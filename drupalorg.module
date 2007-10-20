@@ -1,5 +1,8 @@
 <?php
 
+/// Release node ids for issues we're currently tracking (D6).
+define('ISSUE_RIDS', '97368,175832,184399');
+
 /**
  * Implementation of hook_cron().
  */
@@ -11,10 +14,9 @@ function drupalorg_cron() {
  * Pulls issue counts for various issue queues on drupal.org.
  */
 function drupalorg_issue_counts() {
-  $issue_counts['Pending bugs'] = db_result(db_query("SELECT COUNT(*) FROM project_issues WHERE pid = 3060 AND category = 'bug' AND sid = 1 AND priority IN (1,2) AND rid IN (97368,175832,184399)"));
-  $issue_counts['Critical issues'] = db_result(db_query("SELECT COUNT(*) FROM project_issues WHERE pid = 3060 AND category IN ('bug', 'task') AND sid IN (1,8,13,14) AND priority = 1 AND rid IN
-(97368,175832,184399)"));
-  $issue_counts['Patch queue'] = db_result(db_query("SELECT COUNT(*) FROM project_issues WHERE pid = 3060 AND sid IN (8,13,14) AND rid IN (97368,175832,184399)"));
-  $issue_counts['Patches to review'] = db_result(db_query("SELECT COUNT(*) FROM project_issues WHERE pid = 3060 AND sid IN (8) AND rid IN (97368,175832,184399)"));
+  $issue_counts['Pending bugs'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} WHERE pid = 3060 AND category = 'bug' AND sid = 1 AND priority IN (1,2) AND rid IN (". ISSUE_RIDS .")"));
+  $issue_counts['Critical issues'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} WHERE pid = 3060 AND category IN ('bug', 'task') AND sid IN (1,8,13,14) AND priority = 1 AND rid IN (". ISSUE_RIDS .")"));
+  $issue_counts['Patch queue'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} WHERE pid = 3060 AND sid IN (8,13,14) AND rid IN (". ISSUE_RIDS .")"));
+  $issue_counts['Patches to review'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} WHERE pid = 3060 AND sid IN (8) AND rid IN (". ISSUE_RIDS .")"));
   variable_set('drupalorg_issue_counts', $issue_counts);
 }
