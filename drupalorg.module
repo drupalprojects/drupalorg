@@ -1,4 +1,13 @@
 <?php
+// $Id$
+
+/**
+ * @file
+ * This module contains customizations used on drupal.org itself. It is not
+ * meant to be useful for other sites, except as an example of the kinds of
+ * modifications you can make with a site-specific module.
+ */
+
 
 /// Release node ids for issues we're currently tracking (D6).
 define('ISSUE_RIDS', '97368,175832,184399');
