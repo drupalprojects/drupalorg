@@ -29,3 +29,25 @@ function drupalorg_issue_counts() {
   $issue_counts['Patches to review'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} WHERE pid = 3060 AND sid IN (8) AND rid IN (". ISSUE_RIDS .")"));
   variable_set('drupalorg_issue_counts', $issue_counts);
 }
+
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function drupalorg_form_alter($form_id, &$form) {
+  // List of forms to check for overrides, and the corresponding permissions.
+  $override_forms = array(
+    'book_node_form' => 'edit book pages',
+    'forum_node_form' => 'administer nodes',
+    'page_node_form' => 'administer nodes',
+    'simplenews_node_form' => 'create newsletter',
+    'story_node_form' => 'administer nodes',
+  );
+  // Override the access for attachments if it's a forbidden form,
+  // and the user does not have sufficient permissions.
+  if (in_array($form_id, array_keys($override_forms)) && !user_access($override_forms[$form_id])) {
+    if (isset($form['attachments']['#access'])) {
+      $form['attachments']['#access'] = FALSE;
+    }
+  }
+}
