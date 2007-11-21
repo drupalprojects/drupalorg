@@ -10,7 +10,7 @@
 
 
 /// Release node ids for issues we're currently tracking (D6).
-define('ISSUE_RIDS', '97368,175832,184399');
+define('ISSUE_RIDS', '97368,175832,184399,194287');
 
 /**
  * Implementation of hook_cron().
