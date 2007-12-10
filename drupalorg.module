@@ -60,3 +60,15 @@ function drupalorg_form_alter($form_id, &$form) {
     $form['taxonomy']['#weight'] = 35;
   }
 }
+
+/**
+ * Implementation of hook_comment.
+ */
+function drupalorg_comment(&$comment, $op) {
+  switch ($op) {
+    case 'insert':
+    case 'update':
+      $_SESSION['not_slavesafe'] = TRUE;
+      break;
+  }
+}
