@@ -10,7 +10,7 @@
 
 
 /// Release node ids for issues we're currently tracking (D6).
-define('ISSUE_RIDS', '97368,175832,184399,194287,198188,202820,208616,216077');
+define('ISSUE_RIDS', '97368,175832,184399,194287,198188,202820,208616,216077,219510');
 define('DRUPALORG_CVS_USER_ROLE', 8);
 
 /**
