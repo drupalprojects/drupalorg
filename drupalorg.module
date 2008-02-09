@@ -92,3 +92,11 @@ function drupalorg_cvs_user_edit_submit($form_id, &$form_values) {
     cache_clear_all($form_values['cvs_uid'] .":$locale", 'cache_menu');
   }
 }
+
+/**
+ * Implemenation of hook_project_page_link_alter().
+ */
+function drupalorg_project_page_link_alter($node, &$all_links) {
+  // Link to security handbook page.
+  $all_links['support']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
+}
