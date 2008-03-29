@@ -12,12 +12,35 @@
 /// Release node ids for issues we're currently tracking (Drupal 7).
 define('ISSUE_RIDS', '156281');
 define('DRUPALORG_CVS_USER_ROLE', 8);
+// The required simplenews newsletter tid for CVS account holders.
+define('DRUPALORG_CVS_NEWSLETTER', 118);
 
 /**
  * Implementation of hook_cron().
  */
 function drupalorg_cron() {
   drupalorg_issue_counts();
+
+  // Make sure all CVS account users are subscribed to the mandatory newsletter.
+  if (module_exists('simplenews')) {
+    // Only check/add users once per day - normally users are added when they get a CVS account.
+    if (time() - variable_get('drupalorg_cvs_subscribe_time', 0) > 86400) {
+      // Find CVS users with newsletter subscriptions but not the CVS newsletter.
+      $result = db_query("SELECT u.uid, u.mail, ss.snid FROM {users} u INNER JOIN {users_roles} ur ON u.uid = ur.uid INNER JOIN {simplenews_subscriptions} ss ON ss.uid = u.uid WHERE ur.rid = %d", DRUPALORG_CVS_USER_ROLE);
+      while ($account = db_fetch_object($result)) {
+        if (!db_result(db_query("SELECT snid FROM {simplenews_snid_tid} WHERE snid = %d AND tid = %d", $account->snid, DRUPALORG_CVS_NEWSLETTER))) {
+          module_invoke('simplenews', 'subscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
+        }
+      }
+      // Find CVS users with no newsletter subscriptions at all.
+      $result = db_query("SELECT u.uid, u.mail FROM {users} u INNER JOIN {users_roles} ur ON u.uid = ur.uid LEFT JOIN {simplenews_subscriptions} ss ON ss.uid = u.uid WHERE ur.rid = %d AND ss.uid IS NULL", DRUPALORG_CVS_USER_ROLE);
+      while ($account = db_fetch_object($result)) {
+        module_invoke('simplenews', 'subscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
+      }
+      // Store the time of the last run.
+      variable_set('drupalorg_cvs_subscribe_time', time());
+    }
+  }
 }
 
 /**
@@ -64,6 +87,29 @@ function drupalorg_form_alter($form_id, &$form) {
     $submit['drupalorg_cvs_user_edit_submit'] = array();
     $form['#submit'] = $form['#submit'] + $submit;
   }
+  elseif (($form_id == 'user_edit' && isset($form['_category']['#value']) && $form['_category']['#value'] == 'newsletter') ||
+           ($form_id == 'simplenews_subscription_manager_form')){
+    // Alter the newsletter subscription form for CVS account holders only.
+    // An admin may be editing some other user's account.
+    if (isset($form['_account']['#value'])) {
+      $account = $form['_account']['#value'];
+    }
+    else {
+      $account = $GLOBALS['user'];
+    }
+    // Don't allow CVS account holders to unsubscribe from the required newsletter.
+    if (isset($account->roles[DRUPALORG_CVS_USER_ROLE])) {
+      $option = $form['subscriptions']['newsletters']['#options'][DRUPALORG_CVS_NEWSLETTER];
+      unset($form['subscriptions']['newsletters']['#options'][DRUPALORG_CVS_NEWSLETTER]);
+      $default = is_array($form['subscriptions']['newsletters']['#default_value']) ? in_array(DRUPALORG_CVS_NEWSLETTER, $form['subscriptions']['newsletters']['#default_value']) : FALSE;
+      $form['subscriptions']['cvs_newsletter'] = array(
+        '#type' => 'checkbox',
+        '#title' => $option .' '. t('(mandatory for users with a CVS account)'),
+        '#default_value' => $default,
+        '#disabled' => TRUE,
+      );
+    }
+  }
 }
 
 /**
@@ -83,9 +129,13 @@ function drupalorg_cvs_user_edit_submit($form_id, &$form_values) {
     switch ($form_values['cvs_status']) {
       case CVS_APPROVED:
         db_query('INSERT INTO {users_roles} (uid, rid) VALUES (%d, %d)', $form_values['cvs_uid'], DRUPALORG_CVS_USER_ROLE);
+        $account = user_load($form_values['cvs_uid']);
+        module_invoke('simplenews', 'subscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
         break;
       case CVS_DISABLED:
         db_query('DELETE FROM {users_roles} WHERE uid = %d AND rid = %d', $form_values['cvs_uid'], DRUPALORG_CVS_USER_ROLE);
+        $account = user_load($form_values['cvs_uid']);
+        module_invoke('simplenews', 'unsubscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
         break;
     }
     global $locale;
