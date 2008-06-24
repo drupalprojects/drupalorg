@@ -86,7 +86,7 @@ function drupalorg_form_alter($form_id, &$form) {
     $form['#submit'] = $form['#submit'] + $submit;
   }
   elseif (($form_id == 'user_edit' && isset($form['_category']['#value']) && $form['_category']['#value'] == 'newsletter') ||
-           ($form_id == 'simplenews_subscription_manager_form')){
+          ($form_id == 'simplenews_subscription_manager_form')) {
     // Alter the newsletter subscription form for CVS account holders only.
     // An admin may be editing some other user's account.
     if (isset($form['_account']['#value'])) {
