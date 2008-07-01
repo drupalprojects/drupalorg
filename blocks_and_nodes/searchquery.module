@@ -6,7 +6,7 @@ function searchquery_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALS
     $extra = '';
     switch ($node->nid) {
       case 48380:
-        $extra = search_query_list();
+        $extra = searchquery_list();
         break;
     }
     $node->content['body']['#value'] .= $extra;
@@ -27,7 +27,7 @@ function searchquery_list() {
 
   while ($s = db_fetch_object($result)) {
     preg_match('!<em>(.*?)</em>!', $s->message, $matches);
-    $output .= '<li>'. $matches[1] .' ('. $s->cnt .')</li>';
+    $output .= '<li>'. check_plain($matches[1]) .' ('. $s->cnt .')</li>';
   }
   $output .= '</ul></div>';
 
@@ -40,7 +40,7 @@ function searchquery_list() {
 
   while ($s = db_fetch_object($result)) {
     preg_match('!<em>(.*?)</em>!', $s->message, $matches);
-    $output .= '<li>'. $matches[1] .' ('. $s->cnt .')</li>';
+    $output .= '<li>'. check_plain($matches[1]) .' ('. $s->cnt .')</li>';
   }
   $output .= '</ul></div>';
 
