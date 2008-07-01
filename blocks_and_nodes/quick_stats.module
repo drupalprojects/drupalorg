@@ -3,14 +3,16 @@
 
 function quick_stats_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {
+    $extra = '';
     switch ($node->nid) {
       case 146019:
-        $node->body .= quick_stats_handbook();
-        return;
+        $extra = quick_stats_handbook();
+        break;
       case 190833:
-        $node->body .= quick_stats_report();
-        return;
+        $extra = quick_stats_report();
+        break;
     }
+    $node->content['body']['#value'] .= $extra;
   }
 }
 

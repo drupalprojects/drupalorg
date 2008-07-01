@@ -3,14 +3,16 @@
 
 function project_stuff_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {
+    $extra = '';
     switch ($node->nid) {
       case 206666:
-        $node->body .= project_stuff_by_core();
-        return;
+        $extra = project_stuff_by_core();
+        break;
       case 199251:
-        $node->body .= project_stuff_cvs_rss();
-        return;
+        $extra = project_stuff_cvs_rss();
+        break;
     }
+    $node->content['body']['#value'] .= $extra;
   }
 }
 

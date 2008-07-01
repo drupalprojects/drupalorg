@@ -3,14 +3,16 @@
 
 function branches_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {
+    $extra = '';
     switch ($node->nid) {
       case 97084:
-        $node->body .= branches_body_contrib();
-        return;
+        $extra = branches_body_contrib();
+        break;
       case 93997:
-        $node->body .= branches_body_core();
-        return;
+        $extra = branches_body_core();
+        break;
     }
+    $node->content['body']['#value'] .= $extra;
   }
 }
 
@@ -28,7 +30,6 @@ function branches_body_contrib() {
 }
 
 function branches_body_core() {
-
   $output = '<ul>';
   $query= db_query("SELECT tag
     FROM {cvs_tags}

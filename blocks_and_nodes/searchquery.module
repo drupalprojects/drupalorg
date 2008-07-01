@@ -3,11 +3,13 @@
 
 function searchquery_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {
+    $extra = '';
     switch ($node->nid) {
       case 48380:
-        $node->body .= search_query_list();
-        return;
+        $extra = search_query_list();
+        break;
     }
+    $node->content['body']['#value'] .= $extra;
   }
 }
 

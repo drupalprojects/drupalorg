@@ -3,36 +3,38 @@
 
 function handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {
+    $extra = '';
     switch ($node->nid) {
       case 43633: // Handbook pages with comments
-        $node->body .= handbook_with_comments();
-        return;
+        $extra = handbook_with_comments();
+        break;
       case 43639: // Most popular handbooks
-        $node->body .= handbook_most_popular();
-        return;
+        $extra = handbook_most_popular();
+        break;
       case 322: // Mailing list subscription
-        $node->body .= drupal_get_form('lists_subscribe');
-        return;
+        $extra = drupal_get_form('lists_subscribe');
+        break;
       case 318: // Coding standards, filtered for XSS
         $file = file_get_contents('/var/www/drupal.org/project/cvs/contrib-cvs/CODING_STANDARDS.html');
-        $node->body .= filter_xss_admin($file);
-        return;
+        $extra = filter_xss_admin($file);
+        break;
       case 13355: // Site maintainers
-        $node->body .= handbook_site_maintainers();
-        return;
+        $extra = handbook_site_maintainers();
+        break;
       case 109372: // Handbook maintainers
-        $node->body .= handbook_maintainers();
-        return;
+        $extra = handbook_maintainers();
+        break;
       case 14205: // Book contributors
-        $node->body .= handbook_book_contributors();
-        return;
+        $extra = handbook_book_contributors();
+        break;
       case 263594: // Revision maintainers
-        $node->body .= handbook_revision_maintainers();
-        return;
+        $extra = handbook_revision_maintainers();
+        break;
       case 23192: // Recent updates
-        $node->body .= handbook_recent_updates();
-        return;
+        $extra = handbook_recent_updates();
+        break;
     }
+    $node->content['body']['#value'] .= $extra;
   }
 }
 
