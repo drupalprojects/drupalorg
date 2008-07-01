@@ -1,0 +1,42 @@
+<?php
+// $Id$
+
+function pivots_block_output() {
+  global $user;
+
+  if (arg(0) != 'node' || !is_numeric(arg(1))) {
+    return;
+  }
+
+  $nid = arg(1);
+  $node = node_load($nid);
+
+  if ($node->type != 'project_project' && $node->type != 'forum') {
+    return;
+  }
+
+  drupal_set_html_head("<script src='http://scratch.drupal.org/pivots/action.php?nid=$nid&uid={$user->uid}' type='text/javascript'></script>");
+
+  $output = '<div id="remoteResult">Loading...</div>';
+  $output .= '
+    <script language="Javascript" type="text/javascript">
+      //<![CDATA[
+        drawContent(document.getElementById("remoteResult"));
+      //]]>
+    </script>';
+  return $output;
+}
+
+function pivots_block_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      $blocks[0]['info'] = t('pivots_block: Recommendations');
+      return $blocks;
+
+    case 'view':
+      $block['subject'] = t('Recommendations');
+      $block['content'] = pivots_block_output();
+      return $block;
+  }
+}
+

@@ -1,0 +1,117 @@
+<?php
+// $Id$
+
+function quick_stats_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
+  if ($op == 'view' && $page) {
+    switch ($node->nid) {
+      case 146019:
+        $node->body .= quick_stats_handbook();
+        return;
+      case 190833:
+        $node->body .= quick_stats_report();
+        return;
+    }
+  }
+}
+
+function quick_stats_handbook() {
+  $total_count = 0;
+  $add_count = 0;
+  $delete_count = 0;
+  $newbie_count = 0;
+  $newbies = array();
+
+  // Retrieve a listing of all book pages added in the past week that are still in
+  // the node table:
+  $result = db_query("SELECT nid, title FROM {node} WHERE type = 'book' AND created >= %d", time() - 604800);
+  $books = array();
+  while ($book = db_fetch_object($result)) {
+    $books[$book->nid] = $book->title;
+  }
+
+  // Retrieve listing of *all* added book pages for the past week.
+  $result = db_query("SELECT wid, uid, link FROM {watchdog} WHERE message LIKE 'book: add%' AND type='content'");
+  while ($row = db_fetch_object($result)) {
+    $total_count++;
+    preg_match('!node/(\d+)!', $row->link, $matches);
+    $nid = $matches[1];
+    if (array_search($nid, array_flip($books))) {
+      // Book was added and hasn't been deleted.
+      $add_count++;
+      if (!user_is_on_docs_team($row->uid)) {
+        // Book was created by a new user; not someone on docs team.
+        $newbie_count++;
+        $newbies[$row->uid][] = $nid;
+      }
+    }
+    else {
+      // Book page was spam.
+      $delete_count++;
+    }
+  }
+
+  // Get list of new contributors.
+  foreach ($newbies as $uid => $nodes) {
+    $name = db_result(db_query('SELECT name FROM {users} WHERE uid = %d', $uid));
+    $newbies[$uid] =  l($name, "user/$uid");
+    foreach ($nodes as $nid) {
+      $title = $books[$nid];
+      $newbie_nodes[$uid][] = l($title, "node/$nid");
+    }
+  }
+
+  $output .= "In the past week, a total of $total_count handbook pages were created. Of those, $delete_count were spam. Of the $add_count added, $newbie_count were created by people not on the documentation team: ". theme('new_contributions', $newbies, $newbie_nodes);
+
+  return $output;
+}
+
+function user_is_on_docs_team($uid) {
+  // Role 4 = site maintaner, 5 = docs maintainer.
+  return db_result(db_query("SELECT 1 FROM {users_roles} WHERE uid = %d AND (rid = %d OR rid = %d)",  $uid, 4, 5));
+}
+
+function theme_new_contributions($newbies, $newbie_nodes) {
+  $output = '';
+  foreach ($newbies as $uid => $user) {
+    $output .= '<h3>'. $user .'</h3>';
+    $output .= theme('item_list', $newbie_nodes[$uid]);
+  }
+  return $output;
+}
+
+function quick_stats_report() {
+  $output .=  "<dl>";
+  $nodes = db_result(db_query("SELECT COUNT(1) FROM {node}"));
+  $output .=  "<dt>Content (nodes):</dt><dd>". $nodes ."</dd>";
+
+  $book = db_result(db_query("SELECT COUNT(1) FROM {node} WHERE type = 'book'"));
+  $output .=  "<dt>Book (nodes):</dt><dd>". $book ."</dd>";
+
+  $users = db_result(db_query("SELECT COUNT(1) FROM {users}"));
+  $output .=  "<dt>Users:</dt><dd>". $users ."</dd>";
+
+  $number = db_result(db_query('SELECT COUNT(uid) AS number FROM {users} WHERE status=1')); 
+  
+  $comments = db_result(db_query("SELECT COUNT(1) FROM {comments}"));
+  $output .=  "<dt>Comments:</dt><dd>". $comments ."</dd>";
+  
+  $projects = db_result(db_query("SELECT COUNT(1) FROM {project_projects}"));
+  $output .=  "<dt>Total projects:</dt><dd>". $projects ."</dd>";
+
+  $issues = db_result(db_query("SELECT COUNT(1) FROM {node} WHERE type = 'project_issue'"));
+  $output .=  "<dt>Total issues:</dt><dd>". $issues ."</dd>";
+
+  $issues_month = db_result(db_query("SELECT COUNT(1) FROM {node} WHERE type = 'project_issue' AND created > %d", strtotime("1 year ago", time())));
+  $output .=  "<dt>Issues in In the Last Year:</dt><dd>". $issues_month ."</dd>";
+
+  $followups = db_result(db_query("SELECT COUNT(1) FROM {node} n inner join {comments} c on n.nid = c.nid WHERE n.type = 'project_issue'"));
+  $output .=  "<dt>Followups on Issues:</dt><dd>". $followups ."</dd>";
+
+  $followups_year = db_result(db_query("select count(*) FROM node n inner join comments c on n.nid = c.nid WHERE n.type = 'project_issue' and n.created > (UNIX_TIMESTAMP() - 24 * 60* 60* 365)"));
+  $output .=  "<dt>Followups on Issues in last year:</dt><dd>". $followups_year ."</dd>";
+
+  $output .=  "</dl>";
+
+  return $output;
+}
+

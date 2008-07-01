@@ -1,0 +1,23 @@
+<?php
+// $Id$
+
+function redirects_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
+  if ($op == 'view' && $page) {
+    switch ($node->nid) {
+      case 9730:
+        header('Location: http://drupal.org/project/issues?projects=3060&states=8,13,14');
+        exit;
+
+      case 9731:
+        header('Location: http://drupal.org/project/issues?projects=3060&states=1&categories=bug');
+        exit;
+
+      case 9732:
+        header('Location: http://www.drupal.org/project/issues?projects=3060&states=1&categories=task');
+        exit;
+
+      case 133282:
+        drupal_goto('patch/create');
+    }
+  }
+}

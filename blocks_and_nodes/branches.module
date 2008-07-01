@@ -1,0 +1,53 @@
+<?php
+// $Id$
+
+function branches_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
+  if ($op == 'view' && $page) {
+    switch ($node->nid) {
+      case 97084:
+        $node->body .= branches_body_contrib();
+        return;
+      case 93997:
+        $node->body .= branches_body_core();
+        return;
+    }
+  }
+}
+
+function branches_body_contrib() {
+  $output = '<ul>';
+  $query= db_query("SELECT DISTINCT tag, COUNT(*) AS total
+    FROM {cvs_tags}
+    WHERE nid != 3060 AND nid != 0 AND tag RLIKE 'DRUPAL' AND branch = 1
+    GROUP BY tag ORDER BY tag DESC");
+  while($tag = db_fetch_object($query)) {
+    $output .= ' <li>' . $tag->tag . ' ('. $tag->total .' projects)</li>';
+  }
+  $output .= '</ul>';
+  return $output;
+}
+
+function branches_body_core() {
+
+  $output = '<ul>';
+  $query= db_query("SELECT tag
+    FROM {cvs_tags}
+    WHERE nid = 3060 AND branch = 1 AND tag != 'DRUPAL-3-00'
+    ORDER BY tag DESC");
+  while($tag = db_fetch_object($query)) {
+    $output .= ' <li>' . $tag->tag . '</li>';
+  }
+  $output .= '</ul>';
+  $output .= '<a href="#tags"><h2 id="tags">Available tags</h2></a>';
+  $output .= '<p>The tags currently available in Drupal core are:</p>';
+  $output .= '<ul>';
+
+  $query= db_query("SELECT tag
+    FROM {cvs_tags}
+    WHERE nid = 3060 AND branch = 0 AND tag RLIKE 'DRUPAL-'
+    ORDER BY tag DESC");
+  while($tag = db_fetch_object($query)) {
+    $output .= ' <li>' . $tag->tag . '</li>';
+  }
+  $output .= '</ul>';
+}

@@ -1,0 +1,36 @@
+<?php
+// $Id$
+
+function planet_drupal_subscription_output() {
+  $output = '';
+  $feed_category = 2;
+  $description = '<p>Planet Drupal aggregates the Drupal-related blog posts of:</p>';
+
+  $output .= $description;
+
+  $result = db_query('SELECT f.* FROM {aggregator_feed} f JOIN {aggregator_category_feed} c ON f.fid = c.fid WHERE c.cid = %d ORDER BY f.title', $feed_category);
+
+  $output .= '<div class="item-list"><ul>';
+  while ($feed = db_fetch_object($result)) {
+    $output .= '<li>'.  l($feed->title, $feed->link)  . ' (' . l('feed', $feed->url) . ')</li>'; 
+  }
+  $output .= '</ul></div>';
+
+  $output .= theme('xml_icon', url('planet/rss.xml'));
+
+  return $output;
+}
+
+function planet_drupal_subscription_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      $blocks[0]['info'] = t('planet_drupal_subsciptions: Planet Drupal subscriptions');
+      return $blocks;
+
+    case 'view':
+      $block['subject'] = t('Planet Drupal subscriptions');
+      $block['content'] = planet_drupal_subscription_output();
+      return $block;
+  }
+}
+

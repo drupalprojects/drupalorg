@@ -1,0 +1,4 @@
+; $Id$
+name = Project Stuff
+description = Special pages for project module
+package = Drupal.org

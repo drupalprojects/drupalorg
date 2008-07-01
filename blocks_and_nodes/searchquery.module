@@ -1,0 +1,48 @@
+<?php
+// $Id$
+
+function searchquery_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
+  if ($op == 'view' && $page) {
+    switch ($node->nid) {
+      case 48380:
+        $node->body .= search_query_list();
+        return;
+    }
+  }
+}
+
+function searchquery_list() {
+  if ($cache = cache_get('node_48380')) {
+    return $cache->data;
+  }
+
+  $output .= '<div class="column-left"><h2>Anonymous users</h2><ul>';
+  $result = db_query("SELECT message, COUNT(message) AS cnt FROM {watchdog}
+    WHERE type = 'search' AND uid = 0
+    GROUP BY message
+    ORDER BY cnt DESC
+    LIMIT 300");
+
+  while ($s = db_fetch_object($result)) {
+    preg_match('!<em>(.*?)</em>!', $s->message, $matches);
+    $output .= '<li>'. $matches[1] .' ('. $s->cnt .')</li>';
+  }
+  $output .= '</ul></div>';
+
+  $output .= '<div class="column-right"><h2>Authenticated users</h2><ul>';
+  $result = db_query("SELECT message, COUNT(message) AS cnt FROM {watchdog}
+    WHERE type = 'search' AND uid != 0
+    GROUP BY message
+    ORDER BY cnt
+    DESC limit 300");
+
+  while ($s = db_fetch_object($result)) {
+    preg_match('!<em>(.*?)</em>!', $s->message, $matches);
+    $output .= '<li>'. $matches[1] .' ('. $s->cnt .')</li>';
+  }
+  $output .= '</ul></div>';
+
+  cache_set('node_48380', 'cache', $output, 60*60);
+
+  return $output;
+}
