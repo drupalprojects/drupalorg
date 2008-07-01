@@ -6,7 +6,7 @@ function project_stuff_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FA
     $extra = '';
     switch ($node->nid) {
       case 206666:
-        $extra = project_stuff_by_core();
+        $extra = project_stuff_project_by_core();
         break;
       case 199251:
         $extra = project_stuff_cvs_rss();
