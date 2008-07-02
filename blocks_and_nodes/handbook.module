@@ -5,6 +5,9 @@ function handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) 
   if ($op == 'view' && $page) {
     $extra = '';
     switch ($node->nid) {
+      case 2: // Features
+        $extra = feature_listing();
+        break;
       case 43633: // Handbook pages with comments
         $extra = handbook_with_comments();
         break;
@@ -129,4 +132,66 @@ function handbook_recent_updates() {
 
   $output = theme('table', $header, $rows);
   return $output;
+}
+
+function handbook_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      $blocks[0]['info'] = t('Handbook License');
+      $blocks[1]['info'] = t('Documentation Quick Links');
+      return $blocks;
+
+    case 'view':
+      switch($delta) {
+        case 0:
+          $block['subject'] = t('Handbook license');
+          $block['content'] = handbook_license();
+          return $block;
+
+        case 1:
+          if (handbook_block_is_visible()) {
+            $block['subject'] = t('Documentation Quick Links');
+            $block['content'] = handbook_doc_quick_links();
+            return $block;
+          }
+     }
+  }
+}
+
+function handbook_block_is_visible() {
+  if (arg(0) == 'node') {
+    if (is_numeric(arg(1))) {
+      if ($node = node_load(array('nid' => arg(1)))) {
+        if ($node->type == 'book') {
+          return TRUE;
+        }
+      }
+    }
+  }
+  return FALSE;
+}
+
+function handbook_doc_quick_links() {
+  $output = <<<EOT
+  <ul>
+   <li><a href="/handbook/modules">Module documentation</a></li>
+   <li><a href="/node/257">Customization and theming</a></li>
+   <li><a href="/search/node">Search drupal.org</a></li>
+   <li><a href="/forum/0">Support forums</a></li>
+   <li><a href="/handbook">View other handbooks</a></li>
+   <li><a href="/project/issues/documentation">Suggest documentation improvements</a></li>
+   <li><a href="/node/23367">Join the doc team</a></li>
+  </ul>
+EOT;
+
+  return $output;
+}
+
+function handbook_license() {
+  if (arg(0) == 'node' && is_numeric(arg(1))) {
+    $result = db_result(db_query("SELECT n.nid FROM {node} n INNER JOIN {book} b ON n.nid  = b.nid WHERE n.nid = %d", arg(1)));
+    if ($result) {
+      return "The Drupal handbook pages are © 2000-2008 by the ". l('individual contributors', 'node/14205') ." and can be used in accordance with the ". l('Creative Commons License, Attribution-ShareAlike 2.0', 'node/14307') .'  PHP code is distributed under the <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GNU General Public License</a>';
+    }
+  }
 }
