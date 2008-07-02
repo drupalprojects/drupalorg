@@ -1,0 +1,103 @@
+<?php
+// $Id$
+
+define('ADVERT_FORUM_PAID',    51);
+define('ADVERT_FORUM_HOSTING', 34);
+
+function advert_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      $blocks[0]['info'] = t('Paid services forum ad');
+      $blocks[1]['info'] = t('Affiliate hosting header ad');
+      $blocks[2]['info'] = t('Affiliate paid-services Ad with Google Ad Manager');
+      return $blocks;
+
+    case 'view':
+      switch($delta) {
+        case 0:
+          if (advert_is_in_forum(ADVERT_FORUM_PAID)) {
+            $block['subject'] = t('Paid services ad');
+            $block['content'] = advert_google_ad();
+            return $block;
+          }
+          break;
+        case 1:
+          if (advert_is_in_forum(ADVERT_FORUM_HOSTING)) {
+            $block['subject'] = t('Hosting forum ads');
+            $block['content'] = advert_hosting();
+            return $block;
+          }
+          break;
+        case 2:
+          if (advert_in_forum(ADVERT_FORUM_PAID)) {
+            $block['subject'] = t('Affiliate Ads');
+            $block['content'] = advert_google_affiliate_ad();
+            return $block;
+          }
+          break;
+      }
+  }
+}
+
+function advert_in_forum($forum_id) {
+  if (arg(0) == 'forum' && arg(1) == $forum_id) {
+    return TRUE;
+  }
+  if (arg(0) == 'node' && is_numeric(arg(1))) {
+    $node = node_load(arg(1));
+    if ($node->type == 'forum' && $node->tid == $forum_id) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+function advert_google_affiliate_ad() {
+  $output = <<<EOT
+<script type="text/javascript" src="http://partner.googleadservices.com/gampad/google_service.js">
+</script>
+<script type="text/javascript">
+  GS_googleAddAdSenseService("ca-pub-8747679010629587");
+  GS_googleEnableAllServices();
+</script>
+<script type="text/javascript">
+  GA_googleAddSlot("ca-pub-8747679010629587", "paid-services");
+</script>
+<script type="text/javascript">
+  GA_googleFetchAds();
+</script>
+
+<script type="text/javascript">
+  GA_googleFillSlot("paid-services");
+</script>
+EOT;
+  return $output;
+}
+
+function advert_google_ad() {
+  $output = <<<EOT
+<script type="text/javascript"><!--
+google_ad_client = "pub-8747679010629587";
+google_ad_width = 200;
+google_ad_height = 200;
+google_ad_format = "200x200_as";
+google_ad_type = "text";
+//2007-11-15: paid-services
+google_ad_channel = "0768249931";
+google_color_border = "DFEDF7";
+google_color_bg = "DFEDF7";
+google_color_link = "0174BB";
+google_color_text = "000000";
+google_color_url = "0174BB";
+//-->
+</script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+<p><a href="http://association.drupal.org/drupal-org-adsense-banner-advertising">About ads</a> --- <a href="http://association.drupal.org/contact">Feedback</a></p>
+EOT;
+  return $output;
+}
+
+function advert_hosting() {
+  return t('The Drupal hosting forums have been deprecated. Unfortunately, several hosting companies and their affiliates have chosen to abuse the good will of the Drupal maintainers. The result is that recommendations about hosting companies are not accurate and in some cases even deceptive.  We are currently evaluating other support options for hosting companies that will limit abuse.');
+}
+

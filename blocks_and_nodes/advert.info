@@ -1,0 +1,4 @@
+; $Id$
+name = Advert
+description = Advertising blocks on drupal.org
+package = Drupal.org
