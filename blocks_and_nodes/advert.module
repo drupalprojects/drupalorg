@@ -29,7 +29,7 @@ function advert_block($op = 'list', $delta = 0, $edit = array()) {
           }
           break;
         case 2:
-          if (advert_in_forum(ADVERT_FORUM_PAID)) {
+          if (advert_is_in_forum(ADVERT_FORUM_PAID)) {
             $block['subject'] = t('Affiliate Ads');
             $block['content'] = advert_google_affiliate_ad();
             return $block;
@@ -39,7 +39,7 @@ function advert_block($op = 'list', $delta = 0, $edit = array()) {
   }
 }
 
-function advert_in_forum($forum_id) {
+function advert_is_in_forum($forum_id) {
   if (arg(0) == 'forum' && arg(1) == $forum_id) {
     return TRUE;
   }
