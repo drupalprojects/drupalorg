@@ -63,8 +63,11 @@ function bingo_block($op = 'list', $delta = 0, $edit = array()) {
       return $blocks;
 
     case 'view':
+      global $user;
       $block['subject'] = t('Contributor links');
-      $block['content'] = bingo_block_output();
+      if ($user->uid > 0) {
+        $block['content'] = bingo_block_output();
+      }
       return $block;
   }
 }
