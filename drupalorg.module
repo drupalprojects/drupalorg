@@ -8,7 +8,6 @@
  * modifications you can make with a site-specific module.
  */
 
-
 /// Release node ids for issues we're currently tracking (Drupal 7).
 define('ISSUE_RIDS', '156281');
 define('DRUPALORG_CVS_USER_ROLE', 8);
@@ -112,6 +111,19 @@ function drupalorg_form_alter($form_id, &$form) {
           '#disabled' => TRUE,
         );
       }
+    }
+  }
+  elseif ($form_id == 'project_project_node_form') {
+    // Deprecate the "license" field, as it must always be GPLv2+ anyway.
+    if (! $form['project']['license']['#default_value']) {
+       $form['project']['license'] = array(
+        '#type' => 'item',
+        '#title' => $form['project']['license']['#title'],
+        '#value' => t('<a href="@link_url">@link_name</a>', array(
+          '@link_url' => CVS_LICENSE_LINK,
+          '@link_name' => CVS_LICENSE,
+        )),
+      );
     }
   }
 }
