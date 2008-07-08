@@ -10,27 +10,35 @@ function bingo_menu($may_cache) {
   if ($may_cache) {
     $items[] = array(
       'path'               => 'patch-bingo',
+      'title'              => 'Patch bingo',
       'callback'           => 'bingo_jump',
       'callback arguments' => array(0),
       'access' => user_access('access content'), 
+      'type'               => MENU_SUGGESTED_ITEM,
       );
     $items[] = array(
       'path'               => 'contrib-patch-bingo',
+      'title'              => 'Contrib patch bingo',
       'callback'           => 'bingo_jump',
       'callback arguments' => array(1),
       'access' => user_access('access content'), 
+      'type'               => MENU_SUGGESTED_ITEM,
       );
     $items[] = array(
       'path'               => 'bug-bingo',
+      'title'              => 'Bug bingo',
       'callback'           => 'bingo_jump',
       'callback arguments' => array(2),
       'access' => user_access('access content'), 
+      'type'               => MENU_SUGGESTED_ITEM,
       );
     $items[] = array(
       'path'               => 'contrib-bug-bingo',
+      'title'              => 'Contrib bug bingo',
       'callback'           => 'bingo_jump',
       'callback arguments' => array(3),
       'access' => user_access('access content'), 
+      'type'               => MENU_SUGGESTED_ITEM,
       );
   }
   return $items;
