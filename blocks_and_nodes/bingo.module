@@ -11,22 +11,26 @@ function bingo_menu($may_cache) {
     $items[] = array(
       'path'               => 'patch-bingo',
       'callback'           => 'bingo_jump',
-      'callback arguments' => array(0)
+      'callback arguments' => array(0),
+      'access' => user_access('access content'), 
       );
     $items[] = array(
       'path'               => 'contrib-patch-bingo',
       'callback'           => 'bingo_jump',
-      'callback arguments' => array(1)
+      'callback arguments' => array(1),
+      'access' => user_access('access content'), 
       );
     $items[] = array(
       'path'               => 'bug-bingo',
       'callback'           => 'bingo_jump',
-      'callback arguments' => array(2)
+      'callback arguments' => array(2),
+      'access' => user_access('access content'), 
       );
     $items[] = array(
       'path'               => 'contrib-bug-bingo',
       'callback'           => 'bingo_jump',
-      'callback arguments' => array(3)
+      'callback arguments' => array(3),
+      'access' => user_access('access content'), 
       );
   }
   return $items;
