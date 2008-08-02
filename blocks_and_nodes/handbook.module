@@ -120,15 +120,15 @@ function handbook_revision_maintainers() {
 }
 
 function handbook_recent_updates() {
-  $result = db_query_range("SELECT n.nid, n.title, n.moderate, n.changed, r.log, u.uid, u.name
+  $result = db_query_range("SELECT n.nid, n.title, n.changed, r.log, u.uid, u.name
     FROM {node} n
     INNER JOIN {book} b ON n.vid = b.vid INNER JOIN {node_revisions} r ON n.vid = r.vid INNER JOIN {users} u ON u.uid = r.uid
     ORDER BY n.changed DESC", 0, 50);
 
   while ($page = db_fetch_object($result)) {
-    $rows[] = array(l($page->title, "node/$page->nid") .' '. theme('mark', node_mark($page->nid, $page->changed)) . ($page->log ? "<br />". check_plain($page->log) : ''), theme('username', $page), t('%time ago', array('%time' => format_interval(time() - $page->changed))), ($page->moderate == 1 ? 'no' : 'yes'));
+    $rows[] = array(l($page->title, "node/$page->nid") .' '. theme('mark', node_mark($page->nid, $page->changed)) . ($page->log ? "<br />". check_plain($page->log) : ''), theme('username', $page), t('%time ago', array('%time' => format_interval(time() - $page->changed))));
   } 
-  $header = array('Page', 'Edited', 'Updated', 'Approved');
+  $header = array('Page', 'Edited', 'Updated');
 
   $output = theme('table', $header, $rows);
   return $output;
