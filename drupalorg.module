@@ -129,6 +129,16 @@ function drupalorg_form_alter($form_id, &$form) {
   elseif ($form_id == 'search_admin_settings') {
     unset($form['status']['wipe']);
   }
+  elseif ($form_id == 'user_register') {
+    $form['#validate']['drupalorg_register_mail_validate'] = array();
+  }
+}
+
+function drupalorg_register_mail_validate($form_id, $form_values) {
+  $mail = preg_replace('/\+.*\@/', '@', $form_values['mail']);
+  if (db_num_rows(db_query("SELECT uid FROM {users} WHERE LOWER(mail) = LOWER('%s')", $mail)) > 0) {
+    form_set_error('mail', t('The e-mail address %email is already registered. <a href="@password">Have you forgotten your password?</a>', array('%email' => $mail, '@password' => url('user/password'))));
+  }
 }
 
 /**
@@ -207,3 +217,4 @@ function drupalorg_display_block_external_search() {
     return $form . $message;
   }
 }
+
