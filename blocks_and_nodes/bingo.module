@@ -9,8 +9,8 @@ define('BINGO_TYPE_MAX', 3);
 function bingo_menu($may_cache) {
   if ($may_cache) {
     $items[] = array(
-      'path'               => 'patch-bingo',
-      'title'              => 'Patch bingo',
+      'path'               => 'bug-bingo',
+      'title'              => 'Bug bingo',
       'callback'           => 'bingo_jump',
       'callback arguments' => array(0),
       'access' => user_access('access content'), 
@@ -25,8 +25,8 @@ function bingo_menu($may_cache) {
       'type'               => MENU_SUGGESTED_ITEM,
       );
     $items[] = array(
-      'path'               => 'bug-bingo',
-      'title'              => 'Bug bingo',
+      'path'               => 'patch-bingo',
+      'title'              => 'Patch bingo',
       'callback'           => 'bingo_jump',
       'callback arguments' => array(2),
       'access' => user_access('access content'), 
