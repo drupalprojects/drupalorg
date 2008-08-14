@@ -17,8 +17,8 @@ function bingo_menu($may_cache) {
       'type'               => MENU_SUGGESTED_ITEM,
       );
     $items[] = array(
-      'path'               => 'contrib-patch-bingo',
-      'title'              => 'Contrib patch bingo',
+      'path'               => 'contrib-bug-bingo',
+      'title'              => 'Contrib bug bingo',
       'callback'           => 'bingo_jump',
       'callback arguments' => array(1),
       'access' => user_access('access content'), 
@@ -33,8 +33,8 @@ function bingo_menu($may_cache) {
       'type'               => MENU_SUGGESTED_ITEM,
       );
     $items[] = array(
-      'path'               => 'contrib-bug-bingo',
-      'title'              => 'Contrib bug bingo',
+      'path'               => 'contrib-patch-bingo',
+      'title'              => 'Contrib patch bingo',
       'callback'           => 'bingo_jump',
       'callback arguments' => array(3),
       'access' => user_access('access content'), 
