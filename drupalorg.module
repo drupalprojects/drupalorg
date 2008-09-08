@@ -132,12 +132,42 @@ function drupalorg_form_alter($form_id, &$form) {
   elseif ($form_id == 'user_register') {
     $form['#validate']['drupalorg_register_mail_validate'] = array();
   }
+  elseif ($form_id == 'user_admin_access_add_form') {
+    $form['type']['#options']['homepage'] == t('Homepage');
+  }
+  elseif ($form_id == 'user_edit') {
+    $form['#validate']['drupalorg_profile_user_edit_validate'] = array();
+  }
 }
 
 function drupalorg_register_mail_validate($form_id, $form_values) {
-  $mail = preg_replace('/\+.*\@/', '@', $form_values['mail']);
-  if (db_num_rows(db_query("SELECT uid FROM {users} WHERE LOWER(mail) = LOWER('%s')", $mail)) > 0) {
-    form_set_error('mail', t('The e-mail address %email is already registered. <a href="@password">Have you forgotten your password?</a>', array('%email' => $mail, '@password' => url('user/password'))));
+  $hit = preg_match('/(.*)\+(.*)\@(.*)/', $form_values['mail'], $match);
+  if ($hit) {
+    if (db_num_rows(db_query("SELECT uid FROM {users} WHERE LOWER(mail) LIKE LOWER('%s')", $match[1] .'+%%@'. $match[3])) > 0) {
+      form_set_error('mail', t('An e-mail address similar to %email is already registered. <a href="@password">Have you forgotten your password?</a>', array('%email' => $form_values['mail'], '@password' => url('user/password'))));
+    }
+  }
+}
+
+
+/**
+ * Validate all fields in the user_edit form against the list of bad words.
+ */
+function drupalorg_profile_user_edit_validate($form_id, $form_values) {
+  $result = db_query("SELECT mask FROM {access} WHERE type = '%s' AND status = %d", 'homepage', 0);
+  $masks = array();
+  while ($mask = db_fetch_object($result)) {
+    $masks[] = '@'. strtr($mask->mask, array('%' => '.*', '_' => '.')) .'@';
+  }
+
+  foreach ($form_values as $name => $value) {
+    if (is_string($value) && strpos($name, 'profile_homepage') === 0) {
+      foreach ($masks as $mask) {
+        if (preg_match($mask, $value)){
+          form_set_error($name, t('Unsuitable homepage detected'));
+        }
+      }
+    }
   }
 }
 
@@ -150,6 +180,17 @@ function drupalorg_comment(&$comment, $op) {
     case 'update':
       $_SESSION['not_slavesafe'] = TRUE;
       break;
+  }
+}
+
+/**
+ * Implementation of hook_nodeapi.
+ */
+function drupalorg_nodeapi(&$node, $op, $teaser, $page) {
+  switch ($op) {
+    case 'insert':
+    case 'update':
+      $_SESSION['not_slavesafe'] = TRUE;
   }
 }
 
