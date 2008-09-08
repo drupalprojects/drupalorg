@@ -157,11 +157,11 @@ function drupalorg_profile_user_edit_validate($form_id, $form_values) {
   $result = db_query("SELECT mask FROM {access} WHERE type = '%s' AND status = %d", 'homepage', 0);
   $masks = array();
   while ($mask = db_fetch_object($result)) {
-    $masks[] = '@'. strtr($mask->mask, array('%' => '.*', '_' => '.')) .'@';
+    $masks[] = '@'. strtr($mask->mask, array('.' => '\.', '%' => '.*', '_' => '.')) .'@';
   }
 
   foreach ($form_values as $name => $value) {
-    if (is_string($value) && strpos($name, 'profile_homepage') === 0) {
+    if (is_string($value) && strpos($name, 'homepage') === 0) {
       foreach ($masks as $mask) {
         if (preg_match($mask, $value)){
           form_set_error($name, t('Unsuitable homepage detected'));
