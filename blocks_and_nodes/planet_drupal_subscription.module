@@ -4,7 +4,8 @@
 function planet_drupal_subscription_output() {
   $output = '';
   $feed_category = 2;
-  $description = '<p>Planet Drupal aggregates the Drupal-related blog posts of:</p>';
+  $description = db_result(db_query("SELECT description FROM aggregator_category WHERE cid = %d", $feed_category));
+  $description = '<p>'. filter_xss_admin($description) .'</p>';
 
   $output .= $description;
 
