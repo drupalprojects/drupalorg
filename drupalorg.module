@@ -132,7 +132,7 @@ function drupalorg_form_alter($form_id, &$form) {
   elseif ($form_id == 'user_register') {
     $form['#validate']['drupalorg_register_mail_validate'] = array();
   }
-  elseif ($form_id == 'user_admin_access_add_form') {
+  elseif ($form_id == 'user_admin_access_add_form' || $form_id == 'user_admin_access_edit_form') {
     $form['type']['#options']['homepage'] = t('Homepage');
   }
   elseif ($form_id == 'user_edit') {
