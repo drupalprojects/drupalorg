@@ -128,9 +128,10 @@ function handbook_recent_updates() {
   while ($page = db_fetch_object($result)) {
     $rows[] = array(
       l($page->title, "node/$page->nid") .' '. theme('mark', node_mark($page->nid, $page->changed)) . ($page->log ? "<br />". check_plain($page->log) : ''), 
-      theme('username', $page), t('%time ago', 
-      array('%time' => format_interval(time() - $page->changed))));
-      l(t('Diff'), "node/$page->nid/revisions/view/latest");
+      theme('username', $page), 
+      t('%time ago', array('%time' => format_interval(time() - $page->changed))),
+      l(t('Diff'), "node/$page->nid/revisions/view/latest"),
+    );
   } 
   $header = array('Page', 'Edited', 'Updated', 'Diff');
 
