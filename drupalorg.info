@@ -1,5 +1,5 @@
 ; $Id$
 name = Drupal.org
 description = "Customizations and tweaks for drupal.org"
-dependencies = project_issue cvs simplenews
+;dependencies = project_issue cvs simplenews
 package = Drupal.org
