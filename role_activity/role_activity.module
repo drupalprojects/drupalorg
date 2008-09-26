@@ -151,6 +151,18 @@ function role_activity_parse($type ='', $message = '') {
         $action = t('User deleted');
       }
       break;
+
+    case 'aggregator':
+      if (preg_match('/Feed .* added/i', $message)) {
+        $action = t('Feed added');
+      }
+      elseif (preg_match('/Feed .* deleted/i', $message)) {
+        $action = t('Feed deleted');
+      }
+      elseif (preg_match('/Updated URL for feed/i', $message)) {
+        $action = t('Feed updated');
+      }
+      break;
   }
   return $action;
 }
