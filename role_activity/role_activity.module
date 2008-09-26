@@ -14,32 +14,33 @@ function role_activity_menu($may_cache) {
   if ($may_cache) {
     $items[] = array(
       'path'               => 'admin/settings/role_activity',
-      'title'              => t('Role Activity settings'),
       'callback'           => 'drupal_get_form',
       'callback arguments' => array('role_activity_admin_settings'),
-      'access'             => user_access('administer site configuration'),
+      'title'              => t('Role Activity settings'),
       'description'        => t('Settings for logging of activity for users in certain roles.'),
+      'access'             => user_access('administer site configuration'),
     );
     $items[] = array(
       'path'        => 'admin/logs/role_activity',
-      'title'       => t('Role Activity log'),
       'callback'    => 'role_activity_log',
-      'access'      => $access,
+      'title'       => t('Role Activity log'),
       'description' => t('Role activity log in chronological order, most recent first.'),
+      'access'      => $access,
     );
     $items[] = array(
       'path'        => 'admin/logs/role_activity/top_users',
-      'title'       => t('Role Activity top users'),
       'callback'    => 'role_activity_top_users',
-      'access'      => $access,
+      'title'       => t('Role Activity top users'),
       'description' => t('Role activity log, top users.'),
+      'access'      => $access,
     );
     $items[] = array(
       'path'        => 'admin/logs/role_activity/user',
-      'title'       => t('Role Activity by user'),
       'callback'    => 'role_activity_by_user',
-      'access'      => $access,
+      'title'       => t('Role Activity by user'),
       'description' => t('Role activity log, by user.'),
+      'access'      => $access,
+      'type'        => MENU_CALLBACK,
     );
   }
 
