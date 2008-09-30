@@ -111,22 +111,22 @@ function bingo_block_output() {
         </a>
       </li>
       <li>
-        <a href="/project/issues?projects=3060&states=1&categories=bug&versions=156281&priorities=1,2">
+        <a href="/project/issues?projects=3060&amp;states=1&amp;categories=bug&amp;versions=156281&amp;priorities=1,2">
           $counts_pending Pending bugs (D7)
         </a>
       </li>
       <li>
-        <a href="/project/issues?projects=3060&categories=bug,task&priorities=1&states=1,8,13,14&versions=156281">
+        <a href="/project/issues?projects=3060&amp;categories=bug,task&amp;priorities=1&amp;states=1,8,13,14&amp;versions=156281">
           $counts_critical Critical issues (D7)
         </a>
       </li>
       <li>
-        <a href="/project/issues?projects=3060&states=8,13,14&versions=156281">
+        <a href="/project/issues?projects=3060&amp;states=8,13,14&amp;versions=156281">
           $counts_queue Patch queue (D7)
         </a>
       </li>
       <li>
-        <a href="/project/issues?projects=3060&states=8&versions=156281">
+        <a href="/project/issues?projects=3060&amp;states=8&amp;versions=156281">
           $counts_review Patches to review (D7)
         </a>
       </li>
