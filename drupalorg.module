@@ -220,6 +220,27 @@ function drupalorg_cvs_user_edit_submit($form_id, &$form_values) {
  * Implemenation of hook_project_page_link_alter().
  */
 function drupalorg_project_page_link_alter($node, &$all_links) {
+  // #310446: Alter issue queue links to view issues of all categories
+  if (isset($all_links['support']['links']['pending_support'])) {
+    $prepend = array(
+      'open_issues' => l(t('View open issues'), 'project/issues/'. $node->uri),
+      'all_issues' => l(t('View all issues'), 'project/issues/'. $node->uri, NULL, 'states=all'),
+    );
+    $all_links['support']['links'] = $prepend + $all_links['support']['links'];
+    unset($all_links['support']['links']['pending_support']);
+    unset($all_links['support']['links']['pending_bugs']);
+    unset($all_links['support']['links']['pending_features']);
+    unset($all_links['development']['links']['pending_issues']);
+  }
+  // #310446: Remove issue creation links to avoid duplicate issues.
+  if (isset($all_links['support']['links']['request_support'])) {
+    unset($all_links['support']['links']['request_support']);
+    unset($all_links['support']['links']['report_bug']);
+    unset($all_links['support']['links']['request_feature']);
+  }
+  if (isset($all_links['support']['links']['create_forbidden'])) {
+    unset($all_links['support']['links']['create_forbidden']);
+  }
   // Link to security handbook page.
   $all_links['support']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
 }
