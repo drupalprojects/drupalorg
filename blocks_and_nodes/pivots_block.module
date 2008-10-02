@@ -1,32 +1,99 @@
 <?php
 // $Id$
 
-function pivots_block_output() {
-  global $user;
+/**
+ * @file
+ * This file provides the pivots_blocks that generates module recommendations.
+ *
+ * Current limitations/issues:
+ *   1. Recommendation data is stored externally on master-other.drupal.org database.
+ *      The reason to use external database is to give flexibility to developers to tweak the algorithm.
+ *   2. "More" is disabled temporarily to make the code clearer, will be added later if needed.
+ *   3. Logging & Survey are removed to make the code clearer. They can be added later.
+ */
 
+define('PID_CONVERSATION', 4151); // conversation pivot ID that displays related conversations
+define('PID_DOUBLE', 4153);       // double pivot ID that displays related projects
+define('LIMIT_CONVERSATION', 10);
+define('LIMIT_DOUBLE', 10);
+define('LIMIT_MAX', 100);         // maximum items to display in the block or on a page.
+
+function pivots_block_output() {
   if (arg(0) != 'node' || !is_numeric(arg(1))) {
     return;
   }
-
-  $nid = arg(1);
-  $node = node_load($nid);
-
-  if ($node->type != 'project_project' && $node->type != 'forum') {
-    return;
+  $node_id = arg(1);
+  $node = node_load($node_id);
+  $output = '';
+  
+  if ($node->type == 'project_project') {
+    $output = _pivots_block_display_on_project($node_id); 
   }
-
-  drupal_set_html_head("<script src='http://scratch.drupal.org/pivots/action.php?nid=$nid&uid={$user->uid}' type='text/javascript'></script>");
-
-  $output = '<div id="remoteResult">Loading...</div>';
-  $output .= '
-    <script language="Javascript" type="text/javascript">
-      //<![CDATA[
-        drawContent(document.getElementById("remoteResult"));
-      //]]>
-    </script>';
+  else if ($node->type == 'forum') {
+    $output = _pivots_block_display_on_forum($node_id);
+  }
+  else {
+    // $output = null; 
+  }
+    
   return $output;
 }
 
+function _pivots_block_display_on_project($node_id) {
+  $output = '';
+  $output .= _pivots_block_content($node_id, PID_CONVERSATION, t("Related discussions"), LIMIT_CONVERSATION);
+  $output .= _pivots_block_content($node_id, PID_DOUBLE, t("Related projects"), LIMIT_DOUBLE); 
+  return $output;
+}
+
+function _pivots_block_display_on_forum($node_id) {
+  $output = '';
+  $output = _pivots_block_content($node_id, PID_CONVERSATION, t("Projects mentioned in the discussion"), LIMIT_CONVERSATION); 
+  return $output; 
+}
+
+function _pivots_block_content($node_id, $pivot_id, $title, $limit) {
+  $output = '';
+  $items = _pivots_block_generate_items($node_id, $pivot_id, $limit);  
+  if (!empty($items)) {
+    foreach ($items as $position => $item) {
+      $items[$position] = l($item['title'], "node/{$item['nid']}");
+    }
+    $output = theme('item_list', $items, $title); 
+  }
+  return $output;
+}
+
+function _pivots_block_generate_items($node_id, $pivot_id, $limit) {
+  if ($limit <= 0) {
+    $limit = LIMIT_MAX;
+  }  
+  
+  db_set_active('pivots');  // NOTE: here we activate the pivots database.  
+  // if there's database failure, we just pretend nothing happens whatsoever. pivots_block returns nothing in this case.
+  $matches = @db_query("SELECT DISTINCT dest_id FROM {pivots_match} WHERE pivot_id=%d AND src_id=%d 
+        AND dest_id<>%d ORDER BY score DESC", $pivot_id, $node_id, $node_id);
+  db_set_active();  // NOTE: change back to use the default database
+  
+  $count = 0;
+  $items = array();
+  while (($match = @db_fetch_array($matches)) && $count < $limit) {
+    $dest_id = $match['dest_id'];
+    $result = db_query("SELECT title FROM {node} WHERE nid=%d AND status=1", $dest_id);
+    // there might be cases that the node was deleted, or set to unpublished between pivots database refresh
+    // so here we only count the valid node.
+    if (db_num_rows($result) > 0) {
+      $title = db_result($result);
+      $items[] = array('nid' => $dest_id, 'title' => $title, 'pid' => $pid);
+      $count++;
+    }
+  }  
+  return $items;
+}
+
+/**
+ * Implementation of hook_block()
+ */
 function pivots_block_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
