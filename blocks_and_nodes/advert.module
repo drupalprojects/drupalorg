@@ -1,16 +1,44 @@
 <?php
 // $Id$
 
-define('ADVERT_FORUM_PAID',    51);
-define('ADVERT_FORUM_HOSTING', 34);
-define('ADVERT_BLOCK_BODY',    'advert_block_body_');
+define('ADVERT_BLOCK_BODY', 'advert_block_body_');
 
+/**
+ * List all blocks. This is the only place to add blocks to if you need more.
+ */
+function _advert_list_blocks() {
+  $list = array();
+
+  $list[0]['forum'] = 51;
+  $list[0]['title'] = t('Paid services forum ad');
+
+  $list[1]['forum'] = 34;
+  $list[1]['title'] = t('Affiliate hosting header ad');
+
+  $list[2]['forum'] = 51;
+  $list[2]['title'] = t('Affiliate paid-services Ad with Google Ad Manager');
+
+  return $list;
+}
+
+/**
+ * Get data for a particular block, by delta
+ */
+function _advert_get_block($delta) {
+  $list = _advert_list_blocks();
+  return $list[$delta];
+}
+
+/**
+ * Implementation of hook_block()
+ */
 function advert_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
-      $blocks[0]['info'] = t('Paid services forum ad');
-      $blocks[1]['info'] = t('Affiliate hosting header ad');
-      $blocks[2]['info'] = t('Affiliate paid-services Ad with Google Ad Manager');
+      $blocks = array();
+      foreach(_advert_list_blocks() as $block_delta => $block_data) {
+        $blocks[$block_delta]['info'] = $block_data['title'];
+      }
       return $blocks;
 
     case 'configure':
@@ -29,32 +57,19 @@ function advert_block($op = 'list', $delta = 0, $edit = array()) {
       return;
 
     case 'view':
-      switch($delta) {
-        case 0:
-          if (advert_is_in_forum(ADVERT_FORUM_PAID)) {
-            $block['subject'] = t('Paid services ad');
-            $block['content'] = variable_get(ADVERT_BLOCK_BODY . $delta, '');
-            return $block;
-          }
-          break;
-        case 1:
-          if (advert_is_in_forum(ADVERT_FORUM_HOSTING)) {
-            $block['subject'] = t('Hosting forum ads');
-            $block['content'] = variable_get(ADVERT_BLOCK_BODY . $delta, '');
-            return $block;
-          }
-          break;
-        case 2:
-          if (advert_is_in_forum(ADVERT_FORUM_PAID)) {
-            $block['subject'] = t('Affiliate Ads');
-            $block['content'] = variable_get(ADVERT_BLOCK_BODY . $delta, '');
-            return $block;
-          }
-          break;
+      $block_data = _advert_get_block($delta);
+      $forum = $block_data['forum'];
+      if (advert_is_in_forum($forum)) {
+        $block['subject'] = $block_data['title'];
+        $block['content'] = variable_get(ADVERT_BLOCK_BODY . $delta, '');
+        return $block;
       }
   }
 }
 
+/** 
+ * Check the visibility of the block, it should be on a forum basis
+ */
 function advert_is_in_forum($forum_id) {
   if (arg(0) == 'forum' && arg(1) == $forum_id) {
     return TRUE;
