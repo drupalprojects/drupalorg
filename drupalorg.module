@@ -165,11 +165,17 @@ function drupalorg_profile_user_edit_validate($form_id, $form_values) {
   }
 
   foreach ($form_values as $name => $value) {
-    if (is_string($value) && strpos($name, 'homepage') === 0) {
+    if (is_string($value) && strlen($value) > 7 && strpos($name, 'homepage') === 0) {
+      // check denied homepages
       foreach ($masks as $mask) {
         if (preg_match($mask, $value)){
           form_set_error($name, t('Unsuitable homepage detected'));
         }
+      }
+      // check for Drupal-ness of website. Try only once.
+      $response = drupal_http_request($value, array(), 'GET', NULL, 1);
+      if ($response->headers['Expires'] != 'Sun, 19 Nov 1978 05:00:00 GMT') {
+        form_set_error($name, t("Your website does not seem to be a Drupal site. If you think we are wrong, please open an issue in the webmasters' queue."));
       }
     }
   }
