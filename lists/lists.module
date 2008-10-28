@@ -1,0 +1,176 @@
+<?php
+// $Id$
+
+function _lists_get_lists() {
+  $lists = array(
+    'support'       => array(
+      'name'        => 'Support',
+      'description' => 'A list for support questions.',
+      'mailto'      => 'support-request@drupal.org',
+    ),
+    'development'   => array(
+      'name'        => 'Development',
+      'description' => 'A list for Drupal developers.',
+      'mailto'      => 'development-request@drupal.org',
+    ),
+    'themes'        => array(
+      'name'        => 'Themes',
+      'description' => 'A list for Drupal theme developers/designers.',
+      'mailto'      => 'themes-request@drupal.org',
+    ),
+    'documentation' => array(
+      'name'        => 'Documentation',
+      'description' => 'A list for documentation contributors.',
+      'mailto'      => 'documentation-request@drupal.org',
+    ),
+    'translations'  => array(
+      'name'        => 'Translations',
+      'description' => 'A list for Drupal UI translators.',
+      'mailto'      => 'translations-request@drupal.org',
+    ),
+    'consulting'    => array(
+      'name'        => 'Consulting',
+      'description' => 'A mailing list for Drupal consultants and Drupal service/hosting providers.',
+      'mailto'      => 'consulting-request@drupal.org',
+    ),
+    'drupal-cvs'    => array(
+      'name'        => 'CVS commits',
+      'description' => 'A list with all CVS commit messages.',
+      'mailto'      => 'drupal-cvs-request@drupal.org',
+    ),
+    'cvs-applications' => array(
+      'name'        => 'CVS applications',
+      'description' => 'A list of all applications for an account in the Drupal contributions CVS repository.',
+      'mailto'      => 'cvs-applications-request@drupal.org',
+      'private'     => TRUE,
+    ),
+    'webmasters'     => array(
+      'name'         => 'Webmasters',
+      'description'  => 'A list for drupal.org webmasters (e.g. settings and content on the drupal.org website, user management, removing spam, etc.).',
+      'mailto'       => 'webmasters-request@drupal.org',
+      'private'     => TRUE,
+    ),
+    'infrastructure' => array(
+      'name'         => 'Infrastructure',
+      'description'  => 'A list for drupal.org infrastructure maintainers (e.g. drupal.org hardware and server configuration, the CVS repository, mailing lists, etc).',
+      'mailto'       => 'infrastructure-request@drupal.org',
+      'private'     => TRUE,
+    ),
+    'drupal-con'    => array(
+      'name'        => 'DrupalCON',
+      'description' => 'A list for the organization of Drupal conferences and events.',
+      'mailto'      => 'drupal-con-request@drupal.org',
+      'private'     => TRUE,
+    ),
+  );
+
+  return $lists;
+}
+
+function lists_menu($may_cache) {
+  $items = array();
+
+  if ($may_cache) {
+    $items[] = array(
+      'path'               => 'lists',
+      'title'              => t('Mailing lists'),
+      'access'             => user_access('access content'),
+      'callback'           => 'drupal_get_form',
+      'callback arguments' => array('lists_subscribe'),
+      'type'               => MENU_SUGGESTED_ITEM
+    );
+  }
+  return $items;
+}
+
+function lists_subscribe() {
+  global $user;
+  $lists = _lists_get_lists();
+
+  foreach ($lists as $list => $info) {
+    $links = array();
+    if (isset($info['private']) && $info['private']) {
+      $links[] = "<a href=\"http://lists.drupal.org/private/$list/\">view archive</a> (members only)";
+    }
+    else {
+      $links[] = "<a href=\"http://lists.drupal.org/pipermail/$list/\">view archive</a>";
+      $links[] = "<a href=\"http://lists.drupal.org/archives/cgi-bin/namazu.cgi?idxname=$list\">search archive</a>";
+    }
+
+    $output .= "<h2>$info[name]</h2>\n";
+    if (!$info['disabled']) {
+      $links[] = "<a href=\"http://lists.drupal.org/listinfo/$list\">mailman page</a>";
+    }
+    else {
+      $output .= '<i>This list has been disabled.</i>\n';
+    }
+
+    $output .= "<p>$info[description]</p>\n";
+    $output .= "<p>";
+
+    $output .= implode(' . ', $links);
+
+    $output .= "</p>\n";
+  }
+  $output .= '<h2>Subscribe</h2>';
+
+  $form['intro'] = array(
+    '#type' => 'markup',
+    '#value' => $output,
+  );
+
+  $form['mail'] = array(
+    '#type'          => 'textfield',
+    '#title'         => t('E-mail address'),
+    '#default_value' => ($user->uid ? $user->mail : ''),
+    '#size'          => 50,
+    '#maxlength'     => 255,
+    '#required'      => true,
+  );
+  $form['item'] = array(
+    '#type' => 'item',
+    '#title' => t('Mailing lists'),
+    '#default_value' => '',
+  );
+  foreach ($lists as $list => $info) {
+    if (!$info['disabled']) {
+      $form[$list] = array(
+        '#type' => 'checkbox',
+        '#title' => $list,
+      );
+    }
+  }
+  $form['subscribe'] = array(
+    '#type' => 'submit',
+    '#value' => t('Subscribe'),
+  );
+
+  return $form;
+}
+
+function lists_subscribe_validate($form_id,$form) {
+  if(!valid_email_address($form['mail'])) {
+    form_set_error('mail',t("Please enter a valid email address."));
+  }
+}
+
+function lists_subscribe_submit($form_id, $form = NULL) {
+  $flag = FALSE;
+  $mail = $form['mail'];
+  if ($mail) {
+    foreach (_lists_get_lists() as $list => $info) {
+      if ($form[$list]) {
+        if (!$flag) $flag = TRUE;
+        $headers = "From: $mail\nReturn-path: $mail\nError-to: $mail";
+        $result[] = mail($info['mailto'], "subscribe address=$mail", 'subscribe to mailing list', $headers);
+      }
+    }
+  }
+
+  if (!$flag) {
+    drupal_set_message('You did not fill in the form properly.', 'error');
+  }
+  else {
+      drupal_set_message('You will receive confirmation emails for your subscriptions. Please read them carefully and follow the directions.');
+  }
+}
