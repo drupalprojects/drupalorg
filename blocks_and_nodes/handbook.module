@@ -5,9 +5,6 @@ function handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) 
   if ($op == 'view' && $page) {
     $extra = '';
     switch ($node->nid) {
-      case 2: // Features
-        $extra = feature_listing();
-        break;
       case 43633: // Handbook pages with comments
         $extra = handbook_with_comments();
         break;
