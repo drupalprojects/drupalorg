@@ -273,6 +273,28 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
   }
 }
 
+/**
+ * Implementation of hook_search().
+ */
+function drupalorg_search($op = 'search', $keys = NULL) {
+  switch ($op) {
+    case 'name':
+      if (user_access('access user profiles')) {
+        return t('IRC nicks');
+      }
+    case 'search':
+      if (user_access('access user profiles')) {
+        $find = array();
+        // Replace wildcards with MySQL/PostgreSQL wildcards.
+        $keys = preg_replace('!\*+!', '%', $keys);
+        $result = pager_query("SELECT u.name, u.uid FROM {profile_values} pv INNER JOIN {users} u ON pv.uid = u.uid WHERE pv.fid = 35 AND LOWER(pv.value) LIKE LOWER('%%%s%%')", 15, 0, NULL, $keys);
+        while ($account = db_fetch_object($result)) {
+          $find[] = array('title' => $account->name, 'link' => url('user/'. $account->uid, NULL, NULL, TRUE));
+        }
+        return $find;
+      }
+  }
+}
 
 /**
  * Body for external search block
