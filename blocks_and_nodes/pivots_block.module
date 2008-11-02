@@ -23,26 +23,9 @@ function pivots_block_output() {
   $node = node_load($node_id);
   $output = '';
   
-  // Hack: alternate pivots algorithms.
-  // Explanation at: http://mrzhou.cms.si.umich.edu/pivots-algorithms-explanation
   global $_pivots_block_pid_conversation, $_pivots_block_pid_double;
   $_pivots_block_pid_conversation = 4151; // conversation pivot ID that displays related conversations
   $_pivots_block_pid_double = 4153;  // double pivot ID that displays related projects
-  $time_1 = 1224907200; // 2008-10-25 00:00:00
-  $time_2 = 1225166400; // 2008-10-28 00:00:00
-  $time_3 = 1225425600; // 2008-10-31 00:00:00
-  $time_4 = 1225688400; // 2008-11-03 00:00:00
-  $curr_time = time() - 28800; // Current time on D.O. (UTC) to PST(-8:00) used in Google Analytics
-  if ($curr_time>=$time_1 && $curr_time<$time_2) {
-    $_pivots_block_pid_double = 4152;  // co-references algorithm
-  }
-  else if ($curr_time>=$time_2 && $curr_time<$time_3) {
-    $_pivots_block_pid_double = 4154;  // recency algorithms
-  }
-  else if ($curr_time>=$time_3 && $curr_time<$time_4) {
-    $_pivots_block_pid_double = 4155;  // uniqueness algorithms
-  }
-  // else remain 4153, the default "relevancy" algorithm.
   
   if ($node->type == 'project_project') {
     $output = _pivots_block_display_on_project($node_id); 
@@ -78,7 +61,7 @@ function _pivots_block_content($node_id, $pivot_id, $title, $limit) {
   if (!empty($items)) {
     foreach ($items as $position => $item) {
       $items[$position] = l($item['title'], "node/{$item['nid']}", array(
-        "onClick" => "javascript:urchinTracker('/pivotslog/$pivot_id/$node_id/{$item['nid']}/$position');"
+        "onClick" => "javascript: pageTracker._trackPageview('/pivotslog/$pivot_id/$node_id/{$item['nid']}/$position');"
       ));
     }
     $output = theme('item_list', $items, $title); 
