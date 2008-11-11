@@ -12,7 +12,7 @@ function handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) 
         $extra = handbook_most_popular();
         break;
       case 322: // Mailing list subscription
-        $extra = drupal_get_form('lists_subscribe');
+        $extra = drupal_get_form('lists_subscribe_form');
         break;
       case 318: // Coding standards, filtered for XSS
         $file = file_get_contents('/var/www/drupal.org/project/cvs/contrib-cvs/CODING_STANDARDS.html');
