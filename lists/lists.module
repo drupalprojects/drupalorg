@@ -1,6 +1,32 @@
 <?php
 // $Id$
 
+/**
+ * @file
+ *   Drupal.org mailing list subscription helper.
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function lists_menu($may_cache) {
+  $items = array();
+  if ($may_cache) {
+    $items[] = array(
+      'path'               => 'lists',
+      'title'              => t('Mailing lists'),
+      'access'             => user_access('access content'),
+      'callback'           => 'drupal_get_form',
+      'callback arguments' => array('lists_subscribe_form'),
+      'type'               => MENU_SUGGESTED_ITEM
+    );
+  }
+  return $items;
+}
+
+/**
+ * Internal helper function to return a list of mailing lists.
+ */
 function _lists_get_lists() {
   $lists = array(
     'support'       => array(
@@ -44,17 +70,17 @@ function _lists_get_lists() {
       'mailto'      => 'cvs-applications-request@drupal.org',
       'private'     => TRUE,
     ),
-    'webmasters'     => array(
-      'name'         => 'Webmasters',
-      'description'  => 'A list for drupal.org webmasters (e.g. settings and content on the drupal.org website, user management, removing spam, etc.).',
-      'mailto'       => 'webmasters-request@drupal.org',
+    'webmasters'    => array(
+      'name'        => 'Webmasters',
+      'description' => 'A list for drupal.org webmasters (e.g. settings and content on the drupal.org website, user management, removing spam, etc.).',
+      'mailto'      => 'webmasters-request@drupal.org',
       'private'     => TRUE,
     ),
     'infrastructure' => array(
       'name'         => 'Infrastructure',
       'description'  => 'A list for drupal.org infrastructure maintainers (e.g. drupal.org hardware and server configuration, the CVS repository, mailing lists, etc).',
       'mailto'       => 'infrastructure-request@drupal.org',
-      'private'     => TRUE,
+      'private'      => TRUE,
     ),
     'drupal-con'    => array(
       'name'        => 'DrupalCON',
@@ -63,27 +89,16 @@ function _lists_get_lists() {
       'private'     => TRUE,
     ),
   );
-
   return $lists;
 }
 
-function lists_menu($may_cache) {
-  $items = array();
-
-  if ($may_cache) {
-    $items[] = array(
-      'path'               => 'lists',
-      'title'              => t('Mailing lists'),
-      'access'             => user_access('access content'),
-      'callback'           => 'drupal_get_form',
-      'callback arguments' => array('lists_subscribe'),
-      'type'               => MENU_SUGGESTED_ITEM
-    );
-  }
-  return $items;
-}
-
-function lists_subscribe() {
+/**
+ * Mailing list form builder function.
+ *
+ * @see lists_subscribe_form_validate()
+ * @see lists_subscribe_form_submit()
+ */
+function lists_subscribe_form() {
   global $user;
   $lists = _lists_get_lists();
 
@@ -102,7 +117,7 @@ function lists_subscribe() {
       $links[] = "<a href=\"http://lists.drupal.org/listinfo/$list\">mailman page</a>";
     }
     else {
-      $output .= '<i>This list has been disabled.</i>\n';
+      $output .= "<em>This list has been disabled.</em>\n";
     }
 
     $output .= "<p>$info[description]</p>\n";
@@ -125,7 +140,7 @@ function lists_subscribe() {
     '#default_value' => ($user->uid ? $user->mail : ''),
     '#size'          => 50,
     '#maxlength'     => 255,
-    '#required'      => true,
+    '#required'      => TRUE,
   );
   $form['item'] = array(
     '#type' => 'item',
@@ -148,29 +163,39 @@ function lists_subscribe() {
   return $form;
 }
 
-function lists_subscribe_validate($form_id,$form) {
-  if(!valid_email_address($form['mail'])) {
-    form_set_error('mail',t("Please enter a valid email address."));
+/**
+ * Validate form submission.
+ *
+ * @see lists_subscribe_form()
+ */
+function lists_subscribe_form_validate($form_id,$form) {
+  if (!valid_email_address($form['mail'])) {
+    form_set_error('mail', t("Please enter a valid e-mail address."));
   }
 }
 
-function lists_subscribe_submit($form_id, $form = NULL) {
-  $flag = FALSE;
+/**
+ * Submission handler for the subscription form.
+ *
+ * @see lists_subscribe_form()
+ */
+function lists_subscribe_form_submit($form_id, $form = NULL) {
+  $sent = FALSE;
   $mail = $form['mail'];
   if ($mail) {
     foreach (_lists_get_lists() as $list => $info) {
       if ($form[$list]) {
-        if (!$flag) $flag = TRUE;
+        $sent = TRUE;
         $headers = "From: $mail\nReturn-path: $mail\nError-to: $mail";
         $result[] = mail($info['mailto'], "subscribe address=$mail", 'subscribe to mailing list', $headers);
       }
     }
   }
 
-  if (!$flag) {
+  if (!$sent) {
     drupal_set_message('You did not fill in the form properly.', 'error');
   }
   else {
-      drupal_set_message('You will receive confirmation emails for your subscriptions. Please read them carefully and follow the directions.');
+    drupal_set_message('You will receive confirmation emails for your subscriptions. Please read them carefully and follow the directions.');
   }
 }
