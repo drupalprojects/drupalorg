@@ -53,17 +53,24 @@ function pivots_block_output() {
     // $output = null; 
   }
 
+  // decide whether to add GA tracking code.
+  global $_pivots_block_track;
   if (!empty($output)) {
-    // GA code for pageviews
-    $output .= '
-    <script type="text/javascript">var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");document.write(unescape("%3Cscript src=\'" + gaJsHost + "google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E"));</script>
-    <script type="text/javascript">
-      var pageTracker = _gat._getTracker("UA-2360451-1");
-      pageTracker._trackPageview("/pivotslog/pageview/'.$_pivots_block_pid_double.'/'.$node_id.'");
-    </script>';
+    $_pivots_block_track = 'pageTracker._trackPageview("/pivotslog/pageview/'.$_pivots_block_pid_double.'/'.$node_id.'");';
+  }
+  else {
+    $_pivots_block_track = '';
   }
   
   return $output;
+}
+
+// implementation of hook_footer(). add Google Analytics tracking to pivots_block pageview.
+function pivots_block_footer($main = 0) {
+  global $_pivots_block_track;
+  if (!empty($_pivots_block_track)) {
+    drupal_add_js($_pivots_block_track, 'inline', 'footer');
+  }
 }
 
 function _pivots_block_display_on_project($node_id) {
