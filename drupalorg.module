@@ -72,6 +72,18 @@ function drupalorg_form_alter($form_id, &$form) {
     }
   }
 
+  // Add a description for the Priority and Status levels.
+  if ($form_id == 'project_issue_node_form' || $form_id == 'comment_form' && !empty($form['original_issue']['issue_info'])) {
+    $priority_status_description = array(
+      // The "standard" class adds a clear so the description is positioned
+      // below the floated pull-downs.  "fieldset-description" is from
+      // bluebeach to make the font size smaller.
+      '#prefix' => '<div class="standard fieldset-description">',
+      '#value' => t('Descriptions of the <a href="!priority_url">Priority</a> and <a href="!status_url">Status</a> levels can be found in the <a href="!issue_queue_url">Issue queue handbook</a>.', array('!priority_url' => '/node/45111', '!status_url' => '/node/156119', '!issue_queue_url' => '/node/317')),
+      '#suffix' => '</div>',
+    );
+  }
+
   // Make the "Issue tags" vocabulary not so prominent on issue nodes.
   if ($form_id == 'project_issue_node_form') {
     $form['taxonomy']['#type'] = 'fieldset';
@@ -79,6 +91,10 @@ function drupalorg_form_alter($form_id, &$form) {
     $form['taxonomy']['#collapsible'] = TRUE;
     $form['taxonomy']['#collapsed'] = TRUE;
     $form['taxonomy']['#weight'] = 35;
+    $form['issue_info']['description'] = $priority_status_description;
+  }
+  else if ($form_id == 'comment_form' && !empty($form['original_issue']['issue_info'])) {
+    $form['original_issue']['issue_info']['description'] = $priority_status_description;
   }
   else if ($form_id == 'cvs_user_edit_form') {
     $submit['drupalorg_cvs_user_edit_submit'] = array();
