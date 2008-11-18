@@ -1,0 +1,14 @@
+<?php
+// $Id$
+
+/**
+ * Set the system weight to 1 so that it is invoked after project_usage.
+ *
+ * See http://drupal.org/node/327548 for more information.
+ */
+function drupalorg_update_1() {
+  $ret = array();
+  $ret[] = update_sql("UPDATE {system} SET weight = 1 WHERE name = 'drupalorg'");
+  return $ret;
+}
+
