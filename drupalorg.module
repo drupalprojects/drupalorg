@@ -339,7 +339,11 @@ function drupalorg_help($section) {
   switch ($section) {
     case 'project/usage':
       return '<p>'. t('These statistics are incomplete; only Drupal websites using the <a href="!update_status_url">Update Status</a> module are included in the data. As this module is now included with the download of Drupal since version 6.x, the data is heavily biased toward newer sites. <a href="!usage_description_url">Read more information about how these statistics are calculated.</a>', array('!update_status_url' => url('project/update_status'), '!usage_description_url' => url('node/329620'))) .'</p>';
+
+    case 'project/modules/name':
+    case 'project/Modules/name':
+      return t('You can also view an <a href="@list_url">Alphabetical list of Projects</a> that includes all projects but only their names.', array('@list_url' => url('node/206666')));
+
   }
 }
-
 
