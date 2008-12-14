@@ -367,7 +367,7 @@ function drupalorg_project_page_link_alter($node, &$all_links) {
   // #310446: Alter issue queue links to view issues of all categories
   if (isset($all_links['support']['links']['pending_support'])) {
     $prepend = array(
-      'open_issues' => l(t('View open issues or create a new one'), 'project/issues/'. $node->uri),
+      'open_issues' => l(t('View open issues or create one'), 'project/issues/'. $node->uri),
       'all_issues' => l(t('View all issues'), 'project/issues/'. $node->uri, NULL, 'states=all'),
     );
     $all_links['support']['links'] = $prepend + $all_links['support']['links'];
