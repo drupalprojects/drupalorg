@@ -2,6 +2,16 @@
 // $Id$
 
 /**
+ * Implementation of hook_install().
+ *
+ * Set the system weight heavier than cvslog so our form_alter comes later. 
+ * See http://drupal.org/node/210497 for more information.
+ */
+function drupalorg_install() {
+  db_query("UPDATE {system} SET weight = 5 WHERE name = 'drupalorg'");
+}
+
+/**
  * Set the system weight to 1 so that it is invoked after project_usage.
  *
  * See http://drupal.org/node/327548 for more information.
@@ -9,6 +19,17 @@
 function drupalorg_update_1() {
   $ret = array();
   $ret[] = update_sql("UPDATE {system} SET weight = 1 WHERE name = 'drupalorg'");
+  return $ret;
+}
+
+/**
+ * Set the system weight heavier than cvslog so our form_alter comes later. 
+ *
+ * See http://drupal.org/node/210497 for more information.
+ */
+function drupalorg_update_2() {
+  $ret = array();
+  $ret[] = update_sql("UPDATE {system} SET weight = 5 WHERE name = 'drupalorg'");
   return $ret;
 }
 

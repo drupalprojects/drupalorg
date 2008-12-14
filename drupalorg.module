@@ -14,6 +14,17 @@ define('DRUPALORG_CVS_USER_ROLE', 8);
 // The required simplenews newsletter tid for CVS account holders.
 define('DRUPALORG_CVS_NEWSLETTER', 118);
 
+// URL for the Drupal Security Team
+define('DRUPALORG_SECURITY_TEAM_URL', 'http://drupal.org/security-team');
+// URL for links to contact the security team
+define('DRUPALORG_SECURITY_CONTACT_URL', 'http://drupal.org/security-team#report-issue');
+// URL for the handbook page that describes the "Release type" vocabulary.
+define('DRUPALORG_RELEASE_TYPE_HANDBOOK_URL', 'http://drupal.org/handbook/cvs/releases/types#type');
+// URL specifically to describe the "Security update" term.
+// For now, the general page for release types is the best we've got.
+define('DRUPALORG_SECURITY_UPDATE_HANDBOOK_URL', DRUPALORG_RELEASE_TYPE_HANDBOOK_URL);
+
+
 /**
  * Implementation of hook_cron().
  */
@@ -96,6 +107,9 @@ function drupalorg_form_alter($form_id, &$form) {
   else if ($form_id == 'comment_form' && !empty($form['original_issue']['issue_info'])) {
     $form['original_issue']['issue_info']['description'] = $priority_status_description;
   }
+  elseif ($form_id == 'project_release_node_form') {
+    drupalorg_form_project_release_node_form_alter($form_id, $form);
+  }
   else if ($form_id == 'cvs_user_edit_form') {
     $submit['drupalorg_cvs_user_edit_submit'] = array();
     $form['#submit'] = $form['#submit'] + $submit;
@@ -157,6 +171,112 @@ function drupalorg_form_alter($form_id, &$form) {
   // Force a revision log entry when editing book nodes.
   elseif ($form_id == 'book_node_form' && isset($form['log']) && arg(1) != 'add') {
     $form['log']['#required'] = TRUE;
+  }
+}
+
+function drupalorg_form_project_release_node_form_alter($form_id, &$form) {
+  if (!empty($form['taxonomy'])) {
+    $vid = drupalorg_get_release_type_vid();
+    $security_tid = drupalorg_get_security_update_tid();
+    if (!empty($form['taxonomy'][$vid])) {
+      $form['taxonomy'][$vid]['#weight'] = 10;
+      if (empty($form['nid']['#value'])) {
+        // Adding a new release.
+        if (!empty($form['cvs_tag']['rebuild']['#value'])) {
+          // This is a -dev, don't let anyone mark it a security update.
+          _drupalorg_remove_security_update($form);
+        }
+        else {
+          // Regular release
+          $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => DRUPALORG_RELEASE_TYPE_HANDBOOK_URL));
+          $form['taxonomy'][$vid]['#prefix'] = '<div class="release-type-select">';
+          $form['taxonomy'][$vid]['#suffix'] = '</div>';
+          $form['#validate']['drupalorg_security_release_form_validate'] = array();
+          $confirm_class = 'security-update-confirm';
+          // Hide the confirmation checkbox on page load unless 'Security
+          // update' is already selected.
+          if (empty($form['#post']['taxonomy'][$vid]) || (array_search($security_tid, $form['#post']['taxonomy'][$vid]) === FALSE)) {
+            $confirm_class .= ' js-hide';
+          }
+          $form['security_update_confirm'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Are you sure you want to mark this release as a <a href="@security_update_url">Security update</a>?', array('@security_update_url' => DRUPALORG_SECURITY_UPDATE_HANDBOOK_URL)),
+            '#prefix' => '<div class="'. $confirm_class .'">',
+            '#suffix' => '</div>',
+            '#weight' => -2,
+            '#description' => t('If you select %security_update, your release will not be published without the manual intervention of the <a href="@security_url">Drupal Security Team</a>. You should have already <a href="@contact_url">contacted the Security Team</a> to coordinate a security advisory (SA) for your release before you committed any security-related patches.', array('%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL)),
+          );
+          $drupalorg_path = drupal_get_path('module', 'drupalorg');
+          drupal_add_js($drupalorg_path .'/js/drupalorg.release_node.js');
+          drupal_add_css($drupalorg_path .'/drupalorg.css');
+        }
+      }
+      else {
+        // Editing an existing release.
+        if (array_search($security_tid, $form['taxonomy'][$vid]['#default_value']) !== FALSE) {
+          // If this release is already marked as a Security update, don't
+          // let regular users change it any futher.
+          if (!user_access('administer projects')) {
+            $form['taxonomy'][$vid]['#disabled'] = TRUE;
+          }
+          $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a> Since this release is already marked as a %security_update, you can no longer change the release type. If you believe you need to do so for some reason, you should <a href="@contact_url">contact</a> the <a href="@security_url">Drupal Security Team</a>.', array('@handbook_url' => DRUPALORG_RELEASE_TYPE_HANDBOOK_URL, '%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL));
+        }
+        else {
+          // Not a Security update, remove that option entirely if this is
+          // either a -dev snapshot or a non-admin user.
+          if (!empty($form['#node']->rebuild) || !user_access('administer projects')) {
+            _drupalorg_remove_security_update($form);
+          }
+          $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => DRUPALORG_RELEASE_TYPE_HANDBOOK_URL));
+        }
+      }
+    }
+  }
+}
+
+function _drupalorg_remove_security_update(&$form) {
+  $vid = drupalorg_get_release_type_vid();
+  $security_tid = drupalorg_get_security_update_tid();
+  foreach ($form['taxonomy'][$vid]['#options'] as $i => $option) {
+    if (!empty($option->option)) {
+      $tid = key($option->option);
+      if ($tid == $security_tid) {
+        unset($form['taxonomy'][$vid]['#options'][$i]);
+        return;
+      }
+    }
+  }
+}
+
+function drupalorg_get_release_type_vid() {
+  static $vid = 0;
+  if (empty($vid)) {
+    $vid = variable_get('project_release_type_vid', 0);
+    if (empty($vid)) {
+      $vid = db_result(db_query("SELECT v.vid FROM {vocabulary} v INNER JOIN {vocabulary_node_types} n ON v.vid = n.vid WHERE n.type = 'project_release' AND v.name = 'Release type'"));
+      variable_set('project_release_type_vid', $vid);
+    }
+  }
+  return $vid;
+}
+
+function drupalorg_get_security_update_tid() {
+  static $tid = 0;
+  if (empty($tid)) {
+    $tid = variable_get('project_release_type_security_update_tid', 0);
+    if (empty($tid)) {
+      $tid = db_result(db_query("SELECT tid FROM {term_data} WHERE vid = %d AND name = '%s'", drupalorg_get_release_type_vid(), 'Security update'));
+      variable_set('project_release_type_security_update_tid', $tid);
+    }
+  }
+  return $tid;
+}
+
+function drupalorg_security_release_form_validate($form_id, $form_values, $form) {
+  $vid = drupalorg_get_release_type_vid();
+  $security_tid = drupalorg_get_security_update_tid();
+  if (!empty($form_values['taxonomy'][$vid][$security_tid]) && empty($form_values['security_update_confirm'])) {
+    form_set_error('security_update_confirm', t('You must confirm you want this release to be a <a href="@security_update_url">Security update</a>', array('@security_update_url' => DRUPALORG_SECURITY_UPDATE_HANDBOOK_URL)));
   }
 }
 
