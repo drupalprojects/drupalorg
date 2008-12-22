@@ -467,3 +467,40 @@ function drupalorg_help($section) {
   }
 }
 
+/**
+ * Implementation of hook_project_issue_assignees().
+ */
+function drupalorg_project_issue_assignees(&$assigned, $node) {
+  global $user;
+  if (empty($user->uid) || empty($node->pid)) {
+    return;
+  }
+  $project = node_load($node->pid);
+  if (!isset($project) || $project->type != 'project_project') {
+    return;
+  }
+
+  // Determine if the user has CVS access at all.  If not, the user can't be a
+  // maintainer of the current project and thus we can skip the next, more
+  // expensive query.
+  if (project_use_cvs($node->pid) && db_result(db_query("SELECT COUNT(*) FROM {cvs_accounts} WHERE uid = %d AND status = %d", $user->uid, CVS_APPROVED))) {
+    // Make an array with all maintainers of the current project.
+    $result = db_query("SELECT cpm.uid, u.name FROM {cvs_project_maintainers} cpm INNER JOIN {users} u ON cpm.uid = u.uid WHERE cpm.nid = %d", $node->pid);
+    $maintainers = array($project->uid => $project->name);
+    while ($row = db_fetch_object($result)) {
+      $maintainers[$row->uid] = $row->name;
+    }
+
+    // Determine if the current user is one of the maintainers of the project.
+    if (isset($maintainers[$user->uid])) {
+      // Add any maintainers of this project who are not already in the
+      // $assigned array to the array.
+      foreach ($maintainers as $uid => $name) {
+        if (!isset($assigned[$uid])) {
+          $assigned[$uid] = $name;
+        }
+      }
+    }
+  }
+}
+
