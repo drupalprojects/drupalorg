@@ -209,7 +209,7 @@ function handbook_license() {
   if (arg(0) == 'node' && is_numeric(arg(1))) {
     $result = db_result(db_query("SELECT n.nid FROM {node} n INNER JOIN {book} b ON n.nid  = b.nid WHERE n.nid = %d", arg(1)));
     if ($result) {
-      return "The Drupal handbook pages are © 2000-2008 by the ". l('individual contributors', 'node/14205') ." and can be used in accordance with the ". l('Creative Commons License, Attribution-ShareAlike 2.0', 'node/14307') .'  PHP code is distributed under the <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GNU General Public License</a>';
+      return "The Drupal handbook pages are © 2000-2009 by the ". l('individual contributors', 'node/14205') ." and can be used in accordance with the ". l('Creative Commons License, Attribution-ShareAlike 2.0', 'node/14307') .'  PHP code is distributed under the <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GNU General Public License</a>';
     }
   }
 }
