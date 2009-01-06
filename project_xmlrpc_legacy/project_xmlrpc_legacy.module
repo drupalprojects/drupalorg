@@ -16,7 +16,7 @@ function project_xmlrpc_legacy_xmlrpc() {
 /**
  * Callback for hook_xmlrpc().
  *
- * Returns hard-coded data for the update_status 5.x-2.0 official release.
+ * Returns hard-coded data for the update_status 5.x-2.3 official release.
  */
 function project_xmlrpc_legacy_data($project = NULL, $api_version = NULL, $major_version = NULL) {
   $data = array();
