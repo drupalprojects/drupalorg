@@ -96,12 +96,21 @@ function drupalorg_form_alter($form_id, &$form) {
   }
 
   // Make the "Issue tags" vocabulary not so prominent on issue nodes.
-  if ($form_id == 'project_issue_node_form') {
+  if ($form_id == 'project_issue_node_form' || 
+      ($form_id == 'comment_form' && !empty($form['original_issue']['issue_info']))) {
     $form['taxonomy']['#type'] = 'fieldset';
     $form['taxonomy']['#title'] = t('Categories');
     $form['taxonomy']['#collapsible'] = TRUE;
     $form['taxonomy']['#collapsed'] = TRUE;
-    $form['taxonomy']['#weight'] = 35;
+    if ($form_id == 'project_issue_node_form') {
+      $form['taxonomy']['#weight'] = 35;
+    }
+    else {
+      $form['taxonomy']['#weight'] = 4;
+    }
+  }
+
+  if ($form_id == 'project_issue_node_form') {
     $form['issue_info']['description'] = $priority_status_description;
   }
   else if ($form_id == 'comment_form' && !empty($form['original_issue']['issue_info'])) {
