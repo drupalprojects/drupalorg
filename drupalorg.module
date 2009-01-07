@@ -99,9 +99,12 @@ function drupalorg_form_alter($form_id, &$form) {
   if ($form_id == 'project_issue_node_form' || 
       ($form_id == 'comment_form' && !empty($form['original_issue']['issue_info']))) {
     $form['taxonomy']['#type'] = 'fieldset';
-    $form['taxonomy']['#title'] = t('Categories');
+    $form['taxonomy']['#title'] = t('Tags');
     $form['taxonomy']['#collapsible'] = TRUE;
     $form['taxonomy']['#collapsed'] = TRUE;
+    // We want this fieldset at the very bottom, just above the buttons, but
+    // we need different weights for that depending on if it's a new issue or
+    // a follow-up comment.
     if ($form_id == 'project_issue_node_form') {
       $form['taxonomy']['#weight'] = 35;
     }
