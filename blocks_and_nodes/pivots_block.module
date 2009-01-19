@@ -114,9 +114,7 @@ function _pivots_block_generate_items($node_id, $pivot_id, $limit) {
 }
 
 /**
- * Implementation of hook_block().
- *
- * Copied from Drupal 5.12 forum_block(); removed unused code; added GA tracking code
+ * Implementation of hook_block()
  */
 function pivots_block_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
@@ -125,34 +123,9 @@ function pivots_block_block($op = 'list', $delta = 0, $edit = array()) {
       return $blocks;
 
     case 'view':
-      if (user_access('access content')) {
-        $title = t('New forum topics');
-        $sql = db_rewrite_sql("SELECT n.nid, n.title, l.comment_count FROM {node} n INNER JOIN {node_comment_statistics} l ON n.nid = l.nid WHERE n.type = 'forum' AND n.status = 1 ORDER BY n.nid DESC");
-        $result = db_query_range($sql, 0, 10); // retrieve at most 10 topics
-        if (db_num_rows($result)) {
-          while ($node = db_fetch_object($result)) {
-            $items[] = l($node->title, 'node/'. $node->nid, array(
-              "onClick" => "javascript: pageTracker._trackPageview('/pivotslog/4201/{$node->nid}');"
-            ));
-          }
-          $content = theme('node_list', $items);
-        }
-        
-        // add GA tracking code
-        global $_pivots_block_track;
-        if ($content) {
-          $content .= '<div class="more-link">'. l(t('more'), 'forum', array('title' => t('Read the latest forum topics.'))) .'</div>';
-          $_pivots_block_track = 'pageTracker._trackPageview("/pivotslog/pageview/4201");';
-        }
-        else {
-          $_pivots_block_track = '';
-        }
-
-        $block['subject'] = $title;
-        $block['content'] = $content;
-
-        return $block;
-      }
+      $block['subject'] = t('Recommendations');
+      $block['content'] = pivots_block_output();
+      return $block;
   }
 }
 
