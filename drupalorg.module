@@ -3,56 +3,81 @@
 
 /**
  * @file
- * This module contains customizations used on drupal.org itself. It is not
- * meant to be useful for other sites, except as an example of the kinds of
- * modifications you can make with a site-specific module.
+ *   This module contains customizations used on drupal.org itself. It is not
+ *   meant to be useful for other sites, except as an example of the kinds of
+ *   modifications you can make with a site-specific module.
  */
 
-/// Release node ids for issues we're currently tracking (Drupal 7).
+/**
+ * Release node ids for issues we're currently tracking (Drupal 7).
+ */
 define('ISSUE_RIDS', '156281');
+
+/**
+ * The CVS user role. Added to users with a CVS account.
+ */
 define('DRUPALORG_CVS_USER_ROLE', 8);
-// The required simplenews newsletter tid for CVS account holders.
+
+/**
+ * The required simplenews newsletter tid for CVS account holders.
+ */
 define('DRUPALORG_CVS_NEWSLETTER', 118);
 
-// URL for the Drupal Security Team
+/**
+ * URL for the Drupal Security Team.
+ */
 define('DRUPALORG_SECURITY_TEAM_URL', 'http://drupal.org/security-team');
-// URL for links to contact the security team
+
+/**
+ * URL for links to contact the security team
+ */
 define('DRUPALORG_SECURITY_CONTACT_URL', 'http://drupal.org/security-team#report-issue');
-// URL for the handbook page that describes the "Release type" vocabulary.
+
+/**
+ * URL for the handbook page that describes the "Release type" vocabulary.
+ */
 define('DRUPALORG_RELEASE_TYPE_HANDBOOK_URL', 'http://drupal.org/handbook/cvs/releases/types#type');
-// URL specifically to describe the "Security update" term.
-// For now, the general page for release types is the best we've got.
+
+/**
+ * URL specifically to describe the "Security update" term.
+ * For now, the general page for release types is the best we've got.
+ */
 define('DRUPALORG_SECURITY_UPDATE_HANDBOOK_URL', DRUPALORG_RELEASE_TYPE_HANDBOOK_URL);
 
+// == Basic core hooks =========================================================
+
+/**
+ * Implementation of hook_help().
+ */
+function drupalorg_help($section) {
+  switch ($section) {
+    case 'project/usage':
+      return '<p>'. t('These statistics are incomplete; only Drupal websites using the <a href="!update_status_url">Update Status</a> module are included in the data. As this module is now included with the download of Drupal since version 6.x, the data is heavily biased toward newer sites. <a href="!usage_description_url">Read more information about how these statistics are calculated.</a>', array('!update_status_url' => url('project/update_status'), '!usage_description_url' => url('node/329620'))) .'</p>';
+
+    case 'project/modules/name':
+    case 'project/Modules/name':
+      return t('You can also view an <a href="@list_url">Alphabetical list of Projects</a> that includes all projects but only their names.', array('@list_url' => url('node/206666')));
+
+    case 'project/issues-term/346':
+      return '<p>'. t('A more detailed overview of the issues can be seen in the Community Initiatives handbook section titled <a href="http://drupal.org/node/362117">Upgrade Drupal.org from Drupal 5 to 6</a>.') .'</p>';
+
+  }
+}
 
 /**
  * Implementation of hook_cron().
  */
 function drupalorg_cron() {
   drupalorg_issue_counts();
-
-  // Make sure all CVS account holders are subscribed to the mandatory newsletter.
-  // Only check/add users once per day - normally users are added when they get a CVS account.
-  if (time() - variable_get('drupalorg_cvs_subscribe_time', 0) > 86400) {
-    // Find CVS users with newsletter subscriptions but not the CVS newsletter.
-    $result = db_query("SELECT u.uid, u.mail, ss.snid FROM {cvs_accounts} ca INNER JOIN {users} u ON u.uid = ca.uid INNER JOIN {simplenews_subscriptions} ss ON ss.uid = ca.uid WHERE ca.status = %d", CVS_APPROVED);
-    while ($account = db_fetch_object($result)) {
-      if (!db_result(db_query("SELECT snid FROM {simplenews_snid_tid} WHERE snid = %d AND tid = %d", $account->snid, DRUPALORG_CVS_NEWSLETTER))) {
-        module_invoke('simplenews', 'subscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
-      }
-    }
-    // Find CVS users with no newsletter subscriptions at all.
-    $result = db_query("SELECT u.uid, u.mail FROM {cvs_accounts} ca INNER JOIN {users} u ON u.uid = ca.uid LEFT JOIN {simplenews_subscriptions} ss ON ss.uid = ca.uid WHERE ca.status = %d AND ss.uid IS NULL", CVS_APPROVED);
-    while ($account = db_fetch_object($result)) {
-      module_invoke('simplenews', 'subscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
-    }
-    // Store the time of the last run.
-    variable_set('drupalorg_cvs_subscribe_time', time());
-  }
+  drupalorg_cvs_user_sync();
 }
+
+// == Issue counter ============================================================
 
 /**
  * Pulls issue counts for various issue queues on drupal.org.
+ *
+ * Summarize issue counts for different types of issues for ISSUE_RIDS releases.
  */
 function drupalorg_issue_counts() {
   $issue_counts['Pending bugs'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND  pid = 3060 AND category = 'bug' AND sid = 1 AND priority IN (1,2) AND rid IN (". ISSUE_RIDS .")"));
@@ -62,18 +87,19 @@ function drupalorg_issue_counts() {
   variable_set('drupalorg_issue_counts', $issue_counts);
 }
 
+// == Altering of various forms ================================================
 
 /**
  * Implementation of hook_form_alter().
  */
-function drupalorg_form_alter($form_id, &$form) {
+function drupalorg_form_alter(&$form, $form_state, $form_id) {
   // List of forms to check for overrides, and the corresponding permissions.
   $override_forms = array(
-    'book_node_form' => 'edit book pages',
-    'forum_node_form' => 'administer nodes',
-    'page_node_form' => 'administer nodes',
+    'book_node_form'       => 'edit book pages',
+    'forum_node_form'      => 'administer nodes',
+    'page_node_form'       => 'administer nodes',
     'simplenews_node_form' => 'create newsletter',
-    'story_node_form' => 'administer nodes',
+    'story_node_form'      => 'administer nodes',
   );
   // Override the access for attachments if it's a forbidden form,
   // and the user does not have sufficient permissions.
@@ -107,56 +133,33 @@ function drupalorg_form_alter($form_id, &$form) {
     // a follow-up comment.
     if ($form_id == 'project_issue_node_form') {
       $form['taxonomy']['#weight'] = 35;
+      $form['issue_info']['description'] = $priority_status_description;
     }
     else {
       $form['taxonomy']['#weight'] = 4;
+      $form['original_issue']['issue_info']['description'] = $priority_status_description;
     }
   }
 
-  if ($form_id == 'project_issue_node_form') {
-    $form['issue_info']['description'] = $priority_status_description;
+  // Add security update related checks to release forms.
+  if ($form_id == 'project_release_node_form') {
+    drupalorg_form_project_release_node_form_alter($form, $form_state, $form_id);
   }
-  else if ($form_id == 'comment_form' && !empty($form['original_issue']['issue_info'])) {
-    $form['original_issue']['issue_info']['description'] = $priority_status_description;
-  }
-  elseif ($form_id == 'project_release_node_form') {
-    drupalorg_form_project_release_node_form_alter($form_id, $form);
-  }
-  else if ($form_id == 'cvs_user_edit_form') {
+  
+  // Add CVS maintainer newsletter signup to users when getting a CVS account.
+  if ($form_id == 'cvs_user_edit_form') {
     $submit['drupalorg_cvs_user_edit_submit'] = array();
     $form['#submit'] = $form['#submit'] + $submit;
   }
-  elseif (($form_id == 'user_edit' && isset($form['_category']['#value']) && $form['_category']['#value'] == 'newsletter') ||
+  
+  // Don't allow CVS account holders to unsubscribe from the required newsletter.
+  if (($form_id == 'user_edit' && isset($form['_category']['#value']) && $form['_category']['#value'] == 'newsletter') ||
           ($form_id == 'simplenews_subscription_manager_form')) {
-    // Alter the newsletter subscription form for CVS account holders only.
-    // An admin may be editing some other user's account.
-    if (isset($form['_account']['#value'])) {
-      $account = $form['_account']['#value'];
-    }
-    else {
-      $account = $GLOBALS['user'];
-    }
-    // Don't allow CVS account holders to unsubscribe from the required newsletter.
-    // Determine if the account being edited is an approved CVS user.
-    if (db_result(db_query("SELECT 1 FROM {cvs_accounts} WHERE uid = %d AND status = %d", $account->uid, CVS_APPROVED))) {
-      $subscribed = is_array($form['subscriptions']['newsletters']['#default_value']) ? in_array(DRUPALORG_CVS_NEWSLETTER, $form['subscriptions']['newsletters']['#default_value']) : FALSE;
-      // Only disable the check box if the user is already subscribed.
-      if ($subscribed) {
-        $title = $form['subscriptions']['newsletters']['#options'][DRUPALORG_CVS_NEWSLETTER];
-        // Take the required CVs newsletter out of the normal checkboxes.
-        unset($form['subscriptions']['newsletters']['#options'][DRUPALORG_CVS_NEWSLETTER]);
-        // Append a single disabled checkbox below.
-        $form['subscriptions']['cvs_newsletter'] = array(
-          '#type' => 'checkbox',
-          '#title' => $title .' '. t('(mandatory for users with a CVS account)'),
-          '#default_value' => TRUE,
-          '#disabled' => TRUE,
-        );
-      }
-    }
+    drupalorg_cvs_user_subscriptions_form_alter(&$form, $form_state, $form_id);
   }
-  elseif ($form_id == 'project_project_node_form') {
-    // Deprecate the "license" field, as it must always be GPLv2+ anyway.
+  
+  // Deprecate the "license" field, as it must always be GPLv2+ anyway.
+  if ($form_id == 'project_project_node_form') {
     if (! $form['project']['license']['#default_value']) {
        $form['project']['license'] = array(
         '#type' => 'item',
@@ -168,25 +171,42 @@ function drupalorg_form_alter($form_id, &$form) {
       );
     }
   }
-  elseif ($form_id == 'search_admin_settings') {
+  
+  // Core search index is not used, so clear off wipe option.
+  if ($form_id == 'search_admin_settings') {
     unset($form['status']['wipe']);
   }
-  elseif ($form_id == 'user_register') {
+  
+  // Ensure that wildcard email addresses are not abused.
+  if ($form_id == 'user_register') {
     $form['#validate']['drupalorg_register_mail_validate'] = array();
   }
-  elseif ($form_id == 'user_admin_access_add_form' || $form_id == 'user_admin_access_edit_form') {
+  
+  // Set title of home page option.
+  if ($form_id == 'user_admin_access_add_form' || $form_id == 'user_admin_access_edit_form') {
     $form['type']['#options']['homepage'] = t('Homepage');
   }
-  elseif ($form_id == 'user_edit') {
+  
+  // Ensure nice Drupal home page addresses
+  if ($form_id == 'user_edit') {
     $form['#validate']['drupalorg_profile_user_edit_validate'] = array();
   }
-  // Force a revision log entry when editing book nodes.
-  elseif ($form_id == 'book_node_form' && isset($form['log']) && arg(1) != 'add') {
+  
+  // Force a revision log entry when editing existing book nodes.
+  if ($form_id == 'book_node_form' && isset($form['log']) && arg(1) != 'add') {
     $form['log']['#required'] = TRUE;
   }
 }
 
-function drupalorg_form_project_release_node_form_alter($form_id, &$form) {
+// == Security release restrictions ============================================
+
+/**
+ * Alter release node forms properly for security updates.
+ *
+ * Ensure that only privileged users can modify a security release tag and when
+ * people add this tag, they get to know about the process.
+ */
+function drupalorg_form_project_release_node_form_alter(&$form, $form_state, $form_id) {
   if (!empty($form['taxonomy'])) {
     $vid = drupalorg_get_release_type_vid();
     $security_tid = drupalorg_get_security_update_tid();
@@ -201,6 +221,7 @@ function drupalorg_form_project_release_node_form_alter($form_id, &$form) {
         else {
           // Regular release
           $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => DRUPALORG_RELEASE_TYPE_HANDBOOK_URL));
+          // Add wrapper div for js/drupal.release.node.js
           $form['taxonomy'][$vid]['#prefix'] = '<div class="release-type-select">';
           $form['taxonomy'][$vid]['#suffix'] = '</div>';
           $form['#validate']['drupalorg_security_release_form_validate'] = array();
@@ -246,6 +267,9 @@ function drupalorg_form_project_release_node_form_alter($form_id, &$form) {
   }
 }
 
+/**
+ * Utility function to remove the security update term on node forms.
+ */
 function _drupalorg_remove_security_update(&$form) {
   $vid = drupalorg_get_release_type_vid();
   $security_tid = drupalorg_get_security_update_tid();
@@ -260,6 +284,9 @@ function _drupalorg_remove_security_update(&$form) {
   }
 }
 
+/**
+ * Set the project_release_type_vid Drupal variable and return its value.
+ */
 function drupalorg_get_release_type_vid() {
   static $vid = 0;
   if (empty($vid)) {
@@ -272,6 +299,9 @@ function drupalorg_get_release_type_vid() {
   return $vid;
 }
 
+/**
+ * Set the project_release_type_security_update_tid Drupal variable and return its value.
+ */
 function drupalorg_get_security_update_tid() {
   static $tid = 0;
   if (empty($tid)) {
@@ -284,44 +314,141 @@ function drupalorg_get_security_update_tid() {
   return $tid;
 }
 
-function drupalorg_security_release_form_validate($form_id, $form_values, $form) {
+/**
+ * Form validation function for security release tag check.
+ */
+function drupalorg_security_release_form_validate($form, &$form_state) {
   $vid = drupalorg_get_release_type_vid();
   $security_tid = drupalorg_get_security_update_tid();
   if (!empty($form_values['taxonomy'][$vid][$security_tid]) && empty($form_values['security_update_confirm'])) {
+    // Ensure the user confirms that this release should be marked security.
     form_set_error('security_update_confirm', t('You must confirm you want this release to be a <a href="@security_update_url">Security update</a>', array('@security_update_url' => DRUPALORG_SECURITY_UPDATE_HANDBOOK_URL)));
   }
 }
 
-function drupalorg_register_mail_validate($form_id, $form_values) {
-  $hit = preg_match('/(.*)\+(.*)\@(.*)/', $form_values['mail'], $match);
-  if ($hit) {
-    if (db_num_rows(db_query("SELECT uid FROM {users} WHERE LOWER(mail) LIKE LOWER('%s')", $match[1] .'+%%@'. $match[3])) > 0) {
-      form_set_error('mail', t('An e-mail address similar to %email is already registered. <a href="@password">Have you forgotten your password?</a>', array('%email' => $form_values['mail'], '@password' => url('user/password'))));
+// == CVS maintainer newsletter housekeeping ===================================
+
+/**
+ * Make sure all CVS account holders are subscribed to the mandatory newsletter.
+ * 
+ * Invoked from cron. Only check/add users once per day - normally users are
+ * added when they get a CVS account.
+ *
+ * @see drupalorg_cvs_user_edit_submit()
+ */
+function drupalorg_cvs_user_sync() {
+  if (time() - variable_get('drupalorg_cvs_subscribe_time', 0) > 86400) {
+    // Find CVS users with newsletter subscriptions but not the CVS newsletter.
+    $result = db_query("SELECT u.uid, u.mail, ss.snid FROM {cvs_accounts} ca INNER JOIN {users} u ON u.uid = ca.uid INNER JOIN {simplenews_subscriptions} ss ON ss.uid = ca.uid WHERE ca.status = %d", CVS_APPROVED);
+    while ($account = db_fetch_object($result)) {
+      if (!db_result(db_query("SELECT snid FROM {simplenews_snid_tid} WHERE snid = %d AND tid = %d", $account->snid, DRUPALORG_CVS_NEWSLETTER))) {
+        module_invoke('simplenews', 'subscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
+      }
+    }
+    // Find CVS users with no newsletter subscriptions at all.
+    $result = db_query("SELECT u.uid, u.mail FROM {cvs_accounts} ca INNER JOIN {users} u ON u.uid = ca.uid LEFT JOIN {simplenews_subscriptions} ss ON ss.uid = ca.uid WHERE ca.status = %d AND ss.uid IS NULL", CVS_APPROVED);
+    while ($account = db_fetch_object($result)) {
+      module_invoke('simplenews', 'subscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
+    }
+    // Store the time of the last run.
+    variable_set('drupalorg_cvs_subscribe_time', time());
+  }
+}
+
+/**
+ * Add the user to the CVS maintainers list, when she gets an account.
+ *
+ * @see drupalorg_cvs_user_sync()
+ */
+function drupalorg_cvs_user_edit_submit($form, &$form_state) {
+  global $locale;
+
+  if (isset($form_state['values']['cvs_status'])) {
+    $account = user_load(array('uid' => $form_state['values']['cvs_uid']));
+    switch ($form_state['values']['cvs_status']) {
+      case CVS_APPROVED:
+        db_query('INSERT INTO {users_roles} (uid, rid) VALUES (%d, %d)', $form_state['values']['cvs_uid'], DRUPALORG_CVS_USER_ROLE);
+        module_invoke('simplenews', 'subscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
+        break;
+      case CVS_DISABLED:
+        db_query('DELETE FROM {users_roles} WHERE uid = %d AND rid = %d', $form_state['values']['cvs_uid'], DRUPALORG_CVS_USER_ROLE);
+        module_invoke('simplenews', 'unsubscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
+        break;
+    }
+    cache_clear_all($form_state['values']['cvs_uid'] .":$locale", 'cache_menu');
+  }
+}
+
+/**
+ * Don't allow CVS account holders to unsubscribe from the required newsletter.
+ */
+function drupalorg_cvs_user_subscriptions_form_alter(&$form, $form_state, $form_id) {
+  // Alter the newsletter subscription form for CVS account holders only.
+  // An admin may be editing some other user's account.
+  if (isset($form['_account']['#value'])) {
+    $account = $form['_account']['#value'];
+  }
+  else {
+    $account = $GLOBALS['user'];
+  }
+  // Don't allow CVS account holders to unsubscribe from the required newsletter.
+  // Determine if the account being edited is an approved CVS user.
+  if (db_result(db_query("SELECT 1 FROM {cvs_accounts} WHERE uid = %d AND status = %d", $account->uid, CVS_APPROVED))) {
+    $subscribed = is_array($form['subscriptions']['newsletters']['#default_value']) ? in_array(DRUPALORG_CVS_NEWSLETTER, $form['subscriptions']['newsletters']['#default_value']) : FALSE;
+    // Only disable the check box if the user is already subscribed.
+    if ($subscribed) {
+      $title = $form['subscriptions']['newsletters']['#options'][DRUPALORG_CVS_NEWSLETTER];
+      // Take the required CVs newsletter out of the normal checkboxes.
+      unset($form['subscriptions']['newsletters']['#options'][DRUPALORG_CVS_NEWSLETTER]);
+      // Append a single disabled checkbox below.
+      $form['subscriptions']['cvs_newsletter'] = array(
+        '#type' => 'checkbox',
+        '#title' => $title .' '. t('(mandatory for users with a CVS account)'),
+        '#default_value' => TRUE,
+        '#disabled' => TRUE,
+      );
     }
   }
 }
 
+// == User form validations ====================================================
+
+/**
+ * Try to catch wildcard email address signups, such as joe+drupal@gmail.com.
+ */
+function drupalorg_register_mail_validate($form, &$form_state) {
+  $hit = preg_match('/(.*)\+(.*)\@(.*)/', $form_state['values']['mail'], $match);
+  if ($hit) {
+    if (db_num_rows(db_query("SELECT uid FROM {users} WHERE LOWER(mail) LIKE LOWER('%s')", $match[1] .'+%%@'. $match[3])) > 0) {
+      form_set_error('mail', t('An e-mail address similar to %email is already registered. <a href="@password">Have you forgotten your password?</a>', array('%email' => $form_state['values']['mail'], '@password' => url('user/password'))));
+    }
+  }
+}
 
 /**
  * Validate all fields in the user_edit form against the list of bad words.
+ *
+ * @todo Needs core patch to have real support for 'homepage' access rules.
+ * @todo Look at this cycling through items. There is only one 'homepage' field.
+ * @todo Headers are blocked by some providers so this is not accurate.
  */
-function drupalorg_profile_user_edit_validate($form_id, $form_values) {
+function drupalorg_profile_user_edit_validate($form, &$form_state) {
   $result = db_query("SELECT mask FROM {access} WHERE type = '%s' AND status = %d", 'homepage', 0);
   $masks = array();
   while ($mask = db_fetch_object($result)) {
     $masks[] = '@'. strtr($mask->mask, array('.' => '\.', '%' => '.*', '_' => '.')) .'@';
   }
 
-  foreach ($form_values as $name => $value) {
+  foreach ($form_state['values'] as $name => $value) {
     if (is_string($value) && strlen($value) > 7 && strpos($name, 'homepage') === 0) {
-      // check denied homepages
+      // Check denied homepages.
       foreach ($masks as $mask) {
         if (preg_match($mask, $value)){
           form_set_error($name, t('Unsuitable homepage detected'));
         }
       }
-      if (!user_access('administer users')) { // Override for admins
-        // check for Drupal-ness of website. Try only once.
+      if (!user_access('administer users')) {
+        // Check for Drupal-ness of website. Try only once.
         $response = drupal_http_request($value, array(), 'GET', NULL, 1);
         if ($response->headers['Expires'] != 'Sun, 19 Nov 1978 05:00:00 GMT') {
           form_set_error($name, t("Your website does not seem to be a Drupal site. If you think we are wrong, please open an issue in the webmasters' queue."));
@@ -330,6 +457,8 @@ function drupalorg_profile_user_edit_validate($form_id, $form_values) {
     }
   }
 }
+
+// == Database replication hints ===============================================
 
 /**
  * Implementation of hook_comment.
@@ -354,29 +483,13 @@ function drupalorg_nodeapi(&$node, $op, $teaser, $page) {
   }
 }
 
-function drupalorg_cvs_user_edit_submit($form_id, &$form_values) {
-  if (isset($form_values['cvs_status'])) {
-    $account = user_load(array('uid' => $form_values['cvs_uid']));
-    switch ($form_values['cvs_status']) {
-      case CVS_APPROVED:
-        db_query('INSERT INTO {users_roles} (uid, rid) VALUES (%d, %d)', $form_values['cvs_uid'], DRUPALORG_CVS_USER_ROLE);
-        module_invoke('simplenews', 'subscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
-        break;
-      case CVS_DISABLED:
-        db_query('DELETE FROM {users_roles} WHERE uid = %d AND rid = %d', $form_values['cvs_uid'], DRUPALORG_CVS_USER_ROLE);
-        module_invoke('simplenews', 'unsubscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
-        break;
-    }
-    global $locale;
-    cache_clear_all($form_values['cvs_uid'] .":$locale", 'cache_menu');
-  }
-}
+// == Project links ============================================================
 
 /**
  * Implemenation of hook_project_page_link_alter().
  */
 function drupalorg_project_page_link_alter($node, &$all_links) {
-  // #310446: Alter issue queue links to view issues of all categories
+  // #310446: Alter issue queue links to view issues of all categories.
   if (isset($all_links['support']['links']['pending_support'])) {
     $prepend = array(
       'open_issues' => l(t('View open issues or create one'), 'project/issues/'. $node->uri),
@@ -401,8 +514,12 @@ function drupalorg_project_page_link_alter($node, &$all_links) {
   $all_links['support']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
 }
 
+// == External search block ====================================================
+
 /**
  * Implementation of hook_block().
+ *
+ * @todo Remove as part of search migration.
  */
 function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
   if ($op == 'list') {
@@ -422,9 +539,31 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
 }
 
 /**
+ * Body for external search block.
+ */
+function drupalorg_display_block_external_search() {
+  if (!user_access('search content')) {
+    $form = '<form method="get" action="http://www.google.com/search"><div>
+               <input type="hidden" name="ie" value="UTF-8" />
+               <input type="hidden" name="oe" value="UTF-8" />
+               <input type="hidden" name="domains" value="drupal.org" />
+               <input type="hidden" name="sitesearch" value="drupal.org" />
+               <input type="text" class="form-text" name="q" size="20" maxlength="255" value="" />
+               <input type="submit" class="form-submit" name="btnG" value="Google Search" /></div>
+               </form>';
+    $message = '<p>Due to load issues the Drupal.org search occasionally has to be disabled.  When this happens, you can use external search engines and a modifier like "site:drupal.org" to refine your results to Drupal.  For more information <a href="http://drupal.org/node/271694">see the infrastructure queue</a></p>.';
+    return $form . $message;
+  }
+}
+
+// == IRC nick search ==========================================================
+
+/**
  * Implementation of hook_search().
  *
  * Add support for searching for users based on the fixed IRC nickname field.
+ *
+ * @todo Remove as part of search migration.
  */
 function drupalorg_search($op = 'search', $keys = NULL) {
   switch ($op) {
@@ -447,51 +586,22 @@ function drupalorg_search($op = 'search', $keys = NULL) {
 }
 
 /**
- * Body for external search block
- */
-function drupalorg_display_block_external_search() {
-  if (!user_access('search content')) {
-    $form = '<form method="get" action="http://www.google.com/search"><div>
-               <input type="hidden" name="ie" value="UTF-8" />
-               <input type="hidden" name="oe" value="UTF-8" />
-               <input type="hidden" name="domains" value="drupal.org" />
-               <input type="hidden" name="sitesearch" value="drupal.org" />
-               <input type="text" class="form-text" name="q" size="20" maxlength="255" value="" />
-               <input type="submit" class="form-submit" name="btnG" value="Google Search" /></div>
-               </form>';
-    $message = '<p>Due to load issues the Drupal.org search occasionally has to be disabled.  When this happens, you can use external search engines and a modifier like "site:drupal.org" to refine your results to Drupal.  For more information <a href="http://drupal.org/node/271694">see the infrastructure queue</a></p>.';
-    return $form . $message;
-  }
-}
-
-/**
- * Implementation of hook_help().
- */
-function drupalorg_help($section) {
-  switch ($section) {
-    case 'project/usage':
-      return '<p>'. t('These statistics are incomplete; only Drupal websites using the <a href="!update_status_url">Update Status</a> module are included in the data. As this module is now included with the download of Drupal since version 6.x, the data is heavily biased toward newer sites. <a href="!usage_description_url">Read more information about how these statistics are calculated.</a>', array('!update_status_url' => url('project/update_status'), '!usage_description_url' => url('node/329620'))) .'</p>';
-
-    case 'project/modules/name':
-    case 'project/Modules/name':
-      return t('You can also view an <a href="@list_url">Alphabetical list of Projects</a> that includes all projects but only their names.', array('@list_url' => url('node/206666')));
-
-    case 'project/issues-term/346':
-      return '<p>'. t('A more detailed overview of the issues can be seen in the Community Initiatives handbook section titled <a href="http://drupal.org/node/362117">Upgrade Drupal.org from Drupal 5 to 6</a>.') .'</p>';
-
-  }
-}
-
-/**
  * Implementation of hook_project_issue_assignees().
+ *
+ * Add all users who are maintainers of the module to the lists of people
+ * who issues can be assigned to.
+ *
+ * @todo Investigate moving to CVS module or reuse functionality from there.
  */
 function drupalorg_project_issue_assignees(&$assigned, $node) {
   global $user;
   if (empty($user->uid) || empty($node->pid)) {
+    // Return if anonymous user or not a project node.
     return;
   }
   $project = node_load($node->pid);
   if (!isset($project) || $project->type != 'project_project') {
+    // Return if project node not found.
     return;
   }
 
@@ -518,4 +628,3 @@ function drupalorg_project_issue_assignees(&$assigned, $node) {
     }
   }
 }
-

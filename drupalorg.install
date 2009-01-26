@@ -2,6 +2,11 @@
 // $Id$
 
 /**
+ * @file
+ *   Install and upgrade functionality for drupalorg.module.
+ */
+
+/**
  * Implementation of hook_install().
  *
  * Set the system weight heavier than cvslog so our form_alter comes later. 
@@ -32,4 +37,3 @@ function drupalorg_update_2() {
   $ret[] = update_sql("UPDATE {system} SET weight = 5 WHERE name = 'drupalorg'");
   return $ret;
 }
-
