@@ -1,4 +1,10 @@
 <?php
+// $Id$
+
+/**
+ * @file
+ *   Module to provides XML-RPC server code for legacy update_status 5.x-1.* clients
+ */
 
 /**
  * Implementation of hook_xmlrpc().
