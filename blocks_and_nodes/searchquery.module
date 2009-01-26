@@ -44,7 +44,7 @@ function searchquery_list() {
   }
   $output .= '</ul></div>';
 
-  cache_set('node_48380', 'cache', $output, 60*60);
+  cache_set('node_48380', $output, 'cache', 60*60);
 
   return $output;
 }

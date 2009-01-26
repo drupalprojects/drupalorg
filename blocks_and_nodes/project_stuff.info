@@ -2,3 +2,4 @@
 name = Project Stuff
 description = Special pages for project module
 package = Drupal.org
+core=6.x

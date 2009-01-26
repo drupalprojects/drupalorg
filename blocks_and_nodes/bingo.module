@@ -6,41 +6,35 @@ define('BINGO_TYPE_MIN', 0);
 // Make sure this corresponds to the number of menu items and queries
 define('BINGO_TYPE_MAX', 3);
 
-function bingo_menu($may_cache) {
-  if ($may_cache) {
-    $items[] = array(
-      'path'               => 'bug-bingo',
-      'title'              => 'Bug bingo',
-      'callback'           => 'bingo_jump',
-      'callback arguments' => array(0),
-      'access' => user_access('access content'), 
-      'type'               => MENU_SUGGESTED_ITEM,
-      );
-    $items[] = array(
-      'path'               => 'contrib-bug-bingo',
-      'title'              => 'Contrib bug bingo',
-      'callback'           => 'bingo_jump',
-      'callback arguments' => array(1),
-      'access' => user_access('access content'), 
-      'type'               => MENU_SUGGESTED_ITEM,
-      );
-    $items[] = array(
-      'path'               => 'patch-bingo',
-      'title'              => 'Patch bingo',
-      'callback'           => 'bingo_jump',
-      'callback arguments' => array(2),
-      'access' => user_access('access content'), 
-      'type'               => MENU_SUGGESTED_ITEM,
-      );
-    $items[] = array(
-      'path'               => 'contrib-patch-bingo',
-      'title'              => 'Contrib patch bingo',
-      'callback'           => 'bingo_jump',
-      'callback arguments' => array(3),
-      'access' => user_access('access content'), 
-      'type'               => MENU_SUGGESTED_ITEM,
-      );
-  }
+function bingo_menu() {
+  $items['bug-bingo'] = array(
+    'title'              => 'Bug bingo',
+    'page callback'      => 'bingo_jump',
+    'page arguments'     => array('0'),
+    'access arguments'   => array('access content'),
+    'type'               => MENU_SUGGESTED_ITEM,
+  );
+  $items['contrib-bug-bingo'] = array(
+    'title'              => 'Contrib bug bingo',
+    'page callback'      => 'bingo_jump',
+    'page arguments'     => array('1'),
+    'access arguments'   => array('access content'),
+    'type'               => MENU_SUGGESTED_ITEM,
+  );
+  $items['patch-bingo'] = array(
+    'title'              => 'Patch bingo',
+    'page callback'      => 'bingo_jump',
+    'page arguments'     => array('2'),
+    'access arguments'   => array('access content'),
+    'type'               => MENU_SUGGESTED_ITEM,
+  );
+  $items['contrib-patch-bingo'] = array(
+    'title'              => 'Contrib patch bingo',
+    'page callback'      => 'bingo_jump',
+    'page arguments'     => array('3'),
+    'access arguments'   => array('access content'),
+    'type'               => MENU_SUGGESTED_ITEM,
+  );
   return $items;
 }
 

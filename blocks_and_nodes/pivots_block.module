@@ -104,8 +104,8 @@ function _pivots_block_generate_items($node_id, $pivot_id, $limit) {
     $result = db_query("SELECT title FROM {node} WHERE nid=%d AND status=1", $dest_id);
     // there might be cases that the node was deleted, or set to unpublished between pivots database refresh
     // so here we only count the valid node.
-    if (db_num_rows($result) > 0) {
-      $title = db_result($result);
+    $title = db_result($result);
+    if ($title) {
       $items[] = array('nid' => $dest_id, 'title' => $title, 'pid' => $pivot_id);
       $count++;
     }

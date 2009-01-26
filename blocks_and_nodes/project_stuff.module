@@ -26,14 +26,14 @@ function project_stuff_project_by_core() {
   );
 
   foreach ($tags as $tag => $label) {
-    $top_list[] = l($tag, $_GET['q'], array(), NULL, $tag);
+    $top_list[] = l($tag, $_GET['q'], array('fragment' => $tag));
     $projects = db_query("SELECT DISTINCT p.nid, n.title, p.uri
       FROM {project_projects} p INNER JOIN {project_release_nodes} r ON p.nid = r.pid INNER JOIN {node} n ON n.nid = p.nid INNER JOIN {term_node} tn ON p.nid = tn.nid
       WHERE tn.tid = 14 AND r.tag LIKE '%s%%'
       ORDER BY n.title", $tag);
     $list = array();
     while ($project = db_fetch_object($projects)) {
-      $list[] = l($project->title, "project/$project->uri", array(), NULL, NULL, TRUE);
+      $list[] = l($project->title, "project/$project->uri", array('html' => TRUE));
     }
     if (!empty($list)) {
       $output .= theme('item_list', $list, "<a name=\"$tag\">$label</a>");
@@ -55,7 +55,7 @@ function project_stuff_cvs_rss() {
   $page = (int)$_GET['page'];
   $count= $total - $page * 100;
   while($row = db_fetch_array($result)) {
-    $url = url('cvs', 'rss=true&nid='. $row['nid'], NULL, TRUE);
+    $url = url('cvs', array('query' => 'rss=true&nid='. $row['nid'], 'absolute' => TRUE));
     $rows[]= array($count--, l($row['title'], 'node/'. $row['nid']), theme('feed_icon', $url));
   }
   drupal_set_message("There are $total projects.");

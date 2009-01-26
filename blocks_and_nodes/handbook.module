@@ -127,7 +127,7 @@ function handbook_revision_maintainers() {
   }
 
   $output = theme('item_list', $list);
-  cache_set('node_263594', 'cache', $output, 300);
+  cache_set('node_263594', $output, 'cache', 300);
   return $output;
 }
 

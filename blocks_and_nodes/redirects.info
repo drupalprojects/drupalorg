@@ -2,3 +2,4 @@
 name = Redirects
 description = Special redirects for some pages
 package = Drupal.org
+core=6.x

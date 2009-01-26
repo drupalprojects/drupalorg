@@ -75,7 +75,7 @@ function advert_is_in_forum($forum_id) {
     return TRUE;
   }
   if (arg(0) == 'node' && is_numeric(arg(1))) {
-    $node = node_load(arg(1));
+    $node = menu_get_object();
     if ($node->type == 'forum' && $node->tid == $forum_id) {
       return TRUE;
     }

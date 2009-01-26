@@ -1,6 +1,14 @@
 <?php
 // $Id$
 
+function quick_stats_theme() {
+  return array(
+    'new_contributions' => array(
+      'arguments' => array('newbies' => NULL, 'newbie_nodes' => NULL),
+    ),
+  );
+}
+
 function quick_stats_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {
     $extra = '';

@@ -2,3 +2,4 @@
 name = Branches
 description = Lists core and contrib branches
 package = Drupal.org
+core=6.x

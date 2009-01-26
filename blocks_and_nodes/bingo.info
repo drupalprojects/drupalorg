@@ -2,3 +2,4 @@
 name = Bingo
 description = Contributor Links and Bingo
 package = Drupal.org
+core=6.x
