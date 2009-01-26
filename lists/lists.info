@@ -1,4 +1,5 @@
 ; $Id$
-name = Lists
-description = Allows mailing lists subscriptions.
+name = Mailing lists
+description = Mailing lists subscriptions services.
 package = Drupal.org
+core = 6.x

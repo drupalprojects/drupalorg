@@ -9,18 +9,14 @@
 /**
  * Implementation of hook_menu().
  */
-function lists_menu($may_cache) {
-  $items = array();
-  if ($may_cache) {
-    $items[] = array(
-      'path'               => 'lists',
-      'title'              => t('Mailing lists'),
-      'access'             => user_access('access content'),
-      'callback'           => 'drupal_get_form',
-      'callback arguments' => array('lists_subscribe_form'),
-      'type'               => MENU_SUGGESTED_ITEM
-    );
-  }
+function lists_menu() {
+  $items['lists'] = array(
+    'title' => 'Mailing lists',
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('lists_subscribe_form'),
+    'type' => MENU_SUGGESTED_ITEM
+  );
   return $items;
 }
 
@@ -112,7 +108,7 @@ function lists_subscribe_form() {
       $links[] = "<a href=\"http://lists.drupal.org/archives/cgi-bin/namazu.cgi?idxname=$list\">search archive</a>";
     }
 
-    $output .= "<h2>$info[name]</h2>\n";
+    $output .= '<h2>'. $info['name'] ."</h2>\n";
     if (!$info['disabled']) {
       $links[] = "<a href=\"http://lists.drupal.org/listinfo/$list\">mailman page</a>";
     }
@@ -120,12 +116,8 @@ function lists_subscribe_form() {
       $output .= "<em>This list has been disabled.</em>\n";
     }
 
-    $output .= "<p>$info[description]</p>\n";
-    $output .= "<p>";
-
-    $output .= implode(' . ', $links);
-
-    $output .= "</p>\n";
+    $output .= '<p>'. $info['description'] ."</p>\n";
+    $output .= '<p>'. implode(' . ', $links) ."</p>\n";
   }
   $output .= '<h2>Subscribe</h2>';
 
@@ -168,9 +160,9 @@ function lists_subscribe_form() {
  *
  * @see lists_subscribe_form()
  */
-function lists_subscribe_form_validate($form_id,$form) {
-  if (!valid_email_address($form['mail'])) {
-    form_set_error('mail', t("Please enter a valid e-mail address."));
+function lists_subscribe_form_validate($form, &$form_state) {
+  if (!valid_email_address($form_state['values']['mail'])) {
+    form_set_error('mail', t('Please enter a valid e-mail address.'));
   }
 }
 
@@ -179,12 +171,12 @@ function lists_subscribe_form_validate($form_id,$form) {
  *
  * @see lists_subscribe_form()
  */
-function lists_subscribe_form_submit($form_id, $form = NULL) {
+function lists_subscribe_form_submit($form, &$form_state) {
   $sent = FALSE;
-  $mail = $form['mail'];
+  $mail = $form_state['values']['mail'];
   if ($mail) {
     foreach (_lists_get_lists() as $list => $info) {
-      if ($form[$list]) {
+      if ($form_state['values'][$list]) {
         $sent = TRUE;
         $headers = "From: $mail\nReturn-path: $mail\nError-to: $mail";
         $result[] = mail($info['mailto'], "subscribe address=$mail", 'subscribe to mailing list', $headers);
@@ -193,9 +185,9 @@ function lists_subscribe_form_submit($form_id, $form = NULL) {
   }
 
   if (!$sent) {
-    drupal_set_message('You did not fill in the form properly.', 'error');
+    drupal_set_message(t('You did not fill in the form properly.'), 'error');
   }
   else {
-    drupal_set_message('You will receive confirmation emails for your subscriptions. Please read them carefully and follow the directions.');
+    drupal_set_message(t('You will receive confirmation emails for your subscriptions. Please read them carefully and follow the directions.'));
   }
 }
