@@ -1,42 +1,46 @@
 <?php
 // $Id$
 
-/**
- * TODO: add hook_requirements to check if hook_watchdog is
- * available or not.
- */
+
+function role_activity_schema() {
+  $schema['role_activity'] = array(
+    'description' => 'Stores activity for certain roles',
+
+    'fields' => array(
+      'raid'      => array('type' => 'serial',                      'not null' => TRUE, ),
+      'uid'       => array('type' => 'int',                         'not null' => TRUE, ),
+      'timestamp' => array('type' => 'int',                         'not null' => TRUE, ),
+      'type'      => array('type' => 'varchar',  'length' => 16,    'not null' => TRUE, ),
+      'referer'   => array('type' => 'varchar',  'length' => 128,   'not null' => TRUE, ),
+      'ip'        => array('type' => 'varchar',  'length' => 128,   'not null' => TRUE, ),
+      'action'    => array('type' => 'varchar',  'length' => 256,   'not null' => TRUE, ),
+      'link'      => array('type' => 'varchar',  'length' => 255,   'not null' => TRUE, ),
+      'uri'       => array('type' => 'varchar',  'length' => 255,   'not null' => TRUE, ),
+      'message'   => array('type' => 'text',     'size'   => 'big', 'not null' => TRUE, ),
+    ),
+
+    'primary key' => array('raid'),
+
+    'indexes' => array(
+      'uid'       => array('uid'),
+      'timestamp' => array('timestamp'),
+      'type'      => array('type'),
+    ),
+  );
+
+  return $schema;
+}
 
 /**
  * Implementation of hook_install().
  */
 function role_activity_install() {
-
-  switch ($GLOBALS['db_type']) {
-    case 'mysql':
-    case 'mysqli':
-      db_query("CREATE TABLE {role_activity} (
-        raid      INT          NOT NULL AUTO_INCREMENT,
-        uid       INT          NOT NULL DEFAULT '0',
-        timestamp INT          NOT NULL DEFAULT '0',
-        type      VARCHAR(16)  NOT NULL DEFAULT '',
-        referer   VARCHAR(128) NOT NULL DEFAULT '',
-        ip        VARCHAR(128) NOT NULL DEFAULT '',
-        action    VARCHAR(256) NOT NULL DEFAULT '',
-        link      VARCHAR(255) NOT NULL DEFAULT '',
-        uri       TEXT         NOT NULL,
-        message   LONGTEXT     NOT NULL,
-        PRIMARY KEY (raid),
-        KEY (uid),
-        KEY (timestamp),
-        KEY (type)
-      ) /*!40100 DEFAULT CHARACTER SET UTF8 */ ");
-      break;
-  }
+  drupal_install_schema('role_activity');
 }
 
 /**
  * Implementation of hook_uninstall().
  */
 function role_activity_uninstall() {
-  db_query('DROP TABLE {role_activity}');
+  drupal_uninstall_schema('role_activity');
 }

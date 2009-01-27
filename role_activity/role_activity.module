@@ -7,42 +7,36 @@
 /**
  * Implementation of hook_menu()
  */
-function role_activity_menu($may_cache) {
+function role_activity_menu() {
   $items = array();
-  $access = user_access('view role activity');
+  $access = array('view role activity');
 
-  if ($may_cache) {
-    $items[] = array(
-      'path'               => 'admin/settings/role_activity',
-      'callback'           => 'drupal_get_form',
-      'callback arguments' => array('role_activity_admin_settings'),
-      'title'              => t('Role Activity settings'),
-      'description'        => t('Settings for logging of activity for users in certain roles.'),
-      'access'             => user_access('administer site configuration'),
-    );
-    $items[] = array(
-      'path'        => 'admin/logs/role_activity',
-      'callback'    => 'role_activity_log',
-      'title'       => t('Role Activity log'),
-      'description' => t('Role activity log in chronological order, most recent first.'),
-      'access'      => $access,
-    );
-    $items[] = array(
-      'path'        => 'admin/logs/role_activity/top_users',
-      'callback'    => 'role_activity_top_users',
-      'title'       => t('Role Activity top users'),
-      'description' => t('Role activity log, top users.'),
-      'access'      => $access,
-    );
-    $items[] = array(
-      'path'        => 'admin/logs/role_activity/user',
-      'callback'    => 'role_activity_by_user',
-      'title'       => t('Role Activity by user'),
-      'description' => t('Role activity log, by user.'),
-      'access'      => $access,
-      'type'        => MENU_CALLBACK,
-    );
-  }
+  $items['admin/settings/role_activity'] = array(
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('role_activity_admin_settings'),
+    'title'            => t('Role Activity settings'),
+    'description'      => t('Settings for logging of activity for users in certain roles.'),
+    'access arguments' => array('administer site configuration'),
+  );
+  $items['admin/logs/role_activity'] = array(
+    'page callback'    => 'role_activity_log',
+    'title'            => t('Role Activity log'),
+    'description'      => t('Role activity log in chronological order, most recent first.'),
+    'access arguments' => $access,
+  );
+  $items['admin/logs/role_activity/top_users'] = array(
+    'page callback'    => 'role_activity_top_users',
+    'title'            => t('Role Activity top users'),
+    'description'      => t('Role activity log, top users.'),
+    'access arguments' => $access,
+  );
+  $items['admin/logs/role_activity/user'] = array(
+    'page callback'    => 'role_activity_by_user',
+    'title'            => t('Role Activity by user'),
+    'description'      => t('Role activity log, by user.'),
+    'access arguments' => $access,
+    'type'             => MENU_CALLBACK,
+  );
 
   return $items;
 }
