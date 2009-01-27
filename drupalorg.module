@@ -155,7 +155,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   // Don't allow CVS account holders to unsubscribe from the required newsletter.
   if (($form_id == 'user_edit' && isset($form['_category']['#value']) && $form['_category']['#value'] == 'newsletter') ||
           ($form_id == 'simplenews_subscription_manager_form')) {
-    drupalorg_cvs_user_subscriptions_form_alter(&$form, $form_state, $form_id);
+    drupalorg_cvs_user_subscriptions_form_alter($form, $form_state, $form_id);
   }
   
   // Deprecate the "license" field, as it must always be GPLv2+ anyway.
