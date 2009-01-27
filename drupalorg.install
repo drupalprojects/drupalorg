@@ -37,3 +37,75 @@ function drupalorg_update_2() {
   $ret[] = update_sql("UPDATE {system} SET weight = 5 WHERE name = 'drupalorg'");
   return $ret;
 }
+
+/**
+ * Enable modules and set some permissions and settings.
+ */
+function drupalorg_update_6000() {
+  // Add new admin menu module and views module.
+  drupal_install_modules(array('admin_menu', 'views'));
+
+  // Segregate book block to book pages only.
+  variable_set('book_block_mode', 'book pages');
+
+  // Add permissions to admins and some users.
+  _drupalorg_add_permissions(array(
+    'administrator' => array(
+      // Contact
+      'administer site-wide contact form',
+      // Forum
+      'delete any forum topic', 'delete own forum topics', 'edit any forum topic',
+      // Nodes
+      'create page content', 'create story content',
+      'delete any book content', 'delete any page content', 'delete any story content',
+      'delete own book content', 'delete own page content', 'delete own story content',
+      'edit any page content', 'edit any story content',
+      'edit own page content', 'edit own story content',
+      // Project
+      'browse project listings',
+      // System
+      'access site reports', 'administer actions', 'administer files',
+      // Admin_menu
+      'access administration menu', 'display drupal links',
+    ),
+    'anonymous' => array(
+      // Project
+      'browse project listings',
+    ),
+    'authenticated user' => array(
+      // Project
+      'browse project listings',
+    )
+  ));
+}
+
+/**
+ * Utility function to add permissions to certain user roles.
+ */
+function _drupalorg_add_permissions($permissions) {
+  foreach ($permissions as $role => $grants) {
+    if (is_string($role)) {
+      $role = db_result(db_query("SELECT rid FROM {role} WHERE name = '%s'", $role));
+    }
+    if ($role) {
+      $authz = db_result(db_query('SELECT perm FROM {permission} WHERE rid = %d', $role));
+      if (empty($authz)) {
+        // No permission record yet.
+        db_query("INSERT INTO {permission} (perm, rid) VALUES ('%s', %d)", join(', ', $grants), $role);
+      }
+      else {
+        // Existing permission record. 
+        $authz_changed = FALSE;
+        foreach ($grants as $grant) {
+          if (strpos($authz, $grant) === FALSE) {
+            $authz .= ', '. $grant;
+            $authz_changed = TRUE;
+          }
+        }
+        if ($authz_changed) {
+          db_query("UPDATE {permission} SET perm = '%s' WHERE rid = %d", $authz, $role);
+        }
+      }
+    }
+  }
+}
