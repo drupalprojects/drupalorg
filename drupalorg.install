@@ -43,8 +43,8 @@ function drupalorg_update_2() {
  */
 function drupalorg_update_6000() {
   // Add new admin menu module and views module.
-  drupal_install_modules(array('admin_menu', 'views'));
-
+  drupal_install_modules(array('admin_menu', 'views', 'view_ui'));
+  
   // Segregate book block to book pages only.
   variable_set('book_block_mode', 'book pages');
 
@@ -67,6 +67,8 @@ function drupalorg_update_6000() {
       'access site reports', 'administer actions', 'administer files',
       // Admin_menu
       'access administration menu', 'display drupal links',
+      // Views UI for development
+      'administer views'
     ),
     'anonymous' => array(
       // Project
@@ -77,6 +79,8 @@ function drupalorg_update_6000() {
       'browse project listings',
     )
   ));
+  
+  return array();
 }
 
 /**
