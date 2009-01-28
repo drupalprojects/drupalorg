@@ -43,7 +43,7 @@ function drupalorg_update_2() {
  */
 function drupalorg_update_6000() {
   // Add new admin menu module and views module.
-  drupal_install_modules(array('admin_menu', 'views', 'view_ui', 'apachesolr'));
+  drupal_install_modules(array('admin_menu', 'views', 'view_ui', 'apachesolr', 'site_network'));
   
   // Segregate book block to book pages only.
   variable_set('book_block_mode', 'book pages');
