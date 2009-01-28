@@ -49,8 +49,8 @@ define('DRUPALORG_SECURITY_UPDATE_HANDBOOK_URL', DRUPALORG_RELEASE_TYPE_HANDBOOK
 /**
  * Implementation of hook_help().
  */
-function drupalorg_help($section) {
-  switch ($section) {
+function drupalorg_help($path, $arg) {
+  switch ($path) {
     case 'project/usage':
       return '<p>'. t('These statistics are incomplete; only Drupal websites using the <a href="!update_status_url">Update Status</a> module are included in the data. As this module is now included with the download of Drupal since version 6.x, the data is heavily biased toward newer sites. <a href="!usage_description_url">Read more information about how these statistics are calculated.</a>', array('!update_status_url' => url('project/update_status'), '!usage_description_url' => url('node/329620'))) .'</p>';
 
@@ -60,7 +60,6 @@ function drupalorg_help($section) {
 
     case 'project/issues-term/346':
       return '<p>'. t('A more detailed overview of the issues can be seen in the Community Initiatives handbook section titled <a href="http://drupal.org/node/362117">Upgrade Drupal.org from Drupal 5 to 6</a>.') .'</p>';
-
   }
 }
 
@@ -492,8 +491,8 @@ function drupalorg_project_page_link_alter($node, &$all_links) {
   // #310446: Alter issue queue links to view issues of all categories.
   if (isset($all_links['support']['links']['pending_support'])) {
     $prepend = array(
-      'open_issues' => l(t('View open issues or create one'), 'project/issues/'. $node->uri),
-      'all_issues' => l(t('View all issues'), 'project/issues/'. $node->uri, array('query' => 'states=all')),
+      'open_issues' => l(t('View open issues or create one'), 'project/issues/'. $node->project['uri']),
+      'all_issues' => l(t('View all issues'), 'project/issues/'. $node->project['uri'], array('query' => 'states=all')),
     );
     $all_links['support']['links'] = $prepend + $all_links['support']['links'];
     unset($all_links['support']['links']['pending_support']);
@@ -585,6 +584,8 @@ function drupalorg_search($op = 'search', $keys = NULL) {
   }
 }
 
+// == Let people assign issues to co-maintainers ===============================
+
 /**
  * Implementation of hook_project_issue_assignees().
  *
@@ -595,11 +596,11 @@ function drupalorg_search($op = 'search', $keys = NULL) {
  */
 function drupalorg_project_issue_assignees(&$assigned, $node) {
   global $user;
-  if (empty($user->uid) || empty($node->pid)) {
+  if (empty($user->uid) || empty($node->project['pid'])) {
     // Return if anonymous user or not a project node.
     return;
   }
-  $project = node_load($node->pid);
+  $project = node_load($node->project['pid']);
   if (!isset($project) || $project->type != 'project_project') {
     // Return if project node not found.
     return;
@@ -608,9 +609,9 @@ function drupalorg_project_issue_assignees(&$assigned, $node) {
   // Determine if the user has CVS access at all.  If not, the user can't be a
   // maintainer of the current project and thus we can skip the next, more
   // expensive query.
-  if (project_use_cvs($node->pid) && db_result(db_query("SELECT COUNT(*) FROM {cvs_accounts} WHERE uid = %d AND status = %d", $user->uid, CVS_APPROVED))) {
+  if (project_use_cvs($node->project['pid']) && db_result(db_query("SELECT COUNT(*) FROM {cvs_accounts} WHERE uid = %d AND status = %d", $user->uid, CVS_APPROVED))) {
     // Make an array with all maintainers of the current project.
-    $result = db_query("SELECT cpm.uid, u.name FROM {cvs_project_maintainers} cpm INNER JOIN {users} u ON cpm.uid = u.uid WHERE cpm.nid = %d", $node->pid);
+    $result = db_query("SELECT cpm.uid, u.name FROM {cvs_project_maintainers} cpm INNER JOIN {users} u ON cpm.uid = u.uid WHERE cpm.nid = %d", $node->project['pid']);
     $maintainers = array($project->uid => $project->name);
     while ($row = db_fetch_object($result)) {
       $maintainers[$row->uid] = $row->name;
