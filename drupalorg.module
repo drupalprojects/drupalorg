@@ -147,8 +147,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   
   // Add CVS maintainer newsletter signup to users when getting a CVS account.
   if ($form_id == 'cvs_user_edit_form') {
-    $submit['drupalorg_cvs_user_edit_submit'] = array();
-    $form['#submit'] = $form['#submit'] + $submit;
+    $form['#submit'][] = 'drupalorg_cvs_user_edit_submit';
   }
   
   // Don't allow CVS account holders to unsubscribe from the required newsletter.
@@ -178,7 +177,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   
   // Ensure that wildcard email addresses are not abused.
   if ($form_id == 'user_register') {
-    $form['#validate']['drupalorg_register_mail_validate'] = array();
+    $form['#validate'][] = 'drupalorg_register_mail_validate';
   }
   
   // Set title of home page option.
@@ -187,8 +186,8 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   }
   
   // Ensure nice Drupal home page addresses
-  if ($form_id == 'user_edit') {
-    $form['#validate']['drupalorg_profile_user_edit_validate'] = array();
+  if ($form_id == 'user_profile_form') {
+    $form['#validate'][] = 'drupalorg_profile_user_edit_validate';
   }
   
   // Force a revision log entry when editing existing book nodes.
@@ -522,7 +521,7 @@ function drupalorg_project_page_link_alter($node, &$all_links) {
  */
 function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
   if ($op == 'list') {
-    $blocks[0] = array('info' => t('External/Alternate Search Advice'),
+    $blocks[0] = array('info' => t('External/Alternate Search Advice (only when search is disabled)'),
       'weight' => 0, 'enabled' => 0, 'region' => 'header');
     return $blocks;
   }
