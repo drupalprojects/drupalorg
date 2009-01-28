@@ -180,8 +180,12 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
     $form['#validate'][] = 'drupalorg_register_mail_validate';
   }
   
-  // Set title of home page option.
+  // Add home page option to user access rule adding and editing.
+  // Make sure if we edit a homepage option, we keep using that as a default.
   if ($form_id == 'user_admin_access_add_form' || $form_id == 'user_admin_access_edit_form') {
+    if ($form['#parameters'][2]['type'] == 'homepage') {
+      $form['type']['#default_value'] = 'homepage';
+    }
     $form['type']['#options']['homepage'] = t('Homepage');
   }
   
