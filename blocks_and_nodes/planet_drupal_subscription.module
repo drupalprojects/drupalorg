@@ -1,22 +1,25 @@
 <?php
 // $Id$
 
+/**
+ * Block to show the list of sources for the Planet as well as their count.
+ */
 function planet_drupal_subscription_output() {
   $output = '';
   $feed_category = 2;
   $description = db_result(db_query("SELECT description FROM aggregator_category WHERE cid = %d", $feed_category));
-  $description = '<p>'. filter_xss_admin($description) .'</p>';
-
-  $output .= $description;
-
   $result = db_query('SELECT f.* FROM {aggregator_feed} f JOIN {aggregator_category_feed} c ON f.fid = c.fid WHERE c.cid = %d ORDER BY f.title', $feed_category);
 
-  $output .= '<div class="item-list"><ul>';
+  $list = '<div class="item-list"><ul>';
+  $counter = 0;
   while ($feed = db_fetch_object($result)) {
-    $output .= '<li>'.  l($feed->title, $feed->link)  . ' (' . l('feed', $feed->url) . ')</li>'; 
+    $list .= '<li>'.  l($feed->title, $feed->link)  . ' (' . l('feed', $feed->url) . ')</li>'; 
+    $counter++;
   }
-  $output .= '</ul></div>';
-
+  $list .= '</ul></div>';
+  
+  $output .= '<p>'. filter_xss_admin($description) . t('Collecting posts from the following @num sources:', array('@num' => $counter)) .'</p>';
+  $output .= $list;
   $output .= theme('xml_icon', url('planet/rss.xml'));
 
   return $output;
