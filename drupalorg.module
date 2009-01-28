@@ -441,7 +441,7 @@ function drupalorg_profile_user_edit_validate($form, &$form_state) {
     // Check denied homepages.
     foreach ($masks as $mask) {
       if (preg_match($mask, $form_state['values']['homepage'])) {
-        form_set_error('homepage', t('Unsuitable homepage detected'));
+        form_set_error('homepage', t('Unsuitable Drupal site detected. This address cannot be set as your Drupal site link.'));
       }
     }
     if (!user_access('administer users')) {
