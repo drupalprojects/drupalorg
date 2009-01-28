@@ -417,7 +417,7 @@ function drupalorg_cvs_user_subscriptions_form_alter(&$form, $form_state, $form_
 function drupalorg_register_mail_validate($form, &$form_state) {
   $hit = preg_match('/(.*)\+(.*)\@(.*)/', $form_state['values']['mail'], $match);
   if ($hit) {
-    if (db_num_rows(db_query("SELECT uid FROM {users} WHERE LOWER(mail) LIKE LOWER('%s')", $match[1] .'+%%@'. $match[3])) > 0) {
+    if (db_result(db_query("SELECT uid FROM {users} WHERE LOWER(mail) LIKE LOWER('%s')", $match[1] .'+%%@'. $match[3])) > 0) {
       form_set_error('mail', t('An e-mail address similar to %email is already registered. <a href="@password">Have you forgotten your password?</a>', array('%email' => $form_state['values']['mail'], '@password' => url('user/password'))));
     }
   }
