@@ -43,10 +43,14 @@ function drupalorg_update_2() {
  */
 function drupalorg_update_6000() {
   // Add new admin menu module and views module.
-  drupal_install_modules(array('admin_menu', 'views', 'view_ui'));
+  drupal_install_modules(array('admin_menu', 'views', 'view_ui', 'apachesolr'));
   
   // Segregate book block to book pages only.
   variable_set('book_block_mode', 'book pages');
+  
+  // Set temporary ApacheSolr settings.
+  variable_set('apachesolr_host', 'scratch.drupalfr.org');
+  variable_set('apachesolr_enabled_facets', array('apachesolr_search' => array('uid' => 'uid', 'type' => 'type')));
 
   // Add permissions to admins and some users.
   _drupalorg_add_permissions(array(
@@ -81,6 +85,22 @@ function drupalorg_update_6000() {
   ));
   
   return array();
+}
+
+/**
+ * Work around that image_update_5200() is insanely broken on Drupal 6.
+ *
+ * image_update_5200() tries to run a database change as if we are on the Drupal 5
+ * database. We are not. So that query fails, but we need to run the good one here
+ * to have the proper data.
+ */
+function drupalorg_update_6001() {
+  $ret = array();
+  // Copy image files records into the new table.
+  $args = array_map('db_escape_string', array_keys(image_get_sizes()));
+  $cond = " IN ('". implode("', '",  $args) ."')";
+  $ret[] = update_sql("INSERT INTO {image} SELECT DISTINCT u.nid, f.fid, f.filename FROM {files} f INNER JOIN {upload} u ON f.fid = u.fid INNER JOIN {node} n ON u.nid = n.nid WHERE n.type='image' AND f.filename". $cond);
+  return $ret;
 }
 
 /**
