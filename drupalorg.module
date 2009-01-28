@@ -431,26 +431,24 @@ function drupalorg_register_mail_validate($form, &$form_state) {
  * @todo Headers are blocked by some providers so this is not accurate.
  */
 function drupalorg_profile_user_edit_validate($form, &$form_state) {
-  $result = db_query("SELECT mask FROM {access} WHERE type = '%s' AND status = %d", 'homepage', 0);
-  $masks = array();
-  while ($mask = db_fetch_object($result)) {
-    $masks[] = '@'. strtr($mask->mask, array('.' => '\.', '%' => '.*', '_' => '.')) .'@';
-  }
-
-  foreach ($form_state['values'] as $name => $value) {
-    if (is_string($value) && strlen($value) > 7 && strpos($name, 'homepage') === 0) {
-      // Check denied homepages.
-      foreach ($masks as $mask) {
-        if (preg_match($mask, $value)){
-          form_set_error($name, t('Unsuitable homepage detected'));
-        }
+  if (!empty($form_state['values']['homepage']) && is_string($form_state['values']['homepage']) && (strlen($form_state['values']['homepage']) > 7)) {
+    $result = db_query("SELECT mask FROM {access} WHERE type = '%s' AND status = %d", 'homepage', 0);
+    $masks = array();
+    while ($mask = db_fetch_object($result)) {
+      // Build masks array for preg_matching.
+      $masks[] = '@'. strtr($mask->mask, array('.' => '\.', '%' => '.*', '_' => '.')) .'@';
+    }
+    // Check denied homepages.
+    foreach ($masks as $mask) {
+      if (preg_match($mask, $form_state['values']['homepage'])) {
+        form_set_error('homepage', t('Unsuitable homepage detected'));
       }
-      if (!user_access('administer users')) {
-        // Check for Drupal-ness of website. Try only once.
-        $response = drupal_http_request($value, array(), 'GET', NULL, 1);
-        if ($response->headers['Expires'] != 'Sun, 19 Nov 1978 05:00:00 GMT') {
-          form_set_error($name, t("Your website does not seem to be a Drupal site. If you think we are wrong, please open an issue in the webmasters' queue."));
-        }
+    }
+    if (!user_access('administer users')) {
+      // Check for Drupal-ness of website. Try only once.
+      $response = drupal_http_request($form_state['values']['homepage'], array(), 'GET', NULL, 1);
+      if ($response->headers['Expires'] != 'Sun, 19 Nov 1978 05:00:00 GMT') {
+        form_set_error('homepage', t("Your website does not seem to be a Drupal site. If you think we are wrong, please open an issue in the webmasters' queue."));
       }
     }
   }
