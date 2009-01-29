@@ -1,10 +1,13 @@
 <?php
 // $Id$
 
+/**
+ * Prefix for variable names used to store advertisements.
+ */
 define('ADVERT_BLOCK_BODY', 'advert_block_body_');
 
 /**
- * List all blocks. This is the only place to add blocks to if you need more.
+ * List of all ad blocks. This is the only place to add blocks to if you need more.
  */
 function _advert_list_blocks() {
   $list = array();
@@ -22,7 +25,7 @@ function _advert_list_blocks() {
 }
 
 /**
- * Get data for a particular block, by delta
+ * Get master data for a particular block, by delta.
  */
 function _advert_get_block($delta) {
   $list = _advert_list_blocks();
@@ -30,7 +33,7 @@ function _advert_get_block($delta) {
 }
 
 /**
- * Implementation of hook_block()
+ * Implementation of hook_block().
  */
 function advert_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
@@ -44,6 +47,7 @@ function advert_block($op = 'list', $delta = 0, $edit = array()) {
     case 'configure':
       $form = array();
 
+      // Provide form to enter ad details.
       $form[ADVERT_BLOCK_BODY . $delta] = array(
         '#type'          => 'textarea',
         '#title'         => t('HTML and/or Javascript'),
@@ -68,18 +72,9 @@ function advert_block($op = 'list', $delta = 0, $edit = array()) {
 }
 
 /** 
- * Check the visibility of the block, it should be on a forum basis
+ * Are we in the appropriate forum to display that ad?
  */
 function advert_is_in_forum($forum_id) {
-  if (arg(0) == 'forum' && arg(1) == $forum_id) {
-    return TRUE;
-  }
-  if (arg(0) == 'node' && is_numeric(arg(1))) {
-    $node = menu_get_object();
-    if ($node->type == 'forum' && $node->tid == $forum_id) {
-      return TRUE;
-    }
-  }
-  return FALSE;
+  return ((arg(0) == 'forum') && (arg(1) == $forum_id)) ||
+         ((arg(0) == 'node') && is_numeric(arg(1)) && ($node = menu_get_object()) && (($node->type == 'forum') && ($node->tid == $forum_id)));
 }
-
