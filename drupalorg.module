@@ -631,3 +631,21 @@ function drupalorg_project_issue_assignees(&$assigned, $node) {
     }
   }
 }
+
+// == Utility functions ========================================================
+
+/**
+ * Project issue URL generator for Drupal issues.
+ *
+ * @param $query
+ *   Array of array of options to pass on in the URL:
+ *     - version (array of release node ids)
+ *     - status (array of status ids)
+ *     - priorities (array of prioristy ids)
+ *     - categories (array of category names)
+ *  @param $absolute
+ *    Set to TRUE to get an absolute URL with http://drupal.org/...
+ */
+function drupalorg_drupal_issue_url($query = array(), $absolute = FALSE) {
+  $url = url('/project/issues/search/drupal', array('query' => $query, 'absolute' => $absolute));
+}

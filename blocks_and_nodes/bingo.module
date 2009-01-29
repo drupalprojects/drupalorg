@@ -99,10 +99,36 @@ function bingo_block_output() {
   $counts_queue = $counts['Patch queue'];
   $counts_review = $counts['Patches to review'];
   
-  // Link to the same versions which were used to build the cached count.
-  $rids = explode(', ', ISSUE_RIDS);
-  $versions = 'version%5B%5D='. join('&amp;version%5B%5D=', $rids);
-
+  $versions = array_map('trim', explode(',', ISSUE_RIDS));
+  $url_pending = drupalorg_drupal_issue_url(
+    array(
+      'version' => $versions,
+      'status' => array(1),
+      'priorities' => array(1, 2),
+      'categories' => array('bug'),
+    )
+  );
+  $url_critical = drupalorg_drupal_issue_url(
+    array(
+      'version' => $versions,
+      'status' => array(1, 8, 13, 14),
+      'priorities' => array(1),
+      'categories' => array('bug', 'task'),
+    )
+  );
+  $url_queue = drupalorg_drupal_issue_url(
+    array(
+      'version' => $versions,
+      'status' => array(8, 13, 14),
+    )
+  );
+  $url_review = drupalorg_drupal_issue_url(
+    array(
+      'version' => $versions,
+      'status' => array(8, 14),
+    )
+  );
+  
   $output = <<<EOT
 <div class="item-list">
 <ul>
@@ -115,22 +141,22 @@ function bingo_block_output() {
         </a>
       </li>
       <li>
-        <a href="/project/issues/search/drupal?status%5B%5D=1&amp;priorities%5B%5D=1&amp;priorities%5B%5D=2&amp;categories%5B%5D=bug&amp;$versions">
+        <a href="$url_pending">
           $counts_pending Pending bugs (D7)
         </a>
       </li>
       <li>
-        <a href="/project/issues/search/drupal?status%5B%5D=1&amp;status%5B%5D=8&amp;status%5B%5D=13&amp;status%5B%5D=14&amp;priorities%5B%5D=1&amp;categories%5B%5D=bug&amp;categories%5B%5D=task&amp;$versions">
+        <a href="$url_critical">
           $counts_critical Critical issues (D7)
         </a>
       </li>
       <li>
-        <a href="/project/issues/search/drupal?projects=3060&amp;status%5B%5D=8&amp;status%5B%5D=13&amp;status%5B%5D=14&amp;$versions">
+        <a href="$url_queue">
           $counts_queue Patch queue (D7)
         </a>
       </li>
       <li>
-        <a href="/project/issues/search/drupal?projects=3060&amp;status%5B%5D=8&amp;status%5B%5D=14&amp;$versions">
+        <a href="$url_review">
           $counts_review Patches to review (D7)
         </a>
       </li>

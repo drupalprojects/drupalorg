@@ -1,19 +1,42 @@
 <?php
 // $Id$
 
+/**
+ * Implementation of hook_nodeapi().
+ */
 function redirects_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {
     switch ($node->nid) {
       case 9730:
-        header('Location: http://drupal.org/project/issues?projects=3060&states=8,13,14');
+        $url_queue = drupalorg_drupal_issue_url(
+          array(
+            'status' => array(8, 13, 14),
+          ),
+          TRUE /* Absolute */
+        );
+        header('Location: '. $url_queue);
         exit;
 
       case 9731:
-        header('Location: http://drupal.org/project/issues?projects=3060&states=1&categories=bug');
+        $url_bugs = drupalorg_drupal_issue_url(
+          array(
+            'status' => array(1),
+            'categories' => array('bug'),
+          ),
+          TRUE /* Absolute */
+        );
+        header('Location: '. $url_bugs);
         exit;
 
       case 9732:
-        header('Location: http://www.drupal.org/project/issues?projects=3060&states=1&categories=task');
+        $url_tasks = drupalorg_drupal_issue_url(
+          array(
+            'status' => array(1),
+            'categories' => array('task'),
+          ),
+          TRUE /* Absolute */
+        );
+        header('Location: '. $url_tasks);
         exit;
 
       case 133282:

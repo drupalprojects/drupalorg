@@ -1,6 +1,9 @@
 <?php
 // $Id$
 
+/**
+ * Implementation of hook_nodeapi().
+ */
 function searchquery_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {
     $extra = '';
@@ -13,6 +16,9 @@ function searchquery_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALS
   }
 }
 
+/**
+ * Load cached search query list or generate cache.
+ */
 function searchquery_list() {
   if ($cache = cache_get('node_48380')) {
     return $cache->data;

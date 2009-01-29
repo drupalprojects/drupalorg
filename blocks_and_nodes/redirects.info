@@ -1,5 +1,6 @@
 ; $Id$
 name = Redirects
-description = Special redirects for some pages
+description = Very lightweight redirects for some node pages to other areas of the site.
 package = Drupal.org
-core=6.x
+dependencies[]  = drupalorg
+core = 6.x
