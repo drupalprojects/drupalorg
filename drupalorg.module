@@ -68,7 +68,6 @@ function drupalorg_help($path, $arg) {
  */
 function drupalorg_cron() {
   drupalorg_issue_counts();
-  drupalorg_cvs_user_sync();
 }
 
 // == Issue counter ============================================================
@@ -149,13 +148,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'cvs_user_edit_form') {
     $form['#submit'][] = 'drupalorg_cvs_user_edit_submit';
   }
-  
-  // Don't allow CVS account holders to unsubscribe from the required newsletter.
-  if (($form_id == 'user_edit' && isset($form['_category']['#value']) && $form['_category']['#value'] == 'newsletter') ||
-          ($form_id == 'simplenews_subscription_manager_form')) {
-    drupalorg_cvs_user_subscriptions_form_alter($form, $form_state, $form_id);
-  }
-  
+    
   // Deprecate the "license" field, as it must always be GPLv2+ anyway.
   if ($form_id == 'project_project_node_form') {
     if (! $form['project']['license']['#default_value']) {
@@ -329,88 +322,26 @@ function drupalorg_security_release_form_validate($form, &$form_state) {
   }
 }
 
-// == CVS maintainer newsletter housekeeping ===================================
+// == CVS maintainer housekeeping ==============================================
 
 /**
- * Make sure all CVS account holders are subscribed to the mandatory newsletter.
- * 
- * Invoked from cron. Only check/add users once per day - normally users are
- * added when they get a CVS account.
- *
- * @see drupalorg_cvs_user_edit_submit()
- */
-function drupalorg_cvs_user_sync() {
-  if (time() - variable_get('drupalorg_cvs_subscribe_time', 0) > 86400) {
-    // Find CVS users with newsletter subscriptions but not the CVS newsletter.
-    $result = db_query("SELECT u.uid, u.mail, ss.snid FROM {cvs_accounts} ca INNER JOIN {users} u ON u.uid = ca.uid INNER JOIN {simplenews_subscriptions} ss ON ss.uid = ca.uid WHERE ca.status = %d", CVS_APPROVED);
-    while ($account = db_fetch_object($result)) {
-      if (!db_result(db_query("SELECT snid FROM {simplenews_snid_tid} WHERE snid = %d AND tid = %d", $account->snid, DRUPALORG_CVS_NEWSLETTER))) {
-        module_invoke('simplenews', 'subscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
-      }
-    }
-    // Find CVS users with no newsletter subscriptions at all.
-    $result = db_query("SELECT u.uid, u.mail FROM {cvs_accounts} ca INNER JOIN {users} u ON u.uid = ca.uid LEFT JOIN {simplenews_subscriptions} ss ON ss.uid = ca.uid WHERE ca.status = %d AND ss.uid IS NULL", CVS_APPROVED);
-    while ($account = db_fetch_object($result)) {
-      module_invoke('simplenews', 'subscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
-    }
-    // Store the time of the last run.
-    variable_set('drupalorg_cvs_subscribe_time', time());
-  }
-}
-
-/**
- * Add the user to the CVS maintainers list, when she gets an account.
- *
- * @see drupalorg_cvs_user_sync()
+ * Add the user to the CVS maintainer role, when she gets an account.
  */
 function drupalorg_cvs_user_edit_submit($form, &$form_state) {
-  global $locale;
+  global $language;
 
   if (isset($form_state['values']['cvs_status'])) {
     $account = user_load(array('uid' => $form_state['values']['cvs_uid']));
     switch ($form_state['values']['cvs_status']) {
       case CVS_APPROVED:
         db_query('INSERT INTO {users_roles} (uid, rid) VALUES (%d, %d)', $form_state['values']['cvs_uid'], DRUPALORG_CVS_USER_ROLE);
-        module_invoke('simplenews', 'subscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
         break;
       case CVS_DISABLED:
         db_query('DELETE FROM {users_roles} WHERE uid = %d AND rid = %d', $form_state['values']['cvs_uid'], DRUPALORG_CVS_USER_ROLE);
-        module_invoke('simplenews', 'unsubscribe_user', $account->mail, DRUPALORG_CVS_NEWSLETTER, FALSE);
         break;
     }
-    cache_clear_all($form_state['values']['cvs_uid'] .":$locale", 'cache_menu');
-  }
-}
-
-/**
- * Don't allow CVS account holders to unsubscribe from the required newsletter.
- */
-function drupalorg_cvs_user_subscriptions_form_alter(&$form, $form_state, $form_id) {
-  // Alter the newsletter subscription form for CVS account holders only.
-  // An admin may be editing some other user's account.
-  if (isset($form['_account']['#value'])) {
-    $account = $form['_account']['#value'];
-  }
-  else {
-    $account = $GLOBALS['user'];
-  }
-  // Don't allow CVS account holders to unsubscribe from the required newsletter.
-  // Determine if the account being edited is an approved CVS user.
-  if (db_result(db_query("SELECT 1 FROM {cvs_accounts} WHERE uid = %d AND status = %d", $account->uid, CVS_APPROVED))) {
-    $subscribed = is_array($form['subscriptions']['newsletters']['#default_value']) ? in_array(DRUPALORG_CVS_NEWSLETTER, $form['subscriptions']['newsletters']['#default_value']) : FALSE;
-    // Only disable the check box if the user is already subscribed.
-    if ($subscribed) {
-      $title = $form['subscriptions']['newsletters']['#options'][DRUPALORG_CVS_NEWSLETTER];
-      // Take the required CVs newsletter out of the normal checkboxes.
-      unset($form['subscriptions']['newsletters']['#options'][DRUPALORG_CVS_NEWSLETTER]);
-      // Append a single disabled checkbox below.
-      $form['subscriptions']['cvs_newsletter'] = array(
-        '#type' => 'checkbox',
-        '#title' => $title .' '. t('(mandatory for users with a CVS account)'),
-        '#default_value' => TRUE,
-        '#disabled' => TRUE,
-      );
-    }
+    // Clear cache for this user, so that the user will see new functionality.
+    cache_clear_all($form_state['values']['cvs_uid'] .':'. $language->language, 'cache_menu');
   }
 }
 
