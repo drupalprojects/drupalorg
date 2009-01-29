@@ -182,7 +182,8 @@ function role_activity_write($log, $action) {
     $action,
     $log['link'],
     $log['request_uri'],
-    t($log['message'], $log['variables']);
+    t($log['message'], $log['variables'])
+  );
 }
 
 /**
