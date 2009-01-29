@@ -1,11 +1,9 @@
 <?php
 // $Id$
 
-define('BINGO_TYPE_MIN', 0);
-
-// Make sure this corresponds to the number of menu items and queries
-define('BINGO_TYPE_MAX', 3);
-
+/**
+ * Implementation of hook_menu().
+ */
 function bingo_menu() {
   $items['bug-bingo'] = array(
     'title'              => 'Bug bingo',
@@ -38,23 +36,23 @@ function bingo_menu() {
   return $items;
 }
 
-function bingo_jump($type = BINGO_TYPE_MIN) {
-  // Check that we got a valid argument
-  if ($type < BINGO_TYPE_MIN || $type > BINGO_TYPE_MAX) {
-    // otherwise fake a valid one!
-    $type = BINGO_TYPE_MIN;
-  }
-
+/**
+ * SQL randomizer for issues.
+ */
+function bingo_jump($type = NULL) {
   $sql = array(
-    // Bug core
+    // Bug, core.
     "SELECT nid FROM {project_issues} WHERE sid IN (1) AND category = 'bug' AND pid = 3060 ORDER BY RAND() LIMIT 1",
-    // Bug contrib
+    // Bug, contrib.
     "SELECT nid FROM {project_issues} WHERE sid IN (1) AND category = 'bug' AND pid != 3060 ORDER BY RAND() LIMIT 1",
-    // Patch core
+    // Patch, core.
     "SELECT nid FROM {project_issues} WHERE sid IN (8,13,14) AND pid = 3060 ORDER BY RAND() LIMIT 1",
-    // Patch contrib
+    // Patch, contrib.
     "SELECT nid FROM {project_issues} WHERE sid IN (8,13,14) AND pid != 3060 ORDER BY RAND() LIMIT 1",
   );
+  if (!is_int($type) || !isset($sql[$type])) {
+    $type = 0;
+  }
 
   $nid = db_result(db_query($sql[$type]));
   if ($_GET['stop'] != 1) {
@@ -62,10 +60,13 @@ function bingo_jump($type = BINGO_TYPE_MIN) {
   }
 }
 
+/**
+ * Implementation of hook_block().
+ */
 function bingo_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
-      $blocks[0]['info'] = t('bingo: Contributor links');
+      $blocks[0]['info'] = t('Contributor links');
       return $blocks;
 
     case 'view':
@@ -75,13 +76,19 @@ function bingo_block($op = 'list', $delta = 0, $edit = array()) {
   }
 }
 
+/**
+ * Utility function to look up the title for the patch spotlight node.
+ */
 function bingo_spotlight_title() {
   $nid = 132970;
   $title = db_result(db_query("SELECT title FROM {node} WHERE nid = %d", $nid));
   $clean_title = str_replace('Patch spotlight: ', '', $title);
-  return l($clean_title, 'node/' . $nid);
+  return l($clean_title, 'node/'. $nid);
 }
 
+/**
+ * Output links with issue counts for different types of issues.
+ */
 function bingo_block_output() {
   $spotlight = bingo_spotlight_title();
 
@@ -91,11 +98,14 @@ function bingo_block_output() {
   $counts_critical = $counts['Critical issues'];
   $counts_queue = $counts['Patch queue'];
   $counts_review = $counts['Patches to review'];
+  
+  // Link to the same versions which were used to build the cached count.
+  $rids = explode(', ', ISSUE_RIDS);
+  $versions = 'version%5B%5D='. join('&amp;version%5B%5D=', $rids);
 
   $output = <<<EOT
 <div class="item-list">
 <ul>
-  <li><a href="http://drupal.org/search/node">Advanced search</a></li>
   <li>
     <strong>Queues</strong>
     <ul>
@@ -105,22 +115,22 @@ function bingo_block_output() {
         </a>
       </li>
       <li>
-        <a href="/project/issues?projects=3060&amp;states=1&amp;categories=bug&amp;versions=156281&amp;priorities=1,2">
+        <a href="/project/issues/search/drupal?status%5B%5D=1&amp;priorities%5B%5D=1&amp;priorities%5B%5D=2&amp;categories%5B%5D=bug&amp;$versions">
           $counts_pending Pending bugs (D7)
         </a>
       </li>
       <li>
-        <a href="/project/issues?projects=3060&amp;categories=bug,task&amp;priorities=1&amp;states=1,8,13,14&amp;versions=156281">
+        <a href="/project/issues/search/drupal?status%5B%5D=1&amp;status%5B%5D=8&amp;status%5B%5D=13&amp;status%5B%5D=14&amp;priorities%5B%5D=1&amp;categories%5B%5D=bug&amp;categories%5B%5D=task&amp;$versions">
           $counts_critical Critical issues (D7)
         </a>
       </li>
       <li>
-        <a href="/project/issues?projects=3060&amp;states=8,13,14&amp;versions=156281">
+        <a href="/project/issues/search/drupal?projects=3060&amp;status%5B%5D=8&amp;status%5B%5D=13&amp;status%5B%5D=14&amp;$versions">
           $counts_queue Patch queue (D7)
         </a>
       </li>
       <li>
-        <a href="/project/issues?projects=3060&amp;states=8&amp;versions=156281">
+        <a href="/project/issues/search/drupal?projects=3060&amp;status%5B%5D=8&amp;status%5B%5D=14&amp;$versions">
           $counts_review Patches to review (D7)
         </a>
       </li>
@@ -157,4 +167,3 @@ function bingo_block_output() {
 EOT;
   return $output;
 }
-

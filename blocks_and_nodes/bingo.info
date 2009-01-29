@@ -2,4 +2,5 @@
 name = Bingo
 description = Contributor Links and Bingo
 package = Drupal.org
+dependencies[] = drupalorg
 core=6.x
