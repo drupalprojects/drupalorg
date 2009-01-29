@@ -1,14 +1,17 @@
 <?php
 // $Id$
 
+/**
+ * Implementation of hook_nodeapi().
+ */
 function project_stuff_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {
     $extra = '';
     switch ($node->nid) {
-      case 206666:
+      case 206666: // List projects by Drupal core version.
         $extra = project_stuff_project_by_core();
         break;
-      case 199251:
+      case 199251: // List projects with CVS RSS feeds.
         $extra = project_stuff_cvs_rss();
         break;
     }
@@ -16,6 +19,9 @@ function project_stuff_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FA
   }
 }
 
+/**
+ * List projects by Drupal core version.
+ */
 function project_stuff_project_by_core() {
   $output = '';
 
@@ -46,14 +52,17 @@ function project_stuff_project_by_core() {
   return $output;
 }
 
+/**
+ * List projects with CVS RSS links.
+ */
 function project_stuff_cvs_rss() {
-  $count_query = "SELECT COUNT(*) FROM {node} WHERE type = 'project_project' && status = '1'";
+  $count_query = "SELECT COUNT(*) FROM {node} WHERE type = 'project_project' AND status = 1";
   $total = db_result(db_query($count_query));
   $header = array(array('data' => t('Number'), 'field' => 'nid', 'sort' => 'desc'), t('Title'), t('CVS/RSS'));
-  $result = pager_query("SELECT nid, title, status FROM {node} WHERE type = 'project_project' && status='1' ". tablesort_sql($header), 100, 0, $count_query);
+  $result = pager_query("SELECT nid, title, status FROM {node} WHERE type = 'project_project' AND status = 1 ". tablesort_sql($header), 100, 0, $count_query);
   $rows = array();
   $page = (int)$_GET['page'];
-  $count= $total - $page * 100;
+  $count = $total - $page * 100;
   while($row = db_fetch_array($result)) {
     $url = url('cvs', array('query' => 'rss=true&nid='. $row['nid'], 'absolute' => TRUE));
     $rows[]= array($count--, l($row['title'], 'node/'. $row['nid']), theme('feed_icon', $url));

@@ -2,4 +2,7 @@
 name = Project Stuff
 description = Special pages for project module
 package = Drupal.org
-core=6.x
+dependencies[] = project
+dependencies[] = project_release
+dependencies[] = cvs
+core = 6.x
