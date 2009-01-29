@@ -56,7 +56,7 @@ function lists_menu() {
     'page arguments' => array('lists_subscribe_form'),
     'type' => MENU_SUGGESTED_ITEM
   );
-  $items['user/%user/edit/newsletter'] = array(
+  $items['user/%user_category/edit/newsletter'] = array(
     'title' => 'My newsletters',
     'access arguments' => array('access content'),
     'page callback' => 'drupal_get_form',
@@ -67,58 +67,7 @@ function lists_menu() {
   return $items;
 }
 
-/**
- * Implementation of hook_perm().
- */
-function lists_perm() {
-  return array('post to newsletter');
-}
-
-/**
- * Implementation of hook_form_alter().
- */
-function lists_form_alter(&$form, $form_state, $form_id) {
-  // Add/remove users from maintainer newsletter when their CVS access is
-  // updated.
-  if ($form_id == 'cvs_user_edit_form') {
-    $form['#submit'][] = 'lists_cvs_user_edit_submit';
-  }
-  else if ($form_id == 'forum_node_form') {
-    $node = $form['#node'];
-    $lists_forum_tids = array_keys(_lists_get_forum_tids());
-    if (!user_access('post to newsletter')) {
-      // See if user is trying to post to a forum for which they do not have
-      // permission.  If so, redirect them back to the forum in question and
-      // notify them they lack permission.
-      if (is_array($node->taxonomy)) {
-        foreach ($node->taxonomy as $tid => $data) {
-          if (in_array($tid, $lists_forum_tids)) {
-            drupal_set_message(t('You do not have permission to post to this forum.'));
-            drupal_goto("forum/$tid");
-          }
-        }
-      }
-      // See if user has permission to post to mailing lists (generating emails
-      // to potentially large numbers of users).  If not, remove these forums
-      // as a selectable forum option.
-      if (is_array($form['taxonomy'])) {
-        foreach ($form['taxonomy'] as $vid => $taxonomy) {
-          if (is_array($taxonomy) && is_array($taxonomy['#options'])) {
-            foreach ($taxonomy['#options'] as $key => $option) {
-              if (is_object($option) && isset($option->option)) {
-                foreach ($option->option as $tid => $name) {
-                  if (in_array($tid, $lists_forum_tids)) {
-                    unset($form['taxonomy'][$vid]['#options'][$key]->option[$tid]);
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
+// == Mailing list functionality ===============================================
 
 /**
  * Internal helper function to return a list of mailing lists.
@@ -186,49 +135,6 @@ function _lists_get_lists() {
     ),
   );
   return $lists;
-}
-
-/**
- * Static definition of all mailman managed Drupal mailing lists.
- */
-function _lists_get_mailman_lists() {
-  // passwords need to be set in variable table in order to be able to
-  // administer these lists.
-  $lists = array(
-    'drupal'        => array(
-      'name'        => 'Drupal newsletter',
-      'description' => 'A sometimes-monthly mailing about all things Drupal.',
-      'allow_sub'   => TRUE,
-      'mail'        => variable_get('lists_drupal_mail', ''),
-      'pass'        => variable_get('lists_drupal_pass', ''),
-      'url'         => variable_get('lists_drupal_url', ''),
-    ),
-    'security'      => array(
-      'name'        => 'Security announcements',
-      'description' => 'A low volume mailing list where all security issues affecting Drupal and Drupal contributed modules are publically announced.',
-      'allow_sub'   => TRUE,
-      'mail'        => variable_get('lists_security_mail', ''),
-      'pass'        => variable_get('lists_security_pass', ''),
-      'url'         => variable_get('lists_security_url', ''),
-    ),
-    'maintainer'    => array(
-      'name'        => 'Maintainer news',
-      'description' => 'This list is automatically enabled for users with a CVS account and can not be manually subscribed or unsubscribed.',
-      'allow_sub'   => FALSE,
-      'maintainer_auto' => TRUE,
-      'mail'        => variable_get('lists_maintainer_mail', ''),
-      'pass'        => variable_get('lists_maintainer_pass', ''),
-      'url'         => variable_get('lists_maintainer_url', ''),
-    ),
-  );
-  return $lists;
-}
-
-/**
- * List of all forums that are mailman mailing lists.
- */
-function _lists_get_forum_tids() {
-  return variable_get('lists_forum_tids', array());
 }
 
 /**
@@ -335,15 +241,70 @@ function lists_subscribe_form_submit($form, &$form_state) {
   }
 }
 
+// == Newsletters ==============================================================
+
+/**
+ * Static definition of all mailman managed Drupal mailing lists.
+ */
+function _lists_get_mailman_lists() {
+  // passwords need to be set in variable table in order to be able to
+  // administer these lists.
+  $lists = array(
+    'drupal'        => array(
+      'name'        => 'Drupal newsletter',
+      'description' => 'A sometimes-monthly mailing about all things Drupal.',
+      'allow_sub'   => TRUE,
+      'mail'        => variable_get('lists_drupal_mail', ''),
+      'pass'        => variable_get('lists_drupal_pass', ''),
+      'url'         => variable_get('lists_drupal_url', ''),
+    ),
+    'security'      => array(
+      'name'        => 'Security announcements',
+      'description' => 'A low volume mailing list where all security issues affecting Drupal and Drupal contributed modules are publically announced.',
+      'allow_sub'   => TRUE,
+      'mail'        => variable_get('lists_security_mail', ''),
+      'pass'        => variable_get('lists_security_pass', ''),
+      'url'         => variable_get('lists_security_url', ''),
+    ),
+    'maintainer'    => array(
+      'name'        => 'Maintainer news',
+      'description' => 'This list is automatically enabled for users with a CVS account and can not be manually subscribed or unsubscribed.',
+      'allow_sub'   => FALSE,
+      'maintainer_auto' => TRUE,
+      'mail'        => variable_get('lists_maintainer_mail', ''),
+      'pass'        => variable_get('lists_maintainer_pass', ''),
+      'url'         => variable_get('lists_maintainer_url', ''),
+    ),
+  );
+  return $lists;
+}
+
+/**
+ * List of all forums that are mailman mailing lists.
+ */
+function _lists_get_forum_tids() {
+  return variable_get('lists_forum_tids', array());
+}
+
+/**
+ * Implementation of hook_perm().
+ */
+function lists_perm() {
+  return array('post to newsletter');
+}
+
 /**
  * Per-use mailman subscription form.
+ *
+ * @ingroup forms
+ * @see lists_mailman_user_form_submit()
  */
 function lists_mailman_user_form(&$form_state, $account = FALSE) {
   $form = array();
 
   $form['newsletter'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Mailing list subscriptions'),
+    '#title' => t('Newsletter subscriptions'),
     '#description' => t('Select the newsletter(s) which you want to subcribe or unsubcribe.'),
     '#collapsible' => FALSE,
   );
@@ -359,17 +320,14 @@ function lists_mailman_user_form(&$form_state, $account = FALSE) {
       '#default_value' => $default_value,
     );
   }
-
   $form['uid'] = array(
     '#type' => 'hidden',
     '#value' => $account->uid,
   );
-
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),
   );
-
   return $form;
 }
 
@@ -377,7 +335,6 @@ function lists_mailman_user_form(&$form_state, $account = FALSE) {
  * Subscribe/unsubscribe from mailman mailing lists.
  */
 function lists_mailman_user_form_submit($form, &$form_state) {
-  global $user;
   $account = user_load(array('uid' => $form_state['values']['uid']));
   $lists = _lists_get_mailman_lists();
   foreach ($lists as $list => $data) {
@@ -394,8 +351,8 @@ function lists_mailman_user_form_submit($form, &$form_state) {
     // Special handling for the maintainer newsletter.
     else if ($data['maintainer_auto']) {
       $status = db_query('SELECT status FROM {cvs_accounts} WHERE uid = %d', $account->uid);
-      // If CVS is approved, be sure user is subscribed to the maintainer
-      // newsletter.
+      // If CVS account is approved, be sure user is subscribed to the
+      // maintainer newsletter.
       if ($status == CVS_APPROVED) {
         if (!$old) {
           _lists_mailman_subscribe($data, $account);
@@ -413,12 +370,58 @@ function lists_mailman_user_form_submit($form, &$form_state) {
 }
 
 /**
+ * Implementation of hook_form_alter().
+ */
+function lists_form_alter(&$form, $form_state, $form_id) {
+  // Add/remove users from maintainer newsletter when their CVS access is
+  // updated.
+  if ($form_id == 'cvs_user_edit_form') {
+    $form['#submit'][] = 'lists_cvs_user_edit_submit';
+  }
+  else if ($form_id == 'forum_node_form') {
+    $node = $form['#node'];
+    $lists_forum_tids = array_keys(_lists_get_forum_tids());
+    if (!user_access('post to newsletter')) {
+      // See if user is trying to post to a forum for which they do not have
+      // permission.  If so, redirect them back to the forum in question and
+      // notify them they lack permission.
+      if (is_array($node->taxonomy)) {
+        foreach ($node->taxonomy as $tid => $data) {
+          if (in_array($tid, $lists_forum_tids)) {
+            drupal_set_message(t('You do not have permission to post to this forum.'));
+            drupal_goto("forum/$tid");
+          }
+        }
+      }
+      // See if user has permission to post to mailing lists (generating emails
+      // to potentially large numbers of users).  If not, remove these forums
+      // as a selectable forum option.
+      if (is_array($form['taxonomy'])) {
+        foreach ($form['taxonomy'] as $vid => $taxonomy) {
+          if (is_array($taxonomy) && is_array($taxonomy['#options'])) {
+            foreach ($taxonomy['#options'] as $key => $option) {
+              if (is_object($option) && isset($option->option)) {
+                foreach ($option->option as $tid => $name) {
+                  if (in_array($tid, $lists_forum_tids)) {
+                    unset($form['taxonomy'][$vid]['#options'][$key]->option[$tid]);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
  * Submit newsletter forum to mailman for mass mailing.
  */
 function lists_nodeapi(&$node, $op, $teaser, $page) {
   global $user;
 
-  if ($node->status && ($op == 'insert' || $op == 'update') && user_access('create newsletter')) {
+  if ($node->status && ($op == 'insert' || $op == 'update') && user_access('post to newsletter')) {
     // We are going to return if $node->type is not one of the node
     // types assigned to the forum vocabulary.  If forum_nav_vocabulary
     // is undefined or the vocabulary does not exist, it clearly cannot
@@ -449,8 +452,8 @@ function lists_nodeapi(&$node, $op, $teaser, $page) {
 
     // User has permission to generate emails, so send the node to mailman.
     if ($generate_mail) {
-      // there's no reason I can see for sending a mailing multiple times, but
-      // sense we're tracking whether or not something is sent anyway...
+      // There's no reason I can see for sending a mailing multiple times, but
+      // since we're tracking whether or not something is sent anyway...
       $sent = db_result(db_query('SELECT nid FROM {lists_mailman} WHERE nid = %d', $node->nid));
       if (!$sent) {
         $lists = _lists_get_mailman_lists();
@@ -494,31 +497,28 @@ function lists_cvs_user_edit_submit($form, &$form_state) {
 }
 
 /**
- * Helper function to check if the provided email address is susbcribed to the
- * provided mailman mailing list.
- * Code borrowed from the mailman_api module.
+ * Helper function to check if the provided email address is susbcribed.
+ * 
+ * Some code borrowed from the mailman_api module.
  */
 function _lists_mailman_user_subscribed($list, $account) {
   $query = array(
-    'findmember' => $account->mail,
+    'findmember'     => $account->mail,
     'findmember_btn' => 'Search...'
   );
   $url = url($list['url'] .'/members', array('query' => $query));
   $result = lists_mailman_query($url, $list);
   // replace '@' with '--at--' to match the mailman internal representation so
   // we don't match our own search query which would always result in a match.
-  if (strpos(strtolower($result->data), str_replace('@', '--at--', $account->mail))) {
-    return TRUE;
-  }
-  return FALSE;
+  return (bool) strpos(strtolower($result->data), str_replace('@', '--at--', $account->mail));
 }
 
 /**
  * Helper function to subscribe a user to a mailman mailing list.
+ * 
  * Some code borrowed from the mailmain_api module.
  */
 function _lists_mailman_subscribe($list, $account) {
-  $email = urlencode($email);
   $query = array(
     'subscribe_or_invite' => variable_get('lists_mailman_invite', 0),
     'send_welcome_msg_to_this_batch' => variable_get('lists_mailman_notify', 0),
@@ -528,20 +528,20 @@ function _lists_mailman_subscribe($list, $account) {
   $url = url($list['url'] .'/members/add', array('query' => $query));
   $result = lists_mailman_query($url, $list);
   if ($result !== FALSE) {
-    watchdog('lists', t('User !user subscribed to !list mailman list.', array('!user' => $account->mail, '!list' => $list['name'])));
+    watchdog('lists', t('User %email subscribed to !list mailman list.', array('%email' => $account->mail, '!list' => $list['name'])));
     drupal_set_message(t('%email subscribed to %list.', array('%email' => $account->mail, '%list' => $list['name'])));
   }
   else {
-    drupal_set_message(t('Failed to subscribe %email to %list.  Please try again later.', array('%email' => $account->mail, '%list' => $list['name'])));
+    drupal_set_message(t('Failed to subscribe %email to %list. Please try again later.', array('%email' => $account->mail, '%list' => $list['name'])));
   }
 }
 
 /**
  * Helper function to subscribe a user to a mailman mailing list.
+ * 
  * Some code borrowed from the mailmain_api module.
  */
 function _lists_mailman_unsubscribe($list, $account) {
-  $email = urlencode($email);
   $query = array(
     'send_unsub_ack_to_this_batch' => variable_get('lists_mailman_notify', 0),
     'send_unsub_notifications_to_list_owner' => variable_get('lists_mailman_notify_admin', 0),
@@ -550,7 +550,7 @@ function _lists_mailman_unsubscribe($list, $account) {
   $url = url($list['url'] .'/members/remove', array('query' => $query));
   $result = lists_mailman_query($url, $list);
   if ($result !== FALSE) {
-    watchdog('lists', t('User !user unsubscribed from !list mailman list.', array('!user' => $account->mail, '!list' => $list['name'])));
+    watchdog('lists', t('User %email unsubscribed from !list mailman list.', array('%email' => $account->mail, '!list' => $list['name'])));
     drupal_set_message(t('%email unsubscribed from %list.', array('%email' => $account->mail, '%list' => $list['name'])));
   }
   else {
@@ -559,20 +559,28 @@ function _lists_mailman_unsubscribe($list, $account) {
 }
 
 /**
- * Connect to admin interface for mailman mailing list.  Break out admin_pass
- * so we don't log it on errors to minimize the exposure of this value.
+ * Connect to admin interface for mailman mailing list and run a request.
+ *
+ * Break out adminpw so we don't log it on errors to minimize the
+ * exposure of this value.
+ * 
+ * Some code borrowed from the mailmain_api module.
  */
 function lists_mailman_query($url, $list) {
   $result = drupal_http_request($url .'&adminpw='. urlencode($list['pass']));
-  // provide debug if connection to mailman fails
+  
+  // Provide debug information if connection to mailman fails.
   if (!is_object($result) || !isset($result->code) || $result->code != '200') {
     watchdog('lists', t('Mailman HTTP request error (!code) for !list: %error<br />url=%url', array('!code' => (int)$result->code, '!list' => $list['name'], '%error' => $result->error, '%url' => $url)));
     return FALSE;
   }
-  // provide debug if connection to mailman succeeds but the list is invalid
-  else if (is_object($result) && strpos($result->data, '>No such list')) {
+  
+  // Provide debug information if connection to mailman succeeds but the list is invalid.
+  elseif (is_object($result) && strpos($result->data, '>No such list')) {
     watchdog('lists', t('Mailman list !list does not exist.<br />url=%url', array('!list' => $list['name'], '%url' => $url)));
     return FALSE;
   }
+  
+  // All all right, so return full page reply.
   return $result;
 }
