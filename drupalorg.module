@@ -647,5 +647,5 @@ function drupalorg_project_issue_assignees(&$assigned, $node) {
  *    Set to TRUE to get an absolute URL with http://drupal.org/...
  */
 function drupalorg_drupal_issue_url($query = array(), $absolute = FALSE) {
-  return url('/project/issues/search/drupal', array('query' => $query, 'absolute' => $absolute));
+  return url('project/issues/search/drupal', array('query' => $query, 'absolute' => $absolute));
 }
