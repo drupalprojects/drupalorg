@@ -1,5 +1,6 @@
 ; $Id$
-name = Block: Planet Drupal Subscriptions
-description = Block: Planet Drupal Subscriptions
+name = Planet Drupal feed lister
+description = Lists feeds aggregated on Planet Drupal in a block.
+dependencies[] = aggregator
 package = Drupal.org
 core=6.x
