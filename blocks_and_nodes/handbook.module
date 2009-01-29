@@ -34,6 +34,9 @@ function handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) 
   }
 }
 
+/**
+ * List handbook pages with comments in descending comment order.
+ */
 function handbook_with_comments() {
   $header = array(
     array('data' => 'Page'),
@@ -52,6 +55,9 @@ function handbook_with_comments() {
   return theme('table', $header, $rows);
 }
 
+/**
+ * List pages ordered by visit number descending order.
+ */
 function handbook_most_popular() {
   $header = array('Rank', 'Page', 'Visits today', 'Total visits');
 
@@ -67,6 +73,26 @@ function handbook_most_popular() {
   return theme('table', $header, $rows);
 }
 
+/**
+ * List usernames with site maintainer role.
+ */
+function handbook_site_maintainers() {
+  $output = 'If you have been around for a while, and you want to help maintain Drupal.org and are willing to accept the added responsibilities that come with it, sign up on the <a href="http://drupal.org/mailing-lists">Infrastructure team</a> list.';
+  $output .= '<ol>';
+  $result = db_query("SELECT DISTINCT(u.uid), u.name
+    FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.uid
+    WHERE r.rid = 3 OR r.rid = 4 OR r.rid = 9
+    ORDER BY u.name "); // 3 = site maintainer, 4 = administrator
+  while ($account = db_fetch_object($result)) {
+    $output .= "<li>". theme('username', $account) ."</li>";
+  }
+  $output .= '</ol>';
+  return $output;
+}
+
+/**
+ * List usernames with handbook maintainer role.
+ */
 function handbook_maintainers() {
   $output = '<p>If you are interested in helping maintain/update/correct the documentation on Drupal.org, read up on the <a href="http://drupal.org/node/24572">many ways to get involved</a>.</p>';
   $output .= '<p>Note: Many of our <a href="/site-maintainers">site maintainers</a> also participate on the documentation team and are not listed here. Due to their broader responsibilities on drupal.org, site maintainers are listed separately.</p>';
@@ -82,6 +108,9 @@ function handbook_maintainers() {
   return $output;
 }
 
+/**
+ * Count and list contributors to the books.
+ */
 function handbook_book_contributors() {
   $result = db_query("SELECT u.uid, u.name, COUNT(n.nid) AS pages
   FROM {node} n INNER JOIN {users} u ON n.uid = u.uid
@@ -90,26 +119,15 @@ function handbook_book_contributors() {
   ORDER BY pages DESC");
   $output .= "<ul>";
   while ($contributor = db_fetch_object($result)) {
-    $output .= "<li>". theme('username', $contributor) ." (". format_plural($contributor->pages, "1 page", "$contributor->pages pages") .")</li>";
+    $output .= "<li>". theme('username', $contributor) ." (". format_plural($contributor->pages, "@count page", "@count pages") .")</li>";
   }
   $output .= "</ul>";
   return $output;
 }
 
-function handbook_site_maintainers() {
-  $output = 'If you have been around for a while, and you want to help maintain Drupal.org and are willing to accept the added responsibilities that come with it, sign up on the <a href="http://drupal.org/mailing-lists">Infrastructure team</a> list.';
-  $output .= '<ol>';
-  $result = db_query("SELECT DISTINCT(u.uid), u.name
-    FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.uid
-    WHERE r.rid = 3 OR r.rid = 4 OR r.rid = 9
-    ORDER BY u.name "); // 3 = site maintainer, 4 = administrator
-  while ($account = db_fetch_object($result)) {
-    $output .= "<li>". theme('username', $account) ."</li>";
-  }
-  $output .= '</ol>';
-  return $output;
-}
-
+/**
+ * Collect and cache revision maintainers (those who made revisions to books).
+ */
 function handbook_revision_maintainers() {
   if ($cache = cache_get('node_263594')) {
     return $cache->data;
@@ -123,7 +141,7 @@ function handbook_revision_maintainers() {
 
   $list = array();
   while ($contributor = db_fetch_object($result)) {
-    $list[] = theme('username', $contributor) ." (". format_plural($contributor->pages, "1 revision", "$contributor->pages revisions") .")";
+    $list[] = theme('username', $contributor) ." (". format_plural($contributor->pages, "@count revision", "@count revisions") .")";
   }
 
   $output = theme('item_list', $list);
@@ -131,10 +149,13 @@ function handbook_revision_maintainers() {
   return $output;
 }
 
+/**
+ * List most recent updates to book pages for moderation reasons.
+ */
 function handbook_recent_updates() {
   $result = db_query_range("SELECT n.nid, n.title, n.changed, r.log, u.uid, u.name
     FROM {node} n
-    INNER JOIN {book} b ON n.vid = b.vid INNER JOIN {node_revisions} r ON n.vid = r.vid INNER JOIN {users} u ON u.uid = r.uid
+    INNER JOIN {book} b ON n.nid = b.nid INNER JOIN {node_revisions} r ON n.vid = r.vid INNER JOIN {users} u ON u.uid = r.uid
     WHERE n.status = 1
     ORDER BY n.changed DESC", 0, 50);
 
@@ -152,6 +173,9 @@ function handbook_recent_updates() {
   return $output;
 }
 
+/**
+ * License and quick links blocks for docs.
+ */
 function handbook_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
@@ -162,9 +186,11 @@ function handbook_block($op = 'list', $delta = 0, $edit = array()) {
     case 'view':
       switch($delta) {
         case 0:
-          $block['subject'] = t('Handbook license');
-          $block['content'] = handbook_license();
-          return $block;
+          if (handbook_block_is_visible()) {
+            $block['subject'] = t('Handbook license');
+            $block['content'] = handbook_license();
+            return $block;
+          }
 
         case 1:
           if (handbook_block_is_visible()) {
@@ -176,19 +202,18 @@ function handbook_block($op = 'list', $delta = 0, $edit = array()) {
   }
 }
 
+/**
+ * Check whether the current node is a block module.
+ *
+ * Based on Drupal 6 code from book_block().
+ */
 function handbook_block_is_visible() {
-  if (arg(0) == 'node') {
-    if (is_numeric(arg(1))) {
-      if ($node = node_load(array('nid' => arg(1)))) {
-        if ($node->type == 'book') {
-          return TRUE;
-        }
-      }
-    }
-  }
-  return FALSE;
+  return ($node = menu_get_object()) && !empty($node->book['bid']);
 }
 
+/**
+ * Quick links on handbook pages.
+ */
 function handbook_doc_quick_links() {
   $output = <<<EOT
   <ul>
@@ -201,15 +226,12 @@ function handbook_doc_quick_links() {
    <li><a href="/node/23367">Join the doc team</a></li>
   </ul>
 EOT;
-
   return $output;
 }
 
+/**
+ * License block for the handbook pages.
+ */
 function handbook_license() {
-  if (arg(0) == 'node' && is_numeric(arg(1))) {
-    $result = db_result(db_query("SELECT n.nid FROM {node} n INNER JOIN {book} b ON n.nid  = b.nid WHERE n.nid = %d", arg(1)));
-    if ($result) {
-      return t('The Drupal handbook pages are © 2000-!year by the <a href="@contributors_link">individual contributors</a> and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>', array('!year' => date('Y'), '@contributors_link' => url('node/14205'), '@ccl_url' => url('node/14307'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html')));
-    }
-  }
+  return t('The Drupal handbook pages are © 2000-!year by the <a href="@contributors_link">individual contributors</a> and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>', array('!year' => date('Y'), '@contributors_link' => url('node/14205'), '@ccl_url' => url('node/14307'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html')));
 }

@@ -1,5 +1,6 @@
 ; $Id$
 name = Handbook
 description = Special handbook pages
+dependencies[] = lists
 package = Drupal.org
 core=6.x
