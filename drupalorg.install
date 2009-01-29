@@ -49,8 +49,12 @@ function drupalorg_update_6000() {
   variable_set('book_block_mode', 'book pages');
   
   // Set temporary ApacheSolr settings.
-  variable_set('apachesolr_host', 'scratch.drupalfr.org');
+  variable_set('apachesolr_host', 'solr-do.drupalfr.org');
+  variable_set('apachesolr_port', '8080');
   variable_set('apachesolr_enabled_facets', array('apachesolr_search' => array('uid' => 'uid', 'type' => 'type')));
+
+  // Enable drupal.org as a site_network server.
+  variable_set('site_network_server', 1);
 
   // Add permissions to admins and some users.
   _drupalorg_add_permissions(array(
