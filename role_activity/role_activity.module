@@ -101,9 +101,7 @@ function role_activity_admin_settings() {
  * Implementation of hook_watchdog().
  */
 function role_activity_watchdog($log_entry) {
-  $user = $log_entry['user'];
-  
-  if (!role_activity_check_role($user->uid)) {
+  if (!role_activity_check_role($log_entry['user']->uid)) {
     // If user is not among the roles we should check.
     return;
   }
@@ -112,7 +110,7 @@ function role_activity_watchdog($log_entry) {
     return;
   }
 
-  role_activity_write($log, $action);
+  role_activity_write($log_entry, $action);
 }
 
 /**
