@@ -2,4 +2,5 @@
 name = Branches
 description = Lists core and contrib branches
 package = Drupal.org
+dependencies[] = cvs
 core=6.x
