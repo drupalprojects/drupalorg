@@ -172,27 +172,18 @@ function role_activity_parse($type = '', $message = '') {
  * Store role activity information.
  */
 function role_activity_write($log, $action) {
-  $user    = $log['user'];
-  $time    = $log['timestamp'];
-  $type    = $log['type'];
-  $referer = $log['referer'];
-  $ip      = $log['ip'];
-  $link    = $log['link'];
-  $uri     = $log['request_uri'];
-  $message = $log['message'];
-
   db_query("INSERT INTO {role_activity}
     (uid, timestamp, type, referer, ip, action, link, uri, message) VALUES
     (%d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-    $user->uid,
-    $time,
-    $type,
-    $referer,
-    $ip,
+    $log['user']->uid,
+    $log['timestamp'],
+    $log['type'],
+    $log['referer'],
+    $log['ip'],
     $action,
-    $link,
-    $uri,
-    $message);
+    $log['link'],
+    $log['request_uri'],
+    $log['message']);
 }
 
 /**
@@ -203,11 +194,13 @@ function role_activity_log() {
     array('data' => t('Timestamp'), 'field' => 'timestamp', 'sort' => 'desc'),
     array('data' => t('Action'),    'field' => 'action'),
     array('data' => t('User'),      'field' => 'uid'),
+    array('data' => t('Activity')),
     array('data' => t('Path'),      'field' => 'uri'),
     array('data' => t('IP/Host'),   'field' => 'ip'),
     array('data' => t('Type'),      'field' => 'type'),
     array('data' => t('Message'),   'field' => 'message'),
     array('data' => t('Referer'),   'field' => 'referer'),
+    array('data' => t('Link')),
   );
 
   $sql = 'SELECT * FROM {role_activity} '. tablesort_sql($header);
@@ -215,12 +208,13 @@ function role_activity_log() {
   $result = pager_query($sql, 50);
   while ($log = db_fetch_object($result)) {
     $host = $log->ip;
-    $user = user_load(array('uid' => $log->uid));
+    $account = user_load(array('uid' => $log->uid));
 
     $rows[] = array(
       array('data' => format_date($log->timestamp, 'small'), 'nowrap' => 'nowrap'),
       array('data' => $log->action),
-      array('data' => theme('username', $user) .' '. l(t('Activity'), 'admin/reports/role_activity/user/'. $user->uid)),
+      array('data' => theme('username', $account)),
+      array(l(t('Activity'), 'admin/reports/role_activity/user/'. $account->uid)),
       array('data' => $log->uri),
       l($host, 'http://whois.domaintools.com/'. $log->ip),
       array('data' => $log->type),
@@ -239,7 +233,8 @@ function role_activity_log() {
 function role_activity_top_users() {
   $header = array(
     array('data' => t('User'),     'field' => 'uid'),
-    array('data' => t('# Events'), 'field' => 'count', 'sort' => 'desc'),
+    array('data' => t('Activity')),
+    array('data' => t('Number of events'), 'field' => 'count', 'sort' => 'desc'),
     array('data' => t('Last'),     'field' => 'last'),
   );
 
@@ -247,10 +242,11 @@ function role_activity_top_users() {
 
   $result = pager_query($sql, 50);
   while ($log = db_fetch_object($result)) {
-    $user = user_load(array('uid' => $log->uid));
+    $account = user_load(array('uid' => $log->uid));
     
     $rows[] = array(
-      array('data' => theme('username', $user) .' '. l(t('Activity'), 'admin/reports/role_activity/user/'. $user->uid)),
+      array('data' => theme('username', $account)),
+      array('data' => l(t('Activity'), 'admin/reports/role_activity/user/'. $account->uid)),
       array('data' => $log->count, 'align' => 'right'),
       array('data' => format_date($log->last, 'small'), 'nowrap' => 'nowrap'),
     );
@@ -271,14 +267,15 @@ function role_activity_by_user($uid = 0) {
     array('data' => t('Type'),      'field' => 'type'),
     array('data' => t('Message'),   'field' => 'message'),
     array('data' => t('Referer'),   'field' => 'referer'),
+    array('data' => t('Link')),
   );
 
+  $account = user_load(array('uid' => $uid));
   $sql = 'SELECT * FROM {role_activity} WHERE uid = %d '. tablesort_sql($header);
 
   $result = pager_query($sql, 50, 0, NULL, $uid);
   while ($log = db_fetch_object($result)) {
     $host = $log->ip;
-    $user = user_load(array('uid' => $log->uid));
 
     $rows[] = array(
       array('data' => format_date($log->timestamp, 'small'), 'nowrap' => 'nowrap'),
@@ -292,7 +289,7 @@ function role_activity_by_user($uid = 0) {
     );
   }
 
-  $output = t('Details for !user', array('!user' => theme('username', $user)));
+  $output = t('Details for !user', array('!user' => theme('username', $account)));
   return $output . theme('table', $header, $rows) . theme('pager', NULL, 50, 0);
 }
 
