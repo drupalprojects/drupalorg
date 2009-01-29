@@ -1,14 +1,9 @@
 <?php
 // $Id$
 
-function quick_stats_theme() {
-  return array(
-    'new_contributions' => array(
-      'arguments' => array('newbies' => NULL, 'newbie_nodes' => NULL),
-    ),
-  );
-}
-
+/**
+ * Implementation of hook_nodeapi().
+ */
 function quick_stats_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {
     $extra = '';
@@ -24,6 +19,9 @@ function quick_stats_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALS
   }
 }
 
+/**
+ * Handbook contribution stats.
+ */
 function quick_stats_handbook() {
   $total_count = 0;
   $add_count = 0;
@@ -75,11 +73,17 @@ function quick_stats_handbook() {
   return $output;
 }
 
+/**
+ * Check whether the user by the given uid is on the docs team.
+ */
 function user_is_on_docs_team($uid) {
   // Role 4 = site maintaner, 5 = docs maintainer.
   return db_result(db_query("SELECT 1 FROM {users_roles} WHERE uid = %d AND (rid = %d OR rid = %d)",  $uid, 4, 5));
 }
 
+/**
+ * Theme the new contributors list.
+ */
 function theme_new_contributions($newbies, $newbie_nodes) {
   $output = '';
   foreach ($newbies as $uid => $user) {
@@ -89,6 +93,9 @@ function theme_new_contributions($newbies, $newbie_nodes) {
   return $output;
 }
 
+/**
+ * Overall quick stats for drupal.org.
+ */
 function quick_stats_report() {
   $output .=  "<dl>";
   $nodes = db_result(db_query("SELECT COUNT(1) FROM {node}"));
@@ -125,3 +132,13 @@ function quick_stats_report() {
   return $output;
 }
 
+/**
+ * Implementation of hook_theme().
+ */
+function quick_stats_theme() {
+  return array(
+    'new_contributions' => array(
+      'arguments' => array('newbies' => NULL, 'newbie_nodes' => NULL),
+    ),
+  );
+}
