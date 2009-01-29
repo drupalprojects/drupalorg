@@ -52,6 +52,14 @@ function drupalorg_update_6000() {
   variable_set('apachesolr_host', 'solr-do.drupalfr.org');
   variable_set('apachesolr_port', '8080');
   variable_set('apachesolr_enabled_facets', array('apachesolr_search' => array('uid' => 'uid', 'type' => 'type')));
+  variable_set('apachesolr_index_last', array(
+    // Those values come from the test site. They will need to be tweaked to match
+    // the D5 database dump we used to build the index.
+    'apachesolr_search' => array(
+      'last_change' => '1233245289',
+      'last_nid' => '320451',
+    ),
+  ));
 
   // Enable drupal.org as a site_network server.
   variable_set('site_network_server', 1);
