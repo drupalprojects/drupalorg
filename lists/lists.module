@@ -56,7 +56,7 @@ function lists_menu() {
     'page arguments' => array('lists_subscribe_form'),
     'type' => MENU_SUGGESTED_ITEM
   );
-  $items['user/%user_category/edit/newsletter'] = array(
+  $items['user/%user/edit/newsletter'] = array(
     'title' => 'My newsletters',
     'access arguments' => array('access content'),
     'page callback' => 'drupal_get_form',
