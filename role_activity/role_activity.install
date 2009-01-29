@@ -1,7 +1,9 @@
 <?php
 // $Id$
 
-
+/**
+ * Implementation of hook_schema().
+ */
 function role_activity_schema() {
   $schema['role_activity'] = array(
     'description' => 'Stores activity for certain roles',
