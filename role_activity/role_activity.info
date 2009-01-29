@@ -1,5 +1,4 @@
 name = Role activity
 description = "Activity for selected roles"
 package = Drupal.org
-dependencies[] = dblog
 core = 6.x

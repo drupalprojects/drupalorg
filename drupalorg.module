@@ -431,8 +431,8 @@ function drupalorg_register_mail_validate($form, &$form_state) {
 /**
  * Validate all fields in the user_edit form against the list of bad words.
  *
- * @todo Needs core patch to have real support for 'homepage' access rules.
- * @todo Look at this cycling through items. There is only one 'homepage' field.
+ * @todo Core almost supports it with above form_alter but listings are bad
+ *   (when the value is homepage, core does not know about it, so does not print it).
  * @todo Headers are blocked by some providers so this is not accurate.
  */
 function drupalorg_profile_user_edit_validate($form, &$form_state) {
@@ -520,7 +520,7 @@ function drupalorg_project_page_link_alter($node, &$all_links) {
 /**
  * Implementation of hook_block().
  *
- * @todo Remove as part of search migration.
+ * @todo Hopefully remove as part of search migration.
  */
 function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
   if ($op == 'list') {
@@ -564,7 +564,7 @@ function drupalorg_display_block_external_search() {
  *
  * Add support for searching for users based on the fixed IRC nickname field.
  *
- * @todo Remove as part of search migration.
+ * @todo Possibly remove as part of search migration.
  */
 function drupalorg_search($op = 'search', $keys = NULL) {
   switch ($op) {
