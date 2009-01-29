@@ -27,7 +27,7 @@ function role_activity_menu() {
     'access arguments' => $access,
   );
   $items['admin/reports/role_activity/list'] = array(
-    'title'            => 'List',
+    'title'            => 'Recent activity',
     'access arguments' => $access,
     'type'             => MENU_DEFAULT_LOCAL_TASK
   );
@@ -119,26 +119,25 @@ function role_activity_watchdog($log_entry) {
  * @todo
  *   Ideally, we should move this to a rule engine via a textbox
  *   for regexps to look for.
- * @todo
- *   Check whether the strings still work (after D6 upgrade).
  */
 function role_activity_parse($type = '', $message = '') {
   $action = '';
 
   switch ($type) {
     case 'content':
-      if (preg_match('/(book|page|forum|project|project_issue): updated/i', $message)) {
+      if (preg_match('/@type: updated/i', $message)) {
         $action = t('Content updated');
       }
-      elseif (preg_match('/(book|page|forum|project|project_issue): deleted/i', $message)) {
+      elseif (preg_match('/@type: deleted/i', $message)) {
         $action = t('Content deleted');
       }
       elseif (preg_match('/Comment: updated/i', $message)) {
         $action = t('Comment updated');
       }
-      elseif (preg_match('/Comment: deleted/i', $message)) {
+      // @todo: no such watchdog message in Drupal 6.
+      /*elseif (preg_match('/Comment: deleted/i', $message)) {
         $action = t('Comment deleted');
-      }
+      }*/
       break;
 
     case 'user':
@@ -154,10 +153,10 @@ function role_activity_parse($type = '', $message = '') {
       break;
 
     case 'aggregator':
-      if (preg_match('/Feed .* added/i', $message)) {
+      if (preg_match('/Feed %feed added/i', $message)) {
         $action = t('Feed added');
       }
-      elseif (preg_match('/Feed .* deleted/i', $message)) {
+      elseif (preg_match('/Feed %feed deleted/i', $message)) {
         $action = t('Feed deleted');
       }
       elseif (preg_match('/Updated URL for feed/i', $message)) {
@@ -199,7 +198,7 @@ function role_activity_log() {
     array('data' => t('IP/Host'),   'field' => 'ip'),
     array('data' => t('Type'),      'field' => 'type'),
     array('data' => t('Message'),   'field' => 'message'),
-    array('data' => t('Referer'),   'field' => 'referer'),
+    array('data' => t('Referrer'),  'field' => 'referer'),
     array('data' => t('Link')),
   );
 
@@ -214,7 +213,7 @@ function role_activity_log() {
       array('data' => format_date($log->timestamp, 'small'), 'nowrap' => 'nowrap'),
       array('data' => $log->action),
       array('data' => theme('username', $account)),
-      array(l(t('Activity'), 'admin/reports/role_activity/user/'. $account->uid)),
+      array('data' => l(t('Activity'), 'admin/reports/role_activity/user/'. $account->uid)),
       array('data' => $log->uri),
       l($host, 'http://whois.domaintools.com/'. $log->ip),
       array('data' => $log->type),
@@ -266,7 +265,7 @@ function role_activity_by_user($uid = 0) {
     array('data' => t('IP/Host'),   'field' => 'ip'),
     array('data' => t('Type'),      'field' => 'type'),
     array('data' => t('Message'),   'field' => 'message'),
-    array('data' => t('Referer'),   'field' => 'referer'),
+    array('data' => t('Referrer'),  'field' => 'referer'),
     array('data' => t('Link')),
   );
 
