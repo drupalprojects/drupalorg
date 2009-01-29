@@ -43,7 +43,7 @@ function quick_stats_handbook() {
     $total_count++;
     preg_match('!node/(\d+)!', $row->link, $matches);
     $nid = $matches[1];
-    if (array_search($nid, array_flip($books))) {
+    if (isset($books[$nid])) {
       // Book was added and hasn't been deleted.
       $add_count++;
       if (!user_is_on_docs_team($row->uid)) {
