@@ -112,11 +112,18 @@ function drupalorg_update_6001() {
  */
 function drupalorg_update_6002() {
   $ret = array();
+  // Fix one buggy newsletter post from the past and move it to the security news.
+  $ret[] = update_sql('UPDATE {simplenews_newsletters} SET tid = 44 WHERE tid = 0'); 
   // Add data for all newsletter posts as if they were forum topics all along.
   // This data already exists in the term_node table, so we don't need to deal with that.
   $ret[] = update_sql('INSERT INTO {forum} (niv, vid, tid) SELECT s.nid, n.vid, s.tid FROM {simplenews_newsletters} s LEFT JOIN {node} n ON s.nid = n.nid');
   // Move all newsletters to the forums, except the test newsletter.
   $ret[] = update_sql('UPDATE {term_data} SET vid = 1 WHERE vid = 4 AND tid != 121');
+  // Add rows to lists_mailman, so it stores info on all things sent, and
+  // not going to resend them. Only do that for mails which we actually sent.
+  // There are old but unsent mails in there, which have s_status != 2.
+  $ret[] = update_sql('INSERT INTO {lists_mailman} (nid, uid, timestamp) SELECT nid, 1, NOW() FROM {simplenews_newsletters} WHERE s_status = 2');
+  
   // @todo The container for newsletters will be added manually and these three
   // newsletters will be added to it via the slick drag and drop UI.
   return $ret;
