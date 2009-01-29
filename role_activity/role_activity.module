@@ -219,8 +219,8 @@ function role_activity_log() {
       l($host, 'http://whois.domaintools.com/'. $log->ip),
       array('data' => $log->type),
       array('data' => $log->message),
-      _role_activity_format_path($log->referrer),
-      _role_activity_format_path($log->path, $log->title),
+      _role_activity_format_path($log->referer),
+      $log->link,
     );
   }
 
@@ -284,8 +284,8 @@ function role_activity_by_user($uid = 0) {
       l($host, 'http://whois.domaintools.com/'. $log->ip),
       array('data' => $log->type),
       array('data' => $log->message),
-      _role_activity_format_path($log->referrer),
-      _role_activity_format_path($log->path, $log->title),
+      _role_activity_format_path($log->referer),
+      $log->link,
     );
   }
 
@@ -296,17 +296,9 @@ function role_activity_by_user($uid = 0) {
 /**
  * Provide a short title for linking to the related path.
  */
-function _role_activity_format_path($path, $title = '', $width = 32) {
+function _role_activity_format_path($path, $width = 32) {
   global $base_url;
-
-  if ($title) {
-    $short_title = truncate_utf8($title, $width, FALSE, TRUE);
-  }
-  else {
-    $title = $path;
-    $short_path = preg_replace('?^'. $base_url .'?', '', $path);
-    $short_title = truncate_utf8($short_path, $width, FALSE, TRUE);
-  }
-
-  return l($short_title, $path, array('title' => $title));
+  $short_path = preg_replace('?^'. $base_url .'?', '', $path);
+  $short_title = truncate_utf8($short_path, $width, FALSE, TRUE);
+  return l($short_title, $path, array('title' => $path));
 }
