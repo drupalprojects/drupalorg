@@ -1,0 +1,54 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ *   Install and upgrade functionality for drupalorg lists module.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function lists_install() {
+  // Install lists tables.
+  drupal_install_schema('lists');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function lists_uninstall() {
+  // Remove lists tables.
+  drupal_uninstall_schema('lists');
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function lists_schema() {
+  $schema['lists_mailman'] = array(
+    'description' => 'A table to track when forum postings have been mailed to mailman for mass delivery.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The primary identifier for a node.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The uid of the person who generated this email.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'timestamp' => array(
+        'description' => 'Timestamp when email was sent.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('nid'),
+  );
+  return $schema;
+}
