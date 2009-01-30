@@ -124,9 +124,11 @@ function drupalorg_update_6002() {
   $ret[] = update_sql('UPDATE {simplenews_newsletters} SET tid = 44 WHERE tid = 0'); 
   // Add data for all newsletter posts as if they were forum topics all along.
   // This data already exists in the term_node table, so we don't need to deal with that.
-  $ret[] = update_sql('INSERT INTO {forum} (niv, vid, tid) SELECT s.nid, n.vid, s.tid FROM {simplenews_newsletters} s LEFT JOIN {node} n ON s.nid = n.nid');
+  $ret[] = update_sql('INSERT INTO {forum} (nid, vid, tid) SELECT s.nid, n.vid, s.tid FROM {simplenews_newsletters} s LEFT JOIN {node} n ON s.nid = n.nid');
   // Move all newsletters to the forums, except the test newsletter.
   $ret[] = update_sql('UPDATE {term_data} SET vid = 1 WHERE vid = 4 AND tid != 121');
+  // Install the lists schema.
+  drupal_install_schema('lists');
   // Add rows to lists_mailman, so it stores info on all things sent, and
   // not going to resend them. Only do that for mails which we actually sent.
   // There are old but unsent mails in there, which have s_status != 2.
