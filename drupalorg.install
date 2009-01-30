@@ -122,6 +122,8 @@ function drupalorg_update_6002() {
   $ret = array();
   // Fix one buggy newsletter post from the past and move it to the security news.
   $ret[] = update_sql('UPDATE {simplenews_newsletters} SET tid = 44 WHERE tid = 0'); 
+  // Bogus existing forum IDs, which break our stuff.
+  $ret[] = update_sql('DELETE FROM {forum} WHERE nid IN (25390, 27678, 29754)');
   // Add data for all newsletter posts as if they were forum topics all along.
   // This data already exists in the term_node table, so we don't need to deal with that.
   $ret[] = update_sql('INSERT INTO {forum} (nid, vid, tid) SELECT s.nid, n.vid, s.tid FROM {simplenews_newsletters} s LEFT JOIN {node} n ON s.nid = n.nid');
