@@ -25,23 +25,28 @@ function redirects_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE)
 function redirects_menu($may_cache) {
   $items = array();
   if ($may_cache) {
+    $access = user_access('access content');
+
     $items[] = array(
       'path' => 'project/Drupal project',
-      'access' => user_access('access content'),
       'callback' => 'drupal_goto',
       'callback arguments' => array('project/drupal'),
+      'access' => $access,
+      'type' => MENU_CALLBACK,
     );
     $items[] = array(
       'path' => 'project/drupal project',
-      'access' => user_access('access content'),
       'callback' => 'drupal_goto',
       'callback arguments' => array('project/drupal'),
+      'access' => $access,
+      'type' => MENU_CALLBACK,
     );
     $items[] = array(
       'path' => 'download',
-      'access' => user_access('access content'),
       'callback' => 'drupal_goto',
       'callback arguments' => array('project/drupal'),
+      'access' => $access,
+      'type' => MENU_CALLBACK,
     );
   }
   return $items;
