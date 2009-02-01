@@ -44,3 +44,19 @@ function redirects_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE)
     }
   }
 }
+
+function redirects_menu() {
+  $items = array();
+  $items['project/drupal project'] = array(
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('project/drupal'),
+  );
+  $items['download'] = array(
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('project/drupal'),
+  );
+  return $items;
+}
+
