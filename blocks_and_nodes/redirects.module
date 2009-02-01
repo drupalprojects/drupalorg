@@ -51,11 +51,13 @@ function redirects_menu() {
     'access arguments' => array('access content'),
     'page callback' => 'drupal_goto',
     'page arguments' => array('project/drupal'),
+    'type' => MENU_CALLBACK,
   );
   $items['download'] = array(
     'access arguments' => array('access content'),
     'page callback' => 'drupal_goto',
     'page arguments' => array('project/drupal'),
+    'type' => MENU_CALLBACK,
   );
   return $items;
 }
