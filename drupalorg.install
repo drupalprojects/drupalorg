@@ -146,6 +146,39 @@ function drupalorg_update_6002() {
 }
 
 /**
+ * Migrate polls to story nodes.
+ */
+function drupalorg_update_6003() {
+  $ret = array();
+
+  // Get node identifiers of all poll nodes for conversion.
+  $list_result = db_query("SELECT nid FROM {node} WHERE type = 'poll'");
+  while ($poll_node = db_fetch_object($list_result)) {
+
+    // We only have one revision per poll (polls were on way before revisions),
+    // so we will update their single node_revisions entry right away. Those only
+    // have the teaser/body set up with asterisks for RSS purposes, as poll
+    // module does by default in core, so we can replace that.
+    $poll_result = db_query("SELECT * from {poll_choices} WHERE nid = %d ORDER by chorder ASC", $poll_node->nid);
+    $poll_body = array();
+    while ($poll_choice = db_fetch_object($poll_result)) {
+      // Drupal.org uses format 1 (filtered HTML) for these nodes. It has <p>,
+      // <ul>, <li>, <strong> and <i> enabled, and that is all that is needed
+      // for these nodes, so we should be fine with that.
+      $poll_body[] = $poll_choice->chtext .' <strong>('. $poll_choice->chvotes .' votes)</strong>';
+    }
+    // Tell people this is an archived poll result node, present choices and votes statically.
+    $poll_body = '<p>Archived poll results:</p><ul><li>'. join('</li><li>', $poll_body) .'</li></ul>';
+    db_query('UPDATE {node_revisions} SET teaser = %d, body = %d WHERE nid = %d', $poll_body, $poll_body .'<!--break-->', $poll_node->nid);
+  }
+  
+  // Now that we have the bodies and teasers, convert all poll nodes to story nodes.
+  $ret[] = update_sql("UPDATE {node} SET type = 'story' WHERE type = 'poll'");
+  
+  return $ret;
+}
+
+/**
  * Utility function to add permissions to certain user roles.
  */
 function _drupalorg_add_permissions($permissions) {
