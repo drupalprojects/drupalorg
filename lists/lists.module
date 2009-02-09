@@ -56,14 +56,6 @@ function lists_menu() {
     'page arguments' => array('lists_subscribe_form'),
     'type' => MENU_SUGGESTED_ITEM
   );
-  $items['user/%user/edit/newsletter'] = array(
-    'title' => 'My newsletters',
-    'access arguments' => array('access content'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('lists_mailman_user_form', 1),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 10,
-  );
   return $items;
 }
 
@@ -291,6 +283,30 @@ function _lists_get_forum_tids() {
  */
 function lists_perm() {
   return array('post to newsletter');
+}
+
+/**
+ * Implementation of hook_user().
+ *
+ * We need to hack this in, since user module does try to have a tight control
+ * of management of these menu items, so we need to get it created through
+ * this hook and then altered by hook_menu_alter(). Drupal 7 should do better.
+ */
+function lists_user($op, &$edit, &$account, $category = NULL) {
+  switch ($op) {
+    case 'categories':
+      return array(array('name' => 'newsletter', 'title' => t('My newsletters'), 'weight' => 10));
+  }
+}
+
+/**
+ * Implementation of hook_menu_alter().
+ *
+ * See why we need this hack in lists_user().
+ */
+function lists_menu_alter(&$callbacks) {
+  $callbacks['user/%user_category/edit/newsletter']['page callback'] = 'drupal_get_form';
+  $callbacks['user/%user_category/edit/newsletter']['page arguments'] = array('lists_mailman_user_form', 1);
 }
 
 /**
