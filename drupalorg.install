@@ -136,6 +136,10 @@ function drupalorg_update_6002() {
   // There are old but unsent mails in there, which have s_status != 2.
   $ret[] = update_sql('INSERT INTO {lists_mailman} (nid, uid, timestamp) SELECT nid, 1, NOW() FROM {simplenews_newsletters} WHERE s_status = 2');
   
+  // Now that we have the forum connections set up, convert existing simplenews
+  // nodes to forum nodes.
+  $ret[] = update_sql("UPDATE {node} SET type = 'forum' WHERE type = 'simplenews'");
+
   // @todo The container for newsletters will be added manually and these three
   // newsletters will be added to it via the slick drag and drop UI.
   return $ret;
