@@ -240,7 +240,7 @@ function drupalorg_project_release_node_form_alter(&$form, $form_state, $form_id
           );
           $drupalorg_path = drupal_get_path('module', 'drupalorg');
           drupal_add_js($drupalorg_path .'/drupalorg_project.js');
-          drupal_add_css($drupalorg_path .'/drupalorg.css');
+          drupal_add_css($drupalorg_path .'/drupalorg_project.css');
         }
       }
       else {
