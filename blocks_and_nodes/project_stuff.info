@@ -1,8 +1,0 @@
-; $Id$
-name = Project Stuff
-description = Special pages for project module
-package = Drupal.org
-dependencies[] = project
-dependencies[] = project_release
-dependencies[] = cvs
-core = 6.x

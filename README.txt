@@ -1,9 +1,8 @@
 $Id$
 
-This module provides customizations used on drupal.org itself and is being
-made compatible with Drupal 6.x. Other sites SHOULD NOT INSTALL OR USE THIS
-MODULE. It is only included in the main Drupal contributions repository for
-three reasons:
+These modules provide customizations used on drupal.org itself. Other sites
+SHOULD NOT INSTALL OR USE THESE MODULES. They are only included in the main
+Drupal contributions repository for three reasons:
 
   1) To facilitate members of the Drupal community who wish to help
      debug problems and improve functionality on drupal.org.

@@ -1,0 +1,203 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ *   This module contains customizations used on drupal.org itself. It is not
+ *   meant to be useful for other sites, except as an example of the kinds of
+ *   modifications you can make with a site-specific module.
+ */
+
+// == Core hooks ===============================================================
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function drupalorg_form_alter(&$form, $form_state, $form_id) {
+  // List of forms to check for overrides, and the corresponding permissions.
+  $override_forms = array(
+    'book_node_form'       => 'edit book pages',
+    'forum_node_form'      => 'administer nodes',
+    'page_node_form'       => 'administer nodes',
+    'simplenews_node_form' => 'create newsletter',
+    'story_node_form'      => 'administer nodes',
+  );
+  // Override the access for attachments if it's a forbidden form,
+  // and the user does not have sufficient permissions.
+  if (in_array($form_id, array_keys($override_forms)) && !user_access($override_forms[$form_id])) {
+    if (isset($form['attachments']['#access'])) {
+      $form['attachments']['#access'] = FALSE;
+    }
+  }
+
+  // Ensure that wildcard email addresses are not abused.
+  if ($form_id == 'user_register') {
+    $form['#validate'][] = 'drupalorg_register_mail_validate';
+  }
+  
+  // Core search index is not used, so clear off wipe option.
+  if ($form_id == 'search_admin_settings') {
+    unset($form['status']['wipe']);
+  }
+  
+  // Add home page option to user access rule adding and editing.
+  // Make sure if we edit a homepage option, we keep using that as a default.
+  if ($form_id == 'user_admin_access_add_form' || $form_id == 'user_admin_access_edit_form') {
+    if ($form['#parameters'][2]['type'] == 'homepage') {
+      $form['type']['#default_value'] = 'homepage';
+    }
+    $form['type']['#options']['homepage'] = t('Homepage');
+  }
+  
+  // Ensure nice Drupal home page addresses
+  if ($form_id == 'user_profile_form') {
+    $form['#validate'][] = 'drupalorg_profile_user_edit_validate';
+  }
+  
+  // Force a revision log entry when editing existing book nodes.
+  if ($form_id == 'book_node_form' && isset($form['revision_information']['log']) && arg(1) != 'add') {
+    $form['revision_information']['log']['#required'] = TRUE;
+    $form['revision_information']['#collapsed'] = FALSE;
+  }
+}
+
+// == User form validations ====================================================
+
+/**
+ * Try to catch wildcard email address signups, such as joe+drupal@gmail.com.
+ */
+function drupalorg_register_mail_validate($form, &$form_state) {
+  $hit = preg_match('/(.*)\+(.*)\@(.*)/', $form_state['values']['mail'], $match);
+  if ($hit) {
+    if (db_result(db_query("SELECT uid FROM {users} WHERE LOWER(mail) LIKE LOWER('%s')", $match[1] .'+%%@'. $match[3])) > 0) {
+      form_set_error('mail', t('An e-mail address similar to %email is already registered. <a href="@password">Have you forgotten your password?</a>', array('%email' => $form_state['values']['mail'], '@password' => url('user/password'))));
+    }
+  }
+}
+
+/**
+ * Validate all fields in the user_edit form against the list of bad words.
+ *
+ * @todo Core almost supports it with above form_alter but listings are bad
+ *   (when the value is homepage, core does not know about it, so does not print it).
+ * @todo Headers are blocked by some providers so this is not accurate.
+ */
+function drupalorg_profile_user_edit_validate($form, &$form_state) {
+  if (!empty($form_state['values']['homepage']) && is_string($form_state['values']['homepage']) && (strlen($form_state['values']['homepage']) > 7)) {
+    $result = db_query("SELECT mask FROM {access} WHERE type = '%s' AND status = %d", 'homepage', 0);
+    $masks = array();
+    while ($mask = db_fetch_object($result)) {
+      // Build masks array for preg_matching.
+      $masks[] = '@'. strtr($mask->mask, array('.' => '\.', '%' => '.*', '_' => '.')) .'@';
+    }
+    // Check denied homepages.
+    foreach ($masks as $mask) {
+      if (preg_match($mask, $form_state['values']['homepage'])) {
+        form_set_error('homepage', t('Unsuitable Drupal site detected. This address cannot be set as your Drupal site link.'));
+      }
+    }
+    if (!user_access('administer users')) {
+      // Check for Drupal-ness of website. Try only once.
+      $response = drupal_http_request($form_state['values']['homepage'], array(), 'GET', NULL, 1);
+      if ($response->headers['Expires'] != 'Sun, 19 Nov 1978 05:00:00 GMT') {
+        form_set_error('homepage', t("Your website does not seem to be a Drupal site. If you think we are wrong, please open an issue in the webmasters' queue."));
+      }
+    }
+  }
+}
+
+// == Database replication hints ===============================================
+
+/**
+ * Implementation of hook_comment.
+ */
+function drupalorg_comment(&$comment, $op) {
+  switch ($op) {
+    case 'insert':
+    case 'update':
+      $_SESSION['not_slavesafe'] = TRUE;
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_nodeapi.
+ */
+function drupalorg_nodeapi(&$node, $op, $teaser, $page) {
+  switch ($op) {
+    case 'insert':
+    case 'update':
+      $_SESSION['not_slavesafe'] = TRUE;
+  }
+}
+
+// == External search block ====================================================
+
+/**
+ * Implementation of hook_block().
+ *
+ * @todo Hopefully remove as part of search migration.
+ */
+function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
+  if ($op == 'list') {
+    $blocks[0] = array('info' => t('External/Alternate Search Advice (only when search is disabled)'),
+      'weight' => 0, 'enabled' => 0, 'region' => 'header');
+    return $blocks;
+  }
+  else if ($op == 'view') {
+    switch ($delta) {
+      case 0:
+        $block = array('subject' => t('Search Engine'),
+          'content' => drupalorg_display_block_external_search());
+        break;
+    }
+    return $block;
+  }
+}
+
+/**
+ * Body for external search block.
+ */
+function drupalorg_display_block_external_search() {
+  if (!user_access('search content')) {
+    $form = '<form method="get" action="http://www.google.com/search"><div>
+               <input type="hidden" name="ie" value="UTF-8" />
+               <input type="hidden" name="oe" value="UTF-8" />
+               <input type="hidden" name="domains" value="drupal.org" />
+               <input type="hidden" name="sitesearch" value="drupal.org" />
+               <input type="text" class="form-text" name="q" size="20" maxlength="255" value="" />
+               <input type="submit" class="form-submit" name="btnG" value="Google Search" /></div>
+               </form>';
+    $message = '<p>Due to load issues the Drupal.org search occasionally has to be disabled.  When this happens, you can use external search engines and a modifier like "site:drupal.org" to refine your results to Drupal.  For more information <a href="http://drupal.org/node/271694">see the infrastructure queue</a></p>.';
+    return $form . $message;
+  }
+}
+
+// == IRC nick search ==========================================================
+
+/**
+ * Implementation of hook_search().
+ *
+ * Add support for searching for users based on the fixed IRC nickname field.
+ *
+ * @todo Possibly remove as part of search migration.
+ */
+function drupalorg_search($op = 'search', $keys = NULL) {
+  switch ($op) {
+    case 'name':
+      if (user_access('access user profiles')) {
+        return t('IRC nicks');
+      }
+    case 'search':
+      if (user_access('access user profiles')) {
+        $find = array();
+        // Replace wildcards with MySQL/PostgreSQL wildcards.
+        $keys = preg_replace('!\*+!', '%', $keys);
+        $result = pager_query("SELECT u.name, u.uid FROM {profile_values} pv INNER JOIN {users} u ON pv.uid = u.uid WHERE pv.fid = 35 AND LOWER(pv.value) LIKE LOWER('%%%s%%')", 15, 0, NULL, $keys);
+        while ($account = db_fetch_object($result)) {
+          $find[] = array('title' => $account->name, 'link' => url('user/'. $account->uid, array('html' => TRUE)));
+        }
+        return $find;
+      }
+  }
+}

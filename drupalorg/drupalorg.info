@@ -1,9 +1,5 @@
 ; $Id$
 name = Drupal.org
 description = "Customizations and tweaks for drupal.org"
-dependencies[] = project_issue
-dependencies[] = cvs
-;dependencies[] = simplenews
-dependencies[] = project
 package = Drupal.org
 core = 6.x
