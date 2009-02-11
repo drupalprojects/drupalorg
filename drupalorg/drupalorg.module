@@ -11,6 +11,74 @@
 // == Core hooks ===============================================================
 
 /**
+ * Implementation of hook_menu().
+ */
+function drupalorg_menu() {
+  $items['documentation'] = array(
+    'title' => 'Documentation',
+    'page callback' => 'drupalorg_documentation',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['documentation/index'] = array(
+    'title' => 'Documentation',
+    'page callback' => 'drupalorg_documentation_index',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['getting-started'] = array(
+    'title' => 'Getting started with Drupal',
+    'page callback' => 'drupalorg_getting_started',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function drupalorg_documentation() {
+  return theme('drupalorg_documentation');
+}
+
+function drupalorg_documentation_index() {
+  return theme('drupalorg_documentation_index');
+}
+
+function template_preprocess_drupalorg_getting_started(&$variables) {
+  $variables['version'] = 42;
+  $variables['most_popular_modules'] = theme('item_list', array(
+   '<a href="#">Content construction kit (CCK)</a>', 
+   '<a href="#">Views</a>', 
+   '<a href="#">Gallery</a>', 
+   '<a href="#">Foo bar</a>')); // Will be made dynamic, see issue #372243
+  $variables['most_popular_themes'] = theme('item_list', array(
+   '<a href="#">Paris Eiffel Tower</a>', 
+   '<a href="#">Cute yellow ducks</a>', 
+   '<a href="#">Bluecheese</a>', 
+   '<a href="#">Marvin</a>'));  // Will be made dynamic, see issue #372243
+}
+
+function drupalorg_getting_started() {
+  return theme('drupalorg_getting_started');
+}
+
+function drupalorg_theme() {
+  return array(
+    'drupalorg_documentation' => array(
+      'template' => 'drupalorg-documentation',
+    ),
+    'drupalorg_documentation_index' => array(
+      'template' => 'drupalorg-documentation-index',
+    ),
+    'drupalorg_getting_started' => array(
+      'template' => 'drupalorg-getting-started',
+    ),
+  );
+}
+
+/**
  * Implementation of hook_form_alter().
  */
 function drupalorg_form_alter(&$form, $form_state, $form_id) {
