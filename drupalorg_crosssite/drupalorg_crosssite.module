@@ -120,7 +120,7 @@ function drupalorg_crosssite_content_menu() {
   // in more menus.
   $nav_content_areas = array(
     'documentation' => drupalorg_crosssite_menu_site('api') || drupalorg_crosssite_menu_type('docs', array('book')) || drupalorg_crosssite_menu_path('docs', '^(documentation|handbooks)(/|$)'),
-    'downloads'     => drupalorg_crosssite_menu_path('project', '^project') || drupalorg_crosssite_menu_type('project', array('project_project', 'project_issue', 'project_release')),
+    'downloads'     => drupalorg_crosssite_menu_path('project', '^(project|download)') || drupalorg_crosssite_menu_type('project', array('project_project', 'project_issue', 'project_release')),
     'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
     'jobs'          => drupalorg_crosssite_menu_path('groups', '^(jobs)(/|$)'),
     'association'   => drupalorg_crosssite_menu_site('association'),

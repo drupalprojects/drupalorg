@@ -1,4 +1,4 @@
-<p style="color: red;"><blink><em>This page needs to be themed.  This is outputted by <code>drupalorg-download.tpl.php</code>.  All the dynamic elements are provided as a variable.  *blink* *blink*</em></blink></p>
+<p style="color: red;"><blink><em>This page needs to be themed.  This is outputted by <code>drupalorg-download.tpl.php</code>.  All the dynamic elements are provided as a variable.  The Mark Boulton design has many more blocks but we can't generate these yet.  Would be useful if we could create the grid/design with the block that we have right now and than we can easily add the missing blocks once they become available.  *blink* *blink*</em></blink></p>
 
 <p>Download Drupal <?php print $version; ?></p>
 
