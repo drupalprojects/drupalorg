@@ -1,0 +1,5 @@
+; $Id$
+name = Drupal.org cross-site functionality
+description = "To be used across all the subsites on drupal.org"
+package = Drupal.org
+core = 6.x
