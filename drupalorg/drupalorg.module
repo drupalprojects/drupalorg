@@ -96,13 +96,38 @@ function template_preprocess_drupalorg_download(&$variables) {
    '<a href="#">Content construction kit (CCK)</a>', 
    '<a href="#">Views</a>', 
    '<a href="#">Gallery</a>', 
-   '<a href="#">Foo bar</a>')); // Will be made dynamic, see issue #372243
+   '<a href="#">Foo bar</a>')); 
   
   $variables['most_active_themes'] = theme('item_list', array(
    '<a href="#">Paris Eiffel Tower</a>', 
-   '<a href="#">Cute yellow ducks</a>', 
    '<a href="#">Bluecheese</a>', 
-   '<a href="#">Marvin</a>'));  // Will be made dynamic, see issue #372243
+   '<a href="#">Cute yellow ducks</a>', 
+   '<a href="#">Marvin</a>'));
+
+  $variables['new_modules'] = theme('item_list', array(
+   '<a href="#">Gallery</a>', 
+   '<a href="#">Content construction kit (CCK)</a>', 
+   '<a href="#">Views</a>', 
+   '<a href="#">Foo bar</a>')); 
+  
+  $variables['new_themes'] = theme('item_list', array(
+   '<a href="#">Cute yellow ducks</a>', 
+   '<a href="#">Paris Eiffel Tower</a>', 
+   '<a href="#">Bluecheese</a>', 
+   '<a href="#">Marvin</a>'));
+
+  $variables['module_categories'] = theme('item_list', array(
+   '<a href="#">Gallery</a>', 
+   '<a href="#">Content construction kit (CCK)</a>', 
+   '<a href="#">Views</a>', 
+   '<a href="#">Foo bar</a>')); 
+  
+  $variables['theme_categories'] = theme('item_list', array(
+   '<a href="#">Cute yellow ducks</a>', 
+   '<a href="#">Paris Eiffel Tower</a>', 
+   '<a href="#">Bluecheese</a>', 
+   '<a href="#">Marvin</a>'));
+
 
 }
 

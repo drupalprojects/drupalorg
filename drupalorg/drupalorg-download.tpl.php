@@ -17,6 +17,14 @@
 <h6 class="lined">Most active themes</h6>
 <?php print $most_active_themes; ?>
 <a href="#" class="all">All themes</a>
+ 
+<h6 class="lined">New modules</h6>
+<?php print $new_modules; ?>
+<a href="#" class="all">All themes</a>
+    
+<h6 class="lined">New themes</h6>
+<?php print $new_themes; ?>
+<a href="#" class="all">All themes</a>
     
 <h6 class="lined">Translations</h6>
 <ul>
