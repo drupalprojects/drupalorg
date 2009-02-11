@@ -128,7 +128,7 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
           $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
           $querystring = $new_query->get_url_querystring();
 
-          $entries[] = l(t('@facet (@count)', array('@facet' => $description, '@count' => $count)), $path, array('query' => $querystring, 'attributes' => $active ? array('class' => 'selected') : array()));
+          $entries[] = l(t('@facet (@count)', array('@facet' => $description, '@count' => $count)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => $active ? array('class' => 'selected') : array()));
         }
       }
       if (count($entries)) {
@@ -137,7 +137,7 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
         $new_query->remove_field('ss_meta_type');
         $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
         $querystring = $new_query->get_url_querystring();
-        array_unshift($entries, l(t('All (@count)', array('@count' => $total)), $path, array('query' => $querystring, 'attributes' => !$has_active ? array('class' => 'selected') : array())));
+        array_unshift($entries, l(t('All (@count)', array('@count' => $total)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => !$has_active ? array('class' => 'selected') : array())));
 
         return array(
           'subject' => t('or filter by...'),
