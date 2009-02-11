@@ -99,15 +99,37 @@ function drupalorg_search_apachesolr_modify_query(&$query, &$params) {
  */
 function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
   if ($op == 'list') {
+    $blocks = array();
+
+    $blocks['search_box'] = array(
+      'info' => t('Drupalorg Search: Search box'),
+      'cache' => BLOCK_CACHE_PER_PAGE,
+    );
+
+    // Add the facet blocks.
     $enabled_facets = apachesolr_get_enabled_facets('drupalorg_search');
     $facets = drupalorg_search_apachesolr_facets();
-
-    // Add the blocks
-    $blocks = array();
     foreach ($enabled_facets as $delta => $facet_field) {
       $blocks[$delta] = $facets[$delta] + array('cache' => BLOCK_CACHE_PER_PAGE);
     }
     return $blocks;
+  }
+  else if ($op == 'view' && $delta == 'search_box') {
+    if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
+      $querystring = $query->get_query_basic();
+    }
+    else {
+      $querystring = '';
+    }
+
+    // We need to special case POST requests, because the search module doesn't
+    // trigger search on POST requests.
+    if (!empty($querystring) || (arg(0) == 'search' && $_SERVER['REQUEST_METHOD'] == 'POST')) {
+      return array(
+        'subject' => t('Search again'),
+        'content' => drupal_get_form('drupalorg_search_block_form', $querystring),
+      );
+    }
   }
   else if ($op == 'view' && $delta == 'meta_type') {
     if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
@@ -122,7 +144,7 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
           $new_query = clone $query;
           $active = $query->has_field('ss_meta_type', $name);
           $has_active |= $active;
-          $new_query->remove_field('ss_meta_type');
+          $new_query->remove_field('{!tag=meta_type}ss_meta_type');
           $new_query->add_field('ss_meta_type', $name);
 
           $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
@@ -134,7 +156,7 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
       if (count($entries)) {
         // Add the "All" entry.
         $new_query = clone $query;
-        $new_query->remove_field('ss_meta_type');
+        $new_query->remove_field('{!tag=meta_type}ss_meta_type');
         $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
         $querystring = $new_query->get_url_querystring();
         array_unshift($entries, l(t('All (@count)', array('@count' => $total)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => !$has_active ? array('class' => 'selected') : array())));
@@ -146,4 +168,42 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
       }
     }
   }
+}
+
+/**
+ * Implementation of hook_form_search_form_alter().
+ */
+function drupalorg_search_form_search_form_alter(&$form, $form_state) {
+  if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
+    $form['#access'] = FALSE;
+  }
+}
+
+/**
+ * Form callback; display a search form in a block.
+ */
+function drupalorg_search_block_form(&$form_state, $querystring) {
+  $form['search-wrapper'] = array(
+    '#prefix' => '<div class="container-inline">',
+    '#suffix' => '</div>',
+  );
+  $form['search-wrapper']['query'] = array(
+    '#type' => 'textfield',
+    '#default_value' => $querystring,
+    '#size' => 10,
+  );
+  $form['search-wrapper']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+  return $form;
+}
+
+/**
+ * Submit callback; redirect the user to the search result page.
+ */
+function drupalorg_search_block_form_submit($form, &$form_state) {
+  $query = $_GET;
+  unset($query['q']);
+  $form_state['redirect'] = array('search/' . arg(1) . '/' . $form_state['values']['query'], $query);
 }
