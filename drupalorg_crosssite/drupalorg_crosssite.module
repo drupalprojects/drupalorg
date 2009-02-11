@@ -123,7 +123,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   $vars['nav_masthead'] = theme('links', $nav_activated_links, array());
 
   if (($user->uid != 0)) {
-    $vars['nav_masthead'] .= '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name), 'user')) .' '. l(t('Logout'), 'logout');
+    $vars['nav_masthead'] .= '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user') .' '. l(t('Logout'), 'logout');
   }
 }
 
