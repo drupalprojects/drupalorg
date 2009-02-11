@@ -142,7 +142,7 @@ function drupalorg_crosssite_content_menu() {
       }
       // Otherwise, it might be an active link still, so put on the active class,
       // if we know #active was defined TRUE.
-      elseif ($link['#active']) {
+      elseif (!empty($link['#active'])) {
         // theme('link') uses the key as class, so add active class that way.
         $key = $key .' active';
       }
