@@ -53,13 +53,19 @@ function drupalorg_documentation_index() {
   return theme('drupalorg_documentation_index');
 }
 
+function drupalorg_start() {
+  return theme('drupalorg_start');
+}
+
 function template_preprocess_drupalorg_start(&$variables) {
   $variables['version'] = 42;
+
   $variables['most_popular_modules'] = theme('item_list', array(
    '<a href="#">Content construction kit (CCK)</a>', 
    '<a href="#">Views</a>', 
    '<a href="#">Gallery</a>', 
    '<a href="#">Foo bar</a>')); // Will be made dynamic, see issue #372243
+
   $variables['most_popular_themes'] = theme('item_list', array(
    '<a href="#">Paris Eiffel Tower</a>', 
    '<a href="#">Cute yellow ducks</a>', 
@@ -67,12 +73,37 @@ function template_preprocess_drupalorg_start(&$variables) {
    '<a href="#">Marvin</a>'));  // Will be made dynamic, see issue #372243
 }
 
-function drupalorg_start() {
-  return theme('drupalorg_start');
-}
-
 function drupalorg_download() {
   return theme('drupalorg_download');
+}
+
+function template_preprocess_drupalorg_download(&$variables) {
+  $variables['version'] = 42;
+
+  $variables['most_popular_modules'] = theme('item_list', array(
+   '<a href="#">Content construction kit (CCK)</a>', 
+   '<a href="#">Views</a>', 
+   '<a href="#">Gallery</a>', 
+   '<a href="#">Foo bar</a>')); // Will be made dynamic, see issue #372243
+
+  $variables['most_popular_themes'] = theme('item_list', array(
+   '<a href="#">Paris Eiffel Tower</a>', 
+   '<a href="#">Cute yellow ducks</a>', 
+   '<a href="#">Bluecheese</a>', 
+   '<a href="#">Marvin</a>'));  // Will be made dynamic, see issue #372243
+
+  $variables['most_active_modules'] = theme('item_list', array(
+   '<a href="#">Content construction kit (CCK)</a>', 
+   '<a href="#">Views</a>', 
+   '<a href="#">Gallery</a>', 
+   '<a href="#">Foo bar</a>')); // Will be made dynamic, see issue #372243
+  
+  $variables['most_active_themes'] = theme('item_list', array(
+   '<a href="#">Paris Eiffel Tower</a>', 
+   '<a href="#">Cute yellow ducks</a>', 
+   '<a href="#">Bluecheese</a>', 
+   '<a href="#">Marvin</a>'));  // Will be made dynamic, see issue #372243
+
 }
 
 function drupalorg_theme() {

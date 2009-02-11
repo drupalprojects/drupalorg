@@ -1,3 +1,6 @@
+<p style="color: red;"><blink><em>This page needs to be themed.  This is outputted by <code>drupalorg-start.tpl.php</code>.  All the dynamic elements are provided as a variable.  *blink* *blink*</em></blink></p>
+
+
 <div id="getting-started" class="grid-12">
   <div class="grid-3 alpha">
     Download Drupal
