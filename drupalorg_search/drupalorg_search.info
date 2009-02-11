@@ -1,0 +1,6 @@
+; $Id $
+name = Drupal.org search
+description = Drupal.org search customizations
+package = Drupal.org
+dependencies[] = apachesolr_search
+core = 6.x

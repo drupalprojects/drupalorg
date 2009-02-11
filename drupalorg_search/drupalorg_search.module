@@ -1,0 +1,149 @@
+<?php
+// $Id  $
+
+/**
+ * @file
+ * Drupal.org search customizations.
+ */
+
+// The TID of the "Modules" term.
+define('DRUPALORG_MODULE_TID', 14);
+
+// The TID of the "Themes" term.
+define('DRUPALORG_THEME_TID', 15);
+
+/**
+ * Return the Mark Boulton "filter by..." facet (TM) of a given node.
+ */
+function drupalorg_node_meta_type($node) {
+  if ($node->type == 'project_project') {
+    if (isset($node->taxonomy[DRUPALORG_MODULE_TID])) {
+      return 'module';
+    }
+    else if (isset($node->taxonomy[DRUPALORG_THEME_TID])) {
+      return 'theme';
+    }
+  }
+  else if ($node->type == 'book') {
+    return 'documentation';
+  }
+  else if ($node->type == 'project_issue' || $node->type == 'forum') {
+    return 'forum-issues';
+  }
+}
+
+/**
+ * Define Mark Boulton's "filter by..." entries.
+ */
+function drupalorg_meta_types() {
+  return array(
+    'api' => t('API'),
+    'module' => t('Modules'),
+    'theme' => t('Themes'),
+    'documentation' => t('Documentation'),
+    'forum-issues' => t('Forum & Issues'),
+    'marketplace' => t('Marketplace'),
+  );
+}
+
+/**
+ * Implementation of hook_apachesolr_update_index().
+ *
+ * This adds our specific facets to the Apachesolr search index.
+ */
+function drupalorg_search_apachesolr_update_index(&$document, $node) {
+  if ($type = drupalorg_node_meta_type($node)) {
+    $document->ss_meta_type = $type;
+  }
+}
+
+/**
+ * Implementation of hook_apachesolr_facets().
+ *
+ * Returns an array keyed by block delta.
+ */
+function drupalorg_search_apachesolr_facets() {
+  $facets = array();
+
+  $facets['meta_type'] = array(
+    'info' => t('Drupalorg Search: Filter by meta type'),
+    'facet_field' => '{!ex=meta_type}ss_meta_type',
+    'exclude_filter' => '',
+  );
+
+  return $facets;
+}
+
+/**
+ * Implementation of hook_apachesolr_modify_query().
+ *
+ * Exclude the meta_type filter from faceting.
+ */
+function drupalorg_search_apachesolr_modify_query(&$query, &$params) {
+  // TODO: some pending improvements to Apachesolr may simplify this.
+  foreach ($query->get_fields() as $field) {
+    if ($field['#name'] == 'ss_meta_type') {
+      $query->remove_field($field['#name'], $field['#value']);
+      $query->add_field('{!tag=meta_type}' . $field['#name'], $field['#value']);
+    }
+  }
+  foreach ($params['facet.field'] as &$field) {
+    if ($field == 'ss_meta_type') {
+      $field = '{!ex=meta_type}' . $field;
+    }
+  }
+}
+
+/**
+ * Implementation of hook_block().
+ */
+function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
+  if ($op == 'list') {
+    $enabled_facets = apachesolr_get_enabled_facets('drupalorg_search');
+    $facets = drupalorg_search_apachesolr_facets();
+
+    // Add the blocks
+    $blocks = array();
+    foreach ($enabled_facets as $delta => $facet_field) {
+      $blocks[$delta] = $facets[$delta] + array('cache' => BLOCK_CACHE_PER_PAGE);
+    }
+    return $blocks;
+  }
+  else if ($op == 'view' && $delta == 'meta_type') {
+    if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
+      $entries = array();
+      $total = 0;
+      $has_active = FALSE;
+      foreach (drupalorg_meta_types() as $name => $description) {
+        if (!empty($response->facet_counts->facet_fields->ss_meta_type->$name)) {
+          $count = $response->facet_counts->facet_fields->ss_meta_type->$name;
+          $total += $count;
+
+          $new_query = clone $query;
+          $active = $query->has_field('ss_meta_type', $name);
+          $has_active |= $active;
+          $new_query->remove_field('ss_meta_type');
+          $new_query->add_field('ss_meta_type', $name);
+
+          $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
+          $querystring = $new_query->get_url_querystring();
+
+          $entries[] = l(t('@facet (@count)', array('@facet' => $description, '@count' => $count)), $path, array('query' => $querystring, 'attributes' => $active ? array('class' => 'selected') : array()));
+        }
+      }
+      if (count($entries)) {
+        // Add the "All" entry.
+        $new_query = clone $query;
+        $new_query->remove_field('ss_meta_type');
+        $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
+        $querystring = $new_query->get_url_querystring();
+        array_unshift($entries, l(t('All (@count)', array('@count' => $total)), $path, array('query' => $querystring, 'attributes' => !$has_active ? array('class' => 'selected') : array())));
+
+        return array(
+          'subject' => t('or filter by...'),
+          'content' => theme('item_list', $entries),
+        );
+      }
+    }
+  }
+}
