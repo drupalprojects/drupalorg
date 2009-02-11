@@ -145,6 +145,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     // Theme the links for the page, bypassing class="links".
     $vars['nav_content'] = theme('links', $nav_content_links, array());
     $vars['nav_content_class'] = ' class="nav-content-'. $matched_menu .'"';
+    return;
   }
   
   // Else just return an empty content nav menu.
