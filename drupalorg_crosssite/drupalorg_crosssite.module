@@ -80,7 +80,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   }
   
   // Add content header navigation.
-  $vars['nav_content'] = drupalorg_crosssite_content_menu();
+  drupalorg_crosssite_content_menu($vars);
   
   // == Nav masthead links
   
@@ -115,7 +115,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
  * since an API link on the docs site would link out to API while a docs link
  * on the API would link out to the docs site).
  */
-function drupalorg_crosssite_content_menu() {
+function drupalorg_crosssite_content_menu(&$vars) {
   // Specify the high level matching criteria for each menu and let others put
   // in more menus.
   $nav_content_areas = array(
@@ -143,11 +143,12 @@ function drupalorg_crosssite_content_menu() {
     // Make all external links right.
     $nav_content_links = drupalorg_crosssite_menu_absolute_links($nav_content_links);
     // Theme the links for the page, bypassing class="links".
-    return theme('links', $nav_content_links, array());
+    $vars['nav_content'] = theme('links', $nav_content_links, array());
+    $vars['nav_content_class'] = ' nav-content-'. $matched_menu;
   }
   
   // Else just return an empty content nav menu.
-  return '';
+  $vars['nav_content'] = $vars['nav_content_class'] = '';
 }
 
 /**
