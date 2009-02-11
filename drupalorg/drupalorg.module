@@ -28,9 +28,16 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['getting-started'] = array(
+  $items['start'] = array(
     'title' => 'Getting started with Drupal',
-    'page callback' => 'drupalorg_getting_started',
+    'page callback' => 'drupalorg_start',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['download'] = array(
+    'title' => 'Download & Extend',
+    'page callback' => 'drupalorg_download',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -46,7 +53,7 @@ function drupalorg_documentation_index() {
   return theme('drupalorg_documentation_index');
 }
 
-function template_preprocess_drupalorg_getting_started(&$variables) {
+function template_preprocess_drupalorg_start(&$variables) {
   $variables['version'] = 42;
   $variables['most_popular_modules'] = theme('item_list', array(
    '<a href="#">Content construction kit (CCK)</a>', 
@@ -60,8 +67,12 @@ function template_preprocess_drupalorg_getting_started(&$variables) {
    '<a href="#">Marvin</a>'));  // Will be made dynamic, see issue #372243
 }
 
-function drupalorg_getting_started() {
-  return theme('drupalorg_getting_started');
+function drupalorg_start() {
+  return theme('drupalorg_start');
+}
+
+function drupalorg_download() {
+  return theme('drupalorg_download');
 }
 
 function drupalorg_theme() {
@@ -72,8 +83,11 @@ function drupalorg_theme() {
     'drupalorg_documentation_index' => array(
       'template' => 'drupalorg-documentation-index',
     ),
-    'drupalorg_getting_started' => array(
-      'template' => 'drupalorg-getting-started',
+    'drupalorg_start' => array(
+      'template' => 'drupalorg-start',
+    ),
+    'drupalorg_download' => array(
+      'template' => 'drupalorg-download',
     ),
   );
 }
