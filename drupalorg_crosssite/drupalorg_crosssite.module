@@ -9,6 +9,11 @@
 
 // == Core hooks ===============================================================
 
+/**
+ * Implementation of hook_preprocess_page().
+ *
+ * Add header, footer and content menu data to the page variables.
+ */
 function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
 
   // Site hostnames for the sites we use.
@@ -80,103 +85,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
 
     $vars['nav_footer'] .= '<div class="grid-3">'. theme('links', $links_column) .'</div>';
   }
-}
-
-/**
- * Implementation of hook_block().
- */
-function drupalorg_crosssite_block($op = 'list', $delta = 0, $edit = array()) {
-  if ($op == 'list') {
-    $blocks['crosssite-menu'] = array(
-      'info' => t('Drupal.org cross-site content-top menu'),
-    );
-    return $blocks;
-  }
-  elseif ($op == 'view' && $delta == 'crosssite-menu') {
-    return  array(
-      'subject' => '',
-      'content' => drupalorg_crosssite_content_menu()
-    );
-  }
-}
-
-/**
- * Which site is which URL?
- *
- * We have multiple keys for different functionality, so in case we need to
- * break these out, we can quickly swap these URLs and be done with updating
- * the navigation by deploying the new version of this module across all
- * subsites.
- */
-function drupalorg_crosssite_menu_sites() {
-  return array(
-    'docs'        => 'drupal.org',
-    'main'        => 'drupal.org',
-    'project'     => 'drupal.org',
-    'api'         => 'api.drupal.org',
-    'association' => 'association.drupal.org',
-    'groups'      => 'groups.drupal.org',
-  );
-}
-
-/**
- * Check whether we are on the specified site.
- * 
- * @param $site_key
- *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
- * @return
- *   TRUE if on the site specified by $site_key.
- */
-function drupalorg_crosssite_menu_site($site_key) {
-  static $site = NULL;
   
-  if (!isset($site)) {
-    // Remove www. and get the host for checking. 
-  	list($site) = explode(':', str_replace('www.', '', $_SERVER['HTTP_HOST']));
-  }
-  $sites = drupalorg_crosssite_menu_sites();
-  
-  // If we have this site defined and the host name matches, we are on that site.
-  return isset($sites[$site_key]) &&Ê($sites[$site_key] == $site);
-}
-
-/**
- * Check whether we are viewing any of the specified node types on the given site.
- *
- * @param $site_key
- *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
- * @param $node_types
- *   An array of possible node types to check for.
- * @return
- *   TRUE if on the site specified by $site_key, looking at a node of any of the
- *   types specified in $node_types.
- */
-function drupalorg_crosssite_menu_type($site_key, $node_types) {
-  // menu_get_object() gets us the node, if we have a node loaded on the path.
-  if (drupalorg_crosssite_menu_site($site_key) && ($node = menu_get_object())) {
-    return in_array($node->type, $node_types);
-  }
-}
-
-/**
- * Check whether we are viewing any of the specified paths on the given site.
- *
- * @param $site_key
- *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
- * @param $path_regex
- *   A Per regular expression to match against the current path.
- * @return
- *   TRUE if on the site specified by $site_key, looking at a path matching
- *   $path_regex.
- * @todo
- *   Investigate path alias matching. This will probably be broken a bit in
- *   that regard for now.
- */
-function drupalorg_crosssite_menu_path($site_key, $path_regex) {
-  // menu_get_object() gets us the node, if we have a node loaded on the path.
-  if (drupalorg_crosssite_menu_site($site_key)) {
-    return preg_match($path_regex, $_GET['q']);
-  }
+  // Add content header navigation.
+  $vars['nav_content'] = drupalorg_crosssite_content_menu();
 }
 
 /**
@@ -210,28 +121,35 @@ function drupalorg_crosssite_content_menu() {
   // matching in that case. (This will pick the first matched in that case).
   $matched_menu = array_search(TRUE, $nav_content_areas);
   
-  // Now ask for all the menu items for the matched menu.
+  // Now ask for all the menu items for the matched menu. Let modules add in
+  // menu items (eg. in case of dashboard module adding items we don't know about).
   $nav_content_links = module_invoke_all('drupalorg_crosssite_content_menu_items', $matched_menu);
   
-  $sites = drupalorg_crosssite_menu_sites();
-  foreach ($nav_content_links as $key => $link) {
-    // If we are not on the given site, convert the link to an absolute link
-    // to the given site. In this case, we can also infer that it is not going
-    // be an active link, so we skip checking for activeness.
-    if (isset($link['#site']) && !drupalorg_crosssite_menu_site($link['#site'])) {
-      $nav_content_links[$key]['href'] = 'http://'. $sites[$link['#site']] .'/'. $link['href'];
+  if (count($nav_content_links)) {
+    // We have links to display for this matched menu.
+    $sites = drupalorg_crosssite_menu_sites();
+    foreach ($nav_content_links as $key => $link) {
+      // If we are not on the given site, convert the link to an absolute link
+      // to the given site. In this case, we can also infer that it is not going
+      // be an active link, so we skip checking for activeness.
+      if (isset($link['#site']) && !drupalorg_crosssite_menu_site($link['#site'])) {
+        $nav_content_links[$key]['href'] = 'http://'. $sites[$link['#site']] .'/'. $link['href'];
+      }
+      // Otherwise, it might be an active link still, so put on the active class,
+      // if we know #active was defined TRUE.
+      elseif ($link['#active']) {
+        // theme('link') uses the key as class, so add active class that way.
+        $nav_content_links[$key .' active'] = $link;
+        unset($nav_content_links[$key]);
+      }
     }
-    // Otherwise, it might be an active link still, so put on the active class,
-    // if we know #active was defined TRUE.
-    elseif ($link['#active']) {
-      // theme('link') uses the key as class, so add active class that way.
-      $nav_content_links[$key .' active'] = $link;
-      unset($nav_content_links[$key]);
-    }
+  
+    // Theme the links for the page.
+    return theme('links', $nav_content_links);
   }
   
-  // Theme the links for the page.
-  return theme('links', $nav_content_links);
+  // Else just return an empty content nav menu.
+  return '';
 }
 
 /**
@@ -323,5 +241,86 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         'download' => array('href' => 'node/9068', 'title' => t('Download Druplicon'), 'site' => 'main'),
         'other'    => array('href' => '??', 'title' => t('Other Druplicons'), 'site' => 'main'),
       );
+  }
+}
+
+// == API functions ============================================================
+
+/**
+ * Which site is which URL?
+ *
+ * We have multiple keys for different functionality, so in case we need to
+ * break these out, we can quickly swap these URLs and be done with updating
+ * the navigation by deploying the new version of this module across all
+ * subsites.
+ */
+function drupalorg_crosssite_menu_sites() {
+  return array(
+    'docs'        => 'drupal.org',
+    'main'        => 'drupal.org',
+    'project'     => 'drupal.org',
+    'api'         => 'api.drupal.org',
+    'association' => 'association.drupal.org',
+    'groups'      => 'groups.drupal.org',
+  );
+}
+
+/**
+ * Check whether we are on the specified site.
+ * 
+ * @param $site_key
+ *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
+ * @return
+ *   TRUE if on the site specified by $site_key.
+ */
+function drupalorg_crosssite_menu_site($site_key) {
+  static $site = NULL;
+  
+  if (!isset($site)) {
+    // Remove www. and get the host for checking. 
+  	list($site) = explode(':', str_replace('www.', '', $_SERVER['HTTP_HOST']));
+  }
+  $sites = drupalorg_crosssite_menu_sites();
+  
+  // If we have this site defined and the host name matches, we are on that site.
+  return isset($sites[$site_key]) && ($sites[$site_key] == $site);
+}
+
+/**
+ * Check whether we are viewing any of the specified node types on the given site.
+ *
+ * @param $site_key
+ *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
+ * @param $node_types
+ *   An array of possible node types to check for.
+ * @return
+ *   TRUE if on the site specified by $site_key, looking at a node of any of the
+ *   types specified in $node_types.
+ */
+function drupalorg_crosssite_menu_type($site_key, $node_types) {
+  // menu_get_object() gets us the node, if we have a node loaded on the path.
+  if (drupalorg_crosssite_menu_site($site_key) && ($node = menu_get_object())) {
+    return in_array($node->type, $node_types);
+  }
+}
+
+/**
+ * Check whether we are viewing any of the specified paths on the given site.
+ *
+ * @param $site_key
+ *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
+ * @param $path_regex
+ *   A Per regular expression to match against the current path.
+ * @return
+ *   TRUE if on the site specified by $site_key, looking at a path matching
+ *   $path_regex.
+ * @todo
+ *   Investigate path alias matching. This will probably be broken a bit in
+ *   that regard for now.
+ */
+function drupalorg_crosssite_menu_path($site_key, $path_regex) {
+  // menu_get_object() gets us the node, if we have a node loaded on the path.
+  if (drupalorg_crosssite_menu_site($site_key)) {
+    return preg_match($path_regex, $_GET['q']);
   }
 }
