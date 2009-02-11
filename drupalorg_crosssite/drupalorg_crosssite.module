@@ -329,6 +329,6 @@ function drupalorg_crosssite_menu_type($site_key, $node_types) {
 function drupalorg_crosssite_menu_path($site_key, $path_regex) {
   // menu_get_object() gets us the node, if we have a node loaded on the path.
   if (drupalorg_crosssite_menu_site($site_key)) {
-    return preg_match($path_regex, $_GET['q']);
+    return preg_match('!'. $path_regex .'!', $_GET['q']);
   }
 }
