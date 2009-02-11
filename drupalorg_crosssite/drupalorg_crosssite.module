@@ -28,7 +28,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   $nav_header_links = array(
     'getting-started' => array('href' => 'getting-started', 'title' => t('Get Started'), '#site' => 'main'),
     'forum'           => array('href' => 'forum',           'title' => t('Community & Support'), '#site' => 'main'),
-    'handbooks'       => array('href' => 'handbooks',       'title' => t('Documentation'), '#site' => 'docs'),
+    'handbooks'       => array('href' => 'documentation',   'title' => t('Documentation'), '#site' => 'docs'),
     'project'         => array('href' => 'project',         'title' => t('Download & Extend'), '#site' => 'project'),
     'marketplace'     => array('href' => 'services',        'title' => t('Marketplace'), '#site' => 'main'),
     'about'           => array('href' => 'about',           'title' => t('About'), '#site' => 'main'),
@@ -275,18 +275,23 @@ function drupalorg_crosssite_menu_sites() {
  *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
  * @return
  *   TRUE if on the site specified by $site_key.
+ * @todo
+ *   Investigate testing domain indentification for subsites.
  */
 function drupalorg_crosssite_menu_site($site_key) {
   static $site = NULL;
+  static $sites = NULL;
   
   if (!isset($site)) {
-    // Remove www. and get the host for checking. 
-  	list($site) = explode(':', str_replace('www.', '', $_SERVER['HTTP_HOST']));
+  	list($site) = explode(':', $_SERVER['HTTP_HOST']);
+    $sites = drupalorg_crosssite_menu_sites();
   }
-  $sites = drupalorg_crosssite_menu_sites();
   
   // If we have this site defined and the host name matches, we are on that site.
-  return isset($sites[$site_key]) && ($sites[$site_key] == $site);
+  // If there is no site with our current site name and the main site is requested,
+  // we also fall back on saying we are on the site, since then we are on a developer
+  // site for drupal.org.
+  return (isset($sites[$site_key]) && ($sites[$site_key] == $site)) || (!isset($sites[$site]) && in_array($site_key, array('main', 'project', 'docs')));
 }
 
 /**
