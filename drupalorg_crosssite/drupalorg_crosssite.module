@@ -131,24 +131,25 @@ function drupalorg_crosssite_content_menu() {
   if (count($nav_content_links)) {
     // We have links to display for this matched menu.
     $sites = drupalorg_crosssite_menu_sites();
+    $nav_activated_links = array();
     foreach ($nav_content_links as $key => $link) {
       // If we are not on the given site, convert the link to an absolute link
       // to the given site. In this case, we can also infer that it is not going
       // be an active link, so we skip checking for activeness.
       if (isset($link['#site']) && !drupalorg_crosssite_menu_site($link['#site'])) {
-        $nav_content_links[$key]['href'] = 'http://'. $sites[$link['#site']] .'/'. $link['href'];
+        $link['href'] = 'http://'. $sites[$link['#site']] .'/'. $link['href'];
+        $nav_activated_links[$key] = $link;
       }
       // Otherwise, it might be an active link still, so put on the active class,
       // if we know #active was defined TRUE.
       elseif ($link['#active']) {
         // theme('link') uses the key as class, so add active class that way.
-        $nav_content_links[$key .' active'] = $link;
-        unset($nav_content_links[$key]);
+        $nav_activated_links[$key .' active'] = $link;
       }
     }
   
     // Theme the links for the page, bypassing class="links".
-    return theme('links', $nav_content_links, array());
+    return theme('links', $nav_activated_links, array());
   }
   
   // Else just return an empty content nav menu.
@@ -329,6 +330,6 @@ function drupalorg_crosssite_menu_type($site_key, $node_types) {
 function drupalorg_crosssite_menu_path($site_key, $path_regex) {
   // menu_get_object() gets us the node, if we have a node loaded on the path.
   if (drupalorg_crosssite_menu_site($site_key)) {
-    return preg_match('!'. $path_regex .'!', $_GET['q']);
+    return preg_match('#'. $path_regex .'#', $_GET['q']);
   }
 }
