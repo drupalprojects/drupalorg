@@ -2,6 +2,11 @@
 // $Id$
 
 /**
+ * Taxonomy vid fro the "Drupal versions" vocabulary.
+ */
+define('HANDBOOK_VERSION_VID', 5);
+
+/**
  * Implementation of hook_nodeapi().
  */
 function handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
@@ -34,7 +39,67 @@ function handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) 
         break;
     }
     $node->content['body']['#value'] .= $extra;
+    
+    if (!empty($node->book['bid'])) {
+      // Prepend the handbook meta data to book bodies.
+      $node->content['body']['#value'] = handbook_meta_data($node) . $node->content['body']['#value'];
+    }
   }
+}
+
+/**
+ * Gather information for the top of handbook pages.
+ *
+ * @param $node
+ *   The node object.
+ * @return
+ *   The HTML code for the book meta information.
+ */
+function handbook_meta_data($node) {
+  if (count($node->taxonomy)) {
+    // Group the terms by vid.
+    $taxonomy = array();
+    foreach ($node->taxonomy as $term_id => $term) {
+      $taxonomy[$term->vid][] = $term;
+    }
+
+    if (count($taxonomy[HANDBOOK_VERSION_VID])) { 
+      // Make list of versions associated to handbook page.
+      $links = array();
+      foreach ($taxonomy[HANDBOOK_VERSION_VID] as $tag) {
+        $links[] = theme('handbook_meta_link', l($tag->name, 'taxonomy/term/'. $tag->tid));
+      }
+      $versions = implode(', ', $links);
+    }
+    /*
+    if (count($taxonomy[HANDBOOK_VERSION_VID])) {
+      // @todo Adjust HANDBOOK_VERSION_VID to the vid of the new feature vocabulary
+      $links = array();
+      foreach ($taxonomy[HANDBOOK_VERSION_VID] as $tag) {
+        $links[] = theme('handbook_meta_link', l($tag->name, 'taxonomy/term/'. $tag->tid));
+      }
+      $features = implode(', ', $links);
+    }
+    */
+  }
+  
+  // Set the modified date for display.
+  // @todo Look into better localized date formats, whenever we have locales.
+  $modified = format_date($node->changed, 'custom', 'F j, Y');
+  
+  // Collect a list of people who have edited the book page ever.
+  $authors_query = db_query("SELECT u.uid, u.name FROM {node_revisions} nr JOIN {users} u ON nr.uid = u.uid WHERE nid = %d GROUP BY u.uid ORDER BY timestamp", $node->nid);
+  while ($author = db_fetch_object($authors_query)) {
+    $author_links[] = theme('handbook_meta_link', l($author->name, 'user/'. $author->uid));
+  }
+  $authors = implode(', ', $author_links);
+
+  // @todo Add language listings when available.
+  $languages = NULL; 
+  // @todo Add alerts (discussion pages) when available.
+  $alerts = NULL;
+
+  return theme('handbook_meta_data', $versions, $features, $modified, $authors, $languages, $alerts);
 }
 
 /**
@@ -237,4 +302,31 @@ EOT;
  */
 function handbook_license() {
   return t('The Drupal handbook pages are © 2000-!year by the <a href="@contributors_link">individual contributors</a> and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>', array('!year' => date('Y'), '@contributors_link' => url('node/14205'), '@ccl_url' => url('node/14307'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html')));
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function handbook_theme($existing, $type, $theme, $path) {
+  return array(
+    'handbook_meta_data' => array(
+      'arguments' => array('versions' => NULL, 'features' => NULL, 'modified' => NULL, 'authors' => NULL, 'languages' => NULL, 'alerts' => NULL),
+      'template' => 'handbook-meta-data',
+    ),
+    'handbook_meta_link' => array(
+      'arguments' => array('link' => NULL),
+    ),
+  );
+}
+
+/**
+ * Simply wraps links in a span to make button theming easier.
+ * 
+ * @param $link
+ *   An already generated HTML link, from l() for example.
+ * @return
+ *   The link wrapped in spans to make it possible to use varying width buttons.
+ */
+function theme_handbook_meta_link($link) {
+  return '<span>'. $link .'</span>';
 }
