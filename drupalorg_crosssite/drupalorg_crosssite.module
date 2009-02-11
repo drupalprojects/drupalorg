@@ -93,7 +93,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     $nav_masthead_links['login-register'] = array('href' => 'user',      'title' => t('Login / Register'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
   }
   else {
-    $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user') .' '. l(t('Logout'), 'logout');
+    $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user') .' '. l(t('Logout'), 'logout') .'</div>';
   }
   // Make all external links right.
   $nav_masthead_links = drupalorg_crosssite_menu_absolute_links($nav_masthead_links);
