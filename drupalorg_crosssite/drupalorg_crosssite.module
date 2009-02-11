@@ -144,8 +144,9 @@ function drupalorg_crosssite_content_menu() {
       // if we know #active was defined TRUE.
       elseif ($link['#active']) {
         // theme('link') uses the key as class, so add active class that way.
-        $nav_activated_links[$key .' active'] = $link;
+        $key = $key .' active';
       }
+      $nav_activated_links[$key] = $link;
     }
   
     // Theme the links for the page, bypassing class="links".
