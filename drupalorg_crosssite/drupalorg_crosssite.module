@@ -10,21 +10,76 @@
 // == Core hooks ===============================================================
 
 function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
+
+  // Site hostnames for the sites we use.
+  $sites = drupalorg_crosssite_menu_sites();
+
+  // == Build the header navigation
+
   // Hardcoded list of menu items. These are not supposed to have any indication
   // of the active item, since the page title and submenus have that indication.
   // Also, we should not let people edit these, since they should be standard
   // among all the subsites. So this is why they are here.
   $nav_header_links = array(
-    array('href' => 'getting-started', 'title' => t('Get Started')),
-    array('href' => 'forum',           'title' => t('Community & Support')),
-    array('href' => 'handbooks',       'title' => t('Documentation')),
-    array('href' => 'project',         'title' => t('Download & Extend')),
-    array('href' => 'getting-started', 'title' => t('Marketplace')),
-    array('href' => 'getting-started', 'title' => t('About')),
+    'getting-started' => array('href' => 'getting-started', 'title' => t('Get Started'), '#site' => 'main'),
+    'forum'           => array('href' => 'forum',           'title' => t('Community & Support'), '#site' => 'main'),
+    'handbooks'       => array('href' => 'handbooks',       'title' => t('Documentation'), '#site' => 'docs'),
+    'project'         => array('href' => 'project',         'title' => t('Download & Extend'), '#site' => 'project'),
+    'marketplace'     => array('href' => 'getting-started', 'title' => t('Marketplace'), '#site' => 'main'),
+    'about'           => array('href' => 'about',           'title' => t('About'), '#site' => 'main'),
   );
+  foreach ($nav_header_links as $key => $link) {
+    // If we are not on the given site, convert the link to an absolute link
+    // to the given site.
+    if (isset($link['#site']) && !drupalorg_crosssite_menu_site($link['#site'])) {
+      $nav_header_links[$key]['href'] = 'http://'. $sites[$link['#site']] .'/'. $link['href'];
+    }
+  }
   $vars['nav_header'] = theme('links', $nav_header_links);
   
-  //$vars['nav_footer'] = theme('links');
+  // == Build the footer navigation
+
+  $nav_footer_links = array(
+    array(
+      'news'        => array('href' => 'news', 'title' => t('Drupal News'), '#site' => 'main'),
+      'planet'      => array('href' => 'planet', 'title' => t('Planet Drupal'), '#site' => 'main'),
+      'association' => array('href' => '', 'title' => t('Association'), '#site' => 'association'),
+      'jobs'        => array('href' => 'jobs', 'title' => t('Jobs'), '#site' => 'groups'),
+    ),
+    array(
+      'getting-started' => array('href' => 'getting-started', 'title' => t('Getting Started'), '#site' => 'main'),
+      'download-core'   => array('href' => 'project/Drupal+project', 'title' => t('Downloading Drupal'), '#site' => 'project'),
+      'get-involved'    => array('href' => '', 'title' => t('Get Involved'), '#site' => 'main'),
+    ),
+    array(
+      'download'          => array('href' => 'project', 'title' => t('Download & Extend'), '#site' => 'project'),
+      'download-core'     => array('href' => 'project/Drupal+project', 'title' => t('Drupal core'), '#site' => 'project'),
+      'download-modules'  => array('href' => 'project/Modules', 'title' => t('Modules'), '#site' => 'main'),
+      'download-themes'   => array('href' => 'project/Themes', 'title' => t('Themes'), '#site' => 'main'),
+      'download-profiles' => array('href' => 'project/Installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
+    ),
+    array(
+      'events'      => array('href' => 'events', 'title' => t('Events'), '#site' => 'groups'),
+      'drupalcon'   => array('href' => 'events?filter0%5B%5D=drupalcon', 'title' => t('Drupalcon'), '#site' => 'groups'),
+      'groups-join' => array('href' => '', 'title' => t('Join a Local Group'), '#site' => 'groups'),
+      'training'    => array('href' => 'events?filter0%5B%5D=training', 'title' => t('Training'), '#site' => 'groups'),
+      'druplicon'   => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main'),
+    ),
+  );
+  
+  $vars['nav_footer'] = '';
+  foreach ($nav_footer_links as $links_column) {
+    foreach ($links_column as $key => $link) {
+      // If we are not on the given site, convert the link to an absolute link
+      // to the given site. In this case, we can also infer that it is not going
+      // be an active link, so we skip checking for activeness.
+      if (isset($link['#site']) && !drupalorg_crosssite_menu_site($link['#site'])) {
+        $links_column[$key]['href'] = 'http://'. $sites[$link['#site']] .'/'. $link['href'];
+      }
+    }
+
+    $vars['nav_footer'] .= '<div class="grid-3">'. theme('links', $links_column) .'</div>';
+  }
 }
 
 /**
@@ -164,7 +219,7 @@ function drupalorg_crosssite_content_menu() {
     // to the given site. In this case, we can also infer that it is not going
     // be an active link, so we skip checking for activeness.
     if (isset($link['#site']) && !drupalorg_crosssite_menu_site($link['#site'])) {
-      $link['href'] = 'http://'. $sites[$link['#site']] .'/'. $link['href'];
+      $nav_content_links[$key]['href'] = 'http://'. $sites[$link['#site']] .'/'. $link['href'];
     }
     // Otherwise, it might be an active link still, so put on the active class,
     // if we know #active was defined TRUE.
