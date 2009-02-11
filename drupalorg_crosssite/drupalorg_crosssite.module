@@ -15,6 +15,7 @@
  * Add header, footer and content menu data to the page variables.
  */
 function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
+  global $user;
 
   // Site hostnames for the sites we use.
   $sites = drupalorg_crosssite_menu_sites();
@@ -91,6 +92,39 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   
   // Add content header navigation.
   $vars['nav_content'] = drupalorg_crosssite_content_menu();
+  
+  // == Nav masthead links
+  
+  $nav_masthead_links = array(
+    'homepage'       => array('href' => '',          'title' => t('Drupal Homepage'),  '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '')),
+    'dashboard'      => array('href' => 'dashboard', 'title' => t('Your dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^dashboard(/|$)')),
+    'login-register' => array('href' => 'user',      'title' => t('Login / Register'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)')),
+  );
+  $nav_actived_links = array();
+  foreach ($nav_masthead_links as $key => $link) {
+    if (($user->uid != 0) && ($key == 'login-register')) {
+      // Skip the login/register tab when people are logged in.
+      continue;
+    }
+    // If we are not on the given site, convert the link to an absolute link
+    // to the given site.
+    if (isset($link['#site']) && !drupalorg_crosssite_menu_site($link['#site'])) {
+      $link['href'] = 'http://'. $sites[$link['#site']] .'/'. $link['href'];
+    }
+    // Otherwise, it might be an active link still, so put on the active class,
+    // if we know #active was defined TRUE.
+    elseif (!empty($link['#active'])) {
+      // theme('link') uses the key as class, so add active class that way.
+      $key = $key .' active';
+    }
+    $nav_activated_links[$key] = $link;
+  }
+  // Theme as links, and avoid class="links" on it.
+  $vars['nav_masthead'] = theme('links', $nav_activated_links, array());
+
+  if (($user->uid != 0)) {
+    $vars['nav_masthead'] .= '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name), 'user')) .' '. l(t('Logout'), 'logout');
+  }
 }
 
 /**
@@ -106,17 +140,15 @@ function drupalorg_crosssite_content_menu() {
   // Specify the high level matching criteria for each menu and let others put
   // in more menus.
   $nav_content_areas = array(
-    'documentation' => drupalorg_crosssite_menu_site('api') || drupalorg_crosssite_menu_type('docs', array('book')) || drupalorg_crosssite_menu_path('docs', '^(documentation|handbooks)'),
+    'documentation' => drupalorg_crosssite_menu_site('api') || drupalorg_crosssite_menu_type('docs', array('book')) || drupalorg_crosssite_menu_path('docs', '^(documentation|handbooks)(/|$)'),
     'downloads'     => drupalorg_crosssite_menu_path('project', '^project') || drupalorg_crosssite_menu_type('project', array('project_project', 'project_issue', 'project_release')),
-    'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
-    'jobs'          => drupalorg_crosssite_menu_path('groups', '^(jobs)'),
+    'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
+    'jobs'          => drupalorg_crosssite_menu_path('groups', '^(jobs)(/|$)'),
     'association'   => drupalorg_crosssite_menu_site('association'),
-    'events'        => drupalorg_crosssite_menu_path('groups', '^events'),
-    'druplicon'     => drupalorg_crosssite_menu_path('main', '^(node/9068([^\d]|$)|druplicon)'),
-    // Will be provided by the dashboard module.
-    'dashboard'     => FALSE,
+    'events'        => drupalorg_crosssite_menu_path('groups', '^events(/|$)'),
+    'druplicon'     => drupalorg_crosssite_menu_path('main', '^(node/9068|druplicon)(/|$)'),
+    'dashboard'     => drupalorg_crosssite_menu_path('main', '^dashboard(/|$)'),
   );
-  drupal_alter('drupalorg_crosssite_content_menu_areas', $nav_content_areas);
   
   // Theoretically, the matching criteria made one of the areas win (have TRUE as
   // the array value). If there are two menus to display on the same path, we
@@ -138,7 +170,6 @@ function drupalorg_crosssite_content_menu() {
       // be an active link, so we skip checking for activeness.
       if (isset($link['#site']) && !drupalorg_crosssite_menu_site($link['#site'])) {
         $link['href'] = 'http://'. $sites[$link['#site']] .'/'. $link['href'];
-        $nav_activated_links[$key] = $link;
       }
       // Otherwise, it might be an active link still, so put on the active class,
       // if we know #active was defined TRUE.
@@ -169,10 +200,10 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
     // REAL cross-site.
     case 'documentation':
       return array(
-        'home'    => array('href' => 'documentation', 'title' => t('Docs Home'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_type('docs', 'book') || drupalorg_crosssite_menu_path('docs', '^(documentation(?!/index|/recent)|handbooks)')),
+        'home'    => array('href' => 'documentation', 'title' => t('Docs Home'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_type('docs', 'book') || drupalorg_crosssite_menu_path('docs', '^(documentation(?!/index|/recent)|handbooks(/|$))')),
         'api'     => array('href' => '', 'title' => t('API'), '#site' => 'api', '#active' => drupalorg_crosssite_menu_site('api')),
-        'index'   => array('href' => 'documentation/index', 'title' => t('Index'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(documentation/index)')),
-        'recent'  => array('href' => 'documentation/recent', 'title' => t('Recently updated'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(documentation/recent)')),
+        'index'   => array('href' => 'documentation/index', 'title' => t('Index'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(documentation/index)(/|$)')),
+        'recent'  => array('href' => 'documentation/recent', 'title' => t('Recently updated'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(documentation/recent)(/|$)')),
       );
     
     // Just on the project site.
@@ -328,9 +359,16 @@ function drupalorg_crosssite_menu_type($site_key, $node_types) {
  *   Investigate path alias matching. This will probably be broken a bit in
  *   that regard for now.
  */
-function drupalorg_crosssite_menu_path($site_key, $path_regex) {
+function drupalorg_crosssite_menu_path($site_key, $path_regex = '') {
   // menu_get_object() gets us the node, if we have a node loaded on the path.
   if (drupalorg_crosssite_menu_site($site_key)) {
-    return preg_match('#'. $path_regex .'#', $_GET['q']);
+    if (empty($path_regex)) {
+      // We need to match the front page.
+      return (empty($_GET['q']));
+    }
+    else {
+      // Use the full preg_match.
+      return preg_match('#'. $path_regex .'#', $_GET['q']);
+    }
   }
 }
