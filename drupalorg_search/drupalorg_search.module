@@ -180,6 +180,33 @@ function drupalorg_search_form_search_form_alter(&$form, $form_state) {
 }
 
 /**
+ * Implementation of hook_form_search_theme_form_alter().
+ */
+function drupalorg_search_form_search_theme_form_alter(&$form, $form_state) {
+  $form['search_theme_form']['#title'] = t('Search Drupal.org');
+  $form['advanced'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Refine your search'),
+    '#collapsible' => !drupal_is_front_page(),
+    '#collapsed' => !drupal_is_front_page(),
+  );
+  $form['advanced']['meta_type'] = array(
+    '#type' => 'radios',
+    '#options' => drupalorg_meta_types(),
+  );
+  $form['#submit'][] = 'drupalorg_search_search_theme_form_submit';
+}
+
+function drupalorg_search_search_theme_form_submit($form, &$form_state) {
+  if (!is_array($form_state['redirect'])) {
+    $form_state['redirect'] = array($form_state['redirect']);
+  }
+  if (!empty($form_state['values']['meta_type'])) {
+    $form_state['redirect'][1]['ss_meta_type'] = $form_state['values']['meta_type'];
+  }
+}
+
+/**
  * Form callback; display a search form in a block.
  */
 function drupalorg_search_block_form(&$form_state, $querystring) {
