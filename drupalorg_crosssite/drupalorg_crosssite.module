@@ -90,9 +90,14 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   );
   $userinfo = '';
   if ($user->uid == 0) {
-    $nav_masthead_links['login-register'] = array('href' => 'user',      'title' => t('Login / Register'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
+    $nav_masthead_links['login-register'] = array('href' => 'user', 'title' => t('Login / Register'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
   }
   else {
+    // If not the main site (or a test server), provide logout link to the main site, since
+    // that would log us out of the single-sign-on-domain. @todo
+    // $single_sign_on_prefix = drupalorg_crosssite_menu_site('main') ? '' : 'http://drupal.org/';
+    
+    // Add user page link and logout link.
     $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user') .' '. l(t('Logout'), 'logout') .'</div>';
   }
   // Make all external links right.
@@ -157,7 +162,7 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
     // REAL cross-site.
     case 'documentation':
       return array(
-        'home'    => array('href' => 'documentation', 'title' => t('Docs Home'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_type('docs', 'book') || drupalorg_crosssite_menu_path('docs', '^(documentation(?!/index|/recent)|handbooks(/|$))')),
+        'home'    => array('href' => 'documentation', 'title' => t('Docs Home'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_type('docs', array('book')) || drupalorg_crosssite_menu_path('docs', '^(documentation(?!/index|/recent)|handbooks(/|$))')),
         'api'     => array('href' => '', 'title' => t('API'), '#site' => 'api', '#active' => drupalorg_crosssite_menu_site('api')),
         'index'   => array('href' => 'documentation/index', 'title' => t('Index'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(documentation/index)(/|$)')),
         'recent'  => array('href' => 'documentation/recent', 'title' => t('Recently updated'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(documentation/recent)(/|$)')),
@@ -166,13 +171,15 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
     // Just on the project site.
     case 'downloads':
       return array(
-        'home'         => array('href' => '??', 'title' => t('Download & Extend Home'), '#site' => 'project'),
-        'core'         => array('href' => 'project/Drupal+project', 'title' => t('Drupal Core'), '#site' => 'project'),
+        // All are exact paths and so theme('links') will make them gain active
+        // classes when on the projects site. Therefore no need for #active. 
+        'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'project'),
+        'core'         => array('href' => 'project/Drupal project', 'title' => t('Drupal Core'), '#site' => 'project'),
         'modules'      => array('href' => 'project/Modules', 'title' => t('Modules'), '#site' => 'project'),
         'themes'       => array('href' => 'project/Themes', 'title' => t('Themes'), '#site' => 'project'),
         'translations' => array('href' => 'project/Translations', 'title' => t('Translations'), '#site' => 'project'),
-        'theme-engine' => array('href' => 'project/Theme+engines', 'title' => t('Theme Engines'), '#site' => 'project'),
-        'profile'      => array('href' => 'project/Installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'project'),
+        'theme-engine' => array('href' => 'project/Theme engines', 'title' => t('Theme Engines'), '#site' => 'project'),
+        'profile'      => array('href' => 'project/Installation profiles', 'title' => t('Installation Profiles'), '#site' => 'project'),
       );
 
     // REAL cross-site.
@@ -181,12 +188,12 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         'home'          => array('href' => '??', 'title' => t('Community Home'), '#site' => 'main'),
         'local-groups'  => array('href' => '??', 'title' => t('Local Groups'), '#site' => 'groups'),
         'online-groups' => array('href' => '??', 'title' => t('Online Groups'), '#site' => 'groups'),
-        'chat'          => array('href' => 'irc', 'title' => t('Chat'), '#site' => 'main'),
+        'chat'          => array('href' => 'irc', 'title' => t('Chat'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^irc(/|$)')),
         // Does not make sense, see question to Mark at http://groups.drupal.org/node/19010
         // 'events'        => array('href' => 'events', 'title' => t('Events'), '#site' => 'groups'),
-        'lists'         => array('href' => 'mailing-lists', 'title' => t('Mailing lists'), '#site' => 'main'),
-        'members'       => array('href' => 'profile', 'title' => t('Member directory'), '#site' => 'main'),
-        'forum'         => array('href' => 'forum', 'title' => t('Forum'), '#site' => 'main'),
+        'lists'         => array('href' => 'mailing-lists', 'title' => t('Mailing lists'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)')),
+        'members'       => array('href' => 'profile', 'title' => t('Member directory'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^profile(/|$)')),
+        'forum'         => array('href' => 'forum', 'title' => t('Forum'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^forum(/|$)') || drupalorg_crosssite_menu_type('main', array('forum'))),
       );
 
     // Just on the jobs site. Will need dynamic listing based on numbers.
