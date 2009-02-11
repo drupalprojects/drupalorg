@@ -30,7 +30,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     'forum'           => array('href' => 'forum',           'title' => t('Community & Support'), '#site' => 'main'),
     'handbooks'       => array('href' => 'handbooks',       'title' => t('Documentation'), '#site' => 'docs'),
     'project'         => array('href' => 'project',         'title' => t('Download & Extend'), '#site' => 'project'),
-    'marketplace'     => array('href' => 'getting-started', 'title' => t('Marketplace'), '#site' => 'main'),
+    'marketplace'     => array('href' => 'services',        'title' => t('Marketplace'), '#site' => 'main'),
     'about'           => array('href' => 'about',           'title' => t('About'), '#site' => 'main'),
   );
   foreach ($nav_header_links as $key => $link) {
@@ -40,7 +40,8 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       $nav_header_links[$key]['href'] = 'http://'. $sites[$link['#site']] .'/'. $link['href'];
     }
   }
-  $vars['nav_header'] = theme('links', $nav_header_links);
+  // Theme as links, and avoid class="links" on it.
+  $vars['nav_header'] = theme('links', $nav_header_links, array());
   
   // == Build the footer navigation
 
@@ -73,7 +74,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   );
   
   $vars['nav_footer'] = '';
-  foreach ($nav_footer_links as $links_column) {
+  foreach ($nav_footer_links as $num => $links_column) {
     foreach ($links_column as $key => $link) {
       // If we are not on the given site, convert the link to an absolute link
       // to the given site. In this case, we can also infer that it is not going
@@ -83,7 +84,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       }
     }
 
-    $vars['nav_footer'] .= '<div class="grid-3">'. theme('links', $links_column) .'</div>';
+    // Theme as links, and avoid class="links" on it.
+    $alpha_omega = $num == 0 ? ' alpha' : $num == count($nav_footer_links) - 1 ? ' omega' : '';
+    $vars['nav_footer'] .= '<div class="grid-3'. $alpha_omega .'">'. theme('links', $links_column, array()) .'</div>';
   }
   
   // Add content header navigation.
@@ -144,8 +147,8 @@ function drupalorg_crosssite_content_menu() {
       }
     }
   
-    // Theme the links for the page.
-    return theme('links', $nav_content_links);
+    // Theme the links for the page, bypassing class="links".
+    return theme('links', $nav_content_links, array());
   }
   
   // Else just return an empty content nav menu.
