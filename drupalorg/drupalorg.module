@@ -58,6 +58,13 @@ function drupalorg_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+
+  $items['about'] = array(
+    'title' => 'About Drupal',
+    'page callback' => 'drupalorg_about',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
   return $items;
 }
 
@@ -131,6 +138,13 @@ function drupalorg_documentation_index() {
  */
 function drupalorg_start() {
   return theme('drupalorg_start');
+}
+
+/**
+ * Page callback for the about Druapl page.
+ */
+function drupalorg_about() {
+  return theme('drupalorg_about');
 }
 
 /**
@@ -242,6 +256,9 @@ function drupalorg_theme() {
     ),
     'drupalorg_home' => array(
       'template' => 'drupalorg-home',
+    ),
+    'drupalorg_about' => array(
+      'template' => 'drupalorg-about',
     ),
   );
 }
