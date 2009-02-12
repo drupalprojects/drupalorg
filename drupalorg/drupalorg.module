@@ -69,7 +69,7 @@ function drupalorg_menu() {
  * @todo
  *   Add caching.
  */
-function drupalorg_download() {
+function drupalorg_home() {
   return theme('drupalorg_home');
 }
 
