@@ -190,6 +190,15 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   // Ensure nice Drupal home page addresses
   if ($form_id == 'user_profile_form') {
     $form['#validate'][] = 'drupalorg_profile_user_edit_validate';
+    // Hack to make the language list a multiselect field (there is no UI
+    // for this in profile module). We need to hack around that profile only
+    // ever stores select field values as strings, so we need to explode what
+    // was in there for our multiselect form.
+    if (isset($form['Personal information']['profile_languages'])) {
+      $form['Personal information']['profile_languages']['#multiple'] = TRUE;
+      $form['Personal information']['profile_languages']['#default_value'] = explode('; ', $form['Personal information']['profile_languages']['#default_value']);
+    }
+    $form['#submit'] = array_merge(array('drupalorg_profile_fix_languages'), $form['#submit']);
   }
   
   // Force a revision log entry when editing existing book nodes.
@@ -398,6 +407,15 @@ function drupalorg_profile_user_edit_validate($form, &$form_state) {
         form_set_error('homepage', t("Your website does not seem to be a Drupal site. If you think we are wrong, please open an issue in the webmasters' queue."));
       }
     }
+  }
+}
+
+/**
+ * Submit handler for the user profile form, to serialize languages to a string.
+ */
+function drupalorg_profile_fix_languages(&$form, &$form_state) {
+  if (is_array($form_state['values']['profile_languages'])) {
+    $form_state['values']['profile_languages'] = join('; ', array_keys($form_state['values']['profile_languages']));
   }
 }
 
