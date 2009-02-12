@@ -46,25 +46,48 @@ function drupalorg_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
-
+  
   return $items;
 }
 
+// == Major landing pages ======================================================
+
+/**
+ * Page callback for the documentation page.
+ *
+ * @todo
+ *   Add caching.
+ */
 function drupalorg_documentation() {
-  // TODO: add caching
   return theme('drupalorg_documentation');
 }
 
+/**
+ * Page callback for the documentation index page.
+ *
+ * @todo
+ *   Add caching.
+ */
 function drupalorg_documentation_index() {
-  // TODO: add caching
   return theme('drupalorg_documentation_index');
 }
 
+/**
+ * Page callback for the getting started page.
+ *
+ * @todo
+ *   Add caching.
+ */
 function drupalorg_start() {
-  // TODO: add caching
   return theme('drupalorg_start');
 }
 
+/**
+ * Implementation of template_preprocess_drupalorg_start().
+ *
+ * @todo
+ *   Add caching.
+ */
 function template_preprocess_drupalorg_start(&$variables) {
   $variables['version'] = 42;
 
@@ -81,16 +104,22 @@ function template_preprocess_drupalorg_start(&$variables) {
    '<a href="#">Marvin</a>'));  // Will be made dynamic, see issue #372243
 }
 
+/**
+ * Page callback for the download page.
+ *
+ * @todo
+ *   Add caching.
+ */
 function drupalorg_download() {
-  // TODO: add caching
   return theme('drupalorg_download');
 }
 
-
-// Taxonomy 
-
-
-
+/**
+ * Implementation of template_preprocess_drupalorg_download().
+ *
+ * @todo
+ *   Add caching.
+ */
 function template_preprocess_drupalorg_download(&$variables) {
   $variables['version'] = 42;
 
@@ -143,6 +172,9 @@ function template_preprocess_drupalorg_download(&$variables) {
    '<a href="#">Marvin</a>'));
 }
 
+/**
+ * Implementation of hook_theme().
+ */
 function drupalorg_theme() {
   return array(
     'drupalorg_documentation' => array(
@@ -159,6 +191,8 @@ function drupalorg_theme() {
     ),
   );
 }
+
+// == Altering existing behavior ===============================================
 
 /**
  * Implementation of hook_form_alter().
