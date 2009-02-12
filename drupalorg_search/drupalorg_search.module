@@ -1,15 +1,19 @@
 <?php
-// $Id  $
+// $Id$
 
 /**
  * @file
- * Drupal.org search customizations.
+ *   Drupal.org search customizations.
  */
 
-// The TID of the "Modules" term.
+/**
+ * The TID of the "Modules" term.
+ */
 define('DRUPALORG_MODULE_TID', 14);
 
-// The TID of the "Themes" term.
+/**
+ * The TID of the "Themes" term.
+ */
 define('DRUPALORG_THEME_TID', 15);
 
 /**
