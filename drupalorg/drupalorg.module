@@ -46,14 +46,17 @@ function drupalorg_menu() {
 }
 
 function drupalorg_documentation() {
+  // TODO: add caching
   return theme('drupalorg_documentation');
 }
 
 function drupalorg_documentation_index() {
+  // TODO: add caching
   return theme('drupalorg_documentation_index');
 }
 
 function drupalorg_start() {
+  // TODO: add caching
   return theme('drupalorg_start');
 }
 
@@ -74,8 +77,14 @@ function template_preprocess_drupalorg_start(&$variables) {
 }
 
 function drupalorg_download() {
+  // TODO: add caching
   return theme('drupalorg_download');
 }
+
+
+// Taxonomy 
+
+
 
 function template_preprocess_drupalorg_download(&$variables) {
   $variables['version'] = 42;
@@ -127,8 +136,6 @@ function template_preprocess_drupalorg_download(&$variables) {
    '<a href="#">Paris Eiffel Tower</a>', 
    '<a href="#">Bluecheese</a>', 
    '<a href="#">Marvin</a>'));
-
-
 }
 
 function drupalorg_theme() {
