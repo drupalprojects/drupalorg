@@ -376,6 +376,13 @@ function drupalorg_crosssite_menu_absolute_links($links) {
       // theme('link') uses the key as class, so add active class that way.
       $key = $key .' active';
     }
+    // Add a tab class for styling.
+    if (isset($link['attributes']['class'])) {
+      $link['attributes']['class'] .= ' nav-tab';
+    }
+    else {
+      $link['attributes']['class'] = 'nav-tab';
+    }
     $activated_links[$key] = $link;
   }
   return $activated_links;
