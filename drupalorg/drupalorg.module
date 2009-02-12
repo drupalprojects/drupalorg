@@ -209,8 +209,8 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
     if (isset($form['Personal information']['profile_languages'])) {
       $form['Personal information']['profile_languages']['#multiple'] = TRUE;
       $form['Personal information']['profile_languages']['#default_value'] = explode('; ', $form['Personal information']['profile_languages']['#default_value']);
+      $form['#submit'] = array_merge(array('drupalorg_profile_fix_languages'), $form['#submit']);
     }
-    $form['#submit'] = array_merge(array('drupalorg_profile_fix_languages'), $form['#submit']);
   }
   
   // Force a revision log entry when editing existing book nodes.
