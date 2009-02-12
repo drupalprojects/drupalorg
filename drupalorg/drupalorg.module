@@ -13,6 +13,11 @@
  */
 define('DRUPALORG_NEWS_VID', 34);
 
+/**
+ * Profile field ID for country.
+ */
+define('DRUPALORG_COUNTRY_PID', 34);
+
 // == Core hooks ===============================================================
 
 /**
@@ -69,6 +74,29 @@ function drupalorg_download() {
 }
 
 /**
+ * Implementation of template_preprocess_page().
+ */
+function drupalorg_preprocess_page(&$vars) {
+  if ($vars['is_front']) {
+    $vars['mission'] = '<h2>Build Today. Innovate Tomorrow.</h2>
+    <p class="standfirst">
+      What can you make with Drupal? Beautiful, personal blogs or mighty, multi-featured, multiuser corporate sites. Go wherever your imagination takes you with our robust, open-source publishing software.
+    </p>';
+  }
+}
+
+/**
+ * Implementation of template_preprocess_drupalorg_home().
+ *
+ * @todo
+ *   Add caching.
+ */
+function drupalorg_preprocess_drupalorg_home(&$vars) {
+  $vars['number_of_users'] = db_result(db_query('SELECT COUNT(*) FROM {users}'));
+  $vars['number_of_countries'] = db_result(db_query('SELECT COUNT(DISTINCT value) FROM {profile_values} WHERE fid = %d', DRUPALORG_COUNTRY_PID));
+}
+
+/**
  * Page callback for the documentation page.
  *
  * @todo
@@ -104,7 +132,7 @@ function drupalorg_start() {
  * @todo
  *   Add caching.
  */
-function template_preprocess_drupalorg_start(&$variables) {
+function drupalorg_preprocess_drupalorg_start(&$variables) {
   $variables['version'] = 42;
 
   $variables['most_popular_modules'] = theme('item_list', array(
@@ -136,7 +164,7 @@ function drupalorg_download() {
  * @todo
  *   Add caching.
  */
-function template_preprocess_drupalorg_download(&$variables) {
+function drupalorg_preprocess_drupalorg_download(&$variables) {
   $variables['version'] = 42;
 
   $variables['most_popular_modules'] = theme('item_list', array(
