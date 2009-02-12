@@ -24,6 +24,10 @@ define('DRUPALORG_RELEASE_TYPE_HANDBOOK_URL', 'http://drupal.org/handbook/cvs/re
 // For now, the general page for release types is the best we've got.
 define('DRUPALORG_SECURITY_UPDATE_HANDBOOK_URL', DRUPALORG_RELEASE_TYPE_HANDBOOK_URL);
 
+/**
+ * Vocabulary used for news forum topic tagging.
+ */
+define('DRUPALORG_NEWS_VID', 34);
 
 /**
  * Implementation of hook_cron().
@@ -183,6 +187,12 @@ function drupalorg_form_alter($form_id, &$form) {
   // Force a revision log entry when editing book nodes.
   elseif ($form_id == 'book_node_form' && isset($form['log']) && arg(1) != 'add') {
     $form['log']['#required'] = TRUE;
+  }
+
+  // Remove the news vocabulary on forum forms, if the user is not an admin.
+  // Used to mark news forum topics with tags.
+  if ($form_id == 'forum_node_form' && !user_access('administer nodes')) {
+    unset($form['taxonomy'][DRUPALORG_NEWS_VID]); 
   }
 }
 
