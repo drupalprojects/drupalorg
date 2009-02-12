@@ -200,8 +200,8 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
 
   // Remove the news vocabulary on forum forms, if the user is not an admin.
   // Used to mark news forum topics with tags.
-  if ($form_id == 'forum_node_form' && !user_access('administer nodes')) {
-    unset($form['taxonomy'][DRUPALORG_NEWS_VID]); 
+  if ($form_id == 'forum_node_form') {
+    $form['taxonomy'][DRUPALORG_NEWS_VID]['#access'] = user_access('administer nodes'); 
   }
 }
 
