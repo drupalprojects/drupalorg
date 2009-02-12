@@ -47,10 +47,26 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
   
+  $items['home'] = array(
+    'title' => 'Drupal Homepage',
+    'page callback' => 'drupalorg_home',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
   return $items;
 }
 
 // == Major landing pages ======================================================
+
+/**
+ * Page callback for the frontpage.
+ *
+ * @todo
+ *   Add caching.
+ */
+function drupalorg_download() {
+  return theme('drupalorg_home');
+}
 
 /**
  * Page callback for the documentation page.
@@ -188,6 +204,9 @@ function drupalorg_theme() {
     ),
     'drupalorg_download' => array(
       'template' => 'drupalorg-download',
+    ),
+    'drupalorg_home' => array(
+      'template' => 'drupalorg-home',
     ),
   );
 }
