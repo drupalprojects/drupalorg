@@ -65,6 +65,14 @@ function drupalorg_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+
+  $items['community'] = array(
+    'title' => 'Community & Support',
+    'page callback' => 'drupalorg_community',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -254,6 +262,26 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
 }
 
 /**
+ * Page callback for the community page.
+ *
+ * @todo
+ *   Add caching.
+ */
+function drupalorg_community() {
+  return theme('drupalorg_community');
+}
+
+/**
+ * Implementation of template_preprocess_drupalorg_community().
+ *
+ * @todo
+ *   Add caching.
+ */
+function drupalorg_preprocess_drupalorg_community(&$variables) {
+  $variables['advertisement'] = ''; // used to pull in the proper advertisement block.
+}
+
+/**
  * Implementation of hook_theme().
  */
 function drupalorg_theme() {
@@ -275,6 +303,9 @@ function drupalorg_theme() {
     ),
     'drupalorg_about' => array(
       'template' => 'drupalorg-about',
+    ),
+    'drupalorg_community' => array(
+      'template' => 'drupalorg-community',
     ),
   );
 }
