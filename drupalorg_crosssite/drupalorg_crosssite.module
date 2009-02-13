@@ -81,6 +81,12 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   
   // Add content header navigation.
   drupalorg_crosssite_content_menu($vars);
+
+  // Add page tool navigation.
+  $page_tools = module_invoke_all('drupalorg_crosssite_page_tools');
+  if (count($page_tools) > 0) {
+    $vars['page_tools'] = theme('links', $page_tools);
+  }
   
   // == Nav masthead links
   
