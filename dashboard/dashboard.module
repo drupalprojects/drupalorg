@@ -1,0 +1,192 @@
+<?php
+
+function dashboard_menu() {
+  return array(
+    'dashboard' => array(
+      'title callback' => 'dashboard_page_title',
+      'page callback' => 'dashboard_page',
+      'access arguments' => array('access user dashboard'),
+      'type' => MENU_CALLBACK,
+      'file' => 'dashboard.page.inc',
+    ),
+    'dashboard/%dashboard_user_page' => array(
+      'title callback' => 'dashboard_page_title',
+      'page callback' => 'dashboard_page',
+      'page arguments' => array(1),
+      'access arguments' => array('access user dashboard'),
+      'type' => MENU_CALLBACK,
+      'file' => 'dashboard.page.inc',
+    ),
+    'dashboard/%dashboard_user_page/reorder-pages' => array(
+      'page callback' => 'dashboard_page_reorder',
+      'access callback' => 'dashboard_valid_token',
+      'access arguments' => array(1),
+      'type' => MENU_CALLBACK,
+      'file' => 'dashboard.page.inc',
+    ),
+    'dashboard/%dashboard_user_page/reorder-gadgets' => array(
+      'page callback' => 'dashboard_gadget_reorder',
+      'page arguments' => array(1),
+      'access callback' => 'dashboard_valid_token',
+      'access arguments' => array(1),
+      'type' => MENU_CALLBACK,
+      'file' => 'dashboard.page.inc',
+    ),
+    'dashboard/%dashboard_user_page/rename' => array(
+      'page callback' => 'dashboard_page_rename',
+      'page arguments' => array(1),
+      'access arguments' => array('access user dashboard'),
+      'type' => MENU_CALLBACK,
+      'file' => 'dashboard.page.inc',
+    ),
+
+    'admin/settings/dashboard' => array(
+      'title' => t('Dashboard'),
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('dashboard_settings_form'),
+      'access arguments' => array('administer dashboard'), 
+      'description' => t('Configure dashboard widgets.'),
+      'file' => 'dashboard.admin.inc',
+    ),
+  );
+}
+
+function dashboard_perm() {
+  return array('administer dashboard', 'access user dashboard');
+}
+
+function dashboard_valid_token($page) {
+  return drupal_valid_token($_POST['token'], 'dashboard ' . $page->page_id);
+}
+
+function dashboard_theme() {
+  return array(
+    'dashboard_page' => array(
+      'arguments' => array(
+        'gadgets' => array(),
+      ),
+      'template' => 'templates/dashboard-page',
+    ),
+    'dashboard_gadget' => array(
+      'arguments' => array(
+        'gadget' => array(),
+      ),
+      'template' => 'templates/dashboard-gadget',
+    ),
+  );
+}
+
+function dashboard_user_page_load($path = NULL) {
+  global $user;
+  static $pages;
+
+  if (!isset($pages)) {
+    $result = db_query('SELECT page_id, path, title, weight FROM {dashboard_page} WHERE uid = %d ORDER BY weight', $user->uid);
+    while ($page = db_fetch_object($result)) {
+      $pages[$page->path] = $page;
+      if (!isset($pages[''])) {
+        $pages[''] = $page;
+      }
+    }
+
+    // Create a fresh dashboard for new users.
+    if (count($pages) == 0) {
+      unset($pages);
+      include './' . drupal_get_path('module', 'dashboard') . '/dashboard.defaults.inc';
+      dashboard_defaults($user->uid);
+      return dashboard_user_page_load($path);
+    }
+  }
+
+  if (is_null($path)) {
+    return $pages;
+  }
+  else {
+    return $pages[$path];
+  }
+}
+
+function dashboard_page_title() {
+  global $user;
+  return $user->name;
+}
+
+function dashboard_drupalorg_crosssite_content_menu_items($matched_menu) {
+  if ($matched_menu == 'dashboard') {
+    global $user;
+
+    $links = array();
+    foreach (dashboard_user_page_load() as $path => $page) {
+      $key = 'dashboard-page-' . $page->page_id .' dashboard-path-'. $page->path;
+      $links[$key] = array(
+        'title' => $page->title,
+        'href' => $path == '' ? 'dashboard' : 'dashboard/' . $page->path,
+        '#site' => 'main',
+      );
+      // Make a place to add an edit icon sprite for the active link.
+      if ($links[$key]['href'] == $_GET['q']) {
+        unset($links[$key]['href']);
+        $links[$key]['title'] = l(check_plain($links[$key]['title']) . '<span class="edit-icon"></span>', $_GET['q'], array('attributes' => array('class' => 'edit', 'title' => t('Edit tab')), 'html' => TRUE));
+        $links[$key]['title'] .= '<a href="#" title="' . t('Delete tab') . '" class="delete"></a>';
+        $links[$key]['#active'] = TRUE;
+        $links[$key]['html'] = TRUE;
+      }
+    }
+    $links['dashboard-profile'] = array(
+      'title' => t('Profile'),
+      'href' => 'user/'. $user->uid,
+      '#site' => 'main',
+    );
+    $links['dashboard-link-add'] = array(
+      'title' => t('Add a tab <strong>+</strong>'),
+      'href' => 'dashboard/add',
+      'html' => TRUE,
+      '#site' => 'main',
+    );
+
+    return $links;
+  }
+}
+
+/**
+ * Add dashboard.js for user profile page.
+ */
+function dashboard_user($op, &$edit, &$account, $category = NULL) {
+  global $user;
+
+  if ($op == 'view' && $account->uid == $user->uid) {
+    include './' . drupal_get_path('module', 'dashboard') . '/dashboard.page.inc';
+    dashboard_add_ui();
+  }
+}
+
+function dashboard_example_dashboard_gadget($gadget_id) {
+  return array(
+    'title' => 'Gadget '. $gadget_id,
+    'link' => 'http://example.com',
+    'content' => 'Hello world',
+  );
+}
+
+function dashboard_profile_dashboard_gadget($gadget_id) {
+  global $user;
+
+  $fields = explode('\n', variable_get('dashboard_profile_fields', ''));
+  $values = array();
+  $result = db_query("SELECT f.title, f.name, v.value FROM {profile_fields} f INNER JOIN {profile_values} v ON v.fid = f.fid AND v.uid = %d WHERE f.name IN (" . db_placeholders($fields, 'text') . ")", array_merge(array($user->uid), $fields));
+  while ($value = db_fetch_object($result)) {
+    $values[$value->name] = $value;
+  }
+  $content = '<dl>';
+  foreach ($fields as $field) {
+    $content .= '<dt>' . check_plain($values[$field]->title) . '</dt>';
+    $content .= '<dd>' . check_plain($values[$field]->value) . '</dd>';
+  }
+  $content .= '</dl>';
+
+  return array(
+    'title' => t('Preferences'),
+    'link' => 'user/' . $user->uid,
+    'content' => $content,
+  );
+}
