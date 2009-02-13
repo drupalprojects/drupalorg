@@ -28,7 +28,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   // among all the subsites. So this is why they are here.
   $nav_header_links = array(
     'getting-started' => array('href' => 'start',           'title' => t('Get Started'), '#site' => 'main'),
-    'forum'           => array('href' => 'forum',           'title' => t('Community & Support'), '#site' => 'main'),
+    'forum'           => array('href' => 'community',       'title' => t('Community & Support'), '#site' => 'main'),
     'handbooks'       => array('href' => 'documentation',   'title' => t('Documentation'), '#site' => 'docs'),
     'project'         => array('href' => 'download',        'title' => t('Download & Extend'), '#site' => 'project'),
     'marketplace'     => array('href' => 'services',        'title' => t('Marketplace'), '#site' => 'main'),
@@ -123,7 +123,8 @@ function drupalorg_crosssite_content_menu(&$vars) {
   $nav_content_areas = array(
     'documentation' => drupalorg_crosssite_menu_site('api') || drupalorg_crosssite_menu_type('docs', array('book')) || drupalorg_crosssite_menu_path('docs', '^(documentation|handbooks)(/|$)'),
     'downloads'     => drupalorg_crosssite_menu_path('project', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('project', array('project_project', 'project_issue', 'project_release')),
-    'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
+    // Events appear at here and as an individual tab list. Commented out from here.
+    'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
     'jobs'          => drupalorg_crosssite_menu_path('groups', '^(jobs)(/|$)'),
     'association'   => drupalorg_crosssite_menu_site('association'),
     'events'        => drupalorg_crosssite_menu_path('groups', '^events(/|$)'),
@@ -189,7 +190,7 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
     // REAL cross-site.
     case 'community':
       return array(
-        'home'          => array('href' => '??', 'title' => t('Community Home'), '#site' => 'main'),
+        'home'          => array('href' => 'community', 'title' => t('Community Home'), '#site' => 'main'),
         'local-groups'  => array('href' => '??', 'title' => t('Local Groups'), '#site' => 'groups'),
         'online-groups' => array('href' => '??', 'title' => t('Online Groups'), '#site' => 'groups'),
         'chat'          => array('href' => 'irc', 'title' => t('Chat'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^irc(/|$)')),
