@@ -59,6 +59,32 @@ function drupalorg_news_preprocess_drupalorg_home(&$vars) {
   $vars['tab_content_news'] = $fresh_news;
 }
 
+function drupalorg_news_news_dashboard_gadget($gadget_id) {
+  // Get the first three news items ordered by descending publication date.
+  $result = db_query_range('SELECT nid FROM {node} WHERE promote = 1 ORDER BY created DESC', array(), 0, 3);
+  $news = '';
+  while ($nid = db_fetch_object($result)) {
+    $node = node_load($nid->nid);
+    $node->links = module_invoke_all('link', 'node', $node, $teaser);
+    drupal_alter('link', $node->links, $node);
+
+    $news .= '<h3 class="h5">'. l($node->title, 'node/'. $node->nid) .'</h3>';
+    $news .= '<p class="posted">'. t('Posted my !user on %date', array('!user' => theme('username', $node), '%date' => format_date($node->created, 'custom', 'F j, Y'))) .'</p>';
+    // Cut it to short and sweet to fit into the design. Strip all tags,
+    // so things like big images, distracting links and paragraph tags will
+    // not end up here. The text should be good in itself to display.
+    $news .= '<p>'. strip_tags(node_teaser($node->teaser, $node->format, 180)) . ' ' . l(t('Read more'), 'node/'. $node->nid) .'</p>';
+
+    $news .= bluecheese_linksterms($node->links, $node->taxonomy, $node->type);
+  }
+
+  return array(
+    'title' => t('Drupal News'),
+    'link' => 'news',
+    'content' => $news,
+  );
+}
+
 // == Blocks for news and planet ===============================================
 
 /**
