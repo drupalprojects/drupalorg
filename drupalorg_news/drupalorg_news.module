@@ -31,6 +31,9 @@ function drupalorg_news_form_alter(&$form, $form_state, $form_id) {
 
 /**
  * Implementation of template_preprocess_drupalorg_home().
+ *
+ * @todo
+ *   Add caching.
  */
 function drupalorg_news_preprocess_drupalorg_home(&$vars) {
   // Get the first three news items ordered by descending publication date.

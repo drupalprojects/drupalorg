@@ -42,7 +42,7 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
         $extra = drupalorg_handbook_revision_maintainers();
         break;
       case 23192: // Recent updates
-        $extra = drupalorg_handbook_recent_updates();
+        $extra = drupalorg_handbook_display_recent_updates();
         break;
     }
     $node->content['body']['#value'] .= $extra;
@@ -236,15 +236,21 @@ function drupalorg_handbook_revision_maintainers() {
 }
 
 /**
- * List most recent updates to book pages for moderation reasons.
+ * API function to get recent update information for the documentation pages.
  */
-function drupalorg_handbook_recent_updates() {
-  $result = db_query_range("SELECT n.nid, n.title, n.changed, r.log, u.uid, u.name
+function drupalorg_handbook_get_recent_updates($limit = 50) {
+  return db_query_range("SELECT n.nid, n.title, n.changed, r.log, u.uid, u.name
     FROM {node} n
     INNER JOIN {book} b ON n.nid = b.nid INNER JOIN {node_revisions} r ON n.vid = r.vid INNER JOIN {users} u ON u.uid = r.uid
     WHERE n.status = 1
     ORDER BY n.changed DESC", 0, 50);
+}
 
+/**
+ * List most recent updates to book pages for moderation reasons.
+ */
+function drupalorg_handbook_display_recent_updates() {
+  $result = drupalorg_handbook_get_recent_updates(50);
   while ($page = db_fetch_object($result)) {
     $rows[] = array(
       l($page->title, "node/$page->nid") .' '. theme('mark', node_mark($page->nid, $page->changed)) . ($page->log ? "<br />". check_plain($page->log) : ''), 
@@ -347,4 +353,21 @@ function drupalorg_handbook_theme($existing, $type, $theme, $path) {
  */
 function theme_drupalorg_handbook_meta_link($link) {
   return '<span>'. $link .'</span>';
+}
+
+/**
+ * Implementation of template_preprocess_drupalorg_home().
+ *
+ * @todo
+ *   Add caching.
+ */
+function drupalorg_handbook_preprocess_drupalorg_home(&$vars) {
+  $result = drupalorg_handbook_get_recent_updates(5);
+  $recent_updates = '';
+  while ($node = db_fetch_object($result)) {
+    $recent_updates .= '<h6>'. l($node->title, 'node/'. $node->nid) .'</h6><p class="submitted">'. theme('node_submitted', $node) .'</p>'; 
+  }
+  // We have no place to link this to in a nice way.
+  // $fresh_news .= '<p>'. l(t('More documentation updates...'), '...') .'</p>';
+  $vars['tab_content_docs'] = $recent_updates;
 }

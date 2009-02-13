@@ -88,7 +88,7 @@
           <?php print $tab_content_news; ?>
         </div>
         <div id="fragment-2" class="ui-tabs-panel ui-tabs-hide">
-          Tab for docs updates.
+          <?php print $tab_content_docs; ?>
         </div>
         <div id="fragment-3" class="ui-tabs-panel ui-tabs-hide">
           Tab for forum posts.
