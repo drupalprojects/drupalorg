@@ -1,6 +1,6 @@
 ; $Id$
-name = Handbook
-description = Special handbook pages
+name = Drupal.org handbooks
+description = Handbook related customizations used on Drupal.org.
 dependencies[] = lists
 package = Drupal.org
 core=6.x
