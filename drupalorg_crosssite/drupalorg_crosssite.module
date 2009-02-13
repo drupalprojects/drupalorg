@@ -116,6 +116,8 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
  * on the API would link out to the docs site).
  */
 function drupalorg_crosssite_content_menu(&$vars) {
+  global $user;
+
   // Specify the high level matching criteria for each menu and let others put
   // in more menus.
   $nav_content_areas = array(
@@ -126,7 +128,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'association'   => drupalorg_crosssite_menu_site('association'),
     'events'        => drupalorg_crosssite_menu_path('groups', '^events(/|$)'),
     'druplicon'     => drupalorg_crosssite_menu_path('main', '^(node/9068|druplicon)(/|$)'),
-    'dashboard'     => drupalorg_crosssite_menu_path('main', '^dashboard(/|$)'),
+    'dashboard'     => drupalorg_crosssite_menu_path('main', '^(dashboard|user/'. $user->uid .')(/|$)'),
   );
   
   // Theoretically, the matching criteria made one of the areas win (have TRUE as
