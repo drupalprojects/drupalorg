@@ -169,7 +169,7 @@ function drupalorg_update_6003() {
     }
     // Tell people this is an archived poll result node, present choices and votes statically.
     $poll_body = '<p>Archived poll results:</p><ul><li>'. join('</li><li>', $poll_body) .'</li></ul>';
-    db_query('UPDATE {node_revisions} SET teaser = %d, body = %d WHERE nid = %d', $poll_body, $poll_body .'<!--break-->', $poll_node->nid);
+    db_query("UPDATE {node_revisions} SET teaser = '%s', body = '%s' WHERE nid = %d", $poll_body, $poll_body .'<!--break-->', $poll_node->nid);
   }
   
   // Now that we have the bodies and teasers, convert all poll nodes to story nodes.
