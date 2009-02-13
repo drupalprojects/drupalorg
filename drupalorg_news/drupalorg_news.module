@@ -1,0 +1,93 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ *   Custom code for the news page, planet Drupal and similar pages.
+ */
+
+/**
+ * Vocabulary used for news forum topic tagging.
+ */
+define('DRUPALORG_NEWS_VID', 34);
+
+/**
+ * Planet Drupal category in the aggregator.
+ */
+define('DRUPALORG_PLANET_CATEGORY', 2);
+
+// == Altering existing behavior ===============================================
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function drupalorg_news_form_alter(&$form, $form_state, $form_id) {
+  // Remove the news vocabulary on forum forms, if the user is not an admin.
+  // Used to mark news forum topics with tags.
+  if ($form_id == 'forum_node_form') {
+    $form['taxonomy'][DRUPALORG_NEWS_VID]['#access'] = user_access('administer nodes'); 
+  }
+}
+
+// == Blocks for news and planet ===============================================
+
+/**
+ * Implementation of hook_block().
+ */
+function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      $blocks['planet-list']['info'] = t('Planet Drupal subscriptions');
+      $blocks['news-terms']['info']  = t('News category filter links');
+      return $blocks;
+
+    case 'view':
+      switch ($delta) {
+        case 'planet-list':
+          $block['subject'] = t('Planet Drupal subscriptions');
+          $block['content'] = drupalorg_news_planet_drupal_block();
+          return $block;
+        case 'news-terms':
+          $block['subject'] = t('Filter news');
+          $block['content'] = drupalorg_news_filter_news();
+          return $block;
+      }
+  }
+}
+
+/**
+ * Block to show the list of sources for the Planet as well as their count.
+ */
+function drupalorg_news_planet_drupal_block() {
+  $output = '';
+  $description = db_result(db_query("SELECT description FROM aggregator_category WHERE cid = %d", DRUPALORG_PLANET_CATEGORY));
+  $result = db_query('SELECT f.* FROM {aggregator_feed} f JOIN {aggregator_category_feed} c ON f.fid = c.fid WHERE c.cid = %d ORDER BY f.title', DRUPALORG_PLANET_CATEGORY);
+
+  $list = '<div class="item-list"><ul>';
+  $counter = 0;
+  while ($feed = db_fetch_object($result)) {
+    $list .= '<li>'.  l($feed->title, $feed->link)  .' ('. l('feed', $feed->url) .')</li>'; 
+    $counter++;
+  }
+  $list .= '</ul></div>';
+  
+  $output .= '<p>'. filter_xss_admin($description) .' '. t('Collecting posts from the following @num sources:', array('@num' => $counter)) .'</p>';
+  $output .= $list;
+  $output .= theme('xml_icon', url('planet/rss.xml'));
+
+  return $output;
+}
+
+/**
+ * News filtering by taxonomy term for the frontpage.
+ */
+function drupalorg_news_filter_news() {
+  $tree = taxonomy_get_tree(DRUPALORG_NEWS_VID);
+  $list_of_terms = array(array('title' => t('All news'), 'href' => 'news'));
+  foreach ($tree as $term) {
+    $list_of_terms[] = array('title' => $term->name, 'href' => 'news/'. $term->tid);
+  }
+  // Using theme links should mark active links with a class, so styling
+  // can be applied to them properly.
+  return theme('links', $list_of_terms);
+}

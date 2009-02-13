@@ -9,11 +9,6 @@
  */
 
 /**
- * Vocabulary used for news forum topic tagging.
- */
-define('DRUPALORG_NEWS_VID', 34);
-
-/**
  * Profile field ID for country.
  */
 define('DRUPALORG_COUNTRY_PID', 17);
@@ -339,12 +334,6 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'book_node_form' && isset($form['revision_information']['log']) && arg(1) != 'add') {
     $form['revision_information']['log']['#required'] = TRUE;
     $form['revision_information']['#collapsed'] = FALSE;
-  }
-  
-  // Remove the news vocabulary on forum forms, if the user is not an admin.
-  // Used to mark news forum topics with tags.
-  if ($form_id == 'forum_node_form') {
-    $form['taxonomy'][DRUPALORG_NEWS_VID]['#access'] = user_access('administer nodes'); 
   }
 }
 
