@@ -94,7 +94,7 @@
           <?php print $tab_content_forums; ?>
         </div>
         <div id="fragment-4" class="ui-tabs-panel ui-tabs-hide">
-          Tab for cvs commits.
+          <?php print $tab_content_cvs; ?>
         </div>
         <div id="fragment-5" class="ui-tabs-panel ui-tabs-hide">
           Tab for more... Whatever that means.
