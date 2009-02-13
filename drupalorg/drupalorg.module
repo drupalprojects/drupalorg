@@ -108,6 +108,8 @@ function drupalorg_preprocess_page(&$vars) {
  * Implementation of template_preprocess_drupalorg_home().
  */
 function drupalorg_preprocess_drupalorg_home(&$vars) {
+  $vars['theme_images_directory'] = drupal_get_path('theme', variable_get('theme_default', 'bluecheese')) .'/images';
+
   // If we do not have data or our data was generated an hour ago,
   // try to generate it again.
   if (!count($stats = variable_get('drupalorg_front_counter_data', array())) || (variable_get('drupalorg_front_counter_time', 0) < (time() - 60*60))) {
