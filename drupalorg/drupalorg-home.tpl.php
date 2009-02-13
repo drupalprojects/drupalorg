@@ -91,7 +91,7 @@
           <?php print $tab_content_docs; ?>
         </div>
         <div id="fragment-3" class="ui-tabs-panel ui-tabs-hide">
-          Tab for forum posts.
+          <?php print $tab_content_forums; ?>
         </div>
         <div id="fragment-4" class="ui-tabs-panel ui-tabs-hide">
           Tab for cvs commits.

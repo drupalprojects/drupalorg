@@ -110,6 +110,20 @@ function drupalorg_preprocess_page(&$vars) {
 function drupalorg_preprocess_drupalorg_home(&$vars) {
   $vars['theme_images_directory'] = drupal_get_path('theme', variable_get('theme_default', 'bluecheese')) .'/images';
 
+  // == Forums tab data/markup
+
+  $sql = db_rewrite_sql("SELECT n.nid, n.title, n.created, n.uid, u.name FROM {node} n INNER JOIN {term_node} tn ON tn.vid = n.vid INNER JOIN {term_data} td ON td.tid = tn.tid INNER JOIN {users} u ON u.uid = u.uid WHERE n.status = 1 AND td.vid = %d ORDER BY n.nid DESC");
+  $result = db_query_range($sql, variable_get('forum_nav_vocabulary', ''), 0, 5);
+  $recent_forums = '';
+  while ($node = db_fetch_object($result)) {
+    $recent_forums .= '<h6>'. l($node->title, 'node/'. $node->nid) .'</h6><p class="submitted">'. theme('node_submitted', $node) .'</p>'; 
+  }
+  // We have no place to link this to in a nice way.
+  // $fresh_news .= '<p>'. l(t('More recent forum topics...'), '...') .'</p>';
+  $vars['tab_content_forums'] = $recent_forums;
+
+  // == Counters for users
+
   // If we do not have data or our data was generated an hour ago,
   // try to generate it again.
   if (!count($stats = variable_get('drupalorg_front_counter_data', array())) || (variable_get('drupalorg_front_counter_time', 0) < (time() - 60*60))) {
