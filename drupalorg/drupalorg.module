@@ -323,7 +323,6 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
     'book_node_form'       => 'edit book pages',
     'forum_node_form'      => 'administer nodes',
     'page_node_form'       => 'administer nodes',
-    'simplenews_node_form' => 'create newsletter',
     'story_node_form'      => 'administer nodes',
   );
   // Override the access for attachments if it's a forbidden form,
@@ -365,12 +364,6 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
       $form['Personal information']['profile_languages']['#default_value'] = explode('; ', $form['Personal information']['profile_languages']['#default_value']);
       $form['#submit'] = array_merge(array('drupalorg_profile_fix_languages'), $form['#submit']);
     }
-  }
-  
-  // Force a revision log entry when editing existing book nodes.
-  if ($form_id == 'book_node_form' && isset($form['revision_information']['log']) && arg(1) != 'add') {
-    $form['revision_information']['log']['#required'] = TRUE;
-    $form['revision_information']['#collapsed'] = FALSE;
   }
 }
 

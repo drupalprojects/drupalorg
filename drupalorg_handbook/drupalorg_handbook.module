@@ -2,48 +2,66 @@
 // $Id$
 
 /**
- * Taxonomy vid fro the "Drupal versions" vocabulary.
+ * @file
+ *   Customizations and blocks for the handbook pages.
  */
-define('HANDBOOK_VERSION_VID', 5);
+
+/**
+ * Taxonomy vid for the "Drupal versions" vocabulary.
+ */
+define('DRUPALORG_HANDBOOK_VERSION_VID', 5);
+
+// == Core hooks ===============================================================
 
 /**
  * Implementation of hook_nodeapi().
  */
-function handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
+function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {
     $extra = '';
     switch ($node->nid) {
       case 43633: // Handbook pages with comments
-        $extra = handbook_with_comments();
+        $extra = drupalorg_handbook_with_comments();
         break;
       case 43639: // Most popular handbooks
-        $extra = handbook_most_popular();
+        $extra = drupalorg_handbook_most_popular();
         break;
       case 322: // Mailing list subscription
         $extra = drupal_get_form('lists_subscribe_form');
         break;
       case 13355: // Site maintainers
-        $extra = handbook_site_maintainers();
+        $extra = drupalorg_handbook_site_maintainers();
         break;
       case 109372: // Handbook maintainers
-        $extra = handbook_maintainers();
+        $extra = drupalorg_handbook_maintainers();
         break;
       case 14205: // Book contributors
-        $extra = handbook_book_contributors();
+        $extra = drupalorg_handbook_book_contributors();
         break;
       case 263594: // Revision maintainers
-        $extra = handbook_revision_maintainers();
+        $extra = drupalorg_handbook_revision_maintainers();
         break;
       case 23192: // Recent updates
-        $extra = handbook_recent_updates();
+        $extra = drupalorg_handbook_recent_updates();
         break;
     }
     $node->content['body']['#value'] .= $extra;
     
     if (!empty($node->book['bid'])) {
       // Prepend the handbook meta data to book bodies.
-      $node->content['body']['#value'] = handbook_meta_data($node) . $node->content['body']['#value'];
+      $node->content['body']['#value'] = drupalorg_handbook_meta_data($node) . $node->content['body']['#value'];
     }
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function drupalorg_handbook_form_alter(&$form, $form_state, $form_id) {
+  // Force a revision log entry when editing existing book nodes.
+  if ($form_id == 'book_node_form' && isset($form['revision_information']['log']) && arg(1) != 'add') {
+    $form['revision_information']['log']['#required'] = TRUE;
+    $form['revision_information']['#collapsed'] = FALSE;
   }
 }
 
@@ -55,7 +73,7 @@ function handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) 
  * @return
  *   The HTML code for the book meta information.
  */
-function handbook_meta_data($node) {
+function drupalorg_handbook_meta_data($node) {
   if (count($node->taxonomy)) {
     // Group the terms by vid.
     $taxonomy = array();
@@ -63,20 +81,20 @@ function handbook_meta_data($node) {
       $taxonomy[$term->vid][] = $term;
     }
 
-    if (count($taxonomy[HANDBOOK_VERSION_VID])) { 
+    if (count($taxonomy[DRUPALORG_HANDBOOK_VERSION_VID])) { 
       // Make list of versions associated to handbook page.
       $links = array();
-      foreach ($taxonomy[HANDBOOK_VERSION_VID] as $tag) {
-        $links[] = theme('handbook_meta_link', l($tag->name, 'taxonomy/term/'. $tag->tid));
+      foreach ($taxonomy[DRUPALORG_HANDBOOK_VERSION_VID] as $tag) {
+        $links[] = theme('drupalorg_handbook_meta_link', l($tag->name, 'taxonomy/term/'. $tag->tid));
       }
       $versions = implode(', ', $links);
     }
     /*
-    if (count($taxonomy[HANDBOOK_VERSION_VID])) {
-      // @todo Adjust HANDBOOK_VERSION_VID to the vid of the new feature vocabulary
+    if (count($taxonomy[DRUPALORG_HANDBOOK_VERSION_VID])) {
+      // @todo Adjust DRUPALORG_HANDBOOK_VERSION_VID to the vid of the new feature vocabulary
       $links = array();
-      foreach ($taxonomy[HANDBOOK_VERSION_VID] as $tag) {
-        $links[] = theme('handbook_meta_link', l($tag->name, 'taxonomy/term/'. $tag->tid));
+      foreach ($taxonomy[DRUPALORG_HANDBOOK_VERSION_VID] as $tag) {
+        $links[] = theme('drupalorg_handbook_meta_link', l($tag->name, 'taxonomy/term/'. $tag->tid));
       }
       $features = implode(', ', $links);
     }
@@ -90,7 +108,7 @@ function handbook_meta_data($node) {
   // Collect a list of people who have edited the book page ever.
   $authors_query = db_query("SELECT u.uid, u.name FROM {node_revisions} nr JOIN {users} u ON nr.uid = u.uid WHERE nid = %d GROUP BY u.uid ORDER BY timestamp", $node->nid);
   while ($author = db_fetch_object($authors_query)) {
-    $author_links[] = theme('handbook_meta_link', l($author->name, 'user/'. $author->uid));
+    $author_links[] = theme('drupalorg_handbook_meta_link', l($author->name, 'user/'. $author->uid));
   }
   $authors = implode(', ', $author_links);
 
@@ -99,13 +117,13 @@ function handbook_meta_data($node) {
   // @todo Add alerts (discussion pages) when available.
   $alerts = NULL;
 
-  return theme('handbook_meta_data', $versions, $features, $modified, $authors, $languages, $alerts);
+  return theme('drupalorg_handbook_meta_data', $versions, $features, $modified, $authors, $languages, $alerts);
 }
 
 /**
  * List handbook pages with comments in descending comment order.
  */
-function handbook_with_comments() {
+function drupalorg_handbook_with_comments() {
   $header = array(
     array('data' => 'Page'),
     array('data' => 'Comments', 'field' => 'comment_count', 'sort' => 'desc'),
@@ -126,7 +144,7 @@ function handbook_with_comments() {
 /**
  * List pages ordered by visit number descending order.
  */
-function handbook_most_popular() {
+function drupalorg_handbook_most_popular() {
   $header = array('Rank', 'Page', 'Visits today', 'Total visits');
 
   $result = db_query("SELECT n.nid, n.title, c.daycount, c.totalcount
@@ -144,7 +162,7 @@ function handbook_most_popular() {
 /**
  * List usernames with site maintainer role.
  */
-function handbook_site_maintainers() {
+function drupalorg_handbook_site_maintainers() {
   $output = 'If you have been around for a while, and you want to help maintain Drupal.org and are willing to accept the added responsibilities that come with it, sign up on the <a href="http://drupal.org/mailing-lists">Infrastructure team</a> list.';
   $output .= '<ol>';
   $result = db_query("SELECT DISTINCT(u.uid), u.name
@@ -161,7 +179,7 @@ function handbook_site_maintainers() {
 /**
  * List usernames with handbook maintainer role.
  */
-function handbook_maintainers() {
+function drupalorg_handbook_maintainers() {
   $output = '<p>If you are interested in helping maintain/update/correct the documentation on Drupal.org, read up on the <a href="http://drupal.org/node/24572">many ways to get involved</a>.</p>';
   $output .= '<p>Note: Many of our <a href="/site-maintainers">site maintainers</a> also participate on the documentation team and are not listed here. Due to their broader responsibilities on drupal.org, site maintainers are listed separately.</p>';
   $output .= '<ol>';
@@ -179,7 +197,7 @@ function handbook_maintainers() {
 /**
  * Count and list contributors to the books.
  */
-function handbook_book_contributors() {
+function drupalorg_handbook_book_contributors() {
   $result = db_query("SELECT u.uid, u.name, COUNT(n.nid) AS pages
   FROM {node} n INNER JOIN {users} u ON n.uid = u.uid
   WHERE n.type = 'book' AND n.status = 1 AND n.moderate = 0
@@ -196,7 +214,7 @@ function handbook_book_contributors() {
 /**
  * Collect and cache revision maintainers (those who made revisions to books).
  */
-function handbook_revision_maintainers() {
+function drupalorg_handbook_revision_maintainers() {
   if ($cache = cache_get('node_263594')) {
     return $cache->data;
   }
@@ -220,7 +238,7 @@ function handbook_revision_maintainers() {
 /**
  * List most recent updates to book pages for moderation reasons.
  */
-function handbook_recent_updates() {
+function drupalorg_handbook_recent_updates() {
   $result = db_query_range("SELECT n.nid, n.title, n.changed, r.log, u.uid, u.name
     FROM {node} n
     INNER JOIN {book} b ON n.nid = b.nid INNER JOIN {node_revisions} r ON n.vid = r.vid INNER JOIN {users} u ON u.uid = r.uid
@@ -244,7 +262,7 @@ function handbook_recent_updates() {
 /**
  * License and quick links blocks for docs.
  */
-function handbook_block($op = 'list', $delta = 0, $edit = array()) {
+function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
       $blocks[0]['info'] = t('Handbook License');
@@ -254,16 +272,16 @@ function handbook_block($op = 'list', $delta = 0, $edit = array()) {
     case 'view':
       switch($delta) {
         case 0:
-          if (handbook_block_is_visible()) {
+          if (drupalorg_handbook_block_is_visible()) {
             $block['subject'] = t('Handbook license');
-            $block['content'] = handbook_license();
+            $block['content'] = drupalorg_handbook_license();
             return $block;
           }
 
         case 1:
-          if (handbook_block_is_visible()) {
+          if (drupalorg_handbook_block_is_visible()) {
             $block['subject'] = t('Documentation Quick Links');
-            $block['content'] = handbook_doc_quick_links();
+            $block['content'] = drupalorg_handbook_doc_quick_links();
             return $block;
           }
      }
@@ -275,14 +293,14 @@ function handbook_block($op = 'list', $delta = 0, $edit = array()) {
  *
  * Based on Drupal 6 code from book_block().
  */
-function handbook_block_is_visible() {
+function drupalorg_handbook_block_is_visible() {
   return ($node = menu_get_object()) && !empty($node->book['bid']);
 }
 
 /**
  * Quick links on handbook pages.
  */
-function handbook_doc_quick_links() {
+function drupalorg_handbook_doc_quick_links() {
   $output = <<<EOT
   <ul>
    <li><a href="/handbook/modules">Module documentation</a></li>
@@ -300,20 +318,20 @@ EOT;
 /**
  * License block for the handbook pages.
  */
-function handbook_license() {
+function drupalorg_handbook_license() {
   return t('The Drupal handbook pages are © 2000-!year by the <a href="@contributors_link">individual contributors</a> and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>', array('!year' => date('Y'), '@contributors_link' => url('node/14205'), '@ccl_url' => url('node/14307'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html')));
 }
 
 /**
  * Implementation of hook_theme().
  */
-function handbook_theme($existing, $type, $theme, $path) {
+function drupalorg_handbook_theme($existing, $type, $theme, $path) {
   return array(
-    'handbook_meta_data' => array(
+    'drupalorg_handbook_meta_data' => array(
       'arguments' => array('versions' => NULL, 'features' => NULL, 'modified' => NULL, 'authors' => NULL, 'languages' => NULL, 'alerts' => NULL),
       'template' => 'handbook-meta-data',
     ),
-    'handbook_meta_link' => array(
+    'drupalorg_handbook_meta_link' => array(
       'arguments' => array('link' => NULL),
     ),
   );
@@ -327,6 +345,6 @@ function handbook_theme($existing, $type, $theme, $path) {
  * @return
  *   The link wrapped in spans to make it possible to use varying width buttons.
  */
-function theme_handbook_meta_link($link) {
+function theme_drupalorg_handbook_meta_link($link) {
   return '<span>'. $link .'</span>';
 }
