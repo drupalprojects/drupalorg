@@ -76,12 +76,7 @@
 <div id="front-bottom-right" class="grid-6 omega">
   <div id="front-bottom-right-inner">
     <div class="block-content">
-      <p>New Drupal Book Published: Drupal Multimedia</p>
-      <p>September 18, 2008</p>
-      <p>A year after answering Dries Buytaert's call for Drupal book authors, Aaron Winborn is pleased to announce the publication of Drupal Multimedia, which is now available! Read more</p>
-      <p>Drupal Wins Best Overall 2008 Open Source CMS Award for Second Year in a Row</p>
-      <p>Drupal wins 2008 Best PHP Open Source CMS from Packt Publishing</p>
-      <p>More news...</p>
+      <?php print $tab_content_news; ?>
     </div>
   </div>
 </div>
