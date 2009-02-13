@@ -136,6 +136,7 @@ function dashboard_drupalorg_crosssite_content_menu_items($matched_menu) {
       'title' => t('Profile'),
       'href' => 'user/'. $user->uid,
       '#site' => 'main',
+      '#active' => drupalorg_crosssite_menu_path('main', '^user/'. $user->uid. '($|/)'),
     );
     $links['dashboard-link-add'] = array(
       'title' => t('Add a tab <strong>+</strong>'),
