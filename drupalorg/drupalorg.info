@@ -2,4 +2,6 @@
 name = Drupal.org
 description = "Customizations and tweaks for drupal.org"
 package = Drupal.org
+;@todo: just commented out to ease development for those not working on the jquery part
+;dependencies = jquery_ui
 core = 6.x

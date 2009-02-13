@@ -77,6 +77,10 @@ function drupalorg_menu() {
  *   Add caching.
  */
 function drupalorg_home() {
+  if (module_exists('jquery_ui')) {
+    jquery_ui_add('ui.tabs');
+    drupal_add_js("Drupal.behaviors.frontTabs = function() { $('#rotate > ul').tabs({ fx: { opacity: 'toggle' } }).tabs('rotate', 0); };", 'inline');
+  }
   return theme('drupalorg_home');
 }
 

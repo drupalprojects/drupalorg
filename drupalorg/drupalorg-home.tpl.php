@@ -76,7 +76,30 @@
 <div id="front-bottom-right" class="grid-6 omega">
   <div id="front-bottom-right-inner">
     <div class="block-content">
-      <?php print $tab_content_news; ?>
+      <div id="rotate">
+        <ul class="ui-tabs-nav">
+          <li class="ui-tabs-selected"><a href="#fragment-1">News</a></li>
+          <li><a href="#fragment-2">Docs updates</a></li>
+          <li><a href="#fragment-3">Forum posts</a></li>
+          <li><a href="#fragment-4">Commits</a></li>
+          <li><a href="#fragment-5">More</a></li>
+        </ul>
+        <div id="fragment-1" class="ui-tabs-panel">
+          <?php print $tab_content_news; ?>
+        </div>
+        <div id="fragment-2" class="ui-tabs-panel ui-tabs-hide">
+          Tab for docs updates.
+        </div>
+        <div id="fragment-3" class="ui-tabs-panel ui-tabs-hide">
+          Tab for forum posts.
+        </div>
+        <div id="fragment-4" class="ui-tabs-panel ui-tabs-hide">
+          Tab for cvs commits.
+        </div>
+        <div id="fragment-5" class="ui-tabs-panel ui-tabs-hide">
+          Tab for more... Whatever that means.
+        </div>
+      </div>
     </div>
   </div>
 </div>
