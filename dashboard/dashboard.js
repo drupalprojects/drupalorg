@@ -24,7 +24,7 @@ Drupal.behaviors.dashboard = function(context) {
           token: Drupal.settings.dashboardToken,
           column_0: gadgets[0],
           column_1: gadgets[1],
-          column_2: gadgets[2],
+          column_2: gadgets[2]
         });
         dashboardSetColumnHeight(0);
       }
@@ -65,7 +65,7 @@ Drupal.behaviors.dashboardNavigation = function(context) {
       stop: function(event, ui) {
         jQuery.post(Drupal.settings.basePath + 'dashboard/' + Drupal.settings.dashboardPage + '/reorder-pages', {
           token: Drupal.settings.dashboardToken,
-          pages: $navigation.sortable('toArray').join(',').replace(/dashboard-page-/g, ''),
+          pages: $navigation.sortable('toArray').join(',').replace(/dashboard-page-/g, '')
         });
         $navigation.find('>ul>li:not(.dashboard-link-add, .dashboard-profile)').each(function() {
           $this = $(this);
