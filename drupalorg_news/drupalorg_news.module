@@ -43,8 +43,10 @@ function drupalorg_news_preprocess_drupalorg_home(&$vars) {
       // The first news item has a blurb displayed.
       $fresh_news .= '<h6>'. l($node->title, 'node/'. $node->nid) .'</h6>';
       $fresh_news .= '<p class="event">'. format_date($node->created, 'custom', 'F j, Y') .'</p>';
-      // Cut it to short and sweet to fit into the design.
-      $fresh_news .= '<p>'. node_teaser($node->teaser, $node->format, 180) . l(t('Read more'), 'node/'. $node->nid) .'</p>';
+      // Cut it to short and sweet to fit into the design. Strip all tags,
+      // so things like big images, distracting links and paragraph tags will
+      // not end up here. The text should be good in itself to display.
+      $fresh_news .= '<p>'. strip_tags(node_teaser($node->teaser, $node->format, 180)) . l(t('Read more'), 'node/'. $node->nid) .'</p>';
     }
     else {
       // Rest of the items have just their title displayed.
