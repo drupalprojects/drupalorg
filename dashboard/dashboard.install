@@ -10,6 +10,38 @@ function dashboard_uninstall() {
 
 function dashboard_schema() {
   return array(
+    'dashboard_gadget_registry' => array(
+      'fields' => array(
+        'path' => array(
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+        ),
+        'module' => array(
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+        ),
+        'name' => array(
+          'type' => 'varchar',
+          'length' => 40,
+          'not null' => TRUE,
+        ),
+        'title' => array(
+          'type' => 'varchar',
+          'length' => 100,
+          'not null' => TRUE,
+        ),
+      ),
+      'primary key' => array(
+        array('path', 30),
+        array('module', 10),
+        array('name', 10),
+      ),
+      'indexes' => array(
+        'title' => array('title'),
+      ),
+    ),
     'dashboard_page' => array(
       'fields' => array(
         'page_id' => array(
@@ -24,7 +56,7 @@ function dashboard_schema() {
         ),
         'path' => array(
           'type' => 'varchar',
-          'length' => 100,
+          'length' => 22,
           'not null' => TRUE,
         ),
         'weight' => array(
@@ -35,7 +67,7 @@ function dashboard_schema() {
         ),
         'title' => array(
           'type' => 'varchar',
-          'length' => 100,
+          'length' => 20,
           'not null' => TRUE,
         ),
       ),

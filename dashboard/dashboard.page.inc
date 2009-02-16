@@ -5,14 +5,12 @@
  */
 function dashboard_add_ui($page = NULL) {
   jquery_ui_add(array('ui.sortable'));
-  drupal_add_css(drupal_get_path('module', 'dashboard') . '/dashboard.css');
   drupal_add_js(array(
     'dashboardPage' => $page->path,
     'dashboardToken' => drupal_get_token('dashboard ' . $page->page_id),
     'dashboardPageAddForm' => drupal_get_form('dashboard_page_add_form'),
     'dashboardPageEditForm' => drupal_get_form('dashboard_page_edit_form', $page),
   ),'setting');
-  drupal_add_js(drupal_get_path('module', 'dashboard') . '/dashboard.js');
 }
 
 function dashboard_page($page = NULL) {
@@ -49,6 +47,7 @@ function dashboard_page_add_form($form_state) {
     '#prefix' => '<div class="container-inline">',
     '#type' => 'textfield',
     '#size' => 15,
+    '#maxlength' => 20,
     '#required' => TRUE,
   );
   $form['submit'] = array(

@@ -93,7 +93,9 @@ Drupal.behaviors.dashboardNavigation = function(context) {
           }
         }
       }).focus();
-      $('body').bind('click', dashboardAddPageBodyClick);
+      Drupal.settings.dashboardBodyClickParent = '#dashboard-page-add-form';
+      Drupal.settings.dashboardBodyClickCallback = dashboardRemoveAddPageForm;
+      $('body').bind('click', dashboardBodyClick);
       return false;
     });
 
@@ -126,7 +128,9 @@ Drupal.behaviors.dashboardNavigation = function(context) {
           }
         }
       }).focus();
-      $('body').bind('click', dashboardEditPageBodyClick);
+      Drupal.settings.dashboardBodyClickParent = '#dashboard-page-edit-form';
+      Drupal.settings.dashboardBodyClickCallback = dashboardRemoveEditPageForm;
+      $('body').bind('click', dashboardBodyClick);
       return false;
     });
 
@@ -143,17 +147,38 @@ Drupal.behaviors.dashboardNavigation = function(context) {
         $(this).attr('value', Drupal.t('Deleting…'));
       });
 
-      $('body').bind('click', dashboardEditPageBodyClick);
+      Drupal.settings.dashboardBodyClickParent = '#dashboard-page-edit-form';
+      Drupal.settings.dashboardBodyClickCallback = dashboardRemoveEditPageForm;
+      $('body').bind('click', dashboardBodyClick);
       $dashboardEditForm.find('a.cancel').click(dashboardRemoveEditPageForm);
       return false;
     });
-    dashboardSetColumnHeight(0);
+  }
+}
+
+/**
+ * Add to dashboard links.
+ */
+Drupal.behaviors.dashboardAdd = function(context) {
+  $dashboardAdd = $('#page-tools li.dashboard-add-gadget>a:not(.dashboard-processed)', context).addClass('dashboard-processed');
+
+  if ($dashboardAdd.length > 0) {
+    $dashboardAdd.click(function() {
+      $(this).addClass('selected').parent().append(Drupal.settings.dashboardAddGadget);
+      Drupal.settings.dashboardBodyClickParent = 'li.dashboard-add-gadget';
+      Drupal.settings.dashboardBodyClickCallback = dashboardRemoveAddGadget;
+      $('body').bind('click', dashboardBodyClick);
+      return false;
+    });
   }
 }
 
 /**
  * Set equal height columns with addional space to increase the size of
  * drag zones.
+ *
+ * @param add
+ *   Number of pixels to add to the column height.
  */
 function dashboardSetColumnHeight(add) {
   height = add;
@@ -167,9 +192,9 @@ function dashboardSetColumnHeight(add) {
 /**
  * Hide the Add page form if click is outside the form.
  */
-function dashboardAddPageBodyClick(event) {
-  if ($(event.target).parents('#dashboard-page-add-form').length == 0) {
-    dashboardRemoveAddPageForm();
+function dashboardBodyClick(event) {
+  if ($(event.target).parents(Drupal.settings.dashboardBodyClickParent).length == 0) {
+    Drupal.settings.dashboardBodyClickCallback();
   }
 }
 
@@ -179,16 +204,7 @@ function dashboardAddPageBodyClick(event) {
 function dashboardRemoveAddPageForm() {
   $dashboardAddForm.remove();
   $navigation.find('>ul>li.dashboard-link-add>a').show();
-  $('body').unbind('click', dashboardAddPageBodyClick);
-}
-
-/**
- * Hide the Edit page form if click is outside the form.
- */
-function dashboardEditPageBodyClick(event) {
-  if ($(event.target).parents('#dashboard-page-edit-form').length == 0) {
-    dashboardRemoveEditPageForm();
-  }
+  $('body').unbind('click', dashboardBodyClick);
 }
 
 /**
@@ -197,5 +213,9 @@ function dashboardEditPageBodyClick(event) {
 function dashboardRemoveEditPageForm() {
   $dashboardEditForm.remove();
   $dashboardActiveSpan.removeClass('hover').find('>a').show();
-  $('body').unbind('click', dashboardEditPageBodyClick);
+  $('body').unbind('click', dashboardBodyClick);
+}
+
+function dashboardRemoveAddGadget() {
+  $dashboardAdd.removeClass('selected').parent().find('>ul').remove();
 }

@@ -1,6 +1,15 @@
 <?php
 
 function dashboard_menu() {
+  // Rebuild the gadget registry.
+  db_query("DELETE FROM {dashboard_gadget_registry}");
+  foreach (module_implements('dashboard_gadget') as $module) {
+    foreach (module_invoke($module, 'dashboard_gadget') as $gadget) {
+      $gadget['module'] = $module;
+      drupal_write_record('dashboard_gadget_registry', $gadget);
+    }
+  }
+
   return array(
     'dashboard' => array(
       'title callback' => 'dashboard_page_title',
@@ -51,6 +60,13 @@ function dashboard_menu() {
   );
 }
 
+function dashboard_init() {
+  if (user_access('access user dashboard')) {
+    drupal_add_css(drupal_get_path('module', 'dashboard') . '/dashboard.css');
+    drupal_add_js(drupal_get_path('module', 'dashboard') . '/dashboard.js');
+  }
+}
+
 function dashboard_perm() {
   return array('administer dashboard', 'access user dashboard');
 }
@@ -72,6 +88,16 @@ function dashboard_theme() {
         'gadget' => array(),
       ),
       'template' => 'templates/dashboard-gadget',
+    ),
+  );
+}
+
+function dashboard_dashboard_gadget() {
+  return array(
+    array(
+      'path' => 'user/%',
+      'name' => 'profile',
+      'title' => t('Preferences'),
     ),
   );
 }
@@ -146,6 +172,58 @@ function dashboard_drupalorg_crosssite_content_menu_items($matched_menu) {
     );
 
     return $links;
+  }
+}
+
+function dashboard_drupalorg_crosssite_page_tools() {
+  // Find gadgets for the current path.
+  $item = menu_get_item();
+  $result = db_query("SELECT path, module, name, title FROM {dashboard_gadget_registry} WHERE path = '%s' ORDER BY title", $item['path']);
+  while ($gadget = db_fetch_object($result)) {
+    $gadgets[] = $gadget;
+  }
+
+  if (count($gadgets) > 0) {
+    if (user_access('access user dashboard')) {
+      if (count($gadgets) > 1) {
+        // TODO gadget selection 
+      }
+
+      // Find the user's pages.
+      $pages = array(
+        array(
+          'title' => '<strong>' . t('Select Tab') . '</strong>',
+          'html' => TRUE,
+        ),
+      );
+      foreach (dashboard_user_page_load() as $path => $page) {
+        $pages['dashboard-add-page ' . $page->path] = array(
+          'title' => $page->title,
+          'href' => 'dashboard/' . $path,
+        );
+      }
+
+      drupal_add_js(array(
+        'dashboardAddGadget' => theme('links', $pages),
+      ),'setting');
+
+      return array(
+        'dashboard-add-gadget profile' => array(
+          'href' => 'dashboard',
+          'title' => t('Add to Dashboard'),
+          'attributes' => array('class' => 'add'),
+        ),
+      );
+    }
+    else {
+      return array(
+        'dashboard-add profile' => array(
+          'href' => 'user',
+          'title' => t('Log in to Add to Dashboard'),
+          'attributes' => array('class' => 'add'),
+        ),
+      );
+    }
   }
 }
 

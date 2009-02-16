@@ -2,6 +2,30 @@ html.js #dashboard div.noscript {
   display: none;
 }
 
+div#page-tools li.dashboard-add-gadget {
+  position: relative;
+}
+div#page-tools li.dashboard-add-gadget a.selected {
+  background-image: none;
+  background: #1885c8;
+  color: #fff;
+  padding: 0 6px;
+  font-weight: bold;
+}
+div#page-tools li.dashboard-add-gadget ul strong {
+  display: block;
+  width: 8em; /* min-width */
+}
+#page-tools li.dashboard-add-gadget ul {
+  position: absolute;
+  top: 1.2em;
+  right: 0;
+  z-index: 1;
+  background: #fff;
+  border: 3px solid #1885c8;
+  padding: 6px 10px 10px 10px;
+}
+
 .dashboard-link-add a,
 .dashboard-link-add a:link,
 .dashboard-link-add a:visited,
