@@ -774,6 +774,6 @@ function drupalorg_project_preprocess_drupalorg_home(&$vars) {
     $recent_updates .= '<h6>'. l(truncate_utf8($message->message, 80) .'...', 'cvs', array('query' => 'commit='. $message->cid)) .'</h6><p class="submitted">'. theme('node_submitted', $message) .'</p>'; 
   }
   // We have no place to link this to in a nice way.
-  $fresh_news .= '<p>'. l(t('More commit messages...'), 'cvs') .'</p>';
+  $recent_updates .= '<p>'. l(t('More commit messages...'), 'cvs') .'</p>';
   $vars['tab_content_cvs'] = $recent_updates;
 }

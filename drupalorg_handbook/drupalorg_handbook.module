@@ -243,7 +243,7 @@ function drupalorg_handbook_get_recent_updates($limit = 50) {
     FROM {node} n
     INNER JOIN {book} b ON n.nid = b.nid INNER JOIN {node_revisions} r ON n.vid = r.vid INNER JOIN {users} u ON u.uid = r.uid
     WHERE n.status = 1
-    ORDER BY n.changed DESC", 0, 50);
+    ORDER BY n.changed DESC", 0, $limit);
 }
 
 /**
