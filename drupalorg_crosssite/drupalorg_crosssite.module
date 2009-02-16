@@ -185,7 +185,7 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         // All are exact paths and so theme('links') will make them gain active
         // classes when on the projects site. Therefore no need for #active. 
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'project'),
-        'core'         => array('href' => 'project/Drupal project', 'title' => t('Drupal Core'), '#site' => 'project'),
+        'core'         => array('href' => 'project/drupal', 'title' => t('Drupal Core'), '#site' => 'project'),
         'modules'      => array('href' => 'project/Modules', 'title' => t('Modules'), '#site' => 'project'),
         'themes'       => array('href' => 'project/Themes', 'title' => t('Themes'), '#site' => 'project'),
         'translations' => array('href' => 'project/Translations', 'title' => t('Translations'), '#site' => 'project'),
