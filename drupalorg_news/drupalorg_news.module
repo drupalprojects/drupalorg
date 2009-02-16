@@ -16,6 +16,60 @@ define('DRUPALORG_NEWS_VID', 34);
  */
 define('DRUPALORG_PLANET_CATEGORY', 2);
 
+// == Core hooks ===============================================================
+
+/**
+ * Implementation of hook_menu().
+ */
+function drupalorg_menu() {
+  $items['news'] = array(
+    'title' => 'News',
+    'page callback' => 'drupalorg_news_page',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['news/%drupalorg_news_term'] = array(
+    'title' => 'News',
+    'page callback' => 'drupalorg_news_page',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Menu loader. Load news term if it is indeed from the given vocabulary.
+ */
+function drupalorg_news_term_load($tid) {
+  if (($term = taxonomy_get_term($tid)) && ($term->vid = DRUPALORG_NEWS_VID)) {
+    return $term;
+  }
+  return NULL;
+}
+
+/**
+ * One of the most visited pages of the site, so hardcode queries.
+ */
+function drupalorg_news_page($term) {
+  if (!isset($tid)) {
+    $result = pager_query(db_rewrite_sql('SELECT n.nid, n.sticky, n.created FROM {node} n WHERE n.promote = 1 AND n.status = 1 ORDER BY n.sticky DESC, n.created DESC'), variable_get('default_nodes_main', 10));
+    // Add existing "front page" feed if main news page.
+    $feed_url = url('rss.xml', array('absolute' => TRUE));
+    drupal_add_feed($feed_url, variable_get('site_name', 'Drupal') .' '. t('RSS'));
+  }
+  else {
+    $result = pager_query(db_rewrite_sql('SELECT n.nid, n.sticky, n.created FROM {node} n LEFT JOIN {term_node} t ON t.vid = n.vid WHERE n.promote = 1 AND n.status = 1 AND t.tid = %d ORDER BY n.sticky DESC, n.created DESC'), variable_get('default_nodes_main', 10), 0, NULL, $term->tid);
+  }
+
+  $output = '';
+  while ($node = db_fetch_object($result)) {
+    $output .= node_view(node_load($node->nid), 1);
+  }
+  $output .= theme('pager', NULL, variable_get('default_nodes_main', 10));
+  return $output;
+}
+
 // == Altering existing behavior ===============================================
 
 /**
