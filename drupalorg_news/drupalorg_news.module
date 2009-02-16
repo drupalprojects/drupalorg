@@ -21,7 +21,7 @@ define('DRUPALORG_PLANET_CATEGORY', 2);
 /**
  * Implementation of hook_menu().
  */
-function drupalorg_menu() {
+function drupalorg_news_menu() {
   $items['news'] = array(
     'title' => 'News',
     'page callback' => 'drupalorg_news_page',
