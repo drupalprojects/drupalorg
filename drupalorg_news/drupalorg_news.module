@@ -126,13 +126,13 @@ function drupalorg_news_news_dashboard_gadget($gadget_id) {
     drupal_alter('link', $node->links, $node);
 
     $news .= '<h3 class="h5">'. l($node->title, 'node/'. $node->nid) .'</h3>';
-    $news .= '<p class="posted">'. t('Posted my !user on %date', array('!user' => theme('username', $node), '%date' => format_date($node->created, 'custom', 'F j, Y'))) .'</p>';
+    $news .= '<p class="posted">'. t('Posted by !user on %date', array('!user' => theme('username', $node), '%date' => format_date($node->created, 'custom', 'F j, Y'))) .'</p>';
     // Cut it to short and sweet to fit into the design. Strip all tags,
     // so things like big images, distracting links and paragraph tags will
     // not end up here. The text should be good in itself to display.
     $news .= '<p>'. strip_tags(node_teaser($node->teaser, $node->format, 180)) . ' ' . l(t('Read more'), 'node/'. $node->nid) .'</p>';
 
-    $news .= bluecheese_linksterms($node->links, $node->taxonomy, $node->type);
+    $news .= bluecheese_linksterms($node->links, array() /*$node->taxonomy*/, $node->type);
   }
 
   return array(
