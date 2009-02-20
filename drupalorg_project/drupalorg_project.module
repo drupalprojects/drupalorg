@@ -358,7 +358,7 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   if (isset($links['support']['links']['pending_support'])) {
     $prepend = array(
       'open_issues' => l(t('View open issues or create one'), 'project/issues/'. $node->project['uri']),
-      'all_issues' => l(t('View all issues'), 'project/issues/'. $node->project['uri'], array('query' => 'states=all')),
+      'all_issues' => l(t('View all issues'), 'project/issues/'. $node->project['uri'], array('query' => 'status=All')),
     );
     $links['support']['links'] = $prepend + $links['support']['links'];
     unset($links['support']['links']['pending_support']);
