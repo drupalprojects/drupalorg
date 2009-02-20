@@ -467,30 +467,30 @@ function drupalorg_nodeapi(&$node, $op, $teaser, $page) {
 /**
  * Implemenation of hook_project_page_link_alter().
  */
-function drupalorg_project_page_link_alter($node, &$all_links) {
+function drupalorg_project_page_link_alter(&$links, $node) {
   // #310446: Alter issue queue links to view issues of all categories.
-  if (isset($all_links['support']['links']['pending_support'])) {
+  if (isset($links['support']['links']['pending_support'])) {
     $prepend = array(
       'open_issues' => l(t('View open issues or create one'), 'project/issues/'. $node->project['uri']),
       'all_issues' => l(t('View all issues'), 'project/issues/'. $node->project['uri'], array('query' => 'states=all')),
     );
-    $all_links['support']['links'] = $prepend + $all_links['support']['links'];
-    unset($all_links['support']['links']['pending_support']);
-    unset($all_links['support']['links']['pending_bugs']);
-    unset($all_links['support']['links']['pending_features']);
-    unset($all_links['development']['links']['pending_issues']);
+    $links['support']['links'] = $prepend + $links['support']['links'];
+    unset($links['support']['links']['pending_support']);
+    unset($links['support']['links']['pending_bugs']);
+    unset($links['support']['links']['pending_features']);
+    unset($links['development']['links']['pending_issues']);
   }
   // #310446: Remove issue creation links to avoid duplicate issues.
-  if (isset($all_links['support']['links']['request_support'])) {
-    unset($all_links['support']['links']['request_support']);
-    unset($all_links['support']['links']['report_bug']);
-    unset($all_links['support']['links']['request_feature']);
+  if (isset($links['support']['links']['request_support'])) {
+    unset($links['support']['links']['request_support']);
+    unset($links['support']['links']['report_bug']);
+    unset($links['support']['links']['request_feature']);
   }
-  if (isset($all_links['support']['links']['create_forbidden'])) {
-    unset($all_links['support']['links']['create_forbidden']);
+  if (isset($links['support']['links']['create_forbidden'])) {
+    unset($links['support']['links']['create_forbidden']);
   }
   // Link to security handbook page.
-  $all_links['support']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
+  $links['support']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
 }
 
 // == External search block ====================================================
