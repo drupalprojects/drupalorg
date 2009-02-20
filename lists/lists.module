@@ -481,7 +481,7 @@ function lists_nodeapi(&$node, $op, $teaser, $page) {
           'Content-Transfer-Encoding' => '8Bit',
           'X-Mailer'                  => 'Drupal'
         );
-        drupal_mail_send(array('id' => 'lists_mailman_newsletter', 'to' => $list['mail'], 'subject' => check_plain($node->title), 'body' => drupal_html_to_text($node->body), 'headers' => $headers));
+        drupal_mail_send(array('id' => 'lists_mailman_newsletter', 'to' => $list['mail'], 'subject' => $node->title, 'body' => drupal_html_to_text($node->body), 'headers' => $headers));
         db_query('INSERT INTO {lists_mailman} (nid, uid, timestamp) VALUES(%d, %d, %d)', $node->nid, $user->uid, time());
         drupal_set_message(t('Mail sent to !email.', array('!email' => $list['mail'])));
       }
