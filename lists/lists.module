@@ -485,10 +485,10 @@ function lists_nodeapi(&$node, $op, $teaser, $page) {
         db_query('INSERT INTO {lists_mailman} (nid, uid, timestamp) VALUES(%d, %d, %d)', $node->nid, $user->uid, time());
         drupal_set_message(t('Mail sent to !email.', array('!email' => $list['mail'])));
       }
+      // Force comments to be disabled for these posts.  David doesn't like this.
+      // This is an ugly kludge.
+      db_query('UPDATE {node} SET comment = %d WHERE nid = %d', COMMENT_NODE_DISABLED, $node->nid);
     }
-    // Force comments to be disabled for these posts.  David doesn't like this.
-    // This is an ugly kludge.
-    db_query('UPDATE {node} SET comment = %d WHERE nid = %d', COMMENT_NODE_DISABLED, $node->nid);
   }
 }
 
