@@ -52,28 +52,28 @@ function drupalorg_project_menu() {
   $items['bug-bingo'] = array(
     'title'              => 'Bug bingo',
     'page callback'      => 'drupalorg_project_bingo_jump',
-    'page arguments'     => array('0'),
+    'page arguments'     => array('bug-core'),
     'access arguments'   => array('access content'),
     'type'               => MENU_SUGGESTED_ITEM,
   );
   $items['contrib-bug-bingo'] = array(
     'title'              => 'Contrib bug bingo',
     'page callback'      => 'drupalorg_project_bingo_jump',
-    'page arguments'     => array('1'),
+    'page arguments'     => array('bug-contrib'),
     'access arguments'   => array('access content'),
     'type'               => MENU_SUGGESTED_ITEM,
   );
   $items['patch-bingo'] = array(
     'title'              => 'Patch bingo',
     'page callback'      => 'drupalorg_project_bingo_jump',
-    'page arguments'     => array('2'),
+    'page arguments'     => array('patch-core'),
     'access arguments'   => array('access content'),
     'type'               => MENU_SUGGESTED_ITEM,
   );
   $items['contrib-patch-bingo'] = array(
     'title'              => 'Contrib patch bingo',
     'page callback'      => 'drupalorg_project_bingo_jump',
-    'page arguments'     => array('3'),
+    'page arguments'     => array('patch-contrib'),
     'access arguments'   => array('access content'),
     'type'               => MENU_SUGGESTED_ITEM,
   );
@@ -609,16 +609,16 @@ function drupalorg_project_list_branches_core() {
 function drupalorg_project_bingo_jump($type = NULL) {
   $sql = array(
     // Bug, core.
-    "SELECT nid FROM {project_issues} WHERE sid IN (1) AND category = 'bug' AND pid = 3060 ORDER BY RAND() LIMIT 1",
+    'bug-core' => "SELECT nid FROM {project_issues} WHERE sid IN (1) AND category = 'bug' AND pid = 3060 ORDER BY RAND() LIMIT 1",
     // Bug, contrib.
-    "SELECT nid FROM {project_issues} WHERE sid IN (1) AND category = 'bug' AND pid != 3060 ORDER BY RAND() LIMIT 1",
+    'bug-contrib' => "SELECT nid FROM {project_issues} WHERE sid IN (1) AND category = 'bug' AND pid != 3060 ORDER BY RAND() LIMIT 1",
     // Patch, core.
-    "SELECT nid FROM {project_issues} WHERE sid IN (8,13,14) AND pid = 3060 ORDER BY RAND() LIMIT 1",
+    'patch-core' => "SELECT nid FROM {project_issues} WHERE sid IN (8,13,14) AND pid = 3060 ORDER BY RAND() LIMIT 1",
     // Patch, contrib.
-    "SELECT nid FROM {project_issues} WHERE sid IN (8,13,14) AND pid != 3060 ORDER BY RAND() LIMIT 1",
+    'patch-contrib' => "SELECT nid FROM {project_issues} WHERE sid IN (8,13,14) AND pid != 3060 ORDER BY RAND() LIMIT 1",
   );
-  if (!is_int($type) || !isset($sql[$type])) {
-    $type = 0;
+  if (!isset($type) || !isset($sql[$type])) {
+    $type = 'bug-core';
   }
 
   $nid = db_result(db_query($sql[$type]));
@@ -665,7 +665,7 @@ function drupalorg_project_bingo_block_output() {
   $counts_critical = $counts['Critical issues'];
   $counts_queue = $counts['Patch queue'];
   $counts_review = $counts['Patches to review'];
-  
+
   $versions = array_map('trim', explode(',', DRUPALORG_ISSUE_RIDS));
   $url_pending = drupalorg_project_issue_url(
     array(
@@ -695,7 +695,7 @@ function drupalorg_project_bingo_block_output() {
       'status' => array(8, 14),
     )
   );
-  
+
   $output = <<<EOT
 <div class="item-list">
 <ul>
