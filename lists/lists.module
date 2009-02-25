@@ -295,7 +295,8 @@ function lists_perm() {
 function lists_user($op, &$edit, &$account, $category = NULL) {
   switch ($op) {
     case 'categories':
-      return array(array('name' => 'newsletter', 'title' => t('My newsletters'), 'weight' => 10));
+      return array(array('name' => 'newsletter', 'title' => t('My newsletters (temporarily disabled)'), 'weight' 
+=> 10));
   }
 }
 
@@ -317,6 +318,10 @@ function lists_menu_alter(&$callbacks) {
  */
 function lists_mailman_user_form(&$form_state, $account = FALSE) {
   $form = array();
+  $form['info'] = array('#type' => 'markup', '#value' => 'Temporarily disabled to control excessive load, see 
+<a 
+href="http://drupal.org/node/383858">http://drupal.org/node/383858</a>.');
+  return $form;
 
   $form['newsletter'] = array(
     '#type' => 'fieldset',
@@ -481,7 +486,9 @@ function lists_nodeapi(&$node, $op, $teaser, $page) {
           'Content-Transfer-Encoding' => '8Bit',
           'X-Mailer'                  => 'Drupal'
         );
-        drupal_mail_send(array('id' => 'lists_mailman_newsletter', 'to' => $list['mail'], 'subject' => $node->title, 'body' => drupal_html_to_text($node->body), 'headers' => $headers));
+        $language = language_default();
+        $params = array('node' => $node);
+        drupal_mail('lists', 'mailman_newsletter', $list['mail'], $language, $params);
         db_query('INSERT INTO {lists_mailman} (nid, uid, timestamp) VALUES(%d, %d, %d)', $node->nid, $user->uid, time());
         drupal_set_message(t('Mail sent to !email.', array('!email' => $list['mail'])));
       }
@@ -489,6 +496,17 @@ function lists_nodeapi(&$node, $op, $teaser, $page) {
       // This is an ugly kludge.
       db_query('UPDATE {node} SET comment = %d WHERE nid = %d', COMMENT_NODE_DISABLED, $node->nid);
     }
+  }
+}
+
+/**
+ * Implementation of hook_mail().
+ */
+function lists_mail($key, &$message, $params) {
+  if ($key == 'mailman_newsletter') {
+    // Just copy over the subject and body as provided.
+    $message['subject'] = $params['node']->title;
+    $message['body'] = drupal_html_to_text($params['node']->body);
   }
 }
 
