@@ -238,9 +238,9 @@ function drupalorg_project_release_node_form_alter(&$form, $form_state) {
             '#weight' => -2,
             '#description' => t('If you select %security_update, your release will not be published without the manual intervention of the <a href="@security_url">Drupal Security Team</a>. You should have already <a href="@contact_url">contacted the Security Team</a> to coordinate a security advisory (SA) for your release before you committed any security-related patches.', array('%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL)),
           );
-          $drupalorg_path = drupal_get_path('module', 'drupalorg');
-          drupal_add_js($drupalorg_path .'/drupalorg_project.js');
-          drupal_add_css($drupalorg_path .'/drupalorg_project.css');
+          $drupalorg_project_path = drupal_get_path('module', 'drupalorg_project');
+          drupal_add_js($drupalorg_project_path .'/drupalorg_project.js');
+          drupal_add_css($drupalorg_project_path .'/drupalorg_project.css');
         }
       }
       else {
