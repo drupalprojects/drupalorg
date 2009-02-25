@@ -173,7 +173,7 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
 
   // Add security update related checks to release forms.
   if ($form_id == 'project_release_node_form') {
-    drupalorg_project_release_node_form_alter($form, $form_state, $form_id);
+    drupalorg_project_release_node_form_alter($form, $form_state);
   }
   
   // Add CVS maintainer newsletter signup to users when getting a CVS account.
@@ -205,7 +205,7 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
  * Ensure that only privileged users can modify a security release tag and when
  * people add this tag, they get to know about the process.
  */
-function drupalorg_project_release_node_form_alter(&$form, $form_state, $form_id) {
+function drupalorg_project_release_node_form_alter(&$form, $form_state) {
   if (!empty($form['taxonomy'])) {
     $vid = drupalorg_project_get_release_type_vid();
     $security_tid = drupalorg_project_get_security_update_tid();
@@ -223,7 +223,7 @@ function drupalorg_project_release_node_form_alter(&$form, $form_state, $form_id
           // Add wrapper div for drupalorg_project.js
           $form['taxonomy'][$vid]['#prefix'] = '<div class="release-type-select">';
           $form['taxonomy'][$vid]['#suffix'] = '</div>';
-          $form['#validate']['drupalorg_project_security_release_form_validate'] = array();
+          $form['#validate'][] = 'drupalorg_project_security_release_form_validate';
           $confirm_class = 'security-update-confirm';
           // Hide the confirmation checkbox on page load unless 'Security
           // update' is already selected.
@@ -319,7 +319,7 @@ function drupalorg_project_get_security_update_tid() {
 function drupalorg_project_security_release_form_validate($form, &$form_state) {
   $vid = drupalorg_project_get_release_type_vid();
   $security_tid = drupalorg_project_get_security_update_tid();
-  if (!empty($form_values['taxonomy'][$vid][$security_tid]) && empty($form_values['security_update_confirm'])) {
+  if (!empty($form_state['values']['taxonomy'][$vid][$security_tid]) && empty($form_state['values']['security_update_confirm'])) {
     // Ensure the user confirms that this release should be marked security.
     form_set_error('security_update_confirm', t('You must confirm you want this release to be a <a href="@security_update_url">Security update</a>', array('@security_update_url' => DRUPALORG_SECURITY_UPDATE_HANDBOOK_URL)));
   }
