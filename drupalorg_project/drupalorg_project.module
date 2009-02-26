@@ -379,52 +379,6 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   $links['support']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
 }
 
-// == Let people assign issues to co-maintainers ===============================
-
-/**
- * Implementation of hook_project_issue_assignees().
- *
- * Add all users who are maintainers of the module to the lists of people
- * who issues can be assigned to.
- *
- * @todo Investigate moving to CVS module or reuse functionality from there.
- */
-function drupalorg_project_project_issue_assignees(&$assigned, $node) {
-  global $user;
-  if (empty($user->uid) || empty($node->project['pid'])) {
-    // Return if anonymous user or not a project node.
-    return;
-  }
-  $project = node_load($node->project['pid']);
-  if (!isset($project) || $project->type != 'project_project') {
-    // Return if project node not found.
-    return;
-  }
-
-  // Determine if the user has CVS access at all.  If not, the user can't be a
-  // maintainer of the current project and thus we can skip the next, more
-  // expensive query.
-  if (project_use_cvs($node->project['pid']) && db_result(db_query("SELECT COUNT(*) FROM {cvs_accounts} WHERE uid = %d AND status = %d", $user->uid, CVS_APPROVED))) {
-    // Make an array with all maintainers of the current project.
-    $result = db_query("SELECT cpm.uid, u.name FROM {cvs_project_maintainers} cpm INNER JOIN {users} u ON cpm.uid = u.uid WHERE cpm.nid = %d", $node->project['pid']);
-    $maintainers = array($project->uid => $project->name);
-    while ($row = db_fetch_object($result)) {
-      $maintainers[$row->uid] = $row->name;
-    }
-
-    // Determine if the current user is one of the maintainers of the project.
-    if (isset($maintainers[$user->uid])) {
-      // Add any maintainers of this project who are not already in the
-      // $assigned array to the array.
-      foreach ($maintainers as $uid => $name) {
-        if (!isset($assigned[$uid])) {
-          $assigned[$uid] = $name;
-        }
-      }
-    }
-  }
-}
-
 // == Utility functions ========================================================
 
 /**
