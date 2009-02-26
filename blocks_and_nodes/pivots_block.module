@@ -38,13 +38,13 @@ function pivots_block_output() {
   }
 
   // decide whether to add GA tracking code.
-  global $_pivots_block_track;
-  if (!empty($output)) {
-    $_pivots_block_track = 'pageTracker._trackPageview("/pivotslog/pageview/'.$_pivots_block_pid_double.'/'.$node_id.'");';
-  }
-  else {
-    $_pivots_block_track = '';
-  }
+  //global $_pivots_block_track;
+  //if (!empty($output)) {
+  //  $_pivots_block_track = 'pageTracker._trackPageview("/pivotslog/pageview/'.$_pivots_block_pid_double.'/'.$node_id.'");';
+  //}
+  //else {
+  //  $_pivots_block_track = '';
+  //}
   
   return $output;
 }
