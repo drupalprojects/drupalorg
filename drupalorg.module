@@ -261,7 +261,7 @@ function drupalorg_project_release_node_form_alter(&$form, $form_state) {
           $confirm_class = 'security-update-confirm';
           // Hide the confirmation checkbox on page load unless 'Security
           // update' is already selected.
-          if (empty($form['#post']['taxonomy'][$vid]) || (array_search($security_tid, $form['#post']['taxonomy'][$vid]) === FALSE)) {
+          if (empty($form_state['values']['taxonomy'][$vid]) || (array_search($security_tid, $form_state['values']['taxonomy'][$vid]) === FALSE)) {
             $confirm_class .= ' js-hide';
           }
           $form['security_update_confirm'] = array(
@@ -271,6 +271,7 @@ function drupalorg_project_release_node_form_alter(&$form, $form_state) {
             '#suffix' => '</div>',
             '#weight' => -2,
             '#description' => t('If you select %security_update, your release will not be published without the manual intervention of the <a href="@security_url">Drupal Security Team</a>. You should have already <a href="@contact_url">contacted the Security Team</a> to coordinate a security advisory (SA) for your release before you committed any security-related patches.', array('%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL)),
+            '#default_value' => !empty($form_state['values']['security_update_confirm']),
           );
           $drupalorg_path = drupal_get_path('module', 'drupalorg');
           drupal_add_js($drupalorg_path .'/js/drupalorg.release_node.js');
@@ -284,6 +285,7 @@ function drupalorg_project_release_node_form_alter(&$form, $form_state) {
           // let regular users change it any futher.
           if (!user_access('administer projects')) {
             $form['taxonomy'][$vid]['#disabled'] = TRUE;
+            $form['taxonomy'][$vid]['#value'] = $form['taxonomy'][$vid]['#default_value'];
           }
           $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a> Since this release is already marked as a %security_update, you can no longer change the release type. If you believe you need to do so for some reason, you should <a href="@contact_url">contact</a> the <a href="@security_url">Drupal Security Team</a>.', array('@handbook_url' => DRUPALORG_RELEASE_TYPE_HANDBOOK_URL, '%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL));
         }
