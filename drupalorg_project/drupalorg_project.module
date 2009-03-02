@@ -213,7 +213,7 @@ function drupalorg_project_release_node_form_alter(&$form, $form_state) {
       $form['taxonomy'][$vid]['#weight'] = 10;
       if (empty($form['nid']['#value'])) {
         // Adding a new release.
-        if (!empty($form['cvs_tag']['rebuild']['#value'])) {
+        if (!empty($form['project_release']['rebuild']['#value'])) {
           // This is a -dev, don't let anyone mark it a security update.
           _drupalorg_project_remove_security_update($form);
         }
