@@ -440,31 +440,6 @@ function drupalorg_profile_fix_languages(&$form, &$form_state) {
   }
 }
 
-// == Database replication hints ===============================================
-
-/**
- * Implementation of hook_comment.
- */
-function drupalorg_comment(&$comment, $op) {
-  switch ($op) {
-    case 'insert':
-    case 'update':
-      $_SESSION['not_slavesafe'] = TRUE;
-      break;
-  }
-}
-
-/**
- * Implementation of hook_nodeapi.
- */
-function drupalorg_nodeapi(&$node, $op, $teaser, $page) {
-  switch ($op) {
-    case 'insert':
-    case 'update':
-      $_SESSION['not_slavesafe'] = TRUE;
-  }
-}
-
 // == External search block ====================================================
 
 /**
