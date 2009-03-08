@@ -104,7 +104,7 @@ function drupalorg_project_help($path, $arg) {
   }
 
   if ($arg[0] == 'project' && strtolower($arg[1]) == 'modules') {
-    return t('You can also view an <a href="@list_url">Alphabetical list of Projects</a> that includes all projects but only their names.', array('@list_url' => url('node/206666')));
+    return t('You can also view an <a href="@list_url">alphabetical list of projects</a> that includes all projects but only their names.', array('@list_url' => url('node/206666')));
   }
   if ($arg[0] == 'project' && $arg[1] == 'issues-term' && $arg[2] == '346') {
     return '<p>'. t('A more detailed overview of the issues can be seen in the Community Initiatives handbook section titled <a href="http://drupal.org/node/362117">Upgrade Drupal.org from Drupal 5 to 6</a>.') .'</p>';
