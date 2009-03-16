@@ -558,3 +558,14 @@ function drupalorg_search($op = 'search', $keys = NULL) {
 function drupalorg_drupal_issue_url($query = array(), $absolute = FALSE) {
   return url('project/issues/search/drupal', array('query' => $query, 'absolute' => $absolute));
 }
+
+/**
+ * Implementation of hook_views_api().
+ */
+function drupalorg_views_api() {
+  return array(
+    'api' => 2.0,
+    'path' => drupal_get_path('module', 'drupalorg'),
+  );
+}
+
