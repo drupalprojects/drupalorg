@@ -73,6 +73,32 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  // Redirect some legacy paths related to the security listings.
+  $items['security-contrib'] = array(
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('security/contrib'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['security-contrib/rss.xml'] = array(
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('security/contrib/rss.xml'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['security-psa'] = array(
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('security/psa'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['security-psa/rss.xml'] = array(
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('security/psa/rss.xml'),
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -510,3 +536,14 @@ function drupalorg_search($op = 'search', $keys = NULL) {
       }
   }
 }
+
+/**
+ * Implementation of hook_views_api().
+ */
+function drupalorg_views_api() {
+  return array(
+    'api' => 2.0,
+    'path' => drupal_get_path('module', 'drupalorg'),
+  );
+}
+
