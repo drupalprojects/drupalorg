@@ -74,6 +74,7 @@ function drupalorg_is_cli() {
 function drupalorg_help($path, $arg) {
   switch ($path) {
     case 'project/usage':
+    case 'project/usage/%':
       return '<p>'. t('These statistics are incomplete; only Drupal websites using the <a href="!update_status_url">Update Status</a> module are included in the data. As this module is now included with the download of Drupal since version 6.x, the data is heavily biased toward newer sites. <a href="!usage_description_url">Read more information about how these statistics are calculated.</a>', array('!update_status_url' => url('project/update_status'), '!usage_description_url' => url('node/329620'))) .'</p>';
   }
 
