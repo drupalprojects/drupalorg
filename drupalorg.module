@@ -230,6 +230,11 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'forum_node_form') {
     $form['taxonomy'][DRUPALORG_NEWS_VID]['#access'] = user_access('administer nodes'); 
   }
+
+  // Add extra choices to the dblog settings selector
+  if ($form_id == 'dblog_admin_settings') {
+    $form['dblog_row_limit']['#options'] = drupal_map_assoc(array(100, 1000, 10000, 100000, 250000, 500000, 1000000));
+  }
 }
 
 // == Security release restrictions ============================================
