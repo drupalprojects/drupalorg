@@ -49,7 +49,7 @@ function handbook_with_comments() {
 
   $result = db_query("SELECT n.nid, n.title, s.comment_count, s.last_comment_timestamp
     FROM {node} n LEFT JOIN {node_comment_statistics} s ON n.nid = s.nid
-    WHERE n.type = 'book' AND s.comment_count > 1 AND n.status = 1" . tablesort_sql($header));
+    WHERE n.type = 'book' AND s.comment_count >= 1 AND n.status = 1" . tablesort_sql($header));
 
   while ($node = db_fetch_object($result)) {
     $rows[] = array(l($node->title, "node/$node->nid"), $node->comment_count, format_interval(time() - $node->last_comment_timestamp) .' ago');
