@@ -67,18 +67,31 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       'training'    => array('href' => 'events?filter0%5B%5D=training', 'title' => t('Training'), '#site' => 'groups'),
       'druplicon'   => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main'),
     ),
+    array(
+      'col5item1' => array('href' => 'col5item1', 'title' => t('col5item1'), '#site' => 'main'),
+      'col5item2' => array('href' => 'col5item2', 'title' => t('col5item2'), '#site' => 'main'),
+      'col5item3' => array('href' => 'col5item3', 'title' => t('col5item3'), '#site' => 'main'),
+    ),
   );
   
   $vars['nav_footer'] = '';
   foreach ($nav_footer_links as $num => $links_column) {
     // Make all external links right.
     $links_column = drupalorg_crosssite_menu_absolute_links($links_column);
+
     // Add alpha and omega class to first and last item.
-    $alpha_omega = $num == 0 ? ' alpha' : $num == count($nav_footer_links) - 1 ? ' omega' : '';
+    $alpha_omega = '';
+    if ($num == 0) {
+      $alpha_omega = ' alpha';
+    }
+    else if ($num == count($nav_footer_links) - 1) {
+      $alpha_omega = ' omega';
+    }
+
     // Theme as links, and avoid class="links" on it.
-    $vars['nav_footer'] .= '<div class="grid-3'. $alpha_omega .'">'. theme('links', $links_column, array()) .'</div>';
+    $vars['nav_footer'] .= '<div class="grid-footer'. $alpha_omega .'">'. theme('links', $links_column, array()) .'</div>';
   }
-  
+
   // Add content header navigation.
   drupalorg_crosssite_content_menu($vars);
 
