@@ -106,11 +106,13 @@ function drupalorg_handbook_meta_data($node) {
   $modified = format_date($node->changed, 'custom', 'F j, Y');
   
   // Collect a list of people who have edited the book page ever.
-  $authors_query = db_query("SELECT u.uid, u.name FROM {node_revisions} nr JOIN {users} u ON nr.uid = u.uid WHERE nid = %d GROUP BY u.uid ORDER BY timestamp", $node->nid);
+  // removing authors for now per issue http://drupal.org/node/428410
+  /*$authors_query = db_query("SELECT u.uid, u.name FROM {node_revisions} nr JOIN {users} u ON nr.uid = u.uid WHERE nid = %d GROUP BY u.uid ORDER BY timestamp", $node->nid);
   while ($author = db_fetch_object($authors_query)) {
     $author_links[] = theme('drupalorg_handbook_meta_link', l($author->name, 'user/'. $author->uid));
   }
-  $authors = implode(', ', $author_links);
+  $authors = implode(', ', $author_links);*/
+  $authors = NULL;
 
   // @todo Add language listings when available.
   $languages = NULL; 
