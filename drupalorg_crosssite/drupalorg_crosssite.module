@@ -189,7 +189,7 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         'home'    => array('href' => 'documentation', 'title' => t('Docs Home'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_type('docs', array('book')) || drupalorg_crosssite_menu_path('docs', '^(documentation(?!/index|/recent)|handbooks(/|$))')),
         'api'     => array('href' => '', 'title' => t('API'), '#site' => 'api', '#active' => drupalorg_crosssite_menu_site('api')),
         'index'   => array('href' => 'documentation/index', 'title' => t('Index'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(documentation/index)(/|$)')),
-        'recent'  => array('href' => 'documentation/recent', 'title' => t('Recently updated'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(documentation/recent)(/|$)')),
+        'recent'  => array('href' => 'documentation/recent', 'title' => t('Recently updated'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(node/23192)(/|$)')),
       );
     
     // Just on the project site.
@@ -199,11 +199,11 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         // classes when on the projects site. Therefore no need for #active. 
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'project'),
         'core'         => array('href' => 'project/drupal', 'title' => t('Drupal Core'), '#site' => 'project'),
-        'modules'      => array('href' => 'project/Modules', 'title' => t('Modules'), '#site' => 'project'),
-        'themes'       => array('href' => 'project/Themes', 'title' => t('Themes'), '#site' => 'project'),
-        'translations' => array('href' => 'project/Translations', 'title' => t('Translations'), '#site' => 'project'),
-        'theme-engine' => array('href' => 'project/Theme engines', 'title' => t('Theme Engines'), '#site' => 'project'),
-        'install-profiles' => array('href' => 'project/Installation profiles', 'title' => t('Installation Profiles'), '#site' => 'project'),
+        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'project'),
+        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'project'),
+        'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'project'),
+        'theme-engine' => array('href' => 'project/theme+engines', 'title' => t('Theme Engines'), '#site' => 'project'),
+        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'project'),
       );
 
     // REAL cross-site.
