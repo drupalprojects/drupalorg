@@ -6,12 +6,12 @@
       
   <div class="grid-3">
     <h2>Community Support</h2>
-    <p>The passionate <a href="#">Drupal community</a> is on hand to give support via various <a href="#">vibrant IRC channels</a>, in the <a href="#">forums</a>, and face to face at <a href="#">Drupal events</a>. As Drupal is <a href="#">open source</a>, this means everybody can <a href="#">get involved</a> and make a difference.</p>
+    <p>The passionate <a href="/community">Drupal community</a> is on hand to give support via various <a href="/irc">vibrant IRC channels</a>, in the <a href="/forum">forums</a>, and face to face at <a href="#">Drupal events</a>. As Drupal is <a href="#">open source</a>, this means everybody can <a href="/contribute">get involved</a> and make a difference.</p>
   </div>
       
   <div class="grid-3">
     <h2>Dedicated Security Team</h2>
-    <p><a href="#">We take security seriously</a> and have a <a href="#">dedicated team</a> that has a <a href="#">proven track record</a> in dealing with your <a href="#">security issues</a> professionally and efficiently, meaning you can spend more time creating your site.</p>
+    <p><a href="#">We take security seriously</a> and have a <a href="/security-team">dedicated team</a> that has a <a href="#">proven track record</a> in dealing with your <a href="/security">security issues</a> professionally and efficiently, meaning you can spend more time creating your site.</p>
   </div>
       
   <div class="grid-3 omega">
@@ -35,13 +35,13 @@
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutmodules"><a href="#">MODULES</a></h3>
-      <p>Whether you need a <a href="#">gallery</a>, <a href="#">contact form</a>, or <a href="#">shopping cart</a>, <a href="#">Drupal modules</a> let you build, customize, and extend your site as much as you want. You can even <a href="#">contribute modules</a> for others to use.</p>
+      <h3 id="aboutmodules"><a href="/project/modules">MODULES</a></h3>
+      <p>Whether you need a <a href="#">gallery</a>, <a href="#">contact form</a>, or <a href="#">shopping cart</a>, <a href="/project/modules">Drupal modules</a> let you build, customize, and extend your site as much as you want. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
     </div>
       
     <div class="grid-3 omega">
-      <h3 id="aboutthemes"><a href="#">THEMES</a></h3>
-      <p>Use an existing <a href="#">Drupal theme</a> for your site, giving it an instant identity! If you can't find one you like, try designing your own which others can use, too.</p>
+      <h3 id="aboutthemes"><a href="/project/themes">THEMES</a></h3>
+      <p>Use an existing <a href="/project/themes">Drupal theme</a> for your site, giving it an instant identity! If you can't find one you like, try designing your own which others can use, too.</p>
     </div>
   </div>
   
@@ -104,7 +104,7 @@
       <p>The Drupal Core is a collection of files that you must download in order to get started with Drupal. </p>
       <a href="#" class="link-button"><span>Download Drupal 6.7</span></a>
 
-      <p class="clear">You can then build upon that with <a href="#">modules</a>, <a href="#">themes</a>, and <a href="#">translations.</a></p>
+      <p class="clear">You can then build upon that with <a href="/project/modules">modules</a>, <a href="/project/themes">themes</a>, and <a href="/project/translations">translations.</a></p>
     </div>
   </div>
       
