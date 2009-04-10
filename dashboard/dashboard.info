@@ -1,7 +1,0 @@
-name = Dashboard
-description = Creates customizable pages of gadgets.
-core = 6.x
-package = Drupal.org
-dependencies[] = jquery_ui
-dependencies[] = drupalorg_crosssite
-dependencies[] = profile
