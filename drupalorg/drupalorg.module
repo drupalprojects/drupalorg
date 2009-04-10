@@ -237,13 +237,15 @@ function drupalorg_preprocess_drupalorg_start(&$variables) {
    '<a href="#">Content construction kit (CCK)</a>', 
    '<a href="#">Views</a>', 
    '<a href="#">Gallery</a>', 
-   '<a href="#">Foo bar</a>')); // Will be made dynamic, see issue #372243
+   '<a href="#">Foo bar</a>'), 
+   NULL, 'ul', array('class' => 'flat')); // Will be made dynamic, see issue #372243
 
   $variables['most_popular_themes'] = theme('item_list', array(
    '<a href="#">Paris Eiffel Tower</a>', 
    '<a href="#">Cute yellow ducks</a>', 
    '<a href="#">Bluecheese</a>', 
-   '<a href="#">Marvin</a>'));  // Will be made dynamic, see issue #372243
+   '<a href="#">Marvin</a>'), 
+   NULL, 'ul', array('class' => 'flat'));  // Will be made dynamic, see issue #372243
 }
 
 /**
@@ -264,54 +266,102 @@ function drupalorg_download() {
  */
 function drupalorg_preprocess_drupalorg_download(&$variables) {
   $variables['version'] = 42;
-
-  $variables['most_popular_modules'] = theme('item_list', array(
-   '<a href="#">Content construction kit (CCK)</a>', 
-   '<a href="#">Views</a>', 
-   '<a href="#">Gallery</a>', 
-   '<a href="#">Foo bar</a>')); // Will be made dynamic, see issue #372243
-
-  $variables['most_popular_themes'] = theme('item_list', array(
-   '<a href="#">Paris Eiffel Tower</a>', 
-   '<a href="#">Cute yellow ducks</a>', 
-   '<a href="#">Bluecheese</a>', 
-   '<a href="#">Marvin</a>'));  // Will be made dynamic, see issue #372243
+  
+  //most popular modules, modules tid = 14
+  //TODO: reference project_usage function instead of drupalorg function
+  $most_popular_modules = drupalorg_get_most_active_projects(14, $limit = 4);
+  $variables['most_popular_modules'] = drupalorg_render_project_listing($most_popular_modules);
+  
+  //most popular themes, themes tid = 15
+  //TODO: reference project_usage function instead of drupalorg function
+  $projects_popular_themes = drupalorg_get_most_active_projects(15, $limit = 4);
+  $variables['most_popular_themes'] = drupalorg_render_project_listing($projects_popular_themes); 
 
   $variables['most_active_modules'] = theme('item_list', array(
    '<a href="#">Content construction kit (CCK)</a>', 
    '<a href="#">Views</a>', 
    '<a href="#">Gallery</a>', 
-   '<a href="#">Foo bar</a>')); 
+   '<a href="#">Foo bar</a>'), 
+   NULL, 'ul', array('class' => 'flat')); 
   
   $variables['most_active_themes'] = theme('item_list', array(
    '<a href="#">Paris Eiffel Tower</a>', 
    '<a href="#">Bluecheese</a>', 
    '<a href="#">Cute yellow ducks</a>', 
-   '<a href="#">Marvin</a>'));
+   '<a href="#">Marvin</a>'), 
+   NULL, 'ul', array('class' => 'flat'));
 
-  $variables['new_modules'] = theme('item_list', array(
-   '<a href="#">Gallery</a>', 
-   '<a href="#">Content construction kit (CCK)</a>', 
-   '<a href="#">Views</a>', 
-   '<a href="#">Foo bar</a>')); 
+  //new modules, modules tid = 14
+  //TODO: reference project_usage function instead of drupalorg function
+  $new_modules = drupalorg_get_most_recent_projects(14, $limit = 4);
+  $variables['new_modules'] = drupalorg_render_project_listing($new_modules);
   
-  $variables['new_themes'] = theme('item_list', array(
-   '<a href="#">Cute yellow ducks</a>', 
-   '<a href="#">Paris Eiffel Tower</a>', 
-   '<a href="#">Bluecheese</a>', 
-   '<a href="#">Marvin</a>'));
+  //new themes, themes tid = 15
+  //TODO: reference project_usage function instead of drupalorg function
+  $new_themes = drupalorg_get_most_recent_projects(15, $limit = 4);
+  $variables['new_themes'] = drupalorg_render_project_listing($new_themes);
 
   $variables['module_categories'] = theme('item_list', array(
    '<a href="#">Gallery</a>', 
    '<a href="#">Content construction kit (CCK)</a>', 
    '<a href="#">Views</a>', 
-   '<a href="#">Foo bar</a>')); 
+   '<a href="#">Foo bar</a>'), 
+   NULL, 'ul', array('class' => 'flat')); 
   
   $variables['theme_categories'] = theme('item_list', array(
    '<a href="#">Cute yellow ducks</a>', 
    '<a href="#">Paris Eiffel Tower</a>', 
    '<a href="#">Bluecheese</a>', 
-   '<a href="#">Marvin</a>'));
+   '<a href="#">Marvin</a>'), 
+   NULL, 'ul', array('class' => 'flat'));
+}
+
+/**
+* Return an array of the most active projects with the given taxonomy term.
+*
+* @todo
+*   move this function into project_usage module - see issue #372243
+* @return
+*   An array of of the most active projects.  The array includes the node 
+*   ID and node title.
+*/
+function drupalorg_get_most_active_projects($tid, $limit = 5) {
+  $result = db_query('SELECT n.nid, n.title FROM {node} n INNER JOIN {project_projects} pp ON n.nid = pp.nid INNER JOIN {project_usage_week_project} pw ON pp.nid = pw.nid INNER JOIN {term_node} tn ON tn.nid = pp.nid WHERE pw.timestamp = (SELECT MAX(timestamp) FROM {project_usage_week_project}) AND tn.tid = %d AND n.status = 1 ORDER BY pw.count DESC LIMIT %d', $tid, $limit);
+  $projects = array();
+   while ($project = db_fetch_object($result)) {
+     $projects[] = $project;
+   }
+   return $projects;
+}
+
+/**
+* Return an array of the most recently created projects with the given taxonomy term.
+*
+* @todo
+*   move this function into project_usage module - see issue #372243
+* @return
+*   An array of of the most recently created projects.  The array includes the node 
+*   ID and node title.
+*/
+function drupalorg_get_most_recent_projects($tid, $limit = 5) {
+  $result = db_query('SELECT n.nid, n.title, n.created FROM {node} n INNER JOIN {project_projects} pp ON n.nid = pp.nid INNER JOIN {term_node} tn ON tn.nid = pp.nid WHERE tn.tid = %d AND n.status = 1 ORDER BY n.created DESC LIMIT %d', $tid, $limit);
+  $projects = array();
+   while ($project = db_fetch_object($result)) {
+     $projects[] = $project;
+   }
+   return $projects;
+}
+
+/**
+ * Render project listings for download and homepage.
+ * 
+ * @return a themed ul listing of projects
+ */
+function drupalorg_render_project_listing($projects) {
+  foreach ($projects as $project) {
+   $links[] = l($project->title, 'node/'.$project->nid, array());
+  }
+  return theme('item_list', $links, NULL, 'ul', array('class' => 'flat'));
 }
 
 /**
