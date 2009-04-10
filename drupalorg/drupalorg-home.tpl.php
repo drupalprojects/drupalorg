@@ -7,8 +7,8 @@
       <a href="getting-started" class="link-button"><span>Get Started with Drupal</span></a>
      </p>
      <h4><a href="success-stories">Who Else Uses Drupal?</a></h4>
-     Magazines: <a href="#">Fast Company</a>, <a href="#">Popular Science</a>.
-     Newspapers:<a href="#">The Onion</a>, <a href="#">Morris Digital</a>, <a href="#">Seattle Times</a> and many, many <a href="#">more...</a>
+     Magazines: <a href="">Fast Company</a>, <a href="#">Popular Science</a>.
+     Newspapers:<a href="#">The Onion</a>, <a href="#">Morris Digital</a>, <a href="#">Seattle Times</a> and many, many <a href="success-stories">more...</a>
     </div>
   </div>
 </div>
@@ -28,7 +28,7 @@
       <h2><a href="download">Develop with Drupal</a></h2>
       <p>Drupal is extensible, powerful, scalable, and flexible.</p>
       <div class="grid-2 alpha">
-       <h4><a href="#">Current activity</a></h4>
+       <h4><a href="cvs">Current activity</a></h4>
        <ul>
          <li><a href="#">4212 CVS a/c holders</a></li>
          <li><a href="#">612 commits this month</a></li>
@@ -36,14 +36,14 @@
       </div>
       <div class="grid-2 omega">
        <ul>
-         <li><a href="#">Drupal API</a></li>
-         <li><a href="#">Download Drupal</a></li>
-         <li><a href="#">Security Info</a></li>
-         <li><a href="#">Issue List</a></li>
+         <li><a href="http://api.drupal.org">Drupal API</a></li>
+         <li><a href="download">Download Drupal</a></li>
+         <li><a href="security">Security Info</a></li>
+         <li><a href="project/issues">Issue List</a></li>
        </ul>
       </div>
-      <h4><a href="#">Modules and Themes</a></h4>
-      Explore Drupal <a href="#">modules</a> and <a href="#">themes</a>
+      <h4><a href="download">Modules and Themes</a></h4>
+      Explore Drupal <a href="project/modules">modules</a> and <a href="project/themes">themes</a>
       <div class="advertising">
        <img src="/files/ad.png"/>
        <p><a href="#">Advertising</a> helps build a successful ecosystem around Drupal</p>
