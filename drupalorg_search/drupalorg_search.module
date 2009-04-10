@@ -41,12 +41,10 @@ function drupalorg_node_meta_type($node) {
  */
 function drupalorg_meta_types() {
   return array(
-    'api' => t('API'),
     'module' => t('Modules'),
     'theme' => t('Themes'),
     'documentation' => t('Documentation'),
     'forum-issues' => t('Forum & Issues'),
-    'marketplace' => t('Marketplace'),
   );
 }
 
