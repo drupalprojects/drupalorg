@@ -46,7 +46,7 @@
       Explore Drupal <a href="project/modules">modules</a> and <a href="project/themes">themes</a>
       <div class="advertising">
        <img src="/files/ad.png"/>
-       <p><a href="#">Advertising</a> helps build a successful ecosystem around Drupal</p>
+       <p><a href="http://association.drupal.org/drupal-org-adsense-banner-advertising">Advertising</a> helps build a successful ecosystem around Drupal</p>
       </div>
     </div>
   </div>
