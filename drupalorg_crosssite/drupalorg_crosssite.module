@@ -202,8 +202,8 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'project'),
         'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'project'),
         'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'project'),
-        'theme-engine' => array('href' => 'project/theme+engines', 'title' => t('Theme Engines'), '#site' => 'project'),
-        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'project'),
+        'theme-engine' => array('href' => 'project/theme engines', 'title' => t('Theme Engines'), '#site' => 'project'),
+        'install-profiles' => array('href' => 'project/installation profiles', 'title' => t('Installation Profiles'), '#site' => 'project'),
       );
 
     // REAL cross-site.
