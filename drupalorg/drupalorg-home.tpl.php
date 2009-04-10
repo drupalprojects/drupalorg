@@ -6,7 +6,7 @@
      <p class="front-get-started">
       <a href="getting-started" class="link-button"><span>Get Started with Drupal</span></a>
      </p>
-     <h4><a href="#">Who Else Uses Drupal?</a></h4>
+     <h4><a href="success-stories">Who Else Uses Drupal?</a></h4>
      Magazines: <a href="#">Fast Company</a>, <a href="#">Popular Science</a>.
      Newspapers:<a href="#">The Onion</a>, <a href="#">Morris Digital</a>, <a href="#">Seattle Times</a> and many, many <a href="#">more...</a>
     </div>
@@ -16,7 +16,7 @@
 <div id="front-top-middle" class="grid-4">
   <div id="front-top-middle-inner">
     <div class="block-content">
-     <h2><a href="about">Things we made with Drupal</a></h2>
+     <h2><a href="cases">Things we made with Drupal</a></h2>
      <img src="/files/mtv_screenshot.jpg" class="homeimage" />
     </div>
   </div> 
