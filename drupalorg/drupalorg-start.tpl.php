@@ -1,13 +1,13 @@
 <div id="getting-started" class="grid-12 alpha omega">
-  <a href="download"><img src="sites/all/themes/bluecheese/images/gettingstarted-header1.png" alt="Download Drupal"/></a>
-  <a href="download"><img src="sites/all/themes/bluecheese/images/gettingstarted-header2.png" alt="Extend Drupal"/></a>
-  <a href="documentation"><img src="sites/all/themes/bluecheese/images/gettingstarted-header3.png" alt="Documentation"/></a>
-  <a href="forum"><img src="sites/all/themes/bluecheese/images/gettingstarted-header4.png" alt="Get Support"/></a>
+  <a href="download"><img src="<?php print $theme_images_directory; ?>/gettingstarted-header1.png" alt="Download Drupal"/></a>
+  <a href="download"><img src="<?php print $theme_images_directory; ?>/gettingstarted-header2.png" alt="Extend Drupal"/></a>
+  <a href="documentation"><img src="<?php print $theme_images_directory; ?>/gettingstarted-header3.png" alt="Documentation"/></a>
+  <a href="forum"><img src="<?php print $theme_images_directory; ?>/gettingstarted-header4.png" alt="Get Support"/></a>
 </div>
 <div class="grid-3 alpha">
   <div class="narrow-box">
     <p>The Drupal Core is a collection of files that you must download in order to get started with Drupal. </p>
-    <a class="link-button" href="#"><span>Download Drupal <?php print $version ?></span></a>
+    <a class="link-button" href="#"><span>Download Drupal <?php print $version; ?></span></a>
     <h5>Installation Profiles</h5>
     <p>Already know what site you need? Drupal's <a href="#">installation profiles</a> can help you get started with your shop, blog, or social network, providing all the modules you need in one place.</p>
     <ul>

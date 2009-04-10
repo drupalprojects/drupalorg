@@ -121,9 +121,9 @@ function drupalorg_home() {
 /**
  * Implementation of template_preprocess_page().
  */
-function drupalorg_preprocess_page(&$vars) {
-  if ($vars['is_front']) {
-    $vars['mission'] = '<h2>Build Today. Innovate Tomorrow.</h2>
+function drupalorg_preprocess_page(&$variables) {
+  if ($variables['is_front']) {
+    $variables['mission'] = '<h2>Build Today. Innovate Tomorrow.</h2>
     <p class="standfirst">
       What can you make with Drupal? Beautiful, personal blogs or mighty, multi-featured, multiuser corporate sites. Go wherever your imagination takes you with our robust, open-source publishing software.
     </p>';
@@ -138,14 +138,14 @@ function drupalorg_preprocess_page(&$vars) {
 /**
  * Implementation of template_preprocess_drupalorg_home().
  */
-function drupalorg_preprocess_drupalorg_home(&$vars) {
-  $vars['theme_images_directory'] = drupal_get_path('theme', variable_get('theme_default', 'bluecheese')) .'/images';
+function drupalorg_preprocess_drupalorg_home(&$variables) {
+  $variables['theme_images_directory'] = drupal_get_path('theme', variable_get('theme_default', 'bluecheese')) .'/images';
 
   // == Forums tab data/markup
 
   // Performs badly. Need to find a way to make this run quicker. Of course
   // we need to cache it, but it still runs dog slow.
-  $vars['tab_content_forums'] = 'Recent forums tab content...';
+  $variables['tab_content_forums'] = 'Recent forums tab content...';
   
   /*$sql = db_rewrite_sql("SELECT n.nid, n.title, n.created, n.uid, u.name FROM {node} n INNER JOIN {term_node} tn ON tn.vid = n.vid INNER JOIN {term_data} td ON td.tid = tn.tid INNER JOIN {users} u ON u.uid = u.uid WHERE n.status = 1 AND td.vid = %d ORDER BY n.nid DESC");
   $result = db_query_range($sql, variable_get('forum_nav_vocabulary', ''), 0, 5);
@@ -155,7 +155,7 @@ function drupalorg_preprocess_drupalorg_home(&$vars) {
   }
   // We have no place to link this to in a nice way.
   // $fresh_news .= '<p>'. l(t('More recent forum topics...'), '...') .'</p>';
-  $vars['tab_content_forums'] = $recent_forums;*/
+  $variables['tab_content_forums'] = $recent_forums;*/
 
   // == Counters for users
 
@@ -182,7 +182,7 @@ function drupalorg_preprocess_drupalorg_home(&$vars) {
     variable_set('drupalorg_front_counter_data', $stats);
     variable_set('drupalorg_front_counter_time', time());
   }
-  $vars += $stats;
+  $variables += $stats;
 }
 
 /**
@@ -229,6 +229,8 @@ function drupalorg_about() {
  *   Add caching.
  */
 function drupalorg_preprocess_drupalorg_start(&$variables) {
+  $variables['theme_images_directory'] = drupal_get_path('theme', variable_get('theme_default', 'bluecheese')) .'/images';
+
   $variables['version'] = 42;
 
   $variables['most_popular_modules'] = theme('item_list', array(
