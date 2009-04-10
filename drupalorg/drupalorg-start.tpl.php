@@ -7,9 +7,9 @@
 <div class="grid-3 alpha">
   <div class="narrow-box">
     <p>The Drupal Core is a collection of files that you must download in order to get started with Drupal. </p>
-    <a class="link-button" href="#"><span>Download Drupal <?php print $version; ?></span></a>
+    <a class="link-button" href="download"><span>Download Drupal <?php print $version; ?></span></a>
     <h5>Installation Profiles</h5>
-    <p>Already know what site you need? Drupal's <a href="#">installation profiles</a> can help you get started with your shop, blog, or social network, providing all the modules you need in one place.</p>
+    <p>Already know what site you need? Drupal's <a href="/project/installation+profiles">installation profiles</a> can help you get started with your shop, blog, or social network, providing all the modules you need in one place.</p>
     <ul>
       <li><a href="#">Drupal Developer</a></li>
       <li><a href="#">French Installation Profile</a></li>
@@ -65,12 +65,12 @@
 </div>
 <div class="grid-3 omega">
   <div class="narrow-box">
-    <p>Drupal's community offers a wealth of support. See more resources on our <a href="#">Community &amp; Support</a> page.</p>
-    <h5 class="lined"><a href="#">Forum</a></h5>
+    <p>Drupal's community offers a wealth of support. See more resources on our <a href="/community">Community &amp; Support</a> page.</p>
+    <h5 class="lined"><a href="/forum">Forum</a></h5>
     <p>Whether you are asking questions or answering them, the forum will connect you to the community and provide the help you need.</p>
-    <h5 class="lined"><a href="#">IRC</a></h5>
+    <h5 class="lined"><a href="/irc">IRC</a></h5>
     <p>For rapid responses, check out our IRC (Internet Relay Chat) channels.</p>
-    <h5 class="lined"><a href="#">Services</a></h5>
+    <h5 class="lined"><a href="/services">Services</a></h5>
     <p>For commercial support, check out our directory with service providers.</p>
 
 
