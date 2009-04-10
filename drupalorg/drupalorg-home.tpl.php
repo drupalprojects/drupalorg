@@ -1,10 +1,10 @@
 <div id="front-top-left" class="grid-4 alpha">
   <div id="front-top-left-inner">
     <div class="block-content">
-     <h2><a href="#">Why Choose Drupal?</a></h2>
+     <h2><a href="about">Why Choose Drupal?</a></h2>
      <p>Drupal is like Lego. Connect the pieces and build a site limited only by your imagination. Drupal's passionate, vibrant community are always creating new pieces, or improving existing ones. Choosing Drupal means as your needs evolve, so does your site.</p>
      <p class="front-get-started">
-      <a href="#" class="link-button"><span>Get Started with Drupal</span></a>
+      <a href="getting-started" class="link-button"><span>Get Started with Drupal</span></a>
      </p>
      <h4><a href="#">Who Else Uses Drupal?</a></h4>
      Magazines: <a href="#">Fast Company</a>, <a href="#">Popular Science</a>.
@@ -16,7 +16,7 @@
 <div id="front-top-middle" class="grid-4">
   <div id="front-top-middle-inner">
     <div class="block-content">
-     <h2><a href="#">Things we made with Drupal</a></h2>
+     <h2><a href="about">Things we made with Drupal</a></h2>
      <img src="/files/mtv_screenshot.jpg" class="homeimage" />
     </div>
   </div> 
@@ -25,7 +25,7 @@
 <div id="front-top-right" class="grid-4 omega">
   <div id="front-top-right-inner">
     <div class="block-content">
-      <h2><a href="#">Develop with Drupal</a></h2>
+      <h2><a href="download">Develop with Drupal</a></h2>
       <p>Drupal is extensible, powerful, scalable, and flexible.</p>
       <div class="grid-2 alpha">
        <h4><a href="#">Current activity</a></h4>
