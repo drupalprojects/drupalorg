@@ -157,13 +157,34 @@ function drupalorg_crosssite_content_menu(&$vars) {
   // matching in that case. (This will pick the first matched in that case).
   $matched_menu = array_search(TRUE, $nav_content_areas);
   
+  //Identify sections names/titles to be displayed above content area menus
+  $section_names = array(
+    'downloads' => 'Download and Extend',
+    'documentation' => 'Documentation',
+    'community' => 'Community and Support',
+  );
+ 
+  $vars['section_name'] = $section_names[$matched_menu];
+   
   // Now ask for all the menu items for the matched menu. Let modules add in
   // menu items (eg. in case of dashboard module adding items we don't know about).
   $nav_content_links = module_invoke_all('drupalorg_crosssite_content_menu_items', $matched_menu);
   
   if (count($nav_content_links)) {
     // Make all external links right.
+    
     $nav_content_links = drupalorg_crosssite_menu_absolute_links($nav_content_links);
+    
+    foreach ($nav_content_links as $key => $link) {
+      $class = $key;
+
+      
+      if (isset($link['href']) && ($link['href'] == $_GET['q'] || ($link['href'] == '<front>' && drupal_is_front_page())) 
+          && (empty($link['language']) || $link['language']->language == $language->language)) {
+          $vars['matched_content_link'] = TRUE;
+      }
+    }
+    
     // Theme the links for the page, bypassing class="links".
     $vars['nav_content'] = theme('links', $nav_content_links, array());
     $vars['nav_content_class'] = ' class="nav-content-'. $matched_menu .'"';
