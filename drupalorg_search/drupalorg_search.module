@@ -41,9 +41,9 @@ function drupalorg_node_meta_type($node) {
  */
 function drupalorg_meta_types() {
   return array(
-    'module' => t('Modules'),
-    'theme' => t('Themes'),
+    'module_theme' => t('Modules and Themes'),
     'documentation' => t('Documentation'),
+    'api' => t('API'),
     'forum-issues' => t('Forum & Issues'),
   );
 }
