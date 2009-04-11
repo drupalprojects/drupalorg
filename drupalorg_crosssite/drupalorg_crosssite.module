@@ -163,7 +163,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'documentation' => 'Documentation',
     'community' => 'Community and Support',
   );
- 
+  //set the section_name variable to be output in page.tpl.php
   $vars['section_name'] = $section_names[$matched_menu];
    
   // Now ask for all the menu items for the matched menu. Let modules add in
@@ -175,12 +175,13 @@ function drupalorg_crosssite_content_menu(&$vars) {
     
     $nav_content_links = drupalorg_crosssite_menu_absolute_links($nav_content_links);
     
+    //check the links to see if it is an active link
     foreach ($nav_content_links as $key => $link) {
       $class = $key;
-
-      
       if (isset($link['href']) && ($link['href'] == $_GET['q'] || ($link['href'] == '<front>' && drupal_is_front_page())) 
           && (empty($link['language']) || $link['language']->language == $language->language)) {
+          //this is an active link/tab, therefore we don't want
+          //to display the page title - used in page.tpl.php
           $vars['matched_content_link'] = TRUE;
       }
     }
