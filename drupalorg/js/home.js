@@ -1,11 +1,11 @@
 $(function() {
   jQuery.bt.defaults.closeWhenOthersOpen = true;
-  var current = 0, max = Drupal.settings.homePageMap.length;
+  var items = Drupal.settings.homePageMap, current = 0, max = Drupal.settings.homePageMap.length;
   for (i = 0; i < items.length; i++) {
     item = items[i];
     css = { top: item.top, left: item.left };
-    $('.map').append($('<img class="homepage-image" src="homepage-'+ item.type +'.png" alt="gmap-pin" title="" width="6" height="7" id="homepage-image-'+ i +'" />').css(css));
-    $('#homepage-image-'+ i).bt('<strong>'+ item.title +'</strong><br /><div class="description">'+ item.description +'</div>', {
+    $('.homepage-map').append($('<img class="homepage-image" src="'+ Drupal.settings.basePath +'/sites/all/themes/trunk/images/homepage-'+ item.type +'.png" width="10" height="10" id="homepage-image-'+ i +'" />').css(css));
+    $('#homepage-image-'+ i).bt(item.content, {
       width: 220,
       spikeLength: 15,
       spikeGirth: 10,

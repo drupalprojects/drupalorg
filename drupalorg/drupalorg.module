@@ -117,10 +117,10 @@ function drupalorg_home() {
   }
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/jquery.bt.min.js');
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/home.js');
-  drupal_add_js(array(
-    array('content' => '<strong>Test</strong><div class="description">description</div>', 'top' => 260, 'left' => 435, 'type' => 'forum'),
-    array('content' => '<strong>Test2</strong><div class="description">d3scr1p110n</div>', 'top' => 60, 'left' => 35, 'type' => 'forum'),
-  ));
+  drupal_add_js(array('homePageMap' => array(
+    array('content' => '<strong>Test</strong><div class="description">description</div>', 'top' => 122, 'left' => 335, 'type' => 'forum'),
+    array('content' => '<strong>Test2</strong><div class="description">d3scr1p110n</div>', 'top' => 105, 'left' => 35, 'type' => 'forum'),
+  )), 'setting');
 
   return theme('drupalorg_home');
 }
