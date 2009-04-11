@@ -47,10 +47,9 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
     }
     $node->content['body']['#value'] .= $extra;
     
-    if (!empty($node->book['bid'])) {
-      // Prepend the handbook meta data to book bodies.
-      //ISSUE: the meta data isn't applicable in most of the above pages - i.e. recent changes table doesn't have a last modified
-      //$node->content['body']['#value'] = drupalorg_handbook_meta_data($node) . $node->content['body']['#value'];
+    if (!empty($node->book['bid']) && (!$extra)) {
+      // Prepend the handbook meta data to book bodies only if it's not an above case (!$extra).
+      $node->content['body']['#value'] = drupalorg_handbook_meta_data($node) . $node->content['body']['#value'];
     }
   }
 }
