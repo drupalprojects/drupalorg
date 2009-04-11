@@ -104,7 +104,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   // == Nav masthead links
   
   $nav_masthead_links = array(
-    'homepage'       => array('href' => '',          'title' => t('Drupal Homepage'),  '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '')),
+    'homepage'       => array('href' => 'home',      'title' => t('Drupal Homepage'),  '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$')),
     'dashboard'      => array('href' => 'dashboard', 'title' => t('Your dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^dashboard(/|$)')),
   );
   $userinfo = '';
