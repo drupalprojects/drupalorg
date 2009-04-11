@@ -15,7 +15,8 @@ $(function() {
       strokeStyle: '#BFBFBF',
       strokeWidth: 1,
       trigger: 'none',
-      animate: true
+      animate: true,
+      overlap: 5
     });
   }
   var update = function() {
