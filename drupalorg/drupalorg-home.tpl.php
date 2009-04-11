@@ -63,12 +63,8 @@
 <div id="front-bottom-left" class="grid-6 alpha">
   <div id="front-bottom-left-inner">
     <div class="block-content">
-     <object width="450" height="250" id="myMovieName" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
-      <param value="http://drupal.markboultondesign.com/iteration11/images/flash/map.swf" name="movie"/>
-      <param value="high" name="quality"/>
-      <param value="#FFFFFF" name="bgcolor"/>
-      <embed width="450" height="250" align="" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" name="myMovieName" bgcolor="#FFFFFF" quality="high" src="http://drupal.markboultondesign.com/iteration11/images/flash/map.swf"/>
-     </object>
+      <div class="homepage-map">
+      </div>
     </div>
   </div>
 </div>
