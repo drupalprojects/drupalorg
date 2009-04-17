@@ -98,34 +98,45 @@ function theme_new_contributions($newbies, $newbie_nodes) {
  */
 function quick_stats_report() {
   $output .=  "<dl>";
-  $nodes = db_result(db_query("SELECT COUNT(1) FROM {node}"));
-  $output .=  "<dt>Content (nodes):</dt><dd>". $nodes ."</dd>";
 
-  $book = db_result(db_query("SELECT COUNT(1) FROM {node} WHERE type = 'book'"));
-  $output .=  "<dt>Book (nodes):</dt><dd>". $book ."</dd>";
+  $nodes = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE status = 1"));
+  $output .=  "<dt>All content nodes:</dt><dd>". $nodes ." (excluding unpublished nodes)</dd>";
 
-  $users = db_result(db_query("SELECT COUNT(1) FROM {users}"));
-  $output .=  "<dt>Users:</dt><dd>". $users ."</dd>";
+  $nodes_last_year = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE created > %d AND status = 1", strtotime("1 year ago", time())));
+  $output .=  "<dt>All content nodes in the last year:</dt><dd>". $nodes_last_year ." (excluding unpublished nodes)</dd>";
 
-  $number = db_result(db_query('SELECT COUNT(uid) AS number FROM {users} WHERE status=1')); 
+  $book = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE type = 'book' AND status = 1"));
+  $output .=  "<dt>Book nodes:</dt><dd>". $book ."</dd>";
+
+  $users = db_result(db_query("SELECT COUNT(*) FROM {users} WHERE status = 1"));
+  $output .=  "<dt>Users:</dt><dd>". $users ." (excludes blocked users)</dd>";
+
+  $comments = db_result(db_query("SELECT COUNT(*) FROM {comments} WHERE status = 1"));
+  $output .=  "<dt>Comments:</dt><dd>". $comments ." (excluding unpublished comments)</dd>";
   
-  $comments = db_result(db_query("SELECT COUNT(1) FROM {comments}"));
-  $output .=  "<dt>Comments:</dt><dd>". $comments ."</dd>";
-  
-  $projects = db_result(db_query("SELECT COUNT(1) FROM {project_projects}"));
+  $projects = db_result(db_query("SELECT COUNT(*) FROM {project_projects}"));
   $output .=  "<dt>Total projects:</dt><dd>". $projects ."</dd>";
 
-  $issues = db_result(db_query("SELECT COUNT(1) FROM {node} WHERE type = 'project_issue'"));
-  $output .=  "<dt>Total issues:</dt><dd>". $issues ."</dd>";
+  $issues = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE type = 'project_issue' AND status = 1"));
+  $output .=  "<dt>Total issues:</dt><dd>". $issues ." (excluding unpublished issues)</dd>";
 
-  $issues_month = db_result(db_query("SELECT COUNT(1) FROM {node} WHERE type = 'project_issue' AND created > %d", strtotime("1 year ago", time())));
-  $output .=  "<dt>Issues in In the Last Year:</dt><dd>". $issues_month ."</dd>";
+  $issues_year = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE type = 'project_issue' AND created > %d AND status = 1", strtotime("1 year ago", time())));
+  $output .=  "<dt>Issues in the last Year:</dt><dd>". $issues_year ."</dd>";
 
-  $followups = db_result(db_query("SELECT COUNT(1) FROM {node} n inner join {comments} c on n.nid = c.nid WHERE n.type = 'project_issue'"));
-  $output .=  "<dt>Followups on Issues:</dt><dd>". $followups ."</dd>";
+  $followups = db_result(db_query("SELECT COUNT(*) FROM {node} n INNER JOIN {comments} c ON n.nid = c.nid WHERE n.type = 'project_issue' AND n.status = 1"));
+  $output .=  "<dt>Followups on issues:</dt><dd>". $followups ."</dd>";
 
-  $followups_year = db_result(db_query("select count(*) FROM node n inner join comments c on n.nid = c.nid WHERE n.type = 'project_issue' and n.created > (UNIX_TIMESTAMP() - 24 * 60* 60* 365)"));
-  $output .=  "<dt>Followups on Issues in last year:</dt><dd>". $followups_year ."</dd>";
+  $followups_year = db_result(db_query("SELECT COUNT(*) FROM {node} n INNER JOIN {comments} c ON n.nid = c.nid WHERE n.type = 'project_issue' AND n.status = 1 AND n.created > (UNIX_TIMESTAMP() - 24 * 60* 60* 365)"));
+  $output .=  "<dt>Followups on issues in last year:</dt><dd>". $followups_year ."</dd>";
+
+  $cvs_accts_approved = db_result(db_query('SELECT COUNT(*) FROM {cvs_accounts} WHERE status = %d', CVS_APPROVED));
+  $output .=  "<dt>CVS accounts:</dt><dd>". $cvs_accts_approved ."</dd>";
+
+  $cvs_commits = db_result(db_query('SELECT COUNT(*) FROM {cvs_messages}'));
+  $output .=  "<dt>CVS commits:</dt><dd>". $cvs_commits ."</dd>";
+
+  $cvs_commits_year = db_result(db_query('SELECT COUNT(*) FROM {cvs_messages} WHERE created > %d', strtotime("1 year ago")));
+  $output .=  "<dt>CVS commits in last year:</dt><dd>". $cvs_commits_year ."</dd>";
 
   $output .=  "</dl>";
 
