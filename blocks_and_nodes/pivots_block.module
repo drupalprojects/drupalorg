@@ -11,64 +11,40 @@
  *   2. "More" is disabled temporarily to make the code clearer, will be added later if needed.
  */
 
+define('PID_CONVERSATION', 4151); // conversation pivot algorithm ID that displays related conversations
+define('PID_DOUBLE', 4153);       // double pivot algorithm ID that displays related projects in different algorithms.
 define('LIMIT_CONVERSATION', 5);
 define('LIMIT_DOUBLE', 5);
 define('LIMIT_MAX', 100);         // maximum items to display in the block or on a page.
 
 function pivots_block_output() {
-  if (arg(0) != 'node' || !is_numeric(arg(1))) {
-    return;
+  if ($node = project_get_project_from_menu()) {
+    return _pivots_block_display_on_project($node->nid); 
   }
-  $node_id = arg(1);
-  $node = node_load($node_id);
-  $output = '';
-  
-  global $_pivots_block_pid_conversation, $_pivots_block_pid_double;
-  $_pivots_block_pid_conversation = 4151; // conversation pivot ID that displays related conversations
-  $_pivots_block_pid_double = 4157;  // double pivot ID that displays related projects
-  
-  if ($node->type == 'project_project') {
-    $output = _pivots_block_display_on_project($node_id); 
-  }
-  else if ($node->type == 'forum') {
-    $output = _pivots_block_display_on_forum($node_id);
-  }
-  else {
-    // $output = null; 
-  }
-
-  // decide whether to add GA tracking code.
-  global $_pivots_block_track;
-  if (!empty($output)) {
-    $_pivots_block_track = 'pageTracker._trackPageview("/pivotslog/pageview/'.$_pivots_block_pid_double.'/'.$node_id.'");';
-  }
-  else {
-    $_pivots_block_track = '';
-  }
-  
-  return $output;
 }
 
-// implementation of hook_footer(). add Google Analytics tracking to pivots_block pageview.
-function pivots_block_footer($main = 0) {
-  global $_pivots_block_track;
-  if (!empty($_pivots_block_track)) {
-    drupal_add_js($_pivots_block_track, 'inline', 'footer');
+// Integrating module with Google Analytics http://drupal.org/node/284599
+// Also mentioned in http://drupal.org/node/231451
+function pivots_block_preprocess_page(&$variables) {
+  if ($node = project_get_project_from_menu()) {
+    // inject GA tracking code when pivots_block is present.
+    if (strpos($variables['right'], 'id="block-pivots_block-0"') !== FALSE) {
+      $injection = "pageTracker._trackEvent('PivotsPageview_" .PID_DOUBLE. "', '{$node->nid}');";
+      $variables['closure'] = preg_replace('/(pageTracker._trackPageview\(\);)/', "$1$injection", $variables['closure']);        
+    }
   }
 }
 
 function _pivots_block_display_on_project($node_id) {
-  global $_pivots_block_pid_conversation, $_pivots_block_pid_double;
   $output = '';
-  $output .= _pivots_block_content($node_id, $_pivots_block_pid_conversation, t("Related discussions"), LIMIT_CONVERSATION);
-  $output .= _pivots_block_content($node_id, $_pivots_block_pid_double, t("Related projects"), LIMIT_DOUBLE); 
+  $output .= _pivots_block_content($node_id, PID_CONVERSATION, t("Related discussions"), LIMIT_CONVERSATION);
+  $output .= _pivots_block_content($node_id, PID_DOUBLE, t("Related projects"), LIMIT_DOUBLE); 
   return $output;
 }
 
 function _pivots_block_display_on_forum($node_id) {
-  global $_pivots_block_pid_conversation;
   $output = '';
-  $output = _pivots_block_content($node_id, $_pivots_block_pid_conversation, t("Projects mentioned in the discussion"), LIMIT_CONVERSATION); 
+  $output = _pivots_block_content($node_id, PID_CONVERSATION, t("Projects mentioned in the discussion"), LIMIT_CONVERSATION); 
   return $output; 
 }
 
@@ -77,9 +53,9 @@ function _pivots_block_content($node_id, $pivot_id, $title, $limit) {
   $items = _pivots_block_generate_items($node_id, $pivot_id, $limit);  
   if (!empty($items)) {
     foreach ($items as $position => $item) {
-      $items[$position] = l($item['title'], "node/{$item['nid']}", array(
-        "onClick" => "javascript: pageTracker._trackPageview('/pivotslog/$pivot_id/$node_id/{$item['nid']}/$position');"
-      ));
+      $items[$position] = l($item['title'], "node/{$item['nid']}", array( 'attributes' => array(
+        "onClick" => "javascript:pageTracker._trackEvent('PivotsClick_${pivot_id}', '${node_id}', '${item['nid']}', '${position}');"
+      )));
     }
     $output = theme('item_list', $items, $title); 
   }
