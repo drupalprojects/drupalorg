@@ -19,19 +19,11 @@ define('LIMIT_MAX', 100);         // maximum items to display in the block or on
 
 function pivots_block_output() {
   if ($node = _pivots_project_get_project_from_menu()) {
-    return _pivots_block_display_on_project($node->nid); 
-  }
-}
-
-// Integrating module with Google Analytics http://drupal.org/node/284599
-// Also mentioned in http://drupal.org/node/231451
-function pivots_block_preprocess_page(&$variables) {
-  if ($node = _pivots_project_get_project_from_menu()) {
-    // inject GA tracking code when pivots_block is present.
-    if (strpos($variables['right'], 'id="block-pivots_block-0"') !== FALSE) {
-      $injection = "pageTracker._trackEvent('PivotsPageview_" .PID_DOUBLE. "', 'pivotsfrom_{$node->nid}');";
-      $variables['closure'] = preg_replace('/(pageTracker._trackPageview\(\);)/', "$1$injection", $variables['closure']);        
+    $output = _pivots_block_display_on_project($node->nid); 
+    if (!empty($output)) {
+      $GLOBALS['conf']['googleanalytics_codesnippet_after'] .= "pageTracker._trackEvent('PivotsPageview_" .PID_DOUBLE. "', 'pivotsfrom_{$node->nid}');";
     }
+    return $output;
   }
 }
 
