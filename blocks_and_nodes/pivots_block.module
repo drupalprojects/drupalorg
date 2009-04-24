@@ -18,7 +18,7 @@ define('LIMIT_DOUBLE', 5);
 define('LIMIT_MAX', 100);         // maximum items to display in the block or on a page.
 
 function pivots_block_output() {
-  if ($node = project_get_project_from_menu()) {
+  if ($node = _pivots_project_get_project_from_menu()) {
     return _pivots_block_display_on_project($node->nid); 
   }
 }
@@ -26,10 +26,10 @@ function pivots_block_output() {
 // Integrating module with Google Analytics http://drupal.org/node/284599
 // Also mentioned in http://drupal.org/node/231451
 function pivots_block_preprocess_page(&$variables) {
-  if ($node = project_get_project_from_menu()) {
+  if ($node = _pivots_project_get_project_from_menu()) {
     // inject GA tracking code when pivots_block is present.
     if (strpos($variables['right'], 'id="block-pivots_block-0"') !== FALSE) {
-      $injection = "pageTracker._trackEvent('PivotsPageview_" .PID_DOUBLE. "', '{$node->nid}');";
+      $injection = "pageTracker._trackEvent('PivotsPageview_" .PID_DOUBLE. "', 'pivotsfrom_{$node->nid}');";
       $variables['closure'] = preg_replace('/(pageTracker._trackPageview\(\);)/', "$1$injection", $variables['closure']);        
     }
   }
@@ -54,7 +54,7 @@ function _pivots_block_content($node_id, $pivot_id, $title, $limit) {
   if (!empty($items)) {
     foreach ($items as $position => $item) {
       $items[$position] = l($item['title'], "node/{$item['nid']}", array( 'attributes' => array(
-        "onClick" => "javascript:pageTracker._trackEvent('PivotsClick_${pivot_id}', '${node_id}', '${item['nid']}', '${position}');"
+        "onClick" => "javascript:pageTracker._trackEvent('PivotsClick_${pivot_id}', 'pivotsfrom_${node_id}', 'pivotsto_${item['nid']}', '${position}');"
       )));
     }
     $output = theme('item_list', $items, $title); 
@@ -102,6 +102,16 @@ function pivots_block_block($op = 'list', $delta = 0, $edit = array()) {
       $block['subject'] = t('Recommendations');
       $block['content'] = pivots_block_output();
       return $block;
+  }
+}
+
+/**
+ * Copied from project.module,v 1.349 2009/04/11 02:21:12 dww
+ */
+function _pivots_project_get_project_from_menu() {
+  if (($node = menu_get_object('project_node')) ||
+      (($node = menu_get_object()) && $node->type == 'project_project')) {
+    return $node;
   }
 }
 
