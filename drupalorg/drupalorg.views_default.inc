@@ -448,6 +448,20 @@ function drupalorg_views_default_views() {
     ),
   ));
   $handler->override_option('filters', array(
+    'status' => array(
+      'operator' => '=',
+      'value' => '1',
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'status',
+      'table' => 'node',
+      'field' => 'status',
+      'relationship' => 'none',
+    ),
     'promote' => array(
       'operator' => '=',
       'value' => '1',
