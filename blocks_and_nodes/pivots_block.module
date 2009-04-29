@@ -12,7 +12,7 @@
  */
 
 define('PID_CONVERSATION', 4151); // conversation pivot algorithm ID that displays related conversations
-define('PID_DOUBLE', 4153);       // double pivot algorithm ID that displays related projects in different algorithms.
+define('PID_DOUBLE', 4158);       // double pivot algorithm ID that displays related projects in different algorithms.
 define('LIMIT_CONVERSATION', 5);
 define('LIMIT_DOUBLE', 5);
 define('LIMIT_MAX', 100);         // maximum items to display in the block or on a page.
