@@ -580,21 +580,9 @@ function drupalorg_project_block($op = 'list', $delta = 0, $edit = array()) {
 }
 
 /**
- * Utility function to look up the title for the patch spotlight node.
- */
-function drupalorg_project_bingo_spotlight_title() {
-  $nid = 132970;
-  $title = db_result(db_query("SELECT title FROM {node} WHERE nid = %d", $nid));
-  $clean_title = str_replace('Patch spotlight: ', '', $title);
-  return l($clean_title, 'node/'. $nid);
-}
-
-/**
  * Output links with issue counts for different types of issues.
  */
 function drupalorg_project_bingo_block_output() {
-  $spotlight = drupalorg_project_bingo_spotlight_title();
-
   $counts = variable_get('drupalorg_project_issue_counts', array());
 
   $counts_pending = $counts['Pending bugs'];
@@ -635,6 +623,7 @@ function drupalorg_project_bingo_block_output() {
   $output = <<<EOT
 <div class="item-list">
 <ul>
+  <li><a href="/community-initiatives">Community initiatives</a></li>
   <li>
     <strong>Queues</strong>
     <ul>
@@ -663,12 +652,6 @@ function drupalorg_project_bingo_block_output() {
           $counts_review Patches to review (D7)
         </a>
       </li>
-    </ul>
-  </li>
-  <li>
-    <strong>Patch spotlight</strong>
-     <ul>
-       <li>$spotlight</li>
     </ul>
   </li>
   <li><strong>Play patch bingo!</strong>
