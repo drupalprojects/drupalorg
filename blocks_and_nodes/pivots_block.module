@@ -18,7 +18,7 @@ define('LIMIT_DOUBLE', 5);
 define('LIMIT_MAX', 100);         // maximum items to display in the block or on a page.
 
 function pivots_block_output() {
-  if ($node = _pivots_project_get_project_from_menu()) {
+  if ($node = project_get_project_from_menu()) {
     $output = _pivots_block_display_on_project($node->nid); 
     if (!empty($output)) {
       $GLOBALS['conf']['googleanalytics_codesnippet_after'] .= "pageTracker._trackEvent('PivotsPageview_" .PID_DOUBLE. "', 'pivotsfrom_{$node->nid}');";
@@ -96,14 +96,3 @@ function pivots_block_block($op = 'list', $delta = 0, $edit = array()) {
       return $block;
   }
 }
-
-/**
- * Copied from project.module,v 1.349 2009/04/11 02:21:12 dww
- */
-function _pivots_project_get_project_from_menu() {
-  if (($node = menu_get_object('project_node')) ||
-      (($node = menu_get_object()) && $node->type == 'project_project')) {
-    return $node;
-  }
-}
-
