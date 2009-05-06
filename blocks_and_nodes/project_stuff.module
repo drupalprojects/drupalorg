@@ -65,7 +65,7 @@ function project_stuff_cvs_rss() {
   $count = $total - $page * 100;
   while($row = db_fetch_array($result)) {
     $url = url('cvs', array('query' => 'rss=true&nid='. $row['nid'], 'absolute' => TRUE));
-    $rows[]= array($count--, l($row['title'], 'node/'. $row['nid']), theme('feed_icon', $url));
+    $rows[]= array($count--, l($row['title'], 'node/'. $row['nid']), theme('feed_icon', $url, $row['title']));
   }
   drupal_set_message("There are $total projects.");
 
