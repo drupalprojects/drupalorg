@@ -19,18 +19,40 @@ define('LIMIT_MAX', 100);         // maximum items to display in the block or on
 
 function pivots_block_output() {
   if ($node = project_get_project_from_menu()) {
+    
+    //HACK: randomize algorithm rotation 
+    global $_pivots_block_pid_double;  // double pivot ID defaults to conversation pivots
+    switch (rand(0,4)) {
+      case 0:
+        $_pivots_block_pid_double = 4158; // conversation pivots
+        break;
+      case 1:
+        $_pivots_block_pid_double = 4157; // co-installation
+        break;
+      case 2:
+        $_pivots_block_pid_double = 4159; // Solr-30
+        break;
+      case 3:
+        $_pivots_block_pid_double = 4160; // Solr-100
+        break;
+      case 4:
+        $_pivots_block_pid_double = 4161; // Solr-10
+        break;
+    }
+    
     $output = _pivots_block_display_on_project($node->nid); 
     if (!empty($output)) {
-      $GLOBALS['conf']['googleanalytics_codesnippet_after'] .= "pageTracker._trackEvent('PivotsPageview_" .PID_DOUBLE. "', 'pivotsfrom_{$node->nid}');";
+      $GLOBALS['conf']['googleanalytics_codesnippet_after'] .= "pageTracker._trackEvent('PivotsPageview_{$_pivots_block_pid_double}', 'pivotsfrom_{$node->nid}');";
     }
     return $output;
   }
 }
 
 function _pivots_block_display_on_project($node_id) {
+  global $_pivots_block_pid_double;
   $output = '';
   $output .= _pivots_block_content($node_id, PID_CONVERSATION, t("Related discussions"), LIMIT_CONVERSATION);
-  $output .= _pivots_block_content($node_id, PID_DOUBLE, t("Related projects"), LIMIT_DOUBLE); 
+  $output .= _pivots_block_content($node_id, $_pivots_block_pid_double, t("Related projects"), LIMIT_DOUBLE); 
   return $output;
 }
 
