@@ -537,6 +537,7 @@ function drupalorg_search($op = 'search', $keys = NULL) {
  *     - status (array of status ids)
  *     - priorities (array of prioristy ids)
  *     - categories (array of category names)
+ *     - issue_tags (comma separated issue tags)
  *  @param $absolute
  *    Set to TRUE to get an absolute URL with http://drupal.org/...
  */
