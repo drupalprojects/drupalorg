@@ -193,7 +193,7 @@ function drupalorg_search_form_search_theme_form_alter(&$form, $form_state) {
     '#collapsed' => !drupal_is_front_page(),
   );
   $form['advanced']['meta_type'] = array(
-    '#type' => 'checkboxes',
+    '#type' => 'radios',
     '#options' => drupalorg_meta_types(),
   );
   $form['#submit'][] = 'drupalorg_search_search_theme_form_submit';
