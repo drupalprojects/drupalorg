@@ -141,7 +141,7 @@ function drupalorg_project_issue_counts() {
  */
 function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
   // Add a description for the Priority and Status values.
-  if ($form_id == 'project_issue_node_form' || $form_id == 'comment_form' && !empty($form['original_issue']['issue_info'])) {
+  if ($form_id == 'project_issue_node_form' || ($form_id == 'comment_form' && !empty($form['original_issue']['issue_info']))) {
     $priority_status_description = array(
       // The "standard" class adds a clear so the description is positioned
       // below the floated pull-downs.  "fieldset-description" is from
@@ -150,11 +150,8 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
       '#value' => t('Descriptions of the <a href="!priority_url">Priority</a> and <a href="!status_url">Status</a> values can be found in the <a href="!issue_queue_url">Issue queue handbook</a>.', array('!priority_url' => '/node/45111', '!status_url' => '/node/156119', '!issue_queue_url' => '/node/317')),
       '#suffix' => '</div>',
     );
-  }
 
-  // Make the "Issue tags" vocabulary not so prominent on issue nodes.
-  if ($form_id == 'project_issue_node_form' || 
-      ($form_id == 'comment_form' && !empty($form['original_issue']['issue_info']))) {
+    // Make the "Issue tags" vocabulary not so prominent on issue nodes.
     $form['taxonomy']['#type'] = 'fieldset';
     $form['taxonomy']['#title'] = t('Tags');
     $form['taxonomy']['#collapsible'] = TRUE;
@@ -169,6 +166,36 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
     else {
       $form['taxonomy']['#weight'] = 4;
       $form['original_issue']['issue_info']['description'] = $priority_status_description;
+    }
+
+    // Prefill values from $_GET.
+    if (isset($_GET['rid'])) {
+      $form['project_info']['rid']['#default_value'] = $_GET['rid'];
+    }
+    if (isset($_GET['component'])) {
+      $form['project_info']['component']['#default_value'] = $_GET['component'];
+    }
+    if (isset($_GET['category'])) {
+      $form['issue_info']['category']['#default_value'] = $_GET['category'];
+    }
+    if (isset($_GET['priority'])) {
+      $form['issue_info']['priority']['#default_value'] = $_GET['priority'];
+    }
+    if (isset($_GET['assigned'])) {
+      $form['issue_info']['assigned']['#default_value'] = $_GET['assigned'];
+    }
+    if (isset($_GET['sid'])) {
+      $form['issue_info']['sid']['#default_value'] = $_GET['sid'];
+    }
+    if (isset($_GET['title'])) {
+      $form['issue_details']['title']['#default_value'] = $_GET['title'];
+    }
+    if (isset($_GET['body'])) {
+      $form['issue_details']['body']['#default_value'] = $_GET['body'];
+    }
+    if (isset($_GET['tags'])) {
+      $form['taxonomy']['#collapsed'] = FALSE;
+      $form['taxonomy']['tags'][reset(array_keys($form['taxonomy']['tags']))]['#default_value'] = $_GET['tags'];
     }
   }
 
