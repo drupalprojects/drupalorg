@@ -49,6 +49,11 @@ define('DRUPALORG_SECURITY_UPDATE_HANDBOOK_URL', DRUPALORG_RELEASE_TYPE_HANDBOOK
  */
 define('DRUPALORG_NEWS_VID', 34);
 
+/**
+ * The node nid of Drupal.Org's CVS Applications project node.
+ */
+define('DRUPALORG_CVS_APP_PROJECT_NID', 525912);
+
 // == Basic core hooks =========================================================
 
 function drupalorg_menu() {
@@ -58,6 +63,16 @@ function drupalorg_menu() {
     'title' => 'Aggregator cron run',
     'page callback' => 'aggregator_not_cron',
     'access callback' => 'drupalorg_is_cli',
+    'type' => MENU_CALLBACK,
+  );
+
+  // Override this special case to prevent manually creating
+  // project issue nodes for the cvsapplications project.
+  $items['node/add/project-issue/cvsapplications'] = array(
+    'title' => '',
+    'page callback' => '_drupalorg_node_add_project_issue_cvsapplications',
+    'access callback' => 'node_access',
+    'access arguments' => array('create', 'project_issue'),
     'type' => MENU_CALLBACK,
   );
 
@@ -234,6 +249,14 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   // Add extra choices to the dblog settings selector
   if ($form_id == 'dblog_admin_settings') {
     $form['dblog_row_limit']['#options'] = drupal_map_assoc(array(100, 1000, 10000, 100000, 250000, 500000, 1000000));
+  }
+
+  // Hook into the CVS application form submit handler.
+  if ($form_id == 'cvs_application_form') {
+    $form['#submit'] = array_merge(
+      array('drupalorg_cvs_app_submit'),
+      $form['#submit']
+    );
   }
 }
 
@@ -555,3 +578,80 @@ function drupalorg_views_api() {
   );
 }
 
+
+/**
+ * FormAPI submit handler
+ *
+ * @param $form
+ *  Array, the FormAPI array
+ * @param $form_state
+ *  Array, FormAPI state array.
+ *
+ * This submit handler automatically creates a project issue when the user
+ * applies for CVS account.
+ */
+function drupalorg_cvs_app_submit($form, &$form_state) {
+  global $user;
+
+  // Easy to use link to the user's CVS form.
+  $user_cvs_edit_link = l('CVS edit link for '. $user->name, 'user/'. $user->uid .'/edit/cvs');
+
+  // Automagically create a project issue in the Drupal CVS Applications project.
+  $node = new stdClass();
+  $node->type = 'project_issue';
+  $node->uid = $user->uid;
+  $node->comment = 2; // Allow follow-ups.
+  $node->pid = variable_get('drupalorg_cvs_app_project_nid', DRUPALORG_CVS_APP_PROJECT_NID);
+  $node->sid = variable_get('drupalorg_cvs_app_project_sid', 16); // Status is "active (needs more info)".
+  $node->component = variable_get('drupalorg_cvs_app_project_component', 'Miscellaneous');
+  $node->category = variable_get('drupalorg_cvs_app_project_task', 'task');
+  $node->priority = variable_get('drupalorg_cvs_app_project_priority', 2); // Normal.
+  $node->title = $user->name .' ['. $form_state['values']['cvs_user'] .']'; // Set title to username of applicant (helps when ordering the summary).
+  $node->body = $user_cvs_edit_link ."\n\n<p />". $form_state['values']['motivation'];
+
+  // Create the project issue node.
+  node_save($node);
+
+  // Save the issue nid, used during the email generation phase.
+  _drupalorg_cvs_app_issue_nid($node->nid);
+}
+
+/**
+ * Implementation of hook_mail_alter()
+ */
+function drupalorg_mail_alter(&$message) {
+  global $base_url;
+
+  $find = array(
+    'cvs_cvs_email_submit_applicant',
+    'cvs_cvs_email_submit_admin',
+  );
+
+  if (in_array($message['id'], $find)) {
+    // Find and replace the project issue of the project issue.
+    $message['body'] = str_replace('%cvs-project-issue', $base_url .'/node/'. _drupalorg_cvs_app_issue_nid(), $message['body']);
+  }
+}
+
+/**
+ * Used to store a variable statically between hook calls.
+ *
+ * @param $nid
+ *   Integer, node nid number to save.
+ */
+function _drupalorg_cvs_app_issue_nid($nid = FALSE) {
+  static $stored_nid;
+  if ($nid !== FALSE) {
+    $stored_nid = $nid;
+  }
+  return $stored_nid;
+}
+
+/**
+ * Menu callback handler.
+ * Special case for node/add/project-issue/cvsapplications.
+ */
+function _drupalorg_node_add_project_issue_cvsapplications() {
+  drupal_set_title(t('CVS Applications'));
+  return t('The creation of issues in this project is prohibited.');
+}
