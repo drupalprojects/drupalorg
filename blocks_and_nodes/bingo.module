@@ -198,6 +198,7 @@ function bingo_block_output() {
  <li><a href="/mailing-lists">Mailing list archives</a></li>
  <li><a href="/project/issues/webmasters">Drupal.org webmasters</a></li>
  <li><a href="/project/issues/infrastructure">Drupal.org server administrators</a></li>
+ <li><a href="/project/issues/cvsapplications">Drupal.org CVS applications</a></li>
  <li><strong>Web links</strong>
  <ul>
  <li><a href="/planet">Planet Drupal</a></li>
