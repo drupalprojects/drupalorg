@@ -169,22 +169,22 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
     }
 
     // Prefill values from $_GET.
-    if (isset($_GET['rid'])) {
+    if (isset($_GET['version'])) {
       $form['project_info']['rid']['#default_value'] = $_GET['rid'];
     }
     if (isset($_GET['component'])) {
       $form['project_info']['component']['#default_value'] = $_GET['component'];
     }
-    if (isset($_GET['category'])) {
+    if (isset($_GET['categories'])) {
       $form['issue_info']['category']['#default_value'] = $_GET['category'];
     }
-    if (isset($_GET['priority'])) {
+    if (isset($_GET['priorities'])) {
       $form['issue_info']['priority']['#default_value'] = $_GET['priority'];
     }
     if (isset($_GET['assigned'])) {
       $form['issue_info']['assigned']['#default_value'] = $_GET['assigned'];
     }
-    if (isset($_GET['sid'])) {
+    if (isset($_GET['status'])) {
       $form['issue_info']['sid']['#default_value'] = $_GET['sid'];
     }
     if (isset($_GET['title'])) {
