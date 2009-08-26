@@ -116,7 +116,7 @@ function drupalorg_news_preprocess_drupalorg_home(&$vars) {
   $vars['tab_content_news'] = $fresh_news;
 }
 
-function drupalorg_news_dashboard_gadget() {
+function drupalorg_news_dashboard_widget() {
   return array(
     array(
       'path' => 'news',
@@ -126,7 +126,7 @@ function drupalorg_news_dashboard_gadget() {
   );
 }
 
-function drupalorg_news_news_dashboard_gadget($gadget_id) {
+function drupalorg_news_news_dashboard_widget($widget_id) {
   // Get the first three news items ordered by descending publication date.
   $result = db_query_range('SELECT nid FROM {node} WHERE promote = 1 ORDER BY created DESC', array(), 0, 3);
   $news = '';
