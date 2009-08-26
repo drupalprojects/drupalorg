@@ -162,6 +162,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'downloads' => 'Download and Extend',
     'documentation' => 'Documentation',
     'community' => 'Community &amp; Support',
+    'dashboard' => '',
   );
   //set the section_name variable to be output in page.tpl.php
   $vars['section_name'] = $section_names[$matched_menu];
