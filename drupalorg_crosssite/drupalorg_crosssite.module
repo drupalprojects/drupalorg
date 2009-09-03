@@ -288,6 +288,16 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         'download' => array('href' => 'node/9068', 'title' => t('Download Druplicon'), '#site' => 'main'),
         'other'    => array('href' => '??', 'title' => t('Other Druplicons'), '#site' => 'main'),
       );
+
+    case 'dashboard':
+      $links = dashboard_user_tabs();
+      foreach (array_keys($links) as $key) {
+        $links[$key]['#site'] = 'main';
+        if (isset($links[$key]['#href'])) {
+          $links[$key]['#active'] = drupalorg_crosssite_menu_path('main', '^' . $links[$key]['#href'] . '($|/)');
+        }
+      }
+      return $links;
   }
 }
 
