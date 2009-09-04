@@ -292,7 +292,13 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
       );
 
     case 'dashboard':
+      global $user;
       $links = dashboard_user_tabs();
+      array_splice($links, -1, 0, array('dashboard-profile' => array(
+        'title' => t('Profile'),
+        'href' => 'user/'. $user->uid,
+        'attributes' => array('class' => 'nav-tab'),
+      )));
       foreach (array_keys($links) as $key) {
         $links[$key]['#site'] = 'main';
         if (isset($links[$key]['#href'])) {
