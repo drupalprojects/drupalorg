@@ -9,6 +9,12 @@
  *   1. Recommendation data is stored externally on master-other.drupal.org database.
  *      The reason to use external database is to give flexibility to developers to tweak the algorithm.
  *   2. "More" is disabled temporarily to make the code clearer, will be added later if needed.
+ * 
+ * This module was developed with support from the National Science 
+ * Foundatio under award IIS-0812042. Any opinions, findings, and conclusions 
+ * or recommendations expressed or embodied in this software are those of the 
+ * author(s) and do not necessarily reflect the views of the National Science 
+ * Foundation.
  */
 
 define('PID_CONVERSATION', 4151); // conversation pivot algorithm ID that displays related conversations
