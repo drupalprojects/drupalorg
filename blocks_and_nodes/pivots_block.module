@@ -9,10 +9,16 @@
  *   1. Recommendation data is stored externally on master-other.drupal.org database.
  *      The reason to use external database is to give flexibility to developers to tweak the algorithm.
  *   2. "More" is disabled temporarily to make the code clearer, will be added later if needed.
+ * 
+ * This module was developed with support from the National Science 
+ * Foundatio under award IIS-0812042. Any opinions, findings, and conclusions 
+ * or recommendations expressed or embodied in this software are those of the 
+ * author(s) and do not necessarily reflect the views of the National Science 
+ * Foundation.
  */
 
 define('PID_CONVERSATION', 4151); // conversation pivot algorithm ID that displays related conversations
-define('PID_DOUBLE', 4158);       // double pivot algorithm ID that displays related projects in different algorithms.
+define('PID_DOUBLE', 5001);       // double pivot algorithm ID that displays related projects in different algorithms.
 define('LIMIT_CONVERSATION', 5);
 define('LIMIT_DOUBLE', 5);
 define('LIMIT_MAX', 100);         // maximum items to display in the block or on a page.
@@ -22,28 +28,16 @@ function pivots_block_output() {
     
     //HACK: randomize algorithm rotation 
     global $_pivots_block_pid_double;  // double pivot ID defaults to conversation pivots
-    switch (rand(0,4)) {
+    switch (rand(0,1)) {
       case 0:
-        $_pivots_block_pid_double = 4158; // conversation pivots
+        $_pivots_block_pid_double = 5001; // conversation pivots
         break;
       case 1:
-        $_pivots_block_pid_double = 4157; // co-installation
-        break;
-      case 2:
-        $_pivots_block_pid_double = 4159; // Solr-30
-        break;
-      case 3:
-        $_pivots_block_pid_double = 4160; // Solr-100
-        break;
-      case 4:
-        $_pivots_block_pid_double = 4161; // Solr-10
+        $_pivots_block_pid_double = 5002; // solr10
         break;
     }
     
-    $output = _pivots_block_display_on_project($node->nid); 
-    if (!empty($output)) {
-      $GLOBALS['conf']['googleanalytics_codesnippet_after'] .= "pageTracker._trackEvent('PivotsPageview_{$_pivots_block_pid_double}', 'pivotsfrom_{$node->nid}');";
-    }
+    $output = _pivots_block_display_on_project($node->nid);
     return $output;
   }
 }
@@ -64,15 +58,18 @@ function _pivots_block_display_on_forum($node_id) {
 
 function _pivots_block_content($node_id, $pivot_id, $title, $limit) {
   $output = '';
+  $ga_event = "$node_id";
   $items = _pivots_block_generate_items($node_id, $pivot_id, $limit);  
   if (!empty($items)) {
     foreach ($items as $position => $item) {
       $items[$position] = l($item['title'], "node/{$item['nid']}", array( 'attributes' => array(
-        "onClick" => "javascript:pageTracker._trackEvent('PivotsClick_${pivot_id}', 'pivotsfrom_${node_id}', 'pivotsto_${item['nid']}');"
+      	      "onClick" => "javascript:pageTracker._trackEvent('PivotsClick_${pivot_id}', '${node_id}_{$item['nid']}');"
       )));
+      $ga_event .= "_{$item['nid']}";
     }
     $output = theme('item_list', $items, $title); 
   }
+  $GLOBALS['conf']['googleanalytics_codesnippet_after'] .= "pageTracker._trackEvent('PivotsPageview_{$pivot_id}', '{$ga_event}');";
   return $output;
 }
 
