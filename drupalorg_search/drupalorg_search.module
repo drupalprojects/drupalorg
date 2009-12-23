@@ -83,15 +83,17 @@ function drupalorg_search_apachesolr_facets() {
  */
 function drupalorg_search_apachesolr_modify_query(&$query, &$params) {
   // TODO: some pending improvements to Apachesolr may simplify this.
-  foreach ($query->get_fields() as $field) {
-    if ($field['#name'] == 'ss_meta_type') {
-      $query->remove_field($field['#name'], $field['#value']);
-      $query->add_field('{!tag=meta_type}' . $field['#name'], $field['#value']);
+  foreach ($query->get_filters() as $filter) {
+    if ($filter['#name'] == 'ss_meta_type') {
+      $query->remove_filter($filter['#name'], $filter['#value']);
+      $query->add_filter('{!tag=meta_type}' . $filter['#name'], $filter['#value']);
     }
   }
-  foreach ($params['facet.field'] as &$field) {
-    if ($field == 'ss_meta_type') {
-      $field = '{!ex=meta_type}' . $field;
+  if (isset($params['facet.field'])) {
+    foreach ($params['facet.field'] as &$field) {
+      if ($field == 'ss_meta_type') {
+        $field = '{!ex=meta_type}' . $field;
+      }
     }
   }
 }
