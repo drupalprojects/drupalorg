@@ -146,13 +146,13 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
           $total += $count;
 
           $new_query = clone $query;
-          $active = $query->has_field('ss_meta_type', $name);
+          $active = $query->has_filter('ss_meta_type', $name);
           $has_active |= $active;
-          $new_query->remove_field('{!tag=meta_type}ss_meta_type');
-          $new_query->add_field('ss_meta_type', $name);
+          $new_query->remove_filter('{!tag=meta_type}ss_meta_type');
+          $new_query->add_filter('ss_meta_type', $name);
 
           $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
-          $querystring = $new_query->get_url_querystring();
+          $querystring = $new_query->get_url_queryvalues();
 
           $entries[] = l(t('@facet (@count)', array('@facet' => $description, '@count' => $count)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => $active ? array('class' => 'selected') : array()));
         }
@@ -160,9 +160,9 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
       if (count($entries)) {
         // Add the "All" entry.
         $new_query = clone $query;
-        $new_query->remove_field('{!tag=meta_type}ss_meta_type');
+        $new_query->remove_filter('{!tag=meta_type}ss_meta_type');
         $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
-        $querystring = $new_query->get_url_querystring();
+        $querystring = $new_query->get_url_queryvalues();
         array_unshift($entries, l(t('All (@count)', array('@count' => $total)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => !$has_active ? array('class' => 'selected') : array())));
 
         return array(
