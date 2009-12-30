@@ -107,7 +107,7 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
 
     $blocks['search_box'] = array(
       'info' => t('Drupalorg Search: Search box'),
-      'cache' => BLOCK_CACHE_PER_PAGE,
+      'cache' => BLOCK_NO_CACHE,
     );
 
     // Add the facet blocks.
@@ -148,7 +148,7 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
           $new_query = clone $query;
           $active = $query->has_filter('ss_meta_type', $name);
           $has_active |= $active;
-          $new_query->remove_filter('{!tag=meta_type}ss_meta_type');
+          $new_query->remove_filter('ss_meta_type');
           $new_query->add_filter('ss_meta_type', $name);
 
           $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
@@ -160,7 +160,7 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
       if (count($entries)) {
         // Add the "All" entry.
         $new_query = clone $query;
-        $new_query->remove_filter('{!tag=meta_type}ss_meta_type');
+        $new_query->remove_filter('ss_meta_type');
         $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
         $querystring = $new_query->get_url_queryvalues();
         array_unshift($entries, l(t('All (@count)', array('@count' => $total)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => !$has_active ? array('class' => 'selected') : array())));
