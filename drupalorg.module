@@ -699,15 +699,3 @@ function _drupalorg_node_add_project_issue_cvsapplications() {
   return t('The creation of issues in this project is prohibited.');
 }
 
-/**
- * Implement hook_views_pre_execute.
- * 
- * Some views queries against the node_comment_statistics table do not use the
- * indices properly and therefore end up in the slow query log. We force the
- * index.
- */
-function drupalorg_views_pre_execute(&$view) {
-  if (strpos($view->build_info['query'], 'ORDER BY node_comment_statistics_last_comment_timestamp')) {
-    $view->build_info['query'] = str_replace('INNER JOIN {node_comment_statistics} node_comment_statistics ', 'INNER JOIN {node_comment_statistics} node_comment_statistics FORCE INDEX (node_comment_timestamp) ' , $view->build_info['query']);
-  }
-}
