@@ -1,0 +1,8 @@
+; $Id$
+name = Project verify package
+description = drupal.org specific verification helpers for the project packaging system.
+package = Project
+dependencies[] = project
+dependencies[] = project_release
+dependencies[] = project_package
+core = 6.x

@@ -1,0 +1,13 @@
+<?php
+// $Id$
+
+/**
+* @file
+* Install functions for project_verify_package module.
+*/
+
+function project_verify_package_enable() {
+  // Make this module heavier than project_release module.
+  $weight = db_result(db_query("SELECT weight FROM {system} WHERE name = 'project_release'"));
+  db_query("UPDATE {system} SET weight = %d WHERE name = 'project_verify_package'", $weight + 1);
+}
