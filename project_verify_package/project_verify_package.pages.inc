@@ -319,7 +319,7 @@ function _project_verify_package_verify_release_node($form, &$form_state) {
           list($raw_output, $escaped_output) = project_verify_package_clean_output($output);
           $token_args['!output'] = nl2br($escaped_output);
           if (preg_match(PROJECT_VERIFY_PACKAGE_RELEASE_TAG_REGEX, $cvs_tag)) {
-            $message = t("<p>The %makefile file for project %project_title failed verification for CVS tag %cvs_tag.</p><p><a href=\"!doc_link\">!doc_link</a> -- to learn more about correcting these errors.</p><p>!output</p><p>Once these errors are fixed, commit the changes to your %makefile, move the release tag for your project, and submit the release node again.</p>", $token_args);
+            $message = t("<p>The %makefile file for project %project_title failed verification for CVS tag %cvs_tag.</p><p><a href=\"!doc_link\">!doc_link</a> -- to learn more about correcting these errors.</p><p>!output</p><p>Once these errors are fixed, commit the changes to your %makefile, move the release tag for your project (check the CVS manual to learn how to move tags if necessary), and submit the release node again.</p>", $token_args);
           }
           else {
             $message = t("<p>The %makefile file for project %project_title failed verification for CVS branch %cvs_tag.</p><p><a href=\"!doc_link\">!doc_link</a> -- to learn more about correcting these errors.</p><p>!output</p><p>Once these errors are fixed, commit them to the branch, then resubmit the release.</p>", $token_args);
