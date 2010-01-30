@@ -66,6 +66,35 @@ $handler->override_option('fields', array(
     'table' => 'comments',
     'field' => 'subject',
   ),
+  'comment' => array(
+    'label' => 'Comment',
+    'alter' => array(
+      'alter_text' => 0,
+      'text' => '',
+      'make_link' => 0,
+      'path' => '',
+      'link_class' => '',
+      'alt' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'target' => '',
+      'help' => '',
+      'trim' => 1,
+      'max_length' => '200',
+      'word_boundary' => 1,
+      'ellipsis' => 1,
+      'strip_tags' => 0,
+      'html' => 0,
+    ),
+    'empty' => '',
+    'hide_empty' => 0,
+    'empty_zero' => 0,
+    'exclude' => 0,
+    'id' => 'comment',
+    'table' => 'comments',
+    'field' => 'comment',
+    'relationship' => 'none',
+  ),
   'timestamp' => array(
     'id' => 'timestamp',
     'table' => 'comments',
@@ -101,6 +130,37 @@ $handler->override_option('fields', array(
     'id' => 'edit_comment',
     'table' => 'comments',
     'field' => 'edit_comment',
+  ),
+  'status' => array(
+    'label' => 'Published',
+    'alter' => array(
+      'alter_text' => 0,
+      'text' => '',
+      'make_link' => 0,
+      'path' => '',
+      'link_class' => '',
+      'alt' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'target' => '',
+      'help' => '',
+      'trim' => 0,
+      'max_length' => '',
+      'word_boundary' => 1,
+      'ellipsis' => 1,
+      'strip_tags' => 0,
+      'html' => 0,
+    ),
+    'empty' => '',
+    'hide_empty' => 0,
+    'empty_zero' => 0,
+    'type' => 'yes-no',
+    'not' => 1,
+    'exclude' => 0,
+    'id' => 'status',
+    'table' => 'comments',
+    'field' => 'status',
+    'relationship' => 'none',
   ),
 ));
 $handler->override_option('arguments', array(
@@ -187,9 +247,9 @@ $handler->override_option('access', array(
 $handler->override_option('cache', array(
   'type' => 'none',
 ));
-$handler->override_option('items_per_page', 25);
+$handler->override_option('items_per_page', 50);
 $handler->override_option('use_pager', '1');
-$handler->override_option('style_plugin', 'table');
+$handler->override_option('style_plugin', 'bulk');
 $handler->override_option('style_options', array(
   'grouping' => '',
   'override' => 1,
@@ -201,6 +261,7 @@ $handler->override_option('style_options', array(
     'timestamp' => 'timestamp',
     'delete_comment' => 'delete_comment',
     'edit_comment' => 'delete_comment',
+    'status' => 'status',
   ),
   'info' => array(
     'title' => array(
@@ -221,8 +282,29 @@ $handler->override_option('style_options', array(
     'edit_comment' => array(
       'separator' => '',
     ),
+    'status' => array(
+      'sortable' => 0,
+      'separator' => '',
+    ),
   ),
   'default' => 'timestamp',
+  'execution_type' => '2',
+  'display_type' => '1',
+  'hide_select_all' => 0,
+  'skip_confirmation' => 0,
+  'display_result' => 1,
+  'merge_single_action' => 0,
+  'selected_operations' => array(
+    'views_bulk_operations_delete_comment_action' => 'views_bulk_operations_delete_comment_action',
+    'comment_unpublish_action' => 'comment_unpublish_action',
+    'system_message_action' => 0,
+    'views_bulk_operations_action' => 0,
+    'views_bulk_operations_script_action' => 0,
+    'views_bulk_operations_argument_selector_action' => 0,
+    'system_goto_action' => 0,
+    'system_send_email_action' => 0,
+    'comment_unpublish_by_keyword_action' => 0,
+  ),
 ));
 $handler = $view->new_display('page', 'Page', 'page_1');
 $handler->override_option('path', 'user/%/admin-comments');
