@@ -320,13 +320,14 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
  * subsites.
  */
 function drupalorg_crosssite_menu_sites() {
+  $base_domain = variable_get('drupalorg_base_domain', 'drupal.org');
   return array(
-    'docs'        => 'drupal.org',
-    'main'        => 'drupal.org',
-    'project'     => 'drupal.org',
-    'api'         => 'api.drupal.org',
-    'association' => 'association.drupal.org',
-    'groups'      => 'groups.drupal.org',
+    'docs'        => $base_domain,
+    'main'        => $base_domain,
+    'project'     => $base_domain,
+    'api'         => 'api.' . $base_domain,
+    'association' => 'association.' . $base_domain,
+    'groups'      => 'groups.' . $base_domain,
   );
 }
 
@@ -337,23 +338,16 @@ function drupalorg_crosssite_menu_sites() {
  *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
  * @return
  *   TRUE if on the site specified by $site_key.
- * @todo
- *   Investigate testing domain indentification for subsites.
  */
 function drupalorg_crosssite_menu_site($site_key) {
   static $site = NULL;
   static $sites = NULL;
-  
   if (!isset($site)) {
-  	list($site) = explode(':', $_SERVER['HTTP_HOST']);
+    $site = variable_get('drupalorg_site', 'main');
     $sites = drupalorg_crosssite_menu_sites();
   }
-  
-  // If we have this site defined and the host name matches, we are on that site.
-  // If there is no site with our current site name and the main site is requested,
-  // we also fall back on saying we are on the site, since then we are on a developer
-  // site for drupal.org.
-  return (isset($sites[$site_key]) && ($sites[$site_key] == $site)) || (!isset($sites[$site]) && in_array($site_key, array('main', 'project', 'docs')));
+
+  return isset($sites[$site_key]) && isset($sites[$site]) && ($site_key == $site);
 }
 
 /**
