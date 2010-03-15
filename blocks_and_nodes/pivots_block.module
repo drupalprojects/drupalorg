@@ -52,7 +52,8 @@ function _pivots_block_content($node_id, $pivot_id, $title, $limit) {
   if (!empty($items)) {
     foreach ($items as $position => $item) {
       $items[$position] = l($item['title'], "node/{$item['nid']}", array( 'attributes' => array(
-              "onClick" => "javascript:pageTracker._trackEvent('PivotsClick_${pivot_id}', '${node_id}_{$item['nid']}');"
+              "onClick" => "javascript:pageTracker._trackEvent('PivotsClick_${pivot_id}', '${node_id}_{$item['nid']}');",
+              "rel"     => "nofollow"
       )));
       $ga_event .= "_{$item['nid']}";
     }
