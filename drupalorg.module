@@ -62,7 +62,7 @@ function drupalorg_menu() {
   $items['aggregator_cron'] = array(
     'title' => 'Aggregator cron run',
     'page callback' => 'aggregator_not_cron',
-    'access callback' => 'drupalorg_is_cli',
+    'access callback' => 'drupal_is_cli',
     'type' => MENU_CALLBACK,
   );
 
@@ -77,10 +77,6 @@ function drupalorg_menu() {
   );
 
   return $items;
-}
-
-function drupalorg_is_cli() {
-  return $_SERVER['SERVER_SOFTWARE'] === 'PHP CLI';
 }
 
 /**
