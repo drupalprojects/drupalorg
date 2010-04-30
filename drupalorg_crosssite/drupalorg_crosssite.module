@@ -71,7 +71,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       'col5item1' => array('href' => 'col5item1', 'title' => t('col5item1'), '#site' => 'main'),
       'col5item2' => array('href' => 'col5item2', 'title' => t('col5item2'), '#site' => 'main'),
       'col5item3' => array('href' => 'col5item3', 'title' => t('col5item3'), '#site' => 'main'),
-    )*/,
+    ),*/
   );
 
   $vars['nav_footer'] = '';
