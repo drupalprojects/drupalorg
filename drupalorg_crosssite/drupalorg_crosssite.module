@@ -38,7 +38,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   $nav_header_links = drupalorg_crosssite_menu_absolute_links($nav_header_links);
   // Theme as links, and avoid class="links" on it.
   $vars['nav_header'] = theme('links', $nav_header_links, array());
-  
+
   // == Build the footer navigation
 
   $nav_footer_links = array(
@@ -73,7 +73,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       'col5item3' => array('href' => 'col5item3', 'title' => t('col5item3'), '#site' => 'main'),
     ),
   );
-  
+
   $vars['nav_footer'] = '';
   foreach ($nav_footer_links as $num => $links_column) {
     // Make all external links right.
@@ -100,9 +100,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   if (count($page_tools) > 0) {
     $vars['page_tools'] = theme('links', $page_tools);
   }
-  
+
   // == Nav masthead links
-  
+
   $nav_masthead_links = array(
     'homepage'       => array('href' => 'home',      'title' => t('Drupal Homepage'),  '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$')),
     'dashboard'      => array('href' => 'dashboard', 'title' => t('Your dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^dashboard(/|$)')),
@@ -115,7 +115,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     // If not the main site (or a test server), provide logout link to the main site, since
     // that would log us out of the single-sign-on-domain. @todo
     // $single_sign_on_prefix = drupalorg_crosssite_menu_site('main') ? '' : 'http://drupal.org/';
-    
+
     // Add user page link and logout link.
     $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user') .' '. l(t('Logout'), 'logout') .'</div>';
   }
@@ -150,13 +150,13 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'druplicon'     => drupalorg_crosssite_menu_path('main', '^(node/9068|druplicon)(/|$)'),
     'dashboard'     => drupalorg_crosssite_menu_path('main', '^(dashboard|user/'. $user->uid .')(/|$)'),
   );
-  
+
   // Theoretically, the matching criteria made one of the areas win (have TRUE as
   // the array value). If there are two menus to display on the same path, we
   // are in trouble, since we only have one menu displayed per path. Fix the above
   // matching in that case. (This will pick the first matched in that case).
   $matched_menu = array_search(TRUE, $nav_content_areas);
-  
+
   //Identify sections names/titles to be displayed above content area menus
   $section_names = array(
     'downloads' => 'Download and Extend',
@@ -168,33 +168,33 @@ function drupalorg_crosssite_content_menu(&$vars) {
   if (isset($section_names[$matched_menu])) {
     $vars['section_name'] = $section_names[$matched_menu];
   }
-   
+
   // Now ask for all the menu items for the matched menu. Let modules add in
   // menu items (eg. in case of dashboard module adding items we don't know about).
   $nav_content_links = module_invoke_all('drupalorg_crosssite_content_menu_items', $matched_menu);
-  
+
   if (count($nav_content_links)) {
     // Make all external links right.
-    
+
     $nav_content_links = drupalorg_crosssite_menu_absolute_links($nav_content_links);
-    
+
     //check the links to see if it is an active link
     foreach ($nav_content_links as $key => $link) {
       $class = $key;
-      if (isset($link['href']) && ($link['href'] == $_GET['q'] || ($link['href'] == '<front>' && drupal_is_front_page())) 
+      if (isset($link['href']) && ($link['href'] == $_GET['q'] || ($link['href'] == '<front>' && drupal_is_front_page()))
           && (empty($link['language']) || $link['language']->language == $language->language)) {
           //this is an active link/tab, therefore we don't want
           //to display the page title - used in page.tpl.php
           $vars['matched_content_link'] = TRUE;
       }
     }
-    
+
     // Theme the links for the page, bypassing class="links".
     $vars['nav_content'] = theme('links', $nav_content_links, array());
     $vars['nav_content_class'] = ' class="nav-content-'. $matched_menu .'"';
     return;
   }
-  
+
   // Else just return an empty content nav menu.
   $vars['nav_content'] = $vars['nav_content_class'] = '';
 }
@@ -216,12 +216,12 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         'index'   => array('href' => 'documentation/index', 'title' => t('Index'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(documentation/index)(/|$)')),
         'recent'  => array('href' => 'documentation/recent', 'title' => t('Recently updated'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(node/23192)(/|$)')),
       );
-    
+
     // Just on the project site.
     case 'downloads':
       return array(
         // All are exact paths and so theme('links') will make them gain active
-        // classes when on the projects site. Therefore no need for #active. 
+        // classes when on the projects site. Therefore no need for #active.
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'project'),
         'core'         => array('href' => 'project/drupal', 'title' => t('Drupal Core'), '#site' => 'project'),
         'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'project'),
@@ -292,20 +292,22 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
       );
 
     case 'dashboard':
-      global $user;
-      $links = dashboard_user_tabs();
-      array_splice($links, -1, 0, array('dashboard-profile' => array(
-        'title' => t('Profile'),
-        'href' => 'user/'. $user->uid,
-        'attributes' => array('class' => 'nav-tab'),
-      )));
-      foreach (array_keys($links) as $key) {
-        $links[$key]['#site'] = 'main';
-        if (isset($links[$key]['#href'])) {
-          $links[$key]['#active'] = drupalorg_crosssite_menu_path('main', '^' . $links[$key]['#href'] . '($|/)');
+      if (module_exists('dashboard')) {
+        global $user;
+        $links = module_invoke('dashboard', 'user_tabs');
+        array_splice($links, -1, 0, array('dashboard-profile' => array(
+          'title' => t('Profile'),
+          'href' => 'user/'. $user->uid,
+          'attributes' => array('class' => 'nav-tab'),
+        )));
+        foreach (array_keys($links) as $key) {
+          $links[$key]['#site'] = 'main';
+          if (isset($links[$key]['#href'])) {
+            $links[$key]['#active'] = drupalorg_crosssite_menu_path('main', '^' . $links[$key]['#href'] . '($|/)');
+          }
         }
+        return $links;
       }
-      return $links;
   }
 }
 
@@ -334,7 +336,7 @@ function drupalorg_crosssite_menu_sites() {
 
 /**
  * Check whether we are on the specified site.
- * 
+ *
  * @param $site_key
  *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
  * @return
