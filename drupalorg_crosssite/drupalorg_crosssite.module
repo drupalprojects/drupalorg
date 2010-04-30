@@ -328,6 +328,7 @@ function drupalorg_crosssite_menu_sites() {
     'api'         => 'api.' . $base_domain,
     'association' => 'association.' . $base_domain,
     'groups'      => 'groups.' . $base_domain,
+    'localize'    => 'localize' . $base_domain,
   );
 }
 
