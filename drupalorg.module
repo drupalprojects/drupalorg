@@ -520,12 +520,23 @@ function drupalorg_profile_fix_languages(&$form, &$form_state) {
 function drupalorg_project_page_link_alter(&$links, $node) {
   // Link to security handbook page.
   $links['development']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
+
   // Link to translation downloads.
-  $translation_download = 'http://localize.drupal.org/translate/projects/';
+  $translation_download = '';
   if (is_array($node->taxonomy) && isset($node->taxonomy[DRUPALORG_TRANSLATION_TID])) {
+    // Language projects get links to their language teams.
     $translation_download = 'http://localize.drupal.org/translate/languages/';
   }
-  $links['resources']['links']['get_translations'] = l(t('Project translations'), $translation_download . $node->project['uri']);
+  elseif (!empty($node->project_release['releases'])) {
+    // Otherwise only include links if we have releases and at least one supported.
+    $has_supported = db_result(db_query_range(db_rewrite_sql('SELECT 1 FROM {project_release_supported_versions} WHERE nid = %d AND supported = 1'), $node->nid, 0, 1));
+    if ($has_supported > 0) {
+      $translation_download = 'http://localize.drupal.org/translate/projects/';
+    }
+  }
+  if (!empty($translation_download)) {
+    $links['resources']['links']['view_translations'] = l(t('View project translations'), $translation_download . $node->project['uri']);
+  }
 }
 
 // == External search block ====================================================
