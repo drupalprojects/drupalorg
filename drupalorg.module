@@ -54,6 +54,11 @@ define('DRUPALORG_NEWS_VID', 34);
  */
 define('DRUPALORG_CVS_APP_PROJECT_NID', 525912);
 
+/**
+ * Term ID for translation projects.
+ */
+define('DRUPALORG_TRANSLATION_TID', 29);
+
 // == Basic core hooks =========================================================
 
 function drupalorg_menu() {
@@ -154,7 +159,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   }
 
   // Make the "Issue tags" vocabulary not so prominent on issue nodes.
-  if ($form_id == 'project_issue_node_form' || 
+  if ($form_id == 'project_issue_node_form' ||
       ($form_id == 'comment_form' && !empty($form['original_issue']['issue_info']))) {
     $form['taxonomy']['#type'] = 'fieldset';
     $form['taxonomy']['#title'] = t('Tags');
@@ -207,12 +212,12 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'project_release_node_form') {
     drupalorg_project_release_node_form_alter($form, $form_state);
   }
-  
+
   // Add CVS maintainer newsletter signup to users when getting a CVS account.
   if ($form_id == 'cvs_user_edit_form') {
     $form['#submit'][] = 'drupalorg_cvs_user_edit_submit';
   }
-    
+
   // Deprecate the "license" field, as it must always be GPLv2+ anyway.
   if ($form_id == 'project_project_node_form') {
     if (! $form['project']['license']['#default_value']) {
@@ -226,17 +231,17 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
       );
     }
   }
-  
+
   // Core search index is not used, so clear off wipe option.
   if ($form_id == 'search_admin_settings') {
     unset($form['status']['wipe']);
   }
-  
+
   // Ensure that wildcard email addresses are not abused.
   if ($form_id == 'user_register') {
     $form['#validate'][] = 'drupalorg_register_mail_validate';
   }
-  
+
   // Add home page option to user access rule adding and editing.
   // Make sure if we edit a homepage option, we keep using that as a default.
   if ($form_id == 'user_admin_access_add_form' || $form_id == 'user_admin_access_edit_form') {
@@ -245,7 +250,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
     }
     $form['type']['#options']['homepage'] = t('Homepage');
   }
-  
+
   // Ensure nice Drupal home page addresses
   if ($form_id == 'user_profile_form') {
     $form['#validate'][] = 'drupalorg_profile_user_edit_validate';
@@ -259,7 +264,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
       $form['#submit'] = array_merge(array('drupalorg_profile_fix_languages'), $form['#submit']);
     }
   }
-  
+
   // Book node form modifications.
   if ($form_id == 'book_node_form') {
     // Force a revision log entry when editing existing book nodes.
@@ -282,7 +287,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   // Remove the news vocabulary on forum forms, if the user is not an admin.
   // Used to mark news forum topics with tags.
   if ($form_id == 'forum_node_form') {
-    $form['taxonomy'][DRUPALORG_NEWS_VID]['#access'] = user_access('administer nodes'); 
+    $form['taxonomy'][DRUPALORG_NEWS_VID]['#access'] = user_access('administer nodes');
   }
 
   // Add extra choices to the dblog settings selector
@@ -515,6 +520,12 @@ function drupalorg_profile_fix_languages(&$form, &$form_state) {
 function drupalorg_project_page_link_alter(&$links, $node) {
   // Link to security handbook page.
   $links['development']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
+  // Link to translation downloads.
+  $translation_download = 'http://localize.drupal.org/translate/projects/';
+  if (is_array($node->taxonomy) && isset($node->taxonomy[DRUPALORG_TRANSLATION_TID])) {
+    $translation_download = 'http://localize.drupal.org/translate/languages/';
+  }
+  $links['resources']['links']['get_translations'] = l(t('Project translations'), $translation_download . $node->project['uri']);
 }
 
 // == External search block ====================================================
@@ -694,4 +705,3 @@ function _drupalorg_node_add_project_issue_cvsapplications() {
   drupal_set_title(t('CVS Applications'));
   return t('The creation of issues in this project is prohibited.');
 }
-
