@@ -301,7 +301,7 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         'home'         => array('href' => '', 'title' => t('Translations home'), '#site' => 'localize'),
         'languages'    => array('href' => 'translate/languages', 'title' => t('Languages'), '#site' => 'localize'),
         'projects'     => array('href' => 'translate/projects', 'title' => t('Projects'), '#site' => 'localize'),
-        'download'     => array('href' => 'download', 'title' => t('Download'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^download$'))),
+        'download'     => array('href' => 'download', 'title' => t('Download'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^download$')),
         'news'         => array('href' => 'news', 'title' => t('News'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^news$')),
         'faq'          => array('href' => 'faq', 'title' => t('FAQ'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^faq$')),
       );
