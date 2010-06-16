@@ -150,6 +150,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'events'        => drupalorg_crosssite_menu_path('groups', '^events(/|$)'),
     'druplicon'     => drupalorg_crosssite_menu_path('main', '^(node/9068|druplicon)(/|$)'),
     'dashboard'     => drupalorg_crosssite_menu_path('main', '^(dashboard|user/'. $user->uid .')(/|$)'),
+    'localize'      => drupalorg_crosssite_menu_site('localize'),
   );
 
   // Theoretically, the matching criteria made one of the areas win (have TRUE as
@@ -292,6 +293,19 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         'other'    => array('href' => '??', 'title' => t('Other Druplicons'), '#site' => 'main'),
       );
 
+    // Just on the localization site.
+    case 'localize':
+      return array(
+        // All are exact paths and so theme('links') will make them gain active
+        // classes when on the localize site. Therefore no need for #active.
+        'home'         => array('href' => 'translate', 'title' => t('Translations home'), '#site' => 'localize'),
+        'languages'    => array('href' => 'translate/languages', 'title' => t('Languages'), '#site' => 'localize'),
+        'projects'     => array('href' => 'translate/projects', 'title' => t('Projects'), '#site' => 'localize'),
+        'download'     => array('href' => 'download', 'title' => t('Download'), '#site' => 'localize'),
+        'news'         => array('href' => 'news', 'title' => t('News'), '#site' => 'localize'),
+        'faq'          => array('href' => 'faq', 'title' => t('FAQ'), '#site' => 'localize'),
+      );
+
     case 'dashboard':
       if (module_exists('dashboard')) {
         global $user;
@@ -331,7 +345,7 @@ function drupalorg_crosssite_menu_sites() {
     'api'         => 'api.' . $base_domain,
     'association' => 'association.' . $base_domain,
     'groups'      => 'groups.' . $base_domain,
-    'localize'    => 'localize' . $base_domain,
+    'localize'    => 'localize.' . $base_domain,
   );
 }
 
