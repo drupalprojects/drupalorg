@@ -298,12 +298,12 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
       return array(
         // All are exact paths and so theme('links') will make them gain active
         // classes when on the localize site. Therefore no need for #active.
-        'home'         => array('href' => 'translate', 'title' => t('Translations home'), '#site' => 'localize'),
+        'home'         => array('href' => '', 'title' => t('Translations home'), '#site' => 'localize'),
         'languages'    => array('href' => 'translate/languages', 'title' => t('Languages'), '#site' => 'localize'),
         'projects'     => array('href' => 'translate/projects', 'title' => t('Projects'), '#site' => 'localize'),
-        'download'     => array('href' => 'download', 'title' => t('Download'), '#site' => 'localize'),
-        'news'         => array('href' => 'news', 'title' => t('News'), '#site' => 'localize'),
-        'faq'          => array('href' => 'faq', 'title' => t('FAQ'), '#site' => 'localize'),
+        'download'     => array('href' => 'download', 'title' => t('Download'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^download$'))),
+        'news'         => array('href' => 'news', 'title' => t('News'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^news$')),
+        'faq'          => array('href' => 'faq', 'title' => t('FAQ'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^faq$')),
       );
 
     case 'dashboard':
