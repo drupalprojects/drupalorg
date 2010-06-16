@@ -124,6 +124,14 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   $nav_masthead_links = drupalorg_crosssite_menu_absolute_links($nav_masthead_links);
   // Theme as links, and avoid class="links" on it.
   $vars['nav_masthead'] = theme('links', $nav_masthead_links, array()) . $userinfo;
+
+  // Put in a body class for CSS hooking and a variable for theme dependence
+  // if we are on the main site's home page. Many things should be different
+  // there.
+  if (drupalorg_crosssite_menu_site('main') && drupal_is_front_page()) {
+    $vars['body_classes'] .= ' drupalorg-front';
+    $vars['is_drupalorg_front'] = TRUE;
+  }
 }
 
 /**
