@@ -321,7 +321,6 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         array_splice($links, -1, 0, array('dashboard-profile' => array(
           'title' => t('Profile'),
           'href' => 'user/'. $user->uid,
-          'attributes' => array('class' => 'nav-tab'),
         )));
         foreach (array_keys($links) as $key) {
           $links[$key]['#site'] = 'main';
@@ -455,6 +454,7 @@ function drupalorg_crosssite_menu_absolute_links($links) {
     elseif (!empty($link['#active'])) {
       // theme('link') uses the key as class, so add active class that way.
       $key = $key .' active';
+      $link['attributes']['class'] = 'active';
     }
     $activated_links[$key] = $link;
   }
