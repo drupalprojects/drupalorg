@@ -112,7 +112,7 @@ function drupalorg_news_preprocess_drupalorg_home(&$vars) {
     $news_count++;
   }
   // Finally, we have a link to the rest of the items
-  $fresh_news .= '<p>'. l(t('More news...'), 'news') .'</p>';
+  $fresh_news .= '<p>'. l(t('More news…'), 'news') .'</p>';
   $vars['tab_content_news'] = $fresh_news;
 }
 
