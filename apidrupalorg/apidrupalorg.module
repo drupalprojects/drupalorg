@@ -1,0 +1,66 @@
+<?php
+
+function apidrupalorg_menu() {
+  return array(
+    'pages-with-comments' => array(
+      'title' => 'Pages with comments',
+      'page callback' => 'apidrupalorg_comments_page',
+      'access arguments' => array('access comments'),
+      'type' => MENU_CALLBACK,
+    ),
+  );
+}
+
+/**
+ * Implementation for http://drupal.org/node/500536.
+ */
+function apidrupalorg_form_comment_form_alter(&$form, &$form_state) {
+  $versions = array(
+    '7' => 156281,
+    '6' => 97368,
+    '5' => 96923,
+  );
+  if (isset($versions[api_get_active_branch()])) {
+    $form[] = array(
+      '#value' => '<p>' . t('<strong>Buggy or inaccurate documentation?</strong> Please <a href="!url">file an issue</a> instead of <a href="http://drupal.org/node/14345">commenting</a> here. Need <a href="http://drupal.org/support">support</a>?', array(
+        '!url' => url('http://drupal.org/node/add/project-issue/drupal', array(
+          'query' => array(
+            'title' => t('Documentation problem with @label', array(
+              '@label' => drupal_get_title(),
+            )),
+            'component' => 'documentation',
+            'categories' => 'bug',
+            'version' => $versions[api_get_active_branch()],
+          ),
+        )),
+      )) . '</p>',
+      '#weight' => -1,
+    );
+  }
+}
+
+/**
+ * List handbook pages with comments in descending comment order.
+ */
+function apidrupalorg_comments_page() {
+  $header = array(
+    t('Page'),
+    '',
+    array('data' => t('Comments'), 'field' => 'comment_count', 'sort' => 'desc'),
+    array('data' => t('Last comment'), 'field' => 'last_comment_timestamp'),
+  );
+
+  $result = db_query("SELECT d.object_type, d.object_name, d.branch_name, s.comment_count, s.last_comment_timestamp FROM {node} n INNER JOIN {node_comment_statistics} s ON n.nid = s.nid INNER JOIN {api_documentation} d ON d.did = n.nid WHERE n.type = 'api' AND s.comment_count >= 1" . tablesort_sql($header));
+
+  $rows = array();
+  while ($node = db_fetch_object($result)) {
+    $rows[] = array(
+      l($node->object_name, api_url($node)),
+      check_plain($node->branch_name),
+      $node->comment_count,
+      format_interval(time() - $node->last_comment_timestamp) .' ago',
+    );
+  }
+
+  return theme('table', $header, $rows);
+}
