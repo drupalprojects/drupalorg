@@ -15,12 +15,13 @@ function apidrupalorg_menu() {
  * Implementation for http://drupal.org/node/500536.
  */
 function apidrupalorg_form_comment_form_alter(&$form, &$form_state) {
+  $branch = api_get_active_branch();
   $versions = array(
     '7' => 156281,
     '6' => 97368,
     '5' => 96923,
   );
-  if (isset($versions[api_get_active_branch()])) {
+  if (isset($versions[$branch->branch_name])) {
     $form[] = array(
       '#value' => '<p>' . t('<strong>Buggy or inaccurate documentation?</strong> Please <a href="!url">file an issue</a> instead of <a href="http://drupal.org/node/14345">commenting</a> here. Need <a href="http://drupal.org/support">support</a>?', array(
         '!url' => url('http://drupal.org/node/add/project-issue/drupal', array(
@@ -30,7 +31,7 @@ function apidrupalorg_form_comment_form_alter(&$form, &$form_state) {
             )),
             'component' => 'documentation',
             'categories' => 'bug',
-            'version' => $versions[api_get_active_branch()],
+            'version' => $versions[$branch->branch_name],
           ),
         )),
       )) . '</p>',
