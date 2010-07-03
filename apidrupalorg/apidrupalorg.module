@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Implements hook_menu().
+ */
 function apidrupalorg_menu() {
   return array(
     'pages-with-comments' => array(
@@ -7,6 +10,17 @@ function apidrupalorg_menu() {
       'page callback' => 'apidrupalorg_comments_page',
       'access arguments' => array('access comments'),
       'type' => MENU_CALLBACK,
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme().
+ */
+function apidrupalorg_theme() {
+  return array(
+    'apidrupalorg_comments_filter' => array(
+      'arguments' => array('form' => NULL),
     ),
   );
 }
@@ -41,7 +55,7 @@ function apidrupalorg_form_comment_form_alter(&$form, &$form_state) {
 }
 
 /**
- * List handbook pages with comments in descending comment order.
+ * Lists handbook pages with comments in descending comment order.
  */
 function apidrupalorg_comments_page() {
   $header = array(
@@ -50,18 +64,206 @@ function apidrupalorg_comments_page() {
     array('data' => t('Comments'), 'field' => 'comment_count', 'sort' => 'desc'),
     array('data' => t('Last comment'), 'field' => 'last_comment_timestamp'),
   );
-
-  $result = db_query("SELECT d.object_type, d.object_name, d.branch_name, s.comment_count, s.last_comment_timestamp FROM {node} n INNER JOIN {node_comment_statistics} s ON n.nid = s.nid INNER JOIN {api_documentation} d ON d.did = n.nid WHERE n.type = 'api' AND s.comment_count >= 1" . tablesort_sql($header));
+  $output = '';
+  $query = array(
+    'select' => array(
+      'd.object_type', 'd.object_name', 'ab.branch_name',
+      's.comment_count', 's.last_comment_timestamp'
+    ),
+    'join' => array(
+      '{node_comment_statistics} s ON s.nid = n.nid',
+      '{api_documentation} d ON d.did = n.nid',
+      '{api_branch} ab ON ab.branch_id = d.branch_id'
+    ),
+    'where' => array(
+      "n.type = 'api'",
+      "s.comment_count >= 1",
+    ),
+    'args' => array(),
+  );
 
   $rows = array();
+
+  if (user_access('administer comments')) {
+    $filters = _apidrupalorg_comments_filter();
+    $output = drupal_get_form('apidrupalorg_comments_filter_form', $filters);
+
+    $query['join'] = array_merge($query['join'], $filters['sql']['join']);
+    $query['where'] = array_merge($query['where'], $filters['sql']['where']);
+    $query['args'] = array_merge($query['args'], $filters['sql']['args']);
+  }
+
+  $sql = 'SELECT ' . implode(', ', $query['select']) . ' FROM {node} n INNER JOIN ' .
+    implode(' INNER JOIN ',  $query['join']) . ' WHERE ' .
+    implode(' AND ', $query['where']) . tablesort_sql($header);
+
+  $result = pager_query($sql, 10, 0, NULL, $query['args']);
   while ($node = db_fetch_object($result)) {
     $rows[] = array(
       l($node->object_name, api_url($node)),
       check_plain($node->branch_name),
       $node->comment_count,
-      format_interval(time() - $node->last_comment_timestamp) .' ago',
+      format_interval(time() - $node->last_comment_timestamp) . ' ' . t('ago'),
     );
   }
 
-  return theme('table', $header, $rows);
+  return $output . theme('table', $header, $rows) . theme('pager');
+}
+
+/**
+ * Returns the fields that allow to filter the list of comments.
+ */
+function apidrupalorg_comments_filter_form(&$form_state, $filters) {
+  $form['filter'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Show only comments where'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#theme' => 'apidrupalorg_comments_filter',
+  );
+
+  $form['filter']['user']['username'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Author is'),
+    '#default_value' => empty($filters['values']['username']) ? '' : $filters['values']['username'],
+    '#autocomplete_path' => 'user/autocomplete',
+    '#maxlength' => 128,
+    '#size' => 25,
+  );
+
+  $form['filter']['user']['blocked'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Blocked'),
+    '#default_value' => !empty($filters['values']['blocked']),
+  );
+
+  $form['filter']['comment']['content'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Comment contains'),
+    '#default_value' => empty($filters['values']['content']) ? '' : $filters['values']['content'],
+    '#maxlength' => 128,
+    '#size' => 25,
+  );
+
+  $form['filter']['comment']['empty'] = array(
+    '#value' => '',
+  );
+
+  $form['filter']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Filter'),
+    '#submit' => array('apidrupalorg_comments_filter_form_submit'),
+  );
+
+  // Show the reset button only if the comments are filtered.
+  if (!empty($filters['values']['username']) || !empty($filters['values']['blocked']) || !empty($filters['values']['content'])) {
+    $form['filter']['reset'] = array(
+      '#type' => 'submit',
+      '#value' => t('Reset'),
+      '#submit' => array('apidrupalorg_comments_filter_form_submit_reset'),
+    );
+  }
+
+  return $form;
+}
+
+/**
+ * Submission function for the comment filter form.
+ */
+function apidrupalorg_comments_filter_form_submit($form, &$form_state) {
+  $session = &$_SESSION['apidrupalorg_comments_filter'];
+  $session = is_array($session) ? $session : array();
+
+  $session['username'] = $form_state['values']['username'];
+  $session['blocked'] = $form_state['values']['blocked'];
+  $session['content'] = $form_state['values']['content'];
+
+  $form_state['redirect'] = 'pages-with-comments';
+}
+
+/**
+ * Submission function for the comment filter form.
+ */
+function apidrupalorg_comments_filter_form_submit_reset($form, &$form_state) {
+  $session = &$_SESSION['apidrupalorg_comments_filter'];
+  $session = array();
+
+  $form_state['redirect'] = 'pages-with-comments';
+}
+
+function _apidrupalorg_comments_filter() {
+  $result = array(
+    'sql' => array(
+      'args' => array(),
+      'join' => array(),
+      'where' => array(),
+    ),
+    'values' => array(),
+  );
+  $session = &$_SESSION['apidrupalorg_comments_filter'];
+  $session = is_array($session) ? $session : array();
+
+  if (!empty($session)) {
+    $result['sql']['join'][] = '{comments} c ON c.nid = n.nid';
+
+    if (!empty($session['username']) || !empty($session['blocked'])) {
+      $result['sql']['join'][] = '{users} u ON u.uid = c.uid';
+    }
+
+    if (!empty($session['username'])) {
+      $result['sql']['args'][] = $session['username'];
+      $result['sql']['where'][] = "u.name LIKE '%s'";
+      $result['values']['username'] = $session['username'];
+    }
+
+    if (!empty($session['blocked'])) {
+      $result['sql']['args'][] = (int) !$session['blocked'];
+      $result['sql']['where'][] = "u.uid <> 0";
+      $result['sql']['where'][] = "u.status = %d";
+      $result['values']['blocked'] = $session['blocked'];
+    }
+
+    if (!empty($session['content'])) {
+      $result['sql']['args'][] = $session['content'];
+      $result['sql']['args'][] = $session['content'];
+      $result['sql']['where'][] = "(c.comment LIKE '%%%s%%' OR c.subject LIKE '%%%s%%')";
+      $result['values']['content'] = $session['content'];
+    }
+  }
+
+  return $result;
+}
+
+function theme_apidrupalorg_comments_filter($form) {
+  $output = '';
+  $rows = array();
+
+  foreach (element_children($form) as $key) {
+    $first = TRUE;
+    $row = array();
+    if (is_array($form[$key])) {
+      foreach (element_children($form[$key]) as $id) {
+        if ($first) {
+          if (!empty($form[$key][$id]['#title'])) {
+            $row[] = $form[$key][$id]['#title'];
+            unset($form[$key][$id]['#title']);
+          }
+          else {
+            $row[] = '';
+          }
+
+          $first = FALSE;
+        }
+        $row[] = drupal_render($form[$key][$id]);
+      }
+
+      $rows[] = $row;
+    }
+  }
+
+  if (!empty($rows)) {
+    $output = theme('table', array(), $rows);
+  }
+
+  return $output . drupal_render($form);
 }
