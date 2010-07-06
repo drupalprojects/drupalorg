@@ -46,7 +46,7 @@ function drupalorg_meta_types() {
     'theme' => t('Themes'),
     'documentation' => t('Documentation'),
     'forum-issues' => t('Forums & Issues'),
-    'marketplace' => t('Marketplace'),
+    // 'marketplace' => t('Marketplace'),
   );
 }
 
