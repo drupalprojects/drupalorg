@@ -149,7 +149,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
   // Specify the high level matching criteria for each menu and let others put
   // in more menus.
   $nav_content_areas = array(
-    'documentation' => drupalorg_crosssite_menu_site('api') || drupalorg_crosssite_menu_type('docs', array('book')) || drupalorg_crosssite_menu_path('docs', '^(documentation|handbooks)(/|$)'),
+    'documentation' => drupalorg_crosssite_menu_site('api') || drupalorg_crosssite_menu_type('docs', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)'),
     'downloads'     => drupalorg_crosssite_menu_path('project', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('project', array('project_project', 'project_issue', 'project_release')),
     // Events appear at here and as an individual tab list. Commented out from here.
     'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
@@ -221,7 +221,7 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
     // REAL cross-site.
     case 'documentation':
       return array(
-        'home'    => array('href' => 'handbook', 'title' => t('Docs Home'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_type('docs', array('book')) || drupalorg_crosssite_menu_path('docs', '^(documentation(?!/index|/recent)|handbooks(/|$))')),
+        'home'    => array('href' => 'handbook', 'title' => t('Docs Home'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_type('docs', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation(?!/index|/recent)|handbook(/|$))')),
         'api'     => array('href' => '<front>', 'title' => t('API'), '#site' => 'api', '#active' => drupalorg_crosssite_menu_site('api')),
         //'index'   => array('href' => 'documentation/index', 'title' => t('Index'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(documentation/index)(/|$)')),
         //'recent'  => array('href' => 'documentation/recent', 'title' => t('Recently updated'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(node/23192)(/|$)')),
