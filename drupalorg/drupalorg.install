@@ -179,6 +179,30 @@ function drupalorg_update_6003() {
 }
 
 /**
+ * @defgroup redesign_updates Drupal.org redesign updates
+ * @{
+ */
+
+/**
+ * Set up blocks that work well for the redesign.
+ */
+function drupalorg_update_6500() {
+  $return = array();
+
+  _block_rehash();
+
+  $return[] = update_sql("UPDATE blocks SET status = 0 WHERE theme = 'bluecheese'");
+
+  // todo enable blocks that we do want
+
+  return $return;
+}
+
+/**
+ * @}
+ */
+
+/**
  * Utility function to add permissions to certain user roles.
  */
 function _drupalorg_add_permissions($permissions) {
