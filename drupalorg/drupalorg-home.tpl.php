@@ -78,7 +78,6 @@
           <li><a href="#fragment-2"><img src="<?php print $theme_images_directory; ?>/bullet_home_green.jpg"> Docs updates</a></li>
           <li><a href="#fragment-3"><img src="<?php print $theme_images_directory; ?>/bullet_home_purple.jpg"> Forum posts</a></li>
           <li><a href="#fragment-4"><img src="<?php print $theme_images_directory; ?>/bullet_home_red.jpg"> Commits</a></li>
-          <li><a href="#fragment-5">More</a></li>
         </ul>
         <div id="fragment-1" class="ui-tabs-panel">
           <?php print $tab_content_news; ?>
@@ -91,9 +90,6 @@
         </div>
         <div id="fragment-4" class="ui-tabs-panel ui-tabs-hide">
           <?php print $tab_content_cvs; ?>
-        </div>
-        <div id="fragment-5" class="ui-tabs-panel ui-tabs-hide">
-          Tab for more... Whatever that means.
         </div>
       </div>
     </div>
