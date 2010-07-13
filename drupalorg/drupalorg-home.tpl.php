@@ -2,7 +2,7 @@
   <div id="front-top-left-inner">
     <div class="block-content">
      <h2><a href="about">Why Choose Drupal?</a></h2>
-     <p>Drupal is like Lego. Connect the pieces and build a site limited only by your imagination. Drupal's passionate, vibrant community are always creating new pieces, or improving existing ones. Choosing Drupal means as your needs evolve, so does your site.</p>
+     <p>Drupal is a publishing platform created by our <a href="community">vibrant community</a> and bursting with potential. Use as-is or snap in any of thousands of feature plug-ins. Granular fine-tuning for developers, flexibility for designers, limitless scalability. Drupal evolves daily. Grow with us!</p>
      <p class="front-get-started">
       <a href="getting-started" class="link-button"><span>Get Started with Drupal</span></a>
      </p>
