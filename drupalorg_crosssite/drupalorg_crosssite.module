@@ -30,7 +30,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     'getting-started' => array('href' => 'getting-started/before', 'title' => t('Get Started'), '#site' => 'main'),
     'forum'           => array('href' => 'support',                'title' => t('Community & Support'), '#site' => 'main'),
     'handbooks'       => array('href' => 'handbook',               'title' => t('Documentation'), '#site' => 'docs'),
-    'project'         => array('href' => 'project',                'title' => t('Download & Extend'), '#site' => 'project'),
+    'project'         => array('href' => 'download',               'title' => t('Download & Extend'), '#site' => 'project'),
     'marketplace'     => array('href' => 'services',               'title' => t('Marketplace'), '#site' => 'main'),
     'about'           => array('href' => 'about',                  'title' => t('About'), '#site' => 'main'),
   );
@@ -54,7 +54,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       'get-involved'    => array('href' => '', 'title' => t('Get Involved'), '#site' => 'main'),
     ),
     array(
-      'download'          => array('href' => 'project', 'title' => t('Download & Extend'), '#site' => 'project'),
+      'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'project'),
       'download-core'     => array('href' => 'project/Drupal+project', 'title' => t('Drupal core'), '#site' => 'project'),
       'download-modules'  => array('href' => 'project/Modules', 'title' => t('Modules'), '#site' => 'project'),
       'download-themes'   => array('href' => 'project/Themes', 'title' => t('Themes'), '#site' => 'project'),
@@ -150,7 +150,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
   // in more menus.
   $nav_content_areas = array(
     'documentation' => drupalorg_crosssite_menu_site('api') || drupalorg_crosssite_menu_type('docs', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)'),
-    'downloads'     => drupalorg_crosssite_menu_path('project', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('project', array('project_project', 'project_issue', 'project_release')),
+    'downloads'     => drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')),
     // Events appear at here and as an individual tab list. Commented out from here.
     'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
     'jobs'          => drupalorg_crosssite_menu_path('groups', '^(jobs)(/|$)'),
@@ -232,13 +232,13 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
       return array(
         // All are exact paths and so theme('links') will make them gain active
         // classes when on the projects site. Therefore no need for #active.
-        'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'project'),
-        'core'         => array('href' => 'project/drupal', 'title' => t('Drupal Core'), '#site' => 'project'),
-        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'project'),
-        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'project'),
-        'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'project'),
-        'theme-engine' => array('href' => 'project/theme engines', 'title' => t('Theme Engines'), '#site' => 'project'),
-        'install-profiles' => array('href' => 'project/installation profiles', 'title' => t('Installation Profiles'), '#site' => 'project'),
+        'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
+        'core'         => array('href' => 'project/drupal', 'title' => t('Drupal Core'), '#site' => 'main'),
+        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main'),
+        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main'),
+        'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'main'),
+        'theme-engine' => array('href' => 'project/theme engines', 'title' => t('Theme Engines'), '#site' => 'main'),
+        'install-profiles' => array('href' => 'project/installation profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
       );
 
     // REAL cross-site.
