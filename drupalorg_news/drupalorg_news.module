@@ -135,7 +135,7 @@ function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
           $block['content'] = drupalorg_news_planet_drupal_block();
           return $block;
         case 'news-terms':
-          $block['subject'] = t('Filter news');
+          $block['subject'] = t('Filter News');
           $block['content'] = drupalorg_news_filter_news();
           return $block;
       }
