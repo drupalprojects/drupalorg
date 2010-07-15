@@ -198,6 +198,7 @@ function drupalorg_update_6500() {
       'delta' => 'news-terms',
       'status' => 1,
       'region' => 'right',
+      'visibility' => 1,
       'pages' => "news\nnews/*",
     ),
   );
