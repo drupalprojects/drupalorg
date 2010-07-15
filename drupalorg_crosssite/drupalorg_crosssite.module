@@ -240,8 +240,8 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main'),
         'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main'),
         'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'main'),
-        'theme-engine' => array('href' => 'project/theme engines', 'title' => t('Theme Engines'), '#site' => 'main'),
-        'install-profiles' => array('href' => 'project/installation profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
+        'theme-engine' => array('href' => 'project/theme+engines', 'title' => t('Theme Engines'), '#site' => 'main'),
+        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
       );
 
     // REAL cross-site.
