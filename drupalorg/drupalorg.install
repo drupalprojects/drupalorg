@@ -191,9 +191,19 @@ function drupalorg_update_6500() {
 
   _block_rehash();
 
-  $return[] = update_sql("UPDATE blocks SET status = 0 WHERE theme = 'bluecheese'");
-
-  // todo enable blocks that we do want
+  $return[] = update_sql("UPDATE {blocks} SET status = 0 WHERE theme = 'bluecheese'");
+  $blocks = array(
+    array(
+      'module' => 'drupalorg_news',
+      'delta' => 'news-terms',
+      'status' => 1,
+      'region' => 'right',
+      'pages' => "news\nnews/*",
+    ),
+  );
+  foreach ($blocks as $block) {
+    drupal_write_record('blocks', $block, array('module', 'delta'));
+  }
 
   return $return;
 }
