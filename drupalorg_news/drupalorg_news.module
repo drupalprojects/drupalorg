@@ -42,7 +42,7 @@ function drupalorg_news_menu() {
  * Menu loader. Load news term if it is indeed from the given vocabulary.
  */
 function drupalorg_news_term_load($tid) {
-  if (($term = taxonomy_get_term($tid)) && ($term->vid = DRUPALORG_NEWS_VID)) {
+  if (($term == taxonomy_get_term($tid)) && ($term->vid == DRUPALORG_NEWS_VID)) {
     return $term;
   }
   return NULL;
