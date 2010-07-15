@@ -189,7 +189,8 @@ function drupalorg_update_6003() {
 function drupalorg_update_6500() {
   $return = array();
 
-  _block_rehash();
+  system_theme_data(); // Trigger updating theme filenames
+  _block_rehash(); // Trigger filling out blocks table
 
   $return[] = update_sql("UPDATE {blocks} SET status = 0 WHERE theme = 'bluecheese'");
   $blocks = array(
