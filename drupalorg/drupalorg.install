@@ -202,6 +202,7 @@ function drupalorg_update_6500() {
     ),
   );
   foreach ($blocks as $block) {
+    $block['theme'] = 'bluecheese';
     drupal_write_record('blocks', $block, array('module', 'delta'));
   }
 
