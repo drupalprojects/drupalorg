@@ -114,7 +114,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   $userinfo = '';
   if ($user->uid == 0) {
     unset($nav_masthead_links['dashboard']);
-    $nav_masthead_links['login-register'] = array('href' => 'user', 'title' => t('Login / Register'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
+    $nav_masthead_links['login-register'] = array('href' => 'user', 'query' => drupal_get_destination(), 'title' => t('Login / Register'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
   }
   else {
     // If not the main site (or a test server), provide logout link to the main site, since
