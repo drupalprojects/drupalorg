@@ -105,9 +105,12 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
 
   $nav_masthead_links = array(
     'homepage'       => array('href' => '',      'title' => t('Drupal Homepage'),  '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$')),
-    // @todo: comment this out for dashboard deployment
-    //'dashboard'      => array('href' => 'dashboard', 'title' => t('Your dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^dashboard(/|$)')),
+    'dashboard'      => array('href' => 'dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^dashboard(/|$)')),
   );
+  if (!drupalorg_crosssite_menu_site('main')) {
+    // Only show the dashboard link on the main site, remove when launched
+    unset($nav_masthead_links['dashboard']);
+  }
   $userinfo = '';
   if ($user->uid == 0) {
     $nav_masthead_links['login-register'] = array('href' => 'user', 'title' => t('Login / Register'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
