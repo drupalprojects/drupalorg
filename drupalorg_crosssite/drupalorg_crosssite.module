@@ -113,6 +113,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   }
   $userinfo = '';
   if ($user->uid == 0) {
+    unset($nav_masthead_links['dashboard']);
     $nav_masthead_links['login-register'] = array('href' => 'user', 'title' => t('Login / Register'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
   }
   else {
