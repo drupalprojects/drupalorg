@@ -283,8 +283,8 @@ function drupalorg_handbook_display_recent_updates() {
 function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
-      $blocks['license']]['info'] = t('Handbook License');
-      $blocks['links']]['info'] = t('Documentation Quick Links');
+      $blocks['license']['info'] = t('Handbook License');
+      $blocks['links']['info'] = t('Documentation Quick Links');
       return $blocks;
 
     case 'view':
