@@ -202,6 +202,13 @@ function drupalorg_update_6500() {
       'visibility' => 1,
       'pages' => "news\nnews/*",
     ),
+    array(
+      'module' => 'drupalorg_handbook',
+      'delta' => 'irc',
+      'status' => 1,
+      'region' => 'right',
+      'visibility' => 1,
+    ),
   );
   foreach ($blocks as $block) {
     $block['theme'] = 'bluecheese';
