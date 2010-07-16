@@ -1,6 +1,0 @@
-; $Id$
-name = Advert
-description = Advertising blocks on drupal.org
-package = Drupal.org
-dependencies[] = forum
-core=6.x
