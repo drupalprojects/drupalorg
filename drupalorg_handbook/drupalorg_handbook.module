@@ -283,25 +283,27 @@ function drupalorg_handbook_display_recent_updates() {
 function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
-      $blocks[0]['info'] = t('Handbook License');
-      $blocks[1]['info'] = t('Documentation Quick Links');
+      $blocks['license']]['info'] = t('Handbook License');
+      $blocks['links']]['info'] = t('Documentation Quick Links');
       return $blocks;
 
     case 'view':
       switch($delta) {
-        case 0:
+        case 'license':
           if (drupalorg_handbook_block_is_visible()) {
             $block['subject'] = t('Handbook license');
             $block['content'] = drupalorg_handbook_license();
             return $block;
           }
+          break;
 
-        case 1:
+        case 'links':
           if (drupalorg_handbook_block_is_visible()) {
             $block['subject'] = t('Documentation Quick Links');
             $block['content'] = drupalorg_handbook_doc_quick_links();
             return $block;
           }
+          break;
      }
   }
 }
