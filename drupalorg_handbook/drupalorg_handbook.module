@@ -285,6 +285,7 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
     case 'list':
       $blocks['license']['info'] = t('Handbook License');
       $blocks['links']['info'] = t('Documentation Quick Links');
+      $blocks['irc']['info'] = t('Get Involved - IRC');
       return $blocks;
 
     case 'view':
@@ -302,6 +303,21 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
             $block['subject'] = t('Documentation Quick Links');
             $block['content'] = drupalorg_handbook_doc_quick_links();
             return $block;
+          }
+          break;
+
+        case 'irc':
+          if (drupal_get_path_alias($_GET['q']) === 'irc') {
+            return array(
+              'subject' => t('Get Involved'),
+              'content' => '<p>If you are new to our community and would like to contribute, there are lots of ways to do so. Visit our <a href="/getinvolved">Get Involved</a> section for more information. To read what others are saying about Drupal, or to write your own post, take a trip to <a href="/news">Planet Drupal</a>.</p>
+<ul>
+  <li><a href="/irc/setting-up">Setting up IRC</a></li>
+  <li><a href="/irc/use-effectively">How to use IRC Effectively</a></li>
+  <li><a href="/irc/courtesy">IRC Courtesy</a></li>
+  <li><a href="/irc/channels-list">Drupal IRC channels</a></li>
+</ul>',
+            );
           }
           break;
      }
