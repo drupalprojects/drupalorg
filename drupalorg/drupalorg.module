@@ -482,53 +482,7 @@ function drupalorg_profile_fix_languages(&$form, &$form_state) {
   }
 }
 
-// == External search block ====================================================
-
 /**
- * Implementation of hook_block().
- *
- * @todo Hopefully remove as part of search migration.
- */
-function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
-  if ($op == 'list') {
-    $blocks[0] = array('info' => t('External/Alternate Search Advice (only when search is disabled)'),
-      'weight' => 0, 'enabled' => 0, 'region' => 'header');
-    return $blocks;
-  }
-  else if ($op == 'view') {
-    switch ($delta) {
-      case 0:
-        $block = array('subject' => t('Search Engine'),
-          'content' => drupalorg_display_block_external_search());
-        break;
-    }
-    return $block;
-  }
-}
-
-/**
- * Body for external search block.
- */
-function drupalorg_display_block_external_search() {
-  if (!user_access('search content')) {
-    $form = '<form method="get" action="http://www.google.com/search"><div>
-               <input type="hidden" name="ie" value="UTF-8" />
-               <input type="hidden" name="oe" value="UTF-8" />
-               <input type="hidden" name="domains" value="drupal.org" />
-               <input type="hidden" name="sitesearch" value="drupal.org" />
-               <input type="text" class="form-text" name="q" size="20" maxlength="255" value="" />
-               <input type="submit" class="form-submit" name="btnG" value="Google Search" /></div>
-               </form>';
-    $message = '<p>Due to load issues the Drupal.org search occasionally has to be disabled.  When this happens, you can use external search engines and a modifier like "site:drupal.org" to refine your results to Drupal.  For more information <a href="http://drupal.org/node/271694">see the infrastructure queue</a></p>.';
-    return $form . $message;
-  }
-}
-
-// == IRC nick search ==========================================================
-
-/**
- * Implementation of hook_search().
- *
  * Add support for searching for users based on the fixed IRC nickname field.
  *
  * @todo Possibly remove as part of search migration.
