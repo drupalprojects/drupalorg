@@ -173,7 +173,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
 
   //Identify sections names/titles to be displayed above content area menus
   $section_names = array(
-    'downloads' => 'Download and Extend',
+    'downloads' => 'Download &amp; Extend',
     'documentation' => 'Documentation',
     'community' => 'Community &amp; Support',
     'dashboard' => '',
