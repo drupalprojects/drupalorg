@@ -669,6 +669,25 @@ function drupalorg_project_bingo_block_output() {
       'status' => array(8, 14),
     )
   );
+  $url_performance = drupalorg_drupal_issue_url(
+    array(
+      'version' => array('7.x'),
+      'issue_tags' => 'Performance',
+    )
+  );
+  $url_usability = drupalorg_drupal_issue_url(
+    array(
+      'version' => array('7.x'),
+      'issue_tags' => 'Usability, d7ux',
+    )
+  );
+  $url_fields = drupalorg_drupal_issue_url(
+    array(
+      'version' => array('7.x'),
+      'issue_tags' => 'Fields in Core',
+    )
+  );
+  
 
   $output = <<<EOT
 <div class="item-list">
@@ -700,6 +719,21 @@ function drupalorg_project_bingo_block_output() {
       <li>
         <a href="$url_review">
           $counts_review Patches to review (D7)
+        </a>
+      </li>
+      <li>
+        <a href="$url_performance">
+          Performance issues (D7)
+        </a>
+      </li>
+      <li>
+        <a href="$url_usability">
+          Usability issues (D7)
+        </a>
+      </li>
+      <li>
+        <a href="$url_fields">
+          Fields in Core issues (D7)
         </a>
       </li>
     </ul>
