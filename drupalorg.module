@@ -630,6 +630,24 @@ function drupalorg_drupal_issue_url($query = array(), $absolute = FALSE) {
 }
 
 /**
+ * Project issue link generator for Drupal issues.
+ *
+ * @param $text
+ *   String to use as text for the link.
+ * @param $query
+ *   A keyed array of options to pass to the query parameter of url(). 
+ *     - version (An array of release node IDs)
+ *     - status (An array of status IDs)
+ *     - priorities (An array of priority IDs)
+ *     - categories (An array of category names)
+ *  @param $absolute
+ *    Set to TRUE to get an absolute URL with http://drupal.org/...
+ */
+function drupalorg_drupal_issue_link($text, $query = array(), $absolute = FALSE) {
+  return l($text, 'project/issues/search/drupal', array('query' => $query, 'absolute' => $absolute));
+}
+
+/**
  * Implementation of hook_views_api().
  */
 function drupalorg_views_api() {
