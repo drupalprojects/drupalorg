@@ -23,9 +23,6 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
       case 43633: // Handbook pages with comments
         $extra = drupalorg_handbook_with_comments();
         break;
-      case 43639: // Most popular handbooks
-        $extra = drupalorg_handbook_most_popular();
-        break;
       case 322: // Mailing list subscription
         $extra = drupal_get_form('lists_subscribe_form');
         break;
@@ -148,24 +145,6 @@ function drupalorg_handbook_with_comments() {
 
   while ($node = db_fetch_object($result)) {
     $rows[] = array(l($node->title, "node/$node->nid"), $node->comment_count, format_interval(time() - $node->last_comment_timestamp) .' ago');
-  }
-
-  return theme('table', $header, $rows);
-}
-
-/**
- * List pages ordered by visit number descending order.
- */
-function drupalorg_handbook_most_popular() {
-  $header = array('Rank', 'Page', 'Visits today', 'Total visits');
-
-  $result = db_query("SELECT n.nid, n.title, c.daycount, c.totalcount
-    FROM {node} n INNER JOIN {node_counter} c ON n.nid = c.nid
-    WHERE n.type = 'book' AND n.status = 1
-    ORDER BY c.daycount DESC
-    LIMIT 0, 100");
-  while ($node = db_fetch_object($result)) {
-    $rows[] = array(++$rank, l($node->title, "node/$node->nid"), $node->daycount, $node->totalcount);
   }
 
   return theme('table', $header, $rows);
