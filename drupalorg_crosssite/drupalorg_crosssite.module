@@ -29,8 +29,8 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   $nav_header_links = array(
     'getting-started' => array('href' => 'getting-started/before', 'title' => t('Get Started'), '#site' => 'main'),
     'forum'           => array('href' => 'support',                'title' => t('Community & Support'), '#site' => 'main'),
-    'handbooks'       => array('href' => 'handbook',               'title' => t('Documentation'), '#site' => 'docs'),
-    'project'         => array('href' => 'download',               'title' => t('Download & Extend'), '#site' => 'project'),
+    'handbooks'       => array('href' => 'handbook',               'title' => t('Documentation'), '#site' => 'main'),
+    'project'         => array('href' => 'download',               'title' => t('Download & Extend'), '#site' => 'main'),
     'marketplace'     => array('href' => 'services',               'title' => t('Marketplace'), '#site' => 'main'),
     'about'           => array('href' => 'about',                  'title' => t('About'), '#site' => 'main'),
   );
@@ -50,15 +50,15 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     ),
     array(
       'getting-started' => array('href' => 'getting-started', 'title' => t('Getting Started'), '#site' => 'main'),
-      'download-core'   => array('href' => 'project/Drupal+project', 'title' => t('Downloading Drupal'), '#site' => 'project'),
+      'download-core'   => array('href' => 'project/Drupal', 'title' => t('Downloading Drupal'), '#site' => 'main'),
       'get-involved'    => array('href' => '', 'title' => t('Get Involved'), '#site' => 'main'),
     ),
     array(
-      'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'project'),
-      'download-core'     => array('href' => 'project/Drupal+project', 'title' => t('Drupal core'), '#site' => 'project'),
-      'download-modules'  => array('href' => 'project/Modules', 'title' => t('Modules'), '#site' => 'project'),
-      'download-themes'   => array('href' => 'project/Themes', 'title' => t('Themes'), '#site' => 'project'),
-      'download-profiles' => array('href' => 'project/Installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'project'),
+      'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
+      'download-core'     => array('href' => 'project/Drupal', 'title' => t('Drupal core'), '#site' => 'main'),
+      'download-modules'  => array('href' => 'project/Modules', 'title' => t('Modules'), '#site' => 'main'),
+      'download-themes'   => array('href' => 'project/Themes', 'title' => t('Themes'), '#site' => 'main'),
+      'download-profiles' => array('href' => 'project/Installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
     ),
     array(
       'events'      => array('href' => 'events', 'title' => t('Events'), '#site' => 'groups'),
@@ -153,7 +153,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
   // Specify the high level matching criteria for each menu and let others put
   // in more menus.
   $nav_content_areas = array(
-    'documentation' => drupalorg_crosssite_menu_site('api') || drupalorg_crosssite_menu_type('docs', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)'),
+    'documentation' => drupalorg_crosssite_menu_site('api') || drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)'),
     'downloads'     => drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')),
     // Events appear at here and as an individual tab list. Commented out from here.
     'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
@@ -227,17 +227,15 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
       return array(
         'home'    => array('href' => 'handbook', 'title' => t('Docs Home'), '#site' => 'main', '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
         'api'     => array('href' => '<front>', 'title' => t('API'), '#site' => 'api', '#active' => drupalorg_crosssite_menu_site('api')),
-        //'index'   => array('href' => 'documentation/index', 'title' => t('Index'), '#site' => 'docs', '#active' => drupalorg_crosssite_menu_path('docs', '^(documentation/index)(/|$)')),
         'recent'  => array('href' => 'handbook/updates', 'title' => t('Recently updated'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
       );
 
-    // Just on the project site.
     case 'downloads':
       return array(
         // All are exact paths and so theme('links') will make them gain active
         // classes when on the projects site. Therefore no need for #active.
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
-        'core'         => array('href' => 'project/drupal', 'title' => t('Drupal Core'), '#site' => 'main'),
+        'core'         => array('href' => 'project/Drupal', 'title' => t('Drupal Core'), '#site' => 'main'),
         'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main'),
         'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main'),
         'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'main'),
@@ -348,9 +346,7 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
 function drupalorg_crosssite_menu_sites() {
   $base_domain = variable_get('drupalorg_base_domain', 'drupal.org');
   return array(
-    'docs'        => $base_domain,
     'main'        => $base_domain,
-    'project'     => $base_domain,
     'api'         => 'api.' . $base_domain,
     'association' => 'association.' . $base_domain,
     'groups'      => 'groups.' . $base_domain,
