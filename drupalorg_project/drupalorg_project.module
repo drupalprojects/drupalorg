@@ -417,16 +417,34 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
  * Project issue URL generator for Drupal issues.
  *
  * @param $query
- *   Array of array of options to pass on in the URL:
- *     - version (array of release node ids)
- *     - status (array of status ids)
- *     - priorities (array of prioristy ids)
- *     - categories (array of category names)
+ *   A keyed array of options to pass to the query parameter of url(). 
+ *     - version (An array of release node IDs)
+ *     - status (An array of status IDs)
+ *     - priorities (An array of priority IDs)
+ *     - categories (An array of category names)
  *  @param $absolute
  *    Set to TRUE to get an absolute URL with http://drupal.org/...
  */
 function drupalorg_project_issue_url($query = array(), $absolute = FALSE) {
   return url('project/issues/search/drupal', array('query' => $query, 'absolute' => $absolute));
+}
+
+/**
+ * Project issue link generator for Drupal issues.
+ *
+ * @param $text
+ *   String to use as text for the link.
+ * @param $query
+ *   A keyed array of options to pass to the query parameter of l(). 
+ *     - version (An array of release node IDs)
+ *     - status (An array of status IDs)
+ *     - priorities (An array of priority IDs)
+ *     - categories (An array of category names)
+ *  @param $absolute
+ *    Set to TRUE to get an absolute URL with http://drupal.org/...
+ */
+function drupalorg_project_issue_link($text, $query = array(), $absolute = FALSE) {
+  return l($text, 'project/issues/search/drupal', array('query' => $query, 'absolute' => $absolute));
 }
 
 // == Node overrides ===========================================================
@@ -641,127 +659,96 @@ function drupalorg_project_bingo_block_output() {
   $counts_review = $counts['Patches to review'];
 
   $versions = array_map('trim', explode(',', DRUPALORG_ISSUE_RIDS));
-  $url_pending = drupalorg_project_issue_url(
-    array(
-      'version' => $versions,
-      'status' => array(1),
-      'priorities' => array(1, 2),
-      'categories' => array('bug'),
-    )
-  );
-  $url_critical = drupalorg_project_issue_url(
-    array(
-      'version' => $versions,
-      'status' => array(1, 8, 13, 14),
-      'priorities' => array(1),
-      'categories' => array('bug', 'task'),
-    )
-  );
-  $url_queue = drupalorg_project_issue_url(
-    array(
-      'version' => $versions,
-      'status' => array(8, 13, 14),
-    )
-  );
-  $url_review = drupalorg_project_issue_url(
-    array(
-      'version' => $versions,
-      'status' => array(8, 14),
-    )
-  );
-  $url_performance = drupalorg_drupal_issue_url(
-    array(
-      'version' => array('7.x'),
-      'issue_tags' => 'Performance',
-    )
-  );
-  $url_usability = drupalorg_drupal_issue_url(
-    array(
-      'version' => array('7.x'),
-      'issue_tags' => 'Usability, d7ux',
-    )
-  );
-  $url_fields = drupalorg_drupal_issue_url(
-    array(
-      'version' => array('7.x'),
-      'issue_tags' => 'Fields in Core',
-    )
-  );
   
+  $links = array(
+    l('Community initiatives', 'community-initiatives'),
+    array(
+      'data' => '<strong>Queues</strong>',
+      'children' => array(
+        l('My issues', 'project/issues/user'),
+        drupalorg_project_issue_link(
+          $counts_pending .' Pending bugs (D7)',
+          array(
+            'version' => $versions,
+            'status' => array(1),
+            'priorities' => array(1, 2),
+            'categories' => array('bug'),
+          )
+        ),
+        drupalorg_project_issue_link(
+          $counts_critical .' Critical issues (D7)',
+          array(
+            'version' => $versions,
+            'status' => array(1, 8, 13, 14),
+            'priorities' => array(1),
+            'categories' => array('bug', 'task'),
+          )
+        ),
+        drupalorg_project_issue_link(
+          $counts_queue .' Patch queue (D7)',
+          array(
+            'version' => $versions,
+            'status' => array(8, 13, 14),
+          )
+        ),
+        drupalorg_project_issue_link(
+          $counts_review .' Patches to review (D7)',
+          array(
+            'version' => $versions,
+            'status' => array(8, 14),
+          )
+        ),
+        drupalorg_project_issue_link(
+          'Performance issues (D7)',
+          array(
+            'version' => array('7.x'),
+            'issue_tags' => 'Performance',
+          )
+        ),
+        drupalorg_project_issue_link(
+          'Usability issues (D7)',
+          array(
+            'version' => array('7.x'),
+            'issue_tags' => 'Usability, d7ux',
+          )
+        ),
+        drupalorg_project_issue_link(
+          'Fields in Core issues (D7)',
+          array(
+            'version' => array('7.x'),
+            'issue_tags' => 'Fields in Core',
+          )
+        ),
+      ),
+    ),
+    array(
+      'data' => '<strong>Play patch bingo!</strong>',
+      'children' => array(
+        l('Drupal Core', 'patch-bingo', array('attributes' => array('title' => 'Select a random patch for review'))),
+        l('Contributions', 'contrib-patch-bingo', array('attributes' => array('title' => 'Select a random patch for review from the contributions'))),
+      ),
+    ),
+    array(
+      'data' => '<strong>Play bug bingo!</strong>',
+      'children' => array(
+        l('Drupal Core', 'bug-bingo', array('attributes' => array('title' => 'Select a random bug to fix'))),
+        l('Contributions', 'contrib-bug-bingo', array('attributes' => array('title' => 'Select a random bug to fix from the contributions'))),
+      ),
+    ),
+    l('Mailing list archives', 'mailing-lists'),
+    l('Drupal.org webmasters', 'project/issues/webmasters'),
+    l('Drupal.org server administrators', 'project/issues/infrastructure'),
+    array(
+      'data' => '<strong>Web links</strong>',
+      'children' => array(
+        l('Planet Drupal', 'planet'),
+        l('Drupal talk', 'talk'),
+        l('Drupal dojo', 'http://groups.drupal.org/drupal-dojo'),
+      ),
+    ),
+  );
 
-  $output = <<<EOT
-<div class="item-list">
-<ul>
-  <li><a href="/community-initiatives">Community initiatives</a></li>
-  <li>
-    <strong>Queues</strong>
-    <ul>
-      <li>
-        <a href="/project/issues/user">
-          My issues
-        </a>
-      </li>
-      <li>
-        <a href="$url_pending">
-          $counts_pending Pending bugs (D7)
-        </a>
-      </li>
-      <li>
-        <a href="$url_critical">
-          $counts_critical Critical issues (D7)
-        </a>
-      </li>
-      <li>
-        <a href="$url_queue">
-          $counts_queue Patch queue (D7)
-        </a>
-      </li>
-      <li>
-        <a href="$url_review">
-          $counts_review Patches to review (D7)
-        </a>
-      </li>
-      <li>
-        <a href="$url_performance">
-          Performance issues (D7)
-        </a>
-      </li>
-      <li>
-        <a href="$url_usability">
-          Usability issues (D7)
-        </a>
-      </li>
-      <li>
-        <a href="$url_fields">
-          Fields in Core issues (D7)
-        </a>
-      </li>
-    </ul>
-  </li>
-  <li><strong>Play patch bingo!</strong>
-  <ul>
-   <li><a href="/patch-bingo" title="Select a random patch for review">Drupal core</a></li>
-   <li><a href="/contrib-patch-bingo" title="Select a random patch for review from the contributions">Contributions</a></li>
- </ul>
- </li>
- <li><strong>Play bug bingo!</strong>
- <ul>
- <li><a href="/bug-bingo" title="Select a random bug to fix">Drupal core</a></li>
- <li><a href="/contrib-bug-bingo" title="Select a random bug to fix from the contributions">Contributions</a></li>
- </ul></li>
- <li><a href="/mailing-lists">Mailing list archives</a></li>
- <li><a href="/project/issues/webmasters">Drupal.org webmasters</a></li>
- <li><a href="/project/issues/infrastructure">Drupal.org server administrators</a></li>
- <li><strong>Web links</strong>
- <ul>
- <li><a href="/planet">Planet Drupal</a></li>
- <li><a href="/talk">Drupal talk</a></li>
- <li><a href="http://groups.drupal.org/drupal-dojo">Drupal dojo</a></li>
- </ul></li>
- </ul>
- </div>
-EOT;
-  return $output;
+  return theme('item_list', $links);
 }
 
 /**
