@@ -166,7 +166,7 @@ function bingo_block_output() {
     l('Mailing list archives', 'mailing-lists'),
     l('Drupal.org webmasters', 'project/issues/webmasters'),
     l('Drupal.org server administrators', 'project/issues/infrastructure'),
-    l('Drupal.org CVS applications', '/project/issues/cvsapplications'),
+    l('Drupal.org CVS applications', 'project/issues/cvsapplications'),
     array(
       'data' => '<strong>Web links</strong>',
       'children' => array(
