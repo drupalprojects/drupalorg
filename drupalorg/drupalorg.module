@@ -587,9 +587,7 @@ function drupalorg_render_project_listing($projects) {
  *   HTML string with link to the release node.
  */
 function drupalorg_download_drupal_link_button($text) {
-  list ($latest_release, $recommended_release, $latest_security_release) = project_release_find_latest_releases(3060, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID, DRUPALORG_DOWNLOAD_MAJOR_VERSION);
-  $version = db_result(db_query('SELECT version FROM {project_release_nodes} WHERE nid = %d', $recommended_release));
-
-  return l('<span>'. check_plain("$text $version") .'</span>', "node/$recommended_release", array('html' => TRUE, 'attributes' => array('class' => 'link-button')));
+  $release = project_release_get_current_recommended(3060, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID, DRUPALORG_DOWNLOAD_MAJOR_VERSION, 'recommended');
+  return l('<span>'. check_plain("$text $release->version") .'</span>', "node/$release->nid", array('html' => TRUE, 'attributes' => array('class' => 'link-button')));
 }
 
