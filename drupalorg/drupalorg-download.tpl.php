@@ -2,7 +2,7 @@
 
   <div class="grid-3 alpha">
     <h2>Core</h2>
-    <a class="link-button" href="#"><span>Download Drupal <?php print $version ?></span></a>
+    <?php print $core_download_button; ?>
     <ul class="flat">
       <li><a href="node/3060/release">Other releases</a></li>
       <li><a class="all" href="project/drupal">More information</a></li>

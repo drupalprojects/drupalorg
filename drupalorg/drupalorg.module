@@ -18,6 +18,16 @@ define('DRUPALORG_COUNTRY_PID', 17);
  */
 define('DRUPALORG_LANGUAGES_PID', 48);
 
+/**
+ * Major version number for core project listings.
+ */
+define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 6);  // 6.x
+
+/**
+ * TID for API compatibility for project listings.
+ */
+define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 87);  // 6.x
+
 // == Core hooks ===============================================================
 
 /**
@@ -238,7 +248,7 @@ function drupalorg_about() {
 function drupalorg_preprocess_drupalorg_start(&$variables) {
   $variables['theme_images_directory'] = drupal_get_path('theme', variable_get('theme_default', 'bluecheese')) .'/images';
 
-  $variables['version'] = 42;
+  $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
 
   $variables['most_popular_modules'] = theme('item_list', array(
    '<a href="#">Content construction kit (CCK)</a>', 
@@ -272,8 +282,8 @@ function drupalorg_download() {
  *   Add caching.
  */
 function drupalorg_preprocess_drupalorg_download(&$variables) {
-  $variables['version'] = 42;
-  
+  $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
+
   //most popular modules, modules tid = 14
   //TODO: reference project_usage function instead of drupalorg function
   $most_popular_modules = drupalorg_get_most_active_projects(14, $limit = 4);
@@ -567,4 +577,19 @@ function drupalorg_render_project_listing($projects) {
   return theme('item_list', $links, NULL, 'ul', array('class' => 'flat'));
 }
 
+/**
+ * Returns a link to the latest recommended release for the Drupal project.
+ *
+ * @param $text
+ *   Text to be used for the button in addition to the version string
+ *
+ * @return
+ *   HTML string with link to the release node.
+ */
+function drupalorg_download_drupal_link_button($text) {
+  list ($latest_release, $recommended_release, $latest_security_release) = project_release_find_latest_releases(3060, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID, DRUPALORG_DOWNLOAD_MAJOR_VERSION);
+  $version = db_result(db_query('SELECT version FROM {project_release_nodes} WHERE nid = %d', $recommended_release));
+
+  return l('<span>'. check_plain("$text $version") .'</span>', "node/$recommended_release", array('html' => TRUE, 'attributes' => array('class' => 'link-button')));
+}
 
