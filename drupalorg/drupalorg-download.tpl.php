@@ -4,40 +4,40 @@
     <h2>Core</h2>
     <a class="link-button" href="#"><span>Download Drupal <?php print $version ?></span></a>
     <ul class="flat">
-      <li><a href="#">Other releases</a></li>
-      <li><a class="all" href="#">More information</a></li>
+      <li><a href="node/3060/release">Other releases</a></li>
+      <li><a class="all" href="project/drupal">More information</a></li>
     </ul>
   </div>
 
   <div class="grid-3">
     <h2>Installation Profiles</h2>
     <ul class="flat">
-      <li><a href="#">Community Site</a></li>
-      <li><a href="#">E-commerce</a></li>
-      <li><a href="#">News Site</a></li>
-      <li><a href="#">Wiki</a></li>
-      <li><a class="all" href="#">More profiles</a></li>
+      <li><a href="project/openmedia">Community Site</a></li>
+      <li><a href="project/uberdrupal">E-commerce</a></li>
+      <li><a href="project/openpublish">News Site</a></li>
+      <li><a href="project/drupal_wiki">Wiki</a></li>
+      <li><a class="all" href="project/installation+profiles">More profiles</a></li>
     </ul>
   </div>
 
   <div class="grid-3">
     <h2>Themes</h2>
     <ul class="flat">
-      <li><a href="#">About Themes & Subthemes</a></li>
-      <li><a href="#">Most installed themes</a></li>
-      <li><a href="#">Highest rated themes</a></li>
-      <li><a href="#">Most active themes</a></li>
-      <li><a class="all" href="#">Search for more themes</a></li>
+      <li><a href="node/221881">About Themes & Subthemes</a></li>
+      <li><a href="project/themes?solrsort=sis_project_release_usage%20desc">Most installed themes</a></li>
+      <li><a href="project/themes?solrsort=created%20desc">New themes</a></li>
+      <li><a href="project/themes?solrsort=ds_project_latest_activity%20desc">Most active themes</a></li>
+      <li><a class="all" href="project/themes">Search for more themes</a></li>
     </ul>
   </div>
   
   <div class="grid-3 omega">
     <h2>Translations</h2>
     <ul class="flat">
-      <li><a href="#">Spanish</a></li>
-      <li><a href="#">Chinese</a></li>
-      <li><a href="#">German</a></li>
-      <li><a href="#" class="all">All translations</a></li>
+      <li><a href="http://localize.drupal.org/translate/languages/ca">Catalan</a></li>
+      <li><a href="http://localize.drupal.org/translate/languages/fr">French</a></li>
+      <li><a href="http://localize.drupal.org/translate/languages/hu">Hungarian</a></li>
+      <li><a href="http://localize.drupal.org/" class="all">All translations</a></li>
     </ul>
   </div>
 </div>
