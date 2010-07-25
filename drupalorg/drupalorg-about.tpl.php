@@ -6,7 +6,7 @@
       
   <div class="grid-3">
     <h2>Community Support</h2>
-    <p>The passionate <a href="/community">Drupal community</a> is on hand to give support via various <a href="/irc">vibrant IRC channels</a>, in the <a href="/forum">forums</a>, and face to face at <a href="#">Drupal events</a>. As Drupal is <a href="#">open source</a>, this means everybody can <a href="/contribute">get involved</a> and make a difference.</p>
+    <p>The passionate <a href="/community">Drupal community</a> is on hand to give support via various <a href="/irc">vibrant IRC channels</a>, in the <a href="/forum">forums</a>, and face to face at <a href="#">Drupal events</a>. As Drupal is <a href="/principles">open source</a>, this means everybody can <a href="/contribute">get involved</a> and make a difference.</p>
   </div>
       
   <div class="grid-3">
