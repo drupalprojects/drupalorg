@@ -113,12 +113,12 @@
     <div class="aboutsmall">
       <p>For Drupal 6, you need the following to get started:</p>
       <ul>
-        <li><strong>Web Server</strong>: <a href="#">Apache</a> or <a href="#">Microsoft IIS</a></li>
-        <li><strong>PHP</strong>: <a href="#"><a href="#">5.2</a> or higher recommended; PHP 4.3.5 required</li>
-        <li><strong>Database Server</strong>: <a href="#">MySQL</a> - 4.1 or higher or <a href="#">PostgreSQL</a> - 7.4 or higher</li>
+        <li><strong>Web Server</strong>: Apache or Microsoft IIS</li>
+        <li><strong>PHP</strong>: 5.2 or higher recommended; PHP 4.3.5 required</li>
+        <li><strong>Database Server</strong>: MySQL - 4.1 or higher or PostgreSQL - 7.4 or higher</li>
       </ul>
-      <p>Drupal is web-based, which means it is compatible with all <a href="#">operating systems</a>.</p>
-      <p>More detailed information on the <a href="#">system requirements</a>.</p>
+      <p>Drupal is web-based, which means it is compatible with all operating systems.</p>
+      <p>More detailed information on the <a href="/requirements">system requirements</a>.</p>
     </div>
   </div>
 </div>
