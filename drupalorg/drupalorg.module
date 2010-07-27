@@ -49,7 +49,7 @@ function drupalorg_menu() {
   );
 
   $items['start'] = array(
-    'title' => 'Getting started with Drupal',
+    'title' => 'Get Started with Drupal',
     'page callback' => 'drupalorg_start',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
