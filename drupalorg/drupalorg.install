@@ -204,6 +204,14 @@ function drupalorg_update_6500() {
       'delta' => 'irc',
     ),
     array(
+      'module' => 'book',
+      'delta' => 0,
+    ),
+    array(
+      'module' => 'drupalorg_handbook',
+      'delta' => 'license',
+    ),
+    array(
       'module' => 'project_issue',
       'delta' => 'issue_cockpit',
     ),
