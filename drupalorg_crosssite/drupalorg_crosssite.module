@@ -50,12 +50,12 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     ),
     array(
       'getting-started' => array('href' => 'getting-started', 'title' => t('Getting Started'), '#site' => 'main'),
-      'download-core'   => array('href' => 'project/Drupal', 'title' => t('Downloading Drupal'), '#site' => 'main'),
+      'download-core'   => array('href' => 'node/3060', 'title' => t('Downloading Drupal'), '#site' => 'main'),
       'get-involved'    => array('href' => '', 'title' => t('Get Involved'), '#site' => 'main'),
     ),
     array(
       'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
-      'download-core'     => array('href' => 'project/Drupal', 'title' => t('Drupal Core'), '#site' => 'main'),
+      'download-core'     => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#site' => 'main'),
       'download-modules'  => array('href' => 'project/Modules', 'title' => t('Modules'), '#site' => 'main'),
       'download-themes'   => array('href' => 'project/Themes', 'title' => t('Themes'), '#site' => 'main'),
       'download-profiles' => array('href' => 'project/Installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
@@ -235,7 +235,7 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         // All are exact paths and so theme('links') will make them gain active
         // classes when on the projects site. Therefore no need for #active.
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
-        'core'         => array('href' => 'project/Drupal', 'title' => t('Drupal Core'), '#site' => 'main'),
+        'core'         => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#site' => 'main'),
         'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main'),
         'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main'),
         'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'main'),
