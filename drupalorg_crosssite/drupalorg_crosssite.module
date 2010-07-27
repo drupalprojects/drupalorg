@@ -55,7 +55,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     ),
     array(
       'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
-      'download-core'     => array('href' => 'project/Drupal', 'title' => t('Drupal core'), '#site' => 'main'),
+      'download-core'     => array('href' => 'project/Drupal', 'title' => t('Drupal Core'), '#site' => 'main'),
       'download-modules'  => array('href' => 'project/Modules', 'title' => t('Modules'), '#site' => 'main'),
       'download-themes'   => array('href' => 'project/Themes', 'title' => t('Themes'), '#site' => 'main'),
       'download-profiles' => array('href' => 'project/Installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
@@ -227,7 +227,7 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
       return array(
         'home'    => array('href' => 'handbook', 'title' => t('Docs Home'), '#site' => 'main', '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
         'api'     => array('href' => '<front>', 'title' => t('API'), '#site' => 'api', '#active' => drupalorg_crosssite_menu_site('api')),
-        'recent'  => array('href' => 'handbook/updates', 'title' => t('Recently updated'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
+        'recent'  => array('href' => 'handbook/updates', 'title' => t('Recently Updated'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
       );
 
     case 'downloads':
@@ -252,8 +252,8 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         'chat'          => array('href' => 'irc', 'title' => t('Chat'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^irc(/|$)')),
         // Does not make sense, see question to Mark at http://groups.drupal.org/node/19010
         // 'events'        => array('href' => 'events', 'title' => t('Events'), '#site' => 'groups'),
-        'lists'         => array('href' => 'mailing-lists', 'title' => t('Mailing lists'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)')),
-        'members'       => array('href' => 'profile', 'title' => t('Member directory'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^profile(/|$)')),
+        'lists'         => array('href' => 'mailing-lists', 'title' => t('Mailing Lists'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)')),
+        'members'       => array('href' => 'profile', 'title' => t('Member Directory'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^profile(/|$)')),
         'forum'         => array('href' => 'forum', 'title' => t('Forum'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^forum(/|$)') || drupalorg_crosssite_menu_type('main', array('forum'))),
       );
 
@@ -306,7 +306,7 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
       return array(
         // All are exact paths and so theme('links') will make them gain active
         // classes when on the localize site. Therefore no need for #active.
-        'home'         => array('href' => '<front>', 'title' => t('Translations home'), '#site' => 'localize'),
+        'home'         => array('href' => '<front>', 'title' => t('Translations Home'), '#site' => 'localize'),
         'languages'    => array('href' => 'translate/languages', 'title' => t('Languages'), '#site' => 'localize'),
         'projects'     => array('href' => 'translate/projects', 'title' => t('Projects'), '#site' => 'localize'),
         'download'     => array('href' => 'download', 'title' => t('Download'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^download$')),
