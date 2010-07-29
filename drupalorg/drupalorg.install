@@ -221,7 +221,7 @@ function drupalorg_update_6500() {
     $block['status'] = 1;
     $block['region'] = 'right';
     $block['visibility'] = 1;
-    drupal_write_record('blocks', $block, array('module', 'delta', 'theme'));
+    drupal_write_record('blocks', $block, array('module', 'delta'));
   }
 
   return $return;
