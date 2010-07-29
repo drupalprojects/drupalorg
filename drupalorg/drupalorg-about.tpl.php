@@ -75,22 +75,22 @@
       <p>From local businesses to global corporations, diverse organizations use Drupal.</p>
       <dl>
         <dt>News Publishing</dt>
-        <dd><a href="#">New York Observer</a>, <a href="#">NowPublic</a>, <a href="#">Popular Science</a></dd>
+        <dd><a href="/nyobserver">New York Observer</a>, <a href="/node/47792">NowPublic</a>, <a href="/popular-science">Popular Science</a>, Economist</dd>
   
         <dt>Intranet/Corporate Websites</dt>
-        <dd><a href="#">Yahoo! Research</a>, <a href="#">AOL Corporate</a></dd>
+        <dd><a href="/node/217684">AOL Corporate</a>, <a href="/Dahon-Folding-Bicycles">Dahon Bicycles</a></dd>
         
         <dt>Education</dt>
-        <dd><a href="#">Amherst College</a>, <a href="#">e-Learning Institute</a>, <a href="#">WPA</a></dd>
+        <dd><a href="/node/182486">San Jose State University</a>, Harvard, MIT, <a href="#">e-Learning Institute</a>, <a href="/node/20436">Council on Writing Program Administrators</a></dd>
 
         <dt>Art, Music, Multimedia</dt>
-        <dd><a href="#">MTV UK</a>, <a href="#">Sony Music</a>, <a href="#">Warner Brothers Records</a></dd>
+        <dd><a href="/node/81898">MTV UK</a>, <a href="/node/241344">Sony Music</a>, <a href="/node/162162">Warner Brothers Records</a></dd>
       
         <dt>Community Portal Sites</dt>
-        <dd><a href="#">Fast Company</a>, <a href="#">Team Sugar</a>, <a href="#">Kerneltrap</a></dd>
+        <dd><a href="/node/221481">Fast Company</a>, <a href="/node/72088">Team Sugar</a>, <a href="/node/228222">Ubuntu Brainstorm</a></dd>
 
         <dt>Social Networking Sites</dt>
-        <dd><a href="#">DrupalSN</a>, <a href="#">imbee</a>, <a href="#">GoingOn</a></dd>
+        <dd><a href="/node/288476">DrupalSN</a>, <a href="/node/98076">Jewcy</a></dd>
       </dl>
     </div>
   </div>
