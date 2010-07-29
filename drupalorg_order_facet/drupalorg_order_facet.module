@@ -85,6 +85,8 @@ function _drupalorg_order_facet_build($facet, $query, $response, $count = 4) {
 
   $params['fq'] = array_merge($params['fq'], $order_query->get_fq());
 
+  apachesolr_modify_query($order_query, $params, '_drupalorg_order_facet_build');
+
   // Execute the Solr query.
   $solr = apachesolr_get_solr();
   $response = $solr->search($order_query->get_query_basic(), $params['start'], $params['rows'], $params);
