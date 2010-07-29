@@ -99,7 +99,7 @@ function bingo_block_output() {
           array(
             'version' => $versions,
             'status' => array(1),
-            'priorities' => array(1, 2),
+            'priorities' => array(1, 2, 4),
             'categories' => array('bug'),
           )
         ),
