@@ -192,7 +192,7 @@ function drupalorg_update_6500() {
   system_theme_data(); // Trigger updating theme filenames
   _block_rehash(); // Trigger filling out blocks table
 
-  $return[] = update_sql("UPDATE {blocks} SET status = 0 WHERE theme = 'bluecheese'");
+  $return[] = update_sql("DELETE FROM {blocks} WHERE theme = 'bluecheese'");
   $blocks = array(
     array(
       'module' => 'drupalorg_news',
@@ -221,7 +221,7 @@ function drupalorg_update_6500() {
     $block['status'] = 1;
     $block['region'] = 'right';
     $block['visibility'] = 1;
-    drupal_write_record('blocks', $block, array('module', 'delta'));
+    drupal_write_record('blocks', $block);
   }
 
   return $return;
