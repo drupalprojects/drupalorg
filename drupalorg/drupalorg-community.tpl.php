@@ -46,7 +46,7 @@
     <h5>Commercial Support</h5>
     <p>If you need professional help, check out our <a href="/marketplace">Marketplace</a> where you can find companies on hand to assist with <a href="/hosting">hosting</a>, <a href="/training-services">training</a> and other <a href="/drupal-services">Drupal services</a> such as development, support, content moderation and spam blocking</a>.</p>
     <h5>Local Groups</h5>
-    <p>With a worldwide community, chances are there is a <a href="http://groups.drupal.org/groups">Drupal group</a> close to where you are. If you can't find a local group, why not set one up? It's a great chance for meeting community members face to face.</p>
+    <p>With a worldwide community, chances are there is a <a href="http://groups.drupal.org/groups">Drupal group</a> close to you. If you can't find a local group, why not set one up? It's a great chance for meeting community members face to face.</p>
     <h5>Online Groups</h5>
     <p><a href="http://groups.drupal.org">Groups.drupal.org</a> provides a place for groups to organize, plan, and work on projects. Anyone can start a group and it's a great way to get involved and gain some support.</p>
     <h5>Chat (IRC)</h5>
