@@ -84,6 +84,10 @@ function _drupalorg_order_facet_build($facet, $query, $response, $count = 4) {
   );
 
   $params['fq'] = array_merge($params['fq'], $order_query->get_fq());
+  
+  // Retrieve the query values first so everything is formatted correctly,
+  // and we only have relevant values in the url.
+  $query_values = $order_query->get_url_queryvalues();
 
   apachesolr_modify_query($order_query, $params, '_drupalorg_order_facet_build');
 
@@ -101,7 +105,7 @@ function _drupalorg_order_facet_build($facet, $query, $response, $count = 4) {
   if ($items) {
     // Add the "more" link.
     $items[] = array(
-      'data' => l(t('More @title', array('@title' => $facet['info'])), $order_query->get_path(), array('query' => $order_query->get_url_queryvalues())),
+      'data' => l(t('More @title', array('@title' => $facet['info'])), $order_query->get_path(), array('query' => $query_values)),
       'class' => 'all',
     );
 
