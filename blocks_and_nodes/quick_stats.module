@@ -8,89 +8,12 @@ function quick_stats_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALS
   if ($op == 'view' && $page) {
     $extra = '';
     switch ($node->nid) {
-      case 146019:
-        $extra = quick_stats_handbook();
-        break;
       case 190833:
         $extra = quick_stats_report();
         break;
     }
     $node->content['body']['#value'] .= $extra;
   }
-}
-
-/**
- * Handbook contribution stats.
- */
-function quick_stats_handbook() {
-  $total_count = 0;
-  $add_count = 0;
-  $delete_count = 0;
-  $newbie_count = 0;
-  $newbies = array();
-
-  // Retrieve a listing of all book pages added in the past week that are still in
-  // the node table:
-  $result = db_query("SELECT nid, title FROM {node} WHERE type = 'book' AND created >= %d", time() - 604800);
-  $books = array();
-  while ($book = db_fetch_object($result)) {
-    $books[$book->nid] = $book->title;
-  }
-
-  // Retrieve listing of *all* added book pages for the past week.
-  $result = db_query("SELECT wid, uid, link FROM {watchdog} WHERE message LIKE 'book: add%' AND type='content'");
-  while ($row = db_fetch_object($result)) {
-    $total_count++;
-    preg_match('!node/(\d+)!', $row->link, $matches);
-    $nid = $matches[1];
-    if (isset($books[$nid])) {
-      // Book was added and hasn't been deleted.
-      $add_count++;
-      if (!user_is_on_docs_team($row->uid)) {
-        // Book was created by a new user; not someone on docs team.
-        $newbie_count++;
-        $newbies[$row->uid][] = $nid;
-      }
-    }
-    else {
-      // Book page was spam.
-      $delete_count++;
-    }
-  }
-
-  // Get list of new contributors.
-  foreach ($newbies as $uid => $nodes) {
-    $name = db_result(db_query('SELECT name FROM {users} WHERE uid = %d', $uid));
-    $newbies[$uid] =  l($name, "user/$uid");
-    foreach ($nodes as $nid) {
-      $title = $books[$nid];
-      $newbie_nodes[$uid][] = l($title, "node/$nid");
-    }
-  }
-
-  $output .= "In the past week, a total of $total_count handbook pages were created. Of those, $delete_count were spam. Of the $add_count added, $newbie_count were created by people not on the documentation team: ". theme('new_contributions', $newbies, $newbie_nodes);
-
-  return $output;
-}
-
-/**
- * Check whether the user by the given uid is on the docs team.
- */
-function user_is_on_docs_team($uid) {
-  // Role 4 = site maintaner, 5 = docs maintainer.
-  return db_result(db_query("SELECT 1 FROM {users_roles} WHERE uid = %d AND (rid = %d OR rid = %d)",  $uid, 4, 5));
-}
-
-/**
- * Theme the new contributors list.
- */
-function theme_new_contributions($newbies, $newbie_nodes) {
-  $output = '';
-  foreach ($newbies as $uid => $user) {
-    $output .= '<h3>'. $user .'</h3>';
-    $output .= theme('item_list', $newbie_nodes[$uid]);
-  }
-  return $output;
 }
 
 /**
@@ -141,15 +64,4 @@ function quick_stats_report() {
   $output .=  "</dl>";
 
   return $output;
-}
-
-/**
- * Implementation of hook_theme().
- */
-function quick_stats_theme() {
-  return array(
-    'new_contributions' => array(
-      'arguments' => array('newbies' => NULL, 'newbie_nodes' => NULL),
-    ),
-  );
 }
