@@ -70,9 +70,9 @@ function _drupalorg_order_facet_build($facet, $query, $response, $count = 4) {
 
   // Generate a new query based on the executed one.
   $order_query = clone $query;
-  $order_query->set_available_sort($facet['title'], $facet['facet_field']);
+  $order_query->set_available_sort($facet['facet_field'], array('title' => $facet['info'],'default' => $facet['direction']));
   $order_query->set_solrsort($facet['facet_field'], $facet['direction']);
-
+  
   $params = array(
     // The fields to return.
     'fl' => 'id,nid,title',
@@ -84,7 +84,7 @@ function _drupalorg_order_facet_build($facet, $query, $response, $count = 4) {
   );
 
   $params['fq'] = array_merge($params['fq'], $order_query->get_fq());
-  
+
   // Retrieve the query values first so everything is formatted correctly,
   // and we only have relevant values in the url.
   $query_values = $order_query->get_url_queryvalues();
