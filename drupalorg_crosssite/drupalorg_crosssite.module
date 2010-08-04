@@ -315,21 +315,14 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
       );
 
     case 'dashboard':
-      if (module_exists('dashboard')) {
-        global $user;
-        $links = module_invoke('dashboard', 'user_tabs');
-        array_splice($links, -1, 0, array('dashboard-profile' => array(
-          'title' => t('Profile'),
-          'href' => 'user/'. $user->uid,
-        )));
-        foreach (array_keys($links) as $key) {
-          $links[$key]['#site'] = 'main';
-          if (isset($links[$key]['#href'])) {
-            $links[$key]['#active'] = drupalorg_crosssite_menu_path('main', '^' . $links[$key]['#href'] . '($|/)');
-          }
-        }
-        return $links;
-      }
+      global $user;
+      return array(
+        'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'dashboard', '#site' => 'main'),
+        'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main'),
+        'your-groups' => array('title' => t('Your Groups'), 'href' => 'unread', '#site' => 'groups'),
+        'your-events' => array('title' => t('Your Events'), 'href' => 'events?uid=1', '#site' => 'groups'), // Intentional 1
+        'your-profile' => array('title' => t('Profile'), 'href' => 'user/'. $user->uid, '#site' => 'main'),
+      );
   }
 }
 
