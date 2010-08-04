@@ -34,6 +34,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     'marketplace'     => array('href' => 'services',               'title' => t('Marketplace'), '#site' => 'main'),
     'about'           => array('href' => 'about',                  'title' => t('About'), '#site' => 'main'),
   );
+  if (variable_get('drupalorg_crosssite_redesign', FALSE)) {
+    $nav_header_links['getting-started']['href'] = 'start';
+  }
   // Make all external links right.
   $nav_header_links = drupalorg_crosssite_menu_absolute_links($nav_header_links);
   // Theme as links, and avoid class="links" on it.
@@ -105,10 +108,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
 
   $nav_masthead_links = array(
     'homepage'       => array('href' => '',      'title' => t('Drupal Homepage'),  '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$')),
-    'dashboard'      => array('href' => 'dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^dashboard(/|$)')),
+    'dashboard'      => array('href' => 'user/' . $user->uid . '/dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)')),
   );
-  if (!drupalorg_crosssite_menu_site('main')) {
-    // Only show the dashboard link on the main site, remove when launched
+  if (!variable_get('drupalorg_crosssite_redesign', FALSE)) {
     unset($nav_masthead_links['dashboard']);
   }
   $userinfo = '';
@@ -117,12 +119,17 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     $nav_masthead_links['login-register'] = array('href' => 'user', 'query' => drupal_get_destination(), 'title' => t('Login / Register'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
   }
   else {
-    // If not the main site (or a test server), provide logout link to the main site, since
-    // that would log us out of the single-sign-on-domain. @todo
-    // $single_sign_on_prefix = drupalorg_crosssite_menu_site('main') ? '' : 'http://drupal.org/';
-
     // Add user page link and logout link.
-    $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user') .' '. l(t('Logout'), 'logout') .'</div>';
+    $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user') .' '. l(t('Logout'), 'logout');
+    if (variable_get('drupalorg_crosssite_redesign', FALSE)) {
+      $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'http://' . $sites['main'] . '/user') .' '. l(t('Logout'), 'http://' . $sites['main'] . '/logout');
+    }
+
+    if (user_access('administer site configuration')) {
+      $userinfo .= ' ' . l(t('Admin'), 'admin');
+    }
+
+    $userinfo .= '</div>';
   }
   // Make all external links right.
   $nav_masthead_links = drupalorg_crosssite_menu_absolute_links($nav_masthead_links);
@@ -161,7 +168,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'association'   => drupalorg_crosssite_menu_site('association'),
     'events'        => drupalorg_crosssite_menu_path('groups', '^events(/|$)'),
     'druplicon'     => drupalorg_crosssite_menu_path('main', '^(node/9068|druplicon)(/|$)'),
-    'dashboard'     => drupalorg_crosssite_menu_path('main', '^(dashboard|user/'. $user->uid .')(/|$)'),
+    'dashboard'     => drupalorg_crosssite_menu_path('main', '^user/'. $user->uid .'(/|$)'),
     'localize'      => drupalorg_crosssite_menu_site('localize'),
   );
 
@@ -176,7 +183,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'downloads' => 'Download &amp; Extend',
     'documentation' => 'Documentation',
     'community' => 'Community &amp; Support',
-    'dashboard' => '',
+    'dashboard' => check_plain($user->name),
   );
   //set the section_name variable to be output in page.tpl.php
   if (isset($section_names[$matched_menu])) {
@@ -236,8 +243,8 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         // classes when on the projects site. Therefore no need for #active.
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
         'core'         => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#site' => 'main'),
-        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main'),
-        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main'),
+        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_term('main', array(DRUPALORG_MODULE_TID))),
+        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_term('main', array(DRUPALORG_THEME_TID))),
         'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'main'),
         'theme-engine' => array('href' => 'project/theme+engines', 'title' => t('Theme Engines'), '#site' => 'main'),
         'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
@@ -317,7 +324,7 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
     case 'dashboard':
       global $user;
       return array(
-        'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'dashboard', '#site' => 'main'),
+        'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard', '#site' => 'main'),
         'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main'),
         'your-groups' => array('title' => t('Your Groups'), 'href' => 'unread', '#site' => 'groups'),
         'your-events' => array('title' => t('Your Events'), 'href' => 'events?uid=1', '#site' => 'groups'), // Intentional 1
@@ -381,6 +388,24 @@ function drupalorg_crosssite_menu_type($site_key, $node_types) {
   // menu_get_object() gets us the node, if we have a node loaded on the path.
   if (drupalorg_crosssite_menu_site($site_key) && ($node = menu_get_object())) {
     return in_array($node->type, $node_types);
+  }
+}
+
+/**
+ * Check whether we are viewing any of the specified node terms on the given site.
+ *
+ * @param $site_key
+ *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
+ * @param $node_tids
+ *   An array of possible node term IDs to check for.
+ * @return
+ *   TRUE if on the site specified by $site_key, looking at a node of any of the
+ *   term IDs specified in $node_tids.
+ */
+function drupalorg_crosssite_menu_term($site_key, $node_tids) {
+  // menu_get_object() gets us the node, if we have a node loaded on the path.
+  if (drupalorg_crosssite_menu_site($site_key) && ($node = menu_get_object())) {
+    return count(array_intersect(array_keys($node->taxonomy), $node_tids)) > 0;
   }
 }
 
@@ -450,4 +475,12 @@ function drupalorg_crosssite_menu_absolute_links($links) {
     $activated_links[$key] = $link;
   }
   return $activated_links;
+}
+
+/**
+ * Arrange local tasks for user pages.
+ */
+function drupalorg_crosssite_menu_alter(&$items) {
+  $items['user/%user/dashboard']['type'] = MENU_NORMAL_ITEM;
+  $items['user/%user/track']['type'] = MENU_NORMAL_ITEM;
 }
