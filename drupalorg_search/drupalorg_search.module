@@ -67,15 +67,18 @@ function drupalorg_search_apachesolr_update_index(&$document, $node) {
  * Returns an array keyed by block delta.
  */
 function drupalorg_search_apachesolr_facets() {
-  $facets = array();
-
-  $facets['meta_type'] = array(
-    'info' => t('Drupalorg Search: Filter by meta type'),
-    'facet_field' => '{!ex=meta_type}ss_meta_type',
-    'exclude_filter' => '',
+  return array(
+    'meta_type' => array(
+      'info' => t('Drupalorg Search: Filter by meta type'),
+      'facet_field' => '{!ex=meta_type}ss_meta_type',
+      'exclude_filter' => '',
+    ),
+    'sort_created' => array(
+      'info' => t('New content'),
+      'facet_field' => 'created',
+      'direction' => 'desc',
+    ),
   );
-
-  return $facets;
 }
 
 /**
@@ -323,6 +326,72 @@ function drupalorg_search_block_form_submit($form, &$form_state) {
   $query = $_GET;
   unset($query['q']);
   $form_state['redirect'] = array('search/' . arg(1) . '/' . $form_state['values']['query'], $query);
+}
+
+/**
+ * Base query required for creating the download page context for solr-related
+ * blocks. Creates and caches a solr query for use by block elements.
+ */
+function drupalorg_search_execute_base_query() {
+  // Build a simple query.
+  $base_path = 'project/modules';
+  $query = apachesolr_drupal_query('', '', '', $base_path);
+
+  $params = array(
+    // The fields to return.
+    'fl' => 'id,nid,title',
+    'start' => 0,
+    // We don't actually need to return rows.
+    'rows' => 1,
+    // We need to be able to facet on the project vid value
+    // so we can pull project categories.
+    'facet.field' => array(
+      'im_vid_' . _project_get_vid(),
+    ),
+    // Additional criterias.
+    'fq' => array(
+      'type:project_project',
+      'im_vid_' . _project_get_vid() . ':' . DRUPALORG_MODULE_TID,
+    ),
+    'facet' => 'true',
+    'facet.mincount' => 1,
+    'facet.sort' => 'true',
+  );
+
+  apachesolr_search_add_facet_params($params, $query);
+
+  // Cache the built query. Since all the built queries go through
+  // this process, all the hook_invocations will happen later.
+  apachesolr_current_query($query);
+
+  // This hook allows modules to modify the query and params objects.
+  apachesolr_modify_query($query, $params, 'drupalorg_search_execute_base_query');
+
+  $solr = apachesolr_get_solr();
+  $response = $solr->search($query->get_query_basic(), $params['start'], $params['rows'], $params);
+
+  apachesolr_static_response_cache($response);
+  apachesolr_has_searched(TRUE);
+}
+
+/**
+ * Theme preprocess function for the drupalorg_download search page.
+ */
+function drupalorg_search_preprocess_drupalorg_download(&$variables) {
+  drupalorg_search_execute_base_query();
+  
+  // Since we control what facets we're building, we can just utilize the
+  // delta as the unique key for the sake of brevity (both here and in the
+  // $variables array).
+  $facets = array(
+    'sort_most_installed' => 'drupalorg_order_facet',
+    'project_solr_categories' => 'project_solr',
+    'sort_created' => 'drupalorg_order_facet',
+  );
+  // Render and save the facet blocks.
+  foreach ($facets as $delta => $module) {
+    $variables[$delta] = drupalorg_block_render($module, $delta);
+  }
 }
 
 /**
