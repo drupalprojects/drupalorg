@@ -127,6 +127,10 @@ function drupalorg_search_block_info() {
       'info' => t('Drupalorg Search: Search box'),
       'cache' => BLOCK_NO_CACHE,
     ),
+    'drupalorg_search_project_browse' => array(
+      'info' => t('Drupalorg Search: Project Browsing'),
+      'cache' => BLOCK_NO_CACHE,
+    ),
   );
 
   // Add the facet blocks.
@@ -199,6 +203,21 @@ function drupalorg_search_block_view($delta) {
         }
       }
       break;
+
+    case 'drupalorg_search_project_browse':
+      if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {    
+        $project_type_term = drupalorg_search_get_project_type_term($response);
+        if (!isset($project_type_term)) {
+          // This facet only works if a project type facet has been selected.
+          return;
+        }
+        return array(
+          'subject' => t('Browse @project_type', array('@project_type' => $project_type_term->name)),
+          'content' => drupal_get_form('project_solr_browse_projects_form', $project_type_term),
+        );
+      }
+      break;
+
   }
 }
 
@@ -239,6 +258,45 @@ function drupalorg_search_search_theme_form_submit($form, &$form_state) {
 }
 
 /**
+ * Implementation of hook_form_FORM_ID_alter().
+ */
+function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &$form_state) {
+  if (arg(0) == 'search' && arg(1) == 'apachesolr_search') {
+    // If we're on the search page, we want to alter the project browse form
+    // so that it sends us back to the search page and includes ss_meta_type
+    $form['path'] = array(
+      '#type' => 'value',
+      '#value' => 'search/apachesolr_search/' . arg(2),
+    );    
+    $form['#submit'][] = 'drupalorg_search_project_solr_browse_project_form_submit';
+
+    // We default the text to our url value so that we don't get errors
+    // when attempting to sort by relevancy. Make the access false, so that
+    // the values aren't visible and we don't have 2 search forms.
+    $form['text']['#default_value'] = arg(2);
+    $form['text']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Submit handler for inserting ss_meta_type values into the path for 
+ * project_solr_browse_project_form submissions from the search page.
+ */
+function drupalorg_search_project_solr_browse_project_form_submit(&$form, &$form_state) {
+  // Project_solr_browse_projects_form_submit handles most of the other elements
+  // but it doesn't handle ss_meta_type, so we handle that here.
+  $query = apachesolr_current_query();
+  $filters = explode(' ', $form_state['redirect'][1]['filters']);
+  foreach($query->get_filters() as $filter) {
+    if ($filter['#name'] == 'ss_meta_type') {
+      $filters[] = $filter['#query']; 
+    }
+  }
+  $form_state['redirect'][1]['filters'] = implode(' ', $filters);
+  unset($form_state['redirect'][1]['keys']);
+}
+
+/**
  * Form callback; display a search form in a block.
  */
 function drupalorg_search_block_form(&$form_state, $querystring) {
@@ -265,4 +323,49 @@ function drupalorg_search_block_form_submit($form, &$form_state) {
   $query = $_GET;
   unset($query['q']);
   $form_state['redirect'] = array('search/' . arg(1) . '/' . $form_state['values']['query'], $query);
+}
+
+/**
+ * Get the taxonomy term for the project type (if any) in a given Solr search.
+ *
+ * This function loops over all of the active facets in the given Solr query
+ * response. If one of the facets selected a "meta_type" for the search, and
+ * the meta_type is either "module" or "theme", it loads the corresponding
+ * taxonomy term object and returns that.
+ * 
+ * @param $response
+ *   The ApacheSolr response object for the currently active search.
+ *
+ * @return
+ *   The taxonomy $term object if the search's meta_type is "module" or
+ *   "theme", otherwise NULL.
+ *
+ * @see taxonomy_get_term()
+ */
+function drupalorg_search_get_project_type_term($response) {
+  if (isset($response->responseHeader->params->fq)) {
+    // Depending on how many facets are in the currently active filter, fq
+    // might either be a single value or an array. If there's a single facet,
+    // we turn it into an array so the rest of this function can always assume
+    // it needs to iterate.
+    $fq = $response->responseHeader->params->fq;
+    if (!is_array($fq)) {
+      $fq = array($fq);
+    }
+    foreach ($fq as $query_snippet) {
+      if (preg_match('/^{!tag=meta_type}ss_meta_type:(.*)$/', $query_snippet, $matches)) {
+        $meta_type = trim($matches[1]);
+
+        if ($meta_type == 'theme') {
+          $tid = DRUPALORG_THEME_TID;
+        } 
+        elseif($meta_type == 'module') {
+          $tid = DRUPALORG_MODULE_TID;
+        }
+        if (isset($tid)) {
+          return taxonomy_get_term($tid);
+        }
+      }
+    }
+  }
 }
