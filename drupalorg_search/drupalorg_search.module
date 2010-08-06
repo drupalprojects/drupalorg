@@ -101,78 +101,104 @@ function drupalorg_search_apachesolr_modify_query(&$query, &$params) {
 }
 
 /**
- * Implementation of hook_block().
+ * Implement hook_block().
  */
 function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
-  if ($op == 'list') {
-    $blocks = array();
+  // Instead of a monolithic function, split out this code into separate
+  // functions for each operation (which we're going to need when we port to
+  // D7, anyway).
+  switch ($op) {
+    case 'list':
+      return drupalorg_search_block_info();
 
-    $blocks['search_box'] = array(
+    case 'view':
+      return drupalorg_search_block_view($delta);
+
+  }
+}
+
+
+/**
+ * Declare all the blocks provided by drupalorg_search.
+ */
+function drupalorg_search_block_info() {
+  $blocks = array(
+    'search_box' => array(
       'info' => t('Drupalorg Search: Search box'),
       'cache' => BLOCK_NO_CACHE,
-    );
+    ),
+  );
 
-    // Add the facet blocks.
-    $enabled_facets = apachesolr_get_enabled_facets('drupalorg_search');
-    $facets = drupalorg_search_apachesolr_facets();
-    foreach ($enabled_facets as $delta => $facet_field) {
-      $blocks[$delta] = $facets[$delta] + array('cache' => BLOCK_CACHE_PER_PAGE);
-    }
-    return $blocks;
+  // Add the facet blocks.
+  $enabled_facets = apachesolr_get_enabled_facets('drupalorg_search');
+  $facets = drupalorg_search_apachesolr_facets();
+  foreach ($enabled_facets as $delta => $facet_field) {
+    $blocks[$delta] = $facets[$delta] + array('cache' => BLOCK_CACHE_PER_PAGE);
   }
-  elseif ($op == 'view' && $delta == 'search_box') {
-    if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
-      $querystring = $query->get_query_basic();
-    }
-    else {
-      $querystring = '';
-    }
+  return $blocks;
+}
 
-    // We need to special case POST requests, because the search module doesn't
-    // trigger search on POST requests.
-    if (!empty($querystring) || (arg(0) == 'search' && $_SERVER['REQUEST_METHOD'] == 'POST')) {
-      return array(
-        'subject' => t('Search again'),
-        'content' => drupal_get_form('drupalorg_search_block_form', $querystring),
-      );
-    }
-  }
-  elseif ($op == 'view' && $delta == 'meta_type') {
-    if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
-      $entries = array();
-      $total = 0;
-      $has_active = FALSE;
-      foreach (drupalorg_meta_types() as $name => $description) {
-        if (!empty($response->facet_counts->facet_fields->ss_meta_type->$name)) {
-          $count = $response->facet_counts->facet_fields->ss_meta_type->$name;
-          $total += $count;
-
-          $new_query = clone $query;
-          $active = $query->has_filter('ss_meta_type', $name);
-          $has_active |= $active;
-          $new_query->remove_filter('ss_meta_type');
-          $new_query->add_filter('ss_meta_type', $name);
-
-          $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
-          $querystring = $new_query->get_url_queryvalues();
-
-          $entries[] = l(t('@facet (@count)', array('@facet' => $description, '@count' => $count)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => $active ? array('class' => 'selected') : array()));
-        }
+/**
+ * Render the content for the requested drupalorg_search block.
+ */
+function drupalorg_search_block_view($delta) {
+  switch ($delta) {
+    case 'search_box':
+      if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
+        $querystring = $query->get_query_basic();
       }
-      if (count($entries)) {
-        // Add the "All" entry.
-        $new_query = clone $query;
-        $new_query->remove_filter('ss_meta_type');
-        $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
-        $querystring = $new_query->get_url_queryvalues();
-        array_unshift($entries, l(t('All (@count)', array('@count' => $total)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => !$has_active ? array('class' => 'selected') : array())));
+      else {
+        $querystring = '';
+      }
 
+      // We need to special case POST requests, because the search module
+      // doesn't trigger search on POST requests.
+
+      if (!empty($querystring) || (arg(0) == 'search' && $_SERVER['REQUEST_METHOD'] == 'POST')) {
         return array(
-          'subject' => t('or filter by...'),
-          'content' => theme('item_list', $entries),
+          'subject' => t('Search again'),
+          'content' => drupal_get_form('drupalorg_search_block_form', $querystring),
         );
       }
-    }
+      break;
+
+    case 'meta_type':
+      if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
+        $entries = array();
+        $total = 0;
+        $has_active = FALSE;
+        foreach (drupalorg_meta_types() as $name => $description) {
+          if (!empty($response->facet_counts->facet_fields->ss_meta_type->$name)) {
+            $count = $response->facet_counts->facet_fields->ss_meta_type->$name;
+            $total += $count;
+
+            $new_query = clone $query;
+            $active = $query->has_filter('ss_meta_type', $name);
+            $has_active |= $active;
+            $new_query->remove_filter('ss_meta_type');
+            $new_query->add_filter('ss_meta_type', $name);
+
+            $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
+            $querystring = $new_query->get_url_queryvalues();
+
+            $entries[] = l(t('@facet (@count)', array('@facet' => $description, '@count' => $count)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => $active ? array('class' => 'selected') : array()));
+          }
+        }
+        if (count($entries)) {
+          // Add the "All" entry.
+          $new_query = clone $query;
+          $new_query->remove_filter('ss_meta_type');
+          $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
+          $querystring = $new_query->get_url_queryvalues();
+          array_unshift($entries, l(t('All (@count)', array('@count' => $total)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => !$has_active ? array('class' => 'selected') : array())));
+
+          return array(
+            'subject' => t('or filter by...'),
+            'content' => theme('item_list', $entries),
+          );
+        }
+      }
+      break;
   }
 }
 
