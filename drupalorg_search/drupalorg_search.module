@@ -24,14 +24,14 @@ function drupalorg_node_meta_type($node) {
     if (isset($node->taxonomy[DRUPALORG_MODULE_TID])) {
       return 'module';
     }
-    else if (isset($node->taxonomy[DRUPALORG_THEME_TID])) {
+    elseif (isset($node->taxonomy[DRUPALORG_THEME_TID])) {
       return 'theme';
     }
   }
-  else if ($node->type == 'book') {
+  elseif ($node->type == 'book') {
     return 'documentation';
   }
-  else if ($node->type == 'project_issue' || $node->type == 'forum') {
+  elseif ($node->type == 'project_issue' || $node->type == 'forum') {
     return 'forum-issues';
   }
 }
@@ -120,7 +120,7 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
     }
     return $blocks;
   }
-  else if ($op == 'view' && $delta == 'search_box') {
+  elseif ($op == 'view' && $delta == 'search_box') {
     if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
       $querystring = $query->get_query_basic();
     }
@@ -137,7 +137,7 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
       );
     }
   }
-  else if ($op == 'view' && $delta == 'meta_type') {
+  elseif ($op == 'view' && $delta == 'meta_type') {
     if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
       $entries = array();
       $total = 0;
