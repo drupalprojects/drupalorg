@@ -592,6 +592,118 @@ function drupalorg_download_drupal_link_button($text) {
 }
 
 /**
+ * Default dashboard content.
+ *
+ * @todo this is totally provisional at this point.
+ */
+function drupalorg_homebox() {
+  return array(
+    'dashboard' => array(
+      'title' => 'Dashboard',
+      'path' => 'dashboard',
+      'menu' => 0,
+      'enabled' => 1,
+      'regions' => 3,
+      'cache' => 0,
+      'full' => 0,
+      'custom' => 0,
+      'roles' => array(
+        0 => 'authenticated user',
+      ),
+      'color' => 0,
+      'colors' => array(
+        0 => '#e4f0f8',
+        1 => '#c4d5b4',
+        2 => '#ecc189',
+        3 => '#ec8989',
+        4 => '#6b6b70',
+        5 => '#4b97e5',
+      ),
+      'widths' => array(),
+      'blocks' => array(
+        'node_0' => array(
+          'module' => 'node',
+          'delta' => '0',
+          'region' => 1,
+          'movable' => 1,
+          'status' => 1,
+          'open' => 1,
+          'closable' => 1,
+          'title' => '',
+          'weight' => -33,
+        ),
+        'project_issue_issue_cockpit' => array(
+          'module' => 'project_issue',
+          'delta' => 'issue_cockpit',
+          'region' => 1,
+          'movable' => 1,
+          'status' => 1,
+          'open' => 1,
+          'closable' => 1,
+          'title' => '',
+          'weight' => -32,
+        ),
+        'user_2' => array(
+          'module' => 'user',
+          'delta' => '2',
+          'region' => 1,
+          'movable' => 1,
+          'status' => 1,
+          'open' => 1,
+          'closable' => 1,
+          'title' => '',
+          'weight' => -31,
+        ),
+        'user_1' => array(
+          'module' => 'user',
+          'delta' => '1',
+          'region' => 3,
+          'movable' => 1,
+          'status' => 1,
+          'open' => 1,
+          'closable' => 1,
+          'title' => '',
+          'weight' => -7,
+        ),
+        'system_0' => array(
+          'module' => 'system',
+          'delta' => '0',
+          'region' => 2,
+          'movable' => 1,
+          'status' => 1,
+          'open' => 1,
+          'closable' => 1,
+          'title' => '',
+          'weight' => -7,
+        ),
+        'user_3' => array(
+          'module' => 'user',
+          'delta' => '3',
+          'region' => 2,
+          'movable' => 1,
+          'status' => 1,
+          'open' => 1,
+          'closable' => 1,
+          'title' => '',
+          'weight' => 1,
+        ),
+        'views_project_issue_project-block_1' => array(
+          'module' => 'views',
+          'delta' => 'project_issue_project-block_1',
+          'region' => 1,
+          'movable' => 1,
+          'status' => 1,
+          'open' => 1,
+          'closable' => 1,
+          'title' => '',
+          'weight' => -33,
+        ),
+      ),
+    ),
+  );
+}
+
+/**
  * Render the HTML for a given block.
  *
  * This function takes a module and a delta, loads the block info from the DB,
