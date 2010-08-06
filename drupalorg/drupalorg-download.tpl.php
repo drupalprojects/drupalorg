@@ -44,7 +44,7 @@
   
 <div class="grid-12 alpha omega">
   <h2>Drupal Modules</h2>
-  <p>Show only modules for Drupal version DROPDOWN</p>
+  <p>Show only modules for Drupal version <a href="http://drupal.org/node/428292">DROPDOWN</a></p>
 </div>
 
 <div class="grid-12 alpha omega">
