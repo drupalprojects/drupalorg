@@ -55,50 +55,17 @@
 */ ?>
 
   <div class="grid-3 alpha">
-    <h2>Most Installed</h2>
-    <?php print $most_popular_modules; ?>
-    <a href="#" class="all">More Most installed</a>
+    <?php print $sort_most_installed; ?>
   </div>
   
   <div class="grid-3">      
-    <h2>Most active modules</h2>
-    <?php print $most_active_modules; ?>
-    <a href="#" class="all">More most active</a>
+    <?php print $project_solr_categories; ?>    
   </div>
   
   <div class="grid-3">      
-    <h2>New modules</h2>
-    <?php print $new_modules; ?>
-    <a href="#" class="all">More new modules</a>
+    <?php print $sort_created; ?>
   </div>
   
-  <div class="grid-3 omega">        
-    <h2>Placeholder</h2>
-    <a href="#" class="all">More placeholder</a>
-  </div>
-
-</div>
-
-<div class="grid-12 alpha omega">
-
-  <div class="grid-3 alpha">
-    <h2>Most popular themes</h2>
-    <?php print $most_popular_themes ?>
-    <a href="#" class="all">More popular themes</a>
-  </div>
-  
-  <div class="grid-3">   
-    <h2>Most active themes</h2>
-    <?php print $most_active_themes; ?>
-    <a href="#" class="all">More most active</a>
-  </div>
-
-  <div class="grid-3">        
-    <h2>New themes</h2>
-    <?php print $new_themes; ?>
-    <a href="#" class="all">More new themes</a>
-  </div>
-
   <div class="grid-3 omega">        
     <h2>Placeholder</h2>
     <a href="#" class="all">More placeholder</a>
