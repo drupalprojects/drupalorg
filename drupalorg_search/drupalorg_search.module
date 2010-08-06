@@ -256,7 +256,7 @@ function drupalorg_search_search_theme_form_submit($form, &$form_state) {
     $form_state['redirect'] = array($form_state['redirect']);
   }
   if (!empty($form_state['values']['meta_type'])) {
-    $form_state['redirect'][1]['ss_meta_type'] = $form_state['values']['meta_type'];
+    $form_state['redirect'][1]['filters'] = 'ss_meta_type:'. $form_state['values']['meta_type'];
   }
 }
 
