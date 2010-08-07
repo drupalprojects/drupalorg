@@ -237,6 +237,18 @@ function drupalorg_search_form_search_form_alter(&$form, $form_state) {
  * Implementation of hook_form_search_theme_form_alter().
  */
 function drupalorg_search_form_search_theme_form_alter(&$form, $form_state) {
+  // If we already ran a query, remember those values in the header search bar.
+  $meta_type = '';
+  if (apachesolr_has_searched() && $query = apachesolr_current_query()) {
+    // If a meta_type was specified to refine the search, save that.
+    $filter = $query->get_filters('ss_meta_type');
+    if (!empty($filter)) {
+      $meta_type = $filter[0]['#value'];
+    }
+    // Default the search text to the value of the queried text.
+    $form['search_theme_form']['#default_value'] = $query->get_keys();
+  }
+
   $form['search_theme_form']['#title'] = t('Search Drupal.org');
   $form['advanced'] = array(
     '#type' => 'fieldset',
@@ -247,6 +259,7 @@ function drupalorg_search_form_search_theme_form_alter(&$form, $form_state) {
   $form['advanced']['meta_type'] = array(
     '#type' => 'radios',
     '#options' => drupalorg_meta_types(),
+    '#default_value' => $meta_type,
   );
   $form['#submit'][] = 'drupalorg_search_search_theme_form_submit';
 }
