@@ -41,6 +41,7 @@ function drupalorg_order_facet_block($op = 'list', $delta = 0, $edit = array()) 
         $blocks[$delta] = $facets[$delta] + array(
           'cache' => BLOCK_NO_CACHE
         );
+        $blocks[$delta]['info'] = t('Solr result block: !facet_name', array('!facet_name' => $facets[$delta]['info']));
       }
     }
     return $blocks;
