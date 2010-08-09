@@ -202,11 +202,22 @@ function drupalorg_crosssite_content_menu(&$vars) {
     //check the links to see if it is an active link
     foreach ($nav_content_links as $key => $link) {
       $class = $key;
-      if (isset($link['href']) && ($link['href'] == $_GET['q'] || ($link['href'] == '<front>' && drupal_is_front_page()))
-          && (empty($link['language']) || $link['language']->language == $language->language)) {
-          //this is an active link/tab, therefore we don't want
-          //to display the page title - used in page.tpl.php
-          $vars['matched_content_link'] = TRUE;
+      if ($link['href'] === '<front>') {
+        $link['href'] = variable_get('site_frontpage', 'node');
+      }
+      $item = menu_get_item();
+      $parts = explode('/', $item['tab_root']);
+      $args = arg();
+      foreach ($parts as $index => $part) {
+        if ($part == '%') {
+          $parts[$index] = $args[$index];
+        }
+      }
+      $tab_root_href = implode('/', $parts);
+      if (isset($link['href']) && ($link['href'] === $tab_root_href) && (empty($link['language']) || $link['language']->language == $language->language)) {
+        // This is an active link/tab, therefore we don't want to display the
+        // page title. Used in page.tpl.php. 
+        $vars['matched_content_link'] = TRUE;
       }
     }
 
@@ -325,10 +336,10 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
       global $user;
       return array(
         'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard', '#site' => 'main'),
-        'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main'),
+        'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track')),
         'your-groups' => array('title' => t('Your Groups'), 'href' => 'unread', '#site' => 'groups'),
-        'your-events' => array('title' => t('Your Events'), 'href' => 'events?uid=1', '#site' => 'groups'), // Intentional 1
-        'your-profile' => array('title' => t('Profile'), 'href' => 'user/'. $user->uid, '#site' => 'main'),
+        'your-events' => array('title' => t('Your Events'), 'href' => 'events?uid=1', '#site' => 'groups'), // Intentional uid=1
+        'your-profile' => array('title' => t('Profile'), 'href' => 'user/'. $user->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '(?!/(dashboard|track))')),
       );
   }
 }
