@@ -349,12 +349,11 @@ function _drupalorg_update_enable_filters($filter_list) {
   // module and name, not the actual facet field), and retrieve the facet_field
   // from the facet definition.
   foreach ($filter_list as $module => $filters) {
-    $facets = module_invoke('apachesolr_facets', $module);
+    $facets = module_invoke($module, 'apachesolr_facets');
     foreach ($filters as $filter) {
       $enabled_filters[$module][$filter] = $facets[$filter]['facet_field'];
     }
   }
-  
   // Store all of the enabled facets back.
   variable_set('apachesolr_enabled_facets', $enabled_filters);
 }
