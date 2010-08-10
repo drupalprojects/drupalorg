@@ -212,6 +212,11 @@ function drupalorg_update_6500() {
       'pages' => "news\nnews/*",
     ),
     array(
+      'module' => 'drupalorg',
+      'delta' => 'get_involved',
+      'pages' => 'getting-involved',
+    ),
+    array(
       'module' => 'drupalorg_handbook',
       'delta' => 'irc',
     ),
