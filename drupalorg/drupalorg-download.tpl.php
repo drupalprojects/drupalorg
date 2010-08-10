@@ -43,7 +43,7 @@
   
 <div class="grid-12 alpha omega drupal-modules">
   <h2>Drupal Modules</h2>
-  <p>Show only modules for Drupal version <a href="http://drupal.org/node/428292">DROPDOWN</a></p>
+  <?php print $version_form; ?>
 </div>
 
 <div class="grid-12 alpha omega drupal-modules-facets">

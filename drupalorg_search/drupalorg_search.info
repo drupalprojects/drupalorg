@@ -3,4 +3,6 @@ name = Drupal.org search
 description = Drupal.org search customizations
 package = Drupal.org
 dependencies[] = apachesolr_search
+dependencies[] = project_release
+dependencies[] = project_solr
 core = 6.x
