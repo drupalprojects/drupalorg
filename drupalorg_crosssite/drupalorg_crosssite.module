@@ -160,10 +160,10 @@ function drupalorg_crosssite_content_menu(&$vars) {
   // Specify the high level matching criteria for each menu and let others put
   // in more menus.
   $nav_content_areas = array(
-    'documentation' => drupalorg_crosssite_menu_site('api') || drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)'),
     'downloads'     => drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')),
     // Events appear at here and as an individual tab list. Commented out from here.
     'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
+    'documentation' => drupalorg_crosssite_menu_site('api') || drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)'),
     'jobs'          => drupalorg_crosssite_menu_path('groups', '^(jobs)(/|$)'),
     'association'   => drupalorg_crosssite_menu_site('association'),
     'events'        => drupalorg_crosssite_menu_path('groups', '^events(/|$)'),
