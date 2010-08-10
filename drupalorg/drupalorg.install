@@ -234,6 +234,11 @@ function drupalorg_update_6500() {
     ),
     array(
       'module' => 'drupalorg_search',
+      'delta' => 'search_box',
+      'pages' => "search/apachesolr_search/*",
+    ),
+    array(
+      'module' => 'drupalorg_search',
       'delta' => 'meta_type',
       'pages' => "search/apachesolr_search/*",
     ),
