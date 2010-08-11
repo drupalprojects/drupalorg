@@ -240,7 +240,7 @@ function drupalorg_update_6500() {
     array(
       'module' => 'drupalorg_search',
       'delta' => 'meta_type',
-      'pages' => "search/apachesolr_search/*",
+      'pages' => "search/apachesolr_search\nsearch/apachesolr_search/*",
     ),
     array(
       'title' => 'Most Installed',
