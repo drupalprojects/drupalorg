@@ -229,8 +229,24 @@ function drupalorg_update_6500() {
       'delta' => 'license',
     ),
     array(
+      'module' => 'cvs',
+      'delta' => 'cvs_project_maintainers',
+    ),
+    array(
       'module' => 'project_issue',
       'delta' => 'issue_cockpit',
+    ),
+    array(
+      'module' => 'views',
+      'delta' => 'project_issue_project-block_1',
+    ),
+    array(
+      'module' => 'project',
+      'delta' => 'resources',
+    ),
+    array(
+      'module' => 'project',
+      'delta' => 'development',
     ),
     array(
       'module' => 'drupalorg_search',

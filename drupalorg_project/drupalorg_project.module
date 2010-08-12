@@ -390,6 +390,11 @@ function drupalorg_project_cvs_user_edit_submit($form, &$form_state) {
  * Implemenation of hook_project_page_link_alter().
  */
 function drupalorg_project_project_page_link_alter(&$links, $node) {
+
+  // Make the development and resources sections actual core blocks.
+  $links['development']['type'] = 'block';
+  $links['resources']['type'] = 'block';
+
   // Link to security handbook page.
   $links['development']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
 
