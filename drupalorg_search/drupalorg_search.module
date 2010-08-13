@@ -481,7 +481,9 @@ function drupalorg_search_get_project_type_term($response) {
 function drupalorg_search_version_form(&$form_state, $path) {
   $query = apachesolr_current_query();
 
-  $form = array();
+  $form = array(
+    '#attributes' => array('class' => 'clear-block'),
+  );
 
   // Add version select field to our form.
   $form['drupal_core'] = project_solr_get_api_version_field($query, t('Show only modules for Drupal version'));
