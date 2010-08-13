@@ -126,6 +126,7 @@ function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
     case 'list':
       $blocks['planet-list']['info'] = t('Planet Drupal subscriptions');
       $blocks['news-terms']['info']  = t('News category filter links');
+      $blocks['news-sources']['info']  = t('News sources');
       return $blocks;
 
     case 'view':
@@ -137,6 +138,12 @@ function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
         case 'news-terms':
           $block['subject'] = t('Filter News');
           $block['content'] = drupalorg_news_filter_news();
+          return $block;
+        case 'news-sources':
+          $block['content'] = t('<p>This page gathers:</p>');
+          $block['content'] .= t('<a href="http://association.drupal.org/">Association</a> members’ blog posts<br />');
+          $block['content'] .= t('<a href="/news">Official Drupal news</a> and announcements<br />');
+          $block['content'] .= t('<a href="/planet">Planet Drupal</a> entries (Planet Drupal aggregates Drupal-related blog posts of special interest to the community)');
           return $block;
       }
   }

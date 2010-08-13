@@ -207,6 +207,11 @@ function drupalorg_update_6500() {
   $return[] = update_sql("DELETE FROM {blocks} WHERE theme = 'bluecheese'");
   $blocks = array(
     array(
+       'module' => 'drupalorg_news',
+       'delta' => 'news-sources',
+       'pages' => "news\nnews/*",
+     ),
+    array(
       'module' => 'drupalorg_news',
       'delta' => 'news-terms',
       'pages' => "news\nnews/*",
