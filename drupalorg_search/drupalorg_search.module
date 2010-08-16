@@ -216,7 +216,7 @@ function drupalorg_search_block_view($delta) {
         }
         return array(
           'subject' => t('Browse @project_type', array('@project_type' => $project_type_term->name)),
-          'content' => drupal_get_form('project_solr_browse_projects_form', $project_type_term, 'search/apachesolr_search/' . arg(2)),
+          'content' => drupal_get_form('project_solr_browse_projects_form', $project_type_term, 'search/apachesolr_search/' . $query->get_keys()),
         );
       }
       break;
@@ -280,10 +280,11 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
   if (arg(0) == 'search' && arg(1) == 'apachesolr_search') {
     $form['#submit'][] = 'drupalorg_search_project_solr_browse_project_form_submit';
 
-    // We default the text to our url value so that we don't get errors
-    // when attempting to sort by relevancy. Make the access false, so that
-    // the values aren't visible and we don't have 2 search forms.
-    $form['text']['#default_value'] = arg(2);
+    // We default the text to our current search terms so that we don't get 
+    // errors when attempting to sort by relevancy. We make the access false, 
+    // so that the values aren't visible and we don't have 2 search forms.
+    $query = apachesolr_current_query();
+    $form['text']['#default_value'] = $query->get_keys();
     $form['text']['#access'] = FALSE;
   }
 }
