@@ -59,7 +59,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     array(
       'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
       'download-core'     => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#site' => 'main'),
-      'download-modules'  => array('href' => 'project/Modules', 'title' => t('Modules'), '#site' => 'main'),
+      'download-modules'  => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main'),
       'download-themes'   => array('href' => 'project/Themes', 'title' => t('Themes'), '#site' => 'main'),
       'download-profiles' => array('href' => 'project/Installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
     ),
