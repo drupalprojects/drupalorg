@@ -277,7 +277,13 @@ function drupalorg_search_search_theme_form_submit($form, &$form_state) {
  * Implementation of hook_form_FORM_ID_alter().
  */
 function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &$form_state) {
+  // Check to see if the project_solr_browse_projects form is being used in
+  // our block on the core search page. We could test $form['path']['#value']
+  // here instead, but it's not really any better that way, so arg() works.
   if (arg(0) == 'search' && arg(1) == 'apachesolr_search') {
+
+    // If we're being reused on the core search results page, we add our own
+    // submit handler so that we can properly handle the "meta type" stuff.
     $form['#submit'][] = 'drupalorg_search_project_solr_browse_project_form_submit';
 
     // We default the text to our current search terms so that we don't get 
@@ -290,21 +296,27 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
 }
 
 /**
- * Submit handler for inserting ss_meta_type values into the path for 
- * project_solr_browse_project_form submissions from the search page.
+ * Submit handler for project_solr_browse_project_form on the search page.
+ *
+ * This deals with inserting ss_meta_type values into the path that we
+ * redirect to, so that the whole search page still works and remembers the
+ * value of "refine your search" that the user has selected.
  */
 function drupalorg_search_project_solr_browse_project_form_submit(&$form, &$form_state) {
-  // Project_solr_browse_projects_form_submit handles most of the other elements
-  // but it doesn't handle ss_meta_type, so we handle that here.
   $query = apachesolr_current_query();
-  $filters = explode(' ', $form_state['redirect'][1]['filters']);
+  // There might not be any filters yet. To avoid special-casing this, we just
+  // explode() the existing space-delimited filters into an array,
+  // conditionally append our filter into the array, and then when we're done,
+  // we use implode() to re-create a space-delimited string and let implode()
+  // handle the special cases of 0 or 1 filters for us.
+  $filters = explode(' ', $form_state['redirect']['query']['filters']);
   foreach($query->get_filters() as $filter) {
     if ($filter['#name'] == 'ss_meta_type') {
       $filters[] = $filter['#query']; 
     }
   }
-  $form_state['redirect'][1]['filters'] = implode(' ', $filters);
-  unset($form_state['redirect'][1]['keys']);
+  $form_state['redirect']['query']['filters'] = implode(' ', $filters);
+  unset($form_state['redirect']['query']['keys']);
 }
 
 /**
