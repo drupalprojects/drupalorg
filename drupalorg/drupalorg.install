@@ -322,6 +322,32 @@ function drupalorg_update_6502() {
 
   variable_set('homebox_user_tab', 'dashboard');
 
+  // New image sizes
+  variable_set('image_updated', time());
+  variable_set('image_sizes', array(
+    '_original' => array(
+      'label' => 'Original',
+      'operation' => 'scale',
+      'width' => NULL,
+      'height' => NULL,
+      'link' => 1,
+    ),
+    'thumbnail' => array(
+      'label' => 'Thumbnail',
+      'operation' => 'scale',
+      'width' => 218,
+      'height' => 217,
+      'link' => 1,
+    ),
+    'preview' => array(
+      'label' => 'Preview',
+      'operation' => 'scale',
+      'width' => 700,
+      'height' => 700,
+      'link' => 1,
+    ),
+  ));
+
   return $return;
 }
 
