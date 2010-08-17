@@ -492,6 +492,10 @@ function drupalorg_crosssite_menu_absolute_links($links) {
  * Arrange local tasks for user pages.
  */
 function drupalorg_crosssite_menu_alter(&$items) {
-  $items['user/%user/dashboard']['type'] = MENU_NORMAL_ITEM;
-  $items['user/%user/track']['type'] = MENU_NORMAL_ITEM;
+  if (isset($items['user/%user/dashboard'])) {
+    $items['user/%user/dashboard']['type'] = MENU_NORMAL_ITEM;
+  }
+  if (isset($items['user/%user/track'])) {
+    $items['user/%user/track']['type'] = MENU_NORMAL_ITEM;
+  }
 }
