@@ -102,8 +102,7 @@
       
       <h3>Getting Started</h3>
       <p>The Drupal Core is a collection of files that you must download in order to get started with Drupal. </p>
-      <a href="#" class="link-button"><span>Download Drupal 6.7</span></a>
-
+      <p><?php print $core_download_button; ?></p>
       <p class="clear">You can then build upon that with <a href="/project/modules">modules</a>, <a href="/project/themes">themes</a>, and <a href="http://localize.drupal.org">translations</a>.</p>
     </div>
   </div>

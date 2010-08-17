@@ -261,6 +261,13 @@ function drupalorg_about() {
 }
 
 /**
+ * Implementation of template_preprocess_drupalorg_about().
+ */
+function drupalorg_preprocess_drupalorg_about(&$variables) {
+  $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
+}
+
+/**
  * Implementation of template_preprocess_drupalorg_start().
  *
  * @todo
