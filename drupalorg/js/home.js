@@ -20,7 +20,15 @@ $(function() {
     });
   }
   var update = function() {
-    $('#homepage-image-'+ current).btOn();
+    var $element = $('#homepage-image-'+ current),
+        $window = $(window),
+        top = $window.scrollTop(),
+        bottom = $window.height() + top,
+        elementTop = $element.offset().top,
+        elementBottom = elementTop + $element.height();
+    if (top < elementBottom && bottom > elementBottom) {
+      $element.btOn();
+    }
     current++;
     if (current == max) {
       current = 0;
