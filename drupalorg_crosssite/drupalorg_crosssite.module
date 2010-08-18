@@ -60,8 +60,8 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
       'download-core'     => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#site' => 'main'),
       'download-modules'  => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main'),
-      'download-themes'   => array('href' => 'project/Themes', 'title' => t('Themes'), '#site' => 'main'),
-      'download-profiles' => array('href' => 'project/Installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
+      'download-themes'   => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main'),
+      'download-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
     ),
     array(
       'events'      => array('href' => 'events', 'title' => t('Events'), '#site' => 'groups'),
@@ -70,11 +70,10 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       'training'    => array('href' => 'events?filter0%5B%5D=training', 'title' => t('Training'), '#site' => 'groups'),
       'druplicon'   => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main'),
     ),
-    /*array(
-      'col5item1' => array('href' => 'col5item1', 'title' => t('col5item1'), '#site' => 'main'),
-      'col5item2' => array('href' => 'col5item2', 'title' => t('col5item2'), '#site' => 'main'),
-      'col5item3' => array('href' => 'col5item3', 'title' => t('col5item3'), '#site' => 'main'),
-    ),*/
+    array(
+      'advertise' => array('href' => 'advertising', 'title' => t('Advertise'), '#site' => 'association'),
+      'security'  => array('href' => 'security', 'title' => t('Security Announcements'), '#site' => 'main'),
+    ),
   );
 
   $vars['nav_footer'] = '';
