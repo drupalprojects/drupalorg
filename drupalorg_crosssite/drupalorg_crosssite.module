@@ -267,8 +267,6 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         'local-groups'  => array('href' => '??', 'title' => t('Local Groups'), '#site' => 'groups'),
         'online-groups' => array('href' => '??', 'title' => t('Online Groups'), '#site' => 'groups'),
         'chat'          => array('href' => 'irc', 'title' => t('Chat'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^irc(/|$)')),
-        // Does not make sense, see question to Mark at http://groups.drupal.org/node/19010
-        // 'events'        => array('href' => 'events', 'title' => t('Events'), '#site' => 'groups'),
         'lists'         => array('href' => 'mailing-lists', 'title' => t('Mailing Lists'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)')),
         'members'       => array('href' => 'profile', 'title' => t('Member Directory'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^profile(/|$)')),
         'forum'         => array('href' => 'forum', 'title' => t('Forum'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^forum(/|$)') || drupalorg_crosssite_menu_type('main', array('forum'))),
@@ -337,7 +335,6 @@ function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_men
         'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard', '#site' => 'main'),
         'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track')),
         'your-groups' => array('title' => t('Your Groups'), 'href' => 'unread', '#site' => 'groups'),
-        'your-events' => array('title' => t('Your Events'), 'href' => 'events?uid=1', '#site' => 'groups'), // Intentional uid=1
         'your-profile' => array('title' => t('Profile'), 'href' => 'user/'. $user->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '(?!/(dashboard|track))')),
       );
   }
