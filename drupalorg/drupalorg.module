@@ -142,9 +142,6 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
 
 /**
  * Page callback for the frontpage.
- *
- * @todo
- *   Add caching.
  */
 function drupalorg_home() {
   if (module_exists('jquery_ui')) {
@@ -225,9 +222,6 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
 
 /**
  * Page callback for the documentation page.
- *
- * @todo
- *   Add caching.
  */
 function drupalorg_documentation() {
   return theme('drupalorg_documentation');
@@ -235,9 +229,6 @@ function drupalorg_documentation() {
 
 /**
  * Page callback for the documentation index page.
- *
- * @todo
- *   Add caching.
  */
 function drupalorg_documentation_index() {
   return theme('drupalorg_documentation_index');
@@ -245,9 +236,6 @@ function drupalorg_documentation_index() {
 
 /**
  * Page callback for the getting started page.
- *
- * @todo
- *   Add caching.
  */
 function drupalorg_start() {
   return theme('drupalorg_start');
@@ -269,9 +257,6 @@ function drupalorg_preprocess_drupalorg_about(&$variables) {
 
 /**
  * Implementation of template_preprocess_drupalorg_start().
- *
- * @todo
- *   Add caching.
  */
 function drupalorg_preprocess_drupalorg_start(&$variables) {
   $variables['theme_images_directory'] = drupal_get_path('theme', variable_get('theme_default', 'bluecheese')) .'/images';
@@ -295,9 +280,6 @@ function drupalorg_preprocess_drupalorg_start(&$variables) {
 
 /**
  * Page callback for the download page.
- *
- * @todo
- *   Add caching.
  */
 function drupalorg_download() {
   return theme('drupalorg_download');
@@ -305,9 +287,6 @@ function drupalorg_download() {
 
 /**
  * Implementation of template_preprocess_drupalorg_download().
- *
- * @todo
- *   Add caching.
  */
 function drupalorg_preprocess_drupalorg_download(&$variables) {
   $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
@@ -363,9 +342,6 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
 
 /**
  * Page callback for the community page.
- *
- * @todo
- *   Add caching.
  */
 function drupalorg_community() {
   return theme('drupalorg_community');
@@ -373,9 +349,6 @@ function drupalorg_community() {
 
 /**
  * Implementation of template_preprocess_drupalorg_community().
- *
- * @todo
- *   Add caching.
  */
 function drupalorg_preprocess_drupalorg_community(&$variables) {
   $variables['advertisement'] = ''; // used to pull in the proper advertisement block.
