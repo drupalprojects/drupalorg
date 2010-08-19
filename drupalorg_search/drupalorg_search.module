@@ -82,6 +82,19 @@ function drupalorg_search_apachesolr_facets() {
 }
 
 /**
+ * Implementation of hook_apachesolr_prepare_query().
+ * 
+ * Add project sorts whenever we have an ss_meta_type of theme or module.
+ */
+function drupalorg_search_apachesolr_prepare_query(&$query, &$params) {
+  // The additional project sorts are only relevant if the query is filtering
+  // on a project type (modules or themes).
+  if ($query->has_filter('ss_meta_type', 'theme') || $query->has_filter('ss_meta_type', 'module')) {
+    project_solr_add_sorts($query);
+  }
+}
+
+/**
  * Implementation of hook_apachesolr_modify_query().
  *
  * Exclude the meta_type filter from faceting.
@@ -531,3 +544,4 @@ function drupalorg_search_version_form_submit($form, &$form_state) {
 
   $form_state['redirect'] = array($query->get_path(), $query->get_url_queryvalues());
 }
+
