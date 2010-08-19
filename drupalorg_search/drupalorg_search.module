@@ -389,7 +389,6 @@ function drupalorg_search_preprocess_drupalorg_download(&$variables) {
   // $variables array).
   $facets = array(
     'sort_most_installed' => 'drupalorg_order_facet',
-    'project_solr_categories' => 'project_solr',
     'sort_created' => 'drupalorg_order_facet',
   );
   // Render and save the facet blocks.
