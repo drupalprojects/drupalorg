@@ -75,9 +75,9 @@
       <div id="rotate">
         <ul class="ui-tabs-nav">
           <li class="ui-tabs-selected"><a href="#fragment-1">News</a></li>
-          <li><a href="#fragment-2"><img src="<?php print $theme_images_directory; ?>/bullet_home_green.jpg"> Docs Updates</a></li>
-          <li><a href="#fragment-3"><img src="<?php print $theme_images_directory; ?>/bullet_home_purple.jpg"> Forum Posts</a></li>
-          <li><a href="#fragment-4"><img src="<?php print $theme_images_directory; ?>/bullet_home_red.jpg"> Commits</a></li>
+          <li><a href="#fragment-2">Docs Updates</a></li>
+          <li><a href="#fragment-3">Forum Posts</a></li>
+          <li><a href="#fragment-4">Commits</a></li>
         </ul>
         <div id="fragment-1" class="ui-tabs-panel">
           <?php print $tab_content_news; ?>
