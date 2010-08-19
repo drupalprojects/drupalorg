@@ -366,65 +366,16 @@ function drupalorg_search_block_form_submit($form, &$form_state) {
  * blocks. Creates and caches a solr query for use by block elements.
  */
 function drupalorg_search_execute_base_query() {
-  // Build a simple query.
-  $base_path = 'project/modules';
-  
-  $filters = isset($_GET['filters']) ? $_GET['filters'] : '';  
-  $query = apachesolr_drupal_query('', $filters, '', $base_path);  
-
-  $params = array(
-    // The fields to return.
-    'fl' => 'id,nid,title',
-    'start' => 0,
-    // We don't actually need to return rows.
-    'rows' => 1,
-    // We need to be able to facet on the project vid value
-    // so we can pull project categories.
-    'facet.field' => array(
-      'type',
-      'im_vid_' . _project_get_vid(),
-      'im_project_release_api_tids',
+  // Grab a Solr query with almost everything we need from project_solr. 
+  // The only special filter we want to add for this base query is to restrict
+  // to projects that are modules.
+  $filters = array(
+    array(
+      'key' => 'im_vid_' . _project_get_vid(),
+      'value' => DRUPALORG_MODULE_TID,
     ),
-    // Filters are set below via explicit calls to add_filter() rather than 
-    // here in the $params array. This is because any filters passed to 
-    // apachesolr_drupal_query() will override filters set via the $params
-    // array during the prepare_query() invocation.
-    'fq' => array(),
-    'facet' => 'true',
-    'facet.mincount' => 1,
-    'facet.sort' => 'true',
   );
-
-  apachesolr_search_add_facet_params($params, $query);
-
-  // Allow modules to alter the query prior to statically caching it.
-  // This can e.g. be used to add available sorts.
-  foreach (module_implements('apachesolr_prepare_query') as $module) {
-    $function_name = $module . '_apachesolr_prepare_query';
-    $function_name($query, $params, 'drupalorg_search_execute_base_query');
-  }
-
-  // We add our fields after the prepare_query() because prepare_query()
-  // generates a call to parse_filters() which destroys anything that
-  // does not get passed into the query on construction.
-  // We explicitly filter the blocks to only show projects with the module tid
-  // associated. These values are not passed in the url, so we add them here
-  // ourselves to ensure we only get the content we want.
-  $query->add_filter('type', 'project_project');
-  $query->add_filter('im_vid_' . _project_get_vid(), DRUPALORG_MODULE_TID);
-
-  // Cache the built query. Since all the built queries go through
-  // this process, all the hook_invocations will happen later.
-  apachesolr_current_query($query);
-
-  // This hook allows modules to modify the query and params objects.
-  apachesolr_modify_query($query, $params, 'drupalorg_search_execute_base_query');
-
-  $solr = apachesolr_get_solr();
-  $response = $solr->search($query->get_query_basic(), $params['start'], $params['rows'], $params);
-
-  apachesolr_static_response_cache($response);
-  apachesolr_has_searched(TRUE);
+  $query = project_solr_run_project_query('project/modules', $filters);
 }
 
 /**
@@ -446,7 +397,7 @@ function drupalorg_search_preprocess_drupalorg_download(&$variables) {
     $variables[$delta] = drupalorg_block_render($module, $delta);
   }
 
-  $variables['version_form'] = drupal_get_form('drupalorg_search_version_form', 'download');
+  $variables['version_form'] = drupal_get_form('project_solr_version_form', 'download', t('Show only modules for Drupal version'));
 }
 
 /**
@@ -493,55 +444,3 @@ function drupalorg_search_get_project_type_term($response) {
     }
   }
 }
-
-/**
- * This generates a form containing version selection and a submit button.
- * 
- * Generate a form with a version selection to allow filtering page content
- * based on the drupal version. Also includes path to allow the form to 
- * potentially submit to other urls if desired.
- * 
- * @param string $path
- *   The base path to which the version form will redirect.
- */
-function drupalorg_search_version_form(&$form_state, $path) {
-  $query = apachesolr_current_query();
-
-  $form = array(
-    '#attributes' => array('class' => 'clear-block'),
-  );
-
-  // Add version select field to our form.
-  $form['drupal_core'] = project_solr_get_api_version_field($query, t('Show only modules for Drupal version'));
-
-  $form['path'] = array(
-    '#type' => 'value',
-    '#value' => $path,
-  );
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Search'),
-  );
-  return $form;
-}
-
-/**
- * Create a query with the right version filter and redirect to the right page.
- * 
- * Create a new query, add any version filtering if it was selected in the
- * form, and redirect back to the relevant page with the appropriate filter
- * string.
- */
-function drupalorg_search_version_form_submit($form, &$form_state) {
-  // We create a new query with our base path so that we don't need to remove
-  // any existing drupal_core selection, and so that the implict type and 
-  // module tid filters don't end up in the url string.
-  $query = apachesolr_drupal_query('', '', '', $form_state['values']['path']);
-
-  if (!empty($form_state['values']['drupal_core'])) {
-    $query->add_filter(variable_get('project_solr_project_release_api_tids_alias', 'api_version'), $form_state['values']['drupal_core']);
-  }
-
-  $form_state['redirect'] = array($query->get_path(), $query->get_url_queryvalues());
-}
-
