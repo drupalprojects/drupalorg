@@ -87,6 +87,10 @@ function drupalorg_news_form_alter(&$form, $form_state, $form_id) {
  * Implementation of template_preprocess_drupalorg_home().
  */
 function drupalorg_news_preprocess_drupalorg_home(&$vars) {
+  $vars['tab_content_news'] = drupalorg_news_short_block();
+}
+
+function drupalorg_news_short_block() {
   // Get the first three news items ordered by descending publication date.
   $result = db_query_range('SELECT nid FROM {node} WHERE promote = 1 ORDER BY created DESC', array(), 0, 4);
   $fresh_news = '';
@@ -110,7 +114,8 @@ function drupalorg_news_preprocess_drupalorg_home(&$vars) {
   }
   // Finally, we have a link to the rest of the items
   $fresh_news .= '<p>'. l(t('More news…'), 'news') .'</p>';
-  $vars['tab_content_news'] = $fresh_news;
+
+  return $fresh_news;
 }
 
 // == Blocks for news and planet ===============================================
@@ -124,6 +129,7 @@ function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
       $blocks['planet-list']['info'] = t('Planet Drupal subscriptions');
       $blocks['news-terms']['info']  = t('News category filter links');
       $blocks['news-sources']['info']  = t('News sources');
+      $blocks['drupal-news']['info']  = t('Drupal News');
       return $blocks;
 
     case 'view':
@@ -132,16 +138,24 @@ function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
           $block['subject'] = t('Planet Drupal subscriptions');
           $block['content'] = drupalorg_news_planet_drupal_block();
           return $block;
+
         case 'news-terms':
           $block['subject'] = t('Filter News');
           $block['content'] = drupalorg_news_filter_news();
           return $block;
+
         case 'news-sources':
           $block['content'] = t('<p>This page gathers:</p>');
           $block['content'] .= t('<a href="http://association.drupal.org/">Association</a> members’ blog posts<br />');
           $block['content'] .= t('<a href="/news">Official Drupal news</a> and announcements<br />');
           $block['content'] .= t('<a href="/planet">Planet Drupal</a> entries (Planet Drupal aggregates Drupal-related blog posts of special interest to the community)');
           return $block;
+
+        case 'drupal-news':
+          return array(
+            'subject' => t('Drupal News'),
+            'content' => drupalorg_news_short_block(),
+          );
       }
   }
 }

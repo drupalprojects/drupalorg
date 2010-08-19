@@ -619,9 +619,9 @@ function drupalorg_homebox() {
       ),
       'widths' => array(),
       'blocks' => array(
-        'node_0' => array(
-          'module' => 'node',
-          'delta' => '0',
+        'drupalorg_news_drupal-news' => array(
+          'module' => 'drupalorg_news',
+          'delta' => 'drupal-news',
           'region' => 1,
           'movable' => 1,
           'status' => 1,
