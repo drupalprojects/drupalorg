@@ -125,13 +125,13 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
           return array(
             'subject' => t('Ways to Get Involved'),
             'content' => t('<p><a href="#">Forums</a> – Get advice and give advice.</p>
-<p><a href="#">IRC</a> – Start chatting now with other community members.</p>
-<p><a href="#">Modules</a> – Build a module that other Drupal users can enjoy.</p>
-<p><a href="#">Themes</a> – Feeling creative? Design a theme for other people to customize their site with.</p>
-<p><a href="#">Translations</a> – Fluent in French or a speaker of Spanish? Translate Drupal for other users around the world.</p>
-<p><a href="#">Events</a> – Come to a Drupal event and have fun with the community.</p>
-<p><a href="#">Donate</a> – Whether you want to say thanks or ensure there is a secure future for Drupal, every little bit helps and is gratefully received.</p>
-<p><a href="#">Projects</a> – There are always projects that need a little extra help and attention along the way. Below are just a few that you can get involved with:</p>'),
+<p><a href="/irc">IRC</a> – Start chatting now with other community members.</p>
+<p><a href="/developing/modules">Modules</a> – Build a module that other Drupal users can enjoy.</p>
+<p><a href="/theme-guide">Themes</a> – Feeling creative? Design a theme for other people to customize their site with.</p>
+<p><a href="http://localize.drupal.org">Translations</a> – Fluent in French or a speaker of Spanish? Translate Drupal for other users around the world.</p>
+<p><a href="http://groups.drupal.org/event">Events</a> – Come to a Drupal event and have fun with the community.</p>
+<p><a href="http://association.drupal.org/civicrm/contribute/transact">Donate</a> – Whether you want to say thanks or ensure there is a secure future for Drupal, every little bit helps and is gratefully received.</p>
+<p><a href="/community-initiatives">Projects</a> – There are always projects that need a little extra help and attention along the way. Below are just a few that you can get involved with:</p>'),
           );
       }
       break;
