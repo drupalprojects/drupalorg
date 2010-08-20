@@ -124,7 +124,7 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
         case 'get_involved':
           return array(
             'subject' => t('Ways to Get Involved'),
-            'content' => t('<p><a href="#">Forums</a> – Get advice and give advice.</p>
+            'content' => t('<p><a href="/forum">Forums</a> – Get advice and give advice.</p>
 <p><a href="/irc">IRC</a> – Start chatting now with other community members.</p>
 <p><a href="/developing/modules">Modules</a> – Build a module that other Drupal users can enjoy.</p>
 <p><a href="/theme-guide">Themes</a> – Feeling creative? Design a theme for other people to customize their site with.</p>
