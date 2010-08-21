@@ -294,7 +294,7 @@ function drupalorg_update_6500() {
     'visibility' => 1,
     'weight' => 0,
     'module' => 'drupalorg_search',
-    'delta' => 'drupalorg_search_project_browse',
+    'delta' => 'drupalorg_search_navigation',
     'pages' => "search/apachesolr_search\nsearch/apachesolr_search/*",
   );
   drupal_write_record('blocks', $block);
