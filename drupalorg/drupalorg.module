@@ -525,6 +525,15 @@ function drupalorg_views_api() {
   );
 }
 
+/**
+ * Implement hook_views_default_views_alter().
+ */
+function drupalorg_views_default_views_alter(&$views) {
+  $path = drupal_get_path('module', 'drupalorg');
+  require_once("$path/drupalorg.views_default.inc");
+  _drupalorg_views_default_views_alter($views);
+}
+  
 // == Project related output for download page see issue #372243================
 
 /**

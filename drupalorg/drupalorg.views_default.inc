@@ -24,3 +24,18 @@ function drupalorg_views_default_views() {
   }
   return $views;
 }
+
+/**
+ * Implement hook_views_default_views_alter().
+ */
+function _drupalorg_views_default_views_alter(&$views) {
+  if (isset($views['project_index'])) {
+    $views['project_index']->set_display('default');
+    $filters = $views['project_index']->display_handler->get_option('filters');
+    $filters['tid']['expose']['identifier'] = 'drupal_core';
+    $filters['tid']['expose']['label'] = 'Filter by Drupal core version';
+    $views['project_index']->display_handler->set_option('filters', $filters);
+    $views['project_index']->destroy();
+  }
+}
+
