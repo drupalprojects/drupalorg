@@ -8,48 +8,12 @@ function project_stuff_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FA
   if ($op == 'view' && $page) {
     $extra = '';
     switch ($node->nid) {
-      case 206666: // List projects by Drupal core version.
-        $extra = project_stuff_project_by_core();
-        break;
       case 199251: // List projects with CVS RSS feeds.
         $extra = project_stuff_cvs_rss();
         break;
     }
     $node->content['body']['#value'] .= $extra;
   }
-}
-
-/**
- * List projects by Drupal core version.
- */
-function project_stuff_project_by_core() {
-  $output = '';
-
-  $tags = array(
-    'DRUPAL-4-7' => t('Drupal 4.7.x'),
-    'DRUPAL-5'   => t('Drupal 5.x'),
-    'DRUPAL-6'   => t('Drupal 6.x'),
-  );
-
-  foreach ($tags as $tag => $label) {
-    $top_list[] = l($tag, $_GET['q'], array('fragment' => $tag));
-    $projects = db_query("SELECT DISTINCT p.nid, n.title, p.uri
-      FROM {project_projects} p INNER JOIN {project_release_nodes} r ON p.nid = r.pid INNER JOIN {node} n ON n.nid = p.nid INNER JOIN {term_node} tn ON p.nid = tn.nid
-      WHERE tn.tid = 14 AND r.tag LIKE '%s%%'
-      ORDER BY n.title", $tag);
-    $list = array();
-    while ($project = db_fetch_object($projects)) {
-      $list[] = l($project->title, "project/$project->uri", array('html' => TRUE));
-    }
-    if (!empty($list)) {
-      $output .= theme('item_list', $list, "<a name=\"$tag\">$label</a>");
-    }
-  }
-  if (!empty($top_list)) {
-    $output = theme('item_list', $top_list) . $output;
-  }
-
-  return $output;
 }
 
 /**

@@ -94,9 +94,6 @@ function drupalorg_help($path, $arg) {
       return '<p>'. t('These statistics are incomplete; only Drupal websites using the <a href="!update_status_url">Update Status</a> module are included in the data. As this module is now included with the download of Drupal since version 6.x, the data is heavily biased toward newer sites. <a href="!usage_description_url">Read more information about how these statistics are calculated.</a>', array('!update_status_url' => url('project/update_status'), '!usage_description_url' => url('node/329620'))) .'</p>';
   }
 
-  if ($arg[0] == 'project' && strtolower($arg[1]) == 'modules') {
-    return t('You can also view an <a href="@list_url">alphabetical list of projects</a> that includes all projects but only their names.', array('@list_url' => url('node/206666')));
-  }
   if ($arg[0] == 'project' && $arg[1] == 'issues-term' && $arg[2] == '346') {
     return '<p>'. t('A more detailed overview of the issues can be seen in the Community Initiatives handbook section titled <a href="http://drupal.org/node/362117">Upgrade Drupal.org from Drupal 5 to 6</a>.') .'</p>';
   }
@@ -657,6 +654,14 @@ function drupalorg_views_api() {
   );
 }
 
+/**
+ * Implement hook_views_default_views_alter().
+ */
+function drupalorg_views_default_views_alter(&$views) {
+  $path = drupal_get_path('module', 'drupalorg');
+  require_once("$path/drupalorg.views_default.inc");
+  _drupalorg_views_default_views_alter($views);
+}
 
 /**
  * FormAPI submit handler
