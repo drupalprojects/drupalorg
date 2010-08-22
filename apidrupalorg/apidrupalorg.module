@@ -67,7 +67,7 @@ function apidrupalorg_comments_page() {
   $output = '';
   $query = array(
     'select' => array(
-      'd.object_type', 'd.object_name', 'ab.branch_name',
+      'd.object_type', 'd.object_name', 'd.branch_id', 'd.file_name', 'ab.branch_name',
       's.comment_count', 's.last_comment_timestamp'
     ),
     'join' => array(
