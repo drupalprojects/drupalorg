@@ -381,27 +381,6 @@ function drupalorg_search_execute_base_query() {
 }
 
 /**
- * Theme preprocess function for the drupalorg_download search page.
- */
-function drupalorg_search_preprocess_drupalorg_download(&$variables) {
-  drupalorg_search_execute_base_query();
-  
-  // Since we control what facets we're building, we can just utilize the
-  // delta as the unique key for the sake of brevity (both here and in the
-  // $variables array).
-  $facets = array(
-    'sort_most_installed' => 'drupalorg_order_facet',
-    'sort_created' => 'drupalorg_order_facet',
-  );
-  // Render and save the facet blocks.
-  foreach ($facets as $delta => $module) {
-    $variables[$delta] = drupalorg_block_render($module, $delta);
-  }
-
-  $variables['version_form'] = drupal_get_form('project_solr_version_form', 'download', t('Show only modules for Drupal version'));
-}
-
-/**
  * Get the taxonomy term for the project type (if any) in a given Solr search.
  *
  * This function loops over all of the active facets in the given Solr query
