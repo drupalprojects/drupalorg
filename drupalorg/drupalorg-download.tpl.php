@@ -71,8 +71,7 @@
   </div>
   
   <div class="grid-3 omega">        
-    <h2>Placeholder</h2>
-    <a href="#" class="all">More placeholder</a>
+    <?php print $module_index; ?>
   </div>
 
 </div>

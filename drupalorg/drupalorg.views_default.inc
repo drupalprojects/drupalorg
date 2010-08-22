@@ -35,6 +35,8 @@ function _drupalorg_views_default_views_alter(&$views) {
     $filters['tid']['expose']['identifier'] = 'drupal_core';
     $filters['tid']['expose']['label'] = 'Filter by Drupal core version';
     $views['project_index']->display_handler->set_option('filters', $filters);
+    $views['project_index']->set_display('block_1');
+    $views['project_index']->display_handler->set_option('items_per_page', 4);
     $views['project_index']->destroy();
   }
 

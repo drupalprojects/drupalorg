@@ -298,6 +298,38 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   }
 
   $variables['version_form'] = drupal_get_form('project_solr_version_form', 'download', t('Show only modules for Drupal version'));
+
+  // Rendering the block directly from views doesn't work nicely here, since
+  // the resulting markup is harder to use with bluecheese. Plus, we're doing
+  // some magic to ensure that the version filter impacts this block as well.
+  // So, we just load the view object, do some magic, run the view, fetch the
+  // results and render those ourselves. This also lets us add our 'View full
+  // index' link directly as another li in the list (as bluecheese expects)
+  // instead of having it in its own div.
+  $view = views_get_view('project_index');
+  $view->set_display('block_1');
+  $view->set_arguments(array('modules'));
+  // See if the version filter was used, and if so, have it impact the view.
+  if (!empty($_GET['filters'])) {
+    $matches = array();
+    if (preg_match('/drupal_core:(\d+)/', $_GET['filters'], $matches)) {
+      $core_version = $matches[1];
+      $filters = $view->display_handler->get_option('filters');
+      $filters['tid']['value'] = array($core_version);
+      $filters['tid']['exposed'] = FALSE;
+      $view->display_handler->set_option('filters', $filters);
+    }
+  }
+  $view->pre_execute();
+  $view->execute();
+  $results = $view->result;
+  foreach ($results as $result) {
+    $modules[] = l($result->node_title, 'node/' . $result->nid);
+  }
+  $modules[] = '<a href="/project/modules/index" class="all">View full index</a>';
+  $module_index = '<h2>' . t('Module index') . '</h2>';
+  $module_index .= theme('item_list', $modules, NULL, 'ul', array('class' => 'flat'));
+  $variables['module_index'] = $module_index;
 }
 
 /**
