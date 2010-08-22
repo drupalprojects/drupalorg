@@ -183,6 +183,8 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'documentation' => 'Documentation',
     'community' => 'Community &amp; Support',
     'dashboard' => check_plain($user->name),
+    'localize' => 'Localize',
+    'association' => 'Association',
   );
   //set the section_name variable to be output in page.tpl.php
   if (isset($section_names[$matched_menu])) {
