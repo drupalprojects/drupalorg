@@ -37,5 +37,26 @@ function _drupalorg_views_default_views_alter(&$views) {
     $views['project_index']->display_handler->set_option('filters', $filters);
     $views['project_index']->destroy();
   }
+
+  if (isset($views['flag_bookmarks'])) {
+    $handler = $views['flag_bookmarks']->new_display('block', 'Block', 'block');
+    $handler->override_option('style_plugin', 'list');
+    $handler->override_option('style_options', array(
+      'grouping' => '',
+      'type' => 'ul',
+    ));
+    $handler->override_option('row_plugin', 'fields');
+    $handler->override_option('row_options', array(
+      'inline' => array(
+        'title' => 'title',
+        'ops' => 'ops',
+      ),
+      'separator' => '',
+      'hide_empty' => 0,
+    ));
+    $handler->override_option('title', 'My Bookmarks');
+    $handler->override_option('block_caching', -1);
+  }
+
 }
 
