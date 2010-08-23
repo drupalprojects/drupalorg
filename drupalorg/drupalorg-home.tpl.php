@@ -7,7 +7,7 @@
       <a href="getting-started" class="link-button"><span>Get Started with Drupal</span></a>
      </p>
      <h4><a href="success-stories">Who Else Uses Drupal?</a></h4>
-     Magazines: <a href="">Fast Company</a>, <a href="#">Popular Science</a>, The Economist.
+     Magazines: <a href="">Fast Company</a>, <a href="#">Popular Science</a>, The Economist.<br/>
      Newspapers: <a href="#">Morris Digital</a>, <a href="#">Seattle Times</a> and many, many <a href="success-stories">more...</a>
     </div>
   </div>
