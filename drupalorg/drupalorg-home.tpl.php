@@ -75,9 +75,9 @@
       <div id="rotate">
         <ul class="ui-tabs-nav">
           <li class="ui-tabs-selected"><a href="#fragment-1">News</a></li>
-          <li><a href="#fragment-2">Docs Updates</a></li>
-          <li><a href="#fragment-3">Forum Posts</a></li>
-          <li><a href="#fragment-4">Commits</a></li>
+          <li class="ui-tabs-docs-updates"><a href="#fragment-2"><span class="icon"></span>Docs Updates</a></li>
+          <li class="ui-tabs-forum-posts"><a href="#fragment-3"><span class="icon"></span>Forum Posts</a></li>
+          <li class="ui-tabs-commits"><a href="#fragment-4"><span class="icon"></span>Commits</a></li>
         </ul>
         <div id="fragment-1" class="ui-tabs-panel">
           <?php print $tab_content_news; ?>
