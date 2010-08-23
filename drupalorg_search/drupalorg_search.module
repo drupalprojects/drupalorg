@@ -292,6 +292,14 @@ function drupalorg_search_search_theme_form_submit($form, &$form_state) {
  * Implementation of hook_form_FORM_ID_alter().
  */
 function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &$form_state) {
+  global $pager_total_items;
+  // The type being searched for, this is always plural
+  $type = $form['#parameters'][2]->name;
+  $results = t('@result @type match your search', array('@result' => $pager_total_items[0], '@type' => $type));
+  $form['results'] = array(
+    '#value' => '<h3 class="results-count">' . $results . '</h3>',
+    '#weight' => -10,
+  );
   // Check to see if the project_solr_browse_projects form is being used in
   // our block on the core search page. We could test $form['path']['#value']
   // here instead, but it's not really any better that way, so arg() works.
