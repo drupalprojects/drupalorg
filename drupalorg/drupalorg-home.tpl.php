@@ -17,7 +17,7 @@
   <div id="front-top-middle-inner">
     <div class="block-content">
      <h2><a href="cases">Things We Made with Drupal</a></h2>
-     <img src="/files/mtv_screenshot.jpg" class="homeimage" />
+     <img src="http://drupal.org/files/issues/screenshot_126.jpg" width="279" class="homeimage" />
     </div>
   </div> 
 </div> 
