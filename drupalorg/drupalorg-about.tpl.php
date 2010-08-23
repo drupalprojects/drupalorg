@@ -25,13 +25,13 @@
   
   <div class="node-sub-section grid-12 alpha omega">
     <div class="grid-3 alpha">
-      <h3 id="aboutwebbased"><a href="#">WEB-BASED ADMINISTRATION</a></h3>
-      <p>Drupal can be updated and <a href="#">managed using a web browser</a> so you can access it from around the world without the need for additional software.</p>
+      <h3 id="aboutwebbased">WEB-BASED ADMINISTRATION</h3>
+      <p>Drupal can be updated and managed using a web browser so you can access it from around the world without the need for additional software.</p>
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutcontentmanagement"><a href="#">CONTENT MANAGEMENT</a></h3>
-      <p>Drupal comes with <a href="#">polls</a>, <a href="#">templating</a>, <a href="#">threaded comments</a>, and <a href="#">version control</a>. These features allow you to manage your site's content and let users interact with your content.</p>
+      <h3 id="aboutcontentmanagement">CONTENT MANAGEMENT</h3>
+      <p>Drupal comes with <a href="/handbook/modules/poll">polls</a>, <a href="#">templating</a>, <a href="#">threaded comments</a>, and <a href="#">version control</a>. These features allow you to manage your site's content and let users interact with your content.</p>
     </div>
       
     <div class="grid-3">
