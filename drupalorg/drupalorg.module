@@ -146,7 +146,6 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
 function drupalorg_home() {
   if (module_exists('jquery_ui')) {
     jquery_ui_add('ui.tabs');
-    drupal_add_js("Drupal.behaviors.frontTabs = function() { $('#rotate > ul').tabs({ fx: { opacity: 'toggle' } }).tabs('rotate', 0); };", 'inline');
   }
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/jquery.bt.min.js');
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/home.js');

@@ -38,5 +38,8 @@ $(function() {
     }, 3000);
   };
   update();
-})
+});
 
+Drupal.behaviors.frontTabs = function() {
+  $('#rotate > ul').tabs({}).tabs('rotate', 0);
+};
