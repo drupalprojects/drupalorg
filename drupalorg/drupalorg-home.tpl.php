@@ -4,7 +4,7 @@
      <h2><a href="about">Why Choose Drupal?</a></h2>
      <p>Drupal is a publishing platform created by our <a href="community">vibrant community</a> and bursting with potential. Use as-is or snap in any of thousands of feature plug-ins. Granular fine-tuning for developers, flexibility for designers, limitless scalability. Drupal evolves daily. Grow with us!</p>
      <p class="front-get-started">
-      <a href="getting-started" class="link-button"><span>Get Started with Drupal</span></a>
+      <a href="start" class="link-button"><span>Get Started with Drupal</span></a>
      </p>
      <h4><a href="success-stories">Who Else Uses Drupal?</a></h4>
      Magazines: <a href="">Fast Company</a>, <a href="#">Popular Science</a>, The Economist.<br/>
