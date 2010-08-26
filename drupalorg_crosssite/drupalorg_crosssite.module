@@ -684,6 +684,17 @@ function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
   if (!is_array($form_state['redirect'])) {
     $form_state['redirect'] = array($form_state['redirect']);
   }
+  // We want links to redirect to the appropriate site: initially this will
+  // be the main site for all searches, but may expand over time as new meta-
+  // types are defined.
+  $links = array();
+  // Create a link array out of our current redirect url.
+  $links[] = array('href' => $form_state['redirect'][0], '#site' => 'main');
+  // Make it an absolute link so that searches return to the appropriate site.
+  $links = drupalorg_crosssite_menu_absolute_links($links);
+  // Take our newly created link and make it our redirect path.
+  $form_state['redirect'][0] = $links[0]['href'];
+
   if (!empty($form_state['values']['meta_type'])) {
     $form_state['redirect'][1]['filters'] = 'ss_meta_type:'. $form_state['values']['meta_type'];
   }
