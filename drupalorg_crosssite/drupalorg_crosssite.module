@@ -7,6 +7,16 @@
  *   on more subsites.
  */
 
+/**
+ * The TID of the "Modules" term.
+ */
+define('DRUPALORG_MODULE_TID', 14);
+
+/**
+ * The TID of the "Themes" term.
+ */
+define('DRUPALORG_THEME_TID', 15);
+
 // == Core hooks ===============================================================
 
 /**
@@ -495,5 +505,186 @@ function drupalorg_crosssite_menu_alter(&$items) {
   }
   if (isset($items['user/%user/track'])) {
     $items['user/%user/track']['type'] = MENU_NORMAL_ITEM;
+  }
+}
+
+// == Search functions =========================================================
+
+/**
+ * Define Mark Boulton's "filter by..." entries.
+ */
+function drupalorg_crosssite_meta_types() {
+  return array(
+    // 'API' => t('API'),
+    'module' => t('Modules'),
+    'theme' => t('Themes'),
+    'documentation' => t('Documentation'),
+    'forum-issues' => t('Forums & Issues'),
+    // 'marketplace' => t('Marketplace'),
+  );
+}
+
+/**
+ * Implementation of hook_apachesolr_modify_query().
+ *
+ * Exclude the meta_type filter from faceting.
+ */
+function drupalorg_crosssite_apachesolr_modify_query(&$query, &$params) {
+  // TODO: some pending improvements to Apachesolr may simplify this.
+  foreach ($query->get_filters() as $filter) {
+    if ($filter['#name'] == 'ss_meta_type') {
+      $query->remove_filter($filter['#name'], $filter['#value']);
+      $query->add_filter('{!tag=meta_type}' . $filter['#name'], $filter['#value']);
+    }
+  }
+  if (isset($params['facet.field'])) {
+    foreach ($params['facet.field'] as &$field) {
+      if ($field == 'ss_meta_type') {
+        $field = '{!ex=meta_type}' . $field;
+      }
+    }
+  }
+}
+
+/**
+ * Implementation of hook_apachesolr_update_index().
+ *
+ * This adds our specific facets to the Apachesolr search index.
+ */
+function drupalorg_crosssite_apachesolr_update_index(&$document, $node) {
+  if ($type = drupalorg_crosssite_meta_type_traverse($node, drupalorg_crosssite_get_meta_type_rules())) {
+    $document->ss_meta_type = $type;
+  }
+}
+
+/**
+ * Define rules, per site in the multi-site index, for what meta-types should be
+ * applied to what type of content.
+ */
+function drupalorg_crosssite_get_meta_type_rules() {
+  $site = variable_get('drupalorg_site', 'main');
+  
+  $rule_set = array();
+  if ($site == 'main') {
+    $rule_set = array(
+      // Define the type of selector: in this case, type.
+      'type' => array(
+        // Define the type values that map to meta-types: in this case,
+        // project_project, book, project_issue, and forum.
+        'project_project' => array(
+          // Define a sub-selector to only be run after matching on the primary
+          // selector: in this case, taxonomy.
+          'taxonomy' => array(
+            // Define taxonomy term values and resultant meta types: in this
+            // case after matching a type of project_project, an associated
+            // tid of DRUPALORG_MODULE_TID maps to 'module' while an associated 
+            // tid of DRUPALORG_THEME_TID maps to 'theme'.
+            DRUPALORG_MODULE_TID => 'module',
+            DRUPALORG_THEME_TID => 'theme',
+          ), 
+        ),
+        'book' => 'documentation',
+        'project_issue' => 'forum-issues',
+        'forum' => 'forum-issues',
+      ),
+    );
+  }
+  return $rule_set;
+}
+
+/**
+ * Recursively iterates through an array looking for type or taxonomy filters,
+ * and attempting to match against values in the passed in array.
+ * 
+ * This function takes an array (set in the $conf array in settings.php) and
+ * handles two conditionals: type and taxonomy. Type values match against the
+ * node type and taxonomy values match against associated taxonomy terms. If a
+ * node matches all the criteria, a string will be returned representing the
+ * meta-type of the node for use by the apachesolr module.
+ * 
+ * @param object $node
+ *   A fully-formed node object as passed from hook_apachesolr_update_index.
+ * @param mixed $value
+ *   An array initially respresents the order of operations and the
+ *   resulting meta type value. Currently supported comparisons are type and
+ *   taxonomy. In the final iteration of drupalorg_crosssite_meta_type_traverse,
+ *   $value should be a string value rather than an array.
+ *   @see drupalorg_crosssite_get_meta_type_rules for the 'main' site to see
+ *   an example of $value.
+ * 
+ * @return mixed
+ *   Returns NULL if no meta type is found for the particular node, otherwise,
+ *   if a meta-type is found, a string representing that meta-type is returned.
+ *   
+ * @see drupalorg_crosssite_get_meta_type_rules
+ */
+function drupalorg_crosssite_meta_type_traverse(&$node, $value) {
+  // If we've traversed to a point where we have a string value
+  // simply return it.
+  if (is_string($value)) {
+    return $value;
+  }
+  // If we have a meta type based off of the node type, check that first.
+  if (isset($value['type'])) {
+    // If our node type has an associated meta-type (or further filtering)
+    // recursively call this function to determine the meta-type.
+    if (in_array($node->type, array_keys($value['type']))) {      
+      return drupalorg_crosssite_meta_type_traverse($node, $value['type'][$node->type]);
+    }
+  }
+  // If we have a meta-type based off of taxonomy, check that next.
+  if (isset($value['taxonomy'])) {
+    // If we have a taxonomy term that relates to a meta-type, determine all
+    // matching terms in the node.
+    if ($keys = array_intersect(array_keys($node->taxonomy), array_keys($value['taxonomy']))) {
+      // We should only ever have 1 match (meta-type is singular), so do a
+      // sanity check. If we do only have 1 term, recursively call this function
+      // to determine the meta-type.
+      if (count($keys) == 1) {
+        $tid = array_pop($keys);
+        return drupalorg_crosssite_meta_type_traverse($node, $value['taxonomy'][$tid]);
+      }
+    }
+  }
+}
+
+/**
+ * Implementation of hook_form_search_theme_form_alter().
+ */
+function drupalorg_crosssite_form_search_theme_form_alter(&$form, $form_state) {
+  
+  // If we already ran a query, remember those values in the header search bar.
+  $meta_type = '';
+  if (module_exists('apachesolr') && apachesolr_has_searched() && $query = apachesolr_current_query()) {
+    // If a meta_type was specified to refine the search, save that.
+    $filter = $query->get_filters('ss_meta_type');
+    if (!empty($filter)) {
+      $meta_type = $filter[0]['#value'];
+    }
+    // Default the search text to the value of the queried text.
+    $form['search_theme_form']['#default_value'] = $query->get_keys();
+  }
+
+  $form['search_theme_form']['#title'] = t('Search Drupal.org');
+  $form['advanced'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Refine your search'),
+    '#collapsible' => !drupal_is_front_page(),
+    '#collapsed' => !drupal_is_front_page(),
+  );
+  $form['advanced']['meta_type'] = array(
+    '#type' => 'radios',
+    '#options' => drupalorg_crosssite_meta_types(),
+    '#default_value' => $meta_type,
+  );
+  $form['#submit'][] = 'drupalorg_crosssite_search_theme_form_submit';
+}
+
+function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
+  if (!is_array($form_state['redirect'])) {
+    $form_state['redirect'] = array($form_state['redirect']);
+  }
+  if (!empty($form_state['values']['meta_type'])) {
+    $form_state['redirect'][1]['filters'] = 'ss_meta_type:'. $form_state['values']['meta_type'];
   }
 }
