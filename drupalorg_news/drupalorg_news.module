@@ -146,7 +146,7 @@ function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
 
         case 'news-sources':
           $block['content'] = t('<p>This page gathers:</p>');
-          $block['content'] .= t('<a href="http://association.drupal.org/">Association</a> members’ blog posts<br />');
+          $block['content'] .= t('<a href="http://association.drupal.org/news">Association</a> news<br />');
           $block['content'] .= t('<a href="/news">Official Drupal news</a> and announcements<br />');
           $block['content'] .= t('<a href="/planet">Planet Drupal</a> entries (Planet Drupal aggregates Drupal-related blog posts of special interest to the community)');
           return $block;
