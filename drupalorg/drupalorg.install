@@ -256,12 +256,13 @@ function drupalorg_update_6500() {
     array(
       'module' => 'drupalorg_search',
       'delta' => 'search_box',
-      'pages' => "search/apachesolr_search/*",
+      'pages' => "search/apachesolr_search/*\nsearch/apachesolr_multisitesearch/*",
     ),
     array(
       'module' => 'drupalorg_search',
       'delta' => 'meta_type',
-      'pages' => "search/apachesolr_search\nsearch/apachesolr_search/*",
+      'pages' => "search/apachesolr_search\nsearch/apachesolr_search/*\n" .
+        "search/apachesolr_multisitesearch\nsearch/apachesolr_multisitesearch/*",
     ),
     array(
       'title' => 'Most Installed',
@@ -295,7 +296,8 @@ function drupalorg_update_6500() {
     'weight' => 0,
     'module' => 'drupalorg_search',
     'delta' => 'drupalorg_search_navigation',
-    'pages' => "search/apachesolr_search\nsearch/apachesolr_search/*",
+    'pages' => "search/apachesolr_search\nsearch/apachesolr_search/*\n" .
+      "search/apachesolr_multisitesearch\nsearch/apachesolr_multisitesearch/*",
   );
   drupal_write_record('blocks', $block);
   
