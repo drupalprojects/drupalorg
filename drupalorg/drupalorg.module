@@ -305,7 +305,6 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   // results and render those ourselves. This also lets us add our 'View full
   // index' link directly as another li in the list (as bluecheese expects)
   // instead of having it in its own div.
-  /*
   $view = views_get_view('project_index');
   $view->set_display('block_1');
   $view->set_arguments(array('modules'));
@@ -326,7 +325,6 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   foreach ($results as $result) {
     $modules[] = l($result->node_title, 'node/' . $result->nid);
   }
-  */
   $modules[] = '<a href="/project/modules/index" class="all">View full index</a>';
   $module_index = '<h2>' . t('Module index') . '</h2>';
   $module_index .= theme('item_list', $modules, NULL, 'ul', array('class' => 'flat'));
