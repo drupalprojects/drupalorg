@@ -562,7 +562,7 @@ function drupalorg_get_most_recent_things_we_made($limit = 4) {
     // Find the images in the case study
     while ($thing = db_fetch_object($result)) {
       $image_url = '';
-      $has_image = preg_match("/http:\/\/[^\'\"]*\.png/", $thing->body, $image_url);
+      $has_image = preg_match("/http:\/\/[^\'\"]*\.(png|jpg|jpeg)/", $thing->body, $image_url);
       if ($has_image) {
         $things[] = array(
           'nid' => $thing->nid,
