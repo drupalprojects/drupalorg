@@ -162,7 +162,7 @@ function drupalorg_home() {
  */
 function drupalorg_preprocess_page(&$variables) {
   if ($variables['is_front']) {
-    $variables['mission'] = '<h2>Build Today. Innovate Tomorrow.</h2>
+    $variables['mission'] = '<h2>Come for the software, stay for the community</h2>
     <p class="standfirst">
       What can you make with Drupal? Beautiful, personal blogs or mighty, multi-featured, multiuser corporate sites. Go wherever your imagination takes you with our robust, open-source publishing software.
     </p>';
