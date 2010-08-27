@@ -1,24 +1,3 @@
-<div class="node-section grid-12 alpha omega">
-  <div class="grid-3 alpha">
-    <h2>Build for Today</h2>
-    <p>Drupal is <a href="/getting-started/before/overview">powerful, customizable, and flexible</a>, letting you connect many pieces to make your website. As your site evolves you simply move the pieces, take some away, or add new ones. The site you need now may not be the site you need in the future, so you can extend your site with more pieces.</p>
-  </div>
-      
-  <div class="grid-3">
-    <h2>Community Support</h2>
-    <p>The passionate <a href="/community">Drupal community</a> is on hand to give support via various <a href="/irc">vibrant IRC channels</a>, in the <a href="/forum">forums</a>, and face to face at <a href="http://groups.drupal.org/events">Drupal events</a>. As Drupal is <a href="/principles">open source</a>, this means everybody can <a href="/contribute">get involved</a> and make a difference.</p>
-  </div>
-      
-  <div class="grid-3">
-    <h2>Dedicated Security Team</h2>
-    <p><a href="/getting-started/is-drupal-secure">We take security seriously</a> and have a <a href="/security-team">dedicated team</a> that has a proven track record in dealing with your security issues professionally and efficiently, meaning you can spend more time creating your site.</p>
-  </div>
-      
-  <div class="grid-3 omega">
-    <h2>Commercial Ecosystem</h2>
-    <p>As well as the community, there are <a href="/services">many dedicated companies</a> in the Marketplace on hand to help with your Drupal project. Providing expertise and a deeper understanding, they can help with <a href="/hosting">hosting</a>, spam blocking, <a href="/training-services">training</a>, and more.</p>
-  </div>
-</div>
 
 <div class="node-section grid-12 alpha omega" id="about-features">
   <h2>Drupal Features</h2>
@@ -65,6 +44,28 @@
       <h3 id="aboutpersonalisation"><a href="#">--TBC--</a></h3>
       <p>TBC</p>
     </div>
+  </div>
+</div>
+
+<div class="node-section grid-12 alpha omega">
+  <div class="grid-3 alpha">
+    <h2>Build for Today</h2>
+    <p>Drupal is <a href="/getting-started/before/overview">powerful, customizable, and flexible</a>, letting you connect many pieces to make your website. As your site evolves you simply move the pieces, take some away, or add new ones. The site you need now may not be the site you need in the future, so you can extend your site with more pieces.</p>
+  </div>
+      
+  <div class="grid-3">
+    <h2>Community Support</h2>
+    <p>The passionate <a href="/community">Drupal community</a> is on hand to give support via various <a href="/irc">vibrant IRC channels</a>, in the <a href="/forum">forums</a>, and face to face at <a href="http://groups.drupal.org/events">Drupal events</a>. As Drupal is <a href="/principles">open source</a>, this means everybody can <a href="/contribute">get involved</a> and make a difference.</p>
+  </div>
+      
+  <div class="grid-3">
+    <h2>Dedicated Security Team</h2>
+    <p><a href="/getting-started/is-drupal-secure">We take security seriously</a> and have a <a href="/security-team">dedicated team</a> that has a proven track record in dealing with your security issues professionally and efficiently, meaning you can spend more time creating your site.</p>
+  </div>
+      
+  <div class="grid-3 omega">
+    <h2>Commercial Ecosystem</h2>
+    <p>As well as the community, there are <a href="/services">many dedicated companies</a> in the Marketplace on hand to help with your Drupal project. Providing expertise and a deeper understanding, they can help with <a href="/hosting">hosting</a>, spam blocking, <a href="/training-services">training</a>, and more.</p>
   </div>
 </div>
 
