@@ -173,6 +173,12 @@ function drupalorg_preprocess_page(&$variables) {
  * Implementation of template_preprocess_drupalorg_home().
  */
 function drupalorg_preprocess_drupalorg_home(&$variables) {
+  $variables['theme_images_directory'] = drupal_get_path('theme', variable_get('theme_default', 'bluecheese')) .'/images';
+
+  // == Things we made with drupal
+  $things = drupalorg_get_most_recent_things_we_made(4);
+  $variables['things_we_made'] = drupalorg_render_things_we_made($things);
+
   // == Forums tab data/markup
   $sql = db_rewrite_sql("SELECT n.nid, n.title, n.created, n.uid, u.name FROM {node} n INNER JOIN {term_node} tn ON tn.vid = n.vid INNER JOIN {term_data} td ON td.tid = tn.tid INNER JOIN {users} u ON n.uid = u.uid WHERE n.status = 1 AND td.vid = %d ORDER BY n.nid DESC");
   $result = db_query_range($sql, variable_get('forum_nav_vocabulary', ''), 0, 5);
@@ -534,6 +540,71 @@ function drupalorg_views_default_views_alter(&$views) {
 }
   
 /**
+* Return an array of the most recently created projects with the given taxonomy term.
+*
+* @return
+*   An array of of the most recent case study images created projects. The array includes the node
+*   ID and node title and image url.
+*/
+function drupalorg_get_most_recent_things_we_made($limit = 4) {
+
+  $cached = cache_get('things_we_made');
+
+  if ($cached->data) {
+    $things = $cached->data;
+  }
+  else {
+    // Obtain our case studies
+    // We will pad the results to try to make sure we have enough images
+    $things = array();
+    $result = db_query('SELECT n.nid, n.title, nr.body FROM {node} n LEFT JOIN {term_node} tn ON n.nid = tn.nid AND n.vid = tn.vid LEFT JOIN {node_revisions} nr ON nr.nid = n.nid AND nr.vid = n.vid WHERE tn.tid = 25 AND n.status = 1 AND n.promote = 1 ORDER BY n.created DESC LIMIT %d', $limit * 2);
+
+    // Find the images in the case study
+    while ($thing = db_fetch_object($result)) {
+      $image_url = '';
+      $has_image = preg_match("/http:\/\/[^\'\"]*\.png/", $thing->body, $image_url);
+      if ($has_image) {
+        $things[] = array(
+          'nid' => $thing->nid,
+          'title' => $thing->title,
+          'image_url' => $image_url[0],
+        );
+      }
+
+      // Stop looking if we have met our limit
+      if (count($things) == $limit) {
+        break;
+      }
+    }
+    cache_set('things_we_made', $things);
+  }
+
+  return $things;
+}
+
+/**
+ * Render Things We Made block on the homepage
+ *
+ * @return a themed ul listing of case study images
+ */
+function drupalorg_render_things_we_made($things) {
+  $slides = array();
+  foreach ($things as $i => $thing) {
+    $image = theme('image', $thing['image_url'], $thing['title'], $thing['title'], NULL, FALSE);
+    $caption = '<div class="caption">'. $thing['title'] .'</div>';
+    $output = l($image . $caption, 'node/'. $thing['nid'], array('html' => TRUE));
+
+    $slides[] = array(
+      'data' => $output,
+      'class' => $i == 0 ? 'active thing-'. $i : 'thing-'. $i,
+    );
+  }
+  $things = theme('item_list', $slides, NULL, 'ul', array('class' => 'things-we-made'));
+
+  return '<div class="things-we-made-wrapper">'. $things .'</div>';
+}
+
+/*
  * Returns a link to the latest recommended release for the Drupal project.
  *
  * @param $text

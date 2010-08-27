@@ -17,7 +17,7 @@
   <div id="front-top-middle-inner">
     <div class="block-content">
      <h2><a href="cases">Things We Made with Drupal</a></h2>
-     <img src="http://drupal.org/files/issues/screenshot_126.jpg" width="279" class="homeimage" />
+     <?php print $things_we_made; ?>
     </div>
   </div> 
 </div> 

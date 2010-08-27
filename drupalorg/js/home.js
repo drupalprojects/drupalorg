@@ -40,6 +40,25 @@ $(function() {
   update();
 });
 
+Drupal.behaviors.things_we_made = function(context) {
+  var left = 0;
+  var items = $('.things-we-made li');
+  var index = 0;
+
+  setInterval(function() {
+    // Figure which image we are wrapping too
+    if ($('.things-we-made li').eq(index).hasClass('last')) {
+      index = 0;
+    }
+    else {
+      index++;
+    }
+    left = index * -300;
+
+    $('ul.things-we-made').animate({ marginLeft: left, }, 500);
+  }, 6000);
+}
+
 Drupal.behaviors.frontTabs = function() {
   $('#rotate > ul').tabs({}).tabs('rotate', 0);
 };
