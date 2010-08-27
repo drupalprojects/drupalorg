@@ -25,39 +25,39 @@
   
   <div class="node-sub-section grid-12 alpha omega">
     <div class="grid-3 alpha">
-      <h3 id="aboutwebbased">WEB-BASED ADMINISTRATION</h3>
+      <h3 id="aboutwebbased"><a href="/about/features/web-based-administration">WEB-BASED ADMINISTRATION</a></h3>
       <p>Drupal can be updated and managed using a web browser so you can access it from around the world without the need for additional software.</p>
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutcontentmanagement">CONTENT MANAGEMENT</h3>
+      <h3 id="aboutcontentmanagement"><a href="/about/features/content-mgmt">CONTENT MANAGEMENT</a></h3>
       <p>Drupal comes with <a href="/handbook/modules/poll">polls</a>, <a href="#">templating</a>, <a href="#">threaded comments</a>, and <a href="#">version control</a>. These features allow you to manage your site's content and let users interact with your content.</p>
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutmodules"><a href="/project/modules">MODULES</a></h3>
+      <h3 id="aboutmodules"><a href="/about/features/modules">MODULES</a></h3>
       <p>Whether you need a <a href="#">gallery</a>, <a href="#">contact form</a>, or <a href="#">shopping cart</a>, <a href="/project/modules">Drupal modules</a> let you build, customize, and extend your site as much as you want. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
     </div>
       
     <div class="grid-3 omega">
-      <h3 id="aboutthemes"><a href="/project/themes">THEMES</a></h3>
+      <h3 id="aboutthemes"><a href="/about/features/themes">THEMES</a></h3>
       <p>Use an existing <a href="/project/themes">Drupal theme</a> for your site, giving it an instant identity! If you can't find one you like, try designing your own which others can use, too.</p>
     </div>
   </div>
   
   <div class="node-sub-section grid-12 alpha omega">
     <div class="grid-3 alpha">
-      <h3 id="aboutsearching"><a href="#">SEARCHING</a></h3>
+      <h3 id="aboutsearching"><a href="/node/895188">SEARCHING</a></h3>
       <p>Spend less time looking for answers and more time creating your space on the web. Our search function does the hard work for you, giving you solutions at the click of a button.</p>
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutsocial"><a href="#">SOCIAL PUBLISHING</a></h3>
+      <h3 id="aboutsocial"><a href="/about/features/social-publishing">SOCIAL PUBLISHING</a></h3>
       <p>Drupal allows you to create sites and applications to help people express their opinions and engage with one another through <a href="#">Wikis</a>, <a href="#">Forums</a>, and <a href="#">Blogs</a></p>
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutcommunity"><a href="#">COMMUNITY SUPPORT</a></h3>
+      <h3 id="aboutcommunity"><a href="/about/features/community-support">COMMUNITY SUPPORT</a></h3>
       <p>Drupal has a <a href="#">worldwide community</a> that is one hand to <a href="#">help with your Drupal problems</a>, <a href="#">share ideas</a>, and even meet for coffee at a local <a href="#">Drupal event.</a></p>
     </div>
       
