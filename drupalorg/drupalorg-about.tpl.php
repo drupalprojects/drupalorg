@@ -26,17 +26,17 @@
   <div class="node-sub-section grid-12 alpha omega">
     <div class="grid-3 alpha">
       <h3 id="aboutwebbased"><a href="/about/features/web-based-administration">WEB-BASED ADMINISTRATION</a></h3>
-      <p>Drupal can be updated and managed using a web browser so you can access it from around the world without the need for additional software.</p>
+      <p>Drupal can be updated and managed using a web browser so you can access it from around the world without the need for additional software or command line knowledge.</p>
     </div>
       
     <div class="grid-3">
       <h3 id="aboutcontentmanagement"><a href="/about/features/content-mgmt">CONTENT MANAGEMENT</a></h3>
-      <p>Drupal comes with <a href="/handbook/modules/poll">polls</a>, <a href="#">templating</a>, <a href="#">threaded comments</a>, and <a href="#">version control</a>. These features allow you to manage your site's content and let users interact with your content.</p>
+      <p>Drupal comes with polls, and <a href="#">revisions</a>. These features allow you to manage your site's content and let users interact with your content.</p>
     </div>
       
     <div class="grid-3">
       <h3 id="aboutmodules"><a href="/about/features/modules">MODULES</a></h3>
-      <p>Whether you need a <a href="#">gallery</a>, <a href="#">contact form</a>, or <a href="#">shopping cart</a>, <a href="/project/modules">Drupal modules</a> let you build, customize, and extend your site as much as you want. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
+      <p>Whether you need a <a href="#">gallery</a>, custom layouts, or <a href="#">shopping cart</a>, Drupal modules let you build, customize, and extend your site as much as you want. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
     </div>
       
     <div class="grid-3 omega">
@@ -47,8 +47,8 @@
   
   <div class="node-sub-section grid-12 alpha omega">
     <div class="grid-3 alpha">
-      <h3 id="aboutsearching"><a href="/node/895188">SEARCHING</a></h3>
-      <p>Spend less time looking for answers and more time creating your space on the web. Our search function does the hard work for you, giving you solutions at the click of a button.</p>
+      <h3 id="aboutsearching"><a href="/node/895188">FINDABLE CONTENT</a></h3>
+      <p>Spend less time looking for information, and focus on getting things done. There are several ways to find content in Drupal, including smart menu system, Drupal core search and fantastic contributed search modules, such as Solr.</p>
     </div>
       
     <div class="grid-3">
@@ -62,8 +62,8 @@
     </div>
       
     <div class="grid-3 omega">
-      <h3 id="aboutpersonalisation"><a href="#">PERSONALIZATION</a></h3>
-      <p>Make your Drupal site stand out. Add galleries, create themes, extend it with modules and let your imagination run wild.</p>
+      <h3 id="aboutpersonalisation"><a href="#">--TBC--</a></h3>
+      <p>TBC</p>
     </div>
   </div>
 </div>
