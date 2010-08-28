@@ -56,13 +56,13 @@
   </div>
   
   <div class="grid-3">      
-    <h2>Module categories</h2>
+    <h2>Module Categories</h2>
     <ul class="flat">
-      <li class="first"><a href="/project/modules?filters=tid:53">Administration</a></li>
-      <li><a href="/project/modules?filters=tid:56">Community</a></li>
-      <li><a href="/project/modules?filters=tid:61">Event</a></li>
-      <li><a href="/project/modules?filters=tid:67">Media</a></li>
-      <li class="last all"><a href="/project/modules/categories" class="all">All categories</a></li>
+      <li class="first"><a href="project/modules?filters=tid:53">Administration</a></li>
+      <li><a href="project/modules?filters=tid:56">Community</a></li>
+      <li><a href="project/modules?filters=tid:61">Event</a></li>
+      <li><a href="project/modules?filters=tid:67">Media</a></li>
+      <li class="last all"><a href="project/modules/categories" class="all">All categories</a></li>
     </ul>
   </div>
   
