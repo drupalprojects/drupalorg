@@ -76,7 +76,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     array(
       'events'      => array('href' => 'events', 'title' => t('Events'), '#site' => 'groups'),
       'drupalcon'   => array('href' => 'events?filter0%5B%5D=drupalcon', 'title' => t('Drupalcon'), '#site' => 'groups'),
-      'groups-join' => array('href' => '', 'title' => t('Join a Local Group'), '#site' => 'groups'),
+      'groups-join' => array('href' => '', 'title' => t('Join a Group'), '#site' => 'groups'),
       'training'    => array('href' => 'events?filter0%5B%5D=training', 'title' => t('Training'), '#site' => 'groups'),
       'druplicon'   => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main'),
     ),

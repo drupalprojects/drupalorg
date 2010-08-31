@@ -4,12 +4,12 @@
   
   <div class="node-sub-section grid-12 alpha omega">
     <div class="grid-3 alpha">
-      <h3 id="aboutwebbased"><a href="/about/features/web-based-administration">WEB-BASED ADMINISTRATION</a></h3>
-      <p>Drupal can be updated and managed using a web browser so you can access it from around the world without the need for additional software or command line knowledge.</p>
+      <h3 id="aboutwebbased"><a href="/about/web-content-management">WEB-BASED CONTENT MANAGEMENT</a></h3>
+      <p>Manage content with an easy-to-use browser interface. Drupal's flexibility handles countless content types including video, text, podcasts, and polls with automatic revision control, robust user management and real-time statistics.</p>
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutcontentmanagement"><a href="/about/features/content-mgmt">CONTENT MANAGEMENT</a></h3>
+      <h3 id="aboutcontentmanagement"><a href="/about/">--TBC--</a></h3>
       <p>Drupal comes with polls, and <a href="#">revisions</a>. These features allow you to manage your site's content and let users interact with your content.</p>
     </div>
       
