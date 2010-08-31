@@ -209,12 +209,12 @@ function drupalorg_update_6500() {
     array(
        'module' => 'drupalorg_news',
        'delta' => 'news-sources',
-       'pages' => "news\nnews/*",
+       'pages' => "news",
      ),
     array(
       'module' => 'drupalorg_news',
       'delta' => 'news-terms',
-      'pages' => "news\nnews/*",
+      'pages' => "news\nnews/*\naggregator\naggregator/*",
     ),
     array(
       'module' => 'drupalorg',
