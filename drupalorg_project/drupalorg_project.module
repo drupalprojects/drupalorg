@@ -620,7 +620,6 @@ function drupalorg_project_bingo_block_output() {
   $counts_review = $counts['Patches to review'];
 
   $versions = array_map('trim', explode(',', DRUPALORG_ISSUE_RIDS));
-  
   $links = array(
     l('Community initiatives', 'community-initiatives'),
     array(
@@ -699,6 +698,7 @@ function drupalorg_project_bingo_block_output() {
     l('Mailing list archives', 'mailing-lists'),
     l('Drupal.org webmasters', 'project/issues/webmasters'),
     l('Drupal.org server administrators', 'project/issues/infrastructure'),
+    l('Drupal.org CVS applications', 'project/issues/cvsapplications'),
     array(
       'data' => '<strong>Web links</strong>',
       'children' => array(
