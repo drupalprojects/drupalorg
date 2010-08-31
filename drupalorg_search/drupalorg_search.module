@@ -152,10 +152,11 @@ function drupalorg_search_block_view($delta) {
         else {
           $form = drupal_get_form('project_solr_browse_projects_form', $project_type_term, 'search/apachesolr_search/' . $query->get_keys());
         }
-        return array(
-          'subject' => t('Browse @project_type', array('@project_type' => $project_type_term->name)),
-          'content' => $form,
-        );
+        if (!empty($project_type_term->name)) {
+          $block['subject'] = t('Browse @project_type', array('@project_type' => $project_type_term->name));
+        }
+        $block['content'] = $form;
+        return $block;
       }
       break;
 
