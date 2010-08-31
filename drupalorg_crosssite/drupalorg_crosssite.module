@@ -27,6 +27,10 @@ define('DRUPALORG_THEME_TID', 15);
 function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   global $user;
 
+  // In most cases, the navigation elements should provide orientatiuon within
+  // the site. Breadcrumbs are usually not necessary.
+  unset($vars['breadcrumb']);
+
   // Site hostnames for the sites we use.
   $sites = drupalorg_crosssite_menu_sites();
 
@@ -201,9 +205,114 @@ function drupalorg_crosssite_content_menu(&$vars) {
     $vars['section_name'] = $section_names[$matched_menu];
   }
 
-  // Now ask for all the menu items for the matched menu. Let modules add in
-  // menu items (eg. in case of dashboard module adding items we don't know about).
-  $nav_content_links = module_invoke_all('drupalorg_crosssite_content_menu_items', $matched_menu);
+  // Now ask for all the menu items for the matched menu.
+  switch ($matched_menu) {
+    case 'documentation':
+      $nav_content_links = array(
+        'home'    => array('href' => 'handbook', 'title' => t('Docs Home'), '#site' => 'main', '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
+        'api'     => array('href' => '<front>', 'title' => t('API'), '#site' => 'api', '#active' => drupalorg_crosssite_menu_site('api')),
+        'recent'  => array('href' => 'handbook/updates', 'title' => t('Recently Updated'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
+      );
+      break;
+
+    case 'downloads':
+      $nav_content_links = array(
+        // All are exact paths and so theme('links') will make them gain active
+        // classes when on the projects site. Therefore no need for #active.
+        'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
+        'core'         => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#site' => 'main'),
+        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_term('main', array(DRUPALORG_MODULE_TID)) || drupalorg_crosssite_in_breadcrumb('project/modules', $vars)),
+        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_term('main', array(DRUPALORG_THEME_TID))),
+        'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'main'),
+        'theme-engine' => array('href' => 'project/theme+engines', 'title' => t('Theme Engines'), '#site' => 'main'),
+        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
+      );
+      break;
+
+    case 'community':
+      $nav_content_links = array(
+        'home'          => array('href' => 'community', 'title' => t('Community Home'), '#site' => 'main'),
+        'local-groups'  => array('href' => '??', 'title' => t('Local Groups'), '#site' => 'groups'),
+        'online-groups' => array('href' => '??', 'title' => t('Online Groups'), '#site' => 'groups'),
+        'chat'          => array('href' => 'irc', 'title' => t('Chat'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^irc(/|$)')),
+        'lists'         => array('href' => 'mailing-lists', 'title' => t('Mailing Lists'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)')),
+        'members'       => array('href' => 'profile', 'title' => t('Member Directory'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^profile(/|$)')),
+        'forum'         => array('href' => 'forum', 'title' => t('Forum'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^forum(/|$)') || drupalorg_crosssite_menu_type('main', array('forum'))),
+      );
+      break;
+
+    // Just on the jobs site. Will need dynamic listing based on numbers.
+    case 'jobs':
+      $nav_content_links = array(
+        'latest'     => array('href' => 'jobs', 'title' => t('Latest'), '#site' => 'groups'),
+        'developers' => array('href' => '??', 'title' => t('Developers (#)'), '#site' => 'groups'),
+        'designers'  => array('href' => '??', 'title' => t('Designers (#)'), '#site' => 'groups'),
+        'writers'    => array('href' => '??', 'title' => t('Writers (#)'), '#site' => 'groups'),
+      );
+      break;
+
+    // Just on the association site.
+    case 'association':
+      $nav_content_links = array(
+        'home'       => array('href' => '<front>', 'title' => t('Association Home'), '#site' => 'association'),
+        'blogs'      => array('href' => 'blogs', 'title' => t('Blogs'), '#site' => 'association'),
+        'about'      => array('href' => 'about', 'title' => t('About'), '#site' => 'association'),
+        'donate'     => array('href' => 'civicrm/contribute/transact?reset=1&id=8', 'title' => t('Donate'), '#site' => 'association'),
+        'membership' => array('href' => 'membership', 'title' => t('Memberships'), '#site' => 'association'),
+        'press'      => array('href' => 'press', 'title' => t('Press'), '#site' => 'association'),
+        'faq'        => array('href' => 'faq', 'title' => t('FAQ'), '#site' => 'association'),
+        'staff'      => array('href' => 'about/staff', 'title' => t('Staff'), '#site' => 'association'),
+        'contact'    => array('href' => 'contact', 'title' => t('Contact'), '#site' => 'association'),
+      );
+      break;
+
+    // Just on the events site. Could possibly do the same dynamic
+    // stuff as jobs for consistency (counting number of events).
+    case 'events':
+      $nav_content_links = array(
+        'latest'    => array('href' => 'events', 'title' => t('Latest'), '#site' => 'groups'),
+        'local'     => array('href' => 'events?filter0%5B%5D=usergroup', 'title' => t('Local Group Meeting'), '#site' => 'groups'),
+        'training'  => array('href' => 'events?filter0%5B%5D=training', 'title' => t('Training'), 'site' => '#groups'),
+        'regional'  => array('href' => 'events?filter0%5B%5D=regional', 'title' => t('Regional Conference'), '#site' => 'groups'),
+        'drupalcon' => array('href' => 'events?filter0%5B%5D=drupalcon', 'title' => t('Drupalcon'), '#site' => 'groups'),
+        'virtual'   => array('href' => 'events?filter0%5B%5D=virtual', 'title' => t('Virtual Meeting'), '#site' => 'groups'),
+      );
+      break;
+
+    // Just on the main website.
+    case 'druplicon':
+      $nav_content_links = array(
+        'home'     => array('href' => '??', 'title' => t('Druplicon Home'), '#site' => 'main'),
+        'about'    => array('href' => 'druplicon', 'title' => t('About Druplicon'), '#site' => 'main'),
+        'download' => array('href' => 'node/9068', 'title' => t('Download Druplicon'), '#site' => 'main'),
+        'other'    => array('href' => '??', 'title' => t('Other Druplicons'), '#site' => 'main'),
+      );
+      break;
+
+    // Just on the localization site.
+    case 'localize':
+      $nav_content_links = array(
+        // All are exact paths and so theme('links') will make them gain active
+        // classes when on the localize site. Therefore no need for #active.
+        'home'         => array('href' => '<front>', 'title' => t('Translations Home'), '#site' => 'localize'),
+        'languages'    => array('href' => 'translate/languages', 'title' => t('Languages'), '#site' => 'localize'),
+        'projects'     => array('href' => 'translate/projects', 'title' => t('Projects'), '#site' => 'localize'),
+        'download'     => array('href' => 'download', 'title' => t('Download'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^download$')),
+        'news'         => array('href' => 'news', 'title' => t('News'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^news$')),
+        'faq'          => array('href' => 'faq', 'title' => t('FAQ'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^faq$')),
+      );
+      break;
+
+    case 'dashboard':
+      global $user;
+      $nav_content_links = array(
+        'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard', '#site' => 'main'),
+        'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track')),
+        'your-groups' => array('title' => t('Your Groups'), 'href' => 'unread', '#site' => 'groups'),
+        'your-profile' => array('title' => t('Profile'), 'href' => 'user/'. $user->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '(?!/(dashboard|track))')),
+      );
+      break;
+  }
 
   if (count($nav_content_links)) {
     // Make all external links right.
@@ -235,124 +344,33 @@ function drupalorg_crosssite_content_menu(&$vars) {
     // Theme the links for the page.
     $vars['nav_content'] = theme('links', $nav_content_links);
     $vars['nav_content_class'] = ' class="nav-content-'. $matched_menu .'"';
-    return;
   }
-
-  // Else just return an empty content nav menu.
-  $vars['nav_content'] = $vars['nav_content_class'] = '';
-}
-
-/**
- * Implementation of hook_drupalorg_crosssite_content_menu_items().
- *
- * Return a list of menu items for the given menu with metadata on their
- * associated site and whether they are active at the moment.
- */
-function drupalorg_crosssite_drupalorg_crosssite_content_menu_items($matched_menu) {
-  switch ($matched_menu) {
-
-    // REAL cross-site.
-    case 'documentation':
-      return array(
-        'home'    => array('href' => 'handbook', 'title' => t('Docs Home'), '#site' => 'main', '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
-        'api'     => array('href' => '<front>', 'title' => t('API'), '#site' => 'api', '#active' => drupalorg_crosssite_menu_site('api')),
-        'recent'  => array('href' => 'handbook/updates', 'title' => t('Recently Updated'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
-      );
-
-    case 'downloads':
-      return array(
-        // All are exact paths and so theme('links') will make them gain active
-        // classes when on the projects site. Therefore no need for #active.
-        'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
-        'core'         => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#site' => 'main'),
-        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_term('main', array(DRUPALORG_MODULE_TID))),
-        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_term('main', array(DRUPALORG_THEME_TID))),
-        'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'main'),
-        'theme-engine' => array('href' => 'project/theme+engines', 'title' => t('Theme Engines'), '#site' => 'main'),
-        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
-      );
-
-    // REAL cross-site.
-    case 'community':
-      return array(
-        'home'          => array('href' => 'community', 'title' => t('Community Home'), '#site' => 'main'),
-        'local-groups'  => array('href' => '??', 'title' => t('Local Groups'), '#site' => 'groups'),
-        'online-groups' => array('href' => '??', 'title' => t('Online Groups'), '#site' => 'groups'),
-        'chat'          => array('href' => 'irc', 'title' => t('Chat'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^irc(/|$)')),
-        'lists'         => array('href' => 'mailing-lists', 'title' => t('Mailing Lists'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)')),
-        'members'       => array('href' => 'profile', 'title' => t('Member Directory'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^profile(/|$)')),
-        'forum'         => array('href' => 'forum', 'title' => t('Forum'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^forum(/|$)') || drupalorg_crosssite_menu_type('main', array('forum'))),
-      );
-
-    // Just on the jobs site. Will need dynamic listing based on numbers.
-    case 'jobs':
-      return array(
-        'latest'     => array('href' => 'jobs', 'title' => t('Latest'), '#site' => 'groups'),
-        'developers' => array('href' => '??', 'title' => t('Developers (#)'), '#site' => 'groups'),
-        'designers'  => array('href' => '??', 'title' => t('Designers (#)'), '#site' => 'groups'),
-        'writers'    => array('href' => '??', 'title' => t('Writers (#)'), '#site' => 'groups'),
-      );
-
-    // Just on the association site.
-    case 'association':
-      return array(
-        'home'       => array('href' => '<front>', 'title' => t('Association Home'), '#site' => 'association'),
-        'blogs'      => array('href' => 'blogs', 'title' => t('Blogs'), '#site' => 'association'),
-        'about'      => array('href' => 'about', 'title' => t('About'), '#site' => 'association'),
-        'donate'     => array('href' => 'civicrm/contribute/transact?reset=1&id=8', 'title' => t('Donate'), '#site' => 'association'),
-        'membership' => array('href' => 'membership', 'title' => t('Memberships'), '#site' => 'association'),
-        'press'      => array('href' => 'press', 'title' => t('Press'), '#site' => 'association'),
-        'faq'        => array('href' => 'faq', 'title' => t('FAQ'), '#site' => 'association'),
-        'staff'      => array('href' => 'about/staff', 'title' => t('Staff'), '#site' => 'association'),
-        'contact'    => array('href' => 'contact', 'title' => t('Contact'), '#site' => 'association'),
-      );
-
-    // Just on the events site. Could possibly do the same dynamic
-    // stuff as jobs for consistency (counting number of events).
-    case 'events':
-      return array(
-        'latest'    => array('href' => 'events', 'title' => t('Latest'), '#site' => 'groups'),
-        'local'     => array('href' => 'events?filter0%5B%5D=usergroup', 'title' => t('Local Group Meeting'), '#site' => 'groups'),
-        'training'  => array('href' => 'events?filter0%5B%5D=training', 'title' => t('Training'), 'site' => '#groups'),
-        'regional'  => array('href' => 'events?filter0%5B%5D=regional', 'title' => t('Regional Conference'), '#site' => 'groups'),
-        'drupalcon' => array('href' => 'events?filter0%5B%5D=drupalcon', 'title' => t('Drupalcon'), '#site' => 'groups'),
-        'virtual'   => array('href' => 'events?filter0%5B%5D=virtual', 'title' => t('Virtual Meeting'), '#site' => 'groups'),
-      );
-
-    // Just on the main website.
-    case 'druplicon':
-      return array(
-        'home'     => array('href' => '??', 'title' => t('Druplicon Home'), '#site' => 'main'),
-        'about'    => array('href' => 'druplicon', 'title' => t('About Druplicon'), '#site' => 'main'),
-        'download' => array('href' => 'node/9068', 'title' => t('Download Druplicon'), '#site' => 'main'),
-        'other'    => array('href' => '??', 'title' => t('Other Druplicons'), '#site' => 'main'),
-      );
-
-    // Just on the localization site.
-    case 'localize':
-      return array(
-        // All are exact paths and so theme('links') will make them gain active
-        // classes when on the localize site. Therefore no need for #active.
-        'home'         => array('href' => '<front>', 'title' => t('Translations Home'), '#site' => 'localize'),
-        'languages'    => array('href' => 'translate/languages', 'title' => t('Languages'), '#site' => 'localize'),
-        'projects'     => array('href' => 'translate/projects', 'title' => t('Projects'), '#site' => 'localize'),
-        'download'     => array('href' => 'download', 'title' => t('Download'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^download$')),
-        'news'         => array('href' => 'news', 'title' => t('News'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^news$')),
-        'faq'          => array('href' => 'faq', 'title' => t('FAQ'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^faq$')),
-      );
-
-    case 'dashboard':
-      global $user;
-      return array(
-        'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard', '#site' => 'main'),
-        'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track')),
-        'your-groups' => array('title' => t('Your Groups'), 'href' => 'unread', '#site' => 'groups'),
-        'your-profile' => array('title' => t('Profile'), 'href' => 'user/'. $user->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '(?!/(dashboard|track))')),
-      );
+  else {
+    // Else just return an empty content nav menu.
+    $vars['nav_content'] = $vars['nav_content_class'] = '';
   }
 }
 
 // == API functions ============================================================
+
+/**
+ * Find a path in the breadcrumb. If found, return TRUE and set the shortened
+ * breadcrumb.
+ *
+ * @param $path
+ *   The path to search for, as used in the previously-set breadcrumb.
+ * @return
+ *   TRUE if found, and modify $vars['breadcrumb'].
+ */
+function drupalorg_crosssite_in_breadcrumb($path, &$vars) {
+  $url = url($path);
+  foreach (drupal_get_breadcrumb() as $n => $breadcrumb) {
+    if (strpos($breadcrumb, 'href="' . $url . '"') !== FALSE) {
+      $vars['breadcrumb'] = theme('breadcrumb', array_slice(drupal_get_breadcrumb(), $n + 1));
+      return TRUE;
+    }
+  }
+}
 
 /**
  * Which site is which URL?
