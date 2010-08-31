@@ -558,6 +558,27 @@ function drupalorg_crosssite_apachesolr_update_index(&$document, $node) {
 }
 
 /**
+ * Implementation of hook_apachesolr_node_exclude().
+ *
+ * Excludes all nodes that are not publicly accessible to anonymous users. This
+ * is done so that we can ensure that private content is not indexed and Solr
+ * and potentially retrieved in an insecure fashion.
+ */
+function drupalorg_crosssite_apachesolr_node_exclude($node, $namespace) {
+  static $account;
+
+  if (!isset($account)) {
+    // Load the anonymous user.
+    $account = drupal_anonymous_user();
+  }
+
+  if (!node_access('view', $node, $account)) {
+    // If the document isn't publicly accessible to everyone, don't index it.
+    return TRUE;
+  }
+}
+
+/**
  * Define rules, per site in the multi-site index, for what meta-types should be
  * applied to what type of content.
  */
@@ -655,7 +676,7 @@ function drupalorg_crosssite_form_search_theme_form_alter(&$form, $form_state) {
   
   // If we already ran a query, remember those values in the header search bar.
   $meta_type = '';
-  if (module_exists('apachesolr') && apachesolr_has_searched() && $query = apachesolr_current_query()) {
+  if (drupalorg_crosssite_apachesolr_has_searched() && $query = apachesolr_current_query()) {
     // If a meta_type was specified to refine the search, save that.
     $filter = $query->get_filters('ss_meta_type');
     if (!empty($filter)) {
@@ -698,4 +719,27 @@ function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
   if (!empty($form_state['values']['meta_type'])) {
     $form_state['redirect'][1]['filters'] = 'ss_meta_type:'. $form_state['values']['meta_type'];
   }
+}
+
+/**
+ * Provide a single check for both multi-site searches and single-site searches
+ * so that blocks that are agnostic about the type of search can still behave
+ * as intended on the search pages.
+ *
+ * @return bool
+ *   Returns TRUE if an apachesolr search has been run, regardless of whether it
+ *   is a multisitesearch or a single site search. Returns FALSE otherwise.
+ */
+function drupalorg_crosssite_apachesolr_has_searched() {
+  // If we have a single-site search for apachesolr, return TRUE.
+  if (module_exists('apachesolr') && apachesolr_has_searched()) {
+    return TRUE;
+  }
+  // If we are using apachesolr_multisitesearch and we have a multisitesearch,
+  // then return TRUE.
+  if (module_exists('apachesolr_multisitesearch') && apachesolr_multisitesearch_has_searched()) {
+    return TRUE;
+  }
+  // In all other scenarios, return FALSE;
+  return FALSE;
 }
