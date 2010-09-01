@@ -220,7 +220,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
         // All are exact paths and so theme('links') will make them gain active
         // classes when on the projects site. Therefore no need for #active.
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
-        'core'         => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#site' => 'main'),
+        'core'         => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_in_breadcrumb('node/3060', $vars), '#site' => 'main'),
         'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_term('main', array(DRUPALORG_MODULE_TID)) || drupalorg_crosssite_in_breadcrumb('project/modules', $vars)),
         'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_term('main', array(DRUPALORG_THEME_TID))),
         'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'main'),
