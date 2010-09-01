@@ -297,7 +297,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'home'         => array('href' => '<front>', 'title' => t('Translations Home'), '#site' => 'localize'),
         'languages'    => array('href' => 'translate/languages', 'title' => t('Languages'), '#site' => 'localize'),
         'projects'     => array('href' => 'translate/projects', 'title' => t('Projects'), '#site' => 'localize'),
-        'download'     => array('href' => 'download', 'title' => t('Download'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^download$')),
+        'download'     => array('href' => 'translate/downloads', 'title' => t('Download'), '#site' => 'localize'),
         'news'         => array('href' => 'news', 'title' => t('News'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^news$')),
         'faq'          => array('href' => 'faq', 'title' => t('FAQ'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^faq$')),
       );
@@ -336,7 +336,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       $tab_root_href = implode('/', $parts);
       if (isset($link['href']) && ($link['href'] === $tab_root_href) && (empty($link['language']) || $link['language']->language == $language->language)) {
         // This is an active link/tab, therefore we don't want to display the
-        // page title. Used in page.tpl.php. 
+        // page title. Used in page.tpl.php.
         $vars['matched_content_link'] = TRUE;
       }
     }
@@ -602,7 +602,7 @@ function drupalorg_crosssite_apachesolr_node_exclude($node, $namespace) {
  */
 function drupalorg_crosssite_get_meta_type_rules() {
   $site = variable_get('drupalorg_site', 'main');
-  
+
   $rule_set = array();
   if ($site == 'main') {
     $rule_set = array(
@@ -616,11 +616,11 @@ function drupalorg_crosssite_get_meta_type_rules() {
           'taxonomy' => array(
             // Define taxonomy term values and resultant meta types: in this
             // case after matching a type of project_project, an associated
-            // tid of DRUPALORG_MODULE_TID maps to 'module' while an associated 
+            // tid of DRUPALORG_MODULE_TID maps to 'module' while an associated
             // tid of DRUPALORG_THEME_TID maps to 'theme'.
             DRUPALORG_MODULE_TID => 'module',
             DRUPALORG_THEME_TID => 'theme',
-          ), 
+          ),
         ),
         'book' => 'documentation',
         'project_issue' => 'forum-issues',
@@ -634,13 +634,13 @@ function drupalorg_crosssite_get_meta_type_rules() {
 /**
  * Recursively iterates through an array looking for type or taxonomy filters,
  * and attempting to match against values in the passed in array.
- * 
+ *
  * This function takes an array (set in the $conf array in settings.php) and
  * handles two conditionals: type and taxonomy. Type values match against the
  * node type and taxonomy values match against associated taxonomy terms. If a
  * node matches all the criteria, a string will be returned representing the
  * meta-type of the node for use by the apachesolr module.
- * 
+ *
  * @param object $node
  *   A fully-formed node object as passed from hook_apachesolr_update_index.
  * @param mixed $value
@@ -650,11 +650,11 @@ function drupalorg_crosssite_get_meta_type_rules() {
  *   $value should be a string value rather than an array.
  *   @see drupalorg_crosssite_get_meta_type_rules for the 'main' site to see
  *   an example of $value.
- * 
+ *
  * @return mixed
  *   Returns NULL if no meta type is found for the particular node, otherwise,
  *   if a meta-type is found, a string representing that meta-type is returned.
- *   
+ *
  * @see drupalorg_crosssite_get_meta_type_rules
  */
 function drupalorg_crosssite_meta_type_traverse(&$node, $value) {
@@ -667,7 +667,7 @@ function drupalorg_crosssite_meta_type_traverse(&$node, $value) {
   if (isset($value['type'])) {
     // If our node type has an associated meta-type (or further filtering)
     // recursively call this function to determine the meta-type.
-    if (in_array($node->type, array_keys($value['type']))) {      
+    if (in_array($node->type, array_keys($value['type']))) {
       return drupalorg_crosssite_meta_type_traverse($node, $value['type'][$node->type]);
     }
   }
@@ -691,7 +691,7 @@ function drupalorg_crosssite_meta_type_traverse(&$node, $value) {
  * Implementation of hook_form_search_theme_form_alter().
  */
 function drupalorg_crosssite_form_search_theme_form_alter(&$form, $form_state) {
-  
+
   // If we already ran a query, remember those values in the header search bar.
   $meta_type = '';
   if (drupalorg_crosssite_apachesolr_has_searched() && $query = apachesolr_current_query()) {
