@@ -720,17 +720,53 @@ function drupalorg_crosssite_form_search_theme_form_alter(&$form, $form_state) {
 }
 
 function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
-  if (!is_array($form_state['redirect'])) {
+  // If the redirect is already an array, we'll keep the query params
+  // ($form_state['redirect'][1]) otherwise, we'll build the entire path
+  // manually because we want to be very explicit about where we send the
+  // searches so that they function with apachesolr_multisitesearch.
+	if (!is_array($form_state['redirect'])) {
     $form_state['redirect'] = array($form_state['redirect']);
   }
+
+  // Determine what search is available to us. Ideally, this should always be
+  // multisitesearch, but if it's not part of the multisitesearch index, then
+  // fall back to apachesolr, and if we're not using solr, fall back to the
+  // Drupal core search. 
+  // TODO: Determine if @see search_get_implementing_modules() could supplant
+  // this functionality. At present, it's only on d.o, therefore it can't be
+  // counted on to exist.Rather than duplicating the function, I've opted for
+  // simple logic at present, but this can be changed.
+  if (module_exists('apachesolr_multisitesearch')) {
+    $path = 'apachesolr_multisitesearch';
+  }
+  else if (module_exists('apachesolr_search')) {
+    $path = 'apachesolr_search';
+  }
+  else {
+    $path = 'node';
+  }
+
+  // We override the entire search path if we are pushing to another site,
+  // we end up exactly where we want.
+  $form_id = $form['form_id']['#value'];
+  $path = 'search/' . $path . '/' . trim($form_state['values'][$form_id]);
+
   // We want links to redirect to the appropriate site: initially this will
   // be the main site for all searches, but may expand over time as new meta-
   // types are defined.
   $links = array();
-  // Create a link array out of our current redirect url.
-  $links[] = array('href' => $form_state['redirect'][0], '#site' => 'main');
-  // Make it an absolute link so that searches return to the appropriate site.
-  $links = drupalorg_crosssite_menu_absolute_links($links);
+
+  // Create a link array out of our current redirect url. By default, links to 
+  // the 'main' site, but can be overridden via the $conf array if needed.
+  $links[] = array('href' => $path, '#site' => variable_get('drupalorg_search_site', 'main'));
+
+  // We only push back to the main site in the scenario where multisitesearch
+  // is turned on. If it's not turned on, we assume this simply runs a single-
+  // site implementation of search.
+  if (module_exists('apachesolr_multisitesearch')) {
+    // Make it an absolute link so that searches return to the appropriate site.
+    $links = drupalorg_crosssite_menu_absolute_links($links);
+  }
   // Take our newly created link and make it our redirect path.
   $form_state['redirect'][0] = $links[0]['href'];
 
