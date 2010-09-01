@@ -184,10 +184,12 @@ function drupalorg_update_6003() {
  */
 
 /**
- * Set up blocks that work well for the redesign.
+ * Set up modules, blocks, and solr facets that are necessary for the redesign.
  */
 function drupalorg_update_6500() {
   $return = array();
+
+  drupal_install_modules(array('apachesolr_multisitesearch'));
 
   system_theme_data(); // Trigger updating theme filenames
   _block_rehash(); // Trigger filling out blocks table
