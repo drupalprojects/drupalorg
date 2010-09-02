@@ -27,6 +27,13 @@ function drupalorg_search_apachesolr_facets() {
 }
 
 /**
+ * Implementation of hook_apachesolr_multisitesearch_facets().
+ */
+function drupalorg_search_apachesolr_multisitesearch_facets() {
+  return drupalorg_search_apachesolr_facets();
+}
+
+/**
  * Implementation of hook_apachesolr_prepare_query().
  * 
  * Add project sorts whenever we have an ss_meta_type of theme or module.
@@ -87,7 +94,7 @@ function drupalorg_search_block_info() {
 function drupalorg_search_block_view($delta) {
   switch ($delta) {
     case 'search_box':
-      if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
+      if (drupalorg_crosssite_apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
         $querystring = $query->get_query_basic();
       }
       else {
@@ -106,11 +113,11 @@ function drupalorg_search_block_view($delta) {
       break;
 
     case 'meta_type':
-      if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
+      if (drupalorg_crosssite_apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
         $entries = array();
         $total = 0;
         $has_active = FALSE;
-        foreach (drupalorg_crosssite_meta_types() as $name => $description) {
+        foreach (drupalorg_crosssite_meta_types() as $name => $description) {          
           if (!empty($response->facet_counts->facet_fields->ss_meta_type->$name)) {
             $count = $response->facet_counts->facet_fields->ss_meta_type->$name;
             $total += $count;
@@ -144,9 +151,9 @@ function drupalorg_search_block_view($delta) {
       break;
 
     case 'drupalorg_search_navigation':
-      if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {    
+      if (drupalorg_crosssite_apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {    
         $project_type_term = drupalorg_search_get_project_type_term($response);
-        if (!isset($project_type_term)) {          
+        if (!isset($project_type_term)) {
           $form = drupal_get_form('drupalorg_search_sort_form', $query); 
         }
         else {
@@ -167,7 +174,7 @@ function drupalorg_search_block_view($delta) {
  * Implementation of hook_form_search_form_alter().
  */
 function drupalorg_search_form_search_form_alter(&$form, $form_state) {
-  if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
+  if (drupalorg_crosssite_apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
     $form['#access'] = FALSE;
   }
 }
