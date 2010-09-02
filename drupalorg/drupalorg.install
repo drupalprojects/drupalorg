@@ -352,7 +352,25 @@ function drupalorg_update_6502() {
     ),
   ));
 
+  variable_set('html5_user_geolocation_why', t('Your general location will be used on <a href="http://drupal:drupal@redesign.drupal.org/">Drupal.org’s redesigned home page</a> and potentially more future uses.'));
+
   return $return;
+}
+
+/**
+ * Set permissions.
+ */
+function drupalorg_update_6503() {
+  _drupalorg_add_permissions(array(
+    'administrator' => array(
+      'administer location storing',
+    ),
+    'authenticated user' => array(
+      'allow location to be stored',
+    )
+  ));
+
+  return array();
 }
 
 /**
