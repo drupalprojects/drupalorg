@@ -260,19 +260,18 @@ function drupalorg_preprocess_drupalorg_start(&$variables) {
 
   $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
 
-  $variables['most_popular_modules'] = theme('item_list', array(
-   '<a href="#">Content construction kit (CCK)</a>', 
-   '<a href="#">Views</a>', 
-   '<a href="#">Gallery</a>', 
-   '<a href="#">Foo bar</a>'), 
-   NULL, 'ul', array('class' => 'flat')); // Will be made dynamic, see issue #372243
+  // Create and cache a solr query for use by block elements.
+  project_solr_run_project_query('project/modules', array(array(
+    'key' => 'im_vid_' . _project_get_vid(),
+    'value' => DRUPALORG_MODULE_TID,
+  )));
+  $variables['most_popular_modules'] = drupalorg_order_facet_content('sort_most_installed');
 
-  $variables['most_popular_themes'] = theme('item_list', array(
-   '<a href="#">Paris Eiffel Tower</a>', 
-   '<a href="#">Cute yellow ducks</a>', 
-   '<a href="#">Bluecheese</a>', 
-   '<a href="#">Marvin</a>'), 
-   NULL, 'ul', array('class' => 'flat'));  // Will be made dynamic, see issue #372243
+  project_solr_run_project_query('project/themes', array(array(
+    'key' => 'im_vid_' . _project_get_vid(),
+    'value' => DRUPALORG_THEME_TID,
+  )));
+  $variables['most_popular_themes'] = drupalorg_order_facet_content('sort_most_installed');
 }
 
 /**
@@ -288,7 +287,11 @@ function drupalorg_download() {
 function drupalorg_preprocess_drupalorg_download(&$variables) {
   $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
 
-  drupalorg_search_execute_base_query();
+  // Create and cache a solr query for use by block elements.
+  project_solr_run_project_query('project/modules', array(array(
+    'key' => 'im_vid_' . _project_get_vid(),
+    'value' => DRUPALORG_MODULE_TID,
+  )));
   
   // Since we control what facets we're building, we can just utilize the
   // delta as the unique key for the sake of brevity (both here and in the

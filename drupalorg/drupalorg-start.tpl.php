@@ -24,7 +24,7 @@
       <div class="narrow-box-list">
         <h5 class="lined">Most Popular Modules</h5>
         <?php print $most_popular_modules; ?>
-        <a href="/project/modules" class="all">All Modules</a>>
+        <a href="/project/modules" class="all">All Modules</a>
       </div><!--/narrow-box-list-->
       <div class="narrow-box-list">
         <h5 class="lined">Most Popular Themes</h5>
