@@ -607,31 +607,31 @@ function drupalorg_crosssite_get_meta_type_rules() {
   $site = variable_get('drupalorg_site', 'main');
 
   $rule_set = array();
-  if ($site == 'main') {
-    $rule_set = array(
-      // Define the type of selector: in this case, type.
-      'type' => array(
-        // Define the type values that map to meta-types: in this case,
-        // project_project, book, project_issue, and forum.
-        'project_project' => array(
-          // Define a sub-selector to only be run after matching on the primary
-          // selector: in this case, taxonomy.
-          'taxonomy' => array(
-            // Define taxonomy term values and resultant meta types: in this
-            // case after matching a type of project_project, an associated
-            // tid of DRUPALORG_MODULE_TID maps to 'module' while an associated
-            // tid of DRUPALORG_THEME_TID maps to 'theme'.
-            DRUPALORG_MODULE_TID => 'module',
-            DRUPALORG_THEME_TID => 'theme',
-          ),
+  // For now, make these the rules for all sites, but can be sectioned off by
+  // site using $site if needed.
+  $rule_set = array(
+    // Define the type of selector: in this case, type.
+    'type' => array(
+      // Define the type values that map to meta-types: in this case,
+      // project_project, book, project_issue, and forum.
+      'project_project' => array(
+        // Define a sub-selector to only be run after matching on the primary
+        // selector: in this case, taxonomy.
+        'taxonomy' => array(
+          // Define taxonomy term values and resultant meta types: in this
+          // case after matching a type of project_project, an associated
+          // tid of DRUPALORG_MODULE_TID maps to 'module' while an associated
+          // tid of DRUPALORG_THEME_TID maps to 'theme'.
+          DRUPALORG_MODULE_TID => 'module',
+          DRUPALORG_THEME_TID => 'theme',
         ),
-        'book' => 'documentation',
-        'project_issue' => 'forum-issues',
-        'forum' => 'forum-issues',
-        'og' => 'group',
       ),
-    );
-  }
+      'book' => 'documentation',
+      'project_issue' => 'forum-issues',
+      'forum' => 'forum-issues',
+      'og' => 'group',
+    ),
+  );
   return $rule_set;
 }
 
