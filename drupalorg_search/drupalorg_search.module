@@ -263,23 +263,6 @@ function drupalorg_search_block_form_submit($form, &$form_state) {
 }
 
 /**
- * Base query required for creating the download page context for solr-related
- * blocks. Creates and caches a solr query for use by block elements.
- */
-function drupalorg_search_execute_base_query() {
-  // Grab a Solr query with almost everything we need from project_solr. 
-  // The only special filter we want to add for this base query is to restrict
-  // to projects that are modules.
-  $filters = array(
-    array(
-      'key' => 'im_vid_' . _project_get_vid(),
-      'value' => DRUPALORG_MODULE_TID,
-    ),
-  );
-  $query = project_solr_run_project_query('project/modules', $filters);
-}
-
-/**
  * Get the taxonomy term for the project type (if any) in a given Solr search.
  *
  * This function loops over all of the active facets in the given Solr query
