@@ -538,6 +538,7 @@ function drupalorg_crosssite_meta_types() {
     'theme' => t('Themes'),
     'documentation' => t('Documentation'),
     'forum-issues' => t('Forums & Issues'),
+    'group' => t('Groups'),
     // 'marketplace' => t('Marketplace'),
   );
 }
@@ -625,6 +626,7 @@ function drupalorg_crosssite_get_meta_type_rules() {
         'book' => 'documentation',
         'project_issue' => 'forum-issues',
         'forum' => 'forum-issues',
+        'og' => 'group',
       ),
     );
   }
