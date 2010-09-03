@@ -141,10 +141,10 @@ function bingo_block_output() {
           )
         ),
         drupalorg_drupal_issue_link(
-          'Fields in Core issues (D7)',
+          'Accessibility issues (D7)',
           array(
             'version' => array('7.x'),
-            'issue_tags' => 'Fields in Core',
+            'issue_tags' => 'accessibility',
           )
         ),
       ),
