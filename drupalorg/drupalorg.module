@@ -204,7 +204,7 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
     $stats = array();
 
     $stats['number_of_cvs_accounts'] = number_format(db_result(db_query('SELECT count(*) FROM {cvs_accounts} WHERE status <> 0')));
-    $stats['number_of_cvs_commits'] = number_format(db_result(db_query('SELECT count(*) FROM {cvs_messages} WHERE created > (unix_timestamp() - 30*24*60*60)')));
+    $stats['number_of_cvs_commits'] = number_format(db_result(db_query('SELECT count(*) FROM {cvs_messages} WHERE created > (unix_timestamp() - 7*24*60*60)')));
 
     // Users: Count them.
     $stats['number_of_users'] = number_format(db_result(db_query('SELECT COUNT(*) FROM {users}')));

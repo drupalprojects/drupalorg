@@ -28,10 +28,10 @@
       <h2><a href="download">Develop with Drupal</a></h2>
       <p>Drupal is extensible, powerful, scalable, and flexible.</p>
       <div class="grid-2 alpha">
-       <h4>Current activity</h4>
+       <strong>Current activity</strong>
        <ul>
          <li><a href="cvs"><?php print $number_of_cvs_accounts; ?> CVS a/c holders</a></li>
-         <li><a href="cvs"><?php print $number_of_cvs_commits; ?> commits this month</a></li>
+         <li><a href="cvs"><?php print $number_of_cvs_commits; ?> commits this week</a></li>
        </ul>
       </div>
       <div class="grid-2 omega">
