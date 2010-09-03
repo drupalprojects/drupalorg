@@ -59,6 +59,4 @@ function _drupalorg_views_default_views_alter(&$views) {
     $handler->override_option('title', 'My Bookmarks');
     $handler->override_option('block_caching', -1);
   }
-
 }
-

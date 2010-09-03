@@ -173,6 +173,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
   // Specify the high level matching criteria for each menu and let others put
   // in more menus.
   $nav_content_areas = array(
+    'dashboard'     => drupalorg_crosssite_menu_path('main', '^(user/'. $user->uid .'|project(/issues)?/user)(/|$)'),
     'downloads'     => drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')),
     // Events appear at here and as an individual tab list. Commented out from here.
     'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
@@ -181,7 +182,6 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'association'   => drupalorg_crosssite_menu_site('association'),
     'events'        => drupalorg_crosssite_menu_path('groups', '^events(/|$)'),
     'druplicon'     => drupalorg_crosssite_menu_path('main', '^(node/9068|druplicon)(/|$)'),
-    'dashboard'     => drupalorg_crosssite_menu_path('main', '^user/'. $user->uid .'(/|$)'),
     'localize'      => drupalorg_crosssite_menu_site('localize'),
   );
 
@@ -308,6 +308,8 @@ function drupalorg_crosssite_content_menu(&$vars) {
       $nav_content_links = array(
         'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard', '#site' => 'main'),
         'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track')),
+        'your-issues' => array('title' => t('Your Issues'), 'href' => 'project/issues/user', '#site' => 'main'),
+        'your-projects' => array('title' => t('Your Projects'), 'href' => 'project/user', '#site' => 'main'),
         'your-groups' => array('title' => t('Your Groups'), 'href' => 'unread', '#site' => 'groups'),
         'your-profile' => array('title' => t('Profile'), 'href' => 'user/'. $user->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '(?!/(dashboard|track))')),
       );
