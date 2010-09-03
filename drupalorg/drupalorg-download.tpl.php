@@ -11,10 +11,7 @@
   <div class="grid-3 installation-profiles">
     <h2>Installation Profiles</h2>
     <ul class="flat">
-      <li class="first"><a href="project/openmedia">Community Site</a></li>
-      <li><a href="project/uberdrupal">E-commerce</a></li>
-      <li><a href="project/openpublish">News Site</a></li>
-      <li><a href="project/drupal_wiki">Wiki</a></li>
+      <?php print $drupalorg_featured_install_profiles; ?>
       <li class="last all"><a class="all" href="project/installation+profiles">More profiles</a></li>
     </ul>
   </div>
@@ -33,9 +30,7 @@
   <div class="grid-3 omega translations">
     <h2>Translations</h2>
     <ul class="flat">
-      <li class="first"><a href="http://localize.drupal.org/translate/languages/ca">Catalan</a></li>
-      <li><a href="http://localize.drupal.org/translate/languages/fr">French</a></li>
-      <li><a href="http://localize.drupal.org/translate/languages/hu">Hungarian</a></li>
+      <?php print $drupalorg_featured_translations; ?>
       <li class="last all"><a href="http://localize.drupal.org/" class="all">All translations</a></li>
     </ul>
   </div>

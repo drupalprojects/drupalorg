@@ -353,6 +353,14 @@ function drupalorg_update_6502() {
   ));
 
   variable_set('html5_user_geolocation_why', t('Your general location will be used on <a href="http://drupal:drupal@redesign.drupal.org/">Drupal.org’s redesigned home page</a> and potentially more future uses.'));
+  variable_set('drupalorg_featured_translations', '<li><a href="http://localize.drupal.org/translate/languages/ca">Catalan</a></li>
+<li><a href="http://localize.drupal.org/translate/languages/fr">French</a></li>
+<li><a href="http://localize.drupal.org/translate/languages/hu">Hungarian</a></li>
+<li><a href="http://localize.drupal.org/translate/languages/nl">Dutch</a></li>');
+  variable_set('drupalorg_featured_install_profiles', '<li><a href="project/openmedia">Community Site</a></li>
+<li><a href="project/uberdrupal">E-commerce</a></li>
+<li><a href="project/openpublish">News Site</a></li>
+<li><a href="project/drupal_wiki">Wiki</a></li>');
 
   return $return;
 }

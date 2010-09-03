@@ -11,10 +11,7 @@
     <h5>Installation Profiles</h5>
     <p>Already know what site you need? Drupal's <a href="/project/installation+profiles">installation profiles</a> can help you get started with your shop, blog, or social network, providing all the modules you need in one place.</p>
     <ul>
-      <li><a href="/project/drupal_developer">Drupal Developer</a></li>
-      <li><a href="/project/openmedia">Open Media</a></li>
-      <li><a href="/project/single_user_blog">Single-User Blog</a></li>
-      <li><a href="/project/drupal_wiki">Wiki Installation Profile</a></li>
+      <?php print $drupalorg_featured_install_profiles; ?>
     </ul>
   </div>
 </div>
@@ -34,9 +31,7 @@
       <div class="narrow-box-list">
         <h5 class="lined">Translations</h5>
         <ul>
-          <li><a href="/project/es">Spanish</a></li>
-          <li><a href="/project/zh-hans">Chinese (simplified)</a></li>
-          <li><a href="/project/de">German</a></li>
+          <?php print $drupalorg_featured_translations; ?>
         </ul>
         <a href="/project/translations" class="all">All Translations</a>
     </div><!--/narrow-box-list-->

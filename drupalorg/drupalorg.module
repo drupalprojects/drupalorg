@@ -109,6 +109,13 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['admin/settings/drupalorg'] = array(
+    'title' => 'Drupal.org settings',
+    'access arguments' => array('administer site configuration'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('drupalorg_settings_form'),
+  );
+
   return $items;
 }
 
@@ -259,6 +266,8 @@ function drupalorg_preprocess_drupalorg_start(&$variables) {
   $variables['theme_images_directory'] = drupal_get_path('theme', variable_get('theme_default', 'bluecheese')) .'/images';
 
   $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
+  $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
+  $variables['drupalorg_featured_install_profiles'] = variable_get('drupalorg_featured_install_profiles', '');
 
   // Create and cache a solr query for use by block elements.
   project_solr_run_project_query('project/modules', array(array(
@@ -286,6 +295,8 @@ function drupalorg_download() {
  */
 function drupalorg_preprocess_drupalorg_download(&$variables) {
   $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
+  $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
+  $variables['drupalorg_featured_install_profiles'] = variable_get('drupalorg_featured_install_profiles', '');
 
   // Create and cache a solr query for use by block elements.
   project_solr_run_project_query('project/modules', array(array(
@@ -781,4 +792,23 @@ function drupalorg_block_render($module, $delta) {
     }
   }
   return theme('block', $block);
+}
+
+function drupalorg_settings_form() {
+  $form = array();
+
+  $form['drupalorg_featured_translations'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Featured translations'),
+    '#default_value' => variable_get('drupalorg_featured_translations', ''),
+    '#rows' => 5,
+  );
+  $form['drupalorg_featured_install_profiles'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Featured install profiles'),
+    '#default_value' => variable_get('drupalorg_featured_install_profiles', ''),
+    '#rows' => 5,
+  );
+
+  return system_settings_form($form);
 }
