@@ -205,7 +205,16 @@ function drupalorg_update_6500() {
     ),
   );
   _drupalorg_update_enable_filters($filters);
-  
+
+  // Filters that need to be enabled for multisitesearch pages.
+  $filters = array(
+    'drupalorg_search' => array(
+      'meta_type',
+    ),
+  );
+
+  _drupalorg_update_enable_filters($filters, 'apachesolr_multisitesearch');
+
   $return[] = update_sql("DELETE FROM {blocks} WHERE theme = 'bluecheese'");
   $blocks = array(
     array(
@@ -424,22 +433,26 @@ function _drupalorg_add_permissions($permissions) {
  *   $filter_list = array('module' => array('facet_name', 'facet_name2'));
  *   where module is where the facet is defined, and facet_name is the
  *   name (array key) of the actual facet in the apachesolr_facets instance.
- *   
+ * @param string $search_module
+ *   A string representing which apachesolr module's facets we're going to 
+ *   update. By default, this is apachesolr, but apachesolr_multisitesearch has
+ *   a separate set of facets that must be enabled.
  * @return none
  */
-function _drupalorg_update_enable_filters($filter_list) {
+function _drupalorg_update_enable_filters($filter_list, $search_module = 'apachesolr') {
   // Grab the existing enabled filters.
-  $enabled_filters = variable_get('apachesolr_enabled_facets', array());  
-  
+  $enabled_filters = variable_get($search_module . '_enabled_facets', array());  
+
   // Loop over the filter list, pull the definition (so we only need define the
   // module and name, not the actual facet field), and retrieve the facet_field
   // from the facet definition.
   foreach ($filter_list as $module => $filters) {
-    $facets = module_invoke($module, 'apachesolr_facets');
+    $facets = module_invoke($module, $search_module . '_facets');
     foreach ($filters as $filter) {
       $enabled_filters[$module][$filter] = $facets[$filter]['facet_field'];
     }
   }
+
   // Store all of the enabled facets back.
-  variable_set('apachesolr_enabled_facets', $enabled_filters);
+  variable_set($search_module . '_enabled_facets', $enabled_filters);
 }
