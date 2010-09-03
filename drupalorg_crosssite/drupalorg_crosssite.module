@@ -173,7 +173,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
   // Specify the high level matching criteria for each menu and let others put
   // in more menus.
   $nav_content_areas = array(
-    'dashboard'     => drupalorg_crosssite_menu_path('main', '^(user/'. $user->uid .'|project(/issues)?/user)(/|$)'),
+    'dashboard'     => drupalorg_crosssite_menu_path('main', '^(user/'. $user->uid .'(/|$)|project(/issues)?/user$)'),
     'downloads'     => drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')),
     // Events appear at here and as an individual tab list. Commented out from here.
     'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
