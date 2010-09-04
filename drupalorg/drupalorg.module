@@ -151,15 +151,9 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
  * Page callback for the frontpage.
  */
 function drupalorg_home() {
-  if (module_exists('jquery_ui')) {
-    jquery_ui_add('ui.tabs');
-  }
+  jquery_ui_add('ui.tabs');
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/jquery.bt.min.js');
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/home.js');
-  drupal_add_js(array('homePageMap' => array(
-    array('content' => '<strong>Test</strong><div class="description">description</div>', 'top' => 122, 'left' => 335, 'type' => 'forum'),
-    array('content' => '<strong>Test2</strong><div class="description">d3scr1p110n</div>', 'top' => 105, 'left' => 52, 'type' => 'forum'),
-  )), 'setting');
 
   return theme('drupalorg_home');
 }
@@ -185,6 +179,9 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   // == Things we made with drupal
   $things = drupalorg_get_most_recent_things_we_made(4);
   $variables['things_we_made'] = drupalorg_render_things_we_made($things);
+
+  $variables['map_content'] = '<div class="homepage-pin homepage-pin-commit"><span class="latitude">41.836944</span><span class="longitude">-87.684444</span><div class="content"><a href="http://chicago2011.drupal.org/"><img src="http://chicago2011.drupal.org/sites/default/themes/conchicago/logo.png" alt="DrupalCon Chicago March 7-10 2011" /></a></div></div>
+<div class="homepage-pin homepage-pin-forum"><span class="latitude">60</span><span class="longitude">20</span><div class="content">todo todo todo</div></div>';
 
   // == Forums tab data/markup
   $sql = db_rewrite_sql("SELECT n.nid, n.title, n.created, n.uid, u.name FROM {node} n INNER JOIN {term_node} tn ON tn.vid = n.vid INNER JOIN {term_data} td ON td.tid = tn.tid INNER JOIN {users} u ON n.uid = u.uid WHERE n.status = 1 AND td.vid = %d ORDER BY n.nid DESC");

@@ -1,25 +1,36 @@
 $(function () {
-  var items = Drupal.settings.homePageMap, current = 0, max = Drupal.settings.homePageMap.length, i;
-  $.bt.defaults.closeWhenOthersOpen = true;
-  for (i = 0; i < items.length; i += 1) {
-    var item = items[i];
-    $('.homepage-map').append($('<img class="homepage-image" src="' + Drupal.settings.basePath + '/sites/all/themes/trunk/images/homepage-' + item.type + '.png" width="10" height="10" id="homepage-image-' + i + '" />').css({ top: item.top, left: item.left }));
-    $('#homepage-image-' + i).bt(item.content, {
-      width: 220,
-      spikeLength: 15,
-      spikeGirth: 10,
-      padding: 5,
-      cornerRadius: 10,
-      fill: '#FFF',
-      strokeStyle: '#BFBFBF',
-      strokeWidth: 1,
-      trigger: 'none',
-      animate: true,
-      overlap: 5
+  var current = 0,
+    $map = $('.homepage-map'),
+    $pins = $('.homepage-map>.homepage-pin');
+  $pins.each(function () {
+    $(this).css({
+      left: '' + Drupal.html5UserGeolocationLongitudeToPx($('>.longitude', this).text(), -168, $map.width()) + 'px',
+      bottom: '' + Drupal.html5UserGeolocationLatitudeToPx($('>.latitude', this).text(), 78, -58, $map.height()) + 'px'
     });
-  }
-  var update = function () {
-    var $element = $('#homepage-image-' + current),
+  }).bt({
+    contentSelector: "$('>.content', this)",
+    positions: ['top'],
+    closeWhenOthersOpen: true,
+    width: 'auto',
+    spikeLength: 15,
+    spikeGirth: 10,
+    padding: 5,
+    cornerRadius: 10,
+    fill: '#FFF',
+    strokeStyle: '#BFBFBF',
+    strokeWidth: 1,
+    trigger: 'none',
+    animate: true,
+    preShow: function () {
+      $(this).show();
+    },
+    postHide: function () {
+      $(this).hide();
+    },
+    overlap: 4
+  });
+  setInterval(function () {
+    var $element = $pins.eq(current),
         $window = $(window),
         top = $window.scrollTop(),
         bottom = $window.height() + top,
@@ -27,20 +38,15 @@ $(function () {
         elementBottom = elementTop + $element.height();
     if (top < elementBottom && bottom > elementBottom) {
       $element.btOn();
+      current += 1;
+      if (current === $pins.length) {
+        current = 0;
+      }
     }
-    current += 1;
-    if (current === max) {
-      current = 0;
-    }
-    setTimeout(function () {
-      update();
-    }, 3000);
-  };
-  update();
+  }, 3000);
 });
 
-Drupal.behaviors.things_we_made = function (context) {
-  var left = 0;
+Drupal.behaviors.thingsWeMade = function (context) {
   var index = 0;
 
   setInterval(function () {
@@ -51,12 +57,11 @@ Drupal.behaviors.things_we_made = function (context) {
     else {
       index += 1;
     }
-    left = index * -300;
 
-    $('ul.things-we-made').animate({ marginLeft: left }, 500);
+    $('ul.things-we-made').animate({ marginLeft: index * -300 }, 500);
   }, 6000);
 };
 
 Drupal.behaviors.frontTabs = function () {
-  $('#rotate > ul').tabs({}).tabs('rotate', 0);
+  $('#rotate > ul').tabs();
 };

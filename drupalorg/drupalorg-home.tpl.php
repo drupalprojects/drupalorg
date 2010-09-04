@@ -63,8 +63,7 @@
 <div id="front-bottom-left" class="grid-6 alpha">
   <div id="front-bottom-left-inner">
     <div class="block-content">
-      <div class="homepage-map">
-      </div>
+      <div class="homepage-map"><?php print $map_content; ?></div>
     </div>
   </div>
 </div>
