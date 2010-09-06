@@ -30,18 +30,10 @@ $(function () {
     overlap: 4
   });
   setInterval(function () {
-    var $element = $pins.eq(current),
-        $window = $(window),
-        top = $window.scrollTop(),
-        bottom = $window.height() + top,
-        elementTop = $element.offset().top,
-        elementBottom = elementTop + $element.height();
-    if (top < elementBottom && bottom > elementBottom) {
-      $element.btOn();
-      current += 1;
-      if (current === $pins.length) {
-        current = 0;
-      }
+    $pins.eq(current).btOn();
+    current += 1;
+    if (current === $pins.length) {
+      current = 0;
     }
   }, 3000);
 });
