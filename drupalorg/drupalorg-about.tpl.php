@@ -15,7 +15,7 @@
       
     <div class="grid-3">
       <h3 id="aboutmodules"><a href="/about/features/modules">ROBUST EXTENSIBILITY</a></h3>
-      <p>With more than 6000 available modules, the vast majority of your site’s requirements can be addressed with Drupal core and available add-on modules. Focus your efforts on building great web sites, not re-creating well understood features available elsewhere. Whether you need a gallery or shopping cart, Drupal modules let you build, customize, and extend your site as much as you want. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
+      <p>With more than 6000 available modules, the vast majority of your site’s requirements can be addressed with Drupal core and available add-on modules. Focus your efforts on building great web sites, not re-creating well understood features available elsewhere. Whether you need custom content types, dynamic lists, a gallery or shopping cart, Drupal modules let you build, customize, and extend your site as much as you want. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
     </div>
       
     <div class="grid-3 omega">
@@ -32,7 +32,7 @@
       
     <div class="grid-3">
       <h3 id="aboutsocial"><a href="/about/features/social-publishing">SOCIAL PUBLISHING</a></h3>
-      <p>Drupal allows you to create sites and applications to help people express their opinions and engage with one another through <a href="#">Wikis</a>, <a href="#">Forums</a>, and <a href="#">Blogs</a></p>
+      <p>Drupal allows you to create sites and applications to help people express their opinions and engage with one another through Wikis, Messaging, Forums, Blogs and more.</p>
     </div>
       
     <div class="grid-3">
@@ -41,8 +41,8 @@
     </div>
       
     <div class="grid-3 omega">
-      <h3 id="aboutcontentmanagement"><a href="/about/">MODULAR, EXTENSIBLE ARCHITECTURE</a></h3>
-      <p>Drupal's LAMP-based architecture is designed for extensibility - offering your developers and designers the freedom to address a wide range of site requirements. Create custom content types, views and user experiences to increase engagement across your web properties.</p>
+      <h3 id="aboutcontentmanagement"><a href="/about/">ROLE-BASED USER MANAGEMENT</a></h3>
+      <p>Drupal comes with great options for new user accounts and user permissions. Users can be assigned one or more roles, and each role can be set up with fine-grained permissions allowing users view and create only what the administrator permits.</p>
     </div>
   </div>
 </div>
