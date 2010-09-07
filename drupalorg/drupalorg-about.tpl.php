@@ -19,8 +19,8 @@
     </div>
       
     <div class="grid-3 omega">
-      <h3 id="aboutthemes"><a href="/about/features/themes">THEMES</a></h3>
-      <p>Use an existing <a href="/project/themes">Drupal theme</a> for your site, giving it an instant identity! If you can't find one you like, try designing your own which others can use, too.</p>
+      <h3 id="aboutthemes"><a href="/about/features/themes">POWERFUL DESIGN CUSTOMIZATION</a></h3>
+      <p>Drupal's presentation layer allows designers to create highly usable, interactive experiences that engage users and increase traffic. Drupal themes can range from simple to complex, and support rich customization. Use an existing Drupal theme for your site, giving it an instant identity! If you can't find one you like, try designing your own which others can use, too.</p>
     </div>
   </div>
   
@@ -42,7 +42,7 @@
       
     <div class="grid-3 omega">
       <h3 id="aboutcontentmanagement"><a href="/about/">MODULAR, EXTENSIBLE ARCHITECTURE</a></h3>
-      <p>Drupal’s LAMP-based architecture is designed for extensibility - offering your developers and designers the freedom to address a wide range of site requirements. Create custom content types, views and user experiences to increase engagement across your web properties.</p>
+      <p>Drupal's LAMP-based architecture is designed for extensibility - offering your developers and designers the freedom to address a wide range of site requirements. Create custom content types, views and user experiences to increase engagement across your web properties.</p>
     </div>
   </div>
 </div>
