@@ -159,9 +159,6 @@ function drupalorg_search_block_view($delta) {
         else {
           $form = drupal_get_form('project_solr_browse_projects_form', $project_type_term, 'search/apachesolr_search/' . $query->get_keys());
         }
-        if (!empty($project_type_term->name)) {
-          $block['subject'] = t('Browse @project_type', array('@project_type' => $project_type_term->name));
-        }
         $block['content'] = $form;
         return $block;
       }
@@ -187,10 +184,7 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
   // The type being searched for, this is always plural
   $type = $form['#parameters'][2]->name;
   $results = t('@result @type match your search', array('@result' => $pager_total_items[0], '@type' => $type));
-  $form['results'] = array(
-    '#value' => '<h3 class="results-count">' . $results . '</h3>',
-    '#weight' => -10,
-  );
+
   // Check to see if the project_solr_browse_projects form is being used in
   // our block on the core search page. We could test $form['path']['#value']
   // here instead, but it's not really any better that way, so arg() works.
@@ -206,6 +200,13 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
     $query = apachesolr_current_query();
     $form['text']['#default_value'] = $query->get_keys();
     $form['text']['#access'] = FALSE;
+  }
+  else {
+    // If not on the core search page, add a results count title to the form
+    $form['results'] = array(
+      '#value' => '<h3 class="results-count">' . $results . '</h3>',
+      '#weight' => -10,
+    );
   }
 }
 
