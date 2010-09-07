@@ -9,13 +9,13 @@
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutpersonalisation"><a href="/about/rapid-assembly">RAPID ASSEMBLY</a></h3>      
+      <h3 id="aboutpersonalisation"><a href="/about/rapid-assembly">RAPID SITE ASSEMBLY</a></h3>      
       <p>Build internal and external-facing websites in a matter of hours, with no custom programming. No need to start from scratch every time you build a new site, either. You can utilize a multi-side configuration or choose a Drupal distribution (installation profile). These provide a pre-defined configuration of site features and functions for a specific purpose or type of site, available as a single download.</p>
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutmodules"><a href="/about/features/modules">MODULES</a></h3>
-      <p>Whether you need a <a href="#">gallery</a>, custom layouts, or <a href="#">shopping cart</a>, Drupal modules let you build, customize, and extend your site as much as you want. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
+      <h3 id="aboutmodules"><a href="/about/features/modules">ROBUST EXTENSIBILITY</a></h3>
+      <p>With more than 6000 available modules, the vast majority of your site’s requirements can be addressed with Drupal core and available add-on modules. Focus your efforts on building great web sites, not re-creating well understood features available elsewhere. Whether you need a gallery or shopping cart, Drupal modules let you build, customize, and extend your site as much as you want. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
     </div>
       
     <div class="grid-3 omega">
