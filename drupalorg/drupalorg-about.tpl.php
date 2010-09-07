@@ -36,8 +36,8 @@
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutcommunity"><a href="/about/features/community-support">COMMUNITY SUPPORT</a></h3>
-      <p>Drupal has a <a href="#">worldwide community</a> that is one hand to <a href="#">help with your Drupal problems</a>, <a href="#">share ideas</a>, and even meet for coffee at a local <a href="#">Drupal event.</a></p>
+      <h3 id="aboutcommunity"><a href="/about/features/community-support">THRIVING COMMUNITY</a></h3>
+      <p>With hundreds of contributors to the Drupal 7 release, the Drupal developer and support community is very active and growing rapidly. This community drives the innovation that makes Drupal the preferred social publishing choice for web developers and site owners. Drupal has a worldwide community that is on hand to help with your Drupal problems, share ideas, and even meet at a local Drupal event.</a></p>
     </div>
       
     <div class="grid-3 omega">
