@@ -728,7 +728,7 @@ function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
   // ($form_state['redirect'][1]) otherwise, we'll build the entire path
   // manually because we want to be very explicit about where we send the
   // searches so that they function with apachesolr_multisitesearch.
-	if (!is_array($form_state['redirect'])) {
+  if (!is_array($form_state['redirect'])) {
     $form_state['redirect'] = array($form_state['redirect']);
   }
 
