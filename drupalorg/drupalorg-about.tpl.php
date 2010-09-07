@@ -9,8 +9,8 @@
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutcontentmanagement"><a href="/about/">--TBC--</a></h3>
-      <p>Drupal comes with polls, and <a href="#">revisions</a>. These features allow you to manage your site's content and let users interact with your content.</p>
+      <h3 id="aboutpersonalisation"><a href="/about/rapid-assembly">RAPID ASSEMBLY</a></h3>      
+      <p>Build internal and external-facing websites in a matter of hours, with no custom programming. No need to start from scratch every time you build a new site. Drupal distributions, or installation profiles, provide a pre-defined configuration of site features and functions for a specific purpose or type of site, available as a single download.</p>
     </div>
       
     <div class="grid-3">
@@ -41,7 +41,7 @@
     </div>
       
     <div class="grid-3 omega">
-      <h3 id="aboutpersonalisation"><a href="#">--TBC--</a></h3>
+      <h3 id="aboutcontentmanagement"><a href="/about/">--TBC--</a></h3>
       <p>TBC</p>
     </div>
   </div>
