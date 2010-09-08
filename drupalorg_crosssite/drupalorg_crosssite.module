@@ -255,13 +255,12 @@ function drupalorg_crosssite_content_menu(&$vars) {
     case 'association':
       $nav_content_links = array(
         'home'       => array('href' => '<front>', 'title' => t('Association Home'), '#site' => 'association'),
-        'blogs'      => array('href' => 'blogs', 'title' => t('Blogs'), '#site' => 'association'),
-        'about'      => array('href' => 'about', 'title' => t('About'), '#site' => 'association'),
-        'donate'     => array('href' => 'civicrm/contribute/transact?reset=1&id=8', 'title' => t('Donate'), '#site' => 'association'),
-        'membership' => array('href' => 'membership', 'title' => t('Memberships'), '#site' => 'association'),
-        'press'      => array('href' => 'press', 'title' => t('Press'), '#site' => 'association'),
-        'faq'        => array('href' => 'faq', 'title' => t('FAQ'), '#site' => 'association'),
-        'staff'      => array('href' => 'about/staff', 'title' => t('Staff'), '#site' => 'association'),
+        'blogs'      => array('href' => 'news', 'title' => t('Blogs'), '#site' => 'association'),
+        'about'      => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association'),
+        'donate'     => array('href' => 'node/67', 'title' => t('Donate'), '#site' => 'association'),
+        'membership' => array('href' => 'node/78', 'title' => t('Memberships'), '#site' => 'association'),
+        'faq'        => array('href' => 'node/65', 'title' => t('FAQ'), '#site' => 'association'),
+        'staff'      => array('href' => 'node/61', 'title' => t('Staff'), '#site' => 'association'),
         'contact'    => array('href' => 'contact', 'title' => t('Contact'), '#site' => 'association'),
       );
       break;
