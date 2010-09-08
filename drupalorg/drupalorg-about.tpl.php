@@ -60,7 +60,7 @@
       
   <div class="grid-3">
     <h2>Dedicated Security Team</h2>
-    <p><a href="/getting-started/is-drupal-secure">We take security seriously</a> and have a <a href="/security-team">dedicated team</a> that has a proven track record in dealing with your security issues professionally and efficiently, meaning you can spend more time creating your site.</p>
+    <p><a href="/getting-started/is-drupal-secure">We take security seriously</a> and have a <a href="/security-team">dedicated team</a> that has a <a href="/about/security-track-record">proven track record</a> in dealing with your security issues professionally and efficiently, meaning you can spend more time creating your site.</p>
   </div>
       
   <div class="grid-3 omega">
