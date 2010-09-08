@@ -10,16 +10,16 @@
       
     <div class="grid-3">
       <h3 id="aboutpersonalisation"><a href="/about/rapid-assembly">RAPID SITE ASSEMBLY</a></h3>      
-      <p>Build internal and external-facing websites in a matter of hours, with no custom programming. No need to start from scratch every time you build a new site, either. You can utilize a multi-side configuration or choose a Drupal distribution (installation profile). These provide a pre-defined configuration of site features and functions for a specific purpose or type of site, available as a single download.</p>
+      <p>Build internal and external-facing websites in a matter of hours, with no custom programming. No need to start from scratch every time you build a new site, either. You can utilize a multi-site configuration or choose a Drupal distribution (installation profile). These provide a pre-defined configuration of site features and functions for a specific purpose or type of site, available as a single download.</p>
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutmodules"><a href="/about/features/modules">ROBUST EXTENSIBILITY</a></h3>
-      <p>With more than 6000 available modules, the vast majority of your site’s requirements can be addressed with Drupal core and available add-on modules. Focus your efforts on building great web sites, not re-creating well understood features available elsewhere. Whether you need custom content types, dynamic lists, a gallery or shopping cart, Drupal modules let you build, customize, and extend your site as much as you want. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
+      <h3 id="aboutmodules"><a href="/about/modules">ROBUST EXTENSIBILITY</a></h3>
+      <p>With more than 6000 available modules, the vast majority of your site's requirements can be addressed with Drupal core and available add-on modules. Focus your efforts on building great web sites, not re-creating features available elsewhere. Whether you need custom content types, dynamic lists or shopping cart, Drupal modules let you build, customize, and extend your site. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
     </div>
       
     <div class="grid-3 omega">
-      <h3 id="aboutthemes"><a href="/about/features/themes">POWERFUL DESIGN CUSTOMIZATION</a></h3>
+      <h3 id="aboutthemes"><a href="/about/themes">POWERFUL DESIGN CUSTOMIZATION</a></h3>
       <p>Drupal's presentation layer allows designers to create highly usable, interactive experiences that engage users and increase traffic. Drupal themes can range from simple to complex, and support rich customization. Use an existing Drupal theme for your site, giving it an instant identity! If you can't find one you like, try designing your own which others can use, too.</p>
     </div>
   </div>
@@ -31,17 +31,17 @@
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutsocial"><a href="/about/features/social-publishing">SOCIAL PUBLISHING</a></h3>
+      <h3 id="aboutsocial"><a href="/about/social-publishing">SOCIAL PUBLISHING</a></h3>
       <p>Drupal allows you to create sites and applications to help people express their opinions and engage with one another through Wikis, Messaging, Forums, Blogs and more.</p>
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutcommunity"><a href="/about/features/community-support">THRIVING COMMUNITY</a></h3>
+      <h3 id="aboutcommunity"><a href="/about/community-support">THRIVING COMMUNITY</a></h3>
       <p>With hundreds of contributors to the Drupal 7 release, the Drupal developer and support community is very active and growing rapidly. This community drives the innovation that makes Drupal the preferred social publishing choice for web developers and site owners. Drupal has a worldwide community that is on hand to help with your Drupal problems, share ideas, and even meet at a local Drupal event.</a></p>
     </div>
       
     <div class="grid-3 omega">
-      <h3 id="aboutcontentmanagement"><a href="/about/">ROLE-BASED USER MANAGEMENT</a></h3>
+      <h3 id="aboutcontentmanagement"><a href="/about/user-management">ROLE-BASED USER MANAGEMENT</a></h3>
       <p>Drupal comes with great options for new user accounts and user permissions. Users can be assigned one or more roles, and each role can be set up with fine-grained permissions allowing users view and create only what the administrator permits.</p>
     </div>
   </div>
