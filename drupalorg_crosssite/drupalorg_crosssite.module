@@ -255,7 +255,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     case 'association':
       $nav_content_links = array(
         'home'       => array('href' => '<front>', 'title' => t('Association Home'), '#site' => 'association'),
-        'blogs'      => array('href' => 'news', 'title' => t('Blogs'), '#site' => 'association'),
+        'news'      => array('href' => 'news', 'title' => t('News'), '#site' => 'association'),
         'about'      => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association'),
         'donate'     => array('href' => 'node/67', 'title' => t('Donate'), '#site' => 'association'),
         'membership' => array('href' => 'node/78', 'title' => t('Memberships'), '#site' => 'association'),
