@@ -138,7 +138,14 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
 <p><a href="http://localize.drupal.org">Translations</a> – Fluent in French or a speaker of Spanish? Translate Drupal for other users around the world.</p>
 <p><a href="http://groups.drupal.org/event">Events</a> – Come to a Drupal event and have fun with the community.</p>
 <p><a href="http://association.drupal.org/civicrm/contribute/transact">Donate</a> – Whether you want to say thanks or ensure there is a secure future for Drupal, every little bit helps and is gratefully received.</p>
-<p><a href="/community-initiatives">Projects</a> – There are always projects that need a little extra help and attention along the way. Below are just a few that you can get involved with:</p>'),
+<p><a href="/community-initiatives">Projects</a> – There are always projects that need a little extra help and attention along the way. Below are just a few that you can get involved with:</p>
+<ul>
+<li><a href="/community-initiatives/drupal-core">Drupal core</a></li>
+<li><a href="/community-initiatives/redesign">Drupal.org redesign</a></li>
+<li><a href="/community-initiatives/documentation">Documentation projects</a></li>
+<li><a href="/community-initiatives/drupal-core/usability">Usability issues</a></li>
+<li><a href="/node/363007">Core documentation</a></li>
+</ul>'),
           );
       }
       break;
