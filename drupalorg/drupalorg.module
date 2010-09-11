@@ -698,9 +698,9 @@ function drupalorg_homebox() {
           'title' => '',
           'weight' => -7,
         ),
-        'user_3' => array(
-          'module' => 'user',
-          'delta' => '3',
+        'tracker2_user' => array(
+          'module' => 'tracker2',
+          'delta' => 'user',
           'region' => 2,
           'movable' => 1,
           'status' => 1,
