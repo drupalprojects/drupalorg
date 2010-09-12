@@ -1,20 +1,21 @@
+<p>Drupal is a free software package that allows anyone to easily publish, manage and organize a wide variety of content on a website. Hundreds of thousands of people and organizations are using Drupal to power an endless variety of web sites.</p>
 
 <div class="node-section grid-12 alpha omega" id="about-features">
   <h2>Drupal Features</h2>
   
   <div class="node-sub-section grid-12 alpha omega">
     <div class="grid-3 alpha">
-      <h3 id="aboutwebbased"><a href="/about/build">BUILD</a></h3>
+      <h3 id="aboutpersonalisation"><a href="/about/build">BUILD</a></h3>
       <p>Build internal and external-facing websites in a matter of hours, with no custom programming. No need to start from scratch every time you build a new site, either. You can utilize a multi-site configuration or choose a Drupal distribution (installation profile). These provide a pre-defined configuration of site features and functions for a specific purpose or type of site, available as a single download.</p>
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutpersonalisation"><a href="/about/create">CREATE</a></h3>      
+      <h3 id="aboutwebbased"><a href="/about/create">CREATE</a></h3>      
       <p>Manage content with an easy-to-use web interface. Drupal's flexibility handles countless content types including video, text, blog, podcasts, and polls with robust user management, menu handling, real-time statistics and optional revision control.</p>
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutmodules"><a href="/about/modules">ADMINISTER</a></h3>
+      <h3 id="aboutsocial"><a href="/about/modules">ADMINISTER</a></h3>
       <p>Drupal comes with great options for new user accounts and user permissions. Users can be assigned one or more roles, and each role can be set up with fine-grained permissions allowing users view and create only what the administrator permits. The Drupal 7 admin themes makes administering a site easier than ever.</p>
     </div>
       
@@ -26,12 +27,12 @@
   
   <div class="node-sub-section grid-12 alpha omega">
     <div class="grid-3 alpha">
-      <h3 id="aboutsearching"><a href="/about/organize">ORGANIZE</a></h3>
+      <h3 id="aboutcontentmanagement"><a href="/about/organize">ORGANIZE</a></h3>
       <p>Drupal comes with many tools to help you organize your content. Categorize with taxonomy, automatically create friendly path urls, associate content with other content on your site, and create smart defaults for content creators.</p>
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutsocial"><a href="/about/extend">EXTEND</a></h3>
+      <h3 id="aboutmodules"><a href="/about/extend">EXTEND</a></h3>
       <p>With more than 6000 available modules, the vast majority of your site's requirements can be addressed with Drupal core and available add-on modules. Focus your efforts on building great web sites, not re-creating features available elsewhere. Whether you need custom content types, dynamic lists or shopping cart, Drupal modules let you build, customize, and extend your site. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
     </div>
       
@@ -41,7 +42,7 @@
     </div>
       
     <div class="grid-3 omega">
-      <h3 id="aboutcontentmanagement"><a href="/about/find">FIND</a></h3>
+      <h3 id="aboutsearching"><a href="/about/find">FIND</a></h3>
       <p>Spend less time looking for information, and focus on getting things done. There are several ways to find content in Drupal, including breadcrumbs, Drupal core search and fantastic contributed search modules, such as Solr.</p>
     </div>
   </div>
