@@ -38,7 +38,7 @@
       
     <div class="grid-3">
       <h3 id="aboutcommunity"><a href="/about/collaborate">COLLABORATE</a></h3>
-      <p>Drupal's focus on social publishing can help you create sites and applications to help people express their opinions and engage with one another through Wikis, Messaging, Forums, Blogs and more. Role-based permissions allow sites to embrace community contribution, and Organic Groups allow collaboration amongst members, Also, the worldwide Drupal development and support community is very active and growing rapidly. These people drive the innovation that makes Drupal the preferred choice for web developers and site owners. Drupal has many local events and meetups.</p>
+      <p>Drupal's focus on social publishing can help you create sites and applications to help people express their opinions and engage with one another. Role-based permissions allow sites to embrace community contribution, and Organic Groups allow collaboration amongst members, Also, the worldwide Drupal development and support community is very active and growing rapidly.</p>
     </div>
       
     <div class="grid-3 omega">
@@ -56,7 +56,7 @@
       
   <div class="grid-3">
     <h2>Community Support</h2>
-    <p>The passionate <a href="/community">Drupal community</a> is on hand to give support via various <a href="/irc">vibrant IRC channels</a>, in the <a href="/forum">forums</a>, and face to face at <a href="http://groups.drupal.org/events">Drupal events</a>. As Drupal is <a href="/principles">open source</a>, this means everybody can <a href="/contribute">get involved</a> and make a difference.</p>
+    <p>The passionate <a href="/community">Drupal community</a> is on hand to give support via various <a href="/irc">vibrant IRC channels</a>, in the <a href="/forum">forums</a>, and face to face at <a href="http://groups.drupal.org/events">Drupal events</a>. The worldwide community drives the innovation that makes Drupal the preferred choice for web developers and site owners. Drupal is <a href="/principles">open source</a>, meaning everybody can <a href="/getting-involved">get involved</a> and make a difference.</p>
   </div>
       
   <div class="grid-3">
