@@ -18,22 +18,22 @@
 <div class="grid-3">
   <div class="narrow-box">
     <p>Access hundreds of modules to customize and extend your site. </p>
-      <div class="narrow-box-list">
-        <h5 class="lined">Most Popular Modules</h5>
-        <?php print $most_popular_modules; ?>
-        <a href="/project/modules" class="all">All Modules</a>
-      </div><!--/narrow-box-list-->
-      <div class="narrow-box-list">
-        <h5 class="lined">Most Popular Themes</h5>
-        <?php print $most_popular_themes; ?>
-        <a href="/project/themes" class="all">All Themes</a>
-      </div><!--/narrow-box-list-->
-      <div class="narrow-box-list">
-        <h5 class="lined">Translations</h5>
-        <ul>
-          <?php print $drupalorg_featured_translations; ?>
-        </ul>
-        <a href="/project/translations" class="all">All Translations</a>
+    <div class="narrow-box-list">
+      <h5 class="lined">Most Popular Modules</h5>
+      <?php print $most_popular_modules; ?>
+      <a href="/project/modules" class="all">All Modules</a>
+    </div><!--/narrow-box-list-->
+    <div class="narrow-box-list">
+      <h5 class="lined">Most Popular Themes</h5>
+      <?php print $most_popular_themes; ?>
+      <a href="/project/themes" class="all">All Themes</a>
+    </div><!--/narrow-box-list-->
+    <div class="narrow-box-list">
+      <h5 class="lined">Translations</h5>
+      <ul>
+        <?php print $drupalorg_featured_translations; ?>
+      </ul>
+      <a href="http://localize.drupal.org/" class="all">All Translations</a>
     </div><!--/narrow-box-list-->
   </div>
 </div>
@@ -67,7 +67,5 @@
     <p>For rapid responses, check out our IRC (Internet Relay Chat) channels.</p>
     <h5 class="lined"><a href="/services">Services</a></h5>
     <p>For commercial support, check out our directory with service providers.</p>
-
-
   </div>
 </div>
