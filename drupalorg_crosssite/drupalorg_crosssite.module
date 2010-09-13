@@ -20,6 +20,16 @@ define('DRUPALORG_THEME_TID', 15);
 // == Core hooks ===============================================================
 
 /**
+ * Use URL aliasing to get links to the About Drupal page right in book
+ * navigation, but serve the drupalorg-generated page.
+ */
+function drupalorg_crosssite_init() {
+  if ($_GET['q'] === 'node/1') {
+    $_GET['q'] = 'about';
+  }
+}
+
+/**
  * Implementation of hook_preprocess_page().
  *
  * Add header, footer and content menu data to the page variables.
@@ -174,7 +184,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
   // in more menus.
   $nav_content_areas = array(
     'dashboard'     => drupalorg_crosssite_menu_path('main', '^(user/'. $user->uid .'(/|$)|project(/issues)?/user$)'),
-    'about'         => drupalorg_crosssite_in_breadcrumb('node/1', $vars),
+    'about'         => drupalorg_crosssite_in_breadcrumb('node/1'),
     'downloads'     => drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')),
     // Events appear at here and as an individual tab list. Commented out from here.
     'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
@@ -363,14 +373,18 @@ function drupalorg_crosssite_content_menu(&$vars) {
  *
  * @param $path
  *   The path to search for, as used in the previously-set breadcrumb.
+ * @param $path
+ *   If you want to render part of the breadcrumbs, pass $vars.
  * @return
  *   TRUE if found, and modify $vars['breadcrumb'].
  */
-function drupalorg_crosssite_in_breadcrumb($path, &$vars) {
+function drupalorg_crosssite_in_breadcrumb($path, &$vars = NULL) {
   $url = url($path);
   foreach (drupal_get_breadcrumb() as $n => $breadcrumb) {
     if (strpos($breadcrumb, 'href="' . $url . '"') !== FALSE) {
-      $vars['breadcrumb'] = theme('breadcrumb', array_slice(drupal_get_breadcrumb(), $n + 1));
+      if (isset($vars)) {
+        $vars['breadcrumb'] = theme('breadcrumb', array_slice(drupal_get_breadcrumb(), $n + 1));
+      }
       return TRUE;
     }
   }

@@ -321,7 +321,6 @@ function drupalorg_update_6500() {
 function drupalorg_update_6501() {
   $return = array();
 
-  path_set_alias(NULL, 'about');
   path_set_alias(NULL, 'community');
 
   return $return;
