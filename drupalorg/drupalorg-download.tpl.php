@@ -4,8 +4,8 @@
     <h2>Core</h2>
     <ul class="flat">
       <li class="first download-core"><?php print $core_download_button; ?></li>
-      <li><a href="node/3060/release">Other releases</a></li>
-      <li class="last all"><a class="all" href="project/drupal">More information</a></li>
+      <li><a href="node/3060/release">Other Releases</a></li>
+      <li class="last all"><a class="all" href="project/drupal">More Information</a></li>
     </ul>
   </div>
 
@@ -13,7 +13,7 @@
     <h2>Installation Profiles</h2>
     <ul class="flat">
       <?php print $drupalorg_featured_install_profiles; ?>
-      <li class="last all"><a class="all" href="project/installation+profiles">More profiles</a></li>
+      <li class="last all"><a class="all" href="project/installation+profiles">More Profiles</a></li>
     </ul>
   </div>
 
@@ -21,10 +21,10 @@
     <h2>Themes</h2>
     <ul class="flat">
       <li class="first"><a href="node/221881">About Themes &amp; Subthemes</a></li>
-      <li><a href="project/themes?solrsort=sis_project_release_usage%20desc">Most installed themes</a></li>
-      <li><a href="project/themes?solrsort=created%20desc">New themes</a></li>
-      <li><a href="project/themes?solrsort=ds_project_latest_activity%20desc">Most active themes</a></li>
-      <li class="last all"><a class="all" href="project/themes">Search for more themes</a></li>
+      <li><a href="project/themes?solrsort=sis_project_release_usage%20desc">Most Installed Themes</a></li>
+      <li><a href="project/themes?solrsort=created%20desc">New Themes</a></li>
+      <li><a href="project/themes?solrsort=ds_project_latest_activity%20desc">Most Active Themes</a></li>
+      <li class="last all"><a class="all" href="project/themes">Search for More Themes</a></li>
     </ul>
   </div>
   
@@ -32,7 +32,7 @@
     <h2>Translations</h2>
     <ul class="flat">
       <?php print $drupalorg_featured_translations; ?>
-      <li class="last all"><a href="http://localize.drupal.org/" class="all">All translations</a></li>
+      <li class="last all"><a href="http://localize.drupal.org/" class="all">All Translations</a></li>
     </ul>
   </div>
 </div>
@@ -58,7 +58,7 @@
       <li><a href="project/modules?filters=tid:56">Community</a></li>
       <li><a href="project/modules?filters=tid:61">Event</a></li>
       <li><a href="project/modules?filters=tid:67">Media</a></li>
-      <li class="last all"><a href="project/modules/categories" class="all">All categories</a></li>
+      <li class="last all"><a href="project/modules/categories" class="all">All Categories</a></li>
     </ul>
   </div>
   
