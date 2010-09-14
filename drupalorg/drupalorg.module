@@ -34,20 +34,6 @@ define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 87);  // 6.x
  * Implementation of hook_menu().
  */
 function drupalorg_menu() {
-  $items['documentation'] = array(
-    'title' => 'Documentation',
-    'page callback' => 'drupalorg_documentation',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-
-  $items['documentation/index'] = array(
-    'title' => 'Documentation',
-    'page callback' => 'drupalorg_documentation_index',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-
   $items['start'] = array(
     'title' => 'Get Started with Drupal',
     'page callback' => 'drupalorg_start',
@@ -233,20 +219,6 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
 }
 
 /**
- * Page callback for the documentation page.
- */
-function drupalorg_documentation() {
-  return theme('drupalorg_documentation');
-}
-
-/**
- * Page callback for the documentation index page.
- */
-function drupalorg_documentation_index() {
-  return theme('drupalorg_documentation_index');
-}
-
-/**
  * Page callback for the getting started page.
  */
 function drupalorg_start() {
@@ -378,12 +350,6 @@ function drupalorg_preprocess_drupalorg_community(&$variables) {
  */
 function drupalorg_theme() {
   return array(
-    'drupalorg_documentation' => array(
-      'template' => 'drupalorg-documentation',
-    ),
-    'drupalorg_documentation_index' => array(
-      'template' => 'drupalorg-documentation-index',
-    ),
     'drupalorg_start' => array(
       'template' => 'drupalorg-start',
     ),
