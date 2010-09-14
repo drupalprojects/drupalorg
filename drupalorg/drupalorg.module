@@ -34,7 +34,7 @@ function drupalorg_init() {
   // Use the dashboard as the home page if the user selected it.
   global $user;
   if ($user->uid !== 0 && isset($user->drupalorg_set_home) && $_SERVER['REQUEST_URI'] === url('')) {
-    drupal_goto($user->drupalorg_set_home);
+    drupal_goto('user/' . $user->uid . '/dashboard');
   }
 
   // Use URL aliasing to get links to the About Drupal page right in book
@@ -184,7 +184,6 @@ function drupalorg_set_home() {
   $items['submit'] = array(
     '#type' => 'submit',
     '#value' => $message,
-    '#drupalorg_set_home' => $user->drupalorg_set_home ? NULL : $_GET['q'],
     '#ahah' => array(
       'path' => 'drupalorg_set_home_js',
       'event' => 'click',
@@ -199,7 +198,7 @@ function drupalorg_set_home() {
 function drupalorg_set_home_submit($form, $form_state) {
   global $user;
 
-  $user = user_save($user, array('drupalorg_set_home' => $form_state['clicked_button']['#drupalorg_set_home']));
+  $user = user_save($user, array('drupalorg_set_home' => TRUE));
 
   $_POST['form_id'] = NULL;
   print drupal_json(array(
