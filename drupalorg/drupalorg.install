@@ -218,10 +218,16 @@ function drupalorg_update_6500() {
   $return[] = update_sql("DELETE FROM {blocks} WHERE theme = 'bluecheese'");
   $blocks = array(
     array(
+      'module' => 'drupalorg',
+      'delta' => 'set_home',
+      'pages' => 'user/*/dashboard',
+      'region' => 'page_tools',
+    ),
+    array(
        'module' => 'drupalorg_news',
        'delta' => 'news-sources',
        'pages' => "news",
-     ),
+    ),
     array(
       'module' => 'drupalorg_news',
       'delta' => 'news-terms',
@@ -292,7 +298,9 @@ function drupalorg_update_6500() {
   foreach ($blocks as $block) {
     $block['theme'] = 'bluecheese';
     $block['status'] = 1;
-    $block['region'] = 'right';
+    if (!isset($block['region'])) {
+      $block['region'] = 'right';
+    }
     $block['visibility'] = 1;
     $block['weight'] = $weight;
     drupal_write_record('blocks', $block);

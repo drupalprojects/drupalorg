@@ -30,6 +30,10 @@ define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 87);  // 6.x
 
 // == Core hooks ===============================================================
 
+function drupalorg_init() {
+  drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/general.js');
+}
+
 /**
  * Implementation of hook_menu().
  */
@@ -102,6 +106,12 @@ function drupalorg_menu() {
     'page arguments' => array('drupalorg_settings_form'),
   );
 
+  $items['drupalorg_set_home_js'] = array(
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('drupalorg_set_home'),
+  );
+
   return $items;
 }
 
@@ -110,6 +120,7 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
     case 'list':
       return array(
         'get_involved' => array('info' => t('Ways to Get Involved')),
+        'set_home' => array('info' => t('Set user home page')),
       );
 
     case 'view':
@@ -133,9 +144,56 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
 <li><a href="/node/363007">Core documentation</a></li>
 </ul>'),
           );
+
+        case 'set_home':
+          global $user;
+          if ($user->uid) {
+            return array('content' => drupal_get_form('drupalorg_set_home'));
+          }
       }
       break;
   }
+}
+
+function drupalorg_set_home() {
+  global $user;
+  $items = array();
+  if ($user->drupalorg_set_home) {
+    $message = t('Use Default Homepage');
+  }
+  else {
+    $message = t('Make this my Homepage');
+  }
+
+  $items[] = array(
+    '#value' => l(t($message), $_GET['q'], array('attributes' => array('class' => 'add'))),
+  );
+  $items['submit'] = array(
+    '#type' => 'submit',
+    '#value' => $message,
+    '#drupalorg_set_home' => $user->drupalorg_set_home ? NULL : $_GET['q'],
+    '#ahah' => array(
+      'path' => 'drupalorg_set_home_js',
+      'event' => 'click',
+      'wrapper' => 'drupalorg-set-home',
+      'method' => 'replaceWith',
+    ),
+  );
+
+  return $items;
+}
+
+function drupalorg_set_home_submit($form, $form_state) {
+  global $user;
+
+  $user = user_save($user, array('drupalorg_set_home' => $form_state['clicked_button']['#drupalorg_set_home']));
+
+  $_POST['form_id'] = NULL;
+  print drupal_json(array(
+    'status' => TRUE,
+    'data' => drupal_get_form('drupalorg_set_home'),
+  ));
+  exit;
 }
 
 // == Major landing pages ======================================================
