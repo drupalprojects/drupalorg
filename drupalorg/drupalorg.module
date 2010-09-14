@@ -694,7 +694,7 @@ function drupalorg_homebox() {
           'weight' => -31,
         ),
         // Column 2
-        'system_0' => array(
+        'views_flag_bookmarks-block' => array(
           'module' => 'views',
           'delta' => 'flag_bookmarks-block',
           'region' => 2,
@@ -715,6 +715,17 @@ function drupalorg_homebox() {
           'closable' => 1,
           'title' => '',
           'weight' => 1,
+        ),
+        'views_a512ec6dea837b33a2b010c2af17ed85' => array(
+          'module' => 'views',
+          'delta' => 'a512ec6dea837b33a2b010c2af17ed85',
+          'region' => 2,
+          'movable' => 1,
+          'status' => 1,
+          'open' => 1,
+          'closable' => 1,
+          'title' => '',
+          'weight' => 2,
         ),
         // Column 3
         'project_issue_issue_cockpit' => array(
