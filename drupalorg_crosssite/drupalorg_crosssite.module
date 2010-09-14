@@ -20,16 +20,6 @@ define('DRUPALORG_THEME_TID', 15);
 // == Core hooks ===============================================================
 
 /**
- * Use URL aliasing to get links to the About Drupal page right in book
- * navigation, but serve the drupalorg-generated page.
- */
-function drupalorg_crosssite_init() {
-  if ($_GET['q'] === 'node/1') {
-    $_GET['q'] = 'about';
-  }
-}
-
-/**
  * Implementation of hook_preprocess_page().
  *
  * Add header, footer and content menu data to the page variables.
@@ -130,7 +120,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   // == Nav masthead links
 
   $nav_masthead_links = array(
-    'homepage'       => array('href' => '',      'title' => t('Drupal Homepage'),  '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$')),
+    'homepage'       => array('href' => 'home', 'title' => t('Drupal Homepage'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$')),
     'dashboard'      => array('href' => 'user/' . $user->uid . '/dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)')),
   );
   if (!variable_get('drupalorg_crosssite_redesign', FALSE)) {
@@ -147,11 +137,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     if (variable_get('drupalorg_crosssite_redesign', FALSE)) {
       $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'http://' . $sites['main'] . '/user') .' '. l(t('Logout'), 'http://' . $sites['main'] . '/logout');
     }
-
     if (user_access('administer site configuration')) {
       $userinfo .= ' ' . l(t('Admin'), 'admin');
     }
-
     $userinfo .= '</div>';
   }
   // Make all external links right.

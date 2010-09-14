@@ -31,6 +31,18 @@ define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 87);  // 6.x
 // == Core hooks ===============================================================
 
 function drupalorg_init() {
+  // Use the dashboard as the home page if the user selected it.
+  global $user;
+  if ($user->uid !== 0 && isset($user->drupalorg_set_home) && $_SERVER['REQUEST_URI'] === url('')) {
+    drupal_goto($user->drupalorg_set_home);
+  }
+
+  // Use URL aliasing to get links to the About Drupal page right in book
+  // navigation, but serve the drupalorg-generated page.
+  if ($_GET['q'] === 'node/1') {
+    $_GET['q'] = 'about';
+  }
+
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/general.js');
 }
 
@@ -99,17 +111,18 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['drupalorg_set_home_js'] = array(
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('drupalorg_set_home'),
+    'type' => MENU_CALLBACK,
+  );
+
   $items['admin/settings/drupalorg'] = array(
     'title' => 'Drupal.org settings',
     'access arguments' => array('administer site configuration'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('drupalorg_settings_form'),
-  );
-
-  $items['drupalorg_set_home_js'] = array(
-    'access arguments' => array('access content'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('drupalorg_set_home'),
   );
 
   return $items;
