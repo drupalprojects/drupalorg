@@ -1,7 +1,7 @@
-<p>Drupal is a free software package that allows anyone to easily publish, manage and organize a wide variety of content on a website. Hundreds of thousands of people and organizations are using Drupal to power an endless variety of web sites.</p>
+<p>Drupal is a free software package that allows anyone to easily publish, manage and organize a wide variety of content on a website. Hundreds of thousands of people and organizations are using Drupal to power an endless variety of sites.</p>
 
 <div class="node-section grid-12 alpha omega" id="about-features">
-  <h2>Drupal Features</h2>
+  <h2>Drupal Content Management Features</h2>
   
   <div class="node-sub-section grid-12 alpha omega">
     <div class="grid-3 alpha">
