@@ -598,11 +598,11 @@ function drupalorg_project_bingo_jump($type = NULL) {
 function drupalorg_project_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
-      $blocks[0]['info'] = t('Contributor links');
+      $blocks[0]['info'] = t('Contributor Links');
       return $blocks;
 
     case 'view':
-      $block['subject'] = t('Contributor links');
+      $block['subject'] = t('Contributor Links');
       $block['content'] = drupalorg_project_bingo_block_output();
       return $block;
   }
