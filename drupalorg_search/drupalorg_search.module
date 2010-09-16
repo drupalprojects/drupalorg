@@ -14,7 +14,7 @@ function drupalorg_search_menu() {
     'title' => 'How can we help',
     'page callback' => 'drupalorg_search_help_js',
     'access callback' => 'user_access',
-    'access arguments' => array('view content'),
+    'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
   return $items;
