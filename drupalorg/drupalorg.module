@@ -414,6 +414,10 @@ function drupalorg_community() {
  */
 function drupalorg_preprocess_drupalorg_community(&$variables) {
   $variables['advertisement'] = ''; // used to pull in the proper advertisement block.
+  $variables['help_form'] = '';
+  if (module_exists('drupalorg_search')) {
+    $variables['help_form'] = drupal_get_form('drupalorg_search_help_form');
+  }
 }
 
 /**

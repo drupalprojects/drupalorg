@@ -1,5 +1,6 @@
 
 <div class="grid-8 alpha">
+  <?php print $help_form; ?>
   <h3>Recent activity</h3>
   <form>
     <p>Browse
