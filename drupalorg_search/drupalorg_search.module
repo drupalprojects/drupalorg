@@ -7,6 +7,31 @@
  */
 
 /**
+ * Implementation of hook_menu().
+ */
+function drupalorg_search_menu() {
+  $items['drupalorg-search/help/js'] = array(
+    'title' => 'How can we help',
+    'page callback' => 'drupalorg_search_help_js',
+    'access callback' => 'user_access',
+    'access arguments' => array('view content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function drupalorg_search_theme() {
+  return array(
+    'drupalorg_search_help_results' => array(
+      'arguments' => array('results' => array()),
+    ),
+  );
+}
+
+/**
  * Implementation of hook_apachesolr_facets().
  *
  * Returns an array keyed by block delta.
@@ -307,6 +332,80 @@ function drupalorg_search_get_project_type_term($response) {
     }
   }
 }
+
+/**
+ * Generates the "How can we help you" block for use on the community page.
+ */
+function drupalorg_search_help_form(&$form_state) {
+  $form = array();
+  // We're going to leverage some existing autocomplete functionality, so add
+  // the autocomplete js + our js.
+  drupal_add_js('misc/autocomplete.js');
+  drupal_add_js(drupal_get_path('module', 'drupalorg_search') . '/js/community.js');
+  
+  // Text field for searching documentation items.
+  $form['search_term'] = array(
+    '#type' => 'textfield',
+    '#title' => t('How can we help you?'),
+  );
+  
+  // Hidden auto-lookup field for using auto-complete-like functionality.
+  $form['search_term_autolookup'] = array(
+    '#type' => 'hidden',
+    '#id' => 'edit-search-term-autolookup',
+    '#value' => check_url(url('drupalorg-search/help/js', array('absolute' => TRUE))),
+    '#attributes' => array(
+      'class' => 'autolookup',
+    ),
+  );
+  return $form;
+}
+
+/**
+ * Theme the results of our documentation search against Solr.
+ * 
+ * @param array $results
+ *   An array of results containing, at minimum, a score, a title, and a link.
+ * 
+ * @return string $output
+ *   An html ul representation of li items containing relevancy (score) + 
+ *   a link to the content.
+ */
+function theme_drupalorg_search_help_results($results) {
+  $output = '';
+  if (!empty($results)) {
+    $output = '<p class="help-result-text">Here\'s what we found:</p>';
+    $output .= '<ul>';
+    foreach ($results as $result) {
+      $output .= '<li><div class="result-score-' . round($result['score']) . '"></div><div class="result-value">' . l($result['title'], $result['link']) .'</div></li>';
+    }
+    $output .= '</ul>';
+  }
+  else {
+    $output = '<p class="help-result-text">We\'re sorry, but there were no results for your search.</p>';
+  }
+  return $output;
+}
+
+/**
+ * Menu callback. Retrieves and returns a themed list of documentation results
+ * from Solr based on an initial search term or terms.
+ * 
+ * @param string $search_term
+ *   A term or terms to search for in Solr.
+ *   
+ * @return 
+ *   A json object representing a themed list of results from Solr.
+ */
+function drupalorg_search_help_js($search_term = NULL) {
+  $results = array();
+  if (!empty($search_term)) {
+    $results = apachesolr_search_execute($search_term, 'ss_meta_type:documentation');
+  }
+  $output = theme('drupalorg_search_help_results', $results);
+  drupal_json($output);
+}
+
 
 /**
  * This generates a form containing sort selection and a submit button.
