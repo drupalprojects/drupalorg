@@ -20,7 +20,6 @@ $(function () {
     strokeStyle: '#BFBFBF',
     strokeWidth: 1,
     trigger: 'none',
-    animate: true,
     preShow: function () {
       $(this).show();
     },
@@ -35,7 +34,7 @@ $(function () {
     if (current === $pins.length) {
       current = 0;
     }
-  }, 3000);
+  }, 4000);
 });
 
 Drupal.behaviors.thingsWeMade = function (context) {
@@ -50,8 +49,8 @@ Drupal.behaviors.thingsWeMade = function (context) {
       index += 1;
     }
 
-    $('ul.things-we-made').animate({ marginLeft: index * -300 }, 500);
-  }, 6000);
+    $('ul.things-we-made').animate({ marginLeft: index * -300 }, 200);
+  }, 10000);
 };
 
 Drupal.behaviors.frontTabs = function () {
