@@ -510,6 +510,13 @@ function drupalorg_profile_fix_languages(&$form, &$form_state) {
  * Implemenation of hook_project_page_link_alter().
  */
 function drupalorg_project_page_link_alter(&$links, $node) {
+  // Add "Browse the CVS repository" link for contributed projects by default.
+  if (!isset($links['development']['links']['browse_repository'])) {
+    if (isset($node->cvs['repository']) && $node->cvs['repository'] == 2 && !empty($node->cvs['directory'])) {
+      $links['development']['links']['browse_repository'] = l(t('Browse the CVS repository'), 'http://drupalcode.org/viewvc/drupal/contributions' . $node->cvs['directory']);
+    }
+  }
+
   // Link to security handbook page.
   $links['development']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
 
