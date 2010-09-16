@@ -174,7 +174,8 @@ function drupalorg_crosssite_content_menu(&$vars) {
   // in more menus.
   $nav_content_areas = array(
     'dashboard'     => drupalorg_crosssite_menu_path('main', '^(user/'. $user->uid .'(/|$)|project(/issues)?/user$)'),
-    'about'         => drupalorg_crosssite_in_breadcrumb('node/1') || drupalorg_crosssite_in_breadcrumb('node/909476'),
+    'about'         => drupalorg_crosssite_menu_path('main', 'node/1') || drupalorg_crosssite_in_breadcrumb('node/1')
+                       || drupalorg_crosssite_menu_path('main', 'node/909476') || drupalorg_crosssite_in_breadcrumb('node/909476'),
     'downloads'     => drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')),
     // Events appear at here and as an individual tab list. Commented out from here.
     'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
@@ -224,8 +225,8 @@ function drupalorg_crosssite_content_menu(&$vars) {
         // classes when on the projects site. Therefore no need for #active.
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
         'core'         => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_in_breadcrumb('node/3060', $vars), '#site' => 'main'),
-        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_term('main', array(DRUPALORG_MODULE_TID)) || drupalorg_crosssite_in_breadcrumb('project/modules', $vars)),
-        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_term('main', array(DRUPALORG_THEME_TID))),
+        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_in_breadcrumb('project/modules', $vars)),
+        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_in_breadcrumb('project/themes', $vars)),
         'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'main'),
         'theme-engine' => array('href' => 'project/theme+engines', 'title' => t('Theme Engines'), '#site' => 'main'),
         'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
