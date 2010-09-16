@@ -382,6 +382,12 @@ function drupalorg_project_cvs_user_edit_submit($form, &$form_state) {
  * Implemenation of hook_project_page_link_alter().
  */
 function drupalorg_project_project_page_link_alter(&$links, $node) {
+  // Add "Browse the CVS repository" link for contributed projects by default.
+  if (!isset($links['development']['links']['browse_repository'])) {
+    if (isset($node->cvs['repository']) && $node->cvs['repository'] == 2 && !empty($node->cvs['directory'])) {
+      $links['development']['links']['browse_repository'] = l(t('Browse the CVS repository'), 'http://drupalcode.org/viewvc/drupal/contributions' . $node->cvs['directory']);
+    }
+  }
 
   // Make the development and resources sections actual core blocks.
   $links['development']['type'] = 'block';
