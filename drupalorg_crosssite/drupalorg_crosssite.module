@@ -29,7 +29,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
 
   // In most cases, the navigation elements should provide orientatiuon within
   // the site. Breadcrumbs are usually not necessary.
-  unset($vars['breadcrumb']);
+  if (arg(0) !== 'admin') {
+    $vars['breadcrumb'] = '';
+  }
 
   // Site hostnames for the sites we use.
   $sites = drupalorg_crosssite_menu_sites();
