@@ -377,7 +377,7 @@ function theme_drupalorg_search_help_results($results) {
     $output = '<p class="help-result-text">Here\'s what we found:</p>';
     $output .= '<ul>';
     foreach ($results as $result) {
-      $output .= '<li><div class="result-score-' . round($result['score']) . '"></div><div class="result-value">' . l($result['title'], $result['link']) .'</div></li>';
+      $output .= '<li><div class="help-result-score-' . round($result['score']) . '"></div><div class="help-result-value">' . l($result['title'], $result['link']) .'</div></li>';
     }
     $output .= '</ul>';
   }
