@@ -159,6 +159,65 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
 }
 
 /**
+ * Specify the section matching criteria.
+ */
+function drupalorg_crosssite_section() {
+  global $user;
+  static $section = FALSE;
+
+  if ($section === FALSE) {
+    $node = menu_get_object();
+    // Theoretically, the matching criteria made one of the areas win (have TRUE as
+    // the array value). If there are two menus to display on the same path, we
+    // are in trouble, since we only have one menu displayed per path. Fix the above
+    // matching in that case. (This will pick the first matched in that case).
+    if (drupalorg_crosssite_menu_path('main', '^(user/'. $user->uid .'(/|$)|project(/issues)?/user$)')) {
+      $section = 'dashboard';
+    }
+    elseif (drupalorg_crosssite_menu_path('main', 'node/1') || drupalorg_crosssite_in_breadcrumb('node/1')
+      || drupalorg_crosssite_menu_path('main', 'node/909476') || drupalorg_crosssite_in_breadcrumb('node/909476')) {
+      $section = 'about';
+    }
+    elseif (drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release'))) {
+      $section = 'downloads';
+    }
+    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)')) {
+      // Events appear at here and as an individual tab list. Commented out from here.
+      // || drupalorg_crosssite_menu_path('groups', '^events'),
+      $section = 'community';
+    }
+    elseif (drupalorg_crosssite_menu_site('api')
+      || (drupalorg_crosssite_menu_site('main') && isset($node) && isset($node->book['bid']))) {
+      $section = 'documentation';
+    }
+    elseif (drupalorg_crosssite_menu_path('groups', '^(jobs)(/|$)')) {
+      $section = 'jobs';
+    }
+    elseif (drupalorg_crosssite_menu_site('association')) {
+      $section = 'association';
+    }
+    elseif (drupalorg_crosssite_menu_path('groups', '^events(/|$)')) {
+      $section = 'events';
+    }
+    elseif (drupalorg_crosssite_menu_path('main', '^(node/9068|druplicon)(/|$)')) {
+      $section = 'druplicon';
+    }
+    elseif (drupalorg_crosssite_menu_site('localize')) {
+      $section = 'localize';
+    }
+    elseif (drupalorg_crosssite_in_breadcrumb('admin')) {
+      $section = 'admin';
+    }
+    elseif (is_null(menu_get_item())) {
+      // Should not happen.
+      $section = NULL;
+      watchdog('drupalorg_crosssite', 'No section for @url.', array('@url' => $_GET['q']));
+    }
+  }
+  return $section;
+}
+
+/**
  * Content for the content top menu.
  *
  * We implement this as "custom menus", since we need to have cross-site menu
@@ -170,30 +229,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
 function drupalorg_crosssite_content_menu(&$vars) {
   global $user;
 
-  // Specify the high level matching criteria for each menu and let others put
-  // in more menus.
-  $nav_content_areas = array(
-    'dashboard'     => drupalorg_crosssite_menu_path('main', '^(user/'. $user->uid .'(/|$)|project(/issues)?/user$)'),
-    'about'         => drupalorg_crosssite_menu_path('main', 'node/1') || drupalorg_crosssite_in_breadcrumb('node/1')
-                       || drupalorg_crosssite_menu_path('main', 'node/909476') || drupalorg_crosssite_in_breadcrumb('node/909476'),
-    'downloads'     => drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')),
-    // Events appear at here and as an individual tab list. Commented out from here.
-    'community'     => drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)'), // || drupalorg_crosssite_menu_path('groups', '^events'),
-    'documentation' => drupalorg_crosssite_menu_site('api') || drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)'),
-    'jobs'          => drupalorg_crosssite_menu_path('groups', '^(jobs)(/|$)'),
-    'association'   => drupalorg_crosssite_menu_site('association'),
-    'events'        => drupalorg_crosssite_menu_path('groups', '^events(/|$)'),
-    'druplicon'     => drupalorg_crosssite_menu_path('main', '^(node/9068|druplicon)(/|$)'),
-    'localize'      => drupalorg_crosssite_menu_site('localize'),
-  );
-
-  // Theoretically, the matching criteria made one of the areas win (have TRUE as
-  // the array value). If there are two menus to display on the same path, we
-  // are in trouble, since we only have one menu displayed per path. Fix the above
-  // matching in that case. (This will pick the first matched in that case).
-  $matched_menu = array_search(TRUE, $nav_content_areas);
-
-  //Identify sections names/titles to be displayed above content area menus
+  // Identify sections names/titles to be displayed above content area menus.
   $section_names = array(
     'about' => 'About Drupal',
     'downloads' => 'Download &amp; Extend',
@@ -203,14 +239,14 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'localize' => 'Localize',
     'association' => 'Association',
   );
-  //set the section_name variable to be output in page.tpl.php
-  if (isset($section_names[$matched_menu])) {
-    $vars['section_name'] = $section_names[$matched_menu];
+  // Set the section_name variable to be output in page.tpl.php.
+  if (isset($section_names[drupalorg_crosssite_section()])) {
+    $vars['section_name'] = $section_names[drupalorg_crosssite_section()];
   }
 
   // Now ask for all the menu items for the matched menu.
   $nav_content_links = array();
-  switch ($matched_menu) {
+  switch (drupalorg_crosssite_section()) {
     case 'documentation':
       $nav_content_links = array(
         'home'    => array('href' => 'handbook', 'title' => t('Docs Home'), '#site' => 'main', '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
@@ -307,7 +343,6 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
 
     case 'dashboard':
-      global $user;
       $nav_content_links = array(
         'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard', '#site' => 'main'),
         'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track')),
@@ -348,7 +383,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
 
     // Theme the links for the page.
     $vars['nav_content'] = theme('links', $nav_content_links);
-    $vars['nav_content_class'] = ' class="nav-content-'. $matched_menu .'"';
+    $vars['nav_content_class'] = ' class="nav-content-'. drupalorg_crosssite_section() .'"';
   }
   else {
     // Else just return an empty content nav menu.

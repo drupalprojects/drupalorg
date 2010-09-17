@@ -44,7 +44,7 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
     }
     $node->content['body']['#value'] .= $extra;
     
-    if (!empty($node->book['bid'])) {
+    if (drupalorg_crosssite_section() === 'documentation') {
       // Prepend the handbook meta data to book bodies.
       $node->content['body']['#value'] = drupalorg_handbook_meta_data($node) . $node->content['body']['#value'];
     }
@@ -81,6 +81,8 @@ function drupalorg_handbook_form_alter(&$form, $form_state, $form_id) {
  *   The HTML code for the book meta information.
  */
 function drupalorg_handbook_meta_data($node) {
+  $versions = NULL;
+  $features = NULL;
   if (count($node->taxonomy)) {
     // Group the terms by vid.
     $taxonomy = array();

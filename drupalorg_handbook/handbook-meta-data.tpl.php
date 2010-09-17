@@ -13,8 +13,8 @@
     <?php if ($languages): ?>
       <li class="languages">Languages: <?php print $languages; ?><a href="#">Cymraeg</a>, <a href="#">English</a> </li>
     <?php endif; ?>
-    <?php if ($features || $add_tag_link): ?>
-      <li class="feature-tags">Tags: <?php print $features; ?><span><?php //print $add_tag_link; ?></span></li>
+    <?php if ($features): ?>
+      <li class="feature-tags">Tags: <?php print $features; ?></li>
     <?php endif; ?>
     <?php if ($alerts): ?>
       <?php print $alerts; ?>
