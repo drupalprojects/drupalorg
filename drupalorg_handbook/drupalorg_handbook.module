@@ -37,7 +37,7 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
     }
     $node->content['body']['#value'] .= $extra;
     
-    if (drupalorg_crosssite_section() === 'documentation') {
+    if (drupalorg_crosssite_section() === 'documentation' && isset($node->book['bid'])) {
       // Prepend the handbook meta data to book bodies.
       $node->content['body']['#value'] = drupalorg_handbook_meta_data($node) . $node->content['body']['#value'];
     }
