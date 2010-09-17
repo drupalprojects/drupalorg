@@ -187,7 +187,8 @@ function drupalorg_crosssite_section() {
       $section = 'community';
     }
     elseif (drupalorg_crosssite_menu_site('api')
-      || (drupalorg_crosssite_menu_site('main') && isset($node) && isset($node->book['bid']))) {
+      || (drupalorg_crosssite_menu_site('main') && isset($node) && isset($node->book['bid']))
+      || drupalorg_crosssite_menu_path('main', '^handbook')) {
       $section = 'documentation';
     }
     elseif (drupalorg_crosssite_menu_path('groups', '^(jobs)(/|$)')) {
@@ -208,7 +209,7 @@ function drupalorg_crosssite_section() {
     elseif (drupalorg_crosssite_in_breadcrumb('admin')) {
       $section = 'admin';
     }
-    elseif (is_null(menu_get_item())) {
+    elseif (menu_get_item() !== FALSE) {
       // Should not happen.
       $section = NULL;
       watchdog('drupalorg_crosssite', 'No section for @url.', array('@url' => $_GET['q']));
