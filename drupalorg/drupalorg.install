@@ -277,6 +277,10 @@ function drupalorg_update_6500() {
       'delta' => 'development',
     ),
     array(
+      'module' => 'pivots_block',
+      'delta' => 0,
+    ),
+    array(
       'module' => 'drupalorg_search',
       'delta' => 'search_box',
       'pages' => "search/apachesolr_search/*\nsearch/apachesolr_multisitesearch/*",
