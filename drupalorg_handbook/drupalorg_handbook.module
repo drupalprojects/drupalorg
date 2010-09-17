@@ -7,13 +7,6 @@
  */
 
 /**
- * Taxonomy vid for the "Drupal versions" vocabulary.
- */
-define('DRUPALORG_HANDBOOK_VERSION_VID', 5);
-
-// == Core hooks ===============================================================
-
-/**
  * Implementation of hook_nodeapi().
  */
 function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
@@ -81,54 +74,35 @@ function drupalorg_handbook_form_alter(&$form, $form_state, $form_id) {
  *   The HTML code for the book meta information.
  */
 function drupalorg_handbook_meta_data($node) {
-  $versions = NULL;
-  $features = NULL;
+  $info = array();
   if (count($node->taxonomy)) {
+    $vocabularies = taxonomy_get_vocabularies();
     // Group the terms by vid.
     $taxonomy = array();
     foreach ($node->taxonomy as $term_id => $term) {
-      $taxonomy[$term->vid][] = $term;
+      if ($term_id !== 125) { // No known problems is uninteresting
+        $taxonomy[$term->vid][] = $term;
+      }
     }
 
-    if (count($taxonomy[DRUPALORG_HANDBOOK_VERSION_VID])) { 
-      // Make list of versions associated to handbook page.
-      $links = array();
-      foreach ($taxonomy[DRUPALORG_HANDBOOK_VERSION_VID] as $tag) {
-        $links[] = theme('drupalorg_handbook_meta_link', l($tag->name, 'taxonomy/term/'. $tag->tid));
+    foreach ($vocabularies as $vocabulary) {
+      if (isset($taxonomy[$vocabulary->vid])) {
+        $links = array();
+        foreach ($taxonomy[$vocabulary->vid] as $term) {
+          $options = array();
+          if ($vocabulary->vid === '31') {
+            $options['attributes'] = array('class' => 'alert');
+          }
+          $links[] = l($term->name, taxonomy_term_path($term), $options);
+        }
+        $info[check_plain($vocabulary->name)] = implode(', ', $links);
       }
-      $versions = implode(', ', $links);
     }
-    /*
-    if (count($taxonomy[DRUPALORG_HANDBOOK_VERSION_VID])) {
-      // @todo Adjust DRUPALORG_HANDBOOK_VERSION_VID to the vid of the new feature vocabulary
-      $links = array();
-      foreach ($taxonomy[DRUPALORG_HANDBOOK_VERSION_VID] as $tag) {
-        $links[] = theme('drupalorg_handbook_meta_link', l($tag->name, 'taxonomy/term/'. $tag->tid));
-      }
-      $features = implode(', ', $links);
-    }
-    */
   }
   
-  // Set the modified date for display.
-  // @todo Look into better localized date formats, whenever we have locales.
   $modified = format_date($node->changed, 'custom', 'F j, Y');
-  
-  // Collect a list of people who have edited the book page ever.
-  // removing authors for now per issue http://drupal.org/node/428410
-  /*$authors_query = db_query("SELECT u.uid, u.name FROM {node_revisions} nr JOIN {users} u ON nr.uid = u.uid WHERE nid = %d GROUP BY u.uid ORDER BY timestamp", $node->nid);
-  while ($author = db_fetch_object($authors_query)) {
-    $author_links[] = theme('drupalorg_handbook_meta_link', l($author->name, 'user/'. $author->uid));
-  }
-  $authors = implode(', ', $author_links);*/
-  $authors = NULL;
 
-  // @todo Add language listings when available.
-  $languages = NULL; 
-  // @todo Add alerts (discussion pages) when available.
-  $alerts = NULL;
-
-  return theme('drupalorg_handbook_meta_data', $versions, $features, $modified, $authors, $languages, $alerts);
+  return theme('drupalorg_handbook_meta_data', $info, $modified);
 }
 
 /**
@@ -345,25 +319,13 @@ function drupalorg_handbook_license() {
 function drupalorg_handbook_theme($existing, $type, $theme, $path) {
   return array(
     'drupalorg_handbook_meta_data' => array(
-      'arguments' => array('versions' => NULL, 'features' => NULL, 'modified' => NULL, 'authors' => NULL, 'languages' => NULL, 'alerts' => NULL),
+      'arguments' => array(
+        'info' => NULL,
+        'modified' => NULL,
+      ),
       'template' => 'handbook-meta-data',
     ),
-    'drupalorg_handbook_meta_link' => array(
-      'arguments' => array('link' => NULL),
-    ),
   );
-}
-
-/**
- * Simply wraps links in a span to make button theming easier.
- * 
- * @param $link
- *   An already generated HTML link, from l() for example.
- * @return
- *   The link wrapped in spans to make it possible to use varying width buttons.
- */
-function theme_drupalorg_handbook_meta_link($link) {
-  return '<span>'. $link .'</span>';
 }
 
 /**
