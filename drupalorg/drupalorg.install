@@ -240,7 +240,13 @@ function drupalorg_update_6500() {
     ),
     array(
       'module' => 'drupalorg_handbook',
+      'delta' => 'info',
+      'pages' => 'handbook',
+    ),
+    array(
+      'module' => 'drupalorg_handbook',
       'delta' => 'irc',
+      'pages' => 'irc',
     ),
     array(
       'module' => 'book',

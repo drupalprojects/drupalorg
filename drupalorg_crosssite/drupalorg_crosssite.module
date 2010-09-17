@@ -250,7 +250,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
   switch (drupalorg_crosssite_section()) {
     case 'documentation':
       $nav_content_links = array(
-        'home'    => array('href' => 'handbook', 'title' => t('Docs Home'), '#site' => 'main', '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
+        'home'    => array('href' => 'node/26419', 'title' => t('Docs Home'), '#site' => 'main', '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
         'api'     => array('href' => '<front>', 'title' => t('API'), '#site' => 'api', '#active' => drupalorg_crosssite_menu_site('api')),
         'recent'  => array('href' => 'handbook/updates', 'title' => t('Recently Updated'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
       );
