@@ -101,7 +101,6 @@ Drupal.jsCH.prototype.found = function (matches) {
   if (!this.input.value.length) {
     return false;
   }
-  console.log(matches);
   $('#' + this.resultsId).append(matches);
 };
 
