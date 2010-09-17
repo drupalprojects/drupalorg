@@ -90,7 +90,7 @@ function drupalorg_handbook_meta_data($node) {
         $links = array();
         foreach ($taxonomy[$vocabulary->vid] as $term) {
           $options = array();
-          if ($vocabulary->vid === '31') {
+          if ($vocabulary->vid === '31') { // Page status
             $options['attributes'] = array('class' => 'alert');
           }
           $links[] = l($term->name, taxonomy_term_path($term), $options);
