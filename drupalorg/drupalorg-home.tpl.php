@@ -16,7 +16,7 @@
 <div id="front-top-middle" class="grid-4">
   <div id="front-top-middle-inner">
     <div class="block-content">
-     <h2><a href="cases">Sites We Made with Drupal</a></h2>
+     <h2><a href="cases">Sites Made with Drupal</a></h2>
      <?php print $things_we_made; ?>
     </div>
   </div> 
