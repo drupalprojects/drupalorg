@@ -134,6 +134,7 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
       return array(
         'get_involved' => array('info' => t('Ways to Get Involved')),
         'set_home' => array('info' => t('Set user home page')),
+        'drupalorg_activity' => array('info' => t('Drupal.org Activity')),
       );
 
     case 'view':
@@ -163,9 +164,42 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
           if ($user->uid) {
             return array('content' => drupal_get_form('drupalorg_set_home'));
           }
+        case 'drupalorg_activity':
+          return array(
+            'subject' => t('drupal.org Activity'),
+            'content' => drupalorg_activity_block(),
+            );
       }
       break;
   }
+}
+
+/**
+* Overall quick stats for drupal.org.
+*/
+function drupalorg_activity_block(){
+  $items = array(); 	
+  
+  $cvs_accts_approved = cvs_get_total_accounts();
+ 	$items[] = t('%accounts Number of people with CVS accounts', array('%accounts' => $cvs_accts_approved));
+ 	
+ 	$cvs_commits_month = cvs_get_total_commits(NULL, strtotime("1 month ago")); 
+ 	$items[] = t("%commits CVS commits this month", array('%commits' => $cvs_commits_month));
+ 	
+ 	$users = db_result(db_query("SELECT COUNT(*) FROM {users} WHERE status = 1"));
+ 	$items[] = t("%users Users on drupal.org", array('%users' => $users));
+ 	
+ 	$sites = project_usage_get_project_total_usage(3060);
+ 	$items[] = t("%sites Sites running Drupal", array('%sites' => $sites));
+ 	
+ 	$docs = ''; // TODO - where do I get the members of the doc team
+ 	$items[] = t("%docs Documentation team members", array('%docs' => $docs));
+ 	
+ 	$comments = db_result(db_query("SELECT COUNT(*) FROM {comments} WHERE status = 1"));
+ 	$items[] = t("%comments Comments and issue followups", array('%comments' => $comments));
+  
+  $output = theme('item_list', $items);
+  return $output;
 }
 
 function drupalorg_set_home() {
