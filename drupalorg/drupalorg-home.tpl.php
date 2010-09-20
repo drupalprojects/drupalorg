@@ -6,9 +6,6 @@
      <p class="front-get-started">
       <a href="start" class="link-button"><span>Get Started with Drupal</span></a>
      </p>
-     <h4><a href="success-stories">Who Else Uses Drupal?</a></h4>
-     Magazines: <a href="">Fast Company</a>, <a href="#">Popular Science</a>, The Economist.<br/>
-     Newspapers: <a href="#">Morris Digital</a>, <a href="#">Seattle Times</a> and many, many <a href="success-stories">more...</a>
     </div>
   </div>
 </div>
@@ -18,6 +15,9 @@
     <div class="block-content">
      <h2><a href="cases">Sites Made with Drupal</a></h2>
      <?php print $things_we_made; ?>
+     <h4><a href="success-stories">Who Else Uses Drupal?</a></h4>
+     Magazines: <a href="">Fast Company</a>, <a href="#">Popular Science</a>, The Economist.<br/>
+     Newspapers: <a href="#">Morris Digital</a>, <a href="#">Seattle Times</a> and many, many <a href="success-stories">more...</a>
     </div>
   </div> 
 </div> 
@@ -30,7 +30,7 @@
       <div class="grid-2 alpha">
        <strong>Current activity</strong>
        <ul>
-         <li><a href="cvs"><?php print $number_of_cvs_accounts; ?> CVS a/c holders</a></li>
+         <li><a href="cvs"><?php print $number_of_cvs_accounts; ?> active developers</a></li>
          <li><a href="cvs"><?php print $number_of_cvs_commits; ?> commits this week</a></li>
        </ul>
       </div>
