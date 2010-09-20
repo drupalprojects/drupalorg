@@ -736,7 +736,7 @@ function drupalorg_homebox() {
       'menu' => 0,
       'enabled' => 1,
       'regions' => 3,
-      'cache' => 0,
+      'cache' => 1,
       'full' => 0,
       'custom' => 0,
       'roles' => array(
@@ -777,6 +777,7 @@ function drupalorg_homebox() {
           'weight' => -31,
         ),
         // Column 2
+        /* Waiting on #874790
         'views_flag_bookmarks-block' => array(
           'module' => 'views',
           'delta' => 'flag_bookmarks-block',
@@ -787,7 +788,7 @@ function drupalorg_homebox() {
           'closable' => 1,
           'title' => '',
           'weight' => -7,
-        ),
+        ),*/
         'tracker2_user' => array(
           'module' => 'tracker2',
           'delta' => 'user',
