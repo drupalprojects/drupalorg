@@ -166,9 +166,9 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
           }
         case 'drupalorg_activity':
           return array(
-            'subject' => t('drupal.org Activity'),
+            'subject' => t('Drupal.org Activity'),
             'content' => drupalorg_activity_block(),
-            );
+          );
       }
       break;
   }
