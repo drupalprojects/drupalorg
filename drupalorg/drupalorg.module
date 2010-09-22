@@ -180,12 +180,12 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
 function drupalorg_activity_block(){
   $items = array(); 
   $stats = drupalorg_get_activity();
- 	$items[] = t('%accounts Number of people with CVS accounts', array('%accounts' => $stats['number_of_cvs_accounts']));
+ 	$items[] = t('%accounts people with CVS accounts', array('%accounts' => $stats['number_of_cvs_accounts']));
  	$items[] = t("%commits CVS commits this week", array('%commits' => $stats['number_of_cvs_commits']));
- 	$items[] = t("%users Users on drupal.org", array('%users' => $stats['number_of_users']));
- 	$items[] = t("%sites Sites running Drupal", array('%sites' => $stats['sites']));
+ 	$items[] = t("%users users on drupal.org", array('%users' => $stats['number_of_users']));
+ 	$items[] = t("%sites sites running Drupal", array('%sites' => $stats['sites']));
  	$items[] = t("%docs Documentation team members", array('%docs' => $stats['docs']));
- 	$items[] = t("%comments Comments and issue followups", array('%comments' => $comments));
+ 	$items[] = t("%comments comments and issue followups", array('%comments' => $comments));
   
   $output = theme('item_list', $items);
   return $output;
