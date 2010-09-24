@@ -50,8 +50,8 @@
 
 <div class="node-section grid-12 alpha omega">
   <div class="grid-3 alpha">
-    <h2>Build for Today</h2>
-    <p>Drupal is <a href="/getting-started/before/overview">powerful, customizable, and flexible</a>, letting you connect many pieces to make your website. As your site evolves you simply move the pieces, take some away, or add new ones. The site you need now may not be the site you need in the future, so you can extend your site with more pieces.</p>
+    <h2>Drupal is Open Source</h2>
+    <p>Drupal is open source software maintained and developed by a community of hundreds of thousands of users and developers. It's distributed under the terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> (or "GPL"), which means anyone is free to download it, share it with others, and <a href="http://drupal.org/contribute">contribute</a> back to the project.  This open development model means that people are constantly working to make sure Drupal is a cutting-edge platform that supports the latest technologies that the Web has to offer. </p>
   </div>
       
   <div class="grid-3">
