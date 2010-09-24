@@ -15,9 +15,7 @@
     <div class="block-content">
      <h2><a href="cases">Sites Made with Drupal</a></h2>
      <?php print $things_we_made; ?>
-     <h4><a href="success-stories">Who Else Uses Drupal?</a></h4>
-     Magazines: <a href="">Fast Company</a>, <a href="#">Popular Science</a>, The Economist.<br/>
-     Newspapers: <a href="#">Morris Digital</a>, <a href="#">Seattle Times</a> and many, many <a href="success-stories">more...</a>
+     Drupal is used by some of the biggest sites on the Web, like <a href="http://www.examiner.com/">Examiner.com</a> and <a href="http://www.whitehouse.gov">The White House</a>.  Read more Drupal <a href="success-stories">success stories</a>.
     </div>
   </div> 
 </div> 
