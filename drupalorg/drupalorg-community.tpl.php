@@ -2,38 +2,7 @@
 <div class="grid-8 alpha">
   <?php print $help_form; ?>
   <h3>Recent activity</h3>
-  <form>
-    <p>Browse
-    <select value="Category">
-      <option selected="selected">Group</option>
-    </select> 
-    &nbsp;&nbsp; by 
-    <select value="date">
-      <option selected="selected">Date</option>
-    </select></p>
-  </form>
-
-  <h5><a href="#">Direct hook access to the query</a> <a href="#"><span class="icons icon_add">&nbsp;</span></a></h5>
-  <p class="event">Last activity: September 13, 2008</p>
-  <h5><a href="#">add 'commit' as a valid GET arg</a> <a href="#"><span class="icons icon_add">&nbsp;</span></a></h5>
-  <p class="event">Last activity: September 13, 2008</p>
-  <h5><a href="#">Guidelines for using Drupal's CVS contrib repository</a> <a href="#" class="tag">Add to dashboard</a></h5>
-  <p class="event">Last activity: September 14, 2008</p>
-  <h5><a href="#">Is this module being maintained?</a> <a href="#"><span class="icons icon_add">&nbsp;</span></a></h5>
-  <p class="event">Last activity: September 15, 2008</p>
-  <h5><a href="#">CVS commit error</a> <a href="#"><span class="icons icon_add">&nbsp;</span></a></h5>
-  <p class="event">Last activity: September 15, 2008</p>
-  <h5><a href="#">Direct hook access to the query</a> <a href="#"><span class="icons icon_add">&nbsp;</span></a></h5>
-  <p class="event">Last activity: September 15, 2008</p>
-  <h5><a href="#">add 'commit' as a valid GET arg</a> <a href="#"><span class="icons icon_add">&nbsp;</span></a></h5>
-  <p class="event">Last activity: September 15, 2008</p>
-  <h5><a href="#">Guidelines for using Drupal's CVS contrib repository</a> <a href="#"><span class="icons icon_add">&nbsp;</span></a></h5>
-  <p class="event">Last activity: September 16, 2008</p>
-  <h5><a href="#">Is this module being maintained?</a> <a href="#"><span class="icons icon_add">&nbsp;</span></a></h5>
-  <p class="event">Last activity: September 17, 2008</p>
-  <h5><a href="#">CVS commit error</a> <a href="#"><span class="icons icon_add">&nbsp;</span></a></h5>
-  <p class="event">Last activity: September 17, 2008</p>
-  <br>
+  <?php print $recent_activity; ?>
   
 </div>
 <div class="grid-4 omega">

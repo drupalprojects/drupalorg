@@ -456,10 +456,32 @@ function drupalorg_community() {
  */
 function drupalorg_preprocess_drupalorg_community(&$variables) {
   $variables['advertisement'] = ''; // used to pull in the proper advertisement block.
+  // "How can we help you?" form at the top of /community.
   $variables['help_form'] = '';
   if (module_exists('drupalorg_search')) {
     $variables['help_form'] = drupal_get_form('drupalorg_search_help_form');
   }
+  // "Recent activity" list at the bottom of /community.
+  $variables['recent_activity'] = '';
+  if (module_exists('tracker2')) {
+    // Load the tracker2.pages.inc file so we have access to the tracker2_query function.
+    module_load_include('inc', 'tracker2', 'tracker2.pages');
+    $variables['recent_activity'] = theme('drupalorg_recent_activity', tracker2_query(variable_get('drupalorg_recent_activity_pager', 10)));
+  }
+}
+
+/**
+ * Theme function for the presentation of results on /community in the 
+ * "Recent Activity" section.
+ * 
+ * @param $nodes array
+ *  An array of node objects, keyed by nid.
+ */
+function theme_drupalorg_recent_activity($nodes) {
+  // TODO: Provide theming to recent activity list per both:
+  // 1. https://infrastructure.drupal.org/drupal.org-style-guide/prototype/community.html
+  // 2. http://drupal.org/node/371986
+  return theme('tracker2_page', $nodes);
 }
 
 /**
@@ -481,6 +503,9 @@ function drupalorg_theme() {
     ),
     'drupalorg_community' => array(
       'template' => 'drupalorg-community',
+    ),
+    'drupalorg_recent_activity' => array(
+      'arguments' => array('nodes' => array()),
     ),
   );
 }
