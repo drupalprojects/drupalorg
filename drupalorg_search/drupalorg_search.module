@@ -102,6 +102,10 @@ function drupalorg_search_block_info() {
       'info' => t('Drupalorg Search: Navigation'),
       'cache' => BLOCK_NO_CACHE,
     ),
+    'drupalorg_search_alternate' => array(
+      'info' => t('Drupalorg Search: Alternate Searches'),
+      'cache' => BLOCK_NO_CACHE,
+    ),
   );
 
   // Add the facet blocks.
@@ -188,7 +192,35 @@ function drupalorg_search_block_view($delta) {
         return $block;
       }
       break;
+    case 'drupalorg_search_alternate':
+      // Pull any existing search terms to use in our links.
+      $search_term = search_get_keys();
+      if (empty($search_term) && isset($_GET['text'])) {
+        $search_term = $_GET['text'];
+      }
 
+      // Provide selections for all the site-search options.
+      $searches = array(
+        'apachesolr_multisitesearch' => 'Posts',
+        'drupalorg' => 'IRC Nicks',
+        'user_search' => 'Users',
+      );
+      $items = array();
+      foreach ($searches as $module => $title) {
+        $items[$module] = l(t($title), 'search/' . $module . ($search_term ? '/' . $search_term : ''));
+      }
+      $items['issues'] = l(t('Advanced Issues'), 'search/issues', array('query' => array('text' => $search_term)));
+
+      // Remove our current search (since the list should simply be other options).
+      if (arg(0) == 'search' && arg(1)) {
+        unset($items[arg(1)]);
+      }
+
+      $block = array(
+        'title' => t('or search for...'),
+        'content' => theme('item_list', $items),
+      );
+      return $block;
   }
 }
 
