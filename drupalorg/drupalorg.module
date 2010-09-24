@@ -478,10 +478,23 @@ function drupalorg_preprocess_drupalorg_community(&$variables) {
  *  An array of node objects, keyed by nid.
  */
 function theme_drupalorg_recent_activity($nodes) {
-  // TODO: Provide theming to recent activity list per both:
-  // 1. https://infrastructure.drupal.org/drupal.org-style-guide/prototype/community.html
-  // 2. http://drupal.org/node/371986
-  return theme('tracker2_page', $nodes);
+  if (!empty($nodes)) {
+    // Display the data.
+    $rows = array();
+    foreach ($nodes as $node) {
+      $rows[] = 
+        '<h6>' . l($node->title, "node/$node->nid") .' '. theme('mark', node_mark($node->nid, $node->changed)) . '</h6>' .
+        '<p class="submitted">' . t('Last activity: ') . t('!time', array('!time' => format_date($node->last_activity, 'custom', 'F d, Y'))) . '</p>';
+    }
+  }
+  else {
+    $rows[] = t('No posts available.');
+  }
+  $output = '<div id="recent-activity">';
+  $output .= theme('item_list', $rows);
+  $output .= theme('pager', NULL, variable_get('tracker2_pager', 25), 0);
+  $output .= '</div>';
+  return $output;
 }
 
 /**
