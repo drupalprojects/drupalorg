@@ -297,6 +297,12 @@ function drupalorg_update_6500() {
         "search/apachesolr_multisitesearch\nsearch/apachesolr_multisitesearch/*",
     ),
     array(
+      'module' => 'drupalorg_search',
+      'delta' => 'drupalorg_search_alternate',
+      'pages' => "search/apachesolr_search\nsearch/apachesolr_search/*\n" .
+        "search/apachesolr_multisitesearch\nsearch/apachesolr_multisitesearch/*",
+    ),
+    array(
       'title' => 'Most Installed',
       'module' => 'drupalorg_order_facet',
       'delta' => 'sort_most_installed',
