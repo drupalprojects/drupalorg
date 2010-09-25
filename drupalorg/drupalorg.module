@@ -943,3 +943,18 @@ function drupalorg_settings_form() {
 
   return system_settings_form($form);
 }
+
+/**
+ * Add notes to ads.
+ */
+function drupalorg_preprocess_block(&$variables) {
+  if ($variables['block']->module === 'google_admanager') {
+    $variables['block']->content .= '<div class="gam-suffix"><a href="http://association.drupal.org/advertising">Advertising</a> helps build a successful ecosystem around Drupal.</div>';
+
+    if ($variables['block']->delta === md5('Redesign_books')) {
+      $variables['block']->content = '<div class="gam-prefix"><h3><a href="/books">Drupal Books</a></h3>
+        <p>There are many useful books about Drupal. Here are just a few of our recommendations:</p></div>'
+        . $variables['block']->content;
+    }
+  }
+}
