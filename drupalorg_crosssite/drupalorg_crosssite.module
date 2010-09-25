@@ -569,6 +569,15 @@ function drupalorg_crosssite_menu_alter(&$items) {
   if (isset($items['user/%user/track'])) {
     $items['user/%user/track']['type'] = MENU_NORMAL_ITEM;
   }
+  // Modify the local tasks for search to hide the tabs.
+  if (module_exists('search')) {
+    $modules = search_get_implementing_modules();
+    foreach ($modules as $module) {
+      if (isset($items['search/' . $module . '/%menu_tail'])) {
+        $items['search/' . $module . '/%menu_tail']['type'] = MENU_NORMAL_ITEM;
+      }
+    }
+  }
 }
 
 // == Search functions =========================================================
