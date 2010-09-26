@@ -202,7 +202,7 @@ function drupalorg_get_activity(){
     
     // CVS: retrieve info via API.
     $stats['number_of_cvs_accounts'] = number_format(cvs_get_total_accounts());
-    $stats['number_of_cvs_commits'] = number_format(cvs_get_total_commits(NULL, strtotime("1 week ago")));
+    $stats['number_of_cvs_commits'] = number_format(cvs_get_total_commits(NULL, 7*24*60*60));
     
     // Issue comments this week
     $followups = db_result(db_query("SELECT COUNT(distinct c.nid) FROM {node} n INNER JOIN {comments} c ON n.nid = c.nid WHERE n.type = 'project_issue' AND n.status = 1 AND c.timestamp > %d", strtotime("1 week ago")));
