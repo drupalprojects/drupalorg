@@ -185,7 +185,7 @@ function drupalorg_activity_block(){
  	$items[] = t("%users users on drupal.org", array('%users' => $stats['number_of_users']));
  	$items[] = t("%sites sites running Drupal", array('%sites' => $stats['sites']));
  	$items[] = t("%docs Documentation team members", array('%docs' => $stats['docs']));
- 	$items[] = t("%comments comments and issue followups", array('%comments' => $comments));
+ 	$items[] = t("%comments comments and issue followups", array('%comments' => $stats['comments']));
   
   $output = theme('item_list', $items);
   return $output;
