@@ -196,7 +196,7 @@ function drupalorg_activity_block(){
  * try to generate it again.
  */
 function drupalorg_get_activity(){
-  if (!count($stats = variable_get('drupalorg_front_counter_data', array())) || (variable_get('drupalorg_front_counter_time', 0) < (time() - 60*60))) {
+  if (TRUE || !count($stats = variable_get('drupalorg_front_counter_data', array())) || (variable_get('drupalorg_front_counter_time', 0) < (time() - 60*60))) {
     
     $stats = array();
     
@@ -228,7 +228,7 @@ function drupalorg_get_activity(){
     $stats['number_of_users'] = number_format(db_result(db_query('SELECT COUNT(*) FROM {users}')));
 
     // Country: A single text field, so we can filter it in SQL.
-    $stats['number_of_countries'] = db_result(db_query('SELECT COUNT(DISTINCT value) FROM {profile_values} WHERE fid = %d', DRUPALORG_COUNTRY_PID));
+    $stats['number_of_countries'] = number_format(db_result(db_query('SELECT COUNT(DISTINCT value) FROM {profile_values} WHERE fid = %d', DRUPALORG_COUNTRY_PID)));
 
     // Languages: Get all the distinct combinations and then filter that down.
     $languages = array();
@@ -243,10 +243,10 @@ function drupalorg_get_activity(){
     $stats['sites'] = number_format(project_usage_get_project_total_usage(3060));
     
     // Docs team: count users with role.
-    $stats['docs'] = db_result(db_query("SELECT COUNT(*) FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.rid WHERE u.status = 1 AND r.rid = 5"));   
+    $stats['docs'] = number_format(db_result(db_query("SELECT COUNT(*) FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.rid WHERE u.status = 1 AND r.rid = 5")));   
     
     // Comments: count comments.
-    $stats['comments'] = db_result(db_query("SELECT COUNT(*) FROM {comments} WHERE status = 1")); 
+    $stats['comments'] = number_format(db_result(db_query("SELECT COUNT(*) FROM {comments} WHERE status = 0"))); 
   
     // Store all the results and the time.
     variable_set('drupalorg_front_counter_data', $stats);
