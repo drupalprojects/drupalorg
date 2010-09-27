@@ -399,6 +399,11 @@ function drupalorg_update_6502() {
 <li><a href="project/openpublish">News Site</a></li>
 <li><a href="project/drupal_wiki">Wiki</a></li>');
 
+  variable_set('google_admanager_account', 'ca-pub-8747679010629587');
+  variable_set('google_admanager_ad_slots', 'Redesign_home
+Redesign_books');
+  variable_set('google_admanager_lazy', 1);
+
   return $return;
 }
 
