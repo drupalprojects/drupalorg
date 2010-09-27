@@ -15,7 +15,7 @@
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutsocial"><a href="/features/modules">ADMINISTER</a></h3>
+      <h3 id="aboutsearching"><a href="/features/modules">ADMINISTER</a></h3>
       <p>Drupal comes with great options for new user accounts and user permissions. Users can be assigned one or more roles, and each role can be set up with fine-grained permissions allowing users view and create only what the administrator permits. The Drupal 7 admin theme makes administering a site easier than ever.</p>
     </div>
       
@@ -42,7 +42,7 @@
     </div>
       
     <div class="grid-3 omega">
-      <h3 id="aboutsearching"><a href="/features/connect">CONNECT</a></h3>
+      <h3 id="aboutsocial"><a href="/features/connect">CONNECT</a></h3>
       <p></p>
     </div>
   </div>
