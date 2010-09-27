@@ -250,6 +250,12 @@ function drupalorg_update_6500() {
       'pages' => 'handbook',
     ),
     array(
+      'module' => 'google_admanager',
+      'delta' => md5('Redesign_books'),
+      'pages' => 'handbook',
+      'region' => 'content',
+    ),
+    array(
       'module' => 'drupalorg_handbook',
       'delta' => 'irc',
       'pages' => 'irc',
