@@ -339,7 +339,7 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   $things = drupalorg_get_most_recent_things_we_made(4);
   $variables['things_we_made'] = drupalorg_render_things_we_made($things);
 
-  $variables['map_content'] = '<div class="homepage-pin homepage-pin-commit"><span class="latitude">41.836944</span><span class="longitude">-87.684444</span><div class="content"><a href="http://chicago2011.drupal.org/"><img src="http://chicago2011.drupal.org/sites/default/themes/conchicago/logo.png" alt="DrupalCon Chicago March 7-10 2011" /></a></div></div>
+  $variables['map_content'] = '<div class="homepage-pin homepage-pin-commit"><span class="latitude">' . variable_get('drupalcon_latitude', 41.836944) . '</span><span class="longitude">' . variable_get('drupalcon_longitude', -87.684444) . '</span><div class="content drupalcon">' . variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011') . '</div></div>
 <div class="homepage-pin homepage-pin-forum"><span class="latitude">60</span><span class="longitude">20</span><div class="content">todo todo todo</div></div>';
 
   // == Forums tab data/markup
@@ -997,6 +997,22 @@ function drupalorg_settings_form() {
     '#title' => t('Featured install profiles'),
     '#default_value' => variable_get('drupalorg_featured_install_profiles', ''),
     '#rows' => 5,
+  );
+
+  $form['drupalcon_latitude'] = array(
+    '#type' => 'text',
+    '#title' => t('DrupalCon latitude'),
+    '#default_value' => variable_get('drupalcon_latitude', 41.836944),
+  );
+  $form['drupalcon_longitude'] = array(
+    '#type' => 'text',
+    '#title' => t('DrupalCon longitude'),
+    '#default_value' => variable_get('drupalcon_longitude', -87.684444),
+  );
+  $form['drupalcon_message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('DrupalCon map bubble'),
+    '#default_value' => variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011'),
   );
 
   return system_settings_form($form);
