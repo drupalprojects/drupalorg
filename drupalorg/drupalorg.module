@@ -1,6 +1,7 @@
 <?php
 // $Id$
 
+
 /**
  * @file
  *   This module contains customizations used on drupal.org itself. It is not
@@ -81,6 +82,13 @@ function drupalorg_menu() {
   $items['community'] = array(
     'title' => 'Community & Support',
     'page callback' => 'drupalorg_community',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['getting-involved'] = array(
+    'title' => 'Getting Involved',
+    'page callback' => 'drupalorg_getting_involved',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -495,6 +503,29 @@ function drupalorg_preprocess_drupalorg_community(&$variables) {
 }
 
 /**
+ * Page callback for the getting involved page.
+ */
+function drupalorg_getting_involved() {
+  return theme('drupalorg_getting_involved');
+}
+
+/**
+ * Implementation of template_preprocess_drupalorg_getting_involved().
+ */
+function drupalorg_preprocess_drupalorg_getting_involved(&$variables) {
+  // First, show a teaser of the old docs node.
+  $docs_node = node_load(281873);
+  unset($docs_node->taxonomy); // Looks funny here.
+  unset($docs_node->title); // Looks funny here.
+  $variables['docs_node'] = node_view($docs_node, TRUE, FALSE, TRUE);
+  
+  // Then, show the view for community spotlight.
+  $view = views_get_view('drupalorg_community_spotlight');
+  $variables['spotlight_title'] = t($view->display['default']->display_options['title']);
+  $variables['spotlight'] = $view->preview('block_1');
+}
+
+/**
  * Theme function for the presentation of results on /community in the 
  * "Recent Activity" section.
  * 
@@ -540,6 +571,9 @@ function drupalorg_theme() {
     ),
     'drupalorg_community' => array(
       'template' => 'drupalorg-community',
+    ),
+    'drupalorg_getting_involved' => array(
+      'template' => 'drupalorg-getting-involved',
     ),
     'drupalorg_recent_activity' => array(
       'arguments' => array('nodes' => array()),

@@ -1,5 +1,9 @@
 <?php
+<<<<<<< drupalorg.install
 // $Id$
+=======
+// $Id$
+>>>>>>> 1.40
 
 /**
  * @file
@@ -358,6 +362,7 @@ function drupalorg_update_6501() {
   $return = array();
 
   path_set_alias(NULL, 'community');
+  $return[] = update_sql('DELETE FROM {url_alias} WHERE pid = 60174'); // getting-involved
 
   return $return;
 }
