@@ -9,7 +9,7 @@ $(function () {
     });
   }).bt({
     contentSelector: "$('>.content', this)",
-    positions: ['top'],
+    positions: ['left', 'top'],
     closeWhenOthersOpen: true,
     width: 'auto',
     spikeLength: 15,
