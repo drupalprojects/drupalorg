@@ -339,8 +339,24 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   $things = drupalorg_get_most_recent_things_we_made(4);
   $variables['things_we_made'] = drupalorg_render_things_we_made($things);
 
+  // todo cache
   $variables['map_content'] = '<div class="homepage-pin homepage-pin-commit"><span class="latitude">' . variable_get('drupalcon_latitude', 41.836944) . '</span><span class="longitude">' . variable_get('drupalcon_longitude', -87.684444) . '</span><div class="content drupalcon">' . variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011') . '</div></div>';
-  $variables['map_content'] .= '<div class="homepage-pin homepage-pin-forum"><span class="latitude">60</span><span class="longitude">20</span><div class="content">todo todo todo</div></div>';
+  $queries = array(
+    "SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {book} b ON b.nid = nr.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = nr.uid INNER JOIN {users} u ON u.uid = nr.uid ORDER BY nr.timestamp DESC",
+    "SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' ORDER BY n.created DESC",
+    // todo cvs
+  );
+  $map = array();
+  foreach ($queries as $q => $query) {
+    $n = 0;
+    $result = db_query_range($query, 0, 10);
+    while ($row = db_fetch_object($result)) {
+      $map[$n++ * count($queries) + $q] = $row;
+    }
+  }
+  foreach ($map as $row) {
+    $variables['map_content'] .= '<div class="homepage-pin homepage-pin-' . $row->type . '"><span class="latitude">' . $row->latitude . '</span><span class="longitude">' . $row->longitude . '</span><div class="content">' . t('!name @verb<br />!page', array('!name' => theme('username', $row), '@verb' => $row->verb, '!page' => l($row->title, 'node/' . $row->nid))) . '</div></div>';
+  }
 
   // == Forums tab data/markup
   $sql = db_rewrite_sql("SELECT n.nid, n.title, n.created, n.uid, u.name FROM {node} n INNER JOIN {term_node} tn ON tn.vid = n.vid INNER JOIN {term_data} td ON td.tid = tn.tid INNER JOIN {users} u ON n.uid = u.uid WHERE n.status = 1 AND td.vid = %d ORDER BY n.nid DESC");
