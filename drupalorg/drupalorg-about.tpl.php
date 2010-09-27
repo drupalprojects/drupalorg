@@ -27,7 +27,7 @@
   
   <div class="node-sub-section grid-12 alpha omega">
     <div class="grid-3 alpha">
-      <h3 id="aboutcontentmanagement"><a href="/features/organize">ORGANIZE</a></h3>
+      <h3 id="aboutcontentmanagement"><a href="/features/scale">SCALE YOUR CONTENT</a></h3>
       <p>Drupal comes with many tools to help you organize your content. Categorize with taxonomy, automatically create friendly path urls, associate content with other content on your site, and create smart defaults for content creators.</p>
     </div>
       
@@ -42,8 +42,8 @@
     </div>
       
     <div class="grid-3 omega">
-      <h3 id="aboutsearching"><a href="/features/find">FIND</a></h3>
-      <p>Spend less time looking for information, and focus on getting things done. There are several ways to find content in Drupal, including breadcrumbs, Drupal core search and fantastic contributed search modules, such as Solr.</p>
+      <h3 id="aboutsearching"><a href="/features/connect">CONNECT</a></h3>
+      <p></p>
     </div>
   </div>
 </div>
