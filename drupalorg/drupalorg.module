@@ -349,6 +349,10 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   // Retrieve or rebuild stats cache
   $stats = drupalorg_get_activity();
   $variables += $stats;
+
+  // PSA ad
+  $slots = _google_admanager_get_ad_slots();
+  $variables['psa'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'Redesign_home');
 }
 
 /**
