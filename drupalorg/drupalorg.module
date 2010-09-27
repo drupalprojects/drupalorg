@@ -344,19 +344,39 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   $queries = array(
     "SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {book} b ON b.nid = nr.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = nr.uid INNER JOIN {users} u ON u.uid = nr.uid ORDER BY nr.timestamp DESC",
     "SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' ORDER BY n.created DESC",
-    // todo cvs
+    "SELECT DISTINCT cm.cid, cm.message title, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'comitted' verb FROM {cvs_messages} cm INNER JOIN {html5_user_geolocation} hug ON hug.uid = cm.uid INNER JOIN {users} u ON u.uid = cm.uid ORDER BY cm.created DESC",
   );
   $map = array();
   foreach ($queries as $q => $query) {
     $n = 0;
     $result = db_query_range($query, 0, 10);
     while ($row = db_fetch_object($result)) {
+      // Trim to maximum.
+      $row->title = truncate_utf8(trim($row->title), 45);
+      // If at max.
+      if (drupal_strlen($row->title) === 45) {
+        // Truncate at space in the last 10 characters.
+        if (preg_match('/\s/', drupal_substr($row->title, 35))) {
+          $row->title = preg_replace('/\s[^\s]*$/', '…', $row->title);
+        }
+        else {
+          $row->title .= '…';
+        }
+      }
+      // Set link.
+      if ($row->type === 'commit') {
+        $row->link = l($row->title, 'cvs', array('query' => array('commit' => $row->nid)));
+      }
+      else {
+        $row->link = l($row->title, 'node/' . $row->nid);
+      }
+      // Add for round-robin sorting.
       $map[$n++ * count($queries) + $q] = $row;
     }
   }
   ksort($map);
   foreach ($map as $row) {
-    $variables['map_content'] .= '<div class="homepage-pin homepage-pin-' . $row->type . '"><span class="latitude">' . $row->latitude . '</span><span class="longitude">' . $row->longitude . '</span><div class="content">' . t('!name @verb<br />!page', array('!name' => theme('username', $row), '@verb' => $row->verb, '!page' => l($row->title, 'node/' . $row->nid))) . '</div></div>';
+    $variables['map_content'] .= '<div class="homepage-pin homepage-pin-' . $row->type . '"><span class="latitude">' . $row->latitude . '</span><span class="longitude">' . $row->longitude . '</span><div class="content">' . t('!name @verb<br />!page', array('!name' => theme('username', $row), '@verb' => $row->verb, '!page' => $row->link)) . '</div></div>';
   }
 
   // == Forums tab data/markup
