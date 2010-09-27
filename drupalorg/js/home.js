@@ -10,6 +10,7 @@ $(function () {
   }).bt({
     contentSelector: "$('>.content', this)",
     positions: ['left', 'top'],
+    windowMargin: -1000,
     closeWhenOthersOpen: true,
     width: 'auto',
     spikeLength: 15,
