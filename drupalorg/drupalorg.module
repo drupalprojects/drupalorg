@@ -354,6 +354,7 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
       $map[$n++ * count($queries) + $q] = $row;
     }
   }
+  ksort($map);
   foreach ($map as $row) {
     $variables['map_content'] .= '<div class="homepage-pin homepage-pin-' . $row->type . '"><span class="latitude">' . $row->latitude . '</span><span class="longitude">' . $row->longitude . '</span><div class="content">' . t('!name @verb<br />!page', array('!name' => theme('username', $row), '@verb' => $row->verb, '!page' => l($row->title, 'node/' . $row->nid))) . '</div></div>';
   }
