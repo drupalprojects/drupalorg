@@ -25,12 +25,6 @@ function drupalorg_news_menu() {
   $items['news'] = array(
     'title' => 'News',
     'page callback' => 'drupalorg_news_page',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-  $items['news/%drupalorg_news_term'] = array(
-    'title' => 'News',
-    'page callback' => 'drupalorg_news_page',
     'page arguments' => array(1),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
@@ -42,7 +36,7 @@ function drupalorg_news_menu() {
  * Menu loader. Load news term if it is indeed from the given vocabulary.
  */
 function drupalorg_news_term_load($tid) {
-  if (($term == taxonomy_get_term($tid)) && ($term->vid == DRUPALORG_NEWS_VID)) {
+  if (($term = taxonomy_get_term($tid)) && ($term->vid == DRUPALORG_NEWS_VID)) {
     return $term;
   }
   return NULL;
@@ -51,15 +45,38 @@ function drupalorg_news_term_load($tid) {
 /**
  * One of the most visited pages of the site, so hardcode queries.
  */
-function drupalorg_news_page($term) {
-  if (!isset($tid)) {
+function drupalorg_news_page($tid) {
+  
+  $term = drupalorg_news_term_load($tid);
+
+  if (!isset($term)) {
+    
+    // TODO for "All news" 
+      // create an array key = unix timestamp, value = output
+        // Mix in data from aggregator (association)
+        // Mix in data from aggregator_promote (drupal planet)
+          // array_sort and foreach to generate output
+    
     $result = pager_query(db_rewrite_sql('SELECT n.nid, n.sticky, n.created FROM {node} n WHERE n.promote = 1 AND n.status = 1 ORDER BY n.sticky DESC, n.created DESC'), variable_get('default_nodes_main', 10));
+    
     // Add existing "front page" feed if main news page.
     $feed_url = url('rss.xml', array('absolute' => TRUE));
     drupal_add_feed($feed_url, variable_get('site_name', 'Drupal') .' '. t('RSS'));
+    
   }
   else {
-    $result = pager_query(db_rewrite_sql('SELECT n.nid, n.sticky, n.created FROM {node} n LEFT JOIN {term_node} t ON t.vid = n.vid WHERE n.promote = 1 AND n.status = 1 AND t.tid = %d ORDER BY n.sticky DESC, n.created DESC'), variable_get('default_nodes_main', 10), 0, NULL, $term->tid);
+    
+    // TODO test for Drupal News
+      // only source is nodes (tid 902)
+
+    // TODO test for Assocaition
+      // only source is aggregator - nodes? (tid 904)
+
+    // TODO test for Planet Drupal
+      // only sorurce is aggregator_promote - nodes? (tid 903)
+      
+    $result = pager_query(db_rewrite_sql('SELECT n.nid, n.sticky, n.created FROM {node} n LEFT JOIN {term_node} t ON n.nid = t.nid WHERE n.promote = 1 AND n.status = 1 AND t.tid = %d ORDER BY n.sticky DESC, n.created DESC'), variable_get('default_nodes_main', 10), 0, NULL, $term->tid);
+    
   }
 
   $output = '';
