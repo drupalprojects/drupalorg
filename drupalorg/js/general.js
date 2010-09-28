@@ -19,11 +19,15 @@
   };
 
   Drupal.Drupalorg = function () {
-    var myself = this;
+    var myself = this,
+      $footer = $('#footer'),
+      $page = $('#page');
 
     this.init = function () {
       myself.setDefaultSearchFormValue($('body:not(.front) #edit-search-theme-form-1'), Drupal.t('Search Drupal.org'));
-      myself.setFooterPosition();
+      if ($footer.length > 0 && $page.length > 0) {
+        myself.setFooterPosition();
+      }
     };
 
     // Add focus/blur label behavior to search box.
@@ -46,18 +50,18 @@
 
     // Push footer to bottom of window if content is smaller than window.
     this.setFooterPosition = function () {
-      var footer_height = $('#footer').innerHeight();
-      var footer_pos = $('#footer').position();
+      var footer_height = $footer.innerHeight();
+      var footer_pos = $footer.position();
       var window_height = $(window).height();
-      var page_height = $('#page').height();
-      var page_pos = $('#page').position();
+      var page_height = $page.height();
+      var page_pos = $page.position();
       var page_total = page_pos.top + page_height;
       var content_height = footer_height + page_total;
       if (content_height <= window_height) {
         if (footer_pos.top < window_height) {
           var footer_new_pos = window_height - content_height;
-          $('#footer').css('position', 'relative');
-          $('#footer').css('margin-top', footer_new_pos);
+          $footer.css('position', 'relative');
+          $footer.css('margin-top', footer_new_pos);
         }
       }
     };
