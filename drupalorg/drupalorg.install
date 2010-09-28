@@ -306,8 +306,7 @@ function drupalorg_update_6500() {
     array(
       'module' => 'drupalorg_search',
       'delta' => 'drupalorg_search_alternate',
-      'pages' => "search/apachesolr_search\nsearch/apachesolr_search/*\n" .
-        "search/apachesolr_multisitesearch\nsearch/apachesolr_multisitesearch/*",
+      'pages' => "search/*",
     ),
     array(
       'title' => 'Most Installed',
