@@ -339,45 +339,7 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   $things = drupalorg_get_most_recent_things_we_made(4);
   $variables['things_we_made'] = drupalorg_render_things_we_made($things);
 
-  // todo cache
-  $variables['map_content'] = '<div class="homepage-pin homepage-pin-commit"><span class="latitude">' . variable_get('drupalcon_latitude', 41.836944) . '</span><span class="longitude">' . variable_get('drupalcon_longitude', -87.684444) . '</span><div class="content drupalcon">' . variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011') . '</div></div>';
-  $queries = array(
-    "SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {book} b ON b.nid = nr.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = nr.uid INNER JOIN {users} u ON u.uid = nr.uid ORDER BY nr.timestamp DESC",
-    "SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' ORDER BY n.created DESC",
-    "SELECT DISTINCT cm.cid, cm.message title, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'comitted' verb FROM {cvs_messages} cm INNER JOIN {html5_user_geolocation} hug ON hug.uid = cm.uid INNER JOIN {users} u ON u.uid = cm.uid ORDER BY cm.created DESC",
-  );
-  $map = array();
-  foreach ($queries as $q => $query) {
-    $n = 0;
-    $result = db_query_range($query, 0, 10);
-    while ($row = db_fetch_object($result)) {
-      // Trim to maximum.
-      $row->title = truncate_utf8(trim($row->title), 45);
-      // If at max.
-      if (drupal_strlen($row->title) === 45) {
-        // Truncate at space in the last 10 characters.
-        if (preg_match('/\s/', drupal_substr($row->title, 35))) {
-          $row->title = preg_replace('/\s[^\s]*$/', '…', $row->title);
-        }
-        else {
-          $row->title .= '…';
-        }
-      }
-      // Set link.
-      if ($row->type === 'commit') {
-        $row->link = l($row->title, 'cvs', array('query' => array('commit' => $row->nid)));
-      }
-      else {
-        $row->link = l($row->title, 'node/' . $row->nid);
-      }
-      // Add for round-robin sorting.
-      $map[$n++ * count($queries) + $q] = $row;
-    }
-  }
-  ksort($map);
-  foreach ($map as $row) {
-    $variables['map_content'] .= '<div class="homepage-pin homepage-pin-' . $row->type . '"><span class="latitude">' . $row->latitude . '</span><span class="longitude">' . $row->longitude . '</span><div class="content">' . t('!name @verb<br />!page', array('!name' => theme('username', $row), '@verb' => $row->verb, '!page' => $row->link)) . '</div></div>';
-  }
+  $variables['map_content'] = drupalorg_map_content();
 
   // == Forums tab data/markup
   $sql = db_rewrite_sql("SELECT n.nid, n.title, n.created, n.uid, u.name FROM {node} n INNER JOIN {term_node} tn ON tn.vid = n.vid INNER JOIN {term_data} td ON td.tid = tn.tid INNER JOIN {users} u ON n.uid = u.uid WHERE n.status = 1 AND td.vid = %d ORDER BY n.nid DESC");
@@ -398,6 +360,56 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   // PSA ad
   $slots = _google_admanager_get_ad_slots();
   $variables['psa'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'Redesign_home');
+}
+
+function drupalorg_map_content($_force = FALSE) {
+  if (!$_force && $cache = cache_get('drupalorg_map_content')) {
+    $output = $cache->data;
+  }
+  else {
+    $output = '<div class="homepage-pin homepage-pin-commit"><span class="latitude">' . variable_get('drupalcon_latitude', 41.836944) . '</span><span class="longitude">' . variable_get('drupalcon_longitude', -87.684444) . '</span><div class="content drupalcon">' . variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011') . '</div></div>';
+    $queries = array(
+      "SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {book} b ON b.nid = nr.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = nr.uid INNER JOIN {users} u ON u.uid = nr.uid ORDER BY nr.timestamp DESC",
+      "SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' ORDER BY n.created DESC",
+      "SELECT DISTINCT cm.cid, cm.message title, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'comitted' verb FROM {cvs_messages} cm INNER JOIN {html5_user_geolocation} hug ON hug.uid = cm.uid INNER JOIN {users} u ON u.uid = cm.uid ORDER BY cm.created DESC",
+    );
+    $map = array();
+    foreach ($queries as $q => $query) {
+      $n = 0;
+      $result = db_query_range($query, 0, 10);
+      while ($row = db_fetch_object($result)) {
+        // Trim to maximum.
+        $row->title = truncate_utf8(trim($row->title), 45);
+        // If at max.
+        if (drupal_strlen($row->title) === 45) {
+          // Truncate at space in the last 10 characters.
+          if (preg_match('/\s/', drupal_substr($row->title, 35))) {
+            $row->title = preg_replace('/\s[^\s]*$/', '…', $row->title);
+          }
+          else {
+            $row->title .= '…';
+          }
+        }
+        // Set link.
+        if ($row->type === 'commit') {
+          $row->link = l($row->title, 'cvs', array('query' => array('commit' => $row->cid)));
+        }
+        else {
+          $row->link = l($row->title, 'node/' . $row->nid);
+        }
+        // Add for round-robin sorting.
+        $map[$n++ * count($queries) + $q] = $row;
+      }
+    }
+    ksort($map);
+    foreach ($map as $row) {
+      $output .= '<div class="homepage-pin homepage-pin-' . $row->type . '"><span class="latitude">' . $row->latitude . '</span><span class="longitude">' . $row->longitude . '</span><div class="content">' . t('!name @verb<br />!page', array('!name' => theme('username', $row), '@verb' => $row->verb, '!page' => $row->link)) . '</div></div>';
+    }
+
+    cache_set('drupalorg_map_content', $output);
+  }
+
+  return $output;
 }
 
 /**
