@@ -38,22 +38,6 @@ $(function () {
   }, 4000);
 });
 
-Drupal.behaviors.thingsWeMade = function (context) {
-  var index = 0;
-
-  setInterval(function () {
-    // Figure which image we are wrapping too
-    if ($('.things-we-made li').eq(index).hasClass('last')) {
-      index = 0;
-    }
-    else {
-      index += 1;
-    }
-
-    $('ul.things-we-made').animate({ marginLeft: index * -300 }, 200);
-  }, 10000);
-};
-
 Drupal.behaviors.frontTabs = function () {
   $('#rotate > ul').tabs();
 };

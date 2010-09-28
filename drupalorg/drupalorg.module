@@ -310,6 +310,7 @@ function drupalorg_set_home_submit($form, $form_state) {
  * Page callback for the frontpage.
  */
 function drupalorg_home() {
+  $return[] = update_sql('DELETE FROM {url_alias} WHERE pid = 162'); // news
   jquery_ui_add('ui.tabs');
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/jquery.bt.min.js');
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/home.js');
@@ -337,7 +338,10 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
 
   // == Things we made with drupal
   $things = drupalorg_get_most_recent_things_we_made(4);
-  $variables['things_we_made'] = drupalorg_render_things_we_made($things);
+  $thing = $things[array_rand($things)];
+  $image = theme('image', $thing['image_url'], $thing['title'], $thing['title'], NULL, FALSE);
+  $caption = '<div class="caption">' . $thing['title'] . '</div>';
+  $variables['things_we_made'] = '<div class="things-we-made-wrapper">' . l($image . $caption, 'node/' . $thing['nid'], array('html' => TRUE)) . '</div>';
 
   $variables['map_content'] = drupalorg_map_content();
 
@@ -830,28 +834,6 @@ function drupalorg_get_most_recent_things_we_made($limit = 4) {
   }
 
   return $things;
-}
-
-/**
- * Render Things We Made block on the homepage
- *
- * @return a themed ul listing of case study images
- */
-function drupalorg_render_things_we_made($things) {
-  $slides = array();
-  foreach ($things as $i => $thing) {
-    $image = theme('image', $thing['image_url'], $thing['title'], $thing['title'], NULL, FALSE);
-    $caption = '<div class="caption">'. $thing['title'] .'</div>';
-    $output = l($image . $caption, 'node/'. $thing['nid'], array('html' => TRUE));
-
-    $slides[] = array(
-      'data' => $output,
-      'class' => $i == 0 ? 'active thing-'. $i : 'thing-'. $i,
-    );
-  }
-  $things = theme('item_list', $slides, NULL, 'ul', array('class' => 'things-we-made'));
-
-  return '<div class="things-we-made-wrapper">'. $things .'</div>';
 }
 
 /*
