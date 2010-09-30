@@ -570,11 +570,18 @@ function drupalorg_getting_involved() {
  * Implementation of template_preprocess_drupalorg_getting_involved().
  */
 function drupalorg_preprocess_drupalorg_getting_involved(&$variables) {
-  // First, show a teaser of the old docs node.
+  // First, build and render a teaser of the old docs node.
   $docs_node = node_load(281873);
   unset($docs_node->taxonomy); // Looks funny here.
   unset($docs_node->title); // Looks funny here.
-  $variables['docs_node'] = node_view($docs_node, TRUE, FALSE, TRUE);
+  $docs_node = node_build_content($docs_node, TRUE, FALSE);
+  $content = drupal_render($docs_node->content);
+
+  $variables['docs_node'] = $docs_node->teaser;
+  $variables['docs_more'] = l(t('Getting Involved Handbook'), 'node/281873');
+  
+  // Load the book navigation for the docs node, if needed.
+  //$variables['docs_nav'] = theme('book_navigation', $docs_node->book);
   
   // Then, show the view for community spotlight.
   $view = views_get_view('drupalorg_community_spotlight');
