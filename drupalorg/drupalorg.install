@@ -323,6 +323,11 @@ function drupalorg_update_6500() {
       'delta' => 'sort_created',
       'pages' => "project/modules\nproject/themes",
     ),
+    array(
+      'module' => 'drupalorg_search',
+      'delta' => 'drupalorg_search_users',
+      'pages' => "profile\nprofile/*",
+    ),
   );
   $weight = 0;
   foreach ($blocks as $block) {

@@ -106,6 +106,10 @@ function drupalorg_search_block_info() {
       'info' => t('Drupalorg Search: Alternate Searches'),
       'cache' => BLOCK_NO_CACHE,
     ),
+    'drupalorg_search_users' => array(
+      'info' => t('Drupalorg Search: User Search'),
+      'cache' => BLOCK_NO_CACHE,
+    ),
   );
 
   // Add the facet blocks.
@@ -219,6 +223,12 @@ function drupalorg_search_block_view($delta) {
       $block = array(
         'title' => t('or search for...'),
         'content' => theme('item_list', $items),
+      );
+      return $block;
+    case 'drupalorg_search_users':
+      $block = array(
+        'title' => t('Search users'),
+        'content' => drupal_get_form('search_form', NULL, '', 'user_search'),
       );
       return $block;
   }
