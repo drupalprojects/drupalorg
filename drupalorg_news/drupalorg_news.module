@@ -46,46 +46,73 @@ function drupalorg_news_term_load($tid) {
  * One of the most visited pages of the site, so hardcode queries.
  */
 function drupalorg_news_page($tid) {
-  
+  $output = '';
   $term = drupalorg_news_term_load($tid);
-
-  if (!isset($term)) {
-    
-    // TODO for "All news" 
-      // create an array key = unix timestamp, value = output
-        // Mix in data from aggregator (association)
-        // Mix in data from aggregator_promote (drupal planet)
-          // array_sort and foreach to generate output
-    
-    $result = pager_query(db_rewrite_sql('SELECT n.nid, n.sticky, n.created FROM {node} n WHERE n.promote = 1 AND n.status = 1 ORDER BY n.sticky DESC, n.created DESC'), variable_get('default_nodes_main', 10));
-    
-    // Add existing "front page" feed if main news page.
-    $feed_url = url('rss.xml', array('absolute' => TRUE));
-    drupal_add_feed($feed_url, variable_get('site_name', 'Drupal') .' '. t('RSS'));
-    
+  
+  if ($tid == 904){
+    // Instead of using the Assocaition (tid 904) use aggregator (fid = 628)
+    $items = drupalorg_news_get_aggregated_items(628);
+    $output .= _aggregator_page_list($items, NULL, $feed_source);
   }
   else {
-    
-    // TODO test for Drupal News
-      // only source is nodes (tid 902)
+    if (!isset($term)) {
 
-    // TODO test for Assocaition
-      // only source is aggregator - nodes? (tid 904)
-
-    // TODO test for Planet Drupal
-      // only sorurce is aggregator_promote - nodes? (tid 903)
+      // All News: Source is nodes
+      $result = pager_query(db_rewrite_sql('SELECT n.nid, n.sticky, n.created FROM {node} n WHERE n.promote = 1 AND n.status = 1 ORDER BY n.sticky DESC, n.created DESC'), variable_get('default_nodes_main', 10));
       
-    $result = pager_query(db_rewrite_sql('SELECT n.nid, n.sticky, n.created FROM {node} n LEFT JOIN {term_node} t ON n.nid = t.nid WHERE n.promote = 1 AND n.status = 1 AND t.tid = %d ORDER BY n.sticky DESC, n.created DESC'), variable_get('default_nodes_main', 10), 0, NULL, $term->tid);
+      // TODO create an array key = unix timestamp, value = output
+        // Mix in data from aggregator (association)
+          // $items = drupalorg_news_get_aggregated_items(628);
+        //TODO array_sort
+        // TODO foreach to generate output
     
+      // Add existing "front page" feed if main news page.
+      $feed_url = url('rss.xml', array('absolute' => TRUE));
+      drupal_add_feed($feed_url, variable_get('site_name', 'Drupal') .' '. t('RSS'));
+    
+      while ($node = db_fetch_object($result)) {
+        $output .= node_view(node_load($node->nid), 1);
+      }
+      $output .= theme('pager', NULL, variable_get('default_nodes_main', 10));
+    
+    } 
+    else {
+      
+      // Drupal News - source is nodes (tid 902)
+      // Planet Drupal - sorurce is nodes (via aggregator promote) (tid 903)
+      $query = db_rewrite_sql('SELECT DISTINCT n.nid, n.sticky, n.created FROM {node} n INNER JOIN {term_node} tn ON n.nid = tn.nid WHERE n.promote = 1 AND n.status = 1 AND tn.tid = %d ORDER BY n.sticky DESC, n.created DESC', 'n', 'nid', array($tid));
+      $result = pager_query($query, variable_get('default_nodes_main', 10));
+      
+      while ($node = db_fetch_object($result)) {
+        $output .= node_view(node_load($node->nid), 1);
+      }
+      $output .= theme('pager', NULL, variable_get('default_nodes_main', 10));
+    }  
   }
 
-  $output = '';
-  while ($node = db_fetch_object($result)) {
-    $output .= node_view(node_load($node->nid), 1);
-  }
-  $output .= theme('pager', NULL, variable_get('default_nodes_main', 10));
   return $output;
 }
+
+/*
+ * Helper function: returns items from aggregator
+ *
+ * param $fid - the feed ID of the items
+ *
+ * return $items - items from aggregator
+ *
+ */
+function drupalorg_news_get_aggregated_items($fid){
+  $feed = aggregator_feed_load($fid);
+  $feed = (object)$feed;
+  $feed_source = theme('aggregator_feed_source', $feed);
+
+  // It is safe to include the fid in the query because it's loaded from the
+  // database by aggregator_feed_load.
+  module_load_include('inc', 'aggregator', 'aggregator.pages');
+  $items = aggregator_feed_items_load('SELECT * FROM {aggregator_item} WHERE fid = '. $feed->fid .' ORDER BY timestamp DESC, iid DESC');
+  return $items;
+}
+
 
 // == Altering existing behavior ===============================================
 
