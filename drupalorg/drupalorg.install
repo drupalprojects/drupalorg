@@ -328,6 +328,11 @@ function drupalorg_update_6500() {
       'delta' => 'drupalorg_search_users',
       'pages' => "profile\nprofile/*",
     ),
+    array(
+      'module' => 'forum',
+      'delta' => 1,
+      'pages' => "forum\nforum/*",
+    ),
   );
   $weight = 0;
   foreach ($blocks as $block) {
