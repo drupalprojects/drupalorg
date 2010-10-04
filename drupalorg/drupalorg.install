@@ -423,10 +423,26 @@ Redesign_books');
 }
 
 /**
+ * Update nodes.
+ */
+function drupalorg_update_6503() {
+  $return = array();
+
+  // Promote community spotlights.
+  foreach (array(908902, 908840, 903702, 928224) as $nid) {
+    $node = node_load($nid);
+    $node->promote = 1;
+    node_save($node);
+  }
+
+  return $return;
+}
+
+/**
  * Set new permissions.
  */
 /*
-function drupalorg_update_6503() {
+function drupalorg_update_6504() {
   _drupalorg_add_permissions(array(
     'administrator' => array(
     ),
