@@ -357,6 +357,22 @@ function drupalorg_update_6500() {
       'pages' => "security\nsecurity/*",
     ),
     // todo security book ad
+    array(
+      'module' => 'block',
+      'delta' => 6,
+      'title' => t('CVS Information'),
+      'pages' => 'cvs*'
+    ),
+    array(
+      'module' => 'cvs',
+      'delta' => 'cvs_site_active_projects',
+      'pages' => 'cvs*',
+    ),
+    array(
+      'module' => 'cvs',
+      'delta' => 'cvs_site_active_developers',
+      'pages' => 'cvs*',
+    ),
   );
   $weight = 0;
   foreach ($blocks as $block) {
