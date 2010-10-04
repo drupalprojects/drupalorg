@@ -333,6 +333,25 @@ function drupalorg_update_6500() {
       'delta' => 1,
       'pages' => "forum\nforum/*",
     ),
+    array(
+      'module' => 'block',
+      'delta' => 34,
+      'title' => t('Subscribe to Security Advisories'),
+      'pages' => "security\nsecurity/*",
+    ),
+    array(
+      'module' => 'block',
+      'delta' => 11,
+      'title' => t('Contacting the Security Team'),
+      'pages' => "security\nsecurity/*",
+    ),
+    array(
+      'module' => 'block',
+      'delta' => 18,
+      'title' => t('Writing Secure Code'),
+      'pages' => "security\nsecurity/*",
+    ),
+    // todo security book ad
   );
   $weight = 0;
   foreach ($blocks as $block) {
