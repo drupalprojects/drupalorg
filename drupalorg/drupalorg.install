@@ -235,6 +235,11 @@ function drupalorg_update_6500() {
       'pages' => "news\nnews/*\naggregator\naggregator/*",
     ),
     array(
+      'module' => 'drupalorg_news',
+      'delta' => 'planet-list',
+      'pages' => 'planet',
+    ),
+    array(
       'module' => 'drupalorg',
       'delta' => 'get_involved',
       'pages' => 'getting-involved',
