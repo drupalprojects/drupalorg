@@ -361,7 +361,11 @@ function drupalorg_update_6500() {
       'title' => t('Writing Secure Code'),
       'pages' => "security\nsecurity/*",
     ),
-    // todo security book ad
+    array(
+      'module' => 'google_admanager',
+      'delta' => md5('Security_books'),
+      'pages' => "security\nsecurity/*",
+    ),
     array(
       'module' => 'block',
       'delta' => 6,
@@ -466,7 +470,8 @@ function drupalorg_update_6502() {
 
   variable_set('google_admanager_account', 'ca-pub-8747679010629587');
   variable_set('google_admanager_ad_slots', 'Redesign_home
-Redesign_books');
+Redesign_books
+Security_books');
   variable_set('google_admanager_lazy', 1);
 
   return $return;

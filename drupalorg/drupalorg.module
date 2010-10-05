@@ -1072,5 +1072,9 @@ function drupalorg_preprocess_block(&$variables) {
         <p>There are many useful books about Drupal. Here are just a few of our recommendations:</p></div>'
         . $variables['block']->content;
     }
+    elseif ($variables['block']->delta === md5('Security_books')) {
+      $variables['block']->content = '<div class="gam-prefix"><p>There are many useful <a href="/books">books about Drupal</a>. Here are two that discuss security:</p></div>'
+        . $variables['block']->content;
+    }
   }
 }
