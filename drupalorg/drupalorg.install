@@ -317,6 +317,12 @@ function drupalorg_update_6500() {
         "search/user_search\nsearch/user_search/*",
     ),
     array(
+      'title' => 'Get Started',
+      'module' => 'block',
+      'delta' => 9,
+      'pages' => "project/themes",
+    ),
+    array(
       'title' => 'Most Installed',
       'module' => 'drupalorg_order_facet',
       'delta' => 'sort_most_installed',
