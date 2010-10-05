@@ -40,6 +40,45 @@ function _drupalorg_views_default_views_alter(&$views) {
     $views['project_index']->destroy();
   }
 
+  $project_issue_views = array(
+    'project_issue_all_projects',
+    'project_issue_project',
+    'project_issue_search_all',
+    'project_issue_search_project',
+    'project_issue_user_issues',
+    'project_issue_user_projects',
+  );
+  $cache_none = array(
+    'type' => 'none',
+  );
+  $cache_5min = array(
+    'type' => 'time',
+    'results_lifespan' => '300',
+    'output_lifespan' => '300',
+  );
+  // For all of the issue views, we want to add a 5 minute cache to the feed.
+  foreach ($project_issue_views as $name) {
+    if (isset($views[$name])) {
+      $views[$name]->set_display('default');
+      $views[$name]->display_handler->override_option('cache', $cache_none);
+      $views[$name]->set_display('feed_1');
+      $views[$name]->display_handler->override_option('cache', $cache_5min);
+      $views[$name]->destroy();
+    }
+  }
+
+  // Add block caching to the 'Recent issues' block for each project.
+  $name = 'project_issue_project';
+  if (isset($views[$name])) {
+    $views[$name]->set_display('block_1');
+    $views[$name]->display_handler->override_option('block_caching', BLOCK_CACHE_PER_PAGE);
+    // ... and views-specific caching. Not sure why we want both, but that's
+    // how it was configured by killes on d.o so I'm replicating that here.
+    $views[$name]->display_handler->override_option('cache', $cache_5min);
+    $views[$name]->destroy();
+  }
+
+  // Modify the flag_bookmarks view.
   if (isset($views['flag_bookmarks'])) {
     $handler = $views['flag_bookmarks']->new_display('block', 'Block', 'block');
     $handler->override_option('style_plugin', 'list');
