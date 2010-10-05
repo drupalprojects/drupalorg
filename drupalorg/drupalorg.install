@@ -323,7 +323,6 @@ function drupalorg_update_6500() {
       'pages' => "project/modules\nproject/themes",
     ),
     array(
-      'title' => 'New Modules',
       'module' => 'drupalorg_order_facet',
       'delta' => 'sort_created',
       'pages' => "project/modules\nproject/themes",

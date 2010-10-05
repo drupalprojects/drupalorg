@@ -49,6 +49,13 @@ function drupalorg_order_facet_block($op = 'list', $delta = 0, $edit = array()) 
   elseif ($op == 'view' && apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
     $facets = drupalorg_order_facet_apachesolr_facets();
     if (isset($facets[$delta])) {
+      // Replace 'content' with 'Modules', 'Themes', etc.
+      foreach ($query->get_filters() as $filter) {
+        if ($filter['#name'] === 'im_vid_3') {
+          $term = taxonomy_get_term($filter['#value']);
+          $facets[$delta]['info'] = str_replace('content', check_plain($term->name), $facets[$delta]['info']);
+        }
+      }
       $results = _drupalorg_order_facet_build($facets[$delta], $query, $response);
       if (!empty($results)) {
         return array(
