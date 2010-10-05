@@ -571,8 +571,7 @@ function drupalorg_crosssite_menu_alter(&$items) {
   }
   // Modify the local tasks for search to hide the tabs.
   if (module_exists('search')) {
-    $modules = search_get_implementing_modules();
-    foreach ($modules as $module) {
+    foreach (module_implements('search') as $module) {
       if (isset($items['search/' . $module . '/%menu_tail'])) {
         $items['search/' . $module . '/%menu_tail']['type'] = MENU_NORMAL_ITEM;
       }
