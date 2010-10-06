@@ -923,7 +923,7 @@ function drupalorg_homebox() {
           'status' => 1,
           'open' => 1,
           'closable' => 1,
-          'title' => '',
+          'title' => 'Planet Drupal',
           'weight' => -31,
         ),
         // Column 2
@@ -947,7 +947,7 @@ function drupalorg_homebox() {
           'status' => 1,
           'open' => 1,
           'closable' => 1,
-          'title' => '',
+          'title' => 'Your Posts',
           'weight' => 1,
         ),
         'views_a512ec6dea837b33a2b010c2af17ed85' => array(
@@ -958,7 +958,7 @@ function drupalorg_homebox() {
           'status' => 1,
           'open' => 1,
           'closable' => 1,
-          'title' => '',
+          'title' => 'Your Issues',
           'weight' => 2,
         ),
         // Column 3
