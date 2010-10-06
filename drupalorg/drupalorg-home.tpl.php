@@ -15,7 +15,7 @@
     <div class="block-content">
      <h2><a href="cases">Sites Made with Drupal</a></h2>
      <?php print $things_we_made; ?>
-     <p>Drupal is used by some of the biggest sites on the Web, like <a href="http://www.examiner.com/">Examiner.com</a> and <a href="http://www.whitehouse.gov">The White House</a>.  Read more Drupal <a href="success-stories">success stories</a>.</p>
+     <p>Drupal is used by some of the biggest sites on the Web, like <a href="/node/915102">The Economist</a>, <a href="http://www.examiner.com/">Examiner.com</a> and <a href="http://www.whitehouse.gov">The White House</a>.  Read more Drupal <a href="/success-stories">success stories</a>..</p>
     </div>
   </div> 
 </div> 
