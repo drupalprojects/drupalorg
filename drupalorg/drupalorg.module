@@ -77,7 +77,7 @@ function drupalorg_menu() {
   );
   
   $items['home'] = array(
-    'title' => 'Drupal ‐ Open Source CMS',
+    'title' => 'Drupal - Open Source CMS',
     'page callback' => 'drupalorg_home',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
