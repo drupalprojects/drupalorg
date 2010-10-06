@@ -45,6 +45,17 @@ function drupalorg_init() {
   }
 
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/general.js');
+
+  // Add forum ads
+  foreach (array(34 => 'HostingForumBlock', 51 => 'PaidServicesBlock') as $forum_id => $delta) {
+    if ((arg(0) === 'forum' && arg(1) == $forum_id) || (arg(0) === 'node' && is_numeric(arg(1)) && ($node = menu_get_object()) && ($node->type === 'forum' && $node->tid == $forum_id))) {
+      $block = (object) module_invoke('google_admanager', 'block', 'view', md5($delta));
+      $block->region = 'right';
+      $block->delta = md5($delta);
+      $block->module = 'google_admanager';
+      drupal_set_content($block->region, theme('block', $block));
+    }
+  }
 }
 
 /**
