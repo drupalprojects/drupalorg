@@ -1012,7 +1012,8 @@ function drupalorg_homebox() {
  */
 function drupalorg_block_render($module, $delta) {
   // Load the title, since that can be modified administratively.  
-  $title = db_result(db_query("SELECT title FROM {blocks} WHERE module = '%s' AND delta = '%s'", $module, $delta));
+  global $theme;
+  $title = db_result(db_query("SELECT title FROM {blocks} WHERE module = '%s' AND delta = '%s' AND theme = '%s'", $module, $delta, $theme));
 
   $block_output = module_invoke($module, 'block', 'view', $delta);
   foreach ($block_output as $k => $v) {
