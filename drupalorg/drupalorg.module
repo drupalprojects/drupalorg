@@ -884,6 +884,7 @@ function drupalorg_homebox() {
       'path' => 'dashboard',
       'menu' => 0,
       'enabled' => 1,
+      'auto_save' => 1,
       'regions' => 3,
       'cache' => 1,
       'full' => 0,
