@@ -4,4 +4,5 @@ description = "Customizations and tweaks for drupal.org"
 package = Drupal.org
 dependencies[] = jquery_ui
 dependencies[] = homebox
+dependencies[] = materialized_view
 core = 6.x
