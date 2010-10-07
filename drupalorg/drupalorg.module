@@ -539,7 +539,7 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
     $modules[] = l($result->node_title, 'node/' . $result->nid);
   }
   $modules[] = '<a href="/project/modules/index" class="all">View full index</a>';
-  $module_index = '<h2>' . t('Module index') . '</h2>';
+  $module_index = '<h2>' . t('Module Index') . '</h2>';
   $module_index .= theme('item_list', $modules, NULL, 'ul', array('class' => 'flat'));
   $variables['module_index'] = $module_index;
 }
