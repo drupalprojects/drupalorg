@@ -225,6 +225,11 @@ function drupalorg_update_6500() {
       'region' => 'page_tools',
     ),
     array(
+      'module' => 'drupalorg',
+      'delta' => 'add_to_dashboard',
+      'region' => 'page_tools',
+    ),
+    array(
        'module' => 'drupalorg_news',
        'delta' => 'news-sources',
        'pages' => "news",

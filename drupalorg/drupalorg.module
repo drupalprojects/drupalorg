@@ -154,6 +154,10 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
         'get_involved' => array('info' => t('Ways to Get Involved')),
         'set_home' => array('info' => t('Set user home page')),
         'drupalorg_activity' => array('info' => t('Drupal.org Activity')),
+        'add_to_dashboard' => array(
+          'info' => t('Add to Dashboard links'),
+          'cache' => BLOCK_CACHE_PER_PAGE,
+        ),
       );
 
     case 'view':
@@ -188,15 +192,62 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
             'subject' => t('Drupal.org Activity'),
             'content' => drupalorg_activity_block(),
           );
+
+        case 'add_to_dashboard':
+          global $user;
+          if ($user->uid) {
+            $item = menu_get_item();
+            $blocks = array();
+            switch ($item['path']) {
+              case 'node/%':
+                if ($item['page_arguments'][0]->type === 'project_project') {
+                  $blocks[] = array('Issues for ' . $item['page_arguments'][0]->title, 'project_issue', 'issue_cockpit', array('nid' => $item['page_arguments'][0]->nid));
+                }
+                break;
+
+              case 'news':
+                $blocks[] = array('Drupal News', 'drupalorg_news', 'drupal-news');
+                break;
+
+              case 'aggregator/categories/%':
+                $blocks[] = array($item['page_arguments'][0]['title'], 'aggregator', 'category-' . $item['page_arguments'][0]['cid']);
+                break;
+
+              case 'user/%/track':
+                $blocks[] = array('Your Posts', 'tracker2', 'user');
+                break;
+
+              case 'project/issues/user':
+                $blocks[] = array('Your Issues', 'views', 'a512ec6dea837b33a2b010c2af17ed85');
+                break;
+
+              case 'getting-involved':
+                $blocks[] = array('Contributor Links', 'drupalorg_project', '0');
+                break;
+            }
+            if (count($blocks) > 0) {
+              $page = homebox_get_page('dashboard');
+              $content = '';
+              foreach ($blocks as $block) {
+                $options = array('attributes' => array('class' => 'add'));
+                if (isset($block[3])) {
+                  $options['query'] = $block[3];
+                }
+                $content .= homebox_add_link(t('Add @name to Dashboard', array('@name' => $block[0])), $page, $block[1], $block[2], $options);
+              }
+              return array('content' => $content);
+            }
+          }
+          break;
       }
       break;
   }
 }
 
 /**
-* Overall quick stats for drupal.org.
-*/
-function drupalorg_activity_block(){
+ * Overall quick stats for drupal.org.
+ */
+function drupalorg_activity_block() {
   $items = array(); 
   $stats = drupalorg_get_activity();
  	$items[] = t('%accounts people with CVS accounts', array('%accounts' => $stats['number_of_cvs_accounts']));
