@@ -3,4 +3,5 @@ name = Drupal.org
 description = "Customizations and tweaks for drupal.org"
 package = Drupal.org
 dependencies[] = jquery_ui
+dependencies[] = homebox
 core = 6.x
