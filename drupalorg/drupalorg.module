@@ -391,7 +391,7 @@ function drupalorg_preprocess_page(&$variables) {
   if ($variables['is_front']) {
     $variables['mission'] = '<h2>Come for the software, stay for the community</h2>
     <p class="standfirst">
-      What can you make with Drupal? Beautiful, personal blogs or mighty, multi-featured, multiuser corporate sites. Go wherever your imagination takes you with our robust, open-source publishing software.
+      Drupal is an open source content management platform used to power millions of websites and software applications. It’s built, used, and supported by an active and diverse community of people from around the world.
     </p>';
   }
 }
