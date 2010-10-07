@@ -330,6 +330,7 @@ function drupalorg_handbook_preprocess_drupalorg_home(&$vars) {
       $node->created = $node->changed;
       $recent_updates .= '<h6>'. l($node->title, 'node/'. $node->nid) .'</h6><p class="submitted">'. theme('node_submitted', $node) .'</p>'; 
     }
+    $recent_updates .= '<p>' . l(t('More updates…'), 'handbook/updates') .'</p>';
     cache_set('drupalorg_handbook_recent_updates_' . $count, $recent_updates);
   }
   // We have no place to link this to in a nice way.
