@@ -12,6 +12,7 @@ $(function () {
     positions: ['left', 'top'],
     windowMargin: -1000,
     closeWhenOthersOpen: true,
+    clickAnywhereToClose: false,
     width: 'auto',
     spikeLength: 15,
     spikeGirth: 10,
