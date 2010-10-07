@@ -179,7 +179,8 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
 <li><a href="/community-initiatives/documentation">Documentation projects</a></li>
 <li><a href="/community-initiatives/drupal-core/usability">Usability issues</a></li>
 <li><a href="/node/363007">Core documentation</a></li>
-</ul>'),
+</ul>
+<p><a href="/node/4">More ways to contribute to Drupal</a></p>'),
           );
 
         case 'set_home':
