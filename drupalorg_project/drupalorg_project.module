@@ -505,6 +505,10 @@ function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page 
         exit;
     }
     $node->content['body']['#value'] .= $extra;
+
+    if ($node->type == 'project_project') {
+      $node->content['project_info']['#value'] = drupalorg_project_meta_data($node);
+    }
   }
 }
 
@@ -733,4 +737,157 @@ function drupalorg_project_preprocess_drupalorg_home(&$vars) {
   // We have no place to link this to in a nice way.
   $recent_updates .= '<p>'. l(t('More commit messages...'), 'cvs') .'</p>';
   $vars['tab_content_cvs'] = $recent_updates;
+}
+
+/**
+ * Gather information for the bottom of project pages.
+ *
+ * @param $node
+ *   The node object.
+ * @return
+ *   The HTML code for the book meta information.
+ */
+function drupalorg_project_meta_data($node) {
+  $info = array();
+  if ($node->nid == 3060) {
+    return;
+  }
+  if (count($node->taxonomy)) {
+    $project_vid = _project_get_vid();
+    // It's pointless to query, since we need to hard-code singular
+    // versions while the term names are plural.
+    $project_types = drupalorg_project_get_project_types(TRUE);
+
+    $vocabularies = taxonomy_get_vocabularies();
+    // Group the terms by vid.
+    $taxonomy = array();
+    foreach ($node->taxonomy as $term_id => $term) {
+      // Ignore the project type terms (the top level terms from the
+      // project vocabulary) since those are already visible on the page.
+      if (!empty($project_types[$term->tid])) {
+        $project_type = $term;
+        $project_type->label = $project_types[$term->tid];
+      }
+      else {
+        $taxonomy[$term->vid][] = $term;
+      }
+    }
+
+    foreach ($vocabularies as $vocabulary) {
+      if (isset($taxonomy[$vocabulary->vid])) {
+        $class = '';
+        $links = array();
+        foreach ($taxonomy[$vocabulary->vid] as $term) {
+          $options = array();
+          if ($term->vid == '44') { // Maintenance status
+            $project_status = $term->tid;
+            switch ($term->tid) {
+              case '9994':   // Obsolete
+              case '13032':  // Abandoned
+                $options['attributes'] = array('class' => 'alert');
+                break;
+
+              case '13030':  // Basically maintained
+              case '9990':   // Seeking co-maintainer(s)
+              case '9992':   // Seeking new maintainer
+                $options['attributes'] = array('class' => 'warning');
+                break;
+
+            }
+          }
+          // Special-case module category terms to link to download+extend.
+          if ($term->vid == $project_vid && $project_type->tid == '14') {
+            // Only use the 'terms' style for module categories.
+            $class = 'terms';
+            $term_path = 'project/modules';
+            $options['query'] = array('filters' => 'tid:' . $term->tid);
+          }
+          else {
+            $term_path = taxonomy_term_path($term);
+          }
+
+          $links[] = l($term->name, $term_path, $options);
+        }
+        if ($vocabulary->vid == $project_vid) {
+          // These are hard-coded, don't incur cost of check_plain().
+          $label = t('!project_type categories', array('!project_type' => $project_type->label));
+        }
+        else {
+          $label = check_plain($vocabulary->name);
+        }
+        $info[$label] = '<span class="' . $class . '">' . implode(', ', $links) . '</span>';
+      }
+    }
+    if (empty($project_status)) {
+      $label = t('Maintenance status');
+      $info[$label] = '<span class="warning">' . t('Unknown') . '</span>';
+    }
+  }
+  
+  // Usage stats.
+  $total_usage = project_usage_get_project_total_usage($node->nid);
+  if ($total_usage) {
+    $label = t('Reported installs');
+    $info[$label] = format_plural($total_usage,
+      '<span class="count">1</span> site currently reports using this @project-type.',
+      '<span class="count">@count</span> sites currently report using this @project-type.',
+      array('@project-type' => drupal_strtolower($project_type->label))
+    );
+  }
+
+  // Automated tests.
+  $has_auto_tests = db_result(db_query("SELECT pid FROM {pift_project} WHERE pid = %d", $node->nid));
+  if (!empty($has_auto_tests)) {
+    $label = t('Automated tests');
+    /// @todo Indicate if the tests are passing or not.
+    $info[$label] = t('Enabled');
+  }
+
+  $modified = format_date($node->changed, 'custom', 'F j, Y');
+
+  return theme('drupalorg_project_meta_data', $info, $modified);
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function drupalorg_project_theme($existing, $type, $theme, $path) {
+  return array(
+    'drupalorg_project_meta_data' => array(
+      'arguments' => array(
+        'info' => NULL,
+        'modified' => NULL,
+      ),
+      'template' => 'project-meta-data',
+    ),
+  );
+}
+
+/**
+ * Return an array mapping term ID to name for the top-level project types.
+ *
+ * @param boolean $singular
+ *   Should the name be singular or plural. Defaults to plural.
+ */
+function drupalorg_project_get_project_types($singular = FALSE) {
+  if ($singular) {
+    return array(
+      '13' => t('Drupal project'),
+      '14' => t('Module'),
+      '15' => t('Theme'),
+      '32' => t('Theme engine'),
+      '29' => t('Translation'),
+      '96' => t('Installation profile'),
+    );
+  }
+  else {
+    return array(
+      '13' => t('Drupal project'),
+      '14' => t('Modules'),
+      '15' => t('Themes'),
+      '32' => t('Theme engines'),
+      '29' => t('Translations'),
+      '96' => t('Installation profiles'),
+    );
+  }
 }
