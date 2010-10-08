@@ -35,6 +35,21 @@ function _drupalorg_views_default_views_alter(&$views) {
     $filters['tid']['expose']['identifier'] = 'drupal_core';
     $filters['tid']['expose']['label'] = 'Filter by Drupal core version';
     $views['project_index']->display_handler->set_option('filters', $filters);
+    $views['project_index']->display_handler->override_option('cache', array(
+      'type' => 'views_content_cache',
+      'keys' => array(
+        'comment' => array(
+          'changed' => 0,
+        ),
+        'node' => array(
+          'project_project' => 'project_project',
+        ),
+      ),
+      'results_min_lifespan' => '3600',
+      'results_max_lifespan' => '21600',
+      'output_min_lifespan' => '3600',
+      'output_max_lifespan' => '21600',
+    ));
     $views['project_index']->set_display('block_1');
     $views['project_index']->display_handler->set_option('items_per_page', 4);
     $views['project_index']->destroy();
