@@ -250,10 +250,20 @@ function drupalorg_handbook_display_recent_updates() {
 function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
-      $blocks['license']['info'] = t('Handbook License');
-      $blocks['info']['info'] = t('Documentation home info');
-      $blocks['irc']['info'] = t('Get Involved - IRC');
-      return $blocks;
+      return array(
+        'license' => array(
+          'info' => t('Handbook License'),
+          'cache' => BLOCK_CACHE_PER_PAGE,
+        ),
+        'info' => array(
+          'info' => t('Documentation home info'),
+          'cache' => BLOCK_CACHE_PER_PAGE,
+        ),
+        'irc' => array(
+          'info' => t('Get Involved - IRC'),
+          'cache' => BLOCK_CACHE_PER_PAGE,
+        ),
+      );
 
     case 'view':
       switch($delta) {
