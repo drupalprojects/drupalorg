@@ -170,10 +170,22 @@ function drupalorg_news_short_block() {
 function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
-      $blocks['planet-list']['info'] = t('Planet Drupal subscriptions');
-      $blocks['news-terms']['info']  = t('News category filter links');
-      $blocks['news-sources']['info']  = t('News sources');
-      $blocks['drupal-news']['info']  = t('Drupal News');
+      return array(
+        'planet-list' => array(
+          'info' => t('Planet Drupal subscriptions'),
+        ),
+        'news-terms' => array(
+          'info' => t('News category filter links'),
+          'cache' => BLOCK_CACHE_PER_PAGE,
+        ),
+        'news-sources' => array(
+          'info' => t('News sources'),
+        ),
+        'drupal-news' => array(
+          'info' => t('Drupal News'),
+          'cache' => BLOCK_CACHE_PER_PAGE,
+        ),
+      );
       return $blocks;
 
     case 'view':
