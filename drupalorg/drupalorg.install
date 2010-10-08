@@ -510,6 +510,19 @@ function drupalorg_update_6503() {
 }
 
 /**
+ * Set Image Attach variable for project nodes
+ */
+function drupalorg_update_6504() {
+  $return = array();
+
+  // Set image attach weight for body
+  variable_set('image_attach_weight_body_project_project', -10);
+
+  return $return;
+}
+
+
+/**
  * Set new permissions.
  */
 /*
