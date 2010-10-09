@@ -412,6 +412,7 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   if (!empty($translation_download)) {
     $links['resources']['links']['view_translations'] = l(t('View project translations'), $translation_download . $node->project['uri']);
   }
+  unset($links['resources']['links']['project_usage']);
 }
 
 // == Utility functions ========================================================
@@ -829,9 +830,12 @@ function drupalorg_project_meta_data($node) {
   if ($total_usage) {
     $label = t('Reported installs');
     $info[$label] = format_plural($total_usage,
-      '<span class="count">1</span> site currently reports using this @project-type.',
-      '<span class="count">@count</span> sites currently report using this @project-type.',
-      array('@project-type' => drupal_strtolower($project_type->label))
+      '<span class="count">1</span> site currently reports using this @project-type. <a href="/project/usage/!project_uri">View usage statistics</a>.',
+      '<span class="count">@count</span> sites currently report using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
+      array(
+        '@project-type' => drupal_strtolower($project_type->label),
+        '!project-shortname' => $node->project['uri'],
+      )
     );
   }
 
