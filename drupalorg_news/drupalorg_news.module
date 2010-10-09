@@ -16,16 +16,13 @@ define('DRUPALORG_NEWS_VID', 34);
  */
 define('DRUPALORG_PLANET_CATEGORY', 2);
 
-// == Core hooks ===============================================================
-
 /**
  * Implementation of hook_menu().
  */
 function drupalorg_news_menu() {
   $items['news'] = array(
-    'title' => 'News',
+    'title' => 'Drupal News',
     'page callback' => 'drupalorg_news_page',
-    'page arguments' => array(1),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -33,88 +30,13 @@ function drupalorg_news_menu() {
 }
 
 /**
- * Menu loader. Load news term if it is indeed from the given vocabulary.
+ * Use the regular node page, but with a title.
  */
-function drupalorg_news_term_load($tid) {
-  if (($term = taxonomy_get_term($tid)) && ($term->vid == DRUPALORG_NEWS_VID)) {
-    return $term;
-  }
-  return NULL;
-}
-
-/**
- * One of the most visited pages of the site, so hardcode queries.
- */
-function drupalorg_news_page($tid) {
-  $output = '';
-  $term = drupalorg_news_term_load($tid);
-  
-  if ($tid == 904){
-    // Instead of using the Assocaition (tid 904) use aggregator (fid = 628)
-    $items = drupalorg_news_get_aggregated_items(628);
-    $output .= _aggregator_page_list($items, NULL, $feed_source);
-  }
-  else {
-    if (!isset($term)) {
-
-      // All News: Source is nodes
-      $result = pager_query(db_rewrite_sql('SELECT n.nid, n.sticky, n.created FROM {node} n WHERE n.promote = 1 AND n.status = 1 ORDER BY n.sticky DESC, n.created DESC'), variable_get('default_nodes_main', 10));
-      
-      // TODO create an array key = unix timestamp, value = output
-        // Mix in data from aggregator (association)
-          // $items = drupalorg_news_get_aggregated_items(628);
-        //TODO array_sort
-        // TODO foreach to generate output
-    
-      // Add existing "front page" feed if main news page.
-      $feed_url = url('rss.xml', array('absolute' => TRUE));
-      drupal_add_feed($feed_url, variable_get('site_name', 'Drupal') .' '. t('RSS'));
-    
-      while ($node = db_fetch_object($result)) {
-        $output .= node_view(node_load($node->nid), 1);
-      }
-      $output .= theme('pager', NULL, variable_get('default_nodes_main', 10));
-    
-    } 
-    else {
-      
-      // Drupal News - source is nodes (tid 902)
-      // Planet Drupal - sorurce is nodes (via aggregator promote) (tid 903)
-      $query = db_rewrite_sql('SELECT DISTINCT n.nid, n.sticky, n.created FROM {node} n INNER JOIN {term_node} tn ON n.nid = tn.nid WHERE n.promote = 1 AND n.status = 1 AND tn.tid = %d ORDER BY n.sticky DESC, n.created DESC', 'n', 'nid', array($tid));
-      $result = pager_query($query, variable_get('default_nodes_main', 10));
-      
-      while ($node = db_fetch_object($result)) {
-        $output .= node_view(node_load($node->nid), 1);
-      }
-      $output .= theme('pager', NULL, variable_get('default_nodes_main', 10));
-    }  
-  }
-
+function drupalorg_news_page() {
+  $output = node_page_default();
+  drupal_set_title(t('Drupal News'));
   return $output;
 }
-
-/*
- * Helper function: returns items from aggregator
- *
- * param $fid - the feed ID of the items
- *
- * return $items - items from aggregator
- *
- */
-function drupalorg_news_get_aggregated_items($fid){
-  $feed = aggregator_feed_load($fid);
-  $feed = (object)$feed;
-  $feed_source = theme('aggregator_feed_source', $feed);
-
-  // It is safe to include the fid in the query because it's loaded from the
-  // database by aggregator_feed_load.
-  module_load_include('inc', 'aggregator', 'aggregator.pages');
-  $items = aggregator_feed_items_load('SELECT * FROM {aggregator_item} WHERE fid = '. $feed->fid .' ORDER BY timestamp DESC, iid DESC');
-  return $items;
-}
-
-
-// == Altering existing behavior ===============================================
 
 /**
  * Implementation of hook_form_alter().
@@ -162,8 +84,6 @@ function drupalorg_news_short_block() {
   return $fresh_news;
 }
 
-// == Blocks for news and planet ===============================================
-
 /**
  * Implementation of hook_block().
  */
@@ -178,9 +98,6 @@ function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
           'info' => t('News category filter links'),
           'cache' => BLOCK_CACHE_PER_PAGE,
         ),
-        'news-sources' => array(
-          'info' => t('News sources'),
-        ),
         'drupal-news' => array(
           'info' => t('Drupal News'),
           'cache' => BLOCK_CACHE_PER_PAGE,
@@ -191,21 +108,26 @@ function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
     case 'view':
       switch ($delta) {
         case 'planet-list':
-          $block['subject'] = t('Planet Drupal subscriptions');
           $block['content'] = drupalorg_news_planet_drupal_block();
           return $block;
 
         case 'news-terms':
-          $block['subject'] = t('Filter News');
-          $block['content'] = drupalorg_news_filter_news();
-          return $block;
-
-        case 'news-sources':
-          $block['content'] = t('<p>This page gathers:</p>');
-          $block['content'] .= t('<a href="http://association.drupal.org/news">Association</a> news<br />');
-          $block['content'] .= t('<a href="/news">Official Drupal news</a> and announcements<br />');
-          $block['content'] .= t('<a href="/planet">Planet Drupal</a> entries (Planet Drupal aggregates Drupal-related blog posts of special interest to the community)');
-          return $block;
+          return array(
+            'content' => theme('links', array(
+              array(
+                'title' => t('Drupal News'),
+                'href' => 'news',
+              ),
+              array(
+                'title' => t('Planet Drupal'),
+                'href' => 'aggregator/categories/' . DRUPALORG_PLANET_CATEGORY,
+              ),
+              array(
+                'title' => t('Drupal Association'),
+                'href' => 'aggregator/sources/628',
+              ),
+            )),
+          );
 
         case 'drupal-news':
           return array(
@@ -237,18 +159,4 @@ function drupalorg_news_planet_drupal_block() {
   $output .= theme('xml_icon', url('planet/rss.xml'));
 
   return $output;
-}
-
-/**
- * News filtering by taxonomy term for the frontpage.
- */
-function drupalorg_news_filter_news() {
-  $tree = taxonomy_get_tree(DRUPALORG_NEWS_VID);
-  $list_of_terms = array(array('title' => t('All news'), 'href' => 'news'));
-  foreach ($tree as $term) {
-    $list_of_terms[] = array('title' => $term->name, 'href' => 'news/'. $term->tid);
-  }
-  // Using theme links should mark active links with a class, so styling
-  // can be applied to them properly.
-  return theme('links', $list_of_terms);
 }

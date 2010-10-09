@@ -230,11 +230,6 @@ function drupalorg_update_6500() {
       'region' => 'page_tools',
     ),
     array(
-       'module' => 'drupalorg_news',
-       'delta' => 'news-sources',
-       'pages' => "news",
-    ),
-    array(
       'module' => 'drupalorg_news',
       'delta' => 'news-terms',
       'pages' => "news\nnews/*\naggregator\naggregator/*",

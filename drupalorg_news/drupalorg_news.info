@@ -2,6 +2,5 @@
 name = Drupal.org news
 description = Blocks and customizations related to Drupal.org news and Planet Drupal.
 dependencies[] = aggregator
-dependencies[] = aggregator_promote
 package = Drupal.org
 core = 6.x
