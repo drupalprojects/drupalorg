@@ -571,16 +571,16 @@ function drupalorg_crosssite_menu_absolute_links($links) {
  */
 function drupalorg_crosssite_menu_alter(&$items) {
   if (isset($items['user/%user/dashboard'])) {
-    $items['user/%user/dashboard']['type'] = MENU_NORMAL_ITEM;
+    $items['user/%user/dashboard']['type'] = MENU_CALLBACK;
   }
   if (isset($items['user/%user/track'])) {
-    $items['user/%user/track']['type'] = MENU_NORMAL_ITEM;
+    $items['user/%user/track']['type'] = MENU_CALLBACK;
   }
   // Modify the local tasks for search to hide the tabs.
   if (module_exists('search')) {
     foreach (module_implements('search') as $module) {
       if (isset($items['search/' . $module . '/%menu_tail'])) {
-        $items['search/' . $module . '/%menu_tail']['type'] = MENU_NORMAL_ITEM;
+        $items['search/' . $module . '/%menu_tail']['type'] = MENU_CALLBACK;
       }
     }
   }
