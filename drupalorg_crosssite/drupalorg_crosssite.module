@@ -206,6 +206,9 @@ function drupalorg_crosssite_section() {
     elseif (drupalorg_crosssite_menu_site('localize')) {
       $section = 'localize';
     }
+    elseif (drupalorg_crosssite_menu_path('main', '^user(/|$)')) {
+      $section = 'user';
+    }
     elseif (drupalorg_crosssite_in_breadcrumb('admin')) {
       $section = 'admin';
     }
@@ -351,6 +354,14 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'your-projects' => array('title' => t('Your Projects'), 'href' => 'project/user', '#site' => 'main'),
         'your-groups' => array('title' => t('Your Groups'), 'href' => 'unread', '#site' => 'groups'),
         'your-profile' => array('title' => t('Profile'), 'href' => 'user/'. $user->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '(?!/(dashboard|track))')),
+      );
+      break;
+
+    case 'user':
+      $account = user_load(arg(1));
+      $nav_content_links = array(
+        'posts' => array('title' => t('Posts'), 'href' => 'user/' . $account->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track')),
+        'user-profile' => array('title' => t('Profile'), 'href' => 'user/'. $account->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '(?!/(dashboard|track))')),
       );
       break;
   }
