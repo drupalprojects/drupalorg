@@ -181,7 +181,7 @@ function drupalorg_crosssite_section() {
     elseif (drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release'))) {
       $section = 'downloads';
     }
-    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)')) {
+    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)') || drupalorg_crosssite_menu_type('main', array('forum'))) {
       // Events appear at here and as an individual tab list. Commented out from here.
       // || drupalorg_crosssite_menu_path('groups', '^events'),
       $section = 'community';
@@ -278,7 +278,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'chat'          => array('href' => 'irc', 'title' => t('Chat'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^irc(/|$)')),
         'lists'         => array('href' => 'mailing-lists', 'title' => t('Mailing Lists'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)')),
         'members'       => array('href' => 'profile', 'title' => t('Member Directory'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^profile(/|$)')),
-        'forum'         => array('href' => 'forum', 'title' => t('Forum'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^forum(/|$)') || drupalorg_crosssite_menu_type('main', array('forum'))),
+        'forum'         => array('href' => 'forum', 'title' => t('Forum'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^forum(/|$)') || drupalorg_crosssite_menu_type('main', array('forum')), '#title_match' => 'q'),
       );
       break;
 
@@ -357,25 +357,32 @@ function drupalorg_crosssite_content_menu(&$vars) {
 
   if (count($nav_content_links)) {
     // Make all external links right.
-
     $nav_content_links = drupalorg_crosssite_menu_absolute_links($nav_content_links);
 
-    //check the links to see if it is an active link
+    // Check the links to see if it is an active link. We want to know if the
+    // tab root is the current page, replacing % with the used value. Example:
+    // user/%/edit.
+    $item = menu_get_item();
+    $parts = explode('/', $item['tab_root']);
+    $args = arg();
+    foreach ($parts as $index => $part) {
+      if ($part === '%') {
+        $parts[$index] = $args[$index];
+      }
+    }
+    $tab_root_href = implode('/', $parts);
     foreach ($nav_content_links as $key => $link) {
-      $class = $key;
       if ($link['href'] === '<front>') {
         $link['href'] = variable_get('site_frontpage', 'node');
       }
-      $item = menu_get_item();
-      $parts = explode('/', $item['tab_root']);
-      $args = arg();
-      foreach ($parts as $index => $part) {
-        if ($part == '%') {
-          $parts[$index] = $args[$index];
-        }
+      // Menu items which do not have placeholders for all their arguments will
+      // have an inaccurate tab_root, so allow using $_REQUEST['q']. Example:
+      // forum.
+      $title_match = $tab_root_href;
+      if (isset($link['#title_match']) && $link['#title_match'] === 'q') {
+        $title_match = $_REQUEST['q'];
       }
-      $tab_root_href = implode('/', $parts);
-      if (isset($link['href']) && ($link['href'] === $tab_root_href) && (empty($link['language']) || $link['language']->language == $language->language)) {
+      if (isset($link['href']) && ($link['href'] === $title_match) && (empty($link['language']) || $link['language']->language == $language->language)) {
         // This is an active link/tab, therefore we don't want to display the
         // page title. Used in page.tpl.php.
         $vars['matched_content_link'] = TRUE;
