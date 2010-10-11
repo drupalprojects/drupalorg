@@ -676,7 +676,7 @@ function theme_drupalorg_recent_activity($nodes) {
   }
   $output = '<div id="recent-activity">';
   $output .= theme('item_list', $rows);
-  $output .= theme('pager', NULL, variable_get('drupalorg_recent_activity_pager', 10), 0);
+  $output .= l(t('More recent activity…'), 'tracker');
   $output .= '</div>';
   return $output;
 }
