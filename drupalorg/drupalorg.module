@@ -382,6 +382,7 @@ function drupalorg_set_home_submit($form, $form_state) {
 function drupalorg_home() {
   $return[] = update_sql('DELETE FROM {url_alias} WHERE pid = 162'); // news
   jquery_ui_add('ui.tabs');
+  drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/excanvas.compiled.js');
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/jquery.bt.min.js');
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/home.js');
 
