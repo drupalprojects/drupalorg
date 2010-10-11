@@ -445,7 +445,7 @@ function drupalorg_map_content($_force = FALSE) {
     $queries = array(
       "SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {book} b ON b.nid = nr.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = nr.uid INNER JOIN {users} u ON u.uid = nr.uid ORDER BY nr.timestamp DESC",
       "SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' ORDER BY n.created DESC",
-      "SELECT DISTINCT cm.cid, cm.message title, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'comitted' verb FROM {cvs_messages} cm INNER JOIN {html5_user_geolocation} hug ON hug.uid = cm.uid INNER JOIN {users} u ON u.uid = cm.uid ORDER BY cm.created DESC",
+      "SELECT DISTINCT cm.cid, cm.message title, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'committed' verb FROM {cvs_messages} cm INNER JOIN {html5_user_geolocation} hug ON hug.uid = cm.uid INNER JOIN {users} u ON u.uid = cm.uid ORDER BY cm.created DESC",
     );
     $map = array();
     foreach ($queries as $q => $query) {
