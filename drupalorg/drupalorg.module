@@ -218,7 +218,9 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
                 break;
 
               case 'user/%/track':
-                $blocks[] = array('Your Posts', 'tracker2', 'user');
+                if ($item['map'][1]->uid === $user->uid) {
+                  $blocks[] = array('Your Posts', 'tracker2', 'user');
+                }
                 break;
 
               case 'project/issues/user':
