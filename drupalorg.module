@@ -59,6 +59,16 @@ define('DRUPALORG_CVS_APP_PROJECT_NID', 525912);
  */
 define('DRUPALORG_TRANSLATION_TID', 29);
 
+/**
+ * The TID of the "Modules" term.
+ */
+define('DRUPALORG_MODULE_TID', 14);
+
+/**
+ * The TID of the "Themes" term.
+ */
+define('DRUPALORG_THEME_TID', 15);
+
 // == Basic core hooks =========================================================
 
 function drupalorg_menu() {
@@ -736,4 +746,107 @@ function _drupalorg_cvs_app_issue_nid($nid = FALSE) {
 function _drupalorg_node_add_project_issue_cvsapplications() {
   drupal_set_title(t('CVS Applications'));
   return t('The creation of issues in this project is prohibited.');
+}
+
+/**
+ * Implementation of hook_apachesolr_update_index().
+ *
+ * This adds our specific facets to the Apachesolr search index.
+ */
+function drupalorg_apachesolr_update_index(&$document, $node) {
+  if ($type = drupalorg_meta_type_traverse($node, drupalorg_get_meta_type_rules())) {
+    $document->ss_meta_type = $type;
+  }
+}
+
+/**
+ * Define rules, per site in the multi-site index, for what meta-types should be
+ * applied to what type of content.
+ */
+function drupalorg_get_meta_type_rules() {
+  $site = variable_get('drupalorg_site', 'main');
+
+  $rule_set = array();
+  // For now, make these the rules for all sites, but can be sectioned off by
+  // site using $site if needed.
+  $rule_set = array(
+    // Define the type of selector: in this case, type.
+    'type' => array(
+      // Define the type values that map to meta-types: in this case,
+      // project_project, book, project_issue, and forum.
+      'project_project' => array(
+        // Define a sub-selector to only be run after matching on the primary
+        // selector: in this case, taxonomy.
+        'taxonomy' => array(
+          // Define taxonomy term values and resultant meta types: in this
+          // case after matching a type of project_project, an associated
+          // tid of DRUPALORG_MODULE_TID maps to 'module' while an associated
+          // tid of DRUPALORG_THEME_TID maps to 'theme'.
+          DRUPALORG_MODULE_TID => 'module',
+          DRUPALORG_THEME_TID => 'theme',
+        ),
+      ),
+      'book' => 'documentation',
+      'project_issue' => 'forum-issues',
+      'forum' => 'forum-issues',
+      'og' => 'group',
+    ),
+  );
+  return $rule_set;
+}
+
+/**
+ * Recursively iterates through an array looking for type or taxonomy filters,
+ * and attempting to match against values in the passed in array.
+ *
+ * This function takes an array (set in the $conf array in settings.php) and
+ * handles two conditionals: type and taxonomy. Type values match against the
+ * node type and taxonomy values match against associated taxonomy terms. If a
+ * node matches all the criteria, a string will be returned representing the
+ * meta-type of the node for use by the apachesolr module.
+ *
+ * @param object $node
+ *   A fully-formed node object as passed from hook_apachesolr_update_index.
+ * @param mixed $value
+ *   An array initially respresents the order of operations and the
+ *   resulting meta type value. Currently supported comparisons are type and
+ *   taxonomy. In the final iteration of drupalorg_meta_type_traverse,
+ *   $value should be a string value rather than an array.
+ *   @see drupalorg_get_meta_type_rules for the 'main' site to see
+ *   an example of $value.
+ *
+ * @return mixed
+ *   Returns NULL if no meta type is found for the particular node, otherwise,
+ *   if a meta-type is found, a string representing that meta-type is returned.
+ *
+ * @see drupalorg_get_meta_type_rules
+ */
+function drupalorg_meta_type_traverse(&$node, $value) {
+  // If we've traversed to a point where we have a string value
+  // simply return it.
+  if (is_string($value)) {
+    return $value;
+  }
+  // If we have a meta type based off of the node type, check that first.
+  if (isset($value['type'])) {
+    // If our node type has an associated meta-type (or further filtering)
+    // recursively call this function to determine the meta-type.
+    if (in_array($node->type, array_keys($value['type']))) {
+      return drupalorg_meta_type_traverse($node, $value['type'][$node->type]);
+    }
+  }
+  // If we have a meta-type based off of taxonomy, check that next.
+  if (isset($value['taxonomy'])) {
+    // If we have a taxonomy term that relates to a meta-type, determine all
+    // matching terms in the node.
+    if ($keys = array_intersect(array_keys($node->taxonomy), array_keys($value['taxonomy']))) {
+      // We should only ever have 1 match (meta-type is singular), so do a
+      // sanity check. If we do only have 1 term, recursively call this function
+      // to determine the meta-type.
+      if (count($keys) == 1) {
+        $tid = array_pop($keys);
+        return drupalorg_meta_type_traverse($node, $value['taxonomy'][$tid]);
+      }
+    }
+  }
 }
