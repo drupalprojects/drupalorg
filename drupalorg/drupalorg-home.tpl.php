@@ -42,7 +42,7 @@
       <div class="grid-2 omega">
         <ul>
           <li><a href="http://api.drupal.org">Drupal API</a></li>
-          <li><a href="download">Download Drupal</a></li>
+          <li><a href="project/drupal">Download Drupal</a></li>
           <li><a href="security">Security Info</a></li>
           <li><a href="handbook">Handbook</a></li>
         </ul>
