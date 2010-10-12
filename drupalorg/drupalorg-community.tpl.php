@@ -18,7 +18,7 @@
   <h5>Forum</h5>
   <p><a href="/forum">Our forums</a> offer a huge knowledge bank to support you. It is also a good way for you to <a href="/contribute">contribute</a> and <a href="/contribute/support">help others.</a></p>
   <h5>Mailing Lists</h5>
-  <p>There are <a href="/mailing-lists">many mailing lists</a> you can subscribe to. You can also sign up to receive <a href="/security">security announcements</a> and project issue updates from the project page.</p>
+  <p>There are many <a href="/mailing-lists">mailing lists</a> you can subscribe to, in addition to <a href="/security">security announcements</a>, project issue updates and posts on groups.drupal.org.</p>
   <?php if ($advertisement) : ?>
     <div class="grid-4 alpha omega advertisement">
       <p><a href="/node/218094">Advertising</a> funds the all-volunteer Drupal Association members to deal with serious issues such as hardware upgrades.</p>
