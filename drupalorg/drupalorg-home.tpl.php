@@ -34,7 +34,7 @@
         </ul>
         <strong>This week:</strong>
         <ul>
-          <li><a href="drupal/project"><?php print $number_of_new_projects; ?> new projects</a></li>
+          <li><a href="project/modules/?filters=type:project_project%20im_vid_3:14&solrsort=created%20desc"><?php print $number_of_new_modules; ?> new modules</a></li>
           <li><a href="cvs"><?php print $number_of_cvs_commits; ?> code commits</a></li>
           <li><a href="project/issues"><?php print $number_of_issue_comments; ?> issue comments</a></li>
         </ul>

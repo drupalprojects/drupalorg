@@ -270,7 +270,6 @@ function drupalorg_activity_block() {
  * try to generate it again.
  */
 function drupalorg_get_activity($_force = FALSE){
-
   $time = cache_get('drupalorg_front_counter_time');
   if (!$_force && $time && ($cache = cache_get('drupalorg_front_counter_data')) && ($time->data > (time() - 60*60))) {
     $stats = $cache->data;
@@ -287,8 +286,8 @@ function drupalorg_get_activity($_force = FALSE){
     $stats['number_of_issue_comments'] = number_format($followups);
 
     // Projects this week
-    $projects = db_result(db_query("SELECT COUNT(distinct p.nid) FROM {project_projects} p INNER JOIN {node} n ON p.nid = n.nid WHERE n.created > %d", strtotime("1 week ago")));
-    $stats['number_of_new_projects'] = number_format($projects);
+    $new_modules = db_result(db_query("SELECT COUNT(distinct p.nid) FROM {project_projects} p INNER JOIN {node} n ON p.nid = n.nid INNER JOIN {term_node} tn ON tn.nid = n.nid AND tn.tid = 14 WHERE n.created > %d", strtotime("1 week ago")));
+    $stats['number_of_new_modules'] = number_format($new_modules);
 
     // All Modules
     $modules = db_result(db_query("SELECT COUNT(distinct p.nid) FROM {project_projects} p INNER JOIN {term_node} tn ON p.nid = tn.nid WHERE tn.tid = 14"));
