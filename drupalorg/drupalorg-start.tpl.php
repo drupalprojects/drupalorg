@@ -52,9 +52,8 @@
       <a href="/handbook" class="all">All Handbooks</a>
     </div><!--/narrow-box-list-->
     <div class="narrow-box-list">
-      <h5 class="lined">Recent Books and Resources</h5>
-      <p><img src="images/book_dd.jpg" height="72"><a href="/books">Pro Drupal Development</a><br>
-      Drupal is one of the most popular content management systems in use today. With it, you can create a variety of community-driven sites, including blogs, forums, wiki-style sites, and much more.</p>
+      <h5 class="lined">Books</h5>
+      <p><a href="/books"><img src="<?php print url(drupal_get_path('module', 'drupalorg') . '/images/books.png'); ?>" alt=""></a></p>
     </div><!--/narrow-box-list-->
   </div>
 </div>
@@ -64,8 +63,8 @@
     <h5 class="lined"><a href="/forum">Forum</a></h5>
     <p>Whether you are asking questions or answering them, the forum will connect you to the community and provide the help you need.</p>
     <h5 class="lined"><a href="/irc">IRC</a></h5>
-    <p>For rapid responses, check out our IRC (Internet Relay Chat) channels.</p>
-    <h5 class="lined"><a href="/services">Services</a></h5>
+    <p>For rapid responses, check out our <acronym title="Internet Relay Chat">IRC</acronym> channels.</p>
+    <h5 class="lined"><a href="/drupal-services">Services</a></h5>
     <p>For commercial support, check out our directory with service providers.</p>
   </div>
 </div>
