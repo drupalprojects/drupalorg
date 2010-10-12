@@ -43,7 +43,7 @@
       
     <div class="grid-3 omega">
       <h3 id="aboutsocial"><a href="/features/connect">CONNECT</a></h3>
-      <p></p>
+      <p>Drupal makes it easy to connect your website to other sites and services across the web, using aggregation, feeds, and search engine connection capabilities. Social Networking integration is also widely supported; modules like <a href="/project/fbconnect">Facebook Connect</a>, <a href="/project/twitter">Twitter</a>, and <a href="/project/sharethis">ShareThis</a> help expand your network, and make your product or message more engaging to a wider audience. Drupal also offers your site easy ways to interact with external media and file services.</p>
     </div>
   </div>
 </div>
