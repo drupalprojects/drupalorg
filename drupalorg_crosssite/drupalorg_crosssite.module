@@ -358,11 +358,13 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
 
     case 'user':
-      $account = user_load(arg(1));
-      $nav_content_links = array(
-        'posts' => array('title' => t('Posts'), 'href' => 'user/' . $account->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track')),
-        'user-profile' => array('title' => t('Profile'), 'href' => 'user/'. $account->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '(?!/(dashboard|track))')),
-      );
+      if (is_numeric(arg(1))) {
+        $account = user_load(arg(1));
+        $nav_content_links = array(
+          'posts' => array('title' => t('Posts'), 'href' => 'user/' . $account->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track')),
+          'user-profile' => array('title' => t('Profile'), 'href' => 'user/'. $account->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '(?!/(dashboard|track))')),
+        );
+      }
       break;
   }
 
