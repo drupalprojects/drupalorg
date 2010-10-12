@@ -312,7 +312,7 @@ function drupalorg_update_6500() {
       'module' => 'drupalorg_search',
       'delta' => 'drupalorg_search_alternate',
       'pages' => "search/apachesolr_search\nsearch/apachesolr_search/*\n" .
-        "search/apachesolr_multisitesearch\nsearch/apachesolr_multisitesearch/*" .
+        "search/apachesolr_multisitesearch\nsearch/apachesolr_multisitesearch/*\n" .
         "search/drupalorg\nsearch/drupalorg/*" .
         "search/user_search\nsearch/user_search/*",
     ),
