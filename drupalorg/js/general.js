@@ -52,3 +52,12 @@ Drupal.behaviors.Drupalorg = function () {
     }
   }
 };
+
+Drupal.behaviors.drupalorgSearch = function () {
+  $('body.page-search #content-top-region form:not(.drupalorgSearch-processed)').addClass('drupalorgSearch-processed').each(function () {
+    var $this = $(this);
+    $this.find('select').change(function () {
+      $this.submit();
+    });
+  });
+};
