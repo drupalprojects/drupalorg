@@ -137,11 +137,10 @@ function lists_subscribe_form() {
   foreach ($lists as $list => $info) {
     $links = array();
     if (isset($info['private']) && $info['private']) {
-      $links[] = "<a href=\"http://lists.drupal.org/private/$list/\">view archive</a> (members only)";
+      $links[] = "<a href=\"http://lists.drupal.org/mailman/private/$list/\">view archive</a> (members only)";
     }
     else {
       $links[] = "<a href=\"http://lists.drupal.org/pipermail/$list/\">view archive</a>";
-      $links[] = "<a href=\"http://lists.drupal.org/archives/cgi-bin/namazu.cgi?idxname=$list\">search archive</a>";
     }
 
     $output .= '<h2>'. $info['name'] ."</h2>\n";
