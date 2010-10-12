@@ -413,6 +413,7 @@ function drupalorg_update_6500() {
     'weight' => 0,
     'module' => 'drupalorg_search',
     'delta' => 'drupalorg_search_navigation',
+    'cache' => BLOCK_NO_CACHE,
     'pages' => "search/apachesolr_search\nsearch/apachesolr_search/*\n" .
       "search/apachesolr_multisitesearch\nsearch/apachesolr_multisitesearch/*",
   );

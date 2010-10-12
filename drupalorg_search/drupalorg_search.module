@@ -176,7 +176,7 @@ function drupalorg_search_block_view($delta) {
           array_unshift($entries, l(t('All (@count)', array('@count' => $total)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => !$has_active ? array('class' => 'selected') : array())));
 
           return array(
-            'subject' => t('or filter by...'),
+            'subject' => t('or filter by…'),
             'content' => theme('item_list', $entries),
           );
         }
@@ -190,7 +190,7 @@ function drupalorg_search_block_view($delta) {
           $form = drupal_get_form('drupalorg_search_sort_form', $query); 
         }
         else {
-          $form = drupal_get_form('project_solr_browse_projects_form', $project_type_term, 'search/apachesolr_search/' . $query->get_keys());
+          $form = drupal_get_form('project_solr_browse_projects_form', $project_type_term, 'search/' . arg(1) . '/' . $query->get_keys());
         }
         $block['content'] = $form;
         return $block;
@@ -221,7 +221,7 @@ function drupalorg_search_block_view($delta) {
       }
 
       $block = array(
-        'title' => t('or search for...'),
+        'title' => t('or search for…'),
         'content' => theme('item_list', $items),
       );
       return $block;
@@ -255,8 +255,7 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
   // Check to see if the project_solr_browse_projects form is being used in
   // our block on the core search page. We could test $form['path']['#value']
   // here instead, but it's not really any better that way, so arg() works.
-  if (arg(0) == 'search' && arg(1) == 'apachesolr_search') {
-
+  if (arg(0) === 'search' && (arg(1) === 'apachesolr_search' || arg(1) === 'apachesolr_multisitesearch')) {
     // If we're being reused on the core search results page, we add our own
     // submit handler so that we can properly handle the "meta type" stuff.
     $form['#submit'][] = 'drupalorg_search_project_solr_browse_project_form_submit';
