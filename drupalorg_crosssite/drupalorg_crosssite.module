@@ -70,7 +70,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     array(
       'getting-started' => array('href' => 'start', 'title' => t('Get Started'), '#site' => 'main'),
       'download-core'   => array('href' => 'node/3060', 'title' => t('Downloading Drupal'), '#site' => 'main'),
-      'get-involved'    => array('href' => 'getting-involved', 'title' => t('Get Involved'), '#site' => 'main'),
+      'get-involved'    => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main'),
     ),
     array(
       'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
