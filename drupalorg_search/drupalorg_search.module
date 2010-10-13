@@ -387,7 +387,7 @@ function drupalorg_search_help_form(&$form_state) {
   // Text field for searching documentation items.
   $form['search_term'] = array(
     '#type' => 'textfield',
-    '#title' => t('How can we help you?'),
+    '#title' => t('Search Documentation'),
   );
   
   // Hidden auto-lookup field for using auto-complete-like functionality.
