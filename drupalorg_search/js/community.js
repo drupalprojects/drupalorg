@@ -15,19 +15,12 @@ Drupal.behaviors.communityHelp = function (context) {
     var input_id = this.id.substr(0, this.id.length - 11);
     var input = $('#' + input_id).attr('autolookup', 'OFF')[0];
     $(this).after('<div id="' + input_id + '-results"></div>');
-    $(input.form).submit(Drupal.autolookupSubmit);
+    $(input.form).submit(function(){ return false; });
 
     var jsch = new Drupal.jsCH(input, CHDB[uri]);
     jsch.populateResults();
     $(this).addClass('autolookup-processed');
   });
-};
-
-/**
- * Prevents the form from submitting if the suggestions results is open.
- */
-Drupal.autolookupSubmit = function () {
-  return $('#autolookup').size() == 0;
 };
 
 /**
