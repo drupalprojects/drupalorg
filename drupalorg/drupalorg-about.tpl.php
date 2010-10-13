@@ -15,7 +15,7 @@
     </div>
       
     <div class="grid-3">
-      <h3 id="aboutsearching"><a href="/features/modules">ADMINISTER</a></h3>
+      <h3 id="aboutsearching"><a href="/features/administer">ADMINISTER</a></h3>
       <p>Drupal comes with great options for new user accounts and user permissions. Users can be assigned one or more roles, and each role can be set up with fine-grained permissions allowing users view and create only what the administrator permits. The Drupal 7 admin theme makes administering a site easier than ever.</p>
     </div>
       
@@ -27,7 +27,7 @@
   
   <div class="node-sub-section grid-12 alpha omega">
     <div class="grid-3 alpha">
-      <h3 id="aboutcontentmanagement"><a href="/features/scale">SCALE YOUR CONTENT</a></h3>
+      <h3 id="aboutcontentmanagement"><a href="/features/organize">ORGANIZE & FIND</a></h3>
       <p>Drupal comes with many tools to help you organize your content. Categorize with taxonomy, automatically create friendly path urls, associate content with other content on your site, and create smart defaults for content creators.</p>
     </div>
       
