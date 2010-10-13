@@ -181,7 +181,7 @@ function drupalorg_crosssite_section() {
     elseif (drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release'))) {
       $section = 'downloads';
     }
-    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community)(/|$)') || drupalorg_crosssite_menu_type('main', array('forum'))) {
+    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_menu_path('main', '^node/281873$') || drupalorg_crosssite_in_breadcrumb('node/281873')) {
       // Events appear at here and as an individual tab list. Commented out from here.
       // || drupalorg_crosssite_menu_path('groups', '^events'),
       $section = 'community';
@@ -276,8 +276,8 @@ function drupalorg_crosssite_content_menu(&$vars) {
     case 'community':
       $nav_content_links = array(
         'home'          => array('href' => 'community', 'title' => t('Community Home'), '#site' => 'main'),
-        'local-groups'  => array('href' => 'groups', 'title' => t('Local Groups'), '#site' => 'groups'),
-        'online-groups' => array('href' => 'og/all?keys=&gt_tid[]=141', 'title' => t('Online Groups'), '#site' => 'groups'),
+        'getting-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('node/281873') && !drupalorg_crosssite_menu_path('main', '^irc(/|$)'))),
+        'groups'  => array('href' => 'groups', 'title' => t('Groups & Meetups'), '#site' => 'groups'),
         'chat'          => array('href' => 'irc', 'title' => t('Chat'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^irc(/|$)')),
         'lists'         => array('href' => 'mailing-lists', 'title' => t('Mailing Lists'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)')),
         'members'       => array('href' => 'profile', 'title' => t('Member Directory'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^profile(/|$)')),

@@ -259,10 +259,6 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
           'info' => t('Documentation home info'),
           'cache' => BLOCK_CACHE_PER_PAGE,
         ),
-        'irc' => array(
-          'info' => t('Get Involved - IRC'),
-          'cache' => BLOCK_CACHE_PER_PAGE,
-        ),
       );
 
     case 'view':
@@ -279,18 +275,6 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
           return array(
             'subject' => t('Help Us Write Documentation'),
             'content' => t('All content is written and edited by volunteers, please <a href="/contribute/documentation">contribute where you see a need</a>. If you have a Drupal.org account, you can edit a handbook page by clicking the “Edit” at the top of the page. You can also add new pages by using the “add a child page” link at the bottom. For more information on helping with the documentation, see <a href="/node/302203">quick ways to improve documentation</a>.'),
-          );
-
-        case 'irc':
-          return array(
-            'subject' => t('Get Involved'),
-            'content' => '<p>If you are new to our community and would like to contribute, there are lots of ways to do so. Visit our <a href="/getinvolved">Get Involved</a> section for more information. To read what others are saying about Drupal, or to write your own post, take a trip to <a href="/news">Planet Drupal</a>.</p>
-<ul>
-<li><a href="/irc/setting-up">Setting up IRC</a></li>
-<li><a href="/irc/use-effectively">How to use IRC Effectively</a></li>
-<li><a href="/irc/courtesy">IRC Courtesy</a></li>
-<li><a href="/irc/channels-list">Drupal IRC channels</a></li>
-</ul>',
           );
      }
   }

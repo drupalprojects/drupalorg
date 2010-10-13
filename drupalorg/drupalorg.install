@@ -261,11 +261,6 @@ function drupalorg_update_6500() {
       'region' => 'content',
     ),
     array(
-      'module' => 'drupalorg_handbook',
-      'delta' => 'irc',
-      'pages' => 'irc',
-    ),
-    array(
       'module' => 'book',
       'delta' => 0,
     ),
