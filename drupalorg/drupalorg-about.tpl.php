@@ -83,7 +83,7 @@
         <dd><a href="/node/217684">AOL Corporate</a>, <a href="/Dahon-Folding-Bicycles">Dahon Bicycles</a></dd>
         
         <dt>Education</dt>
-        <dd><a href="/node/182486">San Jose State University</a>, Harvard, MIT, <a href="#">e-Learning Institute</a>, <a href="/node/20436">Council on Writing Program Administrators</a></dd>
+        <dd><a href="/node/182486">San Jose State University</a>, Harvard, MIT, <a href="/node/20436">Council on Writing Program Administrators</a></dd>
 
         <dt>Art, Music, Multimedia</dt>
         <dd><a href="/node/81898">MTV UK</a>, <a href="/node/241344">Sony Music</a>, <a href="/node/162162">Warner Brothers Records</a></dd>
