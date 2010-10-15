@@ -24,31 +24,21 @@
   <div id="front-top-right-inner">
     <div class="block-content clear-block">
       <h2><a href="download">Develop with Drupal</a></h2>
-      <p>Drupal is extensible, powerful, scalable, and flexible.</p>
-      <div class="grid-2 alpha">
-        <strong>Current activity:</strong>
+        <table id="front-current-activity">
+          <tr><td><?php print $number_of_modules; ?></td><td><a href="project/modules">Modules</a></td></tr>
+          <tr><td><?php print $number_of_themes; ?></td><td><a href="project/themes">Themes</a></td></tr>
+          <tr><td><?php print $number_of_cvs_accounts; ?></td><td><a href="cvs">Active developers</a></td></tr>
+          <tr><td></td><th>This week</th></tr>
+          <tr><td><?php print $number_of_cvs_commits; ?></td><td><a href="cvs">Code commits</a></td></tr>
+          <tr><td><?php print $number_of_issue_comments; ?></td><td><a href="project/issues">Issue comments</a></td></tr>
+        </table>
+
         <ul>
-          <li><a href="project/modules"><?php print $number_of_modules; ?> modules</a></li>
-          <li><a href="project/themes"><?php print $number_of_themes; ?> themes</a></li>
-          <li><a href="cvs"><?php print $number_of_cvs_accounts; ?> active developers</a></li>
-        </ul>
-        <strong>This week:</strong>
-        <ul>
-          <li><a href="project/modules/?filters=type:project_project%20im_vid_3:14&solrsort=created%20desc"><?php print $number_of_new_modules; ?> new modules</a></li>
-          <li><a href="cvs"><?php print $number_of_cvs_commits; ?> code commits</a></li>
-          <li><a href="project/issues"><?php print $number_of_issue_comments; ?> issue comments</a></li>
-        </ul>
-      </div>
-      <div class="grid-2 omega">
-        <ul>
-          <li><a href="http://api.drupal.org">Drupal API</a></li>
-          <li><a href="project/drupal">Download Drupal</a></li>
+          <li><a href="project/drupal">Drupal Core</a></li>
           <li><a href="security">Security Info</a></li>
-          <li><a href="handbook">Handbook</a></li>
+          <li><a href="contributors-guide">Developer Docs</a></li>
+          <li><a href="http://api.drupal.org">API Docs</a></li>
         </ul>
-        <h4><a href="download">Modules and Themes</a></h4>
-        Explore Drupal <a href="project/modules">modules</a> and <a href="project/themes">themes</a>
-      </div>
     </div>
     <?php print $psa; ?>
   </div>
