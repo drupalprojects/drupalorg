@@ -181,7 +181,7 @@ function drupalorg_crosssite_section() {
     elseif (drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release'))) {
       $section = 'downloads';
     }
-    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_menu_path('main', '^node/281873$') || drupalorg_crosssite_in_breadcrumb('node/281873')) {
+    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('node/281873') && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)'))) {
       // Events appear at here and as an individual tab list. Commented out from here.
       // || drupalorg_crosssite_menu_path('groups', '^events'),
       $section = 'community';
