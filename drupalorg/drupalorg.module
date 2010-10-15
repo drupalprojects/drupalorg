@@ -448,7 +448,7 @@ function drupalorg_map_content($_force = FALSE) {
     $output = $cache->data;
   }
   else {
-    $output = '<div class="homepage-pin homepage-pin-commit"><span class="latitude">' . variable_get('drupalcon_latitude', 41.836944) . '</span><span class="longitude">' . variable_get('drupalcon_longitude', -87.684444) . '</span><div class="content drupalcon">' . variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011') . '</div></div>';
+    $output = '<div class="homepage-pin homepage-pin-commit homepage-pin-west"><span class="latitude">' . variable_get('drupalcon_latitude', 41.836944) . '</span><span class="longitude">' . variable_get('drupalcon_longitude', -87.684444) . '</span><div class="content drupalcon">' . variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011') . '</div></div>';
     $queries = array(
       "SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {book} b ON b.nid = nr.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = nr.uid INNER JOIN {users} u ON u.uid = nr.uid ORDER BY nr.timestamp DESC",
       "SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' ORDER BY n.created DESC",
@@ -484,7 +484,7 @@ function drupalorg_map_content($_force = FALSE) {
     }
     ksort($map);
     foreach ($map as $row) {
-      $output .= '<div class="homepage-pin homepage-pin-' . $row->type . '"><span class="latitude">' . $row->latitude . '</span><span class="longitude">' . $row->longitude . '</span><div class="content">' . t('!name @verb<br />!page', array('!name' => theme('username', $row), '@verb' => $row->verb, '!page' => $row->link)) . '</div></div>';
+      $output .= '<div class="homepage-pin homepage-pin-' . $row->type . ' homepage-pin-' . ($row->longitude > 0 ? 'east' : 'west') . '"><span class="latitude">' . $row->latitude . '</span><span class="longitude">' . $row->longitude . '</span><div class="content">' . t('!name @verb<br />!page', array('!name' => theme('username', $row), '@verb' => $row->verb, '!page' => $row->link)) . '</div></div>';
     }
 
     cache_set('drupalorg_map_content', $output);
