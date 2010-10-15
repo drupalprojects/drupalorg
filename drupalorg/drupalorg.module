@@ -402,7 +402,7 @@ function drupalorg_preprocess_page(&$variables) {
   if ($variables['is_front']) {
     $variables['mission'] = '<h2>Come for the software, stay for the community</h2>
     <p class="standfirst">
-      Drupal is an open source content management platform used to power millions of websites and software applications. It’s built, used, and supported by an active and diverse community of people from around the world.
+      Drupal is an open source content management platform powering millions of websites and applications. It’s built, used, and supported by an active and diverse community of people around the world.
     </p>';
   }
 }
