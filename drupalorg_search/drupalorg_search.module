@@ -225,12 +225,12 @@ function drupalorg_search_block_view($delta) {
         'content' => theme('item_list', $items),
       );
       return $block;
+
     case 'drupalorg_search_users':
-      $block = array(
-        'title' => t('Search users'),
+      return array(
+        'title' => t('Search Users'),
         'content' => drupal_get_form('search_form', NULL, '', 'user_search'),
       );
-      return $block;
   }
 }
 

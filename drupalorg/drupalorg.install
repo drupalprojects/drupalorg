@@ -329,6 +329,11 @@ function drupalorg_update_6500() {
       'pages' => "project/modules\nproject/themes",
     ),
     array(
+      'module' => 'drupalorg',
+      'delta' => 'find_local',
+      'pages' => "profile\nprofile/*",
+    ),
+    array(
       'module' => 'drupalorg_search',
       'delta' => 'drupalorg_search_users',
       'pages' => "profile\nprofile/*",
