@@ -617,7 +617,6 @@ function drupalorg_community() {
  * Implementation of template_preprocess_drupalorg_community().
  */
 function drupalorg_preprocess_drupalorg_community(&$variables) {
-  $variables['advertisement'] = ''; // used to pull in the proper advertisement block.
   // "How can we help you?" form at the top of /community.
   $variables['help_form'] = '';
   if (module_exists('drupalorg_search')) {
