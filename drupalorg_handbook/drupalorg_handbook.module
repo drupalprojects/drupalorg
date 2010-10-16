@@ -221,25 +221,34 @@ function drupalorg_handbook_get_recent_updates($limit = 50) {
  * List most recent updates to book pages for moderation reasons.
  */
 function drupalorg_handbook_display_recent_updates() {
+  global $user;
+
   // Represents the number of results to retrieve. Also utilized for cache field name.
   $count = 50;
-  if ($cache = cache_get('drupalorg_handbook_recent_updates_' . $count)) {
+  $key = 'drupalorg_handbook_recent_updates_' . $count . ':' . ($user->uid === 0 ? 'anon' : 'auth');
+  if ($cache = cache_get($key)) {
     $output = $cache->data;
   }
   else {
     $result = drupalorg_handbook_get_recent_updates($count);
     while ($page = db_fetch_object($result)) {
-      $rows[] = array(
+      $row = array(
         l($page->title, "node/$page->nid") .' '. theme('mark', node_mark($page->nid, $page->changed)) . ($page->log ? "<br />". check_plain($page->log) : ''), 
         theme('username', $page), 
         t('%time ago', array('%time' => format_interval(time() - $page->changed))),
-        l(t('Diff'), "node/$page->nid/revisions/view/latest"),
       );
+      if (user_access('view revisions')) {
+        $row[] = l(t('Diff'), "node/$page->nid/revisions/view/latest");
+      }
+      $rows[] = $row;
     } 
-    $header = array('Page', 'Edited', 'Updated', 'Diff');
+    $header = array('Page', 'Edited', 'Updated');
+    if (user_access('view revisions')) {
+      $header[] = 'Diff';
+    }
 
     $output = theme('table', $header, $rows);
-    cache_set('drupalorg_handbook_recent_updates_' . $count, $output);
+    cache_set($key, $output);
   }
   return $output;
 }
