@@ -2,7 +2,7 @@
   <div id="front-top-left-inner">
     <div class="block-content">
      <h2><a href="about">Why Choose Drupal?</a></h2>
-     <p>Drupal can be used to build everything from personal blogs to sophisticated enterprise applications. It features thousands of add-on modules and design themes that enable you to build any kind of site you can imagine. Drupal is free software that is flexible, robust, and constantly being improved by a community of hundreds of thousands of passionate users. Come join us!</p>
+     <p>Use Drupal to build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine.</p><p>Drupal is free, flexible, robust and constantly being improved by hundreds of thousands of passionate people from all over the world. Join us!</p>
      <p class="front-get-started">
       <a href="start" class="link-button"><span>Get Started with Drupal</span></a>
      </p>
