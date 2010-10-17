@@ -98,9 +98,9 @@
   </div>
       
   <div class="grid-4">
-    <h3>Download a One-Page Brochure</h3>
+    <h3>Drupal CMS Features</h3>
     <div class="aboutsmall">
-      <p>Short on time? Decision-maker too busy to look at this site? <a href="#">Download our one-page brochure</a> for a summary of why you should choose Drupal, and information on its features and benefits.</p>
+      <p>Read more about how to build, administer and design with <a href="/features">Drupal's Content Management Features</a>.</p>
       
       <h3>Getting Started</h3>
       <p>The Drupal Core is a collection of files that you must download in order to get started with Drupal. </p>
