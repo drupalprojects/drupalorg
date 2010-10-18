@@ -78,10 +78,10 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     ),
     array(
       'get-started' => array('href' => 'start', 'title' => t('Get Started'), '#site' => 'main'),
-      'docs' => array('href' => 'documentation', 'title' => t('Documentation Home'), '#site' => 'main', 'attributes' => array('title' => t('Guidebooks and documentation for working with Drupal'))), 
-      'install' => array('href' => 'documentation/install', 'title' => t('Installation Guide'), '#site' => 'main', 'attributes' => array('title' => t('Guide for installing Drupal'))),   
+      'docs' => array('href' => 'documentation', 'title' => t('Documentation Home'), '#site' => 'main', 'attributes' => array('title' => t('Guidebooks and documentation for working with Drupal'))),
+      'install' => array('href' => 'documentation/install', 'title' => t('Installation Guide'), '#site' => 'main', 'attributes' => array('title' => t('Guide for installing Drupal'))),
       'site-building' => array('href' => 'documentation/build', 'title' => t('Site Building Guide'), '#site' => 'main', 'attributes' => array('title' => t('Guide for building and extending Drupal sites'))),
-      'api' => array('href' => '', 'title' => t('api.drupal.org'), '#site' => 'api', 'attributes' => array('title' => t('Drupal API Reference'))),   
+      'api' => array('href' => '', 'title' => t('api.drupal.org'), '#site' => 'api', 'attributes' => array('title' => t('Drupal API Reference'))),
     ),
     array(
       'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
@@ -180,14 +180,14 @@ function drupalorg_crosssite_section() {
     if (drupalorg_crosssite_menu_path('main', '^(user/'. $user->uid .'(/|$)|project(/issues)?/user$)')) {
       $section = 'dashboard';
     }
-    elseif (drupalorg_crosssite_menu_path('main', '^node/1$') || drupalorg_crosssite_in_breadcrumb('node/1')
-      || drupalorg_crosssite_menu_path('main', '^features$') || drupalorg_crosssite_in_breadcrumb('node/909476')) {
+    elseif (drupalorg_crosssite_menu_path('main', '^node/1$') || drupalorg_crosssite_in_breadcrumb('main', 'node/1')
+      || drupalorg_crosssite_menu_path('main', '^features$') || drupalorg_crosssite_in_breadcrumb('main', 'node/909476')) {
       $section = 'about';
     }
-    elseif (drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release'))) {
+    elseif (drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')) || drupalorg_crosssite_menu_site('localize')) {
       $section = 'downloads';
     }
-    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('node/281873') && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)'))) {
+    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|forum|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)'))) {
       // Events appear at here and as an individual tab list. Commented out from here.
       // || drupalorg_crosssite_menu_path('groups', '^events'),
       $section = 'community';
@@ -209,13 +209,10 @@ function drupalorg_crosssite_section() {
     elseif (drupalorg_crosssite_menu_path('main', '^(node/9068|druplicon)(/|$)')) {
       $section = 'druplicon';
     }
-    elseif (drupalorg_crosssite_menu_site('localize')) {
-      $section = 'localize';
-    }
     elseif (drupalorg_crosssite_menu_path('main', '^user(/|$)')) {
       $section = 'user';
     }
-    elseif (drupalorg_crosssite_in_breadcrumb('admin')) {
+    elseif (drupalorg_crosssite_in_breadcrumb('main', 'admin')) {
       $section = 'admin';
     }
     elseif (menu_get_item() !== FALSE) {
@@ -267,22 +264,20 @@ function drupalorg_crosssite_content_menu(&$vars) {
 
     case 'downloads':
       $nav_content_links = array(
-        // All are exact paths and so theme('links') will make them gain active
-        // classes when on the projects site. Therefore no need for #active.
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
-        'core'         => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_in_breadcrumb('node/3060', $vars), '#site' => 'main'),
-        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_in_breadcrumb('project/modules', $vars)),
-        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_in_breadcrumb('project/themes', $vars)),
-        'translations' => array('href' => 'project/translations', 'title' => t('Translations'), '#site' => 'main', '#active' => drupalorg_crosssite_in_breadcrumb('project/translations', $vars)),
-        'theme-engine' => array('href' => 'project/theme+engines', 'title' => t('Theme Engines'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^project/theme engines') || drupalorg_crosssite_in_breadcrumb('project/theme engines', $vars)),
-        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^project/installation profiles') || drupalorg_crosssite_in_breadcrumb('project/installation profiles', $vars)),
+        'core'         => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_in_breadcrumb('main', 'node/3060', $vars), '#site' => 'main'),
+        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_in_breadcrumb('main', 'project/modules', $vars)),
+        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_in_breadcrumb('main', 'project/themes', $vars)),
+        'translations' => array('href' => '<front>', 'title' => t('Translations'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_site('localize') || drupalorg_crosssite_in_breadcrumb('main', 'project/translations', $vars)),
+        'theme-engine' => array('href' => 'project/theme+engines', 'title' => t('Theme Engines'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^project/theme engines') || drupalorg_crosssite_in_breadcrumb('main', 'project/theme engines', $vars)),
+        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^project/installation profiles') || drupalorg_crosssite_in_breadcrumb('main', 'project/installation profiles', $vars)),
       );
       break;
 
     case 'community':
       $nav_content_links = array(
         'home'          => array('href' => 'community', 'title' => t('Community Home'), '#site' => 'main'),
-        'getting-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('node/281873') && !drupalorg_crosssite_menu_path('main', '^irc(/|$)') && !drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)'))),
+        'getting-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^irc(/|$)') && !drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)'))),
         'chat'          => array('href' => 'irc', 'title' => t('Chat'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^irc(/|$)')),
         'lists'         => array('href' => 'mailing-lists', 'title' => t('Mailing Lists'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)')),
         'members'       => array('href' => 'profile', 'title' => t('Member Directory'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^profile(/|$)'), '#title_match' => 'q'),
@@ -335,20 +330,6 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'about'    => array('href' => 'druplicon', 'title' => t('About Druplicon'), '#site' => 'main'),
         'download' => array('href' => 'node/9068', 'title' => t('Download Druplicon'), '#site' => 'main'),
         'other'    => array('href' => '??', 'title' => t('Other Druplicons'), '#site' => 'main'),
-      );
-      break;
-
-    // Just on the localization site.
-    case 'localize':
-      $nav_content_links = array(
-        // All are exact paths and so theme('links') will make them gain active
-        // classes when on the localize site. Therefore no need for #active.
-        'home'         => array('href' => '<front>', 'title' => t('Translations Home'), '#site' => 'localize'),
-        'languages'    => array('href' => 'translate/languages', 'title' => t('Languages'), '#site' => 'localize'),
-        'projects'     => array('href' => 'translate/projects', 'title' => t('Projects'), '#site' => 'localize'),
-        'download'     => array('href' => 'translate/downloads', 'title' => t('Download'), '#site' => 'localize'),
-        'news'         => array('href' => 'news', 'title' => t('News'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^news$')),
-        'faq'          => array('href' => 'faq', 'title' => t('FAQ'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_path('localize', '^faq$')),
       );
       break;
 
@@ -424,6 +405,8 @@ function drupalorg_crosssite_content_menu(&$vars) {
  * Find a path in the breadcrumb. If found, return TRUE and set the shortened
  * breadcrumb.
  *
+ * @param $site_key
+ *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
  * @param $path
  *   The path to search for, as used in the previously-set breadcrumb.
  * @param $path
@@ -431,16 +414,19 @@ function drupalorg_crosssite_content_menu(&$vars) {
  * @return
  *   TRUE if found, and modify $vars['breadcrumb'].
  */
-function drupalorg_crosssite_in_breadcrumb($path, &$vars = NULL) {
-  $url = url($path);
-  foreach (drupal_get_breadcrumb() as $n => $breadcrumb) {
-    if (strpos($breadcrumb, 'href="' . $url . '"') !== FALSE) {
-      if (isset($vars)) {
-        $vars['breadcrumb'] = theme('breadcrumb', array_slice(drupal_get_breadcrumb(), $n + 1));
+function drupalorg_crosssite_in_breadcrumb($site_key, $path, &$vars = NULL) {
+  if (drupalorg_crosssite_menu_site($site_key) {
+    $url = url($path);
+    foreach (drupal_get_breadcrumb() as $n => $breadcrumb) {
+      if (strpos($breadcrumb, 'href="' . $url . '"') !== FALSE) {
+        if (isset($vars)) {
+          $vars['breadcrumb'] = theme('breadcrumb', array_slice(drupal_get_breadcrumb(), $n + 1));
+        }
+        return TRUE;
       }
-      return TRUE;
     }
   }
+  return FALSE;
 }
 
 /**
@@ -812,7 +798,7 @@ function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
   // Determine what search is available to us. Ideally, this should always be
   // multisitesearch, but if it's not part of the multisitesearch index, then
   // fall back to apachesolr, and if we're not using solr, fall back to the
-  // Drupal core search. 
+  // Drupal core search.
   // TODO: Determine if @see search_get_implementing_modules() could supplant
   // this functionality. At present, it's only on d.o, therefore it can't be
   // counted on to exist.Rather than duplicating the function, I've opted for
@@ -837,7 +823,7 @@ function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
   // types are defined.
   $links = array();
 
-  // Create a link array out of our current redirect url. By default, links to 
+  // Create a link array out of our current redirect url. By default, links to
   // the 'main' site, but can be overridden via the $conf array if needed.
   $links[] = array('href' => $path, '#site' => variable_get('drupalorg_search_site', 'main'));
 
