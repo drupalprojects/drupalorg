@@ -7,8 +7,10 @@
   <p>Community members can also be found at Drupal <a href="http://groups.drupal.org/event">events</a> where you can meet face to face, swap tips, and get inspiration for your next Drupal project, making friends along the way.</p>
   <h5>Chat (IRC)</h5>
   <p><a href="/irc">IRC</a> is one means to communicate and interact with others. Whether you are asking questions or giving answers, IRC is a fast and effective way of getting involved with the community and getting the support you need.</p>
+  <h5>Planet Drupal</h5>
+  <p><a href="/planet">Planet Drupal</a> aggregates blog posts written by the Drupal community, for the Drupal community (code, advocacy, marketing, infrastructure etc.) </p>
   <h5>Community Spotlight</h5>
-  <p>Community members and teams are highlighted in the <a href="/community-spotlight">Community Spotlight</a>. <a href="forum/community-spotlight/how-to-nominate">Nominate others</a> if you have found their contributions worthwhile.</p>
+  <p>The <a href="/community-spotlight">Community Spotlight</a> highlights Drupal community members and teams. <a href="/forum/community-spotlight/how-to-nominate">Nominate others</a> if you have found their contributions worthwhile.</p>
   <h5>Commercial Support</h5>
   <p>If you need professional help, check out our <a href="/marketplace">Marketplace</a> where you can find companies on hand to assist with <a href="/hosting">hosting</a>, <a href="/training-services">training</a> and other <a href="/drupal-services">Drupal services</a> such as development, support, content moderation and spam blocking</a>.</p>
   <h5>Forum</h5>
