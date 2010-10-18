@@ -415,7 +415,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
  *   TRUE if found, and modify $vars['breadcrumb'].
  */
 function drupalorg_crosssite_in_breadcrumb($site_key, $path, &$vars = NULL) {
-  if (drupalorg_crosssite_menu_site($site_key) {
+  if (drupalorg_crosssite_menu_site($site_key)) {
     $url = url($path);
     foreach (drupal_get_breadcrumb() as $n => $breadcrumb) {
       if (strpos($breadcrumb, 'href="' . $url . '"') !== FALSE) {
