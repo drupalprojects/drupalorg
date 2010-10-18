@@ -338,7 +338,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       $nav_content_links = array(
         'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard', '#site' => 'main'),
         'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track$')),
-        'commits' => array('title' => t('Commits'), 'href' => 'user/' . $user->uid . '/track/code', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track/code'), '#enabled' => $code_item['access']),
+        'commits' => array('title' => t('Your Commits'), 'href' => 'user/' . $user->uid . '/track/code', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track/code'), '#enabled' => $code_item['access']),
         'your-issues' => array('title' => t('Your Issues'), 'href' => 'project/issues/user', '#site' => 'main'),
         'your-projects' => array('title' => t('Your Projects'), 'href' => 'project/user', '#site' => 'main'),
         'your-groups' => array('title' => t('Your Groups'), 'href' => 'unread', '#site' => 'groups'),
