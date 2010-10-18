@@ -92,7 +92,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     ),
     array(
       'about'      => array('href' => 'about', 'title' => t('About'), '#site' => 'main'),
-      'druplicon'   => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main', 'attributes' => array('title' => t('Drupal's beloved mascot'))),
+      'druplicon'   => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main', 'attributes' => array('title' => t('Drupal\'s beloved mascot'))),
       'association-about' => array('href' => 'about', 'title' => t('Association'), '#site' => 'association', 'attributes' => array('title' => t('About the Drupal Association'))),
       'advertise' => array('href' => 'advertising', 'title' => t('Advertise'), '#site' => 'association', 'attributes' => array('title' => t('How to advertise on Drupal.org'))),
     ),

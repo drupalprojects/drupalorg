@@ -41,7 +41,7 @@
   <div class="narrow-box">
     <p>Want more information before you begin using Drupal? Our extensive documentation will tell you how.</p>
     <div class="narrow-box-list">
-      <h5 class="lined">Documentation</h5>
+      <h5 class="lined">Most Popular Guides</h5>
       <ul>
         <li><a href="/documentation/install">Installation Guide</a></li>
         <li><a href="/documentation/build">Site Building Guide</a></li>
@@ -62,7 +62,7 @@
     <p>Drupal's community offers a wealth of support. See more resources on our <a href="/community">Community &amp; Support</a> page.</p>
     <h5 class="lined"><a href="/forum">Forum</a></h5>
     <p>Whether you are asking questions or answering them, the forum will connect you to the community and provide the help you need.</p>
-    <h5 class="lined"><a href="/irc">IRC</a></h5>
+    <h5 class="lined"><a href="/irc">Chat in IRC</a></h5>
     <p>For rapid responses, check out our <acronym title="Internet Relay Chat">IRC</acronym> channels.</p>
     <h5 class="lined"><a href="/drupal-services">Services</a></h5>
     <p>For commercial support, check out our directory with service providers.</p>
