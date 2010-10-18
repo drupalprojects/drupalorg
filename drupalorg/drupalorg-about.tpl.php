@@ -21,29 +21,29 @@
       
     <div class="grid-3 omega">
       <h3 id="aboutthemes"><a href="/features/design">DESIGN AND DISPLAY</a></h3>
-      <p>Drupal's presentation layer allows designers to create highly usable, interactive experiences that engage users and increase traffic. Drupal themes can range from simple to complex, and support rich customization. Use an existing Drupal theme for your site, giving it an instant identity! If you can't find one you like, try designing your own which others can use, too.</p>
+      <p>Drupal's presentation layer allows designers to create highly usable, interactive experiences that engage users and increase traffic. Use an existing Drupal theme for your site, giving it an instant identity! If you can't find one you like, try designing your own which others can use, too.</p>
     </div>
   </div>
   
   <div class="node-sub-section grid-12 alpha omega">
     <div class="grid-3 alpha">
       <h3 id="aboutcontentmanagement"><a href="/features/organize">ORGANIZE & FIND</a></h3>
-      <p>Drupal comes with many tools to help you organize your content. Categorize with taxonomy, automatically create friendly path urls, associate content with other content on your site, and create smart defaults for content creators.</p>
+      <p>Drupal comes with many tools to help you organize, structure, find and re-use your content. Categorize with taxonomy, automatically create friendly path urls, create custom lists, associate content with other content on your site, and create smart defaults for content creators.</p>
     </div>
       
     <div class="grid-3">
       <h3 id="aboutmodules"><a href="/features/extend">EXTEND</a></h3>
-      <p>With more than 6000 available modules, the vast majority of your site's requirements can be addressed with Drupal core and available add-on modules. Focus your efforts on building great web sites, not re-creating features available elsewhere. Whether you need custom content types, dynamic lists or shopping cart, Drupal modules let you build, customize, and extend your site. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
+      <p>With more than 6000 available modules, the vast majority of your site's requirements can be addressed with Drupal core and available add-on modules. Focus your efforts on building great web sites, not re-creating features available elsewhere. You can even <a href="/contribute">contribute modules</a> for others to use.</p>
     </div>
       
     <div class="grid-3">
       <h3 id="aboutcommunity"><a href="/features/collaborate">COLLABORATE</a></h3>
-      <p>Drupal's focus on social publishing can help you create sites and applications to help people express their opinions and engage with one another. Role-based permissions allow sites to embrace community contribution, and Organic Groups allow collaboration amongst members, Also, the worldwide Drupal development and support community is very active and growing rapidly.</p>
+      <p>Drupal's focus on social publishing can help you create sites and applications to help your users express their opinions and engage with one another. You can have tight control over who can create, view, administer, publish and otherwise interact with content on your site.</p>
     </div>
       
     <div class="grid-3 omega">
       <h3 id="aboutsocial"><a href="/features/connect">CONNECT</a></h3>
-      <p>Drupal makes it easy to connect your website to other sites and services across the web, using aggregation, feeds, and search engine connection capabilities. Social Networking integration is also widely supported; the <a href="/project/fbconnect">Facebook Connect module</a>, <a href="/project/twitter">Twitter module</a>, and <a href="/project/sharethis">ShareThis module</a> help expand your network, and make your product or message more engaging to a wider audience. Drupal also offers your site easy ways to interact with external media and file services.</p>
+      <p>Drupal makes it easy to connect your website to other sites and services across the web, using aggregation, feeds, and search engine connection capabilities. Social networking integration is also widely supported to help you engage with a wider audience. Drupal also offers your site easy ways to interact with external media and file services.</p>
     </div>
   </div>
 </div>
@@ -61,11 +61,11 @@
       
   <div class="grid-3">
     <h2>Security Team</h2>
-    <p><a href="/getting-started/is-drupal-secure">We take security seriously</a> and have a <a href="/security-team">dedicated team</a> that has a <a href="/about/security-track-record">proven track record</a> in dealing with your security issues professionally and efficiently, meaning you can spend more time creating your site.</p>
+    <p><a href="/documentation/is-drupal-secure">We take security seriously</a> and have a <a href="/security-team">dedicated team</a> that has a <a href="/about/security-track-record">proven track record</a> in dealing with your security issues professionally and efficiently, meaning you can spend more time creating your site.</p>
   </div>
       
   <div class="grid-3 omega">
-    <h2>Commercial Support</h2>
+    <h2>Commercial Services</h2>
     <p>As well as the community, there are <a href="/services">many dedicated companies</a> in the Marketplace on hand to help with your Drupal project. Providing expertise and a deeper understanding, they can help with <a href="/hosting">hosting</a>, spam blocking, <a href="/training-services">training</a>, and more.</p>
   </div>
 </div>
