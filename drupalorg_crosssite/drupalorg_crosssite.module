@@ -334,9 +334,11 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
 
     case 'dashboard':
+      $code_item = menu_get_item('user/' . $user->uid . '/track/code');
       $nav_content_links = array(
         'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard', '#site' => 'main'),
-        'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track')),
+        'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track$')),
+        'commits' => array('title' => t('Commits'), 'href' => 'user/' . $user->uid . '/track/code', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track/code'), '#enabled' => $code_item['access']),
         'your-issues' => array('title' => t('Your Issues'), 'href' => 'project/issues/user', '#site' => 'main'),
         'your-projects' => array('title' => t('Your Projects'), 'href' => 'project/user', '#site' => 'main'),
         'your-groups' => array('title' => t('Your Groups'), 'href' => 'unread', '#site' => 'groups'),
@@ -347,9 +349,11 @@ function drupalorg_crosssite_content_menu(&$vars) {
     case 'user':
       if (is_numeric(arg(1))) {
         $account = user_load(arg(1));
+        $code_item = menu_get_item('user/' . $account->uid . '/track/code');
         $nav_content_links = array(
           'user-profile' => array('title' => t('Profile'), 'href' => 'user/'. $account->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '(?!/(dashboard|track))')),
-          'posts' => array('title' => t('Posts'), 'href' => 'user/' . $account->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track')),
+          'posts' => array('title' => t('Posts'), 'href' => 'user/' . $account->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track$')),
+          'commits' => array('title' => t('Commits'), 'href' => 'user/' . $account->uid . '/track/code', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track/code'), '#enabled' => $code_item['access']),
         );
       }
       break;
@@ -372,6 +376,12 @@ function drupalorg_crosssite_content_menu(&$vars) {
     }
     $tab_root_href = implode('/', $parts);
     foreach ($nav_content_links as $key => $link) {
+      // Disable if applicable
+      if (isset($link['#enabled']) && !$link['#enabled']) {
+        unset($nav_content_links[$key]);
+        continue;
+      }
+
       if ($link['href'] === '<front>') {
         $link['href'] = variable_get('site_frontpage', 'node');
       }
@@ -582,6 +592,9 @@ function drupalorg_crosssite_menu_alter(&$items) {
   }
   if (isset($items['user/%user/track'])) {
     $items['user/%user/track']['type'] = MENU_CALLBACK;
+  }
+  if (isset($items['user/%user/track/code'])) {
+    $items['user/%user/track/code']['type'] = MENU_CALLBACK;
   }
   // Modify the local tasks for search to hide the tabs.
   if (module_exists('search')) {
