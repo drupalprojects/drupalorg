@@ -47,7 +47,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     'forum'           => array('href' => 'community',              'title' => t('Community & Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community and Support'))),
     'handbooks'       => array('href' => 'handbook',               'title' => t('Documentation'),       '#site' => 'main', 'attributes' => array('title' => t('Drupal Documentation'))),
     'project'         => array('href' => 'download',               'title' => t('Download & Extend'),   '#site' => 'main', 'attributes' => array('title' => t('Download and Extend Drupal'))),
-    'marketplace'     => array('href' => 'services',               'title' => t('Marketplace'),         '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
+    'marketplace'     => array('href' => 'marketplace',               'title' => t('Marketplace'),         '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
     'about'           => array('href' => 'about',                  'title' => t('About'),               '#site' => 'main', 'attributes' => array('title' => t('About Drupal'))),
   );
   if (variable_get('drupalorg_crosssite_redesign', FALSE)) {
@@ -64,31 +64,37 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     array(
       'news'        => array('href' => 'news', 'title' => t('Drupal News'), '#site' => 'main'),
       'planet'      => array('href' => 'planet', 'title' => t('Planet Drupal'), '#site' => 'main'),
-      'association' => array('href' => '', 'title' => t('Association'), '#site' => 'association'),
+      'association' => array('href' => '', 'title' => t('Association News'), '#site' => 'association'),
       'jobs'        => array('href' => 'jobs', 'title' => t('Jobs'), '#site' => 'groups'),
+      'security'  => array('href' => 'security', 'title' => t('Security Announcements'), '#site' => 'main'),
     ),
     array(
-      'getting-started' => array('href' => 'start', 'title' => t('Get Started'), '#site' => 'main'),
-      'download-core'   => array('href' => 'node/3060', 'title' => t('Downloading Drupal'), '#site' => 'main'),
+      'community'   => array('href' => 'community', 'title' => t('Community & Support'), '#site' => 'main'),
       'get-involved'    => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main'),
+      'members'    => array('href' => 'profile', 'title' => t('Member Directory'), '#site' => 'main'),
+      'events' => array('href' => '', 'title' => t('Groups & Meetups'), '#site' => 'groups'),
+      'drupalcon'   => array('href' => 'events?filter0%5B%5D=drupalcon', 'title' => t('Drupalcon'), '#site' => 'groups'),
+    ),
+    array(
+      'get-started' => array('href' => 'start', 'title' => t('Get Started'), '#site' => 'main'),
+      'docs' => array('href' => 'documentation', 'title' => t('Documentation Home'), '#site' => 'main'), 
+      'install' => array('href' => 'documentation/install', 'title' => t('Installation Guide'), '#site' => 'main'),   
+      'site-building' => array('href' => 'documentation/build', 'title' => t('Site Building Guide'), '#site' => 'main'),
+      'api' => array('href' => '', 'title' => t('Drupal API Reference'), '#site' => 'api'),   
     ),
     array(
       'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
-      'download-core'     => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#site' => 'main'),
+      'download-core'     => array('href' => 'project/drupal', 'title' => t('Drupal Core'), '#site' => 'main'),
       'download-modules'  => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main'),
       'download-themes'   => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main'),
       'download-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main'),
     ),
     array(
-      'events'      => array('href' => 'events', 'title' => t('Events'), '#site' => 'groups'),
-      'drupalcon'   => array('href' => 'events?filter0%5B%5D=drupalcon', 'title' => t('Drupalcon'), '#site' => 'groups'),
-      'groups-join' => array('href' => '', 'title' => t('Join a Group'), '#site' => 'groups'),
-      'training'    => array('href' => 'events?filter0%5B%5D=training', 'title' => t('Training'), '#site' => 'groups'),
-      'druplicon'   => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main'),
-    ),
-    array(
+      'about'      => array('href' => 'about', 'title' => t('About'), '#site' => 'main'),
+      'marketplace'   => array('href' => 'marketplace', 'title' => t('Marketplace'), '#site' => 'main'),
+      'association-about' => array('href' => 'about', 'title' => t('Association'), '#site' => 'association'),
       'advertise' => array('href' => 'advertising', 'title' => t('Advertise'), '#site' => 'association'),
-      'security'  => array('href' => 'security', 'title' => t('Security Announcements'), '#site' => 'main'),
+      'druplicon'   => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main'),
     ),
   );
 
