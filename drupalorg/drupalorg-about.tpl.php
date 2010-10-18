@@ -60,12 +60,12 @@
   </div>
       
   <div class="grid-3">
-    <h2>Dedicated Security Team</h2>
+    <h2>Security Team</h2>
     <p><a href="/getting-started/is-drupal-secure">We take security seriously</a> and have a <a href="/security-team">dedicated team</a> that has a <a href="/about/security-track-record">proven track record</a> in dealing with your security issues professionally and efficiently, meaning you can spend more time creating your site.</p>
   </div>
       
   <div class="grid-3 omega">
-    <h2>Commercial Ecosystem</h2>
+    <h2>Commercial Support</h2>
     <p>As well as the community, there are <a href="/services">many dedicated companies</a> in the Marketplace on hand to help with your Drupal project. Providing expertise and a deeper understanding, they can help with <a href="/hosting">hosting</a>, spam blocking, <a href="/training-services">training</a>, and more.</p>
   </div>
 </div>
