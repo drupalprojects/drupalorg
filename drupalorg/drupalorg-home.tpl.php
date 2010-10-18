@@ -24,14 +24,18 @@
   <div id="front-top-right-inner">
     <div class="block-content clear-block">
       <h2><a href="download">Develop with Drupal</a></h2>
-        <table id="front-current-activity">
-          <tr><td><?php print $number_of_modules; ?></td><td><a href="project/modules">Modules</a></td></tr>
-          <tr><td><?php print $number_of_themes; ?></td><td><a href="project/themes">Themes</a></td></tr>
-          <tr><td><?php print $number_of_cvs_accounts; ?></td><td><a href="cvs">Active developers</a></td></tr>
-          <tr><td></td><th>This week</th></tr>
-          <tr><td><?php print $number_of_cvs_commits; ?></td><td><a href="cvs">Code commits</a></td></tr>
-          <tr><td><?php print $number_of_issue_comments; ?></td><td><a href="project/issues">Issue comments</a></td></tr>
-        </table>
+        <div class="clear-block">
+          <table class="front-current-activity">
+            <tr><td><?php print $number_of_modules; ?></td><td><a href="project/modules">Modules</a></td></tr>
+            <tr><td><?php print $number_of_themes; ?></td><td><a href="project/themes">Themes</a></td></tr>
+            <tr><td><?php print $number_of_cvs_accounts; ?></td><td><a href="cvs">Active developers</a></td></tr>
+          </table>
+          <table class="front-current-activity">
+            <tr><td></td><th>This week</th></tr>
+            <tr><td><?php print $number_of_cvs_commits; ?></td><td><a href="cvs">Code commits</a></td></tr>
+            <tr><td><?php print $number_of_issue_comments; ?></td><td><a href="project/issues">Issue comments</a></td></tr>
+          </table>
+        </div>
 
         <ul>
           <li><a href="project/drupal">Drupal Core</a></li>
