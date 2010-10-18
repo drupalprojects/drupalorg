@@ -758,32 +758,34 @@ function drupalorg_crosssite_meta_type_traverse(&$node, $value) {
  * Implementation of hook_form_search_theme_form_alter().
  */
 function drupalorg_crosssite_form_search_theme_form_alter(&$form, $form_state) {
-
-  // If we already ran a query, remember those values in the header search bar.
-  $meta_type = '';
-  if (drupalorg_crosssite_apachesolr_has_searched() && $query = apachesolr_current_query()) {
-    // If a meta_type was specified to refine the search, save that.
-    $filter = $query->get_filters('ss_meta_type');
-    if (!empty($filter)) {
-      $meta_type = $filter[0]['#value'];
+  global $theme;
+  if ($theme === 'bluecheese') {
+    // If we already ran a query, remember those values in the header search bar.
+    $meta_type = '';
+    if (drupalorg_crosssite_apachesolr_has_searched() && $query = apachesolr_current_query()) {
+      // If a meta_type was specified to refine the search, save that.
+      $filter = $query->get_filters('ss_meta_type');
+      if (!empty($filter)) {
+        $meta_type = $filter[0]['#value'];
+      }
+      // Default the search text to the value of the queried text.
+      $form['search_theme_form']['#default_value'] = $query->get_keys();
     }
-    // Default the search text to the value of the queried text.
-    $form['search_theme_form']['#default_value'] = $query->get_keys();
-  }
 
-  $form['search_theme_form']['#title'] = t('Search Drupal.org');
-  $form['advanced'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Refine your search'),
-    '#collapsible' => !drupal_is_front_page(),
-    '#collapsed' => !drupal_is_front_page(),
-  );
-  $form['advanced']['meta_type'] = array(
-    '#type' => 'radios',
-    '#options' => drupalorg_crosssite_meta_types(),
-    '#default_value' => $meta_type,
-  );
-  $form['#submit'][] = 'drupalorg_crosssite_search_theme_form_submit';
+    $form['search_theme_form']['#title'] = t('Search Drupal.org');
+    $form['advanced'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Refine your search'),
+      '#collapsible' => !drupal_is_front_page(),
+      '#collapsed' => !drupal_is_front_page(),
+    );
+    $form['advanced']['meta_type'] = array(
+      '#type' => 'radios',
+      '#options' => drupalorg_crosssite_meta_types(),
+      '#default_value' => $meta_type,
+    );
+    $form['#submit'][] = 'drupalorg_crosssite_search_theme_form_submit';
+  }
 }
 
 function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
