@@ -1,6 +1,7 @@
 <div id="getting-involved">
 				
 	<div class="grid-4 alpha">
+	<h2>Getting Involved</h2>
 	  <div id="node-281873" class="node node-type-book clear-block">
 	    <div class="node-content">
         <?php print $docs_node ?>
