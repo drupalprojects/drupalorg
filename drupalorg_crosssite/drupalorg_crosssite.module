@@ -783,7 +783,7 @@ function drupalorg_crosssite_form_search_theme_form_alter(&$form, $form_state) {
     );
     $form['advanced']['meta_type'] = array(
       '#type' => 'radios',
-      '#options' => drupalorg_crosssite_meta_types(),
+      '#options' => array_merge(array('' => t('All')), drupalorg_crosssite_meta_types()),
       '#default_value' => $meta_type,
     );
     $form['#submit'][] = 'drupalorg_crosssite_search_theme_form_submit';
