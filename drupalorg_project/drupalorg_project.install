@@ -1,0 +1,16 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ *   Install functionality for drupalorg_project.module.
+ */
+
+/**
+ * Implementation of hook_install().
+ *
+ * Set the system weight heavier than project* so project altering works.
+ */
+function drupalorg_project_install() {
+  db_query("UPDATE {system} SET weight = 5 WHERE name = 'drupalorg_project'");
+}
