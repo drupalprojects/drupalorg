@@ -71,17 +71,17 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     array(
       'community'   => array('href' => 'community', 'title' => t('Community & Support'), '#site' => 'main'),
       'get-involved'    => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main'),
-      'members'    => array('href' => 'profile', 'title' => t('Member Directory'), '#site' => 'main'),
       'marketplace'   => array('href' => 'marketplace', 'title' => t('Marketplace'), '#site' => 'main'),
       'groups' => array('href' => 'groups', 'title' => t('Groups & Meetups'), '#site' => 'groups'),
-      'drupalcon'   => array('href' => '', 'title' => t('Drupalcon'), '#site' => 'chicago2011'),
+      'dcchicago'   => array('href' => '', 'title' => t('chicago2011.drupal.org'), '#site' => 'chicago2011'),
+      'dclondon'   => array('href' => '', 'title' => t('london2011.drupal.org'), '#site' => 'london2011'),
     ),
     array(
       'get-started' => array('href' => 'start', 'title' => t('Get Started'), '#site' => 'main'),
       'docs' => array('href' => 'documentation', 'title' => t('Documentation Home'), '#site' => 'main'), 
       'install' => array('href' => 'documentation/install', 'title' => t('Installation Guide'), '#site' => 'main'),   
       'site-building' => array('href' => 'documentation/build', 'title' => t('Site Building Guide'), '#site' => 'main'),
-      'api' => array('href' => '', 'title' => t('Drupal API Reference'), '#site' => 'api'),   
+      'api' => array('href' => '', 'title' => t('api.drupal.org'), '#site' => 'api'),   
     ),
     array(
       'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
