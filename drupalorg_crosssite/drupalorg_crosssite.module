@@ -65,15 +65,16 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       'news'        => array('href' => 'news', 'title' => t('Drupal News'), '#site' => 'main'),
       'planet'      => array('href' => 'planet', 'title' => t('Planet Drupal'), '#site' => 'main'),
       'association' => array('href' => '', 'title' => t('Association News'), '#site' => 'association'),
-      'jobs'        => array('href' => 'jobs', 'title' => t('Jobs'), '#site' => 'groups'),
       'security'  => array('href' => 'security', 'title' => t('Security Announcements'), '#site' => 'main'),
+      'jobs'        => array('href' => 'jobs', 'title' => t('Jobs'), '#site' => 'groups'),
     ),
     array(
       'community'   => array('href' => 'community', 'title' => t('Community & Support'), '#site' => 'main'),
       'get-involved'    => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main'),
       'members'    => array('href' => 'profile', 'title' => t('Member Directory'), '#site' => 'main'),
-      'events' => array('href' => '', 'title' => t('Groups & Meetups'), '#site' => 'groups'),
-      'drupalcon'   => array('href' => 'events?filter0%5B%5D=drupalcon', 'title' => t('Drupalcon'), '#site' => 'groups'),
+      'marketplace'   => array('href' => 'marketplace', 'title' => t('Marketplace'), '#site' => 'main'),
+      'groups' => array('href' => 'groups', 'title' => t('Groups & Meetups'), '#site' => 'groups'),
+      'drupalcon'   => array('href' => '', 'title' => t('Drupalcon'), '#site' => 'chicago2011'),
     ),
     array(
       'get-started' => array('href' => 'start', 'title' => t('Get Started'), '#site' => 'main'),
@@ -91,10 +92,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     ),
     array(
       'about'      => array('href' => 'about', 'title' => t('About'), '#site' => 'main'),
-      'marketplace'   => array('href' => 'marketplace', 'title' => t('Marketplace'), '#site' => 'main'),
+      'druplicon'   => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main'),
       'association-about' => array('href' => 'about', 'title' => t('Association'), '#site' => 'association'),
       'advertise' => array('href' => 'advertising', 'title' => t('Advertise'), '#site' => 'association'),
-      'druplicon'   => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main'),
     ),
   );
 
