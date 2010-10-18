@@ -41,15 +41,15 @@
   <div class="narrow-box">
     <p>Want more information before you begin using Drupal? Our extensive documentation will tell you how.</p>
     <div class="narrow-box-list">
-      <h5 class="lined">Handbooks</h5>
+      <h5 class="lined">Documentation</h5>
       <ul>
-        <li><a href="/getting-started/install">Installation Instructions</a></li>
-        <li><a href="/node/627082">Site Configuration</a></li>
-        <li><a href="/node/257">Site Building</a></li>
-        <li><a href="/node/627082">Structure Guide</a></li>
-        <li><a href="/theme-guide">Theming Guide</a></li>
+        <li><a href="/documentation/install">Installation Guide</a></li>
+        <li><a href="/documentation/build">Site Building Guide</a></li>
+        <li><a href="/documentation/structure">Structure Guide</a></li>
+        <li><a href="/documentation/theme">Theming Guide</a></li>
+        <li><a href="/documentation/understand">Understanding Drupal</a></li>
       </ul>
-      <a href="/handbook" class="all">All Handbooks</a>
+      <a href="/documentation" class="all">All Documentation</a>
     </div><!--/narrow-box-list-->
     <div class="narrow-box-list">
       <h5 class="lined">Books</h5>
