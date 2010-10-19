@@ -58,9 +58,11 @@ function drupalorg_init() {
   }
 
   // Temporary message about the Solr index being rebuilt.
-  if (arg(0) == 'search' || arg(0) == 'download' || arg(0) == 'start' ||
-      (arg(0) == 'project' && (arg(1) == 'modules' || arg(1) == 'themes' || arg(1) == 'installation profiles' || arg(1) == 'theme engines'))) {
-    drupal_set_message(t('We are rebuilding the search index for the update to drupal.org. The search results may produce broken or out-of-date results until the index is fully rebuilt. We will remove this message when the indexing is complete. Do not report any search errors at this time.'));
+  if (variable_get('drupalorg_warn_search_index_rebuild', FALSE)) {
+    if (arg(0) == 'search' || arg(0) == 'download' || arg(0) == 'start' ||
+        (arg(0) == 'project' && (arg(1) == 'modules' || arg(1) == 'themes' || arg(1) == 'installation profiles' || arg(1) == 'theme engines'))) {
+      drupal_set_message(t('We are rebuilding the search index for the update to drupal.org. The search results may produce broken or out-of-date results until the index is fully rebuilt. We will remove this message when the indexing is complete. Do not report any search errors at this time.'));
+    }
   }
 }
 
