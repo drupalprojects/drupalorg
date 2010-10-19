@@ -285,8 +285,7 @@ function drupalorg_activity_block() {
  * try to generate it again.
  */
 function drupalorg_get_activity($_force = FALSE){
-  $time = cache_get('drupalorg_front_counter_time');
-  if (!$_force && $time && ($cache = cache_get('drupalorg_front_counter_data')) && ($time->data > (time() - 60*60))) {
+  if (!$_force && ($cache = cache_get('drupalorg_front_counter_data'))) {
     $stats = $cache->data;
   }
   else {
@@ -340,9 +339,7 @@ function drupalorg_get_activity($_force = FALSE){
     // Comments: count comments.
     $stats['comments'] = number_format(db_result(db_query("SELECT COUNT(*) FROM {comments} WHERE status = 0"))); 
 
-    // Store all the results and the time.
-    cache_set('drupalorg_front_counter_data', $stats);
-    cache_set('drupalorg_front_counter_time', time());
+    cache_set('drupalorg_front_counter_data', $stats, 'drupalorg');
   }
   return $stats;
 }
@@ -450,7 +447,7 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
 }
 
 function drupalorg_map_content($_force = FALSE) {
-  if (!$_force && $cache = cache_get('drupalorg_map_content')) {
+  if (!$_force && $cache = cache_get('drupalorg_map_content', 'drupalorg')) {
     $output = $cache->data;
   }
   else {
@@ -493,7 +490,7 @@ function drupalorg_map_content($_force = FALSE) {
       $output .= '<div class="homepage-pin homepage-pin-' . $row->type . ' homepage-pin-' . ($row->longitude > 0 ? 'east' : 'west') . '"><span class="latitude">' . $row->latitude . '</span><span class="longitude">' . $row->longitude . '</span><div class="content">' . t('!name @verb<br />!page', array('!name' => theme('username', $row), '@verb' => $row->verb, '!page' => $row->link)) . '</div></div>';
     }
 
-    cache_set('drupalorg_map_content', $output);
+    cache_set('drupalorg_map_content', $output, 'drupalorg');
   }
 
   return $output;
