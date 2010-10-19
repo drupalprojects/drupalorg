@@ -140,7 +140,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     if (variable_get('drupalorg_crosssite_redesign', FALSE)) {
       $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'http://' . $sites['main'] . '/user') .' '. l(t('Logout'), 'http://' . $sites['main'] . '/logout');
     }
-    if (user_access('administer site configuration')) {
+    if (user_access('access administration pages')) {
       $userinfo .= ' ' . l(t('Admin'), 'admin');
     }
     $userinfo .= '</div>';
