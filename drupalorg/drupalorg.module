@@ -81,7 +81,7 @@ function drupalorg_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
-  
+
   $items['home'] = array(
     'title' => 'Drupal - Open Source CMS',
     'page callback' => 'drupalorg_home',
@@ -102,7 +102,7 @@ function drupalorg_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
-  
+
   $items['getting-involved'] = array(
     'title' => 'Getting Involved',
     'page callback' => 'drupalorg_getting_involved',
@@ -267,7 +267,7 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
  * Overall quick stats for drupal.org.
  */
 function drupalorg_activity_block() {
-  $items = array(); 
+  $items = array();
   $stats = drupalorg_get_activity();
  	$items[] = t('<strong>@accounts</strong> people with CVS accounts', array('@accounts' => $stats['number_of_cvs_accounts']));
  	$items[] = t("<strong>@commits</strong> CVS commits this week", array('@commits' => $stats['number_of_cvs_commits']));
@@ -275,7 +275,7 @@ function drupalorg_activity_block() {
  	$items[] = t("<strong>@sites</strong> sites running Drupal", array('@sites' => $stats['sites']));
  	$items[] = t("<strong>@docs</strong> Documentation team members", array('@docs' => $stats['docs']));
  	$items[] = t("<strong>@comments</strong> comments and issue followups", array('@comments' => $stats['comments']));
-  
+
   $output = theme('item_list', $items);
   return $output;
 }
@@ -325,19 +325,19 @@ function drupalorg_get_activity($_force = FALSE){
     $languages = array();
     $result_languages = db_query('SELECT DISTINCT value FROM {profile_values} WHERE fid = %d', DRUPALORG_LANGUAGES_PID);
     while ($language_profile = db_fetch_object($result_languages)) {
-      $languages = array_merge($languages, explode('; ', $language_profile->value)); 
+      $languages = array_merge($languages, explode('; ', $language_profile->value));
     }
     $languages = array_unique($languages);
-    $stats['number_of_languages'] = count($languages); 
+    $stats['number_of_languages'] = count($languages);
 
     // Sites: use project API.
     $stats['sites'] = number_format(project_usage_get_project_total_usage(3060));
 
     // Docs team: count users with role.
-    $stats['docs'] = number_format(db_result(db_query("SELECT COUNT(*) FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.rid WHERE u.status = 1 AND r.rid = 5")));   
+    $stats['docs'] = number_format(db_result(db_query("SELECT COUNT(*) FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.rid WHERE u.status = 1 AND r.rid = 5")));
 
     // Comments: count comments.
-    $stats['comments'] = number_format(db_result(db_query("SELECT COUNT(*) FROM {comments} WHERE status = 0"))); 
+    $stats['comments'] = number_format(db_result(db_query("SELECT COUNT(*) FROM {comments} WHERE status = 0")));
 
     cache_set('drupalorg_front_counter_data', $stats, 'drupalorg');
     lock_release('drupalorg_get_activity');
@@ -434,7 +434,7 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   $result = db_query_range($sql, variable_get('forum_nav_vocabulary', ''), 0, 5);
   $recent_forums = '';
   while ($node = db_fetch_object($result)) {
-    $recent_forums .= '<h6>'. l($node->title, 'node/'. $node->nid) .'</h6><p class="submitted">'. theme('node_submitted', $node) .'</p>'; 
+    $recent_forums .= '<h6>'. l($node->title, 'node/'. $node->nid) .'</h6><p class="submitted">'. theme('node_submitted', $node) .'</p>';
   }
   $recent_forums .= '<p>' . l(t('More forums…'), 'forum') .'</p>';
   $variables['tab_content_forums'] = $recent_forums;
@@ -565,7 +565,7 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
     'key' => 'im_vid_' . _project_get_vid(),
     'value' => DRUPALORG_MODULE_TID,
   )));
-  
+
   // Since we control what facets we're building, we can just utilize the
   // delta as the unique key for the sake of brevity (both here and in the
   // $variables array).
@@ -658,10 +658,10 @@ function drupalorg_preprocess_drupalorg_getting_involved(&$variables) {
 
   $variables['docs_node'] = $docs_node->teaser;
   $variables['docs_more'] = l(t('Getting Involved Guide'), 'getting-involved');
-  
+
   // Load the book navigation for the docs node, if needed.
   //$variables['docs_nav'] = theme('book_navigation', $docs_node->book);
-  
+
   // Then, show the view for community spotlight.
   $view = views_get_view('drupalorg_community_spotlight');
   $variables['spotlight_title'] = t($view->display['default']->display_options['title']);
@@ -669,9 +669,9 @@ function drupalorg_preprocess_drupalorg_getting_involved(&$variables) {
 }
 
 /**
- * Theme function for the presentation of results on /community in the 
+ * Theme function for the presentation of results on /community in the
  * "Recent Activity" section.
- * 
+ *
  * @param $nodes array
  *  An array of node objects, keyed by nid.
  */
@@ -680,7 +680,7 @@ function theme_drupalorg_recent_activity($nodes) {
     // Display the data.
     $rows = array();
     foreach ($nodes as $node) {
-      $rows[] = 
+      $rows[] =
         '<h6>' . l($node->title, "node/$node->nid") .' '. theme('mark', node_mark($node->nid, $node->changed)) . '</h6>' .
         '<p class="submitted">' . t('Last activity: ') . t('!time', array('!time' => format_date($node->last_activity, 'custom', 'F d, Y'))) . '</p>';
     }
@@ -749,12 +749,12 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'user_register') {
     $form['#validate'][] = 'drupalorg_register_mail_validate';
   }
-  
+
   // Core search index is not used, so clear off wipe option.
   if ($form_id == 'search_admin_settings') {
     unset($form['status']['wipe']);
   }
-  
+
   // Add home page option to user access rule adding and editing.
   // Make sure if we edit a homepage option, we keep using that as a default.
   if ($form_id == 'user_admin_access_add_form' || $form_id == 'user_admin_access_edit_form') {
@@ -763,7 +763,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
     }
     $form['type']['#options']['homepage'] = t('Homepage');
   }
-  
+
   // Ensure nice Drupal home page addresses
   if ($form_id == 'user_profile_form') {
     $form['#validate'][] = 'drupalorg_profile_user_edit_validate';
@@ -882,7 +882,7 @@ function drupalorg_views_default_views_alter(&$views) {
   require_once("$path/drupalorg.views_default.inc");
   _drupalorg_views_default_views_alter($views);
 }
-  
+
 /**
 * Return an array of the most recently created projects with the given taxonomy term.
 *
@@ -937,7 +937,7 @@ function drupalorg_get_most_recent_things_we_made($limit = 4) {
  */
 function drupalorg_download_drupal_link_button($text) {
   $release = project_release_get_current_recommended(3060, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID, DRUPALORG_DOWNLOAD_MAJOR_VERSION, 'recommended');
-  return l('<span>'. check_plain("$text $release->version") .'</span>', "node/$release->nid", array('html' => TRUE, 'attributes' => array('class' => 'link-button')));
+  return l('<span>'. check_plain("$text $release->version") .'</span>', 'drupal/'. $release->version, array('html' => TRUE, 'attributes' => array('class' => 'link-button')));
 }
 
 /**
@@ -1068,18 +1068,18 @@ function drupalorg_homebox() {
  *
  * @param string $module
  *   The module that defines the block we're rendering.
- * 
+ *
  * @param string $delta
  *   The delta of the block that we're rendering.
- * 
+ *
  * @return
  *   The rendered HTML for the given block.
- * 
+ *
  * @see block_list()
  * @see theme_block()
  */
 function drupalorg_block_render($module, $delta) {
-  // Load the title, since that can be modified administratively.  
+  // Load the title, since that can be modified administratively.
   global $theme;
   $title = db_result(db_query("SELECT title FROM {blocks} WHERE module = '%s' AND delta = '%s' AND theme = '%s'", $module, $delta, $theme));
 
