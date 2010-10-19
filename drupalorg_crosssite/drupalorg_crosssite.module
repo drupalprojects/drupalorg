@@ -263,6 +263,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
 
     case 'downloads':
+      drupalorg_crosssite_in_breadcrumb('main', 'project/drupal project', $vars);
       $nav_content_links = array(
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
         'core'         => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_in_breadcrumb('main', 'node/3060', $vars), '#site' => 'main'),
