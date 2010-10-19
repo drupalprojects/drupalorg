@@ -285,7 +285,7 @@ function drupalorg_activity_block() {
  * try to generate it again.
  */
 function drupalorg_get_activity($_force = FALSE){
-  if (!$_force && ($cache = cache_get('drupalorg_front_counter_data'))) {
+  if (!$_force && ($cache = cache_get('drupalorg_front_counter_data', 'drupalorg'))) {
     $stats = $cache->data;
   }
   else {
