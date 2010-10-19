@@ -937,7 +937,9 @@ function drupalorg_get_most_recent_things_we_made($limit = 4) {
  */
 function drupalorg_download_drupal_link_button($text) {
   $release = project_release_get_current_recommended(3060, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID, DRUPALORG_DOWNLOAD_MAJOR_VERSION, 'recommended');
-  return l('<span>'. check_plain("$text $release->version") .'</span>', 'drupal/'. $release->version, array('html' => TRUE, 'attributes' => array('class' => 'link-button')));
+  // Assumes a drupal-$version alias exists for the given Drupal version, which
+  // has been the tradition. Just keep that tradition, and this works wonders.
+  return l('<span>'. check_plain("$text $release->version") .'</span>', 'drupal-'. $release->version, array('html' => TRUE, 'attributes' => array('class' => 'link-button')));
 }
 
 /**
