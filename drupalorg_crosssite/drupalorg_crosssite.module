@@ -45,7 +45,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   $nav_header_links = array(
     'getting-started' => array('href' => 'getting-started/before', 'title' => t('Get Started'),         '#site' => 'main', 'attributes' => array('title' => t('Getting Started with Drupal'))),
     'forum'           => array('href' => 'community',              'title' => t('Community & Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community and Support'))),
-    'handbooks'       => array('href' => 'handbook',               'title' => t('Documentation'),       '#site' => 'main', 'attributes' => array('title' => t('Drupal Documentation'))),
+    'handbooks'       => array('href' => 'documentation',               'title' => t('Documentation'),       '#site' => 'main', 'attributes' => array('title' => t('Drupal Documentation'))),
     'project'         => array('href' => 'download',               'title' => t('Download & Extend'),   '#site' => 'main', 'attributes' => array('title' => t('Download and Extend Drupal'))),
     'marketplace'     => array('href' => 'marketplace',               'title' => t('Marketplace'),         '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
     'about'           => array('href' => 'about',                  'title' => t('About'),               '#site' => 'main', 'attributes' => array('title' => t('About Drupal'))),
@@ -194,7 +194,7 @@ function drupalorg_crosssite_section() {
     }
     elseif (drupalorg_crosssite_menu_site('api')
       || (drupalorg_crosssite_menu_site('main') && isset($node) && isset($node->book['bid']))
-      || drupalorg_crosssite_menu_path('main', '^handbook')) {
+      || drupalorg_crosssite_menu_path('main', '^(handbook|documentation)')) {
       $section = 'documentation';
     }
     elseif (drupalorg_crosssite_menu_path('groups', '^(jobs)(/|$)')) {
