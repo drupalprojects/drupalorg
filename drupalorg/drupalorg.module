@@ -56,6 +56,12 @@ function drupalorg_init() {
       drupal_set_content($block->region, theme('block', $block));
     }
   }
+
+  // Temporary message about the Solr index being rebuilt.
+  if (arg(0) == 'search' ||
+      (arg(0) == 'project' && (arg(1) == 'modules' || arg(1) == 'themes' || arg(1) == 'installation profiles'))) {
+    drupal_set_message(t('We are rebuilding the search index for the update to drupal.org. The search results may produce broken or out-of-date results until the index is fully rebuilt. We will remove this message when the indexing is complete. Do not report any search errors at this time.'));
+  }
 }
 
 /**
