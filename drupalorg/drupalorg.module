@@ -288,7 +288,7 @@ function drupalorg_get_activity($_force = FALSE){
   if (!$_force && ($cache = cache_get('drupalorg_front_counter_data', 'drupalorg'))) {
     $stats = $cache->data;
   }
-  else {
+  elseif (lock_acquire('drupalorg_get_activity', 5)) {
     $stats = array();
 
     // CVS: retrieve info via API.
@@ -340,6 +340,10 @@ function drupalorg_get_activity($_force = FALSE){
     $stats['comments'] = number_format(db_result(db_query("SELECT COUNT(*) FROM {comments} WHERE status = 0"))); 
 
     cache_set('drupalorg_front_counter_data', $stats, 'drupalorg');
+    lock_release('drupalorg_get_activity');
+  }
+  else {
+    $stats = FALSE;
   }
   return $stats;
 }
