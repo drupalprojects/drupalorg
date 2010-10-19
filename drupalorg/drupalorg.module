@@ -1088,6 +1088,10 @@ function drupalorg_block_render($module, $delta) {
   $title = db_result(db_query("SELECT title FROM {blocks} WHERE module = '%s' AND delta = '%s' AND theme = '%s'", $module, $delta, $theme));
 
   $block_output = module_invoke($module, 'block', 'view', $delta);
+  // Make sure our block gave us any output at all.
+  if (empty($block_output) || !is_array($block_output)) {
+    return '';
+  }
   foreach ($block_output as $k => $v) {
     $block->$k = $v;
   }
