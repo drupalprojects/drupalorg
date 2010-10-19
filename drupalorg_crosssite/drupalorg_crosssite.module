@@ -213,7 +213,6 @@ function drupalorg_crosssite_section() {
     elseif (menu_get_item() !== FALSE) {
       // Should not happen.
       $section = NULL;
-      watchdog('drupalorg_crosssite', 'No section for @url.', array('@url' => $_GET['q']));
     }
   }
   return $section;
