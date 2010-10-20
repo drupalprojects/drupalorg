@@ -336,7 +336,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'commits' => array('title' => t('Your Commits'), 'href' => 'user/' . $user->uid . '/track/code', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track/code'), '#enabled' => $code_item['access']),
         'your-issues' => array('title' => t('Your Issues'), 'href' => 'project/issues/user', '#site' => 'main'),
         'your-projects' => array('title' => t('Your Projects'), 'href' => 'project/user', '#site' => 'main'),
-        'your-groups' => array('title' => t('Your Groups'), 'href' => 'unread', '#site' => 'groups'),
+        'your-groups' => array('title' => t('Your Groups'), 'href' => 'groups/my', '#site' => 'groups'),
         'your-profile' => array('title' => t('Profile'), 'href' => 'user/'. $user->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '(?!/(dashboard|track))')),
       );
       break;
