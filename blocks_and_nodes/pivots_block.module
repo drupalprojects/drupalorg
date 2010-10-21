@@ -139,6 +139,7 @@ function pivots_block_block($op = 'list', $delta = 0, $edit = array()) {
 
     case 'view':
       $block['subject'] = t('Related projects');
+      $block['cache']   = BLOCK_CACHE_PER_PAGE;
       $block['content'] = pivots_block_output();
       return $block;
   }
