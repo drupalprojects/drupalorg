@@ -270,7 +270,6 @@ function drupalorg_crosssite_content_menu(&$vars) {
       );
       break;
 
-    // Just on the association site.
     case 'association':
       $nav_content_links = array(
         'home'       => array('href' => '<front>', 'title' => t('Association Home'), '#site' => 'association'),
@@ -352,7 +351,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
 
     // Theme the links for the page.
     $vars['nav_content'] = theme('links', $nav_content_links);
-    $vars['nav_content_class'] = ' class="nav-content-'. drupalorg_crosssite_section() .'"';
+    $vars['nav_content_class'] = ' class="clear-block nav-content-'. drupalorg_crosssite_section() .'"';
   }
   else {
     // Else just return an empty content nav menu.
