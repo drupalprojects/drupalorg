@@ -1167,3 +1167,92 @@ function drupalorg_preprocess_block(&$variables) {
     }
   }
 }
+
+/**
+ * @group CVS Applications
+ * @{
+ */
+
+/**
+ * The node nid of Drupal.Org's CVS Applications project node.
+ */
+define('DRUPALORG_CVS_APP_PROJECT_NID', 525912);
+
+/**
+ * Hook into the CVS application form submit handler.
+ */
+function drupalorg_form_cvs_application_form_alter(&$form) {
+  array_unshift($form['#submit'], 'drupalorg_cvs_app_submit');
+}
+
+/**
+ * FormAPI submit handler
+ *
+ * @param $form
+ *  Array, the FormAPI array
+ * @param $form_state
+ *  Array, FormAPI state array.
+ *
+ * This submit handler automatically creates a project issue when the user
+ * applies for CVS account.
+ */
+function drupalorg_cvs_app_submit($form, &$form_state) {
+  global $user;
+
+  // Easy to use link to the user's CVS form.
+  $user_cvs_edit_link = l('CVS edit link for '. $user->name, 'user/'. $user->uid .'/edit/cvs');
+
+  // Automagically create a project issue in the Drupal CVS Applications project.
+  $node = new stdClass();
+  $node->type = 'project_issue';
+  $node->uid = $user->uid;
+  $node->comment = 2; // Allow follow-ups.
+  $node->pid = variable_get('drupalorg_cvs_app_project_nid', DRUPALORG_CVS_APP_PROJECT_NID);
+  $node->sid = variable_get('drupalorg_cvs_app_project_sid', 16); // Status is "active (needs more info)".
+  $node->component = variable_get('drupalorg_cvs_app_project_component', 'Miscellaneous');
+  $node->category = variable_get('drupalorg_cvs_app_project_task', 'task');
+  $node->priority = variable_get('drupalorg_cvs_app_project_priority', 2); // Normal.
+  $node->title = $user->name .' ['. $form_state['values']['cvs_user'] .']'; // Set title to username of applicant (helps when ordering the summary).
+  $node->body = $user_cvs_edit_link ."\n\n<p />". $form_state['values']['motivation'];
+
+  // Create the project issue node.
+  node_save($node);
+
+  // Save the issue nid, used during the email generation phase.
+  _drupalorg_cvs_app_issue_nid($node->nid);
+}
+
+/**
+ * Implementation of hook_mail_alter()
+ */
+function drupalorg_mail_alter(&$message) {
+  global $base_url;
+
+  $find = array(
+    'cvs_cvs_email_submit_applicant',
+    'cvs_cvs_email_submit_admin',
+  );
+
+  if (in_array($message['id'], $find)) {
+    // Find and replace the project issue of the project issue.
+    $message['body'] = str_replace('%cvs-project-issue', $base_url .'/node/'. _drupalorg_cvs_app_issue_nid(), $message['body']);
+  }
+}
+
+/**
+ * Used to store a variable statically between hook calls.
+ *
+ * @param $nid
+ *   Integer, node nid number to save.
+ */
+function _drupalorg_cvs_app_issue_nid($nid = FALSE) {
+  static $stored_nid;
+  if ($nid !== FALSE) {
+    $stored_nid = $nid;
+  }
+  return $stored_nid;
+}
+
+/**
+ * @}
+ */
