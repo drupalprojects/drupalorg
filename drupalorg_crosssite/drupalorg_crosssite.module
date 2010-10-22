@@ -257,7 +257,6 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_in_breadcrumb('main', 'project/modules', $vars) || drupalorg_crosssite_menu_path('main', '^project/modules')),
         'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_child_of('main', 'project/themes', $vars) || drupalorg_crosssite_child_of('main', 'project/theme engines')),
         'translations' => array('href' => '<front>', 'title' => t('Translations'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_site('localize') || drupalorg_crosssite_in_breadcrumb('main', 'project/translations', $vars)),
-        'theme-engine' => array('href' => 'project/theme+engines', 'title' => t('Theme Engines'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^project/theme engines') || drupalorg_crosssite_in_breadcrumb('main', 'project/theme engines', $vars)),
         'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^project/installation profiles') || drupalorg_crosssite_in_breadcrumb('main', 'project/installation profiles', $vars)),
       );
       break;
