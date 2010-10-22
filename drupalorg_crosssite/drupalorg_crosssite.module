@@ -137,9 +137,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   }
   else {
     // Add user page link and logout link.
-    $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user') .' '. l(t('Logout'), 'logout');
+    $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user', array('html' => TRUE)) .' '. l(t('Logout'), 'logout');
     if (variable_get('drupalorg_crosssite_redesign', FALSE)) {
-      $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'http://' . $sites['main'] . '/user') .' '. l(t('Logout'), 'http://' . $sites['main'] . '/logout');
+      $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'http://' . $sites['main'] . '/user', array('html' => TRUE)) .' '. l(t('Logout'), 'http://' . $sites['main'] . '/logout');
     }
     if (user_access('access administration pages')) {
       $userinfo .= ' ' . l(t('Admin'), 'admin');
