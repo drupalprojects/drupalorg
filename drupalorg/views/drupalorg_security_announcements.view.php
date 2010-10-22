@@ -12,7 +12,7 @@ $view->view_php = '';
 $view->base_table = 'node';
 $view->is_cacheable = FALSE;
 $view->api_version = 2;
-$view->disabled = FALSE;
+$view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 $handler = $view->new_display('default', 'Defaults', 'default');
 $handler->override_option('sorts', array(
   'created' => array(
@@ -66,6 +66,11 @@ $handler->override_option('filters', array(
 $handler->override_option('access', array(
   'type' => 'none',
 ));
+$handler->override_option('cache', array(
+  'type' => 'time',
+  'results_lifespan' => '1800',
+  'output_lifespan' => '1800',
+));
 $handler->override_option('title', 'Security advisories');
 $handler->override_option('header', 'These posts by the Drupal security team are also sent to the security announcements e-mail list.');
 $handler->override_option('header_format', '1');
@@ -91,6 +96,7 @@ $handler->override_option('tab_options', array(
   'title' => 'Security advisories for Drupal core',
   'description' => 'These posts by the Drupal security team are also sent to the security announcements e-mail list.',
   'weight' => '0',
+  'name' => 'navigation',
 ));
 $handler = $view->new_display('feed', 'Feed', 'feed_1');
 $handler->override_option('style_plugin', 'rss');
@@ -115,6 +121,7 @@ $handler->override_option('tab_options', array(
   'title' => '',
   'description' => '',
   'weight' => 0,
+  'name' => 'navigation',
 ));
 $handler->override_option('displays', array(
   'page_1' => 'page_1',

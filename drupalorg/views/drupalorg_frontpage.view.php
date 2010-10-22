@@ -10,6 +10,7 @@ $view = new view;
 $view->name = 'drupalorg_frontpage';
 $view->description = 'Posts from the frontpage vocabulary.';
 $view->tag = '';
+$view->view_php = '';
 $view->base_table = 'node';
 $view->is_cacheable = FALSE;
 $view->api_version = 2;
@@ -99,6 +100,11 @@ $handler->override_option('filters', array(
 $handler->override_option('access', array(
   'type' => 'none',
 ));
+$handler->override_option('cache', array(
+  'type' => 'time',
+  'results_lifespan' => '1800',
+  'output_lifespan' => '1800',
+));
 $handler->override_option('title', 'Drupal.org front page posts for Drupal planet');
 $handler->override_option('empty', 'There are currently no posts in this category.');
 $handler->override_option('empty_format', '1');
@@ -132,6 +138,7 @@ $handler->override_option('tab_options', array(
   'title' => '',
   'description' => '',
   'weight' => 0,
+  'name' => 'navigation',
 ));
 $handler->override_option('displays', array());
 $handler->override_option('sitename_title', 0);
@@ -149,4 +156,5 @@ $handler->override_option('tab_options', array(
   'title' => '',
   'description' => '',
   'weight' => 0,
+  'name' => 'navigation',
 ));
