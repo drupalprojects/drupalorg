@@ -469,13 +469,9 @@ function lists_nodeapi(&$node, $op, $teaser, $page) {
         $lists = _lists_get_mailman_lists();
         $lists_forum_tids = _lists_get_forum_tids();
         $list = $lists[$lists_forum_tids[$forum_tid]];
-        $headers = array(
-          'MIME-Version'              => '1.0',
-          'Content-Type'              => 'text/plain; charset=UTF-8; format=flowed; delsp=yes',
-          'Content-Transfer-Encoding' => '8Bit',
-          'X-Mailer'                  => 'Drupal'
-        );
-        drupal_mail_send(array('id' => 'lists_mailman_newsletter', 'to' => $list['mail'], 'subject' => $node->title, 'body' => drupal_html_to_text($node->body), 'headers' => $headers));
+        $language = language_default();
+        $params = array('node' => $node);
+        drupal_mail('lists', 'mailman_newsletter', $list['mail'], $language, $params);
         db_query('INSERT INTO {lists_mailman} (nid, uid, timestamp) VALUES(%d, %d, %d)', $node->nid, $user->uid, time());
         drupal_set_message(t('Mail sent to !email.', array('!email' => $list['mail'])));
       }
@@ -483,6 +479,17 @@ function lists_nodeapi(&$node, $op, $teaser, $page) {
       // This is an ugly kludge.
       db_query('UPDATE {node} SET comment = %d WHERE nid = %d', COMMENT_NODE_DISABLED, $node->nid);
     }
+  }
+}
+
+/**
+ * Implementation of hook_mail().
+ */
+function lists_mail($key, &$message, $params) {
+  if ($key == 'mailman_newsletter') {
+    // Just copy over the subject and body as provided.
+    $message['subject'] = $params['node']->title;
+    $message['body'] = drupal_html_to_text($params['node']->body);
   }
 }
 
