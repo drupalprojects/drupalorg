@@ -1,9 +1,0 @@
-; $Id$
-name = Quick Stats
-description = Some useful quick statistics for Drupal.org
-package = Drupal.org
-dependencies[] = dblog
-dependencies[] = project_issue
-dependencies[] = comment
-dependencies[] = book
-core = 6.x
