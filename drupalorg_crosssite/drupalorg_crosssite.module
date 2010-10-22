@@ -255,7 +255,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
         'core'         => array('href' => 'node/3060', 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_child_of('main', 'node/3060', $vars), '#site' => 'main'),
         'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_in_breadcrumb('main', 'project/modules', $vars) || drupalorg_crosssite_menu_path('main', '^project/modules')),
-        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_child_of('main', 'project/themes', $vars) || drupalorg_crosssite_child_of('main', 'project/theme engines')),
+        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_child_of('main', 'project/themes', $vars) || drupalorg_crosssite_child_of('main', 'project/theme engines', $vars)),
         'translations' => array('href' => '<front>', 'title' => t('Translations'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_site('localize') || drupalorg_crosssite_in_breadcrumb('main', 'project/translations', $vars)),
         'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^project/installation profiles') || drupalorg_crosssite_in_breadcrumb('main', 'project/installation profiles', $vars)),
       );
