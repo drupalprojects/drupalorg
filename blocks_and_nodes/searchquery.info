@@ -1,6 +1,0 @@
-; $Id$
-name = Search queries
-description = Lists search queries for anonymous and authenticated users based on data from watchdog. Stores results in cache.
-package = Drupal.org
-dependencies[] = dblog
-core=6.x
