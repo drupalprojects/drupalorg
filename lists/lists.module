@@ -350,16 +350,8 @@ function lists_mailman_user_form_submit($form, &$form_state) {
   foreach ($lists as $list => $data) {
     $old = (int)$form['newsletter'][$list]['#default_value'];
     $new = (int)$form_state['values'][$list];
-    if ($data['allow_sub'] && ($old != $new)) {
-      if ($new) {
-        _lists_mailman_subscribe($data, $account);
-      }
-      else {
-        _lists_mailman_unsubscribe($data, $account);
-      }
-    }
     // Special handling for the maintainer newsletter.
-    else if ($data['maintainer_auto']) {
+    if ($data['maintainer_auto']) {
       $status = db_query('SELECT status FROM {cvs_accounts} WHERE uid = %d', $account->uid);
       // If CVS account is approved, be sure user is subscribed to the
       // maintainer newsletter.
@@ -374,6 +366,14 @@ function lists_mailman_user_form_submit($form, &$form_state) {
         if ($old) {
           _lists_mailman_unsubscribe($data, $account);
         }
+      }
+    }
+    elseif ($data['allow_sub'] && ($old != $new)) {
+      if ($new) {
+        _lists_mailman_subscribe($data, $account);
+      }
+      else {
+        _lists_mailman_unsubscribe($data, $account);
       }
     }
   }
