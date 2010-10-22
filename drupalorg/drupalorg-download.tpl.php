@@ -1,4 +1,4 @@
-<p>Download Drupal core files, and extend your site with modules, themes, translations, theme engines and installation profiles.</p>
+<p>Download Drupal core files, and extend your site with modules, themes, translations and installation profiles.</p>
 <div id="download" class="node-section grid-12 alpha omega">
   <div class="grid-3 alpha core">
     <h2>Core</h2>
