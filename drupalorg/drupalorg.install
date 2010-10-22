@@ -522,6 +522,17 @@ function drupalorg_update_6504() {
  */
 
 /**
+ * Clear pivots_block so new block cache settings stick.
+ */
+function drupalorg_update_6505() {
+  $return = array();
+
+  $return[] = update_sql("DELETE FROM {blocks} WHERE module = 'pivots_block'");
+
+  return $return;
+}
+
+/**
  * Utility function to add permissions to certain user roles.
  */
 function _drupalorg_add_permissions($permissions) {

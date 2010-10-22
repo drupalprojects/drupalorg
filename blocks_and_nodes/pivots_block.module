@@ -138,6 +138,7 @@ function pivots_block_block($op = 'list', $delta = 0, $edit = array()) {
         array(
           'info' => t('pivots_block: Recommendations'),
           'cache' => BLOCK_CACHE_PER_PAGE,
+          'pages' => 'project/*',
         ),
       );
       return $blocks;
