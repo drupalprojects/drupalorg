@@ -517,23 +517,6 @@ function drupalorg_update_6504() {
   return $return;
 }
 
-
-/**
- * Set new permissions.
- */
-/*
-function drupalorg_update_6504() {
-  _drupalorg_add_permissions(array(
-    'administrator' => array(
-    ),
-    'authenticated user' => array(
-    )
-  ));
-
-  return array();
-}
-*/
-
 /**
  * @}
  */
