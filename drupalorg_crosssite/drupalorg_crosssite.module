@@ -180,7 +180,7 @@ function drupalorg_crosssite_section() {
       || drupalorg_crosssite_menu_path('main', '^features$') || drupalorg_crosssite_in_breadcrumb('main', 'node/909476')) {
       $section = 'about';
     }
-    elseif (drupalorg_crosssite_menu_path('main', 'taxonomy/term/13') || (drupalorg_crosssite_in_breadcrumb('main', 'project/drupal project') && !drupalorg_crosssite_child_of('main', 'node/3060'))) {
+    elseif (drupalorg_crosssite_menu_path('main', 'taxonomy/term/13') || drupalorg_crosssite_child_of('main', 'node/179723') || (drupalorg_crosssite_in_breadcrumb('main', 'project/drupal project') && !drupalorg_crosssite_child_of('main', 'node/3060'))) {
       $section = 'drupalorg';
     }
     elseif (drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')) || drupalorg_crosssite_menu_site('localize')) {
@@ -314,6 +314,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     case 'drupalorg':
       $nav_content_links = array(
         'home' => array('title' => t('Drupal.org Projects'), 'href' => 'taxonomy/term/13', '#active' => drupalorg_crosssite_child_of('main', 'project/drupal project', $vars) && !(drupalorg_crosssite_child_of('main', 'node/3202') || drupalorg_crosssite_child_of('main', 'node/18753') || drupalorg_crosssite_child_of('main', 'node/525912') || drupalorg_crosssite_child_of('main', 'node/107028') || drupalorg_crosssite_child_of('main', 'node/651778'))),
+        'drupalorg-faq' => array('title' => t('FAQ'), 'href' => 'node/179723', '#active' => drupalorg_crosssite_child_of('main', 'node/179723')),
         'webmasters' =>      array('title' => t('Webmasters'),       'href' => 'node/3202',   '#active' => drupalorg_crosssite_child_of('main', 'node/3202',   $vars)),
         'documentation' =>   array('title' => t('Documentation'),    'href' => 'node/18753',  '#active' => drupalorg_crosssite_child_of('main', 'node/18753',  $vars)),
         'cvsapplications' => array('title' => t('CVS Applications'), 'href' => 'node/525912', '#active' => drupalorg_crosssite_child_of('main', 'node/525912', $vars)),
