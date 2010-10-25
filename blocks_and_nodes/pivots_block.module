@@ -41,7 +41,8 @@ function pivots_block_output() {
 
     $output = _pivots_block_content($node->nid, $_pivots_block_pid_double, t("Related projects"), LIMIT_DOUBLE);
     //$output .= _pivots_block_suggestbox($node->nid, $_pivots_block_pid_double);
-    return $output;
+    //return $output;
+    return "No related projects";
   }
 }
 
@@ -141,7 +142,6 @@ function pivots_block_block($op = 'list', $delta = 0, $edit = array()) {
           'pages' => 'project/*',
         ),
       );
-      return $blocks;
 
     case 'view':
       $block['subject'] = t('Related projects');
