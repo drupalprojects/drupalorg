@@ -1,5 +1,5 @@
 <div class="grid-8 alpha">
-  <a href="http://drumm-x200.local/redesign.drupal.org/druplicon"><img class="left" src="<?php print drupal_get_path('module', 'drupalorg') . '/images/druplicon.png' ?>" alt="Druplicon" /></a>
+  <a href="/druplicon"><img class="left" src="<?php print drupal_get_path('module', 'drupalorg') . '/images/druplicon.png' ?>" alt="Druplicon" /></a>
   <h2 class="community-title">Where is the Drupal Community?</h2>
   <h5>Online &amp; Local Groups</h5>
   <p><a href="http://groups.drupal.org">Groups.drupal.org</a> provides a place for groups to organize, meet, and work on projects based on interest or geographic location. It's a great way to get involved, learn more and get support.</p>
