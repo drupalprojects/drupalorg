@@ -6,7 +6,7 @@
 </div>
 <div class="grid-3 alpha">
   <div class="narrow-box">
-    <p>The Drupal Core is a collection of files that you must download in order to get started with Drupal. </p>
+    <p><a href="/project/drupal">Drupal core</a> is a collection of files that you download to get started with Drupal.</p>
     <?php print $core_download_button; ?>
     <h5>Installation Profiles</h5>
     <p>Already know what site you need? Drupal's <a href="/project/installation+profiles">installation profiles</a> can help you get started with your shop, blog, or social network, providing all the modules you need in one place.</p>
