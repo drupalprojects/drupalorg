@@ -17,7 +17,7 @@
 </div>
 <div class="grid-3">
   <div class="narrow-box">
-    <p>Access hundreds of modules to customize and extend your site. </p>
+    <p>Download hundreds of modules to customize and extend your site.</p>
     <div class="narrow-box-list">
       <h5 class="lined">Most Popular Modules</h5>
       <?php print $most_popular_modules; ?>
