@@ -829,7 +829,7 @@ function drupalorg_project_meta_data($node) {
       $label = t('Maintenance status');
       $info[$label] = '<span class="warning">' . t('Unknown') . '</span>';
     }
-    if (empty($development_status)) {
+    if (empty($development_status) && !empty($node->cvs['directory'])) {
       $label = t('Development status');
       $info[$label] = '<span class="warning">' . t('Unknown') . '</span>';
     }
