@@ -630,7 +630,7 @@ function drupalorg_project_bingo_block_output() {
     array(
       'data' => '<strong>Queues</strong>',
       'children' => array(
-        l('My issues', 'project/issues/user'),
+        l('Your issues', 'project/issues/user'),
         drupalorg_project_issue_link(
           $counts_pending .' Pending bugs (D7)',
           array(

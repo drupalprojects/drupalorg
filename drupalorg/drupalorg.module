@@ -357,7 +357,7 @@ function drupalorg_set_home() {
     $message = t('Use Default Homepage');
   }
   else {
-    $message = t('Make this my Homepage');
+    $message = t('Make this your Homepage');
   }
 
   $items[] = array(
