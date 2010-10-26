@@ -14,3 +14,24 @@
 function drupalorg_project_install() {
   db_query("UPDATE {system} SET weight = 5 WHERE name = 'drupalorg_project'");
 }
+
+/**
+ * Split off some terms from 'Maintenance status' into 'Development status'.
+ */
+function drupalorg_project_update_6000() {
+  $ret = array();
+  $ret[] = update_sql("UPDATE {term_data} SET vid = 46 WHERE tid IN (9988, 9994, 13030)");
+  $ret[] = update_sql("UPDATE {term_data} SET name = 'Maintenance fixes only' WHERE tid = 13030");
+  $term = array(
+    'name' => 'No further development',
+    'description' => '',
+    'parent' => array(),
+    'relations' => array(),
+    'weight' => 0,
+    'vid' => 46,
+  );
+  taxonomy_save_term($term);
+
+  return $ret;
+}
+

@@ -775,16 +775,28 @@ function drupalorg_project_meta_data($node) {
         foreach ($taxonomy[$vocabulary->vid] as $term) {
           $options = array();
           if ($term->vid == '44') { // Maintenance status
-            $project_status = $term->tid;
+            $maintenance_status = $term->tid;
             switch ($term->tid) {
-              case '9994':   // Obsolete
               case '13032':  // Abandoned
                 $options['attributes'] = array('class' => 'alert');
                 break;
 
-              case '13030':  // Basically maintained
               case '9990':   // Seeking co-maintainer(s)
               case '9992':   // Seeking new maintainer
+                $options['attributes'] = array('class' => 'warning');
+                break;
+
+            }
+          }
+          elseif ($term->vid == '46') { // Development status
+            $development_status = $term->tid;
+            switch ($term->tid) {
+              case '9994':   // Obsolete
+                $options['attributes'] = array('class' => 'alert');
+                break;
+
+              case '13030':  // Maintenance fixes only
+              case '16374':  // No futher development
                 $options['attributes'] = array('class' => 'warning');
                 break;
 
@@ -813,8 +825,12 @@ function drupalorg_project_meta_data($node) {
         $info[$label] = '<span class="' . $class . '">' . implode(', ', $links) . '</span>';
       }
     }
-    if (empty($project_status)) {
+    if (empty($maintenance_status)) {
       $label = t('Maintenance status');
+      $info[$label] = '<span class="warning">' . t('Unknown') . '</span>';
+    }
+    if (empty($development_status)) {
+      $label = t('Development status');
       $info[$label] = '<span class="warning">' . t('Unknown') . '</span>';
     }
   }
