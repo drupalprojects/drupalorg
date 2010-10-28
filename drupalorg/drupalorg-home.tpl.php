@@ -51,7 +51,7 @@
 <div id="front-middle" class="grid-12 alpha omega">
   <div id="front-middle-inner">
     <div class="block-content">
-      <div id="front-drupal-stats"><em><?php print $number_of_users; ?></em> people in <em><?php print $number_of_countries; ?></em> countries speaking <em><?php print $number_of_languages; ?></em> languages power Drupal.</div>
+      <div id="front-drupal-stats"><em><?php print $number_of_users; ?></em> people in <em><?php print $number_of_countries; ?></em> countries<span class="country-note"><a href="/node/955312">*</a></span> speaking <em><?php print $number_of_languages; ?></em> languages power Drupal.</div>
     </div>
   </div>
 </div>
