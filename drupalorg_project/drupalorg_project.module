@@ -53,7 +53,7 @@ define('DRUPALORG_TRANSLATION_TID', 29);
 /**
  * Implementation of hook_menu().
  */
-function drupalorg_project_menu() { 
+function drupalorg_project_menu() {
   // Menu items for patch bingo.
   $items['bug-bingo'] = array(
     'title'              => 'Bug bingo',
@@ -92,6 +92,19 @@ function drupalorg_project_menu() {
     'type' => MENU_CALLBACK,
   );
   return $items;
+}
+
+/**
+ * Implementation of hook_menu_alter().
+ */
+function drupalorg_project_menu_alter(&$items) { 
+  // Clobber the menu item from project_solr with a redirect.
+  $items['project'] = array(
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('download'),
+    'type' => MENU_CALLBACK,
+  );
 }
 
 /**
