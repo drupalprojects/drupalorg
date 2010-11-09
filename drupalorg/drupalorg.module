@@ -1131,12 +1131,12 @@ function drupalorg_settings_form() {
   );
 
   $form['drupalcon_latitude'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('DrupalCon latitude'),
     '#default_value' => variable_get('drupalcon_latitude', 41.836944),
   );
   $form['drupalcon_longitude'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('DrupalCon longitude'),
     '#default_value' => variable_get('drupalcon_longitude', -87.684444),
   );
