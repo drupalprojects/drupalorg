@@ -13,7 +13,7 @@ Drupal.behaviors.drupalorgSetHome = function () {
 
 // All Drupal.org specific behaviors.
 Drupal.behaviors.Drupalorg = function () {
-  var $element = $('body:not(.front) #edit-search-theme-form-1'),
+  var $element = $('body:not(.drupalorg-front) #edit-search-theme-form-1'),
     value = Drupal.t('Search Drupal.org');
 
   // Add focus/blur label behavior to search box.
