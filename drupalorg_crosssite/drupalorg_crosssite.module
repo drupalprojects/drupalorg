@@ -681,6 +681,8 @@ function drupalorg_crosssite_get_meta_type_rules() {
       'project_issue' => 'forum-issues',
       'forum' => 'forum-issues',
       'og' => 'group',
+      // Map the session from chicago2011.drupal.org to the 'documentation' metatype
+      'session' => 'documentation',
     ),
   );
   return $rule_set;
