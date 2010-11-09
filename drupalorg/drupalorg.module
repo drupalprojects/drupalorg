@@ -47,11 +47,11 @@ function drupalorg_init() {
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/general.js');
 
   // Add forum ads
-  foreach (array(34 => 'HostingForumBlock', 51 => 'PaidServicesBlock') as $forum_id => $delta) {
+  foreach (array_filter(variable_get('drupalorg_forum_ad', array())) as $forum_id => $delta) {
     if ((arg(0) === 'forum' && arg(1) == $forum_id) || (arg(0) === 'node' && is_numeric(arg(1)) && ($node = menu_get_object()) && ($node->type === 'forum' && $node->tid == $forum_id))) {
-      $block = (object) module_invoke('google_admanager', 'block', 'view', md5($delta));
+      $block = (object) module_invoke('google_admanager', 'block', 'view', $delta);
       $block->region = 'right';
-      $block->delta = md5($delta);
+      $block->delta = $delta;
       $block->module = 'google_admanager';
       drupal_set_content($block->region, theme('block', $block));
     }
@@ -1153,6 +1153,22 @@ function drupalorg_settings_form() {
     '#title' => t('DrupalCon map bubble'),
     '#default_value' => variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011'),
   );
+
+  $slots = array_merge(array(0 => t('No ad')), _google_admanager_get_ad_slots());
+  $ads = variable_get('drupalorg_forum_ad', array());
+  $form['drupalorg_forum_ad'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Forum ads'),
+    '#tree' => TRUE,
+  );
+  foreach (taxonomy_get_tree(1) as $term) {
+    $form['drupalorg_forum_ad'][$term->tid] = array(
+      '#type' => 'select',
+      '#title' => check_plain($term->name),
+      '#options' => $slots,
+      '#default_value' => isset($ads[$term->tid]) ? $ads[$term->tid] : 0,
+    );
+  }
 
   return system_settings_form($form);
 }
