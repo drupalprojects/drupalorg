@@ -659,7 +659,7 @@ function drupalorg_preprocess_drupalorg_getting_involved(&$variables) {
   $content = drupal_render($docs_node->content);
 
   $variables['docs_node'] = $docs_node->teaser;
-  $variables['docs_more'] = l(t('Getting Involved Guide'), 'getting-involved');
+  $variables['docs_more'] = l(t('Getting Involved Guide'), 'node/281873');
 
   // Load the book navigation for the docs node, if needed.
   //$variables['docs_nav'] = theme('book_navigation', $docs_node->book);
