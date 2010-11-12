@@ -723,6 +723,9 @@ function drupalorg_theme() {
     'drupalorg_recent_activity' => array(
       'arguments' => array('nodes' => array()),
     ),
+    'drupalorg_hosting_page' => array(
+      'template' => 'drupalorg-hosting-page',
+    ),
   );
 }
 
@@ -1189,6 +1192,22 @@ function drupalorg_preprocess_block(&$variables) {
       $variables['block']->content = '<div class="gam-prefix"><p>There are many useful <a href="/books">books about Drupal</a>. Here are two that discuss security:</p></div>'
         . $variables['block']->content;
     }
+  }
+}
+
+function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  // Add hosting page ads
+  if ($op === 'view' && $node->nid == 21785) {
+    // Only show to admins while in development.
+    if (!user_access('administer site configuration')) {
+      return;
+    }
+
+    $ads = theme('drupalorg_hosting_page');
+
+    // Add Ads after teaser
+    $filtered_teaser = check_markup($node->teaser, $node->format);
+    $node->content['body']['#value'] = str_replace($filtered_teaser, $filtered_teaser . $ads, $node->content['body']['#value']);
   }
 }
 
