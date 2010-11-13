@@ -1,7 +1,6 @@
 <?php
 // $Id$
 
-
 /**
  * @file
  *   This module contains customizations used on drupal.org itself. It is not
@@ -726,6 +725,10 @@ function drupalorg_theme() {
     'drupalorg_hosting_page' => array(
       'template' => 'drupalorg-hosting-page',
     ),
+    'drupalorg_civimembership' => array(
+      'arguments' => array('drupalorg_civimembership' => NULL),
+      'template' => 'drupalorg-civimembership',
+    ),
   );
 }
 
@@ -1299,3 +1302,103 @@ function _drupalorg_cvs_app_issue_nid($nid = FALSE) {
 /**
  * @}
  */
+
+/**
+ * Preprocess for Association membership.
+ */
+function template_preprocess_drupalorg_civimembership(&$variables) {
+  global $user;
+  // todo I don't think I like this.
+  if (arg(0) == 'user' && arg(1) == $user->uid) {
+    $variables['is_current_user'] = TRUE;
+  }
+}
+
+/**
+ * Implementation of hook_user().
+ */
+function drupalorg_user($op, &$edit, &$account, $category = NULL) {
+  switch ($op) {
+    case 'load':
+      // Add Association membership info
+      if ($account->uid > 0) {
+        $account->drupalorg_civimembership = drupalorg_civimembership_load($account);
+      }
+      break;
+
+    case 'view':
+      if (user_access('administer users') || $GLOBALS['user']->uid == $account->uid) {
+        // Get the membership display content
+        $account->content['membership'] = array(
+          '#value'  => theme('drupalorg_civimembership', $account->drupalorg_civimembership),
+          '#weight' => 10,
+        );
+      }
+      break;
+  }
+}
+
+/**
+ * Load a user's CiviCRM memberships from a remote CiviCRM instance.
+ *
+ * @param $account
+ *   A fully-loaded account object representing the user who's membership
+ *   details should be returned.
+ *
+ * @param $reset
+ *   Reset the static cache of memberships loaded during this request.
+ *
+ * @return
+ *   An object containing the contact_id of the member, as well as an
+ *   array of memberships.
+ */
+function drupalorg_civimembership_load($account, $reset = FALSE) {
+  static $member_cache;
+  global $db_url;
+  if (!is_array($db_url) || !isset($db_url['association_civicrm'])) {
+    return;
+  }
+
+  if (!isset($member_cache[$account->uid]) || $reset) {
+    if (!$reset && ($cache = cache_get($account->uid, 'cache_drupalorg_civimembership')) && !empty($cache->data)) {
+      $member = unserialize($cache->data);
+      $member_cache[$account->uid] = $member;
+    }
+    else {
+      // Check if a record exists in CiviCRM for this particular user.
+      $remote_drupal_uid = db_result(db_query("SELECT slave_uid FROM {bakery_user} WHERE slave = 'http://association.drupal.org/' AND uid = %d", $account->uid));
+
+      // Get external CiviCRM DB DSN.
+      $previous_dsn = db_set_active('association_civicrm');
+
+      $contact_id = db_result(db_query("SELECT contact_id FROM {civicrm_uf_match} WHERE uf_id = %d", $remote_drupal_uid));
+
+      // If a matching contact is found in CiviCRM.
+      $memberships = array();
+      if ($contact_id) {
+        $result = db_query("SELECT cm.id as membership_id, cm.membership_type_id as membership_type_id, cmt.name as membership_type, cm.end_date as end_date, cms.name as status, cmb.entity_id as entity_id FROM {civicrm_membership} cm LEFT JOIN {civicrm_membership_type} cmt ON cm.membership_type_id = cmt.id LEFT JOIN {civicrm_membership_status} cms ON cm.status_id = cms.id LEFT JOIN {civicrm_membership_block} cmb ON cm.membership_type_id = cmb.membership_types WHERE cm.contact_id = %d GROUP BY cm.contact_id, cm.id", $contact_id);
+        while ($row = db_fetch_array($result)) {
+          $memberships[] = $row;
+        }
+      }
+
+      // Change the DSN back to default Drupal $db_url.
+      db_set_active($previous_dsn);
+
+      $member = new stdClass();
+      $member->remote_uid = $remote_drupal_uid;
+      $member->contact_id = empty($contact_id) ? 0 : $contact_id;
+      $member->memberships = $memberships;
+      $member_cache[$account->uid] = $member;
+      cache_set($account->uid, serialize($member), 'cache_drupalorg_civimembership', time() + (60 * 60 * 24));
+    }
+  }
+  return $member_cache[$account->uid];
+}
+
+/**
+ * Implementation of hook_flush_caches().
+ */
+function drupalorg_flush_caches() {
+  return array('cache_drupalorg_civimembership');
+}
