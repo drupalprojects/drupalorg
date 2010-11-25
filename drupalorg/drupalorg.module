@@ -1336,7 +1336,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
       $placeholders['@expires'] = format_date(strtotime($membership->end_date), 'custom', 'M jS, Y');
     }
 
-    if ($membership != FALSE && ($membership->membership_type === 'new' || $membership->membership_type === 'current')) {
+    if ($membership != FALSE && ($membership->status === 'New' || $membership->status === 'Current')) {
       $content['column_2']['membership'] = array(
         '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" class="left" alt=".." /></div><div class="grid-3 omega"><p>',
         '#value' => t('@username is a @membership_type member of the <a href="http://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
@@ -1349,19 +1349,19 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
         $membership_personal = t('<a href="http://association.drupal.org/">Drupal Association</a> memberships pay for improvements to Drupal.org. Please consider purchasing a <a href="http://association.drupal.org/membership">membership</a>.');
       }
       else {
-        switch ($membership->membership_type) {
-          case 'new':
-          case 'current':
-          case 'pending':
+        switch ($membership->status) {
+          case 'New':
+          case 'Current':
+          case 'Pending':
             $membership_personal = t('Thank you for being a <a href="http://association.drupal.org/">Drupal Association</a> member. Your support helps to fund improvements to Drupal.org. Your <a href="!link">membership</a> expires on @expires.', $placeholders);
             break;
 
-          case 'grace':
-          case 'expired':
+          case 'Grace':
+          case 'Expired':
             $membership_personal = t('Thank you for purchasing a membership. Your support has helped us to improve Drupal.org. Your ongoing support via a <a href="!link">membership</a> would be appreciated.', $placeholders);
             break;
 
-          case 'deceased':
+          case 'Deceased':
             $membership_personal = t('Thank you for purchasing a membership. Your support has helped us to improve Drupal.org.', $placeholders);
             break;
         }
