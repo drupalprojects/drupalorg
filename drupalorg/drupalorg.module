@@ -509,7 +509,7 @@ function drupalorg_start() {
 }
 
 /**
- * Page callback for the about Druapl page.
+ * Page callback for the about Drupal page.
  */
 function drupalorg_about() {
   return theme('drupalorg_about');
@@ -1338,7 +1338,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
 
     if ($membership != FALSE && ($membership->status === 'New' || $membership->status === 'Current')) {
       $content['column_2']['membership'] = array(
-        '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" class="left" alt=".." /></div><div class="grid-3 omega"><p>',
+        '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" class="left" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></div><div class="grid-3 omega"><p>',
         '#value' => t('@username is an <a href="http://association.drupal.org/membership">@membership_type member</a> of the <a href="http://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
         '#suffix' => '</p></div></div>',
       );
