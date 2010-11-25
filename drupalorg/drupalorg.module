@@ -725,10 +725,6 @@ function drupalorg_theme() {
     'drupalorg_hosting_page' => array(
       'template' => 'drupalorg-hosting-page',
     ),
-    'drupalorg_civimembership' => array(
-      'arguments' => array('drupalorg_civimembership' => NULL),
-      'template' => 'drupalorg-civimembership',
-    ),
   );
 }
 
@@ -1304,37 +1300,82 @@ function _drupalorg_cvs_app_issue_nid($nid = FALSE) {
  */
 
 /**
- * Preprocess for Association membership.
- */
-function template_preprocess_drupalorg_civimembership(&$variables) {
-  global $user;
-  // todo I don't think I like this.
-  if (arg(0) == 'user' && arg(1) == $user->uid) {
-    $variables['is_current_user'] = TRUE;
-  }
-}
-
-/**
  * Implementation of hook_user().
  */
 function drupalorg_user($op, &$edit, &$account, $category = NULL) {
-  switch ($op) {
-    case 'load':
-      // Add Association membership info
-      if ($account->uid > 0) {
-        $account->drupalorg_civimembership = drupalorg_civimembership_load($account);
-      }
-      break;
+  // Only show to admins while in development.
+  if (!user_access('administer site configuration')) {
+    return;
+  }
 
-    case 'view':
-      if (user_access('administer users') || $GLOBALS['user']->uid == $account->uid) {
-        // Get the membership display content
-        $account->content['membership'] = array(
-          '#value'  => theme('drupalorg_civimembership', $account->drupalorg_civimembership),
-          '#weight' => 10,
-        );
+  if ($op === 'view') {
+    global $user;
+
+    // Column layout for profile pages.
+    $content = array(
+      'column_1' => array(
+        '#weight' => 0,
+        '#prefix' => '<div class="grid-8 alpha">',
+        '#suffix' => '</div>',
+      ),
+      'column_2' => array(
+        '#weight' => 1,
+        '#prefix' => '<div class="grid-4 omega">',
+        '#suffix' => '</div>',
+      ),
+    );
+
+    // Get the membership display content
+    $membership = drupalorg_civimembership_load($account);
+    $placeholders = array(
+      '@username' => $account->name,
+    );
+    if ($membership != FALSE) {
+      $placeholders['@membership_type'] = drupal_strtolower($membership->membership_type);
+      $placeholders['!link'] = check_url('http://association.drupal.org/civicrm/contribute/transact?reset=1&id=' . $membership->entity_id);
+      $placeholders['@expires'] = format_date(strtotime($membership->end_date), 'custom', 'M jS, Y');
+    }
+
+    if ($membership != FALSE && ($membership->membership_type === 'new' || $membership->membership_type === 'current')) {
+      $content['column_2']['membership'] = array(
+        '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" class="left" alt=".." /></div><div class="grid-3 omega"><p>',
+        '#value' => t('@username is a @membership_type member of the <a href="http://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
+        '#suffix' => '</p></div></div>',
+      );
+    }
+
+    if ($account->uid === $user->uid) {
+      if ($membership == FALSE) {
+        $membership_personal = t('<a href="http://association.drupal.org/">Drupal Association</a> memberships pay for improvements to Drupal.org. Please consider purchasing a <a href="http://association.drupal.org/membership">membership</a>.');
       }
-      break;
+      else {
+        switch ($membership->membership_type) {
+          case 'new':
+          case 'current':
+          case 'pending':
+            $membership_personal = t('Thank you for being a <a href="http://association.drupal.org/">Drupal Association</a> member. Your support helps to fund improvements to Drupal.org. Your <a href="!link">membership</a> expires on @expires.', $placeholders);
+            break;
+
+          case 'grace':
+          case 'expired':
+            $membership_personal = t('Thank you for purchasing a membership. Your support has helped us to improve Drupal.org. Your ongoing support via a <a href="!link">membership</a> would be appreciated.', $placeholders);
+            break;
+
+          case 'deceased':
+            $membership_personal = t('Thank you for purchasing a membership. Your support has helped us to improve Drupal.org.', $placeholders);
+            break;
+        }
+      }
+      $content['column_2']['membership_personal'] = array(
+        '#prefix' => '<p>',
+        '#value' => $membership_personal,
+        '#suffix' => '</p>',
+        '#weight' => 1,
+      );
+    }
+
+    $content['column_1'] = array_merge($content['column_1'], $account->content);
+    $account->content = $content;
   }
 }
 
@@ -1349,20 +1390,19 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
  *   Reset the static cache of memberships loaded during this request.
  *
  * @return
- *   An object containing the contact_id of the member, as well as an
- *   array of memberships.
+ *   An object containing the current membership.
  */
 function drupalorg_civimembership_load($account, $reset = FALSE) {
   static $member_cache;
   global $db_url;
+
   if (!is_array($db_url) || !isset($db_url['association_civicrm'])) {
     return;
   }
 
   if (!isset($member_cache[$account->uid]) || $reset) {
     if (!$reset && ($cache = cache_get($account->uid, 'cache_drupalorg_civimembership')) && !empty($cache->data)) {
-      $member = unserialize($cache->data);
-      $member_cache[$account->uid] = $member;
+      $member_cache[$account->uid] = $cache->data;
     }
     else {
       // Check if a record exists in CiviCRM for this particular user.
@@ -1374,25 +1414,19 @@ function drupalorg_civimembership_load($account, $reset = FALSE) {
       $contact_id = db_result(db_query("SELECT contact_id FROM {civicrm_uf_match} WHERE uf_id = %d", $remote_drupal_uid));
 
       // If a matching contact is found in CiviCRM.
-      $memberships = array();
+      $membership = FALSE;
       if ($contact_id) {
-        $result = db_query("SELECT cm.id as membership_id, cm.membership_type_id as membership_type_id, cmt.name as membership_type, cm.end_date as end_date, cms.name as status, cmb.entity_id as entity_id FROM {civicrm_membership} cm LEFT JOIN {civicrm_membership_type} cmt ON cm.membership_type_id = cmt.id LEFT JOIN {civicrm_membership_status} cms ON cm.status_id = cms.id LEFT JOIN {civicrm_membership_block} cmb ON cm.membership_type_id = cmb.membership_types WHERE cm.contact_id = %d GROUP BY cm.contact_id, cm.id", $contact_id);
-        while ($row = db_fetch_array($result)) {
-          $memberships[] = $row;
-        }
+        $membership = db_fetch_array(db_query_range("SELECT cm.id as membership_id, cm.membership_type_id, cmt.name as membership_type, cm.end_date, cms.name as status, cmb.entity_id FROM {civicrm_membership} cm LEFT JOIN {civicrm_membership_type} cmt ON cm.membership_type_id = cmt.id LEFT JOIN {civicrm_membership_status} cms ON cm.status_id = cms.id LEFT JOIN {civicrm_membership_block} cmb ON cm.membership_type_id = cmb.membership_types WHERE cm.contact_id = %d GROUP BY cm.contact_id, cm.id ORDER BY cm.end_date DESC", $contact_id, 0, 1));
       }
 
       // Change the DSN back to default Drupal $db_url.
       db_set_active($previous_dsn);
 
-      $member = new stdClass();
-      $member->remote_uid = $remote_drupal_uid;
-      $member->contact_id = empty($contact_id) ? 0 : $contact_id;
-      $member->memberships = $memberships;
-      $member_cache[$account->uid] = $member;
-      cache_set($account->uid, serialize($member), 'cache_drupalorg_civimembership', time() + (60 * 60 * 24));
+      $member_cache[$account->uid] = $membership;
+      cache_set($account->uid, $membership, 'cache_drupalorg_civimembership', time() + (60 * 60 * 24));
     }
   }
+
   return $member_cache[$account->uid];
 }
 
