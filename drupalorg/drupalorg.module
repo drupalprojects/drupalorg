@@ -1161,6 +1161,7 @@ function drupalorg_settings_form() {
   $form['drupalorg_forum_ad'] = array(
     '#type' => 'fieldset',
     '#title' => t('Forum ads'),
+    '#description' => t('Configure available <a href="!url">ad units</a>', array('!url' => url('admin/settings/google_admanager'))),
     '#tree' => TRUE,
   );
   foreach (taxonomy_get_tree(1) as $term) {
