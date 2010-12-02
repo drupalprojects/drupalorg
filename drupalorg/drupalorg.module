@@ -327,7 +327,7 @@ function drupalorg_get_activity($_force = FALSE){
     $stats['number_of_themes'] = number_format($themes);
 
     // Users: Count them.
-    $stats['number_of_users'] = number_format(db_result(db_query('SELECT COUNT(*) FROM {users} WHERE status = 1')));
+    $stats['number_of_users'] = number_format(db_result(db_query('SELECT COUNT(*) FROM {users} WHERE uid > 0 AND status = 1 AND login > 0')));
 
     // Country: A single text field, so we can filter it in SQL.
     $stats['number_of_countries'] = number_format(db_result(db_query("SELECT COUNT(DISTINCT value) FROM {profile_values} WHERE fid = %d AND value NOT IN ('', '<not specified>')", DRUPALORG_COUNTRY_PID)));
