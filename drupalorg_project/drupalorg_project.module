@@ -161,6 +161,7 @@ function drupalorg_project_issue_counts() {
 
   $issue_counts['Pending bugs'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND category = 'bug' AND sid = 1 AND priority IN (1,2,4) AND rid IN ($issue_rid_placeholders)", $issue_rids));
   $issue_counts['Critical issues'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND category IN ('bug', 'task') AND sid IN (1,8,13,14) AND priority = 1 AND rid IN ($issue_rid_placeholders)", $issue_rids));
+  $issue_counts['Major issues'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND category IN ('bug', 'task') AND sid IN (1,8,13,14) AND priority = 4 AND rid IN ($issue_rid_placeholders)", $issue_rids));
   $issue_counts['Patch queue'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND sid IN (8,13,14) AND rid IN ($issue_rid_placeholders)", $issue_rids));
   $issue_counts['Patches to review'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND sid IN (8) AND rid IN ($issue_rid_placeholders)", $issue_rids));
   variable_set('drupalorg_project_issue_counts', $issue_counts);
@@ -656,6 +657,7 @@ function drupalorg_project_bingo_block_output() {
 
   $counts_pending = $counts['Pending bugs'];
   $counts_critical = $counts['Critical issues'];
+  $counts_major = $counts['Major issues'];
   $counts_queue = $counts['Patch queue'];
   $counts_review = $counts['Patches to review'];
 
@@ -680,6 +682,15 @@ function drupalorg_project_bingo_block_output() {
             'version' => array(DRUPALORG_CORE_VERSION_NAME),
             'status' => array(1, 8, 13, 14),
             'priorities' => array(1),
+            'categories' => array('bug', 'task'),
+          )
+        ),
+        drupalorg_project_issue_link(
+          $counts_major .' Major issues (D7)',
+          array(
+            'version' => array(DRUPALORG_CORE_VERSION_NAME),
+            'status' => array(1, 8, 13, 14),
+            'priorities' => array(4),
             'categories' => array('bug', 'task'),
           )
         ),
