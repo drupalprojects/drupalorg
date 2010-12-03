@@ -8,6 +8,14 @@
     <?php print theme('google_admanager_block', variable_get('google_admanager_account', ''), 'Hosting-SupportDA-Hosting-B'); ?>
   </div>
 </div>
+<div class="clear-block">
+  <div class="grid-4 alpha">
+    <?php print theme('google_admanager_block', variable_get('google_admanager_account', ''), 'Hosting-SupportDA-Hosting-C'); ?>
+  </div>
+  <div class="grid-4 omega">
+    <?php print theme('google_admanager_block', variable_get('google_admanager_account', ''), 'Hosting-SupportDA-Hosting-D'); ?>
+  </div>
+</div>
 
 
 <h2>Enterprise managed Drupal hosting</h2>
