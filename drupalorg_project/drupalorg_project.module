@@ -7,9 +7,14 @@
  */
  
 /**
- * Release node ids for issues we're currently tracking (Drupal 7).
+ * Drupal core compatibility term ID for issues we're tracking (7.x).
  */
-define('DRUPALORG_ISSUE_RIDS', '156281');
+define('DRUPALORG_CORE_VERSION_TID', '103');
+
+/**
+ * Drupal core compatibility term name for issues we're tracking (7.x).
+ */
+define('DRUPALORG_CORE_VERSION_NAME', '7.x');
 
 /**
  * The CVS user role. Added to users with a CVS account.
@@ -135,15 +140,29 @@ function drupalorg_project_cron() {
 // == Issue counter ============================================================
 
 /**
- * Pulls issue counts for various issue queues on drupal.org.
+ * Count number of issues in various issue queues on drupal.org.
  *
- * Summarize issue counts for different types of issues for DRUPALORG_ISSUE_RIDS releases.
+ * This function only counts issues for core releases that we're currently
+ * tracking.
+ *
+ * @see drupalorg_project_bingo_block_output()
+ * @see DRUPALORG_CORE_VERSION_TID
+ * @see DRUPALORG_CORE_VERSION_NAME
  */
 function drupalorg_project_issue_counts() {
-  $issue_counts['Pending bugs'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND  pid = 3060 AND category = 'bug' AND sid = 1 AND priority IN (1,2,4) AND rid IN (". DRUPALORG_ISSUE_RIDS .")"));
-  $issue_counts['Critical issues'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND  pid = 3060 AND category IN ('bug', 'task') AND sid IN (1,8,13,14) AND priority = 1 AND rid IN (". DRUPALORG_ISSUE_RIDS .")"));
-  $issue_counts['Patch queue'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND  pid = 3060 AND sid IN (8,13,14) AND rid IN (". DRUPALORG_ISSUE_RIDS .")"));
-  $issue_counts['Patches to review'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND  pid = 3060 AND sid IN (8) AND rid IN (". DRUPALORG_ISSUE_RIDS .")"));
+  $issue_rids = array();
+  /// @todo Further optimize this if/when {node}.status is denormalized into
+  /// {project_release_nodes}.
+  $query = db_query("SELECT prn.nid FROM {project_release_nodes} prn INNER JOIN {node} n ON prn.nid = n.nid WHERE prn.pid = 3060 AND prn.version_api_tid = %d AND n.status = 1", DRUPALORG_CORE_VERSION_TID);
+  while ($release = db_fetch_object($query)) {
+    $issue_rids[] = $release->nid;
+  }
+  $issue_rid_placeholders = db_placeholders($issue_rids);
+
+  $issue_counts['Pending bugs'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND category = 'bug' AND sid = 1 AND priority IN (1,2,4) AND rid IN ($issue_rid_placeholders)", $issue_rids));
+  $issue_counts['Critical issues'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND category IN ('bug', 'task') AND sid IN (1,8,13,14) AND priority = 1 AND rid IN ($issue_rid_placeholders)", $issue_rids));
+  $issue_counts['Patch queue'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND sid IN (8,13,14) AND rid IN ($issue_rid_placeholders)", $issue_rids));
+  $issue_counts['Patches to review'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND sid IN (8) AND rid IN ($issue_rid_placeholders)", $issue_rids));
   variable_set('drupalorg_project_issue_counts', $issue_counts);
 }
 
@@ -640,7 +659,6 @@ function drupalorg_project_bingo_block_output() {
   $counts_queue = $counts['Patch queue'];
   $counts_review = $counts['Patches to review'];
 
-  $versions = array_map('trim', explode(',', DRUPALORG_ISSUE_RIDS));
   $links = array(
     l('Community initiatives', 'community-initiatives'),
     array(
@@ -650,7 +668,7 @@ function drupalorg_project_bingo_block_output() {
         drupalorg_project_issue_link(
           $counts_pending .' Pending bugs (D7)',
           array(
-            'version' => $versions,
+            'version' => array(DRUPALORG_CORE_VERSION_NAME),
             'status' => array(1),
             'priorities' => array(1, 2, 4),
             'categories' => array('bug'),
@@ -659,7 +677,7 @@ function drupalorg_project_bingo_block_output() {
         drupalorg_project_issue_link(
           $counts_critical .' Critical issues (D7)',
           array(
-            'version' => $versions,
+            'version' => array(DRUPALORG_CORE_VERSION_NAME),
             'status' => array(1, 8, 13, 14),
             'priorities' => array(1),
             'categories' => array('bug', 'task'),
@@ -668,35 +686,35 @@ function drupalorg_project_bingo_block_output() {
         drupalorg_project_issue_link(
           $counts_queue .' Patch queue (D7)',
           array(
-            'version' => $versions,
+            'version' => array(DRUPALORG_CORE_VERSION_NAME),
             'status' => array(8, 13, 14),
           )
         ),
         drupalorg_project_issue_link(
           $counts_review .' Patches to review (D7)',
           array(
-            'version' => $versions,
+            'version' => array(DRUPALORG_CORE_VERSION_NAME),
             'status' => array(8, 14),
           )
         ),
         drupalorg_project_issue_link(
           'Performance issues (D7)',
           array(
-            'version' => array('7.x'),
+            'version' => array(DRUPALORG_CORE_VERSION_NAME),
             'issue_tags' => 'Performance',
           )
         ),
         drupalorg_project_issue_link(
           'Usability issues (D7)',
           array(
-            'version' => array('7.x'),
+            'version' => array(DRUPALORG_CORE_VERSION_NAME),
             'issue_tags' => 'Usability, d7ux',
           )
         ),
         drupalorg_project_issue_link(
           'Accessibility issues (D7)',
           array(
-            'version' => array('7.x'),
+            'version' => array(DRUPALORG_CORE_VERSION_NAME),
             'issue_tags' => 'accessibility',
           )
         ),
