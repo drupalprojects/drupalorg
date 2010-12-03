@@ -1318,11 +1318,6 @@ function _drupalorg_cvs_app_issue_nid($nid = FALSE) {
  * Implementation of hook_user().
  */
 function drupalorg_user($op, &$edit, &$account, $category = NULL) {
-  // Only show to admins while in development.
-  if (!user_access('administer site configuration')) {
-    return;
-  }
-
   if ($op === 'view') {
     global $user;
 
