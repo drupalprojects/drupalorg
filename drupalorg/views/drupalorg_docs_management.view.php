@@ -5,7 +5,7 @@
  * @file View for Docs maintainers / admins to check status of pages
  */
 $view = new view;
-$view->name = 'docs_management';
+$view->name = 'drupalorg_docs_management';
 $view->description = 'View for Docs maintainers / admins to check status of pages';
 $view->tag = '';
 $view->view_php = '';
