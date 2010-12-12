@@ -425,7 +425,11 @@ $handler->override_option('filters', array(
   ),
 ));
 $handler->override_option('access', array(
-  'type' => 'none',
+  'type' => 'role',
+  'role' => array(
+    '3' => 3,
+    '5' => 5,
+  ),
 ));
 $handler->override_option('cache', array(
   'type' => 'none',
