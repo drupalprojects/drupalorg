@@ -427,8 +427,7 @@ $handler->override_option('filters', array(
 $handler->override_option('access', array(
   'type' => 'role',
   'role' => array(
-    '3' => 3,
-    '5' => 5,
+    '2' => 2,
   ),
 ));
 $handler->override_option('cache', array(
