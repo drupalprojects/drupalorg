@@ -13,9 +13,6 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
   if ($op == 'view' && $page) {
     $extra = '';
     switch ($node->nid) {
-      case 43633: // Handbook pages with comments
-        $extra = drupalorg_handbook_with_comments();
-        break;
       case 322: // Mailing list subscription
         $extra = drupal_get_form('lists_subscribe_form');
         break;
@@ -107,27 +104,6 @@ function drupalorg_handbook_meta_data($node) {
   $modified = format_date($node->changed, 'custom', 'F j, Y');
 
   return theme('drupalorg_handbook_meta_data', $info, $modified);
-}
-
-/**
- * List handbook pages with comments in descending comment order.
- */
-function drupalorg_handbook_with_comments() {
-  $header = array(
-    array('data' => 'Page'),
-    array('data' => 'Comments', 'field' => 'comment_count', 'sort' => 'desc'),
-    array('data' => 'Last comment', 'field' => 'last_comment_timestamp'),
-  );
-
-  $result = db_query("SELECT n.nid, n.title, s.comment_count, s.last_comment_timestamp
-    FROM {node} n LEFT JOIN {node_comment_statistics} s ON n.nid = s.nid
-    WHERE n.type = 'book' AND s.comment_count >= 1 AND n.status = 1" . tablesort_sql($header));
-
-  while ($node = db_fetch_object($result)) {
-    $rows[] = array(l($node->title, "node/$node->nid"), $node->comment_count, format_interval(time() - $node->last_comment_timestamp) .' ago');
-  }
-
-  return theme('table', $header, $rows);
 }
 
 /**
