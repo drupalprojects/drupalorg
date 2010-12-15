@@ -53,16 +53,6 @@ function drupalorg_handbook_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'book_node_form' && isset($form['revision_information']['log']) && arg(1) != 'add') {
     $form['revision_information']['log']['#required'] = TRUE;
     $form['revision_information']['#collapsed'] = FALSE;
-
-    // Remove the IA vocabs from handbooks other than the Theming Guide.
-    if ($form['#node']->book['bid'] != 338057) {
-      $form['taxonomy'][40]['#access'] = FALSE;
-      $form['taxonomy']['tags'][42]['#access'] = FALSE;
-    }
-    else {
-      // Add a note for the IA stuff.
-      $form['taxonomy']['#description'] = t('The Theming guide has some additional vocabularies not found on other handbook pages,information type and subject matter, which are being used to assist our IA project. For more information on how to properly use these two vocabularies, please refer to the !guidelines.', array('!guidelines' => l('guidelines', 'node/548322')));
-    }
   }
 }
 
