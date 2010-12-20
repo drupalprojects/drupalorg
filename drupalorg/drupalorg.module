@@ -1214,11 +1214,6 @@ function drupalorg_preprocess_block(&$variables) {
 function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   // Add hosting page ads
   if ($op === 'view' && $node->nid == 21785) {
-    // Only show to admins while in development.
-    if (!user_access('manage drupalorg ads')) {
-      return;
-    }
-
     // Add Ads after teaser
     $filtered_teaser = check_markup($node->teaser, $node->format);
     $node->content['body']['#value'] = str_replace($filtered_teaser, $filtered_teaser . theme('drupalorg_hosting_page'), $node->content['body']['#value']);
