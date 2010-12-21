@@ -8,6 +8,7 @@
   <div class="narrow-box">
     <p><a href="/project/drupal">Drupal core</a> is a collection of files that you download to get started with Drupal.</p>
     <?php print $core_download_button; ?>
+    <p>Drupal 7 is coming! <a href="/project/drupal">Test Drupal 7 now</a>.</p>
     <h5>Installation Profiles</h5>
     <p>Already know what site you need? Drupal's <a href="/project/installation+profiles">installation profiles</a> can help you get started with your shop, blog, or social network, providing all the modules you need in one place.</p>
     <ul>
