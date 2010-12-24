@@ -237,8 +237,11 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
     $form['#submit'][] = 'drupalorg_project_cvs_user_edit_submit';
   }
     
-  // Deprecate the "license" field, as it must always be GPLv2+ anyway.
   if ($form_id == 'project_project_node_form') {
+    // Always hide the sandbox checkbox (for now).
+    $form['project_node']['project']['sandbox']['#access'] = FALSE;
+
+    // Deprecate the "license" field, as it must always be GPLv2+ anyway.
     if (! $form['project']['license']['#default_value']) {
        $form['project']['license'] = array(
         '#type' => 'item',
