@@ -3,4 +3,5 @@ description = "Drupal.org-specific plugins and customizations for Version Contro
 package = Drupal.org
 dependencies[] = versioncontrol
 dependencies[] = versioncontrol_git
+dependencies[] = multiple_email
 core = 6.x
