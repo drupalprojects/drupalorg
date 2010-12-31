@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function drupalorg_versioncontrol_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'versioncontrol') {
+    return "plugins/$plugin";
+  }
+}

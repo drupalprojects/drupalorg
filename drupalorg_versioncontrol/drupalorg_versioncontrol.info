@@ -1,0 +1,6 @@
+name = Drupal.org Version Control API integration
+description = "Drupal.org-specific plugins and customizations for Version Control API"
+package = Drupal.org
+dependencies[] = versioncontrol
+dependencies[] = versioncontrol_git
+core = 6.x
