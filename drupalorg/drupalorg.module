@@ -35,8 +35,9 @@ function drupalorg_perm() {
 }
 
 function drupalorg_init() {
+  global $user, $conf;
+
   // Use the dashboard as the home page if the user selected it.
-  global $user;
   if ($user->uid !== 0 && isset($user->drupalorg_set_home) && $_SERVER['REQUEST_URI'] === url('')) {
     drupal_goto('user/' . $user->uid . '/dashboard');
   }
@@ -49,10 +50,22 @@ function drupalorg_init() {
 
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/general.js');
 
-  // Add forum ads
-  foreach (array_filter(variable_get('drupalorg_forum_ad', array())) as $forum_id => $delta) {
-    if ((arg(0) === 'forum' && arg(1) == $forum_id) || (arg(0) === 'node' && is_numeric(arg(1)) && ($node = menu_get_object()) && ($node->type === 'forum' && $node->tid == $forum_id))) {
-      $block = (object) module_invoke('google_admanager', 'block', 'view', $delta);
+  // Add forum ads & tracking
+  $forum_ads = variable_get('drupalorg_forum_ad', array());
+  if (arg(0) === 'forum' && isset($forum_ads[arg(1)])) {
+    $forum_id = arg(1);
+  }
+  elseif (arg(0) === 'node' && is_numeric(arg(1)) && ($node = menu_get_object()) && $node->type === 'forum' && isset($forum_ads[$node->tid])) {
+    $forum_id = $node->tid;
+  }
+  if (!is_null($forum_id)) {
+    // Tracking
+    $term = taxonomy_get_term($forum_id);
+    $conf['googleanalytics_codesnippet_before'] .= "pageTracker._setCustomVar(1, 'Forum', '" . check_plain($term->name) . "', 3);";
+
+    // Ads
+    if (!empty($forum_ads[$forum_id])) {
+      $block = (object) module_invoke('google_admanager', 'block', 'view', $forum_ads[$forum_id]);
       $block->region = 'right';
       $block->delta = $delta;
       $block->module = 'google_admanager';
