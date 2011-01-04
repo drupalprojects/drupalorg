@@ -56,7 +56,7 @@
       
   <div class="grid-3">
     <h2>Community Support</h2>
-    <p>The passionate <a href="/community">Drupal community</a> is on hand to give support via various <a href="/irc">vibrant IRC channels</a>, in the <a href="/forum">forums</a>, and face to face at <a href="http://groups.drupal.org/events">Drupal events</a>. The worldwide community drives the innovation that makes Drupal the preferred choice for web developers and site owners. Drupal is <a href="/principles">open source</a>, meaning everybody can <a href="/getting-involved">get involved</a> and make a difference.</p>
+    <p>The passionate <a href="/community">Drupal community</a> is on hand to give support via various <a href="/irc">vibrant IRC channels</a>, in the <a href="/forum">forums</a>, and face to face at <a href="http://groups.drupal.org/events">Drupal events</a>. The community has also created <a href="/documentation">Documentation</a> for Drupal, which covers installation, site building, module building, theming, and many other topics. The worldwide community drives the innovation that makes Drupal the preferred choice for web developers and site owners. Drupal is <a href="/principles">open source</a>, meaning everybody can <a href="/getting-involved">get involved</a> and make a difference.</p>
   </div>
       
   <div class="grid-3">
