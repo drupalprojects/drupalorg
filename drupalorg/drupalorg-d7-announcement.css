@@ -34,7 +34,10 @@ h3 {
 
 }
 
-#header-feature {padding-top: 1.6em; margin-top: -387px}
+#header-feature {
+  margin-top: -367px;
+  padding-top: 0;
+}
 
 #header-feature h1, #header-feature h2 {color: #fff;}
 
@@ -137,7 +140,7 @@ h2#heading-features {
   color: #fff; 
   background: #1d272f; 
   position: absolute; 
-  top: 307px;
+  top: 287px;
   right: 1px; 
   font-size: 11px; 
   z-index: 999; 
