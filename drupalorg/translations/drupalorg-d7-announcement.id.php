@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Memori</strong>: 32MB (Sebuah situs dengan sejumlah modul aktif yang umum digunakan mungkin memerlukan 64 MB memori atau lebih.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   '<a href="@requirements-url">Informasi persyaratan</a> lebih lanjut',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Hadiri <a href="@drupalcon-url">DrupalCon Chicago</a> untuk memperlajari lebih lanjut tentang Drupal 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'Hadiri <a href="@drupalcon-url">DrupalCon Chicago</a> untuk memperlajari lebih lanjut tentang Drupal 7.',
 );
