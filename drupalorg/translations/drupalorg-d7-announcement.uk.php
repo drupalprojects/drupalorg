@@ -104,7 +104,7 @@ $strings = array(
   "<strong>Оперативна пам'ять</strong>: 32MB (для сайтів з великою кількістю використовуваних модулів може знадобитися 64 і більше MB пам'яті.)",
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Докладніше по <a href="@requirements-url">системних вимогах</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Відвідайте <a href="@drupalcon-url">DrupalCon Chicago</a> щоб дізнатися більше про Drupal 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'Відвідайте <a href="@drupalcon-url">DrupalCon Chicago</a> щоб дізнатися більше про Drupal 7.',
 );
 

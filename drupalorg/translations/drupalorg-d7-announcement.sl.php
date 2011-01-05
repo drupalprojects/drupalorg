@@ -47,7 +47,7 @@ $strings = array(
   'Flexible content' =>
   'Fleksibilne vsebine',
   'Define custom fields that can be used across content types, users, comments, terms and other entities. Store the data for these fields in SQL, <a href="@nosql-url">NoSQL</a>, or use remote storage.' =>  
-  'Določite poljubna vnosna polja, ki jih lahko uporabite za različne tipe vsebin, uporabnike, komentarje, izraze in druge entitete. Vsebino teh polj lahko hranite v SQL-u, <a href="@nosql-url">NoSQL-u</a>', ali oddaljeni pomnilniški napravi.',
+  'Določite poljubna vnosna polja, ki jih lahko uporabite za različne tipe vsebin, uporabnike, komentarje, izraze in druge entitete. Vsebino teh polj lahko hranite v SQL-u, <a href="@nosql-url">NoSQL-u</a>’, ali oddaljeni pomnilniški napravi.',
   'Better theming' =>
   'Teme',
   'Control exactly what gets shown where on the screen with the new Render API and some truly radical alter hooks. The new RDF module provides semantic web markup.' =>
@@ -75,7 +75,7 @@ $strings = array(
   'Extend' =>
   'Nadgradnja',
   'Thanks to a great community effort, over 800 modules are available or under active development for Drupal 7, including <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, and <a href="@wysiwyg-url">WYSIWYG</a>, with more on the way every day.' =>
-  'Zahvaljujoč odličnemu delu skupnosti je za Drupal 7 na voljo že več kot 800 modulov. Med drugimi tudi: <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a> in <a href="@wysiwyg-url">WYSIWYG</a>', katerim se vsak dan pridružujejo novi.', 
+  'Zahvaljujoč odličnemu delu skupnosti je za Drupal 7 na voljo že več kot 800 modulov. Med drugimi tudi: <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a> in <a href="@wysiwyg-url">WYSIWYG</a>’, katerim se vsak dan pridružujejo novi.', 
   'See Drupal 7 in action' =>
   'Poglej Drupal 7 v živo',
   'Drupal 7 is already in use on hundreds of sites. Some examples include:' =>
@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Pomnilnik</strong>: 32MB (Spletno mesto z več omogočenimi moduli bo lahko potrebovalo 64M ali več pomnjilnika.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Več o <a href="@requirements-url">zahtevah</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Udeležite se <a href="@drupalcon-url">DrupalCon Chicago</a> in bolje spoznajte Drupal 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'Udeležite se <a href="@drupalcon-url">DrupalCon Chicago</a> in bolje spoznajte Drupal 7.',
 );

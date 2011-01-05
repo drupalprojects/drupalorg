@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Muisti</strong>: 32Mt (Sivusto, jolla useita moduuleita käytössä 64Mt tai enemmän.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Lisätietoa <a href="@requirements-url">järjestelmävaatimukset-sivulta</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Osallistu <a href="@drupalcon-url">DrupalCon Chicago</a> -tapahtumaan oppiaksesi lisää Drupal 7:stä',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'Osallistu <a href="@drupalcon-url">DrupalCon Chicago</a> -tapahtumaan oppiaksesi lisää Drupal 7:stä.',
 );

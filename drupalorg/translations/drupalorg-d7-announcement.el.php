@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Μνήμη</strong>: 32MB (Μια σελίδα με πολλά ενεργά modules ίσως χρειάζεται 64 MB μνήμης ή περισσότερα.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Περισσότερες <a href="@requirements-url">πληροφορίες για τις απαιτήσεις</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Παρακολουθήστε την <a href="@drupalcon-url">DrupalCon στο Chicago</a> για να μάθετε περισσότερα για το Drupal 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'Παρακολουθήστε την <a href="@drupalcon-url">DrupalCon στο Chicago</a> για να μάθετε περισσότερα για το Drupal 7.',
 );

@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Arbeitsspeicher</strong>: 32MB (Wenn Sie viele Erweiterungsmodule verwenden, können 64 MB oder mehr benötigt werden.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Mehr <a href="@requirements-url">Informationen zu Systemanforderungen</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Besuchen Sie <a href="@drupalcon-url">DrupalCon Chicago</a> und erfahren Sie mehr über Drupal 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'Besuchen Sie <a href="@drupalcon-url">DrupalCon Chicago</a> und erfahren Sie mehr über Drupal 7.',
 );

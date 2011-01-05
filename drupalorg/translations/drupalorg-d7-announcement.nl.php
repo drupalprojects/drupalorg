@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Geheugen</strong>: 32MB (Een website met een aantal veelgebruikte uitbreidingsmodules kan 64 MB of meer nodig hebben.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Meer <a href="@requirements-url">informatie over systeemvereisten</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Bezoek <a href="@drupalcon-url">DrupalCon Chicago</a> om meer te leren over Drupal 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'Bezoek <a href="@drupalcon-url">DrupalCon Chicago</a> om meer te leren over Drupal 7.',
 );

@@ -106,6 +106,6 @@ $strings = array(
 
 'More <a href="@requirements-url">requirements information</a>.' => 'Mer om <a href="@requirements-url">kravspecifikationer</a>.',
 
-'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' => 'Besök <a href="@drupalcon-url">DrupalCon Chicago</a> för att lära dig mer om Drupal 7',
+'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' => 'Besök <a href="@drupalcon-url">DrupalCon Chicago</a> för att lära dig mer om Drupal 7.',
 
 );

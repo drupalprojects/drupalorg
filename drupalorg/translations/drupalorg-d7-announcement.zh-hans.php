@@ -104,6 +104,6 @@ $strings = array(
   '<strong>内存</strong>: 32MB (开启了常规模块的站点可能会需要64M或更多的内存)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   '更多<a href="@requirements-url">系统需求</a>。',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  '参加<a href="@drupalcon-url">DrupalCon Chicago</a>来了解Drupal 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  '参加<a href="@drupalcon-url">DrupalCon Chicago</a>来了解Drupal 7.',
 );

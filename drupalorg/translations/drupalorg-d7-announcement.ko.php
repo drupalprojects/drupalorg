@@ -104,6 +104,6 @@ $strings = array(
   '<strong>메모리</strong>: 32MB (여러 모듈을 이용할 경우 64MB 이상의 메모리가 필요할 수 있습니다.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   '더 자세한 <a href="@requirements-url">요구 사항 정보</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
   '<a href="@drupalcon-url">DrupalCon Chicago</a>에 참석하여 Drupal 7에 대해 더 알아보십시오.',
 );

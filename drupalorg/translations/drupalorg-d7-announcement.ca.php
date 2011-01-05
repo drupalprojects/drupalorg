@@ -104,8 +104,8 @@ $strings = array(
   '<strong>Memòria</strong>: 32MB (Un lloc amb una sèrie de mòduls d\'ús general habilitats pot necessitar 64MB de memòria o més.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Més <a href="@requirements-url">informació sobre els requeriments</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Vine a la <a href="@drupalcon-url">DrupalCon de Chicago</a> per aprendre més sobre el Drupal 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'Vine a la <a href="@drupalcon-url">DrupalCon de Chicago</a> per aprendre més sobre el Drupal 7.',
   'Attend DrupalCon Chicago to learn more about Drupal 7' =>
   'Vine a la DrupalCon de Chicago per aprendre més sobre el Drupal 7',
 );

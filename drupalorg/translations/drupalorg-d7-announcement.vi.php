@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Bộ nhớ</strong>: 32MB (Site với nhiều module hơn có thể cần tới 64MB hoặc nhiều hơn)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Xem thêm <a href="@requirements-url">thông tin về yêu cầu</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Tham gia <a href="@drupalcon-url">Hội thảo DrupalCon Chicago</a> để tìm hiểu thêm về Drupal 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'Tham gia <a href="@drupalcon-url">Hội thảo DrupalCon Chicago</a> để tìm hiểu thêm về Drupal 7.',
 );
