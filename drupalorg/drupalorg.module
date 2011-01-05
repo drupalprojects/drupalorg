@@ -711,6 +711,7 @@ function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
     'zh-hant' => 'Chinese (traditional)',
     'da' => 'Danish',
     'nl' => 'Dutch',
+    'en' => 'English',
     'fi' => 'Finnish',
     'fr' => 'French',
     'de' => 'German',
@@ -735,12 +736,20 @@ function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
   }
   else {
     $variables['language'] = 'en';
-    $variables['language_list'] = array();
-    foreach ($languages as $code => $name) {
+  }
+
+  $variables['language_list'] = array();
+  unset($languages[$variables['language']]);
+  foreach ($languages as $code => $name) {
+    if ($code === 'en') {
+      $variables['language_list'][] = l($name, 'drupal-7.0');
+    }
+    else {
       $variables['language_list'][] = l($name, 'drupal-7.0/' . $code);
     }
-    $variables['language_list'] = implode(', ', $variables['language_list']);
   }
+  $variables['language_list'] = implode(', ', $variables['language_list']);
+
   drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/jquery.cycle.all.min.js', 'module');
   drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/d7-announcement.js', 'module');
   drupal_add_css(drupal_get_path('module', 'drupalorg') .'/drupalorg-d7-announcement.css', 'theme');
