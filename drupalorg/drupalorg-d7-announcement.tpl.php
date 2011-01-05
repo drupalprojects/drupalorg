@@ -46,9 +46,12 @@
 <div id="video" class="grid-12 alpha omega">
   <div class="grid-9 alpha">
     <h2><?php print t('Take a tour', array(), $language); ?></h2>
-    <iframe 
-src="http://player.vimeo.com/video/18352872?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" 
-width="690" height="388"></iframe>
+    <script type="text/javascript" src="http://s3.www.universalsubtitles.org/embed.js">
+    ({
+        "base_state": {"language": ""},
+        "video_url": "http://vimeo.com/18352872"
+    })
+    </script>
   </div>
   <div class="grid-3 omega">
     <h3><?php print t('Learn more', array(), $language); ?></h3>

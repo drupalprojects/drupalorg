@@ -6,4 +6,8 @@ $(document).ready(function() {
       $('#caption').html(this.alt);
     }    
   });
+  $('#video').bind('DOMSubtreeModified', function () {
+    $('object').attr('width', 690);
+    $('object').attr('height', 388);
+  });
 });
