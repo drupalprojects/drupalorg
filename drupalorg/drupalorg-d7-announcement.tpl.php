@@ -127,7 +127,7 @@ width="690" height="388"></iframe>
       <li><?php print t('<strong>Web Server</strong>: Apache (recommended), Nginx, Lighttpd, or Microsoft IIS', array(), $language); ?></li>
       <li><?php print t('<strong>Database</strong>: MySQL 5.0.15 and higher, PostgreSQL 8.3 and higher, or SQLite 3.x', array(), $language); ?></li>
       <li><?php print t('<strong>PHP</strong>: 5.2.4 and higher', array(), $language); ?></li>
-      <li><?php print t('<strong>Memory</strong>: 32MB (A site with a number of commonly used modules enabled may require 64MB of memory or more.)', array(), $language); ?></li>
+      <li><?php print t('<strong>Memory</strong>: 32MB (A site with a number of commonly used modules enabled may require 64 MB of memory or more.)', array(), $language); ?></li>
     </ul>
     <p><?php print t('More <a href="@requirements-url">requirements information</a>.', array('@requirements-url' => url('requirements')), $language); ?></p>
   </div>
