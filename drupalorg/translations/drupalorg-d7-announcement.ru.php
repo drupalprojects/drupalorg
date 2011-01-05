@@ -1,85 +1,85 @@
 <?php
 $strings = array(
   'Drupal 7 - Easier and more powerful than ever' =>
-  'Drupal 7 - Проще и мощнее, чем когда-либо',
+  'Drupal 7 - РџСЂРѕС‰Рµ Рё РјРѕС‰РЅРµРµ, С‡РµРј РєРѕРіРґР°-Р»РёР±Рѕ',
   'Friendly and powerful:' =>
-  'Удобный и мощный:',
+  'РЈРґРѕР±РЅС‹Р№ Рё РјРѕС‰РЅС‹Р№:',
   'Drupal 7' =>
   'Drupal 7',
   'We are proud to present to you our best work yet &ndash; Drupal 7, the friendly and powerful content management platform for building nearly any kind of website: from blogs and micro-sites to collaborative social communities.' =>
-  'Мы с гордостью представляем Вам нашу лучшую работу &ndash; Drupal 7, удобную и мощную платформу для создания любых типов сайтов: от микросайтов и блогов до крупных социальных проектов.',
+  'РњС‹ СЃ РіРѕСЂРґРѕСЃС‚СЊСЋ РїСЂРµРґСЃС‚Р°РІР»СЏРµРј Р’Р°Рј РЅР°С€Сѓ Р»СѓС‡С€СѓСЋ СЂР°Р±РѕС‚Сѓ &ndash; Drupal 7, СѓРґРѕР±РЅСѓСЋ Рё РјРѕС‰РЅСѓСЋ РїР»Р°С‚С„РѕСЂРјСѓ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ Р»СЋР±С‹С… С‚РёРїРѕРІ СЃР°Р№С‚РѕРІ: РѕС‚ РјРёРєСЂРѕСЃР°Р№С‚РѕРІ Рё Р±Р»РѕРіРѕРІ РґРѕ РєСЂСѓРїРЅС‹С… СЃРѕС†РёР°Р»СЊРЅС‹С… РїСЂРѕРµРєС‚РѕРІ.',
   'Get started with Drupal 7' =>
-  'Начать работу с Drupal 7',
+  'РќР°С‡Р°С‚СЊ СЂР°Р±РѕС‚Сѓ СЃ Drupal 7',
   'Runs on Drupal 7: @site' =>
-  'Работает на Drupal 7: @site',
+  'Р Р°Р±РѕС‚Р°РµС‚ РЅР° Drupal 7: @site',
   'Easier to use' => 
-  'Простота использования',
+  'РџСЂРѕСЃС‚РѕС‚Р° РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ',
   'An entirely revamped administrative interface makes your daily tasks easier to find and carry out. Many improvements were added specifically for site builders and content editors.' =>
-  'Полностью обновленный интерфейс упростит Ваши повседневные задачи. Было добавлено множество новых функций специально для администраторов и редакторов сайта.',
+  'РџРѕР»РЅРѕСЃС‚СЊСЋ РѕР±РЅРѕРІР»РµРЅРЅС‹Р№ РёРЅС‚РµСЂС„РµР№СЃ СѓРїСЂРѕСЃС‚РёС‚ Р’Р°С€Рё РїРѕРІСЃРµРґРЅРµРІРЅС‹Рµ Р·Р°РґР°С‡Рё. Р‘С‹Р»Рѕ РґРѕР±Р°РІР»РµРЅРѕ РјРЅРѕР¶РµСЃС‚РІРѕ РЅРѕРІС‹С… С„СѓРЅРєС†РёР№ СЃРїРµС†РёР°Р»СЊРЅРѕ РґР»СЏ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂРѕРІ Рё СЂРµРґР°РєС‚РѕСЂРѕРІ СЃР°Р№С‚Р°.',
   'More flexible' =>
-  'Более гибкий',
+  'Р‘РѕР»РµРµ РіРёР±РєРёР№',
   'Define your own content structure and add custom fields to content, users, comments, and more. Extend your site with one of the over 800 modules already available for Drupal 7.' =>
-  'Определите структуру сайта, добавляя произвольные поля к материалам, пользователям, комментариям и терминам. Улучшите свой сайт с помощью более 800 модулей, уже доступных для Drupal 7.',
+  'РћРїСЂРµРґРµР»РёС‚Рµ СЃС‚СЂСѓРєС‚СѓСЂСѓ СЃР°Р№С‚Р°, РґРѕР±Р°РІР»СЏСЏ РїСЂРѕРёР·РІРѕР»СЊРЅС‹Рµ РїРѕР»СЏ Рє РјР°С‚РµСЂРёР°Р»Р°Рј, РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРј, РєРѕРјРјРµРЅС‚Р°СЂРёСЏРј Рё С‚РµСЂРјРёРЅР°Рј. РЈР»СѓС‡С€РёС‚Рµ СЃРІРѕР№ СЃР°Р№С‚ СЃ РїРѕРјРѕС‰СЊСЋ Р±РѕР»РµРµ 800 РјРѕРґСѓР»РµР№, СѓР¶Рµ РґРѕСЃС‚СѓРїРЅС‹С… РґР»СЏ Drupal 7.',
   'More scalable' =>
-  'Более масштабируемый',
+  'Р‘РѕР»РµРµ РјР°СЃС€С‚Р°Р±РёСЂСѓРµРјС‹Р№',
   'Your Drupal 7 site will be fast, responsive and handle huge amounts of traffic thanks to improved JavaScript and CSS optimization, better caching and more.' =>
-  'Ваш сайт на Drupal 7 будет быстрым, способным обрабатывать большое количество запросов благодаря улучшенной оптимизации JavaScript и CSS и новой системе кэширования.',
+  'Р’Р°С€ СЃР°Р№С‚ РЅР° Drupal 7 Р±СѓРґРµС‚ Р±С‹СЃС‚СЂС‹Рј, СЃРїРѕСЃРѕР±РЅС‹Рј РѕР±СЂР°Р±Р°С‚С‹РІР°С‚СЊ Р±РѕР»СЊС€РѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РїСЂРѕСЃРѕРІ Р±Р»Р°РіРѕРґР°СЂСЏ СѓР»СѓС‡С€РµРЅРЅРѕР№ РѕРїС‚РёРјРёР·Р°С†РёРё JavaScript Рё CSS Рё РЅРѕРІРѕР№ СЃРёСЃС‚РµРјРµ РєСЌС€РёСЂРѕРІР°РЅРёСЏ.',
   'Open source' =>
-  'Открытый исходный код',
+  'РћС‚РєСЂС‹С‚С‹Р№ РёСЃС…РѕРґРЅС‹Р№ РєРѕРґ',
   'Come for the software, stay for the community. Thousands of smart and productive people work together to continuously improve Drupal, modules, themes and distributions.' =>
-  'Зайдите за программой, останьтесь в сообществе. Тысячи умных и продуктивных людей работают вместе, постоянно совершенствуя Drupal, модули, темы оформления и сборки.',
+  'Р—Р°Р№РґРёС‚Рµ Р·Р° РїСЂРѕРіСЂР°РјРјРѕР№, РѕСЃС‚Р°РЅСЊС‚РµСЃСЊ РІ СЃРѕРѕР±С‰РµСЃС‚РІРµ. РўС‹СЃСЏС‡Рё СѓРјРЅС‹С… Рё РїСЂРѕРґСѓРєС‚РёРІРЅС‹С… Р»СЋРґРµР№ СЂР°Р±РѕС‚Р°СЋС‚ РІРјРµСЃС‚Рµ, РїРѕСЃС‚РѕСЏРЅРЅРѕ СЃРѕРІРµСЂС€РµРЅСЃС‚РІСѓСЏ Drupal, РјРѕРґСѓР»Рё, С‚РµРјС‹ РѕС„РѕСЂРјР»РµРЅРёСЏ Рё СЃР±РѕСЂРєРё.',
   'Take a tour' =>
-  'Посмотреть презентацию',
+  'РџРѕСЃРјРѕС‚СЂРµС‚СЊ РїСЂРµР·РµРЅС‚Р°С†РёСЋ',
   'Learn more' =>
-  'Узнать больше',
+  'РЈР·РЅР°С‚СЊ Р±РѕР»СЊС€Рµ',
   'Get started with updated documentation for Drupal 7:' =>
-  'Начните с обновленной документации для Drupal 7:',
+  'РќР°С‡РЅРёС‚Рµ СЃ РѕР±РЅРѕРІР»РµРЅРЅРѕР№ РґРѕРєСѓРјРµРЅС‚Р°С†РёРё РґР»СЏ Drupal 7:',
   '<a href="@install-url">Installing Drupal 7</a>' =>
-  '<a href="@install-url">Установка Drupal 7</a>',
+  '<a href="@install-url">РЈСЃС‚Р°РЅРѕРІРєР° Drupal 7</a>',
   '<a href="@upgrade-url">Upgrading from version 6</a>' =>
-  '<a href="@upgrade-url">Переход с 6ой версии</a>',
+  '<a href="@upgrade-url">РџРµСЂРµС…РѕРґ СЃ 6РѕР№ РІРµСЂСЃРёРё</a>',
   '<a href="@api-url">API Documentation</a>' =>
-  'Документация по API',
+  'Р”РѕРєСѓРјРµРЅС‚Р°С†РёСЏ РїРѕ API',
   'More topics in the <a href="@documentation-url">online documentation</a>.' =>
-  'Подробная информация в разделе <a href="@documentation-url">онлайн-документация</a>.',
+  'РџРѕРґСЂРѕР±РЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ РІ СЂР°Р·РґРµР»Рµ <a href="@documentation-url">РѕРЅР»Р°Р№РЅ-РґРѕРєСѓРјРµРЅС‚Р°С†РёСЏ</a>.',
   'Features' =>
-  'Особенности',
+  'РћСЃРѕР±РµРЅРЅРѕСЃС‚Рё',
   'Flexible content' =>
-  'Гибкое содержание',
+  'Р“РёР±РєРѕРµ СЃРѕРґРµСЂР¶Р°РЅРёРµ',
   'Define custom fields that can be used across content types, users, comments, terms and other entities. Store the data for these fields in SQL, <a href="@nosql-url">NoSQL</a>, or use remote storage.' =>
-  'Произвольные поля могут быть связаны с различными типами содержимого, пользователями, комментариями, терминами таксономии и любыми другими сущностями. Храните данные в SQL, <a href="@nosql-url">NoSQL</a>, или во внешних хранилищах.',
+  'РџСЂРѕРёР·РІРѕР»СЊРЅС‹Рµ РїРѕР»СЏ РјРѕРіСѓС‚ Р±С‹С‚СЊ СЃРІСЏР·Р°РЅС‹ СЃ СЂР°Р·Р»РёС‡РЅС‹РјРё С‚РёРїР°РјРё СЃРѕРґРµСЂР¶РёРјРѕРіРѕ, РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРјРё, РєРѕРјРјРµРЅС‚Р°СЂРёСЏРјРё, С‚РµСЂРјРёРЅР°РјРё С‚Р°РєСЃРѕРЅРѕРјРёРё Рё Р»СЋР±С‹РјРё РґСЂСѓРіРёРјРё СЃСѓС‰РЅРѕСЃС‚СЏРјРё. РҐСЂР°РЅРёС‚Рµ РґР°РЅРЅС‹Рµ РІ SQL, <a href="@nosql-url">NoSQL</a>, РёР»Рё РІРѕ РІРЅРµС€РЅРёС… С…СЂР°РЅРёР»РёС‰Р°С….',
   'Better theming' =>
-  'Улучшенное оформление',
+  'РЈР»СѓС‡С€РµРЅРЅРѕРµ РѕС„РѕСЂРјР»РµРЅРёРµ',
   'Control exactly what gets shown where on the screen with the new Render API and some truly radical alter hooks. The new RDF module provides semantic web markup.' =>
-  'Решайте какие данные хотите вывести и в каком месте, с новым Render API и несколькими фундаментальными хуками пост-обработки. Новый модуль RDF предоставляет семантическую веб-разметку.',
+  'Р РµС€Р°Р№С‚Рµ РєР°РєРёРµ РґР°РЅРЅС‹Рµ С…РѕС‚РёС‚Рµ РІС‹РІРµСЃС‚Рё Рё РІ РєР°РєРѕРј РјРµСЃС‚Рµ, СЃ РЅРѕРІС‹Рј Render API Рё РЅРµСЃРєРѕР»СЊРєРёРјРё С„СѓРЅРґР°РјРµРЅС‚Р°Р»СЊРЅС‹РјРё С…СѓРєР°РјРё РїРѕСЃС‚-РѕР±СЂР°Р±РѕС‚РєРё. РќРѕРІС‹Р№ РјРѕРґСѓР»СЊ RDF РїСЂРµРґРѕСЃС‚Р°РІР»СЏРµС‚ СЃРµРјР°РЅС‚РёС‡РµСЃРєСѓСЋ РІРµР±-СЂР°Р·РјРµС‚РєСѓ.',
   'Accessible' =>
-  'Доступность',
+  'Р”РѕСЃС‚СѓРїРЅРѕСЃС‚СЊ',
   'Administration screens are now far more accessible. Many front-end improvements make it easier for you to build highly accessible websites.' =>
-  'Страницы администрирования стали более доступными даже для людей с ограниченными возможностями. Множество изменений направлено для упрощения создание сайтов доступных широкой аудитории.',
+  'РЎС‚СЂР°РЅРёС†С‹ Р°РґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°РЅРёСЏ СЃС‚Р°Р»Рё Р±РѕР»РµРµ РґРѕСЃС‚СѓРїРЅС‹РјРё РґР°Р¶Рµ РґР»СЏ Р»СЋРґРµР№ СЃ РѕРіСЂР°РЅРёС‡РµРЅРЅС‹РјРё РІРѕР·РјРѕР¶РЅРѕСЃС‚СЏРјРё. РњРЅРѕР¶РµСЃС‚РІРѕ РёР·РјРµРЅРµРЅРёР№ РЅР°РїСЂР°РІР»РµРЅРѕ РґР»СЏ СѓРїСЂРѕС‰РµРЅРёСЏ СЃРѕР·РґР°РЅРёРµ СЃР°Р№С‚РѕРІ РґРѕСЃС‚СѓРїРЅС‹С… С€РёСЂРѕРєРѕР№ Р°СѓРґРёС‚РѕСЂРёРё.',
   'Images and files' =>
-  'Изображения и файлы',
+  'РР·РѕР±СЂР°Р¶РµРЅРёСЏ Рё С„Р°Р№Р»С‹',
   'Adding images to content is now built in. Generate different versions for thumbnails, previews and other image styles. Private file handling can now be used alongside public files.' =>
-  'Добавлена встроенная поддержка вставки графики в публикации. Генерация различных версий миниатюр, превью и стилей изображения. Публичный и приватный методы обработки файлов доступны одновременно.',
+  'Р”РѕР±Р°РІР»РµРЅР° РІСЃС‚СЂРѕРµРЅРЅР°СЏ РїРѕРґРґРµСЂР¶РєР° РІСЃС‚Р°РІРєРё РіСЂР°С„РёРєРё РІ РїСѓР±Р»РёРєР°С†РёРё. Р“РµРЅРµСЂР°С†РёСЏ СЂР°Р·Р»РёС‡РЅС‹С… РІРµСЂСЃРёР№ РјРёРЅРёР°С‚СЋСЂ, РїСЂРµРІСЊСЋ Рё СЃС‚РёР»РµР№ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ. РџСѓР±Р»РёС‡РЅС‹Р№ Рё РїСЂРёРІР°С‚РЅС‹Р№ РјРµС‚РѕРґС‹ РѕР±СЂР°Р±РѕС‚РєРё С„Р°Р№Р»РѕРІ РґРѕСЃС‚СѓРїРЅС‹ РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ.',
   'Automated code testing' =>
-  'Тестирование кода', 
+  'РўРµСЃС‚РёСЂРѕРІР°РЅРёРµ РєРѕРґР°', 
   'A new automated testing framework with over 30,000 built-in tests allows for <a href="@qa-url">continuous integration testing</a> of all Drupal core patches and contributed modules.' =>
-  'Новый фрэймворк с функцией автоматического тестирования имеет более чем 30000 встроенных тестов и позволяет <a href="@qa-url">проводить непрерывный контроль работы</a> всех патчей ядра Drupal и распространяемых сообществом модулей.',
+  'РќРѕРІС‹Р№ С„СЂСЌР№РјРІРѕСЂРє СЃ С„СѓРЅРєС†РёРµР№ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРіРѕ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ РёРјРµРµС‚ Р±РѕР»РµРµ С‡РµРј 30000 РІСЃС‚СЂРѕРµРЅРЅС‹С… С‚РµСЃС‚РѕРІ Рё РїРѕР·РІРѕР»СЏРµС‚ <a href="@qa-url">РїСЂРѕРІРѕРґРёС‚СЊ РЅРµРїСЂРµСЂС‹РІРЅС‹Р№ РєРѕРЅС‚СЂРѕР»СЊ СЂР°Р±РѕС‚С‹</a> РІСЃРµС… РїР°С‚С‡РµР№ СЏРґСЂР° Drupal Рё СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏРµРјС‹С… СЃРѕРѕР±С‰РµСЃС‚РІРѕРј РјРѕРґСѓР»РµР№.',
   'Improved database support' =>
-  'Улучшения баз данных',
+  'РЈР»СѓС‡С€РµРЅРёСЏ Р±Р°Р· РґР°РЅРЅС‹С…',
   'A new database layer provides out-of-the-box support for SQLite, MySQL/MariaDB, and PostgreSQL. Install contributed modules to use <a href="@sqlsrv-url">MS SQL Server</a>, <a href="@oracle-url">Oracle</a>, and more.' =>
-  'Новый принцип работы слоя баз данных обеспечивает встроенную поддержку для SQLite, MySQL/MariaDB, и PostgreSQL. Установка дополнительных модулей позволяет использовать <a href="@sqlsrv-url">MS SQL Server</a>, <a href="@oracle-url">Oracle</a> и другие базы данных.',
+  'РќРѕРІС‹Р№ РїСЂРёРЅС†РёРї СЂР°Р±РѕС‚С‹ СЃР»РѕСЏ Р±Р°Р· РґР°РЅРЅС‹С… РѕР±РµСЃРїРµС‡РёРІР°РµС‚ РІСЃС‚СЂРѕРµРЅРЅСѓСЋ РїРѕРґРґРµСЂР¶РєСѓ РґР»СЏ SQLite, MySQL/MariaDB, Рё PostgreSQL. РЈСЃС‚Р°РЅРѕРІРєР° РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹С… РјРѕРґСѓР»РµР№ РїРѕР·РІРѕР»СЏРµС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ <a href="@sqlsrv-url">MS SQL Server</a>, <a href="@oracle-url">Oracle</a> Рё РґСЂСѓРіРёРµ Р±Р°Р·С‹ РґР°РЅРЅС‹С….',
   'Better distribution support' =>
-  'Улучшена поддержка сборок',
+  'РЈР»СѓС‡С€РµРЅР° РїРѕРґРґРµСЂР¶РєР° СЃР±РѕСЂРѕРє',
   'Use installation profiles to distribute your custom Drupal product. A new API and exportable configurations let you capture more settings in code.' =>
-  'Используйте инсталляционные профили, чтобы распространять собственный Drupal продукт. Новый API и экспортируемые конфигурации позволяют поместить значительно больше настроек в код установки.',
+  'РСЃРїРѕР»СЊР·СѓР№С‚Рµ РёРЅСЃС‚Р°Р»Р»СЏС†РёРѕРЅРЅС‹Рµ РїСЂРѕС„РёР»Рё, С‡С‚РѕР±С‹ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏС‚СЊ СЃРѕР±СЃС‚РІРµРЅРЅС‹Р№ Drupal РїСЂРѕРґСѓРєС‚. РќРѕРІС‹Р№ API Рё СЌРєСЃРїРѕСЂС‚РёСЂСѓРµРјС‹Рµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РїРѕР·РІРѕР»СЏСЋС‚ РїРѕРјРµСЃС‚РёС‚СЊ Р·РЅР°С‡РёС‚РµР»СЊРЅРѕ Р±РѕР»СЊС€Рµ РЅР°СЃС‚СЂРѕРµРє РІ РєРѕРґ СѓСЃС‚Р°РЅРѕРІРєРё.',
   'Extend' =>
-  'Расширяемость',
+  'Р Р°СЃС€РёСЂСЏРµРјРѕСЃС‚СЊ',
   'Thanks to a great community effort, over 800 modules are available or under active development for Drupal 7, including <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, and <a href="@wysiwyg-url">WYSIWYG</a>, with more on the way every day.' =>
-  'Благодаря огромным усилиям сообщества, более 800 модулей полностью готовы или находятся в стадии активной разработки для Drupal 7, включая <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, <a href="@wysiwyg-url">WYSIWYG</a> и их число растёт изо дня в день.',
+  'Р‘Р»Р°РіРѕРґР°СЂСЏ РѕРіСЂРѕРјРЅС‹Рј СѓСЃРёР»РёСЏРј СЃРѕРѕР±С‰РµСЃС‚РІР°, Р±РѕР»РµРµ 800 РјРѕРґСѓР»РµР№ РїРѕР»РЅРѕСЃС‚СЊСЋ РіРѕС‚РѕРІС‹ РёР»Рё РЅР°С…РѕРґСЏС‚СЃСЏ РІ СЃС‚Р°РґРёРё Р°РєС‚РёРІРЅРѕР№ СЂР°Р·СЂР°Р±РѕС‚РєРё РґР»СЏ Drupal 7, РІРєР»СЋС‡Р°СЏ <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, <a href="@wysiwyg-url">WYSIWYG</a> Рё РёС… С‡РёСЃР»Рѕ СЂР°СЃС‚С‘С‚ РёР·Рѕ РґРЅСЏ РІ РґРµРЅСЊ.',
   'See Drupal 7 in action' =>
-  'Увидеть Drupal 7 в действии',
+  'РЈРІРёРґРµС‚СЊ Drupal 7 РІ РґРµР№СЃС‚РІРёРё',
   'Drupal 7 is already in use on hundreds of sites. Some examples include:' =>
-  'Drupal 7 уже используется на сотнях сайтах. Вот некоторые из них:',
+  'Drupal 7 СѓР¶Рµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РЅР° СЃРѕС‚РЅСЏС… СЃР°Р№С‚Р°С…. Р’РѕС‚ РЅРµРєРѕС‚РѕСЂС‹Рµ РёР· РЅРёС…:',
   '<a href="@examiner-url">Examiner.com</a>' =>
   '<a href="@examiner-url">Examiner.com</a>',
   '<a href="@gardens-url">Drupal Gardens</a>' =>
@@ -91,19 +91,19 @@ $strings = array(
   '<a href="@sagmeister-url">Stefan Sagmeister</a>' =>
   '<a href="@sagmeister-url">Stefan Sagmeister</a>',
   'Requirements' =>
-  'Требования',
+  'РўСЂРµР±РѕРІР°РЅРёСЏ',
   'To install Drupal 7, you will need:' =>
-  'Для установки Drupal 7 вам потребуются:',
+  'Р”Р»СЏ СѓСЃС‚Р°РЅРѕРІРєРё Drupal 7 РІР°Рј РїРѕС‚СЂРµР±СѓСЋС‚СЃСЏ:',
   '<strong>Web Server</strong>: Apache (recommended), Nginx, Lighttpd, or Microsoft IIS' =>
-  '<strong>Веб-сервер</strong>: Apache (рекомендуется), Nginx, Lighttpd, или Microsoft IIS',
+  '<strong>Р’РµР±-СЃРµСЂРІРµСЂ</strong>: Apache (СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ), Nginx, Lighttpd, РёР»Рё Microsoft IIS',
   '<strong>Database</strong>: MySQL 5.0.15 and higher, PostgreSQL 8.3 and higher, or SQLite 3.x' =>
-  '<strong>СУБД</strong>: MySQL 5.0.15 и выше, PostgreSQL 8.3 и выше, или SQLite 3.x',
+  '<strong>РЎРЈР‘Р”</strong>: MySQL 5.0.15 Рё РІС‹С€Рµ, PostgreSQL 8.3 Рё РІС‹С€Рµ, РёР»Рё SQLite 3.x',
   '<strong>PHP</strong>: 5.2.4 and higher' =>
-  '<strong>Версия PHP</strong>: 5.2.4 и выше',
+  '<strong>Р’РµСЂСЃРёСЏ PHP</strong>: 5.2.4 Рё РІС‹С€Рµ',
   '<strong>Memory</strong>: 32MB (A site with a number of commonly used modules enabled may require 64 MB of memory or more.)' =>
-  '<strong>Оперативная память</strong>: 32MB (для сайтов с большим числом используемых модулей может потребоваться 64 и более MB памяти.)',
+  '<strong>РћРїРµСЂР°С‚РёРІРЅР°СЏ РїР°РјСЏС‚СЊ</strong>: 32MB (РґР»СЏ СЃР°Р№С‚РѕРІ СЃ Р±РѕР»СЊС€РёРј С‡РёСЃР»РѕРј РёСЃРїРѕР»СЊР·СѓРµРјС‹С… РјРѕРґСѓР»РµР№ РјРѕР¶РµС‚ РїРѕС‚СЂРµР±РѕРІР°С‚СЊСЃСЏ 64 Рё Р±РѕР»РµРµ MB РїР°РјСЏС‚Рё.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
-  'Подробнее о <a href="@requirements-url">системных требованиях</a>.',
+  'РџРѕРґСЂРѕР±РЅРµРµ Рѕ <a href="@requirements-url">СЃРёСЃС‚РµРјРЅС‹С… С‚СЂРµР±РѕРІР°РЅРёСЏС…</a>.',
   'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Посетите <a href="@drupalcon-url">DrupalCon Chicago</a> чтобы узнать больше о Drupal 7',
+  'РџРѕСЃРµС‚РёС‚Рµ <a href="@drupalcon-url">DrupalCon Chicago</a> С‡С‚РѕР±С‹ СѓР·РЅР°С‚СЊ Р±РѕР»СЊС€Рµ Рѕ Drupal 7',
 );
