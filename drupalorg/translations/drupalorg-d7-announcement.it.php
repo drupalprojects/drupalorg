@@ -7,7 +7,7 @@ $strings = array(
   'Drupal 7' =>
   'Drupal 7',
   'We are proud to present to you our best work yet &ndash; Drupal 7, the friendly and powerful content management platform for building nearly any kind of website: from blogs and micro-sites to collaborative social communities.' =>
-  'Siamo orgogliosi di presentarvi il nostro miglior prodottodi sempre &ndash; Drupal 7, la facile e potente piattaforma di gestione dei contenuti, ottima per gestire praticamente ogni tipo di sito web: dai blog ai micro siti passando per le community collaborative.',
+  'Siamo orgogliosi di presentarvi il nostro miglior prodotto di sempre &ndash; Drupal 7, la facile e potente piattaforma di gestione dei contenuti, ottima per gestire praticamente ogni tipo di sito web: dai blog ai micro siti passando per le community collaborative.',
   'Get started with Drupal 7' =>
   'Prova Drupal 7',
   'Runs on Drupal 7: @site' =>
@@ -71,11 +71,11 @@ $strings = array(
   'Better distribution support' =>
   'Miglior supporto alle distribuzioni',
   'Use installation profiles to distribute your custom Drupal product. A new API and exportable configurations let you capture more settings in code.' =>
-  'Usa i profili di installazione per distribuire i tuoi prodotti Drupal personalizzati. Una nuova API e configurazioni esportabili ti permettono di catturare molte impostazioni nel codice',
+  'Usa i profili di installazione per distribuire i tuoi prodotti Drupal personalizzati. Una nuova API e configurazioni esportabili ti permettono di catturare molte impostazioni nel codice.',
   'Extend' =>
-  'Estendibile',
+  'Estensibile',
   'Thanks to a great community effort, over 800 modules are available or under active development for Drupal 7, including <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, and <a href="@wysiwyg-url">WYSIWYG</a>, with more on the way every day.' =>
-  'Grazie al grande sforzo della comunità, oltre 800 moduli sono disponibili o in sviluppo attivo per Drupal 7, tra i quali Views, Pathauto e WYSIWYG, con molti altri che si aggiungono di giorno in giorno',
+  'Grazie al grande sforzo della comunità, oltre 800 moduli sono disponibili o in sviluppo attivo per Drupal 7, tra i quali Views, Pathauto e WYSIWYG, con molti altri che si aggiungono di giorno in giorno.',
   'See Drupal 7 in action' =>
   'Osserva Drupal 7 in azione',
   'Drupal 7 is already in use on hundreds of sites. Some examples include:' =>
@@ -105,5 +105,5 @@ $strings = array(
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Altre <a href="@requirements-url">informazioni sui requisiti</a>.',
   'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Partecipa al <a href="@drupalcon-url">DrupalCon Chicago</a> per saperne di pi� su Drupal 7',
+  'Partecipa al <a href="@drupalcon-url">DrupalCon Chicago</a> per saperne di più su Drupal 7',
 );
