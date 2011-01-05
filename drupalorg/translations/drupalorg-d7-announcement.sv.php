@@ -4,7 +4,7 @@ $strings = array(
 
 'Drupal 7 - Easier and more powerful than ever' => 'Drupal 7 - Mer lättanvänt och kraftfullare än någonsin',
 
-'Friendly and powerful:' => 'Enkel och kraftfullt',
+'Friendly and powerful:' => 'Enkel och kraftfull',
 
 'Drupal 7' => 'Drupal 7',
 
