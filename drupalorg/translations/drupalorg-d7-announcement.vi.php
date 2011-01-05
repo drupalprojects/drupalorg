@@ -47,7 +47,7 @@ $strings = array(
   'Flexible content' =>
   'Nội dung linh hoạt',
   'Define custom fields that can be used across content types, users, comments, terms and other entities. Store the data for these fields in SQL, <a href="@nosql-url">NoSQL</a>, or use remote storage.' =>
-  'Định nghĩa các trường tự chọn sử dụng cho các loại nội dung, người dùng, bình luận, thuật ngữ và các loại khác. Lưu trữ dữ liệu của các trường đó bằng SQL, <a href="@nosql-url">không SQL</a>, hoặc lưu trữ từ xa.'
+  'Định nghĩa các trường tự chọn sử dụng cho các loại nội dung, người dùng, bình luận, thuật ngữ và các loại khác. Lưu trữ dữ liệu của các trường đó bằng SQL, <a href="@nosql-url">không SQL</a>, hoặc lưu trữ từ xa.',
   'Better theming' =>
   'Tạo theme tốt hơn',
   'Control exactly what gets shown where on the screen with the new Render API and some truly radical alter hooks. The new RDF module provides semantic web markup.' =>
