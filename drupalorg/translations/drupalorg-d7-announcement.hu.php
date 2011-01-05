@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Memória</strong>: 32MB (A leggyakrabban használt modulok bekapcsolásával a webhelynek 64 MB, vagy ennél több memóriára lehet szüksége.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'További információk a <a href="@requirements-url">rendszerkövetelményekről</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Részvétel a chicagói DrupalCon rendezvényen, a Drupal legnépszerűbb fejlesztőivel való találkozásért',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'Részvétel a chicagói DrupalCon rendezvényen, a Drupal legnépszerűbb fejlesztőivel való találkozásért.',
 );
