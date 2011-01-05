@@ -75,7 +75,7 @@ $strings = array(
   'Extend' =>
   'Extender',
   'Thanks to a great community effort, over 800 modules are available or under active development for Drupal 7, including <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, and <a href="@wysiwyg-url">WYSIWYG</a>, with more on the way every day.' =>
-  'Gracias a un enorme esfuerzo de la comunidad, más de 800 módulos están disponibles o bajo desarrollo activo para Drupal 7, incluyendo <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, y <a href="@wysiwyg-url">WYSIWYG</a>', con muchos otros en el camino de actualizarse cada día.',
+  'Gracias a un enorme esfuerzo de la comunidad, más de 800 módulos están disponibles o bajo desarrollo activo para Drupal 7, incluyendo <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, y <a href="@wysiwyg-url">WYSIWYG</a>, con muchos otros en el camino de actualizarse cada día.',
   'See Drupal 7 in action' =>
   'Vea Drupal 7 en acción',
   'Drupal 7 is already in use on hundreds of sites. Some examples include:' =>
