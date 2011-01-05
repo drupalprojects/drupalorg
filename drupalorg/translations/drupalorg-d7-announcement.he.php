@@ -81,29 +81,29 @@ $strings = array(
   'Drupal 7 is already in use on hundreds of sites. Some examples include:' =>
   'דרופל 7 כבר נמצאת בשימוש במאות אתרים. כמה דוגמאות כוללות:',
   '<a href="@examiner-url">Examiner.com</a>' =>
-  '',
+  '<a href="@examiner-url">Examiner.com</a>',
   '<a href="@gardens-url">Drupal Gardens</a>' =>
-  '',
+  '<a href="@gardens-url">Drupal Gardens</a>',
   '<a href="@subhub-url">SubHub</a>' =>
-  '',
+  '<a href="@subhub-url">SubHub</a>',
   '<a href="@cpm-url">Chicago Public Media</a>' =>
-  '',
+  '<a href="@cpm-url">Chicago Public Media</a>',
   '<a href="@sagmeister-url">Stefan Sagmeister</a>' =>
-  '',
+  '<a href="@sagmeister-url">Stefan Sagmeister</a>',
   'Requirements' =>
   'דרישות מערכת',
   'To install Drupal 7, you will need:' =>
   'להתקנת דרופל 7 תצרכו:',
   '<strong>Web Server</strong>: Apache (recommended), Nginx, Lighttpd, or Microsoft IIS' =>
-  '',
+  '<strong>Web Server</strong>: Apache (recommended), Nginx, Lighttpd, or Microsoft IIS',
   '<strong>Database</strong>: MySQL 5.0.15 and higher, PostgreSQL 8.3 and higher, or SQLite 3.x' =>
-  '',
+  '<strong>Database</strong>: MySQL 5.0.15 and higher, PostgreSQL 8.3 and higher, or SQLite 3.x',
   '<strong>PHP</strong>: 5.2.4 and higher' =>
-  '',
+  '<strong>PHP</strong>: 5.2.4 and higher',
   '<strong>Memory</strong>: 32MB (A site with a number of commonly used modules enabled may require 64 MB of memory or more.)' =>
   '<strong>Memory</strong>: 32MB (אתר עם מספר מודולים פופולריים עשוי לצרוך 64MB של זכרון.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'עוד <a href="@requirements-url">מידע על דרישות מערכת</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'השתתפו ב<a href="@drupalcon-url">דרופלקון שיקגו</a> על מנת ללמוד עוד על דרופל 7, או בקרו באתר <a href=”http://www.drupal.org.il”>דרופל ישראל</a>',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'השתתפו ב<a href="@drupalcon-url">דרופלקון שיקגו</a> על מנת ללמוד עוד על דרופל 7, או בקרו באתר <a href=”http://www.drupal.org.il”>דרופל ישראל</a>.',
 );

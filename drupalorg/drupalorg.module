@@ -716,6 +716,7 @@ function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
     'fr' => 'French',
     'de' => 'German',
     'el' => 'Greek',
+    'he' => 'Hebrew',
     'hu' => 'Hungarian',
     'id' => 'Indonesian',
     'it' => 'Italian',
@@ -737,6 +738,9 @@ function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
   }
   else {
     $variables['language'] = 'en';
+  }
+  if ($variables['language'] === 'he') {
+    $variables['rtl'] = TRUE;
   }
 
   $variables['language_list'] = array();

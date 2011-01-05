@@ -1,5 +1,7 @@
 <?php t('Drupal 7 - Easier and more powerful than ever'); // intentionally discarded, need to make sure title is available for translating. ?>
 
+<?php if (isset($rtl)) { ?><div dir="rtl"><?php } ?>
+
 <div id="header-feature" class="grid-12 alpha omega">
   <div class="grid-6 alpha">
     <h1><?php print t('Friendly and powerful:', array(), $language); ?> <strong><?php print t('Drupal 7', array(), $language);?></strong></h1>
@@ -135,6 +137,8 @@
     <p><?php print t('More <a href="@requirements-url">requirements information</a>.', array('@requirements-url' => url('requirements')), $language); ?></p>
   </div>
 </div><!-- /#requirements -->
+
+<?php if (isset($rtl)) { ?></div><?php } ?>
 
 <div class="grid-12 alpha omega" id="translations">
   <h3><?php print t('This announcement is available in', array(), $language); ?></h3>
