@@ -21,12 +21,12 @@ define('DRUPALORG_LANGUAGES_PID', 48);
 /**
  * Major version number for core project listings.
  */
-define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 6);  // 6.x
+define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 7);  // 7.x
 
 /**
  * TID for API compatibility for project listings.
  */
-define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 87);  // 6.x
+define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 103);  // 7.x
 
 // == Core hooks ===============================================================
 
@@ -124,6 +124,14 @@ function drupalorg_menu() {
   $items['getting-involved'] = array(
     'title' => 'Getting Involved',
     'page callback' => 'drupalorg_getting_involved',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['drupal-7.0'] = array(
+    'title' => t('Drupal 7 - Easier and more powerful than ever'),
+    'page callback' => 'theme',
+    'page arguments' => array('drupalorg_d7_announcement', 1),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -429,6 +437,12 @@ function drupalorg_preprocess_page(&$variables) {
       Drupal is an open source content management platform powering millions of websites and applications. It’s built, used, and supported by an active and diverse community of people around the world.
     </p>';
   }
+
+  $router = menu_get_item();
+  if ($router['path'] == 'drupal-7.0') {
+    // Hide the page title on the D7 release announcement
+    unset($variables['title']);
+  }
 }
 
 /**
@@ -686,6 +700,45 @@ function drupalorg_preprocess_drupalorg_getting_involved(&$variables) {
 }
 
 /**
+ * Implementation of template_preprocess_drupalorg_d7_announcement().
+ */
+function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
+  global $conf;
+  $languages = array(
+    'ca' => 'Catalan',
+    'zh-hans' => 'Chinese (simplified)',
+    'da' => 'Danish',
+    'nl' => 'Dutch',
+    'fr' => 'French',
+    'de' => 'German',
+    'id' => 'Indonesian',
+    'it' => 'Italian',
+    'ru' => 'Russian',
+    'sr' => 'Serbian',
+    'es' => 'Spanish',
+    'vi' => 'Vietnamese',
+  );
+
+  // Valid language?
+  if (isset($languages[$variables['language']])) {
+    include './' . drupal_get_path('module', 'drupalorg') . '/translations/drupalorg-d7-announcement.' . $variables['language'] . '.php';
+    $conf['locale_custom_strings_' . $variables['language']] = $strings;
+    drupal_set_title(t(drupal_get_title(), array(), $variables['language']));
+  }
+  else {
+    $variables['language'] = 'en';
+    $variables['language_list'] = array();
+    foreach ($languages as $code => $name) {
+      $variables['language_list'][] = l($name, 'drupal-7.0/' . $code);
+    }
+    $variables['language_list'] = implode(', ', $variables['language_list']);
+  }
+  drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/jquery.cycle.all.min.js', 'module');
+  drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/d7-announcement.js', 'module');
+  drupal_add_css(drupal_get_path('module', 'drupalorg') .'/drupalorg-d7-announcement.css', 'theme');
+}
+
+/**
  * Theme function for the presentation of results on /community in the
  * "Recent Activity" section.
  *
@@ -740,6 +793,12 @@ function drupalorg_theme() {
     ),
     'drupalorg_hosting_page' => array(
       'template' => 'drupalorg-hosting-page',
+    ),
+    'drupalorg_d7_announcement' => array(
+      'arguments' => array(
+        'language' => 'en',
+      ),
+      'template' => 'drupalorg-d7-announcement',
     ),
   );
 }

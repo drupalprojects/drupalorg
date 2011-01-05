@@ -4,7 +4,7 @@
     <h2>Core</h2>
     <ul class="flat">
       <li class="first download-core"><?php print $core_download_button; ?></li>
-      <li><a href="/project/drupal">Test Drupal 7</a></li>
+      <li><a href="/project/drupal">Download Drupal 6</a></li>
       <li><a href="/node/3060/release">Other Releases</a></li>
       <li class="last all"><a class="all" href="/project/drupal">More Information</a></li>
     </ul>

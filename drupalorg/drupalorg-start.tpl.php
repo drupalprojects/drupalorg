@@ -6,14 +6,12 @@
 </div>
 <div class="grid-3 alpha">
   <div class="narrow-box">
-    <p><a href="/project/drupal">Drupal core</a> is a collection of files that you download to get started with Drupal.</p>
+    <p>To get started with Drupal, you'll need to install <a href="/project/drupal">Drupal core</a>, the base system files.</p> 
     <?php print $core_download_button; ?>
-    <p>Drupal 7 is coming! <a href="/project/drupal">Test Drupal 7 now</a>.</p>
+    <p>Drupal 7 is recommended for most new websites. A large number of modules and themes are already available for it.</p>
+    <p>Many Drupal sites currently run on <a href="/project/drupal">Drupal 6</a>.</p>
     <h5>Installation Profiles</h5>
-    <p>Already know what site you need? Drupal's <a href="/project/installation+profiles">installation profiles</a> can help you get started with your shop, blog, or social network, providing all the modules you need in one place.</p>
-    <ul>
-      <?php print $drupalorg_featured_install_profiles; ?>
-    </ul>
+    <p>Drupal <a href="/project/installation+profiles">Installation Profiles</a> are pre-packaged website solutions for specific use cases. They include Drupal core as well as additional modules. More Drupal 7 installation profiles will become available in the near future.</p>
   </div>
 </div>
 <div class="grid-3">
@@ -46,15 +44,16 @@
       <ul>
         <li><a href="/documentation/install">Installation Guide</a></li>
         <li><a href="/documentation/build">Site Building Guide</a></li>
-        <li><a href="/documentation/structure">Structure Guide</a></li>
         <li><a href="/documentation/theme">Theming Guide</a></li>
         <li><a href="/documentation/understand">Understanding Drupal</a></li>
+        <li><a href="/documentation/structure">Structure Guide</a></li>
       </ul>
       <a href="/documentation" class="all">All Documentation</a>
     </div><!--/narrow-box-list-->
     <div class="narrow-box-list">
-      <h5 class="lined">Books</h5>
-      <p><a href="/books"><img src="<?php print url(drupal_get_path('module', 'drupalorg') . '/images/books.png'); ?>" alt=""></a></p>
+      <h5 class="lined">Drupal 7 Books</h5>
+      <p><a href="/books"><img src="<?php print url(drupal_get_path('module', 'drupalorg') . '/images/books-d7.png'); ?>" alt=""></a></p>
+      <p>There are also many <a href="/books">Drupal 6 books</a> available.</p>
     </div><!--/narrow-box-list-->
   </div>
 </div>
