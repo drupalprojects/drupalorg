@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ */
+
+/**
+ * Role for granting git access.
+ */
+# TODO: use the real rid.
+define('DRUPALORG_GIT_GATEWAY_VID', 3);
+
+/**
+ * Implementation of hook_perm().
+ */
+function drupalorg_git_gateway_perm() {
+  return array('use git');
+}
+
+/**
+ * Implementation of hook_user().
+ */
+function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
+  if ($category != 'account') {
+    return;
+  }
+
+  if ($op == 'form') {
+    $form['drupalorg_git_gateway'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Git Access'),
+      '#collapsible' => TRUE,
+    );
+    $form['drupalorg_git_gateway']['terms'] = array(
+      '#type' => 'item',
+      '#title' => t("To use Drupal's version control systems you must agree to the following"),
+      '#value' => theme('item_list', array(
+        t('I will only commit <a href="!link">GPL v2+</a>-licensed code and resources to the Drupal code repository.', array('!link' => url('http://drupal.org/licensing/faq'))),
+        t('I will only commit code and resources that I own or am permitted to distribute.'),
+        t('I will cooperate with the <a href="!link">Drupal Security Team</a> as needed.', array('!link' => url('http://drupal.org/security-team'))),
+        t('I have read and will adhere to the <a href="!link">Drupal Code of Conduct</a>.', array('!link' => url('http://drupal.org/dcoc'))),
+        t('I agree to the <a href="!link">Drupal Code Repository Terms of Service</a>.', array('!link' => url('http://drupalcode.org/viewvc/drupal/contributions/TERMS.txt?view=co'))),
+      )),
+    );
+    $form['drupalorg_git_gateway']['use_git'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('I agree'),
+      '#default_value' => !empty($account->roles[DRUPALORG_GIT_GATEWAY_VID]),
+    );
+    return $form;
+  }
+  if (($op == 'insert' || $op == 'update')) {
+    if (isset($edit['use_git'])) {
+      $edit['roles'][DRUPALORG_GIT_GATEWAY_VID] = !empty($edit['use_git']);
+      unset($edit['use_git']);
+    }
+  }
+}

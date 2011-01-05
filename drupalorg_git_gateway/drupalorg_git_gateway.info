@@ -1,0 +1,5 @@
+; $Id$
+name = Drupal.org Git Gateway
+description = Access control for git.
+package = Drupal.org
+core = 6.x
