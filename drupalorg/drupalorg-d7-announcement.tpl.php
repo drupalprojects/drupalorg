@@ -135,7 +135,7 @@ width="690" height="388"></iframe>
 
 <?php if (isset($language_list)) { ?>
   <div class="grid-12 alpha omega" id="translations">
-    <h3><?php print t('Available languages', array(), $language); ?></h3>
+    <h3><?php print t('This announcement is available in', array(), $language); ?></h3>
     <p><?php print $language_list; ?></p>
   </div><!-- /#translations -->
 <?php } ?>
