@@ -7,8 +7,7 @@
 /**
  * Role for granting git access.
  */
-# TODO: use the real rid.
-define('DRUPALORG_GIT_GATEWAY_VID', 3);
+define('DRUPALORG_GIT_GATEWAY_RID', 20);
 
 /**
  * Implementation of hook_perm().
@@ -45,13 +44,13 @@ function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
     $form['drupalorg_git_gateway']['use_git'] = array(
       '#type' => 'checkbox',
       '#title' => t('I agree'),
-      '#default_value' => !empty($account->roles[DRUPALORG_GIT_GATEWAY_VID]),
+      '#default_value' => !empty($account->roles[DRUPALORG_GIT_GATEWAY_RID]),
     );
     return $form;
   }
   if (($op == 'insert' || $op == 'update')) {
     if (isset($edit['use_git'])) {
-      $edit['roles'][DRUPALORG_GIT_GATEWAY_VID] = !empty($edit['use_git']);
+      $edit['roles'][DRUPALORG_GIT_GATEWAY_RID] = !empty($edit['use_git']);
       unset($edit['use_git']);
     }
   }
