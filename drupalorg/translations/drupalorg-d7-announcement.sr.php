@@ -51,11 +51,11 @@ $strings = array(
   'Better theming' =>
   'Bolje temiranje',
   'Control exactly what gets shown where on the screen with the new Render API and some truly radical alter hooks. The new RDF module provides semantic web markup.' =>
-  'Kontrolišite šta i gde se prikazuje na ekranu sa novim <em>Render API</em>-jem uz pojedine radikalne izmenama za <em>hook</em>-ove. Novi <em>RDF</em> modul pruža semantičko web označavanje.',
+  'Kontrolišite šta i gde se prikazuje na ekranu sa novim <em>Render API</em>-jem uz pojedine radikalne izmene za <em>hook</em>-ove. Novi <em>RDF</em> modul pruža semantičko web označavanje.',
   'Accessible' =>
   'Dostupnost',
   'Administration screens are now far more accessible. Many front-end improvements make it easier for you to build highly accessible websites.' =>
-  'Administratorki deo je sada daleko pristupačniji. Mnoga vizuelna poboljšanja olakšavaju Vam izradu visokodostupnih sajtova.',
+  'Administratorski deo je sada daleko pristupačniji. Mnoga vizuelna poboljšanja olakšavaju Vam izradu visokodostupnih sajtova.',
   'Images and files' =>
   'Slike i fajlovi',
   'Adding images to content is now built in. Generate different versions for thumbnails, previews and other image styles. Private file handling can now be used alongside public files.' =>
@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Memorija</strong>: 32MB (Sajt sa brojnim uobičajenim modulima može zahtevati 64 MB memorije ili više.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Više <a href="@requirements-url">informacija o zahtevima</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
-  'Posetite <a href="@drupalcon-url">DrupalKon Čikago</a> da biste naučili više o Drupalu 7.',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
+  'Posetite <a href="@drupalcon-url">DrupalKon Čikago</a> da biste naučili više o Drupalu 7',
 );
