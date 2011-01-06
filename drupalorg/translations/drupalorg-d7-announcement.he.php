@@ -105,5 +105,5 @@ $strings = array(
   'More <a href="@requirements-url">requirements information</a>.' =>
   'עוד <a href="@requirements-url">מידע על דרישות מערכת</a>.',
   'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
-  'השתתפו ב<a href="@drupalcon-url">דרופלקון שיקגו</a> על מנת ללמוד עוד על דרופל 7, או בקרו באתר <a href=”http://www.drupal.org.il”>דרופל ישראל</a>.',
+  'השתתפו ב<a href="@drupalcon-url">דרופלקון שיקגו</a> על מנת ללמוד עוד על דרופל 7, או בקרו באתר <a href="http://www.drupal.org.il">דרופל ישראל</a>.',
 );
