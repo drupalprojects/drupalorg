@@ -7,7 +7,7 @@ $strings = array(
   'Drupal 7' =>
   'Drupal 7',
   'We are proud to present to you our best work yet &ndash; Drupal 7, the friendly and powerful content management platform for building nearly any kind of website: from blogs and micro-sites to collaborative social communities.' =>
-  'Ylpeinä esittelemme loistavan työmme tuloksen: Drupal 7, helppokäyttöinen ja tehokas sisällönhallintajärjestelmä jolla rakennat kaikenlaisia verkkopalveluita aina pienistä kampanjasivustoista isoihin sosiaalisiin verkkoyhteisöihin.',
+  'Ylpeinä esittelemme loistavan työmme tuloksen: Drupal 7, helppokäyttöisen ja tehokkaan sisällönhallintajärjestelmän, jolla luot monipuolisesti verkkopalveluita pienistä kampanjasivustoista aina isoihin sosiaalisiin verkkoyhteisöihin.',
   'Get started with Drupal 7' =>
   'Ota käyttöösi Drupal 7',
   'Runs on Drupal 7: @site' =>
@@ -17,17 +17,17 @@ $strings = array(
   'An entirely revamped administrative interface makes your daily tasks easier to find and carry out. Many improvements were added specifically for site builders and content editors.' =>
   'Täydellisesti uusitut hallintasivut helpottavat päivittäisten tehtävien suorittamisessa. Lukuisia parannuksia on tehty etenkin sisällönsyöttäjien ja sivuston rakentajien työn helpottamiseksi.',
   'More flexible' =>
-  'Moukattavampi',
+  'Muokattavampi',
   'Define your own content structure and add custom fields to content, users, comments, and more. Extend your site with one of the over 800 modules already available for Drupal 7.' =>
-  'Määrittele itse sopivia artikkelityyppejä ja lisää haluamiasi tietokenttiä liitettäväksi artikkeleihin, käyttäjiin, kommentteihin sekä muihin sisältöihin. Laajenna sivustosi toiminnallisuuksia moduulein, joita löytyy jo yli 800 Drupal 7:lle.',
+  'Laajenna sivustosi toiminnallisuuksia käytössäsi olevilla yli 800 Drupal 7 -moduulilla. Määrittele itse sisältörakenne ja lisää haluamiasi tietokenttiä artikkeleihin, käyttäjiin, kommentteihin ja muihin sisältöihin.',
   'More scalable' =>
   'Skaalautuvampi',
   'Your Drupal 7 site will be fast, responsive and handle huge amounts of traffic thanks to improved JavaScript and CSS optimization, better caching and more.' =>
-  'Drupal 7 sivustosi tulee olemaan nopea ja suuria kävijämääriä palveleva, muun muassa parennettujen JavaScript- ja CSS-optimointien sekä parannettujen välimuistitusratkaisujen ansiosta.',
+  'Käyttämällä Drupal 7:ää valjastat sivustosi palvelemaan nopeasti suuriakin kävijämäääriä mm. parannettujen JavaScript- ja CSS-optimointien sekä välimuistitusratkaisujen ansiosta.',
   'Open source' =>
   'Avoin lähdekoodi',
   'Come for the software, stay for the community. Thousands of smart and productive people work together to continuously improve Drupal, modules, themes and distributions.' =>
-  'Tule hakeaksesi toimiva ohjelmisto, niin tulet osaksi isoa yhteisöä. Tuhannet fiksut ja tuotteliaat ihmiset työskentelevät jatkuvasti yhdessä parantaakseen Drupal-järjestelmää.',
+  'Ottamalla ohjelmiston käyttöösi saat tueksesi koko yhteisön! Tuhannet tuotteliaat ihmiset työskentelevät jatkuvasti yhdessä parantaakseen Drupal-järjestelmää.',
   'Take a tour' =>
   'Tee tutusmiskierros',
   'Learn more' =>
@@ -51,15 +51,15 @@ $strings = array(
   'Better theming' =>
   'Tarkka ulkoasumäärittely',
   'Control exactly what gets shown where on the screen with the new Render API and some truly radical alter hooks. The new RDF module provides semantic web markup.' =>
-  'Kontrolloi tarkasti mitä sivuilla näytetään missäkin kohdin käyttäen uutta Render API:a ja voimakkaita muokkausmahdollisuuksia. RDF-moduuli tarjoilee semattisen tavan sisältöjen esittämiseen.',
+  'Kontrolloi tarkasti mitä sivuilla näytetään missäkin kohdin uuden Render API:n ja sen muokkausmahdollisuuksien avulla. Uusi RDF-moduuli tarjoilee semanttisen tavan sisältöjen esittämiseen.',
   'Accessible' =>
   'Saavutettavuus',
   'Administration screens are now far more accessible. Many front-end improvements make it easier for you to build highly accessible websites.' =>
-  'Ylläpidolliset näkymät ovat nyt entistä saavutettavammat. Useiden käyttöliittymäparannukset tekevät helpoksi saavutettavien sivustojen rakentamisen.',
+  'Ylläpitonäkymät ovat aiempaa helpommat käyttää. Käyttöliittymäparannukset tekevät helpoksi myös saavutettavien sivustojen rakentamisen.',
   'Images and files' =>
   'Kuvat ja tiedostot',
   'Adding images to content is now built in. Generate different versions for thumbnails, previews and other image styles. Private file handling can now be used alongside public files.' =>
-  'Kuvien lisääminen sisältöihin on suoraan valmis käytettäväksi. Erilaiset määrittely automaattsesti luotaviin esikatselu- ja muihin kuvaversioihin. Yksityisten tiedostojen käsittely on mahdollista julkisten tiedostojen rinnalla.',
+  'Kuvien lisääminen sisältöihin on nyt sisäänrakennettu ominaisuus Drupal 7:ssa. Voit myös versioida esikatselu- ja muita kuvatyylejä. Yksityisten tiedostojen käsittely on mahdollista julkisten tiedostojen rinnalla.',
   'Automated code testing' =>
   'Automatisoitu kooditestaus',
   'A new automated testing framework with over 30,000 built-in tests allows for <a href="@qa-url">continuous integration testing</a> of all Drupal core patches and contributed modules.' =>
@@ -75,7 +75,7 @@ $strings = array(
   'Extend' =>
   'Laajennusmahdollisuudet',
   'Thanks to a great community effort, over 800 modules are available or under active development for Drupal 7, including <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, and <a href="@wysiwyg-url">WYSIWYG</a>, with more on the way every day.' =>
-  'Laajan yhteisön tekemä panostus näkyy yli 800 moduulissa, joista on jo Drupal 7 -versiot. Tähän alati kasvavaan listaan kuuluvat muun muassa <a href="@views-url">Views</a>-, <a href="@pathauto-url">Pathauto</a>- ja <a href="@wysiwyg-url">WYSIWYG</a>-moduulit.',
+  'Laajan yhteisön tekemä panostus näkyy yli 800 moduulissa joista on jo Drupal 7 -versiot. Tähän alati kasvavaan listaan kuuluvat muun muassa <a href="@views-url">Views</a>-, <a href="@pathauto-url">Pathauto</a>- ja <a href="@wysiwyg-url">WYSIWYG</a>-moduulit.',
   'See Drupal 7 in action' =>
   'Näe Drupal 7 käytössä',
   'Drupal 7 is already in use on hundreds of sites. Some examples include:' =>
@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Muisti</strong>: 32Mt (Sivusto, jolla useita moduuleita käytössä 64Mt tai enemmän.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Lisätietoa <a href="@requirements-url">järjestelmävaatimukset-sivulta</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
-  'Osallistu <a href="@drupalcon-url">DrupalCon Chicago</a> -tapahtumaan oppiaksesi lisää Drupal 7:stä.',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
+  'Osallistu <a href="@drupalcon-url">DrupalCon Chicago</a> -tapahtumaan oppiaksesi lisää Drupal 7:stä',
 );
