@@ -8,17 +8,19 @@
     <h2><?php print t('We are proud to present to you our best work yet &ndash; Drupal 7, the friendly and powerful content management platform for building nearly any kind of website: from blogs and micro-sites to collaborative social communities.', array(), $language);?></h2>
       <a href="/start" class="link-button"><span><?php print t('Get started with Drupal 7', array(), $language);?></span></a>
   </div>
-  <p id="caption"></p>
-  <div class="grid-6 omega slideshow">
-    <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/examiner.png', t('Runs on Drupal 7: @site', array('@site' => 'Examiner.com'), $language)); ?>
-    <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/chicago-public-media.png', t('Runs on Drupal 7: @site', array('@site' => 'Chicago Public Media'), $language)); ?>
-    <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/drupal-gardens.png', t('Runs on Drupal 7: @site', array('@site' => 'Drupal Gardens'), $language)); ?>
-    <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/subhublite.png', t('Runs on Drupal 7: @site', array('@site' => 'SubHubLite'), $language)); ?>
-    <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/iqmetrix.png', t('Runs on Drupal 7: @site', array('@site' => 'iQmetrix'), $language)); ?>
-    <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/sagmeister.png', t('Runs on Drupal 7: @site', array('@site' => 'Stefan Sagmeister'), $language)); ?>
-    <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/voxel.png', t('Runs on Drupal 7: @site', array('@site' => 'Voxel'), $language)); ?>
-    <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/ipswich-brewery.png', t('Runs on Drupal 7: @site', array('@site' => 'Ipswich Brewery'), $language)); ?>
-    <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/left-click.png', t('Runs on Drupal 7: @site', array('@site' => 'Left-click'), $language)); ?>
+  <div class="grid-6 omega">
+    <p id="caption"><?php print t('Runs on Drupal 7: @site', array('@site' => ''), $language); ?> <span></span></p>
+    <div class="slideshow">
+      <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/examiner.png', 'Examiner.com'); ?>
+      <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/chicago-public-media.png', 'Chicago Public Media'); ?>
+      <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/drupal-gardens.png', 'Drupal Gardens'); ?>
+      <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/subhublite.png', 'SubHubLite'); ?>
+      <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/iqmetrix.png', 'iQmetrix'); ?>
+      <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/sagmeister.png', 'Stefan Sagmeister'); ?>
+      <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/voxel.png', 'Voxel'); ?>
+      <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/ipswich-brewery.png', 'Ipswich Brewery'); ?>
+      <?php print theme('image', drupal_get_path('module', 'drupalorg') .'/images/d7-sites/left-click.png', 'Left-click'); ?>
+    </div>    
   </div>    
   
 </div> <!-- /#header-inner -->

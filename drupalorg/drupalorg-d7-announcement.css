@@ -141,12 +141,12 @@ h2#heading-features {
   background: #1d272f; 
   position: absolute; 
   top: 287px;
-  right: 1px; 
-  font-size: 11px; 
+  right: 0px; 
+  font-size: 18px;
   z-index: 999; 
   padding: 10px; 
-  text-align: right; 
-  width: 439px; 
+  width: 440px;
+  height: 19px;
   display: inline;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
