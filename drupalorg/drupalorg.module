@@ -705,7 +705,6 @@ function drupalorg_preprocess_drupalorg_getting_involved(&$variables) {
 function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
   global $conf;
   $languages = array(
-    'nb' => 'Bokmål',
     'ca' => 'Catalan',
     'zh-hans' => 'Chinese (simplified)',
     'zh-hant' => 'Chinese (traditional)',
@@ -721,6 +720,7 @@ function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
     'id' => 'Indonesian',
     'it' => 'Italian',
     'ko' => 'Korean',
+    'nb' => 'Norwegian (Bokmål)',
     'ru' => 'Russian',
     'sr' => 'Serbian',
     'sl' => 'Slovene',
