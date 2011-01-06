@@ -77,6 +77,10 @@ h3 {
   width: 960px;
   padding: 0px;
 }
+[dir="rtl"] #header-highlight {
+  right: -10px;
+  left: auto;
+}
 
 #header-highlight-inner .grid-3 {
   margin-top: 14px;
