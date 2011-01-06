@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Atmintis</strong>: 32MB (svetainė, kuri naudoja nemažai dažnai naudojamų modulių gali reikalauti 64MB atminties arba daugiau.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Plačiau apie <a href="@requirements-url">reikalavimus</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
   'Dalyvaukite <a href="@drupalcon-url">DrupalCon Chicago konferencijoje</a> ir sužinokite dar daugiau apie Drupal 7.',
 );

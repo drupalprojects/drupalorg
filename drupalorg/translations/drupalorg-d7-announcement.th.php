@@ -27,7 +27,7 @@ $strings = array(
   'Open source' =>
   'โอเพนซอร์ซ',
   'Come for the software, stay for the community. Thousands of smart and productive people work together to continuously improve Drupal, modules, themes and distributions.' =>
-  'ต้องการซอฟต์แวร์และสถิตอยู่กับชุมชน มีคนที่มีความสามารถหลายพันคนที่ช่วยกันสร้างและพัฒนา โมดูล และธีม อยู่อย่างต่อเนื่อง'',
+  'ต้องการซอฟต์แวร์และสถิตอยู่กับชุมชน มีคนที่มีความสามารถหลายพันคนที่ช่วยกันสร้างและพัฒนา โมดูล และธีม อยู่อย่างต่อเนื่อง',
   'Take a tour' =>
   'ลองชม',
   'Learn more' =>
@@ -104,6 +104,6 @@ $strings = array(
   '<strong>ความจำ</strong>: 32MB (เว็บที่โมดูลมากอาจจะต้องการ 64 MB หรือมากกว่า)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'มากกว่านี้ <a href="@requirements-url">ข้อมูลความต้องการของระบบ</a>',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'เข้าร่วมสัมมนา <a href="@drupalcon-url">DrupalCon Chicago</a> ทีเมืองชิคาโกเพื่อเรียนรู้เพิ่มเติมเกี่ยวกับ Drupal 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'เข้าร่วมสัมมนา <a href="@drupalcon-url">DrupalCon Chicago</a> ทีเมืองชิคาโกเพื่อเรียนรู้เพิ่มเติมเกี่ยวกับ Drupal 7.',
 );
