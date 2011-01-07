@@ -1,14 +1,3 @@
-<div id="front-drupal7" class="grid-12 alpha omega">
-  <a href="/drupal-7.0">
-    <div class="grid-8 alpha">
-      <img src="<?php print drupal_get_path('module', 'drupalorg') ?>/images/itshere.png" alt="IT’S HERE" />
-    </div>
-    <div class="grid-4 omega">
-      <img src="<?php print drupal_get_path('module', 'drupalorg') ?>/images/drupal7logo.png" alt="IT’S HERE" />
-    </div>
-  </a>
-</div>
-
 <div id="front-top-left" class="grid-4 alpha">
   <div id="front-top-left-inner">
     <div class="block-content">
