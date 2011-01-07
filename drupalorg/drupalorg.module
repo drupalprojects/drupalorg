@@ -432,10 +432,12 @@ function drupalorg_home() {
  */
 function drupalorg_preprocess_page(&$variables) {
   if ($variables['is_front']) {
+    /* Temporary, http://drupal.org/node/1016076
     $variables['mission'] = '<h2>Come for the software, stay for the community</h2>
-    <p class="standfirst">
-      Drupal is an open source content management platform powering millions of websites and applications. It’s built, used, and supported by an active and diverse community of people around the world.
-    </p>';
+    <p class="standfirst">Drupal is an open source content management platform powering millions of websites and applications. It’s built, used, and supported by an active and diverse community of people around the world.</p>';
+    */
+    $variables['mission'] = '<h2><a href="/drupal-7.0">We’re celebrating the launch of Drupal 7</a></h2>
+    <p class="standfirst">Now easier to use, more flexible and more scalable, Drupal is an open source content management platform powering millions of websites and applications. <a href="/drupal-7.0">Learn more about Drupal 7</a></p>';
   }
 
   $router = menu_get_item();
