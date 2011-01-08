@@ -273,6 +273,19 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
  * people add this tag, they get to know about the process.
  */
 function drupalorg_project_release_node_form_alter(&$form, $form_state) {
+  // See if this is a release for a translation project, and if so, deny.
+  $project = $form['project']['#value'];
+  if (arg(2) != 'edit' && !empty($project->taxonomy[DRUPALORG_TRANSLATION_TID])) {
+    foreach (element_children($form) as $child) {
+      unset($form[$child]);
+    }
+    $form['translations_denied'] = array(
+      '#type' => 'markup',
+      '#value' => t('Translation projects have been moved and are now actively maintained at <a href="@localize-link">localize.drupal.org</a>. You are no longer allowed to create new releases of translation projects on drupal.org.', array('@localize-link' => 'http://localize.drupal.org/')),
+    );
+    return;
+  }
+
   if (!empty($form['taxonomy'])) {
     $vid = drupalorg_project_get_release_type_vid();
     $security_tid = drupalorg_project_get_security_update_tid();
