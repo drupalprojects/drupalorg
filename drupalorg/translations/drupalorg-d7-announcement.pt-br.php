@@ -1,85 +1,85 @@
 <?php
 $strings = array(
   'Drupal 7 - Easier and more powerful than ever' =>
-  'Drupal 7 - Enklere og kraftigere enn noen gang før',
+  'Drupal 7 - Mais fácil e mais poderoso do que nunca',
   'Friendly and powerful:' =>
-  'Vennlig og kraftig:',
+  'Amigável e poderoso:',
   'Drupal 7' =>
   'Drupal 7',
   'We are proud to present to you our best work yet &ndash; Drupal 7, the friendly and powerful content management platform for building nearly any kind of website: from blogs and micro-sites to collaborative social communities.' =>
-  'Vi er stolte av å presentere vårt beste arbeid hittil &ndash; Drupal 7, en vennlig og kraftig publiseringsplattform som kan brukes til å bygge nesten alle slags nettsteder: fra blogger og mikronettsteder til sosiale fellesskap.',
+  'Nós estamos orgulhosos em lhe apresentar nosso melhor trabalho até então &ndash; Drupal 7, uma amigável e poderosa plataforma de gerenciamento de conteúdo para construir praticamente qualquer tipo de website: de blogs e micro-sites a comunidades sociais colaborativas.',
   'Get started with Drupal 7' =>
-  'Kom i gang med Drupal 7',
+  'Comece a usar o Drupal 7',
   'Runs on Drupal 7: @site' =>
-  'Kjører på Drupal 7: @site',
+  'Roda em Drupal 7: @site',
   'Easier to use' =>
-  'Enklere å bruke',
+  'Mais fácil de usar',
   'An entirely revamped administrative interface makes your daily tasks easier to find and carry out. Many improvements were added specifically for site builders and content editors.' =>
-  'Et helt nytt administrativt grensesnitt gjør det enklere å løse de daglige oppgavene dine. Det er lagt inn mange forbedringer spesielt beregnet på nettstedsadministratorer og redaktører.',
+  'Uma interface administrativa totalmente nova torna suas tarefas diárias mais fáceis de encontrar e executar. Muitas melhorias vieram para desenvolvedores e editores de conteúdo especialmente.',
   'More flexible' =>
-  'Mer fleksibel',
+  'Mais flexível',
   'Define your own content structure and add custom fields to content, users, comments, and more. Extend your site with one of the over 800 modules already available for Drupal 7.' =>
-  'Bestem din egen innholdsstruktur og legg til egendefinerte felt for innhold, brukere, kommentarer, med mer. Utvid nettstedet med en av over 800 moduler som allerede er tilgjengelige for Drupal 7.',
+  'Defina sua estrutura de conteúdo e adicione campos personalizados a conteúdo, usuários, comentários e mais. Estenda seu site com um dos mais de 800 módulos já disponíveis para o Drupal 7.',
   'More scalable' =>
-  'Mer skalerbar',
+  'Mais escalável',
   'Your Drupal 7 site will be fast, responsive and handle huge amounts of traffic thanks to improved JavaScript and CSS optimization, better caching and more.' =>
-  'Drupal 7-nettstedet ditt vil være raskt og i stand til å håndtere store trafikkvolum takket være bedre JavaScript- og CSS-optimalisering, bedre mellomlagring, med mer.',
+  'Seu site em Drupal 7 será rápido, ágil e poderá lidar com uma enorme quantidade de tráfego graças a melhorias na otimização de JavaScript e CSS, no sistema de cache e tantas outras.',
   'Open source' =>
-  'Åpen kildekode',
+  'Código aberto',
   'Come for the software, stay for the community. Thousands of smart and productive people work together to continuously improve Drupal, modules, themes and distributions.' =>
-  '&laquo;Come for the software, stay for the community.&raquo; Tusenvis av smarte og produktive mennesker arbeider sammen for kontinuerlig forbedring av Drupal, moduler, utseendemaler og distribusjoner.',
+  'Venha pelo software, fique pela comunidade. Milhares de pessoas inteligentes e produtivas trabalham juntas para melhorar continuamente o Drupal, seus módulos, temas e distribuições.',
   'Take a tour' =>
-  'Omvisning',
+  'Faça um tour',
   'Learn more' =>
-  'Lær mer',
+  'Aprenda mais',
   'Get started with updated documentation for Drupal 7:' =>
-  'Kom i gang med oppdatert dokumentasjon for Drupal 7 (på engelsk):',
+  'Começando com a documentação atualizada para o Drupal 7:',
   '<a href="@install-url">Installing Drupal 7</a>' =>
-  '<a href="@install-url">Installering av Drupal 7</a>',
+  '<a href="@install-url">Instalando o Drupal 7</a>',
   '<a href="@upgrade-url">Upgrading from version 6</a>' =>
-  '<a href="@upgrade-url">Oppgradering fra versjon 6</a>',
+  '<a href="@upgrade-url">Atualizando da versão 6</a>',
   '<a href="@api-url">API Documentation</a>' =>
-  '<a href="@api-url">API-dokumentasjon</a>',
+  '<a href="@api-url">Documentação da API</a>',
   'More topics in the <a href="@documentation-url">online documentation</a>.' =>
-  'Flere emner i <a href="@documentation-url">online-dokumentasjonen</a>.',
+  'Mais tópicos na <a href="@documentation-url">documentação online</a>.',
   'Features' =>
-  'Funksjonalitet',
+  'Funcionalidades',
   'Flexible content' =>
-  'Fleksibelt innhold',
+  'Conteúdo flexível',
   'Define custom fields that can be used across content types, users, comments, terms and other entities. Store the data for these fields in SQL, <a href="@nosql-url">NoSQL</a>, or use remote storage.' =>
-  'Opprett egendefinerte felt som kan brukes på tvers av innholdstyper, brukere, kommentarer, termer og andre entititer. Lagre dataene i SQL, <a href="@nosql-url">NoSQL</a> eller bruk ekstern lagring',
+  'Defina campos personalizados que podem ser usados em tipos de conteúdo, usuários, comentários, termos e outras entidades. Armazene os dados desses campos em SQL, <a href="@nosql-url">NoSQL</a>, ou use armazenamento remoto.',
   'Better theming' =>
-  'Bedre utseendehåndtering',
+  'Melhor sistema de temas',
   'Control exactly what gets shown where on the screen with the new Render API and some truly radical alter hooks. The new RDF module provides semantic web markup.' =>
-  'Bestem nøyaktig hva som vises hvor på skjermen med det nye &laquo;Render&raquo; API-et, og noen riktige radikale endringsmuligheter. Den nye RDF-modulen leverer semantisk markering.',
+  'Controle exatamente o que e onde será exibido na tela com a nova Render API e alguns hooks de alteração realmente radicais. O novo módulo RDF fornece um código semântico para web.',
   'Accessible' =>
-  'Tilgjengelig',
+  'Acessível',
   'Administration screens are now far more accessible. Many front-end improvements make it easier for you to build highly accessible websites.' =>
-  'Administrasjonssidene er nå mye mer tilgjengelige. Mange forbedringer i grensesnittet gjør det enklere for deg å bygge nettsted som er tilgjengelige for brukere med forskjellige behov.',
+  'Agora as telas de administração são muito mais acessíveis. Muitas melhorias na interface permitem que você construa websites altamente acessíveis com muito mais facilidade.',
   'Images and files' =>
-  'Bilder og filer',
+  'Imagens e arquivos',
   'Adding images to content is now built in. Generate different versions for thumbnails, previews and other image styles. Private file handling can now be used alongside public files.' =>
-  'Å legge bilder til innhold er nå innebygd. Opprett forskjellige versjoner av miniatyrbilder, forhåndsvisning og andre bildestiler. Private og offentlige filer kan nå brukes samtidig.',
+  'Adição de imagens a conteúdos vêm de fábrica. Gere diferentes versões de miniaturas, pré-visualizações e outros estilos de imagens. O sistema privado de arquivos agora pode ser usado junto com o sistema público.',
   'Automated code testing' =>
-  'Automatisert testing av koden',
+  'Teste de código automatizado',
   'A new automated testing framework with over 30,000 built-in tests allows for <a href="@qa-url">continuous integration testing</a> of all Drupal core patches and contributed modules.' =>
-  'Et nytt automatisert test-rammeverk med over 30.000 innebygde tester gjør det mulig å gjøre <a href="@qa-url">kontinuerlig integrasjonstesting</a> av alle patcher til Drupal-kjernen og tilleggsmoduler.',
+  'Um novo framework de teste automatizado com mais de 30.000 testes inclusos permite fazer <a href="@qa-url">testes para integração contínua</a> de todos patches do núcleo do Drupal e módulos contribuídos.',
   'Improved database support' =>
-  'Forbedret database-støtte',
+  'Melhor suporte de banco de dados',
   'A new database layer provides out-of-the-box support for SQLite, MySQL/MariaDB, and PostgreSQL. Install contributed modules to use <a href="@sqlsrv-url">MS SQL Server</a>, <a href="@oracle-url">Oracle</a>, and more.' =>
-  'Et nytt databaselag med innebygd støtte for SQLite, MySQL/MariaDB og PostgreSQL. Installer tilleggsmoduler for å bruke <a href="@sqlsrv-url">MS SQL Server</a>, <a href="@oracle-url">Oracle</a>, med mer.',
+  'Uma nova camada de banco de dados fornece suporte de fábrica a SQLite, MySQL/MariaDB, e PostgreSQL. Instale módulos contribuídos para usar <a href="@sqlsrv-url">MS SQL Server</a>, <a href="@oracle-url">Oracle</a>, e outros.',
   'Better distribution support' =>
-  'Bedre støtte for distribusjon',
+  'Melhor suporte a distribuições',
   'Use installation profiles to distribute your custom Drupal product. A new API and exportable configurations let you capture more settings in code.' =>
-  'Bruk installasjonsprofiler for å distribuere ditt Drupal-baserte produkt. Et nytt API og eksporterbare konfigurasjoner gjør det mulig å lagre flere av innstillingene i kode.',
+  'Use perfis de instalação para distribuir seu produto Drupal personalizado. Uma nova API e definições exportáveis permite guardar mais configurações em código.',
   'Extend' =>
-  'Utvid',
+  'Estenda',
   'Thanks to a great community effort, over 800 modules are available or under active development for Drupal 7, including <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, and <a href="@wysiwyg-url">WYSIWYG</a>, with more on the way every day.' =>
-  'Takket være innsatsen fra fellesskapet er mer enn 800 moduler tilgjengelig eller under aktiv utvikling for Drupal 7, inkludert <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, and <a href="@wysiwyg-url">WYSIWYG</a>, og flere kommer hver dag.',
+  'Graças a um grande esforço da comunidade, mais de 800 módulos estão disponíveis ou em desenvolvimento para Drupal 7, incluindo <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, e <a href="@wysiwyg-url">WYSIWYG</a>, com mais a caminho todos os dias.',
   'See Drupal 7 in action' =>
-  'Se Drupal 7 i bruk',
+  'Veja o Drupal 7 em ação',
   'Drupal 7 is already in use on hundreds of sites. Some examples include:' =>
-  'Drupal 7 er allerede i bruk på hundrevis av nettsteder, for eksempel:',
+  'Drupal 7 já está em uso em centenas de sites. Alguns exemplos incluem:',
   '<a href="@examiner-url">Examiner.com</a>' =>
   '<a href="@examiner-url">Examiner.com</a>',
   '<a href="@gardens-url">Drupal Gardens</a>' =>
@@ -91,19 +91,19 @@ $strings = array(
   '<a href="@sagmeister-url">Stefan Sagmeister</a>' =>
   '<a href="@sagmeister-url">Stefan Sagmeister</a>',
   'Requirements' =>
-  'Systemkrav',
+  'Requisitos',
   'To install Drupal 7, you will need:' =>
-  'For å installere Drupal 7 trenger du:',
+  'Para instalar o Drupal 7, é necessário:',
   '<strong>Web Server</strong>: Apache (recommended), Nginx, Lighttpd, or Microsoft IIS' =>
-  '<strong>Vevtjener</strong>: Apache (anbefalt), Nginx, Lighttpd eller Microsoft IIS',
+  '<strong>Servidor Web</strong>: Apache (recomendado), Nginx, Lighttpd, ou Microsoft IIS',
   '<strong>Database</strong>: MySQL 5.0.15 and higher, PostgreSQL 8.3 and higher, or SQLite 3.x' =>
-  '<strong>Database</strong>: MySQL 5.0.15 eller nyere, PostgreSQL 8.3 eller nyere, eller SQLite 3.x',
+  '<strong>Banco de dados</strong>: MySQL 5.0.15 ou superior, PostgreSQL 8.3 ou superior, ou SQLite 3.x',
   '<strong>PHP</strong>: 5.2.4 and higher' =>
-  '<strong>PHP</strong>: 5.2.4 eller nyere',
+  '<strong>PHP</strong>: 5.2.4 ou superior',
   '<strong>Memory</strong>: 32MB (A site with a number of commonly used modules enabled may require 64 MB of memory or more.)' =>
-  '<strong>Minne</strong>: 32MB (Et nettsted som bruker en del av de vanligste tilleggsmodulene kan kreve 64MB eller mer.)',
+  '<strong>Memória</strong>: 32MB (Um site com módulos comumente usados habilitados pode requerir 64MB de memória ou mais.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
-  'Mer <a href="@requirements-url">informasjon om systemkrav</a>.',
+  'Mais <a href="@requirements-url">informações de requisitos</a>.',
   'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Delta på <a href="@drupalcon-url">DrupalCon Chicago</a> for å lære mer om Drupal 7',
+  'Participe do <a href="@drupalcon-url">DrupalCon Chicago</a> para aprender mais a respeito do Drupal 7',
 );
