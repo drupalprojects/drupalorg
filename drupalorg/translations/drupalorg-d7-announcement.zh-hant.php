@@ -104,6 +104,6 @@ $strings = array(
   '<strong>記憶體</strong>：32MB (若網站使用了大量的常用模組，將需要 64MB 或更多。)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   '更多 <a href="@requirements-url">安裝需求</a>資料。',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
   '參與<a href="@drupalcon-url">DrupalCon Chicago</a> 了解更多 Drupal 7 的功能。',
 );

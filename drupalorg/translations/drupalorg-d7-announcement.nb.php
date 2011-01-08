@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Minne</strong>: 32MB (Et nettsted som bruker en del av de vanligste tilleggsmodulene kan kreve 64MB eller mer.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Mer <a href="@requirements-url">informasjon om systemkrav</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Delta på <a href="@drupalcon-url">DrupalCon Chicago</a> for å lære mer om Drupal 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'Delta på <a href="@drupalcon-url">DrupalCon Chicago</a> for å lære mer om Drupal 7.',
 );
