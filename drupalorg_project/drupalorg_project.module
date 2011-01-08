@@ -253,6 +253,14 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
         )),
       );
     }
+
+    // Translation projects on drupal.org are being phased out in favor of
+    // localize.drupal.org, so prevent new translation projects from being
+    // created.
+    if ($form['project_taxonomy']['project_type']['#default_value'] != DRUPALORG_TRANSLATION_TID) {
+      unset($form['project_taxonomy']['project_type']['#options'][DRUPALORG_TRANSLATION_TID]);
+    }
+    $form['project_taxonomy']['project_type']['#description'] = t('Note: Translation projects have been moved and are now actively maintained at <a href="@localize-link">localize.drupal.org</a>.', array('@localize-link' => 'http://localize.drupal.org/'));
   }
 }
 
