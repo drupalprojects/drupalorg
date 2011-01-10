@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $strings = array(
   'Drupal 7 - Easier and more powerful than ever' =>
   'Drupal 7 - आसान और पहले से कहीं अधिक  प्रभावशाली',
@@ -37,7 +37,7 @@ $strings = array(
   '<a href="@upgrade-url">Upgrading from version 6</a>' =>
   '<a href="@upgrade-url">संस्करण 6 से  उन्नयन</a>',
   '<a href="@api-url">API Documentation</a>' =>
-  '<a href="@api-url">API प्रलेखन</ a>',
+  '<a href="@api-url">API प्रलेखन</a>',
   'More topics in the <a href="@documentation-url">online documentation</a>.' =>
   '<a href="@documentation-url">ऑनलाइन प्रलेखन  में बहुत सारे विषय</a>',
   'Features' =>
@@ -99,9 +99,9 @@ $strings = array(
   '<strong>PHP</strong>: 5.2.4 and higher' =>
   '<strong> PHP </strong>: 5.2.4 और उच्च',
   '<strong>Memory</strong>: 32MB (A site with a number of commonly used modules enabled may require 64 MB of memory or more.)'=>
-  '<strong> स्मृति </strong>: 32MB (साईट जो अक्सर उपयोग करने वाले बहुत सारे 'मोडूल्स' का  समर्थन करता है  उसे  64 एमबी  या उससे अधिक मेमोरी की आवश्यकता हो सकती है|',
+  '<strong> स्मृति </strong>: 32MB (साईट जो अक्सर उपयोग करने वाले बहुत सारे \'मोडूल्स\' का  समर्थन करता है  उसे  64 एमबी  या उससे अधिक मेमोरी की आवश्यकता हो सकती है|',
   'More <a href="@requirements-url">requirements information</a>.' =>
   '<a href="@requirements-url">आवश्यकताएं सम्बन्धित अधिक जानकारी</a>',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
   'Drupal 7 के बारे में अधिक जानने के लिए DrupalCon शिकागो में  भाग ले <a href="@drupalcon-url">DrupalCon शिकागो</a> ',
 );

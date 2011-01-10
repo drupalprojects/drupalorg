@@ -718,6 +718,7 @@ function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
     'de' => 'German',
     'el' => 'Greek',
     'he' => 'Hebrew',
+    'hi' => 'Hindi',
     'hu' => 'Hungarian',
     'id' => 'Indonesian',
     'it' => 'Italian',
