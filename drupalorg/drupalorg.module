@@ -727,6 +727,7 @@ function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
     'nb' => 'Norwegian (Bokmål)',
     'pt' => 'Portuguese (Portugal)',
     'pt-br' => 'Portuguese (Brazil)',
+    'ro' => 'Romanian',
     'ru' => 'Russian',
     'sr' => 'Serbian',
     'sl' => 'Slovene',

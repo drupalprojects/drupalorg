@@ -52,5 +52,5 @@ $strings = array(
   '<strong>PHP</strong>: 5.2.4 and higher' =>  '<strong>PHP</strong>: 5.2.4 sau o versiune superioară',
   '<strong>Memory</strong>: 32MB (A site with a number of commonly used modules enabled may require 64 MB of memory or more.)' =>  '<strong>Memorie</strong>: 32MB (Un sit cu module active, utilizate în mod regulat, necesită o memorie de cel puțin 64 MB.)',
   'More <a href="@requirements-url">requirements information</a>.' =>  'Mai multe <a href="@requirements-url">informații legate de cerințe</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>  'Participă la conferința <a href="@drupalcon-url">DrupalCon Chicago</a> pentru a afla mai multe despre Drupal 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>  'Participă la conferința <a href="@drupalcon-url">DrupalCon Chicago</a> pentru a afla mai multe despre Drupal 7.',
 );
