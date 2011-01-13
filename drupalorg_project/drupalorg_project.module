@@ -17,16 +17,6 @@ define('DRUPALORG_CORE_VERSION_TID', '103');
 define('DRUPALORG_CORE_VERSION_NAME', '7.x');
 
 /**
- * The CVS user role. Added to users with a CVS account.
- */
-define('DRUPALORG_CVS_USER_ROLE', 8);
-
-/**
- * The required simplenews newsletter tid for CVS account holders.
- */
-define('DRUPALORG_CVS_NEWSLETTER', 118);
-
-/**
  * URL for the Drupal Security Team.
  */
 define('DRUPALORG_SECURITY_TEAM_URL', 'http://drupal.org/security-team');
@@ -39,18 +29,24 @@ define('DRUPALORG_SECURITY_CONTACT_URL', 'http://drupal.org/security-team#report
 /**
  * URL for the handbook page that describes the "Release type" vocabulary.
  */
-define('DRUPALORG_RELEASE_TYPE_HANDBOOK_URL', 'http://drupal.org/handbook/cvs/releases/types#type');
+define('DRUPALORG_RELEASE_TYPE_HANDBOOK_NID', 1025122);
 
 /**
  * URL specifically to describe the "Security update" term.
  * For now, the general page for release types is the best we've got.
  */
-define('DRUPALORG_SECURITY_UPDATE_HANDBOOK_URL', DRUPALORG_RELEASE_TYPE_HANDBOOK_URL);
+define('DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID', DRUPALORG_RELEASE_TYPE_HANDBOOK_NID);
 
 /**
  * Term ID for translation projects.
  */
 define('DRUPALORG_TRANSLATION_TID', 29);
+
+/**
+ * Defaults for project_project_node_form
+ */
+define('DRUPALORG_DEFAULT_LICENSE', 'GNU public license, version 2');
+define('DRUPALORG_DEFAULT_LICENSE_LINK', 'http://www.gnu.org/licenses/old-licenses/gpl-2.0.html');
 
 
 // == Basic core hooks =========================================================
@@ -120,9 +116,6 @@ function drupalorg_project_help($path, $arg) {
     case 'project/usage':
     case 'project/usage/%':
       return '<p>'. t('These statistics are incomplete; only Drupal websites using the <a href="!update_status_url">Update Status</a> module are included in the data. As this module is now included with the download of Drupal since version 6.x, the data is heavily biased toward newer sites. <a href="!usage_description_url">Read more information about how these statistics are calculated.</a>', array('!update_status_url' => url('project/update_status'), '!usage_description_url' => url('node/329620'))) .'</p>';
-
-   case 'cvs':
-     return t('Work is ongoing to migrate our code management system to Git. If you would like to help, please <a href="http://groups.drupal.org/drupal-org-git-migration-team">join the Git migration team</a>.');
   }
 
   if ($arg[0] == 'project' && $arg[1] == 'issues-term' && $arg[2] == '346') {
@@ -231,25 +224,17 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'project_release_node_form') {
     drupalorg_project_release_node_form_alter($form, $form_state);
   }
-  
-  // Add CVS maintainer newsletter signup to users when getting a CVS account.
-  if ($form_id == 'cvs_user_edit_form') {
-    $form['#submit'][] = 'drupalorg_project_cvs_user_edit_submit';
-  }
     
   if ($form_id == 'project_project_node_form') {
-    // Always hide the sandbox checkbox (for now).
-    $form['project_node']['project']['sandbox']['#access'] = FALSE;
-
     // Deprecate the "license" field, as it must always be GPLv2+ anyway.
     if (! $form['project']['license']['#default_value']) {
        $form['project']['license'] = array(
         '#type' => 'item',
         '#title' => $form['project']['license']['#title'],
         '#value' => t('<a href="@link_url">@link_name</a>', array(
-          // Constants defined in CVS module.
-          '@link_url' => CVS_LICENSE_LINK,
-          '@link_name' => CVS_LICENSE,
+          // Constants defined in drupalorg_project.module.
+          '@link_url' => DRUPALORG_DEFAULT_LICENSE_LINK,
+          '@link_name' => DRUPALORG_DEFAULT_LICENSE,
         )),
       );
     }
@@ -278,7 +263,7 @@ function drupalorg_project_release_node_form_alter(&$form, $form_state) {
         }
         else {
           // Regular release
-          $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => DRUPALORG_RELEASE_TYPE_HANDBOOK_URL));
+          $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => url('node/'. DRUPALORG_RELEASE_TYPE_HANDBOOK_NID)));
           // Add wrapper div for drupalorg_project.js
           $form['taxonomy'][$vid]['#prefix'] = '<div class="release-type-select">';
           $form['taxonomy'][$vid]['#suffix'] = '</div>';
@@ -291,7 +276,7 @@ function drupalorg_project_release_node_form_alter(&$form, $form_state) {
           }
           $form['security_update_confirm'] = array(
             '#type' => 'checkbox',
-            '#title' => t('Are you sure you want to mark this release as a <a href="@security_update_url">Security update</a>?', array('@security_update_url' => DRUPALORG_SECURITY_UPDATE_HANDBOOK_URL)),
+            '#title' => t('Are you sure you want to mark this release as a <a href="@security_update_url">Security update</a>?', array('@security_update_url' => url('node/'. DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID))),
             '#prefix' => '<div class="'. $confirm_class .'">',
             '#suffix' => '</div>',
             '#weight' => -2,
@@ -312,7 +297,7 @@ function drupalorg_project_release_node_form_alter(&$form, $form_state) {
             $form['taxonomy'][$vid]['#disabled'] = TRUE;
             $form['taxonomy'][$vid]['#value'] = $form['taxonomy'][$vid]['#default_value'];
           }
-          $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a> Since this release is already marked as a %security_update, you can no longer change the release type. If you believe you need to do so for some reason, you should <a href="@contact_url">contact</a> the <a href="@security_url">Drupal Security Team</a>.', array('@handbook_url' => DRUPALORG_RELEASE_TYPE_HANDBOOK_URL, '%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL));
+          $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a> Since this release is already marked as a %security_update, you can no longer change the release type. If you believe you need to do so for some reason, you should <a href="@contact_url">contact</a> the <a href="@security_url">Drupal Security Team</a>.', array('@handbook_url' => url('node/'. DRUPALORG_RELEASE_TYPE_HANDBOOK_NID), '%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL));
         }
         else {
           // Not a Security update, remove that option entirely if this is
@@ -320,7 +305,7 @@ function drupalorg_project_release_node_form_alter(&$form, $form_state) {
           if (!empty($form['#node']->rebuild) || !user_access('administer projects')) {
             _drupalorg_project_remove_security_update($form);
           }
-          $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => DRUPALORG_RELEASE_TYPE_HANDBOOK_URL));
+          $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => url('node/'. DRUPALORG_RELEASE_TYPE_HANDBOOK_NID)));
         }
       }
     }
@@ -382,30 +367,7 @@ function drupalorg_project_security_release_form_validate($form, &$form_state) {
   $security_tid = drupalorg_project_get_security_update_tid();
   if (!empty($form_state['values']['taxonomy'][$vid][$security_tid]) && empty($form_state['values']['security_update_confirm'])) {
     // Ensure the user confirms that this release should be marked security.
-    form_set_error('security_update_confirm', t('You must confirm you want this release to be a <a href="@security_update_url">Security update</a>', array('@security_update_url' => DRUPALORG_SECURITY_UPDATE_HANDBOOK_URL)));
-  }
-}
-
-// == CVS maintainer housekeeping ==============================================
-
-/**
- * Add the user to the CVS maintainer role, when she gets an account.
- */
-function drupalorg_project_cvs_user_edit_submit($form, &$form_state) {
-  global $language;
-
-  if (isset($form_state['values']['cvs_status'])) {
-    $account = user_load(array('uid' => $form_state['values']['cvs_uid']));
-    switch ($form_state['values']['cvs_status']) {
-      case CVS_APPROVED:
-        db_query('INSERT INTO {users_roles} (uid, rid) VALUES (%d, %d)', $form_state['values']['cvs_uid'], DRUPALORG_CVS_USER_ROLE);
-        break;
-      case CVS_DISABLED:
-        db_query('DELETE FROM {users_roles} WHERE uid = %d AND rid = %d', $form_state['values']['cvs_uid'], DRUPALORG_CVS_USER_ROLE);
-        break;
-    }
-    // Clear cache for this user, so that the user will see new functionality.
-    cache_clear_all($form_state['values']['cvs_uid'] .':'. $language->language, 'cache_menu');
+    form_set_error('security_update_confirm', t('You must confirm you want this release to be a <a href="@security_update_url">Security update</a>', array('@security_update_url' => url('node/'. DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID))));
   }
 }
 
@@ -415,11 +377,9 @@ function drupalorg_project_cvs_user_edit_submit($form, &$form_state) {
  * Implemenation of hook_project_page_link_alter().
  */
 function drupalorg_project_project_page_link_alter(&$links, $node) {
-  // Add "Browse the CVS repository" link for contributed projects by default.
+  // Add "Browse the VCS repository" link for contributed projects by default.
   if (!isset($links['development']['links']['browse_repository'])) {
-    if (isset($node->cvs['repository']) && $node->cvs['repository'] == 2 && !empty($node->cvs['directory'])) {
-      $links['development']['links']['browse_repository'] = l(t('Browse the CVS repository'), 'http://drupalcode.org/viewvc/drupal/contributions' . $node->cvs['directory']);
-    }
+    // @TODO Add gitweb link, waiting on issue http://drupal.org/node/354509
   }
 
   // Make the development and resources sections actual core blocks.
@@ -493,8 +453,8 @@ function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page 
   if ($op == 'view' && $page) {
     $extra = '';
     switch ($node->nid) {
-      case 199251: // List projects with CVS RSS feeds.
-        $extra = drupalorg_project_list_cvs_rss();
+      case 199251: // List projects with commit RSS feeds.
+        $extra = drupalorg_project_list_commit_rss();
         break;
       case 97084: // List branches ever created in contrib.
         $extra = drupalorg_project_list_branches_contrib();
@@ -547,18 +507,19 @@ function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page 
 }
 
 /**
- * List projects with CVS RSS links.
+ * List projects with commit RSS links.
  */
-function drupalorg_project_list_cvs_rss() {
+function drupalorg_project_list_commit_rss() {
   $count_query = "SELECT COUNT(*) FROM {node} WHERE type = 'project_project' AND status = 1";
   $total = db_result(db_query($count_query));
-  $header = array(array('data' => t('Number'), 'field' => 'nid', 'sort' => 'desc'), t('Title'), t('CVS/RSS'));
+  $header = array(array('data' => t('Number'), 'field' => 'nid', 'sort' => 'desc'), t('Title'), t('Commits RSS'));
   $result = pager_query("SELECT nid, title, status FROM {node} WHERE type = 'project_project' AND status = 1 ". tablesort_sql($header), 100, 0, $count_query);
   $rows = array();
   $page = (int)$_GET['page'];
   $count = $total - $page * 100;
   while($row = db_fetch_array($result)) {
-    $url = url('cvs', array('query' => 'rss=true&nid='. $row['nid'], 'absolute' => TRUE));
+    // @TODO Need RSS feeds and commitlog/project views, see http://drupal.org/node/1024958
+    $url = url('commitlog');
     $rows[]= array($count--, l($row['title'], 'node/'. $row['nid']), theme('feed_icon', $url, $row['title']));
   }
   drupal_set_message("There are $total projects.");
@@ -567,14 +528,15 @@ function drupalorg_project_list_cvs_rss() {
 }
 
 /**
- * Show branches ever created in contrib based on CVS module data.
+ * Show branches ever created in contrib based on versioncontrol module data.
  */
 function drupalorg_project_list_branches_contrib() {
   $output = '<ul>';
-  $query= db_query("SELECT DISTINCT tag, COUNT(*) AS total
-    FROM {cvs_tags}
-    WHERE nid != 3060 AND nid != 0 AND tag RLIKE 'DRUPAL' AND branch = 1
-    GROUP BY tag ORDER BY tag DESC");
+  $query = db_query("SELECT DISTINCT name, COUNT(*) AS total
+    FROM {versioncontrol_labels} vcl
+    INNER JOIN {versioncontrol_project_projects} vcp ON vcp.repo_id = vcl.repo_id
+    WHERE vcp.nid != 3060 AND vcl.type = %d
+    GROUP BY name ORDER BY name DESC", VERSIONCONTROL_OPERATION_BRANCH);
   while($tag = db_fetch_object($query)) {
     $output .= ' <li>' . check_plain($tag->tag) . ' ('. format_plural($tag->total, '1 project', '@count projects') .')</li>';
   }
@@ -583,14 +545,15 @@ function drupalorg_project_list_branches_contrib() {
 }
 
 /**
- * Show branches ever created in core based on CVS module data.
+ * Show branches ever created in core based on versioncontrol module data.
  */
 function drupalorg_project_list_branches_core() {
   $output = '<ul>';
-  $query= db_query("SELECT tag
-    FROM {cvs_tags}
-    WHERE nid = 3060 AND branch = 1 AND tag != 'DRUPAL-3-00'
-    ORDER BY tag DESC");
+  $query = db_query("SELECT name
+    FROM {versioncontrol_labels} vcl
+    INNER JOIN {versioncontrol_project_projects} vcp ON vcp.repo_id = vcl.repo_id
+    WHERE vcp.nid = 3060 AND type = %d
+    ORDER BY name DESC", VERSIONCONTROL_OPERATION_BRANCH);
   while($tag = db_fetch_object($query)) {
     $output .= ' <li>' . check_plain($tag->tag) . '</li>';
   }
@@ -599,10 +562,11 @@ function drupalorg_project_list_branches_core() {
   $output .= '<p>The tags currently available in Drupal core are:</p>';
   $output .= '<ul>';
 
-  $query= db_query("SELECT tag
-    FROM {cvs_tags}
-    WHERE nid = 3060 AND branch = 0 AND tag RLIKE 'DRUPAL-'
-    ORDER BY tag DESC");
+  $query = db_query("SELECT name
+    FROM {versioncontrol_labels} vcl
+    INNER JOIN {versioncontrol_project_projects} vcp ON vcp.repo_id = vcl.repo_id
+    WHERE vcp.nid = 3060 AND type = %d
+    ORDER BY name DESC", VERSIONCONTROL_OPERATION_TAG);
   while($tag = db_fetch_object($query)) {
     $output .= ' <li>' . check_plain($tag->tag) . '</li>';
   }
@@ -751,7 +715,7 @@ function drupalorg_project_bingo_block_output() {
     l('Mailing list archives', 'mailing-lists'),
     l('Drupal.org webmasters', 'project/issues/webmasters'),
     l('Drupal.org server administrators', 'project/issues/infrastructure'),
-    l('Drupal.org CVS applications', 'project/issues/cvsapplications'),
+    l('Drupal.org Project applications', 'project/issues/projectapplications'),
     array(
       'data' => '<strong>Web links</strong>',
       'children' => array(
@@ -772,14 +736,15 @@ function drupalorg_project_bingo_block_output() {
  *   Add caching.
  */
 function drupalorg_project_preprocess_drupalorg_home(&$vars) {
-  $result = db_query_range("SELECT m.*, u.name, u.uid FROM {cvs_messages} m INNER JOIN {users} u ON m.uid = u.uid ORDER BY m.created DESC", 0, 5);
+  $result = db_query_range("SELECT vco.message as message, vco.date as created, u.name, u.uid FROM {versioncontrol_operations} vco INNER JOIN {users} u ON vco.author_uid = u.uid ORDER BY vco.date DESC", 0, 5);
   $recent_updates = '';
   while ($message = db_fetch_object($result)) {
-    $recent_updates .= '<h6>'. l(truncate_utf8($message->message, 80) .'...', 'cvs', array('query' => 'commit='. $message->cid)) .'</h6><p class="submitted">'. theme('node_submitted', $message) .'</p>'; 
+    // @TODO need to update link to use individual commit message view, see http://drupal.org/node/1024960
+    $recent_updates .= '<h6>'. l(truncate_utf8($message->message, 80) .'...', 'commitlog') .'</h6><p class="submitted">'. theme('node_submitted', $message) .'</p>'; 
   }
   // We have no place to link this to in a nice way.
-  $recent_updates .= '<p>'. l(t('More commit messages...'), 'cvs') .'</p>';
-  $vars['tab_content_cvs'] = $recent_updates;
+  $recent_updates .= '<p>'. l(t('More commit messages...'), 'commitlog') .'</p>';
+  $vars['tab_content_git'] = $recent_updates;
 }
 
 /**
@@ -877,7 +842,7 @@ function drupalorg_project_meta_data($node) {
       $label = t('Maintenance status');
       $info[$label] = '<span class="warning">' . t('Unknown') . '</span>';
     }
-    if (empty($development_status) && !empty($node->cvs['directory'])) {
+    if (empty($development_status) && !empty($node->versioncontrol_project['repo_id'])) {
       $label = t('Development status');
       $info[$label] = '<span class="warning">' . t('Unknown') . '</span>';
     }

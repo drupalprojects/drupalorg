@@ -40,11 +40,11 @@
           <table class="front-current-activity">
             <tr><td><?php print $number_of_modules; ?></td><td><a href="project/modules">Modules</a></td></tr>
             <tr><td><?php print $number_of_themes; ?></td><td><a href="project/themes">Themes</a></td></tr>
-            <tr><td><?php print $number_of_cvs_accounts; ?></td><td><a href="cvs">Active devs</a></td></tr>
+            <tr><td><?php print $number_of_git_accounts; ?></td><td><a href="cvs">Active devs</a></td></tr>
           </table>
           <table class="front-current-activity">
             <tr><td></td><th>This week</th></tr>
-            <tr><td><?php print $number_of_cvs_commits; ?></td><td><a href="cvs">Code commits</a></td></tr>
+            <tr><td><?php print $number_of_git_commits; ?></td><td><a href="commitlog">Code commits</a></td></tr>
             <tr><td><?php print $number_of_issue_comments; ?></td><td><a href="project/issues">Issue comments</a></td></tr>
           </table>
         </div>
@@ -96,7 +96,7 @@
           <?php print $tab_content_forums; ?>
         </div>
         <div id="fragment-4" class="ui-tabs-panel ui-tabs-hide">
-          <?php print $tab_content_cvs; ?>
+          <?php print $tab_content_git; ?>
         </div>
       </div>
     </div>

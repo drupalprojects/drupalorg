@@ -321,7 +321,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'drupalorg-faq' => array('title' => t('FAQ'), 'href' => 'node/179723', '#active' => drupalorg_crosssite_child_of('main', 'node/179723')),
         'webmasters' =>      array('title' => t('Webmasters'),       'href' => 'node/3202',   '#active' => drupalorg_crosssite_child_of('main', 'node/3202',   $vars)),
         'documentation' =>   array('title' => t('Documentation'),    'href' => 'node/18753',  '#active' => drupalorg_crosssite_child_of('main', 'node/18753',  $vars)),
-        'cvsapplications' => array('title' => t('CVS Applications'), 'href' => 'node/525912', '#active' => drupalorg_crosssite_child_of('main', 'node/525912', $vars)),
+        'projectapplications' => array('title' => t('Project Applications'), 'href' => 'node/1025112', '#active' => drupalorg_crosssite_child_of('main', 'node/1025112', $vars)),
         'infrastructure' =>  array('title' => t('Infrastructure'),   'href' => 'node/107028', '#active' => drupalorg_crosssite_child_of('main', 'node/107028', $vars)),
         'theme' =>           array('title' => t('Theme'),            'href' => 'node/651778', '#active' => drupalorg_crosssite_child_of('main', 'node/651778', $vars)),
       );

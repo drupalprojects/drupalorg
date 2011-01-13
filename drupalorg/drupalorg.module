@@ -294,8 +294,8 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
 function drupalorg_activity_block() {
   $items = array();
   $stats = drupalorg_get_activity();
- 	$items[] = t('<strong>@accounts</strong> people with CVS accounts', array('@accounts' => $stats['number_of_cvs_accounts']));
- 	$items[] = t("<strong>@commits</strong> CVS commits this week", array('@commits' => $stats['number_of_cvs_commits']));
+  $items[] = t('<strong>@accounts</strong> people with Git accounts', array('@accounts' => $stats['number_of_git_accounts']));
+ 	$items[] = t("<strong>@commits</strong> Git commits this week", array('@commits' => $stats['number_of_git_commits']));
  	$items[] = t("<strong>@users</strong> users on drupal.org", array('@users' => $stats['number_of_users']));
  	$items[] = t("<strong>@sites</strong> sites running Drupal", array('@sites' => $stats['sites']));
  	$items[] = t("<strong>@docs</strong> Documentation team members", array('@docs' => $stats['docs']));
@@ -316,9 +316,9 @@ function drupalorg_get_activity($_force = FALSE){
   elseif (lock_acquire('drupalorg_get_activity', 5)) {
     $stats = array();
 
-    // CVS: retrieve info via API.
-    $stats['number_of_cvs_accounts'] = number_format(cvs_get_total_accounts());
-    $stats['number_of_cvs_commits'] = number_format(cvs_get_total_commits(NULL, 7*24*60*60));
+    // GIT: retrieve info via API.
+    $stats['number_of_git_accounts'] = number_format(drupalorg_git_gateway_get_total_accounts());
+    $stats['number_of_git_commits'] = number_format(drupalorg_versioncontrol_get_total_commits(NULL, 7*24*60*60));
 
     // Issue comments this week
     $followups = db_result(db_query("SELECT COUNT(distinct c.nid) FROM {node} n INNER JOIN {comments} c ON n.nid = c.nid WHERE n.type = 'project_issue' AND n.status = 1 AND c.timestamp > %d", strtotime("1 week ago")));
@@ -490,7 +490,7 @@ function drupalorg_map_content($_force = FALSE) {
     $queries = array(
       "SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {book} b ON b.nid = nr.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = nr.uid INNER JOIN {users} u ON u.uid = nr.uid ORDER BY nr.timestamp DESC",
       "SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' ORDER BY n.created DESC",
-      "SELECT DISTINCT cm.cid, cm.message title, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'committed' verb FROM {cvs_messages} cm INNER JOIN {html5_user_geolocation} hug ON hug.uid = cm.uid INNER JOIN {users} u ON u.uid = cm.uid ORDER BY cm.created DESC",
+      "SELECT DISTINCT vco.vc_op_id, vco.message title, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'committed' verb FROM {versioncontrol_operations} vco INNER JOIN {html5_user_geolocation} hug ON hug.uid = vco.author_uid INNER JOIN {users} u ON u.uid = vco.author_uid ORDER BY vco.date DESC",
     );
     $map = array();
     foreach ($queries as $q => $query) {
@@ -511,7 +511,9 @@ function drupalorg_map_content($_force = FALSE) {
         }
         // Set link.
         if ($row->type === 'commit') {
-          $row->link = l($row->title, 'cvs', array('query' => array('commit' => $row->cid)));
+          // @TODO Commitlog does not have an individual commit view, see http://drupal.org/node/1024960
+//          $row->link = l($row->title, 'commitlog', array('query' => array('commit' => $row->cid)));
+          $row->link = check_plain($row->title);
         }
         else {
           $row->link = l($row->title, 'node/' . $row->nid);
@@ -1306,95 +1308,6 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
     $node->content['body']['#value'] = str_replace($filtered_teaser, $filtered_teaser . theme('drupalorg_hosting_page'), $node->content['body']['#value']);
   }
 }
-
-/**
- * @group CVS Applications
- * @{
- */
-
-/**
- * The node nid of Drupal.Org's CVS Applications project node.
- */
-define('DRUPALORG_CVS_APP_PROJECT_NID', 525912);
-
-/**
- * Hook into the CVS application form submit handler.
- */
-function drupalorg_form_cvs_application_form_alter(&$form) {
-  array_unshift($form['#submit'], 'drupalorg_cvs_app_submit');
-}
-
-/**
- * FormAPI submit handler
- *
- * @param $form
- *  Array, the FormAPI array
- * @param $form_state
- *  Array, FormAPI state array.
- *
- * This submit handler automatically creates a project issue when the user
- * applies for CVS account.
- */
-function drupalorg_cvs_app_submit($form, &$form_state) {
-  global $user;
-
-  // Easy to use link to the user's CVS form.
-  $user_cvs_edit_link = l('CVS edit link for '. $user->name, 'user/'. $user->uid .'/edit/cvs');
-
-  // Automagically create a project issue in the Drupal CVS Applications project.
-  $node = new stdClass();
-  $node->type = 'project_issue';
-  $node->uid = $user->uid;
-  $node->comment = 2; // Allow follow-ups.
-  $node->pid = variable_get('drupalorg_cvs_app_project_nid', DRUPALORG_CVS_APP_PROJECT_NID);
-  $node->sid = variable_get('drupalorg_cvs_app_project_sid', 16); // Status is "active (needs more info)".
-  $node->component = variable_get('drupalorg_cvs_app_project_component', 'Miscellaneous');
-  $node->category = variable_get('drupalorg_cvs_app_project_task', 'task');
-  $node->priority = variable_get('drupalorg_cvs_app_project_priority', 2); // Normal.
-  $node->title = $user->name .' ['. $form_state['values']['cvs_user'] .']'; // Set title to username of applicant (helps when ordering the summary).
-  $node->body = $user_cvs_edit_link ."\n\n<p />". $form_state['values']['motivation'];
-
-  // Create the project issue node.
-  node_save($node);
-
-  // Save the issue nid, used during the email generation phase.
-  _drupalorg_cvs_app_issue_nid($node->nid);
-}
-
-/**
- * Implementation of hook_mail_alter()
- */
-function drupalorg_mail_alter(&$message) {
-  global $base_url;
-
-  $find = array(
-    'cvs_cvs_email_submit_applicant',
-    'cvs_cvs_email_submit_admin',
-  );
-
-  if (in_array($message['id'], $find)) {
-    // Find and replace the project issue of the project issue.
-    $message['body'] = str_replace('%cvs-project-issue', $base_url .'/node/'. _drupalorg_cvs_app_issue_nid(), $message['body']);
-  }
-}
-
-/**
- * Used to store a variable statically between hook calls.
- *
- * @param $nid
- *   Integer, node nid number to save.
- */
-function _drupalorg_cvs_app_issue_nid($nid = FALSE) {
-  static $stored_nid;
-  if ($nid !== FALSE) {
-    $stored_nid = $nid;
-  }
-  return $stored_nid;
-}
-
-/**
- * @}
- */
 
 /**
  * Implementation of hook_user().

@@ -8,3 +8,27 @@ function drupalorg_versioncontrol_ctools_plugin_directory($module, $plugin) {
     return "plugins/$plugin";
   }
 }
+
+/**
+ * Return total number of commits in a given interval.
+ *
+ * @param $rid
+ *   Optional repository identifier.
+ * @param $interval
+ *   Optional interval in seconds, defaults to 30 days.
+ *
+ * @return
+ *   Total number of commits for the requested repository (or site-wide) in
+ *   the specified time interval.
+ *
+ */
+function drupalorg_versioncontrol_get_total_commits($rid = NULL, $interval = -1) {
+  if ($interval < 0) {
+    // Default to 30 days if not specified.
+    $interval = 60 * 60 * 24 * 30;
+  }
+  $where = isset($rid) ? ' AND repo_id = %d' : '';
+  return db_result(db_query('SELECT count(*) FROM {versioncontrol_operations} WHERE date > %d'. $where, time() - $interval, $rid));
+}
+
+
