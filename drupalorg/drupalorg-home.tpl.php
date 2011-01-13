@@ -40,7 +40,7 @@
           <table class="front-current-activity">
             <tr><td><?php print $number_of_modules; ?></td><td><a href="project/modules">Modules</a></td></tr>
             <tr><td><?php print $number_of_themes; ?></td><td><a href="project/themes">Themes</a></td></tr>
-            <tr><td><?php print $number_of_git_accounts; ?></td><td><a href="cvs">Active devs</a></td></tr>
+            <tr><td><?php print $number_of_git_accounts; ?></td><td><a href="commitlog">Active devs</a></td></tr>
           </table>
           <table class="front-current-activity">
             <tr><td></td><th>This week</th></tr>
