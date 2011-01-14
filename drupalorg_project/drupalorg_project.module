@@ -377,11 +377,6 @@ function drupalorg_project_security_release_form_validate($form, &$form_state) {
  * Implemenation of hook_project_page_link_alter().
  */
 function drupalorg_project_project_page_link_alter(&$links, $node) {
-  // Add "Browse the VCS repository" link for contributed projects by default.
-  if (!isset($links['development']['links']['browse_repository'])) {
-    // @TODO Add gitweb link, waiting on issue http://drupal.org/node/354509
-  }
-
   // Make the development and resources sections actual core blocks.
   $links['development']['type'] = 'block';
   $links['resources']['type'] = 'block';
