@@ -10,6 +10,12 @@
 define('DRUPALORG_GIT_GATEWAY_RID', 20);
 
 /**
+ * Role for granting access to create full projects.
+ */
+define('DRUPALORG_GIT_GATEWAY_VETTED_RID', 24);
+
+
+/**
  * Implementation of hook_perm().
  */
 function drupalorg_git_gateway_perm() {
@@ -60,5 +66,5 @@ function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
  * Return total number of approved Git accounts.
  */
 function drupalorg_git_gateway_get_total_accounts() {
-  return db_result(db_query('SELECT count(*) FROM {users_roles} WHERE rid = %d', DRUPALORG_GIT_GATEWAY_RID));
+  return db_result(db_query('SELECT count(*) FROM {users_roles} WHERE rid = %d', DRUPALORG_GIT_GATEWAY_VETTED_RID));
 }
