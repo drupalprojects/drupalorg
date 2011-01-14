@@ -23,5 +23,6 @@ $plugin = array(
     'class' => 'VersioncontrolRepositoryUrlHandlerGitweb',
     'file' => 'VersioncontrolRepositoryUrlHandlerGitweb.inc',
     'path' => drupal_get_path('module', 'versioncontrol_git') . '/includes/plugins/webviewer_url_handlers',
+    'parent' => 'none',
   ),
 );
