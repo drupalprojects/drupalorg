@@ -1,5 +1,6 @@
 <?php
 // $Id$
+
 /**
  * @file
  * This plugin contains the main documentation of how to make a
@@ -7,7 +8,6 @@
  */
 
 $plugin = array(
-
   'vcs' => 'git',
   'title' => t('Drupalorg Gitweb URL autogenerator'),
   'url_templates' => array(
