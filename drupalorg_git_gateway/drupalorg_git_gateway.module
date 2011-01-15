@@ -57,10 +57,11 @@ function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
   if (($op == 'insert' || $op == 'update')) {
     if (isset($edit['use_git'])) {
       if (empty($edit['use_git'])) {
+        db_query('DELETE FROM {users_roles} WHERE uid = %d AND rid = %d', array($account->uid, DRUPALORG_GIT_GATEWAY_RID));
         unset($edit['roles'][DRUPALORG_GIT_GATEWAY_RID]);
       }
       else {
-        $edit['roles'][DRUPALORG_GIT_GATEWAY_RID] = TRUE;
+        $edit['roles'][DRUPALORG_GIT_GATEWAY_RID] = DRUPALORG_GIT_GATEWAY_RID;
       }
       unset($edit['use_git']);
     }
