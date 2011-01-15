@@ -56,7 +56,12 @@ function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
   }
   if (($op == 'insert' || $op == 'update')) {
     if (isset($edit['use_git'])) {
-      $edit['roles'][DRUPALORG_GIT_GATEWAY_RID] = !empty($edit['use_git']);
+      if (empty($edit['use_git'])) {
+        unset($edit['roles'][DRUPALORG_GIT_GATEWAY_RID]);
+      }
+      else {
+        $edit['roles'][DRUPALORG_GIT_GATEWAY_RID] = TRUE;
+      }
       unset($edit['use_git']);
     }
   }
