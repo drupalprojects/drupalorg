@@ -922,3 +922,12 @@ function drupalorg_project_get_project_types($singular = FALSE) {
     );
   }
 }
+
+/**
+ * Implement hook_ctools_plugin_directory().
+ */
+function drupalorg_project_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'project_release' && $plugin == 'release_packager') {
+    return "plugins/$plugin";
+  }
+}
