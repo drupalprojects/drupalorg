@@ -22,8 +22,8 @@ define('LIMIT_DOUBLE', 5);
 define('LIMIT_MAX', 100);         // maximum items to display in the block or on a page.
 
 function pivots_block_output() {
-  // skip nid=3060, the drupal project
-  if (($node = project_get_project_from_menu()) && ($node->nid != 3060)) {
+  // Skip the Drupal core project.
+  if (($node = project_get_project_from_menu()) && ($node->nid != DRUPALORG_CORE_NID)) {
 
     //HACK: randomize algorithm rotation
     $_pivots_block_pid_double = PID_DOUBLE;  // double pivot ID defaults to conversation pivots

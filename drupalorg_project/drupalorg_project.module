@@ -153,17 +153,18 @@ function drupalorg_project_issue_counts() {
   $issue_rids = array();
   /// @todo Further optimize this if/when {node}.status is denormalized into
   /// {project_release_nodes}.
-  $query = db_query("SELECT prn.nid FROM {project_release_nodes} prn INNER JOIN {node} n ON prn.nid = n.nid WHERE prn.pid = 3060 AND prn.version_api_tid = %d AND n.status = 1", DRUPALORG_CORE_VERSION_TID);
+  $query = db_query("SELECT prn.nid FROM {project_release_nodes} prn INNER JOIN {node} n ON prn.nid = n.nid WHERE prn.pid = %d AND prn.version_api_tid = %d AND n.status = 1", DRUPALORG_CORE_NID, DRUPALORG_CORE_VERSION_TID);
   while ($release = db_fetch_object($query)) {
     $issue_rids[] = $release->nid;
   }
   $issue_rid_placeholders = db_placeholders($issue_rids);
+  $args = array_merge(array(DRUPALORG_CORE_NID), $issue_rids);
 
-  $issue_counts['Pending bugs'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND category = 'bug' AND sid = 1 AND priority IN (1,2,4) AND rid IN ($issue_rid_placeholders)", $issue_rids));
-  $issue_counts['Critical issues'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND category IN ('bug', 'task') AND sid IN (1,8,13,14) AND priority = 1 AND rid IN ($issue_rid_placeholders)", $issue_rids));
-  $issue_counts['Major issues'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND category IN ('bug', 'task') AND sid IN (1,8,13,14) AND priority = 4 AND rid IN ($issue_rid_placeholders)", $issue_rids));
-  $issue_counts['Patch queue'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND sid IN (8,13,14) AND rid IN ($issue_rid_placeholders)", $issue_rids));
-  $issue_counts['Patches to review'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = 3060 AND sid IN (8) AND rid IN ($issue_rid_placeholders)", $issue_rids));
+  $issue_counts['Pending bugs'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND category = 'bug' AND sid = 1 AND priority IN (1,2,4) AND rid IN ($issue_rid_placeholders)", $args));
+  $issue_counts['Critical issues'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND category IN ('bug', 'task') AND sid IN (1,8,13,14) AND priority = 1 AND rid IN ($issue_rid_placeholders)", $args));
+  $issue_counts['Major issues'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND category IN ('bug', 'task') AND sid IN (1,8,13,14) AND priority = 4 AND rid IN ($issue_rid_placeholders)", $args));
+  $issue_counts['Patch queue'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND sid IN (8,13,14) AND rid IN ($issue_rid_placeholders)", $args));
+  $issue_counts['Patches to review'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND sid IN (8) AND rid IN ($issue_rid_placeholders)", $args));
   variable_set('drupalorg_project_issue_counts', $issue_counts);
 }
 
@@ -594,8 +595,8 @@ function drupalorg_project_list_branches_contrib() {
   $output = '<ul>';
   $query= db_query("SELECT DISTINCT tag, COUNT(*) AS total
     FROM {cvs_tags}
-    WHERE nid != 3060 AND nid != 0 AND tag RLIKE 'DRUPAL' AND branch = 1
-    GROUP BY tag ORDER BY tag DESC");
+    WHERE nid != %d AND nid != 0 AND tag RLIKE 'DRUPAL' AND branch = 1
+    GROUP BY tag ORDER BY tag DESC", DRUPALORG_CORE_NID);
   while($tag = db_fetch_object($query)) {
     $output .= ' <li>' . check_plain($tag->tag) . ' ('. format_plural($tag->total, '1 project', '@count projects') .')</li>';
   }
@@ -610,8 +611,8 @@ function drupalorg_project_list_branches_core() {
   $output = '<ul>';
   $query= db_query("SELECT tag
     FROM {cvs_tags}
-    WHERE nid = 3060 AND branch = 1 AND tag != 'DRUPAL-3-00'
-    ORDER BY tag DESC");
+    WHERE nid = %d AND branch = 1 AND tag != 'DRUPAL-3-00'
+    ORDER BY tag DESC", DRUPALORG_CORE_NID);
   while($tag = db_fetch_object($query)) {
     $output .= ' <li>' . check_plain($tag->tag) . '</li>';
   }
@@ -622,8 +623,8 @@ function drupalorg_project_list_branches_core() {
 
   $query= db_query("SELECT tag
     FROM {cvs_tags}
-    WHERE nid = 3060 AND branch = 0 AND tag RLIKE 'DRUPAL-'
-    ORDER BY tag DESC");
+    WHERE nid = %d AND branch = 0 AND tag RLIKE 'DRUPAL-'
+    ORDER BY tag DESC", DRUPALORG_CORE_NID);
   while($tag = db_fetch_object($query)) {
     $output .= ' <li>' . check_plain($tag->tag) . '</li>';
   }
@@ -639,19 +640,19 @@ function drupalorg_project_list_branches_core() {
 function drupalorg_project_bingo_jump($type = NULL) {
   $sql = array(
     // Bug, core.
-    'bug-core' => "SELECT nid FROM {project_issues} WHERE sid IN (1) AND category = 'bug' AND pid = 3060 ORDER BY RAND() LIMIT 1",
+    'bug-core' => "SELECT nid FROM {project_issues} WHERE sid IN (1) AND category = 'bug' AND pid = %d ORDER BY RAND() LIMIT 1",
     // Bug, contrib.
-    'bug-contrib' => "SELECT nid FROM {project_issues} WHERE sid IN (1) AND category = 'bug' AND pid != 3060 ORDER BY RAND() LIMIT 1",
+    'bug-contrib' => "SELECT nid FROM {project_issues} WHERE sid IN (1) AND category = 'bug' AND pid != %d ORDER BY RAND() LIMIT 1",
     // Patch, core.
-    'patch-core' => "SELECT nid FROM {project_issues} WHERE sid IN (8,13,14) AND pid = 3060 ORDER BY RAND() LIMIT 1",
+    'patch-core' => "SELECT nid FROM {project_issues} WHERE sid IN (8,13,14) AND pid = %d ORDER BY RAND() LIMIT 1",
     // Patch, contrib.
-    'patch-contrib' => "SELECT nid FROM {project_issues} WHERE sid IN (8,13,14) AND pid != 3060 ORDER BY RAND() LIMIT 1",
+    'patch-contrib' => "SELECT nid FROM {project_issues} WHERE sid IN (8,13,14) AND pid != %d ORDER BY RAND() LIMIT 1",
   );
   if (!isset($type) || !isset($sql[$type])) {
     $type = 'bug-core';
   }
 
-  $nid = db_result(db_query($sql[$type]));
+  $nid = db_result(db_query($sql[$type], DRUPALORG_CORE_NID));
   if ($_GET['stop'] != 1) {
     drupal_goto('node/'. $nid);
   }
@@ -810,7 +811,7 @@ function drupalorg_project_preprocess_drupalorg_home(&$vars) {
  */
 function drupalorg_project_meta_data($node) {
   $info = array();
-  if ($node->nid == 3060) {
+  if ($node->nid == DRUPALORG_CORE_NID) {
     return;
   }
   if (count($node->taxonomy)) {
