@@ -20,7 +20,7 @@ class DrupalorgVersioncontrolLabelVersionMapperGit implements VersioncontrolRele
     $matches = array();
 
     // Core versions are totally different from contrib.
-    if ($project_node->nid == 3060) {
+    if ($project_node->nid == DRUPALORG_CORE_NID) {
       // Core official versions can be any of the following:
       // 4.7.0-beta3
       // 4.7.0
@@ -85,7 +85,7 @@ class DrupalorgVersioncontrolLabelVersionMapperGit implements VersioncontrolRele
     $matches = array();
    
     // Again, core branches are different from contrib.
-    if ($project_node->nid == 3060) {
+    if ($project_node->nid == DRUPALORG_CORE_NID) {
       // Core branches can be any of these:
       // 4.7.x
       // 7.x
