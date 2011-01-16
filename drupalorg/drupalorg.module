@@ -373,7 +373,7 @@ function drupalorg_get_activity($_force = FALSE){
     lock_release('drupalorg_get_activity');
   }
   else {
-    $stats = FALSE;
+    $stats = array();
   }
   return $stats;
 }
