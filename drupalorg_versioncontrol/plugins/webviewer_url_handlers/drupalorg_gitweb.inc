@@ -3,8 +3,8 @@
 
 /**
  * @file
- * This plugin contains the main documentation of how to make a
- * webviewer_url_handler. It does not really provide any functionallity.
+ * This plugin contains a drupalorg specific verison of the URL templates for
+ * the webviewer_url_handlers plugin. 
  */
 
 $plugin = array(
