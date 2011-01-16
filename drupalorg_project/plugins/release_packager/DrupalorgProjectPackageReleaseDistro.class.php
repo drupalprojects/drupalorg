@@ -55,7 +55,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
       }
       else {
 
-        // Basic sanity check for the format of the attribute. The CVS checkout
+        // Basic sanity check for the format of the attribute. The Git checkout
         // attempt of core will handle the rest of the validation (ie, it will
         // fail if a non-existant tag is specified.
         if (!preg_match("/^(\d+)\.(\d+)(-[a-z0-9]+)?$/", $info['core'], $matches)) {

@@ -9,7 +9,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     'tar' => '/bin/tar',
     'gzip' => '/bin/gzip',
     'zip' => '/usr/bin/zip',
-    'cvs' => '/usr/bin/cvs',
+    'git' => '/usr/bin/git',
     'ln' => '/bin/ln',
     'rm' => '/bin/rm',
   );
@@ -27,9 +27,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   protected $file_destination_subdirectory = '';
   protected $temp_directory = '';
   protected $project_build_root = '';
-
-  /// Data about CVS respositories shared across all instances of this class.
-  protected static $repositories = array();
 
   /// Have we initialized our shared static data yet?
   protected static $shared_init = FALSE;
@@ -72,15 +69,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return;
     }
     
-    $query = db_query("SELECT rid, root, modules, name FROM {cvs_repositories}");
-    while ($repo = db_fetch_object($query)) {
-       self::$repositories[$repo->rid] = array(
-        'root' => $repo->root,
-        'modules' => $repo->modules,
-        'name' => $repo->name,
-      );
-    }
-
     putenv("TERM=vt100");  // drush requires a terminal.
     
     self::$shared_init = TRUE;
@@ -93,12 +81,23 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // Remember if the tar.gz version of this release file already exists.
     $tgz_exists = is_file($this->filenames['full_dest_tgz']);
 
-    // Figure out how to check this thing out from CVS.
-    $cvs_tag = escapeshellcmd($this->release_node->project_release['tag']);
-    $cvs_repo_id = $this->project_node->cvs['repository'];
-    $cvs_root = self::$repositories[$cvs_repo_id]['root'];
-    $cvs_module = self::$repositories[$cvs_repo_id]['modules'];
-    $cvs_export_from = $cvs_module . $this->project_node->cvs['directory'];
+    if (empty($this->project_node->versioncontrol_project['repo'])) {
+      wd_err('ERROR: %project_title does not have a VCS repository defined', array('%project_title' => $this->project_node->title));
+      return 'error';
+    }
+    $repo = $this->project_node->versioncontrol_project['repo'];
+
+    // Clean up any old build directory if it exists.
+    // Don't use drupal_exec or return if this fails, we expect it to be empty.
+    exec("{$this->conf['rm']} -rf {$this->project_build_root}");
+
+    // Make a fresh build directory and move inside it.
+    if (!mkdir($this->project_build_root) || !drupal_chdir($this->project_build_root)) {
+      return 'error';
+    }
+
+    // Figure out how to check this thing out from Git.
+    $git_tag = escapeshellcmd($this->release_node->project_release['tag']);
 
     // For core, we want to checkout into a directory named via the version,
     // e.g. "drupal-7.0".
@@ -110,17 +109,19 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       $export_to = $this->project_short_name;
     }
 
-    // Clean up any old build directory if it exists.
-    // Don't use drupal_exec or return if this fails, we expect it to be empty.
-    exec("{$this->conf['rm']} -rf {$this->project_build_root}");
+    /// @todo: Fix this to not assume direct FS access to the Git repositories.
+    /// @see http://drupal.org/node/1028950
+    // Invoke git pointing to the right repo.
+    $git_export = $this->conf['git'] . ' --git-dir=' . escapeshellcmd($repo->root);
+    // Tell it we want a tar archive with a the right subdirectory prefix.
+    $git_export .= ' archive --format=tar --prefix=' . $export_to . '/';
+    // Use the right Git tag
+    $git_export .= ' ' . $git_tag;
+    // Pipe the tarball through tar to extract it locally for post-processing.
+    $git_export .= ' | ' . $this->conf['tar'] . ' x';
 
-    // Make a fresh build directory and move inside it.
-    if (!mkdir($this->project_build_root) || !drupal_chdir($this->project_build_root)) {
-      return 'error';
-    }
-
-    // Checkout this release from CVS, and see if we need to rebuild it
-    if (!drupal_exec("{$this->conf['cvs']} -d $cvs_root -q export -r $cvs_tag -d $export_to $cvs_export_from")) {
+    // Checkout this release from Git, and see if we need to rebuild it
+    if (!drupal_exec($git_export)) {
       return 'error';
     }
     if (!is_dir("{$this->project_build_root}/$export_to")) {
