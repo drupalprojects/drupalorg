@@ -10,6 +10,11 @@
 define('DRUPALORG_GIT_GATEWAY_RID', 20);
 
 /**
+ * Role for administering Git.
+ */
+define('DRUPALORG_GIT_GATEWAY_ADMIN_RID', 22);
+
+/**
  * Role for granting access to create full projects.
  */
 define('DRUPALORG_GIT_GATEWAY_VETTED_RID', 24);
