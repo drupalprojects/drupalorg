@@ -495,7 +495,7 @@ function drupalorg_map_content($_force = FALSE) {
     $queries = array(
       "SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {book} b ON b.nid = nr.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = nr.uid INNER JOIN {users} u ON u.uid = nr.uid ORDER BY nr.timestamp DESC",
       "SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' ORDER BY n.created DESC",
-      "SELECT DISTINCT vco.vc_op_id, vco.message title, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'committed' verb FROM {versioncontrol_operations} vco INNER JOIN {html5_user_geolocation} hug ON hug.uid = vco.author_uid INNER JOIN {users} u ON u.uid = vco.author_uid ORDER BY vco.date DESC",
+      "SELECT DISTINCT vco.vc_op_id, vco.message title, vco.revision, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'committed' verb FROM {versioncontrol_operations} vco INNER JOIN {html5_user_geolocation} hug ON hug.uid = vco.author_uid INNER JOIN {users} u ON u.uid = vco.author_uid ORDER BY vco.date DESC",
     );
     $map = array();
     foreach ($queries as $q => $query) {
@@ -516,8 +516,7 @@ function drupalorg_map_content($_force = FALSE) {
         }
         // Set link.
         if ($row->type === 'commit') {
-          // @TODO Commitlog does not have an individual commit view, see http://drupal.org/node/1024960
-//          $row->link = l($row->title, 'commitlog', array('query' => array('commit' => $row->cid)));
+          $row->link = l($row->title, 'commitlog/commit/'. $row->revision, array('query' => array('commit' => $row->cid)));
           $row->link = check_plain($row->title);
         }
         else {
