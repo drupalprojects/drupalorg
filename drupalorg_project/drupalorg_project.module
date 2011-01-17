@@ -500,7 +500,7 @@ function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page 
       if ($node->project['sandbox']) {
         $user_link = l(t("!name's sandbox", array('!name' => $node->name)), 'project/user/'. $node->uid);
         drupal_set_title($user_link .': '. check_plain($node->title));
-        $node->content['project_info']['#value'] = '<form><input style="font-family: courier; width: 500px;" value="git clone git://git.drupal.org/project/'. $node->project['uri'] .'.git" /></form>';
+        $node->content['project_info']['#value'] = '<form><input style="font-family: courier; width: 500px;" value="git clone git://git-dev.drupal.org/project/'. $node->project['uri'] .'.git" /></form>';
         $node->content['project_sandbox_warning']['#value'] = '<div class="meta"><h5>Experimental Project</h5><p>This is a <a href="/node/1011196">sandbox project</a>, which contains experimental code for developer use only.</p></div>';
       }
       else {
