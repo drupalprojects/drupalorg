@@ -104,6 +104,6 @@ $strings = array(
   '<strong>Memorija</strong>: 32 MB (Web sjediste s vecim brojem modula moze zahtjevati 64 MB memorije ili vise.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Vise <a href="@requirements-url">informacija o zahtjevima</a>.',
-  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7' =>
-  'Nazocite <a href="@drupalcon-url">DrupalCon-u u Chicagu</a> kako biste naucili vise o Drupalu 7',
+  'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>
+  'Nazocite <a href="@drupalcon-url">DrupalCon-u u Chicagu</a> kako biste naucili vise o Drupalu 7.',
 );
