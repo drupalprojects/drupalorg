@@ -516,7 +516,7 @@ function drupalorg_map_content($_force = FALSE) {
         }
         // Set link.
         if ($row->type === 'commit') {
-          $row->link = l($row->title, 'commitlog/commit/'. $row->revision, array('query' => array('commit' => $row->cid)));
+          $row->link = l($row->title, 'commitlog/commit/'. $row->revision);
         }
         else {
           $row->link = l($row->title, 'node/' . $row->nid);
