@@ -646,6 +646,25 @@ function drupalorg_update_6506() {
   return $return;
 }
 
+function drupalorg_update_6507() {
+  $return = array();
+
+  update_sql("INSERT INTO {versioncontrol_views_sets} (views_set, vcs, view_name)
+    VALUES
+	  ('global_commit_view','git','vc_git_project_global_commits'),
+	  ('individual_commit_view','git','vc_git_individual_commit'),
+	  ('repository_commit_view','git','commitlog_repository_commits'),
+	  ('user_commit_view','git','vc_git_project_user_commits'),
+	  ('project_commit_view','git','vc_git_project_commit_view');
+	");
+
+  update_sql("DELETE FROM {blocks} WHERE module = 'cvs' AND theme = 'bluecheese';");
+
+  update_sql("UPDATE {blocks} SET status = 1, weight = '-37', region = 'right', visibility = 1 WHERE module = 'versioncontrol_project' AND delta = 'project_maintainers' AND theme = 'bluecheese';");
+
+  return $return;
+}
+
 /**
  * Utility function to add permissions to certain user roles.
  */
