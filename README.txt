@@ -17,7 +17,7 @@ Drupal contributions repository for three reasons:
      you can do via a site-specific module.
 
 Official releases will never be made for this module, since we're just
-going to update drupal.org based on our changes in CVS. We have no
+going to update drupal.org based on our changes in Git. We have no
 intention of supporting this module such that other sites can make use
 of it.
 
