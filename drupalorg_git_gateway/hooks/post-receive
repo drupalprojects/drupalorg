@@ -28,8 +28,12 @@ fclose($stdin);
 foreach ($queues as $queue_name => $info) {
   try {
     $pheanstalk = new Pheanstalk($info['beanstalkd host'], $info['beanstalkd port']);
+    // Build a stdClass item wrapper to make beanstalkd.module happy
+    $item = new stdClass();
+    $item->name = $queue_name;
+    $item->data = $data;
     $pheanstalk->useTube($queue_name);
-    $pheanstalk->put(serialize($data));
+    $pheanstalk->put(serialize($item));
   }
   catch (Exception $e) {
     if (file_exists($git_hook_error_log) && is_writable($git_hook_error_log)) {
