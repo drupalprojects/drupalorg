@@ -646,9 +646,14 @@ function drupalorg_update_6506() {
   return $return;
 }
 
-function drupalorg_update_6507() {
+/**
+ * Main update function for git migration deployment.
+ */
+function drupalorg_update_6600() {
   $return = array();
 
+  // Update versioncontrol_views_sets with proper views
+  update_sql("DELETE from {versioncontrol_views_sets};");
   update_sql("INSERT INTO {versioncontrol_views_sets} (views_set, vcs, view_name)
     VALUES
 	  ('global_commit_view','git','vc_git_project_global_commits'),
@@ -658,9 +663,22 @@ function drupalorg_update_6507() {
 	  ('project_commit_view','git','vc_git_project_commit_view');
 	");
 
+  // Update Blocks table to properly position maintainers block
   update_sql("DELETE FROM {blocks} WHERE module = 'cvs' AND theme = 'bluecheese';");
+  update_sql("DELETE FROM {blocks} WHERE module = 'versioncontrol_project' AND theme = 'bluecheese';");
 
-  update_sql("UPDATE {blocks} SET status = 1, weight = '-37', region = 'right', visibility = 1 WHERE module = 'versioncontrol_project' AND delta = 'project_maintainers' AND theme = 'bluecheese';");
+  $block = new stdClass;
+  $block->module = 'versioncontrol_project';
+  $block->delta = 'project_maintainers';
+  $block->theme = 'bluecheese';
+  $block->status = 1;
+  $block->weight = -37;
+  $block->region = 'right';
+  $block->visibility = 1;
+  $block->pages = '';
+  $block->cache = -1;
+
+  drupal_write_record('blocks', $block);
 
   return $return;
 }
