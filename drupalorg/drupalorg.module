@@ -714,6 +714,7 @@ function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
     'ca' => 'Catalan',
     'zh-hans' => 'Chinese (simplified)',
     'zh-hant' => 'Chinese (traditional)',
+    'hr' => 'Croatian',
     'da' => 'Danish',
     'nl' => 'Dutch',
     'en' => 'English',
