@@ -3,7 +3,7 @@ $strings = array(
   'Drupal 7 - Easier and more powerful than ever' =>
   'Drupal 7 - Einfacher und mächtiger als zuvor',
   'Friendly and powerful:' =>
-  'Freundlich und mächtig:',
+  'Freundlich & mächtig:',
   'Drupal 7' =>
   'Drupal 7',
   'We are proud to present to you our best work yet &ndash; Drupal 7, the friendly and powerful content management platform for building nearly any kind of website: from blogs and micro-sites to collaborative social communities.' =>
