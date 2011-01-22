@@ -274,3 +274,41 @@ function drupalorg_git_gateway_suggest_git_username($name) {
   }
   return $base_suggestion;
 }
+
+function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $repository) {
+  // FIXME What vc_project adds doesn't help us at all, just regenerate it all for now.
+  unset($data['users']);
+
+  $account_perms = array();
+  $auth_data = $repository->getAuthHandler()->getUserData();
+  foreach ($auth_data as $uid => $value) {
+    $account = new stdClass;
+    $account = user_load($uid);
+    if (empty($account)) {
+      continue;
+    }
+
+    $account_perms[$account->git_username] = $value;
+    $ap =& $account_perms[$account->git_username];
+
+    // User has global access disabled for some reason.
+    if (!isset($account->roles[DRUPALORG_GIT_GATEWAY_RID])) {
+      if (!empty($account->git_disabled)) {
+        $ap['global'] = 1; // 1 == account suspended
+      }
+      else if (!empty($account->git_consent)) {
+        $ap['global'] = 2; // 2 == user's ToS agree checkbox is unchecked
+      }
+      else {
+        $ap['global'] = 3; // 3 == other, unknown reason.
+      }
+    }
+    else {
+      $ap['global'] = 0; // 0 == green light, all good
+    }
+
+    $ap['name'] = $account->git_username;
+    $ap['pass'] = $account->pass;
+  }
+  $data['users'] = $account_perms;
+}
