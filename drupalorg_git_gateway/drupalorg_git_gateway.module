@@ -23,45 +23,224 @@ define('DRUPALORG_GIT_GATEWAY_VETTED_RID', 24);
  * Implementation of hook_user().
  */
 function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
-  if ($category != 'account') {
+  $function = 'drupalorg_git_gateway_user_' . $op;
+  if (function_exists($function)) {
+    return $function($edit, $account, $category);
+  }
+}
+
+function drupalorg_git_gateway_user_categories(&$edit, &$account, $category = NULL) {
+  return array(
+    'git' => array(
+      'name' => 'git',
+      'title' => t('Git'),
+      'weight' => 1,
+      // use defaults for access callback and arguments
+    ),
+  );
+}
+
+function drupalorg_git_gateway_user_form(&$edit, &$account, $category = NULL) {
+  if ($category != 'git') {
     return;
   }
 
-  if ($op == 'form') {
-    $form['drupalorg_git_gateway'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Git Access'),
-      '#collapsible' => TRUE,
-    );
-    $form['drupalorg_git_gateway']['terms'] = array(
-      '#type' => 'item',
-      '#title' => t("To use Drupal's version control systems you must agree to the following"),
-      '#value' => theme('item_list', array(
-        t('I will only commit <a href="!link">GPL v2+</a>-licensed code and resources to the Drupal code repository.', array('!link' => url('http://drupal.org/licensing/faq'))),
-        t('I will only commit code and resources that I own or am permitted to distribute.'),
-        t('I will cooperate with the <a href="!link">Drupal Security Team</a> as needed.', array('!link' => url('http://drupal.org/security-team'))),
-        t('I have read and will adhere to the <a href="!link">Drupal Code of Conduct</a>.', array('!link' => url('http://drupal.org/dcoc'))),
-        t('I agree to the <a href="!link">Drupal Code Repository Terms of Service</a>.', array('!link' => url('http://drupalcode.org/viewvc/drupal/contributions/TERMS.txt?view=co'))),
-      )),
-    );
-    $form['drupalorg_git_gateway']['use_git'] = array(
+  $form = array();
+
+  // Store some state information in local variables for easier checking later.
+  $consented = !empty($account->git_consent);
+  $disabled = !empty($account->git_disabled);
+  $username_set = isset($account->git_username);
+
+  // Compensate for hook_user horribleness by queueing messages to be dsm'd where
+  // we can prevent them from being shown on the form submission passthrough.
+  // Stupid hook_user().
+  $form['_git_dsm'] = array(
+    '#type' => 'value',
+    '#value' => array(),
+  );
+
+  $form['git_tos'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Git Access Agreement'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#weight' => 10,
+  );
+
+  $form['git_tos']['terms'] = array(
+    '#type' => 'item',
+    '#title' => t("To use Drupal's version control systems you must agree to the following"),
+    '#value' => theme('item_list', array(
+      t('I will only commit <a href="!link">GPL v2+</a>-licensed code and resources to the Drupal code repository.', array('!link' => url('http://drupal.org/licensing/faq'))),
+      t('I will only commit code and resources that I own or am permitted to distribute.'),
+      t('I will cooperate with the <a href="!link">Drupal Security Team</a> as needed.', array('!link' => url('http://drupal.org/security-team'))),
+      t('I have read and will adhere to the <a href="!link">Drupal Code of Conduct</a>.', array('!link' => url('http://drupal.org/dcoc'))),
+      t('I agree to the <a href="!link">Drupal Code Repository Terms of Service</a>.', array('!link' => url('http://drupalcode.org/viewvc/drupal/contributions/TERMS.txt?view=co'))),
+    )),
+  );
+
+  $form['git_tos']['git_consent'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('I agree'),
+    '#default_value' => $account->git_consent,
+  );
+
+  global $user;
+  if ($user->uid != $account->uid) {
+    // Even admins should never be able to change the state of whether someone
+    // consented to our terms of service or not.
+    $form['git_tos']['git_consent']['#disabled'] = TRUE;
+  }
+
+  // Both 'Git administrator' and 'User administrator' roles can toggle this.
+  if (user_access('administer users') || user_access('administer version control systems')) {
+    $form['git_tos']['git_disabled'] = array(
       '#type' => 'checkbox',
-      '#title' => t('I agree'),
-      '#default_value' => !empty($account->roles[DRUPALORG_GIT_GATEWAY_RID]),
+      '#title' => t('Disable Git access for this user'),
+      '#default_value' => $account->git_disabled,
+      '#description' => t('Globally disable Git access for this user across all of Drupal.org.'),
     );
+  }
+
+  if ($disabled) {
+    $form['_git_dsm']['#value'][] = array(t('Your Git access has been suspended by a Drupal.org administrator.'), 'warning');
+  }
+
+  // Short-circuit early if the consent button hasn't been checked.
+  if (!$consented) {
+    $form['_git_dsm']['#value'][] = array(t('You will not be able to use Git unless the checkbox consenting to the terms of service is checked.'), 'warning');
+    $form['git_tos']['#collapsible'] = FALSE;
+    $form['git_tos']['#collapsed'] = FALSE;
     return $form;
   }
-  if (($op == 'insert' || $op == 'update')) {
-    if (isset($edit['use_git'])) {
-      if (empty($edit['use_git'])) {
-        db_query('DELETE FROM {users_roles} WHERE uid = %d AND rid = %d', array($account->uid, DRUPALORG_GIT_GATEWAY_RID));
-        unset($edit['roles'][DRUPALORG_GIT_GATEWAY_RID]);
-      }
-      else {
-        $edit['roles'][DRUPALORG_GIT_GATEWAY_RID] = DRUPALORG_GIT_GATEWAY_RID;
-      }
-      unset($edit['use_git']);
+
+  if (!$username_set) {
+    $form['_git_dsm']['#value'][] = array(t('You will not be able to use Git until you have selected a Git username. A suggestion has been provided for you, based on your username. <strong>Note that once chosen, your Git username cannot be changed.</strong>'), 'warning');
+  }
+
+  $form['username'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Git Username'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  );
+
+  if ($username_set) {
+    $form['username']['git_username_display'] = array(
+      '#type' => 'item',
+      '#title' => t('Your Git username'),
+      '#disabled' => TRUE,
+      '#value' => $account->git_username,
+      '#description' => t('Your Git username. It cannot be changed. Drupal.org uses this to generate your personalized sandbox URIs, and you use it as your SSH user when authenticating to Drupal.org with Git.'),
+    );
+  }
+  else {
+    $form['username']['#description'] = t('Choose a username to use for Git. Drupal.org will use this to generate your personalized sandbox URIs, and it will be the username you use to authenticate Git to Drupal.org when cloning and pushing code. <strong>Once chosen, your Git username cannot be changed.</strong>');
+    $form['username']['git_username'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Desired Git username'),
+      '#maxlength' => 64,
+      '#default_value' => drupalorg_git_gateway_suggest_git_username($account->name),
+      '#description' => t('Acceptable characters are ANSI alphanumerics (A-Z, a-z, 0-9), underscores or dashes. A suggested username is provided, based on the acceptable characters in your Drupal username and the availability of Git usernames.'),
+    );
+    // Again, bail out early if the username isn't set, as we need it for the instructions.
+    return $form;
+  }
+
+  $form['git_config'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Git Configuration'),
+    '#description' => t('Git has a number of configuration options you ought to set on your local system.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $user_config = t('Most important of all the configuration options are telling Git who you are by setting a name and email. Based on your current account settings, the following settings are appropriate:') . "\n";
+  $git_config_name = empty($account->profile_full_name) ? $account->name : $account->profile_full_name;
+  $user_config .= '<div class="codeblock"><code>';
+  $user_config .= "git config --global user.name '$git_config_name'<br/>";
+  $user_config .= "git config --global user.email '$account->mail'<br/>";
+  $user_config .= '</code></div>';
+  $user_config .= 'E-mail addresses in Drupal Git repositories are never shown in a web browser, but they can be accessed by anyone looking directly at the Git repository logs. It is generally considered appropriate to use a real, public-facing e-mail for Git. However, if you prefer to use an anonymized address, use this special anonymized address: ';
+  $anon_address = "{$account->git_username}@{$account->uid}.no-reply.drupal.org";
+  $user_config .= "<div class=\"codeblock\"><code>git config --global user.email '$anon_address'</code></div>";
+  $user_config .= t('Setting the Git e-mail to either an !multiemailadmin or the anonymized e-mail is very important. If you do not, your commits cannot be linked to your Drupal.org account, and you will not credited for them in commit statistics or listings.', array('!multiemailadmin' => l('e-mail address associated with your account', "user/$account->uid/edit/email-addresses")));
+
+  $form['git_config']['user_config'] = array(
+    '#type' => 'item',
+    '#title' => t('Git user configuration'),
+    '#value' => $user_config,
+  );
+
+  return $form;
+}
+
+function drupalorg_git_gateway_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id != 'user_profile_form') {
+    return;
+  }
+
+  // Add our custom validator, and before the built-in user.module one.
+  array_unshift($form['#validate'], 'drupalorg_git_gateway_profile_form_validate');
+
+  // Only show message if we're not on the submission passthrough by the form builder.
+  if (empty($form_state['post'])) {
+    foreach ($form['_git_dsm']['#value'] as $messagedata) {
+      list($message, $status) = $messagedata;
+      drupal_set_message($message, $status);
     }
+  }
+}
+
+function drupalorg_git_gateway_profile_form_validate($form, &$form_state) {
+  global $user;
+  // Even admins should never be able to change the state of whether someone
+  // consented to our terms of service or not.
+  if (($user->uid != $form_state['values']['_account']->uid) &&
+      ($form_state['values']['git_consent'] != $form_state['values']['_account']->git_consent)) {
+    form_set_error('git_consent', 'Only the account\'s owner can toggle their consent to the Git Terms of Service.');
+    $form_state['values']['git_consent'] = $form_state['values']['_account']->git_consent;
+  }
+
+  // If the git_username field is present, do some validation.
+  if (isset($form['username']['git_username'])) {
+    // Ensure the requested ID isn't taken.
+    if ($uid = db_result(db_query("SELECT uid FROM {users} WHERE git_username = '%s' AND uid <> %d", $form_state['values']['git_username'], $form_state['values']['_account']->uid))) {
+      form_set_error('git_username', t('The requested Git username is already taken.'));
+    }
+    else if (preg_match('/[^A-Za-z0-9_-]/', $form_state['values']['git_username'])) {
+      form_set_error('git_username', t('The requested username contains invalid characters.'));
+    }
+  }
+}
+
+/**
+ * Perform arbitration to determine if the user should be allocated the
+ * all-important 'Git user' role.
+ */
+function drupalorg_git_gateway_user_update(&$edit, &$account, $category = NULL) {
+  // Start by assuming we should not grant the perm.
+  $grant = FALSE;
+
+  // Munge edited values into place on the account for unified checking.
+  foreach (array('git_disabled', 'git_username', 'git_consent') as $field) {
+    if (isset($edit[$field])) {
+      $account->$field = $edit[$field];
+    }
+  }
+
+  if (empty($account->git_disabled)) {
+    // Grant the perm IFF consent has been given and a username has been set.
+    $grant = (!empty($account->git_username) && !empty($account->git_consent));
+  }
+
+  if ($grant) {
+    $edit['roles'][DRUPALORG_GIT_GATEWAY_RID] = DRUPALORG_GIT_GATEWAY_RID;
+  }
+  else {
+    db_query('DELETE FROM {users_roles} WHERE uid = %d AND rid = %d', array($account->uid, DRUPALORG_GIT_GATEWAY_RID));
+    unset($edit['roles'][DRUPALORG_GIT_GATEWAY_RID]);
   }
 }
 
@@ -70,4 +249,28 @@ function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
  */
 function drupalorg_git_gateway_get_total_accounts() {
   return db_result(db_query('SELECT count(distinct(uid)) FROM {users_roles} WHERE rid IN (%d, %d)', DRUPALORG_GIT_GATEWAY_RID, DRUPALORG_GIT_GATEWAY_VETTED_RID));
+}
+
+/**
+ * Created a suggested username based on the provided name value, and ensuring
+ * no conflicts with existing git usernames.
+ *
+ * @param string $name
+ */
+function drupalorg_git_gateway_suggest_git_username($name) {
+  $base_suggestion = preg_replace('/[^A-Za-z0-9_-]/', '', $name);
+  $len = strlen($base_suggestion);
+
+  $result = db_query("SELECT git_username FROM {users} WHERE git_username LIKE ('%s%')", $name);
+  $matches = array();
+  while ($row = db_fetch_object($result)) {
+    $matches[] = $row->git_username;
+  }
+
+  // Ensure no duplicates, and add an incrementing counter if one is found.
+  $i = 0;
+  while (array_search($base_suggestion, $matches) !== FALSE) {
+    $base_suggestion = substr($base_suggestion, 0, $len) . ++$i;
+  }
+  return $base_suggestion;
 }

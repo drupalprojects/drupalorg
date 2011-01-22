@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * @file
+ * Installation, schema, update and uninstall scripts for the d.o Git gateway.
+ */
+
+/**
+ * Alter the {users} table schema to add our git-related fields.
+ *
+ * @param array $schema
+ */
+function drupalorg_git_gateway_schema_alter(&$schema) {
+  $schema['users']['fields']['git_username'] = array(
+    'default' => '',
+    'description' => 'The Git username associated with this user account.',
+    'length' => 64,
+    'not null' => TRUE,
+    'type' => 'varchar',
+  );
+  $schema['users']['fields']['git_consent'] = array(
+    'type' => 'int',
+    'size' => 'tiny',
+    'description' => 'Bool flag indicating whether the user has consented to the VCS terms of service.',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'default' => 0,
+  );
+  $schema['users']['fields']['git_disabled'] = array(
+    'type' => 'int',
+    'size' => 'tiny',
+    'description' => 'Bool flag indicating whether the user has had their git access disabled by an admin.',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'default' => 0,
+  );
+  $schema['users']['indexes']['git_username']  = array('git_username');
+  $schema['users']['indexes']['git_consent']  = array('git_consent');
+  $schema['users']['indexes']['git_disabled']  = array('git_disabled');
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function drupalorg_git_gateway_install() {
+  // Perform alterations on the {users} table.
+  $specs = array(
+    'git_username' => array(
+      // 'default' => '',
+      'description' => 'The Git username associated with this user account.',
+      'length' => 64,
+      // 'not null' => TRUE,
+      'type' => 'varchar',
+    ),
+    'git_consent' => array(
+      'type' => 'int',
+      'size' => 'tiny',
+      'description' => 'Bool flag indicating whether the user has consented to the VCS terms of service.',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+    'git_disabled' => array(
+      'type' => 'int',
+      'size' => 'tiny',
+      'description' => 'Bool flag indicating whether the user has had their git access disabled by an admin.',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+    ),
+  );
+
+  $fakeret = array();
+  foreach ($specs as $field => $spec) {
+    $index = array($field == 'git_username' ? 'unique keys' : 'indexes' => array($field => array($field)));
+    db_add_field($fakeret, 'users', $field, $spec, $index);
+  }
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function drupalorg_git_gateway_uninstall() {
+  // Remove alterations to the {users} table.
+  $fakeret = array();
+  foreach (array('git_username', 'git_consent', 'git_disabled') as $field) {
+    // Indexes probably take care of themselves, but eh, why not...
+    // db_drop_index($fakeret, 'users', $field);
+    db_drop_field($fakeret, 'users', $field);
+  }
+}
