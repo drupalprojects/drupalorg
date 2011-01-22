@@ -33,7 +33,7 @@ function drupalorg_git_gateway_user_categories(&$edit, &$account, $category = NU
   return array(
     'git' => array(
       'name' => 'git',
-      'title' => t('Git'),
+      'title' => t('Git access'),
       'weight' => 1,
       // use defaults for access callback and arguments
     ),
