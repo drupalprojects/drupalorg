@@ -156,7 +156,7 @@ function drupalorg_git_gateway_user_form(&$edit, &$account, $category = NULL) {
     '#collapsed' => FALSE,
   );
 
-  $user_config = t('Most important of all the configuration options are telling Git who you are by setting a name and email. Based on your current account settings, the following settings are appropriate:') . "\n";
+  $user_config = t('Most important of all the configuration options is telling Git who you are by setting a name and e-mail. Based on your current account settings, the following settings are appropriate:') . "\n";
   $git_config_name = empty($account->profile_full_name) ? $account->name : $account->profile_full_name;
   $user_config .= '<div class="codeblock"><code>';
   $user_config .= "git config --global user.name '$git_config_name'<br/>";
