@@ -19,14 +19,6 @@ define('DRUPALORG_GIT_GATEWAY_ADMIN_RID', 22);
  */
 define('DRUPALORG_GIT_GATEWAY_VETTED_RID', 24);
 
-
-/**
- * Implementation of hook_perm().
- */
-function drupalorg_git_gateway_perm() {
-  return array('use git');
-}
-
 /**
  * Implementation of hook_user().
  */
