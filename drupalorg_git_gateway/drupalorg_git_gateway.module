@@ -236,15 +236,11 @@ function drupalorg_git_gateway_user_update(&$edit, &$account, $category = NULL) 
   }
 
   if ($grant) {
-    db_merge('users_roles')
-      ->key(array(
-        'uid' => $account->uid,
-        'rid' => DRUPALORG_GIT_GATEWAY_RID,
-      ))
-      ->fields(array(
-        'uid' => $account->uid,
-        'rid' => DRUPALORG_GIT_GATEWAY_RID,
-      ))->execute();
+    $vals = array(
+      'uid' => $account->uid,
+      'rid' => DRUPALORG_GIT_GATEWAY_RID,
+    );
+    db_merge('users_roles')->key($vals)->fields($vals)->execute();
   }
   else {
     db_query('DELETE FROM {users_roles} WHERE uid = %d AND rid = %d', array($account->uid, DRUPALORG_GIT_GATEWAY_RID));
