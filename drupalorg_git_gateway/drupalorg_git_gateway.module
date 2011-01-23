@@ -185,7 +185,7 @@ function drupalorg_git_gateway_form_alter(&$form, &$form_state, $form_id) {
   array_unshift($form['#validate'], 'drupalorg_git_gateway_profile_form_validate');
 
   // Only show message if we're not on the submission passthrough by the form builder.
-  if (empty($form_state['post'])) {
+  if (empty($form_state['post']) && is_array($form['_git_dsm'])) {
     foreach ($form['_git_dsm']['#value'] as $messagedata) {
       list($message, $status) = $messagedata;
       drupal_set_message($message, $status);
