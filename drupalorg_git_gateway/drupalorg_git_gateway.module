@@ -195,12 +195,16 @@ function drupalorg_git_gateway_form_alter(&$form, &$form_state, $form_id) {
 
 function drupalorg_git_gateway_profile_form_validate($form, &$form_state) {
   global $user;
-  // Even admins should never be able to change the state of whether someone
-  // consented to our terms of service or not.
-  if (($user->uid != $form_state['values']['_account']->uid) &&
-      ($form_state['values']['git_consent'] != $form_state['values']['_account']->git_consent)) {
-    form_set_error('git_consent', 'Only the account\'s owner can toggle their consent to the Git Terms of Service.');
-    $form_state['values']['git_consent'] = $form_state['values']['_account']->git_consent;
+
+  // Validation checks related to admin users editing normal users.
+  if (($user->uid != $form_state['values']['_account']->uid)) {
+    if ($form_state['values']['_category'] == 'git' &&
+       ($form_state['values']['git_consent'] != $form_state['values']['_account']->git_consent)) {
+      // Even admins should never be able to change the state of whether someone
+      // consented to our terms of service or not.
+      form_set_error('git_consent', 'Only the account\'s owner can toggle their consent to the Git Terms of Service.');
+      $form_state['values']['git_consent'] = $form_state['values']['_account']->git_consent;
+    }
   }
 
   // If the git_username field is present, do some validation.
