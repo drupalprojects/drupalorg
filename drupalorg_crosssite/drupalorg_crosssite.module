@@ -281,7 +281,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       $nav_content_links = array(
         'home'       => array('href' => '<front>', 'title' => t('Association Home'), '#site' => 'association'),
         'news'      => array('href' => 'news', 'title' => t('News'), '#site' => 'association'),
-        'about'      => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association', '#active' => drupalorg_crosssite_child_of('about')),
+        'about'      => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association', '#active' => drupalorg_crosssite_child_of('association', 'about')),
         'donate'     => array('href' => 'node/67', 'title' => t('Donate'), '#site' => 'association'),
         'membership' => array('href' => 'node/78', 'title' => t('Memberships'), '#site' => 'association'),
         'faq'        => array('href' => 'node/65', 'title' => t('FAQ'), '#site' => 'association'),
