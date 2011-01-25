@@ -320,3 +320,16 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
   }
   $data['users'] = $account_perms;
 }
+
+function drupalorg_git_gateway_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  if ($node->type != 'project-project' || empty($node->project['sandbox'])
+      || !variable_get('project_enable_alias', TRUE)) {
+    return;
+  }
+
+  // Clear existing alias for the sandbox, it's guaranteed to be wrong.
+  path_set_alias("node/$node->nid");
+  // Set the one with the git_username
+  $user = user_load($node->uid);
+  path_set_alias("node/$node->nid", "sandbox/{$user->git_username}/{$node->project['uri']}", NULL, isset($node->language) ? $node->language : '');
+}
