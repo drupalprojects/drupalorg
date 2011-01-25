@@ -66,7 +66,7 @@ function drupalorg_init() {
   if (!is_null($forum_id)) {
     // Tracking
     $term = taxonomy_get_term($forum_id);
-    $conf['googleanalytics_codesnippet_before'] .= "pageTracker._setCustomVar(1, 'Forum', '" . check_plain($term->name) . "', 3);";
+    $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 1, 'Forum', '" . check_plain($term->name) . "', 3]);"; // 3 is page-level
 
     // Ads
     if (!empty($forum_ads[$forum_id])) {
@@ -77,6 +77,9 @@ function drupalorg_init() {
       drupal_set_content($block->region, theme('block', $block));
     }
   }
+
+  // Track section
+  $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 1, 'Drupalorg-section', '" . drupalorg_crosssite_section() . "', 3]);"; // 3 is page-level
 
   // Temporary message about the Solr index being rebuilt.
   if (variable_get('drupalorg_warn_search_index_rebuild', FALSE)) {
