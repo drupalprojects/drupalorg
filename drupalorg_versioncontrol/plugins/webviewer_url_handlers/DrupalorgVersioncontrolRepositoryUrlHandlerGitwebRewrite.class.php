@@ -13,8 +13,7 @@
  */
 class DrupalorgVersioncontrolRepositoryUrlHandlerGitwebRewrite extends VersioncontrolRepositoryUrlHandler {
 
-  protected $isSandbox;
-  protected $owner;
+  protected $prefix;
 
   public function __construct($repository, $base_url, $template_urls) {
     parent::__construct($repository, $base_url, $template_urls);
@@ -29,8 +28,17 @@ class DrupalorgVersioncontrolRepositoryUrlHandlerGitwebRewrite extends Versionco
       ->condition('vp.repo_id', $this->repository->repo_id)
       ->execute()->fetchAssoc();
 
-    $this->isSandbox = $result['sandbox'];
-    $this->owner = $result['git_username'];
+    $this->prefix = $result['sandbox'] ? 'sandbox/' . $result['git_username'] : 'project';
+  }
+
+  public function getTemplateUrl($name) {
+    if (!isset($this->templateUrls[$name]) || empty($this->templateUrls[$name])) {
+      return '';
+    }
+    return strtr($this->templateUrls[$name], array(
+      '%base_url' => $this->baseUrl,
+      '%prefix'   => $this->prefix,
+    ));
   }
 
   public function getItemLogViewUrl(&$item) {
@@ -38,7 +46,6 @@ class DrupalorgVersioncontrolRepositoryUrlHandlerGitwebRewrite extends Versionco
       '%repo_name' => $this->repository->name,
       '%path'      => $item->path,
       '%revision'  => $item->revision,
-      '%prefix'    => $this->isSandbox ? 'sandbox/' . $this->owner : 'project',
     );
 
     if ($item->isFile()) {
@@ -54,7 +61,6 @@ class DrupalorgVersioncontrolRepositoryUrlHandlerGitwebRewrite extends Versionco
       '%repo_name' => $this->repository->name,
       '%path'      => $item->path,
       '%revision'  => $item->revision,
-      '%prefix'    => $this->isSandbox ? 'sandbox/' . $this->owner : 'project',
     );
 
     $view_url = $item->isFile()
@@ -70,7 +76,6 @@ class DrupalorgVersioncontrolRepositoryUrlHandlerGitwebRewrite extends Versionco
       '%path'         => $file_item_new->path,
       '%old_revision' => $file_item_new->revision,
       '%new_revision' => $file_item_old->revision,
-      '%prefix'       => $this->isSandbox ? 'sandbox/' . $this->owner : 'project',
     );
 
     return strtr($this->getTemplateUrl('diff'), $placeholders);
