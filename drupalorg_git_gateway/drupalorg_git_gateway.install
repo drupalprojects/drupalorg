@@ -75,6 +75,8 @@ function drupalorg_git_gateway_install() {
     $index = array($field == 'git_username' ? 'unique keys' : 'indexes' => array($field => array($field)));
     db_add_field($fakeret, 'users', $field, $spec, $index);
   }
+
+  db_query("UPDATE {system} SET weight = 10 WHERE name = 'drupalorg_git_gateway'");
 }
 
 /**
