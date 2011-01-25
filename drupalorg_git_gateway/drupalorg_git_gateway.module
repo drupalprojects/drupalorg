@@ -317,6 +317,13 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
 
     $ap['name'] = $account->git_username;
     $ap['pass'] = $account->pass;
+
+    // Add sshkeys data.
+    $keys = sshkey_load_all_by_entity('user', $account->uid);
+    $ap['ssh_keys'][' '] = ' ';
+    foreach ($keys as &$key) {
+      $ap['ssh_keys'][$key->title] = $key->fingerprint;
+    }
   }
   $data['users'] = $account_perms;
 }
