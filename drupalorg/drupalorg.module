@@ -63,7 +63,7 @@ function drupalorg_init() {
   elseif (arg(0) === 'node' && is_numeric(arg(1)) && ($node = menu_get_object()) && $node->type === 'forum' && isset($forum_ads[$node->tid])) {
     $forum_id = $node->tid;
   }
-  if (!is_null($forum_id)) {
+  if (isset($forum_id)) {
     // Tracking
     $term = taxonomy_get_term($forum_id);
     $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 1, 'Forum', '" . check_plain($term->name) . "', 3]);"; // 3 is page-level
