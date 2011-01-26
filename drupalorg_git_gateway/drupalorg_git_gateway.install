@@ -5,6 +5,39 @@
  * Installation, schema, update and uninstall scripts for the d.o Git gateway.
  */
 
+function drupalorg_git_gateway_schema() {
+  $schema = array(
+    'drupalorg_git_consent_log' => array(
+      'fields' => array(
+        'uid' => array(
+          'type' => 'int',
+          'not null' => TRUE,
+          'unsigned' => TRUE,
+          'description' => 'The uid of the user whose consent action is being logged.',
+        ),
+        'timestamp' => array(
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+          'description' => 'Timestamp indicating when this consent action occurred.',
+        ),
+        'action' => array(
+          'type' => 'int',
+          'size' => 'tiny',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'description' => 'The consent action - 1 if the user added their consent to the Git ToS, 0 if the user removed their consent.',
+        ),
+      ),
+      'indexes' => array(
+        'uid' => array('uid')
+      ),
+    ),
+  );
+
+  return $schema;
+}
+
 /**
  * Alter the {users} table schema to add our git-related fields.
  *
@@ -77,6 +110,8 @@ function drupalorg_git_gateway_install() {
   }
 
   db_query("UPDATE {system} SET weight = 10 WHERE name = 'drupalorg_git_gateway'");
+
+  drupal_install_schema('drupalorg_git_gateway');
 }
 
 /**

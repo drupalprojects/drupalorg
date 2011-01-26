@@ -227,6 +227,12 @@ function drupalorg_git_gateway_user_update(&$edit, &$account, $category = NULL) 
   // Start by assuming we should not grant the perm.
   $grant = FALSE;
 
+  // User has changed the state of their consent to the Git ToS. Log the change.
+  if (isset($edit['git_consent']) && ($edit['git_consent'] != $account->git_consent)) {
+    $values = array($account->uid, time(), $edit['git_consent']);
+    db_query('INSERT INTO {drupalorg_git_consent_log} (uid, timestamp, action) VALUES (%d, %d, %d) ', $values);
+  }
+
   // Munge edited values into place on the account for unified checking.
   foreach (array('git_disabled', 'git_username', 'git_consent') as $field) {
     if (isset($edit[$field])) {
