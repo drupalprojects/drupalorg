@@ -76,7 +76,7 @@ function drush_drupalorg_git_gateway_drupalorg_ssh_user_key($username = '', $fin
 function drush_drupalorg_git_gateway_drupalorg_sshkey_check($fingerprint = '') {
   if ($key = sshkey_load_by_fingerprint($fingerprint)) {
     $user = user_load($key->entity_id);
-    if (in_array(DRUPALORG_GIT_GATEWAY_RID, $user->roles)) {
+    if (!empty($user->roles[DRUPALORG_GIT_GATEWAY_RID])) {
       drush_print('true');
       return;
     }
