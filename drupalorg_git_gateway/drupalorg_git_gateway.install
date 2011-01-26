@@ -45,10 +45,8 @@ function drupalorg_git_gateway_schema() {
  */
 function drupalorg_git_gateway_schema_alter(&$schema) {
   $schema['users']['fields']['git_username'] = array(
-    'default' => '',
     'description' => 'The Git username associated with this user account.',
     'length' => 64,
-    'not null' => TRUE,
     'type' => 'varchar',
   );
   $schema['users']['fields']['git_consent'] = array(
@@ -67,7 +65,7 @@ function drupalorg_git_gateway_schema_alter(&$schema) {
     'not null' => TRUE,
     'default' => 0,
   );
-  $schema['users']['indexes']['git_username']  = array('git_username');
+  $schema['users']['unique keys']['git_username']  = array('git_username');
   $schema['users']['indexes']['git_consent']  = array('git_consent');
   $schema['users']['indexes']['git_disabled']  = array('git_disabled');
 }
@@ -79,10 +77,8 @@ function drupalorg_git_gateway_install() {
   // Perform alterations on the {users} table.
   $specs = array(
     'git_username' => array(
-      // 'default' => '',
       'description' => 'The Git username associated with this user account.',
       'length' => 64,
-      // 'not null' => TRUE,
       'type' => 'varchar',
     ),
     'git_consent' => array(
