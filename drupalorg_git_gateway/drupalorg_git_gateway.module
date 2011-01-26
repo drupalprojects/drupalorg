@@ -19,6 +19,11 @@ define('DRUPALORG_GIT_GATEWAY_ADMIN_RID', 22);
  */
 define('DRUPALORG_GIT_GATEWAY_VETTED_RID', 24);
 
+define('DRUPALORG_GIT_AUTH_NO_ROLE', 0x001);
+define('DRUPALORG_GIT_AUTH_ACCOUNT_SUSPENDED', 0x002);
+define('DRUPALORG_GIT_AUTH_NOT_CONSENTED', 0x004);
+define('DRUPALORG_GIT_AUTH_PUSHES_DISABLED', 0x008);
+
 /**
  * Implementation of hook_user().
  */
@@ -289,49 +294,43 @@ function drupalorg_git_gateway_suggest_git_username($name) {
   return $base_suggestion;
 }
 
+/**
+ * Implements hook_versioncontrol_project_auth_data_alter().
+ *
+ * Add more auth data to the array being returned via drush for the auth
+ * service, in particular the 'global' state of the account. Also ensure that
+ * we're using the git username, not the vanilla username.
+ *
+ * @param $data
+ * @param $repository
+ */
 function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $repository) {
-  // FIXME What vc_project adds doesn't help us at all, just regenerate it all for now.
-  unset($data['users']);
+  $result = db_select('users', 'u')
+    ->fields('u', array('name', 'git_username'))
+    ->condition('u.name', array_keys($data['users']), 'IN')
+    ->execute()->fetchAllKeyed();
 
-  $account_perms = array();
-  $auth_data = $repository->getAuthHandler()->getUserData();
-  foreach ($auth_data as $uid => $value) {
-    $account = new stdClass;
-    $account = user_load($uid);
-    if (empty($account)) {
-      continue;
+  foreach ($result as $name => $git_username) {
+    $account = user_load($data['users'][$name]['uid']);
+    if ($name != $git_username) {
+      $data['users'][$git_username] = $data['users'][$name];
+      unset($data['users'][$name]);
     }
 
-    $account_perms[$account->git_username] = $value;
-    $ap =& $account_perms[$account->git_username];
+    $ap =& $data['users'][$git_username];
 
+    $ap['global'] = 0;
     // User has global access disabled for some reason.
     if (!isset($account->roles[DRUPALORG_GIT_GATEWAY_RID])) {
+      $ap['global'] |= DRUPALORG_GIT_AUTH_NO_ROLE;
       if (!empty($account->git_disabled)) {
-        $ap['global'] = 1; // 1 == account suspended
+        $ap['global'] |= DRUPALORG_GIT_AUTH_ACCOUNT_SUSPENDED;
       }
-      else if (!empty($account->git_consent)) {
-        $ap['global'] = 2; // 2 == user's ToS agree checkbox is unchecked
+      if (!empty($account->git_consent)) {
+        $ap['global'] |= DRUPALORG_GIT_AUTH_NOT_CONSENTED;
       }
-      else {
-        $ap['global'] = 3; // 3 == other, unknown reason.
-      }
-    }
-    else {
-      $ap['global'] = 0; // 0 == green light, all good
-    }
-
-    $ap['name'] = $account->git_username;
-    $ap['pass'] = $account->pass;
-
-    // Add sshkeys data.
-    $keys = sshkey_load_all_by_entity('user', $account->uid);
-    $ap['ssh_keys'][' '] = ' ';
-    foreach ($keys as &$key) {
-      $ap['ssh_keys'][$key->title] = $key->fingerprint;
     }
   }
-  $data['users'] = $account_perms;
 }
 
 function drupalorg_git_gateway_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
