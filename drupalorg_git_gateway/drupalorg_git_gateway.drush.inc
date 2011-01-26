@@ -29,6 +29,14 @@ function drupalorg_git_gateway_drush_command() {
       'fingerprint' => 'The fingerprint to lookup.',
     ),
   );
+  $commands['drupalorg-sshkey-check'] = array(
+    'aliases' => array('dvsk'),
+    'description' => 'Check key fingerprint is known and attached to a valid user account.',
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
+    'arguments' => array(
+      'fingerprint' => 'The fingerprint to lookup.',
+    ),
+  );
   return $commands;
 }
 
@@ -54,6 +62,21 @@ function drush_drupalorg_git_gateway_drupalorg_vcs_auth_check_user_pass($usernam
 function drush_drupalorg_git_gateway_drupalorg_ssh_user_key($username = '', $fingerprint = '') {
   if ($key = sshkey_load_by_fingerprint($fingerprint)) {
     if ($username == user_load($key->entity_id)->git_username) {
+      drush_print('true');
+      return;
+    }
+  }
+  drush_print('false');
+}
+
+/**
+ * Returns 'true' if a fingerprint is known and attached to a valid, active
+ * account.
+ */
+function drush_drupalorg_git_gateway_drupalorg_sshkey_check($fingerprint = '') {
+  if ($key = sshkey_load_by_fingerprint($fingerprint)) {
+    $user = user_load($key->entity_id);
+    if (in_array(DRUPALORG_GIT_GATEWAY_RID, $user->roles)) {
       drush_print('true');
       return;
     }
