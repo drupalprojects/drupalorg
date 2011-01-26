@@ -57,6 +57,11 @@ class DrupalorgVersioncontrolRepositoryUrlHandlerGitwebRewrite extends Versionco
   }
 
   public function getItemViewUrl(&$item) {
+    if ($item->isDeleted()) {
+      // Do not link to deleted items.
+      return '';
+    }
+
     $placeholders = array(
       '%repo_name' => $this->repository->name,
       '%path'      => $item->path,
