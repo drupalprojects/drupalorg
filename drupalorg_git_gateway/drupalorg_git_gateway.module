@@ -218,7 +218,7 @@ function drupalorg_git_gateway_profile_form_validate($form, &$form_state) {
     if ($uid = db_result(db_query("SELECT uid FROM {users} WHERE git_username = '%s' AND uid <> %d", $form_state['values']['git_username'], $form_state['values']['_account']->uid))) {
       form_set_error('git_username', t('The requested Git username is already taken.'));
     }
-    else if (preg_match('/[^A-Za-z0-9_-]/', $form_state['values']['git_username'])) {
+    else if (preg_match('/[^A-Za-z0-9\._-]/', $form_state['values']['git_username'])) {
       form_set_error('git_username', t('The requested username contains invalid characters.'));
     }
   }
@@ -277,7 +277,7 @@ function drupalorg_git_gateway_get_total_accounts() {
  * @param string $name
  */
 function drupalorg_git_gateway_suggest_git_username($name) {
-  $base_suggestion = preg_replace('/[^A-Za-z0-9_-]/', '', $name);
+  $base_suggestion = preg_replace('/[^A-Za-z0-9\._-]/', '', $name);
   $len = strlen($base_suggestion);
 
   $result = db_query("SELECT git_username FROM {users} WHERE git_username LIKE ('%s%')", $name);
