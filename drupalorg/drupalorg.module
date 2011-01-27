@@ -78,9 +78,6 @@ function drupalorg_init() {
     }
   }
 
-  // Track section
-  $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 2, 'Drupalorg-section', '" . drupalorg_crosssite_section() . "', 3]);"; // 3 is page-level
-
   // Temporary message about the Solr index being rebuilt.
   if (variable_get('drupalorg_warn_search_index_rebuild', FALSE)) {
     if (arg(0) == 'search' || arg(0) == 'download' || arg(0) == 'start' ||

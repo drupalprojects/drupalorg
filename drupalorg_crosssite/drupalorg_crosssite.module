@@ -164,7 +164,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
  * Specify the section matching criteria.
  */
 function drupalorg_crosssite_section() {
-  global $user;
+  global $user, $conf;
   static $section = FALSE;
 
   if ($section === FALSE) {
@@ -210,6 +210,9 @@ function drupalorg_crosssite_section() {
       // Should not happen.
       $section = NULL;
     }
+
+    // Track section
+    $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 2, 'Drupalorg-section', '" . $section . "', 3]);"; // 3 is page-level
   }
   return $section;
 }
