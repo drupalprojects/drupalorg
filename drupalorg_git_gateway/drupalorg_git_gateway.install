@@ -33,6 +33,77 @@ function drupalorg_git_gateway_schema() {
         'uid' => array('uid')
       ),
     ),
+    'drupalorg_git_push_log' => array(
+      'fields' => array(
+        'push_id' => array(
+          'type' => 'serial',
+          'not null' => TRUE,
+          'description' => 'Primary serial key corresponding to this push event.',
+        ),
+        'uid' => array(
+          'type' => 'int',
+          'not null' => TRUE,
+          'unsigned' => TRUE,
+          'description' => 'The uid of the user who initiated the push.',
+        ),
+        'timestamp' => array(
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+          'description' => 'Timestamp indicating when the push occurred.',
+        ),
+        'repo_id' => array(
+          'type' => 'int',
+          'not null' => TRUE,
+          'unsigned' => TRUE,
+          'description' => 'Repository ID of the repository that received the push.',
+        ),
+      ),
+      'primary key' => array('push_id'),
+      'indexes' => array(
+        'uid' => array('uid'),
+        'repo_id' => array('repo_id'),
+      ),
+    ),
+    'drupalorg_git_push_log_refs' => array(
+      'fields' => array(
+        'push_id' => array(
+          'type' => 'int',
+          'not null' => TRUE,
+          'description' => 'Foreign key to {drupalorg_git_push_log}.push_id.',
+        ),
+        'refname' => array(
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'description' => 'The name of the ref that was updated.',
+        ),
+        'reftype' => array(
+          'type' => 'int',
+          'size' => 'tiny',
+          'not null' => TRUE,
+          'default' => 0,
+          'description' => '1 == branch, 2 == tag.',
+        ),
+        'old_obj' => array(
+          'type' => 'char',
+          'length' => 40,
+          'not null' => TRUE,
+          'description' => 'The object to which this ref pointed before the push.',
+        ),
+        'new_obj' => array(
+          'type' => 'char',
+          'length' => 40,
+          'not null' => TRUE,
+          'description' => 'The object to which this ref pointed after the push.',
+        ),
+      ),
+      'primary key' => array('push_id', 'refname'),
+      'indexes' => array(
+        'old_obj' => array('old_obj'),
+        'new_obj' => array('new_obj'),
+      ),
+    ),
   );
 
   return $schema;
