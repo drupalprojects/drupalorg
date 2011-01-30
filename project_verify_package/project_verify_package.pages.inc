@@ -20,15 +20,10 @@ define('PROJECT_VERIFY_PACKAGE_DRUSH_MAKE_PATH', '/var/www/drupal.org/tools/drus
 
 // The URL to retrieve the package's .info file. The following tokens are
 // available:
-//   %project_directory - The project_type/project_short_name path (ie.
-//                        profiles/foo).
+//   %project_shortname - The project shortname.
 //   %makefile - The value of PROJECT_VERIFY_PACKAGE_MAKE_FILE.
-//   %cvs_tag - The CVS tag associated with the release.
-define('PROJECT_VERIFY_PACKAGE_MAKE_FILE_URI', "http://drupalcode.org/viewvc/drupal/contributions/%project_directory/%makefile?view=co&pathrev=%cvs_tag");
-
-// The regex used to test if the CVS tag associated with the release is an
-// official release.
-define('PROJECT_VERIFY_PACKAGE_RELEASE_TAG_REGEX', '/^DRUPAL-(\d+)--(\d+)-(\d+)(-[A-Z0-9]+)?$/');
+//   %vcs_label - The VCS label (branch or tag) for with the release.
+define('PROJECT_VERIFY_PACKAGE_MAKE_FILE_URI', "http://git-dev.drupalcode.org/project/%project_shortname.git/blob_plain/%vcs_label:/%makefile");
 
 // URI of the 'How to package a profile' handbook page.
 define('DOCUMENTATION_LINK', 'http://drupal.org/node/642116');
@@ -294,18 +289,17 @@ function project_verify_package_clean_output($output) {
  * Verify if a drupalorg.make file in a release has the right format.
  */
 function _project_verify_package_verify_release_node($form, &$form_state) {
-  // It's the final release form, not the CVS tag picker.
+  // It's the final release form, not the VCS tag picker.
   if (!empty($form_state['values']['project_release']['version'])) {
     // Check that it's a project category we want to verify.
     $project = node_load(array('nid' => $form['#node']->project_release['pid']));
     if (!empty($project->taxonomy[PROJECT_VERIFY_PACKAGE_PROJECT_TYPE_TID])) {
-      $project_diretory = trim($project->cvs['directory'], '/');
-      $cvs_tag = $form_state['values']['project_release']['tag'];
+      $vcs_label = $form_state['values']['project_release']['tag'];
       $token_args = array(
         '%project_title' => $project->title,
-        '%project_directory' => $project_diretory,
+        '%project_shortname' => $project->project['uri'],
         '%makefile' => PROJECT_VERIFY_PACKAGE_MAKE_FILE,
-        '%cvs_tag' => $cvs_tag,
+        '%vcs_label' => $vcs_label,
         '!doc_link' => DOCUMENTATION_LINK,
       );
       // Try to grab the .make file to verify.
@@ -318,11 +312,11 @@ function _project_verify_package_verify_release_node($form, &$form_state) {
           // Reformat the output.
           list($raw_output, $escaped_output) = project_verify_package_clean_output($output);
           $token_args['!output'] = nl2br($escaped_output);
-          if (preg_match(PROJECT_VERIFY_PACKAGE_RELEASE_TAG_REGEX, $cvs_tag)) {
-            $message = t("<p>The %makefile file for project %project_title failed verification for CVS tag %cvs_tag.</p><p><a href=\"!doc_link\">!doc_link</a> -- to learn more about correcting these errors.</p><p>!output</p><p>Once these errors are fixed, commit the changes to your %makefile, move the release tag for your project (check the CVS manual to learn how to move tags if necessary), and submit the release node again.</p>", $token_args);
+          if (empty($form_state['values']['project_release']['rebuild'])) {
+            $message = t("<p>The %makefile file for project %project_title failed verification for Git tag %vcs_label.</p><p><a href=\"!doc_link\">!doc_link</a> -- to learn more about correcting these errors.</p><p>!output</p><p>Once these errors are fixed, commit the changes to your %makefile, move the release tag for your project (check the Git manual to learn how to move tags if necessary), and submit the release node again.</p>", $token_args);
           }
           else {
-            $message = t("<p>The %makefile file for project %project_title failed verification for CVS branch %cvs_tag.</p><p><a href=\"!doc_link\">!doc_link</a> -- to learn more about correcting these errors.</p><p>!output</p><p>Once these errors are fixed, commit them to the branch, then resubmit the release.</p>", $token_args);
+            $message = t("<p>The %makefile file for project %project_title failed verification for Git branch %vcs_label.</p><p><a href=\"!doc_link\">!doc_link</a> -- to learn more about correcting these errors.</p><p>!output</p><p>Once these errors are fixed, commit them to the branch, then resubmit the release.</p>", $token_args);
           }
           form_set_error('title', $message);
         }
