@@ -35,6 +35,15 @@ function drupalorg_versioncontrol_get_total_commits($rid = NULL, $interval = -1)
 
 function drupalorg_versioncontrol_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   if (isset($node->type) && $node->type == 'project_project') {
+    // Quick one-off to ensure path aliases are correct.
+    if (in_array($op, array('insert', 'update')) && !empty($node->project['sandbox'])) {
+      // Clear existing alias for the sandbox, it's guaranteed to be wrong.
+      path_set_alias("node/$node->nid");
+      // Set the one with the git_username
+      $user = user_load($node->uid);
+      path_set_alias("node/$node->nid", "sandbox/{$user->git_username}/{$node->project['uri']}", NULL, isset($node->language) ? $node->language : '');
+    }
+
     $function = 'drupalorg_versioncontrol_nodeapi_' . $op;
     if (function_exists($function)) {
       return $function($node, $a3, $a4);

@@ -333,23 +333,6 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
   }
 }
 
-function drupalorg_git_gateway_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
-  if ($node->type != 'project_project' || empty($node->project['sandbox'])) {
-    return;
-  }
-
-  switch ($op) {
-    case 'insert':
-    case 'update':
-      // Clear existing alias for the sandbox, it's guaranteed to be wrong.
-      path_set_alias("node/$node->nid");
-      // Set the one with the git_username
-      $user = user_load($node->uid);
-      path_set_alias("node/$node->nid", "sandbox/{$user->git_username}/{$node->project['uri']}", NULL, isset($node->language) ? $node->language : '');
-      break;
-  }
-}
-
 /**
  * Log an incoming push event to our special logging tables.
  *
