@@ -1,5 +1,7 @@
 <?php
 
+define('GIT_BASE_PATH', '/git');
+
 /**
  * Implements hook_ctools_plugin_directory().
  */
@@ -31,4 +33,138 @@ function drupalorg_versioncontrol_get_total_commits($rid = NULL, $interval = -1)
   return db_result(db_query('SELECT count(*) FROM {versioncontrol_operations} WHERE date > %d'. $where, time() - $interval, $rid));
 }
 
+function drupalorg_versioncontrol_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  if (isset($node->type) && $node->type == 'project_project') {
+    $function = 'drupalorg_versioncontrol_nodeapi_' . $op;
+    if (function_exists($function)) {
+      return $function($node, $a3, $a4);
+    }
+  }
+}
 
+function drupalorg_versioncontrol_nodeapi_insert(&$node, $a3 = NULL, $a4 = NULL) {
+  if ($node->project['sandbox']) {
+    $user = user_load($node->uid);
+    $top_path = "sandbox/{$user->git_username}/{$node->project['uri']}";
+  }
+  else {
+    $top_path = "project/{$node->project['uri']}";
+  }
+  $repo_root = GIT_BASE_PATH . '/' . $top_path . '.git';
+  // FIXME path alias may not be set yet
+  $description = 'For more information about this repository, visit the ' . l('project page.', 'node/' . $node->nid);
+
+  $data = new stdClass();
+  $data->name = $node->project['uri'];
+  $data->root = $repo_root;
+  $data->vcs = 'git';
+  $data->plugins = array(
+    'auth_handler' => 'account',
+    'author_mapper' => 'drupalorg_mapper',
+    'committer_mapper' => 'drupalorg_mapper',
+    'repomgr' => 'drupalorg_repomgr',
+  );
+  $data->project_nid = $node->nid;
+  $data->update_method = 1;
+
+  $backend = versioncontrol_get_backends('git');
+  $repo = $backend->buildEntity('repo', $data);
+
+  // Grab the auth handler just so we know the class is loaded.
+  $repo->getAuthHandler();
+
+  $auth_data = array(
+    'access' => VersioncontrolAuthHandlerMappedAccounts::ALL,
+    'branch_create' => VersioncontrolAuthHandlerMappedAccounts::DENY,
+    'branch_update' => VersioncontrolAuthHandlerMappedAccounts::DENY,
+    'branch_delete' => VersioncontrolAuthHandlerMappedAccounts::DENY,
+    'tag_create' => VersioncontrolAuthHandlerMappedAccounts::DENY,
+    'tag_update' => VersioncontrolAuthHandlerMappedAccounts::DENY,
+    'tag_delete' => VersioncontrolAuthHandlerMappedAccounts::DENY,
+    'per-label' => array()
+  );
+
+  $job = array(
+    'operation' => array(
+      // Create the repo.
+      'create' => array(),
+      // Save repo record to db, creating a repo_id.
+      'save' => array(),
+      // Save user auth data.
+      'setUserAuthData' => array($node->uid, $auth_data),
+      // Set the project description.
+      'setDescription' => array($description),
+    ),
+    'repository' => $repo,
+  );
+
+  drupal_queue_include();
+  $queue = DrupalQueue::get('versioncontrol_repomgr');
+  if (!$queue->createItem($job)) {
+    $error_info = array(
+      '%nid' => $node->nid,
+      '%op' => $op,
+    );
+    drupal_set_message(t('An error occurred while attempting to enqueue your repository for creation. Please file an issue in the infrastructure queue.'), 'error');
+    watchdog('drupalorg_versioncontrol', t("Failed to enqueue Git repository creation job for node '%nid'.", $error_info));
+  }
+  else {
+    drupal_set_message(t('The Git repository for this project has been enqueued for creation. It should be available in a few seconds.'));
+  }
+
+}
+
+function drupalorg_versioncontrol_nodeapi_delete(&$node, $a3 = NULL, $a4 = NULL) {
+  if (!$node->versioncontrol_project['repo'] instanceof VersioncontrolGitRepository) {
+    watchdog('drupalorg_versioncontrol', 'No repo found for project %title when deleting node.', array('%title' => $node->title), WATCHDOG_WARNING);
+    return;
+  }
+
+  $repo = $node->versioncontrol_project['repo'];
+  $job = array(
+    'operation' => 'delete',
+    'repository' => $repo,
+  );
+
+  drupal_queue_include();
+  $queue = DrupalQueue::get('versioncontrol_repomgr');
+  if (!$queue->createItem($job)) {
+    $error_info = array(
+      '%nid' => $node->nid,
+    );
+    drupal_set_message(t('Failed to enqueue Git repository for deletion.'), 'error');
+    watchdog('drupalorg_versioncontrol', t("Failed to enqueue repository deletion job for node '%nid'.", $error_info));
+  }
+  else {
+    drupal_set_message(t('Git repository enqueued for deletion.'));
+  }
+}
+
+/**
+ * Implements hook_project_promote_sandbox().
+ *
+ * Project has been promoted to a full project, relocate it on disk.
+ */
+function drupalorg_versioncontrol_project_promote_sandbox($project) {
+  if (empty($project->versioncontrol_project['repo']) || !$project->versioncontrol_project['repo'] instanceof VersioncontrolGitRepository) {
+    watchdog('drupalorg_versioncontrol', t("Trying to enqueue sandbox promotion job for node '%nid', but no repo attached to node.", $error_info));
+    return;
+  }
+
+  $repo = $project->versioncontrol_project['repo'];
+  $job = array(
+    'operation' => array(
+      // Relocate the repo on disk and update the repo root.
+      'move' => array(GIT_BASE_PATH . '/project/' . $project->project['uri']),
+      // Save the updated repo entry to the db.
+      'save' => array(),
+    ),
+    'repository' => $repo,
+  );
+
+  drupal_queue_include();
+  $queue = DrupalQueue::get('versioncontrol_repomgr');
+  if (!$queue->createItem($job)) {
+    watchdog('drupalorg_versioncontrol', t("Failed to enqueue promotion of sandbox '%shortname'.", array('%shortname' => $project->uri)));
+  }
+}
