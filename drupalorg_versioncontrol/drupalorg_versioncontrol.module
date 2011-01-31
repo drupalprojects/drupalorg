@@ -153,6 +153,8 @@ function drupalorg_versioncontrol_project_promote_sandbox($project) {
   }
 
   $repo = $project->versioncontrol_project['repo'];
+  // Update the name to the new project shortname.
+  $repo->name = $project->project['uri'];
   // Just in case, until dbtng fixes hook_query_alter().
   $repo->project_nid = $project->nid;
   $job = array(
