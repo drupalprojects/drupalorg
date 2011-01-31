@@ -52,7 +52,8 @@ function drupalorg_versioncontrol_nodeapi_insert(&$node, $a3 = NULL, $a4 = NULL)
   }
   $repo_root = GIT_BASE_PATH . '/' . $top_path . '.git';
   // FIXME path alias may not be set yet
-  $description = 'For more information about this repository, visit the ' . l('project page.', 'node/' . $node->nid);
+
+  $description = 'For more information about this repository, visit the project page at ' . url('node/' . $node->nid);
 
   $data = new stdClass();
   $data->name = $node->project['uri'];
@@ -152,10 +153,14 @@ function drupalorg_versioncontrol_project_promote_sandbox($project) {
   }
 
   $repo = $project->versioncontrol_project['repo'];
+  // Just in case, until dbtng fixes hook_query_alter().
+  $repo->project_nid = $project->nid;
   $job = array(
     'operation' => array(
       // Relocate the repo on disk and update the repo root.
-      'move' => array(GIT_BASE_PATH . '/project/' . $project->project['uri']),
+      'move' => array(GIT_BASE_PATH . '/project/' . $project->project['uri'] . '.git'),
+      // Update the description
+      'setDescription' => array('For more information about this repository, visit the project page at ' . url('node/' . $project->nid)),
       // Save the updated repo entry to the db.
       'save' => array(),
     ),
