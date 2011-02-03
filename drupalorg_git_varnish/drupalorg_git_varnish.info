@@ -1,0 +1,7 @@
+name = Drupal.org Git/Varnish Control
+description = "Provides a Varnish-cacheable alternative to drush for getting data necessary for Drupal.org Git SSH auth.'
+package = Drupal.org
+dependencies[] = versioncontrol_project
+dependencies[] = drupalorg_git_gateway
+dependencies[] = sshkey
+core = 6.x

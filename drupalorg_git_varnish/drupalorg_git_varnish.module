@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function drupalorg_git_varnish_menu() {
+  $items = array();
+
+  $items['drupalorg/drupalorg-ssh-user-key'] = array(
+    'title' => 'SSH key auth',
+    'page callback' => 'drupalorg_git_varnish_ssh_user_key',
+    'access callback' => 'drupalorg_git_varnish_access_callback', // we're restricting in apache conf, this is always TRUE
+  );
+
+  $items['drupalorg/drupalorg-vcs-auth-check-user-pass'] = array(
+    'title' => 'SSH key auth',
+    'page callback' => 'drupalorg_git_varnish_vcs_auth_check_user_pass',
+    'access callback' => 'drupalorg_git_varnish_access_callback', // we're restricting in apache conf, this is always TRUE
+  );
+
+  $items['drupalorg/vcs-auth-data'] = array(
+    'title' => 'SSH key auth',
+    'page callback' => 'drupalorg_git_varnish_vcs_auth_data',
+    'access callback' => 'drupalorg_git_varnish_access_callback', // we're restricting in apache conf, this is always TRUE
+  );
+  return $items;
+}
+
+function drupalorg_git_varnish_access_callback() {
+  return TRUE;
+}
+
+function drupalorg_git_varnish_ssh_user_key() {
+  $username = $_GET['username'];
+  $fingerprint = $_GET['fingerprint'];
+
+  if ($key = sshkey_load_by_fingerprint($fingerprint)) {
+    if ($username == user_load($key->entity_id)->git_username) {
+      echo 'true';
+      exit;
+    }
+  }
+  echo 'false';
+  exit;
+}
+
+function drupalorg_git_varnish_vcs_auth_check_user_pass() {
+  $username = $_GET['username'];
+  $password = $_GET['password'];
+
+  $account = user_load(array('git_username' => $username));
+  if (!empty($account) && $password == $account->pass) {
+    echo 'true';
+    exit;
+  }
+  echo 'false';
+  exit;
+}
+
+function drupalorg_git_varnish_vcs_auth_data() {
+  $project_uri = $_GET['project_uri'];
+  echo json_encode(versioncontrol_project_get_auth_data($project_uri));
+  exit;
+}
