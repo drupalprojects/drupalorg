@@ -48,7 +48,7 @@ function drupalorg_git_gateway_drush_command() {
  */
 function drush_drupalorg_git_gateway_drupalorg_vcs_auth_check_user_pass($username = '', $password = '') {
   $account = user_load(array('git_username' => $username));
-  if (!empty($account) && md5($password) == $account->pass) {
+  if (!empty($account) && $password == $account->pass) {
     drush_print('true');
   }
   else {
