@@ -184,3 +184,33 @@ function drupalorg_versioncontrol_project_promote_sandbox($project) {
     watchdog('drupalorg_versioncontrol', t("Failed to enqueue promotion of sandbox '%shortname'.", array('%shortname' => $project->uri)));
   }
 }
+
+/**
+ * Implements views hook_views_default_views_alter().
+ */
+function drupalorg_versioncontrol_views_default_views_alter(&$views) {
+  // Link #123 pattern on operation messages to issues at drupal.org
+  $views_with_tracker_url = array(
+    // versioncontrol default views (commitlog)
+    'commitlog_repository_commits',
+    'commitlog_individual_commit',
+    'commitlog_global_commits',
+    'commitlog_user_commits',
+    // versioncontrol_git default views
+    'vc_git_individual_commit',
+    // versioncontrol_project default views
+    'vc_git_project_commit_view',
+    'vc_git_project_global_commits',
+    'vc_git_project_user_commits',
+    'vc_project_commit_view',
+    'vc_project_global_commits',
+    'vc_project_user_commits',
+  );
+  foreach ($views_with_tracker_url as $view_name) {
+    if (isset($views[$view_name])) {
+      if (isset($views[$view_name]->display['default']->display_options['fields']['message']['issue_tracker_url'])) {
+        $views[$view_name]->display['default']->display_options['fields']['message']['issue_tracker_url'] = 'http://drupal.org/node/%issue_id';
+      }
+    }
+  }
+}
