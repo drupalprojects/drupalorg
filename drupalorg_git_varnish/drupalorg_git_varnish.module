@@ -12,6 +12,12 @@ function drupalorg_git_varnish_menu() {
     'access callback' => 'drupalorg_git_varnish_access_callback', // we're restricting in apache conf, this is always TRUE
   );
 
+  $items['drupalorg/drupalorg-sshkey-check'] = array(
+    'title' => 'SSH key auth',
+    'page callback' => 'drupalorg_git_varnish_sshkey_check',
+    'access callback' => 'drupalorg_git_varnish_access_callback', // we're restricting in apache conf, this is always TRUE
+  );
+
   $items['drupalorg/drupalorg-vcs-auth-check-user-pass'] = array(
     'title' => 'SSH key auth',
     'page callback' => 'drupalorg_git_varnish_vcs_auth_check_user_pass',
@@ -28,6 +34,23 @@ function drupalorg_git_varnish_menu() {
 
 function drupalorg_git_varnish_access_callback() {
   return TRUE;
+}
+
+function drupalorg_git_varnish_sshkey_check() {
+  $fingerprint = $_GET['fingerprint'];
+
+  if ($key = sshkey_load_by_fingerprint($fingerprint)) {
+    if ($key->entity_type == 'user') {
+      $user = user_load($key->entity_id);
+      if (!empty($user->roles[DRUPALORG_GIT_GATEWAY_RID])) {
+        echo 'true';
+        exit;
+      }
+    }
+  }
+
+  echo 'false';
+  exit;
 }
 
 function drupalorg_git_varnish_ssh_user_key() {
