@@ -41,7 +41,7 @@ function drupalorg_git_gateway_drush_command() {
 }
 
 /**
- * Returns 'true' if a the username and passowrd match
+ * Returns 'true' if a the username and password match
  *
  * @todo: We could do this just via DRUPAL_BOOTSTRAP_DATABASE and a direct
  * query on {users} instead of a full bootstrap and user_load().
