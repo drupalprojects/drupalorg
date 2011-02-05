@@ -165,9 +165,7 @@ function drupalorg_git_varnish_project_promote_sandbox($project) {
  * Help[er function to parse the host from the global $base_url
  */
 function _drupalorg_git_varnish_get_host() {
-  global $base_url;
-  $parts = parse_url($base_url);
-  return $parts['host'];
+  return variable_get('drupalorg_git_varnish_http.host', 'git-dev.drupal.org:8080');
 }
 
 /**
