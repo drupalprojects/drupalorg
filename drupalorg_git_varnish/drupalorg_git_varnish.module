@@ -190,7 +190,7 @@ function drupalorg_git_varnish_exec($commands) {
   socket_set_option($client, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>0, 'usec'=>50));
 
   // If there is a CLI banner message (varnish >= 2.1.x), try to read it and move on.
-  $status = _drupalorg_git_varnish_read_socket($client);
+  // $status = _drupalorg_git_varnish_read_socket($client);
 
   foreach ($commands as $command) {
     // Send command and get response.
