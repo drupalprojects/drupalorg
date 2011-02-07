@@ -188,7 +188,7 @@ function drupalorg_git_varnish_exec($commands) {
   if (!socket_connect($client, '127.0.0.1', 6082)) {
     watchdog('varnish', 'Unable to connect to server socket !server:!port', array('!server' => $server, '!port' => $port), WATCHDOG_ERROR);
     $ret[] = FALSE;
-    break;
+    return $ret;
   }
 
   socket_set_option($client, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>0, 'usec'=>50));
