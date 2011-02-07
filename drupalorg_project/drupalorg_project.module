@@ -378,9 +378,22 @@ function drupalorg_project_security_release_form_validate($form, &$form_state) {
  * Implemenation of hook_project_page_link_alter().
  */
 function drupalorg_project_project_page_link_alter(&$links, $node) {
+  global $user;
+
   // Make the development and resources sections actual core blocks.
   $links['development']['type'] = 'block';
   $links['resources']['type'] = 'block';
+
+  // Provide contextual links for sandboxes.
+  if ($node->project['sandbox'] == 1 && $user->uid == $node->uid) {
+    $links['sandbox']['weight'] = 1;
+    if (!user_access('create full projects')) {
+      $links['sandbox']['links']['apply_full'] = l(t('Apply for full project access'), 'node/1011698');
+    }
+    else {
+      $links['sandbox']['links']['no_releases'] = l(t('Promote to full project'), "node/$node->nid/edit/promote");
+    }
+  }
 
   // Link to security handbook page.
   $links['development']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
@@ -501,6 +514,7 @@ function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page 
         $user_link = l(t("!name's sandbox", array('!name' => $node->name)), 'project/user/'. $node->uid);
         drupal_set_title($user_link .': '. check_plain($node->title));
         $node->content['project_sandbox_warning']['#value'] = '<div class="meta"><h5>Experimental Project</h5><p>This is a <a href="/node/1011196">sandbox project</a>, which contains experimental code for developer use only.</p></div>';
+        $node->content['project_sandbox_warning']['#weight'] = -1;
       }
       else {
         $node->content['project_info']['#value'] = drupalorg_project_meta_data($node);
