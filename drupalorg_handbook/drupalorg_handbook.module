@@ -230,11 +230,9 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
           return array(
             'subject' => t('Help Us Maintain Documentation'),
             'content' => '<p>' . t('The Drupal.org online documentation is written by the Drupal community in co-operation with the <a href="@docteam_url">Documentation Team</a>. When you are logged in, you can:', array('@docteam_url' => url('node/24572'))) . '</p>' .
-            '<ul>' .
-            '<li>' . t('Edit most Documentation pages by clicking “Edit” at the top of the page.') . '</li>' .
-            '<li>' . t('Add new pages by using the “add a child page” link at the bottom of the page.') . '</li>' .
-            '<li>' . t('Use the <a href="@issues-url">Documentation issue queue</a> to propose major changes and report problems.', array('@issues-url' => url('project/issues/documentation'))) . '</li>' .
-            '</ul>'
+            '<p>' . t('Edit most Documentation pages by clicking “Edit” at the top of the page.') . '</p>' .
+            '<p>' . t('Add new pages by using the “add a child page” link at the bottom of the page.') . '</p>' .
+            '<p>' . t('Use the <a href="@issues-url">Documentation issue queue</a> to propose major changes and report problems.', array('@issues-url' => url('project/issues/documentation'))) . '</p>'
           );
           break;
      }
