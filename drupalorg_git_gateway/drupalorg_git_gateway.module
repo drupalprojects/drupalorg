@@ -19,10 +19,19 @@ define('DRUPALORG_GIT_GATEWAY_ADMIN_RID', 22);
  */
 define('DRUPALORG_GIT_GATEWAY_VETTED_RID', 24);
 
-define('DRUPALORG_GIT_AUTH_NO_ROLE', 0x001);
-define('DRUPALORG_GIT_AUTH_ACCOUNT_SUSPENDED', 0x002);
-define('DRUPALORG_GIT_AUTH_NOT_CONSENTED', 0x004);
-define('DRUPALORG_GIT_AUTH_PUSHES_DISABLED', 0x008);
+define('DRUPALORG_GIT_AUTH_NO_ROLE', 0x01);
+define('DRUPALORG_GIT_AUTH_ACCOUNT_SUSPENDED', 0x02);
+define('DRUPALORG_GIT_AUTH_NOT_CONSENTED', 0x04);
+
+// Refers to core. Just core.
+define('DRUPALORG_GIT_GATECTL_CORE', 0x01);
+// Refers to the set of contrib/full projects.
+define('DRUPALORG_GIT_GATECTL_PROJECTS', 0x02);
+// Refers to the set of sandbox repositories.
+define('DRUPALORG_GIT_GATECTL_SANDBOXES', 0x04);
+// Refers to the set of per-issue repositories. We don't have these yet, but
+// defining this constant in hopeful anticipation :)
+// define('DRUPALORG_GIT_GATECTL_ISSUES', 0x08);
 
 /**
  * Implementation of hook_meu()
@@ -40,6 +49,14 @@ function drupalorg_git_gateway_menu() {
     'load arguments' => array('%map', '%index'),
     'weight' => 1,
     'type' => MENU_LOCAL_TASK,
+  );
+
+  $items['admin/settings/drupalorg-git'] = array(
+    'title' => 'Drupal.org Git gateway',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('drupalorg_git_gateway_gatectl'),
+    'access arguments' => array('administer version control systems'),
+    'type' => MENU_NORMAL_ITEM,
   );
 
   return $items;
@@ -150,6 +167,58 @@ function drupalorg_git_gateway_user_page($account) {
   return _drupalorg_git_gateway_user_page($account);
 }
 
+function drupalorg_git_gateway_gatectl(&$form_state) {
+  $form = array();
+
+  $push_options = array(
+    DRUPALORG_GIT_GATECTL_CORE      => 'Disable pushes to core',
+    DRUPALORG_GIT_GATECTL_PROJECTS  => 'Disable pushes to all full projects',
+    DRUPALORG_GIT_GATECTL_SANDBOXES => 'Disable pushes to all sandbox projects',
+  );
+
+  $pushctl = (int) variable_get('drupalorg_git_gateway_pushctl', 0);
+  $push_defaults = array();
+  if ($pushctl & DRUPALORG_GIT_GATECTL_CORE) {
+    $push_defaults[] = DRUPALORG_GIT_GATECTL_CORE;
+  }
+  if ($pushctl & DRUPALORG_GIT_GATECTL_PROJECTS) {
+    $push_defaults[] = DRUPALORG_GIT_GATECTL_PROJECTS;
+  }
+  if ($pushctl & DRUPALORG_GIT_GATECTL_SANDBOXES) {
+    $push_defaults[] = DRUPALORG_GIT_GATECTL_SANDBOXES;
+  }
+
+  $form['pushctl'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Git push global control'),
+    '#options' => $push_options,
+    '#default_value' => $push_defaults,
+    '#description' => t('Toggling these checkboxes will immediately disable push access to the respective set of repositories. <strong>This is a hugely powerful setting, do not muck about with it!</strong>'),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+  );
+
+  return $form;
+}
+
+function drupalorg_git_gateway_gatectl_submit($form, &$form_state) {
+  $pushctl = 0;
+  foreach(array_filter($form_state['values']['pushctl']) as $val) {
+    $pushctl |= $val;
+  }
+
+  $old_pushctl = (int) variable_get('drupalorg_git_gateway_pushctl', 0);
+  variable_set('drupalorg_git_gateway_pushctl', $pushctl);
+
+  // Invoke notification hook if old pushctl != new pushctl
+  if ($pushctl != $old_pushctl) {
+    module_invoke_all('drupalorg_pushctl_changed', $pushctl);
+  }
+}
+
 /**
  * Return total number of approved Git accounts.
  */
@@ -196,6 +265,15 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
     ->fields('u', array('name', 'git_username'))
     ->condition('u.name', array_keys($data['users']), 'IN')
     ->execute()->fetchAllKeyed();
+
+  // Stick in the repo set val so the daemon knows how to deal with pushctl settings.
+  if ($data['project_nid'] == DRUPALORG_CORE_NID) {
+    $data['repo_group'] = DRUPALORG_GIT_GATECTL_CORE;
+  }
+  else {
+    $sandbox = db_result(db_query('SELECT sandbox FROM {project_projects} WHERE nid = %d', $data['project_nid']));
+    $data['repo_group'] = (isset($sandbox) && $sandbox == 0) ? DRUPALORG_GIT_GATECTL_PROJECTS : DRUPALORG_GIT_GATECTL_SANDBOXES;
+  }
 
   foreach ($result as $name => $git_username) {
     $account = user_load($data['users'][$name]['uid']);

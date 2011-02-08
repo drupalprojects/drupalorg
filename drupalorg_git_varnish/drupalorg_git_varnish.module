@@ -27,6 +27,13 @@ function drupalorg_git_varnish_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['drupalorg/pushctl-state'] = array(
+    'title' => 'Fetch project vcs auth data',
+    'page callback' => 'drupalorg_git_varnish_pushctl_state',
+    'access callback' => 'drupalorg_git_varnish_access_callback', // we're restricting in apache conf, this is always TRUE
+    'type' => MENU_CALLBACK,
+  );
+
   $items['drupalorg/vcs-auth-data'] = array(
     'title' => 'Fetch project vcs auth data',
     'page callback' => 'drupalorg_git_varnish_vcs_auth_data',
@@ -38,6 +45,10 @@ function drupalorg_git_varnish_menu() {
 
 function drupalorg_git_varnish_access_callback() {
   return TRUE;
+}
+
+function drupalorg_git_varnish_pushctl_state() {
+  echo (int) variable_get('drupalorg_git_gateway_pushctl', 0);
 }
 
 function drupalorg_git_varnish_sshkey_check() {
@@ -129,6 +140,13 @@ function drupalorg_git_varnish_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
     );
     drupalorg_git_varnish_exec($commands);
   }
+}
+
+function drupalorg_git_varnish_drupalorg_pushctl_changed($pushctl) {
+  dsm($pushctl);
+  $host = _drupalorg_git_varnish_get_host();
+  $command = "purge req.http.host == $host && req.url == /drupalorg/pushctl-state";
+  drupalorg_git_varnish_exec(array($command));
 }
 
 function drupalorg_git_varnish_sshkey_insert($key) {
