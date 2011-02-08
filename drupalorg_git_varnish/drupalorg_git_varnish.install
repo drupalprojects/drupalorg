@@ -1,0 +1,6 @@
+<?php
+
+function drupalorg_git_varnish_install() {
+  // Set the weight below drupalorg_versioncontrol and drupalorg_git_gateway.
+  db_query("UPDATE {system} SET weight = 20 WHERE name = 'drupalorg_git_varnish'");
+}
