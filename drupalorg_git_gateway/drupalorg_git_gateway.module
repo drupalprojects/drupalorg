@@ -265,10 +265,24 @@ function drupalorg_git_gateway_suggest_git_username($name) {
  * @param $repository
  */
 function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $repository) {
-  $result = db_select('users', 'u')
-    ->fields('u', array('name', 'git_username'))
-    ->condition('u.name', array_keys($data['users']), 'IN')
+  $select = db_select('project_release_nodes', 'prn')->fields('prn', array('tag', 'rebuild'));
+  $vpp_alias = $select->addJoin('INNER', 'versioncontrol_project_projects', 'vpp', 'prn.pid = vpp.nid');
+  $result = $select->condition($vpp_alias . '.repo_id', $repository->repo_id)
     ->execute()->fetchAllKeyed();
+
+  $tags = $branches = array();
+  foreach ($result as $label_name => $branch) {
+    if (empty($branch)) {
+      $tags[] = $label_name;
+    }
+    else {
+      $branches[] = $label_name;
+    }
+  }
+  $data['protected_labels'] = array(
+    'tags' => $tags,
+    'branches' => $branches,
+  );
 
   // Stick in the repo set val so the daemon knows how to deal with pushctl settings.
   if ($data['project_nid'] == DRUPALORG_CORE_NID) {
@@ -278,6 +292,11 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
     $sandbox = db_result(db_query('SELECT sandbox FROM {project_projects} WHERE nid = %d', $data['project_nid']));
     $data['repo_group'] = (isset($sandbox) && $sandbox == 0) ? DRUPALORG_GIT_GATECTL_PROJECTS : DRUPALORG_GIT_GATECTL_SANDBOXES;
   }
+
+  $result = db_select('users', 'u')
+    ->fields('u', array('name', 'git_username'))
+    ->condition('u.name', array_keys($data['users']), 'IN')
+    ->execute()->fetchAllKeyed();
 
   foreach ($result as $name => $git_username) {
     $account = user_load($data['users'][$name]['uid']);
