@@ -198,6 +198,15 @@ function _drupalorg_git_varnish_get_host() {
   return variable_get('drupalorg_git_varnish_http.host', 'git-dev.drupal.org:8080');
 }
 
+function _drupalorg_git_varnish_get_connection_info() {
+  $defaults = array(
+    'host' => '127.0.0.1',
+    'port' => 6082,
+    'version' => 2.1,
+  );
+  return variable_get('drupalorg_git_varnish_connection_info', $defaults);
+}
+
 /**
  * Connect to our varnish cache and send an arbitrary number of commands.
  *
@@ -211,7 +220,8 @@ function drupalorg_git_varnish_exec($commands) {
 
   $ret = array();
   $client = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
-  if (!socket_connect($client, '127.0.0.1', 6082)) {
+  $conn_info = _drupalorg_git_varnish_get_connection_info();
+  if (!socket_connect($client, $conn_info['host'], $conn_info['port'])) {
     watchdog('varnish', 'Unable to connect to server socket !server:!port', array('!server' => $server, '!port' => $port), WATCHDOG_ERROR);
     $ret[] = FALSE;
     return $ret;
@@ -219,8 +229,10 @@ function drupalorg_git_varnish_exec($commands) {
 
   socket_set_option($client, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>0, 'usec'=>50));
 
-  // If there is a CLI banner message (varnish >= 2.1.x), try to read it and move on.
-  // $status = _drupalorg_git_varnish_read_socket($client);
+  if (version_compare($conn_info['version'], '2.1', 'ge')) {
+    // If there is a CLI banner message (varnish >= 2.1.x), try to read it and move on.
+    $status = _drupalorg_git_varnish_read_socket($client);
+  }
 
   foreach ($commands as $command) {
     // Send command and get response.
