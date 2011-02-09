@@ -102,8 +102,10 @@ function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
         'rid' => DRUPALORG_GIT_GATEWAY_RID,
       );
       db_merge('users_roles')->key($vals)->fields($vals)->execute();
+      $account->roles[DRUPALORG_GIT_GATEWAY_RID] = 'Git user';
     }
     else {
+      unset($account->roles[DRUPALORG_GIT_GATEWAY_RID]);
       $del_rids[] = DRUPALORG_GIT_GATEWAY_RID;
     }
 
@@ -113,8 +115,10 @@ function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
         'rid' => DRUPALORG_GIT_GATEWAY_VETTED_RID,
       );
       db_merge('users_roles')->key($vals)->fields($vals)->execute();
+      $account->roles[DRUPALORG_GIT_GATEWAY_VETTED_RID] = 'Git vetted user';
     }
     else {
+      unset($account->roles[DRUPALORG_GIT_GATEWAY_VETTED_RID]);
       $del_rids[] = DRUPALORG_GIT_GATEWAY_VETTED_RID;
     }
 
