@@ -43,8 +43,16 @@ function drupalorg_git_varnish_menu() {
   return $items;
 }
 
+/**
+ * Only allow any of this data to be published if this drupal instance has the
+ * internal flag set.
+ * @return bool
+ */
 function drupalorg_git_varnish_access_callback() {
-  return TRUE;
+  if (variable_get('drupalorg_is_internal_varnish_instance', FALSE)) {
+    return TRUE;
+  }
+  return FALSE;
 }
 
 function drupalorg_git_varnish_pushctl_state() {
