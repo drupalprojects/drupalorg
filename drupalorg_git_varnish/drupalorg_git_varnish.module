@@ -110,13 +110,11 @@ function drupalorg_git_varnish_vcs_auth_data() {
 }
 
 function drupalorg_git_varnish_user($op, &$edit, &$account, $category = NULL) {
-  if ($op == 'update' && !empty($account->git_username)) {
-    $commands = array();
-
+  if ($op == 'after_update' && !empty($account->git_username)) {
     // Clear the cache for both ssh keys and passwords, just to be safe
     $host = _drupalorg_git_varnish_get_host();
+    $commands = drupalorg_git_varnish_clear_user_cmds($account->uid);
     $commands[] = "purge req.http.host == $host && req.url ~ ^/drupalorg/drupalorg-[a-z-]+.username={$account->git_username}&(password|fingerprint)=";
-    $commands += drupalorg_git_varnish_clear_user_cmds($account->uid);
 
     drupalorg_git_varnish_exec($commands);
   }
@@ -173,12 +171,11 @@ function drupalorg_git_varnish_sshkey_delete($key) {
 }
 
 function drupalorg_git_varnish_clear_sshkey_cmds($key) {
-  $commands = array();
+  if ($key->entity_type == 'user') {
+    $commands = drupalorg_git_varnish_clear_user_cmds($key->entity_id);
+  }
   $host = _drupalorg_git_varnish_get_host();
   $commands[] = "purge req.http.host == $host && req.url ~ ^/drupalorg/drupalorg-ssh.+fingerprint={$key->fingerprint}";
-  if ($key->entity_type == 'user') {
-    $commands += drupalorg_git_varnish_clear_user_cmds($key->entity_id);
-  }
   return $commands;
 }
 
