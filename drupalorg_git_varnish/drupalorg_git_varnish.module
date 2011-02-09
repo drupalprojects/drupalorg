@@ -199,7 +199,7 @@ function _drupalorg_git_varnish_get_connection_info() {
   $defaults = array(
     'host' => '127.0.0.1',
     'port' => 6082,
-    'version' => 2.1,
+    'version' => '2.1',
   );
   return variable_get('drupalorg_git_varnish_connection_info', $defaults);
 }
