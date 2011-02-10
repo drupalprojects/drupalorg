@@ -6,16 +6,21 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
 
   protected $repository;
 
-  protected $templateDir = '/git/templates/drupalorg_repomgr';
+  protected $sandbox;
+
+  // FIXME this path is util-specific, the base element should be made flexible
+  protected $templateBaseDir = '/var/git/templates/built/';
 
   public function setRepository(VersioncontrolRepository $repository) {
     $this->repository = $repository;
+    $this->sandbox = (int) db_result(db_query('SELECT sandbox FROM {project_projects} WHERE nid = %d', $repository->project_nid));
   }
 
   public function init() {
     exec('mkdir -p ' . escapeshellarg($this->repository->root));
+    $template_dir = $this->templateBaseDir . (empty($this->sandbox) ? 'project' : 'sandbox');
     // Create the repository on disk
-    exec('git --git-dir ' . escapeshellarg($this->repository->root) . ' init --template ' . $this->templateDir, $output, $return);
+    exec('git --git-dir ' . escapeshellarg($this->repository->root) . ' init --template ' . $template_dir, $output, $return);
     if ($return) {
       // init failed for some reason, throw exception
       throw new Exception('Git repository initialization failed with code ' . $return . ' and error message \'' . implode(' ', $output) . '\'', E_ERROR);
@@ -89,7 +94,7 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
       $this->verified = FALSE;
     }
 
-    if (!file_exists($this->templateDir)) {
+    if (!file_exists($this->templateBaseDir)) {
       $this->verified = FALSE;
     }
   }
