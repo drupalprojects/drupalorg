@@ -221,7 +221,7 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
         case 'license':
           if (drupalorg_crosssite_section() === 'documentation') {
             return array(
-              'content' => t('The Drupal handbook pages are © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>.', array('!year' => date('Y'), '@ccl_url' => url('node/14307'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html'))),
+              'content' => t('Drupal’s online documentation is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>.', array('!year' => date('Y'), '@ccl_url' => url('node/14307'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html'))),
             );
           }
           break;
