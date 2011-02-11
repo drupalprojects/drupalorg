@@ -22,7 +22,6 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
   }
 
   public function init() {
-    exec('mkdir -p ' . escapeshellarg($this->repository->root));
     $template_dir = $this->templateBaseDir . (empty($this->sandbox) ? 'project' : 'sandbox');
     // Create the repository on disk
     exec('git --git-dir ' . escapeshellarg($this->repository->root) . ' init --template ' . $template_dir, $output, $return);
@@ -33,6 +32,12 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
   }
 
   public function create() {
+    exec('mkdir -p ' . escapeshellarg($this->repository->root), $output, $return);
+    if ($return) {
+      // init failed for some reason, throw exception
+      throw new Exception('Failed to mkdir for intended repository location "' . $this->repository->root . '"; mkdir exited with code ' . $return, E_ERROR);
+    }
+
     $this->init();
     $this->save();
   }
