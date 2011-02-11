@@ -94,7 +94,7 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
     $command = escapeshellcmd($prepend . $command);
     exec($command, $output, $return);
     if ($exception && $return) {
-      throw new Exception ("Command '$command' exited with non-zero status and the following output: " . implode(' ', $output), E_ERROR);
+      throw new Exception ("Command '$command' exited with status $return and the following output: " . implode(' ', $output), E_ERROR);
     }
     return $return;
   }
