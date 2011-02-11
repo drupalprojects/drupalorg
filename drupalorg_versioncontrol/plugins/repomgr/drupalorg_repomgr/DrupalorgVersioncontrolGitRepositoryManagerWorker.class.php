@@ -33,7 +33,10 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
   }
 
   public function reInit(array $flush) {
-    exec('rm -rf ' . escapeshellarg($this->repository->root) . '/{' . implode(',', $flush) . '}');
+    if (!empty($flush)) {
+      $flush = count($flush) > 1 ? '{' . implode(',', $flush) . '}' : array_shift($flush);
+      exec("rm -rf {$this->repository->root}/$flush");
+    }
     $this->init();
   }
 
