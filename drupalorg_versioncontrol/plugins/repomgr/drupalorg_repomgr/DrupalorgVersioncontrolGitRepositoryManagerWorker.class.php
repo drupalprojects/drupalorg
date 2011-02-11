@@ -24,7 +24,8 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
     $this->getSandboxStatus();
     $template_dir = $this->templateBaseDir . '/' . (empty($this->sandbox) ? 'project' : 'sandbox');
     // Create the repository on disk
-    exec('git --git-dir ' . escapeshellarg($this->repository->root) . ' init --template ' . $template_dir, $output, $return);
+    $return = $this->passthru('init --template ' . $template_dir, FALSE);
+
     if ($return) {
       // init failed for some reason, throw exception
       throw new Exception('Git repository initialization failed with code ' . $return . ' and error message \'' . implode(' ', $output) . '\'', E_ERROR);
