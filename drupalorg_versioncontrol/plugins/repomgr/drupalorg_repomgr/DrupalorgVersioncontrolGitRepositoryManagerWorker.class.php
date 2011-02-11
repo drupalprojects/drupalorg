@@ -8,8 +8,13 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
 
   protected $sandbox;
 
-  // FIXME this path is util-specific, the base element should be made flexible
-  protected $templateBaseDir = '/var/git/templates/built/';
+  protected $templateBaseDir;
+
+  public function __construct() {
+    // determine the base dir using a global conf var
+    $git_basedir = variable_get('drupalorg_git_basedir', '/var/git');
+    $this->templateBaseDir = "$git_basedir/templates/built";
+  }
 
   public function setRepository(VersioncontrolRepository $repository) {
     $this->repository = $repository;
