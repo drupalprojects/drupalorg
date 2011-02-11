@@ -89,7 +89,7 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
       ->execute();
   }
 
-  public function passthru(string $command, $exception = FALSE) {
+  public function passthru($command, $exception = FALSE) {
     $prepend = "GIT_DIR={$this->repository->root} " . _versioncontrol_git_get_binary_path() . ' ';
     $command = escapeshellcmd($prepend . $command);
     exec($command, $output, $return);
