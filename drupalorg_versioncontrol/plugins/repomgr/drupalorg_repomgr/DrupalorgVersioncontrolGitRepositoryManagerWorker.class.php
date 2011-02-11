@@ -22,7 +22,7 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
   }
 
   public function init() {
-    $template_dir = $this->templateBaseDir . (empty($this->sandbox) ? 'project' : 'sandbox');
+    $template_dir = $this->templateBaseDir . '/' . (empty($this->sandbox) ? 'project' : 'sandbox');
     // Create the repository on disk
     exec('git --git-dir ' . escapeshellarg($this->repository->root) . ' init --template ' . $template_dir, $output, $return);
     if ($return) {
