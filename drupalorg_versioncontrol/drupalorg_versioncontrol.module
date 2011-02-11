@@ -57,7 +57,7 @@ function drupalorg_versioncontrol_nodeapi_insert(&$node, $a3 = NULL, $a4 = NULL)
   else {
     $top_path = "project/{$node->project['uri']}";
   }
-  $repo_root = variable_get('drupalorg_git_basedir', '/var/git') . '/' . $top_path . '.git';
+  $repo_root = variable_get('drupalorg_git_basedir', '/repositories/var/git') . '/' . $top_path . '.git';
 
   $description = 'For more information about this repository, visit the project page at ' . url('node/' . $node->nid, array('absolute' => TRUE));
 
@@ -167,7 +167,7 @@ function drupalorg_versioncontrol_project_promote_sandbox($project) {
   $job = array(
     'operation' => array(
       // Relocate the repo on disk and update the repo root.
-      'move' => array(variable_get('drupalorg_git_basedir', '/var/git') . '/project/' . $project->project['uri'] . '.git'),
+      'move' => array(variable_get('drupalorg_git_basedir', 'repositories/var/git') . '/project/' . $project->project['uri'] . '.git'),
       // Update the description
       'setDescription' => array('For more information about this repository, visit the project page at ' . url('node/' . $project->nid, array('absolute' => TRUE))),
       // Save the updated repo entry to the db.
