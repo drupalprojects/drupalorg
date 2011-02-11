@@ -168,6 +168,8 @@ function drupalorg_versioncontrol_project_promote_sandbox($project) {
     'operation' => array(
       // Relocate the repo on disk and update the repo root.
       'move' => array(variable_get('drupalorg_git_basedir', '/var/git') . '/repositories/project/' . $project->project['uri'] . '.git'),
+      // The repository needs to be reinit-ed with project hooks, replacing the old sandbox hooks.
+      'reInit' => array('hooks'),
       // Update the description
       'setDescription' => array('For more information about this repository, visit the project page at ' . url('node/' . $project->nid, array('absolute' => TRUE))),
       // Save the updated repo entry to the db.
