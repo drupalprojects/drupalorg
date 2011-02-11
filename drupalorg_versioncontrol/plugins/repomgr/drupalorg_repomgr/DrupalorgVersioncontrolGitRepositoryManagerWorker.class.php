@@ -18,10 +18,10 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
 
   public function setRepository(VersioncontrolRepository $repository) {
     $this->repository = $repository;
-    $this->sandbox = (int) db_result(db_query('SELECT sandbox FROM {project_projects} WHERE nid = %d', $repository->project_nid));
   }
 
   public function init() {
+    $this->getSandboxStatus();
     $template_dir = $this->templateBaseDir . '/' . (empty($this->sandbox) ? 'project' : 'sandbox');
     // Create the repository on disk
     exec('git --git-dir ' . escapeshellarg($this->repository->root) . ' init --template ' . $template_dir, $output, $return);
@@ -122,6 +122,10 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
     if (!file_exists($this->templateBaseDir)) {
       $this->verified = FALSE;
     }
+  }
+
+  protected function getSandboxStatus() {
+    $this->sandbox = (int) db_result(db_query('SELECT sandbox FROM {project_projects} WHERE nid = %d', $repository->project_nid));
   }
 }
 
