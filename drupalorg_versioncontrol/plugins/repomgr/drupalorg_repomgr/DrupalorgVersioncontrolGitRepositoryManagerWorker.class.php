@@ -31,6 +31,11 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
     }
   }
 
+  public function reInit(array $flush) {
+    exec('rm -rf ' . escapeshellarg($this->repository->root) . '/{' . implode(',', $flush) . '}');
+    $this->init();
+  }
+
   public function create() {
     exec('mkdir -p ' . escapeshellarg($this->repository->root), $output, $return);
     if ($return) {
@@ -81,6 +86,16 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
       ->key(array('nid' => $this->repository->project_nid))
       ->fields(array('repo_id' => $this->repository->repo_id))
       ->execute();
+  }
+
+  public function passthru(string $command, $exception = FALSE) {
+    $prepend = "GIT_DIR={$this->repository->root} " . variable_get('versioncontrol_git_binary_path', 'git') . ' ';
+    $command = escapeshellcmd($prepend . $command);
+    exec($command, $output, $return);
+    if ($exception && $return) {
+      throw new Exception ("Command '$command' exited with non-zero status and the following output: " . implode(' ', $output), E_ERROR);
+    }
+    return $return;
   }
 
   /**
