@@ -129,7 +129,7 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
   }
 
   protected function getSandboxStatus() {
-    $this->sandbox = (int) db_result(db_query('SELECT sandbox FROM {project_projects} WHERE nid = %d', $repository->project_nid));
+    $this->sandbox = (int) db_result(db_query('SELECT sandbox FROM {project_projects} WHERE nid = %d', $this->repository->project_nid));
   }
 }
 
