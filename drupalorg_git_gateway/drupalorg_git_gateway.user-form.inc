@@ -243,6 +243,19 @@ function _drupalorg_git_gateway_user_admin($account) {
     '#description' => t('Globally disable Git access for this user across all of Drupal.org.'),
   );
 
+  $form['git_disabled_msg'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Git access disabled e-mail'),
+    '#default_value' => variable_get('project_git_gateway_disabled_msg', DRUPALORG_GIT_DISABLE_MSG),
+    '#description' => t('Message to send to a user when disabling their Git push access.'),
+    '#rows' => 10,
+  );
+
+  // Since we don't send an e-mail when enabling hide for disabled users.
+  if ($account->git_disabled) {
+    $form['git_disabled_msg']['#access'] = FALSE;
+  }
+
   $form['git_vetted'] = array(
     '#type' => 'checkbox',
     '#title' => t('Is a vetted user'),
@@ -361,6 +374,15 @@ function drupalorg_git_gateway_admin_user_form_submit($form, &$form_state) {
   // Admin has changed the enabled/disabled state of this git account. Log the change.
   if (isset($edit['git_disabled']) && ($edit['git_disabled'] != $account->git_disabled)) {
     $values = array($account->uid, $user->uid, time(), $edit['git_disabled']);
-    db_query('INSERT INTO {drupalorg_git_disable_log} (uid, admin_uid, timestamp, action) VALUES (%d, %d, %d, %d) ', $values);
+    if ($edit['git_disabled'] == 1) {
+      $body = t($edit['git_disabled_msg'], array('@user_name' => $account->name, '@admin_name' => $user->name));
+      drupal_mail('drupalorg_git_gateway', 'disabled', $account->mail, user_preferred_language($account), array('body' => $body));
+      $values[] = $body;
+      db_query("INSERT INTO {drupalorg_git_disable_log} (uid, admin_uid, timestamp, action, email) VALUES (%d, %d, %d, %d, '%s') ", $values);
+    }
+    else {
+      db_query("INSERT INTO {drupalorg_git_disable_log} (uid, admin_uid, timestamp, action, email) VALUES (%d, %d, %d, %d, '') ", $values);
+    }
   }
 }
+

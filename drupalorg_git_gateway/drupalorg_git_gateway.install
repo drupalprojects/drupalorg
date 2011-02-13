@@ -60,6 +60,11 @@ function drupalorg_git_gateway_schema() {
           'not null' => TRUE,
           'description' => 'The action - 1 if the admin is disabling the account, 0 if the admin is re-enabling the account.',
         ),
+        'email' => array(
+         'type' => 'text',
+         'not null' => TRUE,
+         'description' => 'Record the customizable body of the e-mail notification.',
+        )
       ),
       'indexes' => array(
         'uid' => array('uid'),
@@ -306,5 +311,19 @@ function drupalorg_git_gateway_update_6301() {
   );
   db_create_table($ret, 'drupalorg_git_disable_log', $spec);
 
+  return $ret;
+}
+
+/**
+ * Add the email column to {drupalorg_git_disable_log} table.
+ */
+function drupalorg_git_gateway_update_6302() {
+  $ret = array();
+  $spec = array(
+    'type' => 'text',
+    'not null' => TRUE,
+    'description' => 'Record the customizable body of the e-mail notification.',
+  );
+  db_add_field($ret, 'drupalorg_git_disable_log', 'email', $spec);
   return $ret;
 }
