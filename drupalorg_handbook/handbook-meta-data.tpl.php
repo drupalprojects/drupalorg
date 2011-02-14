@@ -1,5 +1,4 @@
 <div class="meta">
-  <h5>About This Article</h5>
   <ul>
     <?php foreach ($info as $title => $terms): ?>
       <li><?php print $title; ?>: <?php print $terms; ?>
