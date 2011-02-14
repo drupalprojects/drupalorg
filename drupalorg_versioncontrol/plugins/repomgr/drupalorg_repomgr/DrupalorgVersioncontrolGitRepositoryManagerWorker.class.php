@@ -28,7 +28,7 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
 
     if ($return) {
       // init failed for some reason, throw exception
-      throw new Exception('Git repository initialization failed with code ' . $return . ' and error message \'' . implode(' ', $output) . '\'', E_ERROR);
+      throw new Exception('Git repository initialization failed with code ' . $return, E_ERROR);
     }
   }
 
