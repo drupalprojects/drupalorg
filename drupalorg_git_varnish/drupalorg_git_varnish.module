@@ -224,7 +224,7 @@ function drupalorg_git_varnish_exec($commands) {
     return $ret;
   }
 
-  socket_set_option($client, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>0, 'usec'=>50));
+  socket_set_option($client, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>0, 'usec'=>500));
 
   if (version_compare($conn_info['version'], '2.1', 'ge')) {
     // If there is a CLI banner message (varnish >= 2.1.x), try to read it and move on.
