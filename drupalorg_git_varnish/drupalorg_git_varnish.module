@@ -197,6 +197,43 @@ function drupalorg_git_varnish_project_promote_sandbox($project) {
 }
 
 /**
+ * Implements hook_project_maintainer_save().
+ *
+ * Clear varnish cache for a project when its maintainers list is updated.
+ */
+function drupalorg_git_varnish_project_maintainer_save($nid, $uid, $permissions) {
+  _drupalorg_git_varnish_project_maintainer_update($nid);
+}
+
+/**
+ * Implements hook_project_maintainer_remove().
+ *
+ * Clear varnish cache for a project when its maintainers list is updated.
+ */
+function drupalorg_git_varnish_project_maintainer_remove($nid, $uid) {
+  _drupalorg_git_varnish_project_maintainer_update($nid);
+}
+
+function _drupalorg_git_varnish_project_maintainer_update($nid) {
+  static $nids = array();
+  // This function is likely to get hit multiple times on a given operation, so
+  // we ensure it only runs - only one purge is necessary.
+  if (in_array($nid, $nids)) {
+    return;
+  }
+  $nids[] = $nid;
+
+  $uri = db_result(db_query('SELECT uri FROM {project_projects} WHERE nid = %d', $nid));
+
+  $host = _drupalorg_git_varnish_get_host();
+  $commands = array(
+    'purge req.http.host == ' . $host . ' && req.url ~ ^/drupalorg/vcs-auth-data.project_uri=' . $uri . '$',
+  );
+
+  drupalorg_git_varnish_exec($commands);
+}
+
+/**
  * Help[er function to parse the host from the global $base_url
  */
 function _drupalorg_git_varnish_get_host() {
