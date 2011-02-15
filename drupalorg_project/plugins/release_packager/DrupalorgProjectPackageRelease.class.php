@@ -197,7 +197,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   protected function fixInfoFileVersion($file, $project_short_name, $version) {
     global $site_name;
 
-    $info = "\n; Information added by $site_name packaging script on " . format_date('Y-m-d') . "\n";
+    $info = "\n; Information added by $site_name packaging script on " . gmdate('Y-m-d') . "\n";
     $info .= 'project = "' . $this->release_version . "\"\n";
 
     // .info files started with 5.x, so we don't have to worry about version
