@@ -210,13 +210,13 @@ function _drupalorg_git_gateway_user_config($account) {
   $user_config = t('You will not be credited in commit statistics or listings unless you set the Git e-mail address to either an !multiemailadmin or the anonymized e-mail provided below. Read !handbook for a full discussion of identifying yourself to Git. We recommend:', (array('!handbook' => l('the handbook', 'node/1042972'), '!multiemailadmin' => l('address associated with your account', "user/$account->uid/edit/email-addresses")))) . "\n";
   $git_config_name = empty($account->profile_full_name) ? $account->name : $account->profile_full_name;
   $user_config .= '<div class="codeblock"><code>';
-  $user_config .= "git config --global user.name '$git_config_name'<br/>";
-  $user_config .= "git config --global user.email '$account->mail'<br/>";
+  $user_config .= "git config --global user.name \"$git_config_name\"<br/>";
+  $user_config .= "git config --global user.email $account->mail<br/>";
   $user_config .= '</code></div>';
   $user_config .= 'E-mail addresses in Drupal Git repositories are never shown in a web browser, but they can be accessed by anyone looking directly at the Git repository logs. It is generally considered appro
 priate to use a real, public-facing e-mail for Git. If you prefer to use an anonymized address, use: ';
   $anon_address = "{$account->git_username}@{$account->uid}.no-reply.drupal.org";
-  $user_config .= "<div class=\"codeblock\"><code>git config --global user.email '$anon_address'</code></div>";
+  $user_config .= "<div class=\"codeblock\"><code>git config --global user.email $anon_address</code></div>";
 
   $form['user_config'] = array(
     '#type' => 'item',
