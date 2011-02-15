@@ -183,6 +183,8 @@ function drupalorg_git_varnish_project_promote_sandbox($project) {
   $host = _drupalorg_git_varnish_get_host();
   $commands = array(
     "purge req.http.host == $host && req.url ~ ^/drupalorg/vcs-auth-data.project_uri={$project->project['uri']}$",
+    // And also clear the old sandbox uri.
+    "purge req.http.host == $host && req.url ~ ^/drupalorg/vcs-auth-data.project_uri={$project->nid}$",
   );
   drupalorg_git_varnish_exec($commands);
 }
