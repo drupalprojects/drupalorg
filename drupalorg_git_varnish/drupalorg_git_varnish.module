@@ -139,10 +139,17 @@ function drupalorg_git_varnish_clear_user_cmds($uid) {
 }
 
 function drupalorg_git_varnish_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
-  if ($op == 'update' && $node->type == 'project-project') {
+  if (in_array($op, array('update', 'insert', 'delete')) && in_array($node->type, array('project_project', 'project_release'))) {
+    if ($node->type == 'project_project') {
+      $uri = $node->project['uri'];
+    }
+    else if ($node->type == 'project_release') {
+      $uri = db_result(db_query('SELECT uri FROM {project_projects} WHERE nid = %d', $node->project_release['pid']));
+    }
+
     $host = _drupalorg_git_varnish_get_host();
     $commands = array(
-      'purge req.http.host == ' . $host . ' && req.url ~ "^/drupalorg/vcs-auth-data.project_uri=' . $node->project['uri'] . '$',
+      'purge req.http.host == ' . $host . ' && req.url ~ ^/drupalorg/vcs-auth-data.project_uri=' . $uri . '$',
     );
     drupalorg_git_varnish_exec($commands);
   }
