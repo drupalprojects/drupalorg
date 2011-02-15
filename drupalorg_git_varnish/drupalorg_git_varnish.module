@@ -149,7 +149,6 @@ function drupalorg_git_varnish_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 }
 
 function drupalorg_git_varnish_drupalorg_pushctl_changed($pushctl) {
-  dsm($pushctl);
   $host = _drupalorg_git_varnish_get_host();
   $command = "purge req.http.host == $host && req.url == /drupalorg/pushctl-state";
   drupalorg_git_varnish_exec(array($command));
