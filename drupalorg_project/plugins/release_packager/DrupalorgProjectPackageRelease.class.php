@@ -28,12 +28,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   protected $temp_directory = '';
   protected $project_build_root = '';
 
-  protected $info_files = array();
-  protected $manifest = array();
-  // Files to ignore when checking timestamps:
-  protected $exclude_files = array('.', '..', 'LICENSE.txt');
-  protected $youngest_file_timestamp = 0;
-
   /// Have we initialized our shared static data yet?
   protected static $shared_init = FALSE;
 
@@ -81,6 +75,9 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   }
 
   public function createPackage(&$files, &$contents) {
+    // Files to ignore when checking timestamps:
+    $exclude = array('.', '..', 'LICENSE.txt');
+
     // Remember if the tar.gz version of this release file already exists.
     $tgz_exists = is_file($this->filenames['full_dest_tgz']);
 
@@ -132,9 +129,9 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return 'error';
     }
 
-    $this->walkDirectoryTree($export_to);
-
-    if (!empty($this->release_node->project_release['rebuild']) && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $this->youngest_file_timestamp) {
+    $info_files = array();
+    $youngest = $this->fileFindYoungest($export_to, 0, $exclude, $info_files);
+    if (!empty($this->release_node->project_release['rebuild']) && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $youngest) {
       // The existing tarball for this release is newer than the youngest
       // file in the directory, we're done.
       return 'no-op';
@@ -142,7 +139,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
 
     // Update any .info files with packaging metadata.
     foreach ($info_files as $file) {
-      if (!$this->fixInfoFileVersion($file)) {
+      if (!$this->fixInfoFileVersion($file, $this->project_short_name, $this->release_version)) {
         wd_err("ERROR: Failed to update version in %file, aborting packaging", array('%file' => $file), $release_node_view_link);
         return 'error';
       }
@@ -152,8 +149,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     if (!drupal_exec("{$this->conf['ln']} -sf {$this->conf['license']} $export_to/LICENSE.txt")) {
       return 'error';
     }
-
-    $this->writeManifest($export_to);
 
     // 'h' is for dereference, we want to include the files, not the links
     if (!drupal_exec("{$this->conf['tar']} -ch --file=- $export_to | {$this->conf['gzip']} -9 --no-name > {$this->filenames['full_dest_tgz']}")) {
@@ -208,7 +203,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     if (preg_match('/^((\d+)\.x)-.*/', $version, $matches) && $matches[2] >= 6) {
       $info .= "core = \"$matches[1]\"\n";
     }
-    $info .= 'project = "' . $this->project_short_name . "\"\n";
+    $info .= "project = \"$project_short_name\"\n";
     $info .= 'datestamp = "'. time() ."\"\n";
     $info .= "\n";
 
@@ -228,89 +223,33 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   }
 
   /**
-   * Walk the directory tree after we checkout from VCS.
-   *
-   * This does processing on the directory tree before we create the archive
-   * files for this release:
-   * - Find the youngest (newest) file in a directory tree (stolen wholesale
-   *   from the original package-drupal.php script).
-   * - Add packaging metadata to any files that end with ".info".
-   * - Find all the filenames for later use creating the packaging manifest.
-   *
-   * @param string $relative_path
-   *   The relative directory path of the file or directory to walk.
+   * Find the youngest (newest) file in a directory tree.
+   * Stolen wholesale from the original package-drupal.php script.
+   * Modified to also notice any files that end with ".info" and store
+   * all of them in the array passed in as an argument. Since we have to
+   *  recurse through the whole directory tree already, we should just
+   * record all the info we need in one pass instead of doing it twice.
    */
-  public function walkDirectoryTree($base_dir, $relative_path = '') {
-    $target = $base_dir;
-    if (!empty($relative_path)) {
-      $target .= '/' . $relative_path;
-    }
-    if (is_dir($target)) {
-      $fp = opendir($target);
+  public function fileFindYoungest($dir, $timestamp, $exclude, &$info_files) {
+    if (is_dir($dir)) {
+      $fp = opendir($dir);
       while (FALSE !== ($file = readdir($fp))) {
-        if (!in_array($file, $this->exclude_files)) {
-          $filename = !empty($relative_path) ? "$relative_path/$file" : $file;
-          if (is_dir("$base_dir/$filename")) {
-            $this->walkDirectoryTree($base_dir, $filename);
+        if (!in_array($file, $exclude)) {
+          if (is_dir("$dir/$file")) {
+            $timestamp = $this->fileFindYoungest("$dir/$file", $timestamp, $exclude, $info_files);
           }
           else {
-            $mtime = filemtime("$base_dir/$filename");
-            $this->youngest_file_timestamp = ($mtime > $this->youngest_file_timestamp) ? $mtime : $this->youngest_file_timestamp;
+            $mtime = filemtime("$dir/$file");
+            $timestamp = ($mtime > $timestamp) ? $mtime : $timestamp;
             if (preg_match('/^.+\.info$/', $file)) {
-              $this->info_files[] = "$base_dir/$filename";
+              $info_files[] = "$dir/$file";
             }
-            $this->manifest[$filename] = array();
           }
         }
       }
       closedir($fp);
     }
-  }
-
-  /**
-   * Output the packaging MANIFEST.txt file with all the file metadata.
-   *
-   * @param string $base_dir
-   *   The relative path to where the package directory tree lives.
-   */
-  public function writeManifest($base_dir) {
-    global $base_url;
-    $repo = $this->project_node->versioncontrol_project['repo'];
-    $git_tag = escapeshellcmd($this->release_node->project_release['tag']);
-    $git_base = $this->conf['git'] . ' --git-dir=' . escapeshellcmd($repo->root);
-    $git_log = $git_base . ' log --max-count=1 --pretty="format:%H|%ci" ' . $git_tag . ' -- ';
-
-    $git_rev_parse = $git_base . ' rev-parse ' . $git_tag;
-
-    $output = '';
-    $output .= '# Project short name: ' . $this->project_node->project['uri'] . "\n";
-    $output .= '# Project URL: ' . $base_url . url('node/' . $this->project_node->nid) . "\n";
-    $output .= '# Release version: ' . $this->release_node->project_release['version'] . "\n";
-    $output .= '# Release URL: ' . $base_url . url('node/' . $this->release_node->nid) . "\n";
-    // TODO: Git clone URL?
-
-    $git_rev_parse_handle = popen($git_rev_parse, 'r');
-    $git_rev_parse_out = fgets($git_rev_parse_handle);
-    pclose($git_rev_parse_handle);
-    // The output from git rev-parse already has a newline...
-    $output .= '# Release Git SHA1 hash: ' . $git_rev_parse_out;
-
-    // Finally, give the humans some help on the rest of the file contents.
-    $output .= "#\n# file md5 hash | Git SHA1 of last commit | date of last commit | filename\n";
-
-    // Now, for every file in the directory tree, find the hashes and dates.
-    foreach ($this->manifest as $path => $info) {
-      // Find the datestamp and the SHA1 that last modified this file.
-      $git_log_handle = popen("$git_log $path", 'r');
-      $git_log_out = fgets($git_log_handle);
-      pclose($git_log_handle);
-      // Stash info about this file in the manifest.
-      $output .= md5_file("$base_dir/$path");
-      $output .= '|' . $git_log_out . '|' . $path . "\n";
-    }
-    $manifest = fopen("$base_dir/MANIFEST.txt", 'w');
-    fwrite($manifest, $output);
-    fclose($manifest);
+    return $timestamp;
   }
 
 }
