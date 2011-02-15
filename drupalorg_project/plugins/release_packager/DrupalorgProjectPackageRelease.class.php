@@ -191,7 +191,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   protected function fixInfoFileVersion($file, $project_short_name, $version) {
     global $site_name;
 
-    $info = "\n; Information added by $site_name packaging script on " . format_date('Y-m-d') . "\n";
+    $info = "\n; Information added by $site_name packaging script on " . gmdate('Y-m-d') . "\n";
     $info .= "version = \"$version\"\n";
     // .info files started with 5.x, so we don't have to worry about version
     // strings like "4.7.x-1.0" in this regular expression. If we can't parse
