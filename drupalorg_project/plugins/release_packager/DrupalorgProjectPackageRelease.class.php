@@ -141,7 +141,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     }
 
     // Update any .info files with packaging metadata.
-    foreach ($this->info_files as $file) {
+    foreach ($info_files as $file) {
       if (!$this->fixInfoFileVersion($file)) {
         wd_err("ERROR: Failed to update version in %file, aborting packaging", array('%file' => $file), $release_node_view_link);
         return 'error';
