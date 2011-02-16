@@ -213,8 +213,7 @@ function _drupalorg_git_gateway_user_config($account) {
   $user_config .= "git config --global user.name \"$git_config_name\"<br/>";
   $user_config .= "git config --global user.email $account->mail<br/>";
   $user_config .= '</code></div>';
-  $user_config .= 'E-mail addresses in Drupal Git repositories are never shown in a web browser, but they can be accessed by anyone looking directly at the Git repository logs. It is generally considered appro
-priate to use a real, public-facing e-mail for Git. If you prefer to use an anonymized address, use: ';
+  $user_config .= 'E-mail addresses in Drupal Git repositories are never shown in a web browser, but they can be accessed by anyone looking directly at the Git repository logs. It is generally considered appropriate to use a real, public-facing e-mail for Git. If you prefer to use an anonymized address, use: ';
   $anon_address = "{$account->git_username}@{$account->uid}.no-reply.drupal.org";
   $user_config .= "<div class=\"codeblock\"><code>git config --global user.email $anon_address</code></div>";
 
