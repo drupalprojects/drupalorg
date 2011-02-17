@@ -9,7 +9,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     'tar' => '/bin/tar',
     'gzip' => '/bin/gzip',
     'zip' => '/usr/bin/zip',
-    'git' => '/usr/bin/git',
     'ln' => '/bin/ln',
     'rm' => '/bin/rm',
   );
@@ -32,6 +31,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   protected static $shared_init = FALSE;
 
   public function __construct($release_node, $file_destination_root, $file_destination_subdir, $temp_directory) {
+    $this->conf['git'] = _versioncontrol_git_get_binary_path();
     // Make sure the shared data is initialized.
     self::shared_init();
 
