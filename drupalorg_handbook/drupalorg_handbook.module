@@ -68,8 +68,11 @@ function drupalorg_handbook_meta_data($node) {
     // Group the terms by vid.
     $taxonomy = array();
     foreach ($node->taxonomy as $term_id => $term) {
-      if ($term_id !== 125) { // No known problems is uninteresting
-        $taxonomy[$term->vid][] = $term;
+      if (isset($vocabularies[$term->vid])) {
+        $term->rendered = TRUE;
+        if ($term_id !== 125) { // No known problems is uninteresting
+          $taxonomy[$term->vid][] = $term;
+        }
       }
     }
 

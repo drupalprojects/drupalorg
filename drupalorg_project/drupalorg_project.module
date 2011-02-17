@@ -833,6 +833,7 @@ function drupalorg_project_meta_data($node) {
       else {
         $taxonomy[$term->vid][] = $term;
       }
+      $term->rendered = TRUE;
     }
 
     foreach ($vocabularies as $vocabulary) {

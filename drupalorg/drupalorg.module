@@ -1313,11 +1313,20 @@ function drupalorg_preprocess_block(&$variables) {
 }
 
 function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
-  // Add hosting page ads
-  if ($op === 'view' && $node->nid == 21785) {
-    // Add Ads after teaser
-    $filtered_teaser = check_markup($node->teaser, $node->format, FALSE);
-    $node->content['body']['#value'] = str_replace($filtered_teaser, $filtered_teaser . theme('drupalorg_hosting_page'), $node->content['body']['#value']);
+  if ($op === 'view') {
+    // Add hosting page ads
+    if ($node->nid == 21785) {
+      // Add Ads after teaser
+      $filtered_teaser = check_markup($node->teaser, $node->format, FALSE);
+      $node->content['body']['#value'] = str_replace($filtered_teaser, $filtered_teaser . theme('drupalorg_hosting_page'), $node->content['body']['#value']);
+    }
+
+    // Remove extra terms on SAs, section tabs handle them
+    foreach (array(1852, 44, 1856) as $tid) {
+      if (isset($node->taxonomy[$tid])) {
+        $node->taxonomy[$tid]->rendered = TRUE;
+      }
+    }
   }
 }
 

@@ -340,6 +340,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'hosting' => array('title' => t('Hosting'), 'href' => 'node/21785', '#active' => drupalorg_crosssite_child_of('main', 'hosting')),
         'training' => array('title' => t('Training'), 'href' => 'node/313581', '#active' => drupalorg_crosssite_child_of('main', 'training-services')),
       );
+      break;
 
     case 'security':
       $nav_content_links = array(
@@ -347,6 +348,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'contrib' => array('title' => t('Contributed projects'), 'href' => 'security/contrib', '#active' => drupalorg_crosssite_menu_term('main', array(44))),
         'psa' => array('title' => t('Public service anouncements'), 'href' => 'security/psa', '#active' => drupalorg_crosssite_menu_term('main', array(1856))),
       );
+      break;
   }
 
   if (count($nav_content_links)) {
