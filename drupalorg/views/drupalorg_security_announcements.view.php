@@ -83,21 +83,7 @@ $handler->override_option('row_options', array(
   'comments' => 0,
 ));
 $handler = $view->new_display('page', 'Page', 'page_1');
-$handler->override_option('path', 'security/core');
-$handler->override_option('menu', array(
-  'type' => 'default tab',
-  'title' => 'Drupal core',
-  'description' => '',
-  'weight' => '0',
-  'name' => 'navigation',
-));
-$handler->override_option('tab_options', array(
-  'type' => 'normal',
-  'title' => 'Security advisories for Drupal core',
-  'description' => 'These posts by the Drupal security team are also sent to the security announcements e-mail list.',
-  'weight' => '0',
-  'name' => 'navigation',
-));
+$handler->override_option('path', 'security');
 $handler = $view->new_display('feed', 'Feed', 'feed_1');
 $handler->override_option('style_plugin', 'rss');
 $handler->override_option('style_options', array(

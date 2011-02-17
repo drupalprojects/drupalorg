@@ -84,19 +84,6 @@ $handler->override_option('row_options', array(
 ));
 $handler = $view->new_display('page', 'Page', 'page_1');
 $handler->override_option('path', 'security/contrib');
-$handler->override_option('menu', array(
-  'type' => 'tab',
-  'title' => 'Contributed projects',
-  'description' => '',
-  'weight' => '1',
-  'name' => 'navigation',
-));
-$handler->override_option('tab_options', array(
-  'type' => 'normal',
-  'title' => 'Security advisories for contributed projects',
-  'description' => 'These posts by the Drupal security team are also sent to the security announcements e-mail list.',
-  'weight' => '0',
-));
 $handler = $view->new_display('feed', 'Feed', 'feed_1');
 $handler->override_option('style_plugin', 'rss');
 $handler->override_option('style_options', array(
