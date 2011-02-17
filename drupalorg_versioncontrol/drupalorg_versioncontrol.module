@@ -65,7 +65,9 @@ function drupalorg_versioncontrol_nodeapi_insert(&$node, $a3 = NULL, $a4 = NULL)
   $data->name = $node->project['uri'];
   $data->root = $repo_root;
   $data->vcs = 'git';
-  $data->plugins = array();
+  $data->plugins = array(
+    'auth_handler' => 'account', // We can't rely on the $conf default for this b/c vc_project doesn't respect it
+  );
   $data->project_nid = $node->nid;
   $data->update_method = 1;
 
