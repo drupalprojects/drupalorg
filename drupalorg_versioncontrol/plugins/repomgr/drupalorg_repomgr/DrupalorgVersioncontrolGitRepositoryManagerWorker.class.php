@@ -53,7 +53,15 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
 
   public function setUserAuthData($uid, $auth_data) {
     $auth_handler = $this->repository->getAuthHandler();
-    $auth_handler->setUserData($uid, $auth_data);
+    // special case, let the caller init multiple users' auth data at once
+    if (is_array($uid)) {
+      foreach ($uid as $id) {
+        $auth_handler->setUserData($id, $auth_data);
+      }
+    }
+    else {
+      $auth_handler->setUserData($uid, $auth_data);
+    }
     $auth_handler->save();
   }
 
