@@ -187,7 +187,7 @@ function drupalorg_search_block_view($delta) {
       if (drupalorg_crosssite_apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {    
         $project_type_term = drupalorg_search_get_project_type_term($response);
         if (!isset($project_type_term)) {
-          $form = drupal_get_form('drupalorg_search_sort_form', $query); 
+          $form = drupal_get_form('drupalorg_search_sort_form'); 
         }
         else {
           $form = drupal_get_form('project_solr_browse_projects_form', $project_type_term, 'search/' . arg(1) . '/' . $query->get_keys());

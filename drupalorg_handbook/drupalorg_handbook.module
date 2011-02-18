@@ -22,9 +22,6 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
       case 109372: // Handbook maintainers
         $extra = drupalorg_handbook_maintainers();
         break;
-      case 14205: // Book contributors
-        $extra = drupalorg_handbook_book_contributors();
-        break;
       case 263594: // Revision maintainers
         $extra = drupalorg_handbook_revision_maintainers();
         break;
@@ -71,8 +68,11 @@ function drupalorg_handbook_meta_data($node) {
     // Group the terms by vid.
     $taxonomy = array();
     foreach ($node->taxonomy as $term_id => $term) {
-      if ($term_id !== 125) { // No known problems is uninteresting
-        $taxonomy[$term->vid][] = $term;
+      if (isset($vocabularies[$term->vid])) {
+        $term->rendered = TRUE;
+        if ($term_id !== 125) { // No known problems is uninteresting
+          $taxonomy[$term->vid][] = $term;
+        }
       }
     }
 
@@ -132,23 +132,6 @@ function drupalorg_handbook_maintainers() {
 }
 
 /**
- * Count and list contributors to the books.
- */
-function drupalorg_handbook_book_contributors() {
-  $result = db_query("SELECT u.uid, u.name, COUNT(n.nid) AS pages
-  FROM {node} n INNER JOIN {users} u ON n.uid = u.uid
-  WHERE n.type = 'book' AND n.status = 1 AND n.moderate = 0
-  GROUP BY u.name
-  ORDER BY pages DESC");
-  $output .= "<ul>";
-  while ($contributor = db_fetch_object($result)) {
-    $output .= "<li>". theme('username', $contributor) ." (". format_plural($contributor->pages, "@count page", "@count pages") .")</li>";
-  }
-  $output .= "</ul>";
-  return $output;
-}
-
-/**
  * Collect and cache revision maintainers (those who made revisions to books).
  */
 function drupalorg_handbook_revision_maintainers() {
@@ -176,11 +159,11 @@ function drupalorg_handbook_revision_maintainers() {
  * API function to get recent update information for the documentation pages.
  */
 function drupalorg_handbook_get_recent_updates($limit = 50) {
-  return db_query_range("SELECT n.nid, n.title, n.changed, r.log, u.uid, u.name
+  return db_query_range(db_rewrite_sql("SELECT n.nid, n.title, n.changed, r.log, u.uid, u.name
     FROM {node} n
     INNER JOIN {book} b ON n.nid = b.nid INNER JOIN {node_revisions} r ON n.vid = r.vid INNER JOIN {users} u ON u.uid = r.uid
     WHERE n.status = 1
-    ORDER BY n.changed DESC", 0, $limit);
+    ORDER BY n.changed DESC"), 0, $limit);
 }
 
 /**
@@ -241,16 +224,20 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
         case 'license':
           if (drupalorg_crosssite_section() === 'documentation') {
             return array(
-              'content' => t('The Drupal handbook pages are © 2000-!year by the <a href="@contributors_link">individual contributors</a> and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>', array('!year' => date('Y'), '@contributors_link' => url('node/14205'), '@ccl_url' => url('node/14307'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html'))),
+              'content' => t('Drupal’s online documentation is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>.', array('!year' => date('Y'), '@ccl_url' => url('node/14307'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html'))),
             );
           }
           break;
 
         case 'info':
           return array(
-            'subject' => t('Help Us Write Documentation'),
-            'content' => t('All content is written and edited by volunteers, please <a href="/contribute/documentation">contribute where you see a need</a>. If you have a Drupal.org account, you can edit a handbook page by clicking the “Edit” at the top of the page. You can also add new pages by using the “add a child page” link at the bottom. For more information on helping with the documentation, see <a href="/node/302203">quick ways to improve documentation</a>.'),
+            'subject' => t('Help Us Maintain Documentation'),
+            'content' => '<p>' . t('The Drupal.org online documentation is written by the Drupal community in co-operation with the <a href="@docteam_url">Documentation Team</a>. When you are logged in, you can:', array('@docteam_url' => url('node/24572'))) . '</p>' .
+            '<p>' . t('Edit most Documentation pages by clicking “Edit” at the top of the page.') . '</p>' .
+            '<p>' . t('Add new pages by using the “add a child page” link at the bottom of the page.') . '</p>' .
+            '<p>' . t('Use the <a href="@issues-url">Documentation issue queue</a> to propose major changes and report problems.', array('@issues-url' => url('project/issues/documentation'))) . '</p>'
           );
+          break;
      }
   }
 }

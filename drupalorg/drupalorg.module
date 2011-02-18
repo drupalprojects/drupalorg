@@ -66,7 +66,7 @@ function drupalorg_init() {
   if (isset($forum_id)) {
     // Tracking
     $term = taxonomy_get_term($forum_id);
-    $conf['googleanalytics_codesnippet_before'] .= "pageTracker._setCustomVar(1, 'Forum', '" . check_plain($term->name) . "', 3);";
+    $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 1, 'Forum', '" . check_plain($term->name) . "', 3]);"; // 3 is page-level
 
     // Ads
     if (!empty($forum_ads[$forum_id])) {
@@ -437,10 +437,12 @@ function drupalorg_home() {
  */
 function drupalorg_preprocess_page(&$variables) {
   if ($variables['is_front']) {
+    /* Temporary, http://drupal.org/node/1016076
     $variables['mission'] = '<h2>Come for the software, stay for the community</h2>
-    <p class="standfirst">
-      Drupal is an open source content management platform powering millions of websites and applications. It’s built, used, and supported by an active and diverse community of people around the world.
-    </p>';
+    <p class="standfirst">Drupal is an open source content management platform powering millions of websites and applications. It’s built, used, and supported by an active and diverse community of people around the world.</p>';
+    */
+    $variables['mission'] = '<h2><a href="/drupal-7.0">We’re celebrating the launch of Drupal 7</a></h2>
+    <p class="standfirst">Now easier to use, more flexible and more scalable, Drupal is an open source content management platform powering millions of websites and applications. <a href="/drupal-7.0">Learn more about Drupal 7</a></p>';
   }
 
   $router = menu_get_item();
@@ -466,7 +468,7 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   $variables['map_content'] = drupalorg_map_content();
 
   // == Forums tab data/markup
-  $sql = db_rewrite_sql("SELECT mv.entity_id AS nid, mv.node_title AS title, n.created, n.uid, u.name FROM {mv_drupalorg_node_by_vocabulary} mv INNER JOIN {node} n ON n.nid = mv.entity_id INNER JOIN {users} u ON u.uid = n.uid WHERE mv.term_vid = 1 ORDER BY mv.node_nid DESC");
+  $sql = db_rewrite_sql("SELECT mv.entity_id AS nid, mv.node_title AS title, n.created, n.uid, u.name FROM {mv_drupalorg_node_by_vocabulary} mv INNER JOIN {node} n ON n.nid = mv.entity_id INNER JOIN {users} u ON u.uid = n.uid WHERE mv.term_vid = 1 AND n.status = 1 ORDER BY mv.node_nid DESC");
   $result = db_query_range($sql, variable_get('forum_nav_vocabulary', ''), 0, 5);
   $recent_forums = '';
   while ($node = db_fetch_object($result)) {
@@ -493,8 +495,8 @@ function drupalorg_map_content($_force = FALSE) {
   else {
     $output = '<div class="homepage-pin homepage-pin-commit homepage-pin-west"><span class="latitude">' . variable_get('drupalcon_latitude', 41.836944) . '</span><span class="longitude">' . variable_get('drupalcon_longitude', -87.684444) . '</span><div class="content drupalcon">' . variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011') . '</div></div>';
     $queries = array(
-      "SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {book} b ON b.nid = nr.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = nr.uid INNER JOIN {users} u ON u.uid = nr.uid ORDER BY nr.timestamp DESC",
-      "SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' ORDER BY n.created DESC",
+      db_rewrite_sql("SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {node} n ON nr.nid = n.nid INNER JOIN {book} b ON b.nid = n.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = nr.uid WHERE n.status = 1 AND u.status = 1 ORDER BY nr.timestamp DESC"),
+      db_rewrite_sql("SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' AND n.status = 1 AND u.status = 1 ORDER BY n.created DESC"),
       "SELECT DISTINCT vco.vc_op_id, vco.message title, vco.revision, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'committed' verb FROM {versioncontrol_operations} vco INNER JOIN {html5_user_geolocation} hug ON hug.uid = vco.author_uid INNER JOIN {users} u ON u.uid = vco.author_uid ORDER BY vco.date DESC",
     );
     $map = array();
@@ -710,7 +712,6 @@ function drupalorg_preprocess_drupalorg_getting_involved(&$variables) {
 function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
   global $conf;
   $languages = array(
-    'nb' => 'Bokmål',
     'ca' => 'Catalan',
     'zh-hans' => 'Chinese (simplified)',
     'zh-hant' => 'Chinese (traditional)',
@@ -723,15 +724,22 @@ function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
     'de' => 'German',
     'el' => 'Greek',
     'he' => 'Hebrew',
+    'hi' => 'Hindi',
     'hu' => 'Hungarian',
     'id' => 'Indonesian',
     'it' => 'Italian',
     'ko' => 'Korean',
+    'lt' => 'Lithuanian',
+    'nb' => 'Norwegian (Bokmål)',
+    'pt' => 'Portuguese (Portugal)',
+    'pt-br' => 'Portuguese (Brazil)',
+    'ro' => 'Romanian',
     'ru' => 'Russian',
     'sr' => 'Serbian',
     'sl' => 'Slovene',
     'es' => 'Spanish',
     'sv' => 'Swedish',
+    'th' => 'Thai',
     'uk' => 'Ukrainian',
     'vi' => 'Vietnamese',
   );
@@ -1305,11 +1313,20 @@ function drupalorg_preprocess_block(&$variables) {
 }
 
 function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
-  // Add hosting page ads
-  if ($op === 'view' && $node->nid == 21785) {
-    // Add Ads after teaser
-    $filtered_teaser = check_markup($node->teaser, $node->format, FALSE);
-    $node->content['body']['#value'] = str_replace($filtered_teaser, $filtered_teaser . theme('drupalorg_hosting_page'), $node->content['body']['#value']);
+  if ($op === 'view') {
+    // Add hosting page ads
+    if ($node->nid == 21785) {
+      // Add Ads after teaser
+      $filtered_teaser = check_markup($node->teaser, $node->format, FALSE);
+      $node->content['body']['#value'] = str_replace($filtered_teaser, $filtered_teaser . theme('drupalorg_hosting_page'), $node->content['body']['#value']);
+    }
+
+    // Remove extra terms on SAs, section tabs handle them
+    foreach (array(1852, 44, 1856) as $tid) {
+      if (isset($node->taxonomy[$tid])) {
+        $node->taxonomy[$tid]->rendered = TRUE;
+      }
+    }
   }
 }
 

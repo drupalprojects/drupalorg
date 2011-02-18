@@ -84,19 +84,6 @@ $handler->override_option('row_options', array(
 ));
 $handler = $view->new_display('page', 'Page', 'page_1');
 $handler->override_option('path', 'security/psa');
-$handler->override_option('menu', array(
-  'type' => 'tab',
-  'title' => 'Public service anouncements',
-  'description' => '',
-  'weight' => '2',
-  'name' => 'navigation',
-));
-$handler->override_option('tab_options', array(
-  'type' => 'normal',
-  'title' => 'Security-related public service announcements',
-  'description' => 'These posts by the Drupal security team are also sent to the security announcements e-mail list.',
-  'weight' => '0',
-));
 $handler = $view->new_display('feed', 'Feed', 'feed_1');
 $handler->override_option('style_plugin', 'rss');
 $handler->override_option('style_options', array(

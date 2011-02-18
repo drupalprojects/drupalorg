@@ -101,7 +101,7 @@ $strings = array(
   '<strong>PHP</strong>: 5.2.4 and higher' =>
   '<strong>de PHP</strong>: 5.2.4 ou plus',
   '<strong>Memory</strong>: 32MB (A site with a number of commonly used modules enabled may require 64 MB of memory or more.)' =>
-  '<strong>de mémoire</strong>: 32MB (Un site activant un certain nombre des modules fréquemment utilisés peut peut exiger 64 Mo de mémoire ou plus.)',
+  '<strong>de mémoire</strong>: 32MB (Un site activant un certain nombre des modules fréquemment utilisés peut exiger 64 Mo de mémoire ou plus.)',
   'More <a href="@requirements-url">requirements information</a>.' =>
   'Plus d’<a href="@requirements-url">informations sur la configuration minimale</a>',
   'Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.' =>

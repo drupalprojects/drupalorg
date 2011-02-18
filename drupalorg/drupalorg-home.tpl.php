@@ -1,23 +1,11 @@
-<div id="front-drupal7" class="grid-12 alpha omega">
-  <a href="/drupal-7.0">
-    <div class="grid-8 alpha">
-      <img src="<?php print drupal_get_path('module', 'drupalorg') ?>/images/itshere.png" alt="IT’S HERE" />
-    </div>
-    <div class="grid-4 omega">
-      <img src="<?php print drupal_get_path('module', 'drupalorg') ?>/images/drupal7logo.png" alt="IT’S HERE" />
-    </div>
-  </a>
-</div>
-
 <div id="front-top-left" class="grid-4 alpha">
   <div id="front-top-left-inner">
     <div class="block-content">
      <h2><a href="about">Why Choose Drupal?</a></h2>
      <p>Use Drupal to build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine.</p><p>Drupal is free, flexible, robust and constantly being improved by hundreds of thousands of passionate people from all over the world. Join us!</p>
      <p class="front-get-started">
-      <a href="start" class="link-button"><span>Get Started with Drupal</span></a>
+      <a href="start" class="link-button"><span><span class="celebrating">Get Started with Drupal</span></span></a>
      </p>
-     <h3>Drupal 7 is here. <a href="/drupal-7.0">Read all about it</a>!</h3>
     </div>
   </div>
 </div>

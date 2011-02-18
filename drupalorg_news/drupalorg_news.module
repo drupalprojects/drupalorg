@@ -58,7 +58,7 @@ function drupalorg_news_preprocess_drupalorg_home(&$vars) {
 
 function drupalorg_news_short_block() {
   // Get the first three news items ordered by descending publication date.
-  $result = db_query_range('SELECT nid FROM {node} WHERE promote = 1 ORDER BY created DESC', array(), 0, 4);
+  $result = db_query_range(db_rewrite_sql('SELECT n.nid FROM {node} n WHERE n.status = 1 AND n.promote = 1 ORDER BY n.created DESC'), array(), 0, 4);
   $fresh_news = '';
   $news_count = 0;
   while ($nid = db_fetch_object($result)) {

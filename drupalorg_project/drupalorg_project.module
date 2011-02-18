@@ -239,6 +239,14 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
         )),
       );
     }
+
+    // Translation projects on drupal.org are being phased out in favor of
+    // localize.drupal.org, so prevent new translation projects from being
+    // created.
+    if ($form['project_taxonomy']['project_type']['#default_value'] != DRUPALORG_TRANSLATION_TID) {
+      unset($form['project_taxonomy']['project_type']['#options'][DRUPALORG_TRANSLATION_TID]);
+    }
+    $form['project_taxonomy']['project_type']['#description'] = t('Note: Translation projects have been moved and are now actively maintained at <a href="@localize-link">localize.drupal.org</a>.', array('@localize-link' => 'http://localize.drupal.org/'));
   }
 }
 
@@ -251,6 +259,19 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
  * people add this tag, they get to know about the process.
  */
 function drupalorg_project_release_node_form_alter(&$form, $form_state) {
+  // See if this is a release for a translation project, and if so, deny.
+  $project = $form['project']['#value'];
+  if (arg(2) != 'edit' && !empty($project->taxonomy[DRUPALORG_TRANSLATION_TID])) {
+    foreach (element_children($form) as $child) {
+      unset($form[$child]);
+    }
+    $form['translations_denied'] = array(
+      '#type' => 'markup',
+      '#value' => t('Translation projects have been moved and are now actively maintained at <a href="@localize-link">localize.drupal.org</a>. You are no longer allowed to create new releases of translation projects on drupal.org.', array('@localize-link' => 'http://localize.drupal.org/')),
+    );
+    return;
+  }
+
   if (!empty($form['taxonomy'])) {
     $vid = drupalorg_project_get_release_type_vid();
     $security_tid = drupalorg_project_get_security_update_tid();
@@ -748,9 +769,6 @@ function drupalorg_project_bingo_block_output() {
 
 /**
  * Implementation of template_preprocess_drupalorg_home().
- *
- * @todo
- *   Add caching.
  */
 function drupalorg_project_preprocess_drupalorg_home(&$vars) {
   $result = db_query_range("SELECT vco.message as message, vco.date as created, vco.revision as revision, u.name, u.uid FROM {versioncontrol_operations} vco INNER JOIN {users} u ON vco.author_uid = u.uid ORDER BY vco.date DESC", 0, 5);
@@ -795,6 +813,7 @@ function drupalorg_project_meta_data($node) {
       else {
         $taxonomy[$term->vid][] = $term;
       }
+      $term->rendered = TRUE;
     }
 
     foreach ($vocabularies as $vocabulary) {

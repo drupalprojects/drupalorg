@@ -137,9 +137,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   }
   else {
     // Add user page link and logout link.
-    $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user', array('html' => TRUE)) .' '. l(t('Logout'), 'logout');
+    $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user', array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) .' '. l(t('Logout'), 'logout');
     if (variable_get('drupalorg_crosssite_redesign', FALSE)) {
-      $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'http://' . $sites['main'] . '/user', array('html' => TRUE)) .' '. l(t('Logout'), 'http://' . $sites['main'] . '/logout');
+      $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'http://' . $sites['main'] . '/user', array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) .' '. l(t('Logout'), 'logout');
     }
     if (user_access('access administration pages')) {
       $userinfo .= ' ' . l(t('Admin'), 'admin');
@@ -164,7 +164,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
  * Specify the section matching criteria.
  */
 function drupalorg_crosssite_section() {
-  global $user;
+  global $user, $conf;
   static $section = FALSE;
 
   if ($section === FALSE) {
@@ -185,6 +185,9 @@ function drupalorg_crosssite_section() {
     }
     elseif (drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')) || drupalorg_crosssite_menu_site('localize')) {
       $section = 'downloads';
+    }
+    elseif (drupalorg_crosssite_menu_path('main', '^security(|/contrib|/psa)$') || drupalorg_crosssite_menu_term('main', array(1852, 44, 1856))) {
+      $section = 'security';
     }
     elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('main', 'forum') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)'))) {
       $section = 'community';
@@ -210,6 +213,9 @@ function drupalorg_crosssite_section() {
       // Should not happen.
       $section = NULL;
     }
+
+    // Track section
+    $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 2, 'Drupalorg-section', '" . $section . "', 3]);"; // 3 is page-level
   }
   return $section;
 }
@@ -237,6 +243,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'association' => 'Drupal Association',
     'drupalorg' => 'Drupal.org',
     'marketplace' => 'Marketplace',
+    'security' => 'Security advisories',
   );
   // Set the section_name variable to be output in page.tpl.php.
   if (isset($section_names[drupalorg_crosssite_section()])) {
@@ -280,8 +287,8 @@ function drupalorg_crosssite_content_menu(&$vars) {
     case 'association':
       $nav_content_links = array(
         'home'       => array('href' => '<front>', 'title' => t('Association Home'), '#site' => 'association'),
-        'news'      => array('href' => 'news', 'title' => t('News'), '#site' => 'association'),
-        'about'      => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association'),
+        'news'      => array('href' => 'news', 'title' => t('News'), '#site' => 'association', '#active' => drupalorg_crosssite_menu_term('association', array(263))),
+        'about'      => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association', '#active' => drupalorg_crosssite_child_of('association', 'about')),
         'donate'     => array('href' => 'node/67', 'title' => t('Donate'), '#site' => 'association'),
         'membership' => array('href' => 'node/78', 'title' => t('Memberships'), '#site' => 'association'),
         'faq'        => array('href' => 'node/65', 'title' => t('FAQ'), '#site' => 'association'),
@@ -333,6 +340,15 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'hosting' => array('title' => t('Hosting'), 'href' => 'node/21785', '#active' => drupalorg_crosssite_child_of('main', 'hosting')),
         'training' => array('title' => t('Training'), 'href' => 'node/313581', '#active' => drupalorg_crosssite_child_of('main', 'training-services')),
       );
+      break;
+
+    case 'security':
+      $nav_content_links = array(
+        'core' => array('title' => t('Drupal core'), 'href' => 'security', '#active' => drupalorg_crosssite_menu_term('main', array(1852))),
+        'contrib' => array('title' => t('Contributed projects'), 'href' => 'security/contrib', '#active' => drupalorg_crosssite_menu_term('main', array(44))),
+        'psa' => array('title' => t('Public service anouncements'), 'href' => 'security/psa', '#active' => drupalorg_crosssite_menu_term('main', array(1856))),
+      );
+      break;
   }
 
   if (count($nav_content_links)) {

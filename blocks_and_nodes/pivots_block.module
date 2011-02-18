@@ -60,7 +60,7 @@ function _pivots_block_content($node_id, $pivot_id, $title, $limit) {
     //$output = theme('item_list', $items, $title);
     $output = theme('item_list', $items); // hack: don't show title
   }
-  $GLOBALS['conf']['googleanalytics_codesnippet_after'] .= "pageTracker._trackEvent('PivotsPageview_{$pivot_id}', '{$ga_event}');";
+  $GLOBALS['conf']['googleanalytics_codesnippet_after'] .= "gaq.push(['_trackEvent', 'PivotsPageview_{$pivot_id}', '{$ga_event}']);";
   return $output;
 }
 
