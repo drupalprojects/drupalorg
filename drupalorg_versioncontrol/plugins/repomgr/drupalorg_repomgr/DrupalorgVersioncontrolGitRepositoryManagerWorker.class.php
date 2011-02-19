@@ -1,10 +1,8 @@
 <?php
 
-class DrupalorgVersioncontrolGitRepositoryManagerWorker implements VersioncontrolGitRepositoryManagerWorkerInterface {
+class DrupalorgVersioncontrolGitRepositoryManagerWorker extends VersioncontrolGitRepositoryManagerWorkerDefault {
 
   protected $verified;
-
-  protected $repository;
 
   protected $sandbox;
 
@@ -16,60 +14,10 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
     $this->templateBaseDir = "$git_basedir/templates/built";
   }
 
-  public function setRepository(VersioncontrolRepository $repository) {
-    $this->repository = $repository;
-  }
-
   public function init() {
     $this->getSandboxStatus();
-    $template_dir = $this->templateBaseDir . '/' . (empty($this->sandbox) ? 'project' : 'sandbox');
-    // Create the repository on disk
-    $return = $this->passthru('init --template ' . $template_dir, FALSE);
-
-    if ($return) {
-      // init failed for some reason, throw exception
-      throw new Exception('Git repository initialization failed with code ' . $return, E_ERROR);
-    }
-  }
-
-  public function reInit(array $flush) {
-    if (!empty($flush)) {
-      $flush = count($flush) > 1 ? '{' . implode(',', $flush) . '}' : array_shift($flush);
-      exec("rm -rf {$this->repository->root}/$flush");
-    }
-    $this->init();
-  }
-
-  public function create() {
-    exec('mkdir -p ' . escapeshellarg($this->repository->root), $output, $return);
-    if ($return) {
-      // init failed for some reason, throw exception
-      throw new Exception('Failed to mkdir for intended repository location "' . $this->repository->root . '"; mkdir exited with code ' . $return, E_ERROR);
-    }
-
-    $this->init();
-    $this->save();
-  }
-
-  /**
-   * Set a config option on the repository using `git config`.
-   *
-   * @param string $name
-   *   The name of the config option to set, e.g., receive.denyNonFastForward.
-   *   This option is passed through escapeshellarg().
-   * @param string $value
-   *   The value to set. This option is passed through escapeshellarg().
-   * @param string $type
-   *   The config value type hint to pass to git. Valid values are 'int', 'bool'
-   *   or 'path'. Optional; see man 1 git-config for details.
-   */
-  public function configSet($name, $value, $type = NULL) {
-    $cmd = 'config --file ';
-    if (!is_null($type) && in_array($type, array('int', 'bool', 'path'))) {
-      $cmd .= "--$type ";
-    }
-    $cmd .= escapeshellarg($name) . ' ' . escapeshellarg($value);
-    return $this->passthru($cmd);
+    $this->templateDir = $this->templateBaseDir . '/' . (empty($this->sandbox) ? 'project' : 'sandbox');
+    return parent::init();
   }
 
   public function setUserAuthData($uid, $auth_data) {
@@ -86,10 +34,6 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
     $auth_handler->save();
   }
 
-  public function setDescription($description) {
-    file_put_contents($this->repository->root . '/description', $description);
-  }
-
   public function move($target) {
     exec('mv ' . escapeshellarg($this->repository->root) . ' ' . escapeshellarg($target), $output, $return);
 
@@ -101,34 +45,14 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
     $this->repository->root = $target;
   }
 
-  public function delete() {
-    exec('rm -rf ' . escapeshellarg($this->repository->root), $output, $return);
-    if ($return) {
-      // Deletion failed, throw an error.
-      throw new Exception('Git repository deletion failed with code ' . $return . ' and error message \'' . implode(' ', $output) . '\'', E_ERROR);
-    }
-
-    $this->repository->delete();
-  }
-
   public function save() {
-    $this->repository->save();
+    parent::save();
 
     // Also ensure the versioncontrol_project_projects association is up to date
     db_merge('versioncontrol_project_projects')
       ->key(array('nid' => $this->repository->project_nid))
       ->fields(array('repo_id' => $this->repository->repo_id))
       ->execute();
-  }
-
-  public function passthru($command, $exception = FALSE) {
-    $prepend = "GIT_DIR={$this->repository->root} " . _versioncontrol_git_get_binary_path() . ' ';
-    $command = escapeshellcmd($prepend . $command);
-    exec($command, $output, $return);
-    if ($exception && $return) {
-      throw new Exception ("Command '$command' exited with status $return and the following output: " . implode(' ', $output), E_ERROR);
-    }
-    return $return;
   }
 
   /**
@@ -161,4 +85,3 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
     $this->sandbox = (int) db_result(db_query('SELECT sandbox FROM {project_projects} WHERE nid = %d', $this->repository->project_nid));
   }
 }
-

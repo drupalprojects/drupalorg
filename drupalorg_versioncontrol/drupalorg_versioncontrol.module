@@ -90,8 +90,8 @@ function drupalorg_versioncontrol_nodeapi_insert(&$node, $a3 = NULL, $a4 = NULL)
 
   $job = array(
     'operation' => array(
-      // Create the repo.
-      'create' => array(),
+      // Create the repo on disk.
+      'init' => array(),
       // Save repo record to db, creating a repo_id.
       'save' => array(),
       // Save user auth data.
@@ -166,7 +166,8 @@ function drupalorg_versioncontrol_project_promote_sandbox($project) {
       // Relocate the repo on disk and update the repo root.
       'move' => array(variable_get('drupalorg_git_basedir', '/var/git') . '/repositories/project/' . $project->project['uri'] . '.git'),
       // The repository needs to be reinit-ed with project hooks, replacing the old sandbox hooks.
-      'reInit' => array(array('hooks')),
+      // FIXME replacing the config file means we lose any custom settings. Make this more robust.
+      'reInit' => array(array('hooks', 'config')),
       // Update the description
       'setDescription' => array('For more information about this repository, visit the project page at ' . url('node/' . $project->nid, array('absolute' => TRUE))),
       // Save the updated repo entry to the db.
