@@ -352,7 +352,7 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
       if (!empty($account->git_disabled)) {
         $ap['global'] |= DRUPALORG_GIT_AUTH_ACCOUNT_SUSPENDED;
       }
-      if (!empty($account->git_consent)) {
+      if (empty($account->git_consent)) {
         $ap['global'] |= DRUPALORG_GIT_AUTH_NOT_CONSENTED;
       }
       if (empty($account->status)) {
