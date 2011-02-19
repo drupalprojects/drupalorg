@@ -51,6 +51,27 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker implements Versioncontro
     $this->save();
   }
 
+  /**
+   * Set a config option on the repository using `git config`.
+   *
+   * @param string $name
+   *   The name of the config option to set, e.g., receive.denyNonFastForward.
+   *   This option is passed through escapeshellarg().
+   * @param string $value
+   *   The value to set. This option is passed through escapeshellarg().
+   * @param string $type
+   *   The config value type hint to pass to git. Valid values are 'int', 'bool'
+   *   or 'path'. Optional; see man 1 git-config for details.
+   */
+  public function configSet($name, $value, $type = NULL) {
+    $cmd = 'config --file ';
+    if (!is_null($type) && in_array($type, array('int', 'bool', 'path'))) {
+      $cmd .= "--$type ";
+    }
+    $cmd .= escapeshellarg($name) . ' ' . escapeshellarg($value);
+    return $this->passthru($cmd);
+  }
+
   public function setUserAuthData($uid, $auth_data) {
     $auth_handler = $this->repository->getAuthHandler();
     // special case, let the caller init multiple users' auth data at once
