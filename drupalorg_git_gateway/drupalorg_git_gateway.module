@@ -22,6 +22,7 @@ define('DRUPALORG_GIT_GATEWAY_VETTED_RID', 24);
 define('DRUPALORG_GIT_AUTH_NO_ROLE', 0x01);
 define('DRUPALORG_GIT_AUTH_ACCOUNT_SUSPENDED', 0x02);
 define('DRUPALORG_GIT_AUTH_NOT_CONSENTED', 0x04);
+define('DRUPALORG_GIT_AUTH_ACCOUNT_BLOCKED', 0x08);
 
 // Refers to core. Just core.
 define('DRUPALORG_GIT_GATECTL_CORE', 0x01);
@@ -299,7 +300,7 @@ function drupalorg_git_gateway_suggest_git_username($name) {
  * @param $data
  * @param $repository
  */
-function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $repository) {
+function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $repository, $project) {
   $select = db_select('project_release_nodes', 'prn')->fields('prn', array('tag', 'rebuild'));
   $vpp_alias = $select->addJoin('INNER', 'versioncontrol_project_projects', 'vpp', 'prn.pid = vpp.nid');
   $result = $select->condition($vpp_alias . '.repo_id', $repository->repo_id)
@@ -318,6 +319,8 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
     'tags' => $tags,
     'branches' => $branches,
   );
+
+  $data['status'] = $project->status;
 
   // Stick in the repo set val so the daemon knows how to deal with pushctl settings.
   if ($data['project_nid'] == DRUPALORG_CORE_NID) {
@@ -344,13 +347,16 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
 
     $ap['global'] = 0;
     // User has global access disabled for some reason.
-    if (!isset($account->roles[DRUPALORG_GIT_GATEWAY_RID])) {
+    if (!isset($account->roles[DRUPALORG_GIT_GATEWAY_RID]) || empty($account->status)) {
       $ap['global'] |= DRUPALORG_GIT_AUTH_NO_ROLE;
       if (!empty($account->git_disabled)) {
         $ap['global'] |= DRUPALORG_GIT_AUTH_ACCOUNT_SUSPENDED;
       }
       if (!empty($account->git_consent)) {
         $ap['global'] |= DRUPALORG_GIT_AUTH_NOT_CONSENTED;
+      }
+      if (empty($account->status)) {
+        $ap['global'] |= DRUPALORG_GIT_AUTH_ACCOUNT_BLOCKED;
       }
     }
   }
