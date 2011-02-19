@@ -34,17 +34,6 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker extends VersioncontrolGi
     $auth_handler->save();
   }
 
-  public function move($target) {
-    exec('mv ' . escapeshellarg($this->repository->root) . ' ' . escapeshellarg($target), $output, $return);
-
-    if ($return) {
-      // move failed for some reason, throw exception
-      throw new Exception('Moving Git repository from sandbox to full project location failed with code ' . $return . ' and error message \'' . implode(' ', $output) . '\'', E_ERROR);
-    }
-
-    $this->repository->root = $target;
-  }
-
   public function save() {
     parent::save();
 
