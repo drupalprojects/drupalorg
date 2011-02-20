@@ -215,7 +215,9 @@ function drupalorg_crosssite_section() {
     }
 
     // Track section
-    $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 2, 'Drupalorg-section', '" . $section . "', 3]);"; // 3 is page-level
+    if (!empty($conf['googleanalytics_codesnippet_before'])) {
+      $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 2, 'Drupalorg-section', '" . $section . "', 3]);"; // 3 is page-level
+    }
   }
   return $section;
 }
