@@ -368,12 +368,11 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
   $data['status'] = (int) $project->status;
 
   // Stick in the repo set val so the daemon knows how to deal with pushctl settings.
-  if ($data['project_nid'] == DRUPALORG_CORE_NID) {
+  if ($project->nid == DRUPALORG_CORE_NID) {
     $data['repo_group'] = DRUPALORG_GIT_GATECTL_CORE;
   }
   else {
-    $sandbox = db_result(db_query('SELECT sandbox FROM {project_projects} WHERE nid = %d', $data['project_nid']));
-    $data['repo_group'] = (isset($sandbox) && $sandbox == 0) ? DRUPALORG_GIT_GATECTL_PROJECTS : DRUPALORG_GIT_GATECTL_SANDBOXES;
+    $data['repo_group'] = empty($project->project['sandbox']) ? DRUPALORG_GIT_GATECTL_PROJECTS : DRUPALORG_GIT_GATECTL_SANDBOXES;
   }
 
   $result = db_select('users', 'u')
