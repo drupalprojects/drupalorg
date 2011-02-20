@@ -365,7 +365,7 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
     'branches' => $branches,
   );
 
-  $data['status'] = $project->status;
+  $data['status'] = (int) $project->status;
 
   // Stick in the repo set val so the daemon knows how to deal with pushctl settings.
   if ($data['project_nid'] == DRUPALORG_CORE_NID) {
