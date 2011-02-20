@@ -57,6 +57,7 @@ function drupalorg_git_varnish_access_callback() {
 
 function drupalorg_git_varnish_pushctl_state() {
   echo (int) variable_get('drupalorg_git_gateway_pushctl', 0);
+  exit;
 }
 
 function drupalorg_git_varnish_sshkey_check() {
