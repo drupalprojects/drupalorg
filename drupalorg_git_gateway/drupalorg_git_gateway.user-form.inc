@@ -152,7 +152,7 @@ function _drupalorg_git_gateway_user_tos($account) {
 
   $form['git_consent'] = array(
     '#type' => 'checkbox',
-    '#title' => t('I agree'),
+    '#title' => t('I agree to these terms'),
     '#default_value' => $account->git_consent,
   );
 
