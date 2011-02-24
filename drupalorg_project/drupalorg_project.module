@@ -106,6 +106,36 @@ function drupalorg_project_menu_alter(&$items) {
     'page arguments' => array('download'),
     'type' => MENU_CALLBACK,
   );
+
+  // Override the access callback on the project promote page to enforce our
+  // own special rules in a few cases.
+  $items['node/%project_edit_project/edit/promote']['access callback'] = 'drupalorg_project_promote_project_access';
+  $items['node/%project_edit_project/edit/promote/confirm']['access callback'] = 'drupalorg_project_promote_project_access';
+}
+
+/**
+ * Menu access callback for the form to promote sandboxes to full projects.
+ *
+ * @param $node
+ *   The project object to check access against.
+ */
+function drupalorg_project_promote_project_access($node) {
+  $forbidden_tids = drupalorg_project_get_no_promote_project_tids();
+  foreach ($forbidden_tids as $tid) {
+    if (!empty($node->taxonomy[$tid])) {
+      return FALSE;
+    }
+  }
+  return project_promote_project_access($node);
+}
+
+/**
+ * Return an array of project type tids that cannot be promoted.
+ *
+ * This helper function only exists since you can't define() an array in PHP.
+ */
+function drupalorg_project_get_no_promote_project_tids() {
+  return array(13);
 }
 
 /**
@@ -406,7 +436,10 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   $links['resources']['type'] = 'block';
 
   // Provide contextual links for sandboxes.
-  if ($node->project['sandbox'] == 1 && $user->uid == $node->uid) {
+  $project_tids = array_keys($node->taxonomy);
+  $no_promote_tids = drupalorg_project_get_no_promote_project_tids();
+  $forbidden_tids = array_intersect($no_promote_tids, $project_tids);
+  if ($node->project['sandbox'] == 1 && empty($forbidden_tids) && $user->uid == $node->uid) {
     $links['sandbox']['weight'] = 1;
     if (!user_access('create full projects')) {
       $links['sandbox']['links']['apply_full'] = l(t('Apply for full project access'), 'node/1011698');
