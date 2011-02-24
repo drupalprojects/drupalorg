@@ -4,4 +4,5 @@ package = Drupal.org
 dependencies[] = versioncontrol
 dependencies[] = versioncontrol_git
 dependencies[] = multiple_email
+dependencies[] = views_litepager
 core = 6.x

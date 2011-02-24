@@ -209,6 +209,12 @@ function drupalorg_versioncontrol_views_default_views_alter(&$views) {
       if (isset($views[$view_name]->display['default']->display_options['fields']['message']['issue_tracker_url'])) {
         $views[$view_name]->display['default']->display_options['fields']['message']['issue_tracker_url'] = 'http://drupal.org/node/%issue_id';
       }
+      // Use views_litepager except on individual commit views.
+      if ($view_name != 'commitlog_individual_commit' && $view_name != 'vc_git_individual_commit') {
+        if (isset($views[$view_name]->display['default']->display_options)) {
+          $views[$view_name]->display['default']->display_options['use_pager'] = 'lite';
+        }
+      }
     }
   }
 }
