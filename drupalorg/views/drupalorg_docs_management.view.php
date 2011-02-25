@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file View for Docs maintainers / admins to check status of pages

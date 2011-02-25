@@ -1,4 +1,3 @@
-$Id$
 
 These modules provide customizations used on drupal.org itself. Other sites
 SHOULD NOT INSTALL OR USE THESE MODULES. They are only included in the main
