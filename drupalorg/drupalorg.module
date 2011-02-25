@@ -496,7 +496,7 @@ function drupalorg_map_content($_force = FALSE) {
     $output = $cache->data;
   }
   else {
-    $output = '<div class="homepage-pin homepage-pin-commit homepage-pin-west"><span class="latitude">' . variable_get('drupalcon_latitude', 41.836944) . '</span><span class="longitude">' . variable_get('drupalcon_longitude', -87.684444) . '</span><div class="content drupalcon">' . variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011') . '</div></div>';
+    $output = theme('drupalorg_map_pin', array('homepage-pin', 'homepage-pin-commit', 'homepage-pin-west', 'drupalcon'), variable_get('drupalcon_latitude', 41.836944), variable_get('drupalcon_longitude', -87.684444), variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011'));
     $queries = array(
       db_rewrite_sql("SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {node} n ON nr.nid = n.nid INNER JOIN {book} b ON b.nid = n.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = nr.uid WHERE n.status = 1 AND u.status = 1 ORDER BY nr.timestamp DESC"),
       db_rewrite_sql("SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' AND n.status = 1 AND u.status = 1 ORDER BY n.created DESC"),
@@ -532,13 +532,20 @@ function drupalorg_map_content($_force = FALSE) {
     }
     ksort($map);
     foreach ($map as $row) {
-      $output .= '<div class="homepage-pin homepage-pin-' . $row->type . ' homepage-pin-' . ($row->longitude > 0 ? 'east' : 'west') . '"><span class="latitude">' . $row->latitude . '</span><span class="longitude">' . $row->longitude . '</span><div class="content">' . t('!name @verb<br />!page', array('!name' => theme('username', $row), '@verb' => $row->verb, '!page' => $row->link)) . '</div></div>';
+      $output .= theme('drupalorg_map_pin', array('homepage-pin', 'homepage-pin-' . $row->type, 'homepage-pin-' . ($row->longitude > 0 ? 'east' : 'west')), $row->latitude, $row->longitude, t('!name @verb<br />!page', array('!name' => theme('username', $row), '@verb' => $row->verb, '!page' => $row->link)));
     }
 
     cache_set('drupalorg_map_content', $output, 'drupalorg');
   }
 
   return $output;
+}
+
+/**
+ * Generates HTML to plot a map pin.
+ */
+function drupalorg_preprocess_drupalorg_map_pin(&$variables) {
+  $variables['classes'] = implode(' ', $variables['classes']);
 }
 
 /**
@@ -838,6 +845,15 @@ function drupalorg_theme() {
         'language' => 'en',
       ),
       'template' => 'drupalorg-d7-announcement',
+    ),
+    'drupalorg_map_pin' => array(
+      'arguments' => array(
+        'classes' => NULL,
+        'latitude' => NULL,
+        'longitude' => NULL,
+        'content' => NULL,
+      ),
+      'template' => 'drupalorg-map-pin',
     ),
   );
 }
