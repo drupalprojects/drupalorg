@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 define('BINGO_TYPE_MIN', 0);
 

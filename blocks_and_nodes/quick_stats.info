@@ -1,4 +1,3 @@
-; $Id$
 name = Quick Stats
 description = Some useful quick statistics for Drupal.org
 package = Drupal.org

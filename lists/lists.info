@@ -1,4 +1,3 @@
-; $Id$
 name = Lists
 description = Allows mailing lists subscriptions.
 package = Drupal.org

@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 function project_stuff_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {

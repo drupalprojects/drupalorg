@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 define('ADVERT_BLOCK_BODY', 'advert_block_body_');
 

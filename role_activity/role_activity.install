@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * TODO: add hook_requirements to check if hook_watchdog is

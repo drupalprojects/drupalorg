@@ -1,4 +1,3 @@
-$Id$
 
 This directory contains a collection of modules and blocks that used to house PHP
 code on Drupal.org. For better security and stability, these have been converted 

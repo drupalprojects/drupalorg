@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 function planet_drupal_subscription_output() {
   $output = '';
