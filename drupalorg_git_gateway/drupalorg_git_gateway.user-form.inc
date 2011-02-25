@@ -207,7 +207,7 @@ function _drupalorg_git_gateway_user_config($account) {
     '#weight' => 15,
   );
 
-  $user_config = t('You will not be credited in commit statistics or listings unless you set the Git e-mail address to either an !multiemailadmin or the anonymized e-mail provided below. Read !handbook for a full discussion of identifying yourself to Git. We recommend:', (array('!handbook' => l('the handbook', 'node/1042972'), '!multiemailadmin' => l('address associated with your account', "user/$account->uid/edit/email-addresses")))) . "\n";
+  $user_config = t('You will not be credited in commit statistics or listings unless you set the Git e-mail address to either an !multiemailadmin or the anonymized e-mail provided below. Read !handbook for a full discussion of identifying yourself to Git. We recommend:', (array('!handbook' => l('the handbook', 'node/1022156'), '!multiemailadmin' => l('address associated with your account', "user/$account->uid/edit/email-addresses")))) . "\n";
   $git_config_name = empty($account->profile_full_name) ? $account->name : $account->profile_full_name;
   $user_config .= '<div class="codeblock"><code>';
   $user_config .= "git config --global user.name \"$git_config_name\"<br/>";
@@ -384,4 +384,3 @@ function drupalorg_git_gateway_admin_user_form_submit($form, &$form_state) {
     }
   }
 }
-
