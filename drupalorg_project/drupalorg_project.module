@@ -270,7 +270,7 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
     }
 
     if (!empty($form['project_node']['project']['sandbox_help']) && !drupalorg_project_promote_project_access($form['#node'])) {
-      $form['project_node']['project']['sandbox_help'] = t('This project is a sandbox.');
+      $form['project_node']['project']['sandbox_help']['#value'] = t('This project is a sandbox.');
     }
 
     // Translation projects on drupal.org are being phased out in favor of
