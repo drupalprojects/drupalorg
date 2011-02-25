@@ -193,7 +193,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     global $site_name;
 
     $info = "\n; Information added by $site_name packaging script on " . gmdate('Y-m-d') . "\n";
-    $info .= 'project = "' . $this->release_version . "\"\n";
+    $info .= 'version = "' . $this->release_version . "\"\n";
 
     // .info files started with 5.x, so we don't have to worry about version
     // strings like "4.7.x-1.0" in this regular expression. If we can't parse
