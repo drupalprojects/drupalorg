@@ -1,4 +1,3 @@
-; $Id$
 name = Project legacy XML-RPC
 description = "Provides XML-RPC server code for legacy update_status 5.x-1.* clients"
 package = Drupal.org

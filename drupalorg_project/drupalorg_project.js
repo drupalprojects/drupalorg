@@ -1,4 +1,3 @@
-/* $Id$ */
 
 /**
  * When adding a new release, show the confirm checkbox for security updates.

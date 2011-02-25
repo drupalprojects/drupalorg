@@ -1,4 +1,3 @@
-// $Id$
 
 /**
  * Attaches the autoclookup behavior to all required fields

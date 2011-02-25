@@ -1,4 +1,3 @@
-; $Id$
 name = Drupal.org handbooks
 description = Handbook related customizations used on Drupal.org.
 dependencies[] = lists

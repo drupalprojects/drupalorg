@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file The Drupal core SAs
