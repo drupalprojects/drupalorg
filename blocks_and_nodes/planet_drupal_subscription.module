@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * Block to show the list of sources for the Planet as well as their count.

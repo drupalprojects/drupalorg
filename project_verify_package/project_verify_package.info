@@ -1,4 +1,3 @@
-; $Id$
 name = Project verify package
 description = drupal.org specific verification helpers for the project packaging system.
 package = Project

@@ -1,4 +1,3 @@
-$Id$
 
 This module provides customizations used on drupal.org itself and is being
 made compatible with Drupal 6.x. Other sites SHOULD NOT INSTALL OR USE THIS

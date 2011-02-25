@@ -1,4 +1,3 @@
-; $Id$
 name = Redirects
 description = Very lightweight redirects for some node pages to other areas of the site.
 package = Drupal.org

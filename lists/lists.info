@@ -1,4 +1,3 @@
-; $Id$
 name = Mailing lists
 description = Mailing lists subscriptions services.
 package = Drupal.org
