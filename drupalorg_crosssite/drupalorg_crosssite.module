@@ -91,7 +91,8 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       'druplicon'   => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main', 'attributes' => array('title' => t('Drupal\'s mascot'))),
       'association-about' => array('href' => 'about', 'title' => t('The Drupal Association'), '#site' => 'association', 'attributes' => array('title' => t('About the Drupal Association'))),
       'advertise' => array('href' => 'advertising', 'title' => t('Advertise'), '#site' => 'association', 'attributes' => array('title' => t('How to advertise on Drupal.org'))),
-      'drupalorg' => array('href' => 'project/drupal.org projects', 'title' => t('Drupal.org'), '#site' => 'main', 'attributes' => array('title' => t('About Drupal.org'))),
+      // query may be removed with #910442 and/or #1019300.
+      'drupalorg' => array('href' => 'project/drupal.org projects', 'query' => array('filters' => 'bs_project_sandbox:[* TO *]'), 'title' => t('Drupal.org'), '#site' => 'main', 'attributes' => array('title' => t('About Drupal.org'))),
     ),
   );
 
@@ -325,7 +326,8 @@ function drupalorg_crosssite_content_menu(&$vars) {
 
     case 'drupalorg':
       $nav_content_links = array(
-        'home' => array('title' => t('Drupal.org Projects'), 'href' => 'project/drupal.org projects', '#active' => drupalorg_crosssite_child_of('main', 'project/drupal.org projects', $vars) && !(drupalorg_crosssite_child_of('main', 'node/3202') || drupalorg_crosssite_child_of('main', 'node/18753') || drupalorg_crosssite_child_of('main', 'node/1025112') || drupalorg_crosssite_child_of('main', 'node/107028') || drupalorg_crosssite_child_of('main', 'node/651778'))),
+        // query may be removed with #910442 and/or #1019300.
+        'home' => array('title' => t('Drupal.org Projects'), 'href' => 'project/drupal.org projects', 'query' => array('filters' => 'bs_project_sandbox:[* TO *]'), '#active' => drupalorg_crosssite_child_of('main', 'project/drupal.org projects', $vars) && !(drupalorg_crosssite_child_of('main', 'node/3202') || drupalorg_crosssite_child_of('main', 'node/18753') || drupalorg_crosssite_child_of('main', 'node/1025112') || drupalorg_crosssite_child_of('main', 'node/107028') || drupalorg_crosssite_child_of('main', 'node/651778'))),
         'drupalorg-faq' => array('title' => t('FAQ'), 'href' => 'node/179723', '#active' => drupalorg_crosssite_child_of('main', 'node/179723')),
         'webmasters' =>      array('title' => t('Webmasters'),       'href' => 'node/3202',   '#active' => drupalorg_crosssite_child_of('main', 'node/3202',   $vars)),
         'documentation' =>   array('title' => t('Documentation'),    'href' => 'node/18753',  '#active' => drupalorg_crosssite_child_of('main', 'node/18753',  $vars)),
