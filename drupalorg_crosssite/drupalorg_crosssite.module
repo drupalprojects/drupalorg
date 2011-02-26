@@ -179,7 +179,7 @@ function drupalorg_crosssite_section() {
       || drupalorg_crosssite_menu_path('main', '^features$') || drupalorg_crosssite_in_breadcrumb('main', 'node/909476')) {
       $section = 'about';
     }
-    elseif (drupalorg_crosssite_child_of('main', 'node/179723') || (drupalorg_crosssite_in_breadcrumb('main', 'project/drupal.org projects') && !drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID))) {
+    elseif (drupalorg_crosssite_child_of('main', 'node/179723') || (drupalorg_crosssite_child_of('main', 'project/drupal.org projects') && !drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID))) {
       $section = 'drupalorg';
     }
     elseif (drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')) || drupalorg_crosssite_menu_site('localize')) {
