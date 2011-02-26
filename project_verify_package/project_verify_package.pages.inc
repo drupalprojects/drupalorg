@@ -22,7 +22,7 @@ define('PROJECT_VERIFY_PACKAGE_DRUSH_MAKE_PATH', '/var/www/drupal.org/tools/drus
 //   %project_shortname - The project shortname.
 //   %makefile - The value of PROJECT_VERIFY_PACKAGE_MAKE_FILE.
 //   %vcs_label - The VCS label (branch or tag) for with the release.
-define('PROJECT_VERIFY_PACKAGE_MAKE_FILE_URI', "http://git-dev.drupalcode.org/project/%project_shortname.git/blob_plain/%vcs_label:/%makefile");
+define('PROJECT_VERIFY_PACKAGE_MAKE_FILE_URI', "http://drupalcode.org/project/%project_shortname.git/blob_plain/%vcs_label:/%makefile");
 
 // URI of the 'How to package a profile' handbook page.
 define('DOCUMENTATION_LINK', 'http://drupal.org/node/642116');
