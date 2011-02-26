@@ -92,7 +92,7 @@ $handler->override_option('title', 'Community Spotlight');
 $handler->override_option('header', 'We love open source because it means anyone can get involved, making the community vibrant and the web full of inspirational sites. See why we love Drupal and how we got involved: ');
 $handler->override_option('header_format', '1');
 $handler->override_option('header_empty', 1);
-$handler->override_option('offset', 1);
+$handler->override_option('offset', 0);
 $handler->override_option('row_plugin', 'node');
 $handler->override_option('row_options', array(
   'relationship' => 'none',
@@ -118,7 +118,6 @@ $handler->override_option('tab_options', array(
 ));
 $handler = $view->new_display('block', 'Block', 'block_1');
 $handler->override_option('items_per_page', 1);
-$handler->override_option('offset', 0);
 $handler->override_option('use_more', 1);
 $handler->override_option('use_more_always', 0);
 $handler->override_option('use_more_text', 'View more community spotlights');
