@@ -1349,42 +1349,83 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
     // Marketplace nodes
     if ($node->type === 'company') {
-      /* In-progress theme code, which should match the style of drupalorg_user() below.
-    // Terms
-    $vocabularies = array();
-    $variables['info'] = array();
-    foreach ($variables['node']->taxonomy as $term) {
-      $vocabularies[$term->vid][] = $term;
-      $term->rendered = TRUE;
-    }
-    foreach ($vocabularies as $vid => $terms) {
-      $vocabulary = taxonomy_vocabulary_load($vid);
-      $links = array();
-      foreach ($terms as $term) {
-        $links[] = l($term->name, taxonomy_term_path($term));
+      $content = array(
+        '#prefix' => '<div class="grid-12 alpha omega">',
+        '#suffix' => '</div>',
+        'column_1' => array(
+          '#weight' => 0,
+          '#prefix' => '<div class="grid-3 alpha">',
+          '#suffix' => '</div>',
+        ),
+        'column_2' => array(
+          '#weight' => 1,
+          '#prefix' => '<div class="grid-5">',
+          '#suffix' => '</div>',
+        ),
+        'column_3' => array(
+          '#weight' => 2,
+          '#prefix' => '<div class="grid-4 omega">',
+          '#suffix' => '</div>',
+        ),
+      );
+
+      // Link & logo
+      $content['column_1']['link'] = $node->content['field_link']['field']['items'][0];
+      $content['column_1']['link']['#item']['display_title'] = drupal_render($node->content['field_logo']['field']['items'][0]) . check_plain($content['column_1']['link']['#item']['display_title']);
+      $content['column_1']['link']['#item']['html'] = TRUE;
+
+      // Terms - sector, service, budget
+      $vocabularies = array();
+      $info = array();
+      foreach ($node->taxonomy as $term) {
+        $vocabularies[$term->vid][] = $term;
+        $term->rendered = TRUE;
       }
-      $variables['info'][check_plain($vocabulary->name)] = implode(', ', $links);
-    }
-    // May be replaced by taxonomy, see #371966
-    if (!empty($variables['node']->field_budget[0]['view'])) {
-      $variables['info']['Usual project budget'] = $variables['node']->field_budget[0]['view'];
-    }
+      foreach ($vocabularies as $vid => $terms) {
+        $vocabulary = taxonomy_vocabulary_load($vid);
+        $links = array();
+        foreach ($terms as $term) {
+          $links[] = l($term->name, taxonomy_term_path($term));
+        }
+        $info[check_plain($vocabulary->name)] = implode(', ', $links);
+      }
+      // May be replaced by taxonomy, see #371966
+      if (!empty($node->field_budget[0]['safe'])) {
+        $info[t('Usual project budget')] = $node->field_budget[0]['safe'];
+      }
 
-    // Association membership
-    $variables['association_membership'] = '';
-    $membership = drupalorg_civimembership_load($variables['node']);
-    if ($membership != FALSE) {
-      $placeholders['@membership_type'] = drupal_strtolower($membership->membership_type);
-    }
+      $content['column_1']['info'] = array(
+        '#prefix' => '<dl>',
+        '#suffix' => '</dl>',
+        '#weight' => 1,
+      );
+      $weight = 0;
+      foreach ($info as $label => $data) {
+        $content['column_1']['info'][] = array(
+          '#value' => '<dt>' . $label . '</dt><dd>' . $data . '</dd>',
+          '#weight' => $weight += 1,
+        );
+      }
 
-    if ($membership != FALSE && ($membership->status === 'New' || $membership->status === 'Current')) {
-      $variables['association_membership'] = l('<img src="' . base_path() . path_to_theme() . '/images/da-' . $placeholders['@membership_type'] . '.png" />', 'http://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association @membership_type member', $placeholders))));
-    }
+      // Association membership
+      $variables['association_membership'] = '';
+      $membership = drupalorg_civimembership_load($node);
 
+      if ($membership != FALSE) {
+        $placeholders = array('@membership_type' => drupal_strtolower($membership->membership_type));
+      }
+
+      if ($membership != FALSE && ($membership->status === 'New' || $membership->status === 'Current')) {
+        $content['column_1']['association_membership'] = array('#value' => l('<img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '-2.png" />', 'http://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association @membership_type member', $placeholders)))), '#weight' => $weight += 1);
+      }
+
+      $content['column_2']['body'] = $node->content['body'];
+
+      /* In-progress theme code, which should match the style of drupalorg_user() below.
     // People
     $variables['people'] = array();
     $variables['map'] = '';
-    $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.latitude, hug.longitude FROM {profile_values} pv INNER JOIN users u ON u.uid = pv.uid LEFT JOIN {profile_values} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {html5_user_geolocation} hug ON hug.uid = u.uid WHERE pv.value = '%s' AND pv.fid = 72", $variables['node']->title);
+    $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.latitude, hug.longitude FROM {profile_values} pv INNER JOIN users u ON u.uid = pv.uid LEFT JOIN {profile_values} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {html5_user_geolocation} hug ON hug.uid = u.uid WHERE pv.value = '%s' AND pv.fid = 72", $node->title);
     while ($account = db_fetch_object($result)) {
       $person = array(
         'name' => theme('username', $account),
@@ -1409,19 +1450,6 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
     }
 
 <div class="grid-12 alpha omega">
-  <div class="grid-3 alpha">
-    <a href="<?php print $node->field_link[0]['url']; ?>" title="Company site">
-      <?php print $node->field_logo[0]['view']; ?>
-      <?php print check_plain($node->field_link[0]['display_title']); ?>
-    </a>
-    <dl>
-      <?php foreach ($info as $label => $data) { ?>
-        <dt><?php print $label; ?></dt>
-        <dd><?php print $data; ?></dd>
-      <?php } ?>
-    </dl>
-    <?php print $association_membership; ?>
-  </div>
   <div class="grid-5">
     <?php print $body; ?>
     <h3>Drupal contributions</h3>
@@ -1443,6 +1471,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   </div>
 </div>
        */
+      $node->content = $content;
     }
   }
 }
