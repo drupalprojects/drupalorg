@@ -1352,20 +1352,21 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       $content = array(
         '#prefix' => '<div class="grid-12 alpha omega">',
         '#suffix' => '</div>',
+        '#sorted' => TRUE,
         'column_1' => array(
-          '#weight' => 0,
           '#prefix' => '<div class="grid-3 alpha">',
           '#suffix' => '</div>',
+          '#sorted' => TRUE,
         ),
         'column_2' => array(
-          '#weight' => 1,
           '#prefix' => '<div class="grid-5">',
           '#suffix' => '</div>',
+          '#sorted' => TRUE,
         ),
         'column_3' => array(
-          '#weight' => 2,
           '#prefix' => '<div class="grid-4 omega">',
           '#suffix' => '</div>',
+          '#sorted' => TRUE,
         ),
       );
 
@@ -1397,29 +1398,26 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       $content['column_1']['info'] = array(
         '#prefix' => '<dl>',
         '#suffix' => '</dl>',
-        '#weight' => 1,
       );
-      $weight = 0;
       foreach ($info as $label => $data) {
         $content['column_1']['info'][] = array(
           '#value' => '<dt>' . $label . '</dt><dd>' . $data . '</dd>',
-          '#weight' => $weight += 1,
         );
       }
 
       // Association membership
       $variables['association_membership'] = '';
       $membership = drupalorg_civimembership_load($node);
-
       if ($membership != FALSE) {
         $placeholders = array('@membership_type' => drupal_strtolower($membership->membership_type));
       }
-
       if ($membership != FALSE && ($membership->status === 'New' || $membership->status === 'Current')) {
-        $content['column_1']['association_membership'] = array('#value' => l('<img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '-2.png" />', 'http://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association @membership_type member', $placeholders)))), '#weight' => $weight += 1);
+        $content['column_1']['association_membership'] = array('#value' => l('<img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '-2.png" />', 'http://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association @membership_type member', $placeholders)))));
       }
 
       $content['column_2']['body'] = $node->content['body'];
+      $content['column_2'][] = array('#value' => '<h3>' . t('Drupal contributions') . '</h3>');
+      $content['column_2']['contributions'] = $node->content['field_contributions']['field']['items'][0];
 
       /* In-progress theme code, which should match the style of drupalorg_user() below.
     // People
@@ -1449,13 +1447,6 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       }
     }
 
-<div class="grid-12 alpha omega">
-  <div class="grid-5">
-    <?php print $body; ?>
-    <h3>Drupal contributions</h3>
-    <?php print $node->field_contributions[0]['view']; ?>
-  </div>
-  <div class="grid-4 omega">
     <div id="company-map">
       <img src="<?php print base_path() . path_to_theme() ?>/images/world-map-4.png" />
       <?php print $map; ?>
@@ -1468,8 +1459,6 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         <?php } ?>
       </p>
     <?php } ?>
-  </div>
-</div>
        */
       $node->content = $content;
     }
