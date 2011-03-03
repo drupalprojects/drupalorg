@@ -1416,50 +1416,49 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       }
 
       $content['column_2']['body'] = $node->content['body'];
-      $content['column_2'][] = array('#value' => '<h3>' . t('Drupal contributions') . '</h3>');
+      $content['column_2']['contributions_heading'] = array('#value' => '<h3>' . t('Drupal contributions') . '</h3>');
       $content['column_2']['contributions'] = $node->content['field_contributions']['field']['items'][0];
 
-      /* In-progress theme code, which should match the style of drupalorg_user() below.
-    // People
-    $variables['people'] = array();
-    $variables['map'] = '';
-    $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.latitude, hug.longitude FROM {profile_values} pv INNER JOIN users u ON u.uid = pv.uid LEFT JOIN {profile_values} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {html5_user_geolocation} hug ON hug.uid = u.uid WHERE pv.value = '%s' AND pv.fid = 72", $node->title);
-    while ($account = db_fetch_object($result)) {
-      $person = array(
-        'name' => theme('username', $account),
-        'info' => array(
-          t('On Drupal.org for @for', array('@for' => format_interval(time() - $account->created))),
-        ),
+      // People
+      $content['column_3']['map'] = array(
+        '#prefix' => '<div id="company-map"><img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/world-map-4.png" />',
+        '#value' => '',
+        '#suffix' => '</div>',
       );
-      if (!empty($account->title)) {
-        $person['name'] .= ', ' . check_plain($account->title);
-      }
-      $projects = array();
-      $result_projects = db_query('SELECT n.title, n.nid FROM {project_maintainer} pm INNER JOIN {node} n ON n.nid = pm.nid AND n.status = 1 WHERE pm.uid = %d', $account->uid);
-      while ($project = db_fetch_object($result_projects)) {
-        $projects[] = l($project->title, 'node/' . $project->nid);
-      }
-      $person['info'][] = t('Maintainer for !projects', array('!projects' => implode(', ', $projects)));
-      $variables['people'][] = $person;
+      $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.latitude, hug.longitude FROM {profile_values} pv INNER JOIN users u ON u.uid = pv.uid LEFT JOIN {profile_values} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {html5_user_geolocation} hug ON hug.uid = u.uid WHERE pv.value = '%s' AND pv.fid = 72", $node->title);
+      while ($account = db_fetch_object($result)) {
+        // Name & title
+        $content['column_3'][$account->uid . 'name'] = array(
+          '#prefix' => '<h3>',
+          '#value' => theme('username', $account),
+          '#suffix' => '</h3>',
+        );
+        if (!empty($account->title)) {
+          $content['column_3'][$account->uid . 'name']['#value'] .= ', ' . check_plain($account->title);
+        }
 
-      if (!empty($account->latitude) || !empty($account->longitude)) {
-        $variables['map'] .= theme('drupalorg_map_pin', array('pin'), $account->latitude, $account->longitude, 'todo');
-      }
-    }
+        // Quick info
+        $content['column_3'][$account->uid . 'info'] = array(
+          '#prefix' => '<p>',
+          '#value' => t('On Drupal.org for @for', array('@for' => format_interval(time() - $account->created))),
+          '#suffix' => '</p>',
+        );
 
-    <div id="company-map">
-      <img src="<?php print base_path() . path_to_theme() ?>/images/world-map-4.png" />
-      <?php print $map; ?>
-    </div>
-    <?php foreach ($people as $person) { ?>
-      <h3><?php print $person['name']; ?></h3>
-      <p>
-        <?php foreach ($person['info'] as $line) { ?>
-          <?php print $line; ?>
-        <?php } ?>
-      </p>
-    <?php } ?>
-       */
+        $projects = array();
+        $result_projects = db_query('SELECT n.title, n.nid FROM {project_maintainer} pm INNER JOIN {node} n ON n.nid = pm.nid AND n.status = 1 WHERE pm.uid = %d', $account->uid);
+        while ($project = db_fetch_object($result_projects)) {
+          $projects[] = l($project->title, 'node/' . $project->nid);
+        }
+        if (count($projects) > 1) {
+          $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Maintainer for !projects', array('!projects' => implode(', ', $projects)));
+        }
+
+        // Map
+        if (!empty($account->latitude) || !empty($account->longitude)) {
+          $content['column_3']['map']['#value'] .= theme('drupalorg_map_pin', array('pin'), $account->latitude, $account->longitude, 'todo');
+        }
+      }
+
       $node->content = $content;
     }
   }
