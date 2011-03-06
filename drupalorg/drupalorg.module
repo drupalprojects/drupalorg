@@ -851,7 +851,7 @@ function drupalorg_theme() {
         'classes' => NULL,
         'latitude' => NULL,
         'longitude' => NULL,
-        'content' => NULL,
+        'content' => '',
       ),
       'template' => 'drupalorg-map-pin',
     ),
@@ -1421,7 +1421,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
       // People
       $content['column_3']['map'] = array(
-        '#prefix' => '<div id="company-map"><img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/world-map-4.png" />',
+        '#prefix' => '<div id="company-map">',
         '#value' => '',
         '#suffix' => '</div>',
       );
@@ -1449,13 +1449,16 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         while ($project = db_fetch_object($result_projects)) {
           $projects[] = l($project->title, 'node/' . $project->nid);
         }
-        if (count($projects) > 1) {
+        if (count($projects) > 3) {
+          $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Maintainer for !projects, and <a href="!more">@count more</a>', array('!projects' => implode(', ', array_slice($projects, 0, 3)), '@count' => count($projects) - 3, '!more' => url('user/' . $account->uid)));
+        }
+        elseif (count($projects) > 1) {
           $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Maintainer for !projects', array('!projects' => implode(', ', $projects)));
         }
 
         // Map
         if (!empty($account->latitude) || !empty($account->longitude)) {
-          $content['column_3']['map']['#value'] .= theme('drupalorg_map_pin', array('pin'), $account->latitude, $account->longitude, 'todo');
+          $content['column_3']['map']['#value'] .= theme('drupalorg_map_pin', array('pin'), $account->latitude, $account->longitude);
         }
       }
 
