@@ -510,17 +510,19 @@ function drupalorg_project_issue_link($text, $query = array(), $absolute = FALSE
  */
 function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
   if ($op == 'view' && $page) {
-    $extra = '';
     switch ($node->nid) {
       case 199251: // List projects with commit RSS feeds.
-        $extra = drupalorg_project_list_commit_rss();
+        $node->content['body']['#value'] .= drupalorg_project_list_commit_rss();
         break;
+
       case 97084: // List branches ever created in contrib.
-        $extra = drupalorg_project_list_branches_contrib();
+        $node->content['body']['#value'] .= drupalorg_project_list_branches_contrib();
         break;
+
       case 93997: // List branches ever created in core.
-        $extra = drupalorg_project_list_branches_core();
+        $node->content['body']['#value'] .= drupalorg_project_list_branches_core();
         break;
+
       case 9730:
         $url_queue = drupalorg_project_issue_url(
           array(
@@ -557,7 +559,6 @@ function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page 
         drupal_goto('patch/create');
         exit;
     }
-    $node->content['body']['#value'] .= $extra;
 
     if ($node->type == 'project_project') {
       if ($node->project['sandbox']) {
