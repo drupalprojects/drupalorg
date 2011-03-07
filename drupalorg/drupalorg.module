@@ -1468,7 +1468,6 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       $node->content = $content;
     }
   }
-  // todo flip to insert
   elseif ($op === 'presave') {
     if ($node->type === 'company' && empty($node->nid)) {
       // A new company has been posted, create an issue to ccordinate review.
