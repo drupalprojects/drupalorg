@@ -1478,8 +1478,8 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       }
     }
   }
-  elseif ($op === 'presave') {
-    if ($node->type === 'company' && empty($node->nid)) {
+  elseif ($op === 'insert') {
+    if ($node->type === 'company') {
       // A new company has been posted, create an issue to ccordinate review.
       $issue = new stdClass();
       $issue->type = 'project_issue';
@@ -1496,6 +1496,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       node_save($issue);
 
       $node->field_company_issue[0]['nid'] = $issue->nid;
+      node_save($node);
     }
   }
 }
