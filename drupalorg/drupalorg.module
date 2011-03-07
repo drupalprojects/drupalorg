@@ -1466,6 +1466,16 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       }
 
       $node->content = $content;
+
+      // Messages for review workflow
+      if ($node->status == 0) {
+        if ($node->uid === $user->uid) {
+          drupal_set_message(t('Your company is not published, see <a href="!url">this issue</a> for the current status.', array('!url' => url('node/' . $node->field_company_issue[0]['nid']))), 'warning');
+        }
+        elseif (user_access('administer nodes')) {
+          drupal_set_message(t('This company is not published, see <a href="!url">this issue</a> for the current status.', array('!url' => url('node/' . $node->field_company_issue[0]['nid']))), 'warning');
+        }
+      }
     }
   }
   elseif ($op === 'presave') {
