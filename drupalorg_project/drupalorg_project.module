@@ -127,7 +127,7 @@ function drupalorg_project_promote_project_access($node) {
  * This helper function only exists since you can't define() an array in PHP.
  */
 function drupalorg_project_get_no_promote_project_tids() {
-  return array(13);
+  return array(13, 22588);
 }
 
 /**
@@ -960,7 +960,8 @@ function drupalorg_project_theme($existing, $type, $theme, $path) {
 function drupalorg_project_get_project_types($singular = FALSE) {
   if ($singular) {
     return array(
-      '13' => t('Drupal project'),
+      '13' => t('Drupal core'),
+      '22588' => t('Drupal.org project'),
       '14' => t('Module'),
       '15' => t('Theme'),
       '32' => t('Theme engine'),
@@ -970,7 +971,8 @@ function drupalorg_project_get_project_types($singular = FALSE) {
   }
   else {
     return array(
-      '13' => t('Drupal project'),
+      '13' => t('Drupal core'),
+      '22588' => t('Drupal.org projects'),
       '14' => t('Modules'),
       '15' => t('Themes'),
       '32' => t('Theme engines'),
