@@ -60,7 +60,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     array(
       'news'        => array('href' => 'news', 'title' => t('Drupal News'), '#site' => 'main'),
       'planet'      => array('href' => 'planet', 'title' => t('Planet Drupal'), '#site' => 'main', 'attributes' => array('title' => t('News from Drupal community members'))),
-      'association' => array('href' => '', 'title' => t('Association News'), '#site' => 'association', 'attributes' => array('title' => t('News from association.drupal.org'))),
+      'association' => array('href' => 'news', 'title' => t('Association News'), '#site' => 'association', 'attributes' => array('title' => t('News from association.drupal.org'))),
       'security'  => array('href' => 'security', 'title' => t('Security Announcements'), '#site' => 'main', 'attributes' => array('title' => t('Advisories from the security team'))),
       'jobs'        => array('href' => 'jobs', 'title' => t('Jobs'), '#site' => 'groups', 'attributes' => array('title' => t('Jobs posted on groups.drupal.org'))),
     ),
