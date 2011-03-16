@@ -51,3 +51,9 @@ function lists_schema() {
   );
   return $schema;
 }
+
+function lists_update_6001() {
+  // Designed to fall lower than drupalorg_git_gateway, for hook_user
+  // $op = 'after_update'
+  db_query("UPDATE {system} SET weight = 15 WHERE name = 'lists'");
+}

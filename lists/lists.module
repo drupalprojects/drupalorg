@@ -28,7 +28,8 @@
  *
  *   The 'Maintainer news' is a special newsletter that users can not manually
  *   subscribe/unsubscribe.  Instead, they will be automatically
- *   subscribed/unsubscribed based on whether or not they have CVS commit access.
+ *   subscribed/unsubscribed based on whether or not they have agreed to the Git
+ *   access terms.
  *
  *   3) Create a Forum container named "Newsletters", then create forums for each
  *   mailman-powered newsletter within this new container.  For the current lists,
@@ -90,17 +91,6 @@ function _lists_get_lists() {
       'description' => 'A mailing list for Drupal consultants and Drupal service/hosting providers.',
       'mailto'      => 'consulting-request@drupal.org',
     ),
-    'drupal-cvs'    => array(
-      'name'        => 'CVS commits',
-      'description' => 'A list with all CVS commit messages.',
-      'mailto'      => 'drupal-cvs-request@drupal.org',
-    ),
-    'cvs-applications' => array(
-      'name'        => 'CVS applications',
-      'description' => 'A list of all applications for an account in the Drupal contributions CVS repository.',
-      'mailto'      => 'cvs-applications-request@drupal.org',
-      'private'     => TRUE,
-    ),
     'webmasters'    => array(
       'name'        => 'Webmasters',
       'description' => 'A list for drupal.org webmasters (e.g. settings and content on the drupal.org website, user management, removing spam, etc.).',
@@ -109,7 +99,7 @@ function _lists_get_lists() {
     ),
     'infrastructure' => array(
       'name'         => 'Infrastructure',
-      'description'  => 'A list for drupal.org infrastructure maintainers (e.g. drupal.org hardware and server configuration, the CVS repository, mailing lists, etc).',
+      'description'  => 'A list for drupal.org infrastructure maintainers (e.g. drupal.org hardware and server configuration, the Git repositories, mailing lists, etc).',
       'mailto'       => 'infrastructure-request@drupal.org',
       'private'      => TRUE,
     ),
@@ -132,6 +122,7 @@ function _lists_get_lists() {
 function lists_subscribe_form() {
   global $user;
   $lists = _lists_get_lists();
+  $output = '';
 
   foreach ($lists as $list => $info) {
     $links = array();
@@ -253,7 +244,7 @@ function _lists_get_mailman_lists() {
     ),
     'maintainer'    => array(
       'name'        => 'Maintainer news',
-      'description' => 'This list is automatically enabled for users with a CVS account and can not be manually subscribed or unsubscribed.',
+      'description' => 'This list is automatically enabled for users who have agreed to the terms of the Git access agreement and can not be manually subscribed or unsubscribed.',
       'allow_sub'   => FALSE,
       'maintainer_auto' => TRUE,
       'mail'        => variable_get('lists_maintainer_mail', ''),
@@ -289,6 +280,18 @@ function lists_user($op, &$edit, &$account, $category = NULL) {
   switch ($op) {
     case 'categories':
       return array(array('name' => 'newsletter', 'title' => t('My newsletters'), 'weight' => 10));
+    case 'after_update':
+      // Update maintainers subscription after roles are set in
+      // drupalorg_git_gateway_user().
+      $lists = _lists_get_mailman_lists();
+      $list = $lists['maintainer'];
+      if (array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles)) {
+        _lists_mailman_subscribe($list, $account);
+      }
+      else {
+        _lists_mailman_unsubscribe($list, $account);
+      }
+      break;
   }
 }
 
@@ -351,15 +354,14 @@ function lists_mailman_user_form_submit($form, &$form_state) {
     $new = (int)$form_state['values'][$list];
     // Special handling for the maintainer newsletter.
     if ($data['maintainer_auto']) {
-      $status = db_result(db_query('SELECT status FROM {cvs_accounts} WHERE uid = %d', $account->uid));
-      // If CVS account is approved, be sure user is subscribed to the
-      // maintainer newsletter.
-      if ($status == CVS_APPROVED) {
+      $status = array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles);
+      // If Git account is enabled
+      if ($status) {
         if (!$old) {
           _lists_mailman_subscribe($data, $account);
         }
       }
-      // If CVS is not approved, be sure user is not subscribed to the
+      // If not agreed to Git terms, be sure user is not subscribed to the
       // maintainer newsletter.
       else {
         if ($old) {
@@ -382,12 +384,7 @@ function lists_mailman_user_form_submit($form, &$form_state) {
  * Implementation of hook_form_alter().
  */
 function lists_form_alter(&$form, $form_state, $form_id) {
-  // Add/remove users from maintainer newsletter when their CVS access is
-  // updated.
-  if ($form_id == 'cvs_user_edit_form') {
-    $form['#submit'][] = 'lists_cvs_user_edit_submit';
-  }
-  else if ($form_id == 'forum_node_form') {
+  if ($form_id == 'forum_node_form') {
     $node = $form['#node'];
     $lists_forum_tids = array_keys(_lists_get_forum_tids());
     if (!user_access('post to newsletter')) {
@@ -489,26 +486,6 @@ function lists_mail($key, &$message, $params) {
     // Just copy over the subject and body as provided.
     $message['subject'] = $params['node']->title;
     $message['body'] = drupal_html_to_text($params['node']->body);
-  }
-}
-
-/**
- * Update maintainer newsletter mailman status when cvs status is updated.
- */
-function lists_cvs_user_edit_submit($form, &$form_state) {
-  if (isset($form_state['values']['cvs_status'])) {
-    $account = user_load(array('uid' => $form_state['values']['cvs_uid']));
-    $lists = _lists_get_mailman_lists();
-    $list = $lists['maintainer'];
-    switch ($form_state['values']['cvs_status']) {
-      case CVS_APPROVED:
-        _lists_mailman_subscribe($list, $account);
-        break;
-      case CVS_DISABLED:
-      default:
-        _lists_mailman_unsubscribe($list, $account);
-        break;
-    }
   }
 }
 
