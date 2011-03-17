@@ -349,7 +349,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       $nav_content_links = array(
         'core' => array('title' => t('Drupal core'), 'href' => 'security', '#active' => drupalorg_crosssite_menu_term('main', array(1852))),
         'contrib' => array('title' => t('Contributed projects'), 'href' => 'security/contrib', '#active' => drupalorg_crosssite_menu_term('main', array(44))),
-        'psa' => array('title' => t('Public service anouncements'), 'href' => 'security/psa', '#active' => drupalorg_crosssite_menu_term('main', array(1856))),
+        'psa' => array('title' => t('Public service announcements'), 'href' => 'security/psa', '#active' => drupalorg_crosssite_menu_term('main', array(1856))),
       );
       break;
   }
