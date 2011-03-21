@@ -21,7 +21,7 @@ Drupal.behaviors.drupalorgSearch = function () {
 };
 
 Drupal.behaviors.drupalorgCompany = function () {
-  var $map = $('#company-map');
+  var $map = $('#organization-map');
   $map.find('>.pin').each(function () {
     $(this).css({
       left: '' + Drupal.html5UserGeolocationLongitudeToPx($('>.longitude', this).text(), -168, $map.width()) + 'px',

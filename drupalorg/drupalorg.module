@@ -1350,7 +1350,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
     }
 
     // Marketplace nodes
-    if ($node->type === 'company') {
+    if ($node->type === 'organization') {
       $content = array(
         '#prefix' => '<div class="grid-12 alpha omega">',
         '#suffix' => '</div>',
@@ -1424,7 +1424,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
       // People
       $content['column_3']['map'] = array(
-        '#prefix' => '<div id="company-map">',
+        '#prefix' => '<div id="organization-map">',
         '#value' => '',
         '#suffix' => '</div>',
       );
@@ -1470,17 +1470,17 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       // Messages for review workflow
       if ($node->status == 0) {
         if ($node->uid === $user->uid) {
-          drupal_set_message(t('Your company is not published, see <a href="!url">this issue</a> for the current status.', array('!url' => url('node/' . $node->field_company_issue[0]['nid']))), 'warning');
+          drupal_set_message(t('Your organization is not published, see <a href="!url">this issue</a> for the current status.', array('!url' => url('node/' . $node->field_organization_issue[0]['nid']))), 'warning');
         }
         elseif (user_access('administer nodes')) {
-          drupal_set_message(t('This company is not published, see <a href="!url">this issue</a> for the current status.', array('!url' => url('node/' . $node->field_company_issue[0]['nid']))), 'warning');
+          drupal_set_message(t('This organization is not published, see <a href="!url">this issue</a> for the current status.', array('!url' => url('node/' . $node->field_organization_issue[0]['nid']))), 'warning');
         }
       }
     }
   }
   elseif ($op === 'insert') {
-    if ($node->type === 'company') {
-      // A new company has been posted, create an issue to ccordinate review.
+    if ($node->type === 'organization') {
+      // A new organization has been posted, create an issue to ccordinate review.
       $issue = new stdClass();
       $issue->type = 'project_issue';
       $issue->uid = $user->uid;
@@ -1495,7 +1495,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       $issue->comment = 2; // read & write
       node_save($issue);
 
-      $node->field_company_issue[0]['nid'] = $issue->nid;
+      $node->field_organization_issue[0]['nid'] = $issue->nid;
       node_save($node);
     }
   }
