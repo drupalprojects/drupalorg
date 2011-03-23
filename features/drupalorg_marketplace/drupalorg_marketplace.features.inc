@@ -34,9 +34,9 @@ function drupalorg_marketplace_node_info() {
       'module' => 'features',
       'description' => t('Listings for the marketplace section of the site.'),
       'has_title' => '1',
-      'title_label' => t('Name'),
+      'title_label' => t('Organization name'),
       'has_body' => '1',
-      'body_label' => t('Description'),
+      'body_label' => t('Organization description'),
       'min_word_count' => '0',
       'help' => t('<p>Drupal Association membership is encouraged, the person who holds the membership should be filling out this form.</p>
 

@@ -61,9 +61,9 @@ function drupalorg_marketplace_content_default_fields() {
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Usual project budget',
+      'label' => 'Usual project budget (optional)',
       'weight' => '-1',
-      'description' => '',
+      'description' => 'Helps potential clients know what they are getting into.',
       'type' => 'text_textfield',
       'module' => 'text',
     ),
@@ -202,7 +202,7 @@ function drupalorg_marketplace_content_default_fields() {
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Link',
+      'label' => 'Website',
       'weight' => '-4',
       'description' => '',
       'type' => 'link',
@@ -348,9 +348,9 @@ function drupalorg_marketplace_content_default_fields() {
   // Included for use with string extractors like potx.
   t('Drupal contributions');
   t('Issue for review');
-  t('Link');
   t('Logo');
-  t('Usual project budget');
+  t('Usual project budget (optional)');
+  t('Website');
 
   return $fields;
 }
