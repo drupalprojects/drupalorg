@@ -285,7 +285,7 @@ function lists_user($op, &$edit, &$account, $category = NULL) {
       // drupalorg_git_gateway_user().
       $lists = _lists_get_mailman_lists();
       $list = $lists['maintainer'];
-      if (array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles)) {
+      if (array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles)) {
         _lists_mailman_subscribe($list, $account);
       }
       else {
@@ -354,7 +354,7 @@ function lists_mailman_user_form_submit($form, &$form_state) {
     $new = (int)$form_state['values'][$list];
     // Special handling for the maintainer newsletter.
     if ($data['maintainer_auto']) {
-      $status = array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles);
+      $status = array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles);
       // If Git account is enabled
       if ($status) {
         if (!$old) {
