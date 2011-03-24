@@ -1351,26 +1351,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
     // Marketplace nodes
     if ($node->type === 'organization') {
-      $content = array(
-        '#prefix' => '<div class="grid-12 alpha omega">',
-        '#suffix' => '</div>',
-        '#sorted' => TRUE,
-        'column_1' => array(
-          '#prefix' => '<div class="grid-3 alpha">',
-          '#suffix' => '</div>',
-          '#sorted' => TRUE,
-        ),
-        'column_2' => array(
-          '#prefix' => '<div class="grid-5">',
-          '#suffix' => '</div>',
-          '#sorted' => TRUE,
-        ),
-        'column_3' => array(
-          '#prefix' => '<div class="grid-4 omega">',
-          '#suffix' => '</div>',
-          '#sorted' => TRUE,
-        ),
-      );
+      $content = _drupalorg_grid_elements(array(3, 5, 4));
 
       // Link & logo
       $content['column_1']['link'] = $node->content['field_link']['field']['items'][0];
@@ -1502,6 +1483,42 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 }
 
 /**
+ * Return an array tree suitable for drupal_render() and Bluecheese's grid
+ * system.
+ *
+ * @param $columns
+ *   An array of integers for column widths. Keep the sum 12 or under.
+ *
+ * @return
+ *   An array tree for drupal_render().
+ */
+function _drupalorg_grid_elements(array $columns) {
+  $content = array(
+    '#prefix' => '<div class="grid-' . array_sum($columns) . ' alpha omega">',
+    '#suffix' => '</div>',
+    '#sorted' => TRUE,
+  );
+
+  foreach ($columns as $n => $width) {
+    $classes = array('grid-' . $width);
+    if ($n === 0) {
+      $classes[] = 'alpha';
+    }
+    elseif ($n === count($columns) - 1) {
+      $classes[] = 'omega';
+    }
+    $content['column_' . ($n + 1)] = array(
+      '#prefix' => '<div class="' . implode(' ', $classes) . '">',
+      '#suffix' => '</div>',
+      '#sorted' => TRUE,
+      '#weight' => $n,
+    );
+  }
+
+  return $content;
+}
+
+/**
  * Implementation of hook_user().
  */
 function drupalorg_user($op, &$edit, &$account, $category = NULL) {
@@ -1509,18 +1526,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
     global $user;
 
     // Column layout for profile pages.
-    $content = array(
-      'column_1' => array(
-        '#weight' => 0,
-        '#prefix' => '<div class="grid-8 alpha">',
-        '#suffix' => '</div>',
-      ),
-      'column_2' => array(
-        '#weight' => 1,
-        '#prefix' => '<div class="grid-4 omega">',
-        '#suffix' => '</div>',
-      ),
-    );
+    $content = _drupalorg_grid_elements(array(8, 4));
 
     // Get the membership display content
     $membership = drupalorg_civimembership_load($account);
