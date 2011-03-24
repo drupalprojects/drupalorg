@@ -192,7 +192,7 @@ function drupalorg_crosssite_section() {
     elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('main', 'forum') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)'))) {
       $section = 'community';
     }
-    elseif (drupalorg_crosssite_child_of('main', 'node/366') || drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization')) {
+    elseif (drupalorg_crosssite_child_of('main', 'node/366') || drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization') || drupalorg_crosssite_menu_path('main', 'marketplace-preview')) {
       $section = 'marketplace';
     }
     elseif (drupalorg_crosssite_menu_site('api')
