@@ -1351,110 +1351,161 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
     // Marketplace nodes
     if ($node->type === 'organization') {
-      $content = _drupalorg_grid_elements(array(3, 5, 4));
-
-      // Link & logo
-      $content['column_1']['link'] = $node->content['field_link']['field']['items'][0];
-      $content['column_1']['link']['#item']['display_title'] = drupal_render($node->content['field_logo']['field']['items'][0]) . check_plain($content['column_1']['link']['#item']['display_title']);
-      $content['column_1']['link']['#item']['html'] = TRUE;
-
-      // Terms - sector, service, budget
-      $vocabularies = array();
-      $info = array();
-      foreach ($node->taxonomy as $term) {
-        $vocabularies[$term->vid][] = $term;
-        $term->rendered = TRUE;
-      }
-      foreach ($vocabularies as $vid => $terms) {
-        $vocabulary = taxonomy_vocabulary_load($vid);
-        $links = array();
-        foreach ($terms as $term) {
-          $links[] = l($term->name, taxonomy_term_path($term));
+      if ($a3) { // Teaser
+        if (isset($node->content['field_logo']['field']['items'][0]['#item']['status'])) {
+          $content = _drupalorg_grid_elements(array(3, 5));
+          $main = 'column_2';
         }
-        $info[check_plain($vocabulary->name)] = implode(', ', $links);
-      }
-      // May be replaced by taxonomy, see #371966
-      if (!empty($node->field_budget[0]['safe'])) {
-        $info[t('Usual project budget')] = $node->field_budget[0]['safe'];
-      }
+        else {
+          $content = _drupalorg_grid_elements(array(8));
+          $main = 'column_1';
+        }
 
-      $content['column_1']['info'] = array(
-        '#prefix' => '<dl>',
-        '#suffix' => '</dl>',
-        '#sorted' => TRUE,
-      );
-      foreach ($info as $label => $data) {
-        $content['column_1']['info'][] = array(
-          '#value' => '<dt>' . $label . '</dt><dd>' . $data . '</dd>',
+        // Logo
+        $content['column_1']['logo'] = $node->content['field_logo']['field']['items'][0];
+
+        // Body
+        $content[$main]['body'] = array('#value' => check_markup(node_teaser($node->body, $node->format, 200), $node->format));
+        $content[$main]['meta'] = array(
+          '#prefix' => '<small>',
+          '#suffix' => '</small>',
+          '#sorted' => TRUE,
         );
-      }
+        $content[$main]['meta']['website'] = $node->content['field_link']['field']['items'][0];
+        $content[$main]['meta']['website']['#prefix'] = '<div>' . t('Website: ');
+        $content[$main]['meta']['website']['#suffix'] = '</div>';
 
-      // Association membership
-      $variables['association_membership'] = '';
-      $membership = drupalorg_civimembership_load($node);
-      if ($membership != FALSE) {
-        $placeholders = array('@membership_type' => drupal_strtolower($membership->membership_type));
-      }
-      if ($membership != FALSE && ($membership->status === 'New' || $membership->status === 'Current')) {
-        $content['column_1']['association_membership'] = array('#value' => l('<img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '-2.png" />', 'http://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association @membership_type member', $placeholders)))));
-      }
+        // Taxonomy
+        if (count($node->taxonomy)) {
+          $vocabularies = taxonomy_get_vocabularies();
+          // Group the terms by vid.
+          $taxonomy = array();
+          foreach ($node->taxonomy as $term_id => $term) {
+            if (isset($vocabularies[$term->vid])) {
+              $term->rendered = TRUE;
+              $taxonomy[$term->vid][] = $term;
+            }
+          }
 
-      $content['column_2']['body'] = $node->content['body'];
-      $content['column_2']['contributions_heading'] = array('#value' => '<h3>' . t('Drupal contributions') . '</h3>');
-      $content['column_2']['contributions'] = $node->content['field_contributions']['field']['items'][0];
+          foreach ($vocabularies as $vocabulary) {
+            if (isset($taxonomy[$vocabulary->vid])) {
+              $links = array();
+              foreach ($taxonomy[$vocabulary->vid] as $term) {
+                $links[] = l($term->name, taxonomy_term_path($term));
+              }
+              $content[$main]['meta'][] = array('#value' => '<div class="terms">' . check_plain($vocabulary->name) . ': ' . implode(', ', $links) . '</div> ');
+            }
+          }
+        }
 
-      // People
-      $content['column_3']['map'] = array(
-        '#prefix' => '<div id="organization-map">',
-        '#value' => '',
-        '#suffix' => '</div>',
-      );
-      $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.latitude, hug.longitude FROM {profile_values} pv INNER JOIN users u ON u.uid = pv.uid LEFT JOIN {profile_values} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {html5_user_geolocation} hug ON hug.uid = u.uid WHERE pv.value = '%s' AND pv.fid = 72", $node->title);
-      while ($account = db_fetch_object($result)) {
-        // Name & title
-        $content['column_3'][$account->uid . 'name'] = array(
-          '#prefix' => '<h3>',
-          '#value' => theme('username', $account),
-          '#suffix' => '</h3>',
+        $node->content = $content;
+      }
+      else { // Page
+        $content = _drupalorg_grid_elements(array(3, 5, 4));
+
+        // Link & logo
+        $content['column_1']['link'] = $node->content['field_link']['field']['items'][0];
+        $content['column_1']['link']['#item']['display_title'] = drupal_render($node->content['field_logo']['field']['items'][0]) . check_plain($content['column_1']['link']['#item']['display_title']);
+        $content['column_1']['link']['#item']['html'] = TRUE;
+
+        // Terms - sector, service, budget
+        $vocabularies = array();
+        $info = array();
+        foreach ($node->taxonomy as $term) {
+          $vocabularies[$term->vid][] = $term;
+          $term->rendered = TRUE;
+        }
+        foreach ($vocabularies as $vid => $terms) {
+          $vocabulary = taxonomy_vocabulary_load($vid);
+          $links = array();
+          foreach ($terms as $term) {
+            $links[] = l($term->name, taxonomy_term_path($term));
+          }
+          $info[check_plain($vocabulary->name)] = implode(', ', $links);
+        }
+        // May be replaced by taxonomy, see #371966
+        if (!empty($node->field_budget[0]['safe'])) {
+          $info[t('Usual project budget')] = $node->field_budget[0]['safe'];
+        }
+
+        $content['column_1']['info'] = array(
+          '#prefix' => '<dl>',
+          '#suffix' => '</dl>',
+          '#sorted' => TRUE,
         );
-        if (!empty($account->title)) {
-          $content['column_3'][$account->uid . 'name']['#value'] .= ', ' . check_plain($account->title);
+        foreach ($info as $label => $data) {
+          $content['column_1']['info'][] = array(
+            '#value' => '<dt>' . $label . '</dt><dd>' . $data . '</dd>',
+          );
         }
 
-        // Quick info
-        $content['column_3'][$account->uid . 'info'] = array(
-          '#prefix' => '<p>',
-          '#value' => t('On Drupal.org for @for', array('@for' => format_interval(time() - $account->created))),
-          '#suffix' => '</p>',
+        // Association membership
+        $variables['association_membership'] = '';
+        $membership = drupalorg_civimembership_load($node);
+        if ($membership != FALSE) {
+          $placeholders = array('@membership_type' => drupal_strtolower($membership->membership_type));
+        }
+        if ($membership != FALSE && ($membership->status === 'New' || $membership->status === 'Current')) {
+          $content['column_1']['association_membership'] = array('#value' => l('<img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '-2.png" />', 'http://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association @membership_type member', $placeholders)))));
+        }
+
+        $content['column_2']['body'] = $node->content['body'];
+        $content['column_2']['contributions_heading'] = array('#value' => '<h3>' . t('Drupal contributions') . '</h3>');
+        $content['column_2']['contributions'] = $node->content['field_contributions']['field']['items'][0];
+
+        // People
+        $content['column_3']['map'] = array(
+          '#prefix' => '<div id="organization-map">',
+          '#value' => '',
+          '#suffix' => '</div>',
         );
+        $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.latitude, hug.longitude FROM {profile_values} pv INNER JOIN users u ON u.uid = pv.uid LEFT JOIN {profile_values} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {html5_user_geolocation} hug ON hug.uid = u.uid WHERE pv.value = '%s' AND pv.fid = 72", $node->title);
+        while ($account = db_fetch_object($result)) {
+          // Name & title
+          $content['column_3'][$account->uid . 'name'] = array(
+            '#prefix' => '<h3>',
+            '#value' => theme('username', $account),
+            '#suffix' => '</h3>',
+          );
+          if (!empty($account->title)) {
+            $content['column_3'][$account->uid . 'name']['#value'] .= ', ' . check_plain($account->title);
+          }
 
-        $projects = array();
-        $result_projects = db_query('SELECT n.title, n.nid FROM {project_maintainer} pm INNER JOIN {node} n ON n.nid = pm.nid AND n.status = 1 WHERE pm.uid = %d', $account->uid);
-        while ($project = db_fetch_object($result_projects)) {
-          $projects[] = l($project->title, 'node/' . $project->nid);
-        }
-        if (count($projects) > 3) {
-          $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Maintainer for !projects, and <a href="!more">@count more</a>', array('!projects' => implode(', ', array_slice($projects, 0, 3)), '@count' => count($projects) - 3, '!more' => url('user/' . $account->uid)));
-        }
-        elseif (count($projects) > 1) {
-          $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Maintainer for !projects', array('!projects' => implode(', ', $projects)));
+          // Quick info
+          $content['column_3'][$account->uid . 'info'] = array(
+            '#prefix' => '<p>',
+            '#value' => t('On Drupal.org for @for', array('@for' => format_interval(time() - $account->created))),
+            '#suffix' => '</p>',
+          );
+
+          $projects = array();
+          $result_projects = db_query('SELECT n.title, n.nid FROM {project_maintainer} pm INNER JOIN {node} n ON n.nid = pm.nid AND n.status = 1 WHERE pm.uid = %d', $account->uid);
+          while ($project = db_fetch_object($result_projects)) {
+            $projects[] = l($project->title, 'node/' . $project->nid);
+          }
+          if (count($projects) > 3) {
+            $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Maintainer for !projects, and <a href="!more">@count more</a>', array('!projects' => implode(', ', array_slice($projects, 0, 3)), '@count' => count($projects) - 3, '!more' => url('user/' . $account->uid)));
+          }
+          elseif (count($projects) > 1) {
+            $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Maintainer for !projects', array('!projects' => implode(', ', $projects)));
+          }
+
+          // Map
+          if (!empty($account->latitude) || !empty($account->longitude)) {
+            $content['column_3']['map']['#value'] .= theme('drupalorg_map_pin', array('pin'), $account->latitude, $account->longitude);
+          }
         }
 
-        // Map
-        if (!empty($account->latitude) || !empty($account->longitude)) {
-          $content['column_3']['map']['#value'] .= theme('drupalorg_map_pin', array('pin'), $account->latitude, $account->longitude);
-        }
-      }
+        $node->content = $content;
 
-      $node->content = $content;
-
-      // Messages for review workflow
-      if ($node->status == 0) {
-        if ($node->uid === $user->uid) {
-          drupal_set_message(t('Your organization is not published, see <a href="!url">this issue</a> for the current status.', array('!url' => url('node/' . $node->field_organization_issue[0]['nid']))), 'warning');
-        }
-        elseif (user_access('administer nodes')) {
-          drupal_set_message(t('This organization is not published, see <a href="!url">this issue</a> for the current status.', array('!url' => url('node/' . $node->field_organization_issue[0]['nid']))), 'warning');
+        // Messages for review workflow
+        if ($node->status == 0) {
+          if ($node->uid === $user->uid) {
+            drupal_set_message(t('Your organization is not published, see <a href="!url">this issue</a> for the current status.', array('!url' => url('node/' . $node->field_organization_issue[0]['nid']))), 'warning');
+          }
+          elseif (user_access('administer nodes')) {
+            drupal_set_message(t('This organization is not published, see <a href="!url">this issue</a> for the current status.', array('!url' => url('node/' . $node->field_organization_issue[0]['nid']))), 'warning');
+          }
         }
       }
     }
