@@ -1351,6 +1351,22 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
     // Marketplace nodes
     if ($node->type === 'organization') {
+      // Group terms by vocabulary and link to marketplace browsing pages.
+      $vocabularies = array();
+      $info = array();
+      foreach ($node->taxonomy as $term) {
+        $vocabularies[$term->vid][] = $term;
+        $term->rendered = TRUE;
+      }
+      foreach ($vocabularies as $vid => $terms) {
+        $vocabulary = taxonomy_vocabulary_load($vid);
+        $links = array();
+        foreach ($terms as $term) {
+          $links[] = l($term->name, taxonomy_term_path($term));
+        }
+        $info[check_plain($vocabulary->name)] = implode(', ', $links);
+      }
+
       if ($a3) { // Teaser
         if (isset($node->content['field_logo']['field']['items'][0]['#item']['status'])) {
           $content = _drupalorg_grid_elements(array(3, 5));
@@ -1376,26 +1392,8 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         $content[$main]['meta']['website']['#suffix'] = '</div>';
 
         // Taxonomy
-        if (count($node->taxonomy)) {
-          $vocabularies = taxonomy_get_vocabularies();
-          // Group the terms by vid.
-          $taxonomy = array();
-          foreach ($node->taxonomy as $term_id => $term) {
-            if (isset($vocabularies[$term->vid])) {
-              $term->rendered = TRUE;
-              $taxonomy[$term->vid][] = $term;
-            }
-          }
-
-          foreach ($vocabularies as $vocabulary) {
-            if (isset($taxonomy[$vocabulary->vid])) {
-              $links = array();
-              foreach ($taxonomy[$vocabulary->vid] as $term) {
-                $links[] = l($term->name, taxonomy_term_path($term));
-              }
-              $content[$main]['meta'][] = array('#value' => '<div class="terms">' . check_plain($vocabulary->name) . ': ' . implode(', ', $links) . '</div> ');
-            }
-          }
+        foreach ($info as $label => $value) {
+          $content[$main]['meta'][$label] = array('#value' => '<div class="terms">' . $label . ': ' . $value . '</div> ');
         }
 
         $node->content = $content;
@@ -1409,21 +1407,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         $content['column_1']['link']['#item']['html'] = TRUE;
 
         // Terms - sector, service, budget
-        $vocabularies = array();
-        $info = array();
-        foreach ($node->taxonomy as $term) {
-          $vocabularies[$term->vid][] = $term;
-          $term->rendered = TRUE;
-        }
-        foreach ($vocabularies as $vid => $terms) {
-          $vocabulary = taxonomy_vocabulary_load($vid);
-          $links = array();
-          foreach ($terms as $term) {
-            $links[] = l($term->name, taxonomy_term_path($term));
-          }
-          $info[check_plain($vocabulary->name)] = implode(', ', $links);
-        }
-        // May be replaced by taxonomy, see #371966
+        // Budget may be replaced by taxonomy, see #371966
         if (!empty($node->field_budget[0]['safe'])) {
           $info[t('Usual project budget')] = $node->field_budget[0]['safe'];
         }
