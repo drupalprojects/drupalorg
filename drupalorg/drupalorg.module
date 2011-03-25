@@ -1523,6 +1523,94 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   }
 }
 
+function drupalorg_views_pre_render(&$view) {
+  // Render the taxonomy filtering above the marketplace organization listing.
+  if ($view->name === 'drupalorg_organizations') {
+    $content = _drupalorg_grid_elements(array(2, 2, 2, 2));
+
+    // Each argument should be a term restricted to a vocabulary.
+    $n = 0;
+    foreach ($view->display['default']->handler->options['arguments'] as $argument) {
+      // Find that vocabulary.
+      $vocabulary = taxonomy_vocabulary_load(reset(array_filter($argument['validate_argument_vocabulary'])));
+
+      $content['column_' . ($n + 1)]['header'] = array('#value' => '<h3>' . check_plain($vocabulary->name) . '</h3>');
+      $content['column_' . ($n + 1)]['list'] = array(
+        '#prefix' => '<ul>',
+        '#suffix' => '</ul>',
+        '#sorted' => TRUE,
+      );
+
+      // Query for terms in the vocabulary used by nodes in the current view.
+      if (isset($view->args[$n]) && $view->args[$n] !== 'all') {
+        // Remove the current filter, since only one term in each vocab may be
+        // selected.
+        $copy = $view->clone_view();
+        $copy->args[$n] = 'all';
+        $copy->build();
+        $query = clone $copy->query;
+      }
+      else {
+        $query = clone $view->query;
+      }
+      // Clear out what we don't need.
+      $query->fields = array();
+      $query->orderby = array();
+      // Join back to all terms
+      $term_node = $query->add_table('term_node');
+      $term_data = $query->add_table('term_data');
+      $query->table_queue[$term_data]['join']->left_table = $term_node;
+      $query->table_queue[$term_data]['join']->definition['left_table'] = $term_node;
+      // … in our vid
+      $query->add_where(0, $term_data . '.vid = %d', $vocabulary->vid);
+      $name = $query->add_field($term_data, 'name');
+      // group by term, count & order by
+      $query->add_groupby($term_node . '.tid');
+      $count = $query->add_field(NULL, 'count(*)', 'count', array('aggregate' => TRUE));
+      $query->add_orderby(NULL, NULL, 'DESC', $count);
+
+      $result = db_query($query->query(), $query->get_where_args());
+      while ($row = db_fetch_object($result)) {
+        $args = $view->args;
+        if ($n > count($args)) {
+          $args = array_merge(array_fill(count($args), $n - count($args), 'all'), $args);
+        }
+        $args[$n] = str_replace(' ', '-', $row->$name);
+
+        $content['column_' . ($n + 1)]['list'][] = array(
+          '#prefix' => '<li>',
+          '#value' => l(t('@name (@count)', array('@name' => $row->$name, '@count' => $row->$count)), 'marketplace-preview/' . implode('/', $args)),
+          '#suffix' => '</li>',
+        );
+      }
+
+      // If there is a copy, show an all link.
+      if (isset($copy)) {
+        $replacements = module_invoke_all('views_query_substitutions', $copy);
+        $count = db_result(db_query('SELECT COUNT(*) FROM (' . str_replace(array_keys($replacements), $replacements, $copy->query->query(TRUE)) . ') count_alias', $copy->query->get_where_args()));
+
+        $args = $view->args;
+        if ($n > count($args)) {
+          $args = array_merge(array_fill(count($args), $n - count($args), 'all'), $args);
+        }
+        $args[$n] = 'all';
+        $content['column_' . ($n + 1)]['list'][] = array(
+          '#prefix' => '<li>',
+          '#value' => l(t('All @name (@count)', array('@name' => $vocabulary->name, '@count' => $count)), 'marketplace-preview/' . preg_replace('!(/all)*$!', '', implode('/', $args)), array('attributes' => array('class' => 'all'))),
+          '#suffix' => '</li>',
+        );
+
+        unset($copy);
+      }
+
+      $n += 1;
+    }
+
+    $view->display['default']->handler->options['header'] = drupal_render($content);
+    $view->display['default']->handler->options['header_format'] = 3; // Full HTML
+  }
+}
+
 /**
  * Return an array tree suitable for drupal_render() and Bluecheese's grid
  * system.
@@ -1535,8 +1623,8 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
  */
 function _drupalorg_grid_elements(array $columns) {
   $content = array(
-    '#prefix' => '<div class="grid-' . array_sum($columns) . ' alpha omega">',
-    '#suffix' => '</div>',
+    '#prefix' => '<div class="clear-block"><div class="grid-' . array_sum($columns) . ' alpha omega">',
+    '#suffix' => '</div></div>',
     '#sorted' => TRUE,
   );
 
