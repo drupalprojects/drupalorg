@@ -1354,6 +1354,10 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       // Group terms by vocabulary and link to marketplace browsing pages.
       $vocabularies = array();
       $info = array();
+      $default_args = array(
+        'Services' => 'all',
+        'Sectors' => 'all',
+      );
       foreach ($node->taxonomy as $term) {
         $vocabularies[$term->vid][] = $term;
         $term->rendered = TRUE;
@@ -1362,7 +1366,9 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         $vocabulary = taxonomy_vocabulary_load($vid);
         $links = array();
         foreach ($terms as $term) {
-          $links[] = l($term->name, taxonomy_term_path($term));
+          // Link to the drupalorg_organizations view, terms in order,
+          // truncating trailing '/all'.
+          $links[] = l($term->name, 'marketplace-preview/' . preg_replace('!(/all)*$!', '', implode('/', array_merge($default_args, array($vocabulary->name => str_replace(' ', '-', $term->name))))));
         }
         $info[check_plain($vocabulary->name)] = implode(', ', $links);
       }
