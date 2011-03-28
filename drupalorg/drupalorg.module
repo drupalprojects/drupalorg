@@ -1406,6 +1406,10 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
     $content['column_1'] = array_merge($content['column_1'], $account->content);
     $account->content = $content;
   }
+  elseif ($op === 'after_update') {
+    // Refresh the Association membership cache.
+    drupalorg_civimembership_load($account, TRUE);
+  }
 }
 
 /**
