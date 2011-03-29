@@ -1507,7 +1507,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         }
 
         // Check Association membership.
-        $account = user_load($node->nid);
+        $account = user_load($node->uid);
         $membership = drupalorg_civimembership_load($account, TRUE);
         if ($membership != FALSE && $membership->membership_type === 'Organization' && ($membership->status === 'New' || $membership->status === 'Current')) {
           return;
