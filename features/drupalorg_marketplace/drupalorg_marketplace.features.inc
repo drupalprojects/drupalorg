@@ -38,10 +38,19 @@ function drupalorg_marketplace_node_info() {
       'has_body' => '1',
       'body_label' => t('Organization description'),
       'min_word_count' => '0',
-      'help' => t('<p>Drupal Association membership is encouraged, the person who holds the membership should be filling out this form.</p>
+      'help' => t('<p>Review <a href="http://drupal.org/node/1108710">the policy</a> for organization listings.</p>
 
 <p>People with a "current company or organization" matching this name will be shown on your page.</p>'),
     ),
   );
   return $items;
+}
+
+/**
+ * Implementation of hook_views_api().
+ */
+function drupalorg_marketplace_views_api() {
+  return array(
+    'api' => '2',
+  );
 }

@@ -277,77 +277,9 @@ function drupalorg_marketplace_content_default_fields() {
     ),
   );
 
-  // Exported field: field_organization_issue
-  $fields['organization-field_organization_issue'] = array(
-    'field_name' => 'field_organization_issue',
-    'type_name' => 'organization',
-    'display_settings' => array(
-      'label' => array(
-        'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'teaser' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'full' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '4' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '2' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '3' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-    ),
-    'widget_active' => '1',
-    'type' => 'nodereference',
-    'required' => '0',
-    'multiple' => '0',
-    'module' => 'nodereference',
-    'active' => '1',
-    'referenceable_types' => array(
-      'project_issue' => 'project_issue',
-      'book' => 0,
-      'forum' => 0,
-      'image' => 0,
-      'organization' => 0,
-      'packaging_whitelist' => 0,
-      'page' => 0,
-      'project_project' => 0,
-      'project_release' => 0,
-      'story' => 0,
-    ),
-    'advanced_view' => '--',
-    'advanced_view_args' => '',
-    'widget' => array(
-      'autocomplete_match' => 'starts_with',
-      'size' => '60',
-      'default_value' => NULL,
-      'default_value_php' => NULL,
-      'label' => 'Issue for review',
-      'weight' => '11',
-      'description' => '',
-      'type' => 'nodereference_autocomplete',
-      'module' => 'nodereference',
-    ),
-  );
-
   // Translatables
   // Included for use with string extractors like potx.
   t('Drupal contributions');
-  t('Issue for review');
   t('Logo');
   t('Usual project budget (optional)');
   t('Website');
