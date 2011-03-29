@@ -1490,6 +1490,45 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       }
     }
   }
+  elseif ($op === 'presave') {
+    if ($node->type === 'organization') {
+      // Can not be published without admin access, a Drupal Association
+      // organization membership, or previously being published.
+      if ($node->status && (!user_access('administer nodes') || $node->uid == $user->uid)) {
+        // Check previous status.
+        if (isset($node->nid)) {
+          $old_node = node_load($node->nid);
+          if ($old_node->status) {
+            return;
+          }
+        }
+
+        // Check Association membership.
+        $account = user_load($node->nid);
+        $membership = drupalorg_civimembership_load($account, TRUE);
+        if ($membership != FALSE && $membership->membership_type === 'Organization' && ($membership->status === 'New' || $membership->status === 'Current')) {
+          return;
+        }
+
+        $node->status = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Warn if the user does not have a Drupal Association organization membership.
+ * We don't stop them since they can still be approved without it.
+ */
+function drupalorg_form_organization_node_form_alter(&$form, $form_state) {
+  global $user;
+
+  if ($form['#node']->uid === $user->uid) {
+    $membership = drupalorg_civimembership_load($user, TRUE);
+    if ($membership == FALSE || $membership->membership_type !== 'Organization' || ($membership->status !== 'New' && $membership->status !== 'Current')) {
+      drupal_set_message(t('Please <a href="!url">become a Drupal Association organization member</a>. Your listing <em>may not be public</em> without it.', array('!url' => 'http://association.drupal.org/membership')), 'warning');
+    }
+  }
 }
 
 function drupalorg_views_pre_render(&$view) {
