@@ -62,7 +62,7 @@ function drupalorg_marketplace_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Usual project budget (optional)',
-      'weight' => '-1',
+      'weight' => 0,
       'description' => 'Helps potential clients know what they are getting into.',
       'type' => 'text_textfield',
       'module' => 'text',
@@ -126,7 +126,7 @@ function drupalorg_marketplace_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Drupal contributions',
-      'weight' => '1',
+      'weight' => '2',
       'description' => '<ul>
 <li>Code contributions, in the form of modules, patches to modules, or patches submitted against core. In the case of companies with multiple developers, or of companies who have sponsored development, please include links to the projects your company has worked on. If your developers want to contribute directly, <a href="http://drupal.org/contribute/development" rel="nofollow">this page</a> provides an overview.</li>
 <li>Design firms with contributed themes.</li>
@@ -277,9 +277,72 @@ function drupalorg_marketplace_content_default_fields() {
     ),
   );
 
+  // Exported field: field_organization_headquarters
+  $fields['organization-field_organization_headquarters'] = array(
+    'field_name' => 'field_organization_headquarters',
+    'type_name' => 'organization',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => 5,
+      'size' => '60',
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_organization_headquarters][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Headquarters',
+      'weight' => '-1',
+      'description' => 'Where is your organization located?',
+      'type' => 'text_textfield',
+      'module' => 'text',
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Drupal contributions');
+  t('Headquarters');
   t('Logo');
   t('Usual project budget (optional)');
   t('Website');
