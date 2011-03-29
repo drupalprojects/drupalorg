@@ -1607,7 +1607,7 @@ function drupalorg_views_pre_render(&$view) {
         $args[$n] = 'all';
         $content['column_' . ($n + 1)]['list'][] = array(
           '#prefix' => '<li>',
-          '#value' => l(t('@name (@count)', array('@name' => check_plain($argument['wildcard_substitution']), '@count' => $count)), 'marketplace-preview/' . preg_replace('!(/all)*$!', '', implode('/', $args)), array('attributes' => array('class' => 'all'))),
+          '#value' => l(t('@name (@count)', array('@name' => check_plain($argument['wildcard_substitution']), '@count' => $count)), preg_replace('!(/all)*$!', '', 'marketplace-preview/' . implode('/', $args)), array('attributes' => array('class' => 'all'))),
           '#suffix' => '</li>',
         );
 
