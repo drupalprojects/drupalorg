@@ -1384,9 +1384,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         }
 
         // Logo
-        // TODO remove str_replace(), imagecache isn't exactly working, see #1109006
-        //$content['column_1']['logo'] = $node->content['field_logo']['field']['items'][0];
-        $content['column_1']['logo'] = array('#value' => str_replace('/files/', '/system/files/', drupal_render($node->content['field_logo']['field']['items'][0])));
+        $content['column_1']['logo'] = $node->content['field_logo']['field']['items'][0];
 
         // Body
         $content[$main]['body'] = array('#value' => check_markup(node_teaser($node->body, $node->format, 200), $node->format));
@@ -1411,8 +1409,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
         // Link & logo
         $content['column_1']['link'] = $node->content['field_link']['field']['items'][0];
-        // TODO remove str_replace(), imagecache isn't exactly working, see #1109006
-        $content['column_1']['link']['#item']['display_title'] = str_replace('/files/', '/system/files/', drupal_render($node->content['field_logo']['field']['items'][0])) . check_plain($content['column_1']['link']['#item']['display_title']);
+        $content['column_1']['link']['#item']['display_title'] = drupal_render($node->content['field_logo']['field']['items'][0]) . check_plain($content['column_1']['link']['#item']['display_title']);
         $content['column_1']['link']['#item']['html'] = TRUE;
 
         // Terms - sector, service, budget
