@@ -52,7 +52,7 @@ function drupalorg_git_gateway_menu() {
     'title' => 'Git access',
     'page callback' => 'drupalorg_git_gateway_user_page',
     'page arguments' => array(1),
-    'access callback' => 'user_edit_access',
+    'access callback' => 'drupalorg_git_gateway_user_page_access',
     'access arguments' => array(1),
     'load arguments' => array('%map', '%index'),
     'weight' => 1,
@@ -236,6 +236,11 @@ function drupalorg_git_gateway_no_consent_error($account) {
 function drupalorg_git_gateway_user_page($account) {
   require_once drupal_get_path('module', 'drupalorg_git_gateway') . "/drupalorg_git_gateway.user-form.inc";
   return _drupalorg_git_gateway_user_page($account);
+}
+
+function drupalorg_git_gateway_user_page_access($account) {
+  // Default logic from user_edit_access(), but also allow if they have administer vcs
+  return (($GLOBALS['user']->uid == $account->uid) || user_access('administer users')) || user_access('administer version control systems') && $account->uid > 0;
 }
 
 function drupalorg_git_gateway_defaults(&$form_state) {
