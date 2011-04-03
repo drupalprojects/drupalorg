@@ -1717,6 +1717,14 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
       );
     }
 
+    // Link organization to organization node, if it exists.
+    if (!empty($account->profile_current_company_organization)) {
+      $nid = db_result(db_query("SELECT nid FROM {node} WHERE status = 1 AND type = 'organization' AND title = '%s'", $account->profile_current_company_organization));
+      if ($nid != 0) {
+        $account->content['Work']['profile_current_company_organization']['#value'] = l($account->profile_current_company_organization, 'node/' . $nid);
+      }
+    }
+
     $content['column_1'] = array_merge($content['column_1'], $account->content);
     $account->content = $content;
   }
