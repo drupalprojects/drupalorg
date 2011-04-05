@@ -1414,7 +1414,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
         // Terms - sector, service, budget
         if (!empty($node->field_organization_headquarters[0]['safe'])) {
-          $info[t('Heaquarters')] = $node->field_organization_headquarters[0]['safe'];
+          $info[t('Headquarters')] = $node->field_organization_headquarters[0]['safe'];
         }
         // Budget may be replaced by taxonomy, see #371966
         if (!empty($node->field_budget[0]['safe'])) {
