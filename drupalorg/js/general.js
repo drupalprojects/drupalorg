@@ -29,3 +29,28 @@ Drupal.behaviors.drupalorgCompany = function () {
     });
   })
 };
+
+/**
+ * Marketplace listing pages.
+ */
+Drupal.behaviors.drupalorgMarketplace = function () {
+  $('.view-drupalorg-organizations:not(.drupalorgMarketplace-processed)').addClass('drupalorgMarketplace-processed')
+  .find('ul').each(function () {
+    var $showMore = $('.show-more', this).hide(),
+      $showLink = $('.show-link', this),
+      $hideLink = $('.hide-link', this);
+
+    $showLink.show().click(function (e) {
+      $showMore.show();
+      $showLink.hide();
+      $hideLink.show();
+      e.preventDefault();
+    });
+    $hideLink.click(function (e) {
+      $showMore.hide();
+      $showLink.show();
+      $hideLink.hide();
+      e.preventDefault();
+    });
+  });
+};
