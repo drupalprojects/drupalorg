@@ -1611,10 +1611,10 @@ function drupalorg_views_pre_render(&$view) {
       // If there are more than 6, show more/less links.
       if ($c > 6) {
         $content['column_' . ($n + 1)]['list']['show-more'] = array(
-          '#value' => '<li class="show-link">' . l(t('Show all @count', array('@count' => $c)), $_GET['q']) . '</li>',
+          '#value' => '<li class="show-link">' . l(t('Show more'), $_GET['q']) . '</li>',
         );
         $content['column_' . ($n + 1)]['list']['show-less'] = array(
-          '#value' => '<li class="hide-link">' . l(t('Show only 6'), $_GET['q']) . '</li>',
+          '#value' => '<li class="hide-link">' . l(t('Show fewer'), $_GET['q']) . '</li>',
         );
       }
 
