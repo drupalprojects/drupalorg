@@ -183,7 +183,7 @@ function drupalorg_marketplace_content_default_fields() {
     'attributes' => array(
       'target' => 'default',
       'rel' => '',
-      'class' => '',
+      'class' => 'website',
       'title' => '',
     ),
     'display' => array(
