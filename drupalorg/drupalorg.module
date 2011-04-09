@@ -1595,7 +1595,7 @@ function drupalorg_views_pre_render(&$view) {
         $path = 'marketplace-preview/' . implode('/', $args);
         $item = array(
           '#prefix' => '<li' . ($c > 6 && $_GET['q'] !== $path ? ' class="show-more"' : '') . '>',
-          '#value' => l(t('@name (@count)', array('@name' => $row->$name, '@count' => $row->$count)), $path),
+          '#value' => l(t('@name (@count)', array('@name' => $row->$name, '@count' => $row->$count)), $path, array('html' => TRUE)),
           '#suffix' => '</li>',
         );
         // Ensure active is in slot 6 or lower.
