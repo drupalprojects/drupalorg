@@ -205,7 +205,7 @@ function drupalorg_project_issue_counts() {
  */
 function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
   // Add a description for the Priority and Status values.
-  if ($form_id == 'project_issue_node_form' || ($form_id == 'comment_form' && !empty($form['original_issue']['issue_info']))) {
+  if (($form_id == 'project_issue_node_form' || ($form_id == 'comment_form' && !empty($form['original_issue']['issue_info']))) && empty($form_state['rebuild'])) {
     $priority_status_description = array(
       // The "standard" class adds a clear so the description is positioned
       // below the floated pull-downs.  "fieldset-description" is from
