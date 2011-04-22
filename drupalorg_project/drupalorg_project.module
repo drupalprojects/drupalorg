@@ -924,11 +924,13 @@ function drupalorg_project_meta_data($node) {
   }
 
   // Automated tests.
-  $has_auto_tests = db_result(db_query("SELECT pid FROM {pift_project} WHERE pid = %d", $node->nid));
-  if (!empty($has_auto_tests)) {
-    $label = t('Automated tests');
-    /// @todo Indicate if the tests are passing or not.
-    $info[$label] = t('Enabled');
+  if (module_exists('pift')) {
+    $has_auto_tests = db_result(db_query("SELECT pid FROM {pift_project} WHERE pid = %d", $node->nid));
+    if (!empty($has_auto_tests)) {
+      $label = t('Automated tests');
+      /// @todo Indicate if the tests are passing or not.
+      $info[$label] = t('Enabled');
+    }
   }
 
   $modified = format_date($node->changed, 'custom', 'F j, Y');
