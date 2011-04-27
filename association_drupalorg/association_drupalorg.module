@@ -1,0 +1,21 @@
+<?php
+
+function association_drupalorg_menu() {
+  return array(
+    'membership' => array(
+      'title' => 'Join the Drupal Association',
+      'access arguments' => array('access content'),
+      'page callback' => 'theme',
+      'page arguments' => array('association_drupalorg_membership_page'),
+      'type' => MENU_CALLBACK,
+    ),
+  );
+}
+
+function association_drupalorg_theme() {
+  return array(
+    'association_drupalorg_membership_page' => array(
+      'template' => 'association-drupalorg-membership-page',
+    ),
+  );
+}

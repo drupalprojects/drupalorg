@@ -1,0 +1,4 @@
+name = Association.Drupal.org
+description = Association.Drupal.org customizations, use only on Association.drupal.org.
+package = Drupal.org
+core = 6.x

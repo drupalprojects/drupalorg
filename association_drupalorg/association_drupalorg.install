@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Unpublish the old membership node for posterity.
+ */
+function association_drupalorg_update_6000() {
+  $return = array();
+
+  $return[] = update_sql("DELETE FROM {url_alias} WHERE dst = 'membership'");
+  $return[] = update_sql("UPDATE {node} SET status = 0 WHERE nid = 78");
+
+  return $return;
+}

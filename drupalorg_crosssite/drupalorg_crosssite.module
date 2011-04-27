@@ -292,7 +292,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'news'      => array('href' => 'news', 'title' => t('News'), '#site' => 'association', '#active' => drupalorg_crosssite_menu_term('association', array(263))),
         'about'      => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association', '#active' => drupalorg_crosssite_child_of('association', 'about') && !(drupalorg_crosssite_child_of('association', 'about/donations') || drupalorg_crosssite_child_of('association', 'about/faq') || drupalorg_crosssite_child_of('association', 'about/staff'))),
         'donate'     => array('href' => 'node/67', 'title' => t('Donate'), '#site' => 'association'),
-        'membership' => array('href' => 'node/78', 'title' => t('Memberships'), '#site' => 'association'),
+        'membership' => array('href' => 'membership', 'title' => t('Memberships'), '#site' => 'association'),
         'faq'        => array('href' => 'node/65', 'title' => t('FAQ'), '#site' => 'association'),
         'staff'      => array('href' => 'node/61', 'title' => t('Staff'), '#site' => 'association'),
         'contact'    => array('href' => 'contact', 'title' => t('Contact'), '#site' => 'association'),
