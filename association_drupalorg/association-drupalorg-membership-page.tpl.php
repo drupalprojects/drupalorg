@@ -4,7 +4,7 @@
   <p>Purchase or renew a Drupal Association membership:</p>
   <ul>
     <li><a href="<?php print $individual_url; ?>">Buy an individual membership</a> for €22, approx $33</li>
-    <li><a href="<?php print $organization_url ?>">Buy an organization membership</a> for €73, approx $108</li>
+    <li><a href="<?php print $organization_url; ?>">Buy an organization membership</a> for €73, approx $108</li>
   </ul>
 
   <h3>Membership benefits</h3>
@@ -35,11 +35,16 @@
 </div>
 
 <div class="grid-4 omega">
-  <?php /* todo: Your membership status */ ?>
+  <?php if (user_is_logged_in()) { ?>
+    <h3 class="top">Your membership status</h3>
+    <?php foreach ($memberships as $membership) { ?>
+      <p><?php print $membership; ?></p>
+    <?php } ?>
+  <?php } ?>
 
   <?php /* todo: Want to give more? */ ?>
 
-  <h3 class="top">Association support in numbers</h3>
+  <h3<?php if (!user_is_logged_in()) { ?> class="top"<?php } ?>>Association support in numbers</h3>
   <?php /* todo: Automate */ ?>
   <ul>
     <li><em>2,881 attendees</em> at <a href="http://chicago2011.drupal.org">DrupalCon Chicago</a></li>

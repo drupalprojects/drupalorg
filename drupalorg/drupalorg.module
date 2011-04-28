@@ -1769,6 +1769,9 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
  *
  * @return
  *   An object containing the current membership.
+ *
+ * @todo do some sort of cross-site request to use
+ *   association_drupalorg_get_memberships().
  */
 function drupalorg_civimembership_load($account, $reset = FALSE) {
   static $member_cache;

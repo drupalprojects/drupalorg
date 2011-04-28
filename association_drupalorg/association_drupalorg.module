@@ -33,6 +33,19 @@ function association_drupalorg_preprocess_association_drupalorg_membership_page(
     $variables['individual_url'] = url('membership-redirect', array('query' => array('to' => $variables['individual_url'])));
     $variables['organization_url'] = url('membership-redirect', array('query' => array('to' => $variables['organization_url'])));
   }
+  else {
+    global $user;
+
+    $variables['memberships'] = array();
+    foreach (association_drupalorg_get_memberships($user) as $membership) {
+      if ($membership->status === 'New' || $membership->status === 'Current') {
+        $variables['memberships'][] = t('@membership_type membership expiring @date', array('@membership_type' => $membership->membership_type, '@date' => format_date($membership->end_date, 'custom', 'F j, Y')));
+      }
+    }
+    if (count($variables['memberships']) === 0) {
+      $variables['memberships'][] = t('No current membership.');
+    }
+  }
 }
 
 /**
@@ -41,4 +54,37 @@ function association_drupalorg_preprocess_association_drupalorg_membership_page(
 function association_drupalorg_membership_redirect() {
   drupal_set_message(t('Please log in to buy your membership.'));
   drupal_goto('user', array('destination' => preg_replace('!^' . url() . '!', '', $_REQUEST['to'])));
+}
+
+/**
+ * Query CiviCRM's DB for an account's memberships.
+ *
+ * @param $account
+ *   An account object representing the user who's membership details should be
+ *   returned.
+ *
+ * @todo try using CiviCRM 3.4+'s API
+ */
+function association_drupalorg_get_memberships($account) {
+  global $db_url;
+
+  if (!is_array($db_url) || !isset($db_url['association_civicrm'])) {
+    return;
+  }
+
+  $previous_dsn = db_set_active('association_civicrm');
+
+  $contact_id = db_result(db_query("SELECT contact_id FROM {civicrm_uf_match} WHERE uf_id = %d", $account->uid));
+
+  // If a matching contact is found in CiviCRM.
+  $membership = array();
+  if ($contact_id) {
+    $result = db_query("SELECT cm.id as membership_id, cm.membership_type_id, cmt.name as membership_type, cm.end_date, cms.name as status, cmb.entity_id FROM {civicrm_membership} cm LEFT JOIN {civicrm_membership_type} cmt ON cm.membership_type_id = cmt.id LEFT JOIN {civicrm_membership_status} cms ON cm.status_id = cms.id LEFT JOIN {civicrm_membership_block} cmb ON cm.membership_type_id = cmb.membership_types WHERE cm.contact_id = %d GROUP BY cm.contact_id, cm.id ORDER BY cm.end_date DESC", $contact_id);
+    while ($membership = db_fetch_object($result)) {
+      $memberships[] = $membership;
+    }
+  }
+
+  // Change the DSN back to default Drupal $db_url.
+  db_set_active($previous_dsn);
 }
