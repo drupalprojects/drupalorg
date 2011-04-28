@@ -3,10 +3,15 @@
 function association_drupalorg_menu() {
   return array(
     'membership' => array(
-      'title' => 'Join the Drupal Association',
+      'title' => 'Memberships',
       'access arguments' => array('access content'),
       'page callback' => 'theme',
       'page arguments' => array('association_drupalorg_membership_page'),
+      'type' => MENU_CALLBACK,
+    ),
+    'membership-redirect' => array(
+      'access arguments' => array('access content'),
+      'page callback' => 'association_drupalorg_membership_redirect',
       'type' => MENU_CALLBACK,
     ),
   );
@@ -18,4 +23,22 @@ function association_drupalorg_theme() {
       'template' => 'association-drupalorg-membership-page',
     ),
   );
+}
+
+function association_drupalorg_preprocess_association_drupalorg_membership_page(&$variables) {
+  $variables['individual_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 1)));
+  $variables['organization_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 2)));
+
+  if (!user_is_logged_in()) {
+    $variables['individual_url'] = url('membership-redirect', array('query' => array('to' => $variables['individual_url'])));
+    $variables['organization_url'] = url('membership-redirect', array('query' => array('to' => $variables['organization_url'])));
+  }
+}
+
+/**
+ * Set a message for the login page and redirect to it.
+ */
+function association_drupalorg_membership_redirect() {
+  drupal_set_message(t('Please log in to buy your membership.'));
+  drupal_goto('user', array('destination' => preg_replace('!^' . url() . '!', '', $_REQUEST['to'])));
 }
