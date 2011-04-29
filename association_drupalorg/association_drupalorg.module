@@ -69,7 +69,7 @@ function association_drupalorg_get_memberships($account) {
   global $db_url;
 
   if (!is_array($db_url) || !isset($db_url['association_civicrm'])) {
-    return;
+    return array();
   }
 
   $previous_dsn = db_set_active('association_civicrm');
@@ -87,4 +87,6 @@ function association_drupalorg_get_memberships($account) {
 
   // Change the DSN back to default Drupal $db_url.
   db_set_active($previous_dsn);
+
+  return $memberships;
 }
