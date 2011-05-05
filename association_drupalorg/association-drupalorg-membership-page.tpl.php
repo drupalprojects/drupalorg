@@ -12,8 +12,8 @@
   <h4>1. Membership directory listing</h4>
   <p>Members are listed in the public membership directories. Members who join or renew are listed in the Drupal Association's annual report.</p>
   <ul>
-    <li><a href= "/civicrm/profile?reset=1&force=1&gid=8&search=0">Directory of individual memberships</a></li>
-    <li><a href= "/civicrm/profile?reset=1&force=1&gid=4&search=0">Directory of organization memberships</a></li>
+    <li><a href= "/civicrm/profile?reset=1&force=1&gid=8&search=0&crmRowCount=10000">Directory of individual memberships</a></li>
+    <li><a href= "/civicrm/profile?reset=1&force=1&gid=4&search=0&crmRowCount=10000">Directory of organization memberships</a></li>
   </ul>
 
   <h4>2. Membership badges</h4>
