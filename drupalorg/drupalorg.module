@@ -1472,15 +1472,16 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
           );
 
           $projects = array();
-          $result_projects = db_query('SELECT n.title, n.nid FROM {project_maintainer} pm INNER JOIN {node} n ON n.nid = pm.nid AND n.status = 1 WHERE pm.uid = %d', $account->uid);
+          // @see versioncontrol_project_user() for the following query.
+          $result_projects = db_query("SELECT DISTINCT(vcp.nid), n.title, COUNT(o.vc_op_id) AS commits FROM {versioncontrol_operations} o INNER JOIN {versioncontrol_project_projects} vcp ON vcp.repo_id = o.repo_id INNER JOIN {node} n ON n.status = 1 AND n.nid = vcp.nid INNER JOIN {project_projects} pp ON n.nid = pp.nid WHERE o.author_uid = %d AND pp.sandbox = 0 GROUP BY vcp.nid, n.title ORDER BY commits DESC", $account->uid);
           while ($project = db_fetch_object($result_projects)) {
             $projects[] = l($project->title, 'node/' . $project->nid);
           }
           if (count($projects) > 3) {
-            $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Maintainer for !projects, and <a href="!more">@count more</a>', array('!projects' => implode(', ', array_slice($projects, 0, 3)), '@count' => count($projects) - 3, '!more' => url('user/' . $account->uid)));
+            $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Contributor to !projects, and <a href="!more">@count more</a>', array('!projects' => implode(', ', array_slice($projects, 0, 3)), '@count' => count($projects) - 3, '!more' => url('user/' . $account->uid)));
           }
           elseif (count($projects) > 1) {
-            $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Maintainer for !projects', array('!projects' => implode(', ', $projects)));
+            $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Contributor to !projects', array('!projects' => implode(', ', $projects)));
           }
 
           // Map
@@ -1831,4 +1832,3 @@ function drupalorg_403_page() {
   }
   return t('You are not authorized to access this page.');
 }
-
