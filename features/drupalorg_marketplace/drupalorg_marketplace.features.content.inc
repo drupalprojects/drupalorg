@@ -127,7 +127,9 @@ function drupalorg_marketplace_content_default_fields() {
       'default_value_php' => NULL,
       'label' => 'Drupal contributions',
       'weight' => '2',
-      'description' => '<ul>
+      'description' => '<p>Self promote! These fields determine eligibility for the Drupal.org marketplace and show the Drupal community how much you\'ve given back. Moderators use this information to respond to issues about community involvement, so it is important to list anything and everything relevant:</p>
+
+<ul>
 <li>Code contributions, in the form of modules, patches to modules, or patches submitted against core. In the case of companies with multiple developers, or of companies who have sponsored development, please include links to the projects your company has worked on. If your developers want to contribute directly, <a href="http://drupal.org/contribute/development" rel="nofollow">this page</a> provides an overview.</li>
 <li>Design firms with contributed themes.</li>
 <li>If your contributions include helping in the forums or writing documentation, highlight the areas where you have contributed.</li>
