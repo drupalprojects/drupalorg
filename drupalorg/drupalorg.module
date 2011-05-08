@@ -1374,6 +1374,8 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       }
 
       if ($a3) { // Teaser
+        $node->readmore = FALSE;
+
         if (isset($node->content['field_logo']['field']['items'][0]['#item']['status'])) {
           $content = _drupalorg_grid_elements(array(3, 5));
           $main = 'column_2';
