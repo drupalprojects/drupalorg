@@ -112,11 +112,11 @@
   <div class="grid-4 omega">
     <h3>Technical Requirements</h3>
     <div class="aboutsmall">
-      <p>For Drupal 6, you need the following to get started:</p>
+      <p>For Drupal 7, you need the following to get started:</p>
       <ul>
         <li><strong>Web Server</strong>: Apache or Microsoft IIS</li>
-        <li><strong>PHP</strong>: 5.2 or higher recommended; PHP 4.3.5 required</li>
-        <li><strong>Database Server</strong>: MySQL - 4.1 or higher or PostgreSQL - 7.4 or higher</li>
+        <li><strong>PHP</strong>: 5.2 or higher</li>
+        <li><strong>Database Server</strong>: MySQL - 5.0 or higher, PostgreSQL - 8.3 or higher, or SQLite</li>
       </ul>
       <p>Drupal is web-based, which means it is compatible with all operating systems.</p>
       <p>More detailed information on the <a href="/requirements">system requirements</a>.</p>
