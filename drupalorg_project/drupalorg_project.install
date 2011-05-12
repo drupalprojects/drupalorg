@@ -102,3 +102,10 @@ function drupalorg_project_update_6001() {
 
   return $ret;
 }
+
+/**
+ * Update issue counts for 8.x.
+ */
+function drupalorg_project_update_6002() {
+  drupalorg_project_issue_counts();
+}
