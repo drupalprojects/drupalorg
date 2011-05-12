@@ -1435,13 +1435,8 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         }
 
         // Association membership
-        $variables['association_membership'] = '';
-        $membership = drupalorg_civimembership_load($node);
-        if ($membership != FALSE) {
-          $placeholders = array('@membership_type' => drupal_strtolower($membership->membership_type));
-        }
-        if ($membership != FALSE && ($membership->status === 'New' || $membership->status === 'Current')) {
-          $content['column_1']['association_membership'] = array('#value' => l('<img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '-2.png" />', 'http://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association @membership_type member', $placeholders)))));
+        if (drupalorg_has_civimembership($node, 'Organization')) {
+          $content['column_1']['association_membership'] = array('#value' => l('<img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-organization-2.png" />', 'http://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association organization member')))));
         }
 
         $content['column_2']['body'] = $node->content['body'];
@@ -1511,8 +1506,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
         // Check Association membership.
         $account = user_load($node->uid);
-        $membership = drupalorg_civimembership_load($account, TRUE);
-        if ($membership != FALSE && $membership->membership_type === 'Organization' && ($membership->status === 'New' || $membership->status === 'Current')) {
+        if (drupalorg_has_civimembership($node, 'Organization', TRUE)) {
           return;
         }
 
@@ -1530,8 +1524,7 @@ function drupalorg_form_organization_node_form_alter(&$form, $form_state) {
   global $user;
 
   if ($form['#node']->uid === $user->uid) {
-    $membership = drupalorg_civimembership_load($user, TRUE);
-    if ($membership == FALSE || $membership->membership_type !== 'Organization' || ($membership->status !== 'New' && $membership->status !== 'Current')) {
+    if (!drupalorg_has_civimembership($node, 'Organization', TRUE)) {
       drupal_set_message(t('Please <a href="!url">become a Drupal Association organization member</a>. Your listing <em>may not be public</em> without it.', array('!url' => 'http://association.drupal.org/membership')), 'warning');
     }
   }
@@ -1695,39 +1688,35 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
     $content = _drupalorg_grid_elements(array(8, 4));
 
     // Get the membership display content
-    $membership = drupalorg_civimembership_load($account);
-    $placeholders = array(
-      '@username' => $account->name,
-    );
-    if ($membership != FALSE) {
-      $placeholders['@membership_type'] = drupal_strtolower($membership->membership_type);
-      $placeholders['!link'] = check_url('http://association.drupal.org/civicrm/contribute/transact?reset=1&id=' . $membership->entity_id);
-      $placeholders['@expires'] = format_date(strtotime($membership->end_date), 'custom', 'M jS, Y');
-    }
-
-    if ($membership != FALSE && ($membership->status === 'New' || $membership->status === 'Current')) {
-      $content['column_2']['membership'] = array(
-        '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" class="left" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></div><div class="grid-3 omega"><p>',
-        '#value' => t('@username is an <a href="http://association.drupal.org/membership">@membership_type member</a> of the <a href="http://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
-        '#suffix' => '</p></div></div>',
-      );
-    }
-
     if ($account->uid === $user->uid) {
-      if ($membership == FALSE) {
-        $membership_personal = t('<a href="http://association.drupal.org/">Drupal Association</a> memberships pay for improvements to Drupal.org. Please consider purchasing a <a href="http://association.drupal.org/membership">membership</a>.');
+      $membership_personal = t('<a href="http://association.drupal.org/">Drupal Association</a> memberships pay for improvements to Drupal.org. Please consider purchasing a <a href="http://association.drupal.org/membership">membership</a>.');
+    }
+    foreach (drupalorg_civimembership_load($account) as $membership) {
+      $placeholders = array(
+        '@username' => $account->name,
+        '@membership_type' => drupal_strtolower($membership->membership_type),
+        '!link' => check_url('http://association.drupal.org/civicrm/contribute/transact?reset=1&id=' . $membership->entity_id),
+        '@expires' => format_date(strtotime($membership->end_date), 'custom', 'M jS, Y'),
+      );
+
+      if ($membership->status === 'New' || $membership->status === 'Current') {
+        $content['column_2']['membership'] = array(
+          '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" class="left" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></div><div class="grid-3 omega"><p>',
+          '#value' => t('@username is an <a href="http://association.drupal.org/membership">@membership_type member</a> of the <a href="http://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
+          '#suffix' => '</p></div></div>',
+        );
       }
-      else {
+
+      if ($account->uid === $user->uid) {
         switch ($membership->status) {
           case 'New':
           case 'Current':
-          case 'Pending':
             $membership_personal = t('Thank you for being a <a href="http://association.drupal.org/">Drupal Association</a> member. Your support helps to fund improvements to Drupal.org. Your <a href="!link">membership</a> expires on @expires.', $placeholders);
             break;
 
           case 'Grace':
           case 'Expired':
-            $membership_personal = t('Thank you for purchasing a membership. Your support has helped us to improve Drupal.org. Your ongoing support via a <a href="!link">membership</a> would be appreciated.', $placeholders);
+            $membership_personal = t('Thank you for purchasing a membership. Your support has helped us to improve Drupal.org. Your ongoing support via a <a href="!link">membership</a> is appreciated.', $placeholders);
             break;
 
           case 'Deceased':
@@ -1735,6 +1724,8 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
             break;
         }
       }
+    }
+    if (isset($membership_personal)) {
       $content['column_2']['membership_personal'] = array(
         '#prefix' => '<p>',
         '#value' => $membership_personal,
@@ -1766,7 +1757,6 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
  * @param $account
  *   A fully-loaded account object representing the user who's membership
  *   details should be returned.
- *
  * @param $reset
  *   Reset the static cache of memberships loaded during this request.
  *
@@ -1798,20 +1788,44 @@ function drupalorg_civimembership_load($account, $reset = FALSE) {
       $contact_id = db_result(db_query("SELECT contact_id FROM {civicrm_uf_match} WHERE uf_id = %d", $remote_drupal_uid));
 
       // If a matching contact is found in CiviCRM.
-      $membership = FALSE;
+      $member_cache[$account->uid] = array();
       if ($contact_id) {
-        $membership = db_fetch_object(db_query_range("SELECT cm.id as membership_id, cm.membership_type_id, cmt.name as membership_type, cm.end_date, cms.name as status, cmb.entity_id FROM {civicrm_membership} cm LEFT JOIN {civicrm_membership_type} cmt ON cm.membership_type_id = cmt.id LEFT JOIN {civicrm_membership_status} cms ON cm.status_id = cms.id LEFT JOIN {civicrm_membership_block} cmb ON cm.membership_type_id = cmb.membership_types WHERE cm.contact_id = %d GROUP BY cm.contact_id, cm.id ORDER BY cm.end_date DESC", $contact_id, 0, 1));
+        $result = db_query("SELECT cm.id as membership_id, cm.membership_type_id, cmt.name as membership_type, cm.end_date, cms.name as status, cmb.entity_id FROM {civicrm_membership} cm LEFT JOIN {civicrm_membership_type} cmt ON cm.membership_type_id = cmt.id LEFT JOIN {civicrm_membership_status} cms ON cm.status_id = cms.id LEFT JOIN {civicrm_membership_block} cmb ON cm.membership_type_id = cmb.membership_types WHERE cm.is_test = 0 AND cm.contact_id = %d GROUP BY cm.contact_id, cm.id ORDER BY cm.end_date ASC", $contact_id);
+        while ($membership = db_fetch_object($result)) {
+          $member_cache[$account->uid][] = $membership;
+        }
       }
 
       // Change the DSN back to default Drupal $db_url.
       db_set_active($previous_dsn);
 
-      $member_cache[$account->uid] = $membership;
-      cache_set($account->uid, $membership, 'cache_drupalorg_civimembership', time() + (60 * 60 * 24));
+      cache_set($account->uid, $member_cache[$account->uid], 'cache_drupalorg_civimembership', time() + (60 * 60 * 24));
     }
   }
 
   return $member_cache[$account->uid];
+}
+
+/**
+ * Check if an account has a Drupal Association membership.
+ *
+ * @param $account
+ *   A fully-loaded account object representing the user who's membership
+ *   details should be returned.
+ * @param $type
+ *   'Individual' or 'Organization' at time of writing.
+ * @param $reset
+ *   Reset the static cache of memberships loaded during this request.
+ *
+ * @return
+ */
+function drupalorg_has_civimembership($account, $type, $reset = FALSE) {
+  foreach (drupalorg_civimembership_load($account, $reset) as $membership) {
+    if ($membership->membership_type === $type && ($membership->status === 'New' || $membership->status === 'Current')) {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 /**
