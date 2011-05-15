@@ -1,50 +1,59 @@
-<h2>Join the Drupal Association</h2>
-
 <div class="grid-8 alpha">
-  <p>Purchase or renew a Drupal Association membership:</p>
+  <h2>Become an Individual Member</h2>
+  <p><a href="<?php print $individual_url; ?>" class="action-button">Become an Individual Member for €22, about $30</a></p>
+
+  <h3>Why Join?</h3>
+  <p>Individual Members can show they’re an active part of the Drupal community. Memberships help pay for Drupal.org infrastructure and financing large community initiatives.</p>
+
+  <h3>Benefits:</h3>
   <ul>
-    <li><a href="<?php print $individual_url; ?>">Buy an individual membership</a> for €22, approx $33</li>
-    <li><a href="<?php print $organization_url; ?>">Buy an organization membership</a> for €73, approx $108</li>
+    <li><a href="/civicrm/profile?reset=1&force=1&gid=8&search=0&crmRowCount=10000">Directory of Individual Members</a> - Members are listed in our public directory of Individual Members</li>
+    <li>Promote - Members are listed in the <a href="http://association.drupal.org/system/files/Annual%20Report%202011%20-%20web%20short%20compressed.pdf">Drupal Association Annual Report</a>, given out at major Drupal events and online</li>
+    <li><a href="http://drupal.org/image/tid/112">Membership Badge</a> - Let the world know you’re a part of the Drupal community on your Drupal.org profile and beyond</li>
+    <li>First Alert - Early notice of upcoming promotional programs and Association initiatives</li>
   </ul>
 
-  <h3>Membership benefits</h3>
+  <h2>Become an Organization Member</h2>
+  <p><a href="<?php print $organization_url; ?>" class="action-button">Become an Organization Member for €73, about $100</a></p>
 
-  <h4>1. Membership directory listing</h4>
-  <p>Members are listed in the public membership directories. Members who join or renew are listed in the Drupal Association's annual report.</p>
+  <h3>Why Join?</h3>
+  <p>Not only does your membership support the community, but you also receive unique promotional opportunities. And, by joining, you can tout the depth of your involvement to your prospective Drupal clients.</p>
+
+  <h3>Benefits:</h3>
   <ul>
-    <li><a href= "/civicrm/profile?reset=1&force=1&gid=8&search=0&crmRowCount=10000">Directory of individual memberships</a></li>
-    <li><a href= "/civicrm/profile?reset=1&force=1&gid=4&search=0&crmRowCount=10000">Directory of organization memberships</a></li>
+    <li><a href="http://drupal.org/marketplace-preview">Drupal Marketplace</a> - Organization Members who have contributed to Drupal can be listed in the Drupal Marketplace, which receives 23,000 monthly visitors</li>
+    <li>Advertising - Communicate contextual, relevant and value-add messaging tothe developer community with web banners on fixed, well approved areas
+    <li>Get Connected - Grow your business partnerships. We’ll make introductions at business networking events, so you can accelerate your business</li>
+    <li><a href="/civicrm/profile?reset=1&force=1&gid=4&search=0&crmRowCount=10000">Organization Directory Listing</a> - Members are listed in our public directory of Organization Members</li>
+    <li>Promote - Members are listed in the <a href="http://association.drupal.org/system/files/Annual%20Report%202011%20-%20web%20short%20compressed.pdf">Drupal Association Annual Report</a>, given out at major Drupal events and online</li>
+    <li>Business-focused Newsletter - Provides updates on new promotional opportunities, Drupal Association news, and more!</li>
+    <li>First Alert - Early notice of upcoming promotional programs and Association initiatives</li>
+    <li><a href="http://drupal.org/image/tid/113">Membership Badge</a> - Let the world know you’re a part of the Drupal community on your Drupal.org profile and beyond</li>
   </ul>
 
-  <h4>2. Membership badges</h4>
-  <p>Members are granted free use of the Drupal Association membership badges while they remain active members. Members can put it on their websites, blogs, etc. A badge will also show in their Drupal.org user profile.</p>
+  <h2>What else can I do?</h2>
+  <p>If you would like to give more to the Association and the community, you can also make a donation, offer to be a sponsor for Drupalcon, or sponsor a local Drupal event.</p>
+  <p><a href="donate" class="action-button">Donate to the Drupal Association</a></p>
 
-  <h4>3. Drupal marketplace</h4>
-  <p>Organization members who have contributed to Drupal can be listed in the <a href="http://drupal.org/marketplace-preview">Drupal marketplace</a>.</p>
-
-  <h3>Where does it go?</h3>
-  <p>The Drupal association can not take credit for the amazing success of the Drupal project, but will highlight the success of the community in it's efforts to keep supporting the project. Your membership makes the Drupal.org infrastructure possible and supports:</p>
-
-  <h4>Community initiatives:</h4>
+  <h2>Where does it go?</h2>
+  <p>The Drupal Association can not take credit for the amazing success of the Drupal project, but will highlight the success of the community in it’s efforts to keep supporting the project. Your membership makes the Drupal.org infrastructure possible and supports community initiatives:</p>
   <ul>
     <li><a href="http://groups.drupal.org/drupalorg-redesign-plan-drupal-association">Drupal.org redesign</a></li>
-    <li><a href="http://drupal.org/community-initiatives/git">Drupal.org's migration to Git</a></li>
+    <li><a href="http://drupal.org/community-initiatives/git">Drupal.org’s migration to Git</a></li>
     <li>Upgrading the Drupal.org infrastructure</li>
-    <li><a href="http://drupalcon.org" alt="DrupalCons">DrupalCons</a> and Drupal camps in cities around the world</li>
+    <li><a href="http://drupalcon.org/">DrupalCons</a> and Drupal camps in cities around the world</a></li>
   </ul>
 </div>
 
 <div class="grid-4 omega">
   <?php if (user_is_logged_in()) { ?>
-    <h3 class="top">Your membership status</h3>
+    <h3>Your membership status</h3>
     <?php foreach ($memberships as $membership) { ?>
       <p><?php print $membership; ?></p>
     <?php } ?>
   <?php } ?>
 
-  <?php /* todo: Want to give more? */ ?>
-
-  <h3<?php if (!user_is_logged_in()) { ?> class="top"<?php } ?>>Association support in numbers</h3>
+  <h3>Association support in numbers</h3>
   <?php /* todo: Automate */ ?>
   <ul>
     <li><em>2,881 attendees</em> at <a href="http://chicago2011.drupal.org">DrupalCon Chicago</a></li>

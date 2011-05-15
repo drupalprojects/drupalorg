@@ -3,7 +3,7 @@
 function association_drupalorg_menu() {
   return array(
     'membership' => array(
-      'title' => 'Memberships',
+      'title' => 'Association Memberships',
       'access arguments' => array('access content'),
       'page callback' => 'theme',
       'page arguments' => array('association_drupalorg_membership_page'),
