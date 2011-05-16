@@ -1738,7 +1738,12 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
     if (!empty($account->profile_current_company_organization)) {
       $nid = db_result(db_query("SELECT nid FROM {node} WHERE status = 1 AND type = 'organization' AND title = '%s'", $account->profile_current_company_organization));
       if ($nid != 0) {
-        $account->content['Work']['profile_current_company_organization']['#value'] = l($account->profile_current_company_organization, 'node/' . $nid);
+        $organization = node_load($nid);
+        $link = check_plain($organization->title);
+        if (isset($organization->field_logo[0])) {
+          $link = theme('imagecache', 'grid-3', $organization->field_logo[0]['filepath'], $organization->title, $organization->title);
+        }
+        $account->content['Work']['profile_current_company_organization']['#value'] = l($link, 'node/' . $nid, array('html' => TRUE));
       }
     }
 
