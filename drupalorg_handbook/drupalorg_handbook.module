@@ -29,7 +29,7 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
         break;
     }
     $node->content['body']['#value'] .= $extra;
-    
+
     if (drupalorg_crosssite_section() === 'documentation' && isset($node->book['bid'])) {
       // Prepend the handbook meta data to book bodies.
       $node->content['body']['#value'] = drupalorg_handbook_meta_data($node) . $node->content['body']['#value'];
@@ -89,7 +89,7 @@ function drupalorg_handbook_meta_data($node) {
       }
     }
   }
-  
+
   $modified = format_date($node->changed, 'custom', 'F j, Y');
 
   return theme('drupalorg_handbook_meta_data', $info, $modified);
@@ -139,7 +139,7 @@ function drupalorg_handbook_revision_maintainers() {
   }
 
   $result = db_query("SELECT u.uid, u.name, COUNT(nr.vid) AS pages
-    FROM {node} n INNER JOIN {node_revisions} nr ON n.nid = nr.nid INNER JOIN {users} u ON u.uid = n.uid
+    FROM {node} n INNER JOIN {node_revisions} nr ON n.nid = nr.nid INNER JOIN {users} u ON u.uid = nr.uid
     WHERE n.type = 'book' AND n.status = 1 AND n.moderate = 0
     GROUP BY u.name
     ORDER BY pages DESC");
@@ -181,15 +181,15 @@ function drupalorg_handbook_display_recent_updates() {
     $result = drupalorg_handbook_get_recent_updates($count);
     while ($page = db_fetch_object($result)) {
       $row = array(
-        l($page->title, "node/$page->nid") .' '. theme('mark', node_mark($page->nid, $page->changed)) . ($page->log ? "<br />". check_plain($page->log) : ''), 
-        theme('username', $page), 
+        l($page->title, "node/$page->nid") .' '. theme('mark', node_mark($page->nid, $page->changed)) . ($page->log ? "<br />". check_plain($page->log) : ''),
+        theme('username', $page),
         t('%time ago', array('%time' => format_interval(time() - $page->changed))),
       );
       if (user_access('view revisions')) {
         $row[] = l(t('Diff'), "node/$page->nid/revisions/view/latest");
       }
       $rows[] = $row;
-    } 
+    }
     $header = array('Page', 'Edited', 'Updated');
     if (user_access('view revisions')) {
       $header[] = 'Diff';
@@ -283,7 +283,7 @@ function drupalorg_handbook_preprocess_drupalorg_home(&$vars) {
     while ($node = db_fetch_object($result)) {
       // Fake the created time for the theme function, so we can easily theme it.
       $node->created = $node->changed;
-      $recent_updates .= '<h6>'. l($node->title, 'node/'. $node->nid) .'</h6><p class="submitted">'. theme('node_submitted', $node) .'</p>'; 
+      $recent_updates .= '<h6>'. l($node->title, 'node/'. $node->nid) .'</h6><p class="submitted">'. theme('node_submitted', $node) .'</p>';
     }
     $recent_updates .= '<p>' . l(t('More updates…'), 'handbook/updates') .'</p>';
     cache_set('drupalorg_handbook_recent_updates_' . $count, $recent_updates);
