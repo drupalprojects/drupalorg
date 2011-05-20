@@ -1687,6 +1687,27 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
     // Column layout for profile pages.
     $content = _drupalorg_grid_elements(array(8, 4));
 
+    // Link organization to organization node, if it exists.
+    if (!empty($account->profile_current_company_organization)) {
+      $nid = db_result(db_query("SELECT nid FROM {node} WHERE status = 1 AND type = 'organization' AND title = '%s'", $account->profile_current_company_organization));
+      if ($nid != 0) {
+        $organization = node_load($nid);
+        $link = check_plain($organization->title);
+        if (isset($organization->field_logo[0])) {
+          $link = theme('imagecache', 'grid-3', $organization->field_logo[0]['filepath'], $organization->title, $organization->title);
+        }
+        $account->content['Work']['profile_current_company_organization']['#value'] = l($link, 'node/' . $nid, array('html' => TRUE));
+
+        if (drupalorg_has_civimembership($organization, 'Organization')) {
+          $content['column_2']['membership'][] = array(
+            '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="http://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" class="left" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
+            '#value' => t('My organization is a member of the <a href="http://association.drupal.org/">Drupal Association</a>. We’re supporting the Drupal.org infrastructure and other large community initiatives. <a href="http://association.drupal.org/membership">Join us</a>.'),
+            '#suffix' => '</p></div></div>',
+          );
+        }
+      }
+    }
+
     // Get the membership display content
     if ($account->uid === $user->uid) {
       $membership_personal = t('<a href="http://association.drupal.org/">Drupal Association</a> memberships pay for improvements to Drupal.org. Please consider purchasing a <a href="http://association.drupal.org/membership">membership</a>.');
@@ -1699,7 +1720,8 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
         '@expires' => format_date(strtotime($membership->end_date), 'custom', 'M jS, Y'),
       );
 
-      if ($membership->status === 'New' || $membership->status === 'Current') {
+      // If membership is new or current, and not the organization owner's.
+      if (($membership->status === 'New' || $membership->status === 'Current') && (!isset($organization) || $organization->uid !== $account->uid || $membership->membership_type !== 'Organization')) {
         $content['column_2']['membership'][] = array(
           '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="http://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" class="left" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
           '#value' => t('@username is an <a href="http://association.drupal.org/membership">@membership_type member</a> of the <a href="http://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
@@ -1732,19 +1754,6 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
         '#suffix' => '</p>',
         '#weight' => 1,
       );
-    }
-
-    // Link organization to organization node, if it exists.
-    if (!empty($account->profile_current_company_organization)) {
-      $nid = db_result(db_query("SELECT nid FROM {node} WHERE status = 1 AND type = 'organization' AND title = '%s'", $account->profile_current_company_organization));
-      if ($nid != 0) {
-        $organization = node_load($nid);
-        $link = check_plain($organization->title);
-        if (isset($organization->field_logo[0])) {
-          $link = theme('imagecache', 'grid-3', $organization->field_logo[0]['filepath'], $organization->title, $organization->title);
-        }
-        $account->content['Work']['profile_current_company_organization']['#value'] = l($link, 'node/' . $nid, array('html' => TRUE));
-      }
     }
 
     $content['column_1'] = array_merge($content['column_1'], $account->content);
