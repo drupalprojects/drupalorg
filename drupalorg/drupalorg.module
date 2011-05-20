@@ -1700,7 +1700,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
 
         if (drupalorg_has_civimembership($organization, 'Organization')) {
           $content['column_2']['membership'][] = array(
-            '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="http://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" class="left" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
+            '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="http://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
             '#value' => t('My organization is a member of the <a href="http://association.drupal.org/">Drupal Association</a>. We’re supporting the Drupal.org infrastructure and other large community initiatives. <a href="http://association.drupal.org/membership">Join us</a>.'),
             '#suffix' => '</p></div></div>',
           );
@@ -1723,7 +1723,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
       // If membership is new or current, and not the organization owner's.
       if (($membership->status === 'New' || $membership->status === 'Current') && (!isset($organization) || $organization->uid !== $account->uid || $membership->membership_type !== 'Organization')) {
         $content['column_2']['membership'][] = array(
-          '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="http://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" class="left" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
+          '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="http://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
           '#value' => t('@username is an <a href="http://association.drupal.org/membership">@membership_type member</a> of the <a href="http://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
           '#suffix' => '</p></div></div>',
         );
