@@ -59,7 +59,7 @@ function association_drupalorg_preprocess_association_drupalorg_membership_page(
 }
 
 function association_drupalorg_preprocess_association_drupalorg_donate_page(&$variables) {
-  $variables['donate_url'] = url('civicrm/contribute/transact', array('reset' => 1, 'id' => 29));
+  $variables['donate_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 29)));
   if (!user_is_logged_in()) {
     $variables['donate_url'] = url('membership-redirect', array('query' => array('to' => $variables['donate_url'])));
   }
