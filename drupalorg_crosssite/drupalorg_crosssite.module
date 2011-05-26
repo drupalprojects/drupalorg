@@ -290,8 +290,8 @@ function drupalorg_crosssite_content_menu(&$vars) {
       $nav_content_links = array(
         'home'       => array('href' => '<front>', 'title' => t('Association Home'), '#site' => 'association'),
         'news'      => array('href' => 'news', 'title' => t('News'), '#site' => 'association', '#active' => drupalorg_crosssite_menu_term('association', array(263))),
-        'about'      => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association', '#active' => drupalorg_crosssite_child_of('association', 'about') && !(drupalorg_crosssite_child_of('association', 'about/donations') || drupalorg_crosssite_child_of('association', 'about/faq') || drupalorg_crosssite_child_of('association', 'about/staff'))),
-        'donate'     => array('href' => 'node/366', 'title' => t('Donate'), '#site' => 'association'),
+        'about'      => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association', '#active' => drupalorg_crosssite_child_of('association', 'about') && !(drupalorg_crosssite_child_of('association', 'about/faq') || drupalorg_crosssite_child_of('association', 'about/staff'))),
+        'donate'     => array('href' => 'donate', 'title' => t('Donate'), '#site' => 'association'),
         'membership' => array('href' => 'membership', 'title' => t('Memberships'), '#site' => 'association'),
         'faq'        => array('href' => 'node/65', 'title' => t('FAQ'), '#site' => 'association'),
         'staff'      => array('href' => 'node/61', 'title' => t('Staff'), '#site' => 'association'),
