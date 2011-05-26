@@ -9,6 +9,13 @@ function association_drupalorg_menu() {
       'page arguments' => array('association_drupalorg_membership_page'),
       'type' => MENU_CALLBACK,
     ),
+    'donate' => array(
+      'title' => 'Donating to the Drupal Association',
+      'access arguments' => array('access content'),
+      'page callback' => 'theme',
+      'page arguments' => array('association_drupalorg_donate_page'),
+      'type' => MENU_CALLBACK,
+    ),
     'membership-redirect' => array(
       'access arguments' => array('access content'),
       'page callback' => 'association_drupalorg_membership_redirect',
@@ -21,6 +28,9 @@ function association_drupalorg_theme() {
   return array(
     'association_drupalorg_membership_page' => array(
       'template' => 'association-drupalorg-membership-page',
+    ),
+    'association_drupalorg_donate_page' => array(
+      'template' => 'association-drupalorg-donate-page',
     ),
   );
 }
@@ -48,11 +58,18 @@ function association_drupalorg_preprocess_association_drupalorg_membership_page(
   }
 }
 
+function association_drupalorg_preprocess_association_drupalorg_donate_page(&$variables) {
+  $variables['donate_url'] = url('civicrm/contribute/transact', array('reset' => 1, 'id' => 29));
+  if (!user_is_logged_in()) {
+    $variables['donate_url'] = url('membership-redirect', array('query' => array('to' => $variables['donate_url'])));
+  }
+}
+
 /**
  * Set a message for the login page and redirect to it.
  */
 function association_drupalorg_membership_redirect() {
-  drupal_set_message(t('Please log in to buy your membership.'));
+  drupal_set_message(t('Please log in to buy your membership or donate.'));
   drupal_goto('user', array('destination' => preg_replace('!^' . url() . '!', '', $_REQUEST['to'])));
 }
 
