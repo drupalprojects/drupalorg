@@ -107,3 +107,25 @@ function association_drupalorg_get_memberships($account) {
 
   return $memberships;
 }
+
+function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  if ($op === 'view' && $node->type === 'association_membership_benefit') {
+    global $user;
+
+    $has_membership = FALSE;
+    foreach (association_drupalorg_get_memberships($user) as $membership) {
+      if ($membership->status === 'New' || $membership->status === 'Current') {
+        $has_membership = TRUE;
+        break;
+      }
+    }
+
+    if ($has_membership) {
+      $node->content['field_assoc_benefit_link']['#suffix'] = '<p>' . t('Discount code: <strong>@code</strong>', array('@code' => $node->field_assoc_benefit_code[0]['value'])) . '</p>';
+    }
+    else {
+      unset($node->content['field_assoc_benefit_link']['field']);
+      $node->content['field_assoc_benefit_link']['#value'] = '<p><strong>' . l(t('Become a member!'), 'membership') . '</strong></p>';
+    }
+  }
+}
