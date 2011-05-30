@@ -16,7 +16,7 @@
  * Foundation.
  */
 
-define('PID_DOUBLE', 5006);       // double pivot algorithm ID that displays related projects in different algorithms.
+define('PID_DOUBLE', 5008);       // double pivot algorithm ID that displays related projects in different algorithms.
 define('LIMIT_DOUBLE', 5);
 define('LIMIT_MAX', 100);         // maximum items to display in the block or on a page.
 
@@ -26,15 +26,12 @@ function pivots_block_output() {
 
     //HACK: randomize algorithm rotation
     $_pivots_block_pid_double = PID_DOUBLE;  // double pivot ID defaults to conversation pivots
-    switch (rand(0,2)) {
+    switch (rand(0,1)) {
       case 0:
-        $_pivots_block_pid_double = 5004; // conversation pivots
+        $_pivots_block_pid_double = 5008; // conversation pivots
         break;
       case 1:
-        $_pivots_block_pid_double = 5005; // solr10
-        break;
-      case 2:
-        $_pivots_block_pid_double = 5006; // corrhr + solr10
+        $_pivots_block_pid_double = 5009; // solr10
         break;
     }
 
@@ -51,7 +48,7 @@ function _pivots_block_content($node_id, $pivot_id, $title, $limit) {
   if (!empty($items)) {
     foreach ($items as $position => $item) {
       $items[$position] = l($item['title'], "node/{$item['nid']}", array( 'attributes' => array(
-              "onClick" => "javascript:pageTracker._trackEvent('PivotsClick_${pivot_id}', '${node_id}_{$item['nid']}');",
+              "onClick" => "javascript:_gaq.push(['_trackEvent', 'PivotsClick_${pivot_id}', '${node_id}_{$item['nid']}']);",
               "rel"     => "nofollow"
       )));
       $ga_event .= "_{$item['nid']}";
@@ -59,7 +56,9 @@ function _pivots_block_content($node_id, $pivot_id, $title, $limit) {
     //$output = theme('item_list', $items, $title);
     $output = theme('item_list', $items); // hack: don't show title
   }
-  $GLOBALS['conf']['googleanalytics_codesnippet_after'] .= "gaq.push(['_trackEvent', 'PivotsPageview_{$pivot_id}', '{$ga_event}']);";
+  drupal_add_js("$(document).ready(function() {
+    _gaq.push(['_trackEvent', 'PivotsPageview_{$pivot_id}', '{$ga_event}']);
+  });", 'inline', 'footer');
   return $output;
 }
 
