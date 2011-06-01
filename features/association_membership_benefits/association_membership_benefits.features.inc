@@ -32,7 +32,7 @@ function association_membership_benefits_node_info() {
     'association_membership_benefit' => array(
       'name' => t('Membership benefit'),
       'module' => 'features',
-      'description' => '',
+      'description' => t('Membership benefits for Drupal Association members on /membership/benefits'),
       'has_title' => '1',
       'title_label' => t('Company name'),
       'has_body' => '1',
