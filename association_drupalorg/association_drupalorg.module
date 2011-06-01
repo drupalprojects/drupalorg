@@ -127,5 +127,7 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       unset($node->content['field_assoc_benefit_link']['field']);
       $node->content['field_assoc_benefit_link']['#value'] = '<p><strong>' . l(t('Become a member!'), 'membership') . '</strong></p>';
     }
+
+    $node->content['field_assoc_benefit_restrictions']['#weight'] = 10;
   }
 }
