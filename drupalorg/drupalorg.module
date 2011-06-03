@@ -251,6 +251,9 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
                 if ($item['page_arguments'][0]->type === 'project_project') {
                   $blocks[] = array('Issues for ' . $item['page_arguments'][0]->title, 'project_issue', 'issue_cockpit', array('nid' => $item['page_arguments'][0]->nid));
                 }
+                elseif ($item['page_arguments'][0]->nid === '24572') {
+                  $blocks[] = array('Documentation Team links', 'menu', 'menu-documentation-t');
+                }
                 break;
 
               case 'news':
@@ -283,7 +286,7 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
                 if (isset($block[3])) {
                   $options['query'] = $block[3];
                 }
-                $content .= homebox_add_link(t('Add @name to Dashboard', array('@name' => $block[0])), $page, $block[1], $block[2], $options);
+                $content .= homebox_add_link(t('Add @name to dashboard', array('@name' => $block[0])), $page, $block[1], $block[2], $options);
               }
               return array('content' => $content);
             }
@@ -1187,6 +1190,18 @@ function drupalorg_homebox() {
           'open' => 1,
           'closable' => 1,
           'title' => '',
+          'weight' => -7,
+        ),
+        // Available for enabling
+        'menu_menu-documentation-t' => array(
+          'module' => 'menu',
+          'delta' => 'menu-documentation-t',
+          'region' => 1,
+          'movable' => 1,
+          'status' => 0,
+          'open' => 1,
+          'closable' => 1,
+          'title' => 'Documentation Team links',
           'weight' => -7,
         ),
       ),
