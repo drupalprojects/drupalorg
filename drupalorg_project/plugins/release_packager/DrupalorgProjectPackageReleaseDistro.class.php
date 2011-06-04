@@ -180,9 +180,8 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
         // Core was built without the drupal.org drush extension, so the
         // package item for core isn't in the package contents file. Retrieve
         // it manually.
-        $core_tag = 'DRUPAL-'. str_replace('.', '-', $core_version);
-        if (!($core_release_nid = db_result(db_query("SELECT nid FROM {project_release_nodes} WHERE tag = '%s'", $core_tag)))) {
-          wd_err("ERROR: Can't find core release for $core_tag");
+        if (!($core_release_nid = db_result(db_query("SELECT nid FROM {project_release_nodes} WHERE pid = %d AND tag = '%s'", DRUPALORG_CORE_NID, $core_version)))) {
+          wd_err("ERROR: Can't find core release for $core_version");
           return 'error';
         }
         $contents[] = $core_release_nid;
