@@ -220,21 +220,28 @@ function project_verify_package_run_drush_via_pipe($command, $input) {
 /**
  * Helper to get file contents from a URL using a variety of methods.
  *
- * If PHP is configured to allow URLs in fopen(), we use file_get_contents().
- * Otherwise, if PHP has libcurl loaded, we use that. Finally, we fall back to
+ * If PHP is configured to allow URLs in fopen(), use file_get_contents().
+ * Otherwise, if PHP has libcurl loaded, use that. Finally, fall back to
  * attempting to execute wget from a pipe.
  *
  * @param $url
- *   URL for the file you want to fetch.
+ *   URL for the file to fetch.
  * @return
- *   String containing the contents of the requested file, or FALSE on error.
+ *   An array, first element is a return status string (one of 'success',
+ *   'failure', or 'not found'), second element is the .make file on success,
+ *   possibly an error message on failure, and nothing if the file is not
+ *   found.
  */
 function project_verify_package_get_remote_file($url) {
-  $file_contents = FALSE;
+  $result = 'not found';
+  $data = "";
 
   // Use fopen if allowed.
   if (ini_get('allow_url_fopen')) {
-    $file_contents = file_get_contents($url);
+    if ($output = file_get_contents($url)) {
+      $result = 'success';
+      $data = $output;
+    }
   }
   // Fallback to cURL if it exists.
   elseif (function_exists('curl_init')) {
@@ -242,18 +249,30 @@ function project_verify_package_get_remote_file($url) {
     curl_setopt($ch, CURLOPT_TIMEOUT, 50);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-    $file_contents = curl_exec($ch);
+    $output = curl_exec($ch);
+    // Most likely a server error.
+    if ($output === FALSE) {
+      $result = 'failure';
+      $data = curl_error($ch);
+    }
+    // All HTTP codes other than 200 assume that the file does not exist on
+    // the server.
+    elseif (curl_getinfo($ch, CURLINFO_HTTP_CODE) == "200") {
+      $result = 'success';
+      $data = $output;
+    }
     curl_close($ch);
   }
   // Last try, wget.
   else {
     $output = passthru('wget -q -O - ' . escapeshellarg($url), $return_value);
     if ($return_value === 0) {
-      $file_contents = $output;
+      $result = 'success';
+      $data = $output;
     }
   }
 
-  return $file_contents;
+  return array($result, $data);
 }
 
 /**
@@ -303,7 +322,9 @@ function _project_verify_package_verify_release_node($form, &$form_state) {
       );
       // Try to grab the .make file to verify.
       $url = strtr(PROJECT_VERIFY_PACKAGE_MAKE_FILE_URI, $token_args);
-      if ($makefile = project_verify_package_get_remote_file($url)) {
+      list($result, $data) = project_verify_package_get_remote_file($url);
+      if ($result == 'success') {
+        $makefile = $data;
         // Run the 'verify makefile' drush command. We only diplay a message
         // for errors.
         list ($output, $errors, $return) = project_verify_package_run_drush_via_pipe('verify makefile', $makefile);
@@ -320,8 +341,8 @@ function _project_verify_package_verify_release_node($form, &$form_state) {
           form_set_error('title', $message);
         }
       }
-      else {
-        form_set_error('title', t("Pre-packaging verification failed -- unable to retrieve %makefile from %url", array('%makefile' => PROJECT_VERIFY_PACKAGE_MAKE_FILE, '%url' => $url)));
+      elseif ($result == 'failure') {
+        form_set_error('title', t("Pre-packaging verification failed -- unable to retrieve %makefile from %url: %error", array('%makefile' => PROJECT_VERIFY_PACKAGE_MAKE_FILE, '%url' => $url, '%error' => $data)));
       }
     }
   }
