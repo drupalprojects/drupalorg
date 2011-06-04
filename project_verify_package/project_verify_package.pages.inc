@@ -128,10 +128,10 @@ function project_verify_package_convert_verify_make_file_form_submit($form, &$fo
   // explicitly look for it.
   switch ($operation) {
     case 'convert':
-      $command = 'convert makefile';
+      $command = 'convert-makefile';
       break;
     case 'verify':
-      $command = 'verify makefile';
+      $command = 'verify-makefile';
       break;
   }
   if (isset($command)) {
