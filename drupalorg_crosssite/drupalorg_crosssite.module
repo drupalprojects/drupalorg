@@ -41,18 +41,41 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   // of the active item, since the page title and submenus have that indication.
   // Also, we should not let people edit these, since they should be standard
   // among all the subsites. So this is why they are here.
-  $nav_header_links = array(
-    'getting-started' => array('href' => 'start',           'title' => t('Get Started'),         '#site' => 'main', 'attributes' => array('title' => t('Getting Started with Drupal'))),
-    'forum'           => array('href' => 'community',       'title' => t('Community & Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community and Support'))),
-    'handbooks'       => array('href' => 'documentation',   'title' => t('Documentation'),       '#site' => 'main', 'attributes' => array('title' => t('Drupal Documentation'))),
-    'project'         => array('href' => 'download',        'title' => t('Download & Extend'),   '#site' => 'main', 'attributes' => array('title' => t('Download and Extend Drupal'))),
-    'marketplace'     => array('href' => 'drupal-services', 'title' => t('Marketplace'),         '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
-    'about'           => array('href' => 'about',           'title' => t('About'),               '#site' => 'main', 'attributes' => array('title' => t('About Drupal'))),
-  );
-  // Make all external links right.
-  $nav_header_links = drupalorg_crosssite_menu_absolute_links($nav_header_links);
-  // Theme as links, and avoid class="links" on it.
-  $vars['nav_header'] = theme('links', $nav_header_links, array());
+  $home_link = l(t('◄ Go to Drupal.org'), drupalorg_crosssite_path('', 'main'), array('attributes' => array('class' => 'home')));
+  switch (variable_get('drupalorg_site', 'main')) {
+    case 'association':
+      $vars['drupalorg_logo_link'] = l('Drupal Association', drupalorg_crosssite_path('', 'association'), array('attributes' => array('title' => 'Drupal Association')));
+      $nav_header_links = array(
+        'news' => array('href' => 'news', 'title' => t('News'), '#site' => 'association'),
+        'about' => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association'),
+        'membership' => array('href' => 'membership', 'title' => t('Membership'), '#site' => 'association'),
+        'donate' => array('href' => 'donate', 'title' => t('Donate'), '#site' => 'association'),
+        'faq' => array('href' => 'node/65', 'title' => t('FAQ'), '#site' => 'association'),
+        'contact' => array('href' => 'contact', 'title' => t('Contact'), '#site' => 'association'),
+      );
+      $nav_masthead_links = array(
+        'homepage'       => array('href' => 'home', 'title' => t('Association Homepage'), '#site' => 'association', '#active' => drupalorg_crosssite_menu_path('association', '^(home|)/?$')),
+      );
+      break;
+
+    default:
+      $home_link = '';
+      $vars['drupalorg_logo_link'] = l('Drupal', drupalorg_crosssite_path('', 'main'), array('attributes' => array('title' => 'Drupal')));
+      $nav_header_links = array(
+        'getting-started' => array('href' => 'start',           'title' => t('Get Started'),         '#site' => 'main', 'attributes' => array('title' => t('Getting Started with Drupal'))),
+        'forum'           => array('href' => 'community',       'title' => t('Community & Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community and Support'))),
+        'handbooks'       => array('href' => 'documentation',   'title' => t('Documentation'),       '#site' => 'main', 'attributes' => array('title' => t('Drupal Documentation'))),
+        'project'         => array('href' => 'download',        'title' => t('Download & Extend'),   '#site' => 'main', 'attributes' => array('title' => t('Download and Extend Drupal'))),
+        'marketplace'     => array('href' => 'drupal-services', 'title' => t('Marketplace'),         '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
+        'about'           => array('href' => 'about',           'title' => t('About'),               '#site' => 'main', 'attributes' => array('title' => t('About Drupal'))),
+      );
+      $nav_masthead_links = array(
+        'homepage'       => array('href' => 'home', 'title' => t('Drupal Homepage'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$')),
+        'dashboard'      => array('href' => 'user/' . $master_uid . '/dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)')),
+      );
+  }
+  // Make all external links right. Theme as links, and avoid class="links".
+  $vars['nav_header'] = $home_link . theme('links', drupalorg_crosssite_menu_absolute_links($nav_header_links), array());
 
   // == Build the footer navigation
 
@@ -126,10 +149,6 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   // == Nav masthead links
 
   $master_uid = drupalorg_crossite_bakery_master_uid();
-  $nav_masthead_links = array(
-    'homepage'       => array('href' => 'home', 'title' => t('Drupal Homepage'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$')),
-    'dashboard'      => array('href' => 'user/' . $master_uid . '/dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)')),
-  );
   $userinfo = '';
   if ($user->uid == 0) {
     unset($nav_masthead_links['dashboard']);
@@ -139,17 +158,15 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     // Add user page link and logout link.
     $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user', array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) .' '. l(t('Logout'), 'logout');
     if (variable_get('drupalorg_crosssite_redesign', FALSE)) {
-      $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'http://' . $sites['main'] . '/user', array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) .' '. l(t('Logout'), 'logout');
+      $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), drupalorg_crosssite_path('user', 'main'), array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) .' '. l(t('Logout'), 'logout');
     }
     if (user_access('access administration pages')) {
       $userinfo .= ' ' . l(t('Admin'), 'admin');
     }
     $userinfo .= '</div>';
   }
-  // Make all external links right.
-  $nav_masthead_links = drupalorg_crosssite_menu_absolute_links($nav_masthead_links);
-  // Theme as links, and avoid class="links" on it.
-  $vars['nav_masthead'] = theme('links', $nav_masthead_links, array()) . $userinfo;
+  // Make all external links right. Theme as links, and avoid class="links".
+  $vars['nav_masthead'] = theme('links', drupalorg_crosssite_menu_absolute_links($nav_masthead_links), array()) . $userinfo;
 
   // Put in a body class for CSS hooking and a variable for theme dependence
   // if we are on the main site's home page. Many things should be different
@@ -158,6 +175,8 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   if ($vars['is_drupalorg_front']) {
     $vars['body_classes'] .= ' drupalorg-front';
   }
+
+  $vars['body_classes'] .= ' drupalorg-site-' . variable_get('drupalorg_site', 'main');
 }
 
 /**
@@ -242,7 +261,6 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'community' => 'Community &amp; Support',
     'dashboard' => check_plain($user->name),
     'localize' => 'Localize',
-    'association' => 'Drupal Association',
     'drupalorg' => 'Drupal.org',
     'marketplace' => 'Marketplace',
     'security' => 'Security advisories',
@@ -283,19 +301,6 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'members'       => array('href' => 'profile', 'title' => t('Member Directory'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^profile(/|$)'), '#title_match' => 'q'),
         'forum'         => array('href' => 'forum', 'title' => t('Forum'), '#site' => 'main', '#active' => drupalorg_crosssite_in_breadcrumb('main', 'forum', $vars), '#title_match' => 'q'),
         'groups'  => array('href' => 'groups', 'title' => t('Groups & Meetups'), '#site' => 'groups'),
-      );
-      break;
-
-    case 'association':
-      $nav_content_links = array(
-        'home'       => array('href' => '<front>', 'title' => t('Association Home'), '#site' => 'association'),
-        'news'      => array('href' => 'news', 'title' => t('News'), '#site' => 'association', '#active' => drupalorg_crosssite_menu_term('association', array(263))),
-        'about'      => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association', '#active' => drupalorg_crosssite_child_of('association', 'about') && !(drupalorg_crosssite_child_of('association', 'about/faq') || drupalorg_crosssite_child_of('association', 'about/staff'))),
-        'donate'     => array('href' => 'donate', 'title' => t('Donate'), '#site' => 'association'),
-        'membership' => array('href' => 'membership', 'title' => t('Memberships'), '#site' => 'association', '#active' => drupalorg_crosssite_menu_path('association', '^membership/benefits$')),
-        'faq'        => array('href' => 'node/65', 'title' => t('FAQ'), '#site' => 'association'),
-        'staff'      => array('href' => 'node/61', 'title' => t('Staff'), '#site' => 'association'),
-        'contact'    => array('href' => 'contact', 'title' => t('Contact'), '#site' => 'association'),
       );
       break;
 
@@ -547,29 +552,22 @@ function drupalorg_crosssite_menu_path($site_key, $path_regex = '') {
  *   List of links array as expected by theme('links') with #site and
  *   #active keys for the individual links to specify which site to point
  *   the link to and whether the item is active.
- *
- *    - For possible #site values, @see drupalorg_crosssite_menu_sites().
- *    - #active can be built with @see drupalorg_crosssite_menu_path(),
- *      @see drupalorg_crosssite_menu_site() and
- *      @see drupalorg_crosssite_menu_type() (as well as possibly
- *      @see user_access() and friends, if you made sure the link will be
- *      local, so you can do local access checks against it).
+ *    - For possible #site values, see drupalorg_crosssite_menu_sites().
+ *    - #active can be built with see drupalorg_crosssite_menu_path(), see
+ *      drupalorg_crosssite_menu_site() and see drupalorg_crosssite_menu_type()
+ *      (as well as possibly see user_access() and friends, if you made sure
+ *      the link will be local, so you can do local access checks against it).
  *
  * @return
  *   The modified link array.
  */
 function drupalorg_crosssite_menu_absolute_links($links) {
-  static $sites = NULL;
-  if (!isset($sites)) {
-    $sites = drupalorg_crosssite_menu_sites();
-  }
-
   $activated_links = array();
   foreach ($links as $key => $link) {
     // If we are not on the given site, convert the link to an absolute link
     // to the given site.
     if (isset($link['#site']) && !drupalorg_crosssite_menu_site($link['#site'])) {
-      $link['href'] = 'http://'. $sites[$link['#site']] .'/'. ($link['href'] == '<front>' ? '' : $link['href']);
+      $link['href'] = drupalorg_crosssite_path($link['href'], $link['#site']);
     }
     // Otherwise, it might be an active link still, so add on the active class,
     // if we know #active was defined TRUE.
@@ -581,6 +579,32 @@ function drupalorg_crosssite_menu_absolute_links($links) {
     $activated_links[$key] = $link;
   }
   return $activated_links;
+}
+
+/**
+ * Make sure outside paths are absolute.
+ *
+ * @param $path
+ *   A path like 'node/34'.
+ * @param $site
+ *   Which site to link to; for possible values, see
+ *   drupalorg_crosssite_menu_sites().
+ *
+ * @return
+ *   The modified link array.
+ */
+function drupalorg_crosssite_path($path, $site) {
+  static $sites = NULL;
+  if (!isset($sites)) {
+    $sites = drupalorg_crosssite_menu_sites();
+  }
+
+  if (drupalorg_crosssite_menu_site($site)) {
+    return $path;
+  }
+  else {
+    return 'http://' . $sites[$site] . '/' . ($path === '<front>' ? '' : $path);
+  }
 }
 
 /**
@@ -788,18 +812,38 @@ function drupalorg_crosssite_form_search_theme_form_alter(&$form, $form_state) {
       $form['search_theme_form']['#default_value'] = $query->get_keys();
     }
 
-    $form['search_theme_form']['#title'] = t('Search Drupal.org');
-    $form['advanced'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Refine your search'),
-      '#collapsible' => !(drupal_is_front_page() && drupalorg_crosssite_menu_site('main')),
-      '#collapsed' => !(drupal_is_front_page() && drupalorg_crosssite_menu_site('main')),
-    );
-    $form['advanced']['meta_type'] = array(
-      '#type' => 'radios',
-      '#options' => array_merge(array('' => t('All')), drupalorg_crosssite_meta_types()),
-      '#default_value' => $meta_type,
-    );
+    // Figure out how search will act.
+    if (variable_get('drupalorg_site', 'main') === 'association') {
+      // Association has a site-specific header, so it gets a site-specific search.
+      $form['#drupalorg_search_site'] = 'association';
+      $form['search_theme_form']['#title'] = t('Search Drupal Association');
+    }
+    elseif (module_exists('apachesolr_multisitesearch')) {
+      // Use search on the main site if we can.
+      $form['#drupalorg_search_site'] = 'main';
+      $form['search_theme_form']['#title'] = t('Search Drupal.org');
+    }
+    else {
+      // Otherwise, search locally.
+      $form['#drupalorg_search_site'] = variable_get('drupalorg_site', 'main');
+      $form['search_theme_form']['#title'] = t('Search');
+    }
+
+    // Only show meta-types if searching on the main site.
+    if ($form['#drupalorg_search_site'] === 'main') {
+      $form['advanced'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Refine your search'),
+        '#collapsible' => !(drupal_is_front_page() && drupalorg_crosssite_menu_site('main')),
+        '#collapsed' => !(drupal_is_front_page() && drupalorg_crosssite_menu_site('main')),
+      );
+      $form['advanced']['meta_type'] = array(
+        '#type' => 'radios',
+        '#options' => array_merge(array('' => t('All')), drupalorg_crosssite_meta_types()),
+        '#default_value' => $meta_type,
+      );
+    }
+
     $form['#submit'][] = 'drupalorg_crosssite_search_theme_form_submit';
   }
 }
@@ -819,7 +863,7 @@ function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
   // Drupal core search.
   // TODO: Determine if @see search_get_implementing_modules() could supplant
   // this functionality. At present, it's only on d.o, therefore it can't be
-  // counted on to exist.Rather than duplicating the function, I've opted for
+  // counted on to exist. Rather than duplicating the function, I've opted for
   // simple logic at present, but this can be changed.
   if (module_exists('apachesolr_multisitesearch')) {
     $path = 'apachesolr_multisitesearch';
@@ -831,29 +875,9 @@ function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
     $path = 'node';
   }
 
-  // We override the entire search path if we are pushing to another site,
-  // we end up exactly where we want.
-  $form_id = $form['form_id']['#value'];
-  $path = 'search/' . $path . '/' . trim($form_state['values'][$form_id]);
-
-  // We want links to redirect to the appropriate site: initially this will
-  // be the main site for all searches, but may expand over time as new meta-
-  // types are defined.
-  $links = array();
-
-  // Create a link array out of our current redirect url. By default, links to
-  // the 'main' site, but can be overridden via the $conf array if needed.
-  $links[] = array('href' => $path, '#site' => variable_get('drupalorg_search_site', 'main'));
-
-  // We only push back to the main site in the scenario where multisitesearch
-  // is turned on. If it's not turned on, we assume this simply runs a single-
-  // site implementation of search.
-  if (module_exists('apachesolr_multisitesearch')) {
-    // Make it an absolute link so that searches return to the appropriate site.
-    $links = drupalorg_crosssite_menu_absolute_links($links);
-  }
-  // Take our newly created link and make it our redirect path.
-  $form_state['redirect'][0] = $links[0]['href'];
+  // We override the entire search path if we are pushing to another site, we
+  // end up exactly where we want.
+  $form_state['redirect'][0] = drupalorg_crosssite_path('search/' . $path . '/' . trim($form_state['values'][$form['form_id']['#value']]), $form['#drupalorg_search_site']);
 
   if (!empty($form_state['values']['meta_type'])) {
     $form_state['redirect'][1]['filters'] = 'ss_meta_type:'. $form_state['values']['meta_type'];
