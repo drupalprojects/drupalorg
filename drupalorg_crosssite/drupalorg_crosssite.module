@@ -71,7 +71,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       );
       $nav_masthead_links = array(
         'homepage'       => array('href' => 'home', 'title' => t('Drupal Homepage'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$')),
-        'dashboard'      => array('href' => 'user/' . $master_uid . '/dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)')),
+        'dashboard'      => array('href' => 'user/' . drupalorg_crossite_bakery_master_uid() . '/dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)')),
       );
   }
   // Make all external links right. Theme as links, and avoid class="links".
@@ -147,8 +147,6 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   }
 
   // == Nav masthead links
-
-  $master_uid = drupalorg_crossite_bakery_master_uid();
   $userinfo = '';
   if ($user->uid == 0) {
     unset($nav_masthead_links['dashboard']);
