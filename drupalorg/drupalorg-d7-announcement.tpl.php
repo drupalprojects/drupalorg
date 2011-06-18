@@ -67,9 +67,7 @@
       <li class="last"><?php print t('<a href="@api-url">API Documentation</a>', array('@api-url' => url('http://api.drupal.org/api/drupal/7')), $language); ?></li>
     </ul>
 
-    <p><?php print t('Attend <a href="@drupalcon-url">DrupalCon Chicago</a> to learn more about Drupal 7.', array('@drupalcon-url' => url('http://chicago2011.drupal.org/')), $language); ?></p>
     <p><?php print t('More topics in the <a href="@documentation-url">online documentation</a>.', array('@documentation-url' => url('documentation')), $language); ?></p>
-
   </div>
 </div><!-- /#video -->
 
