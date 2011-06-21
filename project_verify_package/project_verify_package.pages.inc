@@ -325,9 +325,9 @@ function _project_verify_package_verify_release_node($form, &$form_state) {
       list($result, $data) = project_verify_package_get_remote_file($url);
       if ($result == 'success') {
         $makefile = $data;
-        // Run the 'verify makefile' drush command. We only diplay a message
+        // Run the 'verify-makefile' drush command. We only diplay a message
         // for errors.
-        list ($output, $errors, $return) = project_verify_package_run_drush_via_pipe('verify makefile', $makefile);
+        list ($output, $errors, $return) = project_verify_package_run_drush_via_pipe('verify-makefile', $makefile);
         if (!($return === 0)) {
           // Reformat the output.
           list($raw_output, $escaped_output) = project_verify_package_clean_output($output);
