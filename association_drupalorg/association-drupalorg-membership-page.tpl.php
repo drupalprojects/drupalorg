@@ -8,8 +8,8 @@
   <h3>Benefits:</h3>
   <ul>
     <li><a href="/civicrm/profile?reset=1&force=1&gid=8&search=0&crmRowCount=10000">Directory of Individual Members</a> - Members are listed in our public directory of Individual Members</li>
-    <li><a href="http://association.drupal.org/membership/benefits">Discounts</a> - Members receive discounts from Drupal Association partners like Zend, Varnish Software, ActiveState and Acquia.</li>
-    <li>Promote - Members are listed in the <a href="http://association.drupal.org/system/files/Annual%20Report%202011%20-%20web%20short%20compressed.pdf">Drupal Association Annual Report</a>, given out at major Drupal events and online</li>
+    <li><a href="https://association.drupal.org/membership/benefits">Discounts</a> - Members receive discounts from Drupal Association partners like Zend, Varnish Software, ActiveState and Acquia.</li>
+    <li>Promote - Members are listed in the <a href="https://association.drupal.org/system/files/Annual%20Report%202011%20-%20web%20short%20compressed.pdf">Drupal Association Annual Report</a>, given out at major Drupal events and online</li>
     <li><a href="http://drupal.org/image/tid/112">Membership Badge</a> - Let the world know you’re a part of the Drupal community on your Drupal.org profile and beyond</li>
     <li>First Alert - Early notice of upcoming promotional programs and Association initiatives</li>
   </ul>
@@ -25,9 +25,9 @@
     <li><a href="http://drupal.org/marketplace-preview">Drupal Marketplace</a> - Organization Members who have contributed to Drupal can be listed in the Drupal Marketplace, which receives 23,000 monthly visitors</li>
     <li>Advertising - Communicate contextual, relevant and value-add messaging tothe developer community with web banners on fixed, well approved areas
     <li>Get Connected - Grow your business partnerships. We’ll make introductions at business networking events, so you can accelerate your business</li>
-    <li><a href="http://association.drupal.org/membership/benefits">Discounts</a> - Members receive discounts from Drupal Association partners like Zend, Varnish Software, ActiveState and Acquia.</li>
+    <li><a href="https://association.drupal.org/membership/benefits">Discounts</a> - Members receive discounts from Drupal Association partners like Zend, Varnish Software, ActiveState and Acquia.</li>
     <li><a href="/civicrm/profile?reset=1&force=1&gid=4&search=0&crmRowCount=10000">Organization Directory Listing</a> - Members are listed in our public directory of Organization Members</li>
-    <li>Promote - Members are listed in the <a href="http://association.drupal.org/system/files/Annual%20Report%202011%20-%20web%20short%20compressed.pdf">Drupal Association Annual Report</a>, given out at major Drupal events and online</li>
+    <li>Promote - Members are listed in the <a href="https://association.drupal.org/system/files/Annual%20Report%202011%20-%20web%20short%20compressed.pdf">Drupal Association Annual Report</a>, given out at major Drupal events and online</li>
     <li>Business-focused Newsletter - Provides updates on new promotional opportunities, Drupal Association news, and more!</li>
     <li>First Alert - Early notice of upcoming promotional programs and Association initiatives</li>
     <li><a href="http://drupal.org/image/tid/113">Membership Badge</a> - Let the world know you’re a part of the Drupal community on your Drupal.org profile and beyond</li>
@@ -56,7 +56,7 @@
   <?php } ?>
 
   <h3>Current membership discounts</h3>
-  <p>The Drupal Association has partnered with companies like Zend, Varnish, ActiveState and Acquia to secure discounts at their stores. <a href="http://association.drupal.org/membership/benefits">See our partner discounts</a>.</p>
+  <p>The Drupal Association has partnered with companies like Zend, Varnish, ActiveState and Acquia to secure discounts at their stores. <a href="https://association.drupal.org/membership/benefits">See our partner discounts</a>.</p>
 
   <h3>Association support in numbers</h3>
   <?php /* todo: Automate */ ?>

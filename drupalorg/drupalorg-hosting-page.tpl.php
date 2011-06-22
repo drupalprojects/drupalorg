@@ -1,4 +1,4 @@
-<h2>Drupal hosts that support the <a href="http://association.drupal.org/">Drupal Association</a></h2>
+<h2>Drupal hosts that support the <a href="https://association.drupal.org/">Drupal Association</a></h2>
 
 <div class="clear-block">
   <div class="grid-4 alpha">

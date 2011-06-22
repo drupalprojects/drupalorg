@@ -601,6 +601,9 @@ function drupalorg_crosssite_path($path, $site) {
     return $path;
   }
   else {
+    if ($site === 'associated') {
+      return 'https://' . $sites[$site] . '/' . ($path === '<front>' ? '' : $path);
+    }
     return 'http://' . $sites[$site] . '/' . ($path === '<front>' ? '' : $path);
   }
 }

@@ -75,7 +75,7 @@ function association_membership_benefits_views_default_views() {
     'type' => 'none',
   ));
   $handler->override_option('title', 'Membership benefits');
-  $handler->override_option('header', 'We’ve become partners with the well-known and reliable companies below to bring our members discounts in their services. We’ve leveraged the size and buying power of our members to get these great offers from these reliable organizations. The Drupal Association has not and will not sell our membership database or access to our membership database. If you have any questions or concerns, please <a href="http://association.drupal.org/contact">contact us</a>.');
+  $handler->override_option('header', 'We’ve become partners with the well-known and reliable companies below to bring our members discounts in their services. We’ve leveraged the size and buying power of our members to get these great offers from these reliable organizations. The Drupal Association has not and will not sell our membership database or access to our membership database. If you have any questions or concerns, please <a href="https://association.drupal.org/contact">contact us</a>.');
   $handler->override_option('header_format', '1');
   $handler->override_option('header_empty', 1);
   $handler->override_option('items_per_page', 0);

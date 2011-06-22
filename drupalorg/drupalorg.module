@@ -225,7 +225,7 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
 <p><a href="/theme-guide">Themes</a> – Feeling creative? Design a theme for other people to customize their site with.</p>
 <p><a href="http://localize.drupal.org">Translations</a> – Fluent in French or a speaker of Spanish? Translate Drupal for other users around the world.</p>
 <p><a href="http://groups.drupal.org/event">Events</a> – Come to a Drupal event and have fun with the community.</p>
-<p><a href="http://association.drupal.org/civicrm/contribute/transact">Donate</a> – Whether you want to say thanks or ensure there is a secure future for Drupal, every little bit helps and is gratefully received.</p>
+<p><a href="https://association.drupal.org/donate">Donate</a> – Whether you want to say thanks or ensure there is a secure future for Drupal, every little bit helps and is gratefully received.</p>
 <p><a href="/contribute/documentation">Documentation</a> – Join the Drupal Documentation Team, and build your skills while improving Drupal\'s documentation.</p>
 <p><a href="/community-initiatives">Projects</a> – Get involved with an active longer-term project, such as improving <a href="/community-initiatives/drupal-core">Drupal core</a> or <a href="/community-initiatives/documentation">documentation processes and infrastructure</a>.</p>'),
           );
@@ -1306,7 +1306,7 @@ function drupalorg_ad_settings_form() {
  */
 function drupalorg_preprocess_block(&$variables) {
   if ($variables['block']->module === 'google_admanager') {
-    $variables['block']->content .= '<div class="gam-suffix"><a href="http://association.drupal.org/advertising">Advertising</a> helps build a successful ecosystem around Drupal.</div>';
+    $variables['block']->content .= '<div class="gam-suffix"><a href="https://association.drupal.org/advertising">Advertising</a> helps build a successful ecosystem around Drupal.</div>';
 
     if ($variables['block']->delta === md5('Redesign_books')) {
       $variables['block']->content = '<div class="gam-prefix"><h3><a href="/books">Drupal Books</a></h3>
@@ -1425,7 +1425,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
         // Association membership
         if (drupalorg_has_civimembership($node, 'Organization')) {
-          $content['column_1']['association_membership'] = array('#value' => l('<img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-organization-2.png" />', 'http://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association organization member')))));
+          $content['column_1']['association_membership'] = array('#value' => l('<img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-organization-2.png" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association organization member')))));
         }
 
         $content['column_2']['body'] = $node->content['body'];
@@ -1514,7 +1514,7 @@ function drupalorg_form_organization_node_form_alter(&$form, $form_state) {
 
   if ($form['#node']->uid === $user->uid) {
     if (!drupalorg_has_civimembership($node, 'Organization', TRUE)) {
-      drupal_set_message(t('Please <a href="!url">become a Drupal Association organization member</a>. Your listing <em>may not be public</em> without it.', array('!url' => 'http://association.drupal.org/membership')), 'warning');
+      drupal_set_message(t('Please <a href="!url">become a Drupal Association organization member</a>. Your listing <em>may not be public</em> without it.', array('!url' => 'https://association.drupal.org/membership')), 'warning');
     }
   }
 }
@@ -1689,8 +1689,8 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
 
         if (drupalorg_has_civimembership($organization, 'Organization')) {
           $content['column_2']['membership'][] = array(
-            '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="http://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
-            '#value' => t('My organization is a member of the <a href="http://association.drupal.org/">Drupal Association</a>. We’re supporting the Drupal.org infrastructure and other large community initiatives. <a href="http://association.drupal.org/membership">Join us</a>.'),
+            '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
+            '#value' => t('My organization is a member of the <a href="https://association.drupal.org/">Drupal Association</a>. We’re supporting the Drupal.org infrastructure and other large community initiatives. <a href="https://association.drupal.org/membership">Join us</a>.'),
             '#suffix' => '</p></div></div>',
           );
         }
@@ -1699,21 +1699,21 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
 
     // Get the membership display content
     if ($account->uid === $user->uid) {
-      $membership_personal = t('<a href="http://association.drupal.org/">Drupal Association</a> memberships pay for improvements to Drupal.org. Please consider purchasing a <a href="http://association.drupal.org/membership">membership</a>.');
+      $membership_personal = t('<a href="https://association.drupal.org/">Drupal Association</a> memberships pay for improvements to Drupal.org. Please consider purchasing a <a href="https://association.drupal.org/membership">membership</a>.');
     }
     foreach (drupalorg_civimembership_load($account) as $membership) {
       $placeholders = array(
         '@username' => $account->name,
         '@membership_type' => drupal_strtolower($membership->membership_type),
-        '!link' => check_url('http://association.drupal.org/civicrm/contribute/transact?reset=1&id=' . $membership->entity_id),
+        '!link' => check_url('https://association.drupal.org/civicrm/contribute/transact?reset=1&id=' . $membership->entity_id),
         '@expires' => format_date(strtotime($membership->end_date), 'custom', 'M jS, Y'),
       );
 
       // If membership is new or current, and not the organization owner's.
       if (($membership->status === 'New' || $membership->status === 'Current') && (!isset($organization) || $organization->uid !== $account->uid || $membership->membership_type !== 'Organization')) {
         $content['column_2']['membership'][] = array(
-          '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="http://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
-          '#value' => t('@username is an <a href="http://association.drupal.org/membership">@membership_type member</a> of the <a href="http://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
+          '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
+          '#value' => t('@username is an <a href="https://association.drupal.org/membership">@membership_type member</a> of the <a href="https://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
           '#suffix' => '</p></div></div>',
         );
       }
@@ -1722,7 +1722,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
         switch ($membership->status) {
           case 'New':
           case 'Current':
-            $membership_personal = t('Thank you for being a <a href="http://association.drupal.org/">Drupal Association</a> member. Your support helps to fund improvements to Drupal.org. Your <a href="!link">membership</a> expires on @expires.', $placeholders);
+            $membership_personal = t('Thank you for being a <a href="https://association.drupal.org/">Drupal Association</a> member. Your support helps to fund improvements to Drupal.org. Your <a href="!link">membership</a> expires on @expires.', $placeholders);
             break;
 
           case 'Grace':
