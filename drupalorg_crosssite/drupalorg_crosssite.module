@@ -458,8 +458,8 @@ function drupalorg_crosssite_menu_sites() {
     'association' => 'association.' . $base_domain,
     'groups'      => 'groups.' . $base_domain,
     'localize'    => 'localize.' . $base_domain,
-    'chicago2011' => 'chicago2011.drupal.org',
-    'london2011'  => 'london2011.drupal.org',
+    'chicago2011' => 'chicago2011' . $base_domain,
+    'london2011'  => 'london2011' . $base_domain,
   );
 }
 
