@@ -73,7 +73,7 @@ function _lists_get_lists() {
     ),
     'development'   => array(
       'name'        => 'Development',
-      'description' => 'A list for Drupal developers.',
+      'description' => 'A list for Drupal core developers.',
       'mailto'      => 'development-request@drupal.org',
     ),
     'themes'        => array(
