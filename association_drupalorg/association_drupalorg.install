@@ -23,3 +23,17 @@ function association_drupalorg_update_6001() {
 
   return $return;
 }
+
+/**
+ * Rewrite association URLs to https://
+ */
+function association_drupalorg_update_6002() {
+  $return = array();
+
+  $result = db_query("SELECT nr.vid, nr.body FROM node_revisions nr INNER JOIN node n ON n.nid = nr.nid AND n.vid = nr.vid WHERE nr.body LIKE '%http://association.drupal.org%'");
+  while ($row = db_fetch_object($result)) {
+    db_query("UPDATE node_revisions SET body = '%s' WHERE vid = %d", preg_replace('%http://association.drupal.org%', 'https://association.drupal.org', $row->body), $row->vid);
+  }
+
+  return $return;
+}
