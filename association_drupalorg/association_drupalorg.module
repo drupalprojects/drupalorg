@@ -94,7 +94,7 @@ function association_drupalorg_get_memberships($account) {
   $contact_id = db_result(db_query("SELECT contact_id FROM {civicrm_uf_match} WHERE uf_id = %d", $account->uid));
 
   // If a matching contact is found in CiviCRM.
-  $membership = array();
+  $memberships = array();
   if ($contact_id) {
     $result = db_query("SELECT cm.id as membership_id, cm.membership_type_id, cmt.name as membership_type, cm.end_date, cms.name as status, cmb.entity_id FROM {civicrm_membership} cm LEFT JOIN {civicrm_membership_type} cmt ON cm.membership_type_id = cmt.id LEFT JOIN {civicrm_membership_status} cms ON cm.status_id = cms.id LEFT JOIN {civicrm_membership_block} cmb ON cm.membership_type_id = cmb.membership_types WHERE cm.contact_id = %d GROUP BY cm.contact_id, cm.id ORDER BY cm.end_date DESC", $contact_id);
     while ($membership = db_fetch_object($result)) {
