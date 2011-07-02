@@ -361,13 +361,13 @@ function drupalorg_crosssite_content_menu(&$vars) {
 
     case 'bizconnect':
       $nav_content_links = array(
-        'home' => array('title' => t('BizConnect Home'), 'href' => 'bizconnect'),
-        'getinvolved' => array('title' => t('Get Involved'), 'href' => 'bizconnect/getinvolved'),
-        'intheknow' => array('title' => t('In the Know'), 'href' => 'bizconnect/intheknow'),
-        'sponsorships' => array('title' => t('Sponsorships'), 'href' => 'bizconnect/sponsorships'),
-        'leads' => array('title' => t('Lead Generation'), 'href' => 'bizconnect/leads'),
-        'networking' => array('title' => t('Networking'), 'href' => 'bizconnect/networking'),
-        'tools' => array('title' => t('Sales Tools'), 'href' => 'bizconnect/tools'),
+        'home' => array('title' => t('BizConnect Home'), 'href' => 'bizconnect', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect$')),
+        'getinvolved' => array('title' => t('Get Involved'), 'href' => 'bizconnect/getinvolved', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/getinvolved$')),
+        'intheknow' => array('title' => t('In the Know'), 'href' => 'bizconnect/intheknow', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/intheknow$')),
+        'sponsorships' => array('title' => t('Sponsorships'), 'href' => 'bizconnect/sponsorships', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/sponsorships$')),
+        'leads' => array('title' => t('Lead Generation'), 'href' => 'bizconnect/leads', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/leads$')),
+        'networking' => array('title' => t('Networking'), 'href' => 'bizconnect/networking', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/networking$')),
+        'tools' => array('title' => t('Sales Tools'), 'href' => 'bizconnect/tools', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/tools$')),
       );
       break;
   }
