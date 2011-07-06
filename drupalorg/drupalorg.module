@@ -1764,7 +1764,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
       else {
         foreach (array(10000, 5000, 1000, 500, 100, 50, 10, 5) as $threshold) {
           if ($count > $threshold) {
-            $drupalorg_documentation = t('over @count', array('@count' => $count));
+            $drupalorg_documentation = t('over @count', array('@count' => $threshold));
             break;
           }
         }
