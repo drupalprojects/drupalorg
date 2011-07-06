@@ -118,6 +118,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       'advertise' => array('href' => 'advertising', 'title' => t('Advertise'), '#site' => 'association', 'attributes' => array('title' => t('How to advertise on Drupal.org'))),
       // query may be removed with #910442 and/or #1019300.
       'drupalorg' => array('href' => 'project/drupal.org projects', 'query' => array('filters' => 'bs_project_sandbox:[* TO *]'), 'title' => t('Drupal.org'), '#site' => 'main', 'attributes' => array('title' => t('About Drupal.org'))),
+      'accessibility' => array('href' => 'about/accessibility', 'title' => t('Web accessibility'), '#site' => 'main', array('title' => t('Drupal Accessibility Statement'))),
     ),
   );
 
