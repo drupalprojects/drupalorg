@@ -1751,6 +1751,31 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
       );
     }
 
+    // Documentation edits
+    $count = (int) db_result(db_query("SELECT count(*) FROM node n INNER JOIN node_revisions nr ON n.nid = nr.nid AND nr.uid = %d WHERE n.type = 'book' AND n.status = 1", $account->uid));
+    if ($count > 0) {
+      // This isn't a leaderboard.
+      if ($count === 1) {
+        $drupalorg_documentation = t('1 page');
+      }
+      elseif ($count <= 5) {
+        $drupalorg_documentation = t('at least 1');
+      }
+      else {
+        foreach (array(10000, 5000, 1000, 500, 100, 50, 10, 5) as $threshold) {
+          if ($count > $threshold) {
+            $drupalorg_documentation = t('over @count', array('@count' => $count));
+            break;
+          }
+        }
+      }
+      $account->content['summary']['drupalorg_documentation'] = array(
+        '#type' => 'user_profile_item',
+        '#title' => t('Documentation edits'),
+        '#value' => $drupalorg_documentation,
+      );
+    }
+
     $content['column_1'] = array_merge($content['column_1'], $account->content);
     $account->content = $content;
   }
