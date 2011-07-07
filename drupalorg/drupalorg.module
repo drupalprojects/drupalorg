@@ -1365,6 +1365,11 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
           // truncating trailing '/all'.
           $links[] = l($term->name, 'marketplace-preview/' . preg_replace('!(/all)*$!', '', implode('/', array_merge($default_args, array($vocabulary->name => str_replace(' ', '-', $term->name))))));
         }
+        if ($a3 && ($count = count($links)) > 3) { // Teaser
+          shuffle($links);
+          $links = array_slice($links, 0, 2);
+          $links[] = t('and @count more', array('@count' => $count - 2));
+        }
         $info[check_plain($vocabulary->name)] = implode(', ', $links);
       }
 
