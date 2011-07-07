@@ -1463,6 +1463,10 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
             '#suffix' => '</p>',
           );
 
+          if ($drupalorg_documentation = drupalorg_documentation_contributions($account)) {
+            $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . $drupalorg_documentation . t(' to documentation');
+          }
+
           $projects = array();
           // @see versioncontrol_project_user() for the following query.
           $result_projects = db_query("SELECT DISTINCT(vcp.nid), n.title, COUNT(o.vc_op_id) AS commits FROM {versioncontrol_operations} o INNER JOIN {versioncontrol_project_projects} vcp ON vcp.repo_id = o.repo_id INNER JOIN {node} n ON n.status = 1 AND n.nid = vcp.nid INNER JOIN {project_projects} pp ON n.nid = pp.nid WHERE o.author_uid = %d AND pp.sandbox = 0 GROUP BY vcp.nid, n.title ORDER BY commits DESC", $account->uid);
@@ -1752,26 +1756,10 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
     }
 
     // Documentation edits
-    $count = (int) db_result(db_query("SELECT count(*) FROM node n INNER JOIN node_revisions nr ON n.nid = nr.nid AND nr.uid = %d WHERE n.type = 'book' AND n.status = 1", $account->uid));
-    if ($count > 0) {
-      // This isn't a leaderboard.
-      if ($count === 1) {
-        $drupalorg_documentation = t('1 page');
-      }
-      elseif ($count <= 5) {
-        $drupalorg_documentation = t('at least 1');
-      }
-      else {
-        foreach (array(10000, 5000, 1000, 500, 100, 50, 10, 5) as $threshold) {
-          if ($count > $threshold) {
-            $drupalorg_documentation = t('over @count', array('@count' => $threshold));
-            break;
-          }
-        }
-      }
+    if ($drupalorg_documentation = drupalorg_documentation_contributions($account)) {
       $account->content['summary']['drupalorg_documentation'] = array(
         '#type' => 'user_profile_item',
-        '#title' => t('Documentation edits'),
+        '#title' => t('Documentation'),
         '#value' => $drupalorg_documentation,
       );
     }
@@ -1783,6 +1771,27 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
     // Refresh the Association membership cache.
     drupalorg_civimembership_load($account, TRUE);
   }
+}
+
+function drupalorg_documentation_contributions($account) {
+  $count = (int) db_result(db_query("SELECT count(*) FROM node n INNER JOIN node_revisions nr ON n.nid = nr.nid AND nr.uid = %d WHERE n.type = 'book' AND n.status = 1", $account->uid));
+  if ($count > 0) {
+    // This isn't a leaderboard.
+    if ($count === 1) {
+      return t('1 edit');
+    }
+    elseif ($count <= 5) {
+      return t('At least 1 edit');
+    }
+    else {
+      foreach (array(10000, 5000, 1000, 500, 100, 50, 10, 5) as $threshold) {
+        if ($count > $threshold) {
+          return t('Over @count edits', array('@count' => $threshold));
+        }
+      }
+    }
+  }
+  return FALSE;
 }
 
 /**
