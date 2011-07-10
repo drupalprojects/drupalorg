@@ -377,10 +377,10 @@ function drupalorg_crosssite_content_menu(&$vars) {
 
     case 'advertising':
       $nav_content_links = array(
-        'home' => array('title' => t('Advertising Home'), 'href' => 'advertising', '#active' => drupalorg_crosssite_menu_path('^advertising$')),
-        'web' => array('title' => t('Web Advertising'), 'href' => 'advertising/web', '#active' => drupalorg_crosssite_menu_path('^advertising/web$')),
-        'hosting' => array('title' => t('Hosting'), 'href' => 'advertising/hosting', '#active' => drupalorg_crosssite_menu_path('^advertising/hosting$')),
-        'sponsorships' => array('title' => t('Sponsorships'), 'href' => 'advertising/sponsorships', '#active' => drupalorg_crosssite_menu_path('^advertising/sponsorships$')),
+        'home' => array('title' => t('Advertising Home'), 'href' => 'advertising', '#active' => drupalorg_crosssite_menu_path('association', '^advertising$')),
+        'web' => array('title' => t('Web Advertising'), 'href' => 'advertising/web', '#active' => drupalorg_crosssite_menu_path('association', '^advertising/web$')),
+        'hosting' => array('title' => t('Hosting'), 'href' => 'advertising/hosting', '#active' => drupalorg_crosssite_menu_path('association', '^advertising/hosting$')),
+        'sponsorships' => array('title' => t('Sponsorships'), 'href' => 'advertising/sponsorships', '#active' => drupalorg_crosssite_menu_path('association', '^advertising/sponsorships$')),
       );
       break;
   }
