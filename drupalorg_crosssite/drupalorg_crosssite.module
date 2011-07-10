@@ -223,6 +223,9 @@ function drupalorg_crosssite_section() {
     elseif (drupalorg_crosssite_menu_path('association', '^bizconnect')) {
       $section = 'bizconnect';
     }
+    elseif (drupalorg_crosssite_menu_path('association', '^advertising')) {
+      $section = 'advertising';
+    }
     elseif (drupalorg_crosssite_menu_path('main', '^user(/|$)')) {
       $section = 'user';
     }
@@ -369,6 +372,15 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'leads' => array('title' => t('Lead Generation'), 'href' => 'bizconnect/leads', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/leads$')),
         'networking' => array('title' => t('Networking'), 'href' => 'bizconnect/networking', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/networking$')),
         'tools' => array('title' => t('Sales Tools'), 'href' => 'bizconnect/tools', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/tools$')),
+      );
+      break;
+
+    case 'advertising':
+      $nav_content_links = array(
+        'home' => array('title' => t('Advertising Home'), 'href' => 'advertising', '#active' => drupalorg_crosssite_menu_path('^advertising$')),
+        'web' => array('title' => t('Web Advertising'), 'href' => 'advertising/web', '#active' => drupalorg_crosssite_menu_path('^advertising/web$')),
+        'hosting' => array('title' => t('Hosting'), 'href' => 'advertising/hosting', '#active' => drupalorg_crosssite_menu_path('^advertising/hosting$')),
+        'sponsorships' => array('title' => t('Sponsorships'), 'href' => 'advertising/sponsorships', '#active' => drupalorg_crosssite_menu_path('^advertising/sponsorships$')),
       );
       break;
   }
