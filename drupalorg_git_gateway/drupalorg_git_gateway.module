@@ -81,6 +81,14 @@ function drupalorg_git_gateway_menu() {
     'type' => MENU_LOCAL_TASK,
   );
 
+  $items['user/%user/git-attribution'] = array(
+    'title' => 'git information for account',
+    'page callback' => 'drupalorg_git_gateway_user_git_json_output',
+    'page arguments' => array(1),
+    'access callback' => 'drupalorg_git_gateway_user_git_access',
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -152,8 +160,52 @@ function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
         ->execute();
     }
   }
+  elseif ($op == 'view') {
+    if (drupalorg_git_gateway_user_git_access()) {
+      $attribution = t('Use the following <code>git commit</code> command option to attribute authorship to this user:');
+      $attribution .= '<pre>';
+      $attribution .= '--author="' . drupalorg_git_gateway_user_git_format_author($account) . '"';
+      $attribution .= '</pre>';
+      $attribution .= t('Learn more about proper <a href="@attribution-url">Git attribution</a>.', array(
+        '@attribution-url' => url('node/1146430'),
+      ));
+      $account->content['git_information']['attribution'] = array(
+        '#type' => 'user_profile_item',
+        '#title' => t('Git attribution'),
+        '#value' => $attribution,
+      );
+    }
+  }
 }
 
+/**
+ * Returns whether currently logged in user is allowed to see git author attribution.
+ */
+function drupalorg_git_gateway_user_git_access() {
+  global $user;
+  return (user_is_logged_in() && !empty($user->git_vetted));
+}
+
+/**
+ * Formats a git commit --author parameter value for the passed user account.
+ */
+function drupalorg_git_gateway_user_git_format_author($account) {
+  $alias = !empty($account->git_username) ? $account->git_username : 'git';
+
+  return strtr('!name <!name@!uid.no-reply.drupal.org>', array(
+    '!name' => $alias,
+    '!uid' => $account->uid,
+  ));
+}
+
+/**
+ * Menu callback; Returns git information for $account as JSON.
+ */
+function drupalorg_git_gateway_user_git_json_output($account) {
+  $data = array('author' => drupalorg_git_gateway_user_git_format_author($account));
+  drupal_json($data);
+  // No return value, index.php renders no page but calls drupal_page_footer().
+}
 
 /**
  * Implements hook_form_alter().
