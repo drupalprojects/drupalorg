@@ -1720,7 +1720,6 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
       $placeholders = array(
         '@username' => $account->name,
         '@membership_type' => drupal_strtolower($membership->membership_type),
-        '!link' => check_url('https://association.drupal.org/civicrm/contribute/transact?reset=1&id=' . $membership->entity_id),
         '@expires' => format_date(strtotime($membership->end_date), 'custom', 'M jS, Y'),
       );
 
@@ -1737,12 +1736,12 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
         switch ($membership->status) {
           case 'New':
           case 'Current':
-            $membership_personal = t('Thank you for being a <a href="https://association.drupal.org/">Drupal Association</a> member. Your support helps to fund improvements to Drupal.org. Your <a href="!link">membership</a> expires on @expires.', $placeholders);
+            $membership_personal = t('Thank you for being a <a href="https://association.drupal.org/">Drupal Association</a> member. Your support helps to fund improvements to Drupal.org. Your <a href="https://association.drupal.org/membership">membership</a> expires on @expires.', $placeholders);
             break;
 
           case 'Grace':
           case 'Expired':
-            $membership_personal = t('Thank you for purchasing a membership. Your support has helped us to improve Drupal.org. Your ongoing support via a <a href="!link">membership</a> is appreciated.', $placeholders);
+            $membership_personal = t('Thank you for purchasing a membership. Your support has helped us to improve Drupal.org. Your ongoing support via a <a href="https://association.drupal.org/membership">membership</a> is appreciated.', $placeholders);
             break;
 
           case 'Deceased':
@@ -1813,6 +1812,7 @@ function drupalorg_documentation_contributions($account) {
  *
  * @todo do some sort of cross-site request to use
  *   association_drupalorg_get_memberships().
+ * @todo remove entity_id, it is broken and we don't use it.
  */
 function drupalorg_civimembership_load($account, $reset = FALSE) {
   static $member_cache;
