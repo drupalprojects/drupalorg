@@ -457,7 +457,10 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   $links['resources']['type'] = 'block';
 
   // Provide contextual links for sandboxes.
-  $project_tids = array_keys($node->taxonomy);
+  $project_tids = array();
+  if (!empty($node->taxonomy)) {
+    $project_tids = array_keys($node->taxonomy);
+  }
   $no_promote_tids = drupalorg_project_get_no_promote_project_tids();
   $forbidden_tids = array_intersect($no_promote_tids, $project_tids);
   if ($node->project['sandbox'] == 1 && empty($forbidden_tids) && $user->uid == $node->uid) {
