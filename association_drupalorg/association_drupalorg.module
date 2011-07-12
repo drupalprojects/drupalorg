@@ -139,7 +139,7 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
     elseif ($node->nid == 1104) {
       // Add example ads for https://association.drupal.org/advertising/web.
       $node->content['exmaple_ads'] = array(
-        '#prefix' => '<h2>' . t('Examples') . '</h2>',
+        '#prefix' => '<h2 id="examples">' . t('Examples') . '</h2>',
         '#weight' => 1,
         '#sorted' => TRUE,
       );
