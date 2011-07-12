@@ -69,7 +69,7 @@ function drupalorg_init() {
 
     // Ads
     if (!empty($forum_ads[$forum_id])) {
-      drupal_set_content($block->region, drupalorg_crosssite_ad_block($forum_ads[$forum_id], FALSE));
+      drupal_set_content('right', drupalorg_crosssite_ad_block($forum_ads[$forum_id], FALSE));
     }
   }
 
