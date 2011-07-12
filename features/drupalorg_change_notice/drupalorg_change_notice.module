@@ -1,0 +1,3 @@
+<?php
+
+include_once('drupalorg_change_notice.features.inc');

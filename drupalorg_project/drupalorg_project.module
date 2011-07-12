@@ -473,6 +473,11 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   // Link to security handbook page.
   $links['development']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
 
+  // Link to change records page.
+  if (!empty($node->project['uri'])) {
+    $links['development']['links']['change_records'] = l(t('View change records'), 'list-changes/' . $node->project['uri']);
+  }
+
   // Link to translation downloads.
   $translation_download = '';
   if (is_array($node->taxonomy) && isset($node->taxonomy[DRUPALORG_TRANSLATION_TID])) {
@@ -592,6 +597,19 @@ function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page 
         $node->content['project_info']['#value'] = drupalorg_project_meta_data($node);
         $node->content['project_info']['#weight'] = 1;
       }
+    }
+  }
+
+  // Add a breadcrumb to API Change nodes.
+  if ($op == 'alter' && !$teaser && $page && $node->type == 'changenotice') {
+    if (isset($node->field_project[0]['nid'])) {
+      $proj_nid = $node->field_project[0]['nid'];
+      $proj_node = node_load($proj_nid);
+      $proj_shortcode = $proj_node->project['uri'];
+      $extra = array();
+      $extra[] = l($node->field_project[0]['safe']['title'], 'node/' . $proj_nid);
+      $extra[] = l(t('Change records'), 'list-changes/' . $proj_shortcode);
+      project_project_set_breadcrumb($proj_node, $extra);
     }
   }
 }
@@ -1021,5 +1039,25 @@ function drupalorg_project_get_project_types($singular = FALSE) {
 function drupalorg_project_ctools_plugin_directory($module, $plugin) {
   if ($module == 'project_release' && $plugin == 'release_packager') {
     return "plugins/$plugin";
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * Sets the breadcrumb up for project navigation for the change records views.
+ */
+function drupalorg_project_views_pre_render(&$view) {
+  switch ($view->name) {
+    case 'change_records':
+      if (count($view->args) > 0) {
+        // Note: this returns FALSE if it isn't a project node.
+        $proj_node = project_node_load($view->args[0]);
+        if ($proj_node) {
+          $extra[] = l($proj_node->title, 'node/' . $proj_node->nid);
+          project_project_set_breadcrumb($proj_node, $extra);
+        }
+      }
+      break;
   }
 }
