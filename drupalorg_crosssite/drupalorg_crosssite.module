@@ -50,8 +50,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
         'about' => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association'),
         'membership' => array('href' => 'membership', 'title' => t('Membership'), '#site' => 'association'),
         'donate' => array('href' => 'donate', 'title' => t('Donate'), '#site' => 'association'),
-        // Not launched yet.
-        //'bizconnect' => array('href' => 'bizconnect', 'title' => t('BizConnect'), '#site' => 'association'),
+        'bizconnect' => array('href' => 'bizconnect', 'title' => t('BizConnect'), '#site' => 'association'),
         'faq' => array('href' => 'node/65', 'title' => t('FAQ'), '#site' => 'association'),
         'contact' => array('href' => 'contact', 'title' => t('Contact'), '#site' => 'association'),
       );
