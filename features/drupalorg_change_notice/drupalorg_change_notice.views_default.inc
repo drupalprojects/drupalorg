@@ -905,6 +905,7 @@ function drupalorg_change_notice_views_default_views() {
     ),
   ));
   $handler->override_option('title', 'Change records for this issue');
+  $handler->override_option('empty', '');
   $handler->override_option('items_per_page', 0);
   $handler->override_option('use_pager', FALSE);
   $handler->override_option('style_plugin', 'list');
