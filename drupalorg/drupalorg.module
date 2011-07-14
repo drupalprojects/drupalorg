@@ -34,10 +34,6 @@ define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 103);  // 7.x
 
 // == Core hooks ===============================================================
 
-function drupalorg_perm() {
-  return array('manage drupalorg ads');
-}
-
 function drupalorg_init() {
   global $user, $conf;
 
@@ -185,7 +181,7 @@ function drupalorg_menu() {
   );
   $items['admin/settings/drupalorg-ads'] = array(
     'title' => 'Drupal.org ad settings',
-    'access arguments' => array('manage drupalorg ads'),
+    'access arguments' => array('administer site configuration'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('drupalorg_ad_settings_form'),
   );
