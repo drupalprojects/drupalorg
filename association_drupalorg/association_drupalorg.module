@@ -145,10 +145,10 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       );
       $node->content['exmaple_ads']['row_1'] = drupalorg_crosssite_grid_elements(array(4, 4));
       $node->content['exmaple_ads']['row_2'] = drupalorg_crosssite_grid_elements(array(4, 4));
-      $node->content['exmaple_ads']['row_1']['column_1']['#value'] = '<h3>' . t('300x250 image') . '</h3>' . drupalorg_crosssite_ad_block('association-example-image-300x250');
-      $node->content['exmaple_ads']['row_1']['column_2']['#value'] = '<h3>' . t('300x250 image + text') . '</h3>' . drupalorg_crosssite_ad_block('association-example-imagetext-300x250');
-      $node->content['exmaple_ads']['row_2']['column_1']['#value'] = '<h3>' . t('300x100 image') . '</h3>' . drupalorg_crosssite_ad_block('association-example-image-300x100');
-      $node->content['exmaple_ads']['row_2']['column_2']['#value'] = '<h3>' . t('300x100 image + text') . '</h3>' . drupalorg_crosssite_ad_block('association-example-imagetext-300x100');
+      $node->content['exmaple_ads']['row_1']['column_1']['#value'] = '<h3>' . t('300 x 250 Image') . '</h3>' . drupalorg_crosssite_ad_block('association-example-image-300x250');
+      $node->content['exmaple_ads']['row_1']['column_2']['#value'] = '<h3>' . t('300 x 250 Image + Text') . '</h3>' . drupalorg_crosssite_ad_block('association-example-imagetext-300x250');
+      $node->content['exmaple_ads']['row_2']['column_1']['#value'] = '<h3>' . t('300 x 100 Image') . '</h3>' . drupalorg_crosssite_ad_block('association-example-image-300x100');
+      $node->content['exmaple_ads']['row_2']['column_2']['#value'] = '<h3>' . t('300 x 100 Image + Text') . '</h3>' . drupalorg_crosssite_ad_block('association-example-imagetext-300x100');
     }
   }
 }
