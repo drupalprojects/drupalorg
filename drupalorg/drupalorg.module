@@ -189,6 +189,21 @@ function drupalorg_menu() {
   return $items;
 }
 
+function drupalorg_field_access($op, $field, $account, $node = NULL) {
+  if ($op === 'edit') {
+    switch ($field['field_name']) {
+      // Only allow admins to change an organization's visibility.
+      case 'field_organization_list_rule':
+        return user_access('administer nodes');
+
+        // drupalorg_nodeapi('presave') handles this.
+      case 'field_organization_marketplace':
+        return FALSE;
+    }
+  }
+  return TRUE;
+}
+
 function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
@@ -1470,24 +1485,22 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   }
   elseif ($op === 'presave') {
     if ($node->type === 'organization') {
-      // Can not be published without admin access, a Drupal Association
-      // organization membership, or previously being published.
-      if ($node->status && (!user_access('administer nodes') || $node->uid == $user->uid)) {
-        // Check previous status.
-        if (isset($node->nid)) {
-          $old_node = node_load($node->nid);
-          if ($old_node->status) {
-            return;
-          }
-        }
+      // Determine if the organization should be lsited in the marketplace.
+      switch ($node->field_organization_list_rule[0]['value']) {
+        case 'never':
+          $node->field_organization_marketplace[0]['value'] = 0;
+          break;
 
-        // Check Association membership.
-        $account = user_load($node->uid);
-        if (drupalorg_has_civimembership($node, 'Organization', TRUE)) {
-          return;
-        }
+        case 'membership':
+          // Doing this on view would be slow, and require a bit of boolean
+          // logic in the view. And saves surprises if an organization goes a
+          // few days without renewing.
+          $node->field_organization_marketplace[0]['value'] = drupalorg_has_civimembership($node, 'Organization', TRUE);
+          break;
 
-        $node->status = FALSE;
+        case 'always':
+          $node->field_organization_marketplace[0]['value'] = 1;
+          break;
       }
     }
   }

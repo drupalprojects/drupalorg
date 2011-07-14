@@ -62,7 +62,7 @@ function drupalorg_marketplace_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Usual project budget (optional)',
-      'weight' => 0,
+      'weight' => '17',
       'description' => 'Helps potential clients know what they are getting into.',
       'type' => 'text_textfield',
       'module' => 'text',
@@ -126,7 +126,7 @@ function drupalorg_marketplace_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Drupal contributions',
-      'weight' => '2',
+      'weight' => '19',
       'description' => '<p>Self promote! These fields determine eligibility for the Drupal.org marketplace and show the Drupal community how much you\'ve given back. Moderators use this information to respond to issues about community involvement, so it is important to list anything and everything relevant:</p>
 
 <ul>
@@ -205,7 +205,7 @@ function drupalorg_marketplace_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Website',
-      'weight' => '-4',
+      'weight' => '13',
       'description' => '',
       'type' => 'link',
       'module' => 'link',
@@ -272,7 +272,7 @@ function drupalorg_marketplace_content_default_fields() {
       'default_image' => NULL,
       'use_default_image' => 0,
       'label' => 'Logo',
-      'weight' => '-3',
+      'weight' => '14',
       'description' => '',
       'type' => 'imagefield_widget',
       'module' => 'imagefield',
@@ -334,10 +334,133 @@ function drupalorg_marketplace_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Headquarters',
-      'weight' => '-1',
+      'weight' => '16',
       'description' => 'Where is your organization located?',
       'type' => 'text_textfield',
       'module' => 'text',
+    ),
+  );
+
+  // Exported field: field_organization_list_rule
+  $fields['organization-field_organization_list_rule'] = array(
+    'field_name' => 'field_organization_list_rule',
+    'type_name' => 'organization',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '1',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => 'never|Do not list
+membership|List if the organization has a current membership, updated on saving this page
+always|Always list, regardless of membership',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'value' => 'membership',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'List in marketplace',
+      'weight' => '20',
+      'description' => 'Follow the <a href="http://drupal.org/node/1108710">policy</a>.',
+      'type' => 'optionwidgets_buttons',
+      'module' => 'optionwidgets',
+    ),
+  );
+
+  // Exported field: field_organization_marketplace
+  $fields['organization-field_organization_marketplace'] = array(
+    'field_name' => 'field_organization_marketplace',
+    'type_name' => 'organization',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'number_integer',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'number',
+    'active' => '1',
+    'prefix' => '',
+    'suffix' => '',
+    'min' => '',
+    'max' => '',
+    'allowed_values' => '0|Unlisted
+1|List in Marketplace',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'value' => 1,
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'List in marketplace',
+      'weight' => '21',
+      'description' => '',
+      'type' => 'optionwidgets_onoff',
+      'module' => 'optionwidgets',
     ),
   );
 
@@ -345,6 +468,7 @@ function drupalorg_marketplace_content_default_fields() {
   // Included for use with string extractors like potx.
   t('Drupal contributions');
   t('Headquarters');
+  t('List in marketplace');
   t('Logo');
   t('Usual project budget (optional)');
   t('Website');

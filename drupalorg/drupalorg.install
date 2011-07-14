@@ -792,6 +792,21 @@ function drupalorg_update_6601() {
 }
 
 /**
+ * Reshuffle organization listing rules. See http://drupal.org/node/1217292.
+ */
+function drupalorg_update_6602() {
+  $return = array();
+
+  // Set field_organization_marketplace = status
+  // Set field_organization_list_rule = 'membership'
+  $return = update_sql("UPDATE {content_type_organization} cto INNER JOIN {node} n ON n.vid = cto.vid SET field_organization_list_rule_value = 'membership', field_organization_marketplace_value = n.status");
+  // Set status = 1
+  $return = update_sql("UPDATE {node} SET status = 1 WHERE type = 'organization'");
+
+  return $return;
+}
+
+/**
  * Utility function to add permissions to certain user roles.
  */
 function _drupalorg_add_permissions($permissions) {
