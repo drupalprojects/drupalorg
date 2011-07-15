@@ -190,13 +190,18 @@ function drupalorg_menu() {
 }
 
 function drupalorg_field_access($op, $field, $account, $node = NULL) {
+  global $user;
+
   if ($op === 'edit') {
     switch ($field['field_name']) {
-      // Only allow admins to change an organization's visibility.
+      // Only allow admins, but not the node owner, to change an organization's visibility.
       case 'field_organization_list_rule':
+        if ($node !== NULL && $node->uid === $user->uid) {
+          return FALSE;
+        }
         return user_access('administer nodes');
 
-        // drupalorg_nodeapi('presave') handles this.
+      // drupalorg_nodeapi('presave') handles this.
       case 'field_organization_marketplace':
         return FALSE;
     }
