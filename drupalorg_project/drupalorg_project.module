@@ -628,7 +628,7 @@ function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page 
 
       // Add header label and last updated information to node body.
       $node->content['project_issue_header']['#value'] = '<h2>' . t('Issue Summary') . '</h2>';
-      $node->content['project_issue_header']['#suffix'] = '<p class="project-issue-last-modified">' . $modified_text . '</p>';
+      $node->content['project_issue_header']['#suffix'] = '<p class="project-issue-last-modified submitted">' . $modified_text . '</p>';
     }
   }
 
