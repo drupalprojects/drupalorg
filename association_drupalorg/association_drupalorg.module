@@ -136,6 +136,9 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
       $node->content['field_assoc_benefit_restrictions']['#weight'] = 10;
     }
+    elseif ($node->type === 'association_sponsorship_level') {
+      $node->content['field_assoc_level_notes']['#weight'] = 8;
+    }
     elseif ($node->nid == 1104) {
       // Add example ads for https://association.drupal.org/advertising/web.
       $node->content['exmaple_ads'] = array(
@@ -151,4 +154,66 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       $node->content['exmaple_ads']['row_2']['column_2']['#value'] = '<h3>' . t('300 x 100 Image + Text') . '</h3>' . drupalorg_crosssite_ad_block('association-example-imagetext-300x100');
     }
   }
+}
+
+function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id === 'association_sponsor_node_form') {
+    // Default he first sponsor user to the current user.
+    global $user;
+    $form['field_assoc_sponsor_users'][0]['#default_value']['uid'] = $user->uid;
+  }
+  elseif (strpos($form_id, 'uc_product_add_to_cart_form_') === 0 && $form['node']['#value']->type === 'association_sponsorship_level' && association_drupalorg_get_sponsor() === FALSE) {
+    // Do not allow sponsorships to be bought without a sponsor.
+    $form['submit']['#disabled'] = TRUE;
+  }
+}
+
+function association_drupalorg_views_pre_render(&$view) {
+  if ($view->name === 'association_store_con_sponsor') {
+    // Remind about sponsor associated with, or lack thereof.
+    $sponsor = association_drupalorg_get_sponsor();
+    if ($sponsor === FALSE) {
+      drupal_set_message(t('You currently are not associated with a sponsor. Before you buy, either <a href="!create">create your sponsor</a> or get added to an existing sponsor.', array('!create' => url('node/add/association-sponsor', array('query' => drupal_get_destination())))), 'warning');
+    }
+    else {
+      drupal_set_message(t('You are buying for !sponsor.', array('!sponsor' => l($sponsor->title, 'node/' . $sponsor->nid))));
+    }
+  }
+}
+
+function association_drupalorg_uc_payment_entered($order) {
+  foreach ($order->products as $product) {
+    $node = node_load($product->nid);
+    if ($node->type === 'association_sponsorship_level') {
+      // Create a sponsorship with the customer's sponor and the sponsorship
+      // level bought.
+      $sponsor = association_drupalorg_get_sponsor($order->order_uid);
+      $sponsorship = new stdClass();
+      $sponsorship->type = 'association_sponsorship';
+      $sponsorship->title = $node->title;
+      $sponsorship->field_assoc_sponsorship_level = array(
+        array('nid' => $node->nid),
+      );
+      $sponsorship->field_assoc_sponsorship_sponsor = array(
+        array('nid' => $sponsor->nid),
+      );
+      node_save($sponsorship);
+    }
+  }
+}
+
+/**
+ * Find the sponsor associated with a user.
+ *
+ * @param $uid
+ *   The user ID to check, or omit for the current user.
+ * @return
+ *   FALSE if there is no sponsor, or an object with nid and title.
+ */
+function association_drupalorg_get_sponsor($uid = NULL) {
+  if ($uid === NULL) {
+    global $user;
+    $uid = $user->uid;
+  }
+  return db_fetch_object(db_query_range("SELECT n.title, n.nid FROM {content_field_assoc_sponsor_users} su INNER JOIN {node} n ON n.vid = su.vid AND n.status = 1 WHERE su.field_assoc_sponsor_users_uid = %d", $uid, 0, 1));
 }
