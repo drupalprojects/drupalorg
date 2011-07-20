@@ -475,11 +475,13 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'allowed_values' => '0|Diamond
 4|Platinum
 8|Gold
-16|Add on
+16|Add-on
 20|Silver
+22|Add-on
 24|Bronze
 28|Supporter
-32|Media',
+32|Media
+36|Platinum Add-on',
     'allowed_values_php' => '',
     'widget' => array(
       'default_value' => array(
