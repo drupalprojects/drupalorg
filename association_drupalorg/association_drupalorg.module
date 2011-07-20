@@ -157,13 +157,14 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 }
 
 function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id === 'association_sponsor_node_form') {
+  if ($form_id === 'association_sponsor_node_form' && empty($form['field_assoc_sponsor_users'][0]['#default_value']['uid'])) {
     // Default he first sponsor user to the current user.
     global $user;
     $form['field_assoc_sponsor_users'][0]['#default_value']['uid'] = $user->uid;
   }
   elseif (strpos($form_id, 'uc_product_add_to_cart_form_') === 0 && $form['node']['#value']->type === 'association_sponsorship_level' && association_drupalorg_get_sponsor() === FALSE) {
     // Do not allow sponsorships to be bought without a sponsor.
+    $form['submit']['#suffix'] = '<br />' . l(t('You must be associated with a sponsor'), $_GET['q'], array('fragment' => 'content'));
     $form['submit']['#disabled'] = TRUE;
   }
 }
@@ -171,12 +172,17 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
 function association_drupalorg_views_pre_render(&$view) {
   if ($view->name === 'association_store_con_sponsor') {
     // Remind about sponsor associated with, or lack thereof.
-    $sponsor = association_drupalorg_get_sponsor();
-    if ($sponsor === FALSE) {
-      drupal_set_message(t('You currently are not associated with a sponsor. Before you buy, either <a href="!create">create your sponsor</a> or get added to an existing sponsor.', array('!create' => url('node/add/association-sponsor', array('query' => drupal_get_destination())))), 'warning');
+    if (user_is_logged_in()) {
+      $sponsor = association_drupalorg_get_sponsor();
+      if ($sponsor === FALSE) {
+        drupal_set_message(t('You currently are not associated with a sponsor. Before you buy, either <a href="!create">create your sponsor</a> or get added to an <a href="!sponsors">existing sponsor</a>.', array('!create' => url('node/add/association-sponsor', array('query' => drupal_get_destination())), '!sponsors' => url('sponsor/sponsors'))), 'warning');
+      }
+      else {
+        drupal_set_message(t('You are buying for !sponsor.', array('!sponsor' => l($sponsor->title, 'node/' . $sponsor->nid))));
+      }
     }
     else {
-      drupal_set_message(t('You are buying for !sponsor.', array('!sponsor' => l($sponsor->title, 'node/' . $sponsor->nid))));
+      drupal_set_message(t('You must <a href="!login">log in</a> to buy sponsorships.', array('!login' => url('user', array('query' => drupal_get_destination())))), 'warning');
     }
   }
 }
@@ -187,7 +193,7 @@ function association_drupalorg_uc_payment_entered($order) {
     if ($node->type === 'association_sponsorship_level') {
       // Create a sponsorship with the customer's sponor and the sponsorship
       // level bought.
-      $sponsor = association_drupalorg_get_sponsor($order->order_uid);
+      $sponsor = association_drupalorg_get_sponsor($order->uid);
       $sponsorship = new stdClass();
       $sponsorship->type = 'association_sponsorship';
       $sponsorship->title = $node->title;
@@ -198,6 +204,38 @@ function association_drupalorg_uc_payment_entered($order) {
         array('nid' => $sponsor->nid),
       );
       node_save($sponsorship);
+    }
+  }
+}
+
+/**
+ * Set up sponsor nodes, and future associated nodes, in the
+ * association_drupalorg_sponsor realm by nid.
+ */
+function association_drupalorg_node_access_records($node) {
+  if ($node->type === 'association_sponsor') {
+    return array(
+      array(
+        'realm' => 'association_drupalorg_sponsor',
+        'gid' => $node->nid,
+        'grant_view' => TRUE,
+        'grant_update' => TRUE,
+        'grant_delete' => FALSE,
+        'priority' => 0,
+      ),
+    );
+  }
+}
+
+/**
+ * If a user is associated with a sponsor, grant them access to that nid in the
+ * association_drupalorg_sponsor realm.
+ */
+function association_drupalorg_node_grants($account, $op) {
+  if ($op === 'update' || $op === 'view') { // todo remove view when tac_lite is finally gone.
+    $sponsor = association_drupalorg_get_sponsor($account->uid);
+    if ($sponsor !== FALSE) {
+      return array('association_drupalorg_sponsor' => array($sponsor->nid));
     }
   }
 }
