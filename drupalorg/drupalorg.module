@@ -196,6 +196,7 @@ function drupalorg_field_access($op, $field, $account, $node = NULL) {
     switch ($field['field_name']) {
       // Only allow admins, but not the node owner, to change an organization's visibility.
       case 'field_organization_list_rule':
+      case 'field_organization_hosting_level':
         if ($node !== NULL && $node->uid === $user->uid) {
           return FALSE;
         }
