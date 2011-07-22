@@ -158,9 +158,13 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
 function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id === 'association_sponsor_node_form' && empty($form['field_assoc_sponsor_users'][0]['#default_value']['uid'])) {
-    // Default he first sponsor user to the current user.
+    // Default the first sponsor user to the current user.
     global $user;
     $form['field_assoc_sponsor_users'][0]['#default_value']['uid'] = $user->uid;
+  }
+  elseif ($form_id === 'association_sponsorship_node_form') {
+    // There isn't anything good to put in the sponsorship body.
+    $form['body_field']['#access'] = FALSE;
   }
   elseif (strpos($form_id, 'uc_product_add_to_cart_form_') === 0 && $form['node']['#value']->type === 'association_sponsorship_level' && association_drupalorg_get_sponsor() === FALSE) {
     // Do not allow sponsorships to be bought without a sponsor.
