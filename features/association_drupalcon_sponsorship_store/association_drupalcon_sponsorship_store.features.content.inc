@@ -11,19 +11,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_sponsor_drupalorg',
     'type_name' => 'association_sponsor',
     'display_settings' => array(
+      'weight' => '8',
+      'parent' => '',
       'label' => array(
-        'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
+        'format' => 'hidden',
       ),
       'teaser' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -58,19 +59,18 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'url' => 0,
     'title' => 'value',
     'title_value' => 'Organization on Drupal.org',
-    'enable_tokens' => '',
+    'enable_tokens' => 0,
     'validate_url' => 1,
     'widget' => array(
       'default_value' => array(
         '0' => array(
-          'title' => '',
           'url' => '',
         ),
       ),
       'default_value_php' => NULL,
       'label' => 'Drupal.org organization URL',
-      'weight' => '34',
-      'description' => '',
+      'weight' => '8',
+      'description' => 'Listed in the <a href="http://drupal.org/marketplace-preview">marketplace</a>, if approved.',
       'type' => 'link',
       'module' => 'link',
     ),
@@ -81,19 +81,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_sponsor_logo',
     'type_name' => 'association_sponsor',
     'display_settings' => array(
+      'weight' => '6',
+      'parent' => '',
       'label' => array(
-        'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'image_plain',
-        'exclude' => 0,
+        'format' => 'hidden',
       ),
       'teaser' => array(
         'format' => 'image_plain',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'image_plain',
         'exclude' => 0,
       ),
@@ -135,7 +136,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       'default_image' => NULL,
       'use_default_image' => 0,
       'label' => 'Logo',
-      'weight' => '33',
+      'weight' => '6',
       'description' => 'Large, transparent PNG recommended; will be scaled and put on non-white backgrounds.',
       'type' => 'imagefield_widget',
       'module' => 'imagefield',
@@ -147,19 +148,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_sponsor_users',
     'type_name' => 'association_sponsor',
     'display_settings' => array(
+      'weight' => '5',
+      'parent' => '',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -208,7 +210,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Authorized users',
-      'weight' => '32',
+      'weight' => '5',
       'description' => 'Users who can update company information and buy sponsorships.',
       'type' => 'userreference_autocomplete',
       'module' => 'userreference',
@@ -219,6 +221,135 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
   $fields['association_sponsor-field_assoc_sponsor_vat'] = array(
     'field_name' => 'field_assoc_sponsor_vat',
     'type_name' => 'association_sponsor',
+    'display_settings' => array(
+      'weight' => '9',
+      'parent' => '',
+      'label' => array(
+        'format' => 'above',
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => 5,
+      'size' => '20',
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_assoc_sponsor_vat][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'VAT #',
+      'weight' => '9',
+      'description' => 'If you have one, please tell us.',
+      'type' => 'text_textfield',
+      'module' => 'text',
+    ),
+  );
+
+  // Exported field: field_assoc_sponsor_vector_logo
+  $fields['association_sponsor-field_assoc_sponsor_vector_logo'] = array(
+    'field_name' => 'field_assoc_sponsor_vector_logo',
+    'type_name' => 'association_sponsor',
+    'display_settings' => array(
+      'weight' => '7',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'filefield',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'filefield',
+    'active' => '1',
+    'list_field' => '0',
+    'list_default' => 1,
+    'description_field' => '0',
+    'widget' => array(
+      'file_extensions' => 'eps pdf ai svg',
+      'file_path' => '',
+      'progress_indicator' => 'bar',
+      'max_filesize_per_file' => '',
+      'max_filesize_per_node' => '',
+      'label' => 'Vector Logo',
+      'weight' => '7',
+      'description' => '',
+      'type' => 'filefield_widget',
+      'module' => 'filefield',
+    ),
+  );
+
+  // Exported field: field_assoc_sponsorship_booth
+  $fields['association_sponsorship-field_assoc_sponsorship_booth'] = array(
+    'field_name' => 'field_assoc_sponsorship_booth',
+    'type_name' => 'association_sponsorship',
     'display_settings' => array(
       'label' => array(
         'format' => 'above',
@@ -265,17 +396,17 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'allowed_values_php' => '',
     'widget' => array(
       'rows' => 5,
-      'size' => '20',
+      'size' => '10',
       'default_value' => array(
         '0' => array(
           'value' => '',
-          '_error_element' => 'default_value_widget][field_assoc_sponsor_vat][0][value',
+          '_error_element' => 'default_value_widget][field_assoc_sponsorship_booth][0][value',
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'VAT #',
-      'weight' => '35',
-      'description' => 'If you have one, please tell us.',
+      'label' => 'Booth',
+      'weight' => '33',
+      'description' => '',
       'type' => 'text_textfield',
       'module' => 'text',
     ),
@@ -702,6 +833,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Authorized users');
+  t('Booth');
   t('Conference');
   t('Drupal.org organization URL');
   t('Extra');
@@ -710,6 +842,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
   t('Notes');
   t('Sponsor');
   t('VAT #');
+  t('Vector Logo');
 
   return $fields;
 }
