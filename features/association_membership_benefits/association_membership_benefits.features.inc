@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Implementation of hook_imagecache_default_presets().
- */
-function association_membership_benefits_imagecache_default_presets() {
-  $items = array(
-    'grid-2' => array(
-      'presetname' => 'grid-2',
-      'actions' => array(
-        '0' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_scale',
-          'data' => array(
-            'width' => '140',
-            'height' => '100%',
-            'upscale' => 0,
-          ),
-        ),
-      ),
-    ),
-  );
-  return $items;
-}
-
-/**
  * Implementation of hook_node_info().
  */
 function association_membership_benefits_node_info() {

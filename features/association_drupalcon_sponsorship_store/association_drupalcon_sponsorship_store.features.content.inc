@@ -87,11 +87,11 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
         'format' => 'hidden',
       ),
       'teaser' => array(
-        'format' => 'image_plain',
+        'format' => 'grid-3_linked',
         'exclude' => 0,
       ),
       'full' => array(
-        'format' => 'image_plain',
+        'format' => 'grid-3_default',
         'exclude' => 0,
       ),
       '5' => array(

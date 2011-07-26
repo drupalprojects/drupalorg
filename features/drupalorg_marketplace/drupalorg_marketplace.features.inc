@@ -1,30 +1,6 @@
 <?php
 
 /**
- * Implementation of hook_imagecache_default_presets().
- */
-function drupalorg_marketplace_imagecache_default_presets() {
-  $items = array(
-    'grid-3' => array(
-      'presetname' => 'grid-3',
-      'actions' => array(
-        '0' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_scale',
-          'data' => array(
-            'width' => '220',
-            'height' => '220',
-            'upscale' => 0,
-          ),
-        ),
-      ),
-    ),
-  );
-  return $items;
-}
-
-/**
  * Implementation of hook_node_info().
  */
 function drupalorg_marketplace_node_info() {

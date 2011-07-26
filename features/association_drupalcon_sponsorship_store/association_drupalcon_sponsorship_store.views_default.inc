@@ -311,6 +311,36 @@ function association_drupalcon_sponsorship_store_views_default_views() {
     ),
   ));
   $handler->override_option('fields', array(
+    'nid' => array(
+      'label' => 'Nid',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'link_to_node' => 0,
+      'exclude' => 1,
+      'id' => 'nid',
+      'table' => 'node',
+      'field' => 'nid',
+      'relationship' => 'none',
+    ),
     'title' => array(
       'label' => 'Sponsor',
       'alter' => array(
@@ -346,8 +376,8 @@ function association_drupalcon_sponsorship_store_views_default_views() {
       'alter' => array(
         'alter_text' => 0,
         'text' => '',
-        'make_link' => 0,
-        'path' => '',
+        'make_link' => 1,
+        'path' => 'node/[nid]/edit',
         'link_class' => '',
         'alt' => '',
         'prefix' => '',
@@ -789,6 +819,7 @@ function association_drupalcon_sponsorship_store_views_default_views() {
 </div>
 </div>
 
+<p><br /></p>
 <table>
 <thead><tr><td></td><th>Platinum</th> <th>Gold</th> <th>Silver</th> <th>Bronze</th></tr></thead>
 <tbody>
