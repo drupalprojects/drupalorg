@@ -221,6 +221,14 @@ function association_drupalorg_node_access_records($node) {
     return array(
       array(
         'realm' => 'association_drupalorg_sponsor',
+        'gid' => 0,
+        'grant_view' => TRUE,
+        'grant_update' => FALSE,
+        'grant_delete' => FALSE,
+        'priority' => 0,
+      ),
+      array(
+        'realm' => 'association_drupalorg_sponsor',
         'gid' => $node->nid,
         'grant_view' => TRUE,
         'grant_update' => TRUE,
@@ -236,7 +244,10 @@ function association_drupalorg_node_access_records($node) {
  * association_drupalorg_sponsor realm.
  */
 function association_drupalorg_node_grants($account, $op) {
-  if ($op === 'update' || $op === 'view') { // todo remove view when tac_lite is finally gone.
+  if ($op === 'view') {
+    return array('association_drupalorg_sponsor' => array(0));
+  }
+  elseif ($op === 'update') {
     $sponsor = association_drupalorg_get_sponsor($account->uid);
     if ($sponsor !== FALSE) {
       return array('association_drupalorg_sponsor' => array($sponsor->nid));
