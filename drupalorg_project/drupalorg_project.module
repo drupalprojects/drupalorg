@@ -457,7 +457,10 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   $links['resources']['type'] = 'block';
 
   // Provide contextual links for sandboxes.
-  $project_tids = array_keys($node->taxonomy);
+  $project_tids = array();
+  if (!empty($node->taxonomy)) {
+    $project_tids = array_keys($node->taxonomy);
+  }
   $no_promote_tids = drupalorg_project_get_no_promote_project_tids();
   $forbidden_tids = array_intersect($no_promote_tids, $project_tids);
   if ($node->project['sandbox'] == 1 && empty($forbidden_tids) && $user->uid == $node->uid) {
@@ -472,6 +475,11 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
 
   // Link to security handbook page.
   $links['development']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
+
+  // Link to change records page.
+  if (!empty($node->project['uri'])) {
+    $links['development']['links']['change_records'] = l(t('View change records'), 'list-changes/' . $node->project['uri']);
+  }
 
   // Link to translation downloads.
   $translation_download = '';
@@ -592,6 +600,48 @@ function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page 
         $node->content['project_info']['#value'] = drupalorg_project_meta_data($node);
         $node->content['project_info']['#weight'] = 1;
       }
+    }
+    elseif ($node->type === 'project_issue') {
+      // Get the number of revisions on this issue.
+      $count = db_result(db_query('SELECT COUNT(vid) FROM {node_revisions} WHERE nid = %d', $node->nid));
+
+      // Make a mock user object for theme_username() to avoid expensive call
+      // to user_load().
+      $revision_author = new stdClass;
+      $revision_author->uid = $node->revision_uid;
+      $revision_author->name = db_result(db_query('SELECT name FROM {users} WHERE uid = %d', $revision_author->uid));
+      $username = theme('username', $revision_author);
+
+      // Format the date according to Bluecheese standards.
+      $date = format_date($node->changed, 'custom', 'F j, Y \a\t g:ia');
+
+      if ($count > 1) {
+        // Generate a link to the diff of this revision.
+        $previous_vid = db_result(db_query_range('SELECT vid FROM {node_revisions} WHERE nid = %d ORDER BY vid DESC', $node->nid, 1, 1));
+        $diff_link = url("node/$node->nid/revisions/view/$node->vid/$previous_vid");
+        $modified_text = t('<a href="@diff">Revision @count</a> by !username on @date', array('@diff' => $diff_link, '@count' => $count, '!username' => $username, '@date' => $date));
+      }
+      else {
+        // Just one revision, no link.
+        $modified_text = t('Revision 1 by !username on @date', array('!username' => $username, '@date' => $date));
+      }
+
+      // Add header label and last updated information to node body.
+      $node->content['project_issue_header']['#value'] = '<h2>' . t('Issue Summary') . '</h2>';
+      $node->content['project_issue_header']['#suffix'] = '<p class="project-issue-last-modified submitted">' . $modified_text . '</p>';
+    }
+  }
+
+  // Add a breadcrumb to API Change nodes.
+  if ($op == 'alter' && !$teaser && $page && $node->type == 'changenotice') {
+    if (isset($node->field_project[0]['nid'])) {
+      $proj_nid = $node->field_project[0]['nid'];
+      $proj_node = node_load($proj_nid);
+      $proj_shortcode = $proj_node->project['uri'];
+      $extra = array();
+      $extra[] = l($node->field_project[0]['safe']['title'], 'node/' . $proj_nid);
+      $extra[] = l(t('Change records'), 'list-changes/' . $proj_shortcode);
+      project_project_set_breadcrumb($proj_node, $extra);
     }
   }
 }
@@ -1021,5 +1071,25 @@ function drupalorg_project_get_project_types($singular = FALSE) {
 function drupalorg_project_ctools_plugin_directory($module, $plugin) {
   if ($module == 'project_release' && $plugin == 'release_packager') {
     return "plugins/$plugin";
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * Sets the breadcrumb up for project navigation for the change records views.
+ */
+function drupalorg_project_views_pre_render(&$view) {
+  switch ($view->name) {
+    case 'change_records':
+      if (count($view->args) > 0) {
+        // Note: this returns FALSE if it isn't a project node.
+        $proj_node = project_node_load($view->args[0]);
+        if ($proj_node) {
+          $extra[] = l($proj_node->title, 'node/' . $proj_node->nid);
+          project_project_set_breadcrumb($proj_node, $extra);
+        }
+      }
+      break;
   }
 }

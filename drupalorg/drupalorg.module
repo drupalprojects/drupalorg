@@ -34,10 +34,6 @@ define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 103);  // 7.x
 
 // == Core hooks ===============================================================
 
-function drupalorg_perm() {
-  return array('manage drupalorg ads');
-}
-
 function drupalorg_init() {
   global $user, $conf;
 
@@ -69,11 +65,7 @@ function drupalorg_init() {
 
     // Ads
     if (!empty($forum_ads[$forum_id])) {
-      $block = (object) module_invoke('google_admanager', 'block', 'view', $forum_ads[$forum_id]);
-      $block->region = 'right';
-      $block->delta = $delta;
-      $block->module = 'google_admanager';
-      drupal_set_content($block->region, theme('block', $block));
+      drupal_set_content('right', drupalorg_crosssite_ad_block($forum_ads[$forum_id], FALSE));
     }
   }
 
@@ -189,12 +181,33 @@ function drupalorg_menu() {
   );
   $items['admin/settings/drupalorg-ads'] = array(
     'title' => 'Drupal.org ad settings',
-    'access arguments' => array('manage drupalorg ads'),
+    'access arguments' => array('administer site configuration'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('drupalorg_ad_settings_form'),
   );
 
   return $items;
+}
+
+function drupalorg_field_access($op, $field, $account, $node = NULL) {
+  global $user;
+
+  if ($op === 'edit') {
+    switch ($field['field_name']) {
+      // Only allow admins, but not the node owner, to change an organization's visibility.
+      case 'field_organization_list_rule':
+      case 'field_organization_hosting_level':
+        if ($node !== NULL && $node->uid === $user->uid) {
+          return FALSE;
+        }
+        return user_access('administer nodes');
+
+      // drupalorg_nodeapi('presave') handles this.
+      case 'field_organization_marketplace':
+        return FALSE;
+    }
+  }
+  return TRUE;
 }
 
 function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
@@ -1309,25 +1322,6 @@ function drupalorg_ad_settings_form() {
   return system_settings_form($form);
 }
 
-/**
- * Add notes to ads.
- */
-function drupalorg_preprocess_block(&$variables) {
-  if ($variables['block']->module === 'google_admanager') {
-    $variables['block']->content .= '<div class="gam-suffix"><a href="https://association.drupal.org/advertising">Advertising</a> helps build a successful ecosystem around Drupal.</div>';
-
-    if ($variables['block']->delta === md5('Redesign_books')) {
-      $variables['block']->content = '<div class="gam-prefix"><h3><a href="/books">Drupal Books</a></h3>
-        <p>There are many useful books about Drupal. Here are just a few of our recommendations:</p></div>'
-        . $variables['block']->content;
-    }
-    elseif ($variables['block']->delta === md5('Security_books')) {
-      $variables['block']->content = '<div class="gam-prefix"><p>There are many useful <a href="/books">books about Drupal</a>. Here are two that discuss security:</p></div>'
-        . $variables['block']->content;
-    }
-  }
-}
-
 function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   global $user;
 
@@ -1377,11 +1371,11 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         $node->readmore = FALSE;
 
         if (isset($node->content['field_logo']['field']['items'][0]['#item']['status'])) {
-          $content = _drupalorg_grid_elements(array(3, 5));
+          $content = drupalorg_crosssite_grid_elements(array(3, 5));
           $main = 'column_2';
         }
         else {
-          $content = _drupalorg_grid_elements(array(8));
+          $content = drupalorg_crosssite_grid_elements(array(8));
           $main = 'column_1';
         }
 
@@ -1407,7 +1401,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         $node->content = $content;
       }
       else { // Page
-        $content = _drupalorg_grid_elements(array(3, 5, 4));
+        $content = drupalorg_crosssite_grid_elements(array(3, 5, 4));
 
         // Link & logo
         $content['column_1']['link'] = $node->content['field_link']['field']['items'][0];
@@ -1497,24 +1491,22 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   }
   elseif ($op === 'presave') {
     if ($node->type === 'organization') {
-      // Can not be published without admin access, a Drupal Association
-      // organization membership, or previously being published.
-      if ($node->status && (!user_access('administer nodes') || $node->uid == $user->uid)) {
-        // Check previous status.
-        if (isset($node->nid)) {
-          $old_node = node_load($node->nid);
-          if ($old_node->status) {
-            return;
-          }
-        }
+      // Determine if the organization should be lsited in the marketplace.
+      switch ($node->field_organization_list_rule[0]['value']) {
+        case 'never':
+          $node->field_organization_marketplace[0]['value'] = 0;
+          break;
 
-        // Check Association membership.
-        $account = user_load($node->uid);
-        if (drupalorg_has_civimembership($node, 'Organization', TRUE)) {
-          return;
-        }
+        case 'membership':
+          // Doing this on view would be slow, and require a bit of boolean
+          // logic in the view. And saves surprises if an organization goes a
+          // few days without renewing.
+          $node->field_organization_marketplace[0]['value'] = drupalorg_has_civimembership($node, 'Organization', TRUE);
+          break;
 
-        $node->status = FALSE;
+        case 'always':
+          $node->field_organization_marketplace[0]['value'] = 1;
+          break;
       }
     }
   }
@@ -1537,7 +1529,7 @@ function drupalorg_form_organization_node_form_alter(&$form, $form_state) {
 function drupalorg_views_pre_render(&$view) {
   // Render the taxonomy filtering above the marketplace organization listing.
   if ($view->name === 'drupalorg_organizations') {
-    $content = _drupalorg_grid_elements(array(2, 2, 2, 2));
+    $content = drupalorg_crosssite_grid_elements(array(2, 2, 2, 2));
 
     // Each argument should be a term restricted to a vocabulary.
     $n = 0;
@@ -1646,42 +1638,6 @@ function drupalorg_views_pre_render(&$view) {
 }
 
 /**
- * Return an array tree suitable for drupal_render() and Bluecheese's grid
- * system.
- *
- * @param $columns
- *   An array of integers for column widths. Keep the sum 12 or under.
- *
- * @return
- *   An array tree for drupal_render().
- */
-function _drupalorg_grid_elements(array $columns) {
-  $content = array(
-    '#prefix' => '<div class="clear-block"><div class="grid-' . array_sum($columns) . ' alpha omega">',
-    '#suffix' => '</div></div>',
-    '#sorted' => TRUE,
-  );
-
-  foreach ($columns as $n => $width) {
-    $classes = array('grid-' . $width);
-    if ($n === 0) {
-      $classes[] = 'alpha';
-    }
-    elseif ($n === count($columns) - 1) {
-      $classes[] = 'omega';
-    }
-    $content['column_' . ($n + 1)] = array(
-      '#prefix' => '<div class="' . implode(' ', $classes) . '">',
-      '#suffix' => '</div>',
-      '#sorted' => TRUE,
-      '#weight' => $n,
-    );
-  }
-
-  return $content;
-}
-
-/**
  * Implementation of hook_user().
  */
 function drupalorg_user($op, &$edit, &$account, $category = NULL) {
@@ -1689,7 +1645,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
     global $user;
 
     // Column layout for profile pages.
-    $content = _drupalorg_grid_elements(array(8, 4));
+    $content = drupalorg_crosssite_grid_elements(array(8, 4));
 
     // Link organization to organization node, if it exists.
     if (!empty($account->profile_current_company_organization)) {
@@ -1720,7 +1676,6 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
       $placeholders = array(
         '@username' => $account->name,
         '@membership_type' => drupal_strtolower($membership->membership_type),
-        '!link' => check_url('https://association.drupal.org/civicrm/contribute/transact?reset=1&id=' . $membership->entity_id),
         '@expires' => format_date(strtotime($membership->end_date), 'custom', 'M jS, Y'),
       );
 
@@ -1737,12 +1692,12 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
         switch ($membership->status) {
           case 'New':
           case 'Current':
-            $membership_personal = t('Thank you for being a <a href="https://association.drupal.org/">Drupal Association</a> member. Your support helps to fund improvements to Drupal.org. Your <a href="!link">membership</a> expires on @expires.', $placeholders);
+            $membership_personal = t('Thank you for being a <a href="https://association.drupal.org/">Drupal Association</a> member. Your support helps to fund improvements to Drupal.org. Your <a href="https://association.drupal.org/membership">membership</a> expires on @expires.', $placeholders);
             break;
 
           case 'Grace':
           case 'Expired':
-            $membership_personal = t('Thank you for purchasing a membership. Your support has helped us to improve Drupal.org. Your ongoing support via a <a href="!link">membership</a> is appreciated.', $placeholders);
+            $membership_personal = t('Thank you for purchasing a membership. Your support has helped us to improve Drupal.org. Your ongoing support via a <a href="https://association.drupal.org/membership">membership</a> is appreciated.', $placeholders);
             break;
 
           case 'Deceased':
@@ -1813,6 +1768,7 @@ function drupalorg_documentation_contributions($account) {
  *
  * @todo do some sort of cross-site request to use
  *   association_drupalorg_get_memberships().
+ * @todo remove entity_id, it is broken and we don't use it.
  */
 function drupalorg_civimembership_load($account, $reset = FALSE) {
   static $member_cache;

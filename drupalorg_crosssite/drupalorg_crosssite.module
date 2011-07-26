@@ -50,8 +50,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
         'about' => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association'),
         'membership' => array('href' => 'membership', 'title' => t('Membership'), '#site' => 'association'),
         'donate' => array('href' => 'donate', 'title' => t('Donate'), '#site' => 'association'),
-        // Not launched yet.
-        //'bizconnect' => array('href' => 'bizconnect', 'title' => t('BizConnect'), '#site' => 'association'),
+        'bizconnect' => array('href' => 'bizconnect', 'title' => t('BizConnect'), '#site' => 'association'),
         'faq' => array('href' => 'node/65', 'title' => t('FAQ'), '#site' => 'association'),
         'contact' => array('href' => 'contact', 'title' => t('Contact'), '#site' => 'association'),
       );
@@ -203,7 +202,7 @@ function drupalorg_crosssite_section() {
     elseif (drupalorg_crosssite_child_of('main', 'node/179723') || (drupalorg_crosssite_child_of('main', 'project/drupal.org projects') && !drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID))) {
       $section = 'drupalorg';
     }
-    elseif (drupalorg_crosssite_menu_path('main', '^(project|download)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_menu_path('main', '^node/add/project-issue') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release')) || drupalorg_crosssite_menu_site('localize')) {
+    elseif (drupalorg_crosssite_menu_path('main', '^(project|download|list-changes|list-change-updates)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_menu_path('main', '^node/add/project-issue') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release', 'changenotice')) || drupalorg_crosssite_menu_site('localize')) {
       $section = 'downloads';
     }
     elseif (drupalorg_crosssite_menu_path('main', '^security(|/contrib|/psa)$') || drupalorg_crosssite_menu_term('main', array(1852, 44, 1856))) {
@@ -946,5 +945,82 @@ function drupalorg_crossite_bakery_master_uid() {
   }
   else {
     return $user->uid;
+  }
+}
+
+/**
+ * Return an array tree suitable for drupal_render() and Bluecheese's grid
+ * system.
+ *
+ * @param $columns
+ *   An array of integers for column widths. Keep the sum 12 or under.
+ *
+ * @return
+ *   An array tree for drupal_render().
+ */
+function drupalorg_crosssite_grid_elements(array $columns) {
+  $content = array(
+    '#prefix' => '<div class="clear-block"><div class="grid-' . array_sum($columns) . ' alpha omega">',
+    '#suffix' => '</div></div>',
+    '#sorted' => TRUE,
+  );
+
+  foreach ($columns as $n => $width) {
+    $classes = array('grid-' . $width);
+    if ($n === 0) {
+      $classes[] = 'alpha';
+    }
+    elseif ($n === count($columns) - 1) {
+      $classes[] = 'omega';
+    }
+    $content['column_' . ($n + 1)] = array(
+      '#prefix' => '<div class="' . implode(' ', $classes) . '">',
+      '#suffix' => '</div>',
+      '#sorted' => TRUE,
+      '#weight' => $n,
+    );
+  }
+
+  return $content;
+}
+
+/**
+ * Build an ad slot block. The note about ads is added via
+ * drupalorg_crosssite_preprocess_block(). Enough is simulated to get that.
+ *
+ * @param $slot
+ *   The ad manager slot name.
+ * @param $md5_slot
+ *   Ad manager likes using md5sums, if needed, keep true.
+ */
+function drupalorg_crosssite_ad_block($slot, $md5_slot = TRUE) {
+  if ($md5_slot) {
+    $slot = md5(trim($slot));
+  }
+
+  $block = (object) module_invoke('google_admanager', 'block', 'view', $slot);
+  $block->region = 'right';
+  $block->delta = $slot;
+  $block->module = 'google_admanager';
+
+  return theme('block', $block);
+}
+
+/**
+ * Add notes to ads.
+ */
+function drupalorg_crosssite_preprocess_block(&$variables) {
+  if ($variables['block']->module === 'google_admanager') {
+    $variables['block']->content .= '<div class="gam-suffix"><a href="https://association.drupal.org/advertising">Advertising</a> helps build a successful ecosystem around Drupal.</div>';
+
+    if ($variables['block']->delta === md5('Redesign_books')) {
+      $variables['block']->content = '<div class="gam-prefix"><h3><a href="/books">Drupal Books</a></h3>
+        <p>There are many useful books about Drupal. Here are just a few of our recommendations:</p></div>'
+        . $variables['block']->content;
+    }
+    elseif ($variables['block']->delta === md5('Security_books')) {
+      $variables['block']->content = '<div class="gam-prefix"><p>There are many useful <a href="/books">books about Drupal</a>. Here are two that discuss security:</p></div>'
+        . $variables['block']->content;
+    }
   }
 }

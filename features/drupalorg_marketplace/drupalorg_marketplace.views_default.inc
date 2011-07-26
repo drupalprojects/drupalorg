@@ -329,10 +329,23 @@ function drupalorg_marketplace_views_default_views() {
       'field' => 'type',
       'relationship' => 'none',
     ),
-    'tid' => array(
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
+    'field_organization_marketplace_value' => array(
+      'operator' => '=',
+      'value' => array(
+        'value' => '1',
+        'min' => '',
+        'max' => '',
+      ),
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'field_organization_marketplace_value',
+      'table' => 'node_data_field_organization_marketplace',
+      'field' => 'field_organization_marketplace_value',
+      'relationship' => 'none',
     ),
   ));
   $handler->override_option('access', array(
