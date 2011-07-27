@@ -52,7 +52,7 @@
     </div><!--/narrow-box-list-->
     <div class="narrow-box-list">
       <h5 class="lined">Drupal books</h5>
-      <p><a href="/books"><img src="<?php print url(drupal_get_path('module', 'drupalorg') . '/images/books-d7.png'); ?>" alt=""></a></p>
+      <p><a href="/books"><img src="<?php print url(drupal_get_path('module', 'drupalorg') . '/images/books-d7.png'); ?>" alt="Drupal book covers"></a></p>
       <p>There are many <a href="/books">Drupal books</a> available.</p>
     </div><!--/narrow-box-list-->
   </div>
