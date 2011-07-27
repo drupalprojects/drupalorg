@@ -156,6 +156,12 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   }
 }
 
+function association_drupalorg_preprocess_node(&$variables) {
+  if ($variables['type'] === 'association_sponsorship_level') {
+    $variables['classes'][] = drupal_strtolower(str_replace(' ', '-', $variables['node']->field_assoc_level[0]['view']));
+  }
+}
+
 function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id === 'association_sponsor_node_form' && empty($form['field_assoc_sponsor_users'][0]['#default_value']['uid'])) {
     // Default the first sponsor user to the current user.
