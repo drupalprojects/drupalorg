@@ -1,4 +1,26 @@
-<p>Drupal is a free software package that allows anyone to easily publish, manage and organize a wide variety of content on a website. Hundreds of thousands of people and organizations are using Drupal to power an endless variety of sites.</p>
+<p>Drupal is a free software package that allows you to easily organize, manage and publish your content, with an endless variety of customization.</p>
+
+<div class="node-section grid-12 alpha omega">
+  <div class="grid-3 alpha">
+    <h2>Drupal is Open Source</h2>
+    <p>Drupal is open source software maintained and developed by a community of 630,000+ users and developers. It's distributed under the terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> (or "GPL"), which means anyone is free to download it and share it with others. This open development model means that people are constantly working to make sure Drupal is a cutting-edge platform that supports the latest technologies that the Web has to offer. The Drupal project's <a href="/principles">principles</a> encourage modularity, standards, collaboration, ease-of-use, and more.</p>
+  </div>
+      
+  <div class="grid-3">
+    <h2>Community Support</h2>
+    <p>The passionate volunteer <a href="/community">Drupal community</a> is on hand to give support via various <a href="/irc">vibrant IRC channels</a>, in the <a href="/forum">forums</a>, and face to face at <a href="http://groups.drupal.org/events">Drupal events</a>. The community has also created <a href="/documentation">Documentation</a> for Drupal, which covers major topics related to working with Drupal. The worldwide community drives the innovation that makes Drupal the preferred choice for web developers and site owners. Everybody can <a href="/getting-involved">get involved</a> and make a difference to Drupal.</p>
+  </div>
+      
+  <div class="grid-3">
+    <h2>Drupal's History</h2>
+    <p><a href="http://buytaert.net/">Dries Buytaert</a> began the Drupal software as an message board in 1999. Within a year or so, more people became interested using and contributing to Drupal, so the project was made open source. Drupal.org came online in 2001, and the Drupal community gained momentum in 2005 with several code sprints and conferences. Read more about the full <a href="http://drupal.org/about/history">history of Drupal</a> and Druplicon.</p>
+      </div>
+      
+  <div class="grid-3 omega">
+    <h2>Commercial Services</h2>
+    <p>As well as the community, there are many dedicated companies in the <a href="/marketplace">Marketplace</a> to help with your Drupal project. Providing expertise and a deeper understanding, they can help with design, development, <a href="/hosting">hosting</a>, spam blocking, theming, <a href="/training-services">training</a>, and more.</p>
+  </div>
+</div>
 
 <div class="node-footer-section grid-12 alpha omega">
   <div class="grid-4 alpha">
@@ -24,19 +46,31 @@
         <dt>Social Networking Sites</dt>
         <dd><a href="/node/288476">DrupalSN</a>, <a href="/node/98076">Jewcy</a></dd>
       </dl>
+      <p>More examples can be found in <a href="/cases">Sites Made with Drupal</a>.</p>
     </div>
   </div>
       
   <div class="grid-4">
     <h3>Drupal CMS Features</h3>
     <div class="aboutsmall">
-      <p>Read more about how to build, administer and design with <a href="/features">Drupal's Content Management Features</a>.</p>
-      
-      <h3>Getting Started</h3>
-      <p><a href="/start">Get Started with Drupal</a> gives an overview of working with Drupal, or you can check out a pre-built <a href="/project/installation+profiles">Drupal distribution</a> or <a href="/download">download Drupal core</a>. </p>
-      <p><?php print $core_download_button; ?></p>
-      <p class="clear">You can then build upon that with <a href="/project/modules">modules</a>, <a href="/project/themes">themes</a>, and <a href="http://localize.drupal.org">translations</a>.</p>
+      <p>Read more about how to build, administer and design with <a href="/features">Drupal's Content Management Features</a>. See also <a href="/about/new-in-drupal-7">What's New in Drupal 7</a>.</p>
     </div>
+      
+      <h3>Security Team</h3>
+      <div class="aboutsmall">
+      <p><a href="/documentation/is-drupal-secure">We take security seriously</a> and have a <a href="/security-team">dedicated team</a> that has a <a href="/about/security-track-record">proven track record</a> in dealing with your security issues professionally and efficiently, meaning you can spend more time creating your site.</p>
+      </div>
+      
+      <h3>More About Drupal</h3>
+      <div class="aboutsmall">
+      <ul>
+        <li><a href="about-drupal-project">About the Drupal project</a></li>
+        <li><a href="/press">Press releases</a></li>
+        <li><a href="/marketing-resources">Marketing resources</a></li>
+        <li><a href="/about/drupal.org-FAQ">About Drupal.org</a></li>
+      </ul>
+      <p>Read more about how to build, administer and design with <a href="/features">Drupal's Content Management Features</a>.</p>
+      </div>
   </div>
       
   <div class="grid-4 omega">
@@ -50,28 +84,11 @@
       </ul>
       <p>Drupal is web-based, which means it is compatible with all operating systems.</p>
       <p>More detailed information on the <a href="/requirements">system requirements</a>.</p>
-    </div>
-  </div>
-</div>
-
-<div class="node-section grid-12 alpha omega">
-  <div class="grid-3 alpha">
-    <h2>Drupal is Open Source</h2>
-    <p>Drupal is open source software maintained and developed by a community of hundreds of thousands of users and developers. It's distributed under the terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> (or "GPL"), which means anyone is free to download it, share it with others, and <a href="http://drupal.org/contribute">contribute</a> back to the project.  This open development model means that people are constantly working to make sure Drupal is a cutting-edge platform that supports the latest technologies that the Web has to offer. </p>
-  </div>
-      
-  <div class="grid-3">
-    <h2>Community Support</h2>
-    <p>The passionate <a href="/community">Drupal community</a> is on hand to give support via various <a href="/irc">vibrant IRC channels</a>, in the <a href="/forum">forums</a>, and face to face at <a href="http://groups.drupal.org/events">Drupal events</a>. The community has also created <a href="/documentation">Documentation</a> for Drupal, which covers installation, site building, module building, theming, and many other topics. The worldwide community drives the innovation that makes Drupal the preferred choice for web developers and site owners. Drupal is <a href="/principles">open source</a>, meaning everybody can <a href="/getting-involved">get involved</a> and make a difference.</p>
-  </div>
-      
-  <div class="grid-3">
-    <h2>Security Team</h2>
-    <p><a href="/documentation/is-drupal-secure">We take security seriously</a> and have a <a href="/security-team">dedicated team</a> that has a <a href="/about/security-track-record">proven track record</a> in dealing with your security issues professionally and efficiently, meaning you can spend more time creating your site.</p>
-  </div>
-      
-  <div class="grid-3 omega">
-    <h2>Commercial Services</h2>
-    <p>As well as the community, there are <a href="/services">many dedicated companies</a> in the Marketplace on hand to help with your Drupal project. Providing expertise and a deeper understanding, they can help with <a href="/hosting">hosting</a>, spam blocking, <a href="/training-services">training</a>, and more.</p>
+      </div>
+      <h3>Getting Started</h3>
+      <div class="aboutsmall">
+      <p><a href="/start">Get Started with Drupal</a> gives an overview of working with Drupal, or you can check out a pre-built <a href="/project/installation+profiles">Drupal distribution</a> or <a href="/download">download Drupal core</a>. </p>
+      <p class="clear">You can then build upon that with <a href="/project/modules">modules</a>, <a href="/project/themes">themes</a>, and <a href="http://localize.drupal.org">translations</a>.</p>
+	  </div>
   </div>
 </div>
