@@ -197,6 +197,8 @@ function drupalorg_field_access($op, $field, $account, $node = NULL) {
       // Only allow admins, but not the node owner, to change an organization's visibility.
       case 'field_organization_list_rule':
       case 'field_organization_hosting_level':
+      case 'field_organization_hosting_last':
+      case 'field_organization_hosting_by':
         if ($node !== NULL && $node->uid === $user->uid) {
           return FALSE;
         }
@@ -870,9 +872,6 @@ function drupalorg_theme() {
     'drupalorg_recent_activity' => array(
       'arguments' => array('nodes' => array()),
     ),
-    'drupalorg_hosting_page' => array(
-      'template' => 'drupalorg-hosting-page',
-    ),
     'drupalorg_d7_announcement' => array(
       'arguments' => array(
         'language' => 'en',
@@ -1326,11 +1325,6 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   global $user;
 
   if ($op === 'view') {
-    // Add hosting page ads
-    if ($node->nid == 21785) {
-      $node->content['body']['#value'] = theme('drupalorg_hosting_page') . $node->content['body']['#value'];
-    }
-
     // Remove extra terms on SAs, section tabs handle them
     foreach (array(1852, 44, 1856) as $tid) {
       if (isset($node->taxonomy[$tid])) {
@@ -1631,6 +1625,23 @@ function drupalorg_views_pre_render(&$view) {
 
       $n += 1;
     }
+
+    $view->display['default']->handler->options['header'] = drupal_render($content);
+    $view->display['default']->handler->options['header_format'] = 3; // Full HTML
+  }
+  elseif ($view->name === 'drupalorg_marketplace_hosting') {
+    // Add gold-level hosting ads
+    $page = drupal_strtolower($view->display[$view->current_display]->display_title);
+
+    $content = array(
+      '#sorted' => TRUE,
+      'row_1' => drupalorg_crosssite_grid_elements(array(4, 4)),
+      'row_2' => drupalorg_crosssite_grid_elements(array(4, 4)),
+    );
+    $content['row_1']['column_1']['#value'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-a-300x100');
+    $content['row_1']['column_2']['#value'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-b-300x100');
+    $content['row_2']['column_1']['#value'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-c-300x100');
+    $content['row_2']['column_2']['#value'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-d-300x100');
 
     $view->display['default']->handler->options['header'] = drupal_render($content);
     $view->display['default']->handler->options['header_format'] = 3; // Full HTML

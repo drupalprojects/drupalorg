@@ -341,6 +341,81 @@ function drupalorg_marketplace_content_default_fields() {
     ),
   );
 
+  // Exported field: field_organization_hosting_by
+  $fields['organization-field_organization_hosting_by'] = array(
+    'field_name' => 'field_organization_hosting_by',
+    'type_name' => 'organization',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'userreference',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'userreference',
+    'active' => '1',
+    'referenceable_roles' => array(
+      '2' => 0,
+      '3' => 0,
+      '5' => 0,
+      '16' => 0,
+      '22' => 0,
+      '20' => 0,
+      '24' => 0,
+      '12' => 0,
+      '4' => 0,
+      '14' => 0,
+      '7' => 0,
+    ),
+    'referenceable_status' => '1',
+    'advanced_view' => '--',
+    'advanced_view_args' => '',
+    'widget' => array(
+      'autocomplete_match' => 'starts_with',
+      'size' => '60',
+      'reverse_link' => 0,
+      'default_value' => array(
+        '0' => array(
+          'uid' => NULL,
+          '_error_element' => 'default_value_widget][field_organization_hosting_by][0][uid][uid',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Reviewed by',
+      'weight' => '27',
+      'description' => '',
+      'type' => 'userreference_autocomplete',
+      'module' => 'userreference',
+    ),
+  );
+
   // Exported field: field_organization_hosting_categ
   $fields['organization-field_organization_hosting_categ'] = array(
     'field_name' => 'field_organization_hosting_categ',
@@ -400,6 +475,76 @@ Platform as a Service',
       'description' => '',
       'type' => 'optionwidgets_buttons',
       'module' => 'optionwidgets',
+    ),
+  );
+
+  // Exported field: field_organization_hosting_last
+  $fields['organization-field_organization_hosting_last'] = array(
+    'field_name' => 'field_organization_hosting_last',
+    'type_name' => 'organization',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'date',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'date',
+    'active' => '1',
+    'granularity' => array(
+      'year' => 'year',
+      'month' => 'month',
+      'day' => 'day',
+    ),
+    'timezone_db' => '',
+    'tz_handling' => 'none',
+    'todate' => '',
+    'repeat' => 0,
+    'repeat_collapsed' => '',
+    'default_format' => 'medium',
+    'widget' => array(
+      'default_value' => 'blank',
+      'default_value_code' => '',
+      'default_value2' => 'same',
+      'default_value_code2' => '',
+      'input_format' => 'Y M j - H:i:s',
+      'input_format_custom' => '',
+      'increment' => '1',
+      'text_parts' => array(),
+      'year_range' => '-3:+3',
+      'label_position' => 'above',
+      'label' => 'Last reviewed',
+      'weight' => '26',
+      'description' => '',
+      'type' => 'date_select',
+      'module' => 'date',
     ),
   );
 
@@ -666,8 +811,10 @@ always|Always list, regardless of membership',
   t('Hosting URL');
   t('Hosting category');
   t('Hosting level');
+  t('Last reviewed');
   t('List in marketplace');
   t('Logo');
+  t('Reviewed by');
   t('Usual project budget (optional)');
   t('Website');
 

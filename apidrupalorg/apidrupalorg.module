@@ -30,7 +30,9 @@ function apidrupalorg_theme() {
  */
 function apidrupalorg_form_comment_form_alter(&$form, &$form_state) {
   $branch = api_get_active_branch();
+  // Relates each major version number to a drupal release node on drupal.org.
   $versions = array(
+    '8' => 572834,
     '7' => 156281,
     '6' => 97368,
     '5' => 96923,
