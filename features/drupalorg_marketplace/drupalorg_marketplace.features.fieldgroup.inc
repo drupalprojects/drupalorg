@@ -98,6 +98,8 @@ function drupalorg_marketplace_fieldgroup_default_groups() {
       '0' => 'field_organization_marketplace',
       '1' => 'field_organization_list_rule',
       '2' => 'field_organization_hosting_level',
+      '3' => 'field_organization_hosting_last',
+      '4' => 'field_organization_hosting_by',
     ),
   );
 
