@@ -811,10 +811,10 @@ function association_drupalcon_sponsorship_store_views_default_views() {
 <tr class="even"><td>Corporate Leadership</td> <td>Project Managers</td> <td>Themers</td> <td>Designers</td> <td>Developers</td></tr>
 </tbody></table>
 <table><tbody>
-<tr class="even"><th>3,000</th> <th>1,400</th> <th>800</th> <th>300</th></tr>
-<tr class="even"><td>San Francisco 2010</td> <td>Washington D.C 2009</td> <td>Boston 2008</td> <td>Sunnyvale 2007</td></tr>
-<tr class="even"><th>1,200</th> <th>750</th> <th>550</th> <th>400</th> <th>150</th> <th>25</th></tr>
-<tr class="even"><td>Copenhagen 2010</td> <td>Paris 2009</td> <td>Szeged 2008</td> <td>Barcelona 2007</td> <td>Vancouver, BC 2006</td> <td>Antwerp, Belgium 2005</td></tr>
+<tr class="even"><th>2,900</th>        <th>3,000</th>              <th>1,400</th>               <th>800</th>         <th>300</th>            <th>150</th>               </tr>
+<tr class="even"><td>Chicago 2011</td> <td>San Francisco 2010</td> <td>Washington D.C 2009</td> <td>Boston 2008</td> <td>Sunnyvale 2007</td> <td>Vancouver, BC 2006</td></tr>
+<tr class="even"><th>1,600</th>       <th>1,200</th>           <th>750</th>        <th>550</th>         <th>400</th>            <th>25</th></tr>
+<tr class="even"><td>London 2011</td> <td>Copenhagen 2010</td> <td>Paris 2009</td> <td>Szeged 2008</td> <td>Barcelona 2007</td> <td>Antwerp, Belgium 2005</td></tr>
 </tbody></table>
 </div>
 </div>
