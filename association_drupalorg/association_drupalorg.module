@@ -136,6 +136,7 @@ function association_drupalorg_membership_redirect() {
  *   returned.
  */
 function association_drupalorg_civicrm_current_memberships($account) {
+  civicrm_initialize();
   $current_memberships = array();
 
   $contact_id = civicrm_api('uf_match', 'getvalue', array(
