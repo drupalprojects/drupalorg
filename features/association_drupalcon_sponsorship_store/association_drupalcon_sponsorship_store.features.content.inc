@@ -11,7 +11,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_sponsor_drupalorg',
     'type_name' => 'association_sponsor',
     'display_settings' => array(
-      'weight' => '8',
+      'weight' => '-2',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -69,7 +69,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Drupal.org organization URL',
-      'weight' => '1',
+      'weight' => '-2',
       'description' => 'Listed in the <a href="http://drupal.org/marketplace-preview">marketplace</a>, if approved.',
       'type' => 'link',
       'module' => 'link',
@@ -81,7 +81,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_sponsor_logo',
     'type_name' => 'association_sponsor',
     'display_settings' => array(
-      'weight' => '6',
+      'weight' => '-4',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -148,7 +148,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_sponsor_users',
     'type_name' => 'association_sponsor',
     'display_settings' => array(
-      'weight' => '5',
+      'weight' => '1',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -210,7 +210,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Authorized users',
-      'weight' => '-1',
+      'weight' => '1',
       'description' => 'Users who can update company information and buy sponsorships.',
       'type' => 'userreference_autocomplete',
       'module' => 'userreference',
@@ -222,17 +222,17 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_sponsor_vat',
     'type_name' => 'association_sponsor',
     'display_settings' => array(
-      'weight' => '9',
+      'weight' => '4',
       'parent' => '',
       'label' => array(
         'format' => 'above',
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       '5' => array(
@@ -277,7 +277,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'VAT #',
-      'weight' => '2',
+      'weight' => '4',
       'description' => 'If you have one, please tell us.',
       'type' => 'text_textfield',
       'module' => 'text',
@@ -289,17 +289,17 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_sponsor_vector_logo',
     'type_name' => 'association_sponsor',
     'display_settings' => array(
-      'weight' => '7',
+      'weight' => '-3',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       '5' => array(
@@ -339,10 +339,152 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       'max_filesize_per_file' => '',
       'max_filesize_per_node' => '',
       'label' => 'Vector Logo',
-      'weight' => 0,
+      'weight' => '-3',
       'description' => '',
       'type' => 'filefield_widget',
       'module' => 'filefield',
+    ),
+  );
+
+  // Exported field: field_sponsor_link
+  $fields['association_sponsor-field_sponsor_link'] = array(
+    'field_name' => 'field_sponsor_link',
+    'type_name' => 'association_sponsor',
+    'display_settings' => array(
+      'weight' => '-1',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'link',
+    'required' => '1',
+    'multiple' => '0',
+    'module' => 'link',
+    'active' => '1',
+    'attributes' => array(
+      'target' => 'default',
+      'rel' => '',
+      'class' => '',
+      'title' => '',
+    ),
+    'display' => array(
+      'url_cutoff' => '80',
+    ),
+    'url' => 0,
+    'title' => 'none',
+    'title_value' => '',
+    'enable_tokens' => 0,
+    'validate_url' => 1,
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'title' => '',
+          'url' => '',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Link',
+      'weight' => '-1',
+      'description' => '',
+      'type' => 'link',
+      'module' => 'link',
+    ),
+  );
+
+  // Exported field: field_sponsor_twitter
+  $fields['association_sponsor-field_sponsor_twitter'] = array(
+    'field_name' => 'field_sponsor_twitter',
+    'type_name' => 'association_sponsor',
+    'display_settings' => array(
+      'weight' => '3',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => 5,
+      'size' => '60',
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_sponsor_twitter][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Twitter username',
+      'weight' => '3',
+      'description' => '',
+      'type' => 'text_textfield',
+      'module' => 'text',
     ),
   );
 
@@ -838,9 +980,11 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
   t('Drupal.org organization URL');
   t('Extra');
   t('Level');
+  t('Link');
   t('Logo');
   t('Notes');
   t('Sponsor');
+  t('Twitter username');
   t('VAT #');
   t('Vector Logo');
 

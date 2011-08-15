@@ -1,6 +1,30 @@
 <?php
 
 /**
+ * Implementation of hook_imagecache_default_presets().
+ */
+function association_drupalcon_sponsorship_store_imagecache_default_presets() {
+  $items = array(
+    '300x200' => array(
+      'presetname' => '300x200',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '300',
+            'height' => '200',
+            'upscale' => 0,
+          ),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
  * Implementation of hook_node_info().
  */
 function association_drupalcon_sponsorship_store_node_info() {
