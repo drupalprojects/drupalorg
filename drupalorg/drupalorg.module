@@ -1795,7 +1795,7 @@ function drupalorg_civimembership_load($account, $reset = FALSE) {
     }
     else {
       // Check if a record exists in CiviCRM for this particular user.
-      $remote_drupal_uid = db_result(db_query("SELECT slave_uid FROM {bakery_user} WHERE slave = 'http://association.drupal.org/' AND uid = %d", $account->uid));
+      $remote_drupal_uid = db_result(db_query("SELECT slave_uid FROM {bakery_user} WHERE slave = 'https://association.drupal.org/' AND uid = %d", $account->uid));
 
       // Get external CiviCRM DB DSN.
       $previous_dsn = db_set_active('association_civicrm');
