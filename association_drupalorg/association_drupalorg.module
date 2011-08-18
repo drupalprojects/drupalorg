@@ -45,6 +45,21 @@ function association_drupalorg_theme() {
   );
 }
 
+/**
+ * When bakery pulls users, it first creates a dummy account with no email
+ * address. This confuses CiviCRM and it doesn't make a contact. Having
+ * contacts is useful, so we don't have to check that they exist when doing
+ * other operations.
+ */
+function association_drupalorg_user($op, &$edit, &$user, $category = NULL) {
+  if ($op === 'after_update' && civicrm_initialize()) {
+    require_once 'CRM/Core/BAO/UFMatch.php';
+    if (!CRM_Core_BAO_UFMatch::getContactId($user->uid)) {
+      CRM_Core_BAO_UFMatch::synchronize($user, false, 'Drupal', civicrm_get_ctype( 'Individual'));
+    }
+  }
+}
+
 function association_drupalorg_preprocess_association_drupalorg_membership_page(&$variables) {
   $variables['individual_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 1)));
   $variables['organization_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 2)));
