@@ -262,9 +262,10 @@ function association_drupalorg_preprocess_node(&$variables) {
 }
 
 function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+
   if ($form_id === 'association_sponsor_node_form' && empty($form['field_assoc_sponsor_users'][0]['#default_value']['uid'])) {
     // Default the first sponsor user to the current user.
-    global $user;
     $form['field_assoc_sponsor_users'][0]['#default_value']['uid'] = $user->uid;
   }
   elseif ($form_id === 'association_sponsorship_node_form') {
