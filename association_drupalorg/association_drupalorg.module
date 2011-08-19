@@ -172,7 +172,7 @@ function association_drupalorg_civicrm_contact_id($account) {
     }
   }
 
-  if (!is_int($contact_id)) {
+  if (!is_numeric($contact_id)) {
     watchdog('association_drupalorg', 'Could not find CiviCRM contact for %name', array('%name' => $account->name), WATCHDOG_ERROR, l(t('View user'), 'user/' . $account->uid));
     return FALSE;
   }
@@ -192,8 +192,6 @@ function association_drupalorg_civicrm_current_memberships($account) {
   $contact_id = association_drupalorg_civicrm_contact_id($account);
 
   if ($contact_id !== FALSE) {
-    civicrm_initialize();
-
     $statuses = civicrm_api('membership_status', 'get', array(
       'version' => 3,
     ));
