@@ -17,6 +17,8 @@
   <h3>Work</h3>
   <div class="profile"><dl class="clear-block"><?php print $work_info; ?></dl></div>
   <?php print $work_info_edit; ?>
+
+  <?php print node_view(node_load(1484)); ?>
 <?php } else { // Not logged in. ?>
   <p>Please <a href="<?php print url('user', array('query' => drupal_get_destination())); ?>">log in</a>.
 <?php } ?>

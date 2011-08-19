@@ -144,6 +144,43 @@ function association_drupalorg_membership_redirect() {
 }
 
 /**
+ * Query CiviCRM's API for an account's contact ID.
+ *
+ * @param $account
+ *   An account object representing the user who's membership details should be
+ *   returned.
+ */
+function association_drupalorg_civicrm_contact_id($account) {
+  if (module_exists('civicrm')) {
+    civicrm_initialize();
+
+    $contact_id = civicrm_api('uf_match', 'getvalue', array(
+      'version' => 3,
+      'domain_id' => 1,
+      'uf_id' => $account->uid,
+      'return' => 'contact_id',
+    ));
+    if (is_array($contact_id) && $contact_id['is_error'] && !empty($account->mail)) {
+      // CiviCRM contacts can only have one Drupal user. Look up by email. An
+      // email being used multiple times does happen, so can't use getvalue.
+      $result = civicrm_api('email', 'get', array(
+        'version' => 3,
+        'sequential' => TRUE,
+        'email' => $account->mail,
+      ));
+      $contact_id = $result['values'][0]['contact_id'];
+    }
+  }
+
+  if (!is_int($contact_id)) {
+    watchdog('association_drupalorg', 'Could not find CiviCRM contact for %name', array('%name' => $account->name), WATCHDOG_ERROR, l(t('View user'), 'user/' . $account->uid));
+    return FALSE;
+  }
+
+  return $contact_id;
+}
+
+/**
  * Query CiviCRM's API for an account's current memberships.
  *
  * @param $account
@@ -151,25 +188,23 @@ function association_drupalorg_membership_redirect() {
  *   returned.
  */
 function association_drupalorg_civicrm_current_memberships($account) {
-  civicrm_initialize();
   $current_memberships = array();
+  $contact_id = association_drupalorg_civicrm_contact_id($account);
 
-  $contact_id = civicrm_api('uf_match', 'getvalue', array(
-    'version' => 3,
-    'domain_id' => 1,
-    'uf_id' => $account->uid,
-    'return' => 'contact_id',
-  ));
-  $statuses = civicrm_api('membership_status', 'get', array(
-    'version' => 3,
-  ));
-  $memberships = civicrm_api('membership', 'get', array(
-    'version' => 3,
-    'contact_id' => $contact_id,
-  ));
-  foreach ($memberships['values'] as $membership) {
-    if ($statuses['values'][$membership['status_id']]['is_current_member']) {
-      $current_memberships[] = $membership;
+  if ($contact_id !== FALSE) {
+    civicrm_initialize();
+
+    $statuses = civicrm_api('membership_status', 'get', array(
+      'version' => 3,
+    ));
+    $memberships = civicrm_api('membership', 'get', array(
+      'version' => 3,
+      'contact_id' => $contact_id,
+    ));
+    foreach ($memberships['values'] as $membership) {
+      if ($statuses['values'][$membership['status_id']]['is_current_member']) {
+        $current_memberships[] = $membership;
+      }
     }
   }
 
@@ -198,6 +233,12 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
     }
     elseif ($node->type === 'association_sponsorship_level') {
       $node->content['field_assoc_level_notes']['#weight'] = 8;
+    }
+    elseif ($node->type === 'product') {
+      // Hide zero price.
+      if ($node->sell_price == 0) {
+        $node->content['display_price']['#access'] = FALSE;
+      }
     }
     elseif ($node->nid == 1104) {
       // Add example ads for https://association.drupal.org/advertising/web.
@@ -232,10 +273,30 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
     // There isn't anything good to put in the sponsorship body.
     $form['body_field']['#access'] = FALSE;
   }
-  elseif (strpos($form_id, 'uc_product_add_to_cart_form_') === 0 && $form['node']['#value']->type === 'association_sponsorship_level' && association_drupalorg_get_sponsor() === FALSE) {
-    // Do not allow sponsorships to be bought without a sponsor.
-    $form['submit']['#suffix'] = '<br />' . l(t('You must be associated with a sponsor'), $_GET['q'], array('fragment' => 'content'));
-    $form['submit']['#disabled'] = TRUE;
+  elseif (strpos($form_id, 'uc_product_add_to_cart_form_') === 0) {
+    if ($form['node']['#value']->type === 'association_sponsorship_level' && association_drupalorg_get_sponsor() === FALSE) {
+      // Do not allow sponsorships to be bought without a sponsor.
+      $form['submit']['#suffix'] = '<br />' . l(t('You must be associated with a sponsor'), $_GET['q'], array('fragment' => 'content'));
+      $form['submit']['#disabled'] = TRUE;
+    }
+    else {
+      foreach ($form['node']['#value']->attributes as $attribute_id => $attribute) {
+        if ($attribute->name === 'Membership type') {
+          // Make membership prices clear
+          foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
+            $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1 for 1 year'), $value);
+          }
+          // Add current memberships
+          $memberships = '';
+          foreach (association_drupalorg_civicrm_current_memberships($user) as $membership) {
+            $memberships .= '<li>' . t('@membership_type membership expiring @date', array('@membership_type' => $membership['membership_name'], '@date' => format_date(strtotime($membership['end_date']), 'custom', 'M j, Y'))) . '</li>';
+          }
+          if (!empty($memberships)) {
+            $form['attributes'][$attribute_id]['#prefix'] = '<p><strong>' . t('Your current membership') . '</strong></p><ul>' . $memberships . '</ul>';
+          }
+        }
+      }
+    }
   }
 }
 
@@ -335,4 +396,27 @@ function association_drupalorg_get_sponsor($uid = NULL) {
     $uid = $user->uid;
   }
   return db_fetch_object(db_query_range("SELECT n.title, n.nid FROM {content_field_assoc_sponsor_users} su INNER JOIN {node} n ON n.vid = su.vid AND n.status = 1 WHERE su.field_assoc_sponsor_users_uid = %d", $uid, 0, 1));
+}
+
+function association_drupalorg_ca_action() {
+  return array(
+    'association_drupalorg_membership' => array(
+      '#title' => t('Update Association membership'),
+      '#category' => t('Association cutstom'),
+      '#callback' => 'association_drupalorg_update_membership',
+      '#arguments' => array(
+        'order' => array('#entity' => 'uc_order', '#title' => t('Order')),
+      ),
+    ),
+  );
+}
+
+function association_drupalorg_update_membership($order) {
+  foreach ($order->products as $product) {
+    if (isset($product->data['attributes']['Membership type'])) {
+      foreach ($product->data['attributes']['Membership type'] as $membership) {
+        // Individual or Organization
+      }
+    }
+  }
 }
