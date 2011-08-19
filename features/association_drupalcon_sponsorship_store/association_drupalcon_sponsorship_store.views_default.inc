@@ -1215,46 +1215,70 @@ function association_drupalcon_sponsorship_store_views_default_views() {
 
 <div class="grid-6 omega">
 <h2>DrupalCon by the Numbers</h2>
-<p>The Drupal community is a diverse group, with a variety of interests, that span the globe. Thousands of these Drupal enthusiasts will be in attendance at DrupalCon Denver. Let’s take a look at who took part in last year’s DrupalCon.</p>
+<p>The Drupal community is a diverse group, with a variety of interests, that span the globe. Thousands of these Drupal enthusiasts will be in attendance at DrupalCon Denver.</p>
 <p><strong>Attendees by Job Position</strong> (based on San Francisco DrupalCon)</p>
 <table><tbody>
 <tr class="even"><th>25%</th> <th>19%</th> <th>14%</th> <th>11%</th> <th>31%</th></tr>
 <tr class="even"><td>Corporate Leadership</td> <td>Project Managers</td> <td>Themers</td> <td>Designers</td> <td>Developers</td></tr>
 </tbody></table>
-<table><tbody>
-<tr class="even"><th>2,900</th>        <th>3,000</th>              <th>1,400</th>               <th>800</th>         <th>300</th>            <th>150</th>               </tr>
-<tr class="even"><td>Chicago 2011</td> <td>San Francisco 2010</td> <td>Washington D.C 2009</td> <td>Boston 2008</td> <td>Sunnyvale 2007</td> <td>Vancouver, BC 2006</td></tr>
-<tr class="even"><th>1,600</th>       <th>1,200</th>           <th>750</th>        <th>550</th>         <th>400</th>            <th>25</th></tr>
-<tr class="even"><td>London 2011</td> <td>Copenhagen 2010</td> <td>Paris 2009</td> <td>Szeged 2008</td> <td>Barcelona 2007</td> <td>Antwerp, Belgium 2005</td></tr>
-</tbody></table>
+
+<div class="grid-3 alpha"><table><tbody>
+<tr class="even"><td><em>3,500</em></td><td>Denver 2012 <em>estimated</em></td></tr>
+<tr class="odd"> <td>2,900</td><td>Chicago 2011</td></tr>
+<tr class="even"><td>3,000</td><td>San Francisco 2010</td></tr>
+<tr class="odd"> <td>1,400</td><td>Washington, D.C. 2009</td></tr>
+<tr class="even"><td>800</td><td>Boston 2008</td></tr>
+<tr class="odd"> <td>300</td><td>Sunnyvale 2007</td></tr>
+<tr class="even"><td>150</td><td>Vancouver 2006</td></tr>
+</tbody></table></div>
+
+<div class="grid-3 omega"><table><tbody>
+<tr class="even"><td>1,800</td><td>London 2011</td></tr>
+<tr class="odd"> <td>1,200</td><td>Copenhagen 2010</td></tr>
+<tr class="even"><td>750</td><td>Paris 2009</td></tr>
+<tr class="odd"> <td>550</td><td>Szeged 2008</td></tr>
+<tr class="even"><td>400</td><td>Barcelona 2007</td></tr>
+<tr class="odd"> <td>25</td><td>Antwerp 2005</td></tr>
+</tbody></table></div>
+
 </div>
 </div>
 
 <p><br /></p>
 <table>
-<thead><tr><td></td><th>Platinum</th> <th>Gold</th> <th>Silver</th> <th>Bronze</th></tr></thead>
+<thead><tr>      <td></td>                                                               <th>Diamond</th>           <th>Platinum</th>          <th>Gold</th>              <th>Silver</th>            <th>Bronze</th></tr></thead>
 <tbody>
-<tr class="odd"><th>Price</th> <td>$25,000</td> <td>$12,500</td> <td>$7,500</td> <td>$4,000</td></tr>
-<tr class="even"><th>Quantities</th> <td>8</td> <td>12</td> <td>22</td> <td>20</td></tr>
-<tr class="odd"><th>Conference passes</th> <td>16</td> <td>8</td> <td>5</td> <td>2</td></tr>
-<tr class="even"><th>Exhibit hall</th> <td>20\'W x 8\'H x 10\'D</td> <td>10\'W x 8\'H x 10\'D</td> <td>10\'W x 8\'H x 10\'D</td> <td>10\'W x 8\'H x 10\'D</td></tr>
-<tr class="odd"><th>Company logo, link, & description<br />on sponsor web page</th> <td>Yes</td> <td>Yes</td> <td>Yes</td> <td>Yes</td></tr>
-<tr class="even"><th>Logo on plenary screen</th> <td>Yes</td> <td>Yes</td> <td>Yes</td> <td>Yes</td></tr>
-<tr class="odd"><th>Program guide<br />(sizes will be adjusted<br />if guide format changes)</th> <td>Full Page Ad</td> <td>Half Page Ad</td> <td>Quarter Page Ad</td> <td>Acknowledgement</td></tr>
-<tr class="even"><th>Tote bag insert</th> <td>Yes</td> <td></td> <td></td> <td></td></tr>
-<tr class="odd"><th>Value-add booklet<br >(see below)</th> <td>Yes</td> <td>Yes</td> <td>Yes</td> <td></td></tr>
-<tr class="even"><th>Named room</th> <td>Yes</td> <td></td> <td></td> <td></td></tr>
-<tr class="odd"><th>Drupal association<br />and committee dinner</th> <td>2 tickets</td> <td></td> <td></td> <td></td></tr>
+<tr class="odd"> <th>Price</th>                                                          <td>$45,000</td>           <td>$25,000</td>           <td>$12,500</td>           <td>$7,500</td>            <td>$4,000</td></tr>
+<tr class="even"><th>Quantities</th>                                                     <td>2</td>                 <td>6</td>                 <td>12</td>                <td>22</td>                <td>20</td></tr>
+<tr class="odd"> <th>Conference passes</th>                                              <td>20</td>                <td>16</td>                <td>8</td>                 <td>5</td>                 <td>2</td></tr>
+<tr class="even"><th>Exhibit hall</th>                                                   <td>20\'W × 8\'H × 10\'D</td> <td>20\'W × 8\'H × 10\'D</td> <td>10\'W × 8\'H × 10\'D</td> <td>10\'W × 8\'H × 10\'D</td> <td>10\'W × 8\'H × 10\'D</td></tr>
+<tr class="odd"> <th>Premium event site placement</th>                                   <td>Yes</td>               <td>Yes</td>               <td></td>                  <td></td>                  <td></td></tr>
+<tr class="even"><th>Event site: company logo, link, and description</th>                <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Yes</td></tr>
+<tr class="odd"> <th>Logo on plenary screen</th>                                         <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Yes</td></tr>
+<tr class="even"><th>Logo on program badge *</th>                                        <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Acknowledgement</td>   <td>Acknowledgement</td></tr>
+<tr class="odd"> <th>Event web site ad †</th>                                            <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td></td></tr>
+<tr class="even"><th>Registration desk handout</th>                                      <td>Yes</td>               <td>Yes</td>               <td></td>                  <td></td>                  <td></td></tr>
+<tr class="odd"> <th>Value-add booklet ‡</th>                                            <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td></td></tr>
+<tr class="even"><th>Named room</th>                                                     <td>Yes</td>               <td>Yes</td>               <td></td>                  <td></td>                  <td></td></tr>
+<tr class="odd"> <th>Drupal Association panel and cocktail table</th>                    <td>4 tickets</td>         <td>2 tickets</td>         <td>2 tickets</td>         <td></td>                  <td></td></tr>
+<tr class="even"><th>Jobs posting: bulletin board</th>                                   <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Yes</td></tr>
+<tr class="odd"> <th>Special offer posting</th>                                          <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Yes</td></tr>
+<tr class="even"><th>Keynote introdruction</th>                                          <td>Yes</td>               <td></td>                  <td></td>                  <td></td>                  <td></td></tr>
+<tr class="odd"> <th>Day stage speaking opportunity</th>                                 <td>One 50 minute session on the Day Stage during Drupal Means Business Exhibit Hall Day</td> <td>One 50 minute Day Stage session on Tuesday or Wednesday;<br />or one 25 minute session on Thursday (limited availability)</td> <td>Participate in a panel or lightning talk</td> <td></td> <td></td></tr>
+<tr class="even"><th>Drupal Means Business §</th>                                        <td>20 tickets</td>        <td>10 tickets</td>        <td>5 tickets</td>         <td>2 tickets</td>         <td>2 tickets</td></tr>
+<tr class="odd"> <th><a href="http://twitter.com/#!/drupalcon">@drupalcon</a> tweet</th> <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Yes</td>               <td>Yes</td></tr>
+<tr class="even"><th>Logo/link on event emails</th>                                      <td>Yes</td>               <td>Yes</td>               <td></td>                  <td></td>                  <td></td></tr>
+<tr class="odd"> <th>Logo on main signage</th>                                           <td>Yes</td>               <td>Yes</td>               <td></td>                  <td></td>                  <td></td></tr>
 </tbody>
 </table>
 
 <div class="clear-block"><div class="grid-4 alpha">
-<h3>About Diamond Level</h3>
-<p>Currently, we are not offering a Diamond Level. However, we may create additional benefits, allowing Platinum sponsors to upgrade to a Diamond Level. Platinum sponsors will get the first opportunity to upgrade to Diamond.</p>
-</div><div class="grid-8 omega">
-<h3>What is a Value-add Booklet?</h3>
-<p>This booklet is a companion to the program guide and will go into the Tote Bag for every attendee to receive. Each sponsor gets one page to promote either a discount/ promotional offer or a sweepstakes.</p>
-<p>Why the change from last year\'s tote bag insert? Your value-add message will draw more readers and it will drive traffic (attendee should redeem your offer or enter sweepstakes at your booth or website.) It is also a greener promotional opportunity and saves you money on printing and shipping.</p>
+<p><small>* <strong>Program badge</strong>: The program badge replaces the traditional program guide. It is a printed piece that is easier to use and hooks on to your lanyard. It is smaller in size than the program guide, so there is only room for sponsor logos.</small></p>
+<p><small>† <strong>Web ads</strong>: Diamond sponsors’ ads will be weighted 50% more than Platinum ads, which will be weighted 50% more than Gold sponsor ads, which will be weighted 50% more than Silver sponsor ads.</small></p>
+</div><div class="grid-4">
+<p><small>‡ <strong>Value-add booklet</strong>: This is a printed piece that goes in attendee tote bags. Sponsors who receive this benefit will provide an ad promoting something of value to attendees such as a special offer or a discount. This is a green solution to tote bag inserts and saves sponsors’ print budget as well as creates a way to draw traffic to booths and websites.</small></p>
+</div><div class="grid-4 omega">
+<p><small>§ <strong>Drupal Means Business</strong>: Drupal Business evaluators can buy a one day pass for about $50, to enter the sponsor fair on Thursday during DrupalCon. The Day Stage is located in the Sponsor Fair and all content that day will target this audience (case studies, best practices, etc.). Sponsor packages include a set number of Drupal Means Business passes, so you can invite your potential clients and use this day as a sales tool. The content will help you demonstrate that Drupal is the CMS platform of choice.</small></p>
 </div>');
   $handler->override_option('header_format', '3');
   $handler->override_option('header_empty', 1);
