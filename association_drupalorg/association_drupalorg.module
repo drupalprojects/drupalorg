@@ -21,13 +21,6 @@ function association_drupalorg_menu() {
       'page callback' => 'association_drupalorg_membership_redirect',
       'type' => MENU_CALLBACK,
     ),
-    'denver2012' => array(
-      'title' => 'Register for DrupalCon Denver',
-      'access arguments' => array('access administration pages'),
-      'page callback' => 'theme',
-      'page arguments' => array('association_drupalorg_denver2012_page'),
-      'type' => MENU_CALLBACK,
-    ),
   );
 }
 
@@ -38,9 +31,6 @@ function association_drupalorg_theme() {
     ),
     'association_drupalorg_donate_page' => array(
       'template' => 'association-drupalorg-donate-page',
-    ),
-    'association_drupalorg_denver2012_page' => array(
-      'template' => 'association-drupalorg-denver2012-page',
     ),
   );
 }
@@ -85,53 +75,6 @@ function association_drupalorg_preprocess_association_drupalorg_donate_page(&$va
   $variables['donate_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 29)));
   if (!user_is_logged_in()) {
     $variables['donate_url'] = url('membership-redirect', array('query' => array('to' => $variables['donate_url'])));
-  }
-}
-
-function association_drupalorg_preprocess_association_drupalorg_denver2012_page(&$variables) {
-  global $user;
-  if (user_is_logged_in()) {
-    drupal_set_message(t('I assure you, <em>we are <strong>not</strong> open</em>, yet. Only site admins can see this page. Prices are completely made up.'), 'warning');
-    $account = user_load($user->uid);
-
-    if (substr($account->init, 0, strlen(variable_get('bakery_master', 'http://drupal.org/'))) === variable_get('bakery_master', 'http://drupal.org/')) {
-      $personal_info_fields = array('profile_full_name', 'profile_country', 'profile_irc_nick', 'profile_personal_home_page', 'profile_twitter_url');
-      $work_info_fields = array('profile_job', 'profile_current_company_organization', 'profile_company_home_page');
-      $all_fields = array_merge($personal_info_fields, $work_info_fields);
-      $fields = array();
-      $result = db_query("SELECT name, visibility, type, page, title FROM {profile_fields} WHERE name IN (" . db_placeholders($all_fields, 'text') . ")", $all_fields);
-      while ($field = db_fetch_object($result)) {
-        $fields[$field->name] = $field;
-      }
-
-      $variables['personal_info'] = '';
-      foreach ($personal_info_fields as $name) {
-        if ($name === 'profile_full_name' && empty($account->profile_full_name)) {
-          $variables['personal_info'] .= theme('user_profile_item', array(
-            '#title' => check_plain($fields[$name]->title),
-            '#value' => '<div class="warning">' . t('While not required, your full name is appreciated.') . ' ' . l(t('Edit'), $account->init . '/Personal information', array('query' => array('destination' => 'denver2012-registration'))) . '</div>',
-          ));
-        }
-        else {
-          $variables['personal_info'] .= theme('user_profile_item', array(
-            '#title' => check_plain($fields[$name]->title),
-            '#value' => profile_view_field($account, $fields[$name]),
-          ));
-        }
-      }
-      $variables['personal_info_edit'] = l(t('Edit personal information'), $account->init . '/Personal information', array('query' => array('destination' => 'denver2012-registration')));
-      $variables['work_info'] = '';
-      foreach ($work_info_fields as $name) {
-        $variables['work_info'] .= theme('user_profile_item', array(
-          '#title' => check_plain($fields[$name]->title),
-          '#value' => profile_view_field($account, $fields[$name]),
-        ));
-      }
-      $variables['work_info_edit'] = l(t('Edit work'), $account->init . '/Work', array('query' => array('destination' => 'denver2012-registration')));
-    }
-    else { // Not synced for bakery.
-      drupal_set_message(t('Your account is not synced for single sign on, please <a href="!contact">contact us</a>. For Category, select Website feedback. Include your Drupal.org username and/or email address used.', array('!contact' => url('contact'))), 'warning');
-    }
   }
 }
 
@@ -294,7 +237,91 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
             $form['attributes'][$attribute_id]['#prefix'] = '<p><strong>' . t('Your current membership') . '</strong></p><ul>' . $memberships . '</ul>';
           }
         }
+        elseif ($attribute->name === 'Conference registration') {
+          // Make sure user is logged in.
+          if (user_is_logged_in()) {
+            // And properly workign with Bakery.
+            if (TRUE || substr($user->init, 0, strlen(variable_get('bakery_master', 'http://drupal.org/'))) === variable_get('bakery_master', 'http://drupal.org/')) {
+              // Load profile data we might show on badges.
+              $account = user_load($user->uid);
+              $personal_info_fields = array('profile_full_name', 'profile_country', 'profile_irc_nick', 'profile_personal_home_page', 'profile_twitter_url');
+              $work_info_fields = array('profile_job', 'profile_current_company_organization', 'profile_company_home_page');
+              $all_fields = array_merge($personal_info_fields, $work_info_fields);
+              $fields = array();
+              $result = db_query("SELECT name, visibility, type, page, title FROM {profile_fields} WHERE name IN (" . db_placeholders($all_fields, 'text') . ")", $all_fields);
+              while ($field = db_fetch_object($result)) {
+                $fields[$field->name] = $field;
+              }
+
+              $personal_info = '';
+              foreach ($personal_info_fields as $name) {
+                if ($name === 'profile_full_name' && empty($account->profile_full_name)) {
+                  $personal_info .= theme('user_profile_item', array(
+                    '#title' => check_plain($fields[$name]->title),
+                    '#value' => '<div class="warning">' . t('While not required, your full name is appreciated.') . ' ' . l(t('Edit'), $account->init . '/Personal information', array('query' => array('destination' => 'denver2012-registration'))) . '</div>',
+                  ));
+                }
+                else {
+                  $personal_info .= theme('user_profile_item', array(
+                    '#title' => check_plain($fields[$name]->title),
+                    '#value' => profile_view_field($account, $fields[$name]),
+                  ));
+                }
+              }
+              $work_info = '';
+              foreach ($work_info_fields as $name) {
+                $work_info .= theme('user_profile_item', array(
+                  '#title' => check_plain($fields[$name]->title),
+                  '#value' => profile_view_field($account, $fields[$name]),
+                ));
+              }
+
+              $form['attributes'][$attribute_id]['#prefix'] = '<h2>' . t('Personal information') . '</h2>';
+              $form['attributes'][$attribute_id]['#prefix'] .= '<p>' . t('We use your Drupal.org account. This information can be updated on Drupal.org at any time, and may be printed on your badge.') . '</p>';
+              $form['attributes'][$attribute_id]['#prefix'] .= '<div class="profile"><dl class="clear-block">' . $personal_info . '</dl></div>';
+              $form['attributes'][$attribute_id]['#prefix'] .= '<p>' . l(t('Edit personal information'), $account->init . '/Personal information', array('query' => array('destination' => 'denver2012-registration'))) . '</p>';
+              $form['attributes'][$attribute_id]['#prefix'] .= '<h3>' . t('Work') . '</h3>';
+              $form['attributes'][$attribute_id]['#prefix'] .= '<div class="profile"><dl class="clear-block">' . $work_info . '</dl></div>';
+              $form['attributes'][$attribute_id]['#prefix'] .= '<p>' . l(t('Edit work'), $account->init . '/Work', array('query' => array('destination' => 'denver2012-registration'))) . '</p>';
+
+              // Make prices clear and check registration by default
+              foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
+                $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1'), $value);
+                if (strpos($value, 'DrupalCon registration') === 0) {
+                  $form['attributes'][$attribute_id]['#default_value'] = array($key);
+                }
+                // todo make sure each attribute can only be bought once
+              }
+
+              // Add to Cart is boring.
+              $form['submit']['#value'] = t('I’m going to DrupalCon!');
+              $form['#redirect'] = 'cart/checkout';
+
+              array_unshift($form['#submit'], 'association_drupalorg_conference_registration_submit');
+            }
+            else { // Not synced for bakery.
+              drupal_set_message(t('Your account is not synced for single sign on, please <a href="!contact">contact us</a>, select Website feedback category. Include your Drupal.org username and/or email address used.', array('!contact' => url('contact'))), 'warning');
+              $form['attributes']['#access'] = FALSE;
+              $form['submit']['#access'] = FALSE;
+            }
+          }
+          else {
+            // Require login
+            drupal_set_message(t('Please <a href="!login">log in</a> to purchase DrupalCon tickets.', array('!login' => url('user', array('query' => drupal_get_destination())))), 'warning');
+            $form['attributes']['#access'] = FALSE;
+            $form['submit']['#access'] = FALSE;
+          }
+        }
       }
+    }
+  }
+}
+
+function association_drupalorg_conference_registration_submit($form, $form_state) {
+  // One ticket per cart.
+  foreach (uc_cart_get_contents($cart_id) as $item) {
+    if ($item->nid === $form['node']['#value']->nid) {
+      uc_cart_remove_item($item->nid, NULL, $item->data);
     }
   }
 }
