@@ -215,6 +215,17 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
     // There isn't anything good to put in the sponsorship body.
     $form['body_field']['#access'] = FALSE;
   }
+  elseif ($form_id === 'uc_cart_view_form') {
+    // One ticket per cart.
+    foreach (element_children($form['items']) as $key) {
+      $node = node_load($form['items'][$key]['nid']['#value']);
+      foreach ($node->attributes as $attribute) {
+        if ($attribute->name === 'Conference registration') {
+          $form['items'][$key]['qty']['#type'] = 'value';
+        }
+      }
+    }
+  }
   elseif (strpos($form_id, 'uc_product_add_to_cart_form_') === 0) {
     if ($form['node']['#value']->type === 'association_sponsorship_level' && association_drupalorg_get_sponsor() === FALSE) {
       // Do not allow sponsorships to be bought without a sponsor.
@@ -228,19 +239,26 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
           foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
             $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1 for 1 year'), $value);
           }
+
+          // Add heading and make description larger
+          $form['attributes'][$attribute_id]['#prefix'] = '<h2>' . t('Drupal Association Membership') . '</h2>';
+          $form['attributes'][$attribute_id]['#prefix'] .= $form['attributes'][$attribute_id]['#description'];
+          unset($form['attributes'][$attribute_id]['#description']);
+
           // Add current memberships
           $memberships = '';
           foreach (association_drupalorg_civicrm_current_memberships($user) as $membership) {
             $memberships .= '<li>' . t('@membership_type membership expiring @date', array('@membership_type' => $membership['membership_name'], '@date' => format_date(strtotime($membership['end_date']), 'custom', 'M j, Y'))) . '</li>';
           }
           if (!empty($memberships)) {
-            $form['attributes'][$attribute_id]['#prefix'] = '<p><strong>' . t('Your current membership') . '</strong></p><ul>' . $memberships . '</ul>';
+            $form['attributes'][$attribute_id]['#prefix'] .= '<p><strong>' . t('Your current membership') . '</strong></p><ul>' . $memberships . '</ul>';
           }
         }
         elseif ($attribute->name === 'Conference registration') {
           // Make sure user is logged in.
           if (user_is_logged_in()) {
-            // And properly workign with Bakery.
+            // And properly working with Bakery.
+            // todo remove TRUE for production
             if (TRUE || substr($user->init, 0, strlen(variable_get('bakery_master', 'http://drupal.org/'))) === variable_get('bakery_master', 'http://drupal.org/')) {
               // Load profile data we might show on badges.
               $account = user_load($user->uid);
@@ -284,14 +302,21 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
               $form['attributes'][$attribute_id]['#prefix'] .= '<div class="profile"><dl class="clear-block">' . $work_info . '</dl></div>';
               $form['attributes'][$attribute_id]['#prefix'] .= '<p>' . l(t('Edit work'), $account->init . '/Work', array('query' => array('destination' => 'denver2012-registration'))) . '</p>';
 
-              // Make prices clear and check registration by default
+              // Registration heading
+              $form['attributes'][$attribute_id]['#prefix'] .= '<h2>' . $form['attributes'][$attribute_id]['#title'] . '</h2>';
+              unset($form['attributes'][$attribute_id]['#title']);
+
               foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
+                // Make prices clear.
                 $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1'), $value);
+                // Make sure each attribute can only be bought once.
+                // todo that ^
                 if (strpos($value, 'DrupalCon registration') === 0) {
-                  $form['attributes'][$attribute_id]['#default_value'] = array($key);
+                  $form['attributes'][$attribute_id]['#value'] = array($key);
+                  $form['attributes'][$attribute_id]['#association_drupalorg_disabled'] = array($key);
                 }
-                // todo make sure each attribute can only be bought once
               }
+              $form['attributes'][$attribute_id]['#after_build'][] = 'association_drupalorg_conference_registration_after_build';
 
               // Add to Cart is boring.
               $form['submit']['#value'] = t('I’m going to DrupalCon!');
@@ -317,8 +342,21 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
   }
 }
 
+/**
+ * Because formapi doesn't hve a way to selectively disable checkboxes.
+ */
+function association_drupalorg_conference_registration_after_build($form, $form_state) {
+  foreach ($form['#association_drupalorg_disabled'] as $key) {
+    $form[$key]['#attributes']['disabled'] = 'disabled';
+    $form[$key]['#value'] = TRUE;
+  }
+  return $form;
+}
+
+/**
+ * One ticket per cart.
+ */
 function association_drupalorg_conference_registration_submit($form, $form_state) {
-  // One ticket per cart.
   foreach (uc_cart_get_contents($cart_id) as $item) {
     if ($item->nid === $form['node']['#value']->nid) {
       uc_cart_remove_item($item->nid, NULL, $item->data);
@@ -437,11 +475,15 @@ function association_drupalorg_ca_action() {
   );
 }
 
+/**
+ * Save memberhsip to CiviCRM.
+ */
 function association_drupalorg_update_membership($order) {
   foreach ($order->products as $product) {
     if (isset($product->data['attributes']['Membership type'])) {
       foreach ($product->data['attributes']['Membership type'] as $membership) {
         // Individual or Organization
+        // todo
       }
     }
   }
