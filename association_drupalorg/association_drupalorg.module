@@ -262,7 +262,7 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
               // Load profile data we might show on badges.
               $account = user_load($user->uid);
               $personal_info_fields = array('profile_full_name', 'profile_country', 'profile_irc_nick', 'profile_personal_home_page', 'profile_twitter_url');
-              $work_info_fields = array('profile_job', 'profile_current_company_organization', 'profile_company_home_page');
+              $work_info_fields = array('profile_job', 'profile_current_company_organization');
               $all_fields = array_merge($personal_info_fields, $work_info_fields);
               $fields = array();
               $result = db_query("SELECT name, visibility, type, page, title FROM {profile_fields} WHERE name IN (" . db_placeholders($all_fields, 'text') . ")", $all_fields);
