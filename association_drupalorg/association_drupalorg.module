@@ -258,8 +258,7 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
           // Make sure user is logged in.
           if (user_is_logged_in()) {
             // And properly working with Bakery.
-            // todo remove TRUE for production
-            if (TRUE || substr($user->init, 0, strlen(variable_get('bakery_master', 'http://drupal.org/'))) === variable_get('bakery_master', 'http://drupal.org/')) {
+            if (substr($user->init, 0, strlen(variable_get('bakery_master', 'http://drupal.org/'))) === variable_get('bakery_master', 'http://drupal.org/')) {
               // Load profile data we might show on badges.
               $account = user_load($user->uid);
               $personal_info_fields = array('profile_full_name', 'profile_country', 'profile_irc_nick', 'profile_personal_home_page', 'profile_twitter_url');
@@ -306,16 +305,44 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
               $form['attributes'][$attribute_id]['#prefix'] .= '<h2>' . $form['attributes'][$attribute_id]['#title'] . '</h2>';
               unset($form['attributes'][$attribute_id]['#title']);
 
-              foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
-                // Make prices clear.
-                $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1'), $value);
-                // Make sure each attribute can only be bought once.
-                // todo that ^
-                if (strpos($value, 'DrupalCon registration') === 0) {
-                  $form['attributes'][$attribute_id]['#value'] = array($key);
-                  $form['attributes'][$attribute_id]['#association_drupalorg_disabled'] = array($key);
+              // Check for existing order. One per user.
+              $already_bought = FALSE;
+              $result = db_query("SELECT o.order_id, o.order_status, op.data FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid = %d WHERE o.uid = %d", $form['node']['#value']->nid, $user->uid);
+              while ($order = db_fetch_object($result)) {
+                $order = drupal_unpack($order);
+                if ($order->order_status === 'payment_received') {
+                  foreach ($order->attributes['Conference registration'] as $attribute) {
+                    foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
+                      if (strpos($value, $attribute) === 0) {
+                        unset($form['attributes'][$attribute_id]['#options'][$key]);
+                        $already_bought = TRUE;
+                      }
+                    }
+                  }
+                }
+                else {
+                  drupal_set_message(t('You already have a <a href="!order">pending order</a>. Please only complete one order per user account.', array('!order' => url('user/' . $user->uid . '/order/' . $order->order_id))), 'warning');
                 }
               }
+
+              if (count($form['attributes'][$attribute_id]['#options']) === 0) {
+                drupal_set_message(t('You have already bought your conference registration. You can only buy one for each user account.'));
+                $form['attributes']['#access'] = FALSE;
+                $form['submit']['#access'] = FALSE;
+                return;
+              }
+              elseif ($already_bought) {
+                drupal_set_message(t('You have already bought your conference registration. You can only buy one for each user account. You can still add options.'));
+              }
+
+              // Make prices clear.
+              foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
+                $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1'), $value);
+              }
+
+              // Need to buy something, first is required.
+              $form['attributes'][$attribute_id]['#value'] = array(reset(array_keys($form['attributes'][$attribute_id]['#options'])));
+              $form['attributes'][$attribute_id]['#association_drupalorg_disabled'] = array(reset(array_keys($form['attributes'][$attribute_id]['#options'])));
               $form['attributes'][$attribute_id]['#after_build'][] = 'association_drupalorg_conference_registration_after_build';
 
               // Add to Cart is boring.
