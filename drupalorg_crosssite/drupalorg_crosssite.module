@@ -93,8 +93,8 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       'get-involved'    => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main', 'attributes' => array('title' => t('Learn how to contribute to the Drupal project'))),
       'marketplace'   => array('href' => 'drupal-services', 'title' => t('Marketplace'), '#site' => 'main', 'attributes' => array('title' => t('People and organizations offering Drupal services'))),
       'groups' => array('href' => 'groups', 'title' => t('Groups & Meetups'), '#site' => 'groups', 'attributes' => array('title' => t('groups.drupal.org'))),
-      'dcchicago'   => array('href' => '', 'title' => t('DrupalCon Chicago 2011'), '#site' => 'chicago2011', 'attributes' => array('title' => t('DrupalCon chicago2011.drupal.org'))),
-      'dclondon'   => array('href' => '', 'title' => t('DrupalCon London 2011'), '#site' => 'london2011', 'attributes' => array('title' => t('DrupalCon london2011.drupal.org'))),
+      'drupalcon'   => array('href' => 'drupalcon', 'title' => t('DrupalCon'), '#site' => 'main', 'attributes' => array('title' => t('Upcoming and past DrupalCons'))),
+      'help'   => array('href' => 'support', 'title' => t('Need Help?'), '#site' => 'main', 'attributes' => array('title' => t('Find your way around this site'))),
     ),
     array(
       'get-started' => array('href' => 'start', 'title' => t('Get Started'), '#site' => 'main'),
@@ -116,7 +116,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       'association-about' => array('href' => 'about', 'title' => t('The Drupal Association'), '#site' => 'association', 'attributes' => array('title' => t('About the Drupal Association'))),
       'advertise' => array('href' => 'advertising', 'title' => t('Advertise'), '#site' => 'association', 'attributes' => array('title' => t('How to advertise on Drupal.org'))),
       // query may be removed with #910442 and/or #1019300.
-      'drupalorg' => array('href' => 'project/drupal.org projects', 'query' => array('filters' => 'bs_project_sandbox:[* TO *]'), 'title' => t('Drupal.org'), '#site' => 'main', 'attributes' => array('title' => t('About Drupal.org'))),
+      'drupalorg' => array('href' => '/node/179723', 'query' => array('filters' => 'bs_project_sandbox:[* TO *]'), 'title' => t('About Drupal.org'), '#site' => 'main', 'attributes' => array('title' => t('About Drupal.org'))),
       'accessibility' => array('href' => 'about/accessibility', 'title' => t('Web accessibility'), '#site' => 'main', array('title' => t('Drupal Accessibility Statement'))),
     ),
   );
@@ -337,7 +337,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       $nav_content_links = array(
         // query may be removed with #910442 and/or #1019300.
         'home' => array('title' => t('Drupal.org Projects'), 'href' => 'project/drupal.org projects', 'query' => array('filters' => 'bs_project_sandbox:[* TO *]'), '#active' => drupalorg_crosssite_child_of('main', 'project/drupal.org projects', $vars) && !(drupalorg_crosssite_child_of('main', 'node/3202') || drupalorg_crosssite_child_of('main', 'node/18753') || drupalorg_crosssite_child_of('main', 'node/1025112') || drupalorg_crosssite_child_of('main', 'node/107028') || drupalorg_crosssite_child_of('main', 'node/651778'))),
-        'drupalorg-faq' => array('title' => t('FAQ'), 'href' => 'node/179723', '#active' => drupalorg_crosssite_child_of('main', 'node/179723')),
+        'drupalorg-faq' => array('title' => t('About Drupal.org'), 'href' => 'node/179723', '#active' => drupalorg_crosssite_child_of('main', 'node/179723')),
         'webmasters' =>      array('title' => t('Webmasters'),       'href' => 'node/3202',   '#active' => drupalorg_crosssite_child_of('main', 'node/3202',   $vars)),
         'documentation' =>   array('title' => t('Documentation'),    'href' => 'node/18753',  '#active' => drupalorg_crosssite_child_of('main', 'node/18753',  $vars)),
         'projectapplications' => array('title' => t('Project Applications'), 'href' => 'node/1025112', '#active' => drupalorg_crosssite_child_of('main', 'node/1025112', $vars)),
