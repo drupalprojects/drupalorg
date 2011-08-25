@@ -219,9 +219,11 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
     // One ticket per cart.
     foreach (element_children($form['items']) as $key) {
       $node = node_load($form['items'][$key]['nid']['#value']);
-      foreach ($node->attributes as $attribute) {
-        if ($attribute->name === 'Conference registration') {
-          $form['items'][$key]['qty']['#type'] = 'value';
+      if (isset($node->attributes)) {
+        foreach ($node->attributes as $attribute) {
+          if ($attribute->name === 'Conference registration') {
+            $form['items'][$key]['qty']['#type'] = 'value';
+          }
         }
       }
     }
