@@ -51,14 +51,12 @@ function association_drupalorg_user($op, &$edit, &$user, $category = NULL) {
 }
 
 function association_drupalorg_preprocess_association_drupalorg_membership_page(&$variables) {
-  $variables['individual_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 1)));
-  $variables['organization_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 2)));
+  $variables['individual_usd_url'] = url('cart/add/e-p1629_a34o134_m0', array('query' => array('destination' => 'cart/checkout')));
+  $variables['organization_usd_url'] = url('cart/add/e-p1629_a34o139_m0', array('query' => array('destination' => 'cart/checkout')));
+  $variables['individual_eur_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 1)));
+  $variables['organization_eur_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 2)));
 
-  if (!user_is_logged_in()) {
-    $variables['individual_url'] = url('membership-redirect', array('query' => array('to' => $variables['individual_url'])));
-    $variables['organization_url'] = url('membership-redirect', array('query' => array('to' => $variables['organization_url'])));
-  }
-  else {
+  if (user_is_logged_in()) {
     global $user;
 
     $variables['memberships'] = array();
@@ -69,12 +67,20 @@ function association_drupalorg_preprocess_association_drupalorg_membership_page(
       $variables['memberships'][] = t('No current membership.');
     }
   }
+  else {
+    $variables['individual_usd_url'] = url('membership-redirect', array('query' => array('to' => $variables['individual_usd_url'])));
+    $variables['organization_usd_url'] = url('membership-redirect', array('query' => array('to' => $variables['organization_usd_url'])));
+    $variables['individual_eur_url'] = url('membership-redirect', array('query' => array('to' => $variables['individual_eur_url'])));
+    $variables['organization_eur_url'] = url('membership-redirect', array('query' => array('to' => $variables['organization_eur_url'])));
+  }
 }
 
 function association_drupalorg_preprocess_association_drupalorg_donate_page(&$variables) {
-  $variables['donate_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 29)));
+  $variables['donate_usd_url'] = url('node/1639');
+  $variables['donate_eur_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 29)));
   if (!user_is_logged_in()) {
-    $variables['donate_url'] = url('membership-redirect', array('query' => array('to' => $variables['donate_url'])));
+    $variables['donate_usd_url'] = url('membership-redirect', array('query' => array('to' => $variables['donate_usd_url'])));
+    $variables['donate_eur_url'] = url('membership-redirect', array('query' => array('to' => $variables['donate_eur_url'])));
   }
 }
 

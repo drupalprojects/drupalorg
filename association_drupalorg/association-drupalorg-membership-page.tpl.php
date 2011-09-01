@@ -1,6 +1,6 @@
 <div class="grid-8 alpha">
   <h2>Become an Individual Member</h2>
-  <p><a href="<?php print $individual_url; ?>" class="action-button">Become an Individual Member for €22, about $30</a></p>
+  <p><a href="<?php print $individual_usd_url; ?>" class="action-button">$30 for 1 year</a> or <a href="<?php print $individual_eur_url; ?>" class="action-button">€22 for 1 year</a></p>
 
   <h3>Why Join?</h3>
   <p>Individual Members can show they’re an active part of the Drupal community. Memberships help pay for Drupal.org infrastructure and financing large community initiatives.</p>
@@ -15,7 +15,7 @@
   </ul>
 
   <h2>Become an Organization Member</h2>
-  <p><a href="<?php print $organization_url; ?>" class="action-button">Become an Organization Member for €73, about $100</a></p>
+  <p><a href="<?php print $organization_usd_url; ?>" class="action-button">$100 for 1 year</a> or <a href="<?php print $organization_eur_url; ?>" class="action-button">€73 for 1 year</a></p>
 
   <h3>Why Join?</h3>
   <p>Not only does your membership support the community, but you also receive unique promotional opportunities. And, by joining, you can tout the depth of your involvement to your prospective Drupal clients.</p>
