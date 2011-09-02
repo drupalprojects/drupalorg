@@ -539,14 +539,24 @@ function association_drupalorg_update_membership($order) {
       'state_province_id' => array_search(uc_zone_get_by_id($order->billing_zone), $state_provinces['values']),
       'country_id' => array_search(uc_country_get_by_id($order->billing_country), $countries['values']),
     );
-    $found = FALSE;
+    $new = TRUE;
     foreach ($addresses['values'] as $existing_address) {
       if (count(array_diff_assoc($address, $existing_address)) === 0) {
-        $found = TRUE;
+        $new = FALSE;
+        $existing_address['version'] = 3;
+        $existing_address['is_primary'] = TRUE;
+        $existing_address['is_billing'] = TRUE;
+        civicrm_api('address', 'update', $existing_address);
         break;
       }
+      else {
+        $existing_address['version'] = 3;
+        $existing_address['is_primary'] = FALSE;
+        $existing_address['is_billing'] = FALSE;
+        civicrm_api('address', 'update', $existing_address);
+      }
     }
-    if (!$found) {
+    if ($new) {
       $address['version'] = 3;
       $address['is_primary'] = TRUE;
       $address['is_billing'] = TRUE;
@@ -555,9 +565,11 @@ function association_drupalorg_update_membership($order) {
     }
 
     $membership_types = array();
+    $membership_remind = array();
     $civicrm_types = civicrm_api('membership_type', 'get', array('version' => 3));
     foreach ($civicrm_types['values'] as $civicrm_type) {
       $membership_types[$civicrm_type['name']] = $civicrm_type['id'];
+      $membership_remind[$civicrm_type['name']] = $civicrm_type['renewal_reminder_day'];
     }
 
     foreach ($order->products as $product) {
@@ -570,6 +582,7 @@ function association_drupalorg_update_membership($order) {
             'membership_type_id' => $membership_types[$membership_type],
             'join_date' => date('Y-m-d'),
             'start_date' => date('Y-m-d'),
+            'reminder_date' => date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - 1 - $membership_remind[$membership_type], date('Y') + 1)),
             'end_date' => date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - 1, date('Y') + 1)),
             'source' => 'UberCart',
           );
@@ -580,7 +593,8 @@ function association_drupalorg_update_membership($order) {
               $new = FALSE;
               $membership['version'] = 3;
               $membership['source'] .= ', ' . t('updated by UberCart @date', array('@date' => date('Y-m-d')));
-              $membership['end_date'] = date('Y-m-d', mktime(0, 0, 0, date('m', strtotime($membership['start_date'])), date('d', strtotime($membership['start_date'])), date('Y', strtotime($membership['start_date'])) + 1));
+              $membership['reminder_date'] = date('Y-m-d', mktime(0, 0, 0, date('m', strtotime($membership['reminder_date'])), date('d', strtotime($membership['reminder_date'])), date('Y', strtotime($membership['reminder_date'])) + 1));
+              $membership['end_date'] = date('Y-m-d', mktime(0, 0, 0, date('m', strtotime($membership['end_date'])), date('d', strtotime($membership['end_date'])), date('Y', strtotime($membership['end_date'])) + 1));
               civicrm_api('membership', 'update', $membership);
               break;
             }
