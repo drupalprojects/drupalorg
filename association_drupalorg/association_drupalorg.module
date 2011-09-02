@@ -514,7 +514,8 @@ function association_drupalorg_ca_action() {
  * Save memberhsip to CiviCRM.
  */
 function association_drupalorg_update_membership($order) {
-  $contact_id = association_drupalorg_civicrm_contact_id($account);
+  global $user;
+  $contact_id = association_drupalorg_civicrm_contact_id($user);
 
   if ($contact_id !== FALSE) {
     // Record customer information in CiviCRM.
