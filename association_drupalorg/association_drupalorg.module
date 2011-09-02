@@ -45,7 +45,7 @@ function association_drupalorg_user($op, &$edit, &$user, $category = NULL) {
   if ($op === 'after_update' && civicrm_initialize()) {
     require_once 'CRM/Core/BAO/UFMatch.php';
     if (!CRM_Core_BAO_UFMatch::getContactId($user->uid)) {
-      CRM_Core_BAO_UFMatch::synchronize($user, false, 'Drupal', civicrm_get_ctype( 'Individual'));
+      CRM_Core_BAO_UFMatch::synchronize($user, FALSE, 'Drupal', civicrm_get_ctype('Individual'));
     }
   }
 }
@@ -519,6 +519,10 @@ function association_drupalorg_update_membership($order) {
 
   if ($contact_id !== FALSE) {
     // Record customer information in CiviCRM.
+    $addresses = civicrm_api('address', 'get', array('version' => 3, 'contact_id' => $contact_id));
+    $countries = civicrm_api('constant', 'get', array('version' => 3, 'name' => 'country'));
+    $state_provinces = civicrm_api('constant', 'get', array('version' => 3, 'name' => 'stateProvince'));
+    $address_types = civicrm_api('constant', 'get', array('version' => 3, 'name' => 'locationType'));
     civicrm_api('contact', 'update', array(
       'version' => 3,
       'id' => $contact_id,
