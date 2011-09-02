@@ -561,32 +561,31 @@ function association_drupalorg_update_membership($order) {
     }
 
     foreach ($order->products as $product) {
-      // Record membership
+      // Record membership.
       if (isset($product->data['attributes']['Membership type'])) {
         foreach ($product->data['attributes']['Membership type'] as $membership_type) {
           $params = array(
             'version' => 3,
             'contact_id' => $contact_id,
             'membership_type_id' => $membership_types[$membership_type],
+            'join_date' => date('Y-m-d'),
             'start_date' => date('Y-m-d'),
+            'end_date' => date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - 1, date('Y') + 1)),
             'source' => 'UberCart',
           );
-          // Check for existing memberships
-          $extend = FALSE;
+          $new = TRUE;
           foreach (association_drupalorg_civicrm_current_memberships($account) as $membership) {
-            if ($membership['membership_name'] === $membership_type && strtotime($membership['end_date']) > strtotime($params['start_date'])) {
-              $extend = TRUE;
-              $params['join_date'] = $membership['join_date'];
-              $params['start_date'] = date('Y-m-d', strtotime($membership['end_date']) + 24*60*60);
+            if ($membership['membership_name'] === $membership_type) {
+              // Update existing memebership.
+              $new = FALSE;
+              $membership['version'] = 3;
+              $membership['source'] .= ', ' . t('updated by UberCart @date', array('@date' => date('Y-m-d')));
+              $membership['end_date'] = date('Y-m-d', mktime(0, 0, 0, date('m', strtotime($membership['start_date'])), date('d', strtotime($membership['start_date'])), date('Y', strtotime($membership['start_date'])) + 1));
+              civicrm_api('membership', 'update', $membership);
+              break;
             }
           }
-          // End one year, minus one day, later
-          $params['end_date'] = date('Y-m-d', mktime(0, 0, 0, date('m', strtotime($params['start_date'])), date('d', strtotime($params['start_date'])) - 1, date('Y', strtotime($params['start_date'])) + 1));
-
-          if ($extend) {
-            // todo
-          }
-          else {
+          if ($new) {
             civicrm_api('membership', 'create', $params);
           }
         }
