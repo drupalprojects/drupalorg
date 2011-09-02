@@ -514,7 +514,8 @@ function association_drupalorg_ca_action() {
  * Save memberhsip to CiviCRM.
  */
 function association_drupalorg_update_membership($order) {
-  $contact_id = association_drupalorg_civicrm_contact_id(user_load($order->uid));
+  $account = user_load($order->uid);
+  $contact_id = association_drupalorg_civicrm_contact_id($account);
 
   if ($contact_id !== FALSE) {
     // Record customer information in CiviCRM.
@@ -572,7 +573,7 @@ function association_drupalorg_update_membership($order) {
           );
           // Check for existing memberships
           $extend = FALSE;
-          foreach (association_drupalorg_civicrm_current_memberships($user) as $membership) {
+          foreach (association_drupalorg_civicrm_current_memberships($account) as $membership) {
             if ($membership['membership_name'] === $membership_type && strtotime($membership['end_date']) > strtotime($params['start_date'])) {
               $extend = TRUE;
               $params['join_date'] = $membership['join_date'];
