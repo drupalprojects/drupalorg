@@ -514,12 +514,49 @@ function association_drupalorg_ca_action() {
  * Save memberhsip to CiviCRM.
  */
 function association_drupalorg_update_membership($order) {
-  foreach ($order->products as $product) {
-    if (isset($product->data['attributes']['Membership type'])) {
-      foreach ($product->data['attributes']['Membership type'] as $membership) {
-        // Individual or Organization
-        // todo
+  $contact_id = association_drupalorg_civicrm_contact_id($account);
+
+  if ($contact_id !== FALSE) {
+    // Record customer information in CiviCRM.
+    civicrm_api('contact', 'update', array(
+      'version' => 3,
+      'id' => $contact_id,
+      'first_name' => $order->billing_first_name,
+      'last_name' => $order->billing_last_name,
+      'current_employer' => $order->billing_company,
+    ));
+    $address = array(
+      'contact_id' => $contact_id,
+      'street_address' => $order->billing_street1,
+      'supplemental_address_1' => $order->billing_street2,
+      'city' => $order->billing_city,
+      'postal_code' => $order->billing_postal_code,
+      'state_province_id' => array_search(uc_zone_get_by_id($order->billing_zone), $state_provinces['values']),
+      'country_id' => array_search(uc_country_get_by_id($order->billing_country), $countries['values']),
+    );
+    $found = FALSE;
+    foreach ($addresses['values'] as $existing_address) {
+      if (count(array_diff_assoc($address, $existing_address)) === 0) {
+        $found = TRUE;
+        break;
       }
+    }
+    if (!$found) {
+      $address['version'] = 3;
+      $address['is_primary'] = TRUE;
+      $address['is_billing'] = TRUE;
+      $address['location_type_id'] = array_search('Main', $address_types['values']);
+      civicrm_api('address', 'create', $address);
+    }
+
+    foreach ($order->products as $product) {
+      if (isset($product->data['attributes']['Membership type'])) {
+        foreach ($product->data['attributes']['Membership type'] as $membership) {
+          // Individual or Organization
+          // todo
+        }
+      }
+      // todo record donation
     }
   }
 }
