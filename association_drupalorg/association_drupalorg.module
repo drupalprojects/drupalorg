@@ -573,6 +573,18 @@ function association_drupalorg_update_membership($order) {
     }
 
     foreach ($order->products as $product) {
+      // Record contribution.
+      $contribution = civicrm_api('contribution', 'create', array(
+        'version' => 3,
+        'contact_id' => $contact_id,
+        'currency' => $order->currency,
+        'total_amount' => number_format($product->price, 2),
+        'receive_date' => date('Y-m-d', $order->created),
+        'source' => 'UberCart: ' . $product->title,
+        'contribution_type' => 'Donation',
+        'trxn_id' => l($order->order_id, 'admin/store/orders/' . $order->order_id, array('absolute' => TRUE)),
+      ));
+
       // Record membership.
       if (isset($product->data['attributes']['Membership type'])) {
         foreach ($product->data['attributes']['Membership type'] as $membership_type) {
@@ -593,19 +605,22 @@ function association_drupalorg_update_membership($order) {
               $new = FALSE;
               $membership['version'] = 3;
               $membership['source'] .= ', ' . t('updated by UberCart @date', array('@date' => date('Y-m-d')));
-              $membership['reminder_date'] = date('Y-m-d', mktime(0, 0, 0, date('m', strtotime($membership['reminder_date'])), date('d', strtotime($membership['reminder_date'])), date('Y', strtotime($membership['reminder_date'])) + 1));
+              $membership['reminder_date'] = date('Y-m-d', mktime(0, 0, 0, date('m', strtotime($membership['end_date'])), date('d', strtotime($membership['end_date'])) - $membership_remind[$membership_type], date('Y', strtotime($membership['end_date'])) + 1));
               $membership['end_date'] = date('Y-m-d', mktime(0, 0, 0, date('m', strtotime($membership['end_date'])), date('d', strtotime($membership['end_date'])), date('Y', strtotime($membership['end_date'])) + 1));
-              civicrm_api('membership', 'update', $membership);
+              $membership = civicrm_api('membership', 'update', $membership);
               break;
             }
           }
           if ($new) {
-            civicrm_api('membership', 'create', $params);
+            $membership = civicrm_api('membership', 'create', $params);
           }
+          civicrm_api('membership_payment', 'create', array(
+            'version' => 3,
+            'contribution_id' => $contribution['id'],
+            'membership_id' => $membership['id'],
+          ));
         }
       }
-
-      // todo record donation
     }
   }
 }
