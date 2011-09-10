@@ -511,12 +511,23 @@ function association_drupalorg_ca_action() {
 }
 
 /**
- * Save memberhsip to CiviCRM.
+ * Save membership to CiviCRM and MailChimp subscriptions.
  */
 function association_drupalorg_update_membership($order) {
   $account = user_load($order->uid);
-  $contact_id = association_drupalorg_civicrm_contact_id($account);
 
+  // DrupalCon mailing list.
+  $please_contact_me = uc_attribute_load(24);
+  foreach ($order->products as $product) {
+    if (array_search($please_contact_me->options[124]->name, $product->data['attributes'][$please_contact_me->name]) !== FALSE) {
+      $lists = _mailchimp_get_available_lists($account);
+      $q = _mailchimp_get_api_object();
+      $list_id = '189afc7b7a'; // Denver, todo- don't hardcode
+      _mailchimp_subscribe_user($lists[$list_id], $account->mail, _mailchimp_load_user_list_mergevars($account->uid, $list_id, $q->listMergeVars($list_id)), FALSE);
+    }
+  }
+
+  $contact_id = association_drupalorg_civicrm_contact_id($account);
   if ($contact_id !== FALSE) {
     // Record customer information in CiviCRM.
     $addresses = civicrm_api('address', 'get', array('version' => 3, 'contact_id' => $contact_id));
@@ -607,6 +618,7 @@ function association_drupalorg_update_membership($order) {
               $membership['source'] .= ', ' . t('updated by UberCart @date', array('@date' => date('Y-m-d')));
               $membership['reminder_date'] = date('Y-m-d', mktime(0, 0, 0, date('m', strtotime($membership['end_date'])), date('d', strtotime($membership['end_date'])) - $membership_remind[$membership_type], date('Y', strtotime($membership['end_date'])) + 1));
               $membership['end_date'] = date('Y-m-d', mktime(0, 0, 0, date('m', strtotime($membership['end_date'])), date('d', strtotime($membership['end_date'])), date('Y', strtotime($membership['end_date'])) + 1));
+              // todo $membership['status_id'] = current;
               $membership = civicrm_api('membership', 'update', $membership);
               break;
             }
