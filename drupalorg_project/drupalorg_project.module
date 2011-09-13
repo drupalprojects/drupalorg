@@ -200,6 +200,7 @@ function drupalorg_project_issue_counts() {
     $issue_counts[$version]['Patch queue'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND sid IN (8,13,14) AND rid IN ($issue_rid_placeholders)", $args));
     $issue_counts[$version]['Pending bugs'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND category = 'bug' AND sid IN(1,8,13,14,15) AND rid IN ($issue_rid_placeholders)", $args));
   }
+  $issue_counts['Novice issues'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {term_node} tn ON pi.nid = tn.nid INNER JOIN {term_data} td on tn.tid = td.tid WHERE td.name = 'Novice' AND pi.sid IN (1, 2, 8, 13, 14, 15)"));
   variable_set('drupalorg_project_issue_counts', $issue_counts);
 }
 
@@ -524,7 +525,7 @@ function drupalorg_project_issue_url($query = array(), $absolute = FALSE) {
  * @param $text
  *   String to use as text for the link.
  * @param $query
- *   A keyed array of options to pass to the query parameter of l(). 
+ *   A keyed array of options to pass to the query parameter of l().
  *     - version (An array of release node IDs)
  *     - status (An array of status IDs)
  *     - priorities (An array of priority IDs)
@@ -532,8 +533,26 @@ function drupalorg_project_issue_url($query = array(), $absolute = FALSE) {
  *  @param $absolute
  *    Set to TRUE to get an absolute URL with http://drupal.org/...
  */
-function drupalorg_project_issue_link($text, $query = array(), $absolute = FALSE) {
+function drupalorg_project_core_issue_link($text, $query = array(), $absolute = FALSE) {
   return l($text, 'project/issues/search/drupal', array('query' => $query, 'absolute' => $absolute));
+}
+
+/**
+ * Project issue link generator for all issues.
+ *
+ * @param $text
+ *   String to use as text for the link.
+ * @param $query
+ *   A keyed array of options to pass to the query parameter of l().
+ *     - version (An array of release node IDs)
+ *     - status (An array of status IDs)
+ *     - priorities (An array of priority IDs)
+ *     - categories (An array of category names)
+ *  @param $absolute
+ *    Set to TRUE to get an absolute URL with http://drupal.org/...
+ */
+function drupalorg_project_global_issue_link($text, $query = array(), $absolute = FALSE) {
+  return l($text, 'project/issues/search', array('query' => $query, 'absolute' => $absolute));
 }
 
 // == Node overrides ===========================================================
@@ -773,6 +792,7 @@ function drupalorg_project_bingo_block_output() {
   $counts_major_tasks = $counts['both']['Major tasks'];
   $counts_pending_bugs = $counts['both']['Pending bugs'];
   $counts_queue = $counts[DRUPALORG_CORE_DEVELOPMENT_VERSION_TID]['Patch queue'];
+  $counts_novice = $counts['Novice issues'];
 
   $links = array(
     l('Community initiatives', 'community-initiatives'),
@@ -780,7 +800,15 @@ function drupalorg_project_bingo_block_output() {
       'data' => '<strong>Queues</strong>',
       'children' => array(
         l('Your issues', 'project/issues/user'),
-        drupalorg_project_issue_link(
+        drupalorg_project_global_issue_link(
+          $counts_novice . t(' Novice issues'),
+          array(
+               'status' => array(1, 2, 8, 13, 14, 15),
+               'issue_tags_op' => 'or',
+               'issue_tags' => 'Novice',
+          )
+        ),
+        drupalorg_project_core_issue_link(
           $counts_critical_bugs .' Critical bugs (D8 + D7)',
           array(
                'version' => $versions,
@@ -789,7 +817,7 @@ function drupalorg_project_bingo_block_output() {
                'categories' => array('bug'),
           )
         ),
-        drupalorg_project_issue_link(
+        drupalorg_project_core_issue_link(
           $counts_major_bugs .' Major bugs (D8 + D7)',
           array(
                'version' => $versions,
@@ -798,7 +826,7 @@ function drupalorg_project_bingo_block_output() {
                'categories' => array('bug'),
           )
         ),
-        drupalorg_project_issue_link(
+        drupalorg_project_core_issue_link(
          $counts_critical_tasks .' Critical tasks (D8 + D7)',
           array(
                'version' => $versions,
@@ -807,7 +835,7 @@ function drupalorg_project_bingo_block_output() {
                'categories' => array('task'),
           )
         ),
-        drupalorg_project_issue_link(
+        drupalorg_project_core_issue_link(
           $counts_major_tasks .' Major tasks (D8 + D7)',
           array(
                'version' => $versions,
@@ -816,7 +844,7 @@ function drupalorg_project_bingo_block_output() {
                'categories' => array('task'),
           )
         ),
-        drupalorg_project_issue_link(
+        drupalorg_project_core_issue_link(
           $counts_pending_bugs .' Pending bugs (D8 + D7)',
           array(
                'version' => $versions,
@@ -824,14 +852,14 @@ function drupalorg_project_bingo_block_output() {
                'categories' => array('bug'),
           )
         ),
-        drupalorg_project_issue_link(
+        drupalorg_project_core_issue_link(
           $counts_queue .' Patch queue (D8)',
           array(
                'version' => array(DRUPALORG_CORE_DEVELOPMENT_VERSION_NAME),
                'status' => array(8, 13, 14),
           )
         ),
-        drupalorg_project_issue_link(
+        drupalorg_project_core_issue_link(
           'Issues needing triage',
           array(
                'version' => $versions,
