@@ -50,6 +50,12 @@ function association_drupalorg_user($op, &$edit, &$user, $category = NULL) {
   }
 }
 
+function association_drupalorg_cron() {
+  google_dfp_api_replace_creative_view(6734416973, 'association_sponsors_admin', 'page_2'); // All logos
+  google_dfp_api_replace_creative_view(6980741093, 'association_sponsors_admin', 'page_3'); // Diamond
+  google_dfp_api_replace_creative_view(6980741213, 'association_sponsors_admin', 'page_4'); // Platinum
+}
+
 function association_drupalorg_preprocess_association_drupalorg_membership_page(&$variables) {
   $variables['individual_usd_url'] = url('cart/add/e-p1629_a34o134_m0', array('query' => array('destination' => 'cart/checkout')));
   $variables['organization_usd_url'] = url('cart/add/e-p1629_a34o139_m0', array('query' => array('destination' => 'cart/checkout')));
