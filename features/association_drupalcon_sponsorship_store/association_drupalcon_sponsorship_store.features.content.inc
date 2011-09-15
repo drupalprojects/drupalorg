@@ -361,7 +361,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
         'exclude' => 0,
       ),
       'full' => array(
-        'format' => 'hidden',
+        'format' => 'url',
         'exclude' => 0,
       ),
       '5' => array(

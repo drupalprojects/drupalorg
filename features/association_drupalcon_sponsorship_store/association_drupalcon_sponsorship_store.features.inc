@@ -5,6 +5,21 @@
  */
 function association_drupalcon_sponsorship_store_imagecache_default_presets() {
   $items = array(
+    '200x120' => array(
+      'presetname' => '200x120',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '200',
+            'height' => '120',
+            'upscale' => 0,
+          ),
+        ),
+      ),
+    ),
     '300x200' => array(
       'presetname' => '300x200',
       'actions' => array(
