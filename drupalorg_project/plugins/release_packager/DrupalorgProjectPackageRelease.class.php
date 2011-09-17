@@ -5,7 +5,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
    * Configuration settings.
    */
   protected $conf = array(
-    'license' => '/var/www/drupal.org/project/scripts/package-extra/LICENSE.txt',
+    'license' => '/var/www/drupal.org/htdocs/sites/all/modules/drupalorg/drupalorg_project/plugins/release_packager/LICENSE.txt',
     'tar' => '/bin/tar',
     'gzip' => '/bin/gzip',
     'zip' => '/usr/bin/zip',
