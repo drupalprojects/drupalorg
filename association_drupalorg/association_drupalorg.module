@@ -21,6 +21,18 @@ function association_drupalorg_menu() {
       'page callback' => 'association_drupalorg_membership_redirect',
       'type' => MENU_CALLBACK,
     ),
+    'admin/reports/drupalcon' => array(
+      'title' => 'DrupalCon',
+      'description' => 'Registration',
+      'access arguments' => array('view all orders'),
+      'page callback' => 'theme',
+      'page arguments' => array('association_drupalorg_drupalcon_report_page'),
+    ),
+    'admin/reports/drupalcon/registration.csv' => array(
+      'access arguments' => array('view all orders'),
+      'page callback' => 'association_drupalorg_drupalcon_registration_csv',
+      'type' => MENU_CALLBACK,
+    ),
   );
 }
 
@@ -31,6 +43,9 @@ function association_drupalorg_theme() {
     ),
     'association_drupalorg_donate_page' => array(
       'template' => 'association-drupalorg-donate-page',
+    ),
+    'association_drupalorg_drupalcon_report_page' => array(
+      'template' => 'association-drupalorg-drupalcon-report-page',
     ),
   );
 }
@@ -88,6 +103,69 @@ function association_drupalorg_preprocess_association_drupalorg_donate_page(&$va
     $variables['donate_usd_url'] = url('membership-redirect', array('query' => array('to' => $variables['donate_usd_url'])));
     $variables['donate_eur_url'] = url('membership-redirect', array('query' => array('to' => $variables['donate_eur_url'])));
   }
+}
+
+function association_drupalorg_preprocess_association_drupalorg_drupalcon_report_page(&$variables) {
+  $variables['time_left'] = t('<strong>@time</strong> until DrupalCon', array('@time' => format_interval(strtotime('2012-03-19 8:00:00 MDT') - time())));
+  $variables['total_registration'] = l(t('<strong>@count</strong> registrations', array('@count' => db_result(db_query("SELECT count(DISTINCT o.order_id) FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid = 1484 WHERE o.order_status IN ('completed', 'payment_received')")))), 'admin/reports/drupalcon/registration.csv', array('html' => TRUE));
+}
+
+function association_drupalorg_drupalcon_registration_csv() {
+  header('Content-Type: text/csv');
+  $result = db_query("SELECT o.order_id FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid = 1484 WHERE o.order_status IN ('completed', 'payment_received')");
+  $fp = fopen('php://output', 'w');
+  fputcsv($fp, array(
+    t('Order'),
+    t('Date'),
+    t('Name'),
+    t('Username'),
+    t('Company'),
+    t('Country'),
+    t('Shirt'),
+    t('Meal'),
+    t('Other'),
+    t('Services'),
+    t('Training'),
+    t('Drupalgängers'),
+    t('Sponsorship'),
+  ));
+  while ($order_id = db_result($result)) {
+    $order = uc_order_load($order_id);
+    $account = user_load($order->uid);
+    foreach ($order->products as $product) {
+      if ($product->nid === 1484) {
+        break;
+      }
+    }
+    $contact = array(
+      'training' => '',
+      'Drupalgängers' => '',
+      'sponsorship' => '',
+    );
+    foreach ($product->data['attributes']['Please contact me'] as $contact_about) {
+      foreach (array_keys($contact) as $type) {
+        if (strpos($contact_about, $type) !== FALSE) {
+          $contact[$type] = t('yes');
+        }
+      }
+    }
+    fputcsv($fp, array(
+      $order->order_id,
+      date('Y-m-d', $order->created),
+      $account->profile_full_name,
+      $account->name,
+      $account->profile_current_company_organization,
+      $account->country,
+      $product->data['attributes']['T-shirt'][0],
+      $product->data['attributes']['Meal preference'][0],
+      $product->data['attributes']['Other meal preference'][0],
+      implode(', ', $product->data['attributes']['Services you require']),
+      $contact['training'],
+      $contact['Drupalgängers'],
+      $contact['sponsorship'],
+    ));
+  }
+  fclose($fp);
 }
 
 /**
