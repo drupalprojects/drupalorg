@@ -1042,6 +1042,34 @@ function association_drupalcon_sponsorship_store_views_default_views() {
         'button' => 'Use default',
       ),
     ),
+    'field_assoc_level_value_many_to_one' => array(
+      'operator' => 'or',
+      'value' => array(
+        '0' => '0',
+        '4' => '4',
+        '8' => '8',
+        '16' => '16',
+        '20' => '20',
+        '22' => '22',
+        '24' => '24',
+        '28' => '28',
+        '32' => '32',
+      ),
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'field_assoc_level_value_many_to_one',
+      'table' => 'node_data_field_assoc_level',
+      'field' => 'field_assoc_level_value_many_to_one',
+      'override' => array(
+        'button' => 'Use default',
+      ),
+      'relationship' => 'field_assoc_sponsorship_level_nid',
+      'reduce_duplicates' => 0,
+    ),
   ));
   $handler->override_option('style_plugin', 'list');
   $handler->override_option('style_options', array(
