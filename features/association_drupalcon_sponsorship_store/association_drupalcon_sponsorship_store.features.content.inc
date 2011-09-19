@@ -6,12 +6,78 @@
 function association_drupalcon_sponsorship_store_content_default_fields() {
   $fields = array();
 
+  // Exported field: field_assoc_sponsor_dfp
+  $fields['association_sponsor-field_assoc_sponsor_dfp'] = array(
+    'field_name' => 'field_assoc_sponsor_dfp',
+    'type_name' => 'association_sponsor',
+    'display_settings' => array(
+      'weight' => '5',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'number_integer',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'number',
+    'active' => '1',
+    'prefix' => '',
+    'suffix' => '',
+    'min' => '',
+    'max' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'DfP company',
+      'weight' => '5',
+      'description' => '',
+      'type' => 'google_dfp_api_select',
+      'module' => 'google_dfp_api',
+    ),
+  );
+
   // Exported field: field_assoc_sponsor_drupalorg
   $fields['association_sponsor-field_assoc_sponsor_drupalorg'] = array(
     'field_name' => 'field_assoc_sponsor_drupalorg',
     'type_name' => 'association_sponsor',
     'display_settings' => array(
-      'weight' => '-2',
+      'weight' => '-1',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -69,7 +135,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Drupal.org organization URL',
-      'weight' => '-2',
+      'weight' => '-1',
       'description' => 'Listed in the <a href="http://drupal.org/marketplace-preview">marketplace</a>, if approved.',
       'type' => 'link',
       'module' => 'link',
@@ -148,7 +214,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_sponsor_users',
     'type_name' => 'association_sponsor',
     'display_settings' => array(
-      'weight' => '1',
+      'weight' => '2',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -210,7 +276,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Authorized users',
-      'weight' => '1',
+      'weight' => '2',
       'description' => 'Users who can update company information and buy sponsorships.',
       'type' => 'userreference_autocomplete',
       'module' => 'userreference',
@@ -351,7 +417,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_sponsor_link',
     'type_name' => 'association_sponsor',
     'display_settings' => array(
-      'weight' => '-1',
+      'weight' => 0,
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -413,8 +479,8 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Link',
-      'weight' => '-1',
+      'label' => 'Website',
+      'weight' => 0,
       'description' => '',
       'type' => 'link',
       'module' => 'link',
@@ -977,16 +1043,17 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
   t('Authorized users');
   t('Booth');
   t('Conference');
+  t('DfP company');
   t('Drupal.org organization URL');
   t('Extra');
   t('Level');
-  t('Link');
   t('Logo');
   t('Notes');
   t('Sponsor');
   t('Twitter username');
   t('VAT #');
   t('Vector Logo');
+  t('Website');
 
   return $fields;
 }
