@@ -567,7 +567,6 @@ function association_drupalorg_node_grants($account, $op) {
 
 function association_drupalorg_field_access($op, $field, $account, $node = NULL) {
   if ($op === 'edit') {
-    print $field['field_name'];
     switch ($field['field_name']) {
       // Only allow DfP admins to change DfP info.
       case 'field_assoc_sponsor_dfp':
