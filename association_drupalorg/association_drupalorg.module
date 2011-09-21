@@ -350,7 +350,7 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
           // Make sure user is logged in.
           if (user_is_logged_in()) {
             // And properly working with Bakery.
-            if (substr($user->init, 0, strlen(variable_get('bakery_master', 'http://drupal.org/'))) === variable_get('bakery_master', 'http://drupal.org/')) {
+            if (strpos($user->init, variable_get('bakery_master', 'http://drupal.org/')) === 0 || strpos($user->init, preg_replace('!^http:!', 'https:', variable_get('bakery_master', 'http://drupal.org/'))) === 0) {
               // Load profile data we might show on badges.
               $account = user_load($user->uid);
               $personal_info_fields = array('profile_full_name', 'profile_country', 'profile_irc_nick', 'profile_personal_home_page', 'profile_twitter_url');
