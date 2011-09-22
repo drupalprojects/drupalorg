@@ -559,19 +559,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_sponsorship_booth',
     'type_name' => 'association_sponsorship',
     'display_settings' => array(
+      'weight' => '7',
+      'parent' => 'group_sponsorship_conference',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -613,7 +614,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Booth',
-      'weight' => '33',
+      'weight' => '7',
       'description' => '',
       'type' => 'text_textfield',
       'module' => 'text',
@@ -625,19 +626,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_sponsorship_level',
     'type_name' => 'association_sponsorship',
     'display_settings' => array(
+      'weight' => '6',
+      'parent' => 'group_sponsorship_conference',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -686,7 +688,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Level',
-      'weight' => '32',
+      'weight' => '6',
       'description' => '',
       'type' => 'nodereference_select',
       'module' => 'nodereference',
@@ -698,19 +700,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_sponsorship_sponsor',
     'type_name' => 'association_sponsorship',
     'display_settings' => array(
+      'weight' => '5',
+      'parent' => 'group_sponsorship_conference',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -759,10 +762,156 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Sponsor',
-      'weight' => '31',
+      'weight' => '5',
       'description' => '',
       'type' => 'nodereference_select',
       'module' => 'nodereference',
+    ),
+  );
+
+  // Exported field: field_sponsorship_web_image
+  $fields['association_sponsorship-field_sponsorship_web_image'] = array(
+    'field_name' => 'field_sponsorship_web_image',
+    'type_name' => 'association_sponsorship',
+    'display_settings' => array(
+      'weight' => '11',
+      'parent' => 'group_sponsorship_web_ad',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'filefield',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'filefield',
+    'active' => '1',
+    'list_field' => '0',
+    'list_default' => 1,
+    'description_field' => '0',
+    'widget' => array(
+      'file_extensions' => 'png gif jpg jpeg',
+      'file_path' => '',
+      'progress_indicator' => 'bar',
+      'max_filesize_per_file' => '50K',
+      'max_filesize_per_node' => '',
+      'max_resolution' => '300x250',
+      'min_resolution' => '',
+      'alt' => '',
+      'custom_alt' => 0,
+      'title' => '',
+      'custom_title' => 0,
+      'title_type' => 'textfield',
+      'default_image' => NULL,
+      'use_default_image' => 0,
+      'label' => '300 × 250 image',
+      'weight' => '11',
+      'description' => '',
+      'type' => 'imagefield_widget',
+      'module' => 'imagefield',
+    ),
+  );
+
+  // Exported field: field_sponsorship_web_url
+  $fields['association_sponsorship-field_sponsorship_web_url'] = array(
+    'field_name' => 'field_sponsorship_web_url',
+    'type_name' => 'association_sponsorship',
+    'display_settings' => array(
+      'weight' => '12',
+      'parent' => 'group_sponsorship_web_ad',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'url',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'link',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'link',
+    'active' => '1',
+    'attributes' => array(
+      'target' => 'default',
+      'rel' => '',
+      'class' => '',
+      'title' => '',
+    ),
+    'display' => array(
+      'url_cutoff' => '80',
+    ),
+    'url' => 0,
+    'title' => 'none',
+    'title_value' => '',
+    'enable_tokens' => 0,
+    'validate_url' => 1,
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'title' => '',
+          'url' => '',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'URL',
+      'weight' => '12',
+      'description' => '',
+      'type' => 'link',
+      'module' => 'link',
     ),
   );
 
@@ -834,6 +983,77 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       'description' => '',
       'type' => 'optionwidgets_buttons',
       'module' => 'optionwidgets',
+    ),
+  );
+
+  // Exported field: field_assoc_level_badge
+  $fields['association_sponsorship_level-field_assoc_level_badge'] = array(
+    'field_name' => 'field_assoc_level_badge',
+    'type_name' => 'association_sponsorship_level',
+    'display_settings' => array(
+      'weight' => '36',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'filefield',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'filefield',
+    'active' => '1',
+    'list_field' => '0',
+    'list_default' => 1,
+    'description_field' => '0',
+    'widget' => array(
+      'file_extensions' => 'png gif jpg jpeg',
+      'file_path' => '',
+      'progress_indicator' => 'bar',
+      'max_filesize_per_file' => '',
+      'max_filesize_per_node' => '',
+      'max_resolution' => '0',
+      'min_resolution' => '0',
+      'alt' => '',
+      'custom_alt' => 0,
+      'title' => '',
+      'custom_title' => 0,
+      'title_type' => 'textfield',
+      'default_image' => NULL,
+      'use_default_image' => 0,
+      'label' => 'Badge',
+      'weight' => '36',
+      'description' => '',
+      'type' => 'imagefield_widget',
+      'module' => 'imagefield',
     ),
   );
 
@@ -1038,19 +1258,90 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     ),
   );
 
+  // Exported field: field_assoc_level_web_ads
+  $fields['association_sponsorship_level-field_assoc_level_web_ads'] = array(
+    'field_name' => 'field_assoc_level_web_ads',
+    'type_name' => 'association_sponsorship_level',
+    'display_settings' => array(
+      'weight' => '35',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'number_integer',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'number',
+    'active' => '1',
+    'prefix' => '',
+    'suffix' => '',
+    'min' => '',
+    'max' => '',
+    'allowed_values' => '0|No web ad
+1|Has web ads',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'value' => NULL,
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Has web ads',
+      'weight' => '35',
+      'description' => '',
+      'type' => 'optionwidgets_onoff',
+      'module' => 'optionwidgets',
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
+  t('300 × 250 image');
   t('Authorized users');
+  t('Badge');
   t('Booth');
   t('Conference');
   t('DfP company');
   t('Drupal.org organization URL');
   t('Extra');
+  t('Has web ads');
   t('Level');
   t('Logo');
   t('Notes');
   t('Sponsor');
   t('Twitter username');
+  t('URL');
   t('VAT #');
   t('Vector Logo');
   t('Website');

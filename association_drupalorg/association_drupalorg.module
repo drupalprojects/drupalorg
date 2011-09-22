@@ -527,7 +527,7 @@ function association_drupalorg_uc_payment_entered($order) {
  * association_drupalorg_sponsor realm by nid.
  */
 function association_drupalorg_node_access_records($node) {
-  if ($node->type === 'association_sponsor') {
+  if (in_array($node->type, array('association_sponsor', 'association_sponsorship'))) {
     return array(
       array(
         'realm' => 'association_drupalorg_sponsor',
@@ -539,7 +539,7 @@ function association_drupalorg_node_access_records($node) {
       ),
       array(
         'realm' => 'association_drupalorg_sponsor',
-        'gid' => $node->nid,
+        'gid' => $node->type === 'association_sponsor' ? $node->nid : $node->field_assoc_sponsorship_sponsor[0]['nid'],
         'grant_view' => TRUE,
         'grant_update' => TRUE,
         'grant_delete' => FALSE,
@@ -571,6 +571,17 @@ function association_drupalorg_field_access($op, $field, $account, $node = NULL)
       // Only allow DfP admins to change DfP info.
       case 'field_assoc_sponsor_dfp':
         return user_access('administer Google DfP API');
+    }
+    switch ($field['display_settings']['parent']) {
+      // Do not let sponsors edit their conference information, like
+      // sponsorship level.
+      case 'group_sponsorship_conference':
+        return user_access('edit any association_sponsorship content');
+
+      // Only show web ad information if sponsorship level has it.
+      case 'group_sponsorship_web_ad':
+        $level = node_load($node->field_assoc_sponsorship_level[0]['nid']);
+        return $level->field_assoc_level_web_ads[0]['value'];
     }
   }
   return TRUE;
