@@ -621,33 +621,8 @@ function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page 
       }
     }
     elseif ($node->type === 'project_issue') {
-      // Get the number of revisions on this issue.
-      $count = db_result(db_query('SELECT COUNT(vid) FROM {node_revisions} WHERE nid = %d', $node->nid));
-
-      // Make a mock user object for theme_username() to avoid expensive call
-      // to user_load().
-      $revision_author = new stdClass;
-      $revision_author->uid = $node->revision_uid;
-      $revision_author->name = db_result(db_query('SELECT name FROM {users} WHERE uid = %d', $revision_author->uid));
-      $username = theme('username', $revision_author);
-
-      // Format the date according to Bluecheese standards.
-      $date = format_date($node->changed, 'custom', 'F j, Y \a\t g:ia');
-
-      if ($count > 1) {
-        // Generate a link to the diff of this revision.
-        $previous_vid = db_result(db_query_range('SELECT vid FROM {node_revisions} WHERE nid = %d ORDER BY vid DESC', $node->nid, 1, 1));
-        $diff_link = url("node/$node->nid/revisions/view/$node->vid/$previous_vid");
-        $modified_text = t('<a href="@diff">Revision @count</a> by !username on @date', array('@diff' => $diff_link, '@count' => $count, '!username' => $username, '@date' => $date));
-      }
-      else {
-        // Just one revision, no link.
-        $modified_text = t('Revision 1 by !username on @date', array('!username' => $username, '@date' => $date));
-      }
-
       // Add header label and last updated information to node body.
       $node->content['project_issue_header']['#value'] = '<h2>' . t('Issue Summary') . '</h2>';
-      $node->content['project_issue_header']['#suffix'] = '<p class="project-issue-last-modified submitted">' . $modified_text . '</p>';
     }
   }
 
