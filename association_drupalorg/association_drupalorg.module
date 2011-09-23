@@ -121,6 +121,7 @@ function association_drupalorg_drupalcon_registration_csv() {
     t('Username'),
     t('Company'),
     t('Country'),
+    t('Email'),
     t('Shirt'),
     t('Meal'),
     t('Other'),
@@ -128,6 +129,9 @@ function association_drupalorg_drupalcon_registration_csv() {
     t('Training'),
     t('Drupalgängers'),
     t('Sponsorship'),
+    t('Coupon'),
+    t('Total'),
+    t('Payment'),
   ));
   while ($order_id = db_result($result)) {
     $order = uc_order_load($order_id);
@@ -156,6 +160,7 @@ function association_drupalorg_drupalcon_registration_csv() {
       $account->name,
       $account->profile_current_company_organization,
       $account->country,
+      $account->mail,
       $product->data['attributes']['T-shirt'][0],
       $product->data['attributes']['Meal preference'][0],
       $product->data['attributes']['Other meal preference'][0],
@@ -163,6 +168,9 @@ function association_drupalorg_drupalcon_registration_csv() {
       $contact['training'],
       $contact['Drupalgängers'],
       $contact['sponsorship'],
+      $order->data['coupon'],
+      $order->order_total,
+      $order->payment_method,
     ));
   }
   fclose($fp);
