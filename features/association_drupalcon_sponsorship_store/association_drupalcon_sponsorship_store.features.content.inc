@@ -6,72 +6,6 @@
 function association_drupalcon_sponsorship_store_content_default_fields() {
   $fields = array();
 
-  // Exported field: field_assoc_sponsor_dfp
-  $fields['association_sponsor-field_assoc_sponsor_dfp'] = array(
-    'field_name' => 'field_assoc_sponsor_dfp',
-    'type_name' => 'association_sponsor',
-    'display_settings' => array(
-      'weight' => '5',
-      'parent' => '',
-      'label' => array(
-        'format' => 'hidden',
-      ),
-      'teaser' => array(
-        'format' => 'hidden',
-        'exclude' => 0,
-      ),
-      'full' => array(
-        'format' => 'hidden',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '4' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '2' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '3' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'token' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-    ),
-    'widget_active' => '1',
-    'type' => 'number_integer',
-    'required' => '0',
-    'multiple' => '0',
-    'module' => 'number',
-    'active' => '1',
-    'prefix' => '',
-    'suffix' => '',
-    'min' => '',
-    'max' => '',
-    'allowed_values' => '',
-    'allowed_values_php' => '',
-    'widget' => array(
-      'default_value' => array(
-        '0' => array(
-          'value' => '',
-        ),
-      ),
-      'default_value_php' => NULL,
-      'label' => 'DfP company',
-      'weight' => '5',
-      'description' => '',
-      'type' => 'google_dfp_api_select',
-      'module' => 'google_dfp_api',
-    ),
-  );
-
   // Exported field: field_assoc_sponsor_drupalorg
   $fields['association_sponsor-field_assoc_sponsor_drupalorg'] = array(
     'field_name' => 'field_assoc_sponsor_drupalorg',
@@ -412,6 +346,67 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     ),
   );
 
+  // Exported field: field_sponsor_dfp
+  $fields['association_sponsor-field_sponsor_dfp'] = array(
+    'field_name' => 'field_sponsor_dfp',
+    'type_name' => 'association_sponsor',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'google_dfp_api_company',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'google_dfp_api',
+    'active' => '1',
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          '0' => array(
+            'dfp_id' => '',
+          ),
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'DfP company',
+      'weight' => '5',
+      'description' => '',
+      'type' => 'google_dfp_api_select_company',
+      'module' => 'google_dfp_api',
+    ),
+  );
+
   // Exported field: field_sponsor_link
   $fields['association_sponsor-field_sponsor_link'] = array(
     'field_name' => 'field_sponsor_link',
@@ -480,7 +475,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Website',
-      'weight' => 0,
+      'weight' => '1',
       'description' => '',
       'type' => 'link',
       'module' => 'link',
@@ -766,6 +761,70 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       'description' => '',
       'type' => 'nodereference_select',
       'module' => 'nodereference',
+    ),
+  );
+
+  // Exported field: field_sponsorship_dfp
+  $fields['association_sponsorship-field_sponsorship_dfp'] = array(
+    'field_name' => 'field_sponsorship_dfp',
+    'type_name' => 'association_sponsorship',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'google_dfp_api_creative',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'google_dfp_api',
+    'active' => '1',
+    'limit' => 'LineItem:3688493',
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'dfp_id' => '',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'image' => 'field_sponsorship_web_image',
+      'create' => 1,
+      'link' => 'field_sponsorship_web_url',
+      'company' => 'field_assoc_sponsorship_sponsor:field_sponsor_dfp',
+      'label' => 'DfP creative',
+      'weight' => '31',
+      'description' => '',
+      'type' => 'google_dfp_api_select_creative',
+      'module' => 'google_dfp_api',
     ),
   );
 
@@ -1333,6 +1392,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
   t('Booth');
   t('Conference');
   t('DfP company');
+  t('DfP creative');
   t('Drupal.org organization URL');
   t('Extra');
   t('Has web ads');

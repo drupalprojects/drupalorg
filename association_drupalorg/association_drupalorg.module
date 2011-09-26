@@ -580,6 +580,7 @@ function association_drupalorg_field_access($op, $field, $account, $node = NULL)
     switch ($field['field_name']) {
       // Only allow DfP admins to change DfP info.
       case 'field_assoc_sponsor_dfp':
+      case 'field_sponsorship_dfp':
         return user_access('administer Google DfP API');
     }
     switch ($field['display_settings']['parent']) {
