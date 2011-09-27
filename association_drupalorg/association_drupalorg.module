@@ -257,17 +257,18 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
     if ($node->type === 'association_membership_benefit') {
       global $user;
 
-      if (count(association_drupalorg_civicrm_current_memberships($user)) > 0) {
-        $node->content['field_assoc_benefit_link']['#suffix'] = '<p>' . t('Discount code: <strong>@code</strong>', array('@code' => $node->field_assoc_benefit_code[0]['value'])) . '</p>';
+      if (user_is_logged_in()) {
+        if (count(association_drupalorg_civicrm_current_memberships($user)) > 0) {
+          $node->content['field_assoc_benefit_link']['#suffix'] = '<p>' . t('Discount code: <strong>@code</strong>', array('@code' => $node->field_assoc_benefit_code[0]['value'])) . '</p>';
+        }
+        else {
+          unset($node->content['field_assoc_benefit_link']['field']);
+          $node->content['field_assoc_benefit_link']['#value'] = '<p>' . $node->field_assoc_benefit_link[0]['display_title'] . '<br /><strong>' . l(t('Become a member!'), 'membership') . '</strong></p>';
+        }
       }
       else {
         unset($node->content['field_assoc_benefit_link']['field']);
-        if (user_is_logged_in()) {
-          $node->content['field_assoc_benefit_link']['#value'] = '<p>' . $node->field_assoc_benefit_link[0]['display_title'] . '<br /><strong>' . l(t('Become a member!'), 'membership') . '</strong></p>';
-        }
-        else {
-          $node->content['field_assoc_benefit_link']['#value'] = '<p>' . $node->field_assoc_benefit_link[0]['display_title'] . '<br /><strong>' . l(t('Sign in to get this discount'), 'user/login', array('query' => drupal_get_destination())) . '</strong></p>';
-        }
+        $node->content['field_assoc_benefit_link']['#value'] = '<p>' . $node->field_assoc_benefit_link[0]['display_title'] . '<br /><strong>' . l(t('Sign in to get this discount'), 'user/login', array('query' => drupal_get_destination())) . '</strong></p>';
       }
 
       $node->content['field_assoc_benefit_restrictions']['#weight'] = 10;
