@@ -137,7 +137,8 @@ function association_drupalorg_preprocess_association_drupalorg_drupalcon_report
 }
 
 function association_drupalorg_drupalcon_registration_csv() {
-  header('Content-Type: text/csv');
+  drupal_set_header('Content-Type: text/csv');
+  drupal_set_header('Content-Disposition: attachment; filename=registration.csv');
   $result = db_query("SELECT o.order_id FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid = 1484 WHERE o.order_status IN ('completed', 'payment_received')");
   $fp = fopen('php://output', 'w');
   fputcsv($fp, array(
