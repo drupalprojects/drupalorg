@@ -905,7 +905,6 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
 
   // List of forms to check for overrides, and the corresponding permissions.
   $override_forms = array(
-    'book_node_form'       => 'revert revisions',
     'forum_node_form'      => 'administer nodes',
     'page_node_form'       => 'administer nodes',
     'story_node_form'      => 'administer nodes',
