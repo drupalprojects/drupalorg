@@ -300,6 +300,13 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
     }
     $form['project_taxonomy']['project_type']['#description'] = t('Note: Translation projects have been moved and are now actively maintained at <a href="@localize-link">localize.drupal.org</a>.', array('@localize-link' => 'http://localize.drupal.org/'));
   }
+
+  // Since drupal.org has so many projects, it'd be insane to allow people to
+  // get e-mail notifications for all issues for all projects. Remove that
+  // option entirely on the per-user notification settings form.
+  if ($form_id == 'project_issue_notification_user_form') {
+    unset($form['project_issue_notification']['projects']['default']['level']['#options'][PROJECT_ISSUE_NOTIFICATION_ALL]);
+  }
 }
 
 // == Security release restrictions ============================================
