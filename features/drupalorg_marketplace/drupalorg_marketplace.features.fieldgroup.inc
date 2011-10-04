@@ -46,7 +46,7 @@ function drupalorg_marketplace_fieldgroup_default_groups() {
         'label' => 'above',
       ),
     ),
-    'weight' => '11',
+    'weight' => '12',
     'fields' => array(
       '0' => 'field_organization_hosting_url',
       '1' => 'field_organization_hosting_categ',
@@ -93,13 +93,12 @@ function drupalorg_marketplace_fieldgroup_default_groups() {
         ),
       ),
     ),
-    'weight' => '14',
+    'weight' => '13',
     'fields' => array(
       '0' => 'field_organization_marketplace',
       '1' => 'field_organization_list_rule',
-      '2' => 'field_organization_hosting_level',
-      '3' => 'field_organization_hosting_last',
-      '4' => 'field_organization_hosting_by',
+      '2' => 'field_organization_issue',
+      '3' => 'field_organization_hosting_level',
     ),
   );
 

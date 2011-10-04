@@ -62,7 +62,7 @@ function drupalorg_marketplace_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Usual project budget (optional)',
-      'weight' => '9',
+      'weight' => '3',
       'description' => 'Helps potential clients know what they are getting into.',
       'type' => 'text_textfield',
       'module' => 'text',
@@ -126,7 +126,7 @@ function drupalorg_marketplace_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Drupal contributions',
-      'weight' => '10',
+      'weight' => 0,
       'description' => '<p>Self promote! These fields determine eligibility for the Drupal.org marketplace and show the Drupal community how much you\'ve given back. Moderators use this information to respond to issues about community involvement, so it is important to list anything and everything relevant:</p>
 
 <ul>
@@ -205,7 +205,7 @@ function drupalorg_marketplace_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Website',
-      'weight' => '6',
+      'weight' => '-3',
       'description' => '',
       'type' => 'link',
       'module' => 'link',
@@ -272,10 +272,72 @@ function drupalorg_marketplace_content_default_fields() {
       'default_image' => NULL,
       'use_default_image' => 0,
       'label' => 'Logo',
-      'weight' => '7',
+      'weight' => '-2',
       'description' => '',
       'type' => 'imagefield_widget',
       'module' => 'imagefield',
+    ),
+  );
+
+  // Exported field: field_org_marketplace_request
+  $fields['organization-field_org_marketplace_request'] = array(
+    'field_name' => 'field_org_marketplace_request',
+    'type_name' => 'organization',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'number_integer',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'number',
+    'active' => '1',
+    'prefix' => '',
+    'suffix' => '',
+    'min' => '',
+    'max' => '',
+    'allowed_values' => '0|Not listed in marketplace
+1|Request listing in marketplace',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'List in marketplace',
+      'weight' => '1',
+      'description' => 'If you request a listing, please <a href="http://drupal.org/node/1108710">review the policy</a>. You will be automatically listed if you have a current <a href="https://association.drupal.org/membership">Association membership</a>. Listings can be approved or denied by community webmasters. If you are not listed, you will still have the page and some features, like your logo replacing company name on profile pages.',
+      'type' => 'optionwidgets_onoff',
+      'module' => 'optionwidgets',
     ),
   );
 
@@ -334,85 +396,10 @@ function drupalorg_marketplace_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Headquarters',
-      'weight' => '8',
+      'weight' => '2',
       'description' => 'Where is your organization located?',
       'type' => 'text_textfield',
       'module' => 'text',
-    ),
-  );
-
-  // Exported field: field_organization_hosting_by
-  $fields['organization-field_organization_hosting_by'] = array(
-    'field_name' => 'field_organization_hosting_by',
-    'type_name' => 'organization',
-    'display_settings' => array(
-      'label' => array(
-        'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'teaser' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'full' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '4' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '2' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '3' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-    ),
-    'widget_active' => '1',
-    'type' => 'userreference',
-    'required' => '0',
-    'multiple' => '0',
-    'module' => 'userreference',
-    'active' => '1',
-    'referenceable_roles' => array(
-      '2' => 0,
-      '3' => 0,
-      '5' => 0,
-      '16' => 0,
-      '22' => 0,
-      '20' => 0,
-      '24' => 0,
-      '12' => 0,
-      '4' => 0,
-      '14' => 0,
-      '7' => 0,
-    ),
-    'referenceable_status' => '1',
-    'advanced_view' => '--',
-    'advanced_view_args' => '',
-    'widget' => array(
-      'autocomplete_match' => 'starts_with',
-      'size' => '60',
-      'reverse_link' => 0,
-      'default_value' => array(
-        '0' => array(
-          'uid' => NULL,
-          '_error_element' => 'default_value_widget][field_organization_hosting_by][0][uid][uid',
-        ),
-      ),
-      'default_value_php' => NULL,
-      'label' => 'Reviewed by',
-      'weight' => '27',
-      'description' => '',
-      'type' => 'userreference_autocomplete',
-      'module' => 'userreference',
     ),
   );
 
@@ -478,76 +465,6 @@ Platform as a Service',
     ),
   );
 
-  // Exported field: field_organization_hosting_last
-  $fields['organization-field_organization_hosting_last'] = array(
-    'field_name' => 'field_organization_hosting_last',
-    'type_name' => 'organization',
-    'display_settings' => array(
-      'label' => array(
-        'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'teaser' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'full' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '4' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '2' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '3' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-    ),
-    'widget_active' => '1',
-    'type' => 'date',
-    'required' => '0',
-    'multiple' => '0',
-    'module' => 'date',
-    'active' => '1',
-    'granularity' => array(
-      'year' => 'year',
-      'month' => 'month',
-      'day' => 'day',
-    ),
-    'timezone_db' => '',
-    'tz_handling' => 'none',
-    'todate' => '',
-    'repeat' => 0,
-    'repeat_collapsed' => '',
-    'default_format' => 'medium',
-    'widget' => array(
-      'default_value' => 'blank',
-      'default_value_code' => '',
-      'default_value2' => 'same',
-      'default_value_code2' => '',
-      'input_format' => 'Y M j - H:i:s',
-      'input_format_custom' => '',
-      'increment' => '1',
-      'text_parts' => array(),
-      'year_range' => '-3:+3',
-      'label_position' => 'above',
-      'label' => 'Last reviewed',
-      'weight' => '26',
-      'description' => '',
-      'type' => 'date_select',
-      'module' => 'date',
-    ),
-  );
-
   // Exported field: field_organization_hosting_level
   $fields['organization-field_organization_hosting_level'] = array(
     'field_name' => 'field_organization_hosting_level',
@@ -605,7 +522,7 @@ Platform as a Service',
       ),
       'default_value_php' => NULL,
       'label' => 'Hosting level',
-      'weight' => '25',
+      'weight' => '26',
       'description' => 'See the <a href="https://association.drupal.org/advertising/hosting">policy</a>.',
       'type' => 'optionwidgets_buttons',
       'module' => 'optionwidgets',
@@ -681,6 +598,79 @@ Platform as a Service',
     ),
   );
 
+  // Exported field: field_organization_issue
+  $fields['organization-field_organization_issue'] = array(
+    'field_name' => 'field_organization_issue',
+    'type_name' => 'organization',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'nodereference',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'nodereference',
+    'active' => '1',
+    'referenceable_types' => array(
+      'project_issue' => 'project_issue',
+      'book' => 0,
+      'changenotice' => 0,
+      'forum' => 0,
+      'image' => 0,
+      'organization' => 0,
+      'packaging_whitelist' => 0,
+      'page' => 0,
+      'project_project' => 0,
+      'project_release' => 0,
+      'story' => 0,
+    ),
+    'advanced_view' => '--',
+    'advanced_view_args' => '',
+    'widget' => array(
+      'autocomplete_match' => NULL,
+      'size' => NULL,
+      'default_value' => array(
+        '0' => array(
+          'nid' => NULL,
+          '_error_element' => 'default_value_widget][field_organization_issue][0][nid][nid',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Issue for review',
+      'weight' => '25',
+      'description' => '',
+      'type' => 'project_issue_nodereference_auto',
+      'module' => 'project_issue',
+    ),
+  );
+
   // Exported field: field_organization_list_rule
   $fields['organization-field_organization_list_rule'] = array(
     'field_name' => 'field_organization_list_rule',
@@ -734,7 +724,7 @@ always|Always list, regardless of membership',
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'List in marketplace',
+      'label' => 'List in marketplace (admin)',
       'weight' => '24',
       'description' => 'Follow the <a href="http://drupal.org/node/1108710">policy</a>.',
       'type' => 'optionwidgets_buttons',
@@ -796,7 +786,7 @@ always|Always list, regardless of membership',
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'List in marketplace',
+      'label' => 'List in marketplace (computed)',
       'weight' => '23',
       'description' => '',
       'type' => 'optionwidgets_onoff',
@@ -811,10 +801,11 @@ always|Always list, regardless of membership',
   t('Hosting URL');
   t('Hosting category');
   t('Hosting level');
-  t('Last reviewed');
+  t('Issue for review');
   t('List in marketplace');
+  t('List in marketplace (admin)');
+  t('List in marketplace (computed)');
   t('Logo');
-  t('Reviewed by');
   t('Usual project budget (optional)');
   t('Website');
 

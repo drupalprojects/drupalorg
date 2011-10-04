@@ -799,9 +799,20 @@ function drupalorg_update_6602() {
 
   // Set field_organization_marketplace = status
   // Set field_organization_list_rule = 'membership'
-  $return = update_sql("UPDATE {content_type_organization} cto INNER JOIN {node} n ON n.vid = cto.vid SET field_organization_list_rule_value = 'membership', field_organization_marketplace_value = n.status");
+  $return[] = update_sql("UPDATE {content_type_organization} cto INNER JOIN {node} n ON n.vid = cto.vid SET field_organization_list_rule_value = 'membership', field_organization_marketplace_value = n.status");
   // Set status = 1
-  $return = update_sql("UPDATE {node} SET status = 1 WHERE type = 'organization'");
+  $return[] = update_sql("UPDATE {node} SET status = 1 WHERE type = 'organization'");
+
+  return $return;
+}
+
+/**
+ * Allow organizations to decide if they want to be listed. See http://drupal.org/node/1217308.
+ */
+function drupalorg_update_6603() {
+  $return = array();
+
+  $return[] = update_sql("UPDATE {content_type_organization} cto INNER JOIN {node} n ON n.vid = cto.vid SET cto.field_org_marketplace_request_value = (cto.field_organization_list_rule_value != 'never')");
 
   return $return;
 }

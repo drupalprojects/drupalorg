@@ -199,6 +199,7 @@ function drupalorg_field_access($op, $field, $account, $node = NULL) {
       case 'field_organization_hosting_level':
       case 'field_organization_hosting_last':
       case 'field_organization_hosting_by':
+      case 'field_organization_issue':
         if ($node !== NULL && $node->uid === $user->uid) {
           return FALSE;
         }
@@ -1479,42 +1480,78 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         }
 
         $node->content = $content;
+
+        if ($node->field_org_marketplace_request[0]['value'] && ($node->uid === $user->uid || user_access('administer nodes'))) {
+          $placeholders = array('!marketplace' => url('marketplace-preview'));
+          if ($node->field_organization_marketplace[0]['value']) {
+            $status = t('This organization is listed in the <a href="!marketplace">marketplace</a>.', $placeholders);
+          }
+          else {
+            $status = t('This organization is <em>not</em> listed in the <a href="!marketplace">marketplace</a>.', $placeholders);
+          }
+          $moderation = array(
+            'always' => t('Community webmasters set this to <em>always</em> be listed.'),
+            'membership' => t('This listing is active when <a href="https://association.drupal.org/membership">Drupal Association membership</a> is current.'),
+            'never' => t('Community webmasters set this to <em>never</em> be listed.'),
+          );
+          if (empty($node->field_organization_issue[0]['nid'])) {
+            $message = '';
+          }
+          else {
+            $message = t('Communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_organization_issue[0]['nid'])));
+          }
+          drupal_set_message($status . ' ' . $moderation[$node->field_organization_list_rule[0]['value']] . ' ' . $message, 'status');
+        }
       }
     }
   }
-  elseif ($op === 'presave') {
-    if ($node->type === 'organization') {
-      // Determine if the organization should be lsited in the marketplace.
-      switch ($node->field_organization_list_rule[0]['value']) {
-        case 'never':
-          $node->field_organization_marketplace[0]['value'] = 0;
-          break;
+  elseif ($op === 'insert' || $op === 'update') {
+    if ($node->type === 'organization' && !isset($node->drupalorg_processed)) {
+      // Determine if the organization should be listed in the marketplace.
+      if ($node->field_org_marketplace_request[0]['value']) {
+        // Requested listing, see if there is any moderation.
+        switch ($node->field_organization_list_rule[0]['value']) {
+          case 'never':
+            $node->field_organization_marketplace[0]['value'] = 0;
+            break;
 
-        case 'membership':
-          // Doing this on view would be slow, and require a bit of boolean
-          // logic in the view. And saves surprises if an organization goes a
-          // few days without renewing.
-          $node->field_organization_marketplace[0]['value'] = drupalorg_has_civimembership($node, 'Organization', TRUE);
-          break;
+          case 'membership':
+            // Doing this on view would be slow, and require a bit of boolean
+            // logic in the view. And saves surprises if an organization goes a
+            // few days without renewing.
+            $node->field_organization_marketplace[0]['value'] = drupalorg_has_civimembership($node, 'Organization', TRUE);
+            break;
 
-        case 'always':
-          $node->field_organization_marketplace[0]['value'] = 1;
-          break;
+          case 'always':
+            $node->field_organization_marketplace[0]['value'] = 1;
+            break;
+        }
+
+        if (empty($node->field_organization_issue[0]['nid'])) {
+          // A new organization has been posted, create an issue to coordinate review.
+          $issue = new stdClass();
+          $issue->type = 'project_issue';
+          $issue->uid = $node->uid;
+          $issue->status = 1;
+          $issue->title = t('Review @title', array('@title' => $node->title));
+          $issue->body = t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid)));
+          $issue->pid = 3202;  // Webmasters, http://drupal.org/project/webmasters
+          $issue->priority = 2;  // normal
+          $issue->sid = 1;  // active
+          $issue->component = 'Marketplace listing';
+          $issue->category = 'task';
+          $issue->comment = 2; // read & write
+          node_save($issue);
+          $node->field_organization_issue[0]['nid'] = $issue->nid;
+        }
       }
-    }
-  }
-}
+      else {
+        // Didn't even request to be listed.
+        $node->field_organization_marketplace[0]['value'] = 0;
+      }
 
-/**
- * Warn if the user does not have a Drupal Association organization membership.
- * We don't stop them since they can still be approved without it.
- */
-function drupalorg_form_organization_node_form_alter(&$form, $form_state) {
-  global $user;
-
-  if ($form['#node']->uid === $user->uid) {
-    if (!drupalorg_has_civimembership($node, 'Organization', TRUE)) {
-      drupal_set_message(t('Please <a href="!url">become a Drupal Association organization member</a>. Your listing <em>may not be public</em> without it.', array('!url' => 'https://association.drupal.org/membership')), 'warning');
+      $node->drupalorg_processed = TRUE;
+      node_save($node);
     }
   }
 }
