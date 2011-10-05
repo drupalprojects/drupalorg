@@ -377,8 +377,10 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
 
           // Add current memberships
           $memberships = '';
-          foreach (association_drupalorg_civicrm_current_memberships($user) as $membership) {
-            $memberships .= '<li>' . t('@membership_type membership expiring @date', array('@membership_type' => $membership['membership_name'], '@date' => format_date(strtotime($membership['end_date']), 'custom', 'M j, Y'))) . '</li>';
+          if (user_is_logged_in()) {
+            foreach (association_drupalorg_civicrm_current_memberships($user) as $membership) {
+              $memberships .= '<li>' . t('@membership_type membership expiring @date', array('@membership_type' => $membership['membership_name'], '@date' => format_date(strtotime($membership['end_date']), 'custom', 'M j, Y'))) . '</li>';
+            }
           }
           if (!empty($memberships)) {
             $form['attributes'][$attribute_id]['#prefix'] .= '<p><strong>' . t('Your current membership') . '</strong></p><ul>' . $memberships . '</ul>';
