@@ -6,12 +6,12 @@
 </div>
 <div class="grid-3 alpha">
   <div class="narrow-box">
-    <p>To get started with Drupal, you'll need to install <a href="/project/drupal">Drupal core</a>, the base system files.</p> 
+    <p>To get started with Drupal, you'll need the Drupal base system files either as <a href="/project/drupal">Drupal core</a> or a <a href="project/installation+profiles">pre-built distribution</a>, as well as a <a href="/hosting">web hosting provider</a>.</p>
     <?php print $core_download_button; ?>
     <p>Drupal 7 is recommended for most new websites. A large number of modules and themes are already available for it.</p>
     <p>Many Drupal sites currently run on <a href="/project/drupal">Drupal 6</a>.</p>
     <h5>Installation Profiles</h5>
-    <p>Drupal <a href="/project/installation+profiles">Installation profiles</a> are pre-packaged website solutions for specific use cases. They include Drupal core as well as additional modules. More Drupal 7 installation profiles will become available in the near future.</p>
+    <p>Drupal <a href="/project/installation+profiles">distributions</a> (also known as installation profiles) are pre-packaged website solutions for specific use cases. They include Drupal core as well as additional modules. More Drupal 7 installation profiles will become available in the near future.</p>
   </div>
 </div>
 <div class="grid-3">
@@ -59,9 +59,9 @@
 </div>
 <div class="grid-3 omega">
   <div class="narrow-box">
-    <p>Ask questions and get answers in <a href="/forum">Forums</a>.</p>
+    <p>Ask questions and get answers in <a href="/forum">our forums</a>.</p>
     <p>Get quick responses and friendly chat in the <a href="/irc">IRC channels</a>.</p>
-    <p>Find professional Drupal service providers in the <a href="/marketplace">Marketplace</a> directory.</p>
+    <p>Visit the Marketplace to find <a href="/marketplace">professional Drupal services</a> and <a href="/hosting">great Drupal hosting</a>.</p>
     <p>Find more ways to connect on the <a href="/community">Community and Support page</a>.</p>
   </div>
 </div>
