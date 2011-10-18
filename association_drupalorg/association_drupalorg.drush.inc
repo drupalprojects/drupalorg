@@ -9,14 +9,31 @@
  * Implementation of hook_drush_command().
  */
 function association_drupalorg_drush_command() {
-  $items = array();
-
-  $items['user-data-clean'] = array (
-    'callback' => 'association_drupalorg_drush_user_data_cleaner',
-    'description' => 'Clean out the users.data column of profile fields.',
+  return array(
+    'user-data-clean' => array(
+      'callback' => 'association_drupalorg_drush_user_data_cleaner',
+      'description' => 'Clean out the users.data column of profile fields.',
+    ),
+    'fulfillment-mail' => array(
+      'description' => 'Email fulfillment CSV.',
+      'arguments' => array(
+        'addresses' => 'Commma-separated list of email addresses.',
+      ),
+    ),
   );
+}
 
-  return $items;
+/**
+ * Implementation of hook_drush_help().
+ */
+function association_drupalorg_drush_help($section) {
+  switch ($section) {
+    case 'drush:user-data-clean':
+      return dt('Cleans out the users.data field. This loops over all users, loads the row, modifies, updates it back. Could take a while.');
+
+    case 'error:ASSOCIATION_DRUPALORG_ARG_MISSING':
+      return t('Missing argument.');
+  }
 }
 
 /**
@@ -40,12 +57,11 @@ function association_drupalorg_drush_user_data_cleaner() {
   }
 }
 
-/**
- * Implementation of hook_drush_help().
- */
-function association_drupalorg_drush_help($section) {
-  switch ($section) {
-    case 'drush:user-data-clean':
-      return dt("Cleans out the users.data field. This loops over all users, loads the row, modifies, updates it back. Could take a while.");
+function drush_association_drupalorg_fulfillment_mail($addresses = '') {
+  if (empty($addresses)) {
+    drush_set_error('ASSOCIATION_DRUPALORG_ARG_MISSING');
+    return;
   }
+
+  drupal_mail('association_drupalorg', 'fulfillment', $addresses, language_default());
 }
