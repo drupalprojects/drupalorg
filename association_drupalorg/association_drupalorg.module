@@ -839,7 +839,7 @@ function association_drupalorg_mail($key, &$message, $params) {
       while ($order_id = db_result($result)) {
         $order = uc_order_load($order_id);
         $line = array(
-          $order->uid,
+          197,
           $order->order_id,
           $order->billing_first_name . ' ' . $order->billing_last_name . ' ' . $order->billing_company,
           $order->billing_street1,
