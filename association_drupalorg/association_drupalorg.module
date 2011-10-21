@@ -385,7 +385,7 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
     }
   }
   elseif (strpos($form_id, 'uc_product_add_to_cart_form_') === 0) {
-    if ($form['node']['#value']->type === 'association_sponsorship_level' && association_drupalorg_get_sponsor() === FALSE) {
+    if ($form['node']['#value']->type === 'association_sponsorship_level' && count(association_drupalorg_get_sponsors()) === 0) {
       // Do not allow sponsorships to be bought without a sponsor.
       $form['submit']['#suffix'] = '<br />' . l(t('You must be associated with a sponsor'), $_GET['q'], array('fragment' => 'content'));
       $form['submit']['#disabled'] = TRUE;
@@ -555,12 +555,12 @@ function association_drupalorg_views_pre_render(&$view) {
   if ($view->name === 'association_store_con_sponsor') {
     // Remind about sponsor associated with, or lack thereof.
     if (user_is_logged_in()) {
-      $sponsor = association_drupalorg_get_sponsor();
-      if ($sponsor === FALSE) {
+      $sponsors = association_drupalorg_get_sponsors();
+      if (count($sponsors) === 0) {
         drupal_set_message(t('You currently are not associated with a sponsor. Before you buy, either <a href="!create">create your sponsor</a> or get added to an <a href="!sponsors">existing sponsor</a>.', array('!create' => url('node/add/association-sponsor', array('query' => drupal_get_destination())), '!sponsors' => url('sponsor/sponsors'))), 'warning');
       }
       else {
-        drupal_set_message(t('You are buying for !sponsor.', array('!sponsor' => l($sponsor->title, 'node/' . $sponsor->nid))));
+        drupal_set_message(t('You are buying for !sponsor.', array('!sponsor' => l($sponsors[0]->title, 'node/' . $sponsors[0]->nid))));
       }
     }
     else {
@@ -575,7 +575,7 @@ function association_drupalorg_uc_payment_entered($order) {
     if ($node->type === 'association_sponsorship_level') {
       // Create a sponsorship with the customer's sponor and the sponsorship
       // level bought.
-      $sponsor = association_drupalorg_get_sponsor($order->uid);
+      $sponsors = association_drupalorg_get_sponsors($order->uid);
       $sponsorship = new stdClass();
       $sponsorship->type = 'association_sponsorship';
       $sponsorship->title = $node->title;
@@ -583,7 +583,7 @@ function association_drupalorg_uc_payment_entered($order) {
         array('nid' => $node->nid),
       );
       $sponsorship->field_assoc_sponsorship_sponsor = array(
-        array('nid' => $sponsor->nid),
+        array('nid' => $sponsors[0]->nid),
       );
       node_save($sponsorship);
     }
@@ -626,9 +626,12 @@ function association_drupalorg_node_grants($account, $op) {
     return array('association_drupalorg_sponsor' => array(0));
   }
   elseif ($op === 'update') {
-    $sponsor = association_drupalorg_get_sponsor($account->uid);
-    if ($sponsor !== FALSE) {
-      return array('association_drupalorg_sponsor' => array($sponsor->nid));
+    $grants = array('association_drupalorg_sponsor' => array());
+    foreach (association_drupalorg_get_sponsors($account->uid) as $sponsor) {
+      $grants['association_drupalorg_sponsor'][] = $sponsor->nid;
+    }
+    if (count($grants['association_drupalorg_sponsor'])) {
+      return $grants;
     }
   }
 }
@@ -657,19 +660,24 @@ function association_drupalorg_field_access($op, $field, $account, $node = NULL)
 }
 
 /**
- * Find the sponsor associated with a user.
+ * Find the sponsors associated with a user.
  *
  * @param $uid
  *   The user ID to check, or omit for the current user.
  * @return
- *   FALSE if there is no sponsor, or an object with nid and title.
+ *   An array of objects with nid and title.
  */
-function association_drupalorg_get_sponsor($uid = NULL) {
+function association_drupalorg_get_sponsors($uid = NULL) {
   if ($uid === NULL) {
     global $user;
     $uid = $user->uid;
   }
-  return db_fetch_object(db_query_range("SELECT n.title, n.nid FROM {content_field_assoc_sponsor_users} su INNER JOIN {node} n ON n.vid = su.vid AND n.status = 1 WHERE su.field_assoc_sponsor_users_uid = %d", $uid, 0, 1));
+  $sponsors = array();
+  $result = db_query("SELECT n.title, n.nid FROM {content_field_assoc_sponsor_users} su INNER JOIN {node} n ON n.vid = su.vid AND n.status = 1 WHERE su.field_assoc_sponsor_users_uid = %d", $uid);
+  while ($sponsor = db_fetch_object($result)) {
+    $sponsors[] = $sponsor;
+  }
+  return $sponsors;
 }
 
 function association_drupalorg_ca_action() {
