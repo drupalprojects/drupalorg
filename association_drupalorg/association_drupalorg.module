@@ -71,22 +71,50 @@ function association_drupalorg_cron() {
   google_dfp_api_replace_creative_view(6980741213, 'association_sponsors_admin', 'page_4'); // Platinum
 }
 
+function association_drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
+  global $user;
+
+  switch ($op) {
+    case 'list':
+      return array(
+        'membership' => array(
+          'info' => t('Drupal Association membership'),
+          'cache' => BLOCK_NO_CACHE,
+          'status' => 1,
+          'region' => 'right',
+          'visibility' => 1,
+          'pages' => 'membership',
+        ),
+      );
+
+    case 'view':
+      switch ($delta) {
+        case 'membership':
+          if (user_is_logged_in()) {
+            $content = '';
+            foreach (association_drupalorg_civicrm_current_memberships($user) as $membership) {
+              $content .= '<p>' . t('@membership_type membership expiring @date', array('@membership_type' => $membership['membership_name'], '@date' => format_date(strtotime($membership['end_date']), 'custom', 'M j, Y'))) . '</p>';
+            }
+            if ($content === '') {
+              $content = '<p>' . t('No current membership.') . '</p>';
+            }
+            return array(
+              'subject' => t('Your membership status'),
+              'content' => $content,
+            );
+          }
+          return;
+      }
+      return;
+  }
+}
+
 function association_drupalorg_preprocess_association_drupalorg_membership_page(&$variables) {
-  $variables['individual_usd_url'] = url('cart/add/e-p1629_a34o134_m0', array('query' => array('destination' => 'cart/checkout')));
-  $variables['organization_usd_url'] = url('cart/add/e-p1629_a34o139_m0', array('query' => array('destination' => 'cart/checkout')));
-  $variables['individual_eur_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 1)));
-  $variables['organization_eur_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 2)));
-
   if (user_is_logged_in()) {
-    global $user;
-
-    $variables['memberships'] = array();
-    foreach (association_drupalorg_civicrm_current_memberships($user) as $membership) {
-      $variables['memberships'][] = t('@membership_type membership expiring @date', array('@membership_type' => $membership['membership_name'], '@date' => format_date(strtotime($membership['end_date']), 'custom', 'M j, Y')));
-    }
-    if (count($variables['memberships']) === 0) {
-      $variables['memberships'][] = t('No current membership.');
-    }
+    $variables['individual_usd_url'] = url('cart/add/e-p1629_a34o134_m0', array('query' => array('destination' => 'cart/checkout')));
+    $variables['organization_usd_url'] = url('cart/add/e-p1629_a34o139_m0', array('query' => array('destination' => 'cart/checkout')));
+    $variables['individual_eur_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 1)));
+    $variables['organization_eur_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 2)));
   }
   else {
     $variables['individual_usd_url'] = url('membership-redirect', array('query' => array('to' => $variables['individual_usd_url'])));
@@ -863,11 +891,11 @@ function association_drupalorg_mail($key, &$message, $params) {
           if ($product->data['shippable']) {
             $line[] = $product->model;
             $line[] = $product->qty;
-            $line[] = $product->price;
+            $line[] = $product->cost;
           }
         }
         fputcsv($fp, $line);
-        uc_order_update_status($order->order_id, 'shipped');
+        uc_order_update_status($order->order_id, 'fulfillment');
       }
 
       $boundary = md5('boundary');
