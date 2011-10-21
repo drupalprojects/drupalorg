@@ -298,7 +298,7 @@ function association_drupalorg_civicrm_current_memberships($account) {
       'contact_id' => $contact_id,
     ));
     foreach ($memberships['values'] as $membership) {
-      if ($statuses['values'][$membership['status_id']]['is_current_member']) {
+      if ($statuses['values'][$membership['status_id']]['is_current_member'] && !$membership['is_test']) {
         $current_memberships[] = $membership;
       }
     }
