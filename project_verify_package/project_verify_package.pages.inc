@@ -188,7 +188,7 @@ function project_verify_package_run_drush_via_pipe($command, $input) {
   // drush expects a terminal, so give it one.
   $env = array('TERM' => 'vt100');
 
-  $process = proc_open(PROJECT_VERIFY_PACKAGE_DRUSH_BIN . ' --include=' . PROJECT_VERIFY_PACKAGE_DRUSH_MAKE_PATH . " $command -", $descriptorspec, $pipes, NULL, $env);
+  $process = proc_open(PROJECT_VERIFY_PACKAGE_DRUSH_BIN . ' --include=' . PROJECT_VERIFY_PACKAGE_DRUSH_MAKE_PATH . " $command --drupal-org -", $descriptorspec, $pipes, NULL, $env);
 
   if (is_resource($process)) {
       // $pipes now looks like this:
