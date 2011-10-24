@@ -331,12 +331,14 @@ function _project_verify_package_verify_release_node($form, &$form_state) {
         if (!($return === 0)) {
           // Reformat the output.
           list($raw_output, $escaped_output) = project_verify_package_clean_output($output);
-          $token_args['!output'] = nl2br($escaped_output);
+          list($raw_errors, $escaped_errors) = project_verify_package_clean_output($errors);
+          $token_args['!output'] = !empty($escaped_output) ? nl2br($escaped_output) : '';
+          $token_args['!errors'] = !empty($escaped_errors) ? nl2br($escaped_errors) : '';
           if (empty($form_state['values']['project_release']['rebuild'])) {
-            $message = t("<p>The %makefile file for project %project_title failed verification for Git tag %vcs_label.</p><p><a href=\"!doc_link\">!doc_link</a> -- to learn more about correcting these errors.</p><p>!output</p><p>Once these errors are fixed, commit the changes to your %makefile, move the release tag for your project (check the Git manual to learn how to move tags if necessary), and submit the release node again.</p>", $token_args);
+            $message = t("<p>The %makefile file for project %project_title failed verification for Git tag %vcs_label.</p><p><a href=\"!doc_link\">!doc_link</a> -- to learn more about correcting these errors.</p>!output!errors<p>Once these errors are fixed, commit the changes to your %makefile, move the release tag for your project (check the Git manual to learn how to move tags if necessary), and submit the release node again.</p>", $token_args);
           }
           else {
-            $message = t("<p>The %makefile file for project %project_title failed verification for Git branch %vcs_label.</p><p><a href=\"!doc_link\">!doc_link</a> -- to learn more about correcting these errors.</p><p>!output</p><p>Once these errors are fixed, commit them to the branch, then resubmit the release.</p>", $token_args);
+            $message = t("<p>The %makefile file for project %project_title failed verification for Git branch %vcs_label.</p><p><a href=\"!doc_link\">!doc_link</a> -- to learn more about correcting these errors.</p>!output!errors<p>Once these errors are fixed, commit them to the branch, then resubmit the release.</p>", $token_args);
           }
           form_set_error('title', $message);
         }
