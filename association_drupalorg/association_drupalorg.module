@@ -695,7 +695,7 @@ function association_drupalorg_field_access($op, $field, $account, $node = NULL)
       // Only show web ad information if sponsorship level has it.
       case 'group_sponsorship_web_ad':
         $level = node_load($node->field_assoc_sponsorship_level[0]['nid']);
-        return $level->field_assoc_level_web_ads[0]['value'];
+        return (bool) $level->field_assoc_level_web_ads[0]['value'];
     }
   }
   return TRUE;
