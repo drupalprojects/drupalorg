@@ -110,13 +110,12 @@ function association_drupalorg_block($op = 'list', $delta = 0, $edit = array()) 
 }
 
 function association_drupalorg_preprocess_association_drupalorg_membership_page(&$variables) {
-  if (user_is_logged_in()) {
-    $variables['individual_usd_url'] = url('cart/add/e-p1629_a34o134_m0', array('query' => array('destination' => 'cart/checkout')));
-    $variables['organization_usd_url'] = url('cart/add/e-p1629_a34o139_m0', array('query' => array('destination' => 'cart/checkout')));
-    $variables['individual_eur_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 1)));
-    $variables['organization_eur_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 2)));
-  }
-  else {
+  $variables['individual_usd_url'] = url('cart/add/e-p1629_a34o134_m0', array('query' => array('destination' => 'cart/checkout')));
+  $variables['organization_usd_url'] = url('cart/add/e-p1629_a34o139_m0', array('query' => array('destination' => 'cart/checkout')));
+  $variables['individual_eur_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 1)));
+  $variables['organization_eur_url'] = url('civicrm/contribute/transact', array('query' => array('reset' => 1, 'id' => 2)));
+
+  if (!user_is_logged_in()) {
     $variables['individual_usd_url'] = url('membership-redirect', array('query' => array('to' => $variables['individual_usd_url'])));
     $variables['organization_usd_url'] = url('membership-redirect', array('query' => array('to' => $variables['organization_usd_url'])));
     $variables['individual_eur_url'] = url('membership-redirect', array('query' => array('to' => $variables['individual_eur_url'])));
@@ -336,6 +335,23 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       if ($node->sell_price == 0) {
         $node->content['display_price']['#access'] = FALSE;
       }
+      if ($node->nid == 13394) {
+        if (user_is_logged_in()) {
+          $node->content['display_price']['#access'] = FALSE;
+          $node->content['add_to_cart']['#weight'] = -1;
+        }
+        else {
+          $node->content['add_to_cart'] = array(
+            'login' => array(
+              '#value' => l(t('Log in to donate'), 'membership-redirect', array('query' => array('to' => $_GET['q']), 'attributes' => array('class' => 'action-button'))),
+              '#prefix' => '<div class="grid-3 omega front-get-started">',
+              '#suffix' => '</div>',
+            ),
+          );
+        }
+        $node->content['add_to_cart']['#prefix'] = '<div class="right">';
+        $node->content['add_to_cart']['#suffix'] = '</div>';
+      }
     }
     elseif ($node->nid == 1104) {
       // Add example ads for https://association.drupal.org/advertising/web.
@@ -392,137 +408,163 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
     }
     else {
       foreach ($form['node']['#value']->attributes as $attribute_id => $attribute) {
-        if ($attribute->name === 'Membership type') {
-          // Make membership prices clear
-          foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
-            $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1 for 1 year'), $value);
-          }
+        switch ($attribute->name) {
+          case 'Membership type':
+            if ($form['node']['#value']->nid == 13394) {
+              // T-shirt is only individual membership
+              $form['attributes'][$attribute_id]['#default_value'] = array_keys($form['attributes'][$attribute_id]['#options']);
+              $form['attributes'][$attribute_id]['#type'] = 'value';
 
-          // Add heading and make description larger
-          $form['attributes'][$attribute_id]['#prefix'] = '<h2>' . t('Drupal Association Membership') . '</h2>';
-          $form['attributes'][$attribute_id]['#prefix'] .= $form['attributes'][$attribute_id]['#description'];
-          unset($form['attributes'][$attribute_id]['#description']);
-
-          // Add current memberships
-          $memberships = '';
-          if (user_is_logged_in()) {
-            foreach (association_drupalorg_civicrm_current_memberships($user) as $membership) {
-              $memberships .= '<li>' . t('@membership_type membership expiring @date', array('@membership_type' => $membership['membership_name'], '@date' => format_date(strtotime($membership['end_date']), 'custom', 'M j, Y'))) . '</li>';
+              // Show nice button
+              $form['submit']['#attributes']['class'] .= ' action-button';
+              $form['submit']['#value'] = t('@price for 1 year + t-shirt', array('@price' => preg_replace('/\.00$/', '', strip_tags($form['node']['#value']->content['display_price']['#value']))));
+              $form['#prefix'] = '<div class="grid-3 omega front-get-started">';
+              $form['#suffix'] = '</div>';
+              $form['attributes']['#prefix'] = '<div class="container-inline">';
+              $form['attributes']['#suffix'] = '</div>';
             }
-          }
-          if (!empty($memberships)) {
-            $form['attributes'][$attribute_id]['#prefix'] .= '<p><strong>' . t('Your current membership') . '</strong></p><ul>' . $memberships . '</ul>';
-          }
-        }
-        elseif ($attribute->name === 'Conference registration') {
-          // Make sure user is logged in.
-          if (user_is_logged_in()) {
-            // And properly working with Bakery.
-            if (strpos($user->init, variable_get('bakery_master', 'http://drupal.org/')) === 0 || strpos($user->init, preg_replace('!^http:!', 'https:', variable_get('bakery_master', 'http://drupal.org/'))) === 0) {
-              // Load profile data we might show on badges.
-              $account = user_load($user->uid);
-              $personal_info_fields = array('profile_full_name', 'profile_country', 'profile_irc_nick', 'profile_personal_home_page', 'profile_twitter_url');
-              $work_info_fields = array('profile_job', 'profile_current_company_organization');
-              $all_fields = array_merge($personal_info_fields, $work_info_fields);
-              $fields = array();
-              $result = db_query("SELECT name, visibility, type, page, title FROM {profile_fields} WHERE name IN (" . db_placeholders($all_fields, 'text') . ")", $all_fields);
-              while ($field = db_fetch_object($result)) {
-                $fields[$field->name] = $field;
+            else {
+              // Make membership prices clear
+              foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
+                $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1 for 1 year'), $value);
               }
 
-              $personal_info = '';
-              foreach ($personal_info_fields as $name) {
-                if ($name === 'profile_full_name' && empty($account->profile_full_name)) {
-                  $personal_info .= theme('user_profile_item', array(
-                    '#title' => check_plain($fields[$name]->title),
-                    '#value' => '<div class="warning">' . t('While not required, your full name is appreciated.') . ' ' . l(t('Edit'), $account->init . '/Personal information', array('query' => array('destination' => 'denver2012-registration'))) . '</div>',
-                  ));
+              // Add heading and make description larger
+              $form['attributes'][$attribute_id]['#prefix'] = '<h2>' . t('Drupal Association Membership') . '</h2>';
+              $form['attributes'][$attribute_id]['#prefix'] .= $form['attributes'][$attribute_id]['#description'];
+              unset($form['attributes'][$attribute_id]['#description']);
+
+              // Add current memberships
+              $memberships = '';
+              if (user_is_logged_in()) {
+                foreach (association_drupalorg_civicrm_current_memberships($user) as $membership) {
+                  $memberships .= '<li>' . t('@membership_type membership expiring @date', array('@membership_type' => $membership['membership_name'], '@date' => format_date(strtotime($membership['end_date']), 'custom', 'M j, Y'))) . '</li>';
                 }
-                else {
-                  $personal_info .= theme('user_profile_item', array(
+              }
+              if (!empty($memberships)) {
+                $form['attributes'][$attribute_id]['#prefix'] .= '<p><strong>' . t('Your current membership') . '</strong></p><ul>' . $memberships . '</ul>';
+              }
+            }
+            break;
+
+          case 'T-shirt':
+            if ($form['node']['#value']->nid == 13394) {
+              // T-shirt does not need a huge form.
+              $form['attributes'][$attribute_id]['#options'][''] = $form['attributes'][$attribute_id]['#title'];
+              unset($form['attributes'][$attribute_id]['#title']);
+            }
+            break;
+
+          case 'Conference registration':
+            // Make sure user is logged in.
+            if (user_is_logged_in()) {
+              // And properly working with Bakery.
+              if (strpos($user->init, variable_get('bakery_master', 'http://drupal.org/')) === 0 || strpos($user->init, preg_replace('!^http:!', 'https:', variable_get('bakery_master', 'http://drupal.org/'))) === 0) {
+                // Load profile data we might show on badges.
+                $account = user_load($user->uid);
+                $personal_info_fields = array('profile_full_name', 'profile_country', 'profile_irc_nick', 'profile_personal_home_page', 'profile_twitter_url');
+                $work_info_fields = array('profile_job', 'profile_current_company_organization');
+                $all_fields = array_merge($personal_info_fields, $work_info_fields);
+                $fields = array();
+                $result = db_query("SELECT name, visibility, type, page, title FROM {profile_fields} WHERE name IN (" . db_placeholders($all_fields, 'text') . ")", $all_fields);
+                while ($field = db_fetch_object($result)) {
+                  $fields[$field->name] = $field;
+                }
+
+                $personal_info = '';
+                foreach ($personal_info_fields as $name) {
+                  if ($name === 'profile_full_name' && empty($account->profile_full_name)) {
+                    $personal_info .= theme('user_profile_item', array(
+                      '#title' => check_plain($fields[$name]->title),
+                      '#value' => '<div class="warning">' . t('While not required, your full name is appreciated.') . ' ' . l(t('Edit'), $account->init . '/Personal information', array('query' => array('destination' => 'denver2012-registration'))) . '</div>',
+                    ));
+                  }
+                  else {
+                    $personal_info .= theme('user_profile_item', array(
+                      '#title' => check_plain($fields[$name]->title),
+                      '#value' => profile_view_field($account, $fields[$name]),
+                    ));
+                  }
+                }
+                $work_info = '';
+                foreach ($work_info_fields as $name) {
+                  $work_info .= theme('user_profile_item', array(
                     '#title' => check_plain($fields[$name]->title),
                     '#value' => profile_view_field($account, $fields[$name]),
                   ));
                 }
-              }
-              $work_info = '';
-              foreach ($work_info_fields as $name) {
-                $work_info .= theme('user_profile_item', array(
-                  '#title' => check_plain($fields[$name]->title),
-                  '#value' => profile_view_field($account, $fields[$name]),
-                ));
-              }
 
-              $form['attributes'][$attribute_id]['#prefix'] = '<h2>' . t('Personal information') . '</h2>';
-              $form['attributes'][$attribute_id]['#prefix'] .= '<p>' . t('We use your Drupal.org account. This information can be updated on Drupal.org at any time, and may be printed on your badge.') . '</p>';
-              $form['attributes'][$attribute_id]['#prefix'] .= '<div class="profile"><dl class="clear-block">' . $personal_info . '</dl></div>';
-              $form['attributes'][$attribute_id]['#prefix'] .= '<p>' . l(t('Edit personal information'), $account->init . '/Personal information', array('query' => array('destination' => 'denver2012-registration'))) . '</p>';
-              $form['attributes'][$attribute_id]['#prefix'] .= '<h3>' . t('Work') . '</h3>';
-              $form['attributes'][$attribute_id]['#prefix'] .= '<div class="profile"><dl class="clear-block">' . $work_info . '</dl></div>';
-              $form['attributes'][$attribute_id]['#prefix'] .= '<p>' . l(t('Edit work'), $account->init . '/Work', array('query' => array('destination' => 'denver2012-registration'))) . '</p>';
+                $form['attributes'][$attribute_id]['#prefix'] = '<h2>' . t('Personal information') . '</h2>';
+                $form['attributes'][$attribute_id]['#prefix'] .= '<p>' . t('We use your Drupal.org account. This information can be updated on Drupal.org at any time, and may be printed on your badge.') . '</p>';
+                $form['attributes'][$attribute_id]['#prefix'] .= '<div class="profile"><dl class="clear-block">' . $personal_info . '</dl></div>';
+                $form['attributes'][$attribute_id]['#prefix'] .= '<p>' . l(t('Edit personal information'), $account->init . '/Personal information', array('query' => array('destination' => 'denver2012-registration'))) . '</p>';
+                $form['attributes'][$attribute_id]['#prefix'] .= '<h3>' . t('Work') . '</h3>';
+                $form['attributes'][$attribute_id]['#prefix'] .= '<div class="profile"><dl class="clear-block">' . $work_info . '</dl></div>';
+                $form['attributes'][$attribute_id]['#prefix'] .= '<p>' . l(t('Edit work'), $account->init . '/Work', array('query' => array('destination' => 'denver2012-registration'))) . '</p>';
 
-              // Registration heading
-              $form['attributes'][$attribute_id]['#prefix'] .= '<h2>' . $form['attributes'][$attribute_id]['#title'] . '</h2>';
-              unset($form['attributes'][$attribute_id]['#title']);
+                // Registration heading
+                $form['attributes'][$attribute_id]['#prefix'] .= '<h2>' . $form['attributes'][$attribute_id]['#title'] . '</h2>';
+                unset($form['attributes'][$attribute_id]['#title']);
 
-              // Check for existing order. One per user.
-              $already_bought = FALSE;
-              $result = db_query("SELECT o.order_id, o.order_status, op.data FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid = %d WHERE o.uid = %d", $form['node']['#value']->nid, $user->uid);
-              while ($order = db_fetch_object($result)) {
-                $order = drupal_unpack($order);
-                if ($order->order_status === 'payment_received') {
-                  foreach ($order->attributes['Conference registration'] as $attribute) {
-                    foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
-                      if (strpos($value, $attribute) === 0) {
-                        unset($form['attributes'][$attribute_id]['#options'][$key]);
-                        $already_bought = TRUE;
+                // Check for existing order. One per user.
+                $already_bought = FALSE;
+                $result = db_query("SELECT o.order_id, o.order_status, op.data FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid = %d WHERE o.uid = %d", $form['node']['#value']->nid, $user->uid);
+                while ($order = db_fetch_object($result)) {
+                  $order = drupal_unpack($order);
+                  if ($order->order_status === 'payment_received') {
+                    foreach ($order->attributes['Conference registration'] as $attribute) {
+                      foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
+                        if (strpos($value, $attribute) === 0) {
+                          unset($form['attributes'][$attribute_id]['#options'][$key]);
+                          $already_bought = TRUE;
+                        }
                       }
                     }
                   }
+                  else {
+                    drupal_set_message(t('You already have a <a href="!order">pending order</a>. Please only complete one order per user account.', array('!order' => url('user/' . $user->uid . '/order/' . $order->order_id))), 'warning');
+                  }
                 }
-                else {
-                  drupal_set_message(t('You already have a <a href="!order">pending order</a>. Please only complete one order per user account.', array('!order' => url('user/' . $user->uid . '/order/' . $order->order_id))), 'warning');
-                }
-              }
 
-              if (count($form['attributes'][$attribute_id]['#options']) === 0) {
-                drupal_set_message(t('You have already bought your conference registration. You can only buy one for each user account.'));
+                if (count($form['attributes'][$attribute_id]['#options']) === 0) {
+                  drupal_set_message(t('You have already bought your conference registration. You can only buy one for each user account.'));
+                  $form['attributes']['#access'] = FALSE;
+                  $form['submit']['#access'] = FALSE;
+                  return;
+                }
+                elseif ($already_bought) {
+                  drupal_set_message(t('You have already bought your conference registration. You can only buy one for each user account. You can still add options.'));
+                }
+
+                // Make prices clear.
+                foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
+                  $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1'), $value);
+                }
+
+                // Need to buy something, first is required.
+                $form['attributes'][$attribute_id]['#value'] = array(reset(array_keys($form['attributes'][$attribute_id]['#options'])));
+                $form['attributes'][$attribute_id]['#association_drupalorg_disabled'] = array(reset(array_keys($form['attributes'][$attribute_id]['#options'])));
+                $form['attributes'][$attribute_id]['#after_build'][] = 'association_drupalorg_conference_registration_after_build';
+
+                // Add to Cart is boring.
+                $form['submit']['#value'] = t('I’m going to DrupalCon!');
+                $form['#redirect'] = 'cart/checkout';
+
+                array_unshift($form['#submit'], 'association_drupalorg_conference_registration_submit');
+              }
+              else { // Not synced for bakery.
+                drupal_set_message(t('Your account is not synced for single sign on, please <a href="!contact">contact us</a>, select Website feedback category. Include your Drupal.org username and/or email address used.', array('!contact' => url('contact'))), 'warning');
                 $form['attributes']['#access'] = FALSE;
                 $form['submit']['#access'] = FALSE;
-                return;
               }
-              elseif ($already_bought) {
-                drupal_set_message(t('You have already bought your conference registration. You can only buy one for each user account. You can still add options.'));
-              }
-
-              // Make prices clear.
-              foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
-                $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1'), $value);
-              }
-
-              // Need to buy something, first is required.
-              $form['attributes'][$attribute_id]['#value'] = array(reset(array_keys($form['attributes'][$attribute_id]['#options'])));
-              $form['attributes'][$attribute_id]['#association_drupalorg_disabled'] = array(reset(array_keys($form['attributes'][$attribute_id]['#options'])));
-              $form['attributes'][$attribute_id]['#after_build'][] = 'association_drupalorg_conference_registration_after_build';
-
-              // Add to Cart is boring.
-              $form['submit']['#value'] = t('I’m going to DrupalCon!');
-              $form['#redirect'] = 'cart/checkout';
-
-              array_unshift($form['#submit'], 'association_drupalorg_conference_registration_submit');
             }
-            else { // Not synced for bakery.
-              drupal_set_message(t('Your account is not synced for single sign on, please <a href="!contact">contact us</a>, select Website feedback category. Include your Drupal.org username and/or email address used.', array('!contact' => url('contact'))), 'warning');
+            else {
+              // Require login
+              drupal_set_message(t('Please <a href="!login">log in</a> to purchase DrupalCon tickets.', array('!login' => url('user', array('query' => drupal_get_destination())))), 'warning');
               $form['attributes']['#access'] = FALSE;
               $form['submit']['#access'] = FALSE;
             }
-          }
-          else {
-            // Require login
-            drupal_set_message(t('Please <a href="!login">log in</a> to purchase DrupalCon tickets.', array('!login' => url('user', array('query' => drupal_get_destination())))), 'warning');
-            $form['attributes']['#access'] = FALSE;
-            $form['submit']['#access'] = FALSE;
-          }
+            break;
         }
       }
     }
@@ -801,7 +843,6 @@ function association_drupalorg_update_membership($order) {
               $membership['source'] .= ', ' . t('updated by UberCart @date', array('@date' => date('Y-m-d')));
               $membership['reminder_date'] = date('Y-m-d', mktime(0, 0, 0, date('m', strtotime($membership['end_date'])), date('d', strtotime($membership['end_date'])) - $membership_remind[$membership_type], date('Y', strtotime($membership['end_date'])) + 1));
               $membership['end_date'] = date('Y-m-d', mktime(0, 0, 0, date('m', strtotime($membership['end_date'])), date('d', strtotime($membership['end_date'])), date('Y', strtotime($membership['end_date'])) + 1));
-              // todo $membership['status_id'] = current;
               $membership = civicrm_api('membership', 'update', $membership);
               break;
             }
@@ -817,102 +858,5 @@ function association_drupalorg_update_membership($order) {
         }
       }
     }
-  }
-}
-
-function association_drupalorg_mail($key, &$message, $params) {
-  switch ($key) {
-    case 'fulfillment':
-      $fp = fopen('php://temp', 'w');
-      fputcsv($fp, array(
-        'Customer ID',
-        'Order #',
-        'Billing Name',
-        'Billing Address 1',
-        'Billing Address 2',
-        'Billing City',
-        'Billing State',
-        'Billing Zip',
-        'Billing Country',
-        'Order Date',
-        'Shipping Name',
-        'Shipping Address 1',
-        'Shipping Address 2',
-        'Shipping City',
-        'Shipping State',
-        'Shipping Zip',
-        'Shipping Country',
-        'Ship Method',
-        'Email',
-        'item1', 'qty1', 'price1',
-        'item2', 'qty2', 'price2',
-        'item3', 'qty3', 'price3',
-        'item4', 'qty4', 'price4',
-        'item5', 'qty5', 'price5',
-        'item6', 'qty6', 'price6',
-        'item7', 'qty7', 'price7',
-        'item8', 'qty8', 'price8',
-        'item9', 'qty9', 'price9',
-        'item10', 'qty10', 'price10',
-        'item11', 'qty11', 'price11',
-        'item12', 'qty12', 'price12',
-        'item13', 'qty13', 'price13',
-        'item14', 'qty14', 'price14',
-        'item15', 'qty15', 'price15',
-        'item16', 'qty16', 'price16',
-        'item17', 'qty17', 'price17',
-        'item18', 'qty18', 'price18',
-        'item19', 'qty19', 'price19',
-        'item20', 'qty20', 'price20',
-        'item21', 'qty21', 'price21',
-        'item22', 'qty22', 'price22',
-        'item23', 'qty23', 'price23',
-        'item24', 'qty24', 'price24',
-        'item25', 'qty25', 'price25',
-      ));
-
-      $result = db_query("SELECT DISTINCT o.order_id FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id INNER JOIN {uc_products} p ON p.nid = op.nid AND p.shippable = 1 WHERE o.order_status IN ('completed', 'payment_received')");
-      while ($order_id = db_result($result)) {
-        $order = uc_order_load($order_id);
-        $line = array(
-          197,
-          $order->order_id,
-          $order->billing_first_name . ' ' . $order->billing_last_name . ' ' . $order->billing_company,
-          $order->billing_street1,
-          $order->billing_street2,
-          $order->billing_city,
-          uc_zone_get_by_id($order->billing_zone),
-          $order->billing_postal_code,
-          uc_country_get_by_id($order->billing_country),
-          date('Y-m-d', $order->created),
-          $order->delivery_first_name . ' ' . $order->delivery_last_name . ' ' . $order->delivery_company,
-          $order->delivery_street1,
-          $order->delivery_street2,
-          $order->delivery_city,
-          uc_zone_get_by_id($order->delivery_zone),
-          $order->delivery_postal_code,
-          uc_country_get_by_id($order->delivery_country),
-          '',
-          $order->primary_email,
-        );
-        foreach ($order->products as $product) {
-          if ($product->data['shippable']) {
-            $line[] = $product->model;
-            $line[] = $product->qty;
-            $line[] = $product->cost;
-          }
-        }
-        fputcsv($fp, $line);
-        uc_order_update_status($order->order_id, 'fulfillment');
-      }
-
-      $boundary = md5('boundary');
-      $message['subject'] = t('Drupal Association fulfillment for @date', array('@date' => date('Y-m-d')), $message['language']->language);
-      $message['headers']['Content-Type'] = 'multipart/mixed; boundary=' . $boundary;
-      $message['body'][] = '--' . $boundary . "\n" . 'Content-Type: ' . mime_header_encode('text/plain; charset=UTF-8') . "\n\n" . t('See attached.', array(), $message['language']->language);
-      $message['body'][] = '--' . $boundary . "\n" . 'Content-Type: ' . mime_header_encode('text/csv; charset=UTF-8') . "\n" . mime_header_encode('Content-Disposition: attachment; filename="orders.csv"') . "\n\n" . stream_get_contents($fp, -1, 0);
-
-      fclose($fp);
-      break;
   }
 }
