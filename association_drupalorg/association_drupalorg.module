@@ -507,16 +507,30 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
                 unset($form['attributes'][$attribute_id]['#title']);
 
                 // Check for existing order. One per user.
-                $already_bought = FALSE;
-                $result = db_query("SELECT o.order_id, o.order_status, op.data FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid = %d WHERE o.uid = %d", $form['node']['#value']->nid, $user->uid);
-                while ($order = db_fetch_object($result)) {
-                  $order = drupal_unpack($order);
-                  if ($order->order_status === 'payment_received') {
-                    foreach ($order->attributes['Conference registration'] as $attribute) {
-                      foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
-                        if (strpos($value, $attribute) === 0) {
-                          unset($form['attributes'][$attribute_id]['#options'][$key]);
-                          $already_bought = TRUE;
+                $remove_dmb_upgrade = TRUE;
+                $result = db_query("SELECT o.order_id FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid = %d WHERE o.uid = %d", $form['node']['#value']->nid, $user->uid);
+                while ($order_id = db_result($result)) {
+                  $order = uc_order_load($order_id);
+                  if ($order->order_status === 'payment_received' || $order->order_status === 'completed') {
+                    foreach ($order->products as $product) {
+                      foreach ($product->data['attributes']['Conference registration'] as $attribute) {
+                        foreach ($form['attributes'][$attribute_id]['#options'] as $option_id => $label) {
+                          if (strpos($label, $attribute) === 0) {
+                            switch ($option_id) {
+                              case 144: // Already registered for DrupalCon
+                              case 194: // … via DMB upgrade
+                                unset($form['attributes'][$attribute_id]['#options'][144]);
+                                unset($form['attributes'][$attribute_id]['#options'][149]);
+                                unset($form['attributes'][$attribute_id]['#options'][194]);
+                                break;
+
+                              case 149: // Already registered for Drupal Means Business
+                                $remove_dmb_upgrade = FALSE;
+                                unset($form['attributes'][$attribute_id]['#options'][144]);
+                                unset($form['attributes'][$attribute_id]['#options'][149]);
+                                break;
+                            }
+                          }
                         }
                       }
                     }
@@ -532,19 +546,29 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
                   $form['submit']['#access'] = FALSE;
                   return;
                 }
-                elseif ($already_bought) {
-                  drupal_set_message(t('You have already bought your conference registration. You can only buy one for each user account. You can still add options.'));
+
+                if ($remove_dmb_upgrade) {
+                  unset($form['attributes'][$attribute_id]['#options'][194]);
                 }
+
+                if (isset($_GET['dmb']) && isset($form['attributes'][$attribute_id]['#options'][149])) {
+                  $form['attributes'][$attribute_id]['#default_value'] = 149;
+                }
+                else {
+                  $form['attributes'][$attribute_id]['#default_value'] = reset(array_keys($form['attributes'][$attribute_id]['#options']));
+                }
+                $form['#after_build'][] = 'association_drupalorg_conference_registration_after_build';
+                drupal_add_js(drupal_get_path('module', 'association_drupalorg') .'/association_drupalorg.js');
+                drupal_add_js(array(
+                  'associationDrupalorgConfReg' => 'input[name^=attributes[' . $attribute_id . ']',
+                  'associationDrupalorgDMB' => 149,
+                  'associationDrupalorgShirt' => '#edit-attributes-4-wrapper',
+                ), 'setting');
 
                 // Make prices clear.
                 foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
                   $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1'), $value);
                 }
-
-                // Need to buy something, first is required.
-                $form['attributes'][$attribute_id]['#value'] = array(reset(array_keys($form['attributes'][$attribute_id]['#options'])));
-                $form['attributes'][$attribute_id]['#association_drupalorg_disabled'] = array(reset(array_keys($form['attributes'][$attribute_id]['#options'])));
-                $form['attributes'][$attribute_id]['#after_build'][] = 'association_drupalorg_conference_registration_after_build';
 
                 // Add to Cart is boring.
                 $form['submit']['#value'] = t('I’m going to DrupalCon!');
@@ -571,14 +595,17 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
   }
 }
 
-/**
- * Because formapi doesn't hve a way to selectively disable checkboxes.
- */
 function association_drupalorg_conference_registration_after_build($form, $form_state) {
-  foreach ($form['#association_drupalorg_disabled'] as $key) {
-    $form[$key]['#attributes']['disabled'] = 'disabled';
-    $form[$key]['#value'] = TRUE;
+  $attribute_names = array();
+  foreach ($form['node']['#value']->attributes as $attribute_id => $attribute) {
+    $attribute_names[$attribute->name] = $attribute_id;
   }
+
+  // Drupal Means Business does not get a T-shirt.
+  if ($form['attributes'][$attribute_names['Conference registration']]['#value'] == 149) {
+    unset($form['attributes'][$attribute_names['T-shirt']]['#required']);
+  }
+
   return $form;
 }
 
