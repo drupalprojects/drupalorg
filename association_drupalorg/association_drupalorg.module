@@ -721,6 +721,9 @@ function association_drupalorg_field_access($op, $field, $account, $node = NULL)
 
       // Only show web ad information if sponsorship level has it.
       case 'group_sponsorship_web_ad':
+        if (is_null($node)) { // $node is not set for AHAH request just uploading the image.
+          return TRUE;
+        }
         $level = node_load($node->field_assoc_sponsorship_level[0]['nid']);
         return (bool) $level->field_assoc_level_web_ads[0]['value'];
     }
