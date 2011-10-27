@@ -9,6 +9,6 @@ Drupal.behaviors.associationDrupalorg = function (context) {
       else {
         $(Drupal.settings.associationDrupalorgShirt).slideDown('fast');
       }
-    }).change();
+    });
   });
 };
