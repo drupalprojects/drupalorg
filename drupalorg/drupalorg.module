@@ -1722,7 +1722,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
 
     // Get the membership display content
     if ($account->uid === $user->uid) {
-      $membership_personal = t('<a href="https://association.drupal.org/">Drupal Association</a> memberships pay for improvements to Drupal.org. Please consider purchasing a <a href="https://association.drupal.org/membership">membership</a>.');
+      $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="http://association.drupal.org">Drupal Association</a> badges on your profile page? <a href="http://association.drupal.org/membership">Become a member today.</a>');
     }
     foreach (drupalorg_civimembership_load($account) as $membership) {
       $placeholders = array(
@@ -1732,7 +1732,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
       );
 
       // If membership is new or current, and not the organization owner's.
-      if (($membership->status === 'New' || $membership->status === 'Current') && (!isset($organization) || $organization->uid !== $account->uid || $membership->membership_type !== 'Organization')) {
+      if (($membership->status === 'New' || $membership->status === 'Current' || $membership->status === 'Grace') && (!isset($organization) || $organization->uid !== $account->uid || $membership->membership_type !== 'Organization')) {
         $content['column_2']['membership'][] = array(
           '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
           '#value' => t('@username is an <a href="https://association.drupal.org/membership">@membership_type member</a> of the <a href="https://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
@@ -1744,26 +1744,25 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
         switch ($membership->status) {
           case 'New':
           case 'Current':
-            $membership_personal = t('Thank you for being a <a href="https://association.drupal.org/">Drupal Association</a> member. Your support helps to fund improvements to Drupal.org. Your <a href="https://association.drupal.org/membership">membership</a> expires on @expires.', $placeholders);
+            $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="http://association.drupal.org">Drupal Association</a> membership. Your support has helped us to support the Drupal community. We really appreciate your contribution to making Drupal and its community great.<br />Your Membership expires: @expires', $placeholders);
             break;
 
           case 'Grace':
-          case 'Expired':
-            $membership_personal = t('Thank you for purchasing a membership. Your support has helped us to improve Drupal.org. Your ongoing support via a <a href="https://association.drupal.org/membership">membership</a> is appreciated.', $placeholders);
+            $membership_personal = t('<strong>Oh No!</strong> Your membership lapsed on @expires. You’re awesome, so we are leaving your membership badge up for a bit giving you time to renew. Continue supporting the <a href="http://association.drupal.org">Drupal Association</a> by <a href="htp://association.drupal.org/membership">renewing your membership</a>', $placeholders);
             break;
 
-          case 'Deceased':
-            $membership_personal = t('Thank you for purchasing a membership. Your support has helped us to improve Drupal.org.', $placeholders);
+          case 'Expired':
+            $membership_personal = t('<strong>Uh oh!</strong> Your Drupal Association membership expired on @expires. Membership helps support the Drupal community and infrastructure improvements to drupal.org, take a minute to <a href="http://association.drupal.org/membership">renew your membership</a> today.', $placeholders);
             break;
         }
       }
     }
     if (isset($membership_personal)) {
-      $content['column_2']['membership_personal'] = array(
+      $content['column_2']['membership'][] = array(
         '#prefix' => '<p>',
         '#value' => $membership_personal,
         '#suffix' => '</p>',
-        '#weight' => 1,
+        '#weight' => -1,
       );
     }
 
