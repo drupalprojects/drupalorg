@@ -133,10 +133,11 @@ function association_drupalorg_preprocess_association_drupalorg_donate_page(&$va
 }
 
 function association_drupalorg_preprocess_association_drupalorg_drupalcon_report_page(&$variables) {
+  $product_id = 1484;
   module_load_include('inc', 'uc_coupon', 'uc_coupon.admin');
 
   $variables['time_left'] = t('<strong>@time</strong> until DrupalCon', array('@time' => format_interval(strtotime('2012-03-19 8:00:00 MDT') - time())));
-  $variables['total_registration'] = l(t('<strong>@count</strong> registrations', array('@count' => db_result(db_query("SELECT count(DISTINCT o.order_id) FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid = 1484 WHERE o.order_status IN ('completed', 'payment_received')")))), 'admin/reports/drupalcon/registration.csv', array('html' => TRUE));
+  $variables['download'] = l(t('Download CSV'), 'admin/reports/drupalcon/registration.csv', array('html' => TRUE));
 
   $header = array(
     t('Name'),
@@ -146,27 +147,111 @@ function association_drupalorg_preprocess_association_drupalorg_drupalcon_report
     t('Used'),
     t('Outstanding'),
   );
+  $cids = array();
   $rows = array();
-  $result = db_query('SELECT cid FROM {uc_coupons} ORDER BY status DESC, valid_until ASC');
+  $result = db_query('SELECT cid FROM {uc_coupons} ORDER BY status DESC, value, valid_until ASC');
+  $last_status_value = NULL;
   while ($cid = db_result($result)) {
     $coupon = uc_coupon_load($cid);
-    $usage = uc_coupon_count_usage($cid);
+    if (isset($coupon->data['products'][$product_id])) {
+      $cids[] = $coupon->cid;
+      $usage = uc_coupon_count_usage($cid);
+
+      if ($last_status_value !== $coupon->status . $coupon->value) {
+        if (!is_null($last_status_value)) {
+          $rows[] = array(
+            '<strong>' . t('Subtotal') . '</strong>',
+            '',
+            '<strong>' . uc_coupon_format_discount($coupon) . '</strong>',
+            '<strong>' . $count_sum . '</strong>',
+            '<strong>' . $used_sum . '</strong>',
+            '<strong>' . $outstanding_sum . '</strong>',
+          );
+        }
+
+        $last_status_value = $coupon->status . $coupon->value;
+        $count_sum = $used_sum = $outstanding_sum = 0;
+      }
+
+      $count_sum += $count = $coupon->bulk ? $coupon->data['bulk_number'] : $coupon->max_uses;
+      $used_sum += $used = array_sum($usage['codes']);
+      $outstanding_sum += $outstanding = $coupon->status ? (($coupon->bulk ? $coupon->data['bulk_number'] : $coupon->max_uses) - array_sum($usage['codes'])) : 0;
+
+      $rows[] = array(
+        l($coupon->name, 'admin/store/coupons/' . $coupon->cid),
+        $coupon->status ? ($coupon->valid_until ? _uc_coupon_format_date($coupon->valid_until, variable_get('uc_date_format_default', 'm/d/Y H:iT')) : '-') : t('inactive'),
+        uc_coupon_format_discount($coupon),
+        $count,
+        $used,
+        $outstanding,
+      );
+    }
+  }
+  $rows[] = array(
+    '<strong>' . t('Subtotal') . '</strong>',
+    '',
+    '<strong>' . uc_coupon_format_discount($coupon) . '</strong>',
+    '<strong>' . $count_sum . '</strong>',
+    '<strong>' . $used_sum . '</strong>',
+    '<strong>' . $outstanding_sum . '</strong>',
+  );
+  $variables['coupons'] = theme('table', $header, $rows);
+
+  // Get products which have coupon purchase options for the main product.
+  $nodes = array($product_id => node_load($product_id));
+  association_drupalorg_attribute_name_index($nodes[$product_id]);
+  $result = db_query("SELECT nid FROM {uc_coupon_purchase} WHERE base_cid IN (" . db_placeholders($cids) . ")", $cids);
+  while ($nid = db_result($result)) {
+    $nodes[$nid] = node_load($nid);
+    association_drupalorg_attribute_name_index($nodes[$nid]);
+  }
+
+  $registration_sums = array();
+  $payment_sums = array();
+  foreach (association_drupalorg_orders(array_keys($nodes)) as $order) {
+    if (isset($order->products[$order->product_index]->data['attributes']['Conference registration'])) {
+      $registration_sums[$order->products[$order->product_index]->data['attributes']['Conference registration'][0]] += 1;
+    }
+    $price = $order->order_total;
+    // Subtract membership price
+    if (isset($order->products[$order->product_index]->data['attributes']['Membership type'])) {
+      foreach ($nodes[$order->products[$order->product_index]->nid]->attributes[$nodes[$order->products[$order->product_index]->nid]->attribute_names['Membership type']]->options as $option) {
+        if (in_array($option->name, $order->products[$order->product_index]->data['attributes']['Membership type'])) {
+          $price -= $option->price;
+        }
+      }
+    }
+    $payment_sums[$price] += 1;
+  }
+  $rows = array();
+  foreach ($registration_sums as $type => $count) {
     $rows[] = array(
-      l($coupon->name, 'admin/store/coupons/' . $coupon->cid),
-      $coupon->status ? ($coupon->valid_until ? _uc_coupon_format_date($coupon->valid_until, variable_get('uc_date_format_default', 'm/d/Y H:iT')) : '-') : t('inactive'),
-      uc_coupon_format_discount($coupon),
-      $coupon->bulk ? $coupon->data['bulk_number'] : $coupon->max_uses,
-      array_sum($usage['codes']),
-      '<strong>' . ($coupon->status ? (($coupon->bulk ? $coupon->data['bulk_number'] : $coupon->max_uses) - array_sum($usage['codes'])) : 0) . '</strong>',
+      $type,
+      $count,
     );
   }
-  $variables['coupons'] = theme('table', $header, $rows);
+  $variables['registration_sums'] = theme('table', array(t('Registration'), t('Count')), $rows);
+  $rows = array();
+  $total = 0;
+  foreach ($payment_sums as $amount => $count) {
+    $total += $amount * $count;
+    $rows[] = array(
+      number_format($amount),
+      $count,
+      number_format($amount * $count),
+    );
+  }
+  $rows[] = array(
+    '<strong>' . t('Total') . '</strong>',
+    '',
+    '<strong>' . number_format($total) . '</strong>',
+  );
+  $variables['payment_sums'] = theme('table', array(t('Amount'), t('Count'), t('Revenue')), $rows);
 }
 
 function association_drupalorg_drupalcon_registration_csv() {
   drupal_set_header('Content-Type: text/csv');
   drupal_set_header('Content-Disposition: attachment; filename=registration.csv');
-  $result = db_query("SELECT o.order_id FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid = 1484 WHERE o.order_status IN ('completed', 'payment_received')");
   $fp = fopen('php://output', 'w');
   fputcsv($fp, array(
     t('Order'),
@@ -177,6 +262,7 @@ function association_drupalorg_drupalcon_registration_csv() {
     t('Title'),
     t('Country'),
     t('Email'),
+    t('Registration'),
     t('Shirt'),
     t('Meal'),
     t('Other'),
@@ -188,20 +274,15 @@ function association_drupalorg_drupalcon_registration_csv() {
     t('Total'),
     t('Payment'),
   ));
-  while ($order_id = db_result($result)) {
-    $order = uc_order_load($order_id);
+  foreach (association_drupalorg_orders(array(1484)) as $order) {
     $account = user_load($order->uid);
-    foreach ($order->products as $product) {
-      if ($product->nid === 1484) {
-        break;
-      }
-    }
+
     $contact = array(
       'training' => '',
       'Drupalgängers' => '',
       'sponsorship' => '',
     );
-    foreach ($product->data['attributes']['Please contact me'] as $contact_about) {
+    foreach ($order->products[$order->product_index]->data['attributes']['Please contact me'] as $contact_about) {
       foreach (array_keys($contact) as $type) {
         if (strpos($contact_about, $type) !== FALSE) {
           $contact[$type] = t('yes');
@@ -217,9 +298,10 @@ function association_drupalorg_drupalcon_registration_csv() {
       $account->profile_job,
       $account->country,
       $account->mail,
-      $product->data['attributes']['T-shirt'][0],
-      $product->data['attributes']['Meal preference'][0],
-      $product->data['attributes']['Other meal preference'][0],
+      $order->products[$order->product_index]->data['attributes']['Conference registration'][0],
+      $order->products[$order->product_index]->data['attributes']['T-shirt'][0],
+      $order->products[$order->product_index]->data['attributes']['Meal preference'][0],
+      $order->products[$order->product_index]->data['attributes']['Other meal preference'][0],
       implode(', ', $product->data['attributes']['Services you require']),
       $contact['training'],
       $contact['Drupalgängers'],
@@ -230,6 +312,33 @@ function association_drupalorg_drupalcon_registration_csv() {
     ));
   }
   fclose($fp);
+}
+
+/**
+ * Get all the orders for a product and find that product in each.
+ *
+ * @param $nids
+ *   Array of product node IDs.
+ * @return
+ *   An array of order objects from uc_order_load(), with $order->product_index
+ *   set for $order->products[$order->product_index].
+ */
+function association_drupalorg_orders($nids) {
+  $orders = array();
+
+  $result = db_query("SELECT o.order_id FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid IN (" . db_placeholders($nids) . ") WHERE o.order_status IN ('completed', 'payment_received')", $nids);
+  while ($order_id = db_result($result)) {
+    $order = uc_order_load($order_id);
+    foreach ($order->products as $key => $product) {
+      if (in_array($product->nid, $nids)) {
+        $order->product_index = $key;
+        break;
+      }
+    }
+    $orders[] = $order;
+  }
+
+  return $orders;
 }
 
 /**
@@ -352,6 +461,12 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         $node->content['add_to_cart']['#prefix'] = '<div class="right">';
         $node->content['add_to_cart']['#suffix'] = '</div>';
       }
+    }
+    elseif ($node->type === 'project') {
+      $node->content['projects'] = array(
+        '#value' => '<p class="big">' . l(t('◄ See our other projects'), 'projects') . '</p>',
+        '#weight' => 100,
+      );
     }
     elseif ($node->nid == 1104) {
       // Add example ads for https://association.drupal.org/advertising/web.
@@ -558,11 +673,12 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
                   $form['attributes'][$attribute_id]['#default_value'] = reset(array_keys($form['attributes'][$attribute_id]['#options']));
                 }
                 $form['#after_build'][] = 'association_drupalorg_conference_registration_after_build';
+                association_drupalorg_attribute_name_index($form['node']['#value']);
                 drupal_add_js(drupal_get_path('module', 'association_drupalorg') .'/association_drupalorg.js');
                 drupal_add_js(array(
                   'associationDrupalorgConfReg' => 'input[name^=attributes[' . $attribute_id . ']',
                   'associationDrupalorgDMB' => 149,
-                  'associationDrupalorgShirt' => '#edit-attributes-4-wrapper',
+                  'associationDrupalorgShirt' => '#edit-attributes-' . $form['node']['#value']->attribute_names['T-shirt'] . '-wrapper',
                 ), 'setting');
 
                 // Make prices clear.
@@ -596,17 +712,25 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
 }
 
 function association_drupalorg_conference_registration_after_build($form, $form_state) {
-  $attribute_names = array();
-  foreach ($form['node']['#value']->attributes as $attribute_id => $attribute) {
-    $attribute_names[$attribute->name] = $attribute_id;
-  }
-
   // Drupal Means Business does not get a T-shirt.
-  if ($form['attributes'][$attribute_names['Conference registration']]['#value'] == 149) {
-    unset($form['attributes'][$attribute_names['T-shirt']]['#required']);
+  association_drupalorg_attribute_name_index($form['node']['#value']);
+  if ($form['attributes'][$form['node']['#value']->attribute_names['Conference registration']]['#value'] == 149) {
+    unset($form['attributes'][$form['node']['#value']->attribute_names['T-shirt']]['#required']);
   }
 
   return $form;
+}
+
+/**
+ * Hard-coding IDs is non-ideal. We want to refer to product attriubtes by name.
+ */
+function association_drupalorg_attribute_name_index(&$node) {
+  $node->attribute_names = array();
+  if (isset($node->attributes)) {
+    foreach ($node->attributes as $attribute_id => $attribute) {
+      $node->attribute_names[$attribute->name] = $attribute_id;
+    }
+  }
 }
 
 /**
