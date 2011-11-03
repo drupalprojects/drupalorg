@@ -1,0 +1,3 @@
+<?php
+
+include_once('association_projects.features.inc');
