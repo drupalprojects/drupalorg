@@ -150,26 +150,26 @@ function association_drupalorg_preprocess_association_drupalorg_drupalcon_report
   $cids = array();
   $rows = array();
   $result = db_query('SELECT cid FROM {uc_coupons} ORDER BY status DESC, value, valid_until ASC');
-  $last_status_value = NULL;
+  $last_value = NULL;
   while ($cid = db_result($result)) {
     $coupon = uc_coupon_load($cid);
     if (isset($coupon->data['products'][$product_id])) {
       $cids[] = $coupon->cid;
       $usage = uc_coupon_count_usage($cid);
 
-      if ($last_status_value !== $coupon->status . $coupon->value) {
-        if (!is_null($last_status_value)) {
+      if ($last_value !== $coupon->status . $coupon->value) {
+        if (!is_null($last_value)) {
           $rows[] = array(
             '<strong>' . t('Subtotal') . '</strong>',
             '',
-            '<strong>' . uc_coupon_format_discount($coupon) . '</strong>',
+            '<strong>' . $last_value . '</strong>',
             '<strong>' . $count_sum . '</strong>',
             '<strong>' . $used_sum . '</strong>',
             '<strong>' . $outstanding_sum . '</strong>',
           );
         }
 
-        $last_status_value = $coupon->status . $coupon->value;
+        $last_value = uc_coupon_format_discount($coupon);
         $count_sum = $used_sum = $outstanding_sum = 0;
       }
 
@@ -233,6 +233,7 @@ function association_drupalorg_preprocess_association_drupalorg_drupalcon_report
   $variables['registration_sums'] = theme('table', array(t('Registration'), t('Count')), $rows);
   $rows = array();
   $total = 0;
+  ksort($payment_sums);
   foreach ($payment_sums as $amount => $count) {
     $total += $amount * $count;
     $rows[] = array(
