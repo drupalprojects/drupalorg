@@ -155,9 +155,10 @@ function association_drupalorg_preprocess_association_drupalorg_drupalcon_report
     $coupon = uc_coupon_load($cid);
     if (isset($coupon->data['products'][$product_id])) {
       $cids[] = $coupon->cid;
+      $discount = uc_coupon_format_discount($coupon);
       $usage = uc_coupon_count_usage($cid);
 
-      if ($last_value !== $coupon->status . $coupon->value) {
+      if ($last_value !== $discount) {
         if (!is_null($last_value)) {
           $rows[] = array(
             '<strong>' . t('Subtotal') . '</strong>',
@@ -169,7 +170,7 @@ function association_drupalorg_preprocess_association_drupalorg_drupalcon_report
           );
         }
 
-        $last_value = uc_coupon_format_discount($coupon);
+        $last_value = $discount;
         $count_sum = $used_sum = $outstanding_sum = 0;
       }
 
@@ -180,7 +181,7 @@ function association_drupalorg_preprocess_association_drupalorg_drupalcon_report
       $rows[] = array(
         l($coupon->name, 'admin/store/coupons/' . $coupon->cid),
         $coupon->status ? ($coupon->valid_until ? _uc_coupon_format_date($coupon->valid_until, variable_get('uc_date_format_default', 'm/d/Y H:iT')) : '-') : t('inactive'),
-        uc_coupon_format_discount($coupon),
+        $discount,
         $count,
         $used,
         $outstanding,
