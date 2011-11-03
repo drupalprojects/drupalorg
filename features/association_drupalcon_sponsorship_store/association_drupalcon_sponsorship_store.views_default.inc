@@ -1115,6 +1115,7 @@ function association_drupalcon_sponsorship_store_views_default_views() {
       'value' => array(
         '0' => '0',
         '4' => '4',
+        '6' => '6',
         '8' => '8',
         '16' => '16',
         '20' => '20',

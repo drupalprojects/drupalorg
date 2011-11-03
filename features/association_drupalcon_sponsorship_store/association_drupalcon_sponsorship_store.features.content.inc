@@ -810,16 +810,16 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'active' => '1',
     'limit' => 'LineItem:3688493',
     'widget' => array(
+      'create' => 1,
+      'image' => 'field_sponsorship_web_image',
+      'link' => 'field_sponsorship_web_url',
+      'company' => 'field_assoc_sponsorship_sponsor:field_sponsor_dfp',
       'default_value' => array(
         '0' => array(
           'dfp_id' => '',
         ),
       ),
       'default_value_php' => NULL,
-      'image' => 'field_sponsorship_web_image',
-      'create' => 1,
-      'link' => 'field_sponsorship_web_url',
-      'company' => 'field_assoc_sponsorship_sponsor:field_sponsor_dfp',
       'label' => 'DfP creative',
       'weight' => '31',
       'description' => '',
@@ -1021,6 +1021,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'max' => '',
     'allowed_values' => '0|Diamond
 4|Platinum
+6|Day Stage & Drupal Games
 8|Gold
 16|Add-on
 20|Silver
