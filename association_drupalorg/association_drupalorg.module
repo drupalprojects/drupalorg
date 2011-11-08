@@ -1017,3 +1017,71 @@ function association_drupalorg_update_membership($order) {
     }
   }
 }
+
+/**
+ * Add a product to the checkout process. This would be good to make generic
+ * and put in a separate module.
+ */
+function association_drupalorg_checkout_pane() {
+  $node = node_load(1639);
+  return array(
+    array(
+      'id' => 'association_drupalorg_donate',
+      'callback' => 'association_drupalorg_donate_pane',
+      'title' => check_plain($node->title),
+      'desc' => t('Donation to the Drupal Association.'),
+      'weight' => 0,
+      'enabled' => FALSE,
+      'process' => TRUE,
+      'collapsible' => FALSE,
+      'node' => $node,
+    ),
+  );
+}
+
+/**
+ * Process the product form early, in case it alters the cart contents.
+ */
+function association_drupalorg_checkout_pane_alter(&$panes) {
+  foreach ($panes as $pane) {
+    if ($pane['id'] === 'association_drupalorg_donate' && $pane['enabled']) {
+      $form_state = array();
+      $form = uc_product_add_to_cart_form($form_state, $pane['node']);
+      $form_id = 'uc_product_add_to_cart_form_' . $pane['node']->nid;
+      if (!empty($_POST)) {
+        $form['#post'] = $_POST;
+      }
+      drupal_prepare_form($form_id, $form, $form_state);
+      form_builder($form_id, $form, $form_state);
+      if (isset($form_state['clicked_button'])) { // If the button was ours.
+        drupal_process_form($form_id, $form, $form_state);
+        unset($_POST); // Prevent processing the enclosing form.
+      }
+      association_drupalorg_donate_pane('stash form', $form, NULL);
+    }
+  }
+}
+
+function association_drupalorg_donate_pane($op, $arg1, $arg2) {
+  static $form;
+
+  switch ($op) {
+    case 'stash form': // custom, to hand off the form array.
+      $form = $arg1;
+      return;
+
+    case 'view':
+      foreach (uc_cart_get_contents() as $product) {
+        if ($product->nid == $form['node']['#value']->nid) {
+          return; // Do not ask for a second donation.
+        }
+      }
+      unset($form['#type']); // would override fieldset
+      unset($form['#description']); // would override description below
+
+      return array(
+        'contents' => $form,
+        'description' => check_markup($form['node']['#value']->body, $form['node']['#value']->format),
+      );
+  }
+}
