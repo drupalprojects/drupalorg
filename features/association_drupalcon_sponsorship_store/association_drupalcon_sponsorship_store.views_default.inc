@@ -11,10 +11,9 @@ function association_drupalcon_sponsorship_store_views_default_views() {
   $view->name = 'association_sponsor_node_list';
   $view->description = 'List of a sponsor\'s sponsorships';
   $view->tag = '';
-  $view->view_php = '';
   $view->base_table = 'node';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
+  $view->core = 0;
+  $view->api_version = '2';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'Defaults', 'default');
   $handler->override_option('relationships', array(
@@ -241,15 +240,15 @@ function association_drupalcon_sponsorship_store_views_default_views() {
       'field' => 'nid',
       'validate_user_argument_type' => 'uid',
       'validate_user_roles' => array(
-        '2' => 0,
-        '3' => 0,
-        '6' => 0,
-        '5' => 0,
-        '10' => 0,
-        '12' => 0,
-        '16' => 0,
-        '14' => 0,
-        '19' => 0,
+        2 => 0,
+        3 => 0,
+        6 => 0,
+        5 => 0,
+        10 => 0,
+        12 => 0,
+        16 => 0,
+        14 => 0,
+        19 => 0,
       ),
       'override' => array(
         'button' => 'Override',
@@ -276,15 +275,15 @@ function association_drupalcon_sponsorship_store_views_default_views() {
       'validate_argument_node_access' => 1,
       'validate_argument_nid_type' => 'nid',
       'validate_argument_vocabulary' => array(
-        '4' => 0,
-        '8' => 0,
-        '2' => 0,
-        '6' => 0,
-        '13' => 0,
-        '12' => 0,
-        '1' => 0,
-        '3' => 0,
-        '10' => 0,
+        4 => 0,
+        8 => 0,
+        2 => 0,
+        6 => 0,
+        13 => 0,
+        12 => 0,
+        1 => 0,
+        3 => 0,
+        10 => 0,
       ),
       'validate_argument_type' => 'tid',
       'validate_argument_transform' => 0,
@@ -352,10 +351,9 @@ function association_drupalcon_sponsorship_store_views_default_views() {
   $view->name = 'association_sponsors_admin';
   $view->description = 'Admin view of sponsorships';
   $view->tag = '';
-  $view->view_php = '';
   $view->base_table = 'node';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
+  $view->core = 0;
+  $view->api_version = '2';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'Defaults', 'default');
   $handler->override_option('relationships', array(
@@ -638,7 +636,7 @@ function association_drupalcon_sponsorship_store_views_default_views() {
     'field_assoc_level_conference_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        '11' => '11',
+        11 => '11',
       ),
       'group' => '0',
       'exposed' => TRUE,
@@ -666,9 +664,9 @@ function association_drupalcon_sponsorship_store_views_default_views() {
   $handler->override_option('access', array(
     'type' => 'role',
     'role' => array(
-      '3' => 3,
-      '14' => 14,
-      '19' => 19,
+      3 => 3,
+      14 => 14,
+      19 => 19,
     ),
   ));
   $handler->override_option('cache', array(
@@ -1083,7 +1081,7 @@ function association_drupalcon_sponsorship_store_views_default_views() {
     'field_assoc_level_conference_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        '11' => '11',
+        11 => '11',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -1113,16 +1111,16 @@ function association_drupalcon_sponsorship_store_views_default_views() {
     'field_assoc_level_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        '0' => '0',
-        '4' => '4',
-        '6' => '6',
-        '8' => '8',
-        '16' => '16',
-        '20' => '20',
-        '22' => '22',
-        '24' => '24',
-        '28' => '28',
-        '32' => '32',
+        0 => '0',
+        4 => '4',
+        6 => '6',
+        8 => '8',
+        16 => '16',
+        20 => '20',
+        22 => '22',
+        24 => '24',
+        28 => '28',
+        32 => '32',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -1498,7 +1496,7 @@ function association_drupalcon_sponsorship_store_views_default_views() {
     'field_assoc_level_conference_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        '11' => '11',
+        11 => '11',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -1528,7 +1526,7 @@ function association_drupalcon_sponsorship_store_views_default_views() {
     'field_assoc_level_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        '0' => '0',
+        0 => '0',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -1904,7 +1902,7 @@ function association_drupalcon_sponsorship_store_views_default_views() {
     'field_assoc_level_conference_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        '11' => '11',
+        11 => '11',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -1934,7 +1932,7 @@ function association_drupalcon_sponsorship_store_views_default_views() {
     'field_assoc_level_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        '4' => '4',
+        4 => '4',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -1980,10 +1978,9 @@ function association_drupalcon_sponsorship_store_views_default_views() {
   $view->name = 'association_store_con_sponsor';
   $view->description = 'DrupalCon sponsorship store';
   $view->tag = '';
-  $view->view_php = '';
   $view->base_table = 'node';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
+  $view->core = 0;
+  $view->api_version = '2';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'Defaults', 'default');
   $handler->override_option('sorts', array(
@@ -2099,7 +2096,7 @@ function association_drupalcon_sponsorship_store_views_default_views() {
     'field_assoc_level_conference_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        '11' => '11',
+        11 => '11',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -2220,10 +2217,9 @@ function association_drupalcon_sponsorship_store_views_default_views() {
   $view->name = 'association_store_sponsors';
   $view->description = 'List of all published sponsors';
   $view->tag = '';
-  $view->view_php = '';
   $view->base_table = 'node';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
+  $view->core = 0;
+  $view->api_version = '2';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'Defaults', 'default');
   $handler->override_option('fields', array(
