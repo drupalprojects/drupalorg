@@ -47,6 +47,9 @@ function association_drupalorg_theme() {
     'association_drupalorg_drupalcon_report_page' => array(
       'template' => 'association-drupalorg-drupalcon-report-page',
     ),
+    'association_drupalorg_campaign_block' => array(
+      'template' => 'association-drupalorg-campaign-block',
+    ),
   );
 }
 
@@ -85,6 +88,12 @@ function association_drupalorg_block($op = 'list', $delta = 0, $edit = array()) 
           'visibility' => 1,
           'pages' => 'membership',
         ),
+        'campaign' => array(
+          'info' => t('Funds Raised for Home Improvement Projects'),
+          'region' => 'right',
+          'visibility' => 1,
+          'pages' => "membership/shirt\nnode/13609",
+        ),
       );
 
     case 'view':
@@ -104,6 +113,12 @@ function association_drupalorg_block($op = 'list', $delta = 0, $edit = array()) 
             );
           }
           return;
+
+        case 'campaign':
+          return array(
+            'subject' => t('Funds Raised for Home Improvement Projects'),
+            'content' => theme('association_drupalorg_campaign_block'),
+          );
       }
       return;
   }
@@ -251,6 +266,29 @@ function association_drupalorg_preprocess_association_drupalorg_drupalcon_report
   $variables['payment_sums'] = theme('table', array(t('Amount'), t('Count'), t('Revenue')), $rows);
 }
 
+function association_drupalorg_preprocess_association_drupalorg_campaign_block(&$variables) {
+  $total = 0;
+  foreach (association_drupalorg_orders(array(13394)) as $order) {
+    foreach ($order->products as $product) {
+      switch ($product->nid) {
+        case 13394: // t-shirt
+          $total += $product->qty * 37;
+          break;
+
+        case 1639: // donation
+          $total += $product->price;
+      }
+    }
+  }
+  if ($total < 1000) {
+    $variables['amount'] = l('$' . number_format($total), 'node/13609');
+  }
+  else {
+    $variables['amount'] = l('$' . number_format($total / 1000, 1) . 'K', 'node/13609');
+  }
+  $variables['learn_more_url'] = url('node/13609');
+}
+
 function association_drupalorg_drupalcon_registration_csv() {
   drupal_set_header('Content-Type: text/csv');
   drupal_set_header('Content-Disposition: attachment; filename=registration.csv');
@@ -328,7 +366,7 @@ function association_drupalorg_drupalcon_registration_csv() {
 function association_drupalorg_orders($nids) {
   $orders = array();
 
-  $result = db_query("SELECT o.order_id FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid IN (" . db_placeholders($nids) . ") WHERE o.order_status IN ('completed', 'payment_received')", $nids);
+  $result = db_query("SELECT o.order_id FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid IN (" . db_placeholders($nids) . ") INNER JOIN {uc_order_statuses} os ON os.order_status_id = o.order_status AND os.state IN ('completed', 'payment_received')", $nids);
   while ($order_id = db_result($result)) {
     $order = uc_order_load($order_id);
     foreach ($order->products as $key => $product) {
