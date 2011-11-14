@@ -111,9 +111,117 @@ function association_drupalcon_sponsorship_store_fieldgroup_default_groups() {
     ),
   );
 
+  // Exported group: group_assoc_level_coupon1
+  $groups['association_sponsorship_level-group_assoc_level_coupon1'] = array(
+    'group_type' => 'standard',
+    'type_name' => 'association_sponsorship_level',
+    'group_name' => 'group_assoc_level_coupon1',
+    'label' => 'Coupon 1',
+    'settings' => array(
+      'form' => array(
+        'style' => 'fieldset',
+        'description' => '',
+      ),
+      'display' => array(
+        'description' => '',
+        'label' => 'above',
+        '5' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'teaser' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'full' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        '4' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        '2' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        '3' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'token' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+      ),
+    ),
+    'weight' => '42',
+    'fields' => array(
+      '0' => 'field_assoc_level_coupon1_count',
+      '1' => 'field_assoc_level_coupon1_prod',
+      '2' => 'field_assoc_level_coupon1_value',
+      '3' => 'field_assoc_level_coupon1_expire',
+    ),
+  );
+
+  // Exported group: group_assoc_level_coupon2
+  $groups['association_sponsorship_level-group_assoc_level_coupon2'] = array(
+    'group_type' => 'standard',
+    'type_name' => 'association_sponsorship_level',
+    'group_name' => 'group_assoc_level_coupon2',
+    'label' => 'Coupon 2',
+    'settings' => array(
+      'form' => array(
+        'style' => 'fieldset',
+        'description' => '',
+      ),
+      'display' => array(
+        'description' => '',
+        '5' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'teaser' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'full' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        '4' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        '2' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        '3' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'token' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'label' => 'above',
+      ),
+    ),
+    'weight' => '48',
+    'fields' => array(
+      '0' => 'field_assoc_level_coupon2_count',
+      '1' => 'field_assoc_level_coupon2_prod',
+      '2' => 'field_assoc_level_coupon2_value',
+      '3' => 'field_assoc_level_coupon2_expire',
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Conference');
+  t('Coupon 1');
+  t('Coupon 2');
   t('Web ad');
 
   return $groups;

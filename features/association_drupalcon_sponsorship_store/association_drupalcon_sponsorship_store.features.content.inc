@@ -1162,7 +1162,8 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'suffix' => '',
     'min' => '',
     'max' => '',
-    'allowed_values' => '1|Barcelona 2007
+    'allowed_values' => '0|Drupal Association
+1|Barcelona 2007
 2|Boston 2008
 3|Szeged 2008
 4|Washington D.C. 2009
@@ -1181,7 +1182,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Conference',
+      'label' => 'Conference or program',
       'weight' => '31',
       'description' => '',
       'type' => 'optionwidgets_buttons',
@@ -1954,13 +1955,80 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     ),
   );
 
+  // Exported field: field_product_thanks
+  $fields['product-field_product_thanks'] = array(
+    'field_name' => 'field_product_thanks',
+    'type_name' => 'product',
+    'display_settings' => array(
+      'weight' => '-3',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '1',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => '5',
+      'size' => 60,
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_product_thanks][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Thank you message',
+      'weight' => '-3',
+      'description' => 'Shown after payment.',
+      'type' => 'text_textarea',
+      'module' => 'text',
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('300 × 250 image');
   t('Authorized users');
   t('Badge');
   t('Booth');
-  t('Conference');
+  t('Conference or program');
   t('Count');
   t('DfP company');
   t('DfP creative');
@@ -1973,6 +2041,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
   t('Notes');
   t('Product');
   t('Sponsor');
+  t('Thank you message');
   t('Twitter username');
   t('URL');
   t('VAT #');
