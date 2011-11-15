@@ -20,6 +20,21 @@ function association_drupalcon_sponsorship_store_imagecache_default_presets() {
         ),
       ),
     ),
+    '274x164' => array(
+      'presetname' => '274x164',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '274',
+            'height' => '164',
+            'upscale' => 0,
+          ),
+        ),
+      ),
+    ),
     '300x200' => array(
       'presetname' => '300x200',
       'actions' => array(
