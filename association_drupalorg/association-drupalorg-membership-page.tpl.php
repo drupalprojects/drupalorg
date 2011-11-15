@@ -53,5 +53,5 @@
 </dl>
 
 <h2>What else can I do?</h2>
-<p>If you would like to give more to the Association and the community, you can also make a donation, offer to be a sponsor for Drupalcon, or sponsor a local Drupal event.</p>
+<p>If you would like to give more to the Association and the community, you can also make a donation, offer to be a sponsor for <a href="http://drupalcon.org/">DrupalCon</a>, sponsor a local Drupal event, or become a <a href="/about/supporting-partners">supporting partner</a>.</p>
 <p><a href="donate" class="action-button">Donate to the Drupal Association</a></p>
