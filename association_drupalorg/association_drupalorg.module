@@ -269,14 +269,17 @@ function association_drupalorg_preprocess_association_drupalorg_drupalcon_report
 function association_drupalorg_preprocess_association_drupalorg_campaign_block(&$variables) {
   $total = 0;
   foreach (association_drupalorg_orders(array(13394)) as $order) {
-    foreach ($order->products as $product) {
-      switch ($product->nid) {
-        case 13394: // t-shirt
-          $total += $product->qty * 37;
-          break;
+    if ($order->order_total > 0) {
+      foreach ($order->products as $product) {
+        switch ($product->nid) {
+          case 13394: // t-shirt
+            $total += $product->qty * 35;
+            break;
 
-        case 1639: // donation
-          $total += $product->price;
+          case 1639: // donation
+            $total += $product->price;
+            break;
+        }
       }
     }
   }
