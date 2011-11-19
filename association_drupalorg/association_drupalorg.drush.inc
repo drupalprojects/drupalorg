@@ -58,6 +58,8 @@ function association_drupalorg_drush_user_data_cleaner() {
 }
 
 function drush_association_drupalorg_fulfillment_mail($addresses = '') {
+  module_load_include('inc', 'uc_usps', 'uc_usps.countries');
+
   if (empty($addresses)) {
     drush_set_error('ASSOCIATION_DRUPALORG_ARG_MISSING');
     return;
@@ -133,7 +135,7 @@ function drush_association_drupalorg_fulfillment_mail($addresses = '') {
       $order->delivery_city,
       uc_zone_get_by_id($order->delivery_zone),
       $order->delivery_postal_code,
-      uc_country_get_by_id($order->delivery_country),
+      uc_usps_country_map($order->delivery_country),
       '',
       $order->primary_email,
     );
