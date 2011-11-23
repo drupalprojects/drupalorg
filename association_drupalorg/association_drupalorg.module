@@ -566,7 +566,11 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
       $form['submit']['#disabled'] = TRUE;
     }
     else {
+      $weight = 0;
       foreach ($form['node']['#value']->attributes as $attribute_id => $attribute) {
+        $weight += 1;
+        $form['attributes'][$attribute_id]['#weight'] = $weight;
+
         switch ($attribute->name) {
           case 'Membership type':
             if ($form['node']['#value']->nid == 13394) {
@@ -730,9 +734,31 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
                   $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1'), $value);
                 }
 
+                // Trainings
+                $trainings_view = views_get_view('association_trainings');
+                $trainings_view->set_arguments(array($form['node']['#value']->nid));
+                $trainings_view->execute();
+                if (count($trainings_view->result) > 0) {
+                  $form['attributes']['training'] = array(
+                    '#type' => 'radios',
+                    '#title' => t('Training'),
+                    '#options' => array(
+                      '' => t('No training'),
+                    ),
+                    '#weight' => $weight + 0.5,
+                  );
+                  foreach ($trainings_view->result as $training) {
+                    $form['attributes']['training']['#options'][$training->nid] = t('<strong>@title</strong> by @by !more, @price', array(
+                      '@title' => $training->node_title,
+                      '@by' => $training->node_data_field_training_trainers_field_training_trainers_value,
+                      '@price' => '$' . number_format($training->uc_products_sell_price, 2),
+                      '!more' => l('more info', $training->node_data_field_training_trainers_field_training_link_url),
+                    ));
+                  }
+                }
+
                 // Add to Cart is boring.
                 $form['submit']['#value'] = t('I’m going to DrupalCon!');
-                $form['#redirect'] = 'cart/checkout';
 
                 array_unshift($form['#submit'], 'association_drupalorg_conference_registration_submit');
               }
@@ -777,14 +803,9 @@ function association_drupalorg_attribute_name_index(&$node) {
   }
 }
 
-/**
- * One ticket per cart.
- */
 function association_drupalorg_conference_registration_submit($form, $form_state) {
-  foreach (uc_cart_get_contents($cart_id) as $item) {
-    if ($item->nid === $form['node']['#value']->nid) {
-      uc_cart_remove_item($item->nid, NULL, $item->data);
-    }
+  if (!empty($form_state['values']['attributes']['training'])) {
+    uc_cart_add_item($form_state['values']['attributes']['training']);
   }
 }
 
@@ -880,6 +901,10 @@ function association_drupalorg_field_access($op, $field, $account, $node = NULL)
       case 'field_assoc_sponsor_dfp':
       case 'field_sponsorship_dfp':
         return user_access('administer Google DfP API');
+
+      case 'field_sponsorship_offer':
+        $level = node_load($node->field_assoc_sponsorship_level[0]['nid']);
+        return (bool) $level->field_assoc_level_offers[0]['value'];
     }
     switch ($field['display_settings']['parent']) {
       // Do not let sponsors edit their conference information, like

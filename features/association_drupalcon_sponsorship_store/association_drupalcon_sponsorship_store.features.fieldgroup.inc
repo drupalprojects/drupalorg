@@ -51,7 +51,7 @@ function association_drupalcon_sponsorship_store_fieldgroup_default_groups() {
         ),
       ),
     ),
-    'weight' => '8',
+    'weight' => '-2',
     'fields' => array(
       '0' => 'field_assoc_sponsorship_sponsor',
       '1' => 'field_assoc_sponsorship_level',
@@ -104,7 +104,7 @@ function association_drupalcon_sponsorship_store_fieldgroup_default_groups() {
         ),
       ),
     ),
-    'weight' => '9',
+    'weight' => '-1',
     'fields' => array(
       '0' => 'field_sponsorship_web_image',
       '1' => 'field_sponsorship_web_url',
@@ -123,17 +123,18 @@ function association_drupalcon_sponsorship_store_fieldgroup_default_groups() {
         'description' => '',
       ),
       'display' => array(
-        'description' => '',
+        'weight' => '15',
         'label' => 'above',
-        '5' => array(
-          'format' => 'fieldset',
-          'exclude' => 0,
-        ),
         'teaser' => array(
-          'format' => 'fieldset',
+          'format' => 'hidden',
           'exclude' => 0,
         ),
         'full' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'description' => '',
+        '5' => array(
           'format' => 'fieldset',
           'exclude' => 0,
         ),
@@ -155,7 +156,7 @@ function association_drupalcon_sponsorship_store_fieldgroup_default_groups() {
         ),
       ),
     ),
-    'weight' => '42',
+    'weight' => '15',
     'fields' => array(
       '0' => 'field_assoc_level_coupon1_count',
       '1' => 'field_assoc_level_coupon1_prod',
@@ -176,16 +177,18 @@ function association_drupalcon_sponsorship_store_fieldgroup_default_groups() {
         'description' => '',
       ),
       'display' => array(
-        'description' => '',
-        '5' => array(
-          'format' => 'fieldset',
-          'exclude' => 0,
-        ),
+        'weight' => '16',
+        'label' => 'above',
         'teaser' => array(
-          'format' => 'fieldset',
+          'format' => 'hidden',
           'exclude' => 0,
         ),
         'full' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'description' => '',
+        '5' => array(
           'format' => 'fieldset',
           'exclude' => 0,
         ),
@@ -205,10 +208,9 @@ function association_drupalcon_sponsorship_store_fieldgroup_default_groups() {
           'format' => 'fieldset',
           'exclude' => 0,
         ),
-        'label' => 'above',
       ),
     ),
-    'weight' => '48',
+    'weight' => '16',
     'fields' => array(
       '0' => 'field_assoc_level_coupon2_count',
       '1' => 'field_assoc_level_coupon2_prod',

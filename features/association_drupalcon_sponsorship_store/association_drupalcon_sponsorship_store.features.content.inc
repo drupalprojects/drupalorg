@@ -821,10 +821,77 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'DfP creative',
-      'weight' => '31',
+      'weight' => '8',
       'description' => '',
       'type' => 'google_dfp_api_select_creative',
       'module' => 'google_dfp_api',
+    ),
+  );
+
+  // Exported field: field_sponsorship_offer
+  $fields['association_sponsorship-field_sponsorship_offer'] = array(
+    'field_name' => 'field_sponsorship_offer',
+    'type_name' => 'association_sponsorship',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '1',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => '5',
+      'size' => 60,
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          'format' => '1',
+          '_error_element' => 'default_value_widget][field_sponsorship_offer][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Special offer',
+      'weight' => 0,
+      'description' => 'Shown on the conference site, like http://london2011.drupal.org/page/special-offers-sponsors and http://denver2012.drupal.org/special-offers-sponsors.',
+      'type' => 'text_textarea',
+      'module' => 'text',
     ),
   );
 
@@ -979,7 +1046,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '32',
+      'weight' => '9',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -1039,9 +1106,9 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Level',
-      'weight' => '32',
+      'weight' => '9',
       'description' => '',
-      'type' => 'optionwidgets_buttons',
+      'type' => 'optionwidgets_select',
       'module' => 'optionwidgets',
     ),
   );
@@ -1051,7 +1118,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_badge',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '36',
+      'weight' => '14',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -1110,7 +1177,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       'default_image' => NULL,
       'use_default_image' => 0,
       'label' => 'Badge',
-      'weight' => '36',
+      'weight' => '14',
       'description' => '',
       'type' => 'imagefield_widget',
       'module' => 'imagefield',
@@ -1122,7 +1189,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_conference',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '31',
+      'weight' => '8',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -1183,9 +1250,9 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Conference or program',
-      'weight' => '31',
+      'weight' => '8',
       'description' => '',
-      'type' => 'optionwidgets_buttons',
+      'type' => 'optionwidgets_select',
       'module' => 'optionwidgets',
     ),
   );
@@ -1195,19 +1262,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_coupon1_count',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
+      'weight' => '37',
+      'parent' => 'group_assoc_level_coupon1',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -1261,19 +1329,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_coupon1_expire',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
+      'weight' => '40',
+      'parent' => 'group_assoc_level_coupon1',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -1335,19 +1404,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_coupon1_prod',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
+      'weight' => '38',
+      'parent' => 'group_assoc_level_coupon1',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -1413,19 +1483,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_coupon1_value',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
+      'weight' => '39',
+      'parent' => 'group_assoc_level_coupon1',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -1479,19 +1550,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_coupon2_count',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
+      'weight' => '43',
+      'parent' => 'group_assoc_level_coupon2',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -1545,19 +1617,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_coupon2_expire',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
+      'weight' => '46',
+      'parent' => 'group_assoc_level_coupon2',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -1619,19 +1692,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_coupon2_prod',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
+      'weight' => '44',
+      'parent' => 'group_assoc_level_coupon2',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -1697,19 +1771,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_coupon2_value',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
+      'weight' => '45',
+      'parent' => 'group_assoc_level_coupon2',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -1763,7 +1838,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_extra',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '33',
+      'weight' => '10',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -1814,7 +1889,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Extra',
-      'weight' => '33',
+      'weight' => '10',
       'description' => 'For Add on, if extra description is needed.',
       'type' => 'text_textfield',
       'module' => 'text',
@@ -1826,7 +1901,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_notes',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '34',
+      'weight' => '11',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -1881,10 +1956,77 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Notes',
-      'weight' => '34',
+      'weight' => '11',
       'description' => 'Sold out, requires something, or other important restrictions.',
       'type' => 'text_textfield',
       'module' => 'text',
+    ),
+  );
+
+  // Exported field: field_assoc_level_offers
+  $fields['association_sponsorship_level-field_assoc_level_offers'] = array(
+    'field_name' => 'field_assoc_level_offers',
+    'type_name' => 'association_sponsorship_level',
+    'display_settings' => array(
+      'weight' => '13',
+      'parent' => '',
+      'label' => array(
+        'format' => 'above',
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'number_integer',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'number',
+    'active' => '1',
+    'prefix' => '',
+    'suffix' => '',
+    'min' => '',
+    'max' => '',
+    'allowed_values' => '0|No special offer
+1|Has special offer',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'value' => 0,
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Has special offer',
+      'weight' => '13',
+      'description' => '',
+      'type' => 'optionwidgets_onoff',
+      'module' => 'optionwidgets',
     ),
   );
 
@@ -1893,7 +2035,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_web_ads',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '35',
+      'weight' => '12',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -1948,10 +2090,228 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Has web ads',
-      'weight' => '35',
+      'weight' => '12',
       'description' => '',
       'type' => 'optionwidgets_onoff',
       'module' => 'optionwidgets',
+    ),
+  );
+
+  // Exported field: field_training_conference
+  $fields['association_training-field_training_conference'] = array(
+    'field_name' => 'field_training_conference',
+    'type_name' => 'association_training',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'nodereference',
+    'required' => '1',
+    'multiple' => '0',
+    'module' => 'nodereference',
+    'active' => '1',
+    'referenceable_types' => array(
+      'product' => 'product',
+      'blog' => 0,
+      'book' => 0,
+      'forum' => 0,
+      'job_posting' => 0,
+      'association_membership_benefit' => 0,
+      'page' => 0,
+      'project' => 0,
+      'association_sponsor' => 0,
+      'association_sponsorship' => 0,
+      'association_sponsorship_level' => 0,
+      'story' => 0,
+      'association_training' => 0,
+      'webform' => 0,
+    ),
+    'advanced_view' => '--',
+    'advanced_view_args' => '',
+    'widget' => array(
+      'autocomplete_match' => 'contains',
+      'size' => 60,
+      'default_value' => array(
+        '0' => array(
+          'nid' => '',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Conference',
+      'weight' => '-3',
+      'description' => '',
+      'type' => 'nodereference_select',
+      'module' => 'nodereference',
+    ),
+  );
+
+  // Exported field: field_training_link
+  $fields['association_training-field_training_link'] = array(
+    'field_name' => 'field_training_link',
+    'type_name' => 'association_training',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'link',
+    'required' => '1',
+    'multiple' => '0',
+    'module' => 'link',
+    'active' => '1',
+    'attributes' => array(
+      'target' => 'default',
+      'rel' => '',
+      'class' => '',
+      'title' => '',
+    ),
+    'display' => array(
+      'url_cutoff' => '80',
+    ),
+    'url' => 0,
+    'title' => 'none',
+    'title_value' => '',
+    'enable_tokens' => 0,
+    'validate_url' => 1,
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'url' => '',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Full description',
+      'weight' => '-2',
+      'description' => 'URL on the DrupalCon site.',
+      'type' => 'link',
+      'module' => 'link',
+    ),
+  );
+
+  // Exported field: field_training_trainers
+  $fields['association_training-field_training_trainers'] = array(
+    'field_name' => 'field_training_trainers',
+    'type_name' => 'association_training',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => 5,
+      'size' => '60',
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_training_trainers][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Trainers',
+      'weight' => '-4',
+      'description' => '',
+      'type' => 'text_textfield',
+      'module' => 'text',
     ),
   );
 
@@ -2028,6 +2388,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
   t('Authorized users');
   t('Badge');
   t('Booth');
+  t('Conference');
   t('Conference or program');
   t('Count');
   t('DfP company');
@@ -2035,13 +2396,17 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
   t('Drupal.org organization URL');
   t('Expires');
   t('Extra');
+  t('Full description');
+  t('Has special offer');
   t('Has web ads');
   t('Level');
   t('Logo');
   t('Notes');
   t('Product');
+  t('Special offer');
   t('Sponsor');
   t('Thank you message');
+  t('Trainers');
   t('Twitter username');
   t('URL');
   t('VAT #');

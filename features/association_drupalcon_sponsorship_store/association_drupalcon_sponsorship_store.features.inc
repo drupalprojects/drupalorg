@@ -101,6 +101,17 @@ function association_drupalcon_sponsorship_store_uc_product_default_classes() {
       'min_word_count' => '0',
       'help' => '',
     ),
+    'association_training' => array(
+      'name' => t('Training'),
+      'module' => 'uc_product',
+      'description' => '',
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'has_body' => '1',
+      'body_label' => t('Description'),
+      'min_word_count' => '0',
+      'help' => '',
+    ),
     'product' => array(
       'name' => t('Product'),
       'module' => 'uc_product',
