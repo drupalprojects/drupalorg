@@ -557,12 +557,19 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
           }
         }
       }
+      if ($node->type === 'association_training') {
+        $form['items'][$key]['qty']['#type'] = 'value';
+      }
     }
   }
   elseif (strpos($form_id, 'uc_product_add_to_cart_form_') === 0) {
     if ($form['node']['#value']->type === 'association_sponsorship_level' && count(association_drupalorg_get_sponsors()) === 0) {
       // Do not allow sponsorships to be bought without a sponsor.
       $form['submit']['#suffix'] = '<br />' . l(t('You must be associated with a sponsor'), $_GET['q'], array('fragment' => 'content'));
+      $form['submit']['#disabled'] = TRUE;
+    }
+    elseif ($form['node']['#value']->type === 'association_training') {
+      $form['submit']['#value'] = t('Buy with DrupalCon registration.');
       $form['submit']['#disabled'] = TRUE;
     }
     else {
@@ -670,28 +677,32 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
                 unset($form['attributes'][$attribute_id]['#title']);
 
                 // Check for existing order. One per user.
-                $remove_dmb_upgrade = TRUE;
+                $uc_attribute = uc_attribute_load($attribute_id, $form['node']['#value']->nid, 'product');
+                $previously_paid = 0;
                 $result = db_query("SELECT o.order_id FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid = %d WHERE o.uid = %d", $form['node']['#value']->nid, $user->uid);
                 while ($order_id = db_result($result)) {
                   $order = uc_order_load($order_id);
                   if ($order->order_status === 'payment_received' || $order->order_status === 'completed') {
                     foreach ($order->products as $product) {
-                      foreach ($product->data['attributes']['Conference registration'] as $attribute) {
-                        foreach ($form['attributes'][$attribute_id]['#options'] as $option_id => $label) {
-                          if (strpos($label, $attribute) === 0) {
-                            switch ($option_id) {
-                              case 144: // Already registered for DrupalCon
-                              case 194: // … via DMB upgrade
-                                unset($form['attributes'][$attribute_id]['#options'][144]);
-                                unset($form['attributes'][$attribute_id]['#options'][149]);
-                                unset($form['attributes'][$attribute_id]['#options'][194]);
-                                break;
+                      if (isset($product->data['attributes']['Conference registration'])) {
+                        foreach ($product->data['attributes']['Conference registration'] as $attribute) {
+                          foreach ($form['attributes'][$attribute_id]['#options'] as $option_id => $label) {
+                            if (strpos($label, $attribute) === 0) {
+                              // You can not buy something twice.
+                              unset($form['attributes'][$attribute_id]['#options'][$option_id]);
+                              // … including training.
+                              if ($option_id == 198) {
+                                unset($form['attributes'][$attribute_id]['#options'][208]);
+                              }
+                              elseif ($option_id == 208) {
+                                unset($form['attributes'][$attribute_id]['#options'][198]);
+                              }
 
-                              case 149: // Already registered for Drupal Means Business
-                                $remove_dmb_upgrade = FALSE;
-                                unset($form['attributes'][$attribute_id]['#options'][144]);
-                                unset($form['attributes'][$attribute_id]['#options'][149]);
-                                break;
+                              // Add to amount paid.
+                              $previously_paid += $uc_attribute->options[$option_id]->price;
+
+                              // Let the user know where they are.
+                              drupal_set_message(t('You have already registered for %label.', array('%label' => $uc_attribute->options[$option_id]->name)));
                             }
                           }
                         }
@@ -703,57 +714,78 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
                   }
                 }
 
+                $full_option_ids = array(144, 213, 203, 194);
+                if ($previously_paid == $uc_attribute->options[144]->price) {
+                  // Already fully registered.
+                  foreach ($full_option_ids as $option_id) {
+                    unset($form['attributes'][$attribute_id]['#options'][$option_id]);
+                  }
+                  unset($form['attributes'][$attribute_id]['#options'][149]);
+                  unset($form['attributes'][$attribute_id]['#options'][198]);
+                }
+                else {
+                  // Not fully registered.
+                  // Remove no-additional-cost training.
+                  unset($form['attributes'][$attribute_id]['#options'][208]);
+
+                  // Out of the full registrations, show the one matching the
+                  // price remaining.
+                  foreach ($full_option_ids as $option_id) {
+                    if ($previously_paid + $uc_attribute->options[$option_id]->price != $uc_attribute->options[144]->price) {
+                      unset($form['attributes'][$attribute_id]['#options'][$option_id]);
+                    }
+                  }
+                }
+
                 if (count($form['attributes'][$attribute_id]['#options']) === 0) {
-                  drupal_set_message(t('You have already bought your conference registration. You can only buy one for each user account.'));
+                  drupal_set_message(t('You have already bought your conference registration and training. You can only buy one for each user account.'));
                   $form['attributes']['#access'] = FALSE;
                   $form['submit']['#access'] = FALSE;
                   return;
                 }
 
-                if ($remove_dmb_upgrade) {
-                  unset($form['attributes'][$attribute_id]['#options'][194]);
-                }
-
                 if (isset($_GET['dmb']) && isset($form['attributes'][$attribute_id]['#options'][149])) {
-                  $form['attributes'][$attribute_id]['#default_value'] = 149;
+                  $form['attributes'][$attribute_id]['#default_value'] = array(149);
                 }
                 else {
-                  $form['attributes'][$attribute_id]['#default_value'] = reset(array_keys($form['attributes'][$attribute_id]['#options']));
+                  $form['attributes'][$attribute_id]['#default_value'] = array(reset(array_keys($form['attributes'][$attribute_id]['#options'])));
                 }
                 $form['#after_build'][] = 'association_drupalorg_conference_registration_after_build';
                 association_drupalorg_attribute_name_index($form['node']['#value']);
                 drupal_add_js(drupal_get_path('module', 'association_drupalorg') .'/association_drupalorg.js');
                 drupal_add_js(array(
                   'associationDrupalorgConfReg' => 'input[name^=attributes[' . $attribute_id . ']',
-                  'associationDrupalorgDMB' => 149,
+                  'associationDrupalorgHasShirt' => $full_option_ids,
                   'associationDrupalorgShirt' => '#edit-attributes-' . $form['node']['#value']->attribute_names['T-shirt'] . '-wrapper',
                 ), 'setting');
 
                 // Make prices clear.
-                foreach ($form['attributes'][$attribute_id]['#options'] as $key => $value) {
-                  $form['attributes'][$attribute_id]['#options'][$key] = preg_replace('!\+(\$\d+\.\d+)!', t('\1'), $value);
+                foreach ($form['attributes'][$attribute_id]['#options'] as $option_id => $value) {
+                  $form['attributes'][$attribute_id]['#options'][$option_id] = preg_replace('!\+(\$\d+\.\d+)!', '\1', $value);
                 }
 
                 // Trainings
-                $trainings_view = views_get_view('association_trainings');
-                $trainings_view->set_arguments(array($form['node']['#value']->nid));
-                $trainings_view->execute();
-                if (count($trainings_view->result) > 0) {
-                  $form['attributes']['training'] = array(
-                    '#type' => 'radios',
-                    '#title' => t('Training'),
-                    '#options' => array(
-                      '' => t('No training'),
-                    ),
-                    '#weight' => $weight + 0.5,
-                  );
-                  foreach ($trainings_view->result as $training) {
-                    $form['attributes']['training']['#options'][$training->nid] = t('<strong>@title</strong> by @by !more, @price', array(
-                      '@title' => $training->node_title,
-                      '@by' => $training->node_data_field_training_trainers_field_training_trainers_value,
-                      '@price' => '$' . number_format($training->uc_products_sell_price, 2),
-                      '!more' => l('more info', $training->node_data_field_training_trainers_field_training_link_url),
-                    ));
+                if (isset($form['attributes'][$attribute_id]['#options'][198]) || $form['attributes'][$attribute_id]['#options'][208]) {
+                  $trainings_view = views_get_view('association_trainings');
+                  $trainings_view->set_arguments(array($form['node']['#value']->nid));
+                  $trainings_view->execute();
+                  if (count($trainings_view->result) > 0) {
+                    $form['attributes']['training'] = array(
+                      '#type' => 'radios',
+                      '#title' => t('Training'),
+                      '#options' => array(
+                        '' => t('No training'),
+                      ),
+                      '#weight' => $weight + 0.5,
+                    );
+                    foreach ($trainings_view->result as $training) {
+                      $form['attributes']['training']['#options'][$training->nid] = t('<strong>@title</strong> by @by !more, @price', array(
+                        '@title' => $training->node_title,
+                        '@by' => $training->node_data_field_training_trainers_field_training_trainers_value,
+                        '@price' => '$' . number_format($training->uc_products_sell_price, 2),
+                        '!more' => l('more info', $training->node_data_field_training_trainers_field_training_link_url),
+                      ));
+                    }
                   }
                 }
 
@@ -761,6 +793,7 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
                 $form['submit']['#value'] = t('I’m going to DrupalCon!');
 
                 array_unshift($form['#submit'], 'association_drupalorg_conference_registration_submit');
+                $form['#validate'][] = 'association_drupalorg_conference_registration_validate';
               }
               else { // Not synced for bakery.
                 drupal_set_message(t('Your account is not synced for single sign on, please <a href="!contact">contact us</a>, select Website feedback category. Include your Drupal.org username and/or email address used.', array('!contact' => url('contact'))), 'warning');
@@ -782,10 +815,20 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
 }
 
 function association_drupalorg_conference_registration_after_build($form, $form_state) {
-  // Drupal Means Business does not get a T-shirt.
   association_drupalorg_attribute_name_index($form['node']['#value']);
-  if ($form['attributes'][$form['node']['#value']->attribute_names['Conference registration']]['#value'] == 149) {
+  $registration_attribute_id = $form['node']['#value']->attribute_names['Conference registration'];
+  $registration_options = array_filter($form_state['values']['attributes'][$registration_attribute_id]);
+  $chosen_full_registration = reset(array_intersect($registration_options, array(144, 213, 203, 194)));
+  // If not a full registration…
+  if (empty($chosen_full_registration)) {
+    // … no t-shirt. JS does the hiding.
     unset($form['attributes'][$form['node']['#value']->attribute_names['T-shirt']]['#required']);
+  }
+
+  // If training…
+  if (array_intersect($registration_options, array(198, 208))) {
+    // … require training.
+    $form['attributes']['training']['#required'] = TRUE;
   }
 
   return $form;
@@ -800,6 +843,22 @@ function association_drupalorg_attribute_name_index(&$node) {
     foreach ($node->attributes as $attribute_id => $attribute) {
       $node->attribute_names[$attribute->name] = $attribute_id;
     }
+  }
+}
+
+function association_drupalorg_conference_registration_validate($form, $form_state) {
+  association_drupalorg_attribute_name_index($form['node']['#value']);
+  $registration_attribute_id = $form['node']['#value']->attribute_names['Conference registration'];
+  $uc_attribute = uc_attribute_load($registration_attribute_id, $form['node']['#value']->nid, 'product');
+  $registration_options = array_filter($form_state['values']['attributes'][$registration_attribute_id]);
+  $chosen_full_registration = reset(array_intersect($registration_options, array(144, 213, 203, 194)));
+  // If full registration, do not allow extras.
+  if (!empty($chosen_full_registration) && count(array_intersect($registration_options, array(149, 198))) > 0) {
+    form_set_error('attributes][' . $registration_attribute_id, t('%registration includes %add149 and %add198, you do not need to register for both.', array('%registration' => $uc_attribute->options[$chosen_full_registration]->name, '%add149' => $uc_attribute->options[149]->name, '%add198' => $uc_attribute->options[198]->name)));
+  }
+
+  if (!empty($form_state['values']['attributes']['training']) && empty($chosen_full_registration) && count(array_intersect($registration_options, array(198, 208))) === 0) {
+    form_set_error('attributes][' . $registration_attribute_id, t('If you select a training, you must have either a full registration or training registration.'));
   }
 }
 
@@ -824,6 +883,19 @@ function association_drupalorg_views_pre_render(&$view) {
     else {
       drupal_set_message(t('You must <a href="!login">log in</a> to buy sponsorships.', array('!login' => url('user', array('query' => drupal_get_destination())))), 'warning');
     }
+  }
+}
+
+/**
+ * If one item is removed, empty the whole cart. For DrupalCon, we need to sync
+ * up training; validation is done on add. For others, we always have one item
+ * and maybe a donation.
+ */
+function association_drupalorg_cart_item($op, $item) {
+  static $called = FALSE;
+  if (!$called && $op === 'remove') {
+    $called = TRUE;
+    uc_cart_empty($item->cart_id);
   }
 }
 

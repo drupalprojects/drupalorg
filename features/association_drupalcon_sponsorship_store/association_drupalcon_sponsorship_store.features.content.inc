@@ -1971,10 +1971,10 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       'weight' => '13',
       'parent' => '',
       'label' => array(
-        'format' => 'above',
+        'format' => 'hidden',
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
