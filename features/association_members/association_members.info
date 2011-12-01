@@ -1,0 +1,8 @@
+core = "6.x"
+dependencies[] = "profile"
+dependencies[] = "views"
+description = "Drupal Association members"
+features[views][] = "association_members"
+features[views_api][] = "api:2"
+name = "association_members"
+package = "Features"
