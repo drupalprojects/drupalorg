@@ -779,6 +779,13 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
                       '#weight' => $weight + 0.5,
                     );
                     foreach ($trainings_view->result as $training) {
+                      // Microsoft’s free training at Denver 2012 requires
+                      // approval to attend. This is accomplished by checking
+                      // for your username in a webform submission they will be
+                      // doing.
+                      if ($training->nid == 14093 && !db_result(db_query("SELECT 1 FROM {webform_submitted_data} WHERE nid = 14098 AND data = '%s'", $user->name))) {
+                        continue;
+                      }
                       $form['attributes']['training']['#options'][$training->nid] = t('<strong>@title</strong> by @by !more, @price', array(
                         '@title' => $training->node_title,
                         '@by' => $training->node_data_field_training_trainers_field_training_trainers_value,
