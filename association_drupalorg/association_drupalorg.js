@@ -6,8 +6,7 @@ Drupal.behaviors.associationDrupalorg = function (context) {
       if (Drupal.settings.associationDrupalorgHasShirt.indexOf(parseInt($(this).val(), 10)) !== -1) {
         if ($(this).attr('checked')) {
           $(Drupal.settings.associationDrupalorgShirt).slideDown('fast');
-        }
-        else {
+        } else {
           $(Drupal.settings.associationDrupalorgShirt).slideUp('fast');
         }
       }
