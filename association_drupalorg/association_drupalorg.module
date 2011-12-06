@@ -69,9 +69,14 @@ function association_drupalorg_user($op, &$edit, &$user, $category = NULL) {
 }
 
 function association_drupalorg_cron() {
+  // Denver 2012
   google_dfp_api_replace_creative_view(6734416973, 'association_sponsors_admin', 'page_2'); // All logos
   google_dfp_api_replace_creative_view(6980741093, 'association_sponsors_admin', 'page_3'); // Diamond
   google_dfp_api_replace_creative_view(6980741213, 'association_sponsors_admin', 'page_4'); // Platinum
+  // Munich 2012
+  google_dfp_api_replace_creative_view(7603231253, 'association_sponsors_admin', 'page_5', array(13, '0+4+6+8+16+20+22+24+28+32')); // All logos
+  google_dfp_api_replace_creative_view(7603231493, 'association_sponsors_admin', 'page_5', array(13, '0')); // Diamond
+  google_dfp_api_replace_creative_view(7603231613, 'association_sponsors_admin', 'page_5', array(13, '4')); // Platinum
 }
 
 function association_drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
