@@ -880,6 +880,15 @@ function association_drupalorg_conference_registration_submit($form, $form_state
   }
 }
 
+function association_drupalorg_views_query_alter(&$view, &$query) {
+  if ($view->name === 'association_members') {
+    // Blanks should be sorted to the end. The query is already filesort and we
+    // can turn views' cache on if needed.
+    list($field, $order) = explode(' ', $query->orderby[0]);
+    $query->orderby[0] = "(" . $field . " = '' OR " . $field . " IS NULL) " . $order . ", " . $field . " " . $order;
+  }
+}
+
 function association_drupalorg_views_pre_render(&$view) {
   if ($view->name === 'association_store_con_sponsor') {
     // Remind about sponsor associated with, or lack thereof.
