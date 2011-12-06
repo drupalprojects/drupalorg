@@ -9,7 +9,7 @@
 
 <h3>Benefits:</h3>
 <dl>
-  <dt><a href="/civicrm/profile?reset=1&force=1&gid=8&search=0&crmRowCount=10000">Directory of Individual Members</a></dt>
+  <dt><a href="/membership/individuals">Directory of Individual Members</a></dt>
   <dd>Members are listed in our public directory of Individual Members</dd>
   <dt><a href="/membership/benefits">Discounts</a></dt>
   <dd>Members receive discounts from Drupal Association partners like Zend, Varnish Software, ActiveState and Acquia.</dd>
@@ -40,7 +40,7 @@
   <dd>Grow your business partnerships. We’ll make introductions at business networking events, so you can accelerate your business</dd>
   <dt><a href="/membership/benefits">Discounts</a></dt>
   <dd>Members receive discounts from Drupal Association partners like Zend, Varnish Software, ActiveState and Acquia.</dd>
-  <dt><a href="/civicrm/profile?reset=1&force=1&gid=4&search=0&crmRowCount=10000">Organization Directory Listing</a></dt>
+  <dt><a href="/membership/organizations">Organization Directory Listing</a></dt>
   <dd>Members are listed in our public directory of Organization Members</dd>
   <dt>Promote</dt>
   <dd>Members are listed in the <a href="/system/files/Annual%20Report%202011%20-%20web%20short%20compressed.pdf">Drupal Association Annual Report</a>, given out at major Drupal events and online</dd>
