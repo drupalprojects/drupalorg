@@ -158,10 +158,11 @@ function association_drupalcon_sponsorship_store_fieldgroup_default_groups() {
     ),
     'weight' => '15',
     'fields' => array(
-      '0' => 'field_assoc_level_coupon1_count',
-      '1' => 'field_assoc_level_coupon1_prod',
-      '2' => 'field_assoc_level_coupon1_value',
-      '3' => 'field_assoc_level_coupon1_expire',
+      '0' => 'field_assoc_level_coupon1_name',
+      '1' => 'field_assoc_level_coupon1_count',
+      '2' => 'field_assoc_level_coupon1_prod',
+      '3' => 'field_assoc_level_coupon1_value',
+      '4' => 'field_assoc_level_coupon1_expire',
     ),
   );
 
@@ -212,10 +213,11 @@ function association_drupalcon_sponsorship_store_fieldgroup_default_groups() {
     ),
     'weight' => '16',
     'fields' => array(
-      '0' => 'field_assoc_level_coupon2_count',
-      '1' => 'field_assoc_level_coupon2_prod',
-      '2' => 'field_assoc_level_coupon2_value',
-      '3' => 'field_assoc_level_coupon2_expire',
+      '0' => 'field_assoc_level_coupon2_name',
+      '1' => 'field_assoc_level_coupon2_count',
+      '2' => 'field_assoc_level_coupon2_prod',
+      '3' => 'field_assoc_level_coupon2_value',
+      '4' => 'field_assoc_level_coupon2_expire',
     ),
   );
 

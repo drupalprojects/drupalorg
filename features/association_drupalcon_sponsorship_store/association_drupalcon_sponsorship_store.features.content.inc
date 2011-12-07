@@ -1317,7 +1317,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Count',
-      'weight' => '37',
+      'weight' => '48',
       'description' => '',
       'type' => 'number',
       'module' => 'number',
@@ -1392,10 +1392,76 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       'year_range' => '-3:+3',
       'label_position' => 'above',
       'label' => 'Expires',
-      'weight' => '40',
+      'weight' => '51',
       'description' => '',
       'type' => 'date_select',
       'module' => 'date',
+    ),
+  );
+
+  // Exported field: field_assoc_level_coupon1_name
+  $fields['association_sponsorship_level-field_assoc_level_coupon1_name'] = array(
+    'field_name' => 'field_assoc_level_coupon1_name',
+    'type_name' => 'association_sponsorship_level',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => 'Conference registration
+Drupal Means Business',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => 5,
+      'size' => '60',
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Name',
+      'weight' => '47',
+      'description' => '',
+      'type' => 'optionwidgets_select',
+      'module' => 'optionwidgets',
     ),
   );
 
@@ -1471,7 +1537,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Product',
-      'weight' => '38',
+      'weight' => '49',
       'description' => '',
       'type' => 'nodereference_select',
       'module' => 'nodereference',
@@ -1538,7 +1604,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Value',
-      'weight' => '39',
+      'weight' => '50',
       'description' => '',
       'type' => 'text_textfield',
       'module' => 'text',
@@ -1605,7 +1671,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Count',
-      'weight' => '43',
+      'weight' => '49',
       'description' => '',
       'type' => 'number',
       'module' => 'number',
@@ -1680,10 +1746,74 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       'year_range' => '-3:+3',
       'label_position' => 'above',
       'label' => 'Expires',
-      'weight' => '46',
+      'weight' => '52',
       'description' => '',
       'type' => 'date_select',
       'module' => 'date',
+    ),
+  );
+
+  // Exported field: field_assoc_level_coupon2_name
+  $fields['association_sponsorship_level-field_assoc_level_coupon2_name'] = array(
+    'field_name' => 'field_assoc_level_coupon2_name',
+    'type_name' => 'association_sponsorship_level',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => 'Conference registration
+Drupal Means Business',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Name',
+      'weight' => '48',
+      'description' => '',
+      'type' => 'optionwidgets_select',
+      'module' => 'optionwidgets',
     ),
   );
 
@@ -1759,7 +1889,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Product',
-      'weight' => '44',
+      'weight' => '50',
       'description' => '',
       'type' => 'nodereference_select',
       'module' => 'nodereference',
@@ -1826,7 +1956,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Value',
-      'weight' => '45',
+      'weight' => '51',
       'description' => '',
       'type' => 'text_textfield',
       'module' => 'text',
@@ -2401,6 +2531,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
   t('Has web ads');
   t('Level');
   t('Logo');
+  t('Name');
   t('Notes');
   t('Product');
   t('Special offer');
