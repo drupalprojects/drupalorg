@@ -221,14 +221,17 @@ function association_drupalorg_preprocess_association_drupalorg_drupalcon_report
   // Get products which have coupon purchase options for the main product.
   $nodes = array($product_id => node_load($product_id));
   association_drupalorg_attribute_name_index($nodes[$product_id]);
-  $result = db_query("SELECT nid FROM {uc_coupon_purchase} WHERE base_cid IN (" . db_placeholders($cids) . ")", $cids);
-  while ($nid = db_result($result)) {
-    $nodes[$nid] = node_load($nid);
-    association_drupalorg_attribute_name_index($nodes[$nid]);
+  if (count($cids)) {
+    $result = db_query("SELECT nid FROM {uc_coupon_purchase} WHERE base_cid IN (" . db_placeholders($cids) . ")", $cids);
+    while ($nid = db_result($result)) {
+      $nodes[$nid] = node_load($nid);
+      association_drupalorg_attribute_name_index($nodes[$nid]);
+    }
   }
 
   $registration_sums = array();
   $payment_sums = array();
+  $sold_with = array();
   foreach (association_drupalorg_orders(array_keys($nodes)) as $order) {
     if (isset($order->products[$order->product_index]->data['attributes']['Conference registration'])) {
       $registration_sums[$order->products[$order->product_index]->data['attributes']['Conference registration'][0]] += 1;
@@ -243,6 +246,11 @@ function association_drupalorg_preprocess_association_drupalorg_drupalcon_report
       }
     }
     $payment_sums[$price] += 1;
+    foreach ($order->products as $key => $product) {
+      if ($key !== $order->product_index) {
+        $sold_with[$product->title] += 1;
+      }
+    }
   }
   $rows = array();
   foreach ($registration_sums as $type => $count) {
@@ -269,6 +277,15 @@ function association_drupalorg_preprocess_association_drupalorg_drupalcon_report
     '<strong>' . number_format($total) . '</strong>',
   );
   $variables['payment_sums'] = theme('table', array(t('Amount'), t('Count'), t('Revenue')), $rows);
+
+  $rows = array();
+  foreach ($sold_with as $product => $count) {
+    $rows[] = array(
+      check_plain($product),
+      $count,
+    );
+  }
+  $variables['sold_with'] = theme('table', array(t('Product'), t('Count')), $rows);
 }
 
 function association_drupalorg_preprocess_association_drupalorg_campaign_block(&$variables) {
@@ -311,6 +328,7 @@ function association_drupalorg_drupalcon_registration_csv() {
     t('Country'),
     t('Email'),
     t('Registration'),
+    t('Training'),
     t('Shirt'),
     t('Meal'),
     t('Other'),
@@ -322,6 +340,7 @@ function association_drupalorg_drupalcon_registration_csv() {
     t('Total'),
     t('Payment'),
   ));
+  $registrations = array();
   foreach (association_drupalorg_orders(array(1484)) as $order) {
     $account = user_load($order->uid);
 
@@ -330,34 +349,77 @@ function association_drupalorg_drupalcon_registration_csv() {
       'Drupalgängers' => '',
       'sponsorship' => '',
     );
-    foreach ($order->products[$order->product_index]->data['attributes']['Please contact me'] as $contact_about) {
-      foreach (array_keys($contact) as $type) {
-        if (strpos($contact_about, $type) !== FALSE) {
-          $contact[$type] = t('yes');
+    if (isset($order->products[$order->product_index]->data['attributes']['Please contact me'])) {
+      foreach ($order->products[$order->product_index]->data['attributes']['Please contact me'] as $contact_about) {
+        foreach (array_keys($contact) as $type) {
+          if (strpos($contact_about, $type) !== FALSE) {
+            $contact[$type] = t('yes');
+          }
         }
       }
     }
-    fputcsv($fp, array(
-      $order->order_id,
-      date('Y-m-d', $order->created),
-      $account->profile_full_name,
-      $account->name,
-      $account->profile_current_company_organization,
-      $account->profile_job,
-      $account->country,
-      $account->mail,
-      $order->products[$order->product_index]->data['attributes']['Conference registration'][0],
-      $order->products[$order->product_index]->data['attributes']['T-shirt'][0],
-      $order->products[$order->product_index]->data['attributes']['Meal preference'][0],
-      $order->products[$order->product_index]->data['attributes']['Other meal preference'][0],
-      implode(', ', $product->data['attributes']['Services you require']),
-      $contact['training'],
-      $contact['Drupalgängers'],
-      $contact['sponsorship'],
-      $order->data['coupon'],
-      $order->order_total,
-      $order->payment_method,
-    ));
+
+    if (!isset($product->data['attributes']['Services you require'])) {
+      $product->data['attributes']['Services you require'] = array();
+    }
+
+    $training = '';
+    foreach ($order->products as $product_training) {
+      if (strpos($product_training->model, '-training-') !== FALSE) {
+        $training = $product_training->title;
+      }
+    }
+
+    if (isset($registrations[$order->uid])) {
+      // Append to user’s previous order.
+      $registrations[$order->uid]['Order'] .= ', ' . $order->order_id;
+      $registrations[$order->uid]['Date'] .= ', ' . date('Y-m-d', $order->created);
+      $registrations[$order->uid]['Registration'] .= ', ' . $order->products[$order->product_index]->data['attributes']['Conference registration'][0];
+      $registrations[$order->uid]['Coupon'] .= ', ' . $order->data['coupon'];
+      $registrations[$order->uid]['Total'] .= ', ' . $order->order_total;
+      $registrations[$order->uid]['Payment'] .= ', ' . $order->payment_method;
+      // Replace
+      $registrations[$order->uid]['Meal'] = $order->products[$order->product_index]->data['attributes']['Meal preference'][0];
+      $registrations[$order->uid]['Other'] = $order->products[$order->product_index]->data['attributes']['Other meal preference'][0];
+      $registrations[$order->uid]['Services'] = implode(', ', $product->data['attributes']['Services you require']);
+      $registrations[$order->uid]['Training-contact'] = $contact['training'];
+      $registrations[$order->uid]['Drupalgängers'] = $contact['Drupalgängers'];
+      $registrations[$order->uid]['Sponsorship'] = $contact['sponsorship'];
+      // Replace if set
+      if (isset($order->products[$order->product_index]->data['attributes']['T-shirt'])) {
+        $registrations[$order->uid]['Shirt'] = $order->products[$order->product_index]->data['attributes']['T-shirt'][0];
+      }
+      if (!empty($training)) {
+        $registrations[$order->uid]['Training'] = $training;
+      }
+    }
+    else {
+      $registrations[$order->uid] = array(
+        'Order'         => $order->order_id,
+        'Date'          => date('Y-m-d', $order->created),
+        'Name'          => $account->profile_full_name,
+        'Username'      => $account->name,
+        'Company'       => $account->profile_current_company_organization,
+        'Title'         => $account->profile_job,
+        'Country'       => $account->country,
+        'Email'         => $account->mail,
+        'Registration'  => $order->products[$order->product_index]->data['attributes']['Conference registration'][0],
+        'Training'      => $training,
+        'Shirt'         => $order->products[$order->product_index]->data['attributes']['T-shirt'][0],
+        'Meal'          => $order->products[$order->product_index]->data['attributes']['Meal preference'][0],
+        'Other'         => $order->products[$order->product_index]->data['attributes']['Other meal preference'][0],
+        'Services'      => implode(', ', $product->data['attributes']['Services you require']),
+        'Training-contact' => $contact['training'],
+        'Drupalgängers' => $contact['Drupalgängers'],
+        'Sponsorship'   => $contact['sponsorship'],
+        'Coupon'        => $order->data['coupon'],
+        'Total'         => $order->order_total,
+        'Payment'       => $order->payment_method,
+      );
+    }
+  }
+  foreach ($registrations as $registration) {
+    fputcsv($fp, $registration);
   }
   fclose($fp);
 }
@@ -374,7 +436,7 @@ function association_drupalorg_drupalcon_registration_csv() {
 function association_drupalorg_orders($nids) {
   $orders = array();
 
-  $result = db_query("SELECT o.order_id FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid IN (" . db_placeholders($nids) . ") INNER JOIN {uc_order_statuses} os ON os.order_status_id = o.order_status AND os.state IN ('completed', 'payment_received')", $nids);
+  $result = db_query("SELECT o.order_id FROM {uc_orders} o INNER JOIN {uc_order_products} op ON op.order_id = o.order_id AND op.nid IN (" . db_placeholders($nids) . ") INNER JOIN {uc_order_statuses} os ON os.order_status_id = o.order_status AND os.state IN ('completed', 'payment_received') ORDER BY o.order_id", $nids);
   while ($order_id = db_result($result)) {
     $order = uc_order_load($order_id);
     foreach ($order->products as $key => $product) {
