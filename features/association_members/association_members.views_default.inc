@@ -599,14 +599,6 @@ function association_members_views_default_views() {
     ),
   ));
   $handler->override_option('sorts', array(
-    'join_date' => array(
-      'order' => 'ASC',
-      'granularity' => 'year',
-      'id' => 'join_date',
-      'table' => 'civicrm_membership',
-      'field' => 'join_date',
-      'relationship' => 'none',
-    ),
     'value' => array(
       'order' => 'ASC',
       'id' => 'value',
@@ -614,6 +606,17 @@ function association_members_views_default_views() {
       'field' => 'value',
       'override' => array(
         'button' => 'Override',
+      ),
+      'relationship' => 'none',
+    ),
+    'join_date' => array(
+      'order' => 'ASC',
+      'granularity' => 'year',
+      'id' => 'join_date',
+      'table' => 'civicrm_membership',
+      'field' => 'join_date',
+      'override' => array(
+        'button' => 'Use default',
       ),
       'relationship' => 'none',
     ),
@@ -729,7 +732,7 @@ function association_members_views_default_views() {
       ),
     ),
   ));
-  $handler->override_option('title', 'Organization members');
+  $handler->override_option('title', 'Organization Members');
   $handler->override_option('header', '<div class="clear-block"><div class="grid-6 alpha big">
 These organizations help support the Drupal Association and make the large projects possible. The Drupal.org redesign, Git migration, and DrupalCons are made possible because of Individuals and Organizations from the community. <a href="https://association.drupal.org/membership">Join them</a>.
 </div><div class="grid-6 omega">
@@ -928,19 +931,19 @@ These organizations help support the Drupal Association and make the large proje
     ),
   ));
   $handler->override_option('sorts', array(
+    'value_1' => array(
+      'order' => 'ASC',
+      'id' => 'value_1',
+      'table' => 'profile_values_profile_full_name',
+      'field' => 'value',
+      'relationship' => 'none',
+    ),
     'join_date' => array(
       'order' => 'ASC',
       'granularity' => 'year',
       'id' => 'join_date',
       'table' => 'civicrm_membership',
       'field' => 'join_date',
-      'relationship' => 'none',
-    ),
-    'value_1' => array(
-      'order' => 'ASC',
-      'id' => 'value_1',
-      'table' => 'profile_values_profile_full_name',
-      'field' => 'value',
       'relationship' => 'none',
     ),
     'name' => array(
@@ -1055,7 +1058,7 @@ These organizations help support the Drupal Association and make the large proje
       ),
     ),
   ));
-  $handler->override_option('title', 'Individual members');
+  $handler->override_option('title', 'Individual Members');
   $handler->override_option('header', '<div class="clear-block"><div class="grid-6 alpha big">
 These people help support the Drupal Association and make the large projects possible. The Drupal.org redesign, Git migration, and DrupalCons are made possible because of Individuals and Organizations from the community. <a href="https://association.drupal.org/membership">Join them</a>.
 </div><div class="grid-6 omega">
