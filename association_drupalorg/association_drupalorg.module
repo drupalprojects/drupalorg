@@ -1306,3 +1306,35 @@ function association_drupalorg_donate_pane($op, $arg1, $arg2) {
       );
   }
 }
+
+function association_drupalorg_issue_coupons($sponsorship_nid) {
+  $sponsorship = node_load($sponsorship_nid);
+  $level = node_load($sponsorship->field_assoc_sponsorship_level[0]['nid']);
+
+  foreach (array(1, 2) as $n) {
+    $field = 'field_assoc_level_coupon' . $n . '_';
+    $coupon = new stdClass;
+    $coupon->code = 'SPONSOR' . $n . '-' . $sponsorship->nid . '-';
+    if (db_result(db_query("SELECT 1 FROM {uc_coupons} WHERE code = '%s'", $coupon->code))) {
+      continue;
+    }
+    $coupon->type = 'price';
+    $coupon->status = TRUE;
+    $coupon->minimum_order = 0;
+    $coupon->bulk = TRUE;
+    $coupon->max_uses = 1;
+    $coupon->valid_from = time();
+    $coupon->value = $level->{$field . 'value'}[0]['value'];
+    $coupon->valid_until = strtotime($level->{$field . 'expire'}[0]['value'] . ' ' . $level->{$field . 'expire'}[0]['timezone']);
+    $coupon->name = t('@sponsorship @coupon', array('@sponsorship' => $sponsorship->title, '@coupon' => $level->{$field . 'name'}[0]['value']));
+    $coupon->data = array(
+      'bulk_number' => $level->{$field . 'count'}[0]['value'],
+      'bulk_length' => 8,
+      'apply_to' => 'products_total',
+      'products' => drupal_map_assoc($level->{$field . 'prod'}[0]),
+      'wholesale' => 1,
+      'purchase_suffix_length' => 8,
+    );
+    uc_coupon_save($coupon);
+  }
+}

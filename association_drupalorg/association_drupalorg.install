@@ -37,3 +37,16 @@ function association_drupalorg_update_6002() {
 
   return $return;
 }
+
+/**
+ * Issue DrupalCon Denver 2012 sponsor coupons.
+ */
+function association_drupalorg_update_6003() {
+  $view = views_get_view('association_sponsors_admin');
+  $view->preview('page_1', array('conference' => 11));
+  foreach ($view->result as $sponsorship) {
+    association_drupalorg_issue_coupons($sponsorship->nid);
+  }
+
+  return array();
+}

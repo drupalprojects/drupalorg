@@ -1262,7 +1262,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_coupon1_count',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '37',
+      'weight' => '48',
       'parent' => 'group_assoc_level_coupon1',
       'label' => array(
         'format' => 'above',
@@ -1329,7 +1329,7 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_coupon1_expire',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '40',
+      'weight' => '51',
       'parent' => 'group_assoc_level_coupon1',
       'label' => array(
         'format' => 'above',
@@ -1404,19 +1404,20 @@ function association_drupalcon_sponsorship_store_content_default_fields() {
     'field_name' => 'field_assoc_level_coupon1_name',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
+      'weight' => '47',
+      'parent' => 'group_assoc_level_coupon1',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -1470,7 +1471,7 @@ Drupal Means Business',
     'field_name' => 'field_assoc_level_coupon1_prod',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '38',
+      'weight' => '49',
       'parent' => 'group_assoc_level_coupon1',
       'label' => array(
         'format' => 'above',
@@ -1549,7 +1550,7 @@ Drupal Means Business',
     'field_name' => 'field_assoc_level_coupon1_value',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '39',
+      'weight' => '50',
       'parent' => 'group_assoc_level_coupon1',
       'label' => array(
         'format' => 'above',
@@ -1616,7 +1617,7 @@ Drupal Means Business',
     'field_name' => 'field_assoc_level_coupon2_count',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '43',
+      'weight' => '49',
       'parent' => 'group_assoc_level_coupon2',
       'label' => array(
         'format' => 'above',
@@ -1683,7 +1684,7 @@ Drupal Means Business',
     'field_name' => 'field_assoc_level_coupon2_expire',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '46',
+      'weight' => '52',
       'parent' => 'group_assoc_level_coupon2',
       'label' => array(
         'format' => 'above',
@@ -1758,19 +1759,20 @@ Drupal Means Business',
     'field_name' => 'field_assoc_level_coupon2_name',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
+      'weight' => '48',
+      'parent' => 'group_assoc_level_coupon2',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -1822,7 +1824,7 @@ Drupal Means Business',
     'field_name' => 'field_assoc_level_coupon2_prod',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '44',
+      'weight' => '50',
       'parent' => 'group_assoc_level_coupon2',
       'label' => array(
         'format' => 'above',
@@ -1901,7 +1903,7 @@ Drupal Means Business',
     'field_name' => 'field_assoc_level_coupon2_value',
     'type_name' => 'association_sponsorship_level',
     'display_settings' => array(
-      'weight' => '45',
+      'weight' => '51',
       'parent' => 'group_assoc_level_coupon2',
       'label' => array(
         'format' => 'above',
