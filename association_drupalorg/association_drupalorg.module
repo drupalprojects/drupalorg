@@ -612,6 +612,44 @@ function association_drupalorg_form_alter(&$form, &$form_state, $form_id) {
   elseif ($form_id === 'association_sponsorship_node_form') {
     // There isn't anything good to put in the sponsorship body.
     $form['body_field']['#access'] = FALSE;
+    // Show coupon codes.
+    $rows = array();
+    $result = db_query("SELECT cid FROM {uc_coupons} WHERE code IN ('SPONSOR1-%d-', 'SPONSOR2-%d-')", $form['#node']->nid, $form['#node']->nid);
+    while ($cid = db_result($result)) {
+      $coupon = uc_coupon_load($cid);
+      if ($coupon->bulk) {
+        $codes = array($coupon->code . '*');
+        for ($id = 0; $id < $coupon->data['bulk_number']; $id += 1) {
+          $codes[] = uc_coupon_get_bulk_code($coupon, $id);
+        }
+      }
+      else {
+        $codes = array($coupon->code);
+      }
+      if (!$coupon->status) {
+        $valid = t('Inactive');
+      }
+      else if (!$coupon->valid_until) {
+        $valid = t('Unlimited');
+      }
+      else {
+        $valid = format_date($coupon->valid_until, 'custom', variable_get('uc_date_format_default', 'm/d/Y'), 0);
+      }
+      $usage = array();
+      $result_usage = db_query("SELECT uco.code, uo.uid FROM {uc_coupons_orders} AS uco LEFT JOIN {uc_orders} AS uo ON uco.oid = uo.order_id LEFT JOIN {uc_order_statuses} AS uos ON uo.order_status = uos.order_status_id WHERE uos.weight > 0 AND uco.cid = %d", $coupon->cid);
+      while ($row = db_fetch_object($result_usage)) {
+        $usage[$row->code] = theme('username', user_load($row->uid));
+      }
+
+      foreach ($codes as $code) {
+        if (substr($code, -1) !== '*') {
+          $rows[] = array(check_plain($coupon->name), isset($usage[$code]) ? $usage[$code] : $code, $valid);
+        }
+      }
+    }
+    if (count($rows)) {
+      $form['coupons'] = array('#value' => theme('table', array(t('Coupon'), t('Code or attendee'), t('Expires')), $rows) . '<p>' . t('Each attendee needs to register individually using a coupon code.') . '</p>');
+    }
   }
   elseif ($form_id === 'uc_cart_view_form') {
     // One ticket per cart.
@@ -1326,7 +1364,7 @@ function association_drupalorg_issue_coupons($sponsorship_nid) {
     $coupon->valid_from = time();
     $coupon->value = $level->{$field . 'value'}[0]['value'];
     $coupon->valid_until = strtotime($level->{$field . 'expire'}[0]['value'] . ' ' . $level->{$field . 'expire'}[0]['timezone']);
-    $coupon->name = t('@sponsorship @coupon', array('@sponsorship' => $sponsorship->title, '@coupon' => $level->{$field . 'name'}[0]['value']));
+    $coupon->name = t('@sponsorship, @coupon', array('@sponsorship' => $sponsorship->title, '@coupon' => $level->{$field . 'name'}[0]['value']));
     $coupon->data = array(
       'bulk_number' => $level->{$field . 'count'}[0]['value'],
       'bulk_length' => 8,
