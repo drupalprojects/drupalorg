@@ -173,8 +173,8 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
 
         // Development releases may have changed package contents -- clear out
         // their package item summary so a fresh item summary will be inserted.
-        if ($release_node->project_release['rebuild'] && module_exists('project_package')) {
-          db_query("DELETE FROM {project_package_local_release_item} WHERE package_nid = %d", $nid);
+        if ($this->release_node->project_release['rebuild'] && module_exists('project_package')) {
+          db_query("DELETE FROM {project_package_local_release_item} WHERE package_nid = %d", $this->release_node->nid);
         }
 
         // Core was built without the drupal.org drush extension, so the
