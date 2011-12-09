@@ -50,7 +50,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
 
       // Only proceed if a core release was found.
       if (!isset($info['core'])) {
-        wd_err("ERROR: %profile does not have the required 'core' attribute.", array('%profile' => $this->release_file_id), $release_node_view_link);
+        wd_err("ERROR: %profile does not have the required 'core' attribute.", array('%profile' => $this->release_file_id), $this->release_node_view_link);
         return 'error';
       }
       else {
@@ -59,7 +59,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
         // attempt of core will handle the rest of the validation (ie, it will
         // fail if a non-existant tag is specified.
         if (!preg_match("/^(\d+)\.(\d+)(-[a-z0-9]+)?$/", $info['core'], $matches)) {
-          wd_err("ERROR: %profile specified an invalid 'core' attribute -- both API version and release are required.", array('%profile' => $this->release_file_id), $release_node_view_link);
+          wd_err("ERROR: %profile specified an invalid 'core' attribute -- both API version and release are required.", array('%profile' => $this->release_file_id), $this->release_node_view_link);
           return 'error';
         }
         else {
@@ -71,7 +71,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
           $release_api_version = $parts[0];
           
           if ($profile_api_version != $release_api_version) {
-            wd_err("ERROR: %profile specified an invalid 'core' attribute -- the API version must match the API version of the release.", array('%profile' => $this->release_file_id), $release_node_view_link);
+            wd_err("ERROR: %profile specified an invalid 'core' attribute -- the API version must match the API version of the release.", array('%profile' => $this->release_file_id), $this->release_node_view_link);
             return 'error';
           }
         }
@@ -103,7 +103,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
             	wd_err("ERROR: $line");
             }
           }
-          wd_err("ERROR: Build for %profile failed.", array('%profile' => $no_core_id), $release_node_view_link);
+          wd_err("ERROR: Build for %profile failed.", array('%profile' => $no_core_id), $this->release_node_view_link);
           return 'error';
         }
 
@@ -137,7 +137,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
         // Run drush_make to build core.
         if (!drupal_exec("{$this->conf['drush']} make $core_makefile $core_build_dir")) {
           // The build failed, bail out.
-          wd_err("ERROR: Build for %core failed.", array('%core' => $core_build_dir), $release_node_view_link);
+          wd_err("ERROR: Build for %core failed.", array('%core' => $core_build_dir), $this->release_node_view_link);
           return 'error';
         }
 
@@ -197,13 +197,13 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
           }
         }
         else {
-          wd_err("ERROR: %file does not exist for %profile release.", array('%file' => $package_contents_file, '%profile' => $this->release_file_id), $release_node_view_link);
+          wd_err("ERROR: %file does not exist for %profile release.", array('%file' => $package_contents_file, '%profile' => $this->release_file_id), $this->release_node_view_link);
           return 'error';
         }
       }
     }
     else {
-      wd_msg("No makefile for %profile profile -- skipping extended packaging.", array('%profile' => $this->release_file_id), $release_node_view_link);
+      wd_msg("No makefile for %profile profile -- skipping extended packaging.", array('%profile' => $this->release_file_id), $this->release_node_view_link);
     }
     return $rval;
   }
