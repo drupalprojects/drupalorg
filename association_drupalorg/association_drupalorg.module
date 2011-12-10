@@ -594,6 +594,11 @@ function association_drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       $node->content['exmaple_ads']['row_2']['column_2']['#value'] = '<h3>' . t('300 x 100 Image + Text') . '</h3>' . drupalorg_crosssite_ad_block('association-example-imagetext-300x100');
     }
   }
+  elseif ($op === 'insert' || $op === 'update') {
+    if ($node->type === 'association_sponsorship') {
+      association_drupalorg_issue_coupons($node->nid);
+    }
+  }
 }
 
 function association_drupalorg_preprocess_node(&$variables) {
@@ -1351,6 +1356,9 @@ function association_drupalorg_issue_coupons($sponsorship_nid) {
 
   foreach (array(1, 2) as $n) {
     $field = 'field_assoc_level_coupon' . $n . '_';
+    if (empty($level->{$field . 'value'}[0]) || empty($level->{$field . 'expire'}[0]) || empty($level->{$field . 'name'}[0]) || empty($level->{$field . 'count'}[0]) || empty($level->{$field . 'prod'}[0])) {
+      continue;
+    }
     $coupon = new stdClass;
     $coupon->code = 'SPONSOR' . $n . '-' . $sponsorship->nid . '-';
     if (db_result(db_query("SELECT 1 FROM {uc_coupons} WHERE code = '%s'", $coupon->code))) {
