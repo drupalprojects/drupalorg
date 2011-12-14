@@ -103,12 +103,6 @@ function _lists_get_lists() {
       'mailto'       => 'infrastructure-request@drupal.org',
       'private'      => TRUE,
     ),
-    'drupal-con'    => array(
-      'name'        => 'DrupalCON',
-      'description' => 'A list for the organization of Drupal conferences and events.',
-      'mailto'      => 'drupal-con-request@drupal.org',
-      'private'     => TRUE,
-    ),
   );
   return $lists;
 }
