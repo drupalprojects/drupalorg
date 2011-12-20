@@ -1,0 +1,95 @@
+<?php
+
+/**
+ * @file
+ *   A dashboard showing community health metrics over time.
+ */
+
+/**
+ * Implementation of hook_meu()
+ */
+function drupalorg_metrics_menu() {
+  $items = array();
+  $items['metrics'] = array(
+    'title' => 'Drupal.org Metrics',
+    'page callback' => 'drupalorg_metrics_page',
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+/*
+ * Page callback.
+ */
+function drupalorg_metrics_page() {
+	$element = array('style' => 'width:900px;height:400px');
+	$options = array(
+	  'xaxis' => array('mode' => 'time', 'ticks' => 9), // 
+	  'series' => array(
+			'lines' => array('show' => 'true'), 
+			'points' => array('show' => 'true'),
+		),
+	  'grid' => array(
+		  'borderwidth' => 1,
+		),
+	 );
+	
+	$map = drupalorg_metrics_map();
+	$counts = variable_get('drupalorg_metrics_counts', array());
+	foreach ($counts as $type => $points) {
+	  foreach ($points as $start => $value) {
+	 	  $data[$start] = $value; 
+		}
+		$series = new flotData($data);
+		$graph = theme('flot_graph', $element, array($series), $options);
+		$outputs[] = "<a name=\"$type\"><h2 align=\"center\">" . $map[$type] . '</h2></a>' . $graph;
+		$links[] = array('title' => $map[$type], 'href' => $_GET['q'], 'fragment' => "$type");
+		unset($data);
+	}
+	return theme('links', $links) . implode("<br /><br />\n", $outputs);
+}
+
+/*
+ * Implement hook_cron().
+ */
+function drupalorg_metrics_cron() {
+  // Assumes world domination has been achieved by 2030.
+  drupalorg_metrics_record_stats(2007, 2030);
+}
+
+function drupalorg_metrics_record_stats($start_year, $end_year) {
+  for ($year = $start_year; $year <= $end_year; $year++) {
+    for ($month = 1; $month <= 12; $month++) {
+      $start = mktime(0, 0, 0, $month, 1, $year);
+      if ($month != 12) {
+        $end = mktime(0, 0, 0, $month + 1, 1, $year);
+      }
+      else {
+        $end = mktime(0, 0, 0, 1, 1, $year + 1);
+      }
+      // Don't record the current month or future months.
+      if ($end > $_SERVER['REQUEST_TIME']) {
+	      break;
+      }
+			// Javascript timestamps are in milliseconds since epoch.
+			$start_js = $start * 1000;
+			
+      $counts['nodes'][] = array($start_js, db_result(db_query("SELECT COUNT(*) FROM node WHERE created >= %d AND created < %d", $start, $end)));
+      $counts['users'][] = array($start_js, db_result(db_query("SELECT COUNT(*) FROM users WHERE created >= %d AND created < %d", $start, $end)));
+      $counts['comments'][] = array($start_js, db_result(db_query("SELECT COUNT(*) FROM comments WHERE timestamp >= %d AND timestamp < %d", $start, $end)));
+      $counts['commits'][] = array($start_js, db_result(db_query("SELECT COUNT(DISTINCT(revision)) FROM versioncontrol_operations WHERE date >= %d AND date < %d AND author <> 'tggm@no-reply.drupal.org'", $start, $end)));
+      $counts['committers'][] = array($start_js, db_result(db_query("SELECT COUNT(DISTINCT(author_uid)) FROM versioncontrol_operations WHERE date >= %d AND date < %d", $start, $end)));
+    }
+  }
+  variable_set('drupalorg_metrics_counts', $counts);
+}
+
+function drupalorg_metrics_map() {
+	return array(
+		'nodes' => 'Nodes created by month',
+    'users' => 'Users created by month',
+    'comments' => 'Comments created by month',
+    'commits' => 'Commits created by month',
+    'committers' => 'Committers by month',
+	);
+}
