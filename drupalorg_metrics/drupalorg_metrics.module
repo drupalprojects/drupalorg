@@ -18,7 +18,7 @@ function drupalorg_metrics_menu() {
   return $items;
 }
 
-/*
+/**
  * Page callback.
  */
 function drupalorg_metrics_page() {
@@ -32,7 +32,7 @@ function drupalorg_metrics_page() {
 	  'grid' => array(
 		  'borderwidth' => 1,
 		),
-	 );
+	);
 	
 	$map = drupalorg_metrics_map();
 	$counts = variable_get('drupalorg_metrics_counts', array());
@@ -49,7 +49,7 @@ function drupalorg_metrics_page() {
 	return theme('links', $links) . implode("<br /><br />\n", $outputs);
 }
 
-/*
+/**
  * Implement hook_cron().
  */
 function drupalorg_metrics_cron() {
@@ -61,12 +61,7 @@ function drupalorg_metrics_record_stats($start_year, $end_year) {
   for ($year = $start_year; $year <= $end_year; $year++) {
     for ($month = 1; $month <= 12; $month++) {
       $start = mktime(0, 0, 0, $month, 1, $year);
-      if ($month != 12) {
-        $end = mktime(0, 0, 0, $month + 1, 1, $year);
-      }
-      else {
-        $end = mktime(0, 0, 0, 1, 1, $year + 1);
-      }
+      $end = mktime(0, 0, 0, $month + 1, 1, $year);
       // Don't record the current month or future months.
       if ($end > $_SERVER['REQUEST_TIME']) {
 	      break;
