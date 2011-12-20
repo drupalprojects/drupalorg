@@ -1,0 +1,34 @@
+<?php
+
+include_once('drupalorg_packaging_whitelist.features.inc');
+
+/**
+ * Implementation of hook_menu().
+ */
+function drupalorg_packaging_whitelist_menu() {
+  $items = array();
+
+  $items['packaging_whitelist/json'] = array(
+    'page callback' => 'drupalorg_packaging_whitelist_json_output',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK
+  );
+
+  return $items;
+}
+
+/**
+ * Return the JSON output for the packaging whitelist.
+ */
+function drupalorg_packaging_whitelist_json_output() {
+  $whitelist = array();
+
+  $result = db_query("SELECT nid FROM {node} WHERE type = 'packaging_whitelist' AND status = 1");
+  while ($row = db_fetch_object($result)) {
+    $node = node_load($row->nid);
+    $urls = preg_split('/(\r\n?|\n)/', $node->field_packaging_whitelist_urls[0]['value']);
+    $whitelist = array_merge($whitelist, $urls);
+  }
+
+  drupal_json($whitelist);
+}
