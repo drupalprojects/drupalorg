@@ -8,7 +8,7 @@ include_once('drupalorg_packaging_whitelist.features.inc');
 function drupalorg_packaging_whitelist_menu() {
   $items = array();
 
-  $items['packaging_whitelist/json'] = array(
+  $items['packaging-whitelist/json'] = array(
     'page callback' => 'drupalorg_packaging_whitelist_json_output',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK

@@ -181,7 +181,7 @@ function drupalorg_packaging_whitelist_views_default_views() {
     'relationship' => 'none',
     'item_length' => 'default',
   ));
-  $handler->override_option('path', 'packaging_whitelists/rss');
+  $handler->override_option('path', 'packaging-whitelist/rss');
   $handler->override_option('menu', array(
     'type' => 'none',
     'title' => '',
@@ -202,7 +202,7 @@ function drupalorg_packaging_whitelist_views_default_views() {
   ));
   $handler->override_option('sitename_title', FALSE);
   $handler = $view->new_display('page', 'Page', 'page_1');
-  $handler->override_option('path', 'packaging_whitelists');
+  $handler->override_option('path', 'packaging-whitelist');
   $handler->override_option('menu', array(
     'type' => 'none',
     'title' => '',
