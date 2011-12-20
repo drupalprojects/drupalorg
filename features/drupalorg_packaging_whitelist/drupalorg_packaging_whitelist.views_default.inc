@@ -12,7 +12,7 @@ function drupalorg_packaging_whitelist_views_default_views() {
   $view->description = '';
   $view->tag = '';
   $view->base_table = 'node';
-  $view->core = 6;
+  $view->core = 0;
   $view->api_version = '2';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'Defaults', 'default');
@@ -54,8 +54,8 @@ function drupalorg_packaging_whitelist_views_default_views() {
       'field' => 'title',
       'relationship' => 'none',
     ),
-    'field_packaging_whitelist_urls_value' => array(
-      'label' => 'URLs',
+    'body' => array(
+      'label' => 'Allowed URLs',
       'alter' => array(
         'alter_text' => 0,
         'text' => '',
@@ -77,22 +77,13 @@ function drupalorg_packaging_whitelist_views_default_views() {
         'strip_tags' => 0,
       ),
       'empty' => '',
-      'hide_empty' => 0,
+      'hide_empty' => 1,
       'empty_zero' => 0,
       'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'label_type' => 'widget',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
       'exclude' => 0,
-      'id' => 'field_packaging_whitelist_urls_value',
-      'table' => 'node_data_field_packaging_whitelist_urls',
-      'field' => 'field_packaging_whitelist_urls_value',
+      'id' => 'body',
+      'table' => 'node_revisions',
+      'field' => 'body',
       'relationship' => 'none',
     ),
   ));
@@ -161,7 +152,33 @@ function drupalorg_packaging_whitelist_views_default_views() {
   $handler->override_option('cache', array(
     'type' => 'none',
   ));
+  $handler->override_option('title', 'Packaging whitelist URLs');
+  $handler->override_option('empty', 'No whitelists have been created.');
+  $handler->override_option('empty_format', '1');
+  $handler->override_option('items_per_page', 50);
   $handler->override_option('use_pager', '1');
+  $handler->override_option('style_plugin', 'table');
+  $handler->override_option('style_options', array(
+    'grouping' => '',
+    'override' => 1,
+    'sticky' => 1,
+    'order' => 'asc',
+    'summary' => 'Packaging whitelist URLs',
+    'columns' => array(
+      'title' => 'title',
+      'body' => 'body',
+    ),
+    'info' => array(
+      'title' => array(
+        'sortable' => 0,
+        'separator' => '',
+      ),
+      'body' => array(
+        'separator' => '',
+      ),
+    ),
+    'default' => '-1',
+  ));
   $handler->override_option('row_plugin', 'node');
   $handler->override_option('row_options', array(
     'relationship' => 'none',
