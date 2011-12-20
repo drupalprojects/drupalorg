@@ -8,15 +8,13 @@ function drupalorg_packaging_whitelist_node_info() {
     'packaging_whitelist' => array(
       'name' => t('Packaging Whitelist Entry'),
       'module' => 'features',
-      'description' => t('This content type is used to define white-listed URLs for external code that can be packaged in install profiles.
-
-The title should be a human readable identifier for the entry and the body a newline separated list of URLs supporting wildcards.'),
+      'description' => t('Define white-listed URLs for external code that can be packaged in install profiles.'),
       'has_title' => '1',
       'title_label' => t('Title'),
-      'has_body' => '0',
-      'body_label' => '',
+      'has_body' => '1',
+      'body_label' => t('Allowed URLs'),
       'min_word_count' => '0',
-      'help' => '',
+      'help' => t('The title should be a human readable identifier for the entry and the body a newline separated list of URLs supporting wildcards.'),
     ),
   );
   return $items;
