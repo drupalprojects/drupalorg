@@ -55,7 +55,7 @@ function drupalorg_packaging_whitelist_views_default_views() {
       'relationship' => 'none',
     ),
     'body' => array(
-      'label' => 'Allowed URLs',
+      'label' => 'Allowed URL filters',
       'alter' => array(
         'alter_text' => 0,
         'text' => '',
