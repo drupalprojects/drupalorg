@@ -159,7 +159,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   // Put in a body class for CSS hooking and a variable for theme dependence
   // if we are on the main site's home page. Many things should be different
   // there.
-  $vars['is_drupalorg_front'] = drupalorg_crosssite_menu_site('main') && drupal_is_front_page();
+  $vars['is_drupalorg_front'] = drupalorg_crosssite_is_site('main') && drupal_is_front_page();
   if ($vars['is_drupalorg_front']) {
     $vars['body_classes'] .= ' drupalorg-front';
   }
@@ -191,7 +191,7 @@ function drupalorg_crosssite_section() {
     elseif (drupalorg_crosssite_child_of('main', 'node/179723') || (drupalorg_crosssite_child_of('main', 'project/drupal.org projects') && !drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID))) {
       $section = 'drupalorg';
     }
-    elseif (drupalorg_crosssite_menu_path('main', '^(project|download|list-changes|list-change-updates)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_menu_path('main', '^node/add/project-issue') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release', 'changenotice')) || drupalorg_crosssite_menu_site('localize')) {
+    elseif (drupalorg_crosssite_menu_path('main', '^(project|download|list-changes|list-change-updates)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_menu_path('main', '^node/add/project-issue') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release', 'changenotice')) || drupalorg_crosssite_is_site('localize')) {
       $section = 'downloads';
     }
     elseif (drupalorg_crosssite_menu_path('main', '^security(|/contrib|/psa)$') || drupalorg_crosssite_menu_term('main', array(1852, 44, 1856))) {
@@ -203,8 +203,8 @@ function drupalorg_crosssite_section() {
     elseif (drupalorg_crosssite_child_of('main', 'node/366') || drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization') || drupalorg_crosssite_menu_path('main', '^(marketplace-preview|hosting)')) {
       $section = 'marketplace';
     }
-    elseif (drupalorg_crosssite_menu_site('api')
-      || (drupalorg_crosssite_menu_site('main') && isset($node) && isset($node->book['bid']))
+    elseif (drupalorg_crosssite_is_site('api')
+      || (drupalorg_crosssite_is_site('main') && isset($node) && isset($node->book['bid']))
       || drupalorg_crosssite_menu_path('main', '^(handbook|documentation)')) {
       $section = 'documentation';
     }
@@ -268,7 +268,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     case 'documentation':
       $nav_content_links = array(
         'home'    => array('href' => 'node/26419', 'title' => t('Docs Home'), '#site' => 'main', '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
-        'api'     => array('href' => '<front>', 'title' => t('API'), '#site' => 'api', '#active' => drupalorg_crosssite_in_breadcrumb('api', 'api/drupal', $vars) || drupalorg_crosssite_menu_site('api')),
+        'api'     => array('href' => '<front>', 'title' => t('API'), '#site' => 'api', '#active' => drupalorg_crosssite_in_breadcrumb('api', 'api/drupal', $vars) || drupalorg_crosssite_is_site('api')),
         'recent'  => array('href' => 'handbook/updates', 'title' => t('Recently Updated'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
       );
       break;
@@ -279,7 +279,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
         'core'         => array('href' => 'node/' . DRUPALORG_CORE_NID, 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID, $vars) || drupalorg_crosssite_child_of('main', 'project/drupal core', $vars), '#site' => 'main'),
         'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_in_breadcrumb('main', 'project/modules', $vars) || drupalorg_crosssite_menu_path('main', '^project/modules')),
         'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_child_of('main', 'project/themes', $vars) || drupalorg_crosssite_child_of('main', 'project/theme engines', $vars)),
-        'translations' => array('href' => '<front>', 'title' => t('Translations'), '#site' => 'localize', '#active' => drupalorg_crosssite_menu_site('localize') || drupalorg_crosssite_in_breadcrumb('main', 'project/translations', $vars)),
+        'translations' => array('href' => '<front>', 'title' => t('Translations'), '#site' => 'localize', '#active' => drupalorg_crosssite_is_site('localize') || drupalorg_crosssite_in_breadcrumb('main', 'project/translations', $vars)),
         'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^project/installation profiles') || drupalorg_crosssite_in_breadcrumb('main', 'project/installation profiles', $vars)),
       );
       break;
@@ -443,7 +443,7 @@ function drupalorg_crosssite_child_of($site_key, $path, &$vars = NULL) {
  *   TRUE if found, and modify $vars['breadcrumb'].
  */
 function drupalorg_crosssite_in_breadcrumb($site_key, $path, &$vars = NULL) {
-  if (drupalorg_crosssite_menu_site($site_key)) {
+  if (drupalorg_crosssite_is_site($site_key)) {
     $url = url($path);
     foreach (drupal_get_breadcrumb() as $n => $breadcrumb) {
       if (strpos($breadcrumb, 'href="' . $url . '"') !== FALSE) {
@@ -486,7 +486,7 @@ function drupalorg_crosssite_menu_sites() {
  * @return
  *   TRUE if on the site specified by $site_key.
  */
-function drupalorg_crosssite_menu_site($site_key) {
+function drupalorg_crosssite_is_site($site_key) {
   static $site = NULL;
   static $sites = NULL;
   if (!isset($site)) {
@@ -510,7 +510,7 @@ function drupalorg_crosssite_menu_site($site_key) {
  */
 function drupalorg_crosssite_menu_type($site_key, $node_types) {
   // menu_get_object() gets us the node, if we have a node loaded on the path.
-  if (drupalorg_crosssite_menu_site($site_key) && ($node = menu_get_object())) {
+  if (drupalorg_crosssite_is_site($site_key) && ($node = menu_get_object())) {
     return in_array($node->type, $node_types);
   }
 }
@@ -528,7 +528,7 @@ function drupalorg_crosssite_menu_type($site_key, $node_types) {
  */
 function drupalorg_crosssite_menu_term($site_key, $node_tids) {
   // menu_get_object() gets us the node, if we have a node loaded on the path.
-  if (drupalorg_crosssite_menu_site($site_key) && ($node = menu_get_object())) {
+  if (drupalorg_crosssite_is_site($site_key) && ($node = menu_get_object())) {
     return count(array_intersect(array_keys($node->taxonomy), $node_tids)) > 0;
   }
 }
@@ -545,7 +545,7 @@ function drupalorg_crosssite_menu_term($site_key, $node_tids) {
  *   $path_regex.
  */
 function drupalorg_crosssite_menu_path($site_key, $path_regex) {
-  return drupalorg_crosssite_menu_site($site_key) && preg_match('#'. $path_regex .'#', drupal_get_path_alias($_GET['q']));
+  return drupalorg_crosssite_is_site($site_key) && preg_match('#'. $path_regex .'#', drupal_get_path_alias($_GET['q']));
 }
 
 /**
@@ -557,7 +557,7 @@ function drupalorg_crosssite_menu_path($site_key, $path_regex) {
  *   the link to and whether the item is active.
  *    - For possible #site values, see drupalorg_crosssite_menu_sites().
  *    - #active can be built with see drupalorg_crosssite_menu_path(), see
- *      drupalorg_crosssite_menu_site() and see drupalorg_crosssite_menu_type()
+ *      drupalorg_crosssite_is_site() and see drupalorg_crosssite_menu_type()
  *      (as well as possibly see user_access() and friends, if you made sure
  *      the link will be local, so you can do local access checks against it).
  *
@@ -569,7 +569,7 @@ function drupalorg_crosssite_menu_absolute_links($links) {
   foreach ($links as $key => $link) {
     // If we are not on the given site, convert the link to an absolute link
     // to the given site.
-    if (isset($link['#site']) && !drupalorg_crosssite_menu_site($link['#site'])) {
+    if (isset($link['#site']) && !drupalorg_crosssite_is_site($link['#site'])) {
       $link['href'] = drupalorg_crosssite_path($link['href'], $link['#site']);
     }
     // Otherwise, it might be an active link still, so add on the active class,
@@ -602,7 +602,7 @@ function drupalorg_crosssite_path($path, $site) {
     $sites = drupalorg_crosssite_menu_sites();
   }
 
-  if (drupalorg_crosssite_menu_site($site)) {
+  if (drupalorg_crosssite_is_site($site)) {
     return $path;
   }
   else {
@@ -840,8 +840,8 @@ function drupalorg_crosssite_form_search_theme_form_alter(&$form, $form_state) {
       $form['advanced'] = array(
         '#type' => 'fieldset',
         '#title' => t('Refine your search'),
-        '#collapsible' => !(drupal_is_front_page() && drupalorg_crosssite_menu_site('main')),
-        '#collapsed' => !(drupal_is_front_page() && drupalorg_crosssite_menu_site('main')),
+        '#collapsible' => !(drupal_is_front_page() && drupalorg_crosssite_is_site('main')),
+        '#collapsed' => !(drupal_is_front_page() && drupalorg_crosssite_is_site('main')),
       );
       $form['advanced']['meta_type'] = array(
         '#type' => 'radios',
