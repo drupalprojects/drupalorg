@@ -459,11 +459,6 @@ function drupalorg_crosssite_in_breadcrumb($site_key, $path, &$vars = NULL) {
 
 /**
  * Which site is which URL?
- *
- * We have multiple keys for different functionality, so in case we need to
- * break these out, we can quickly swap these URLs and be done with updating
- * the navigation by deploying the new version of this module across all
- * subsites.
  */
 function drupalorg_crosssite_menu_sites() {
   $base_domain = variable_get('drupalorg_base_domain', 'drupal.org');
@@ -576,7 +571,7 @@ function drupalorg_crosssite_menu_absolute_links($links) {
     // if we know #active was defined TRUE.
     elseif (!empty($link['#active'])) {
       // theme('link') uses the key as class, so add active class that way.
-      $key = $key .' active';
+      $key = $key . ' active';
       $link['attributes']['class'] = 'active';
     }
     $activated_links[$key] = $link;
