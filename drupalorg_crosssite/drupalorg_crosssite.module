@@ -556,18 +556,8 @@ function drupalorg_crosssite_menu_term($site_key, $node_tids) {
  *   TRUE if on the site specified by $site_key, looking at a path matching
  *   $path_regex.
  */
-function drupalorg_crosssite_menu_path($site_key, $path_regex = '') {
-  // menu_get_object() gets us the node, if we have a node loaded on the path.
-  if (drupalorg_crosssite_menu_site($site_key)) {
-    if (empty($path_regex)) {
-      // We need to match the front page.
-      return (empty($_GET['q']));
-    }
-    else {
-      // Use the full preg_match.
-      return preg_match('#'. $path_regex .'#', drupal_get_path_alias($_GET['q']));
-    }
-  }
+function drupalorg_crosssite_menu_path($site_key, $path_regex) {
+  return drupalorg_crosssite_menu_site($site_key) && preg_match('#'. $path_regex .'#', drupal_get_path_alias($_GET['q']));
 }
 
 /**
