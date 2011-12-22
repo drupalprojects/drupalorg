@@ -32,36 +32,24 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     $vars['breadcrumb'] = '';
   }
 
-  // Site hostnames for the sites we use.
-  $sites = drupalorg_crosssite_menu_sites();
-
-  // == Build the header navigation
-
-  // Hardcoded list of menu items. These are not supposed to have any indication
-  // of the active item, since the page title and submenus have that indication.
-  // Also, we should not let people edit these, since they should be standard
-  // among all the subsites. So this is why they are here.
+  // Build the header navigation
   $home_link = l(t('◄ Go to Drupal.org'), drupalorg_crosssite_path('', 'main'), array('attributes' => array('class' => 'home')));
+  $vars['drupalorg_logo_link'] = l($vars['site_name'], '', array('attributes' => array('title' => $vars['site_name'])));
+  $nav_header_links = $vars['primary_links'];
+  $nav_masthead_links = array(
+    'homepage' => array('href' => '', 'title' => t('@site Homepage', array('@site' => str_replace('Drupal ', '', variable_get('site_name')))), '#active' => drupal_get_path_alias($_GET['q']) === variable_get('site_frontpage', 'node')),
+  );
   switch (variable_get('drupalorg_site', 'main')) {
     case 'association':
-      $vars['drupalorg_logo_link'] = l('Drupal Association', drupalorg_crosssite_path('', 'association'), array('attributes' => array('title' => 'Drupal Association')));
-      $nav_header_links = array(
-        'news' => array('href' => 'news', 'title' => t('News'), '#site' => 'association'),
-        'about' => array('href' => 'node/58', 'title' => t('About'), '#site' => 'association'),
-        'membership' => array('href' => 'membership', 'title' => t('Membership'), '#site' => 'association'),
-        'donate' => array('href' => 'donate', 'title' => t('Donate'), '#site' => 'association'),
-        'bizconnect' => array('href' => 'bizconnect', 'title' => t('BizConnect'), '#site' => 'association'),
-        'faq' => array('href' => 'node/65', 'title' => t('FAQ'), '#site' => 'association'),
-        'contact' => array('href' => 'contact', 'title' => t('Contact'), '#site' => 'association'),
-      );
-      $nav_masthead_links = array(
-        'homepage'       => array('href' => 'home', 'title' => t('Association Homepage'), '#site' => 'association', '#active' => drupalorg_crosssite_menu_path('association', '^(home|)/?$')),
-      );
+    case 'groups':
+      // Prevent generic navigation. todo expand to all subsites.
       break;
 
     default:
       $home_link = '';
       $vars['drupalorg_logo_link'] = l('Drupal', drupalorg_crosssite_path('', 'main'), array('attributes' => array('title' => 'Drupal')));
+      // Hardcoded list of menu items. These are not supposed to have any indication
+      // of the active item, since the page title and submenus have that indication.
       $nav_header_links = array(
         'getting-started' => array('href' => 'start',           'title' => t('Get Started'),         '#site' => 'main', 'attributes' => array('title' => t('Getting Started with Drupal'))),
         'forum'           => array('href' => 'community',       'title' => t('Community & Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community and Support'))),
