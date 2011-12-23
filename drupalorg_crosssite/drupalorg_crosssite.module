@@ -551,10 +551,10 @@ function drupalorg_crosssite_menu_path($site_key, $path_regex) {
  *   #active keys for the individual links to specify which site to point
  *   the link to and whether the item is active.
  *    - For possible #site values, see drupalorg_crosssite_menu_sites().
- *    - #active can be built with see drupalorg_crosssite_menu_path(), see
- *      drupalorg_crosssite_is_site() and see drupalorg_crosssite_menu_type()
- *      (as well as possibly see user_access() and friends, if you made sure
- *      the link will be local, so you can do local access checks against it).
+ *    - #active can be built with functions like
+ *      drupalorg_crosssite_menu_path(), drupalorg_crosssite_is_site(), and
+ *      drupalorg_crosssite_menu_type(). If the link will be local, you can use
+ *      local checks.
  *
  * @return
  *   The modified link array.
@@ -752,12 +752,12 @@ function drupalorg_crosssite_get_meta_type_rules() {
  * @param object $node
  *   A fully-formed node object as passed from hook_apachesolr_update_index.
  * @param mixed $value
- *   An array initially respresents the order of operations and the
- *   resulting meta type value. Currently supported comparisons are type and
- *   taxonomy. In the final iteration of drupalorg_crosssite_meta_type_traverse,
- *   $value should be a string value rather than an array.
- *   @see drupalorg_crosssite_get_meta_type_rules for the 'main' site to see
- *   an example of $value.
+ *   An array initially respresents the order of operations and the resulting
+ *   meta type value. Currently supported comparisons are type and taxonomy. In
+ *   the final iteration of drupalorg_crosssite_meta_type_traverse, $value
+ *   should be a string value rather than an array. See
+ *   drupalorg_crosssite_get_meta_type_rules for the 'main' site for an example
+ *   of $value.
  *
  * @return mixed
  *   Returns NULL if no meta type is found for the particular node, otherwise,
