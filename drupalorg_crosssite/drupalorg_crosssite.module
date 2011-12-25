@@ -256,6 +256,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'drupalorg' => 'Drupal.org',
     'marketplace' => 'Marketplace',
     'security' => 'Security advisories',
+    'advertising' => 'Drupal Association Media Kit',
   );
   // Set the section_name variable to be output in page.tpl.php.
   if (isset($section_names[drupalorg_crosssite_section()])) {
