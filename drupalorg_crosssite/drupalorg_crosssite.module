@@ -39,35 +39,28 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   $nav_masthead_links = array(
     'homepage' => array('href' => '', 'title' => t('@site Homepage', array('@site' => str_replace('Drupal ', '', variable_get('site_name', 'Drupal')))), '#active' => drupal_get_path_alias($_GET['q']) === variable_get('site_frontpage', 'node')),
   );
-  switch (variable_get('drupalorg_site', 'main')) {
-    case 'association':
-    case 'groups':
-      // Prevent generic navigation. todo expand to all subsites.
-      break;
-
-    default:
-      $home_link = '';
-      $vars['drupalorg_logo_link'] = l('Drupal', drupalorg_crosssite_path('', 'main'), array('attributes' => array('title' => 'Drupal')));
-      // Hardcoded list of menu items. These are not supposed to have any indication
-      // of the active item, since the page title and submenus have that indication.
-      $nav_header_links = array(
-        'getting-started' => array('href' => 'start',           'title' => t('Get Started'),         '#site' => 'main', 'attributes' => array('title' => t('Getting Started with Drupal'))),
-        'forum'           => array('href' => 'community',       'title' => t('Community & Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community and Support'))),
-        'handbooks'       => array('href' => 'documentation',   'title' => t('Documentation'),       '#site' => 'main', 'attributes' => array('title' => t('Drupal Documentation'))),
-        'project'         => array('href' => 'download',        'title' => t('Download & Extend'),   '#site' => 'main', 'attributes' => array('title' => t('Download and Extend Drupal'))),
-        'marketplace'     => array('href' => 'drupal-services', 'title' => t('Marketplace'),         '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
-        'about'           => array('href' => 'about',           'title' => t('About'),               '#site' => 'main', 'attributes' => array('title' => t('About Drupal'))),
-      );
-      $nav_masthead_links = array(
-        'homepage'       => array('href' => 'home', 'title' => t('Drupal Homepage'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$')),
-        'dashboard'      => array('href' => 'user/' . drupalorg_crossite_bakery_master_uid() . '/dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)')),
-      );
+  if (!in_array(variable_get('drupalorg_site', 'main'), array('association', 'groups'))) {
+    $home_link = '';
+    $vars['drupalorg_logo_link'] = l('Drupal', drupalorg_crosssite_path('', 'main'), array('attributes' => array('title' => 'Drupal')));
+    // Hardcoded list of menu items. These are not supposed to have any indication
+    // of the active item, since the page title and submenus have that indication.
+    $nav_header_links = array(
+      'getting-started' => array('href' => 'start',           'title' => t('Get Started'),         '#site' => 'main', 'attributes' => array('title' => t('Getting Started with Drupal'))),
+      'forum'           => array('href' => 'community',       'title' => t('Community & Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community and Support'))),
+      'handbooks'       => array('href' => 'documentation',   'title' => t('Documentation'),       '#site' => 'main', 'attributes' => array('title' => t('Drupal Documentation'))),
+      'project'         => array('href' => 'download',        'title' => t('Download & Extend'),   '#site' => 'main', 'attributes' => array('title' => t('Download and Extend Drupal'))),
+      'marketplace'     => array('href' => 'drupal-services', 'title' => t('Marketplace'),         '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
+      'about'           => array('href' => 'about',           'title' => t('About'),               '#site' => 'main', 'attributes' => array('title' => t('About Drupal'))),
+    );
+    $nav_masthead_links = array(
+      'homepage' => array('href' => 'home', 'title' => t('Drupal Homepage'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$')),
+      'dashboard' => array('href' => 'user/' . drupalorg_crossite_bakery_master_uid() . '/dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)')),
+    );
   }
   // Make all external links right. Theme as links, and avoid class="links".
   $vars['nav_header'] = $home_link . theme('links', drupalorg_crosssite_menu_absolute_links($nav_header_links), array());
 
-  // == Build the footer navigation
-
+  // Build the footer navigation
   $nav_footer_links = array(
     array(
       'news'        => array('href' => 'news', 'title' => t('Drupal News'), '#site' => 'main'),
@@ -127,124 +120,11 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     $vars['nav_footer'] .= '<div class="grid-footer'. $alpha_omega .'">'. theme('links', $links_column, array()) .'</div>';
   }
 
-  // Add content header navigation.
-  drupalorg_crosssite_content_menu($vars);
-
-  // Add page tool navigation.
-  $page_tools = module_invoke_all('drupalorg_crosssite_page_tools');
-  if (count($page_tools) > 0) {
-    $vars['page_tools'] = theme('links', $page_tools);
-  }
-
-  // == Nav masthead links
-  $userinfo = '';
-  if ($user->uid == 0) {
-    unset($nav_masthead_links['dashboard']);
-    $nav_masthead_links['login-register'] = array('href' => 'user', 'query' => drupal_get_destination(), 'title' => t('Log in / Register'), '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
-  }
-  else {
-    // Add user page link and logout link.
-    $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user', array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) .' '. l(t('Log out'), 'logout');
-    if (variable_get('drupalorg_crosssite_redesign', FALSE)) {
-      $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), drupalorg_crosssite_path('user', 'main'), array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) .' '. l(t('Log out'), 'logout');
-    }
-    if (user_access('access administration pages')) {
-      $userinfo .= ' ' . l(t('Admin'), 'admin');
-    }
-    $userinfo .= '</div>';
-  }
-  // Make all external links right. Theme as links, and avoid class="links".
-  $vars['nav_masthead'] = theme('links', drupalorg_crosssite_menu_absolute_links($nav_masthead_links), array()) . $userinfo;
-
-  // Put in a body class for CSS hooking and a variable for theme dependence
-  // if we are on the main site's home page. Many things should be different
-  // there.
-  $vars['is_drupalorg_front'] = drupalorg_crosssite_is_site('main') && drupal_is_front_page();
-  if ($vars['is_drupalorg_front']) {
-    $vars['body_classes'] .= ' drupalorg-front';
-  }
-
-  $vars['body_classes'] .= ' drupalorg-site-' . variable_get('drupalorg_site', 'main');
-}
-
-/**
- * Specify the section matching criteria.
- */
-function drupalorg_crosssite_section() {
-  global $user, $conf;
-  static $section = FALSE;
-
-  if ($section === FALSE) {
-    $node = menu_get_object();
-    // Theoretically, the matching criteria made one of the areas win (have TRUE as
-    // the array value). If there are two menus to display on the same path, we
-    // are in trouble, since we only have one menu displayed per path. Fix the above
-    // matching in that case. (This will pick the first matched in that case).
-    if (drupalorg_crosssite_menu_path('main', '^(user/'. $user->uid .'(/|$)|project(/issues)?/user$)')) {
-      $section = 'dashboard';
-    }
-    elseif (drupalorg_crosssite_menu_path('main', '^node/1$') || drupalorg_crosssite_in_breadcrumb('main', 'node/1')
-      || drupalorg_crosssite_menu_path('main', '^features$') || drupalorg_crosssite_in_breadcrumb('main', 'node/909476')
-      || drupalorg_crosssite_menu_path('main', '^benefits$') || drupalorg_crosssite_in_breadcrumb('main', 'node/909476')) {
-      $section = 'about';
-    }
-    elseif (drupalorg_crosssite_child_of('main', 'node/179723') || (drupalorg_crosssite_child_of('main', 'project/drupal.org projects') && !drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID))) {
-      $section = 'drupalorg';
-    }
-    elseif (drupalorg_crosssite_menu_path('main', '^(project|download|list-changes|list-change-updates)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_menu_path('main', '^node/add/project-issue') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release', 'changenotice')) || drupalorg_crosssite_is_site('localize')) {
-      $section = 'downloads';
-    }
-    elseif (drupalorg_crosssite_menu_path('main', '^security(|/contrib|/psa)$') || drupalorg_crosssite_menu_term('main', array(1852, 44, 1856))) {
-      $section = 'security';
-    }
-    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('main', 'forum') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)'))) {
-      $section = 'community';
-    }
-    elseif (drupalorg_crosssite_child_of('main', 'node/366') || drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization') || drupalorg_crosssite_menu_path('main', '^(marketplace-preview|hosting)')) {
-      $section = 'marketplace';
-    }
-    elseif (drupalorg_crosssite_is_site('api')
-      || (drupalorg_crosssite_is_site('main') && isset($node) && isset($node->book['bid']))
-      || drupalorg_crosssite_menu_path('main', '^(handbook|documentation)')) {
-      $section = 'documentation';
-    }
-    elseif (drupalorg_crosssite_menu_path('association', '^bizconnect')) {
-      $section = 'bizconnect';
-    }
-    elseif (drupalorg_crosssite_menu_path('association', '^advertising')) {
-      $section = 'advertising';
-    }
-    elseif (drupalorg_crosssite_menu_path('main', '^user(/|$)')) {
-      $section = 'user';
-    }
-    elseif (drupalorg_crosssite_in_breadcrumb('main', 'admin')) {
-      $section = 'admin';
-    }
-    elseif (menu_get_item() !== FALSE) {
-      // Should not happen.
-      $section = NULL;
-    }
-
-    // Track section
-    if (!empty($conf['googleanalytics_codesnippet_before'])) {
-      $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 2, 'Drupalorg-section', '" . $section . "', 3]);"; // 3 is page-level
-    }
-  }
-  return $section;
-}
-
-/**
- * Content for the content top menu.
- *
- * We implement this as "custom menus", since we need to have cross-site menu
- * items in some cases, and having these sycned across all subsites would be
- * painful (read: menu items would have different URLs and menu ids on subsites,
- * since an API link on the docs site would link out to API while a docs link
- * on the API would link out to the docs site).
- */
-function drupalorg_crosssite_content_menu(&$vars) {
-  global $user;
-
+  // We implement the content top menu as "custom menus", since we need to have
+  // cross-site menu items in some cases, and having these sycned across all
+  // subsites would be painful (read: menu items would have different URLs and
+  // menu ids on subsites, since an API link on the docs site would link out to
+  // API while a docs link on the API would link out to the docs site).
   $nav_content_links = array();
   switch (drupalorg_crosssite_section()) {
     case 'documentation':
@@ -372,7 +252,8 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
   }
 
-  if (count($nav_content_links)) {
+  $vars['nav_content'] = $vars['nav_content_class'] = '';
+  if (!empty($nav_content_links)) {
     // Make all external links right.
     $nav_content_links = drupalorg_crosssite_menu_absolute_links($nav_content_links);
 
@@ -416,10 +297,108 @@ function drupalorg_crosssite_content_menu(&$vars) {
     $vars['nav_content'] = theme('links', $nav_content_links);
     $vars['nav_content_class'] = ' class="clear-block nav-content-'. drupalorg_crosssite_section() .'"';
   }
-  else {
-    // Else just return an empty content nav menu.
-    $vars['nav_content'] = $vars['nav_content_class'] = '';
+
+  // Add page tool navigation.
+  $page_tools = module_invoke_all('drupalorg_crosssite_page_tools');
+  if (count($page_tools) > 0) {
+    $vars['page_tools'] = theme('links', $page_tools);
   }
+
+  // == Nav masthead links
+  $userinfo = '';
+  if ($user->uid == 0) {
+    unset($nav_masthead_links['dashboard']);
+    $nav_masthead_links['login-register'] = array('href' => 'user', 'query' => drupal_get_destination(), 'title' => t('Log in / Register'), '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
+  }
+  else {
+    // Add user page link and logout link.
+    $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user', array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) .' '. l(t('Log out'), 'logout');
+    if (variable_get('drupalorg_crosssite_redesign', FALSE)) {
+      $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), drupalorg_crosssite_path('user', 'main'), array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) .' '. l(t('Log out'), 'logout');
+    }
+    if (user_access('access administration pages')) {
+      $userinfo .= ' ' . l(t('Admin'), 'admin');
+    }
+    $userinfo .= '</div>';
+  }
+  // Make all external links right. Theme as links, and avoid class="links".
+  $vars['nav_masthead'] = theme('links', drupalorg_crosssite_menu_absolute_links($nav_masthead_links), array()) . $userinfo;
+
+  // Put in a body class for CSS hooking and a variable for theme dependence
+  // if we are on the main site's home page. Many things should be different
+  // there.
+  $vars['is_drupalorg_front'] = drupalorg_crosssite_is_site('main') && drupal_is_front_page();
+  if ($vars['is_drupalorg_front']) {
+    $vars['body_classes'] .= ' drupalorg-front';
+  }
+
+  $vars['body_classes'] .= ' drupalorg-site-' . variable_get('drupalorg_site', 'main');
+}
+
+/**
+ * Specify the section matching criteria.
+ */
+function drupalorg_crosssite_section() {
+  global $user, $conf;
+  static $section = FALSE;
+
+  if ($section === FALSE) {
+    $node = menu_get_object();
+    // Theoretically, the matching criteria made one of the areas win (have TRUE as
+    // the array value). If there are two menus to display on the same path, we
+    // are in trouble, since we only have one menu displayed per path. Fix the above
+    // matching in that case. (This will pick the first matched in that case).
+    if (drupalorg_crosssite_menu_path('main', '^(user/'. $user->uid .'(/|$)|project(/issues)?/user$)')) {
+      $section = 'dashboard';
+    }
+    elseif (drupalorg_crosssite_menu_path('main', '^node/1$') || drupalorg_crosssite_in_breadcrumb('main', 'node/1')
+      || drupalorg_crosssite_menu_path('main', '^features$') || drupalorg_crosssite_in_breadcrumb('main', 'node/909476')
+      || drupalorg_crosssite_menu_path('main', '^benefits$') || drupalorg_crosssite_in_breadcrumb('main', 'node/909476')) {
+      $section = 'about';
+    }
+    elseif (drupalorg_crosssite_child_of('main', 'node/179723') || (drupalorg_crosssite_child_of('main', 'project/drupal.org projects') && !drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID))) {
+      $section = 'drupalorg';
+    }
+    elseif (drupalorg_crosssite_menu_path('main', '^(project|download|list-changes|list-change-updates)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_menu_path('main', '^node/add/project-issue') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release', 'changenotice')) || drupalorg_crosssite_is_site('localize')) {
+      $section = 'downloads';
+    }
+    elseif (drupalorg_crosssite_menu_path('main', '^security(|/contrib|/psa)$') || drupalorg_crosssite_menu_term('main', array(1852, 44, 1856))) {
+      $section = 'security';
+    }
+    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('main', 'forum') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)'))) {
+      $section = 'community';
+    }
+    elseif (drupalorg_crosssite_child_of('main', 'node/366') || drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization') || drupalorg_crosssite_menu_path('main', '^(marketplace-preview|hosting)')) {
+      $section = 'marketplace';
+    }
+    elseif (drupalorg_crosssite_is_site('api')
+      || (drupalorg_crosssite_is_site('main') && isset($node) && isset($node->book['bid']))
+      || drupalorg_crosssite_menu_path('main', '^(handbook|documentation)')) {
+      $section = 'documentation';
+    }
+    elseif (drupalorg_crosssite_menu_path('association', '^bizconnect')) {
+      $section = 'bizconnect';
+    }
+    elseif (drupalorg_crosssite_menu_path('association', '^advertising')) {
+      $section = 'advertising';
+    }
+    elseif (drupalorg_crosssite_menu_path('main', '^user(/|$)')) {
+      $section = 'user';
+    }
+    elseif (drupalorg_crosssite_in_breadcrumb('main', 'admin')) {
+      $section = 'admin';
+    }
+    elseif (menu_get_item() !== FALSE) {
+      // Should not happen.
+      $section = NULL;
+    }
+
+    // Track section
+    if (!empty($conf['googleanalytics_codesnippet_before'])) {
+      $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 2, 'Drupalorg-section', '" . $section . "', 3]);"; // 3 is page-level
+    }
+  }
+  return $section;
 }
 
 // == API functions ============================================================
