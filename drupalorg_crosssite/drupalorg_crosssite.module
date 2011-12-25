@@ -33,32 +33,40 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   }
 
   // Build the header navigation
-  $home_link = l(t('◄ Go to Drupal.org'), drupalorg_crosssite_path('', 'main'), array('attributes' => array('class' => 'home')));
   $vars['drupalorg_logo_link'] = l($vars['site_name'], '', array('attributes' => array('title' => $vars['site_name'])));
-  $nav_header_links = $vars['primary_links'];
+  $vars['nav_header'] = l(t('◄ Go to Drupal.org'), drupalorg_crosssite_path('', 'main'), array('attributes' => array('class' => 'home'))) . theme('links', $vars['primary_links'], array());
   $nav_masthead_links = array(
     'homepage' => array('href' => '', 'title' => t('@site Homepage', array('@site' => str_replace('Drupal ', '', variable_get('site_name', 'Drupal')))), '#active' => drupal_get_path_alias($_GET['q']) === variable_get('site_frontpage', 'node')),
   );
+  if (!user_is_logged_in()) {
+    $nav_masthead_links['login-register'] = array('href' => 'user', 'query' => drupal_get_destination(), 'title' => t('Log in / Register'), '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
+  }
   if (!in_array(variable_get('drupalorg_site', 'main'), array('association', 'groups'))) {
-    $home_link = '';
     $vars['drupalorg_logo_link'] = l('Drupal', drupalorg_crosssite_path('', 'main'), array('attributes' => array('title' => 'Drupal')));
     // Hardcoded list of menu items. These are not supposed to have any indication
     // of the active item, since the page title and submenus have that indication.
-    $nav_header_links = array(
+    $vars['nav_header'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
       'getting-started' => array('href' => 'start',           'title' => t('Get Started'),         '#site' => 'main', 'attributes' => array('title' => t('Getting Started with Drupal'))),
       'forum'           => array('href' => 'community',       'title' => t('Community & Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community and Support'))),
       'handbooks'       => array('href' => 'documentation',   'title' => t('Documentation'),       '#site' => 'main', 'attributes' => array('title' => t('Drupal Documentation'))),
       'project'         => array('href' => 'download',        'title' => t('Download & Extend'),   '#site' => 'main', 'attributes' => array('title' => t('Download and Extend Drupal'))),
       'marketplace'     => array('href' => 'drupal-services', 'title' => t('Marketplace'),         '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
       'about'           => array('href' => 'about',           'title' => t('About'),               '#site' => 'main', 'attributes' => array('title' => t('About Drupal'))),
-    );
-    $nav_masthead_links = array(
-      'homepage' => array('href' => 'home', 'title' => t('Drupal Homepage'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$')),
-      'dashboard' => array('href' => 'user/' . drupalorg_crossite_bakery_master_uid() . '/dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)')),
-    );
+    )), array());
+    $nav_masthead_links['homepage'] = array('href' => 'home', 'title' => t('Drupal Homepage'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$'));
+    if (user_is_logged_in()) {
+      $nav_masthead_links['dashboard'] = array('href' => 'user/' . drupalorg_crossite_bakery_master_uid() . '/dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)'));
+    }
   }
-  // Make all external links right. Theme as links, and avoid class="links".
-  $vars['nav_header'] = $home_link . theme('links', drupalorg_crosssite_menu_absolute_links($nav_header_links), array());
+  $vars['nav_masthead'] = theme('links', drupalorg_crosssite_menu_absolute_links($nav_masthead_links), array());
+  if (user_is_logged_in()) {
+    // Add user page link and logout link.
+    $vars['nav_masthead'] .= '<div id="userinfo">' . l(t('Logged in as @username', array('@username' => $user->name)), variable_get('drupalorg_crosssite_redesign', FALSE) ? drupalorg_crosssite_path('user', 'main') : 'user', array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) . ' ' . l(t('Log out'), 'logout');
+    if (user_access('access administration pages')) {
+      $vars['nav_masthead'] .= ' ' . l(t('Admin'), 'admin');
+    }
+    $vars['nav_masthead'] .= '</div>';
+  }
 
   // Build the footer navigation
   $nav_footer_links = array(
@@ -303,26 +311,6 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   if (count($page_tools) > 0) {
     $vars['page_tools'] = theme('links', $page_tools);
   }
-
-  // == Nav masthead links
-  $userinfo = '';
-  if ($user->uid == 0) {
-    unset($nav_masthead_links['dashboard']);
-    $nav_masthead_links['login-register'] = array('href' => 'user', 'query' => drupal_get_destination(), 'title' => t('Log in / Register'), '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
-  }
-  else {
-    // Add user page link and logout link.
-    $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), 'user', array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) .' '. l(t('Log out'), 'logout');
-    if (variable_get('drupalorg_crosssite_redesign', FALSE)) {
-      $userinfo = '<div id="userinfo">'. l(t('Logged in as @username', array('@username' => $user->name)), drupalorg_crosssite_path('user', 'main'), array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) .' '. l(t('Log out'), 'logout');
-    }
-    if (user_access('access administration pages')) {
-      $userinfo .= ' ' . l(t('Admin'), 'admin');
-    }
-    $userinfo .= '</div>';
-  }
-  // Make all external links right. Theme as links, and avoid class="links".
-  $vars['nav_masthead'] = theme('links', drupalorg_crosssite_menu_absolute_links($nav_masthead_links), array()) . $userinfo;
 
   // Put in a body class for CSS hooking and a variable for theme dependence
   // if we are on the main site's home page. Many things should be different
