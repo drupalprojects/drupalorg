@@ -37,7 +37,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   $vars['drupalorg_logo_link'] = l($vars['site_name'], '', array('attributes' => array('title' => $vars['site_name'])));
   $nav_header_links = $vars['primary_links'];
   $nav_masthead_links = array(
-    'homepage' => array('href' => '', 'title' => t('@site Homepage', array('@site' => str_replace('Drupal ', '', variable_get('site_name')))), '#active' => drupal_get_path_alias($_GET['q']) === variable_get('site_frontpage', 'node')),
+    'homepage' => array('href' => '', 'title' => t('@site Homepage', array('@site' => str_replace('Drupal ', '', variable_get('site_name', 'Drupal')))), '#active' => drupal_get_path_alias($_GET['q']) === variable_get('site_frontpage', 'node')),
   );
   switch (variable_get('drupalorg_site', 'main')) {
     case 'association':
