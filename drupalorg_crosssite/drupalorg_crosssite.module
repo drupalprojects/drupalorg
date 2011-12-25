@@ -245,29 +245,10 @@ function drupalorg_crosssite_section() {
 function drupalorg_crosssite_content_menu(&$vars) {
   global $user;
 
-  // Identify sections names/titles to be displayed above content area menus.
-  $section_names = array(
-    'about' => 'About Drupal',
-    'downloads' => 'Download &amp; Extend',
-    'documentation' => 'Documentation',
-    'community' => 'Community &amp; Support',
-    'dashboard' => check_plain($user->name),
-    'localize' => 'Localize',
-    'drupalorg' => 'Drupal.org',
-    'marketplace' => 'Marketplace',
-    'security' => 'Security advisories',
-    'bizconnect' => 'Drupal BizConnect',
-    'advertising' => 'Drupal Association Media Kit',
-  );
-  // Set the section_name variable to be output in page.tpl.php.
-  if (isset($section_names[drupalorg_crosssite_section()])) {
-    $vars['section_name'] = $section_names[drupalorg_crosssite_section()];
-  }
-
-  // Now ask for all the menu items for the matched menu.
   $nav_content_links = array();
   switch (drupalorg_crosssite_section()) {
     case 'documentation':
+      $vars['section_name'] = 'Documentation';
       $nav_content_links = array(
         'home'    => array('href' => 'node/26419', 'title' => t('Docs Home'), '#site' => 'main', '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)')),
         'api'     => array('href' => '<front>', 'title' => t('API'), '#site' => 'api', '#active' => drupalorg_crosssite_in_breadcrumb('api', 'api/drupal', $vars) || drupalorg_crosssite_is_site('api')),
@@ -276,6 +257,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
 
     case 'downloads':
+      $vars['section_name'] = 'Download &amp; Extend';
       $nav_content_links = array(
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
         'core'         => array('href' => 'node/' . DRUPALORG_CORE_NID, 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID, $vars) || drupalorg_crosssite_child_of('main', 'project/drupal core', $vars), '#site' => 'main'),
@@ -287,6 +269,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
 
     case 'community':
+      $vars['section_name'] = 'Community &amp; Support';
       $nav_content_links = array(
         'home'          => array('href' => 'community', 'title' => t('Community Home'), '#site' => 'main'),
         'getting-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^irc(/|$)') && !drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)'))),
@@ -299,6 +282,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
 
     case 'dashboard':
+      $vars['section_name'] = check_plain($user->name);
       $code_item = menu_get_item('user/' . $user->uid . '/track/code');
       $nav_content_links = array(
         'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard', '#site' => 'main'),
@@ -324,6 +308,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
 
     case 'drupalorg':
+      $vars['section_name'] = 'Drupal.org';
       $nav_content_links = array(
         // query may be removed with #910442 and/or #1019300.
         'home' => array('title' => t('Drupal.org Projects'), 'href' => 'project/drupal.org projects', 'query' => array('filters' => 'bs_project_sandbox:[* TO *]'), '#active' => drupalorg_crosssite_child_of('main', 'project/drupal.org projects', $vars) && !(drupalorg_crosssite_child_of('main', 'node/3202') || drupalorg_crosssite_child_of('main', 'node/18753') || drupalorg_crosssite_child_of('main', 'node/1025112') || drupalorg_crosssite_child_of('main', 'node/107028') || drupalorg_crosssite_child_of('main', 'node/651778'))),
@@ -337,6 +322,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
 
     case 'marketplace':
+      $vars['section_name'] = 'Marketplace';
       $nav_content_links = array(
         'services' => array('title' => t('Services'), 'href' => 'node/21791', '#active' => drupalorg_crosssite_child_of('main', 'drupal-services')),
         'hosting' => array('title' => t('Hosting'), 'href' => 'hosting', '#active' => drupalorg_crosssite_child_of('main', 'hosting')),
@@ -346,6 +332,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
 
     case 'security':
+      $vars['section_name'] = 'Security advisories';
       $nav_content_links = array(
         'core' => array('title' => t('Drupal core'), 'href' => 'security', '#active' => drupalorg_crosssite_menu_term('main', array(1852))),
         'contrib' => array('title' => t('Contributed projects'), 'href' => 'security/contrib', '#active' => drupalorg_crosssite_menu_term('main', array(44))),
@@ -354,6 +341,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
 
     case 'bizconnect':
+      $vars['section_name'] = 'Drupal BizConnect';
       $nav_content_links = array(
         'home' => array('title' => t('BizConnect Home'), 'href' => 'node/1064'),
         'getinvolved' => array('title' => t('Get Involved'), 'href' => 'node/1069'),
@@ -366,12 +354,21 @@ function drupalorg_crosssite_content_menu(&$vars) {
       break;
 
     case 'advertising':
+      $vars['section_name'] = 'Drupal Association Media Kit';
       $nav_content_links = array(
         'home' => array('title' => t('Advertising Home'), 'href' => 'node/228'),
         'web' => array('title' => t('Web Advertising'), 'href' => 'node/1104'),
         'hosting' => array('title' => t('Hosting'), 'href' => 'node/1109'),
         'sponsorships' => array('title' => t('Sponsorships'), 'href' => 'node/1114'),
       );
+      break;
+
+    case 'about':
+      $vars['section_name'] = 'About Drupal';
+      break;
+
+    case 'localize':
+      $vars['section_name'] = 'Localize';
       break;
   }
 
