@@ -366,10 +366,10 @@ function drupalorg_crosssite_content_menu(&$vars) {
 
     case 'advertising':
       $nav_content_links = array(
-        'home' => array('title' => t('Advertising Home'), 'href' => 'advertising', '#active' => drupalorg_crosssite_menu_path('association', '^advertising$')),
-        'web' => array('title' => t('Web Advertising'), 'href' => 'advertising/web', '#active' => drupalorg_crosssite_menu_path('association', '^advertising/web$')),
-        'hosting' => array('title' => t('Hosting'), 'href' => 'advertising/hosting', '#active' => drupalorg_crosssite_menu_path('association', '^advertising/hosting$')),
-        'sponsorships' => array('title' => t('Sponsorships'), 'href' => 'advertising/sponsorships', '#active' => drupalorg_crosssite_menu_path('association', '^advertising/sponsorships$')),
+        'home' => array('title' => t('Advertising Home'), 'href' => 'node/228'),
+        'web' => array('title' => t('Web Advertising'), 'href' => 'node/1104'),
+        'hosting' => array('title' => t('Hosting'), 'href' => 'node/1109'),
+        'sponsorships' => array('title' => t('Sponsorships'), 'href' => 'node/1114'),
       );
       break;
   }
@@ -570,10 +570,15 @@ function drupalorg_crosssite_menu_absolute_links($links) {
     }
     // Otherwise, it might be an active link still, so add on the active class,
     // if we know #active was defined TRUE.
-    elseif (!empty($link['#active'])) {
-      // theme('link') uses the key as class, so add active class that way.
-      $key = $key . ' active';
-      $link['attributes']['class'] = 'active';
+    else {
+      if (!isset($link['#active'])) {
+        $link['#active'] = $link['href'] === drupal_get_path_alias($_GET['q']);
+      }
+      if ($link['#active']) {
+        // theme('link') uses the key as class, so add active class that way.
+        $key = $key . ' active';
+        $link['attributes']['class'] = 'active';
+      }
     }
     $activated_links[$key] = $link;
   }
