@@ -256,6 +256,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     'drupalorg' => 'Drupal.org',
     'marketplace' => 'Marketplace',
     'security' => 'Security advisories',
+    'bizconnect' => 'Drupal BizConnect',
     'advertising' => 'Drupal Association Media Kit',
   );
   // Set the section_name variable to be output in page.tpl.php.
@@ -354,13 +355,13 @@ function drupalorg_crosssite_content_menu(&$vars) {
 
     case 'bizconnect':
       $nav_content_links = array(
-        'home' => array('title' => t('BizConnect Home'), 'href' => 'bizconnect', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect$')),
-        'getinvolved' => array('title' => t('Get Involved'), 'href' => 'bizconnect/getinvolved', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/getinvolved$')),
-        'intheknow' => array('title' => t('In the Know'), 'href' => 'bizconnect/intheknow', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/intheknow$')),
-        'sponsorships' => array('title' => t('Sponsorships'), 'href' => 'bizconnect/sponsorships', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/sponsorships$')),
-        'leads' => array('title' => t('Lead Generation'), 'href' => 'bizconnect/leads', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/leads$')),
-        'networking' => array('title' => t('Networking'), 'href' => 'bizconnect/networking', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/networking$')),
-        'tools' => array('title' => t('Sales Tools'), 'href' => 'bizconnect/tools', '#active' => drupalorg_crosssite_menu_path('association', '^bizconnect/tools$')),
+        'home' => array('title' => t('BizConnect Home'), 'href' => 'node/1064'),
+        'getinvolved' => array('title' => t('Get Involved'), 'href' => 'node/1069'),
+        'intheknow' => array('title' => t('In the Know'), 'href' => 'node/1074'),
+        'sponsorships' => array('title' => t('Sponsorships'), 'href' => 'node/1079'),
+        'leads' => array('title' => t('Lead Generation'), 'href' => 'node/1084'),
+        'networking' => array('title' => t('Networking'), 'href' => 'node/1089'),
+        'tools' => array('title' => t('Sales Tools'), 'href' => 'node/1094'),
       );
       break;
 
