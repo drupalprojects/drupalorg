@@ -55,7 +55,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     )), array());
     $nav_masthead_links['homepage'] = array('href' => 'home', 'title' => t('Drupal Homepage'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$'));
     if (user_is_logged_in()) {
-      $nav_masthead_links['dashboard'] = array('href' => 'user/' . drupalorg_crossite_bakery_master_uid() . '/dashboard', 'title' => t('Your Dashboard'),   '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)'));
+      $nav_masthead_links['dashboard'] = array('href' => 'user/' . drupalorg_crossite_bakery_master_uid() . '/dashboard', 'title' => t('Your Dashboard'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)'));
     }
   }
   $vars['nav_masthead'] = theme('links', drupalorg_crosssite_menu_absolute_links($nav_masthead_links), array());
@@ -836,7 +836,7 @@ function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
   if (module_exists('apachesolr_multisitesearch')) {
     $path = 'apachesolr_multisitesearch';
   }
-  else if (module_exists('apachesolr_search')) {
+  elseif (module_exists('apachesolr_search')) {
     $path = 'apachesolr_search';
   }
   else {
