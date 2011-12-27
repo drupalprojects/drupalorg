@@ -531,15 +531,10 @@ function drupalorg_crosssite_menu_absolute_links($links) {
     }
     // Otherwise, it might be an active link still, so add on the active class,
     // if we know #active was defined TRUE.
-    else {
-      if (!isset($link['#active'])) {
-        $link['#active'] = $link['href'] === drupal_get_path_alias($_GET['q']);
-      }
-      if ($link['#active']) {
-        // theme('link') uses the key as class, so add active class that way.
-        $key = $key . ' active';
-        $link['attributes']['class'] = 'active';
-      }
+    elseif (!empty($link['#active'])) {
+      // theme('link') uses the key as class, so add active class that way.
+      $key = $key . ' active';
+      $link['attributes']['class'] = 'active';
     }
     $activated_links[$key] = $link;
   }
