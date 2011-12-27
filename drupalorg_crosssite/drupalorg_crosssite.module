@@ -39,7 +39,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     'homepage' => array('href' => '', 'title' => t('@site Homepage', array('@site' => str_replace('Drupal ', '', variable_get('site_name', 'Drupal')))), '#active' => drupal_get_path_alias($_GET['q']) === variable_get('site_frontpage', 'node')),
   );
   if (!user_is_logged_in()) {
-    $nav_masthead_links['login-register'] = array('href' => 'user', 'query' => drupal_get_destination(), 'title' => t('Log in / Register'), '#active' => drupalorg_crosssite_menu_path('main', '^user(/|$)'));
+    $nav_masthead_links['login-register'] = array('href' => 'user', 'query' => drupal_get_destination(), 'title' => t('Log in / Register'), '#active' => drupalorg_crosssite_match_path('^user(/|$)'));
   }
   if (!in_array(variable_get('drupalorg_site', 'main'), array('association', 'groups'))) {
     $vars['drupalorg_logo_link'] = l('Drupal', drupalorg_crosssite_path('', 'main'), array('attributes' => array('title' => 'Drupal')));
@@ -490,7 +490,19 @@ function drupalorg_crosssite_menu_term($site_key, $node_tids) {
  *   $path_regex.
  */
 function drupalorg_crosssite_menu_path($site_key, $path_regex) {
-  return drupalorg_crosssite_is_site($site_key) && preg_match('#'. $path_regex .'#', drupal_get_path_alias($_GET['q']));
+  return drupalorg_crosssite_is_site($site_key) && drupalorg_crosssite_match_path($path_regex);
+}
+
+/**
+ * Check if the current path alias matches a regular expression.
+ *
+ * @param $path_regex
+ *   A Perl regular expression.
+ * @return
+ *   TRUE if the aliased path matches $path_regex.
+ */
+function drupalorg_crosssite_match_path($path_regex) {
+  return preg_match('#'. $path_regex .'#', drupal_get_path_alias($_GET['q']));
 }
 
 /**
