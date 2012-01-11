@@ -261,7 +261,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
   $section_names = array(
     'about' => 'About Drupal',
     'downloads' => 'Download &amp; Extend',
-    'documentation' => 'Documentation',
+    'documentation' => 'Community Documentation',
     'community' => 'Community &amp; Support',
     'dashboard' => check_plain($user->name),
     'localize' => 'Localize',
