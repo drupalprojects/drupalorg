@@ -60,7 +60,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     $this->filenames['file_path_zip'] = $file_destination_subdir . '/' . $this->release_file_id . '.zip';
     $this->filenames['full_dest_zip'] = $file_destination_root . '/' . $this->filenames['file_path_zip'];
   }
-  
+
   /**
    * One-time initialization shared across all instances of this class.
    */
@@ -68,9 +68,9 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     if (self::$shared_init) {
       return;
     }
-    
+
     putenv("TERM=vt100");  // drush requires a terminal.
-    
+
     self::$shared_init = TRUE;
   }
 
@@ -137,9 +137,16 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return 'no-op';
     }
 
+    // If this is a -dev release, do some magic to determine a spiffy
+    // "rebuild_version" string which we'll put into any .info files and
+    // save in the DB for other uses.
+    if (!empty($this->release_node->project_release['rebuild'])) {
+      $this->computeRebuildVersion();
+    }
+
     // Update any .info files with packaging metadata.
     foreach ($info_files as $file) {
-      if (!$this->fixInfoFileVersion($file, $this->project_short_name, $this->release_version)) {
+      if (!$this->fixInfoFileVersion($file)) {
         wd_err("ERROR: Failed to update version in %file, aborting packaging", array('%file' => $file), $release_node_view_link);
         return 'error';
       }
@@ -187,9 +194,58 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   }
 
   /**
+   * Compute and save the 'rebuild version' string for this release.
+   *
+   * This does some magic in Git to find the latest release tag along
+   * the branch we're packaging from, count the number of commits since
+   * then, and use that to construct this fancy alternate version string
+   * which is useful for the version-specific dependency support in Drupal
+   * 7 and higher.
+   *
+   * This function is all about side effects (sorry). It just uses data
+   * already in the packager object and saves the results there and hands
+   * them off to project_release.module via its API, so there's no return
+   * value, either.
+   */
+  protected function computeRebuildVersion() {
+    $git = $this->conf['git'] . ' --git-dir=' . escapeshellcmd($this->project_node->versioncontrol_project['repo']->root);
+    // This is called tag but in reality this is the branch for dev releases.
+    $branch = $this->release_node->project_release['tag'];
+    // Prepare for preg later.
+    $branch_preg = preg_quote(substr($branch, 0, -1));
+    // Prepare for execution now.
+    $branch = escapeshellcmd($branch);
+    // Try to find a tag.
+    exec("$git rev-list --topo-order --max-count=1 $branch 2>&1", $last_tag_hash);
+    if ($last_tag_hash) {
+      exec("$git describe  --tags $last_tag_hash[0] 2>&1", $last_tag);
+      if ($last_tag) {
+        $last_tag = $last_tag[0];
+        // Make sure the tag starts as Drupal formatted (for eg.
+        // 7.x-1.0-alpha1) and if we are on a proper branch (ie. not master)
+        // then it's on that branch.
+        if (preg_match('/^(?<drupalversion>' . $branch_preg . '\d+(?:-[^-]+)?)(?<gitextra>-(?<numberofcommits>\d+-)g[0-9a-f]{7})?$/', $last_tag, $matches)) {
+          // If we found additional git metadata (in particular, number of
+          // commits) then use that info to build the version string.
+          if (isset($matches['gitextra'])) {
+            $this->release_version =  $matches['drupalversion'] . '+' . $matches['numberofcommits'] . 'dev';
+          }
+          // Otherwise, the branch tip is pointing to the same commit as the
+          // last tag on the branch, in which case we use the prior tag and
+          // add '+0-dev' to indicate we're still on a -dev branch.
+          else {
+            $this->release_version = $last_tag . '+0-dev';
+          }
+        }
+      }
+    }
+    project_release_record_rebuild_metadata($this->release_node->nid, $this->release_version);
+  }
+
+  /**
    * Fix the given .info file with the specified version string
    */
-  protected function fixInfoFileVersion($file, $project_short_name, $version) {
+  protected function fixInfoFileVersion($file) {
     global $site_name;
 
     $info = "\n; Information added by $site_name packaging script on " . gmdate('Y-m-d') . "\n";
@@ -200,10 +256,10 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // the version (also from an old "HEAD" release), or the version isn't at
     // least 6.x, don't add any "core" attribute at all.
     $matches = array();
-    if (preg_match('/^((\d+)\.x)-.*/', $version, $matches) && $matches[2] >= 6) {
+    if (preg_match('/^((\d+)\.x)-.*/', $this->release_version, $matches) && $matches[2] >= 6) {
       $info .= "core = \"$matches[1]\"\n";
     }
-    $info .= "project = \"$project_short_name\"\n";
+    $info .= 'project = "' . $this->project_short_name . "\"\n";
     $info .= 'datestamp = "'. time() ."\"\n";
     $info .= "\n";
 
