@@ -200,12 +200,96 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
           wd_err("ERROR: %file does not exist for %profile release.", array('%file' => $package_contents_file, '%profile' => $this->release_file_id), $this->release_node_view_link);
           return 'error';
         }
+
+        // Record patches and libraries included in the release.
+        if (module_exists('project_package')) {
+          if (isset($info['projects'])) {
+            $this->recordProjectPatches($contents, $info['projects']);
+          }
+          if (isset($info['libraries'])) {
+            $this->recordLibraries($info['libraries']);
+          }
+        }
       }
     }
     else {
       wd_msg("No makefile for %profile profile -- skipping extended packaging.", array('%profile' => $this->release_file_id), $this->release_node_view_link);
     }
     return $rval;
+  }
+
+  /**
+   * Record information about patches applied to projects in the .make file.
+   *
+   * @param array $release_nids
+   *   An array of release node ids of other projects that were packaged with
+   *   this release.
+   * @param array $projects
+   *   The array of project info from the .make file (which might include
+   *   patch information).
+   */
+  public function recordProjectPatches($release_nids, $projects) {
+    // Look up all the projects, and get the machine name from the release
+    // nids that were recorded in the package_contents.txt file.
+    $project_release_map = array();
+    $results = db_query("SELECT pp.uri as shortname, prn.nid as nid FROM {project_release_nodes} prn INNER JOIN {project_projects} pp ON prn.pid = pp.nid WHERE prn.nid in (" . db_placeholders($release_nids) . ")", $release_nids);
+    while ($row = db_fetch_object($results)) {
+      $project_release_map[$row->shortname] = $row->nid;
+    }
+    // Loop over all projects and record patches.
+    foreach ($projects as $name => $project) {
+      $this->recordPatchInfo($project, $project_release_map[$name], 'local');
+    }
+  }
+
+  /**
+   * Record information about external libraries referenced in the .make file.
+   *
+   * @param array $libraries
+   *   The array of library info from the .make file (which might include
+   *   patch information).
+   */
+  public function recordLibraries($libraries) {
+    foreach ($libraries as $name => $library) {
+      switch ($library['download']['type']) {
+        case 'cvs':
+          $url = $library['download']['root'] .' '. $library['download']['module'];
+          break;
+        case 'bzr':
+        case 'svn':
+        case 'git':
+        case 'file':
+          $url = $library['download']['url'];
+          break;
+      }
+      // Record the remote item and save its ID in case there are patches.
+      $remote_id = project_package_record_remote_item($this->release_node->nid, $url, $name);
+      $this->recordPatchInfo($library, $remote_id, 'remote');
+    }
+  }
+
+  /**
+   * Record information about patches for a single item in the .make file.
+   *
+   * @param array $item
+   *   An array of information from the .make file about a specific item.
+   *   This could be either a project or a library.
+   * @param integer $item_id
+   *   The unique ID for the specific item in the .make file. If $item is a
+   *   project, this should be the release node ID of the release packaged for
+   *   that project. If $item is a library, this should be the 'id' column
+   *   from {project_package_remote_item}.
+   * @param string $type
+   *   What type of thing $item is describing. Can be 'local' for a project or
+   *   'remote' for a library.
+   */
+  public function recordPatchInfo($item, $item_id, $type) {
+    if (isset($item['patch'])) {
+      foreach ($item['patch'] as $patch) {
+        $patch_url = is_array($patch) ? $patch['url'] : $patch;
+        project_package_record_patch($this->release_node->nid, $patch_url, $item_id, $type);
+      }
+    }
   }
 
   public function cleanupFailedBuild() {
