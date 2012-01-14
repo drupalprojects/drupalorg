@@ -343,7 +343,7 @@ function _project_verify_package_verify_release_node($form, &$form_state) {
           form_set_error('title', $message);
         }
       }
-      elseif ($result == 'failure') {
+      else {
         form_set_error('title', t("Pre-packaging verification failed -- unable to retrieve %makefile from %url: %error", array('%makefile' => PROJECT_VERIFY_PACKAGE_MAKE_FILE, '%url' => $url, '%error' => $data)));
       }
     }
