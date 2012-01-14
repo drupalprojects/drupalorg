@@ -234,7 +234,7 @@ function project_verify_package_run_drush_via_pipe($command, $input) {
  */
 function project_verify_package_get_remote_file($url) {
   $result = 'not found';
-  $data = "";
+  $data = 'not found';
 
   // Use fopen if allowed.
   if (ini_get('allow_url_fopen')) {
