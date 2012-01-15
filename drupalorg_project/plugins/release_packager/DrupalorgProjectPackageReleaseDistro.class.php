@@ -11,11 +11,11 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
     parent::__construct($release_node, $file_destination_root, $file_destination_subdir, $temp_directory);
 
     // Full path to the drush executable. This also needs to define --include
-    // with the full path to the directory where drush_make is located. This
-    // is needed to manually include it as a searchable path for drush
+    // with the full path to the directory where drupalorg_drush is located.
+    // This is needed to manually include it as a searchable path for drush
     // extensions, as this script's owner will not likely have a home
     // directory to search.
-    $this->conf['drush'] = '/var/www/drupal.org/tools/drush/drush --include=/var/www/drupal.org/tools/drush_make';
+    $this->conf['drush'] = '/var/www/drupal.org/tools/drush5/drush --include=/var/www/drupal.org/tools/drupalorg_drush';
   }
 
   public function createPackage(&$files, &$contents) {
