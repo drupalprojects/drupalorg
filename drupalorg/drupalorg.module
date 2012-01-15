@@ -1748,7 +1748,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
             break;
 
           case 'Grace':
-            $membership_personal = t('<strong>Oh No!</strong> Your membership lapsed on @expires. You’re awesome, so we are leaving your membership badge up for a bit giving you time to renew. Continue supporting the <a href="http://association.drupal.org">Drupal Association</a> by <a href="htp://association.drupal.org/membership">renewing your membership</a>', $placeholders);
+            $membership_personal = t('<strong>Oh No!</strong> Your membership lapsed on @expires. You’re awesome, so we are leaving your membership badge up for a bit giving you time to renew. Continue supporting the <a href="http://association.drupal.org">Drupal Association</a> by <a href="http://association.drupal.org/membership">renewing your membership</a>', $placeholders);
             break;
 
           case 'Expired':
