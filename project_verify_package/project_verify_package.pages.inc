@@ -11,7 +11,7 @@
 // -------------------
 
 // The full path of the drush executable.
-define('PROJECT_VERIFY_PACKAGE_DRUSH_BIN', '/var/www/drupal.org/tools/drush5/drush');
+define('PROJECT_VERIFY_PACKAGE_DRUSH_BIN', '/usr/bin/php /var/www/drupal.org/tools/drush5/drush.php');
 
 // The full path of the directory that contains the drush_make
 // extensions.
