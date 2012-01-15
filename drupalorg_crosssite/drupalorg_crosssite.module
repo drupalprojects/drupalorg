@@ -209,7 +209,7 @@ function drupalorg_crosssite_section() {
     elseif (drupalorg_crosssite_menu_path('main', '^security(|/contrib|/psa)$') || drupalorg_crosssite_menu_term('main', array(1852, 44, 1856))) {
       $section = 'security';
     }
-    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('main', 'forum') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)'))) {
+    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|community|getting-involved|getting-involved-guide|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('main', 'forum') || drupalorg_crosssite_menu_type('main', array('forum')) || (drupalorg_crosssite_in_breadcrumb('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^(node/23192|handbook/updates)(/|$)'))) {
       $section = 'community';
     }
     elseif (drupalorg_crosssite_child_of('main', 'node/366') || drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization') || drupalorg_crosssite_menu_path('main', '^(marketplace-preview|hosting)')) {
@@ -299,7 +299,7 @@ function drupalorg_crosssite_content_menu(&$vars) {
     case 'community':
       $nav_content_links = array(
         'home'          => array('href' => 'community', 'title' => t('Community Home'), '#site' => 'main'),
-        'getting-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/281873$') || (drupalorg_crosssite_in_breadcrumb('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^irc(/|$)') && !drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)'))),
+        'getting-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(getting-involved|getting-involved-guide|community-spotlight)(/|$)') || (drupalorg_crosssite_in_breadcrumb('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^irc(/|$)') && !drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)'))),
         'chat'          => array('href' => 'irc', 'title' => t('Chat'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^irc(/|$)')),
         'lists'         => array('href' => 'mailing-lists', 'title' => t('Mailing Lists'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)')),
         'members'       => array('href' => 'profile', 'title' => t('Member Directory'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^profile(/|$)'), '#title_match' => 'q'),
