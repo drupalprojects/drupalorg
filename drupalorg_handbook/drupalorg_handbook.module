@@ -30,9 +30,18 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
     }
     $node->content['body']['#value'] .= $extra;
 
-    if (drupalorg_crosssite_section() === 'documentation' && isset($node->book['bid'])) {
-      // Prepend the handbook meta data to book bodies.
-      $node->content['body']['#value'] = drupalorg_handbook_meta_data($node) . $node->content['body']['#value'];
+    $section = drupalorg_crosssite_section();
+
+    if (isset($node->book['bid']) && ($section === 'documentation' || $section === 'community')) {
+      // Prepend information about the page.
+      $node->content['body']['#prefix'] = drupalorg_handbook_before_body($node);
+      // Mark the taxonomy terms as rendered so they don't display on the node.
+      foreach ($node->taxonomy as $term_id => $dummy) {
+        $node->taxonomy[$term_id]->rendered = TRUE;
+      }
+      if ($section === 'documentation') {
+        $node->extra_footer = theme('drupalorg_handbook_footer_line');
+      }
     }
   }
   elseif (($op == 'update' || $op == 'insert') && !empty($node->book) && !empty($node->book['bid'])) {
@@ -42,46 +51,144 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
 }
 
 /**
- * Gather information for the top of handbook pages.
+ * Implementation of hook_link().
+ *
+ * Adds links to the bottom of documentation pages.
+ */
+function drupalorg_handbook_link($type, $object, $teaser = FALSE) {
+  if ($type === 'node' && isset($object->book['bid'])) {
+    return array('report' => drupalorg_handbook_moderate_link_info($object));
+  }
+}
+
+/**
+ * Returns the link information for the Report to moderator link.
+ *
+ * @param $node
+ *   The node to make the link for.
+ *
+ * @return
+ *   An array for the link (suitable for theme('link')), or NULL if the user
+ *   does not have permission to create issues.
+ */
+function drupalorg_handbook_moderate_link_info($node) {
+  if (!user_access('create project issues') || drupalorg_crosssite_section() !== 'documentation') {
+    return NULL;
+  }
+  $url = url('node/' . $node->nid, array('absolute' => TRUE));
+  return array(
+    'title' => t('Report to moderator'),
+    'href' => 'node/add/project-issue/documentation',
+    'query' => array(
+      'categories' => 'task',
+      'component' => 'Vandalism/Spam',
+      'title' => 'Moderation report for ' . $url,
+      'body' => 'Describe why you are reporting ' . $url . ' to moderators:',
+    ),
+  );
+}
+
+/**
+ * Creates a list of who recently updated a page, and call to edit.
  *
  * @param $node
  *   The node object.
+ *
  * @return
- *   The HTML code for the book meta information.
+ *   HTML for the list of contributors with call to edit.
+ *
+ * @see handbook-contributors.tpl.php
  */
-function drupalorg_handbook_meta_data($node) {
-  $info = array();
-  if (count($node->taxonomy)) {
+function drupalorg_handbook_before_body($node) {
+  $format = 'F j, Y';
+  $modified = t('Last updated @changed.', array('@changed' => format_date($node->changed, 'custom', $format)));
+  $created = '';
+  $contributors = '';
+  $edit_link = '';
+  if (drupalorg_crosssite_section() === 'documentation') {
+    $created = t('Created by !author on @created.', array('!author' => theme('username', $node), '@created' => format_date($node->created, 'custom', $format)));
+    // Make a list of the 4 most recent different revision authors, not including
+    // the original author.
+    $contributor_list = array();
+    foreach (node_revision_list($node) as $revision) {
+      if (!isset($contributor_list[$revision->uid]) && $revision->uid !== $node->uid) {
+        $contributor_list[$revision->uid] = theme('username', $revision);
+      }
+      if (count($contributor_list) >= 4) {
+        break;
+      }
+    }
+    if (!empty($contributor_list)) {
+      $contributors = t('Edited by !contributors.', array('!contributors' => implode(', ', $contributor_list)));
+    }
+
+    if (node_access('update', $node)) {
+      $edit_link = t('You can <a href="!url">edit this page</a>', array('!url' => url('node/' . $node->nid . '/edit'))) . (empty($contributor_list) ? '.' : t(', too.'));
+    }
+    elseif (!user_is_logged_in()) {
+      $edit_link = l(t('Log in to edit this page'), 'user', array('query' => drupal_get_destination())) . '.';
+    }
+  }
+  return theme('drupalorg_handbook_contributors', $created, $modified, $contributors, $edit_link);
+}
+
+/**
+ * Gathers meta-data information for the book page sidebar.
+ *
+ * @return
+ *   HTML for the book page sidebar.
+ */
+function drupalorg_handbook_meta_data() {
+  static $about;
+
+  if (!isset($about)) {
+    $about = array('status' => '');
+    $node = menu_get_object();
     $vocabularies = taxonomy_get_vocabularies();
-    // Group the terms by vid.
-    $taxonomy = array();
+
     foreach ($node->taxonomy as $term_id => $term) {
       if (isset($vocabularies[$term->vid])) {
-        $term->rendered = TRUE;
-        if ($term_id !== 125) { // No known problems is uninteresting
-          $taxonomy[$term->vid][] = $term;
+        switch ($term->vid) {
+          case 31:
+            // Page status vocabulary: build status line.
+            $class = 'page-ok';
+            switch ($term_id) {
+              case 126: // Incomplete.
+              case 128: // Needs updating.
+              case 18960: // Needs tech review.
+              case 18962: // Needs copy/style review.
+              case 18964: // Needs dividing.
+                $class = 'page-needs-work';
+                break;
+
+              case 127: // Insecure.
+              case 129: // Deprecated.
+                $class = 'page-major-problem';
+                break;
+            }
+            $about['status'] = '<p class="page-status ' . $class . '"><span>' . check_plain($term->name) . '</span></p>';
+            break;
+
+          case 54:
+            // Keywords vocabulary: print a link, separate section.
+            $keywords[] = l($term->name, taxonomy_term_path($term));
+            break;
+
+          default:
+            // Any other vocabulary: print the name.
+            $vocab_name = check_plain($vocabularies[$term->vid]->name);
+            $about[$vocab_name][] = check_plain($term->name);
+            break;
         }
       }
     }
-
-    foreach ($vocabularies as $vocabulary) {
-      if (isset($taxonomy[$vocabulary->vid])) {
-        $links = array();
-        foreach ($taxonomy[$vocabulary->vid] as $term) {
-          $options = array();
-          if ($vocabulary->vid === '31') { // Page status
-            $options['attributes'] = array('class' => 'alert');
-          }
-          $links[] = l($term->name, taxonomy_term_path($term), $options);
-        }
-        $info[check_plain($vocabulary->name)] = implode(', ', $links);
-      }
+    if (!empty($keywords)) {
+      // Keywords at the end.
+      $about[t('Keywords')] = $keywords;
     }
   }
 
-  $modified = format_date($node->changed, 'custom', 'F j, Y');
-
-  return theme('drupalorg_handbook_meta_data', $info, $modified);
+  return $about;
 }
 
 /**
@@ -205,12 +312,22 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
           'info' => t('Documentation home info'),
           'cache' => BLOCK_CACHE_PER_PAGE,
         ),
+        'meta-sidebar' => array(
+          'info' => t('Documentation status'),
+          'cache' => BLOCK_NO_CACHE,
+        ),
+        'about-page' => array(
+          'info' => t('Documentation about'),
+          'cache' => BLOCK_NO_CACHE,
+        ),
       );
 
     case 'view':
-      switch($delta) {
+      $section = drupalorg_crosssite_section();
+      $node = menu_get_object();
+      switch ($delta) {
         case 'license':
-          if (drupalorg_crosssite_section() === 'documentation') {
+          if ($section === 'documentation') {
             return array(
               'content' => t('Drupal’s online documentation is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>.', array('!year' => date('Y'), '@ccl_url' => url('node/14307'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html'))),
             );
@@ -225,18 +342,43 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
             '<p>' . t('Add new pages by using the “add a child page” link at the bottom of the page.') . '</p>' .
             '<p>' . t('Use the <a href="@issues-url">Documentation issue queue</a> to propose major changes and report problems.', array('@issues-url' => url('project/issues/documentation'))) . '</p>'
           );
+
+        case 'meta-sidebar':
+          if (($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) {
+            $about = drupalorg_handbook_meta_data();
+            $links = array();
+            if (node_access('update', $node)) {
+              $links['edit'] = t('<a href="!url">Edit</a> this page', array('!url' => url('node/' . $node->nid . '/edit')));
+            }
+            elseif (!user_is_logged_in()) {
+              $links['edit'] = l(t('Log in to edit this page'), 'user', array('query' => drupal_get_destination()));
+            }
+            $report_link = drupalorg_handbook_moderate_link_info($node);
+            if (isset($report_link)) {
+              $links['report'] = l($report_link['title'], $report_link['href'], array('query' => $report_link['query']));
+            }
+
+            return array(
+              'subject' => t('Page status'),
+              'content' => $about['status'] . '<p>' . implode('<br />', $links) . '</p>',
+            );
+          }
+          break;
+
+        case 'about-page':
+          if (($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) {
+            $about = drupalorg_handbook_meta_data();
+            unset($about['status']);
+            if (!empty($about)) {
+              return array(
+                'subject' => t('About this page'),
+                'content' => theme('drupalorg_handbook_meta_sidebar', $about),
+              );
+            }
+          }
           break;
      }
   }
-}
-
-/**
- * Check whether the current node is a block module.
- *
- * Based on Drupal 6 code from book_block().
- */
-function drupalorg_handbook_block_is_visible() {
-  return ($node = menu_get_object()) && !empty($node->book['bid']);
 }
 
 /**
@@ -244,21 +386,29 @@ function drupalorg_handbook_block_is_visible() {
  */
 function drupalorg_handbook_theme($existing, $type, $theme, $path) {
   return array(
-    'drupalorg_handbook_meta_data' => array(
+    'drupalorg_handbook_footer_line' => array(
+      'arguments' => array(),
+    ),
+    'drupalorg_handbook_contributors' => array(
       'arguments' => array(
-        'info' => NULL,
-        'modified' => NULL,
+        'created' => '',
+        'updated' => '',
+        'contributors' => '',
+        'edit_link' => '',
       ),
-      'template' => 'handbook-meta-data',
+      'template' => 'handbook-contributors',
+    ),
+    'drupalorg_handbook_meta_sidebar' => array(
+      'arguments' => array(
+        'about' => array(),
+      ),
+      'template' => 'handbook-meta-sidebar',
     ),
   );
 }
 
 /**
  * Implementation of template_preprocess_drupalorg_home().
- *
- * @todo
- *   Add caching.
  */
 function drupalorg_handbook_preprocess_drupalorg_home(&$vars) {
   // Represents the number of results to retrieve. Also utilized for cache field name.
@@ -280,4 +430,17 @@ function drupalorg_handbook_preprocess_drupalorg_home(&$vars) {
   // We have no place to link this to in a nice way.
   // $fresh_news .= '<p>'. l(t('More documentation updates...'), '...') .'</p>';
   $vars['tab_content_docs'] = $recent_updates;
+}
+
+/**
+ * Returns HTML for a footer line for a documentation page.
+ *
+ * @ingroup themeable
+ */
+function theme_drupalorg_handbook_footer_line() {
+  return '<p class="support"><strong>' . t('Looking for support? Visit the !forumlink, or join #drupal-support in !irclink.',
+    array(
+     '!forumlink' => l(t('Drupal.org forums'), 'forum'),
+     '!irclink' => l(t('IRC'), 'node/108355'),
+    )) . '</strong></p>';
 }

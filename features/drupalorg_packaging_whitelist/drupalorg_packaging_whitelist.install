@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * Implementation of hook_install().
+ */
+function drupalorg_packaging_whitelist_install() {
+  // Set up variable for our content type
+  variable_set('content_extra_weights_packaging_whitelist', array(
+    'title' => '-5',
+    'revision_information' => '-2',
+    'author' => '-1',
+    'options' => '0',
+    'comment_settings' => '2',
+    'menu' => '-3',
+    'path' => '1',
+  ));
+  variable_set('comment_packaging_whitelist', '0');
+  variable_set('node_options_packaging_whitelist', array(
+    0 => 'status',
+    1 => 'revision',
+  ));
+  variable_set('upload_packaging_whitelist', '0');
+}
