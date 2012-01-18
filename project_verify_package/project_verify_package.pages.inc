@@ -343,6 +343,12 @@ function _project_verify_package_verify_release_node($form, &$form_state) {
           form_set_error('title', $message);
         }
       }
+      elseif ($result == 'not found') {
+        // If there is no drupal-org.make file at all, we just want to return
+        // without a validation error so that distributions which don't
+        // use the Drupal.org packaging system can still create releases.
+        return;
+      }
       else {
         form_set_error('title', t("Pre-packaging verification failed -- unable to retrieve %makefile from %url: %error", array('%makefile' => PROJECT_VERIFY_PACKAGE_MAKE_FILE, '%url' => $url, '%error' => $data)));
       }
