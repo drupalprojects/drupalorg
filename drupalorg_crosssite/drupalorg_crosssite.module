@@ -161,7 +161,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
         'your-issues' => array('title' => t('Your Issues'), 'href' => 'project/issues/user', '#site' => 'main'),
         'your-projects' => array('title' => t('Your Projects'), 'href' => 'project/user', '#site' => 'main'),
         'your-groups' => array('title' => t('Your Groups'), 'href' => 'groups/my', '#site' => 'groups'),
-        'your-profile' => array('title' => t('Profile'), 'href' => 'user/'. $user->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '(?!/(dashboard|track))')),
+        'your-profile' => array('title' => t('Profile'), 'href' => 'user/' . $user->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '(?!/(dashboard|track))')),
       );
       break;
 
@@ -170,7 +170,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
         $account = user_load(arg(1));
         $code_item = menu_get_item('user/' . $account->uid . '/track/code');
         $nav_content_links = array(
-          'user-profile' => array('title' => t('Profile'), 'href' => 'user/'. $account->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '(?!/(dashboard|track))')),
+          'user-profile' => array('title' => t('Profile'), 'href' => 'user/' . $account->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '(?!/(dashboard|track))')),
           'posts' => array('title' => t('Posts'), 'href' => 'user/' . $account->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track$')),
           'commits' => array('title' => t('Commits'), 'href' => 'user/' . $account->uid . '/track/code', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track/code'), '#enabled' => $code_item['access']),
         );
@@ -281,7 +281,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
 
     // Theme the links for the page.
     $vars['nav_content'] = theme('links', $nav_content_links);
-    $vars['nav_content_class'] = ' class="clear-block nav-content-'. drupalorg_crosssite_section() .'"';
+    $vars['nav_content_class'] = ' class="clear-block nav-content-' . drupalorg_crosssite_section() . '"';
   }
 
   // Add page tool navigation.
@@ -314,7 +314,7 @@ function drupalorg_crosssite_section() {
     // the array value). If there are two menus to display on the same path, we
     // are in trouble, since we only have one menu displayed per path. Fix the above
     // matching in that case. (This will pick the first matched in that case).
-    if (drupalorg_crosssite_menu_path('main', '^(user/'. $user->uid .'(/|$)|project(/issues)?/user$)')) {
+    if (drupalorg_crosssite_menu_path('main', '^(user/' . $user->uid . '(/|$)|project(/issues)?/user$)')) {
       $section = 'dashboard';
     }
     elseif (drupalorg_crosssite_in_breadcrumb('main', 'node/1') || drupalorg_crosssite_child_of('main', 'node/909476')) {
@@ -494,7 +494,7 @@ function drupalorg_crosssite_menu_path($site_key, $path_regex) {
  *   TRUE if the aliased path matches $path_regex.
  */
 function drupalorg_crosssite_match_path($path_regex) {
-  return preg_match('#'. $path_regex .'#', drupal_get_path_alias($_GET['q']));
+  return preg_match('#' . $path_regex . '#', drupal_get_path_alias($_GET['q']));
 }
 
 /**
@@ -835,7 +835,7 @@ function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
   $form_state['redirect'][0] = drupalorg_crosssite_path('search/' . $path . '/' . trim($form_state['values'][$form['form_id']['#value']]), $form['#drupalorg_search_site']);
 
   if (!empty($form_state['values']['meta_type'])) {
-    $form_state['redirect'][1]['filters'] = 'ss_meta_type:'. $form_state['values']['meta_type'];
+    $form_state['redirect'][1]['filters'] = 'ss_meta_type:' . $form_state['values']['meta_type'];
   }
 }
 
