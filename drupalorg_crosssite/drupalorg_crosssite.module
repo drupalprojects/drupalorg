@@ -317,9 +317,7 @@ function drupalorg_crosssite_section() {
     if (drupalorg_crosssite_menu_path('main', '^(user/'. $user->uid .'(/|$)|project(/issues)?/user$)')) {
       $section = 'dashboard';
     }
-    elseif (drupalorg_crosssite_menu_path('main', '^node/1$') || drupalorg_crosssite_in_breadcrumb('main', 'node/1')
-      || drupalorg_crosssite_menu_path('main', '^features$') || drupalorg_crosssite_in_breadcrumb('main', 'node/909476')
-      || drupalorg_crosssite_menu_path('main', '^benefits$') || drupalorg_crosssite_in_breadcrumb('main', 'node/909476')) {
+    elseif (drupalorg_crosssite_in_breadcrumb('main', 'node/1') || drupalorg_crosssite_child_of('main', 'node/909476')) {
       $section = 'about';
     }
     elseif (drupalorg_crosssite_child_of('main', 'node/179723') || (drupalorg_crosssite_child_of('main', 'project/drupal.org projects') && !drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID))) {
