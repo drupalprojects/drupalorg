@@ -236,10 +236,6 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     case 'about':
       $vars['section_name'] = 'About Drupal';
       break;
-
-    case 'localize':
-      $vars['section_name'] = 'Localize';
-      break;
   }
 
   $vars['nav_content'] = $vars['nav_content_class'] = '';
