@@ -41,7 +41,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   if (!user_is_logged_in()) {
     $nav_masthead_links['login-register'] = array('href' => 'user', 'query' => drupal_get_destination(), 'title' => t('Log in / Register'), '#active' => drupalorg_crosssite_match_path('^user(/|$)'));
   }
-  if (!in_array(variable_get('drupalorg_site', 'main'), array('association', 'groups'))) {
+  if (in_array(variable_get('drupalorg_site', 'main'), array('main', 'localize', 'api'))) {
     $vars['drupalorg_logo_link'] = l('Drupal', drupalorg_crosssite_path('', 'main'), array('attributes' => array('title' => 'Drupal')));
     // Hardcoded list of menu items. These are not supposed to have any indication
     // of the active item, since the page title and submenus have that indication.
@@ -309,51 +309,57 @@ function drupalorg_crosssite_section() {
   static $section = FALSE;
 
   if ($section === FALSE) {
-    $node = menu_get_object();
-    // Theoretically, the matching criteria made one of the areas win (have TRUE as
-    // the array value). If there are two menus to display on the same path, we
-    // are in trouble, since we only have one menu displayed per path. Fix the above
-    // matching in that case. (This will pick the first matched in that case).
-    if (drupalorg_crosssite_menu_path('main', '^(user/' . $user->uid . '(/|$)|project(/issues)?/user$)')) {
-      $section = 'dashboard';
+    switch (variable_get('drupalorg_site', 'main')) {
+      case 'association':
+        if (drupalorg_crosssite_match_path('^bizconnect')) {
+          $section = 'bizconnect';
+        }
+        elseif (drupalorg_crosssite_match_path('^advertising')) {
+          $section = 'advertising';
+        }
+        break;
+
+      case 'api':
+        $section = 'documentation';
+        break;
+
+      case 'localize':
+        $section = 'downloads';
+        break;
+
+      case 'main':
+        $node = menu_get_object();
+        if (drupalorg_crosssite_match_path('^(user/' . $user->uid . '(/|$)|project(/issues)?/user$)')) {
+          $section = 'dashboard';
+        }
+        elseif (drupalorg_crosssite_in_breadcrumb('main', 'node/1') || drupalorg_crosssite_child_of('main', 'node/909476')) {
+          $section = 'about';
+        }
+        elseif (drupalorg_crosssite_child_of('main', 'node/179723') || (drupalorg_crosssite_child_of('main', 'project/drupal.org projects') && !drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID))) {
+          $section = 'drupalorg';
+        }
+        elseif (drupalorg_crosssite_match_path('^(project|download|list-changes|list-change-updates)(/|$)') || drupalorg_crosssite_match_path('^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_match_path('^node/add/project-issue') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release', 'changenotice'))) {
+          $section = 'downloads';
+        }
+        elseif (drupalorg_crosssite_match_path('^security(|/contrib|/psa)$') || drupalorg_crosssite_menu_term('main', array(1852, 44, 1856))) {
+          $section = 'security';
+        }
+        elseif (drupalorg_crosssite_match_path('^(irc|mailing-lists|profile|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('main', 'forum') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_child_of('main', 'node/281873')) {
+          $section = 'community';
+        }
+        elseif (drupalorg_crosssite_child_of('main', 'node/366') || drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization') || drupalorg_crosssite_match_path('^(marketplace-preview|hosting)')) {
+          $section = 'marketplace';
+        }
+        elseif ((isset($node) && isset($node->book['bid'])) || drupalorg_crosssite_match_path('^(handbook|documentation)')) {
+          $section = 'documentation';
+        }
+        elseif (drupalorg_crosssite_match_path('^user(/|$)')) {
+          $section = 'user';
+        }
+        break;
     }
-    elseif (drupalorg_crosssite_in_breadcrumb('main', 'node/1') || drupalorg_crosssite_child_of('main', 'node/909476')) {
-      $section = 'about';
-    }
-    elseif (drupalorg_crosssite_child_of('main', 'node/179723') || (drupalorg_crosssite_child_of('main', 'project/drupal.org projects') && !drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID))) {
-      $section = 'drupalorg';
-    }
-    elseif (drupalorg_crosssite_menu_path('main', '^(project|download|list-changes|list-change-updates)(/|$)') || drupalorg_crosssite_menu_path('main', '^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_menu_path('main', '^node/add/project-issue') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release', 'changenotice')) || drupalorg_crosssite_is_site('localize')) {
-      $section = 'downloads';
-    }
-    elseif (drupalorg_crosssite_menu_path('main', '^security(|/contrib|/psa)$') || drupalorg_crosssite_menu_term('main', array(1852, 44, 1856))) {
-      $section = 'security';
-    }
-    elseif (drupalorg_crosssite_menu_path('main', '^(irc|mailing-lists|profile|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('main', 'forum') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_child_of('main', 'node/281873')) {
-      $section = 'community';
-    }
-    elseif (drupalorg_crosssite_child_of('main', 'node/366') || drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization') || drupalorg_crosssite_menu_path('main', '^(marketplace-preview|hosting)')) {
-      $section = 'marketplace';
-    }
-    elseif (drupalorg_crosssite_is_site('api')
-      || (drupalorg_crosssite_is_site('main') && isset($node) && isset($node->book['bid']))
-      || drupalorg_crosssite_menu_path('main', '^(handbook|documentation)')) {
-      $section = 'documentation';
-    }
-    elseif (drupalorg_crosssite_menu_path('association', '^bizconnect')) {
-      $section = 'bizconnect';
-    }
-    elseif (drupalorg_crosssite_menu_path('association', '^advertising')) {
-      $section = 'advertising';
-    }
-    elseif (drupalorg_crosssite_menu_path('main', '^user(/|$)')) {
-      $section = 'user';
-    }
-    elseif (drupalorg_crosssite_in_breadcrumb('main', 'admin')) {
-      $section = 'admin';
-    }
-    elseif (menu_get_item() !== FALSE) {
-      // Should not happen.
+
+    if ($section === FALSE) {
       $section = NULL;
     }
 
