@@ -11,11 +11,11 @@
 // -------------------
 
 // The full path of the drush executable.
-define('PROJECT_VERIFY_PACKAGE_DRUSH_BIN', '/var/www/drupal.org/tools/drush/drush');
+define('PROJECT_VERIFY_PACKAGE_DRUSH_BIN', '/usr/bin/php /var/www/drupal.org/tools/drush5/drush.php');
 
 // The full path of the directory that contains the drush_make
 // extensions.
-define('PROJECT_VERIFY_PACKAGE_DRUSH_MAKE_PATH', '/var/www/drupal.org/tools/drush_make');
+define('PROJECT_VERIFY_PACKAGE_DRUPALORG_DRUSH_PATH', '/var/www/drupal.org/tools/drupalorg_drush');
 
 // The URL to retrieve the package's .info file. The following tokens are
 // available:
@@ -188,7 +188,7 @@ function project_verify_package_run_drush_via_pipe($command, $input) {
   // drush expects a terminal, so give it one.
   $env = array('TERM' => 'vt100');
 
-  $process = proc_open(PROJECT_VERIFY_PACKAGE_DRUSH_BIN . ' --include=' . PROJECT_VERIFY_PACKAGE_DRUSH_MAKE_PATH . " $command --drupal-org -", $descriptorspec, $pipes, NULL, $env);
+  $process = proc_open(PROJECT_VERIFY_PACKAGE_DRUSH_BIN . ' --include=' . PROJECT_VERIFY_PACKAGE_DRUPALORG_DRUSH_PATH . " $command -", $descriptorspec, $pipes, NULL, $env);
 
   if (is_resource($process)) {
       // $pipes now looks like this:
@@ -234,7 +234,7 @@ function project_verify_package_run_drush_via_pipe($command, $input) {
  */
 function project_verify_package_get_remote_file($url) {
   $result = 'not found';
-  $data = "";
+  $data = 'not found';
 
   // Use fopen if allowed.
   if (ini_get('allow_url_fopen')) {
@@ -343,7 +343,13 @@ function _project_verify_package_verify_release_node($form, &$form_state) {
           form_set_error('title', $message);
         }
       }
-      elseif ($result == 'failure') {
+      elseif ($result == 'not found') {
+        // If there is no drupal-org.make file at all, we just want to return
+        // without a validation error so that distributions which don't
+        // use the Drupal.org packaging system can still create releases.
+        return;
+      }
+      else {
         form_set_error('title', t("Pre-packaging verification failed -- unable to retrieve %makefile from %url: %error", array('%makefile' => PROJECT_VERIFY_PACKAGE_MAKE_FILE, '%url' => $url, '%error' => $data)));
       }
     }

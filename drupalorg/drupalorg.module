@@ -536,7 +536,7 @@ function drupalorg_map_content($_force = FALSE) {
     $queries = array(
       db_rewrite_sql("SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {node} n ON nr.nid = n.nid INNER JOIN {book} b ON b.nid = n.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = nr.uid WHERE n.status = 1 AND u.status = 1 ORDER BY nr.timestamp DESC"),
       db_rewrite_sql("SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' AND n.status = 1 AND u.status = 1 ORDER BY n.created DESC"),
-      "SELECT DISTINCT vco.vc_op_id, vco.message title, vco.revision, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'committed' verb FROM {versioncontrol_operations} vco INNER JOIN {html5_user_geolocation} hug ON hug.uid = vco.author_uid INNER JOIN {users} u ON u.uid = vco.author_uid ORDER BY vco.date DESC",
+      "SELECT DISTINCT vco.vc_op_id, vco.message title, vco.repo_id, vco.revision, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'committed' verb FROM {versioncontrol_operations} vco INNER JOIN {html5_user_geolocation} hug ON hug.uid = vco.author_uid INNER JOIN {users} u ON u.uid = vco.author_uid ORDER BY vco.date DESC",
     );
     $map = array();
     foreach ($queries as $q => $query) {
@@ -557,7 +557,7 @@ function drupalorg_map_content($_force = FALSE) {
         }
         // Set link.
         if ($row->type === 'commit') {
-          $row->link = l($row->title, 'commitlog/commit/'. $row->revision);
+          $row->link = l($row->title, 'commitlog/commit/' . $row->repo_id . '/'. $row->revision);
         }
         else {
           $row->link = l($row->title, 'node/' . $row->nid);
@@ -1722,7 +1722,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
 
     // Get the membership display content
     if ($account->uid === $user->uid) {
-      $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="http://association.drupal.org">Drupal Association</a> badges on your profile page? <a href="http://association.drupal.org/membership">Become a member today.</a>');
+      $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="https://association.drupal.org">Drupal Association</a> badges on your profile page? <a href="https://association.drupal.org/membership">Become a member today.</a>');
     }
     foreach (drupalorg_civimembership_load($account) as $membership) {
       $placeholders = array(
@@ -1744,15 +1744,15 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
         switch ($membership->status) {
           case 'New':
           case 'Current':
-            $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="http://association.drupal.org">Drupal Association</a> membership. Your support has helped us to support the Drupal community. We really appreciate your contribution to making Drupal and its community great.<br />Your Membership expires: @expires', $placeholders);
+            $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="https://association.drupal.org">Drupal Association</a> membership. Your support has helped us to support the Drupal community. We really appreciate your contribution to making Drupal and its community great.<br />Your Membership expires: @expires', $placeholders);
             break;
 
           case 'Grace':
-            $membership_personal = t('<strong>Oh No!</strong> Your membership lapsed on @expires. You’re awesome, so we are leaving your membership badge up for a bit giving you time to renew. Continue supporting the <a href="http://association.drupal.org">Drupal Association</a> by <a href="htp://association.drupal.org/membership">renewing your membership</a>', $placeholders);
+            $membership_personal = t('<strong>Oh No!</strong> Your membership lapsed on @expires. You’re awesome, so we are leaving your membership badge up for a bit giving you time to renew. Continue supporting the <a href="https://association.drupal.org">Drupal Association</a> by <a href="https://association.drupal.org/membership">renewing your membership</a>', $placeholders);
             break;
 
           case 'Expired':
-            $membership_personal = t('<strong>Uh oh!</strong> Your Drupal Association membership expired on @expires. Membership helps support the Drupal community and infrastructure improvements to drupal.org, take a minute to <a href="http://association.drupal.org/membership">renew your membership</a> today.', $placeholders);
+            $membership_personal = t('<strong>Uh oh!</strong> Your Drupal Association membership expired on @expires. Membership helps support the Drupal community and infrastructure improvements to drupal.org, take a minute to <a href="https://association.drupal.org/membership">renew your membership</a> today.', $placeholders);
             break;
         }
       }
