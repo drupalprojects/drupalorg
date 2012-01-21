@@ -6,47 +6,46 @@
  */
 
 /**
- * Implementation of hook_meu()
+ * Implementation of hook_menu().
  */
 function drupalorg_metrics_menu() {
-  $items = array();
-  $items['metrics'] = array(
-    'title' => 'Drupal.org Metrics',
-    'page callback' => 'drupalorg_metrics_page',
-    'access arguments' => array('access content'),
+  return array(
+    'metrics' => array(
+      'title' => 'Drupal.org Metrics',
+      'page callback' => 'drupalorg_metrics_page',
+      'access arguments' => array('access content'),
+    ),
   );
-  return $items;
 }
 
 /**
  * Page callback.
  */
 function drupalorg_metrics_page() {
-  $element = array('style' => 'width:900px;height:400px');
-  $options = array(
-    'xaxis' => array('mode' => 'time', 'ticks' => 9),
-    'series' => array(
-      'lines' => array('show' => 'true'),
-      'points' => array('show' => 'true'),
-    ),
-    'grid' => array(
-      'borderwidth' => 1,
-    ),
+  $map = array(
+    'nodes' => t('Nodes created by month'),
+    'users' => t('Users created by month'),
+    'comments' => t('Comments created by month'),
+    'commits' => t('Commits created by month'),
+    'committers' => t('Committers by month'),
   );
-
-  $map = drupalorg_metrics_map();
   $counts = cache_get('drupalorg_metrics_counts', 'drupalorg');
+  $output = '';
   foreach ($counts->data as $type => $points) {
-    foreach ($points as $start => $value) {
-      $data[$start] = $value;
-    }
-    $series = new flotData($data);
-    $graph = theme('flot_graph', $element, array($series), $options);
-    $outputs[] = "<a name=\"$type\"><h2 align=\"center\">" . $map[$type] . '</h2></a>' . $graph;
-    $links[] = array('title' => $map[$type], 'href' => $_GET['q'], 'fragment' => "$type");
-    unset($data);
+    $graph = theme('flot_graph', array('style' => 'width:940px;height:400px'), array(new flotData($points)), array(
+      'xaxis' => array('mode' => 'time', 'ticks' => 9),
+      'series' => array(
+        'lines' => array('show' => 'true'),
+        'points' => array('show' => 'true'),
+      ),
+      'grid' => array(
+        'borderwidth' => 1,
+      ),
+    ));
+    $output = '<h2 id="' . $type . '">' . $map[$type] . '</h2>' . $graph;
+    $links[] = array('title' => $map[$type], 'href' => $_GET['q'], 'fragment' => $type);
   }
-  return theme('links', $links) . implode("<br /><br />\n", $outputs);
+  return theme('links', $links) . $output;
 }
 
 function drupalorg_metrics_record_stats($start_year, $end_year) {
@@ -72,14 +71,4 @@ function drupalorg_metrics_record_stats($start_year, $end_year) {
     cache_set('drupalorg_metrics_counts', $counts, 'drupalorg');
     lock_release('drupalorg_metrics_record_stats');
   }
-}
-
-function drupalorg_metrics_map() {
-  return array(
-    'nodes' => 'Nodes created by month',
-    'users' => 'Users created by month',
-    'comments' => 'Comments created by month',
-    'commits' => 'Commits created by month',
-    'committers' => 'Committers by month',
-  );
 }
