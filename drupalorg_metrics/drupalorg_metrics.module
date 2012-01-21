@@ -42,7 +42,7 @@ function drupalorg_metrics_page() {
         'borderwidth' => 1,
       ),
     ));
-    $output = '<h2 id="' . $type . '">' . $map[$type] . '</h2>' . $graph;
+    $output .= '<h2 id="' . $type . '">' . $map[$type] . '</h2>' . $graph;
     $links[] = array('title' => $map[$type], 'href' => $_GET['q'], 'fragment' => $type);
   }
   return theme('links', $links) . $output;
