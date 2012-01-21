@@ -49,14 +49,6 @@ function drupalorg_metrics_page() {
   return theme('links', $links) . implode("<br /><br />\n", $outputs);
 }
 
-/**
- * Implement hook_cron().
- */
-function drupalorg_metrics_cron() {
-  // Assumes world domination has been achieved by 2030.
-  drupalorg_metrics_record_stats(2007, 2030);
-}
-
 function drupalorg_metrics_record_stats($start_year, $end_year) {
   if (lock_acquire('drupalorg_metrics_record_stats', 5)) {
     for ($year = $start_year; $year <= $end_year; $year++) {
