@@ -219,6 +219,9 @@ function drupalorg_packaging_whitelist_views_default_views() {
   ));
   $handler->override_option('sitename_title', FALSE);
   $handler = $view->new_display('page', 'Page', 'page_1');
+  $handler->override_option('header', 'To request changes to this list, visit the <a href="/project/drupalorg_whitelist">Drupal.org Library Packaging Whitelist</a> project page.');
+  $handler->override_option('header_format', '1');
+  $handler->override_option('header_empty', 1);
   $handler->override_option('path', 'packaging-whitelist');
   $handler->override_option('menu', array(
     'type' => 'none',
