@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * @file
+ *   A dashboard showing community health metrics over time.
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function drupalorg_metrics_menu() {
+  return array(
+    'metrics' => array(
+      'title' => 'Drupal.org Metrics',
+      'page callback' => 'drupalorg_metrics_page',
+      'access arguments' => array('access content'),
+    ),
+  );
+}
+
+/**
+ * Page callback.
+ */
+function drupalorg_metrics_page() {
+  $map = array(
+    'nodes' => t('Nodes created by month'),
+    'users' => t('Users created by month'),
+    'comments' => t('Comments created by month'),
+    'commits' => t('Commits created by month'),
+    'committers' => t('Committers by month'),
+  );
+  $counts = cache_get('drupalorg_metrics_counts', 'drupalorg');
+  $output = '';
+  foreach ($counts->data as $type => $points) {
+    $graph = theme('flot_graph', array('style' => 'width:940px;height:400px'), array(new flotData($points)), array(
+      'xaxis' => array('mode' => 'time', 'ticks' => 9),
+      'series' => array(
+        'lines' => array('show' => 'true'),
+        'points' => array('show' => 'true'),
+      ),
+      'grid' => array(
+        'borderwidth' => 1,
+      ),
+    ));
+    $output .= '<h2 id="' . $type . '">' . $map[$type] . '</h2>' . $graph;
+    $links[] = array('title' => $map[$type], 'href' => $_GET['q'], 'fragment' => $type);
+  }
+  return theme('links', $links) . $output;
+}
+
+function drupalorg_metrics_record_stats($start_year, $end_year) {
+  if (lock_acquire('drupalorg_metrics_record_stats', 5)) {
+    for ($year = $start_year; $year <= $end_year; $year++) {
+      for ($month = 1; $month <= 12; $month++) {
+        $start = mktime(0, 0, 0, $month, 1, $year);
+        $end = mktime(0, 0, 0, $month + 1, 1, $year);
+        // Don't record the current month or future months.
+        if ($end > $_SERVER['REQUEST_TIME']) {
+          break;
+        }
+        // Javascript timestamps are in milliseconds since epoch.
+        $start_js = $start * 1000;
+
+        $counts['nodes'][] = array($start_js, db_result(db_query("SELECT COUNT(*) FROM node WHERE created >= %d AND created < %d", $start, $end)));
+        $counts['users'][] = array($start_js, db_result(db_query("SELECT COUNT(*) FROM users WHERE status = 1 AND created >= %d AND created < %d", $start, $end)));
+        $counts['comments'][] = array($start_js, db_result(db_query("SELECT COUNT(*) FROM comments WHERE status = %d AND timestamp >= %d AND timestamp < %d", COMMENT_PUBLISHED, $start, $end)));
+        $counts['commits'][] = array($start_js, db_result(db_query("SELECT COUNT(DISTINCT(revision)) FROM versioncontrol_operations WHERE date >= %d AND date < %d AND author <> 'tggm@no-reply.drupal.org'", $start, $end)));
+        $counts['committers'][] = array($start_js, db_result(db_query("SELECT COUNT(DISTINCT(author_uid)) FROM versioncontrol_operations WHERE date >= %d AND date < %d", $start, $end)));
+      }
+    }
+    cache_set('drupalorg_metrics_counts', $counts, 'drupalorg');
+    lock_release('drupalorg_metrics_record_stats');
+  }
+}

@@ -251,20 +251,25 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
    */
   public function recordLibraries($libraries) {
     foreach ($libraries as $name => $library) {
+      $url = '';
       switch ($library['download']['type']) {
         case 'cvs':
           $url = $library['download']['root'] .' '. $library['download']['module'];
           break;
-        case 'bzr':
-        case 'svn':
-        case 'git':
-        case 'file':
+
+        default:
           $url = $library['download']['url'];
           break;
+
       }
-      // Record the remote item and save its ID in case there are patches.
-      $remote_id = project_package_record_remote_item($this->release_node->nid, $url, $name);
-      $this->recordPatchInfo($library, $remote_id, 'remote');
+      if (empty($url)) {
+          wd_err("ERROR: Can't find URL for eternal library $name");
+      }
+      else {
+        // Record the remote item and save its ID in case there are patches.
+        $remote_id = project_package_record_remote_item($this->release_node->nid, $url, $name);
+        $this->recordPatchInfo($library, $remote_id, 'remote');
+      }
     }
   }
 
