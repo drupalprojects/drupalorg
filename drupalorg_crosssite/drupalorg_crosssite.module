@@ -773,30 +773,15 @@ function drupalorg_crosssite_form_search_theme_form_alter(&$form, $form_state) {
       $form['search_theme_form']['#default_value'] = $query->get_keys();
     }
 
-    // Figure out how search will act.
-    if (variable_get('drupalorg_site', 'main') === 'association') {
-      // Association has a site-specific header, so it gets a site-specific search.
-      $form['#drupalorg_search_site'] = 'association';
-      $form['search_theme_form']['#title'] = t('Search Drupal Association');
-    }
-    elseif (module_exists('apachesolr_multisitesearch')) {
-      // Use search on the main site if we can.
-      $form['#drupalorg_search_site'] = 'main';
-      $form['search_theme_form']['#title'] = t('Search Drupal.org');
-    }
-    else {
-      // Otherwise, search locally.
-      $form['#drupalorg_search_site'] = variable_get('drupalorg_site', 'main');
-      $form['search_theme_form']['#title'] = t('Search');
-    }
+    $form['search_theme_form']['#title'] = t('Search @site_name', array('@site_name' => variable_get('site_name', 'Drupal')));
 
     // Only show meta-types if searching on the main site.
-    if ($form['#drupalorg_search_site'] === 'main') {
+    if (drupalorg_crosssite_is_site('main')) {
       $form['advanced'] = array(
         '#type' => 'fieldset',
         '#title' => t('Refine your search'),
-        '#collapsible' => !(drupal_is_front_page() && drupalorg_crosssite_is_site('main')),
-        '#collapsed' => !(drupal_is_front_page() && drupalorg_crosssite_is_site('main')),
+        '#collapsible' => !drupal_is_front_page(),
+        '#collapsed' => !drupal_is_front_page(),
       );
       $form['advanced']['meta_type'] = array(
         '#type' => 'radios',
@@ -810,37 +795,10 @@ function drupalorg_crosssite_form_search_theme_form_alter(&$form, $form_state) {
 }
 
 function drupalorg_crosssite_search_theme_form_submit($form, &$form_state) {
-  // If the redirect is already an array, we'll keep the query params
-  // ($form_state['redirect'][1]) otherwise, we'll build the entire path
-  // manually because we want to be very explicit about where we send the
-  // searches so that they function with apachesolr_multisitesearch.
-  if (!is_array($form_state['redirect'])) {
-    $form_state['redirect'] = array($form_state['redirect']);
-  }
-
-  // Determine what search is available to us. Ideally, this should always be
-  // multisitesearch, but if it's not part of the multisitesearch index, then
-  // fall back to apachesolr, and if we're not using solr, fall back to the
-  // Drupal core search.
-  // TODO: Determine if @see search_get_implementing_modules() could supplant
-  // this functionality. At present, it's only on d.o, therefore it can't be
-  // counted on to exist. Rather than duplicating the function, I've opted for
-  // simple logic at present, but this can be changed.
-  if (module_exists('apachesolr_multisitesearch')) {
-    $path = 'apachesolr_multisitesearch';
-  }
-  elseif (module_exists('apachesolr_search')) {
-    $path = 'apachesolr_search';
-  }
-  else {
-    $path = 'node';
-  }
-
-  // We override the entire search path if we are pushing to another site, we
-  // end up exactly where we want.
-  $form_state['redirect'][0] = drupalorg_crosssite_path('search/' . $path . '/' . trim($form_state['values'][$form['form_id']['#value']]), $form['#drupalorg_search_site']);
-
   if (!empty($form_state['values']['meta_type'])) {
+    if (!is_array($form_state['redirect'])) {
+      $form_state['redirect'] = array($form_state['redirect']);
+    }
     $form_state['redirect'][1]['filters'] = 'ss_meta_type:' . $form_state['values']['meta_type'];
   }
 }
