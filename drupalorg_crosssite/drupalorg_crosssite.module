@@ -41,7 +41,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   if (!user_is_logged_in()) {
     $nav_masthead_links['login-register'] = array('href' => 'user', 'query' => drupal_get_destination(), 'title' => t('Log in / Register'), '#active' => drupalorg_crosssite_match_path('^user(/|$)'));
   }
-  if (in_array(variable_get('drupalorg_site', 'main'), array('main', 'localize', 'api'))) {
+  if (in_array(variable_get('drupalorg_site', 'main'), array('main', 'localize'))) {
     $vars['drupalorg_logo_link'] = l('Drupal', drupalorg_crosssite_path('', 'main'), array('attributes' => array('title' => 'Drupal')));
     // Hardcoded list of menu items. These are not supposed to have any indication
     // of the active item, since the page title and submenus have that indication.
@@ -317,10 +317,6 @@ function drupalorg_crosssite_section() {
         elseif (drupalorg_crosssite_match_path('^advertising')) {
           $section = 'advertising';
         }
-        break;
-
-      case 'api':
-        $section = 'documentation';
         break;
 
       case 'localize':
