@@ -1503,6 +1503,18 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         }
       }
     }
+    elseif ($node->type === 'project_issue') {
+      // Load the view to make sure that there are actually some results.
+      $change_records = views_get_view('change_records', 'block_1', array($node->nid));
+      $change_records->execute('block_1');
+      if (!empty($change_records->result)) {
+        $node->content['change_records'] = array(
+          '#prefix' => '<h3>' . check_plain($change_records->get_title()) . '</h3>',
+          '#value' => $change_records->preview('block_1', array($node->nid)),
+          '#weight' => 50,
+        );
+      }
+    }
   }
   elseif ($op === 'insert' || $op === 'update') {
     if ($node->type === 'organization' && !isset($node->drupalorg_processed)) {
