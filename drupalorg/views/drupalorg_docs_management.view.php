@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @file View for Docs maintainers / admins to check status of pages
+ * @file
+ * View for Docs maintainers and admins to check status of pages.
  */
 $view = new view;
 $view->name = 'drupalorg_docs_management';
@@ -214,6 +215,38 @@ $handler->override_option('fields', array(
     'table' => 'node',
     'field' => 'changed',
   ),
+  'name' => array(
+    'label' => 'Revised by',
+    'alter' => array(
+      'alter_text' => 0,
+      'text' => '',
+      'make_link' => 0,
+      'path' => '',
+      'link_class' => '',
+      'alt' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'target' => '',
+      'help' => '',
+      'trim' => 0,
+      'max_length' => '',
+      'word_boundary' => 1,
+      'ellipsis' => 1,
+      'html' => 0,
+      'strip_tags' => 0,
+    ),
+    'empty' => '',
+    'hide_empty' => 0,
+    'empty_zero' => 0,
+    'link_to_user' => 1,
+    'overwrite_anonymous' => 0,
+    'anonymous_text' => '',
+    'exclude' => 0,
+    'id' => 'name',
+    'table' => 'users',
+    'field' => 'name',
+    'relationship' => 'uid',
+  ),
   'status' => array(
     'label' => 'Published',
     'alter' => array(
@@ -422,6 +455,31 @@ $handler->override_option('filters', array(
     'relationship' => 'none',
     'reduce_duplicates' => 0,
   ),
+  'tid_2' => array(
+    'operator' => 'or',
+    'value' => array(),
+    'group' => '0',
+    'exposed' => TRUE,
+    'expose' => array(
+      'use_operator' => 0,
+      'operator' => 'tid_2_op',
+      'identifier' => 'level',
+      'label' => 'Level',
+      'optional' => 1,
+      'single' => 1,
+      'remember' => 0,
+      'reduce' => 0,
+    ),
+    'type' => 'select',
+    'limit' => TRUE,
+    'vid' => '56',
+    'id' => 'tid_2',
+    'table' => 'term_node',
+    'field' => 'tid',
+    'hierarchy' => 0,
+    'relationship' => 'none',
+    'reduce_duplicates' => 0,
+  ),
 ));
 $handler->override_option('access', array(
   'type' => 'role',
@@ -451,6 +509,7 @@ $handler->override_option('style_options', array(
     'tid' => 'tid',
     'comment_count' => 'comment_count',
     'changed' => 'changed',
+    'name' => 'name',
     'status' => 'status',
   ),
   'info' => array(
@@ -473,6 +532,10 @@ $handler->override_option('style_options', array(
       'separator' => '',
     ),
     'changed' => array(
+      'sortable' => 1,
+      'separator' => '',
+    ),
+    'name' => array(
       'sortable' => 1,
       'separator' => '',
     ),
