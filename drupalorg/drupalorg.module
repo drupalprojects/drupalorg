@@ -474,7 +474,6 @@ function drupalorg_set_home_submit($form, $form_state) {
  * Page callback for the frontpage.
  */
 function drupalorg_home() {
-  $return[] = update_sql('DELETE FROM {url_alias} WHERE pid = 162'); // news
   jquery_ui_add('ui.tabs');
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/home.js');
 
