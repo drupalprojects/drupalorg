@@ -1689,7 +1689,7 @@ function drupalorg_views_pre_render(&$view) {
     $content['row_1']['column_2']['#value'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-b-300x100');
     $content['row_2']['column_1']['#value'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-c-300x100');
     $content['row_2']['column_2']['#value'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-d-300x100');
-    if ($page === 'enterprise') {
+    if ($page === 'enterprise' || $page === 'shared') {
       $content['row_3'] = drupalorg_crosssite_grid_elements(array(4, 4));
       $content['row_3']['column_1']['#value'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-e-300x100');
       $content['row_3']['column_2']['#value'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-f-300x100');
