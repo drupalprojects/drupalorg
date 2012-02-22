@@ -218,7 +218,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
         'getinvolved' => array('title' => t('Get Involved'), 'href' => 'node/1069'),
         'intheknow' => array('title' => t('In the Know'), 'href' => 'node/1074'),
         'sponsorships' => array('title' => t('Sponsorships'), 'href' => 'node/1079'),
-        'leads' => array('title' => t('Lead Generation'), 'href' => 'node/1084'),
+        'leads' => array('title' => t('Advertise'), 'href' => 'node/1084'),
         'networking' => array('title' => t('Networking'), 'href' => 'node/1089'),
         'tools' => array('title' => t('Sales Tools'), 'href' => 'node/1094'),
       );
