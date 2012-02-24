@@ -47,8 +47,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     // of the active item, since the page title and submenus have that indication.
     $vars['nav_header'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
       'getting-started' => array('href' => 'start',           'title' => t('Get Started'),         '#site' => 'main', 'attributes' => array('title' => t('Getting Started with Drupal'))),
-      'forum'           => array('href' => 'community',       'title' => t('Community & Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community and Support'))),
+      'forum'           => array('href' => 'community',       'title' => t('Community'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community'))),
       'handbooks'       => array('href' => 'documentation',   'title' => t('Documentation'),       '#site' => 'main', 'attributes' => array('title' => t('Drupal Documentation'))),
+      'forum'           => array('href' => 'support',       'title' => t('Support'), '#site' => 'main', 'attributes' => array('title' => t('Support for using Drupal'))),
       'project'         => array('href' => 'download',        'title' => t('Download & Extend'),   '#site' => 'main', 'attributes' => array('title' => t('Download and Extend Drupal'))),
       'marketplace'     => array('href' => 'drupal-services', 'title' => t('Marketplace'),         '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
       'about'           => array('href' => 'about',           'title' => t('About'),               '#site' => 'main', 'attributes' => array('title' => t('About Drupal'))),
@@ -80,12 +81,11 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     'jobs'        => array('href' => 'jobs', 'title' => t('Jobs'), '#site' => 'groups', 'attributes' => array('title' => t('Jobs posted on groups.drupal.org'))),
   )), array());
   $nav_footer['column_2']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
-    'community'   => array('href' => 'community', 'title' => t('Community & Support'), '#site' => 'main'),
+    'community'   => array('href' => 'community', 'title' => t('Community'), '#site' => 'main'),
     'get-involved'    => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main', 'attributes' => array('title' => t('Learn how to contribute to the Drupal project'))),
     'marketplace'   => array('href' => 'drupal-services', 'title' => t('Marketplace'), '#site' => 'main', 'attributes' => array('title' => t('People and organizations offering Drupal services'))),
     'groups' => array('href' => 'groups', 'title' => t('Groups & Meetups'), '#site' => 'groups', 'attributes' => array('title' => t('groups.drupal.org'))),
     'drupalcon'   => array('href' => 'drupalcon', 'title' => t('DrupalCon'), '#site' => 'main', 'attributes' => array('title' => t('Upcoming and past DrupalCons'))),
-    'help'   => array('href' => 'support', 'title' => t('Need Help?'), '#site' => 'main', 'attributes' => array('title' => t('Find your way around this site'))),
   )), array());
   $nav_footer['column_3']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
     'get-started' => array('href' => 'start', 'title' => t('Get Started'), '#site' => 'main'),
@@ -93,6 +93,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     'install' => array('href' => 'documentation/install', 'title' => t('Installation Guide'), '#site' => 'main', 'attributes' => array('title' => t('Guide for installing Drupal'))),
     'site-building' => array('href' => 'documentation/build', 'title' => t('Site Building Guide'), '#site' => 'main', 'attributes' => array('title' => t('Guide for building and extending Drupal sites'))),
     'api' => array('href' => '', 'title' => t('api.drupal.org'), '#site' => 'api', 'attributes' => array('title' => t('Drupal API Reference'))),
+    'help'   => array('href' => 'support', 'title' => t('Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal support options'))),
   )), array());
   $nav_footer['column_4']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
     'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
@@ -140,7 +141,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       break;
 
     case 'community':
-      $vars['section_name'] = 'Community &amp; Support';
+      $vars['section_name'] = 'Community';
       $nav_content_links = array(
         'home' => array('href' => 'community', 'title' => t('Community Home')),
         'getting-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#active' => drupalorg_crosssite_menu_path('main', '^(getting-involved|community-spotlight)(/|$)') || (drupalorg_crosssite_child_of('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^irc(/|$)') && !drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)'))),
