@@ -92,8 +92,8 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     'docs' => array('href' => 'documentation', 'title' => t('Documentation Home'), '#site' => 'main', 'attributes' => array('title' => t('Guidebooks and documentation for working with Drupal'))),
     'install' => array('href' => 'documentation/install', 'title' => t('Installation Guide'), '#site' => 'main', 'attributes' => array('title' => t('Guide for installing Drupal'))),
     'site-building' => array('href' => 'documentation/build', 'title' => t('Site Building Guide'), '#site' => 'main', 'attributes' => array('title' => t('Guide for building and extending Drupal sites'))),
-    'api' => array('href' => '', 'title' => t('api.drupal.org'), '#site' => 'api', 'attributes' => array('title' => t('Drupal API Reference'))),
     'help'   => array('href' => 'support', 'title' => t('Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal support options'))),
+    'api' => array('href' => '', 'title' => t('api.drupal.org'), '#site' => 'api', 'attributes' => array('title' => t('Drupal API Reference'))),
   )), array());
   $nav_footer['column_4']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
     'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
