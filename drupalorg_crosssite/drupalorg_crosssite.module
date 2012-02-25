@@ -47,9 +47,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     // of the active item, since the page title and submenus have that indication.
     $vars['nav_header'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
       'getting-started' => array('href' => 'start',           'title' => t('Get Started'),         '#site' => 'main', 'attributes' => array('title' => t('Getting Started with Drupal'))),
-      'forum'           => array('href' => 'community',       'title' => t('Community'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community'))),
+      'community'       => array('href' => 'community', 'title' => t('Community'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community'))),
       'handbooks'       => array('href' => 'documentation',   'title' => t('Documentation'),       '#site' => 'main', 'attributes' => array('title' => t('Drupal Documentation'))),
-      'forum'           => array('href' => 'support',       'title' => t('Support'), '#site' => 'main', 'attributes' => array('title' => t('Support for using Drupal'))),
+      'support'         => array('href' => 'support', 'title' => t('Support'), '#site' => 'main', 'attributes' => array('title' => t('Support for using Drupal'))),
       'project'         => array('href' => 'download',        'title' => t('Download & Extend'),   '#site' => 'main', 'attributes' => array('title' => t('Download and Extend Drupal'))),
       'marketplace'     => array('href' => 'drupal-services', 'title' => t('Marketplace'),         '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
       'about'           => array('href' => 'about',           'title' => t('About'),               '#site' => 'main', 'attributes' => array('title' => t('About Drupal'))),
