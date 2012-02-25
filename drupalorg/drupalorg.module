@@ -42,12 +42,6 @@ function drupalorg_init() {
     drupal_goto('user/' . $user->uid . '/dashboard');
   }
 
-  // Use URL aliasing to get links to the About Drupal page right in book
-  // navigation, but serve the drupalorg-generated page.
-  if ($_GET['q'] === 'node/1') {
-    $_GET['q'] = 'about';
-  }
-
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/general.js');
 
   // Add forum ads & tracking
@@ -107,13 +101,6 @@ function drupalorg_menu() {
   $items['home'] = array(
     'title' => 'Drupal - Open Source CMS',
     'page callback' => 'drupalorg_home',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-
-  $items['about'] = array(
-    'title' => 'About Drupal',
-    'page callback' => 'drupalorg_about',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -591,20 +578,6 @@ function drupalorg_start() {
 }
 
 /**
- * Page callback for the about Drupal page.
- */
-function drupalorg_about() {
-  return theme('drupalorg_about');
-}
-
-/**
- * Implementation of template_preprocess_drupalorg_about().
- */
-function drupalorg_preprocess_drupalorg_about(&$variables) {
-  $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
-}
-
-/**
  * Implementation of template_preprocess_drupalorg_start().
  */
 function drupalorg_preprocess_drupalorg_start(&$variables) {
@@ -859,9 +832,6 @@ function drupalorg_theme() {
     ),
     'drupalorg_home' => array(
       'template' => 'drupalorg-home',
-    ),
-    'drupalorg_about' => array(
-      'template' => 'drupalorg-about',
     ),
     'drupalorg_community' => array(
       'template' => 'drupalorg-community',
