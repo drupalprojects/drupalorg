@@ -233,10 +233,6 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
         'sponsorships' => array('title' => t('Sponsorships'), 'href' => 'node/1114'),
       );
       break;
-
-    case 'about':
-      $vars['section_name'] = 'About Drupal';
-      break;
   }
 
   $vars['nav_content'] = $vars['nav_content_class'] = '';
@@ -329,9 +325,6 @@ function drupalorg_crosssite_section() {
         if (drupalorg_crosssite_match_path('^(user/' . $user->uid . '(/|$)|project(/issues)?/user$)')) {
           $section = 'dashboard';
         }
-        elseif (drupalorg_crosssite_child_of('main', 'node/1') || drupalorg_crosssite_child_of('main', 'node/909476')) {
-          $section = 'about';
-        }
         elseif (drupalorg_crosssite_child_of('main', 'node/179723') || (drupalorg_crosssite_child_of('main', 'project/drupal.org projects') && !drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID))) {
           $section = 'drupalorg';
         }
@@ -347,7 +340,7 @@ function drupalorg_crosssite_section() {
         elseif (drupalorg_crosssite_child_of('main', 'node/366') || drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization') || drupalorg_crosssite_match_path('^(marketplace-preview|hosting)')) {
           $section = 'marketplace';
         }
-        elseif ((isset($node) && isset($node->book['bid'])) || drupalorg_crosssite_match_path('^(handbook|documentation)')) {
+        elseif (((isset($node) && isset($node->book['bid'])) || drupalorg_crosssite_match_path('^(handbook|documentation)')) && !(drupalorg_crosssite_child_of('main', 'node/1') || drupalorg_crosssite_child_of('main', 'node/909476'))) {
           $section = 'documentation';
         }
         elseif (drupalorg_crosssite_match_path('^user(/|$)')) {
