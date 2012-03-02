@@ -11,10 +11,9 @@ function drupalorg_marketplace_views_default_views() {
   $view->name = 'drupalorg_marketplace_hosting';
   $view->description = 'List of organizations providing hosting';
   $view->tag = '';
-  $view->view_php = '';
   $view->base_table = 'node';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
+  $view->core = 0;
+  $view->api_version = '2';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'Defaults', 'default');
   $handler->override_option('fields', array(
@@ -98,11 +97,13 @@ function drupalorg_marketplace_views_default_views() {
       'label' => '',
       'alter' => array(
         'alter_text' => 1,
-        'text' => '<p class="[field_organization_hosting_level_value]"><a href="[field_organization_hosting_url_url]">[title]</a></p>',
+        'text' => '<a href="[field_organization_hosting_url_url]">[title]</a>',
         'make_link' => 0,
         'path' => '',
+        'absolute' => 0,
         'link_class' => '',
         'alt' => '',
+        'rel' => '',
         'prefix' => '',
         'suffix' => '',
         'target' => '',
@@ -117,6 +118,7 @@ function drupalorg_marketplace_views_default_views() {
       'empty' => '',
       'hide_empty' => 0,
       'empty_zero' => 0,
+      'hide_alter_empty' => 1,
       'link_to_node' => 0,
       'exclude' => 0,
       'id' => 'title',
@@ -146,8 +148,8 @@ function drupalorg_marketplace_views_default_views() {
     'field_organization_hosting_level_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        '1' => '1',
-        '2' => '2',
+        1 => '1',
+        2 => '2',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -218,21 +220,28 @@ function drupalorg_marketplace_views_default_views() {
     'type' => 'none',
   ));
   $handler->override_option('css_class', 'drupalorg-grid-2 drupalorg-4-col');
+  $handler->override_option('header', 'The following hosting companies are great choices not only because they provide quality services, but because they go out of their way to support the Drupal community directly. Through code contributions or sponsorship of the Drupal Association, these organizations help make Drupal successful.');
+  $handler->override_option('header_format', '1');
+  $handler->override_option('header_empty', 0);
+  $handler->override_option('footer', '<h2>Other great hosts that support Drupal</h2>');
+  $handler->override_option('footer_format', '1');
+  $handler->override_option('footer_empty', 0);
   $handler->override_option('items_per_page', 0);
   $handler->override_option('style_plugin', 'grid');
   $handler->override_option('style_options', array(
-    'grouping' => 'field_organization_hosting_level_value',
+    'grouping' => '',
     'columns' => '4',
-    'alignment' => 'vertical',
-    'fill_single_line' => 1,
+    'alignment' => 'horizontal',
+    'fill_single_line' => 0,
+    'summary' => '',
   ));
   $handler = $view->new_display('page', 'Shared', 'page_1');
   $handler->override_option('filters', array(
     'field_organization_hosting_level_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        '1' => '1',
-        '2' => '2',
+        1 => '1',
+        2 => '2',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -297,14 +306,14 @@ function drupalorg_marketplace_views_default_views() {
       ),
     ),
   ));
-  $handler->override_option('title', 'Shared Hosting');
+  $handler->override_option('title', 'Shared Hosting Providers');
   $handler->override_option('path', 'hosting/shared');
   $handler->override_option('menu', array(
-    'type' => 'default tab',
-    'title' => 'Shared',
+    'type' => 'normal',
+    'title' => 'Shared Hosting',
     'description' => 'Shared hosting',
     'weight' => '0',
-    'name' => 'navigation',
+    'name' => 'menu-hosting-types-menu',
   ));
   $handler->override_option('tab_options', array(
     'type' => 'normal',
@@ -318,8 +327,8 @@ function drupalorg_marketplace_views_default_views() {
     'field_organization_hosting_level_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        '1' => '1',
-        '2' => '2',
+        1 => '1',
+        2 => '2',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -387,11 +396,11 @@ function drupalorg_marketplace_views_default_views() {
   $handler->override_option('title', 'Enterprise & Managed Hosting');
   $handler->override_option('path', 'hosting/enterprise');
   $handler->override_option('menu', array(
-    'type' => 'tab',
+    'type' => 'normal',
     'title' => 'Enterprise & Managed',
     'description' => 'Enterprise & Managed hosting',
     'weight' => '1',
-    'name' => 'navigation',
+    'name' => 'menu-hosting-types-menu',
   ));
   $handler->override_option('tab_options', array(
     'type' => 'none',
@@ -405,8 +414,8 @@ function drupalorg_marketplace_views_default_views() {
     'field_organization_hosting_level_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        '1' => '1',
-        '2' => '2',
+        1 => '1',
+        2 => '2',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -474,11 +483,11 @@ function drupalorg_marketplace_views_default_views() {
   $handler->override_option('title', 'Platform as a Service');
   $handler->override_option('path', 'hosting/paas');
   $handler->override_option('menu', array(
-    'type' => 'tab',
+    'type' => 'normal',
     'title' => 'Platform as a Service',
     'description' => 'Platform as a Service hosting',
     'weight' => '2',
-    'name' => 'navigation',
+    'name' => 'menu-hosting-types-menu',
   ));
   $handler->override_option('tab_options', array(
     'type' => 'none',
@@ -495,10 +504,9 @@ function drupalorg_marketplace_views_default_views() {
   $view->name = 'drupalorg_organizations';
   $view->description = 'Basic organizations list';
   $view->tag = '';
-  $view->view_php = '';
   $view->base_table = 'node';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
+  $view->core = 0;
+  $view->api_version = '2';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'Defaults', 'default');
   $handler->override_option('sorts', array(
@@ -533,17 +541,17 @@ function drupalorg_marketplace_views_default_views() {
       'field' => 'tid',
       'validate_user_argument_type' => 'uid',
       'validate_user_roles' => array(
-        '2' => 0,
-        '18' => 0,
-        '3' => 0,
-        '6' => 0,
-        '8' => 0,
-        '5' => 0,
-        '12' => 0,
-        '16' => 0,
-        '4' => 0,
-        '14' => 0,
-        '7' => 0,
+        2 => 0,
+        18 => 0,
+        3 => 0,
+        6 => 0,
+        8 => 0,
+        5 => 0,
+        12 => 0,
+        16 => 0,
+        4 => 0,
+        14 => 0,
+        7 => 0,
       ),
       'relationship' => 'none',
       'default_options_div_prefix' => '',
@@ -566,26 +574,26 @@ function drupalorg_marketplace_views_default_views() {
       'validate_argument_node_access' => 0,
       'validate_argument_nid_type' => 'nid',
       'validate_argument_vocabulary' => array(
-        '48' => 48,
-        '1' => 0,
-        '5' => 0,
-        '40' => 0,
-        '42' => 0,
-        '38' => 0,
-        '6' => 0,
-        '9' => 0,
-        '4' => 0,
-        '44' => 0,
-        '46' => 0,
-        '3' => 0,
-        '50' => 0,
-        '52' => 0,
-        '7' => 0,
-        '2' => 0,
-        '31' => 0,
-        '32' => 0,
-        '33' => 0,
-        '34' => 0,
+        48 => 48,
+        1 => 0,
+        5 => 0,
+        40 => 0,
+        42 => 0,
+        38 => 0,
+        6 => 0,
+        9 => 0,
+        4 => 0,
+        44 => 0,
+        46 => 0,
+        3 => 0,
+        50 => 0,
+        52 => 0,
+        7 => 0,
+        2 => 0,
+        31 => 0,
+        32 => 0,
+        33 => 0,
+        34 => 0,
       ),
       'validate_argument_type' => 'convert',
       'validate_argument_transform' => 1,
@@ -623,17 +631,17 @@ function drupalorg_marketplace_views_default_views() {
       'field' => 'tid',
       'validate_user_argument_type' => 'uid',
       'validate_user_roles' => array(
-        '2' => 0,
-        '18' => 0,
-        '3' => 0,
-        '6' => 0,
-        '8' => 0,
-        '5' => 0,
-        '12' => 0,
-        '16' => 0,
-        '4' => 0,
-        '14' => 0,
-        '7' => 0,
+        2 => 0,
+        18 => 0,
+        3 => 0,
+        6 => 0,
+        8 => 0,
+        5 => 0,
+        12 => 0,
+        16 => 0,
+        4 => 0,
+        14 => 0,
+        7 => 0,
       ),
       'relationship' => 'none',
       'default_options_div_prefix' => '',
@@ -656,26 +664,26 @@ function drupalorg_marketplace_views_default_views() {
       'validate_argument_node_access' => 0,
       'validate_argument_nid_type' => 'nid',
       'validate_argument_vocabulary' => array(
-        '50' => 50,
-        '1' => 0,
-        '5' => 0,
-        '40' => 0,
-        '42' => 0,
-        '38' => 0,
-        '6' => 0,
-        '9' => 0,
-        '4' => 0,
-        '44' => 0,
-        '46' => 0,
-        '3' => 0,
-        '48' => 0,
-        '52' => 0,
-        '7' => 0,
-        '2' => 0,
-        '31' => 0,
-        '32' => 0,
-        '33' => 0,
-        '34' => 0,
+        50 => 50,
+        1 => 0,
+        5 => 0,
+        40 => 0,
+        42 => 0,
+        38 => 0,
+        6 => 0,
+        9 => 0,
+        4 => 0,
+        44 => 0,
+        46 => 0,
+        3 => 0,
+        48 => 0,
+        52 => 0,
+        7 => 0,
+        2 => 0,
+        31 => 0,
+        32 => 0,
+        33 => 0,
+        34 => 0,
       ),
       'validate_argument_type' => 'convert',
       'validate_argument_transform' => 1,
@@ -713,17 +721,17 @@ function drupalorg_marketplace_views_default_views() {
       'field' => 'tid',
       'validate_user_argument_type' => 'uid',
       'validate_user_roles' => array(
-        '2' => 0,
-        '18' => 0,
-        '3' => 0,
-        '6' => 0,
-        '8' => 0,
-        '5' => 0,
-        '12' => 0,
-        '16' => 0,
-        '4' => 0,
-        '14' => 0,
-        '7' => 0,
+        2 => 0,
+        18 => 0,
+        3 => 0,
+        6 => 0,
+        8 => 0,
+        5 => 0,
+        12 => 0,
+        16 => 0,
+        4 => 0,
+        14 => 0,
+        7 => 0,
       ),
       'relationship' => 'none',
       'default_options_div_prefix' => '',
@@ -746,26 +754,26 @@ function drupalorg_marketplace_views_default_views() {
       'validate_argument_node_access' => 0,
       'validate_argument_nid_type' => 'nid',
       'validate_argument_vocabulary' => array(
-        '52' => 52,
-        '1' => 0,
-        '5' => 0,
-        '40' => 0,
-        '42' => 0,
-        '38' => 0,
-        '6' => 0,
-        '9' => 0,
-        '4' => 0,
-        '44' => 0,
-        '46' => 0,
-        '3' => 0,
-        '48' => 0,
-        '50' => 0,
-        '7' => 0,
-        '2' => 0,
-        '31' => 0,
-        '32' => 0,
-        '33' => 0,
-        '34' => 0,
+        52 => 52,
+        1 => 0,
+        5 => 0,
+        40 => 0,
+        42 => 0,
+        38 => 0,
+        6 => 0,
+        9 => 0,
+        4 => 0,
+        44 => 0,
+        46 => 0,
+        3 => 0,
+        48 => 0,
+        50 => 0,
+        7 => 0,
+        2 => 0,
+        31 => 0,
+        32 => 0,
+        33 => 0,
+        34 => 0,
       ),
       'validate_argument_type' => 'convert',
       'validate_argument_transform' => 1,
