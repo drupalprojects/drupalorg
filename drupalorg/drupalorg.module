@@ -224,13 +224,13 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
             'subject' => t('Ways to Get Involved'),
             'content' => t('<p><a href="/forum">Forums</a> – Get advice and give advice.</p>
 <p><a href="/irc">IRC</a> – Start chatting now with other community members.</p>
+<p><a href="/community-initiatives">Community Initiatives</a> – Get involved with an active longer-term project, such as improving <a href="/community-initiatives/drupal-core">Drupal core</a> or <a href="/community-initiatives/documentation">documentation processes and infrastructure</a>.</p>
 <p><a href="/developing/modules">Modules</a> – Build a module that other Drupal users can enjoy.</p>
 <p><a href="/theme-guide">Themes</a> – Feeling creative? Design a theme for other people to customize their site with.</p>
 <p><a href="http://localize.drupal.org">Translations</a> – Fluent in French or a speaker of Spanish? Translate Drupal for other users around the world.</p>
 <p><a href="http://groups.drupal.org/event">Events</a> – Come to a Drupal event and have fun with the community.</p>
 <p><a href="https://association.drupal.org/donate">Donate</a> – Whether you want to say thanks or ensure there is a secure future for Drupal, every little bit helps and is gratefully received.</p>
-<p><a href="/contribute/documentation">Documentation</a> – Join the Drupal Documentation Team, and build your skills while improving Drupal\'s documentation.</p>
-<p><a href="/community-initiatives">Projects</a> – Get involved with an active longer-term project, such as improving <a href="/community-initiatives/drupal-core">Drupal core</a> or <a href="/community-initiatives/documentation">documentation processes and infrastructure</a>.</p>'),
+<p><a href="/contribute/documentation">Documentation</a> – Join the Drupal Documentation Team, and build your skills while improving Drupal\'s documentation.</p>'),
           );
 
         case 'set_home':
