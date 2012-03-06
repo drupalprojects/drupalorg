@@ -83,7 +83,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   $nav_footer['column_2']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
     'community'   => array('href' => 'community', 'title' => t('Community'), '#site' => 'main'),
     'get-involved'    => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main', 'attributes' => array('title' => t('Learn how to contribute to the Drupal project'))),
-    'marketplace'   => array('href' => 'drupal-services', 'title' => t('Marketplace'), '#site' => 'main', 'attributes' => array('title' => t('People and organizations offering Drupal services'))),
+    'marketplace'   => array('href' => 'drupal-services', 'title' => t('Services, Training & Hosting'), '#site' => 'main', 'attributes' => array('title' => t('People and organizations offering Drupal services'))),
     'groups' => array('href' => 'groups', 'title' => t('Groups & Meetups'), '#site' => 'groups', 'attributes' => array('title' => t('groups.drupal.org'))),
     'drupalcon'   => array('href' => 'drupalcon', 'title' => t('DrupalCon'), '#site' => 'main', 'attributes' => array('title' => t('Upcoming and past DrupalCons'))),
   )), array());
