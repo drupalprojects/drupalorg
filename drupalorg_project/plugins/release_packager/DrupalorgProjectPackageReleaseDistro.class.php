@@ -18,10 +18,10 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
     $this->conf['drush'] = '/usr/bin/php /var/www/drupal.org/tools/drush5/drush.php --include=/var/www/drupal.org/tools/drupalorg_drush';
   }
 
-  public function createPackage(&$files, &$contents) {
+  public function createPackage(&$files) {
 
     // First, do the default packaging.
-    $rval = parent::createPackage($files, $contents);
+    $rval = parent::createPackage($files);
 
     if ($rval == 'error' || $rval == 'no-op') {
       // If we already failed or determined there's nothing to do, return
@@ -177,6 +177,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
           db_query("DELETE FROM {project_package_local_release_item} WHERE package_nid = %d", $this->release_node->nid);
         }
 
+        $contents = array();
         // Core was built without the drupal.org drush extension, so the
         // package item for core isn't in the package contents file. Retrieve
         // it manually.
@@ -201,8 +202,11 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
           return 'error';
         }
 
-        // Record patches and libraries included in the release.
+        // Record everything included in the release.
         if (module_exists('project_package')) {
+          if (!empty($contents)) {
+            project_package_record_local_items($this->release_node->nid, $contents);
+          }
           if (isset($info['projects'])) {
             $this->recordProjectPatches($contents, $info['projects']);
           }

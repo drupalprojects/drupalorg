@@ -74,7 +74,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     self::$shared_init = TRUE;
   }
 
-  public function createPackage(&$files, &$contents) {
+  public function createPackage(&$files) {
     // Files to ignore when checking timestamps:
     $exclude = array('.', '..', 'LICENSE.txt');
 
