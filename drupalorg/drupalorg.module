@@ -1406,7 +1406,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
           '#value' => '',
           '#suffix' => '</div>',
         );
-        $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.latitude, hug.longitude FROM {profile_values} pv INNER JOIN users u ON u.uid = pv.uid LEFT JOIN {profile_values} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {html5_user_geolocation} hug ON hug.uid = u.uid WHERE pv.value = '%s' AND pv.fid = 72", $node->title);
+        $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.latitude, hug.longitude FROM {profile_values} pv INNER JOIN {users} u ON u.uid = pv.uid AND u.status = 1 LEFT JOIN {profile_values} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {html5_user_geolocation} hug ON hug.uid = u.uid WHERE pv.value = '%s' AND pv.fid = 72", $node->title);
         while ($account = db_fetch_object($result)) {
           // Name & title
           $content['column_3'][$account->uid . 'name'] = array(
