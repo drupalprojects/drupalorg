@@ -91,9 +91,9 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
         // --drupal-org-build-root: Let the script know where to place it's
         //   build-related files.
         // --drupal-org-log-errors-to-file: Store build errors for later output.
-        // --drupal-org-log-package-items-to-file: Store package items for
+        // --drupal-org-log-package-metadata: Store package metadata for
         //   later recording in the database.
-        if (!drupal_exec("{$this->conf['drush']} make --drupal-org --drupal-org-build-root={$this->project_build_root} --drupal-org-log-errors-to-file --drupal-org-log-package-items-to-file $drupalorg_makefile .")) {
+        if (!drupal_exec("{$this->conf['drush']} make --drupal-org --drupal-org-build-root={$this->project_build_root} --drupal-org-log-errors-to-file --drupal-org-log-package-metadata=metadata-contrib.json $drupalorg_makefile .")) {
           // The build failed, get any output error messages and include them
           // in the packaging error report.
           $build_errors_file = "{$this->project_build_root}/build_errors.txt";
@@ -171,48 +171,41 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
         // files, but heavier than .tar.gz.
         $files[$core_file_path_zip] = 1;
 
-        // Development releases may have changed package contents -- clear out
-        // their package item summary so a fresh item summary will be inserted.
-        if ($this->release_node->project_release['rebuild'] && module_exists('project_package')) {
-          db_query("DELETE FROM {project_package_local_release_item} WHERE package_nid = %d", $this->release_node->nid);
-        }
-
-        $contents = array();
-        // Core was built without the drupal.org drush extension, so the
-        // package item for core isn't in the package contents file. Retrieve
-        // it manually.
-        if (!($core_release_nid = db_result(db_query("SELECT nid FROM {project_release_nodes} WHERE pid = %d AND tag = '%s'", DRUPALORG_CORE_NID, $core_version)))) {
-          wd_err("ERROR: Can't find core release for $core_version");
-          return 'error';
-        }
-        $contents[] = $core_release_nid;
-
-        // Retrieve the package contents for the release.
-        $package_contents_file = "{$this->project_build_root}/package_contents.txt";
-        if (file_exists($package_contents_file)) {
-          $lines = file($package_contents_file, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
-          foreach ($lines as $line) {
-            if (is_numeric($line)) {
-              $contents[] = $line;
-            }
-          }
-        }
-        else {
-          wd_err("ERROR: %file does not exist for %profile release.", array('%file' => $package_contents_file, '%profile' => $this->release_file_id), $this->release_node_view_link);
-          return 'error';
-        }
-
-        // Record everything included in the release.
+        // If project_package exists, process the package metadata and record
+        // everything we just packaged up with this release.
         if (module_exists('project_package')) {
-          if (!empty($contents)) {
-            project_package_record_local_items($this->release_node->nid, $contents);
+
+          // Development releases may have changed package contents -- clear
+          // out their package items so a fresh item summary will be built.
+          if ($this->release_node->project_release['rebuild']) {
+            db_query("DELETE FROM {project_package_local_release_item} WHERE package_nid = %d", $this->release_node->nid);
           }
-          if (isset($info['projects'])) {
-            $this->recordProjectPatches($contents, $info['projects']);
+
+          // TODO: Fix this once http://drupal.org/node/1469714 is deployed
+          // and we can safely use --drupal-org-log-package-metadata when
+          // building core, too.
+          // Core was built without the drupal.org drush extension, so the
+          // package item for core isn't in the package contents file.
+          // Retrieve it manually.
+          if (!($core_release_nid = db_result(db_query("SELECT nid FROM {project_release_nodes} WHERE pid = %d AND tag = '%s'", DRUPALORG_CORE_NID, $core_version)))) {
+            wd_err("ERROR: Can't find core release for $core_version");
+            return 'error';
           }
-          if (isset($info['libraries'])) {
-            $this->recordLibraries($info['libraries']);
+          project_package_record_local_items($this->release_node->nid, array($core_release_nid));
+
+          // Retrieve the contrib package metadata.
+          $contrib_metadata_file = "{$this->project_build_root}/metadata-contrib.json";
+          if (file_exists($contrib_metadata_file)) {
+            $json = file_get_contents($contrib_metadata_file);
+            $contrib_metadata = json_decode($json, TRUE);
           }
+          else {
+            wd_err("ERROR: %file does not exist for %profile release.", array('%file' => $contrib_metadata_file, '%profile' => $this->release_file_id), $this->release_node_view_link);
+            return 'error';
+          }
+
+          // Record everything included in the release.
+          $this->recordPackageMetadata($contrib_metadata);
         }
       }
     }
@@ -223,80 +216,61 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
   }
 
   /**
-   * Record information about patches applied to projects in the .make file.
+   * Record information about everything packaged in a release.
    *
-   * @param array $release_nids
-   *   An array of release node ids of other projects that were packaged with
-   *   this release.
-   * @param array $projects
-   *   The array of project info from the .make file (which might include
-   *   patch information).
+   * @param array $metadata
+   *   An array of packaging metadata as provided by drush make.
    */
-  public function recordProjectPatches($release_nids, $projects) {
-    // Look up all the projects, and get the machine name from the release
-    // nids that were recorded in the package_contents.txt file.
-    $project_release_map = array();
-    $results = db_query("SELECT pp.uri as shortname, prn.nid as nid FROM {project_release_nodes} prn INNER JOIN {project_projects} pp ON prn.pid = pp.nid WHERE prn.nid in (" . db_placeholders($release_nids) . ")", $release_nids);
-    while ($row = db_fetch_object($results)) {
-      $project_release_map[$row->shortname] = $row->nid;
+  public function recordPackageMetadata($metadata) {
+    $local_projects = array();
+    if (!empty($metadata['project'])) {
+      foreach ($metadata['project'] as $name => $project) {
+        if (!empty($project['nid'])) {
+          $local_projects[] = $project['nid'];
+          $this->recordPatchInfo($project, $project['nid'], 'local');
+        }
+        else {
+          // TODO: handle 'remote' projects as if they were libraries...
+        }
+      }
     }
-    // Loop over all projects and record patches.
-    foreach ($projects as $name => $project) {
-      $this->recordPatchInfo($project, $project_release_map[$name], 'local');
+
+    if (!empty($metadata['library'])) {
+      foreach ($metadata['library'] as $name => $library) {
+        if (!empty($library['url'])) {
+          // Record the remote item and save its ID in case there are patches.
+          $remote_id = project_package_record_remote_item($this->release_node->nid, $library['url'], $name);
+          $this->recordPatchInfo($library, $remote_id, 'remote');
+        }
+      }
     }
+
+    // Record all the local projects themselves.
+    if (!empty($local_projects)) {
+      project_package_record_local_items($this->release_node->nid, $local_projects);
+    }
+
   }
 
   /**
-   * Record information about external libraries referenced in the .make file.
-   *
-   * @param array $libraries
-   *   The array of library info from the .make file (which might include
-   *   patch information).
-   */
-  public function recordLibraries($libraries) {
-    foreach ($libraries as $name => $library) {
-      $url = '';
-      switch ($library['download']['type']) {
-        case 'cvs':
-          $url = $library['download']['root'] .' '. $library['download']['module'];
-          break;
-
-        default:
-          $url = $library['download']['url'];
-          break;
-
-      }
-      if (empty($url)) {
-          wd_err("ERROR: Can't find URL for eternal library $name");
-      }
-      else {
-        // Record the remote item and save its ID in case there are patches.
-        $remote_id = project_package_record_remote_item($this->release_node->nid, $url, $name);
-        $this->recordPatchInfo($library, $remote_id, 'remote');
-      }
-    }
-  }
-
-  /**
-   * Record information about patches for a single item in the .make file.
+   * Record information about patches for a single packaging item.
    *
    * @param array $item
-   *   An array of information from the .make file about a specific item.
-   *   This could be either a project or a library.
+   *   An array of packaging metadata about a specific item. This could be
+   *   either a project or a library.
    * @param integer $item_id
-   *   The unique ID for the specific item in the .make file. If $item is a
-   *   project, this should be the release node ID of the release packaged for
-   *   that project. If $item is a library, this should be the 'id' column
-   *   from {project_package_remote_item}.
+   *   The unique ID for the packaged item. If $item is a project, this should
+   *   be the release node ID of the release packaged for that project. If
+   *   $item is a library, this should be the 'id' column from
+   *   {project_package_remote_item}.
    * @param string $type
    *   What type of thing $item is describing. Can be 'local' for a project or
    *   'remote' for a library.
    */
   public function recordPatchInfo($item, $item_id, $type) {
-    if (isset($item['patch'])) {
-      foreach ($item['patch'] as $patch) {
-        $patch_url = is_array($patch) ? $patch['url'] : $patch;
-        project_package_record_patch($this->release_node->nid, $patch_url, $item_id, $type);
+    if (!empty($item['patch'])) {
+      foreach ($item['patch'] as $url) {
+        project_package_record_patch($this->release_node->nid, $url, $item_id, $type);
       }
     }
   }
