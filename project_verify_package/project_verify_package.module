@@ -4,7 +4,7 @@
  * @file
  * drupal.org specific verification helpers for the project packaging system.
  *
- * This module was written to provide drupal.org-specific conversion/validation
+ * This module was written to provide drupal.org-specific validation
  * functions for .make files used on drupal.org, and it would most likely
  * require some custom hacking to work in any other environment.
  */
@@ -38,53 +38,7 @@ function project_verify_package_form_alter(&$form, $form_state, $form_id) {
 }
 
 /**
- * Implement hook_menu().
- */
-function project_verify_package_menu() {
-  $items = array();
-
-  // 'Verify .make files' link on profile project pages.
-  $items['node/%project_node/verify-make-file'] = array(
-    'title' => 'Verify drupal-org.make files',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('project_verify_package_convert_verify_make_file_form', 1, 'verify'),
-    'access callback' => 'node_access',
-    'access arguments' => array('create', 'project_release'),
-    'type' => MENU_CALLBACK,
-    'file' => 'project_verify_package.pages.inc',
-  );
-
-  // 'Convert .make files' link on profile project pages.
-  $items['node/%project_node/convert-make-file'] = array(
-    'title' => 'Convert .make files to drupal-org.make format',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('project_verify_package_convert_verify_make_file_form', 1, 'convert'),
-    'access callback' => 'node_access',
-    'access arguments' => array('create', 'project_release'),
-    'type' => MENU_CALLBACK,
-    'file' => 'project_verify_package.pages.inc',
-  );
-
-  return $items;
-}
-
-/**
- * Implemenation of hook_project_page_link_alter().
- *
- * Note:  This is *not* an implementation of hook_link_alter().
- */
-function project_verify_package_project_page_link_alter(&$links, $node) {
-  // Insert the links on all project nodes that:
-  //   1. Have releases enabled.
-  //   2. Have the PROJECT_VERIFY_PACKAGE_PROJECT_TYPE_TID term ID.
-  if (!empty($node->project_release['releases']) && !empty($node->taxonomy[PROJECT_VERIFY_PACKAGE_PROJECT_TYPE_TID])) {
-    $links['project_release']['links']['project_verify_package_verify_make_file_link'] = l(t('Verify release .make files'), "node/$node->nid/verify-make-file");
-    $links['project_release']['links']['project_verify_package_convert_make_file_link'] = l(t('Convert release .make files'), "node/$node->nid/convert-make-file");
-  }
-}
-
-/**
- * Verify if a drupalorg.make file in a release has the right format.
+ * Verify if a drupal-cxorg.make file in a release has the right format.
  *
  * This function must be included in the main module file, as hook_form_alter()
  * is not called on cached forms. It's provided here as a simple wrapper for
