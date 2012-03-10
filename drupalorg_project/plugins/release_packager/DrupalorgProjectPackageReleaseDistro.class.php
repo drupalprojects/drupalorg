@@ -153,7 +153,11 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
 
       // Create the name of the directory where we'll build core. This will be
       // the top-level directory in the fully packaged distribution release.
-      $core_build_dir = 'drupal-' . $core_info['core'];
+      // We use the profile's shortname and full version string (just like the
+      // tarball name itself) to prevent end-users from accidentally
+      // clobbering directories when they unpack multiple distribution
+      // releases.
+      $core_build_dir = $this->release_file_id;
 
       // Run drush_make to build core.
       // --drupal-org=core: Invoke drupal.org specific validation/processing.
