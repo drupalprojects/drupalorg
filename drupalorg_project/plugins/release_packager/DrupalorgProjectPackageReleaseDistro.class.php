@@ -71,14 +71,6 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
           return 'error';
         }
 
-        // Basic sanity check for the format of the attribute. The Git checkout
-        // attempt of core will handle the rest of the validation (ie, it will
-        // fail if a non-existant tag is specified.
-        if (!preg_match("/^(\d+)\.(\d+)(-[a-z0-9]+)?$/", $contrib_info['core'], $matches)) {
-          wd_err("ERROR: %profile specified an invalid 'core' attribute -- both API version and release are required.", array('%profile' => $this->release_file_id), $this->release_node_view_link);
-          return 'error';
-        }
-
         // Write a drupal-org-core.make file used to build core.
         $drupalorg_core_makefile = "{$this->project_build_root}/$drupalorg_core_makefile";
         $core_info = $this->createCoreMakeFile($contrib_info['core'], $drupalorg_core_makefile);
@@ -327,9 +319,21 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
    *   with drupal_parse_info_file()
    */
   protected function createCoreMakeFile($core_version, $core_makefile) {
+    // See what they defined for the top-level 'core' attribute. If they just
+    // said something like '7.x' we want to use '7' as the version so drush
+    // make finds the latest official core release. If they actually want
+    // 7.x-dev (evil!) they need to say so explicitly via a separate
+    // drupal-org-core.make file.
+    $matches = array();
+    if (preg_match("/^(\d+)\.x$/", $core_version, $matches)) {
+      $core_project_version = $matches[1];
+    }
+    else {
+      $core_project_version = $core_version;
+    }
     $output = "api = 2\n";
     $output .= "core = $core_version\n";
-    $output .= "projects[drupal] = $core_version\n";
+    $output .= "projects[drupal] = $core_project_version\n";
     file_put_contents($core_makefile, $output);
 
     // Return this .make file as a parsed info array.
@@ -337,7 +341,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
       'api' => 2,
       'core' => $core_version,
       'projects' => array(
-        'drupal' => $core_version,
+        'drupal' => $core_project_version,
       ),
     );
   }
