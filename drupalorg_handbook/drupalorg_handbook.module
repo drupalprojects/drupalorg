@@ -228,25 +228,46 @@ function drupalorg_handbook_maintainers() {
 
 /**
  * Collect and cache revision maintainers (those who made revisions to books).
+ *
+ * If the page visited is node/263594/filter, then filter is used as an input
+ * to strtotime(), to limit to revisions after that date/time.
  */
 function drupalorg_handbook_revision_maintainers() {
-  if ($cache = cache_get('node_263594')) {
+  $filter = check_plain(arg(2));
+  $cache_key = 'node_263594-' . $filter;
+  if ($cache = cache_get($cache_key)) {
     return $cache->data;
+  }
+
+  $since = 0;
+  $output = '';
+  if ($filter) {
+    $trial = strtotime($filter);
+    if ($trial) {
+      $since = $trial;
+      $output .= '<p>' . t('Contributions since !filter', array('!filter' => $filter)) . '</p>';
+    }
   }
 
   $result = db_query("SELECT u.uid, u.name, COUNT(nr.vid) AS pages
     FROM {node} n INNER JOIN {node_revisions} nr ON n.nid = nr.nid INNER JOIN {users} u ON u.uid = nr.uid
-    WHERE n.type = 'book' AND n.status = 1 AND n.moderate = 0
+    WHERE n.type = 'book' AND n.status = 1 AND n.moderate = 0 AND nr.timestamp > %d
     GROUP BY u.name
-    ORDER BY pages DESC");
+    ORDER BY pages DESC", $since);
 
   $list = array();
+  $total = 0;
+  $count = 0;
   while ($contributor = db_fetch_object($result)) {
     $list[] = theme('username', $contributor) ." (". format_plural($contributor->pages, "@count revision", "@count revisions") .")";
+    $total += $contributor->pages;
+    $count++;
   }
 
-  $output = theme('item_list', $list);
-  cache_set('node_263594', $output, 'cache', 300);
+  $output .= '<p>' . format_plural($count, '@count contributor', '@count contributors') . '</p>';
+  $output .= '<p>' . format_plural($total, '@count total revision', '@count total revisions') . '</p>';
+  $output .= theme('item_list', $list);
+  cache_set($cache_key, $output, 'cache', 300);
   return $output;
 }
 
