@@ -156,12 +156,12 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       $vars['section_name'] = check_plain($user->name);
       $code_item = menu_get_item('user/' . $user->uid . '/track/code');
       $nav_content_links = array(
-        'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard', '#site' => 'main'),
-        'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track$')),
-        'commits' => array('title' => t('Your Commits'), 'href' => 'user/' . $user->uid . '/track/code', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track/code'), '#enabled' => $code_item['access']),
-        'your-issues' => array('title' => t('Your Issues'), 'href' => 'project/issues/user', '#site' => 'main'),
-        'your-projects' => array('title' => t('Your Projects'), 'href' => 'project/user', '#site' => 'main'),
-        'your-profile' => array('title' => t('Profile'), 'href' => 'user/' . $user->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '(?!/(dashboard|track))')),
+        'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard'),
+        'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track$')),
+        'commits' => array('title' => t('Your Commits'), 'href' => 'user/' . $user->uid . '/track/code', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track/code'), '#enabled' => $code_item['access']),
+        'your-issues' => array('title' => t('Your Issues'), 'href' => 'project/issues/user'),
+        'your-projects' => array('title' => t('Your Projects'), 'href' => 'project/user'),
+        'your-profile' => array('title' => t('Profile'), 'href' => 'user/' . $user->uid, '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '(?!/(dashboard|track))')),
       );
       break;
 
@@ -170,9 +170,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
         $account = user_load(arg(1));
         $code_item = menu_get_item('user/' . $account->uid . '/track/code');
         $nav_content_links = array(
-          'user-profile' => array('title' => t('Profile'), 'href' => 'user/' . $account->uid, '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '(?!/(dashboard|track))')),
-          'posts' => array('title' => t('Posts'), 'href' => 'user/' . $account->uid . '/track', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track$')),
-          'commits' => array('title' => t('Commits'), 'href' => 'user/' . $account->uid . '/track/code', '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track/code'), '#enabled' => $code_item['access']),
+          'user-profile' => array('title' => t('Profile'), 'href' => 'user/' . $account->uid, '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '(?!/(dashboard|track))')),
+          'posts' => array('title' => t('Posts'), 'href' => 'user/' . $account->uid . '/track', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track$')),
+          'commits' => array('title' => t('Commits'), 'href' => 'user/' . $account->uid . '/track/code', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track/code'), '#enabled' => $code_item['access']),
         );
       }
       break;
