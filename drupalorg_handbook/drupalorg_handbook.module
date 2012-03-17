@@ -72,16 +72,14 @@ function drupalorg_handbook_moderate_link_info($node) {
   if (!user_access('create project issues') || drupalorg_crosssite_section() !== 'documentation') {
     return NULL;
   }
-  $url = url('node/' . $node->nid, array('absolute' => TRUE));
-  $title = $node->title;
   return array(
     'title' => t('Report to moderator'),
     'href' => 'node/add/project-issue/documentation',
     'query' => array(
       'categories' => 'task',
       'component' => 'Vandalism/Spam',
-      'title' => t('Moderation report for !title', array('!title' => $title)),
-      'body' => t('I am reporting !url to moderators because:', array('!url' => $url)),
+      'title' => t('Moderation report for !title', array('!title' => $node->title)),
+      'body' => t('I am reporting !url to moderators because:', array('!url' => url('node/' . $node->nid, array('absolute' => TRUE)))),
     ),
   );
 }
