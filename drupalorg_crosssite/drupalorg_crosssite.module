@@ -62,7 +62,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   $vars['nav_masthead'] = theme('links', drupalorg_crosssite_menu_absolute_links($nav_masthead_links), array());
   if (user_is_logged_in()) {
     // Add user page link and logout link.
-    $vars['nav_masthead'] .= '<div id="userinfo">' . l(t('Logged in as @username', array('@username' => $user->name)), variable_get('drupalorg_crosssite_redesign', FALSE) ? drupalorg_crosssite_path('user', 'main') : 'user', array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) . ' ' . l(t('Log out'), 'logout');
+    $vars['nav_masthead'] .= '<div id="userinfo">' . l(t('Logged in as @username', array('@username' => $user->name)), 'user', array('html' => TRUE, 'attributes' => array('title' => t('View & edit your user profile')))) . ' ' . l(t('Log out'), 'logout');
     if (user_access('access administration pages')) {
       $vars['nav_masthead'] .= ' ' . l(t('Admin'), 'admin');
     }
