@@ -122,7 +122,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     case 'documentation':
       $vars['section_name'] = 'Community Documentation';
       $nav_content_links = array(
-        'home' => array('href' => 'node/26419', 'title' => t('Community Docs Home'), '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_match_path('^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_child_of('node/251019') && !drupalorg_crosssite_child_of('node/627152')),
+        'home' => array('href' => 'node/26419', 'title' => t('Community Docs Home'), '#active' => (drupalorg_crosssite_is_type(array('book')) || drupalorg_crosssite_match_path('^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_child_of('node/251019') && !drupalorg_crosssite_child_of('node/627152')),
         'install' => array('href' => 'node/251019', 'title' => t('Installation Guide'), '#active' => drupalorg_crosssite_child_of('node/251019')),
         'admin' => array('href' => 'node/627152', 'title' => t('Administration Guide'), '#active' => drupalorg_crosssite_child_of('node/627152')),
       );
@@ -197,7 +197,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
         'services' => array('title' => t('Services'), 'href' => 'node/21791', '#active' => drupalorg_crosssite_child_of('drupal-services')),
         'hosting' => array('title' => t('Hosting'), 'href' => 'hosting', '#active' => drupalorg_crosssite_child_of('hosting')),
         'training' => array('title' => t('Training'), 'href' => 'node/313581', '#active' => drupalorg_crosssite_child_of('training-services')),
-        'marketplace-preview' => array('title' => t('Marketplace preview'), 'href' => 'marketplace-preview', '#active' => drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('node/add/organization') || drupalorg_crosssite_match_path('^marketplace-preview')),
+        'marketplace-preview' => array('title' => t('Marketplace preview'), 'href' => 'marketplace-preview', '#active' => drupalorg_crosssite_is_type(array('organization')) || drupalorg_crosssite_child_of('node/add/organization') || drupalorg_crosssite_match_path('^marketplace-preview')),
       );
       break;
 
@@ -327,16 +327,16 @@ function drupalorg_crosssite_section() {
         elseif (drupalorg_crosssite_child_of('node/179723') || (drupalorg_crosssite_child_of('project/drupal.org projects') && !drupalorg_crosssite_child_of('node/' . DRUPALORG_CORE_NID))) {
           $section = 'drupalorg';
         }
-        elseif (drupalorg_crosssite_match_path('^(project|download|list-changes|list-change-updates)(/|$)') || drupalorg_crosssite_match_path('^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_match_path('^node/add/project-issue') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release', 'changenotice'))) {
+        elseif (drupalorg_crosssite_match_path('^(project|download|list-changes|list-change-updates)(/|$)') || drupalorg_crosssite_match_path('^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_match_path('^node/add/project-issue') || drupalorg_crosssite_is_type(array('project_project', 'project_issue', 'project_release', 'changenotice'))) {
           $section = 'downloads';
         }
         elseif (drupalorg_crosssite_match_path('^security(|/contrib|/psa)$') || drupalorg_crosssite_menu_term('main', array(1852, 44, 1856))) {
           $section = 'security';
         }
-        elseif (drupalorg_crosssite_match_path('^(irc|mailing-lists|profile|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('forum') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_child_of('node/281873')) {
+        elseif (drupalorg_crosssite_match_path('^(irc|mailing-lists|profile|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('forum') || drupalorg_crosssite_is_type(array('forum')) || drupalorg_crosssite_child_of('node/281873')) {
           $section = 'community';
         }
-        elseif (drupalorg_crosssite_child_of('node/366') || drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('node/add/organization') || drupalorg_crosssite_match_path('^(marketplace-preview|hosting)')) {
+        elseif (drupalorg_crosssite_child_of('node/366') || drupalorg_crosssite_is_type(array('organization')) || drupalorg_crosssite_child_of('node/add/organization') || drupalorg_crosssite_match_path('^(marketplace-preview|hosting)')) {
           $section = 'marketplace';
         }
         elseif (((isset($node) && isset($node->book['bid'])) || drupalorg_crosssite_match_path('^(handbook|documentation)')) && !(drupalorg_crosssite_child_of('node/1') || drupalorg_crosssite_child_of('node/909476'))) {
@@ -428,17 +428,15 @@ function drupalorg_crosssite_is_site($site_key) {
 /**
  * Check whether we are viewing any of the specified node types on the given site.
  *
- * @param $site_key
- *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
  * @param $node_types
  *   An array of possible node types to check for.
  * @return
  *   TRUE if on the site specified by $site_key, looking at a node of any of the
  *   types specified in $node_types.
  */
-function drupalorg_crosssite_menu_type($site_key, $node_types) {
+function drupalorg_crosssite_is_type($node_types) {
   // menu_get_object() gets us the node, if we have a node loaded on the path.
-  if (drupalorg_crosssite_is_site($site_key) && ($node = menu_get_object())) {
+  if ($node = menu_get_object()) {
     return in_array($node->type, $node_types);
   }
 }
@@ -483,7 +481,7 @@ function drupalorg_crosssite_match_path($path_regex) {
  *    - For possible #site values, see drupalorg_crosssite_menu_sites().
  *    - #active can be built with functions like
  *      drupalorg_crosssite_match_path(), drupalorg_crosssite_is_site(), and
- *      drupalorg_crosssite_menu_type(). If the link will be local, you can use
+ *      drupalorg_crosssite_is_type(). If the link will be local, you can use
  *      local checks.
  *
  * @return
