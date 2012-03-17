@@ -136,7 +136,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
         'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && (drupalorg_crosssite_in_breadcrumb('main', 'project/modules', $vars) || drupalorg_crosssite_match_path('^project/modules'))),
         'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_child_of('main', 'project/themes', $vars) || drupalorg_crosssite_child_of('main', 'project/theme engines', $vars)),
         'translations' => array('href' => '<front>', 'title' => t('Translations'), '#site' => 'localize', '#active' => drupalorg_crosssite_is_site('localize') || drupalorg_crosssite_in_breadcrumb('main', 'project/translations', $vars)),
-        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && (drupalorg_crosssite_match_path('^project/installation profiles') || drupalorg_crosssite_in_breadcrumb('main', 'project/installation profiles', $vars))),
+        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && drupalorg_crosssite_child_of('main', 'project/installation profiles', $vars)),
       );
       break;
 
