@@ -122,9 +122,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     case 'documentation':
       $vars['section_name'] = 'Community Documentation';
       $nav_content_links = array(
-        'home' => array('href' => 'node/26419', 'title' => t('Community Docs Home'), '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_match_path('^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_child_of('main', 'node/251019') && !drupalorg_crosssite_child_of('main', 'node/627152')),
-        'install' => array('href' => 'node/251019', 'title' => t('Installation Guide'), '#active' => drupalorg_crosssite_child_of('main', 'node/251019')),
-        'admin' => array('href' => 'node/627152', 'title' => t('Administration Guide'), '#active' => drupalorg_crosssite_child_of('main', 'node/627152')),
+        'home' => array('href' => 'node/26419', 'title' => t('Community Docs Home'), '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_match_path('^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_child_of('node/251019') && !drupalorg_crosssite_child_of('node/627152')),
+        'install' => array('href' => 'node/251019', 'title' => t('Installation Guide'), '#active' => drupalorg_crosssite_child_of('node/251019')),
+        'admin' => array('href' => 'node/627152', 'title' => t('Administration Guide'), '#active' => drupalorg_crosssite_child_of('node/627152')),
       );
       break;
 
@@ -132,11 +132,11 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       $vars['section_name'] = 'Download &amp; Extend';
       $nav_content_links = array(
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
-        'core'         => array('href' => 'node/' . DRUPALORG_CORE_NID, 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID, $vars) || drupalorg_crosssite_child_of('main', 'project/drupal core', $vars), '#site' => 'main'),
-        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && drupalorg_crosssite_child_of('main', 'project/modules', $vars)),
-        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_child_of('main', 'project/themes', $vars) || drupalorg_crosssite_child_of('main', 'project/theme engines', $vars)),
+        'core'         => array('href' => 'node/' . DRUPALORG_CORE_NID, 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_is_site('main') && (drupalorg_crosssite_child_of('node/' . DRUPALORG_CORE_NID, $vars) || drupalorg_crosssite_child_of('project/drupal core', $vars), '#site' => 'main')),
+        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && drupalorg_crosssite_child_of('project/modules', $vars)),
+        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && (drupalorg_crosssite_child_of('project/themes', $vars) || drupalorg_crosssite_child_of('project/theme engines', $vars))),
         'translations' => array('href' => '<front>', 'title' => t('Translations'), '#site' => 'localize', '#active' => drupalorg_crosssite_is_site('localize') || (drupalorg_crosssite_is_site('main') && drupalorg_crosssite_in_breadcrumb('project/translations', $vars))),
-        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && drupalorg_crosssite_child_of('main', 'project/installation profiles', $vars)),
+        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && drupalorg_crosssite_child_of('project/installation profiles', $vars)),
       );
       break;
 
@@ -144,7 +144,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       $vars['section_name'] = 'Community';
       $nav_content_links = array(
         'home' => array('href' => 'community', 'title' => t('Community Home')),
-        'getting-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#active' => drupalorg_crosssite_match_path('^(getting-involved|community-spotlight)(/|$)') || (drupalorg_crosssite_child_of('main', 'node/281873') && !drupalorg_crosssite_match_path('^irc(/|$)') && !drupalorg_crosssite_match_path('^mailing-lists(/|$)'))),
+        'getting-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#active' => drupalorg_crosssite_match_path('^(getting-involved|community-spotlight)(/|$)') || (drupalorg_crosssite_child_of('node/281873') && !drupalorg_crosssite_match_path('^irc(/|$)') && !drupalorg_crosssite_match_path('^mailing-lists(/|$)'))),
         'chat' => array('href' => 'irc', 'title' => t('Chat'), '#active' => drupalorg_crosssite_match_path('^irc(/|$)')),
         'lists' => array('href' => 'mailing-lists', 'title' => t('Mailing Lists'), '#active' => drupalorg_crosssite_match_path('^mailing-lists(/|$)')),
         'members' => array('href' => 'profile', 'title' => t('Member Directory'), '#active' => drupalorg_crosssite_match_path('^profile(/|$)'), '#title_match' => 'q'),
@@ -181,23 +181,23 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       $vars['section_name'] = 'Drupal.org';
       $nav_content_links = array(
         // query may be removed with #910442 and/or #1019300.
-        'home' => array('title' => t('Drupal.org Projects'), 'href' => 'project/drupal.org projects', 'query' => array('filters' => 'bs_project_sandbox:[* TO *]'), '#active' => drupalorg_crosssite_child_of('main', 'project/drupal.org projects', $vars) && !(drupalorg_crosssite_child_of('main', 'node/3202') || drupalorg_crosssite_child_of('main', 'node/18753') || drupalorg_crosssite_child_of('main', 'node/1025112') || drupalorg_crosssite_child_of('main', 'node/107028') || drupalorg_crosssite_child_of('main', 'node/651778'))),
-        'drupalorg-faq' => array('title' => t('About Drupal.org'), 'href' => 'node/179723', '#active' => drupalorg_crosssite_child_of('main', 'node/179723')),
-        'webmasters' =>      array('title' => t('Webmasters'),       'href' => 'node/3202',   '#active' => drupalorg_crosssite_child_of('main', 'node/3202',   $vars)),
-        'documentation' =>   array('title' => t('Documentation'),    'href' => 'node/18753',  '#active' => drupalorg_crosssite_child_of('main', 'node/18753',  $vars)),
-        'projectapplications' => array('title' => t('Project Applications'), 'href' => 'node/1025112', '#active' => drupalorg_crosssite_child_of('main', 'node/1025112', $vars)),
-        'infrastructure' =>  array('title' => t('Infrastructure'),   'href' => 'node/107028', '#active' => drupalorg_crosssite_child_of('main', 'node/107028', $vars)),
-        'theme' =>           array('title' => t('Theme'),            'href' => 'node/651778', '#active' => drupalorg_crosssite_child_of('main', 'node/651778', $vars)),
+        'home' => array('title' => t('Drupal.org Projects'), 'href' => 'project/drupal.org projects', 'query' => array('filters' => 'bs_project_sandbox:[* TO *]'), '#active' => drupalorg_crosssite_child_of('project/drupal.org projects', $vars) && !(drupalorg_crosssite_child_of('node/3202') || drupalorg_crosssite_child_of('node/18753') || drupalorg_crosssite_child_of('node/1025112') || drupalorg_crosssite_child_of('node/107028') || drupalorg_crosssite_child_of('node/651778'))),
+        'drupalorg-faq' => array('title' => t('About Drupal.org'), 'href' => 'node/179723', '#active' => drupalorg_crosssite_child_of('node/179723')),
+        'webmasters' =>      array('title' => t('Webmasters'),       'href' => 'node/3202',   '#active' => drupalorg_crosssite_child_of('node/3202',   $vars)),
+        'documentation' =>   array('title' => t('Documentation'),    'href' => 'node/18753',  '#active' => drupalorg_crosssite_child_of('node/18753',  $vars)),
+        'projectapplications' => array('title' => t('Project Applications'), 'href' => 'node/1025112', '#active' => drupalorg_crosssite_child_of('node/1025112', $vars)),
+        'infrastructure' =>  array('title' => t('Infrastructure'),   'href' => 'node/107028', '#active' => drupalorg_crosssite_child_of('node/107028', $vars)),
+        'theme' =>           array('title' => t('Theme'),            'href' => 'node/651778', '#active' => drupalorg_crosssite_child_of('node/651778', $vars)),
       );
       break;
 
     case 'marketplace':
       $vars['section_name'] = 'Marketplace';
       $nav_content_links = array(
-        'services' => array('title' => t('Services'), 'href' => 'node/21791', '#active' => drupalorg_crosssite_child_of('main', 'drupal-services')),
-        'hosting' => array('title' => t('Hosting'), 'href' => 'hosting', '#active' => drupalorg_crosssite_child_of('main', 'hosting')),
-        'training' => array('title' => t('Training'), 'href' => 'node/313581', '#active' => drupalorg_crosssite_child_of('main', 'training-services')),
-        'marketplace-preview' => array('title' => t('Marketplace preview'), 'href' => 'marketplace-preview', '#active' => drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization') || drupalorg_crosssite_match_path('^marketplace-preview')),
+        'services' => array('title' => t('Services'), 'href' => 'node/21791', '#active' => drupalorg_crosssite_child_of('drupal-services')),
+        'hosting' => array('title' => t('Hosting'), 'href' => 'hosting', '#active' => drupalorg_crosssite_child_of('hosting')),
+        'training' => array('title' => t('Training'), 'href' => 'node/313581', '#active' => drupalorg_crosssite_child_of('training-services')),
+        'marketplace-preview' => array('title' => t('Marketplace preview'), 'href' => 'marketplace-preview', '#active' => drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('node/add/organization') || drupalorg_crosssite_match_path('^marketplace-preview')),
       );
       break;
 
@@ -324,7 +324,7 @@ function drupalorg_crosssite_section() {
         if (drupalorg_crosssite_match_path('^(user/' . $user->uid . '(/|$)|project(/issues)?/user$)')) {
           $section = 'dashboard';
         }
-        elseif (drupalorg_crosssite_child_of('main', 'node/179723') || (drupalorg_crosssite_child_of('main', 'project/drupal.org projects') && !drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID))) {
+        elseif (drupalorg_crosssite_child_of('node/179723') || (drupalorg_crosssite_child_of('project/drupal.org projects') && !drupalorg_crosssite_child_of('node/' . DRUPALORG_CORE_NID))) {
           $section = 'drupalorg';
         }
         elseif (drupalorg_crosssite_match_path('^(project|download|list-changes|list-change-updates)(/|$)') || drupalorg_crosssite_match_path('^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_match_path('^node/add/project-issue') || drupalorg_crosssite_menu_type('main', array('project_project', 'project_issue', 'project_release', 'changenotice'))) {
@@ -333,13 +333,13 @@ function drupalorg_crosssite_section() {
         elseif (drupalorg_crosssite_match_path('^security(|/contrib|/psa)$') || drupalorg_crosssite_menu_term('main', array(1852, 44, 1856))) {
           $section = 'security';
         }
-        elseif (drupalorg_crosssite_match_path('^(irc|mailing-lists|profile|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('main', 'forum') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_child_of('main', 'node/281873')) {
+        elseif (drupalorg_crosssite_match_path('^(irc|mailing-lists|profile|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('forum') || drupalorg_crosssite_menu_type('main', array('forum')) || drupalorg_crosssite_child_of('node/281873')) {
           $section = 'community';
         }
-        elseif (drupalorg_crosssite_child_of('main', 'node/366') || drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization') || drupalorg_crosssite_match_path('^(marketplace-preview|hosting)')) {
+        elseif (drupalorg_crosssite_child_of('node/366') || drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('node/add/organization') || drupalorg_crosssite_match_path('^(marketplace-preview|hosting)')) {
           $section = 'marketplace';
         }
-        elseif (((isset($node) && isset($node->book['bid'])) || drupalorg_crosssite_match_path('^(handbook|documentation)')) && !(drupalorg_crosssite_child_of('main', 'node/1') || drupalorg_crosssite_child_of('main', 'node/909476'))) {
+        elseif (((isset($node) && isset($node->book['bid'])) || drupalorg_crosssite_match_path('^(handbook|documentation)')) && !(drupalorg_crosssite_child_of('node/1') || drupalorg_crosssite_child_of('node/909476'))) {
           $section = 'documentation';
         }
         elseif (drupalorg_crosssite_match_path('^user(/|$)')) {
@@ -362,8 +362,8 @@ function drupalorg_crosssite_section() {
 
 // == API functions ============================================================
 
-function drupalorg_crosssite_child_of($site_key, $path, &$vars = NULL) {
-  return drupalorg_crosssite_is_site($site_key) && (drupalorg_crosssite_match_path('^(' . $path . '|' . drupal_get_path_alias($path) . ')(/|$)') || drupalorg_crosssite_in_breadcrumb($path, $vars));
+function drupalorg_crosssite_child_of($path, &$vars = NULL) {
+  return drupalorg_crosssite_match_path('^(' . $path . '|' . drupal_get_path_alias($path) . ')(/|$)') || drupalorg_crosssite_in_breadcrumb($path, $vars);
 }
 
 /**
