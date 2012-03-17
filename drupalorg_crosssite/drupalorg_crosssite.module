@@ -54,9 +54,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       'marketplace'     => array('href' => 'drupal-services', 'title' => t('Marketplace'),         '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
       'about'           => array('href' => 'about',           'title' => t('About'),               '#site' => 'main', 'attributes' => array('title' => t('About Drupal'))),
     )), array());
-    $nav_masthead_links['homepage'] = array('href' => 'home', 'title' => t('Drupal Homepage'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^(home|)/?$'));
+    $nav_masthead_links['homepage'] = array('href' => 'home', 'title' => t('Drupal Homepage'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && drupalorg_crosssite_match_path('^(home|)/?$'));
     if (user_is_logged_in()) {
-      $nav_masthead_links['dashboard'] = array('href' => 'user/' . drupalorg_crossite_bakery_master_uid() . '/dashboard', 'title' => t('Your Dashboard'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^user/[0-9]+/dashboard(/|$)'));
+      $nav_masthead_links['dashboard'] = array('href' => 'user/' . drupalorg_crossite_bakery_master_uid() . '/dashboard', 'title' => t('Your Dashboard'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && drupalorg_crosssite_match_path('^user/[0-9]+/dashboard(/|$)'));
     }
   }
   $vars['nav_masthead'] = theme('links', drupalorg_crosssite_menu_absolute_links($nav_masthead_links), array());
@@ -122,7 +122,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     case 'documentation':
       $vars['section_name'] = 'Community Documentation';
       $nav_content_links = array(
-        'home' => array('href' => 'node/26419', 'title' => t('Community Docs Home'), '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_menu_path('main', '^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_child_of('main', 'node/251019') && !drupalorg_crosssite_child_of('main', 'node/627152')),
+        'home' => array('href' => 'node/26419', 'title' => t('Community Docs Home'), '#active' => (drupalorg_crosssite_menu_type('main', array('book')) || drupalorg_crosssite_match_path('^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_child_of('main', 'node/251019') && !drupalorg_crosssite_child_of('main', 'node/627152')),
         'install' => array('href' => 'node/251019', 'title' => t('Installation Guide'), '#active' => drupalorg_crosssite_child_of('main', 'node/251019')),
         'admin' => array('href' => 'node/627152', 'title' => t('Administration Guide'), '#active' => drupalorg_crosssite_child_of('main', 'node/627152')),
       );
@@ -133,10 +133,10 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       $nav_content_links = array(
         'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
         'core'         => array('href' => 'node/' . DRUPALORG_CORE_NID, 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_child_of('main', 'node/' . DRUPALORG_CORE_NID, $vars) || drupalorg_crosssite_child_of('main', 'project/drupal core', $vars), '#site' => 'main'),
-        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_in_breadcrumb('main', 'project/modules', $vars) || drupalorg_crosssite_menu_path('main', '^project/modules')),
+        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && (drupalorg_crosssite_in_breadcrumb('main', 'project/modules', $vars) || drupalorg_crosssite_match_path('^project/modules'))),
         'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_child_of('main', 'project/themes', $vars) || drupalorg_crosssite_child_of('main', 'project/theme engines', $vars)),
         'translations' => array('href' => '<front>', 'title' => t('Translations'), '#site' => 'localize', '#active' => drupalorg_crosssite_is_site('localize') || drupalorg_crosssite_in_breadcrumb('main', 'project/translations', $vars)),
-        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', '#active' => drupalorg_crosssite_menu_path('main', '^project/installation profiles') || drupalorg_crosssite_in_breadcrumb('main', 'project/installation profiles', $vars)),
+        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && (drupalorg_crosssite_match_path('^project/installation profiles') || drupalorg_crosssite_in_breadcrumb('main', 'project/installation profiles', $vars))),
       );
       break;
 
@@ -144,10 +144,10 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       $vars['section_name'] = 'Community';
       $nav_content_links = array(
         'home' => array('href' => 'community', 'title' => t('Community Home')),
-        'getting-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#active' => drupalorg_crosssite_menu_path('main', '^(getting-involved|community-spotlight)(/|$)') || (drupalorg_crosssite_child_of('main', 'node/281873') && !drupalorg_crosssite_menu_path('main', '^irc(/|$)') && !drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)'))),
-        'chat' => array('href' => 'irc', 'title' => t('Chat'), '#active' => drupalorg_crosssite_menu_path('main', '^irc(/|$)')),
-        'lists' => array('href' => 'mailing-lists', 'title' => t('Mailing Lists'), '#active' => drupalorg_crosssite_menu_path('main', '^mailing-lists(/|$)')),
-        'members' => array('href' => 'profile', 'title' => t('Member Directory'), '#active' => drupalorg_crosssite_menu_path('main', '^profile(/|$)'), '#title_match' => 'q'),
+        'getting-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#active' => drupalorg_crosssite_match_path('^(getting-involved|community-spotlight)(/|$)') || (drupalorg_crosssite_child_of('main', 'node/281873') && !drupalorg_crosssite_match_path('^irc(/|$)') && !drupalorg_crosssite_match_path('^mailing-lists(/|$)'))),
+        'chat' => array('href' => 'irc', 'title' => t('Chat'), '#active' => drupalorg_crosssite_match_path('^irc(/|$)')),
+        'lists' => array('href' => 'mailing-lists', 'title' => t('Mailing Lists'), '#active' => drupalorg_crosssite_match_path('^mailing-lists(/|$)')),
+        'members' => array('href' => 'profile', 'title' => t('Member Directory'), '#active' => drupalorg_crosssite_match_path('^profile(/|$)'), '#title_match' => 'q'),
         'forum' => array('href' => 'forum', 'title' => t('Forum'), '#active' => drupalorg_crosssite_in_breadcrumb('main', 'forum', $vars), '#title_match' => 'q'),
       );
       break;
@@ -157,11 +157,11 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       $code_item = menu_get_item('user/' . $user->uid . '/track/code');
       $nav_content_links = array(
         'your-dashboard' => array('title' => t('Dashboard'), 'href' => 'user/' . $user->uid . '/dashboard'),
-        'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track$')),
-        'commits' => array('title' => t('Your Commits'), 'href' => 'user/' . $user->uid . '/track/code', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '/track/code'), '#enabled' => $code_item['access']),
+        'your-posts' => array('title' => t('Your Posts'), 'href' => 'user/' . $user->uid . '/track', '#active' => drupalorg_crosssite_match_path('^user/' . $user->uid . '/track$')),
+        'commits' => array('title' => t('Your Commits'), 'href' => 'user/' . $user->uid . '/track/code', '#active' => drupalorg_crosssite_match_path('^user/' . $user->uid . '/track/code'), '#enabled' => $code_item['access']),
         'your-issues' => array('title' => t('Your Issues'), 'href' => 'project/issues/user'),
         'your-projects' => array('title' => t('Your Projects'), 'href' => 'project/user'),
-        'your-profile' => array('title' => t('Profile'), 'href' => 'user/' . $user->uid, '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $user->uid . '(?!/(dashboard|track))')),
+        'your-profile' => array('title' => t('Profile'), 'href' => 'user/' . $user->uid, '#active' => drupalorg_crosssite_match_path('^user/' . $user->uid . '(?!/(dashboard|track))')),
       );
       break;
 
@@ -170,9 +170,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
         $account = user_load(arg(1));
         $code_item = menu_get_item('user/' . $account->uid . '/track/code');
         $nav_content_links = array(
-          'user-profile' => array('title' => t('Profile'), 'href' => 'user/' . $account->uid, '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '(?!/(dashboard|track))')),
-          'posts' => array('title' => t('Posts'), 'href' => 'user/' . $account->uid . '/track', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track$')),
-          'commits' => array('title' => t('Commits'), 'href' => 'user/' . $account->uid . '/track/code', '#active' => drupalorg_crosssite_menu_path('main', '^user/' . $account->uid . '/track/code'), '#enabled' => $code_item['access']),
+          'user-profile' => array('title' => t('Profile'), 'href' => 'user/' . $account->uid, '#active' => drupalorg_crosssite_match_path('^user/' . $account->uid . '(?!/(dashboard|track))')),
+          'posts' => array('title' => t('Posts'), 'href' => 'user/' . $account->uid . '/track', '#active' => drupalorg_crosssite_match_path('^user/' . $account->uid . '/track$')),
+          'commits' => array('title' => t('Commits'), 'href' => 'user/' . $account->uid . '/track/code', '#active' => drupalorg_crosssite_match_path('^user/' . $account->uid . '/track/code'), '#enabled' => $code_item['access']),
         );
       }
       break;
@@ -197,7 +197,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
         'services' => array('title' => t('Services'), 'href' => 'node/21791', '#active' => drupalorg_crosssite_child_of('main', 'drupal-services')),
         'hosting' => array('title' => t('Hosting'), 'href' => 'hosting', '#active' => drupalorg_crosssite_child_of('main', 'hosting')),
         'training' => array('title' => t('Training'), 'href' => 'node/313581', '#active' => drupalorg_crosssite_child_of('main', 'training-services')),
-        'marketplace-preview' => array('title' => t('Marketplace preview'), 'href' => 'marketplace-preview', '#active' => drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization') || drupalorg_crosssite_menu_path('main', '^marketplace-preview')),
+        'marketplace-preview' => array('title' => t('Marketplace preview'), 'href' => 'marketplace-preview', '#active' => drupalorg_crosssite_menu_type('main', array('organization')) || drupalorg_crosssite_child_of('main', 'node/add/organization') || drupalorg_crosssite_match_path('^marketplace-preview')),
       );
       break;
 
@@ -363,7 +363,7 @@ function drupalorg_crosssite_section() {
 // == API functions ============================================================
 
 function drupalorg_crosssite_child_of($site_key, $path, &$vars = NULL) {
-  return drupalorg_crosssite_menu_path($site_key, '^(' . $path . '|' . drupal_get_path_alias($path) . ')(/|$)') || drupalorg_crosssite_in_breadcrumb($site_key, $path, $vars);
+  return drupalorg_crosssite_is_site($site_key) && (drupalorg_crosssite_match_path('^(' . $path . '|' . drupal_get_path_alias($path) . ')(/|$)') || drupalorg_crosssite_in_breadcrumb($site_key, $path, $vars));
 }
 
 /**
@@ -466,21 +466,6 @@ function drupalorg_crosssite_menu_term($site_key, $node_tids) {
 }
 
 /**
- * Check whether we are viewing any of the specified paths on the given site.
- *
- * @param $site_key
- *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
- * @param $path_regex
- *   A Per regular expression to match against the current path.
- * @return
- *   TRUE if on the site specified by $site_key, looking at a path matching
- *   $path_regex.
- */
-function drupalorg_crosssite_menu_path($site_key, $path_regex) {
-  return drupalorg_crosssite_is_site($site_key) && drupalorg_crosssite_match_path($path_regex);
-}
-
-/**
  * Check if the current path alias matches a regular expression.
  *
  * @param $path_regex
@@ -501,7 +486,7 @@ function drupalorg_crosssite_match_path($path_regex) {
  *   the link to and whether the item is active.
  *    - For possible #site values, see drupalorg_crosssite_menu_sites().
  *    - #active can be built with functions like
- *      drupalorg_crosssite_menu_path(), drupalorg_crosssite_is_site(), and
+ *      drupalorg_crosssite_match_path(), drupalorg_crosssite_is_site(), and
  *      drupalorg_crosssite_menu_type(). If the link will be local, you can use
  *      local checks.
  *
