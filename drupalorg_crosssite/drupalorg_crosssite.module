@@ -46,13 +46,13 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     // Hardcoded list of menu items. These are not supposed to have any indication
     // of the active item, since the page title and submenus have that indication.
     $vars['nav_header'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
-      'getting-started' => array('href' => 'start',           'title' => t('Get Started'),         '#site' => 'main', 'attributes' => array('title' => t('Getting Started with Drupal'))),
-      'community'       => array('href' => 'community', 'title' => t('Community'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community'))),
-      'handbooks'       => array('href' => 'documentation',   'title' => t('Documentation'),       '#site' => 'main', 'attributes' => array('title' => t('Drupal Documentation'))),
-      'support'         => array('href' => 'support', 'title' => t('Support'), '#site' => 'main', 'attributes' => array('title' => t('Support for using Drupal'))),
-      'project'         => array('href' => 'download',        'title' => t('Download & Extend'),   '#site' => 'main', 'attributes' => array('title' => t('Download and Extend Drupal'))),
-      'marketplace'     => array('href' => 'drupal-services', 'title' => t('Marketplace'),         '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
-      'about'           => array('href' => 'about',           'title' => t('About'),               '#site' => 'main', 'attributes' => array('title' => t('About Drupal'))),
+      'getting-started' => array('href' => 'start', 'title' => t('Get Started'), '#site' => 'main', 'attributes' => array('title' => t('Getting Started with Drupal'))),
+      'community' => array('href' => 'community', 'title' => t('Community'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Community'))),
+      'handbooks' => array('href' => 'documentation', 'title' => t('Documentation'), '#site' => 'main', 'attributes' => array('title' => t('Drupal Documentation'))),
+      'support' => array('href' => 'support', 'title' => t('Support'), '#site' => 'main', 'attributes' => array('title' => t('Support for using Drupal'))),
+      'project' => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main', 'attributes' => array('title' => t('Download and Extend Drupal'))),
+      'marketplace' => array('href' => 'drupal-services', 'title' => t('Marketplace'), '#site' => 'main', 'attributes' => array('title' => t('Buy Drupal Products and Services'))),
+      'about' => array('href' => 'about', 'title' => t('About'), '#site' => 'main', 'attributes' => array('title' => t('About Drupal'))),
     )), array());
     $nav_masthead_links['homepage'] = array('href' => 'home', 'title' => t('Drupal Homepage'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && drupalorg_crosssite_match_path('^(home|)/?$'));
     if (user_is_logged_in()) {
@@ -74,37 +74,37 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   unset($nav_footer['#prefix']);
   unset($nav_footer['#suffix']);
   $nav_footer['column_1']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
-    'news'        => array('href' => 'news', 'title' => t('Drupal News'), '#site' => 'main'),
-    'planet'      => array('href' => 'planet', 'title' => t('Planet Drupal'), '#site' => 'main', 'attributes' => array('title' => t('News from Drupal community members'))),
+    'news' => array('href' => 'news', 'title' => t('Drupal News'), '#site' => 'main'),
+    'planet' => array('href' => 'planet', 'title' => t('Planet Drupal'), '#site' => 'main', 'attributes' => array('title' => t('News from Drupal community members'))),
     'association' => array('href' => 'news', 'title' => t('Association News'), '#site' => 'association', 'attributes' => array('title' => t('News from association.drupal.org'))),
-    'security'  => array('href' => 'security', 'title' => t('Security Announcements'), '#site' => 'main', 'attributes' => array('title' => t('Advisories from the security team'))),
-    'jobs'        => array('href' => 'jobs', 'title' => t('Jobs'), '#site' => 'groups', 'attributes' => array('title' => t('Jobs posted on groups.drupal.org'))),
+    'security' => array('href' => 'security', 'title' => t('Security Announcements'), '#site' => 'main', 'attributes' => array('title' => t('Advisories from the security team'))),
+    'jobs' => array('href' => 'jobs', 'title' => t('Jobs'), '#site' => 'groups', 'attributes' => array('title' => t('Jobs posted on groups.drupal.org'))),
   )), array());
   $nav_footer['column_2']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
-    'community'   => array('href' => 'community', 'title' => t('Community'), '#site' => 'main'),
-    'get-involved'    => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main', 'attributes' => array('title' => t('Learn how to contribute to the Drupal project'))),
-    'marketplace'   => array('href' => 'drupal-services', 'title' => t('Services, Training & Hosting'), '#site' => 'main', 'attributes' => array('title' => t('People and organizations offering Drupal services'))),
+    'community' => array('href' => 'community', 'title' => t('Community'), '#site' => 'main'),
+    'get-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main', 'attributes' => array('title' => t('Learn how to contribute to the Drupal project'))),
+    'marketplace' => array('href' => 'drupal-services', 'title' => t('Services, Training & Hosting'), '#site' => 'main', 'attributes' => array('title' => t('People and organizations offering Drupal services'))),
     'groups' => array('href' => 'groups', 'title' => t('Groups & Meetups'), '#site' => 'groups', 'attributes' => array('title' => t('groups.drupal.org'))),
-    'drupalcon'   => array('href' => 'drupalcon', 'title' => t('DrupalCon'), '#site' => 'main', 'attributes' => array('title' => t('Upcoming and past DrupalCons'))),
+    'drupalcon' => array('href' => 'drupalcon', 'title' => t('DrupalCon'), '#site' => 'main', 'attributes' => array('title' => t('Upcoming and past DrupalCons'))),
   )), array());
   $nav_footer['column_3']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
     'get-started' => array('href' => 'start', 'title' => t('Get Started'), '#site' => 'main'),
     'docs' => array('href' => 'documentation', 'title' => t('Documentation Home'), '#site' => 'main', 'attributes' => array('title' => t('Guidebooks and documentation for working with Drupal'))),
     'install' => array('href' => 'documentation/install', 'title' => t('Installation Guide'), '#site' => 'main', 'attributes' => array('title' => t('Guide for installing Drupal'))),
     'site-building' => array('href' => 'documentation/build', 'title' => t('Site Building Guide'), '#site' => 'main', 'attributes' => array('title' => t('Guide for building and extending Drupal sites'))),
-    'help'   => array('href' => 'support', 'title' => t('Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal support options'))),
+    'help' => array('href' => 'support', 'title' => t('Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal support options'))),
     'api' => array('href' => '', 'title' => t('api.drupal.org'), '#site' => 'api', 'attributes' => array('title' => t('Drupal API Reference'))),
   )), array());
   $nav_footer['column_4']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
-    'download'          => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
-    'download-core'     => array('href' => 'project/drupal', 'title' => t('Drupal Core'), '#site' => 'main', 'attributes' => array('title' => t('Download the latest version of the Drupal software'))),
-    'download-modules'  => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', 'attributes' => array('title' => t('Download add-on features and functionality'))),
-    'download-themes'   => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', 'attributes' => array('title' => t('Download pre-designed styles for Drupal'))),
+    'download' => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
+    'download-core' => array('href' => 'project/drupal', 'title' => t('Drupal Core'), '#site' => 'main', 'attributes' => array('title' => t('Download the latest version of the Drupal software'))),
+    'download-modules' => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', 'attributes' => array('title' => t('Download add-on features and functionality'))),
+    'download-themes' => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', 'attributes' => array('title' => t('Download pre-designed styles for Drupal'))),
     'download-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', 'attributes' => array('title' => t('Download a pre-packaged Drupal site'))),
   )), array());
   $nav_footer['column_5']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
-    'about'      => array('href' => 'about', 'title' => t('About'), '#site' => 'main'),
-    'druplicon'   => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main', 'attributes' => array('title' => t('Drupal’s mascot'))),
+    'about' => array('href' => 'about', 'title' => t('About'), '#site' => 'main'),
+    'druplicon' => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main', 'attributes' => array('title' => t('Drupal’s mascot'))),
     'association-about' => array('href' => 'about', 'title' => t('The Drupal Association'), '#site' => 'association', 'attributes' => array('title' => t('About the Drupal Association'))),
     'advertise' => array('href' => 'advertising', 'title' => t('Advertise'), '#site' => 'association', 'attributes' => array('title' => t('How to advertise on Drupal.org'))),
     'drupalorg' => array('href' => 'node/179723', 'title' => t('About Drupal.org'), '#site' => 'main', 'attributes' => array('title' => t('About Drupal.org'))),
@@ -131,10 +131,10 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     case 'downloads':
       $vars['section_name'] = 'Download &amp; Extend';
       $nav_content_links = array(
-        'home'         => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
-        'core'         => array('href' => 'node/' . DRUPALORG_CORE_NID, 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_is_site('main') && (drupalorg_crosssite_child_of('node/' . DRUPALORG_CORE_NID, $vars) || drupalorg_crosssite_child_of('project/drupal core', $vars), '#site' => 'main')),
-        'modules'      => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && drupalorg_crosssite_child_of('project/modules', $vars)),
-        'themes'       => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && (drupalorg_crosssite_child_of('project/themes', $vars) || drupalorg_crosssite_child_of('project/theme engines', $vars))),
+        'home' => array('href' => 'download', 'title' => t('Download & Extend Home'), '#site' => 'main'),
+        'core' => array('href' => 'node/' . DRUPALORG_CORE_NID, 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_is_site('main') && (drupalorg_crosssite_child_of('node/' . DRUPALORG_CORE_NID, $vars) || drupalorg_crosssite_child_of('project/drupal core', $vars), '#site' => 'main')),
+        'modules' => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && drupalorg_crosssite_child_of('project/modules', $vars)),
+        'themes' => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && (drupalorg_crosssite_child_of('project/themes', $vars) || drupalorg_crosssite_child_of('project/theme engines', $vars))),
         'translations' => array('href' => '<front>', 'title' => t('Translations'), '#site' => 'localize', '#active' => drupalorg_crosssite_is_site('localize') || (drupalorg_crosssite_is_site('main') && drupalorg_crosssite_in_breadcrumb('project/translations', $vars))),
         'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', '#active' => drupalorg_crosssite_is_site('main') && drupalorg_crosssite_child_of('project/installation profiles', $vars)),
       );
@@ -183,11 +183,11 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
         // query may be removed with #910442 and/or #1019300.
         'home' => array('title' => t('Drupal.org Projects'), 'href' => 'project/drupal.org projects', 'query' => array('filters' => 'bs_project_sandbox:[* TO *]'), '#active' => drupalorg_crosssite_child_of('project/drupal.org projects', $vars) && !(drupalorg_crosssite_child_of('node/3202') || drupalorg_crosssite_child_of('node/18753') || drupalorg_crosssite_child_of('node/1025112') || drupalorg_crosssite_child_of('node/107028') || drupalorg_crosssite_child_of('node/651778'))),
         'drupalorg-faq' => array('title' => t('About Drupal.org'), 'href' => 'node/179723', '#active' => drupalorg_crosssite_child_of('node/179723')),
-        'webmasters' =>      array('title' => t('Webmasters'),       'href' => 'node/3202',   '#active' => drupalorg_crosssite_child_of('node/3202',   $vars)),
-        'documentation' =>   array('title' => t('Documentation'),    'href' => 'node/18753',  '#active' => drupalorg_crosssite_child_of('node/18753',  $vars)),
+        'webmasters' => array('title' => t('Webmasters'), 'href' => 'node/3202', '#active' => drupalorg_crosssite_child_of('node/3202', $vars)),
+        'documentation' => array('title' => t('Documentation'), 'href' => 'node/18753', '#active' => drupalorg_crosssite_child_of('node/18753', $vars)),
         'projectapplications' => array('title' => t('Project Applications'), 'href' => 'node/1025112', '#active' => drupalorg_crosssite_child_of('node/1025112', $vars)),
-        'infrastructure' =>  array('title' => t('Infrastructure'),   'href' => 'node/107028', '#active' => drupalorg_crosssite_child_of('node/107028', $vars)),
-        'theme' =>           array('title' => t('Theme'),            'href' => 'node/651778', '#active' => drupalorg_crosssite_child_of('node/651778', $vars)),
+        'infrastructure' => array('title' => t('Infrastructure'), 'href' => 'node/107028', '#active' => drupalorg_crosssite_child_of('node/107028', $vars)),
+        'theme' => array('title' => t('Theme'), 'href' => 'node/651778', '#active' => drupalorg_crosssite_child_of('node/651778', $vars)),
       );
       break;
 
@@ -396,13 +396,13 @@ function drupalorg_crosssite_in_breadcrumb($path, &$vars = NULL) {
 function drupalorg_crosssite_menu_sites() {
   $base_domain = variable_get('drupalorg_base_domain', 'drupal.org');
   return array(
-    'main'        => $base_domain,
-    'api'         => 'api.' . $base_domain,
+    'main' => $base_domain,
+    'api' => 'api.' . $base_domain,
     'association' => 'association.' . $base_domain,
-    'groups'      => 'groups.' . $base_domain,
-    'localize'    => 'localize.' . $base_domain,
+    'groups' => 'groups.' . $base_domain,
+    'localize' => 'localize.' . $base_domain,
     'chicago2011' => 'chicago2011.' . $base_domain,
-    'london2011'  => 'london2011.' . $base_domain,
+    'london2011' => 'london2011.' . $base_domain,
   );
 }
 
