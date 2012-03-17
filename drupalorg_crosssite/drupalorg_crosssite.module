@@ -204,9 +204,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     case 'security':
       $vars['section_name'] = 'Security advisories';
       $nav_content_links = array(
-        'core' => array('title' => t('Drupal core'), 'href' => 'security', '#active' => drupalorg_crosssite_menu_term('main', array(1852))),
-        'contrib' => array('title' => t('Contributed projects'), 'href' => 'security/contrib', '#active' => drupalorg_crosssite_menu_term('main', array(44))),
-        'psa' => array('title' => t('Public service announcements'), 'href' => 'security/psa', '#active' => drupalorg_crosssite_menu_term('main', array(1856))),
+        'core' => array('title' => t('Drupal core'), 'href' => 'security', '#active' => drupalorg_crosssite_has_term(array(1852))),
+        'contrib' => array('title' => t('Contributed projects'), 'href' => 'security/contrib', '#active' => drupalorg_crosssite_has_term(array(44))),
+        'psa' => array('title' => t('Public service announcements'), 'href' => 'security/psa', '#active' => drupalorg_crosssite_has_term(array(1856))),
       );
       break;
 
@@ -330,7 +330,7 @@ function drupalorg_crosssite_section() {
         elseif (drupalorg_crosssite_match_path('^(project|download|list-changes|list-change-updates)(/|$)') || drupalorg_crosssite_match_path('^node/\d+/(release|committers|maintainers)') || drupalorg_crosssite_match_path('^node/add/project-issue') || drupalorg_crosssite_is_type(array('project_project', 'project_issue', 'project_release', 'changenotice'))) {
           $section = 'downloads';
         }
-        elseif (drupalorg_crosssite_match_path('^security(|/contrib|/psa)$') || drupalorg_crosssite_menu_term('main', array(1852, 44, 1856))) {
+        elseif (drupalorg_crosssite_match_path('^security(|/contrib|/psa)$') || drupalorg_crosssite_has_term(array(1852, 44, 1856))) {
           $section = 'security';
         }
         elseif (drupalorg_crosssite_match_path('^(irc|mailing-lists|profile|community|getting-involved|community-spotlight)(/|$)') || drupalorg_crosssite_child_of('forum') || drupalorg_crosssite_is_type(array('forum')) || drupalorg_crosssite_child_of('node/281873')) {
@@ -431,8 +431,7 @@ function drupalorg_crosssite_is_site($site_key) {
  * @param $node_types
  *   An array of possible node types to check for.
  * @return
- *   TRUE if on the site specified by $site_key, looking at a node of any of the
- *   types specified in $node_types.
+ *   TRUE for node pages of any type specified in $node_types.
  */
 function drupalorg_crosssite_is_type($node_types) {
   // menu_get_object() gets us the node, if we have a node loaded on the path.
@@ -444,17 +443,14 @@ function drupalorg_crosssite_is_type($node_types) {
 /**
  * Check whether we are viewing any of the specified node terms on the given site.
  *
- * @param $site_key
- *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
  * @param $node_tids
  *   An array of possible node term IDs to check for.
  * @return
- *   TRUE if on the site specified by $site_key, looking at a node of any of the
- *   term IDs specified in $node_tids.
+ *   TRUE for node pages with term IDs specified in $node_tids.
  */
-function drupalorg_crosssite_menu_term($site_key, $node_tids) {
+function drupalorg_crosssite_has_term($node_tids) {
   // menu_get_object() gets us the node, if we have a node loaded on the path.
-  if (drupalorg_crosssite_is_site($site_key) && ($node = menu_get_object())) {
+  if ($node = menu_get_object()) {
     return count(array_intersect(array_keys($node->taxonomy), $node_tids)) > 0;
   }
 }
