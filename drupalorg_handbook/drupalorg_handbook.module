@@ -24,9 +24,6 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
       case 263594: // Revision maintainers
         $extra = drupalorg_handbook_revision_maintainers();
         break;
-      case 23192: // Recent updates
-        $extra = drupalorg_handbook_display_recent_updates();
-        break;
     }
     $node->content['body']['#value'] .= $extra;
 
@@ -45,7 +42,7 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
     }
   }
   elseif (($op == 'update' || $op == 'insert') && !empty($node->book) && !empty($node->book['bid'])) {
-    // Remove all cached versions of recently updated data (home & node 23192).
+    // Remove all cached versions of recently updated data (home).
     cache_clear_all('drupalorg_handbook_recent_updates_', 'cache', TRUE);
   }
 }
@@ -75,15 +72,14 @@ function drupalorg_handbook_moderate_link_info($node) {
   if (!user_access('create project issues') || drupalorg_crosssite_section() !== 'documentation') {
     return NULL;
   }
-  $url = url('node/' . $node->nid, array('absolute' => TRUE));
   return array(
     'title' => t('Report to moderator'),
     'href' => 'node/add/project-issue/documentation',
     'query' => array(
       'categories' => 'task',
       'component' => 'Vandalism/Spam',
-      'title' => 'Moderation report for ' . $url,
-      'body' => 'Describe why you are reporting ' . $url . ' to moderators:',
+      'title' => t('Moderation report for !title', array('!title' => $node->title)),
+      'body' => t('I am reporting !url to moderators because:', array('!url' => url('node/' . $node->nid, array('absolute' => TRUE)))),
     ),
   );
 }
@@ -283,42 +279,6 @@ function drupalorg_handbook_get_recent_updates($limit = 50) {
 }
 
 /**
- * List most recent updates to book pages for moderation reasons.
- */
-function drupalorg_handbook_display_recent_updates() {
-  global $user;
-
-  // Represents the number of results to retrieve. Also utilized for cache field name.
-  $count = 50;
-  $key = 'drupalorg_handbook_recent_updates_' . $count . ':' . ($user->uid === 0 ? 'anon' : 'auth');
-  if ($cache = cache_get($key)) {
-    $output = $cache->data;
-  }
-  else {
-    $result = drupalorg_handbook_get_recent_updates($count);
-    while ($page = db_fetch_object($result)) {
-      $row = array(
-        l($page->title, "node/$page->nid") .' '. theme('mark', node_mark($page->nid, $page->changed)) . ($page->log ? "<br />". check_plain($page->log) : ''),
-        theme('username', $page),
-        t('%time ago', array('%time' => format_interval(time() - $page->changed))),
-      );
-      if (user_access('view revisions')) {
-        $row[] = l(t('Diff'), "node/$page->nid/revisions/view/latest");
-      }
-      $rows[] = $row;
-    }
-    $header = array('Page', 'Edited', 'Updated');
-    if (user_access('view revisions')) {
-      $header[] = 'Diff';
-    }
-
-    $output = theme('table', $header, $rows);
-    cache_set($key, $output);
-  }
-  return $output;
-}
-
-/**
  * License and quick links blocks for docs.
  */
 function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
@@ -446,11 +406,9 @@ function drupalorg_handbook_preprocess_drupalorg_home(&$vars) {
       $node->created = $node->changed;
       $recent_updates .= '<h6>'. l($node->title, 'node/'. $node->nid) .'</h6><p class="submitted">'. theme('node_submitted', $node) .'</p>';
     }
-    $recent_updates .= '<p>' . l(t('More updates…'), 'handbook/updates') .'</p>';
+    $recent_updates .= '<p>' . l(t('More documentation…'), 'documentation') . '</p>';
     cache_set('drupalorg_handbook_recent_updates_' . $count, $recent_updates);
   }
-  // We have no place to link this to in a nice way.
-  // $fresh_news .= '<p>'. l(t('More documentation updates...'), '...') .'</p>';
   $vars['tab_content_docs'] = $recent_updates;
 }
 
