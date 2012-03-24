@@ -11,22 +11,23 @@ function drupalorg_case_studies_views_default_views() {
   $view->name = 'drupalorg_casestudies';
   $view->description = 'List of case studies';
   $view->tag = '';
-  $view->view_php = '';
   $view->base_table = 'node';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
+  $view->core = 0;
+  $view->api_version = '2';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'Defaults', 'default');
   $handler->override_option('fields', array(
     'title' => array(
       'label' => '',
       'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
+        'alter_text' => 1,
+        'text' => '<h2>[title]</h2>',
         'make_link' => 0,
         'path' => '',
+        'absolute' => 0,
         'link_class' => '',
         'alt' => '',
+        'rel' => '',
         'prefix' => '',
         'suffix' => '',
         'target' => '',
@@ -41,22 +42,25 @@ function drupalorg_case_studies_views_default_views() {
       'empty' => '',
       'hide_empty' => 0,
       'empty_zero' => 0,
-      'link_to_node' => 0,
+      'hide_alter_empty' => 1,
+      'link_to_node' => 1,
       'exclude' => 0,
       'id' => 'title',
       'table' => 'node',
       'field' => 'title',
       'relationship' => 'none',
     ),
-    'field_overview_value' => array(
+    'field_mainimage_fid' => array(
       'label' => '',
       'alter' => array(
         'alter_text' => 0,
         'text' => '',
         'make_link' => 0,
         'path' => '',
+        'absolute' => 0,
         'link_class' => '',
         'alt' => '',
+        'rel' => '',
         'prefix' => '',
         'suffix' => '',
         'target' => '',
@@ -71,9 +75,10 @@ function drupalorg_case_studies_views_default_views() {
       'empty' => '',
       'hide_empty' => 0,
       'empty_zero' => 0,
+      'hide_alter_empty' => 1,
       'link_to_node' => 0,
       'label_type' => 'none',
-      'format' => 'default',
+      'format' => 'grid-3_linked',
       'multiple' => array(
         'group' => TRUE,
         'multiple_number' => '',
@@ -81,20 +86,22 @@ function drupalorg_case_studies_views_default_views() {
         'multiple_reversed' => FALSE,
       ),
       'exclude' => 0,
-      'id' => 'field_overview_value',
-      'table' => 'node_data_field_overview',
-      'field' => 'field_overview_value',
+      'id' => 'field_mainimage_fid',
+      'table' => 'node_data_field_mainimage',
+      'field' => 'field_mainimage_fid',
       'relationship' => 'none',
     ),
-    'field_images_fid' => array(
-      'label' => '',
+    'tid' => array(
+      'label' => 'Type',
       'alter' => array(
         'alter_text' => 0,
         'text' => '',
         'make_link' => 0,
         'path' => '',
+        'absolute' => 0,
         'link_class' => '',
         'alt' => '',
+        'rel' => '',
         'prefix' => '',
         'suffix' => '',
         'target' => '',
@@ -109,23 +116,49 @@ function drupalorg_case_studies_views_default_views() {
       'empty' => '',
       'hide_empty' => 0,
       'empty_zero' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'grid-3_linked',
-      'multiple' => array(
-        'group' => 1,
-        'multiple_number' => '1',
-        'multiple_from' => '1',
-        'multiple_reversed' => 0,
+      'hide_alter_empty' => 1,
+      'type' => 'separator',
+      'separator' => ', ',
+      'link_to_taxonomy' => 1,
+      'limit' => 0,
+      'vids' => array(
+        1 => 0,
+        5 => 0,
+        38 => 0,
+        54 => 0,
+        56 => 0,
+        6 => 0,
+        4 => 0,
+        44 => 0,
+        46 => 0,
+        3 => 0,
+        48 => 0,
+        50 => 0,
+        52 => 0,
+        58 => 0,
+        7 => 0,
+        2 => 0,
+        31 => 0,
+        32 => 0,
+        33 => 0,
+        34 => 0,
+        9 => 0,
       ),
       'exclude' => 0,
-      'id' => 'field_images_fid',
-      'table' => 'node_data_field_images',
-      'field' => 'field_images_fid',
+      'id' => 'tid',
+      'table' => 'term_node',
+      'field' => 'tid',
       'relationship' => 'none',
     ),
   ));
   $handler->override_option('sorts', array(
+    'promote' => array(
+      'order' => 'DESC',
+      'id' => 'promote',
+      'table' => 'node',
+      'field' => 'promote',
+      'relationship' => 'none',
+    ),
     'created' => array(
       'order' => 'DESC',
       'granularity' => 'hour',
@@ -158,18 +191,18 @@ function drupalorg_case_studies_views_default_views() {
       'field' => 'tid',
       'validate_user_argument_type' => 'uid',
       'validate_user_roles' => array(
-        '2' => 0,
-        '18' => 0,
-        '3' => 0,
-        '5' => 0,
-        '16' => 0,
-        '22' => 0,
-        '20' => 0,
-        '24' => 0,
-        '12' => 0,
-        '4' => 0,
-        '14' => 0,
-        '7' => 0,
+        2 => 0,
+        18 => 0,
+        3 => 0,
+        5 => 0,
+        16 => 0,
+        22 => 0,
+        20 => 0,
+        24 => 0,
+        12 => 0,
+        4 => 0,
+        14 => 0,
+        7 => 0,
       ),
       'relationship' => 'none',
       'default_options_div_prefix' => '',
@@ -193,24 +226,24 @@ function drupalorg_case_studies_views_default_views() {
       'validate_argument_node_access' => 0,
       'validate_argument_nid_type' => 'nid',
       'validate_argument_vocabulary' => array(
-        '50' => 50,
-        '1' => 0,
-        '5' => 0,
-        '38' => 0,
-        '6' => 0,
-        '4' => 0,
-        '44' => 0,
-        '46' => 0,
-        '3' => 0,
-        '48' => 0,
-        '52' => 0,
-        '7' => 0,
-        '2' => 0,
-        '31' => 0,
-        '32' => 0,
-        '33' => 0,
-        '34' => 0,
-        '9' => 0,
+        50 => 50,
+        1 => 0,
+        5 => 0,
+        38 => 0,
+        6 => 0,
+        4 => 0,
+        44 => 0,
+        46 => 0,
+        3 => 0,
+        48 => 0,
+        52 => 0,
+        7 => 0,
+        2 => 0,
+        31 => 0,
+        32 => 0,
+        33 => 0,
+        34 => 0,
+        9 => 0,
       ),
       'validate_argument_type' => 'convert',
       'validate_argument_transform' => 1,
@@ -257,22 +290,6 @@ function drupalorg_case_studies_views_default_views() {
       'field' => 'type',
       'relationship' => 'none',
     ),
-    'vid' => array(
-      'operator' => 'in',
-      'value' => array(
-        '50' => '50',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'vid',
-      'table' => 'term_data',
-      'field' => 'vid',
-      'relationship' => 'none',
-    ),
   ));
   $handler->override_option('access', array(
     'type' => 'none',
@@ -281,14 +298,22 @@ function drupalorg_case_studies_views_default_views() {
     'type' => 'none',
   ));
   $handler->override_option('title', 'Drupal Case Studies');
+  $handler->override_option('css_class', 'drupalorg-grid-2 drupalorg-3-col');
   $handler->override_option('use_pager', '1');
   $handler->override_option('distinct', 1);
-  $handler->override_option('row_plugin', 'node');
+  $handler->override_option('style_plugin', 'grid');
+  $handler->override_option('style_options', array(
+    'columns' => '3',
+    'alignment' => 'horizontal',
+    'fill_single_line' => 1,
+    'summary' => 'Thumbnails and descriptions of case studies',
+  ));
   $handler->override_option('row_options', array(
-    'relationship' => 'none',
-    'build_mode' => 'teaser',
-    'links' => 1,
-    'comments' => 0,
+    'inline' => array(
+      'title' => 'title',
+    ),
+    'separator' => '',
+    'hide_empty' => 0,
   ));
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->override_option('path', 'case-studies');
