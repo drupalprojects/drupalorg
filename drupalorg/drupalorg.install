@@ -818,6 +818,23 @@ function drupalorg_update_6603() {
 }
 
 /**
+ * Set nodes with Documentation input format to Filtered HTML or Full HTML instead. See http://drupal.org/node/1275424.
+ */
+function drupalorg_update_6604() {
+  $return = array();
+
+  // Set Book and Project nodes with Documentation input format to be Filtered
+  // HTML.
+  $return[] = update_sql("UPDATE {node_revisions} nr INNER JOIN {node} n ON n.vid=nr.vid SET nr.format = 1 WHERE n.type IN ('book', 'project_project') AND nr.format = 5");
+
+  // Set all other types of nodes with Documentation input format to be Full
+  // HTML.
+  $return[] = update_sql("UPDATE {node_revisions} nr INNER JOIN {node} n ON n.vid=nr.vid SET nr.format = 3 WHERE n.type NOT IN ('book', 'project_project') AND nr.format = 5");
+
+  return $return;
+}
+
+/**
  * Utility function to add permissions to certain user roles.
  */
 function _drupalorg_add_permissions($permissions) {
