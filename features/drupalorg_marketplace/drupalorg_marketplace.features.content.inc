@@ -185,14 +185,14 @@ function drupalorg_marketplace_content_default_fields() {
     'attributes' => array(
       'target' => 'default',
       'rel' => '',
-      'class' => 'website',
+      'class' => '',
       'title' => '',
     ),
     'display' => array(
       'url_cutoff' => '80',
     ),
     'url' => 0,
-    'title' => 'optional',
+    'title' => 'none',
     'title_value' => '',
     'enable_tokens' => '',
     'validate_url' => 1,
