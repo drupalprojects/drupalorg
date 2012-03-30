@@ -482,7 +482,12 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   }
 
   // Link to security handbook page.
-  $links['development']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
+  if ($node->project['sandbox']) {
+    $links['development']['links']['report_security_issue'] = l(t('Sandbox security policy'), 'security-advisory-policy');
+  }
+  else {
+    $links['development']['links']['report_security_issue'] = l(t('Report a security issue'), 'https://security.drupal.org/node/add/project-issue/' . $node->project['uri']);
+  }
 
   // Link to change records page.
   if (!empty($node->project['uri'])) {
