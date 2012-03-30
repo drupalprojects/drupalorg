@@ -93,6 +93,16 @@ function drupalorg_project_menu() {
     'access arguments'   => array('access content'),
     'type'               => MENU_SUGGESTED_ITEM,
   );
+  $items['sandbox/%/%node'] = array(
+    // Modeled on $items['node/%node'] will pass through
+    'title callback'     => 'node_page_title',
+    'title arguments'    => array(2),
+    'page callback'      => 'drupalorg_project_sandbox',
+    'page arguments'     => array(2),
+    'access callback'    => 'node_access',
+    'access arguments'   => array('view', 2),
+    'type'               => MENU_CALLBACK,
+  );
 
   return $items;
 }
@@ -1106,5 +1116,19 @@ function drupalorg_project_views_pre_render(&$view) {
         }
       }
       break;
+  }
+}
+
+/**
+ * Menu callback for serving up sandbox projects (or redirecting to full).
+ */
+function drupalorg_project_sandbox($node) {
+  // If a sandbox project, do the same as node module does for page views.
+  if (isset($node->project['sandbox']) && $node->project['sandbox']) {
+    return node_page_view($node);
+  }
+  else {
+    // Not a sandbox project, redirect to the node's usual path.
+    drupal_goto('node/' . $node->nid, NULL, NULL, 301);
   }
 }
