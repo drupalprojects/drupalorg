@@ -700,6 +700,9 @@ function drupalorg_change_notice_views_default_views() {
         'reduce_duplicates' => 0,
       ),
     ));
+  $handler->override_option('header', '<a href="/node/add/changenotice">Add new change record</a>');
+  $handler->override_option('header_format', '1');
+  $handler->override_option('header_empty', 1);
   $handler->override_option('path', 'list-changes');
   $handler->override_option('menu', array(
       'type' => 'none',
@@ -1077,7 +1080,12 @@ function drupalorg_change_notice_views_default_views() {
       'weight' => 0,
       'name' => 'navigation',
     ));
-  $handler->override_option('displays', array());
+  $handler->override_option('displays', array(
+      'page_1' => 'page_1',
+      'default' => 0,
+      'page_2' => 0,
+      'block_1' => 0,
+    ));
   $handler->override_option('sitename_title', FALSE);
 
   $views[$view->name] = $view;
