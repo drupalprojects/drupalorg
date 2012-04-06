@@ -93,6 +93,16 @@ function drupalorg_project_menu() {
     'access arguments'   => array('access content'),
     'type'               => MENU_SUGGESTED_ITEM,
   );
+  $items['sandbox/%/%node'] = array(
+    // Modeled on $items['node/%node'] will pass through
+    'title callback'     => 'node_page_title',
+    'title arguments'    => array(2),
+    'page callback'      => 'drupalorg_project_sandbox',
+    'page arguments'     => array(2),
+    'access callback'    => 'node_access',
+    'access arguments'   => array('view', 2),
+    'type'               => MENU_CALLBACK,
+  );
 
   return $items;
 }
@@ -482,7 +492,12 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   }
 
   // Link to security handbook page.
-  $links['development']['links']['report_security_issue'] = l(t('Report a security issue'), 'security-team');
+  if ($node->project['sandbox']) {
+    $links['development']['links']['report_security_issue'] = l(t('Sandbox security policy'), 'security-advisory-policy');
+  }
+  else {
+    $links['development']['links']['report_security_issue'] = l(t('Report a security issue'), 'https://security.drupal.org/node/add/project-issue/' . $node->project['uri']);
+  }
 
   // Link to change records page.
   if (!empty($node->project['uri'])) {
@@ -991,22 +1006,19 @@ function drupalorg_project_meta_data($node) {
       }
     }
     if (empty($maintenance_status)) {
-      $label = t('Maintenance status');
-      $info[$label] = '<span class="warning">' . t('Unknown') . '</span>';
+      $info[t('Maintenance status')] = '<span class="warning">' . t('Unknown') . '</span>';
     }
     if (empty($development_status) && !empty($node->versioncontrol_project['repo_id'])) {
-      $label = t('Development status');
-      $info[$label] = '<span class="warning">' . t('Unknown') . '</span>';
+      $info[t('Development status')] = '<span class="warning">' . t('Unknown') . '</span>';
     }
   }
   
   // Usage stats.
   $total_usage = project_usage_get_project_total_usage($node->nid);
   if ($total_usage) {
-    $label = t('Reported installs');
-    $info[$label] = format_plural($total_usage,
-      '<span class="count">1</span> site currently reports using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
-      '<span class="count">@count</span> sites currently report using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
+    $info[t('Reported installs')] = format_plural($total_usage,
+      '<strong>1</strong> site currently reports using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
+      '<strong>@count</strong> sites currently report using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
       array(
         '@project-type' => drupal_strtolower($project_type->label),
         '!project-shortname' => $node->project['uri'],
@@ -1014,13 +1026,18 @@ function drupalorg_project_meta_data($node) {
     );
   }
 
+  // Download stats.
+  $downloads = db_result(db_query("SELECT sum(prf.downloads) FROM {project_release_nodes} prn INNER JOIN {project_release_file} prf ON prf.nid = prn.nid WHERE prn.pid = %d", $node->nid));
+  if ($downloads > 0) {
+    $info[t('Downloads')] = number_format($downloads);
+  }
+
   // Automated tests.
   if (module_exists('pift')) {
     $has_auto_tests = db_result(db_query("SELECT pid FROM {pift_project} WHERE pid = %d", $node->nid));
     if (!empty($has_auto_tests)) {
-      $label = t('Automated tests');
       /// @todo Indicate if the tests are passing or not.
-      $info[$label] = t('Enabled');
+      $info[t('Automated tests')] = t('Enabled');
     }
   }
 
@@ -1101,5 +1118,19 @@ function drupalorg_project_views_pre_render(&$view) {
         }
       }
       break;
+  }
+}
+
+/**
+ * Menu callback for serving up sandbox projects (or redirecting to full).
+ */
+function drupalorg_project_sandbox($node) {
+  // If a sandbox project, do the same as node module does for page views.
+  if (isset($node->project['sandbox']) && $node->project['sandbox']) {
+    return node_page_view($node);
+  }
+  else {
+    // Not a sandbox project, redirect to the node's usual path.
+    drupal_goto('node/' . $node->nid, NULL, NULL, 301);
   }
 }

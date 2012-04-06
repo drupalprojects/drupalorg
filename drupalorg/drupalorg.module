@@ -294,7 +294,6 @@ function drupalorg_activity_block() {
  	$items[] = t("<strong>@commits</strong> Git commits this week", array('@commits' => $stats['number_of_git_commits']));
  	$items[] = t("<strong>@users</strong> users on drupal.org", array('@users' => $stats['number_of_users']));
  	$items[] = t("<strong>@sites</strong> sites running Drupal", array('@sites' => $stats['sites']));
- 	$items[] = t("<strong>@docs</strong> Documentation team members", array('@docs' => $stats['docs']));
  	$items[] = t("<strong>@comments</strong> comments and issue followups", array('@comments' => $stats['comments']));
 
   $output = theme('item_list', $items);
@@ -353,9 +352,6 @@ function drupalorg_get_activity($_force = FALSE){
 
     // Sites: use project API.
     $stats['sites'] = number_format(project_usage_get_project_total_usage(DRUPALORG_CORE_NID));
-
-    // Docs team: count users with role.
-    $stats['docs'] = number_format(db_result(db_query("SELECT COUNT(*) FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.rid WHERE u.status = 1 AND r.rid = 5")));
 
     // Comments: count comments.
     $stats['comments'] = number_format(db_result(db_query("SELECT COUNT(*) FROM {comments} WHERE status = 0")));

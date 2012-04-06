@@ -1,4 +1,0 @@
-name = API.Drupal.org
-description = API.Drupal.org customizations, use only on API.drupal.org.
-package = Drupal.org
-core = 6.x

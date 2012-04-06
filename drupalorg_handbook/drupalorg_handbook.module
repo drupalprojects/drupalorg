@@ -18,9 +18,6 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
       case 13355: // Site maintainers
         $extra = drupalorg_handbook_site_maintainers();
         break;
-      case 109372: // Handbook maintainers
-        $extra = drupalorg_handbook_maintainers();
-        break;
       case 263594: // Revision maintainers
         $extra = drupalorg_handbook_revision_maintainers();
         break;
@@ -197,24 +194,6 @@ function drupalorg_handbook_site_maintainers() {
     FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.uid
     WHERE r.rid = 3 OR r.rid = 4 OR r.rid = 9
     ORDER BY u.name "); // 3 = site maintainer, 4 = administrator
-  while ($account = db_fetch_object($result)) {
-    $output .= "<li>". theme('username', $account) ."</li>";
-  }
-  $output .= '</ol>';
-  return $output;
-}
-
-/**
- * List usernames with handbook maintainer role.
- */
-function drupalorg_handbook_maintainers() {
-  $output = '<p>If you are interested in helping maintain/update/correct the documentation on Drupal.org, read up on the <a href="http://drupal.org/node/24572">many ways to get involved</a>.</p>';
-  $output .= '<p>Note: Many of our <a href="/site-maintainers">site maintainers</a> also participate on the documentation team and are not listed here. Due to their broader responsibilities on drupal.org, site maintainers are listed separately.</p>';
-  $output .= '<ol>';
-  $result = db_query("SELECT DISTINCT(u.uid), u.name
-    FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.uid
-    WHERE r.rid = 5 OR r.rid = 9
-    ORDER BY u.name "); // 3 = site maintainer, 4 = administrator 5 = document maintainer
   while ($account = db_fetch_object($result)) {
     $output .= "<li>". theme('username', $account) ."</li>";
   }
