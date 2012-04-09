@@ -356,27 +356,12 @@ function drupalorg_get_activity($_force = FALSE){
     // Comments: count comments.
     $stats['comments'] = number_format(db_result(db_query("SELECT COUNT(*) FROM {comments} WHERE status = 0")));
 
-    // Sites made with Drupal. Construct an array of of the most recent case
-    // study images created. The array includes the node ID, node title and
-    // image url. The query grabs more than the limit in case some don't have
-    // images.
-    $limit = 4;
+    // Sites made with Drupal.
     $stats['sites_made'] = array();
-    $result = db_query('SELECT n.nid, n.title, nr.body FROM {node} n LEFT JOIN {term_node} tn ON n.nid = tn.nid AND n.vid = tn.vid LEFT JOIN {node_revisions} nr ON nr.nid = n.nid AND nr.vid = n.vid WHERE tn.tid = 25 AND n.status = 1 AND n.promote = 1 ORDER BY n.created DESC LIMIT %d', $limit * 2);
-    while ($site = db_fetch_object($result)) {
-      // Find the images in the case study.
-      $image_url = '';
-      if (preg_match("/http:\/\/[^\'\"]*\.(png|jpg|jpeg)/", $site->body, $image_url)) {
-        $stats['sites_made'][] = array(
-          'nid' => $site->nid,
-          'title' => $site->title,
-          'image_url' => $image_url[0],
-        );
-      }
-      // Stop looking if we have met our limit.
-      if (count($stats['sites_made']) === $limit) {
-        break;
-      }
+    $view = views_get_view('drupalorg_casestudies');
+    $view->preview('block_1');
+    foreach ($view->style_plugin->rendered_fields as $row) {
+      $stats['sites_made'][] = implode('', $row);
     }
 
     cache_set('drupalorg_front_counter_data', $stats, 'drupalorg');
@@ -477,10 +462,8 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   // Retrieve or rebuild stats cache.
   $variables += drupalorg_get_activity();
 
-  // Pick a random site made with Drupal. The cache is long-lived, so we cache
-  // a few and do the randomization here.
-  $site = $variables['sites_made'][array_rand($variables['sites_made'])];
-  $variables['things_we_made'] = '<div class="things-we-made-wrapper">' . l(theme('image', $site['image_url'], $site['title'], $site['title'], NULL, FALSE) . '<div class="caption">' . $site['title'] . '</div>', 'node/' . $site['nid'], array('html' => TRUE)) . '</div>';
+  // Pick a random site made with Drupal from the cache.
+  $variables['things_we_made'] = $variables['sites_made'][array_rand($variables['sites_made'])];
 
   // PSA ad
   $slots = _google_admanager_get_ad_slots();
