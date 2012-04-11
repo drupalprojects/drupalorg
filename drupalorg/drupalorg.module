@@ -449,7 +449,6 @@ function drupalorg_preprocess_page(&$variables) {
  * Implementation of template_preprocess_drupalorg_home().
  */
 function drupalorg_preprocess_drupalorg_home(&$variables) {
-  $variables['theme_images_directory'] = drupal_get_path('theme', variable_get('theme_default', 'bluecheese')) .'/images';
   $variables['map_content'] = drupalorg_map_content();
 
   // == Forums tab data/markup
@@ -468,8 +467,6 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   // Pick a random site made with Drupal from the cache.
   $variables['things_we_made'] = $variables['sites_made'][array_rand($variables['sites_made'])];
 
-  // PSA ad
-  $slots = _google_admanager_get_ad_slots();
   $variables['psa'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'Redesign_home');
 }
 
@@ -541,8 +538,6 @@ function drupalorg_start() {
  * Implementation of template_preprocess_drupalorg_start().
  */
 function drupalorg_preprocess_drupalorg_start(&$variables) {
-  $variables['theme_images_directory'] = drupal_get_path('theme', variable_get('theme_default', 'bluecheese')) .'/images';
-
   $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
   $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
 

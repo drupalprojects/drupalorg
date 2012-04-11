@@ -1,8 +1,8 @@
 <div id="getting-started" class="grid-12 alpha omega">
-  <img src="<?php print $theme_images_directory; ?>/gettingstarted-header1.png" alt="Download Drupal" />
-  <img src="<?php print $theme_images_directory; ?>/gettingstarted-header2.png" alt="Extend Drupal" />
-  <img src="<?php print $theme_images_directory; ?>/gettingstarted-header3.png" alt="Documentation" />
-  <img src="<?php print $theme_images_directory; ?>/gettingstarted-header4.png" alt="Get Support" />
+  <img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/gettingstarted-header1.png" alt="Download Drupal" />
+  <img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/gettingstarted-header2.png" alt="Extend Drupal" />
+  <img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/gettingstarted-header3.png" alt="Documentation" />
+  <img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/gettingstarted-header4.png" alt="Get Support" />
 </div>
 <div class="grid-3 alpha">
   <div class="narrow-box">
