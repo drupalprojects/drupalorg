@@ -16,8 +16,6 @@ define('DRUPALORG_MODULE_TID', 14);
  */
 define('DRUPALORG_THEME_TID', 15);
 
-// == Core hooks ===============================================================
-
 /**
  * Implementation of hook_preprocess_page().
  *
@@ -46,7 +44,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   }
   if (variable_get('drupalorg_site', 'main') === 'main') {
     if (user_is_logged_in()) {
-      $nav_masthead_links['dashboard'] = array('href' => 'user/' . $user->uid . '/dashboard', 'title' => t('Your Dashboard'), '#active' => drupalorg_crosssite_match_path('^user/[0-9]+/dashboard(/|$)'));
+      $nav_masthead_links['dashboard'] = array('href' => 'user/' . $user->uid . '/dashboard', 'title' => t('Your Dashboard'));
     }
   }
   else {
@@ -66,50 +64,47 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
   $nav_footer = drupalorg_crosssite_grid_elements(array_fill(0, 5, 'footer'));
   unset($nav_footer['#prefix']);
   unset($nav_footer['#suffix']);
-  $nav_footer['column_1']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
-    'news' => array('href' => 'news', 'title' => t('Drupal News'), '#site' => 'main'),
-    'planet' => array('href' => 'planet', 'title' => t('Planet Drupal'), '#site' => 'main', 'attributes' => array('title' => t('News from Drupal community members'))),
-    'association' => array('href' => 'news', 'title' => t('Association News'), '#site' => 'association', 'attributes' => array('title' => t('News from association.drupal.org'))),
-    'security' => array('href' => 'security', 'title' => t('Security Announcements'), '#site' => 'main', 'attributes' => array('title' => t('Advisories from the security team'))),
-    'jobs' => array('href' => 'jobs', 'title' => t('Jobs'), '#site' => 'groups', 'attributes' => array('title' => t('Jobs posted on groups.drupal.org'))),
-  )), array());
-  $nav_footer['column_2']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
-    'community' => array('href' => 'community', 'title' => t('Community'), '#site' => 'main'),
-    'get-involved' => array('href' => 'getting-involved', 'title' => t('Getting Involved'), '#site' => 'main', 'attributes' => array('title' => t('Learn how to contribute to the Drupal project'))),
-    'marketplace' => array('href' => 'drupal-services', 'title' => t('Services, Training & Hosting'), '#site' => 'main', 'attributes' => array('title' => t('People and organizations offering Drupal services'))),
-    'groups' => array('href' => 'groups', 'title' => t('Groups & Meetups'), '#site' => 'groups', 'attributes' => array('title' => t('groups.drupal.org'))),
-    'drupalcon' => array('href' => 'drupalcon', 'title' => t('DrupalCon'), '#site' => 'main', 'attributes' => array('title' => t('Upcoming and past DrupalCons'))),
-  )), array());
-  $nav_footer['column_3']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
-    'get-started' => array('href' => 'start', 'title' => t('Get Started'), '#site' => 'main'),
-    'docs' => array('href' => 'documentation', 'title' => t('Documentation Home'), '#site' => 'main', 'attributes' => array('title' => t('Guidebooks and documentation for working with Drupal'))),
-    'install' => array('href' => 'documentation/install', 'title' => t('Installation Guide'), '#site' => 'main', 'attributes' => array('title' => t('Guide for installing Drupal'))),
-    'site-building' => array('href' => 'documentation/build', 'title' => t('Site Building Guide'), '#site' => 'main', 'attributes' => array('title' => t('Guide for building and extending Drupal sites'))),
-    'help' => array('href' => 'support', 'title' => t('Support'), '#site' => 'main', 'attributes' => array('title' => t('Drupal support options'))),
-    'api' => array('href' => '', 'title' => t('api.drupal.org'), '#site' => 'api', 'attributes' => array('title' => t('Drupal API Reference'))),
-  )), array());
-  $nav_footer['column_4']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
-    'download' => array('href' => 'download', 'title' => t('Download & Extend'), '#site' => 'main'),
-    'download-core' => array('href' => 'project/drupal', 'title' => t('Drupal Core'), '#site' => 'main', 'attributes' => array('title' => t('Download the latest version of the Drupal software'))),
-    'download-modules' => array('href' => 'project/modules', 'title' => t('Modules'), '#site' => 'main', 'attributes' => array('title' => t('Download add-on features and functionality'))),
-    'download-themes' => array('href' => 'project/themes', 'title' => t('Themes'), '#site' => 'main', 'attributes' => array('title' => t('Download pre-designed styles for Drupal'))),
-    'download-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#site' => 'main', 'attributes' => array('title' => t('Download a pre-packaged Drupal site'))),
-  )), array());
-  $nav_footer['column_5']['#value'] = theme('links', drupalorg_crosssite_menu_absolute_links(array(
-    'about' => array('href' => 'about', 'title' => t('About'), '#site' => 'main'),
-    'druplicon' => array('href' => 'druplicon', 'title' => t('Druplicon'), '#site' => 'main', 'attributes' => array('title' => t('Drupal’s mascot'))),
-    'association-about' => array('href' => 'about', 'title' => t('The Drupal Association'), '#site' => 'association', 'attributes' => array('title' => t('About the Drupal Association'))),
-    'advertise' => array('href' => 'advertising', 'title' => t('Advertise'), '#site' => 'association', 'attributes' => array('title' => t('How to advertise on Drupal.org'))),
-    'drupalorg' => array('href' => 'node/179723', 'title' => t('About Drupal.org'), '#site' => 'main', 'attributes' => array('title' => t('About Drupal.org'))),
-    'accessibility' => array('href' => 'about/accessibility', 'title' => t('Web accessibility'), '#site' => 'main', array('title' => t('Drupal Accessibility Statement'))),
-  )), array());
+  $nav_footer['column_1']['#value'] = theme('links', array(
+    array('href' => 'http://drupal.org/news', 'title' => t('Drupal News')),
+    array('href' => 'http://drupal.org/planet', 'title' => t('Planet Drupal'), 'attributes' => array('title' => t('News from Drupal community members'))),
+    array('href' => 'https://association.drupal.org/news', 'title' => t('Association News'), 'attributes' => array('title' => t('News from association.drupal.org'))),
+    array('href' => 'http://drupal.org/security', 'title' => t('Security Announcements'), 'attributes' => array('title' => t('Advisories from the security team'))),
+    array('href' => 'http://groups.drupal.org/jobs', 'title' => t('Jobs'), 'attributes' => array('title' => t('Jobs posted on groups.drupal.org'))),
+  ), array());
+  $nav_footer['column_2']['#value'] = theme('links', array(
+    array('href' => 'http://drupal.org/community', 'title' => t('Community')),
+    array('href' => 'http://drupal.org/getting-involved', 'title' => t('Getting Involved'), 'attributes' => array('title' => t('Learn how to contribute to the Drupal project'))),
+    array('title' => l(t('Services'), 'http://drupal.org/drupal-services', array('attributes' => array('title' => t('People and organizations offering Drupal services')))) . ', '
+      . l(t('Training'), 'http://drupal.org/training-services', array('attributes' => array('title' => t('People and organizations offering Drupal training')))) . ' & '
+      . l(t('Hosting'), 'http://drupal.org/hosting', array('attributes' => array('title' => t('Organizations offering Drupal hosting')))), 'html' => TRUE),
+    array('href' => 'http://groups.drupal.org/groups', 'title' => t('Groups & Meetups'), 'attributes' => array('title' => t('groups.drupal.org'))),
+    array('href' => 'http://drupal.org/drupalcon', 'title' => t('DrupalCon'), 'attributes' => array('title' => t('Upcoming and past DrupalCons'))),
+  ), array());
+  $nav_footer['column_3']['#value'] = theme('links', array(
+    array('href' => 'http://drupal.org/start', 'title' => t('Get Started')),
+    array('href' => 'http://drupal.org/documentation', 'title' => t('Documentation Home'), 'attributes' => array('title' => t('Guidebooks and documentation for working with Drupal'))),
+    array('href' => 'http://drupal.org/documentation/install', 'title' => t('Installation Guide'), 'attributes' => array('title' => t('Guide for installing Drupal'))),
+    array('href' => 'http://drupal.org/documentation/build', 'title' => t('Site Building Guide'), 'attributes' => array('title' => t('Guide for building and extending Drupal sites'))),
+    array('href' => 'http://drupal.org/support', 'title' => t('Support'), 'attributes' => array('title' => t('Drupal support options'))),
+    array('href' => 'http://api.drupal.org/', 'title' => t('api.drupal.org'), 'attributes' => array('title' => t('Drupal API Reference'))),
+  ), array());
+  $nav_footer['column_4']['#value'] = theme('links', array(
+    array('href' => 'http://drupal.org/download', 'title' => t('Download & Extend')),
+    array('href' => 'http://drupal.org/project/drupal', 'title' => t('Drupal Core'), 'attributes' => array('title' => t('Download the latest version of the Drupal software'))),
+    array('href' => 'http://drupal.org/project/modules', 'title' => t('Modules'), 'attributes' => array('title' => t('Download add-on features and functionality'))),
+    array('href' => 'http://drupal.org/project/themes', 'title' => t('Themes'), 'attributes' => array('title' => t('Download pre-designed styles for Drupal'))),
+    array('href' => 'http://drupal.org/project/installation+profiles', 'title' => t('Installation Profiles'), 'attributes' => array('title' => t('Download a pre-packaged Drupal site'))),
+  ), array());
+  $nav_footer['column_5']['#value'] = theme('links', array(
+    array('href' => 'http://drupal.org/about', 'title' => t('About')),
+    array('href' => 'http://drupal.org/druplicon', 'title' => t('Druplicon'), 'attributes' => array('title' => t('Drupal’s mascot'))),
+    array('href' => 'https://association.drupal.org/about', 'title' => t('The Drupal Association'), 'attributes' => array('title' => t('About the Drupal Association'))),
+    array('href' => 'https://association.drupal.org/advertising', 'title' => t('Advertise'), 'attributes' => array('title' => t('How to advertise on Drupal.org'))),
+    array('href' => 'http://drupal.org/node/179723', 'title' => t('About Drupal.org'), 'attributes' => array('title' => t('About Drupal.org'))),
+    array('href' => 'http://drupal.org/about/accessibility', 'title' => t('Web accessibility'), array('title' => t('Drupal Accessibility Statement'))),
+  ), array());
   $vars['nav_footer'] = drupal_render($nav_footer);
 
-  // We implement the content top menu as "custom menus", since we need to have
-  // cross-site menu items in some cases, and having these sycned across all
-  // subsites would be painful (read: menu items would have different URLs and
-  // menu ids on subsites, since an API link on the docs site would link out to
-  // API while a docs link on the API would link out to the docs site).
   $nav_content_links = array();
   switch (drupalorg_crosssite_section()) {
     case 'documentation':
@@ -226,7 +221,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       break;
   }
 
-  $vars['nav_content'] = $vars['nav_content_class'] = '';
+  $vars['nav_content'] = '';
   if (!empty($nav_content_links)) {
     // Make all external links right.
     $nav_content_links = drupalorg_crosssite_menu_absolute_links($nav_content_links);
@@ -266,22 +261,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
 
     // Theme the links for the page.
     $vars['nav_content'] = theme('links', $nav_content_links);
-    $vars['nav_content_class'] = ' class="clear-block nav-content-' . drupalorg_crosssite_section() . '"';
   }
 
-  // Add page tool navigation.
-  $page_tools = module_invoke_all('drupalorg_crosssite_page_tools');
-  if (count($page_tools) > 0) {
-    $vars['page_tools'] = theme('links', $page_tools);
-  }
-
-  // Put in a body class for CSS hooking and a variable for theme dependence
-  // if we are on the main site's home page. Many things should be different
-  // there.
-  $vars['is_drupalorg_front'] = drupalorg_crosssite_is_site('main') && drupal_is_front_page();
-  if ($vars['is_drupalorg_front']) {
-    $vars['body_classes'] .= ' drupalorg-front';
-  }
+  $vars['is_drupalorg_front'] = variable_get('drupalorg_site', 'main') === 'main' && drupal_is_front_page();
 
   $vars['body_classes'] .= ' drupalorg-site-' . variable_get('drupalorg_site', 'main');
 }
@@ -345,8 +327,6 @@ function drupalorg_crosssite_section() {
   return $section;
 }
 
-// == API functions ============================================================
-
 function drupalorg_crosssite_child_of($path, &$vars = NULL) {
   return drupalorg_crosssite_match_path('^(' . $path . '|' . drupal_get_path_alias($path) . ')(/|$)') || drupalorg_crosssite_in_breadcrumb($path, $vars);
 }
@@ -373,39 +353,6 @@ function drupalorg_crosssite_in_breadcrumb($path, &$vars = NULL) {
     }
   }
   return FALSE;
-}
-
-/**
- * Which site is which URL?
- */
-function drupalorg_crosssite_menu_sites() {
-  $base_domain = variable_get('drupalorg_base_domain', 'drupal.org');
-  return array(
-    'main' => $base_domain,
-    'api' => 'api.' . $base_domain,
-    'association' => 'association.' . $base_domain,
-    'groups' => 'groups.' . $base_domain,
-    'localize' => 'localize.' . $base_domain,
-  );
-}
-
-/**
- * Check whether we are on the specified site.
- *
- * @param $site_key
- *   One of the sitekeys as defined in drupalorg_crosssite_menu_sites().
- * @return
- *   TRUE if on the site specified by $site_key.
- */
-function drupalorg_crosssite_is_site($site_key) {
-  static $site = NULL;
-  static $sites = NULL;
-  if (!isset($site)) {
-    $site = variable_get('drupalorg_site', 'main');
-    $sites = drupalorg_crosssite_menu_sites();
-  }
-
-  return isset($sites[$site_key]) && isset($sites[$site]) && ($site_key == $site);
 }
 
 /**
@@ -451,32 +398,20 @@ function drupalorg_crosssite_match_path($path_regex) {
 }
 
 /**
- * Make sure outside links are absolute and add "active" classes as required.
+ * Add "active" classes as required.
  *
  * @param $links
- *   List of links array as expected by theme('links') with #site and
- *   #active keys for the individual links to specify which site to point
- *   the link to and whether the item is active.
- *    - For possible #site values, see drupalorg_crosssite_menu_sites().
- *    - #active can be built with functions like
- *      drupalorg_crosssite_match_path(), drupalorg_crosssite_is_site(), and
- *      drupalorg_crosssite_is_type(). If the link will be local, you can use
- *      local checks.
- *
+ *   List of links array as expected by theme('links') with an optional #active
+ *   key for the individual links to make an item active. #active can be set
+ *   with functions like drupalorg_crosssite_match_path() and
+ *   drupalorg_crosssite_is_type().
  * @return
  *   The modified link array.
  */
 function drupalorg_crosssite_menu_absolute_links($links) {
   $activated_links = array();
   foreach ($links as $key => $link) {
-    // If we are not on the given site, convert the link to an absolute link
-    // to the given site.
-    if (isset($link['#site']) && !drupalorg_crosssite_is_site($link['#site'])) {
-      $link['href'] = drupalorg_crosssite_path($link['href'], $link['#site']);
-    }
-    // Otherwise, it might be an active link still, so add on the active class,
-    // if we know #active was defined TRUE.
-    elseif (!empty($link['#active'])) {
+    if (!empty($link['#active'])) {
       // theme('link') uses the key as class, so add active class that way.
       $key = $key . ' active';
       $link['attributes']['class'] = 'active';
@@ -484,35 +419,6 @@ function drupalorg_crosssite_menu_absolute_links($links) {
     $activated_links[$key] = $link;
   }
   return $activated_links;
-}
-
-/**
- * Make sure outside paths are absolute.
- *
- * @param $path
- *   A path like 'node/34'.
- * @param $site
- *   Which site to link to; for possible values, see
- *   drupalorg_crosssite_menu_sites().
- *
- * @return
- *   The modified link array.
- */
-function drupalorg_crosssite_path($path, $site) {
-  static $sites = NULL;
-  if (!isset($sites)) {
-    $sites = drupalorg_crosssite_menu_sites();
-  }
-
-  if (drupalorg_crosssite_is_site($site)) {
-    return $path;
-  }
-  else {
-    if ($site === 'association') {
-      return 'https://' . $sites[$site] . '/' . $path;
-    }
-    return 'http://' . $sites[$site] . '/' . $path;
-  }
 }
 
 /**
@@ -537,8 +443,6 @@ function drupalorg_crosssite_menu_alter(&$items) {
     }
   }
 }
-
-// == Search functions =========================================================
 
 /**
  * Define Mark Boulton's "filter by..." entries.
@@ -723,7 +627,7 @@ function drupalorg_crosssite_form_search_theme_form_alter(&$form, $form_state) {
     $form['search_theme_form']['#title'] = t('Search @site_name', array('@site_name' => variable_get('site_name', 'Drupal')));
 
     // Only show meta-types if searching on the main site.
-    if (drupalorg_crosssite_is_site('main')) {
+    if (variable_get('drupalorg_site', 'main') === 'main') {
       $form['advanced'] = array(
         '#type' => 'fieldset',
         '#title' => t('Refine your search'),
@@ -771,20 +675,6 @@ function drupalorg_crosssite_apachesolr_has_searched() {
   }
   // In all other scenarios, return FALSE;
   return FALSE;
-}
-
-/**
- * Get the master uid from bakery's init field.
- */
-function drupalorg_crossite_bakery_master_uid() {
-  global $user;
-
-  if (!variable_get('bakery_is_master', 0)) {
-    return preg_replace('!^.+/user/(\d+)/.+$!', '\1', $user->init);
-  }
-  else {
-    return $user->uid;
-  }
 }
 
 /**
