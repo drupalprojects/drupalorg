@@ -319,24 +319,24 @@ function drupalorg_get_activity($_force = FALSE){
     $followups = db_result(db_query("SELECT COUNT(distinct c.nid) FROM {node} n INNER JOIN {comments} c ON n.nid = c.nid WHERE n.type = 'project_issue' AND n.status = 1 AND c.timestamp > %d", strtotime("1 week ago")));
     $stats['number_of_issue_comments'] = number_format($followups);
 
-    // Projects this week
+    // Projects this week.
     $new_modules = db_result(db_query("SELECT COUNT(distinct p.nid) FROM {project_projects} p INNER JOIN {node} n ON p.nid = n.nid INNER JOIN {term_node} tn ON tn.nid = n.nid AND tn.tid = 14 WHERE n.created > %d", strtotime("1 week ago")));
     $stats['number_of_new_modules'] = number_format($new_modules);
 
-    // All Modules
-    $modules = db_result(db_query("SELECT COUNT(distinct p.nid) FROM {project_projects} p INNER JOIN {term_node} tn ON p.nid = tn.nid WHERE tn.tid = 14"));
+    // All Modules.
+    $modules = db_result(db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {term_node} tn ON n.vid = tn.vid WHERE tn.tid = 14 AND n.status = 1"));
     // TODO would be nice to limit to D6 & D7
     //$modules = db_result(db_query("SELECT COUNT(distinct prn.pid) FROM node n INNER JOIN project_release_nodes prn ON n.nid = prn.nid INNER JOIN term_node tn on prn.pid = tn.nid WHERE tn.tid = 14 AND prn.version_api_tid IN (87, 103)"));
     $stats['number_of_modules'] = number_format($modules);
 
-    // All Themes
-    $themes = db_result(db_query("SELECT COUNT(distinct p.nid) FROM {project_projects} p INNER JOIN {term_node} tn ON p.nid = tn.nid WHERE tn.tid = 15"));
+    // All Themes.
+    $themes = db_result(db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {term_node} tn ON n.vid = tn.vid WHERE tn.tid = 15 AND n.status = 1"));
     // TODO would be nice to limit to D6 & D7
     //$themes = db_result(db_query("SELECT COUNT(distinct prn.pid) FROM node n INNER JOIN project_release_nodes prn ON n.nid = prn.nid INNER JOIN term_node tn on prn.pid = tn.nid WHERE tn.tid = 15 AND prn.version_api_tid IN (87, 103)"));
     $stats['number_of_themes'] = number_format($themes);
 
     // All Distributions.
-    $distributions = db_result(db_query("SELECT COUNT(distinct p.nid) FROM {project_projects} p INNER JOIN {term_node} tn ON p.nid = tn.nid WHERE tn.tid = 96"));
+    $distributions = db_result(db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {term_node} tn ON n.vid = tn.vid WHERE tn.tid = 96 AND n.status = 1"));
     $stats['number_of_distributions'] = number_format($distributions);
     // Users: Count them.
     $stats['number_of_users'] = number_format(db_result(db_query('SELECT COUNT(*) FROM {users} WHERE uid > 0 AND status = 1 AND login > 0')));
