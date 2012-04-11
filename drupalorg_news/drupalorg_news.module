@@ -93,11 +93,7 @@ function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
         'planet-list' => array(
           'info' => t('Planet Drupal subscriptions'),
         ),
-        'news-terms' => array(
-          'info' => t('News category filter links'),
-          'cache' => BLOCK_CACHE_PER_PAGE,
-        ),
-        'drupal-news' => array(
+        'drupal-news' => array( // for dashboard
           'info' => t('Drupal News'),
           'cache' => BLOCK_CACHE_PER_PAGE,
         ),
@@ -107,25 +103,8 @@ function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
     case 'view':
       switch ($delta) {
         case 'planet-list':
-          $block['content'] = drupalorg_news_planet_drupal_block();
-          return $block;
-
-        case 'news-terms':
           return array(
-            'content' => theme('links', array(
-              array(
-                'title' => t('Drupal News'),
-                'href' => 'news',
-              ),
-              array(
-                'title' => t('Planet Drupal'),
-                'href' => 'aggregator/categories/' . DRUPALORG_PLANET_CATEGORY,
-              ),
-              array(
-                'title' => t('Drupal Association'),
-                'href' => 'aggregator/sources/628',
-              ),
-            )),
+            'content' => drupalorg_news_planet_drupal_block(),
           );
 
         case 'drupal-news':

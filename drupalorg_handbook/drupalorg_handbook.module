@@ -268,10 +268,6 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
           'info' => t('Handbook License'),
           'cache' => BLOCK_CACHE_PER_PAGE,
         ),
-        'info' => array(
-          'info' => t('Documentation home info'),
-          'cache' => BLOCK_CACHE_PER_PAGE,
-        ),
         'meta-sidebar' => array(
           'info' => t('Documentation status'),
           'cache' => BLOCK_NO_CACHE,
@@ -293,16 +289,6 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
             );
           }
           break;
-
-        case 'info':
-          return array(
-            'subject' => t('Help maintain the Community Documentation'),
-            'content' => '<p>' . t('The Drupal.org online Community Documentation is written and maintained by the Drupal community. When you are logged in, you can:') . '</p>' .
-            '<p>' . t('Edit most Documentation pages by clicking “Edit” at the top of the page.') . '</p>' .
-            '<p>' . t('If unsure of edits, leave a comment instead, and edit the page to update the page status.') . '</p>' .
-            '<p>' . t('Add new pages by using the “Add child page” link at the bottom of the page. Check the <a href="@issues_url">Documentation issue queue</a> for new page requests by others.', array('@issues_url' => url('project/issues/documentation'))) . '</p>' .
-            '<p>' . t('Create Documentation issues to request new documentation and make moderation reports.') . '</p>',
-          );
 
         case 'meta-sidebar':
           if (($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) {
