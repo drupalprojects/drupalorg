@@ -1076,7 +1076,7 @@ function drupalorg_project_get_project_types($singular = FALSE) {
       '15' => t('Theme'),
       '32' => t('Theme engine'),
       '29' => t('Translation'),
-      '96' => t('Installation profile'),
+      '96' => t('Distribution'),
     );
   }
   else {
@@ -1087,7 +1087,7 @@ function drupalorg_project_get_project_types($singular = FALSE) {
       '15' => t('Themes'),
       '32' => t('Theme engines'),
       '29' => t('Translations'),
-      '96' => t('Installation profiles'),
+      '96' => t('Distributions'),
     );
   }
 }

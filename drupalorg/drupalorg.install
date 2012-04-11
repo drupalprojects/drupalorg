@@ -835,6 +835,19 @@ function drupalorg_update_6604() {
 }
 
 /**
+ * Elements related to pushing distributions as a first-class thing.
+ */
+function drupalorg_update_6605() {
+  // Populate activity stats for new "distributions" count.
+  drupalorg_get_activity(TRUE);
+
+  // Remove old 'drupalorg_featured_install_profiles' variable.
+  variable_del('drupalorg_featured_install_profiles');
+
+  return array();
+}
+
+/**
  * Utility function to add permissions to certain user roles.
  */
 function _drupalorg_add_permissions($permissions) {

@@ -10,11 +10,14 @@
     </ul>
   </div>
 
-  <div class="grid-3 installation-profiles">
-    <h2>Installation Profiles</h2>
+  <div class="grid-3 distributions">
+    <h2>Distributions</h2>
     <ul class="flat">
-      <?php print $drupalorg_featured_install_profiles; ?>
-      <li class="last all"><a class="all" href="/project/installation+profiles">More Profiles</a></li>
+      <li><a href="/documentation/build/distributions">About Distributions</a></li>
+      <li><a href="/project/distributions?solrsort=sis_project_release_usage%20desc">Most Installed Distributions</a></li>
+      <li><a href="/project/distributions?solrsort=created%20desc">New Distributions</a></li>
+      <li><a href="/project/distributions?solrsort=ds_project_latest_activity%20desc">Most Active Distribitions</a></li>
+      <li class="last all"><a class="all" href="/project/distributions">Search for More Distributions</a></li>
     </ul>
   </div>
 

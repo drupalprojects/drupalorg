@@ -66,7 +66,7 @@ function drupalorg_init() {
   // Temporary message about the Solr index being rebuilt.
   if (variable_get('drupalorg_warn_search_index_rebuild', FALSE)) {
     if (arg(0) == 'search' || arg(0) == 'download' || arg(0) == 'start' ||
-        (arg(0) == 'project' && (arg(1) == 'modules' || arg(1) == 'themes' || arg(1) == 'installation profiles' || arg(1) == 'theme engines'))) {
+        (arg(0) == 'project' && (arg(1) == 'modules' || arg(1) == 'themes' || arg(1) == 'distributions' || arg(1) == 'theme engines'))) {
       drupal_set_message(t('We are rebuilding the search index for the update to drupal.org. The search results may produce broken or out-of-date results until the index is fully rebuilt. We will remove this message when the indexing is complete. Do not report any search errors at this time.'));
     }
   }
@@ -335,6 +335,9 @@ function drupalorg_get_activity($_force = FALSE){
     //$themes = db_result(db_query("SELECT COUNT(distinct prn.pid) FROM node n INNER JOIN project_release_nodes prn ON n.nid = prn.nid INNER JOIN term_node tn on prn.pid = tn.nid WHERE tn.tid = 15 AND prn.version_api_tid IN (87, 103)"));
     $stats['number_of_themes'] = number_format($themes);
 
+    // All Distributions.
+    $distributions = db_result(db_query("SELECT COUNT(distinct p.nid) FROM {project_projects} p INNER JOIN {term_node} tn ON p.nid = tn.nid WHERE tn.tid = 96"));
+    $stats['number_of_distributions'] = number_format($distributions);
     // Users: Count them.
     $stats['number_of_users'] = number_format(db_result(db_query('SELECT COUNT(*) FROM {users} WHERE uid > 0 AND status = 1 AND login > 0')));
 
@@ -542,7 +545,6 @@ function drupalorg_preprocess_drupalorg_start(&$variables) {
 
   $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
   $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
-  $variables['drupalorg_featured_install_profiles'] = variable_get('drupalorg_featured_install_profiles', '');
 
   // Create and cache a solr query for use by block elements.
   project_solr_run_project_query('project/modules', array(array(
@@ -571,7 +573,6 @@ function drupalorg_download() {
 function drupalorg_preprocess_drupalorg_download(&$variables) {
   $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
   $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
-  $variables['drupalorg_featured_install_profiles'] = variable_get('drupalorg_featured_install_profiles', '');
 
   // Create and cache a solr query for use by block elements.
   project_solr_run_project_query('project/modules', array(array(
@@ -1194,13 +1195,6 @@ function drupalorg_settings_form() {
     '#default_value' => variable_get('drupalorg_featured_translations', ''),
     '#rows' => 5,
   );
-  $form['featured']['drupalorg_featured_install_profiles'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Featured install profiles'),
-    '#default_value' => variable_get('drupalorg_featured_install_profiles', ''),
-    '#rows' => 5,
-  );
-
   $form['drupalcon'] = array(
     '#type' => 'fieldset',
     '#title' => t('DrupalCon'),

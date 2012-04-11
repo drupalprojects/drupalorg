@@ -117,3 +117,28 @@ function drupalorg_project_update_6003() {
   drupalorg_project_issue_counts();
   return array();
 }
+
+/**
+ * Rename the 'Installation Profiles' project type to 'Distributions'.
+ */
+function drupalorg_project_update_6004() {
+  // Rename project type taxonomy term.
+  $term = taxonomy_get_term(96);
+  $term->name = t('Distributions');
+  $term->description = t('<p>Distributions provide site features and functions for a specific type of site as a single download containing Drupal core, contributed modules, themes, and pre-defined configuration. They make it possible to quickly set up a complex, use-specific site in fewer steps than if installing and configuring elements individually.</p>');
+  // Cast $term to an array since taxonomy_save_term() wants form values.
+  $term = (array) $term;
+  taxonomy_save_term($term);
+
+  // Remove variable that holds hard-coded list of featured distributions.
+  variable_del('drupalorg_featured_install_profiles');
+
+  // Set up redirect from /project/installation+profiles to /project/distributions.
+  $redirect = array(
+    'source' => 'project/installation+profiles',
+    'redirect' => 'project/distributions',
+  );
+  path_redirect_save($redirect);
+
+  return array();
+}

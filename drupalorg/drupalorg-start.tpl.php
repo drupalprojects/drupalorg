@@ -6,12 +6,10 @@
 </div>
 <div class="grid-3 alpha">
   <div class="narrow-box">
-    <p>To get started with Drupal, you'll need the Drupal base system files either as <a href="/project/drupal">Drupal core</a> or a <a href="project/installation+profiles">pre-built distribution</a>, as well as a <a href="/hosting">web hosting provider</a>.</p>
+    <p><a href="/project/drupal">Drupal core</a> contains the essential building blocks providing you a flexible foundation to get started with Drupal.</p>
     <?php print $core_download_button; ?>
-    <p>Drupal 7 is recommended for most new websites. A large number of modules and themes are already available for it.</p>
-    <p>Many Drupal sites currently run on <a href="/project/drupal">Drupal 6</a>.</p>
-    <h5>Installation Profiles</h5>
-    <p>Drupal <a href="/project/installation+profiles">distributions</a> (also known as installation profiles) are pre-packaged website solutions for specific use cases. They include Drupal core as well as additional modules. More Drupal 7 installation profiles will become available in the near future.</p>
+    <p>Drupal <a href="/project/distributions">distributions</a> provide pre-configured installations, allowing you to quickly setup a fully featured Drupal site.</p>
+    <a class="link-button" href="/project/distributions"><span>Find a Distribution</span></a>
   </div>
 </div>
 <div class="grid-3">
