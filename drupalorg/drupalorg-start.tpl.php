@@ -7,9 +7,9 @@
 <div class="grid-3 alpha">
   <div class="narrow-box">
     <p><a href="/project/drupal">Drupal core</a> contains the essential building blocks providing you a flexible foundation to get started with Drupal.</p>
-    <?php print $core_download_button; ?>
+    <p><?php print $core_download_button; ?></p>
     <p>Drupal <a href="/project/distributions">distributions</a> provide pre-configured installations, allowing you to quickly setup a fully featured Drupal site.</p>
-    <a class="link-button" href="/project/distributions"><span>Find a Distribution</span></a>
+    <p><a class="link-button" href="/project/distributions"><span>Find a Distribution</span></a></p>
   </div>
 </div>
 <div class="grid-3">
