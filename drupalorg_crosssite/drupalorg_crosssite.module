@@ -110,7 +110,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     case 'documentation':
       $vars['section_name'] = 'Community Documentation';
       $nav_content_links = array(
-        'home' => array('href' => 'node/26419', 'title' => t('Community Docs Home'), '#active' => (drupalorg_crosssite_is_type(array('book')) || drupalorg_crosssite_match_path('^(documentation|handbook)(/|$)')) && !drupalorg_crosssite_child_of('node/251019') && !drupalorg_crosssite_child_of('node/627152')),
+        'home' => array('href' => 'node/26419', 'title' => t('Community Docs Home'), '#active' => !drupalorg_crosssite_child_of('node/251019') && !drupalorg_crosssite_child_of('node/627152')),
         'install' => array('href' => 'node/251019', 'title' => t('Installation Guide'), '#active' => drupalorg_crosssite_child_of('node/251019')),
         'admin' => array('href' => 'node/627152', 'title' => t('Administration Guide'), '#active' => drupalorg_crosssite_child_of('node/627152')),
       );
