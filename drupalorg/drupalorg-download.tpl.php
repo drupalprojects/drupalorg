@@ -10,7 +10,7 @@
     </ul>
   </div>
 
-  <div class="grid-3 distributions">
+  <div class="grid-3">
     <h2>Distributions</h2>
     <ul class="flat">
       <li><a href="/documentation/build/distributions">About Distributions</a></li>

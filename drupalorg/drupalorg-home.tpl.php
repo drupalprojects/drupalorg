@@ -3,14 +3,10 @@
     <div class="block-content">
      <h2><a href="about">Why Choose Drupal?</a></h2>
      <p>Use Drupal to build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine. Join us!</p>
-     <p class="front-get-started">
-      <a href="start" class="link-button"><span>Get Started with Drupal</span></a>
-     </p>
+     <p class="front-get-started"><a href="start" class="link-button"><span>Get Started with Drupal</span></a></p>
      <h2><a href="project/distributions">Drupal Distributions</a></h2>
      <p>Distributions are a collection of pre-configured themes and modules for feature-rich web sites giving you a head start on building your site. Build your own online communities, media portal, online store, and more!</p>
-     <p class="front-get-started">
-      <a href="documentation/build/distributions" class="link-button"><span>Learn about Distributions</span></a>
-     </p>
+     <p class="front-get-started"><a href="documentation/build/distributions" class="link-button"><span>Learn about Distributions</span></a></p>
     </div>
   </div>
 </div>
