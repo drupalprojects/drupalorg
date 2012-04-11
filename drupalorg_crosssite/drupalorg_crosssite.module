@@ -93,7 +93,7 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
     array('href' => 'http://drupal.org/project/drupal', 'title' => t('Drupal Core'), 'attributes' => array('title' => t('Download the latest version of the Drupal software'))),
     array('href' => 'http://drupal.org/project/modules', 'title' => t('Modules'), 'attributes' => array('title' => t('Download add-on features and functionality'))),
     array('href' => 'http://drupal.org/project/themes', 'title' => t('Themes'), 'attributes' => array('title' => t('Download pre-designed styles for Drupal'))),
-    array('href' => 'http://drupal.org/project/installation+profiles', 'title' => t('Installation Profiles'), 'attributes' => array('title' => t('Download a pre-packaged Drupal site'))),
+    array('href' => 'http://drupal.org/project/distributions', 'title' => t('Distributions'), 'attributes' => array('title' => t('Download a pre-packaged Drupal site'))),
   ), array());
   $nav_footer['column_5']['#value'] = theme('links', array(
     array('href' => 'http://drupal.org/about', 'title' => t('About')),
@@ -121,9 +121,9 @@ function drupalorg_crosssite_preprocess_page(&$vars, $hook) {
       $nav_content_links = array(
         'home' => array('href' => 'download', 'title' => t('Download & Extend Home')),
         'core' => array('href' => 'node/' . DRUPALORG_CORE_NID, 'title' => t('Drupal Core'), '#active' => drupalorg_crosssite_child_of('node/' . DRUPALORG_CORE_NID, $vars) || drupalorg_crosssite_child_of('project/drupal core', $vars)),
+        'distributions' => array('href' => 'project/distributions', 'title' => t('Distributions'), '#active' => drupalorg_crosssite_child_of('project/distributions', $vars)),
         'modules' => array('href' => 'project/modules', 'title' => t('Modules'), '#active' => drupalorg_crosssite_child_of('project/modules', $vars)),
         'themes' => array('href' => 'project/themes', 'title' => t('Themes'), '#active' => drupalorg_crosssite_child_of('project/themes', $vars) || drupalorg_crosssite_child_of('project/theme engines', $vars)),
-        'install-profiles' => array('href' => 'project/installation+profiles', 'title' => t('Installation Profiles'), '#active' => drupalorg_crosssite_child_of('project/installation profiles', $vars)),
       );
       break;
 
