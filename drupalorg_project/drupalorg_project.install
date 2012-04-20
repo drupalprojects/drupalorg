@@ -11,5 +11,8 @@
  * Set the system weight heavier than project* so project altering works.
  */
 function drupalorg_project_install() {
-  db_query("UPDATE {system} SET weight = 5 WHERE name = 'drupalorg_project'");
+  db_update('system')
+    ->fields(array('weight' => 5))
+    ->condition('name', 'drupalorg_project')
+    ->execute();
 }

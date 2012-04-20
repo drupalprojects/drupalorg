@@ -231,7 +231,10 @@ function drupalorg_git_gateway_install() {
     db_add_field($fakeret, 'users', $field, $spec, $index);
   }
 
-  db_query("UPDATE {system} SET weight = 10 WHERE name = 'drupalorg_git_gateway'");
+  db_update('system')
+    ->fields(array('weight' => 10))
+    ->condition('name', 'drupalorg_git_gateway')
+    ->execute();
 }
 
 /**

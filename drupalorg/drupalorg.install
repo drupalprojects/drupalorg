@@ -106,5 +106,8 @@ function drupalorg_schema() {
  * See http://drupal.org/node/210497 for more information.
  */
 function drupalorg_install() {
-  db_query("UPDATE {system} SET weight = 5 WHERE name = 'drupalorg'");
+  db_update('system')
+    ->fields(array('weight' => 5))
+    ->condition('name', 'drupalorg')
+    ->execute();
 }

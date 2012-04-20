@@ -2,5 +2,8 @@
 
 function drupalorg_versioncontrol_install() {
   // Set the weight even lower than drupalorg_git_gateway.
-  db_query("UPDATE {system} SET weight = 15 WHERE name = 'drupalorg_versioncontrol'");
+  db_update('system')
+    ->fields(array('weight' => 15))
+    ->condition('name', 'drupalorg_versioncontrol')
+    ->execute();
 }
