@@ -9,96 +9,14 @@
  * Implementation of hook_schema().
  */
 function drupalorg_schema() {
-  return array(
-    'cache_drupalorg_civimembership' => array(
-      'description' => 'Cache table for a CiviCRM membership from a remote CiviCRM instance.',
-      'fields' => array(
-        'cid' => array(
-          'description' => 'Primary Key: Unique cache ID.',
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => TRUE,
-          'default' => '',
-        ),
-        'data' => array(
-          'description' => 'A collection of data to cache.',
-          'type' => 'blob',
-          'not null' => FALSE,
-          'size' => 'big',
-        ),
-        'expire' => array(
-          'description' => 'A Unix timestamp indicating when the cache entry should expire, or 0 for never.',
-          'type' => 'int',
-          'not null' => TRUE,
-          'default' => 0,
-        ),
-        'created' => array(
-          'description' => 'A Unix timestamp indicating when the cache entry was created.',
-          'type' => 'int',
-          'not null' => TRUE,
-          'default' => 0,
-        ),
-        'headers' => array(
-          'description' => 'Any custom HTTP headers to be added to cached data.',
-          'type' => 'text',
-          'not null' => FALSE,
-        ),
-        'serialized' => array(
-          'description' => 'A flag to indicate whether content is serialized (1) or not (0).',
-          'type' => 'int',
-          'size' => 'small',
-          'not null' => TRUE,
-          'default' => 0,
-        ),
-      ),
-      'indexes' => array('expire' => array('expire')),
-      'primary key' => array('cid'),
-    ),
-    'drupalorg' => array(
-      'description' => 'Cache table for home page map data, with a mediocre name.',
-      'fields' => array(
-        'cid' => array(
-          'description' => 'Primary Key: Unique cache ID.',
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => TRUE,
-          'default' => '',
-        ),
-        'data' => array(
-          'description' => 'A collection of data to cache.',
-          'type' => 'blob',
-          'not null' => FALSE,
-          'size' => 'big',
-        ),
-        'expire' => array(
-          'description' => 'A Unix timestamp indicating when the cache entry should expire, or 0 for never.',
-          'type' => 'int',
-          'not null' => TRUE,
-          'default' => 0,
-        ),
-        'created' => array(
-          'description' => 'A Unix timestamp indicating when the cache entry was created.',
-          'type' => 'int',
-          'not null' => TRUE,
-          'default' => 0,
-        ),
-        'headers' => array(
-          'description' => 'Any custom HTTP headers to be added to cached data.',
-          'type' => 'text',
-          'not null' => FALSE,
-        ),
-        'serialized' => array(
-          'description' => 'A flag to indicate whether content is serialized (1) or not (0).',
-          'type' => 'int',
-          'size' => 'small',
-          'not null' => TRUE,
-          'default' => 0,
-        ),
-      ),
-      'indexes' => array('expire' => array('expire')),
-      'primary key' => array('cid'),
-    ),
+  $system_schema = system_schema();
+  $schema = array(
+    'cache_drupalorg_civimembership' => $system_schema['cache'],
+    'drupalorg' => $system_schema['cache'],
   );
+  $schema['cache_drupalorg_civimembership']['description'] = 'Cache table for a CiviCRM membership from a remote CiviCRM instance.';
+  $schema['drupalorg']['description'] = 'Cache table for home page map data, with a mediocre name.';
+  return $schema;
 }
 
 /**
@@ -110,4 +28,29 @@ function drupalorg_install() {
     ->fields(array('weight' => 5))
     ->condition('name', 'drupalorg')
     ->execute();
+}
+
+/**
+ * Move users access column back to core default.
+ */
+function drupalorg_update_7000() {
+  // create new column
+  // migrate data
+  // remove table
+}
+
+/**
+ * Remove cache headers columns.
+ */
+function drupalorg_update_7001() {
+  $schema = system_schema_cache_7054();
+  $cache_tables = array(
+    'cache_drupalorg_civimembership' => 'Cache table for a CiviCRM membership from a remote CiviCRM instance.',
+    'drupalorg' => 'Cache table for home page map data, with a mediocre name.',
+  );
+  foreach ($cache_tables as $table => $description) {
+    $schema['description'] = $description;
+    db_drop_table($table);
+    db_create_table($table, $schema);
+  }
 }
