@@ -102,19 +102,9 @@ function drupalorg_schema() {
 }
 
 /**
- * Implementation of hook_install().
- *
  * Set the system weight heavier than cvslog so our form_alter comes later. 
  * See http://drupal.org/node/210497 for more information.
  */
 function drupalorg_install() {
-  drupal_install_schema('drupalorg');
   db_query("UPDATE {system} SET weight = 5 WHERE name = 'drupalorg'");
-}
-
-/**
- * Implementation of hook_uninstall().
- */
-function drupalorg_uninstall() {
-  drupal_uninstall_schema('drupalorg');
 }

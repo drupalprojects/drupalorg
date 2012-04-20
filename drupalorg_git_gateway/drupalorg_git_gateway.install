@@ -232,8 +232,6 @@ function drupalorg_git_gateway_install() {
   }
 
   db_query("UPDATE {system} SET weight = 10 WHERE name = 'drupalorg_git_gateway'");
-
-  drupal_install_schema('drupalorg_git_gateway');
 }
 
 /**
@@ -247,26 +245,4 @@ function drupalorg_git_gateway_uninstall() {
     // db_drop_index($fakeret, 'users', $field);
     db_drop_field($fakeret, 'users', $field);
   }
-
-  drupal_uninstall_schema('drupalorg_git_gateway');
-}
-
-/**
- * Add the git_vetted field to {users}.
- *
- * @return array
- */
-function drupalorg_git_gateway_update_6300() {
-  $ret = array();
-  $spec = array(
-    'type' => 'int',
-    'size' => 'tiny',
-    'description' => 'Bool flag indicating whether the user been marked as "vetted" or not.',
-    'unsigned' => TRUE,
-    'not null' => TRUE,
-    'default' => 0,
-  );
-  $index = array('indexes' => array('git_vetted' => array('git_vetted')));
-  db_add_field($ret, 'users', 'git_vetted', $spec, $index);
-  return $ret;
 }

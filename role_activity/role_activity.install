@@ -31,17 +31,3 @@ function role_activity_schema() {
 
   return $schema;
 }
-
-/**
- * Implementation of hook_install().
- */
-function role_activity_install() {
-  drupal_install_schema('role_activity');
-}
-
-/**
- * Implementation of hook_uninstall().
- */
-function role_activity_uninstall() {
-  drupal_uninstall_schema('role_activity');
-}

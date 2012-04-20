@@ -6,22 +6,6 @@
  */
 
 /**
- * Implementation of hook_install().
- */
-function lists_install() {
-  // Install lists tables.
-  drupal_install_schema('lists');
-}
-
-/**
- * Implementation of hook_uninstall().
- */
-function lists_uninstall() {
-  // Remove lists tables.
-  drupal_uninstall_schema('lists');
-}
-
-/**
  * Implementation of hook_schema().
  */
 function lists_schema() {
