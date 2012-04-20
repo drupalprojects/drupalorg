@@ -34,9 +34,24 @@ function drupalorg_install() {
  * Move users access column back to core default.
  */
 function drupalorg_update_7000() {
-  // create new column
-  // migrate data
-  // remove table
+  // Re-create access column.
+  db_add_field('users', 'access', array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 0,
+    'description' => 'Timestamp for previous time user accessed the site.',
+  ));
+
+  // Migrate data.
+  $result = db_select('users_access', 'ua')
+    ->fields('ua', array('uid', 'access'))
+    ->execute();
+  foreach ($result as $row) {
+    drupal_write_record('users', $row, array('uid'));
+  }
+
+  // Remove table.
+  db_drop_table('users_access');
 }
 
 /**
