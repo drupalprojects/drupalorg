@@ -99,6 +99,7 @@ function role_activity_admin_settings() {
 /**
  * Implementation of hook_watchdog().
  */
+/* todo D7
 function role_activity_watchdog($log_entry) {
   if (!role_activity_check_role($log_entry['user']->uid)) {
     // If user is not among the roles we should check.
