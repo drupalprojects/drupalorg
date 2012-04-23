@@ -5,6 +5,10 @@
  * Installation, schema, update and uninstall scripts for the d.o Git gateway.
  */
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function drupalorg_git_gateway_schema() {
   $schema = array(
     'drupalorg_git_consent_log' => array(
@@ -189,7 +193,7 @@ function drupalorg_git_gateway_schema_alter(&$schema) {
 }
 
 /**
- * Implementation of hook_install().
+ * Implements hook_install().
  */
 function drupalorg_git_gateway_install() {
   // Perform alterations on the {users} table.
@@ -225,10 +229,9 @@ function drupalorg_git_gateway_install() {
     ),
   );
 
-  $fakeret = array();
   foreach ($specs as $field => $spec) {
     $index = array(($field == 'git_username' ? 'unique keys' : 'indexes') => array($field => array($field)));
-    db_add_field($fakeret, 'users', $field, $spec, $index);
+    db_add_field('users', $field, $spec, $index);
   }
 
   db_update('system')
@@ -238,14 +241,13 @@ function drupalorg_git_gateway_install() {
 }
 
 /**
- * Implementation of hook_uninstall().
+ * Implements hook_uninstall().
  */
 function drupalorg_git_gateway_uninstall() {
   // Remove alterations to the {users} table.
-  $fakeret = array();
   foreach (array('git_username', 'git_consent', 'git_disabled', 'git_vetted') as $field) {
     // Indexes probably take care of themselves, but eh, why not...
     // db_drop_index($fakeret, 'users', $field);
-    db_drop_field($fakeret, 'users', $field);
+    db_drop_field('users', $field);
   }
 }

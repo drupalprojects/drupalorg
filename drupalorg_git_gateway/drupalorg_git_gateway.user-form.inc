@@ -8,7 +8,6 @@
 function _drupalorg_git_gateway_user_page($account) {
   global $user;
 
-  ctools_include('form');
   // Pre-populate the form state with account information.
   $form_state = array(
     'account' => $account,
@@ -16,11 +15,11 @@ function _drupalorg_git_gateway_user_page($account) {
 
   // Show one form if we're the user who owns this account
   if ($user->uid == $account->uid) {
-    return ctools_build_form('drupalorg_git_gateway_user_form', $form_state);
+    return drupal_build_form('drupalorg_git_gateway_user_form', $form_state);
   }
   // But show an entirely different form if we're another user (an admin).
   elseif (user_access('administer users') || user_access('administer version control systems')) {
-    return ctools_build_form('drupalorg_git_gateway_admin_user_form', $form_state);
+    return drupal_build_form('drupalorg_git_gateway_admin_user_form', $form_state);
   }
   else {
     // Or deny access.
@@ -28,7 +27,11 @@ function _drupalorg_git_gateway_user_page($account) {
   }
 }
 
-function drupalorg_git_gateway_user_form(&$form_state) {
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function drupalorg_git_gateway_user_form($form, &$form_state) {
   $form = array();
   $account = $form_state['account'];
   $form['#submit'][] = 'drupalorg_git_gateway_user_form_submit';
@@ -91,7 +94,11 @@ function drupalorg_git_gateway_user_form(&$form_state) {
   return $form;
 }
 
-function drupalorg_git_gateway_admin_user_form(&$form_state) {
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function drupalorg_git_gateway_admin_user_form($form, &$form_state) {
   $form = array();
   $account = $form_state['account'];
   $form['user_info'] = array(
@@ -154,13 +161,13 @@ function _drupalorg_git_gateway_user_tos($account) {
   $form['terms'] = array(
     '#type' => 'item',
     '#title' => t("To use Drupal's version control systems you must agree to the following"),
-    '#value' => theme('item_list', array(
-      t('I will only commit <a href="!url">GPL V2+-licensed</a> code and resources to Drupal code repositories.', array('!url' => url('licensing/faq', array('alias' => TRUE)))),
-      t('I will only commit code and resources that I own or am permitted to distribute.'),
-      t('I will cooperate with the <a href="!url">Drupal Security Team</a> as needed.', array('!url' => url('security-team', array('alias' => TRUE)))),
-      t('I have read and will adhere to the <a href="!url">Drupal Code of Conduct</a>.', array('!url' => l('dcoc', array('alias' => TRUE)))),
-      t('I agree to the <a href="!url">Drupal Code Repository Terms of Service</a>.', array('!url' => url('node/1001544'))),
-    )),
+    '#value' => theme('item_list', array('items' => array(
+        t('I will only commit <a href="!url">GPL V2+-licensed</a> code and resources to Drupal code repositories.', array('!url' => url('licensing/faq', array('alias' => TRUE)))),
+        t('I will only commit code and resources that I own or am permitted to distribute.'),
+        t('I will cooperate with the <a href="!url">Drupal Security Team</a> as needed.', array('!url' => url('security-team', array('alias' => TRUE)))),
+        t('I have read and will adhere to the <a href="!url">Drupal Code of Conduct</a>.', array('!url' => l('dcoc', array('alias' => TRUE)))),
+        t('I agree to the <a href="!url">Drupal Code Repository Terms of Service</a>.', array('!url' => url('node/1001544'))),
+      ))),
   );
 
   $form['git_consent'] = array(
@@ -278,6 +285,10 @@ function _drupalorg_git_gateway_user_admin($account) {
   return $form;
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function drupalorg_git_gateway_confirm_username($form, &$form_state, $account) {
   // Copy out the original settings so we have them when actually submitting.
   $form_state['storage']['base_form_values'] = $form_state['values'];
@@ -304,6 +315,10 @@ function drupalorg_git_gateway_confirm_username($form, &$form_state, $account) {
   return $form;
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function drupalorg_git_gateway_user_form_base_validate($form, &$form_state) {
   global $user;
 
@@ -320,7 +335,7 @@ function drupalorg_git_gateway_user_form_base_validate($form, &$form_state) {
   // If the git_username field is present, do some validation.
   if (isset($form['username']['git_username'])) {
     // Ensure the requested ID isn't taken.
-    if ($uid = db_result(db_query("SELECT uid FROM {users} WHERE git_username = '%s' AND uid <> %d", $form_state['values']['git_username'], $form_state['account']->uid))) {
+    if ($uid = db_query("SELECT uid FROM {users} WHERE git_username = :git_username AND uid <> :uid", array(':git_username' => $form_state['values']['git_username'], ':uid' => $form_state['account']->uid))->fetchField()) {
       form_set_error('git_username', t('The requested Git username is already taken.'));
     }
     elseif (preg_match('/[^A-Za-z0-9\._-]/', $form_state['values']['git_username'])) {
@@ -333,6 +348,10 @@ function drupalorg_git_gateway_user_form_base_validate($form, &$form_state) {
   }
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function drupalorg_git_gateway_confirm_username_validate($form, &$form_state) {
   // Copy the stored base form values into place for the main submit handler.
   $form_state['values'] += $form_state['storage']['base_form_values'];
@@ -356,8 +375,13 @@ function drupalorg_git_gateway_user_form_submit($form, &$form_state) {
 
   // User has changed the state of their consent to the Git ToS. Log the change.
   if (isset($edit['git_consent']) && ($edit['git_consent'] != $account->git_consent)) {
-    $values = array($account->uid, time(), $edit['git_consent']);
-    db_query('INSERT INTO {drupalorg_git_consent_log} (uid, timestamp, action) VALUES (%d, %d, %d) ', $values);
+    $id = db_insert('drupalorg_git_consent_log')
+    ->fields(array(
+      'uid' => $account->uid,
+      'timestamp' => REQUEST_TIME,
+      'action' => $edit['git_consent'],    
+    ))
+    ->execute();
   }
 
   // Munge edited values into place on the account for unified checking.
@@ -385,15 +409,20 @@ function drupalorg_git_gateway_admin_user_form_submit($form, &$form_state) {
 
   // Admin has changed the enabled/disabled state of this git account. Log the change.
   if (isset($edit['git_disabled']) && ($edit['git_disabled'] != $account->git_disabled)) {
-    $values = array($account->uid, $user->uid, time(), $edit['git_disabled']);
+    $record = array(
+      'uid' => $account->uid,
+      'admin_uid' => $user->uid,
+      'timestamp' => REQUEST_TIME,
+      'action' => $edit['git_disabled'],
+      'email' => '',
+    );
     if ($edit['git_disabled'] == 1) {
       $body = t($edit['git_disabled_msg'], array('@user_name' => $account->name, '@admin_name' => $user->name));
       drupal_mail('drupalorg_git_gateway', 'disabled', $account->mail, user_preferred_language($account), array('body' => $body));
-      $values[] = $body;
-      db_query("INSERT INTO {drupalorg_git_disable_log} (uid, admin_uid, timestamp, action, email) VALUES (%d, %d, %d, %d, '%s') ", $values);
+      $values['email'] = $body;
     }
-    else {
-      db_query("INSERT INTO {drupalorg_git_disable_log} (uid, admin_uid, timestamp, action, email) VALUES (%d, %d, %d, %d, '') ", $values);
-    }
+    $id = db_insert('drupalorg_git_disable_log')
+    ->fields($record)
+    ->execute();
   }
 }

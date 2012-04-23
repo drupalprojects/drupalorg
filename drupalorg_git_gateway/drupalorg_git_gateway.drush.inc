@@ -7,7 +7,7 @@
  */
 
 /**
- * Implementation of hook_drush_command().
+ * Implements hook_drush_command().
  */
 function drupalorg_git_gateway_drush_command() {
   $commands = array();
@@ -47,7 +47,7 @@ function drupalorg_git_gateway_drush_command() {
  * query on {users} instead of a full bootstrap and user_load().
  */
 function drush_drupalorg_git_gateway_drupalorg_vcs_auth_check_user_pass($username = '', $password = '') {
-  $account = user_load(array('git_username' => $username));
+  $account = array_shift(user_load_multiple(array(), array('git_username' => $username)));
   if (!empty($account) && $password == $account->pass) {
     drush_print('true');
   }

@@ -43,7 +43,7 @@ situation to the Drupal.org webmasters issue queue
 \n@admin_name");
 
 /**
- * Implementation of hook_menu().
+ * Implements hook_menu().
  */
 function drupalorg_git_gateway_menu() {
   $items = array();
@@ -60,7 +60,7 @@ function drupalorg_git_gateway_menu() {
     'type' => MENU_LOCAL_TASK,
   );
 
-  $items['admin/settings/drupalorg-git'] = array(
+  $items['admin/config/drupalorg-git'] = array(
     'title' => 'Drupal.org Git gateway',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('drupalorg_git_gateway_defaults'),
@@ -69,13 +69,13 @@ function drupalorg_git_gateway_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
-  $items['admin/settings/drupalorg-git/defaults'] = array(
+  $items['admin/config/drupalorg-git/defaults'] = array(
     'title' => 'Defaults',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => - 10,
   );
 
-  $items['admin/settings/drupalorg-git/gatectl'] = array(
+  $items['admin/config/drupalorg-git/gatectl'] = array(
     'title' => 'Global Push Control',
     'page arguments' => array('drupalorg_git_gateway_gatectl'),
     'access arguments' => array('administer version control systems'),
@@ -94,89 +94,93 @@ function drupalorg_git_gateway_menu() {
 }
 
 /**
- * Implementation of hook_user().
+ * Implements hook_user_categories().
  */
-function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
-  // An ugly shim to ensure that things show up nicely in the sub-tabs generated
-  // by the User module.
-  if ($op == 'categories') {
-    return array(
-      'git' => array(
-        'name' => 'git',
-        'title' => t('Git access'),
-        'weight' => 1,
-        // use defaults for access callback and arguments
-      ),
+function drupalorg_git_gateway_user_categories() {
+  return array(
+    'git' => array(
+      'name' => 'git',
+      'title' => t('Git access'),
+      'weight' => 1,
+      // use defaults for access callback and arguments
+    ),
+  );
+}
+
+/**
+ * Implements hook_user_update().
+ */
+function drupalorg_git_gateway_user_update(&$edit, $account, $category) {
+  // Determine appropriate role grants for the account. By doing this in
+  // after_update, we don't have to swim upstream against the rest of the user
+  // system.
+  //
+  // Start by assuming we should not grant the perm.
+  $grant = 0;
+  // 0x01 == grant basic; 0x02 == grant vetted
+
+  if (empty($account->git_disabled)) {
+    // Grant the perm IFF consent has been given and a username has been set.
+    $grant |= (!empty($account->git_username) && !empty($account->git_consent)) ? 0x01 : 0;
+
+  }
+  // Vetted state persists through disabling.
+  $grant |= !empty($account->git_vetted) ? 0x02 : 0;
+
+  $del_rids = array();
+  if ($grant & 0x01) {
+    $vals = array(
+      'uid' => $account->uid,
+      'rid' => DRUPALORG_GIT_GATEWAY_RID,
     );
+    db_merge('users_roles')->key($vals)->fields($vals)->execute();
+    $account->roles[DRUPALORG_GIT_GATEWAY_RID] = 'Git user';
   }
-  elseif ($op == 'after_update') {
-    // Determine appropriate role grants for the account. By doing this in
-    // after_update, we don't have to swim upstream against the rest of the user
-    // system.
-    //
-    // Start by assuming we should not grant the perm.
-    $grant = 0;
-    // 0x01 == grant basic; 0x02 == grant vetted
-
-    if (empty($account->git_disabled)) {
-      // Grant the perm IFF consent has been given and a username has been set.
-      $grant |= (!empty($account->git_username) && !empty($account->git_consent)) ? 0x01 : 0;
-
-    }
-    // Vetted state persists through disabling.
-    $grant |= !empty($account->git_vetted) ? 0x02 : 0;
-
-    $del_rids = array();
-    if ($grant & 0x01) {
-      $vals = array(
-        'uid' => $account->uid,
-        'rid' => DRUPALORG_GIT_GATEWAY_RID,
-      );
-      db_merge('users_roles')->key($vals)->fields($vals)->execute();
-      $account->roles[DRUPALORG_GIT_GATEWAY_RID] = 'Git user';
-    }
-    else {
-      unset($account->roles[DRUPALORG_GIT_GATEWAY_RID]);
-      $del_rids[] = DRUPALORG_GIT_GATEWAY_RID;
-    }
-
-    if ($grant & 0x02) {
-      $vals = array(
-        'uid' => $account->uid,
-        'rid' => DRUPALORG_GIT_GATEWAY_VETTED_RID,
-      );
-      db_merge('users_roles')->key($vals)->fields($vals)->execute();
-      $account->roles[DRUPALORG_GIT_GATEWAY_VETTED_RID] = 'Git vetted user';
-    }
-    else {
-      unset($account->roles[DRUPALORG_GIT_GATEWAY_VETTED_RID]);
-      $del_rids[] = DRUPALORG_GIT_GATEWAY_VETTED_RID;
-    }
-
-    if (0x03 & ~$grant) {
-      // If both perms shouldn't be available, run a delete to be safe.
-      $del = db_delete('users_roles')
-        ->condition('uid', $account->uid)
-        ->condition('rid', $del_rids)
-        ->execute();
-    }
+  else {
+    unset($account->roles[DRUPALORG_GIT_GATEWAY_RID]);
+    $del_rids[] = DRUPALORG_GIT_GATEWAY_RID;
   }
-  elseif ($op == 'view') {
-    if (drupalorg_git_gateway_user_git_access()) {
-      $attribution = t('Pass the following option to <code>git commit</code> to attribute authorship to this user:');
-      $attribution .= '<pre>';
-      $attribution .= check_plain('--author="' . drupalorg_git_gateway_user_git_format_author($account) . '"');
-      $attribution .= '</pre>';
-      $attribution .= '<em>' . t('Learn more about <a href="@attribution-url">proper Git attribution</a>.', array(
-        '@attribution-url' => url('node/1146430'),
-      )) . '</em>';
-      $account->content['column_1']['Personal information']['git_attribution'] = array(
-        '#type' => 'user_profile_item',
-        '#title' => t('Git attribution'),
-        '#value' => $attribution,
-        '#weight' => 15,
-      );
-    }
+
+  if ($grant & 0x02) {
+    $vals = array(
+      'uid' => $account->uid,
+      'rid' => DRUPALORG_GIT_GATEWAY_VETTED_RID,
+    );
+    db_merge('users_roles')->key($vals)->fields($vals)->execute();
+    $account->roles[DRUPALORG_GIT_GATEWAY_VETTED_RID] = 'Git vetted user';
+  }
+  else {
+    unset($account->roles[DRUPALORG_GIT_GATEWAY_VETTED_RID]);
+    $del_rids[] = DRUPALORG_GIT_GATEWAY_VETTED_RID;
+  }
+
+  if (0x03 & ~$grant) {
+    // If both perms shouldn't be available, run a delete to be safe.
+    $del = db_delete('users_roles')
+      ->condition('uid', $account->uid)
+      ->condition('rid', $del_rids)
+      ->execute();
+  }
+}
+
+/**
+ * Implements hook_user_view().
+ */
+function drupalorg_git_gateway_user_view($account, $view_mode) {
+  if (drupalorg_git_gateway_user_git_access()) {
+    $attribution = t('Pass the following option to <code>git commit</code> to attribute authorship to this user:');
+    $attribution .= '<pre>';
+    $attribution .= check_plain('--author="' . drupalorg_git_gateway_user_git_format_author($account) . '"');
+    $attribution .= '</pre>';
+    $attribution .= '<em>' . t('Learn more about <a href="@attribution-url">proper Git attribution</a>.', array(
+      '@attribution-url' => url('node/1146430'),
+    )) . '</em>';
+    $account->content['column_1']['Personal information']['git_attribution'] = array(
+      '#type' => 'user_profile_item',
+      '#title' => t('Git attribution'),
+      '#value' => $attribution,
+      '#weight' => 15,
+    );
   }
 }
 
@@ -205,12 +209,12 @@ function drupalorg_git_gateway_user_git_format_author($account) {
  */
 function drupalorg_git_gateway_user_git_json_output($account) {
   $data = array('author' => drupalorg_git_gateway_user_git_format_author($account));
-  drupal_json($data);
+  drupal_json_output($data);
   // No return value, index.php renders no page but calls drupal_page_footer().
 }
 
 /**
- * Implementation of hook_form_alter().
+ * Implements hook_form_alter().
  *
  * Modify the base user account editing form to disable the Git user and Git
  * vetted user roles from being modified directly.
@@ -243,7 +247,7 @@ function drupalorg_git_gateway_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Implementation of hook_help().
+ * Implements hook_help().
  */
 function drupalorg_git_gateway_help($path, $arg) {
   global $user;
@@ -287,17 +291,29 @@ function drupalorg_git_gateway_no_consent_error($account) {
   return t('In order to create projects, agree to the terms of service on <a href="@git_access">Git access</a>.', array('@git_access' => $git_access_url));
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function drupalorg_git_gateway_user_page($account) {
-  require_once drupal_get_path('module', 'drupalorg_git_gateway') . "/drupalorg_git_gateway.user-form.inc";
+  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'drupalorg_git_gateway') . "/drupalorg_git_gateway.user-form.inc";
   return _drupalorg_git_gateway_user_page($account);
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function drupalorg_git_gateway_user_page_access($account) {
   // Default logic from user_edit_access(), but also allow if they have administer vcs
   return (($GLOBALS['user']->uid == $account->uid) || user_access('administer users')) || user_access('administer version control systems') && $account->uid > 0;
 }
 
-function drupalorg_git_gateway_defaults(&$form_state) {
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function drupalorg_git_gateway_defaults($form, &$form_state) {
   $form = array();
 
   $form['project_git_gateway_disabled_msg'] = array(
@@ -311,7 +327,11 @@ function drupalorg_git_gateway_defaults(&$form_state) {
   return system_settings_form($form);
 }
 
-function drupalorg_git_gateway_gatectl(&$form_state) {
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function drupalorg_git_gateway_gatectl($form, &$form_state) {
   $form = array();
 
   $push_options = array(
@@ -348,6 +368,10 @@ function drupalorg_git_gateway_gatectl(&$form_state) {
   return $form;
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function drupalorg_git_gateway_gatectl_submit($form, &$form_state) {
   $pushctl = 0;
   foreach (array_filter($form_state['values']['pushctl']) as $val) {
@@ -367,7 +391,7 @@ function drupalorg_git_gateway_gatectl_submit($form, &$form_state) {
  * Return total number of approved Git accounts.
  */
 function drupalorg_git_gateway_get_total_accounts() {
-  return db_result(db_query('SELECT count(distinct(uid)) FROM {users_roles} WHERE rid IN (%d, %d)', DRUPALORG_GIT_GATEWAY_RID, DRUPALORG_GIT_GATEWAY_VETTED_RID));
+  return db_query('SELECT count(distinct(uid)) FROM {users_roles} WHERE rid IN (:rid, :rid2)', array(':rid' => DRUPALORG_GIT_GATEWAY_RID, ':rid2' => DRUPALORG_GIT_GATEWAY_VETTED_RID))->fetchField();
 }
 
 /**
@@ -380,10 +404,10 @@ function drupalorg_git_gateway_suggest_git_username($name) {
   $base_suggestion = preg_replace('/[^A-Za-z0-9\._-]/', '', $name);
   $len = strlen($base_suggestion);
 
-  $result = db_query("SELECT git_username FROM {users} WHERE git_username LIKE ('%s%')", $name);
+  $result = db_query("SELECT git_username FROM {users} WHERE git_username LIKE (':name')", array(':name' => $name));
   $matches = array();
-  while ($row = db_fetch_object($result)) {
-    $matches[] = $row->git_username;
+  foreach ($result as $record) {
+    $matches[] = $record->git_username;
   }
 
   // Ensure no duplicates, and add an incrementing counter if one is found.
@@ -395,7 +419,7 @@ function drupalorg_git_gateway_suggest_git_username($name) {
 }
 
 /**
- * Implementation of hook_versioncontrol_project_auth_data_alter().
+ * Implements hook_versioncontrol_project_auth_data_alter().
  *
  * Add more auth data to the array being returned via drush for the auth
  * service, in particular the 'global' state of the account. Also ensure that
@@ -506,7 +530,7 @@ function drupalorg_git_gateway_versioncontrol_git_raw_push_data($data) {
 }
 
 /**
- * Implementation of hook_mail().
+ * Implements hook_mail().
  *
  * @param $key
  * @param $message

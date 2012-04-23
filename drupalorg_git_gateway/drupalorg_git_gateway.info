@@ -1,7 +1,6 @@
 name = Drupal.org Git Gateway
 description = Access control for git.
 package = Drupal.org
-core = 6.x
+core = 7.x
 dependencies[] = versioncontrol_project
 dependencies[] = sshkey
-dependencies[] = ctools
