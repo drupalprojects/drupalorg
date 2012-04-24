@@ -61,10 +61,10 @@ function drupalorg_git_gateway_schema() {
           'description' => 'The action - 1 if the admin is disabling the account, 0 if the admin is re-enabling the account.',
         ),
         'email' => array(
-         'type' => 'text',
-         'not null' => TRUE,
-         'description' => 'Record the customizable body of the e-mail notification.',
-        )
+          'type' => 'text',
+          'not null' => TRUE,
+          'description' => 'Record the customizable body of the e-mail notification.',
+        ),
       ),
       'indexes' => array(
         'uid' => array('uid'),
@@ -306,7 +306,7 @@ function drupalorg_git_gateway_update_6301() {
       ),
     ),
     'indexes' => array(
-      'uid' => array('uid')
+      'uid' => array('uid'),
     ),
   );
   db_create_table($ret, 'drupalorg_git_disable_log', $spec);

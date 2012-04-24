@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Forms for Drupal.org Git Gateway.
+ */
+
 function _drupalorg_git_gateway_user_page($account) {
   global $user;
 
@@ -14,7 +19,7 @@ function _drupalorg_git_gateway_user_page($account) {
     return ctools_build_form('drupalorg_git_gateway_user_form', $form_state);
   }
   // But show an entirely different form if we're another user (an admin).
-  else if (user_access('administer users') || user_access('administer version control systems')) {
+  elseif (user_access('administer users') || user_access('administer version control systems')) {
     return ctools_build_form('drupalorg_git_gateway_admin_user_form', $form_state);
   }
   else {
@@ -34,14 +39,18 @@ function drupalorg_git_gateway_user_form(&$form_state) {
   }
 
   $form['#validate'] = array('drupalorg_git_gateway_user_form_base_validate');
-  $form['submit'] = array('#type' => 'submit', '#value' => t('Save'), '#weight' => 30);
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+    '#weight' => 30,
+  );
 
   // This is somewhat naughty.
   $show_messages = empty($form_state['post']);
 
   // Warn the user if their account has been suspended.
   if ($show_messages && !empty($account->git_disabled)) {
-    drupal_set_message(t('Your Git access has been suspended by a Drupal.org administrator. See !handbook for information about reinstating your account.', array('!handbook' => l('the handbook', 'node/1042972'))), 'error');
+    drupal_set_message(t('Your Git access has been suspended by a Drupal.org administrator. See <a href="!handbook">the handbook</a> for information about reinstating your account.', array('!handbook' => url('node/1042972'))), 'error');
   }
 
   // Both 'Git administrator' and 'User administrator' roles get admin powers here.
@@ -125,7 +134,11 @@ function drupalorg_git_gateway_admin_user_form(&$form_state) {
     'drupalorg_git_gateway_user_form_submit',
   );
 
-  $form['submit'] = array('#type' => 'submit', '#value' => t('Save'), '#weight' => 30);
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+    '#weight' => 30,
+  );
   return $form;
 }
 
@@ -133,7 +146,7 @@ function _drupalorg_git_gateway_user_tos($account) {
   $form = array(
     '#type' => 'fieldset',
     '#title' => t('Git access agreement'),
-    '#collapsible' => TRUE ,
+    '#collapsible' => TRUE,
     '#collapsed' => !empty($account->git_consent),
     '#weight' => 10,
   );
@@ -142,11 +155,11 @@ function _drupalorg_git_gateway_user_tos($account) {
     '#type' => 'item',
     '#title' => t("To use Drupal's version control systems you must agree to the following"),
     '#value' => theme('item_list', array(
-      t('I will only commit !link code and resources to Drupal code repositories.', array('!link' => l('GPL V2+-licensed', 'licensing/faq', array('alias' => TRUE)))),
+      t('I will only commit <a href="!url">GPL V2+-licensed</a> code and resources to Drupal code repositories.', array('!url' => url('licensing/faq', array('alias' => TRUE)))),
       t('I will only commit code and resources that I own or am permitted to distribute.'),
-      t('I will cooperate with the !link as needed.', array('!link' => l('Drupal Security Team', 'security-team', array('alias' => TRUE)))),
-      t('I have read and will adhere to the !link.', array('!link' => l('Drupal Code of Conduct', 'dcoc', array('alias' => TRUE)))),
-      t('I agree to the !link.', array('!link' => l('Drupal Code Repository Terms of Service', 'node/1001544'))),
+      t('I will cooperate with the <a href="!url">Drupal Security Team</a> as needed.', array('!url' => url('security-team', array('alias' => TRUE)))),
+      t('I have read and will adhere to the <a href="!url">Drupal Code of Conduct</a>.', array('!url' => l('dcoc', array('alias' => TRUE)))),
+      t('I agree to the <a href="!url">Drupal Code Repository Terms of Service</a>.', array('!url' => url('node/1001544'))),
     )),
   );
 
@@ -207,13 +220,13 @@ function _drupalorg_git_gateway_user_config($account) {
     '#weight' => 15,
   );
 
-  $user_config = t('You will not be credited in commit statistics or listings unless you set the Git e-mail address to either an !multiemailadmin or the anonymized e-mail provided below. Read !handbook for a full discussion of identifying yourself to Git. We recommend:', (array('!handbook' => l('the handbook', 'node/1022156'), '!multiemailadmin' => l('address associated with your account', "user/$account->uid/edit/email-addresses")))) . "\n";
+  $user_config = t('You will not be credited in commit statistics or listings unless you set the Git e-mail address to either <a href="!emailadmin">an address associated with your account</a> or the anonymized e-mail provided below. Read <a href="!handbook">the handbook</a> for a full discussion of identifying yourself to Git. We recommend:', (array('!handbook' => url('node/1022156'), '!emailadmin' => url("user/$account->uid/edit/email-addresses")))) . "\n";
   $git_config_name = empty($account->profile_full_name) ? $account->name : $account->profile_full_name;
   $user_config .= '<div class="codeblock"><code>';
   $user_config .= "git config --global user.name \"$git_config_name\"<br/>";
   $user_config .= "git config --global user.email $account->mail<br/>";
   $user_config .= '</code></div>';
-  $user_config .= 'E-mail addresses in Drupal Git repositories are never shown in a web browser, but they can be accessed by anyone looking directly at the Git repository logs. It is generally considered appropriate to use a real, public-facing e-mail for Git. If you prefer to use an anonymized address, use: ';
+  $user_config .= t('E-mail addresses in Drupal Git repositories are never shown in a web browser, but they can be accessed by anyone looking directly at the Git repository logs. It is generally considered appropriate to use a real, public-facing e-mail for Git. If you prefer to use an anonymized address, use: ');
   $anon_address = "{$account->git_username}@{$account->uid}.no-reply.drupal.org";
   $user_config .= "<div class=\"codeblock\"><code>git config --global user.email $anon_address</code></div>";
 
@@ -299,7 +312,7 @@ function drupalorg_git_gateway_user_form_base_validate($form, &$form_state) {
     if ($form_state['values']['git_consent'] != $form_state['account']->git_consent) {
       // Even admins should never be able to change the state of whether someone
       // consented to our terms of service or not.
-      form_set_error('git_consent', 'Only the account\'s owner can toggle their consent to the Git Terms of Service.');
+      form_set_error('git_consent', t('Only the account\'s owner can toggle their consent to the Git Terms of Service.'));
       $form_state['git_consent'] = $form_state['account']->git_consent;
     }
   }
@@ -310,10 +323,10 @@ function drupalorg_git_gateway_user_form_base_validate($form, &$form_state) {
     if ($uid = db_result(db_query("SELECT uid FROM {users} WHERE git_username = '%s' AND uid <> %d", $form_state['values']['git_username'], $form_state['account']->uid))) {
       form_set_error('git_username', t('The requested Git username is already taken.'));
     }
-    else if (preg_match('/[^A-Za-z0-9\._-]/', $form_state['values']['git_username'])) {
+    elseif (preg_match('/[^A-Za-z0-9\._-]/', $form_state['values']['git_username'])) {
       form_set_error('git_username', t('The requested username contains invalid characters.'));
     }
-    else if (empty($form_state['account']->git_username)) {
+    elseif (empty($form_state['account']->git_username)) {
       $form_state['rebuild'] = TRUE;
       $form_state['storage']['chosen_username'] = $form_state['values']['git_username'];
     }
