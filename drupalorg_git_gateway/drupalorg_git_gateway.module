@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Drupal.org Git Gateway
  */
 
 /**
@@ -42,7 +43,7 @@ situation to the Drupal.org webmasters issue queue
 \n@admin_name");
 
 /**
- * Implementation of hook_meu()
+ * Implementation of hook_menu().
  */
 function drupalorg_git_gateway_menu() {
   $items = array();
@@ -108,7 +109,7 @@ function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
       ),
     );
   }
-  else if ($op == 'after_update') {
+  elseif ($op == 'after_update') {
     // Determine appropriate role grants for the account. By doing this in
     // after_update, we don't have to swim upstream against the rest of the user
     // system.
@@ -180,7 +181,7 @@ function drupalorg_git_gateway_user($op, &$edit, &$account, $category = NULL) {
 }
 
 /**
- * Returns whether currently logged in user is allowed to see git author attribution.
+ * Return whether currently logged in user is allowed to see git author attribution.
  */
 function drupalorg_git_gateway_user_git_access() {
   global $user;
@@ -209,7 +210,7 @@ function drupalorg_git_gateway_user_git_json_output($account) {
 }
 
 /**
- * Implements hook_form_alter().
+ * Implementation of hook_form_alter().
  *
  * Modify the base user account editing form to disable the Git user and Git
  * vetted user roles from being modified directly.
@@ -222,7 +223,7 @@ function drupalorg_git_gateway_form_alter(&$form, &$form_state, $form_id) {
   // Disable the 'Git user' and 'Git vetted user' roles in the same way the
   // authenticated user role is disabled.
   if (user_access('administer permissions')) {
-    $options =& $form['account']['roles']['#options'];
+    $options = &$form['account']['roles']['#options'];
     foreach (array(DRUPALORG_GIT_GATEWAY_RID, DRUPALORG_GIT_GATEWAY_VETTED_RID) as $rid) {
       $checkbox = array(
         '#type' => 'checkbox',
@@ -314,8 +315,8 @@ function drupalorg_git_gateway_gatectl(&$form_state) {
   $form = array();
 
   $push_options = array(
-    DRUPALORG_GIT_GATECTL_CORE      => 'Disable pushes to core',
-    DRUPALORG_GIT_GATECTL_PROJECTS  => 'Disable pushes to all full projects',
+    DRUPALORG_GIT_GATECTL_CORE => 'Disable pushes to core',
+    DRUPALORG_GIT_GATECTL_PROJECTS => 'Disable pushes to all full projects',
     DRUPALORG_GIT_GATECTL_SANDBOXES => 'Disable pushes to all sandbox projects',
   );
 
@@ -349,7 +350,7 @@ function drupalorg_git_gateway_gatectl(&$form_state) {
 
 function drupalorg_git_gateway_gatectl_submit($form, &$form_state) {
   $pushctl = 0;
-  foreach(array_filter($form_state['values']['pushctl']) as $val) {
+  foreach (array_filter($form_state['values']['pushctl']) as $val) {
     $pushctl |= $val;
   }
 
@@ -370,7 +371,7 @@ function drupalorg_git_gateway_get_total_accounts() {
 }
 
 /**
- * Created a suggested username based on the provided name value, and ensuring
+ * Create a suggested username based on the provided name value, ensuring
  * no conflicts with existing git usernames.
  *
  * @param string $name
@@ -394,7 +395,7 @@ function drupalorg_git_gateway_suggest_git_username($name) {
 }
 
 /**
- * Implements hook_versioncontrol_project_auth_data_alter().
+ * Implementation of hook_versioncontrol_project_auth_data_alter().
  *
  * Add more auth data to the array being returned via drush for the auth
  * service, in particular the 'global' state of the account. Also ensure that
@@ -446,7 +447,7 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
       unset($data['users'][$name]);
     }
 
-    $ap =& $data['users'][$git_username];
+    $ap = &$data['users'][$git_username];
 
     $ap['global'] = 0;
     // User has global access disabled for some reason.
@@ -475,10 +476,10 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
  */
 function drupalorg_git_gateway_versioncontrol_git_raw_push_data($data) {
   $push_id = db_insert('drupalorg_git_push_log')->fields(array(
-      'uid' => $data['uid'],
-      'timestamp' => $data['timestamp'],
-      'repo_id' => $data['repo_id'],
-    ))->execute();
+    'uid' => $data['uid'],
+    'timestamp' => $data['timestamp'],
+    'repo_id' => $data['repo_id'],
+  ))->execute();
 
   // Create a new insert object for multi-insert fun.
   $insert = db_insert('drupalorg_git_push_log_refs')
@@ -505,7 +506,7 @@ function drupalorg_git_gateway_versioncontrol_git_raw_push_data($data) {
 }
 
 /**
- * Implements hook_mail()
+ * Implementation of hook_mail().
  *
  * @param $key
  * @param $message
