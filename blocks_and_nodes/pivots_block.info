@@ -1,4 +1,4 @@
 name = Block: Pivots
 description = Block: Pivots
 package = Drupal.org
-core=6.x
+core = 7.x

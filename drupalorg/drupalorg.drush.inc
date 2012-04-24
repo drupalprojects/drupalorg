@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function drupalorg_drush_help($section) {
   switch ($section) {
     case 'drupalorg:map-content':
@@ -11,6 +15,10 @@ function drupalorg_drush_help($section) {
   }
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function drupalorg_drush_command() {
   return array(
     'map-content' => array(

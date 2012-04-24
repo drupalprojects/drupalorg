@@ -2,4 +2,4 @@ name = Drupal.org news
 description = Blocks and customizations related to Drupal.org news and Planet Drupal.
 dependencies[] = aggregator
 package = Drupal.org
-core = 6.x
+core = 7.x

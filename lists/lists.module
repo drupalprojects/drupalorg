@@ -3,7 +3,7 @@
 /**
  * @file
  *   Drupal.org mailing list subscription helper.
- *   
+ *
  *   How to configure mailman mailing lists with this module (there is no admin
  *   interface for this at this time):
  *
@@ -46,7 +46,7 @@
  */
 
 /**
- * Implementation of hook_menu().
+ * Implements hook_menu().
  */
 function lists_menu() {
   $items['lists'] = array(
@@ -54,7 +54,7 @@ function lists_menu() {
     'access arguments' => array('access content'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('lists_subscribe_form'),
-    'type' => MENU_SUGGESTED_ITEM
+    'type' => MENU_SUGGESTED_ITEM,
   );
   return $items;
 }
@@ -66,42 +66,42 @@ function lists_menu() {
  */
 function _lists_get_lists() {
   $lists = array(
-    'support'       => array(
-      'name'        => 'Support',
+    'support' => array(
+      'name' => 'Support',
       'description' => 'A list for support questions.',
-      'mailto'      => 'support-request@drupal.org',
+      'mailto' => 'support-request@drupal.org',
     ),
-    'development'   => array(
-      'name'        => 'Development',
+    'development' => array(
+      'name' => 'Development',
       'description' => 'A list for Drupal core developers.',
-      'mailto'      => 'development-request@drupal.org',
+      'mailto' => 'development-request@drupal.org',
     ),
-    'themes'        => array(
-      'name'        => 'Themes',
+    'themes' => array(
+      'name' => 'Themes',
       'description' => 'A list for Drupal theme developers/designers.',
-      'mailto'      => 'themes-request@drupal.org',
+      'mailto' => 'themes-request@drupal.org',
     ),
-    'translations'  => array(
-      'name'        => 'Translations',
+    'translations' => array(
+      'name' => 'Translations',
       'description' => 'A list for Drupal UI translators.',
-      'mailto'      => 'translations-request@drupal.org',
+      'mailto' => 'translations-request@drupal.org',
     ),
-    'consulting'    => array(
-      'name'        => 'Consulting',
+    'consulting' => array(
+      'name' => 'Consulting',
       'description' => 'A mailing list for Drupal consultants and Drupal service/hosting providers.',
-      'mailto'      => 'consulting-request@drupal.org',
+      'mailto' => 'consulting-request@drupal.org',
     ),
-    'webmasters'    => array(
-      'name'        => 'Webmasters',
+    'webmasters' => array(
+      'name' => 'Webmasters',
       'description' => 'A list for drupal.org webmasters (e.g. settings and content on the drupal.org website, user management, removing spam, etc.).',
-      'mailto'      => 'webmasters-request@drupal.org',
-      'private'     => TRUE,
+      'mailto' => 'webmasters-request@drupal.org',
+      'private' => TRUE,
     ),
     'infrastructure' => array(
-      'name'         => 'Infrastructure',
-      'description'  => 'A list for drupal.org infrastructure maintainers (e.g. drupal.org hardware and server configuration, the Git repositories, mailing lists, etc).',
-      'mailto'       => 'infrastructure-request@drupal.org',
-      'private'      => TRUE,
+      'name' => 'Infrastructure',
+      'description' => 'A list for drupal.org infrastructure maintainers (e.g. drupal.org hardware and server configuration, the Git repositories, mailing lists, etc).',
+      'mailto' => 'infrastructure-request@drupal.org',
+      'private' => TRUE,
     ),
   );
   return $lists;
@@ -127,7 +127,7 @@ function lists_subscribe_form() {
       $links[] = "<a href=\"http://lists.drupal.org/pipermail/$list/\">view archive</a>";
     }
 
-    $output .= '<h2>'. $info['name'] ."</h2>\n";
+    $output .= '<h2>' . $info['name'] . "</h2>\n";
     if (!$info['disabled']) {
       $links[] = "<a href=\"http://lists.drupal.org/listinfo/$list\">mailman page</a>";
     }
@@ -135,8 +135,8 @@ function lists_subscribe_form() {
       $output .= "<em>This list has been disabled.</em>\n";
     }
 
-    $output .= '<p>'. $info['description'] ."</p>\n";
-    $output .= '<p>'. implode(' . ', $links) ."</p>\n";
+    $output .= '<p>' . $info['description'] . "</p>\n";
+    $output .= '<p>' . implode(' . ', $links) . "</p>\n";
   }
   $output .= '<h2>Subscribe</h2>';
 
@@ -146,12 +146,12 @@ function lists_subscribe_form() {
   );
 
   $form['mail'] = array(
-    '#type'          => 'textfield',
-    '#title'         => t('E-mail address'),
+    '#type' => 'textfield',
+    '#title' => t('E-mail address'),
     '#default_value' => ($user->uid ? $user->mail : ''),
-    '#size'          => 50,
-    '#maxlength'     => 255,
-    '#required'      => TRUE,
+    '#size' => 50,
+    '#maxlength' => 255,
+    '#required' => TRUE,
   );
   $form['item'] = array(
     '#type' => 'item',
@@ -220,30 +220,30 @@ function _lists_get_mailman_lists() {
   // passwords need to be set in variable table in order to be able to
   // administer these lists.
   $lists = array(
-    'drupal'        => array(
-      'name'        => 'Drupal newsletter',
+    'drupal' => array(
+      'name' => 'Drupal newsletter',
       'description' => 'A sometimes-monthly mailing about all things Drupal.',
-      'allow_sub'   => TRUE,
-      'mail'        => variable_get('lists_drupal_mail', ''),
-      'pass'        => variable_get('lists_drupal_pass', ''),
-      'url'         => variable_get('lists_drupal_url', ''),
+      'allow_sub' => TRUE,
+      'mail' => variable_get('lists_drupal_mail', ''),
+      'pass' => variable_get('lists_drupal_pass', ''),
+      'url' => variable_get('lists_drupal_url', ''),
     ),
-    'security'      => array(
-      'name'        => 'Security announcements',
+    'security' => array(
+      'name' => 'Security announcements',
       'description' => 'A low volume mailing list where all security issues affecting Drupal and Drupal contributed modules are publically announced.',
-      'allow_sub'   => TRUE,
-      'mail'        => variable_get('lists_security_mail', ''),
-      'pass'        => variable_get('lists_security_pass', ''),
-      'url'         => variable_get('lists_security_url', ''),
+      'allow_sub' => TRUE,
+      'mail' => variable_get('lists_security_mail', ''),
+      'pass' => variable_get('lists_security_pass', ''),
+      'url' => variable_get('lists_security_url', ''),
     ),
-    'maintainer'    => array(
-      'name'        => 'Maintainer news',
+    'maintainer' => array(
+      'name' => 'Maintainer news',
       'description' => 'This list is automatically enabled for users who have agreed to the terms of the Git access agreement and can not be manually subscribed or unsubscribed.',
-      'allow_sub'   => FALSE,
+      'allow_sub' => FALSE,
       'maintainer_auto' => TRUE,
-      'mail'        => variable_get('lists_maintainer_mail', ''),
-      'pass'        => variable_get('lists_maintainer_pass', ''),
-      'url'         => variable_get('lists_maintainer_url', ''),
+      'mail' => variable_get('lists_maintainer_mail', ''),
+      'pass' => variable_get('lists_maintainer_pass', ''),
+      'url' => variable_get('lists_maintainer_url', ''),
     ),
   );
   return $lists;
@@ -257,40 +257,51 @@ function _lists_get_forum_tids() {
 }
 
 /**
- * Implementation of hook_perm().
+ * Implements hook_permission().
  */
-function lists_perm() {
-  return array('post to newsletter');
+function lists_permission() {
+  return array(
+    'post to newsletter' => array(
+      'title' => t('post to newsletter'),
+      'description' => t('TODO Add a description for \'post to newsletter\''),
+    ),
+  );
 }
 
 /**
- * Implementation of hook_user().
+ * Implements hook_user_categories().
+ */
+function lists_user_categories() {
+  return array(array('name' => 'newsletter', 'title' => t('My newsletters'), 'weight' => 10));
+}
+
+/**
+ * Implements hook_user_update().
+ */
+function lists_user_update(&$edit, $account, $category) {
+  // Update maintainers subscription after roles are set in
+  // drupalorg_git_gateway_user().
+  $lists = _lists_get_mailman_lists();
+  $list = $lists['maintainer'];
+  if (array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles)) {
+    _lists_mailman_subscribe($list, $account);
+  }
+  else {
+    _lists_mailman_unsubscribe($list, $account);
+  }
+}
+
+/**
+ * Implements hook_user().
  *
  * We need to hack this in, since user module does try to have a tight control
  * of management of these menu items, so we need to get it created through
  * this hook and then altered by hook_menu_alter(). Drupal 7 should do better.
  */
-function lists_user($op, &$edit, &$account, $category = NULL) {
-  switch ($op) {
-    case 'categories':
-      return array(array('name' => 'newsletter', 'title' => t('My newsletters'), 'weight' => 10));
-    case 'after_update':
-      // Update maintainers subscription after roles are set in
-      // drupalorg_git_gateway_user().
-      $lists = _lists_get_mailman_lists();
-      $list = $lists['maintainer'];
-      if (array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles)) {
-        _lists_mailman_subscribe($list, $account);
-      }
-      else {
-        _lists_mailman_unsubscribe($list, $account);
-      }
-      break;
-  }
-}
+function lists_user_OLD($op, &$edit, &$account, $category = NULL) { }
 
 /**
- * Implementation of hook_menu_alter().
+ * Implements hook_menu_alter().
  *
  * See why we need this hack in lists_user().
  */
@@ -341,11 +352,11 @@ function lists_mailman_user_form(&$form_state, $account = FALSE) {
  * Subscribe/unsubscribe from mailman mailing lists.
  */
 function lists_mailman_user_form_submit($form, &$form_state) {
-  $account = user_load(array('uid' => $form_state['values']['uid']));
+  $account = user_load($form_state['values']['uid']);
   $lists = _lists_get_mailman_lists();
   foreach ($lists as $list => $data) {
-    $old = (int)$form['newsletter'][$list]['#default_value'];
-    $new = (int)$form_state['values'][$list];
+    $old = (int) $form['newsletter'][$list]['#default_value'];
+    $new = (int) $form_state['values'][$list];
     // Special handling for the maintainer newsletter.
     if ($data['maintainer_auto']) {
       $status = array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles);
@@ -375,7 +386,7 @@ function lists_mailman_user_form_submit($form, &$form_state) {
 }
 
 /**
- * Implementation of hook_form_alter().
+ * Implements hook_form_alter().
  */
 function lists_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'forum_node_form') {
@@ -416,12 +427,10 @@ function lists_form_alter(&$form, $form_state, $form_id) {
 }
 
 /**
- * Submit newsletter forum to mailman for mass mailing.
+ * Implements hook_node_update().
  */
-function lists_nodeapi(&$node, $op, $teaser, $page) {
-  global $user;
-
-  if ($node->status && ($op == 'insert' || $op == 'update') && user_access('post to newsletter')) {
+function lists_node_update($node) {
+  if ($node->status && TRUE && user_access('post to newsletter')) {
     // We are going to return if $node->type is not one of the node
     // types assigned to the forum vocabulary.  If forum_nav_vocabulary
     // is undefined or the vocabulary does not exist, it clearly cannot
@@ -454,7 +463,7 @@ function lists_nodeapi(&$node, $op, $teaser, $page) {
     if ($generate_mail) {
       // There's no reason I can see for sending a mailing multiple times, but
       // since we're tracking whether or not something is sent anyway...
-      $sent = db_result(db_query('SELECT nid FROM {lists_mailman} WHERE nid = %d', $node->nid));
+      $sent = db_query('SELECT nid FROM {lists_mailman} WHERE nid = :nid', array(':nid' => $node->nid))->fetchField();
       if (!$sent) {
         $lists = _lists_get_mailman_lists();
         $lists_forum_tids = _lists_get_forum_tids();
@@ -462,18 +471,33 @@ function lists_nodeapi(&$node, $op, $teaser, $page) {
         $language = language_default();
         $params = array('node' => $node);
         drupal_mail('lists', 'mailman_newsletter', $list['mail'], $language, $params);
-        db_query('INSERT INTO {lists_mailman} (nid, uid, timestamp) VALUES(%d, %d, %d)', $node->nid, $user->uid, time());
+        // TODO Please convert this statement to the D7 database API syntax.
+        /* db_query('INSERT INTO {lists_mailman} (nid, uid, timestamp) VALUES(%d, %d, %d)', $node->nid, $user->uid, REQUEST_TIME) */
+        NULL;
         drupal_set_message(t('Mail sent to !email.', array('!email' => $list['mail'])));
       }
       // Force comments to be disabled for these posts.  David doesn't like this.
       // This is an ugly kludge.
-      db_query('UPDATE {node} SET comment = %d WHERE nid = %d', COMMENT_NODE_DISABLED, $node->nid);
+      db_update('node')
+        ->fields(array(
+          'comment' => COMMENT_NODE_DISABLED,
+        ))
+        ->condition('nid', $node->nid)
+        ->execute();
     }
   }
 }
 
 /**
- * Implementation of hook_mail().
+ * Submit newsletter forum to mailman for mass mailing.
+ */
+function lists_nodeapi_OLD(&$node, $op, $teaser, $page) {
+  // TODO Remaining code in this function needs to be moved to the appropriate new hook function.
+  global $user;
+}
+
+/**
+ * Implements hook_mail().
  */
 function lists_mail($key, &$message, $params) {
   if ($key == 'mailman_newsletter') {
@@ -485,15 +509,15 @@ function lists_mail($key, &$message, $params) {
 
 /**
  * Helper function to check if the provided email address is susbcribed.
- * 
+ *
  * Some code borrowed from the mailman_api module.
  */
 function _lists_mailman_user_subscribed($list, $account) {
   $query = array(
-    'findmember'     => $account->mail,
-    'findmember_btn' => 'Search...'
+    'findmember' => $account->mail,
+    'findmember_btn' => 'Search...',
   );
-  $url = url($list['url'] .'/members', array('query' => $query));
+  $url = url($list['url'] . '/members', array('query' => $query));
   $result = lists_mailman_query($url, $list);
   // replace '@' with '--at--' to match the mailman internal representation so
   // we don't match our own search query which would always result in a match.
@@ -502,7 +526,7 @@ function _lists_mailman_user_subscribed($list, $account) {
 
 /**
  * Helper function to subscribe a user to a mailman mailing list.
- * 
+ *
  * Some code borrowed from the mailmain_api module.
  */
 function _lists_mailman_subscribe($list, $account) {
@@ -512,7 +536,7 @@ function _lists_mailman_subscribe($list, $account) {
     'notification_to_list_owner' => variable_get('lists_mailman_notify_admin', 0),
     'subscribees_upload' => $account->mail,
   );
-  $url = url($list['url'] .'/members/add', array('query' => $query));
+  $url = url($list['url'] . '/members/add', array('query' => $query));
   $result = lists_mailman_query($url, $list);
   if ($result !== FALSE) {
     watchdog('lists', t('User %email subscribed to !list mailman list.', array('%email' => $account->mail, '!list' => $list['name'])));
@@ -525,7 +549,7 @@ function _lists_mailman_subscribe($list, $account) {
 
 /**
  * Helper function to subscribe a user to a mailman mailing list.
- * 
+ *
  * Some code borrowed from the mailmain_api module.
  */
 function _lists_mailman_unsubscribe($list, $account) {
@@ -534,7 +558,7 @@ function _lists_mailman_unsubscribe($list, $account) {
     'send_unsub_notifications_to_list_owner' => variable_get('lists_mailman_notify_admin', 0),
     'unsubscribees_upload' => $account->mail,
   );
-  $url = url($list['url'] .'/members/remove', array('query' => $query));
+  $url = url($list['url'] . '/members/remove', array('query' => $query));
   $result = lists_mailman_query($url, $list);
   if ($result !== FALSE) {
     watchdog('lists', t('User %email unsubscribed from !list mailman list.', array('%email' => $account->mail, '!list' => $list['name'])));
@@ -550,24 +574,24 @@ function _lists_mailman_unsubscribe($list, $account) {
  *
  * Break out adminpw so we don't log it on errors to minimize the
  * exposure of this value.
- * 
+ *
  * Some code borrowed from the mailmain_api module.
  */
 function lists_mailman_query($url, $list) {
-  $result = drupal_http_request($url .'&adminpw='. urlencode($list['pass']));
-  
+  $result = drupal_http_request($url . '&adminpw=' . urlencode($list['pass']));
+
   // Provide debug information if connection to mailman fails.
   if (!is_object($result) || !isset($result->code) || $result->code != '200') {
-    watchdog('lists', t('Mailman HTTP request error (!code) for !list: %error<br />url=%url', array('!code' => (int)$result->code, '!list' => $list['name'], '%error' => $result->error, '%url' => $url)));
+    watchdog('lists', t('Mailman HTTP request error (!code) for !list: %error<br />url=%url', array('!code' => (int) $result->code, '!list' => $list['name'], '%error' => $result->error, '%url' => $url)));
     return FALSE;
   }
-  
+
   // Provide debug information if connection to mailman succeeds but the list is invalid.
   elseif (is_object($result) && strpos($result->data, '>No such list')) {
     watchdog('lists', t('Mailman list !list does not exist.<br />url=%url', array('!list' => $list['name'], '%url' => $url)));
     return FALSE;
   }
-  
+
   // All all right, so return full page reply.
   return $result;
 }

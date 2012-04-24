@@ -6,7 +6,7 @@
  */
 
 /**
- * Implementation of hook_schema().
+ * Implements hook_schema().
  */
 function drupalorg_schema() {
   $system_schema = system_schema();
@@ -20,7 +20,7 @@ function drupalorg_schema() {
 }
 
 /**
- * Set the system weight heavier than cvslog so our form_alter comes later. 
+ * Set the system weight heavier than cvslog so our form_alter comes later.
  * See http://drupal.org/node/210497 for more information.
  */
 function drupalorg_install() {

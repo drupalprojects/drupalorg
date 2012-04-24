@@ -6,15 +6,15 @@
  */
 
 /**
- * Implement hook_views_default_views().
+ * Implements hook_views_default_views().
  */
 function drupalorg_views_default_views() {
   // Search the "views" subdirectory for files ending in .view.php.
-  $files = file_scan_directory(drupal_get_path('module', 'drupalorg'). '/views', 'view\.php$');
+  $files = file_scan_directory(drupal_get_path('module', 'drupalorg') . '/views', '/view\.php$/');
   foreach ($files as $absolute => $file) {
     // This is not require_once because it's possible that
     // hook_views_default_views() gets called more than once.
-    require $absolute;
+    require DRUPAL_ROOT . '/' . $absolute;
     if (isset($view)) {
       // $file->name has the ".php" stripped off, but still has the ".view".
       $view_name = substr($file->name, 0, strrpos($file->name, '.'));
@@ -85,7 +85,7 @@ function _drupalorg_views_default_views_alter(&$views) {
   $name = 'project_issue_project';
   if (isset($views[$name])) {
     $views[$name]->set_display('block_1');
-    $views[$name]->display_handler->override_option('block_caching', BLOCK_CACHE_PER_PAGE);
+    $views[$name]->display_handler->override_option('block_caching', DRUPAL_CACHE_PER_PAGE);
     // ... and views-specific caching. Not sure why we want both, but that's
     // how it was configured by killes on d.o so I'm replicating that here.
     $views[$name]->display_handler->override_option('cache', $cache_5min);

@@ -16,7 +16,7 @@ define('DRUPALORG_NEWS_VID', 34);
 define('DRUPALORG_PLANET_CATEGORY', 2);
 
 /**
- * Implementation of hook_menu().
+ * Implements hook_menu().
  */
 function drupalorg_news_menu() {
   $items['news'] = array(
@@ -38,13 +38,13 @@ function drupalorg_news_page() {
 }
 
 /**
- * Implementation of hook_form_alter().
+ * Implements hook_form_alter().
  */
 function drupalorg_news_form_alter(&$form, $form_state, $form_id) {
   // Remove the news vocabulary on forum forms, if the user is not an admin.
   // Used to mark news forum topics with tags.
   if ($form_id == 'forum_node_form') {
-    $form['taxonomy'][DRUPALORG_NEWS_VID]['#access'] = user_access('administer nodes'); 
+    $form['taxonomy'][DRUPALORG_NEWS_VID]['#access'] = user_access('administer nodes');
   }
 }
 
@@ -55,64 +55,79 @@ function drupalorg_news_preprocess_drupalorg_home(&$vars) {
   $vars['tab_content_news'] = drupalorg_news_short_block();
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function drupalorg_news_short_block() {
   // Get the first three news items ordered by descending publication date.
-  $result = db_query_range(db_rewrite_sql('SELECT n.nid FROM {node} n WHERE n.status = 1 AND n.promote = 1 ORDER BY n.created DESC'), array(), 0, 4);
+  $nids = db_select('node', 'n')
+    ->fields('n', array('nid'))
+    ->condition('status', 1)
+    ->condition('promote', 1)
+    ->orderBy('created', 'DESC')
+    ->range(0, 3)
+    ->addTag('node_access')
+    ->execute()
+    ->fetchCol();
+
   $fresh_news = '';
   $news_count = 0;
-  while ($nid = db_fetch_object($result)) {
-    $node = node_load($nid->nid);
+  foreach ($nids as $nid) {
+    $node = node_load($nid);
     if ($news_count == 0) {
       // The first news item has a blurb displayed.
-      $fresh_news .= '<h6>'. l($node->title, 'node/'. $node->nid) .'</h6>';
-      $fresh_news .= '<p class="submitted">'. format_date($node->created, 'custom', 'F j, Y') .'</p>';
+      $fresh_news .= '<h6>' . l($node->title, 'node/' . $node->nid) . '</h6>';
+      $fresh_news .= '<p class="submitted">' . format_date($node->created, 'custom', 'F j, Y') . '</p>';
       // Cut it to short and sweet to fit into the design. Strip all tags,
       // so things like big images, distracting links and paragraph tags will
       // not end up here. The text should be good in itself to display.
-      $fresh_news .= '<p>'. node_teaser(strip_tags($node->teaser), $node->format, 180) .' '. l(t('Read more'), 'node/'. $node->nid) .'</p>';
+      $fresh_news .= '<p>' . text_summary(strip_tags($node->body['und']['0']['summary']), $node->body['und']['0']['format'], 180) . ' ' . l(t('Read more'), 'node/' . $node->nid) . '</p>';
     }
     else {
       // Rest of the items have just their title displayed.
-      $fresh_news .= '<p>'. l($node->title, 'node/'. $node->nid) .'</p>';
+      $fresh_news .= '<p>' . l($node->title, 'node/' . $node->nid) . '</p>';
     }
     $news_count++;
+
   }
   // Finally, we have a link to the rest of the items
-  $fresh_news .= '<p>'. l(t('More news…'), 'news') .'</p>';
+  $fresh_news .= '<p>' . l(t('More news…'), 'news') . '</p>';
 
   return $fresh_news;
 }
 
 /**
- * Implementation of hook_block().
+ * Implements hook_block_info().
  */
-function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
-  switch ($op) {
-    case 'list':
+function drupalorg_news_block_info() {
+  return array(
+    'planet-list' => array(
+      'info' => t('Planet Drupal subscriptions'),
+    ),
+    'drupal-news' => array(// for dashboard
+      'info' => t('Drupal News'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    ),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function drupalorg_news_block_view($delta) {
+  switch ($delta) {
+    case 'planet-list':
       return array(
-        'planet-list' => array(
-          'info' => t('Planet Drupal subscriptions'),
-        ),
-        'drupal-news' => array( // for dashboard
-          'info' => t('Drupal News'),
-          'cache' => BLOCK_CACHE_PER_PAGE,
-        ),
+        'content' => drupalorg_news_planet_drupal_block(),
       );
-      return $blocks;
 
-    case 'view':
-      switch ($delta) {
-        case 'planet-list':
-          return array(
-            'content' => drupalorg_news_planet_drupal_block(),
-          );
-
-        case 'drupal-news':
-          return array(
-            'subject' => t('Drupal News'),
-            'content' => drupalorg_news_short_block(),
-          );
-      }
+    case 'drupal-news':
+      return array(
+        'subject' => t('Drupal News'),
+        'content' => drupalorg_news_short_block(),
+      );
   }
 }
 
@@ -121,20 +136,31 @@ function drupalorg_news_block($op = 'list', $delta = 0, $edit = array()) {
  */
 function drupalorg_news_planet_drupal_block() {
   $output = '';
-  $description = db_result(db_query("SELECT description FROM aggregator_category WHERE cid = %d", DRUPALORG_PLANET_CATEGORY));
-  $result = db_query('SELECT f.* FROM {aggregator_feed} f JOIN {aggregator_category_feed} c ON f.fid = c.fid WHERE c.cid = %d ORDER BY f.title', DRUPALORG_PLANET_CATEGORY);
+
+  $description = db_query("SELECT description FROM aggregator_category WHERE cid = :cid", array(':cid' => DRUPALORG_PLANET_CATEGORY))->fetchField();
+
+  $query = db_select('aggregator_feed', 'f')->fields('f');
+  $query->leftJoin('aggregator_category_feed', 'c', 'f.fid = c.fid');
+  $query->condition('c.cid', DRUPALORG_PLANET_CATEGORY)->orderBy('f.title', 'DESC');
+
+  $results = $query->execute();
 
   $list = '<div class="item-list"><ul>';
   $counter = 0;
-  while ($feed = db_fetch_object($result)) {
-    $list .= '<li>'.  l($feed->title, $feed->link)  .' ('. l('feed', $feed->url) .')</li>'; 
+  foreach($results as $feed) {
+    $list .= '<li>' .  l($feed->title, $feed->link)  . ' (' . l('feed', $feed->url) . ')</li>';
     $counter++;
   }
   $list .= '</ul></div>';
-  
-  $output .= '<p>'. filter_xss_admin($description) .' '. t('Collecting posts from the following @num sources:', array('@num' => $counter)) .'</p>';
+
+  $output .= '<p>' . filter_xss_admin($description) . ' ' . t('Collecting posts from the following @num sources:', array('@num' => $counter)) . '</p>';
   $output .= $list;
-  $output .= theme('xml_icon', url('planet/rss.xml'));
+
+  $variables = array(
+    'url' => url('planet/rss.xml'),
+    'title' => 'Drupal planet',
+  );
+  $output .= theme('feed_icon', $variables);
 
   return $output;
 }

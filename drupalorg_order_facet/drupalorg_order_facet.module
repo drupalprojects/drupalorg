@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Implementation of hook_apachesolr_facets().
+ * Implements hook_apachesolr_facets().
  *
  * Reexport all the facets defined by other modules, and give the possibility
  * to define them as "order facets".
  */
 function drupalorg_order_facet_apachesolr_facets() {
   // Load the _apachesolr_sort_facets() function.
-  require_once drupal_get_path('module', 'apachesolr') . '/apachesolr.admin.inc';
+  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'apachesolr') . '/apachesolr.admin.inc';
 
   foreach (module_implements('apachesolr_facets') as $module) {
     if ($module != 'drupalorg_order_facet') {
@@ -27,10 +27,10 @@ function drupalorg_order_facet_apachesolr_facets() {
 }
 
 /**
- * Implementation of hook_block().
+ * Implements hook_block_info().
  */
-function drupalorg_order_facet_block($op = 'list', $delta = 0, $edit = array()) {
-  if ($op == 'list') {
+function drupalorg_order_facet_block_info() {
+  if (TRUE) {
     $enabled_facets = apachesolr_get_enabled_facets('drupalorg_order_facet');
     $facets = drupalorg_order_facet_apachesolr_facets();
     // Add the blocks
@@ -38,20 +38,26 @@ function drupalorg_order_facet_block($op = 'list', $delta = 0, $edit = array()) 
     foreach ($enabled_facets as $delta => $facet_field) {
       if (isset($facets[$delta])) {
         $blocks[$delta] = $facets[$delta] + array(
-          'cache' => BLOCK_NO_CACHE
+          'cache' => BLOCK_NO_CACHE,
         );
         $blocks[$delta]['info'] = t('Solr result block: !facet_name', array('!facet_name' => $facets[$delta]['info']));
       }
     }
     return $blocks;
   }
-  elseif ($op == 'view' && apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function drupalorg_order_facet_block_view($delta) {
+  if (TRUE && apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
     $facets = drupalorg_order_facet_apachesolr_facets();
     if (isset($facets[$delta])) {
       // Replace 'content' with 'Modules', 'Themes', etc.
       foreach ($query->get_filters() as $filter) {
         if ($filter['#name'] === 'im_vid_3') {
-          $term = taxonomy_get_term($filter['#value']);
+          $term = taxonomy_term_load($filter['#value']);
           $facets[$delta]['info'] = str_replace('content', check_plain($term->name), $facets[$delta]['info']);
         }
       }
@@ -59,20 +65,29 @@ function drupalorg_order_facet_block($op = 'list', $delta = 0, $edit = array()) 
       if (!empty($results)) {
         return array(
           'subject' => $facets[$delta]['info'],
-          'content' => theme('item_list', $results, NULL, 'ul', array('class' => 'flat')),
+          'content' => theme('item_list', array('items' => $results, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => 'flat'))),
         );
       }
     }
   }
 }
 
+/**
+ * Implements hook_block().
+ */
+function drupalorg_order_facet_block_OLD($op = 'list', $delta = 0, $edit = array()) { }
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function drupalorg_order_facet_content($delta) {
   if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
     $facets = drupalorg_order_facet_apachesolr_facets();
     if (isset($facets[$delta])) {
       $results = _drupalorg_order_facet_build($facets[$delta], $query, $response, 4, FALSE);
       if (!empty($results)) {
-        return theme('item_list', $results, NULL, 'ul', array('class' => 'flat'));
+        return theme('item_list', array('items' => $results, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => 'flat')));
       }
     }
   }
@@ -89,9 +104,9 @@ function _drupalorg_order_facet_build($facet, $query, $response, $count = 4, $mo
 
   // Generate a new query based on the executed one.
   $order_query = clone $query;
-  $order_query->set_available_sort($facet['facet_field'], array('title' => $facet['info'],'default' => $facet['direction']));
+  $order_query->set_available_sort($facet['facet_field'], array('title' => $facet['info'], 'default' => $facet['direction']));
   $order_query->set_solrsort($facet['facet_field'], $facet['direction']);
-  
+
   $params = array(
     // The fields to return.
     'fl' => 'id,nid,title',

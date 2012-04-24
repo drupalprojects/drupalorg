@@ -1,9 +1,13 @@
 name = Drupal.org
 description = "Customizations and tweaks for drupal.org"
 package = Drupal.org
-dependencies[] = jquery_ui
+dependencies[] = comment
+dependencies[] = profile
 dependencies[] = homebox
 dependencies[] = materialized_view
 dependencies[] = ctools
 dependencies[] = views_content_cache
-core = 6.x
+; @todo D7 - these are dependencies and should be marked as such.
+;dependencues[] = drupalorg_git_gateway
+;dependencues[] = drupalorg_versioncontrol
+core = 7.x

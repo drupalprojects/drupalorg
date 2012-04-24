@@ -6,7 +6,7 @@
  */
 
 /**
- * Implementation of hook_menu().
+ * Implements hook_menu().
  */
 function drupalorg_metrics_menu() {
   return array(
@@ -32,6 +32,7 @@ function drupalorg_metrics_page() {
   $counts = cache_get('drupalorg_metrics_counts', 'drupalorg');
   $output = '';
   foreach ($counts->data as $type => $points) {
+    // TODO Please change this theme call to use an associative array for the $variables parameter.
     $graph = theme('flot_graph', array('style' => 'width:940px;height:400px'), array(new flotData($points)), array(
       'xaxis' => array('mode' => 'time', 'ticks' => 9),
       'series' => array(
@@ -43,11 +44,19 @@ function drupalorg_metrics_page() {
       ),
     ));
     $output .= '<h2 id="' . $type . '">' . $map[$type] . '</h2>' . $graph;
-    $links[] = array('title' => $map[$type], 'href' => $_GET['q'], 'fragment' => $type);
+    $links[] = array(
+      'title' => $map[$type],
+      'href' => $_GET['q'],
+      'fragment' => $type,
+    );
   }
-  return theme('links', $links) . $output;
+  return theme('links', array('links' => $links)) . $output;
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function drupalorg_metrics_record_stats($start_year, $end_year) {
   if (lock_acquire('drupalorg_metrics_record_stats', 5)) {
     for ($year = $start_year; $year <= $end_year; $year++) {
@@ -61,11 +70,11 @@ function drupalorg_metrics_record_stats($start_year, $end_year) {
         // Javascript timestamps are in milliseconds since epoch.
         $start_js = $start * 1000;
 
-        $counts['nodes'][] = array($start_js, db_result(db_query("SELECT COUNT(*) FROM node WHERE created >= %d AND created < %d", $start, $end)));
-        $counts['users'][] = array($start_js, db_result(db_query("SELECT COUNT(*) FROM users WHERE status = 1 AND created >= %d AND created < %d", $start, $end)));
-        $counts['comments'][] = array($start_js, db_result(db_query("SELECT COUNT(*) FROM comments WHERE status = %d AND timestamp >= %d AND timestamp < %d", COMMENT_PUBLISHED, $start, $end)));
-        $counts['commits'][] = array($start_js, db_result(db_query("SELECT COUNT(DISTINCT(revision)) FROM versioncontrol_operations WHERE date >= %d AND date < %d AND author <> 'tggm@no-reply.drupal.org'", $start, $end)));
-        $counts['committers'][] = array($start_js, db_result(db_query("SELECT COUNT(DISTINCT(author_uid)) FROM versioncontrol_operations WHERE date >= %d AND date < %d", $start, $end)));
+        $counts['nodes'][] = array($start_js, db_query("SELECT COUNT(*) FROM node WHERE created >= :created AND created < :created", array(':created' => $start, ':created' => $end))->fetchField());
+        $counts['users'][] = array($start_js, db_query("SELECT COUNT(*) FROM users WHERE status = :status AND created >= :created AND created < :created", array(':status' => 1, ':created' => $start, ':created' => $end))->fetchField());
+        $counts['comments'][] = array($start_js, db_query("SELECT COUNT(*) FROM comments WHERE status = :status AND timestamp >= :timestamp AND timestamp < :timestamp", array(':status' => COMMENT_PUBLISHED, ':timestamp' => $start, ':timestamp' => $end))->fetchField());
+        $counts['commits'][] = array($start_js, db_query("SELECT COUNT(DISTINCT(revision)) FROM versioncontrol_operations WHERE date >= :date AND date < :date AND author <> :author", array(':date' => $start, ':date' => $end, ':author' => 'tggm@no-reply.drupal.org'))->fetchField());
+        $counts['committers'][] = array($start_js, db_query("SELECT COUNT(DISTINCT(author_uid)) FROM versioncontrol_operations WHERE date >= :date AND date < :date", array(':date' => $start, ':date' => $end))->fetchField());
       }
     }
     cache_set('drupalorg_metrics_counts', $counts, 'drupalorg');

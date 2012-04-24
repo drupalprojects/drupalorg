@@ -16,17 +16,21 @@
  * Foundation.
  */
 
-define('PID_DOUBLE', 5008);       // double pivot algorithm ID that displays related projects in different algorithms.
+define('PID_DOUBLE', 5008); // double pivot algorithm ID that displays related projects in different algorithms.
 define('LIMIT_DOUBLE', 5);
-define('LIMIT_MAX', 100);         // maximum items to display in the block or on a page.
+define('LIMIT_MAX', 100); // maximum items to display in the block or on a page.
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function pivots_block_output() {
   // Skip the Drupal core project.
   if (($node = project_get_project_from_menu()) && ($node->nid != DRUPALORG_CORE_NID)) {
 
     //HACK: randomize algorithm rotation
-    $_pivots_block_pid_double = PID_DOUBLE;  // double pivot ID defaults to conversation pivots
-    switch (rand(0,1)) {
+    $_pivots_block_pid_double = PID_DOUBLE; // double pivot ID defaults to conversation pivots
+    switch (rand(0, 1)) {
       case 0:
         $_pivots_block_pid_double = 5008; // conversation pivots
         break;
@@ -47,18 +51,18 @@ function _pivots_block_content($node_id, $pivot_id, $title, $limit) {
   $items = _pivots_block_generate_items($node_id, $pivot_id, $limit);
   if (!empty($items)) {
     foreach ($items as $position => $item) {
-      $items[$position] = l($item['title'], "node/{$item['nid']}", array( 'attributes' => array(
-              "onClick" => "javascript:_gaq.push(['_trackEvent', 'PivotsClick_${pivot_id}', '${node_id}_{$item['nid']}']);",
-              "rel"     => "nofollow"
-      )));
+      $items[$position] = l($item['title'], "node/{$item['nid']}", array('attributes' => array(
+          "onClick" => "javascript:_gaq.push(['_trackEvent', 'PivotsClick_${pivot_id}', '${node_id}_{$item['nid']}']);",
+          "rel" => "nofollow",
+        )));
       $ga_event .= "_{$item['nid']}";
     }
     //$output = theme('item_list', $items, $title);
-    $output = theme('item_list', $items); // hack: don't show title
+    $output = theme('item_list', array('items' => $items)); // hack: don't show title
   }
   drupal_add_js("$(document).ready(function() {
     _gaq.push(['_trackEvent', 'PivotsPageview_{$pivot_id}', '{$ga_event}']);
-  });", 'inline', 'footer');
+  });", array('type' => 'inline', 'scope' => 'footer'));
   return $output;
 }
 
@@ -67,22 +71,26 @@ function _pivots_block_generate_items($node_id, $pivot_id, $limit) {
     $limit = LIMIT_MAX;
   }
 
-  db_set_active('pivots');  // NOTE: here we activate the pivots database.
+  db_set_active('pivots'); // NOTE: here we activate the pivots database.
   // if there's database failure, we just pretend nothing happens whatsoever. pivots_block returns nothing in this case.
-  $matches = @db_query("SELECT DISTINCT dest_id FROM {pivots_match} WHERE pivot_id=%d AND src_id=%d
-        AND dest_id<>%d ORDER BY score DESC", $pivot_id, $node_id, $node_id);
-  db_set_active();  // NOTE: change back to use the default database
+  $matches = @db_query("SELECT DISTINCT dest_id FROM {pivots_match} WHERE pivot_id = :pivot_id AND src_id = :src_id
+        AND dest_id< > :dest_id< ORDER BY score DESC", array(':pivot_id' => $pivot_id, ':src_id' => $node_id, ':dest_id<' => $node_id));
+  db_set_active(); // NOTE: change back to use the default database
 
   $count = 0;
   $items = array();
   while (($match = @db_fetch_array($matches)) && $count < $limit) {
     $dest_id = $match['dest_id'];
-    $result = db_query("SELECT title FROM {node} WHERE nid=%d AND status=1", $dest_id);
+    $result = db_query("SELECT title FROM {node} WHERE nid = :nid AND status = :status", array(':nid' => $dest_id, ':status' => 1));
     // there might be cases that the node was deleted, or set to unpublished between pivots database refresh
     // so here we only count the valid node.
-    $title = db_result($result);
+    $title = $result->fetchField();
     if ($title) {
-      $items[] = array('nid' => $dest_id, 'title' => $title, 'pid' => $pivot_id);
+      $items[] = array(
+        'nid' => $dest_id,
+        'title' => $title,
+        'pid' => $pivot_id,
+      );
       $count++;
     }
   }
@@ -127,23 +135,24 @@ function _pivots_block_generate_items($node_id, $pivot_id, $limit) {
 }*/
 
 /**
- * Implementation of hook_block()
+ * Implements hook_block_info().
  */
-function pivots_block_block($op = 'list', $delta = 0, $edit = array()) {
-  switch ($op) {
-    case 'list':
-      return array(
-        array(
-          'info' => t('pivots_block: Recommendations'),
-          'cache' => BLOCK_CACHE_PER_PAGE,
-          'pages' => 'project/*',
-        ),
-      );
-      return $blocks;
+function pivots_block_block_info() {
+  return array(
+    array(
+      'info' => t('pivots_block: Recommendations'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+      'pages' => 'project/*',
+    ),
+  );
+  return $blocks;
+}
 
-    case 'view':
-      $block['subject'] = t('Related projects');
-      $block['content'] = pivots_block_output();
-      return $block;
-  }
+/**
+ * Implements hook_block_view().
+ */
+function pivots_block_block_view($delta) {
+  $block['subject'] = t('Related projects');
+  $block['content'] = pivots_block_output();
+  return $block;
 }

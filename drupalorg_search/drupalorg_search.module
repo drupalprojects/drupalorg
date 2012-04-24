@@ -6,7 +6,7 @@
  */
 
 /**
- * Implementation of hook_menu().
+ * Implements hook_menu().
  */
 function drupalorg_search_menu() {
   $items['drupalorg-search/help/js'] = array(
@@ -20,18 +20,18 @@ function drupalorg_search_menu() {
 }
 
 /**
- * Implementation of hook_theme().
+ * Implements hook_theme().
  */
 function drupalorg_search_theme() {
   return array(
     'drupalorg_search_help_results' => array(
-      'arguments' => array('results' => array()),
+      'variables' => array('results' => array()),
     ),
   );
 }
 
 /**
- * Implementation of hook_apachesolr_facets().
+ * Implements hook_apachesolr_facets().
  *
  * Returns an array keyed by block delta.
  */
@@ -51,15 +51,15 @@ function drupalorg_search_apachesolr_facets() {
 }
 
 /**
- * Implementation of hook_apachesolr_multisitesearch_facets().
+ * Implements hook_apachesolr_multisitesearch_facets().
  */
 function drupalorg_search_apachesolr_multisitesearch_facets() {
   return drupalorg_search_apachesolr_facets();
 }
 
 /**
- * Implementation of hook_apachesolr_prepare_query().
- * 
+ * Implements hook_apachesolr_prepare_query().
+ *
  * Add project sorts whenever we have an ss_meta_type of theme or module.
  */
 function drupalorg_search_apachesolr_prepare_query(&$query, &$params) {
@@ -71,20 +71,27 @@ function drupalorg_search_apachesolr_prepare_query(&$query, &$params) {
 }
 
 /**
- * Implement hook_block().
+ * Implements hook_block_info().
  */
-function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
+function drupalorg_search_block_info() {
+  return drupalorg_search_block_info();
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function drupalorg_search_block_view($delta) {
+  return drupalorg_search_block_view($delta);
+}
+
+/**
+ * Implements hook_block().
+ */
+function drupalorg_search_block_OLD($op = 'list', $delta = 0, $edit = array()) {
+  // TODO Remaining code in this function needs to be moved to the appropriate new hook function.
   // Instead of a monolithic function, split out this code into separate
   // functions for each operation (which we're going to need when we port to
   // D7, anyway).
-  switch ($op) {
-    case 'list':
-      return drupalorg_search_block_info();
-
-    case 'view':
-      return drupalorg_search_block_view($delta);
-
-  }
 }
 
 
@@ -149,7 +156,7 @@ function drupalorg_search_block_view($delta) {
         $entries = array();
         $total = 0;
         $has_active = FALSE;
-        foreach (drupalorg_crosssite_meta_types() as $name => $description) {          
+        foreach (drupalorg_crosssite_meta_types() as $name => $description) {
           if (!empty($response->facet_counts->facet_fields->ss_meta_type->$name)) {
             $count = $response->facet_counts->facet_fields->ss_meta_type->$name;
             $total += $count;
@@ -176,17 +183,17 @@ function drupalorg_search_block_view($delta) {
 
           return array(
             'subject' => t('or filter by…'),
-            'content' => theme('item_list', $entries),
+            'content' => theme('item_list', array('items' => $entries)),
           );
         }
       }
       break;
 
     case 'drupalorg_search_navigation':
-      if (drupalorg_crosssite_apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {    
+      if (drupalorg_crosssite_apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
         $project_type_term = drupalorg_search_get_project_type_term($response);
         if (!isset($project_type_term)) {
-          $form = drupal_get_form('drupalorg_search_sort_form'); 
+          $form = drupal_get_form('drupalorg_search_sort_form');
         }
         else {
           $form = drupal_get_form('project_solr_browse_projects_form', $project_type_term, 'search/' . arg(1) . '/' . $query->get_keys());
@@ -221,7 +228,7 @@ function drupalorg_search_block_view($delta) {
 
       $block = array(
         'title' => t('or search for…'),
-        'content' => theme('item_list', $items),
+        'content' => theme('item_list', array('items' => $items)),
       );
       return $block;
 
@@ -234,7 +241,7 @@ function drupalorg_search_block_view($delta) {
 }
 
 /**
- * Implementation of hook_form_search_form_alter().
+ * Implements hook_form_search_form_alter().
  */
 function drupalorg_search_form_search_form_alter(&$form, $form_state) {
   if (drupalorg_crosssite_apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
@@ -243,7 +250,7 @@ function drupalorg_search_form_search_form_alter(&$form, $form_state) {
 }
 
 /**
- * Implementation of hook_form_FORM_ID_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
 function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &$form_state) {
   global $pager_total_items;
@@ -259,8 +266,8 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
     // submit handler so that we can properly handle the "meta type" stuff.
     $form['#submit'][] = 'drupalorg_search_project_solr_browse_project_form_submit';
 
-    // We default the text to our current search terms so that we don't get 
-    // errors when attempting to sort by relevancy. We make the access false, 
+    // We default the text to our current search terms so that we don't get
+    // errors when attempting to sort by relevancy. We make the access false,
     // so that the values aren't visible and we don't have 2 search forms.
     $query = apachesolr_current_query();
     $form['text']['#default_value'] = $query->get_keys();
@@ -290,9 +297,9 @@ function drupalorg_search_project_solr_browse_project_form_submit(&$form, &$form
   // we use implode() to re-create a space-delimited string and let implode()
   // handle the special cases of 0 or 1 filters for us.
   $filters = explode(' ', $form_state['redirect']['query']['filters']);
-  foreach($query->get_filters() as $filter) {
+  foreach ($query->get_filters() as $filter) {
     if ($filter['#name'] == 'ss_meta_type') {
-      $filters[] = $filter['#query']; 
+      $filters[] = $filter['#query'];
     }
   }
   $form_state['redirect']['query']['filters'] = implode(' ', $filters);
@@ -335,7 +342,7 @@ function drupalorg_search_block_form_submit($form, &$form_state) {
  * response. If one of the facets selected a "meta_type" for the search, and
  * the meta_type is either "module" or "theme", it loads the corresponding
  * taxonomy term object and returns that.
- * 
+ *
  * @param $response
  *   The ApacheSolr response object for the currently active search.
  *
@@ -361,12 +368,12 @@ function drupalorg_search_get_project_type_term($response) {
 
         if ($meta_type == 'theme') {
           $tid = DRUPALORG_THEME_TID;
-        } 
-        elseif($meta_type == 'module') {
+        }
+        elseif ($meta_type == 'module') {
           $tid = DRUPALORG_MODULE_TID;
         }
         if (isset($tid)) {
-          return taxonomy_get_term($tid);
+          return taxonomy_term_load($tid);
         }
       }
     }
@@ -382,13 +389,13 @@ function drupalorg_search_help_form(&$form_state) {
   // the autocomplete js + our js.
   drupal_add_js('misc/autocomplete.js');
   drupal_add_js(drupal_get_path('module', 'drupalorg_search') . '/js/community.js');
-  
+
   // Text field for searching documentation items.
   $form['search_term'] = array(
     '#type' => 'textfield',
     '#title' => t('Search Documentation'),
   );
-  
+
   // Hidden auto-lookup field for using auto-complete-like functionality.
   $form['search_term_autolookup'] = array(
     '#type' => 'hidden',
@@ -403,21 +410,22 @@ function drupalorg_search_help_form(&$form_state) {
 
 /**
  * Theme the results of our documentation search against Solr.
- * 
+ *
  * @param array $results
  *   An array of results containing, at minimum, a score, a title, and a link.
- * 
+ *
  * @return string $output
- *   An html ul representation of li items containing relevancy (score) + 
+ *   An html ul representation of li items containing relevancy (score) +
  *   a link to the content.
  */
-function theme_drupalorg_search_help_results($results) {
+function theme_drupalorg_search_help_results($variables) {
+  $results = $variables['results'];
   $output = '';
   if (!empty($results)) {
     $output = '<p class="help-result-text">Here\'s what we found:</p>';
     $output .= '<ul>';
     foreach ($results as $result) {
-      $output .= '<li><div class="help-result-score-' . round($result['score']) . '"></div><div class="help-result-value">' . l($result['title'], $result['link']) .'</div></li>';
+      $output .= '<li><div class="help-result-score-' . round($result['score']) . '"></div><div class="help-result-value">' . l($result['title'], $result['link']) . '</div></li>';
     }
     $output .= '</ul>';
   }
@@ -430,11 +438,11 @@ function theme_drupalorg_search_help_results($results) {
 /**
  * Menu callback. Retrieves and returns a themed list of documentation results
  * from Solr based on an initial search term or terms.
- * 
+ *
  * @param string $search_term
  *   A term or terms to search for in Solr.
- *   
- * @return 
+ *
+ * @return
  *   A json object representing a themed list of results from Solr.
  */
 function drupalorg_search_help_js($search_term = NULL) {
@@ -442,18 +450,18 @@ function drupalorg_search_help_js($search_term = NULL) {
   if (!empty($search_term)) {
     $results = apachesolr_search_execute($search_term, 'ss_meta_type:documentation', '');
   }
-  $output = theme('drupalorg_search_help_results', $results);
-  drupal_json($output);
+  $output = theme('drupalorg_search_help_results', array('results' => $results));
+  drupal_json_output($output);
 }
 
 
 /**
  * This generates a form containing sort selection and a submit button.
- * 
+ *
  * Generate a form with a sort selection to allow ordering page content
- * based on the available sorting methods. 
+ * based on the available sorting methods.
  */
-function drupalorg_search_sort_form(&$form_state) {
+function drupalorg_search_sort_form($form, &$form_state) {
   $form = array();
 
   // Add the sort selection field to our form.
@@ -468,7 +476,7 @@ function drupalorg_search_sort_form(&$form_state) {
 
 /**
  * Create a query with the right version filter and redirect to the right page.
- * 
+ *
  * Create a new query, add any version filtering if it was selected in the
  * form, and redirect back to the relevant page with the appropriate filter
  * string.
@@ -478,7 +486,7 @@ function drupalorg_search_sort_form_submit($form, &$form_state) {
   $path = $query->get_path();
 
   // We create a new query with our base path so that we don't need to remove
-  // any existing drupal_core selection, and so that the implict type and 
+  // any existing drupal_core selection, and so that the implict type and
   // module tid filters don't end up in the url string.
   $query = apachesolr_drupal_query('', '', '', $path);
 

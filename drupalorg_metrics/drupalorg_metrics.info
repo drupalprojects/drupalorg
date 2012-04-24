@@ -1,7 +1,8 @@
 name = Drupal.org Metrics
 description = A community dashboard
 package = Drupal.org
-core = 6.x
+core = 7.x
 dependencies[] = versioncontrol_project
 dependencies[] = project_issue
 dependencies[] = flot
+

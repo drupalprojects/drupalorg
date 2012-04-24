@@ -6,60 +6,65 @@
  */
 
 /**
- * Implementation of hook_menu().
+ * Implements hook_menu().
  */
 function role_activity_menu() {
   $items = array();
   $access = array('view role activity');
 
-  $items['admin/settings/role_activity'] = array(
-    'page callback'    => 'drupal_get_form',
-    'page arguments'   => array('role_activity_admin_settings'),
-    'title'            => 'User activity logging settings',
-    'description'      => 'Settings for logging of activity for users in certain roles.',
+  $items['admin/config/system/role_activity'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('role_activity_admin_settings'),
+    'title' => 'User activity logging settings',
+    'description' => 'Settings for logging of activity for users in certain roles.',
     'access arguments' => array('administer site configuration'),
   );
   $items['admin/reports/role_activity'] = array(
-    'title'            => 'User activity log',
-    'page callback'    => 'role_activity_log',
-    'description'      => 'User activity log in chronological order, most recent first.',
+    'title' => 'User activity log',
+    'page callback' => 'role_activity_log',
+    'description' => 'User activity log in chronological order, most recent first.',
     'access arguments' => $access,
   );
   $items['admin/reports/role_activity/list'] = array(
-    'title'            => 'Recent activity',
+    'title' => 'Recent activity',
     'access arguments' => $access,
-    'type'             => MENU_DEFAULT_LOCAL_TASK
+    'type' => MENU_DEFAULT_LOCAL_TASK,
   );
   $items['admin/reports/role_activity/top_users'] = array(
-    'title'            => 'Top users',
-    'page callback'    => 'role_activity_top_users',
+    'title' => 'Top users',
+    'page callback' => 'role_activity_top_users',
     'access arguments' => $access,
-    'type'             => MENU_LOCAL_TASK
+    'type' => MENU_LOCAL_TASK,
   );
   $items['admin/reports/role_activity/user'] = array(
-    'title'            => 'Activity by user',
-    'page callback'    => 'role_activity_by_user',
+    'title' => 'Activity by user',
+    'page callback' => 'role_activity_by_user',
     'access arguments' => $access,
-    'type'             => MENU_CALLBACK,
+    'type' => MENU_CALLBACK,
   );
 
   return $items;
 }
 
 /**
- * Implementation of hook_perm().
+ * Implements hook_permission().
  */
-function role_activity_perm() {
-  return array('view role activity');
+function role_activity_permission() {
+  return array(
+    'view role activity' => array(
+      'title' => t('view role activity'),
+      'description' => t('TODO Add a description for \'view role activity\''),
+    ),
+  );
 }
 
 /**
- * Get a list of roles to record activity for.
+ * Gets a list of roles to record activity for.
  */
 function role_activity_role_list() {
   $result = array();
   foreach (user_roles(TRUE) as $rid => $name) {
-    if (variable_get('role_activity_rid_'. $rid, 0)) {
+    if (variable_get('role_activity_rid_' . $rid, 0)) {
       $result[$rid] = $name;
     }
   }
@@ -67,30 +72,42 @@ function role_activity_role_list() {
 }
 
 /**
- * Check whether the given user has any of the roles we shold monitor.
+ * Checks whether the given user has any of the roles we shold monitor.
  */
 function role_activity_check_role($uid = 0) {
   $roles = array_keys(role_activity_role_list());
-  $params = array_merge($roles, array($uid));
-  return (bool) db_result(db_query("SELECT uid FROM {users_roles} WHERE rid IN (". db_placeholders($roles) .") AND uid = %d", $params));
+
+  if (empty($roles)) {
+    return false;
+  }
+
+  // TODO Check if this actually works
+  $result = db_select('users_roles', 'u')
+    ->fields('u', array('uid'))
+    ->condition('rid', $roles, 'IN')
+    ->condition('uid', $uid)
+    ->execute()
+    ->fetchField();
+
+  return (bool) $result;
 }
 
 /**
  * Administrator settings page.
  */
-function role_activity_admin_settings() {
+function role_activity_admin_settings($form, &$form_state) {
   $form['group'] = array(
-    '#type'        => 'fieldset',
+    '#type' => 'fieldset',
     '#collapsible' => TRUE,
     '#description' => t('Activity will be monitored for these roles.'),
-    '#title'       => t('Track activity for these roles')
+    '#title' => t('Track activity for these roles'),
   );
   foreach (user_roles(TRUE) as $rid => $name) {
-    $form['group']['role_activity_rid_'. $rid] = array(
-      '#type'          => 'checkbox',
-      '#title'         => $name,
-      '#return_value'  => 1,
-      '#default_value' => variable_get('role_activity_rid_'. $rid, 0), 
+    $form['group']['role_activity_rid_' . $rid] = array(
+      '#type' => 'checkbox',
+      '#title' => $name,
+      '#return_value' => 1,
+      '#default_value' => variable_get('role_activity_rid_' . $rid, 0),
     );
   }
   return system_settings_form($form);
@@ -99,26 +116,30 @@ function role_activity_admin_settings() {
 /**
  * Implementation of hook_watchdog().
  */
-/* todo D7
-function role_activity_watchdog($log_entry) {
-  if (!role_activity_check_role($log_entry['user']->uid)) {
-    // If user is not among the roles we should check.
-    return;
-  }
-  if (!($action = role_activity_parse($log_entry['type'], $log_entry['message']))) {
-    // It the parser did not find that we should the action, skip.
-    return;
-  }
+function role_activity_watchdog(array $log_entry) {
 
-  role_activity_write($log_entry, $action);
+ if (!role_activity_check_role($log_entry['user']->uid)) {
+   // If user is not among the roles we should check.
+   return;
+ }
+ if (!($action = role_activity_parse($log_entry['type'], $log_entry['message']))) {
+  // It the parser did not find that we should the action, skip.
+  return;
+ }
+
+ role_activity_write($log_entry, $action);
 }
 
-/**
- * Parse the watchdog messages for certain patterns.
+ /**
+ * Parses the watchdog messages for certain patterns.
  *
  * @todo
  *   Ideally, we should move this to a rule engine via a textbox
  *   for regexps to look for.
+ */
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
  */
 function role_activity_parse($type = '', $message = '') {
   $action = '';
@@ -134,10 +155,6 @@ function role_activity_parse($type = '', $message = '') {
       elseif (preg_match('/Comment: updated/i', $message)) {
         $action = t('Comment updated');
       }
-      // @todo: no such watchdog message in Drupal 6.
-      /*elseif (preg_match('/Comment: deleted/i', $message)) {
-        $action = t('Comment deleted');
-      }*/
       break;
 
     case 'user':
@@ -168,55 +185,89 @@ function role_activity_parse($type = '', $message = '') {
 }
 
 /**
- * Store role activity information.
+ * Stores role activity information.
  */
 function role_activity_write($log, $action) {
-  db_query("INSERT INTO {role_activity}
-    (uid, timestamp, type, referer, ip, action, link, uri, message) VALUES
-    (%d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-    $log['user']->uid,
-    $log['timestamp'],
-    $log['type'],
-    $log['referer'],
-    $log['ip'],
-    $action,
-    $log['link'],
-    $log['request_uri'],
-    t($log['message'], $log['variables'])
-  );
+  $id = db_insert('role_activity')
+  ->fields(array(
+    'uid' => $log['user']->uid,
+    'timestamp' => $log['timestamp'],
+    'type' => $log['type'],
+    'referer' => $log['referer'],
+    'ip' => $log['ip'],
+    'action' => $action,
+    'link' => isset($log['link']) ?: '',
+    'uri' => $log['request_uri'],
+    'message' => t($log['message'], $log['variables']),
+  ))
+  ->execute();
 }
 
 /**
- * Review role activity log.
+ * Reviews role activity log.
  */
 function role_activity_log() {
   $header = array(
-    array('data' => t('Timestamp'), 'field' => 'timestamp', 'sort' => 'desc'),
-    array('data' => t('Action'),    'field' => 'action'),
-    array('data' => t('User'),      'field' => 'uid'),
+    array(
+      'data' => t('Timestamp'),
+      'field' => 'timestamp',
+      'sort' => 'desc',
+    ),
+    array(
+      'data' => t('Action'),
+      'field' => 'action',
+    ),
+    array(
+      'data' => t('User'),
+      'field' => 'uid',
+    ),
     array('data' => t('Activity')),
-    array('data' => t('Path'),      'field' => 'uri'),
-    array('data' => t('IP/Host'),   'field' => 'ip'),
-    array('data' => t('Type'),      'field' => 'type'),
-    array('data' => t('Message'),   'field' => 'message'),
-    array('data' => t('Referrer'),  'field' => 'referer'),
+    array(
+      'data' => t('Path'),
+      'field' => 'uri',
+    ),
+    array(
+      'data' => t('IP/Host'),
+      'field' => 'ip',
+    ),
+    array(
+      'data' => t('Type'),
+      'field' => 'type',
+    ),
+    array(
+      'data' => t('Message'),
+      'field' => 'message',
+    ),
+    array(
+      'data' => t('Referrer'),
+      'field' => 'referer',
+    ),
     array('data' => t('Link')),
   );
 
-  $sql = 'SELECT * FROM {role_activity} '. tablesort_sql($header);
+  $results = db_select('role_activity', 'r')
+    ->extend('TableSort')
+    ->fields('r')
+    ->orderByHeader($header)
+    ->extend('PagerDefault')
+    ->limit(50)
+    ->execute();
 
-  $result = pager_query($sql, 50);
-  while ($log = db_fetch_object($result)) {
+  $rows = array();
+  foreach ($results as $log) {
     $host = $log->ip;
-    $account = user_load(array('uid' => $log->uid));
+    $account = user_load($log->uid);
 
     $rows[] = array(
-      array('data' => format_date($log->timestamp, 'small'), 'nowrap' => 'nowrap'),
+      array(
+        'data' => format_date($log->timestamp, 'short'),
+        'nowrap' => 'nowrap',
+      ),
       array('data' => $log->action),
-      array('data' => theme('username', $account)),
-      array('data' => l(t('Activity'), 'admin/reports/role_activity/user/'. $account->uid)),
+      array('data' => theme('username', array('account' => $account))),
+      array('data' => l(t('Activity'), 'admin/reports/role_activity/user/' . $account->uid)),
       array('data' => $log->uri),
-      l($host, 'http://whois.domaintools.com/'. $log->ip),
+      l($host, 'http://whois.domaintools.com/' . $log->ip),
       array('data' => $log->type),
       array('data' => $log->message),
       _role_activity_format_path($log->referer),
@@ -224,64 +275,123 @@ function role_activity_log() {
     );
   }
 
-  return theme('table', $header, $rows) . theme('pager', NULL, 50, 0);
+  return theme('table', array('header' => $header, 'rows' => $rows)) . theme('pager', array('tags' => NULL, 'element' => 0));
 }
 
 /**
- * Top users by activity on the site.
+ * Lists top users by activity on the site.
  */
 function role_activity_top_users() {
   $header = array(
-    array('data' => t('User'),     'field' => 'uid'),
+    array(
+      'data' => t('User'),
+      'field' => 'uid',
+    ),
     array('data' => t('Activity')),
-    array('data' => t('Number of events'), 'field' => 'count', 'sort' => 'desc'),
-    array('data' => t('Last'),     'field' => 'last'),
+    array(
+      'data' => t('Number of events'),
+      'field' => 'count',
+      'sort' => 'desc',
+    ),
+    array(
+      'data' => t('Last'),
+      'field' => 'last',
+    ),
   );
 
-  $sql = 'SELECT uid, COUNT(*) AS count, MAX(timestamp) AS last FROM {role_activity} GROUP BY uid '. tablesort_sql($header);
+  $query = db_select('role_activity', 'r')
+    ->fields('r')
+    ->groupBy('uid');
 
-  $result = pager_query($sql, 50);
-  while ($log = db_fetch_object($result)) {
-    $account = user_load(array('uid' => $log->uid));
-    
+  $query->addExpression('COUNT(uid)', 'count');
+  $query->addExpression('MAX(timestamp)', 'last');
+
+  $query = $query->extend('TableSort')->orderByHeader($header);
+  $query = $query->extend('PagerDefault')->limit(50);
+
+  $results = $query->execute();
+
+  $rows = array();
+  foreach ($results as $log) {
+    $account = user_load($log->uid);
+
     $rows[] = array(
-      array('data' => theme('username', $account)),
-      array('data' => l(t('Activity'), 'admin/reports/role_activity/user/'. $account->uid)),
-      array('data' => $log->count, 'align' => 'right'),
-      array('data' => format_date($log->last, 'small'), 'nowrap' => 'nowrap'),
+      array('data' => theme('username', array('account' => $account))),
+      array('data' => l(t('Activity'), 'admin/reports/role_activity/user/' . $account->uid)),
+      array(
+        'data' => $log->count,
+        'align' => 'right',
+      ),
+      array(
+        'data' => format_date($log->last, 'short'),
+        'nowrap' => 'nowrap',
+      ),
     );
   }
 
-  return theme('table', $header, $rows) . theme('pager', NULL, 50, 0);
+  return theme('table', array('header' => $header, 'rows' => $rows)) . theme('pager', array('tags' => NULL, 'element' => 0));
 }
 
 /**
- * Per-user activity data display on the site.
+ * Displays per-user activity data on the site.
  */
 function role_activity_by_user($uid = 0) {
   $header = array(
-    array('data' => t('Timestamp'), 'field' => 'timestamp', 'sort' => 'desc'),
-    array('data' => t('Action'),    'field' => 'action'),
-    array('data' => t('Path'),      'field' => 'uri'),
-    array('data' => t('IP/Host'),   'field' => 'ip'),
-    array('data' => t('Type'),      'field' => 'type'),
-    array('data' => t('Message'),   'field' => 'message'),
-    array('data' => t('Referrer'),  'field' => 'referer'),
+    array(
+      'data' => t('Timestamp'),
+      'field' => 'timestamp',
+      'sort' => 'desc',
+    ),
+    array(
+      'data' => t('Action'),
+      'field' => 'action',
+    ),
+    array(
+      'data' => t('Path'),
+      'field' => 'uri',
+    ),
+    array(
+      'data' => t('IP/Host'),
+      'field' => 'ip',
+    ),
+    array(
+      'data' => t('Type'),
+      'field' => 'type',
+    ),
+    array(
+      'data' => t('Message'),
+      'field' => 'message',
+    ),
+    array(
+      'data' => t('Referrer'),
+      'field' => 'referer',
+    ),
     array('data' => t('Link')),
   );
 
-  $account = user_load(array('uid' => $uid));
-  $sql = 'SELECT * FROM {role_activity} WHERE uid = %d '. tablesort_sql($header);
+  $account = user_load($uid);
 
-  $result = pager_query($sql, 50, 0, NULL, $uid);
-  while ($log = db_fetch_object($result)) {
+  $results = db_select('role_activity', 'r')
+    ->extend('TableSort')
+    ->fields('r')
+    ->condition('uid', $uid)
+    ->orderByHeader($header)
+    ->extend('PagerDefault')
+    ->limit(50)
+    ->execute();
+
+  $rows = array();
+  foreach ($results as $log) {
     $host = $log->ip;
 
     $rows[] = array(
-      array('data' => format_date($log->timestamp, 'small'), 'nowrap' => 'nowrap'),
+      array(
+        'data' => format_date($log->timestamp, 'short'),
+        'nowrap' => 'nowrap',
+      ),
       array('data' => $log->action),
       array('data' => $log->uri),
-      l($host, 'http://whois.domaintools.com/'. $log->ip),
+      l($host, 'http://whois.domaintools.com/' . $log->ip),
       array('data' => $log->type),
       array('data' => $log->message),
       _role_activity_format_path($log->referer),
@@ -289,16 +399,16 @@ function role_activity_by_user($uid = 0) {
     );
   }
 
-  $output = t('Details for !user', array('!user' => theme('username', $account)));
-  return $output . theme('table', $header, $rows) . theme('pager', NULL, 50, 0);
+  $output = t('Details for !user', array('!user' => theme('username', array('account' => $account))));
+  return $output . theme('table', array('header' => $header, 'rows' => $rows)) . theme('pager', array('tags' => NULL, 'element' => 0));
 }
 
 /**
- * Provide a short title for linking to the related path.
+ * Provides a short title for linking to the related path.
  */
 function _role_activity_format_path($path, $width = 32) {
   global $base_url;
-  $short_path = preg_replace('?^'. $base_url .'?', '', $path);
+  $short_path = preg_replace('?^' . $base_url . '?', '', $path);
   $short_title = truncate_utf8($short_path, $width, FALSE, TRUE);
   return l($short_title, $path, array('title' => $path));
 }

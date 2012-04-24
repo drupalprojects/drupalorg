@@ -1,7 +1,7 @@
 body {
-  background-color: #fff;  
+  background-color: #fff;
   background: -moz-linear-gradient(100% 100% 90deg, #f6f5f0, #fff);
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f6f5f0), to(#fff));  
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f6f5f0), to(#fff));
   background-position-x: 612px;
 }
 
@@ -19,16 +19,16 @@ h3 {
 }
 
 #header-highlight .grid-3 {
-  margin-top: 28px; 
+  margin-top: 28px;
   margin-bottom: 28px;
-} 
+}
 
 #page-title {
   margin-top: 48px;
 }
 
 #header {
-  height: 612px; 
+  height: 612px;
   background-color: #5cb2e8;
   background: url('images/header-bg.jpg') top left no-repeat, url('images/header-bg-gradient.jpg') top left repeat-x;
 
@@ -62,7 +62,7 @@ h3 {
 #header-highlight {
   background-color: #293640;
   background: url('images/gray-gradient.png') repeat-x 0 0;
-  background: -moz-linear-gradient(100% 100% 90deg, #3f4a51, #293640); 
+  background: -moz-linear-gradient(100% 100% 90deg, #3f4a51, #293640);
   background: -webkit-gradient(linear, left top, left bottom, from(#3f4a51), to(#293640));
   overflow: hidden;
   border-radius: 5px;
@@ -71,8 +71,8 @@ h3 {
   position: relative;
   top: -16px;
   left: -10px;
-  -moz-box-shadow: 0px 2px 4px #888; 
-  -webkit-box-shadow: 0px 2px 4px #888; 
+  -moz-box-shadow: 0px 2px 4px #888;
+  -webkit-box-shadow: 0px 2px 4px #888;
   box-shadow: 0px 2px 4px #888;
   width: 960px;
   padding: 0px;
@@ -141,14 +141,14 @@ h2#heading-features {
 }
 
 #caption {
-  color: #fff; 
-  background: #1d272f; 
-  position: absolute; 
+  color: #fff;
+  background: #1d272f;
+  position: absolute;
   top: 287px;
-  right: 0px; 
+  right: 0px;
   font-size: 18px;
-  z-index: 999; 
-  padding: 10px; 
+  z-index: 999;
+  padding: 10px;
   width: 440px;
   height: 19px;
   display: inline;
