@@ -71,20 +71,6 @@ function drupalorg_search_apachesolr_prepare_query(&$query, &$params) {
 }
 
 /**
- * Implements hook_block_info().
- */
-function drupalorg_search_block_info() {
-  return drupalorg_search_block_info();
-}
-
-/**
- * Implements hook_block_view().
- */
-function drupalorg_search_block_view($delta) {
-  return drupalorg_search_block_view($delta);
-}
-
-/**
  * Implements hook_block().
  */
 function drupalorg_search_block_OLD($op = 'list', $delta = 0, $edit = array()) {
