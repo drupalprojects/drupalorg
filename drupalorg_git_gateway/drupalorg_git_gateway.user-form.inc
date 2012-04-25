@@ -165,7 +165,7 @@ function _drupalorg_git_gateway_user_tos($account) {
         t('I will only commit <a href="!url">GPL V2+-licensed</a> code and resources to Drupal code repositories.', array('!url' => url('licensing/faq', array('alias' => TRUE)))),
         t('I will only commit code and resources that I own or am permitted to distribute.'),
         t('I will cooperate with the <a href="!url">Drupal Security Team</a> as needed.', array('!url' => url('security-team', array('alias' => TRUE)))),
-        t('I have read and will adhere to the <a href="!url">Drupal Code of Conduct</a>.', array('!url' => l('dcoc', array('alias' => TRUE)))),
+        t('I have read and will adhere to the <a href="!url">Drupal Code of Conduct</a>.', array('!url' => url('dcoc', array('alias' => TRUE)))),
         t('I agree to the <a href="!url">Drupal Code Repository Terms of Service</a>.', array('!url' => url('node/1001544'))),
       ))),
   );
