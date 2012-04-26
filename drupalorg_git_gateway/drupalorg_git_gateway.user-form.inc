@@ -379,7 +379,7 @@ function drupalorg_git_gateway_user_form_submit($form, &$form_state) {
     ->fields(array(
       'uid' => $account->uid,
       'timestamp' => REQUEST_TIME,
-      'action' => $edit['git_consent'],    
+      'action' => $edit['git_consent'],
     ))
     ->execute();
   }
@@ -422,7 +422,7 @@ function drupalorg_git_gateway_admin_user_form_submit($form, &$form_state) {
       $values['email'] = $body;
     }
     $id = db_insert('drupalorg_git_disable_log')
-    ->fields($record)
-    ->execute();
+      ->fields($record)
+      ->execute();
   }
 }
