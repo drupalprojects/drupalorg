@@ -183,7 +183,8 @@ function drupalorg_search_block_view($delta) {
       break;
 
     case 'drupalorg_search_navigation':
-      if (drupalorg_crosssite_apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {    
+      $env_id = apachesolr_default_environment();
+      if (drupalorg_crosssite_apachesolr_has_searched() && ($query = apachesolr_current_query($env_id)) && ($response = apachesolr_static_response_cache($query->getSearcher()))) {
         $project_type_term = drupalorg_search_get_project_type_term($response);
         if (!isset($project_type_term)) {
           $form = drupal_get_form('drupalorg_search_sort_form'); 
@@ -474,18 +475,19 @@ function drupalorg_search_sort_form(&$form_state) {
  * string.
  */
 function drupalorg_search_sort_form_submit($form, &$form_state) {
-  $query = apachesolr_current_query();
-  $path = $query->get_path();
+  $env_id = apachesolr_default_environment();
+  $query = apachesolr_current_query($env_id);
+  $path = $query->getPath();
 
   // We create a new query with our base path so that we don't need to remove
   // any existing drupal_core selection, and so that the implict type and 
   // module tid filters don't end up in the url string.
-  $query = apachesolr_drupal_query('', '', '', $path);
+  $query = apachesolr_drupal_query('', array(), '', $path);
 
   if (!empty($form_state['values']['solrsort'])) {
     list($sort, $direction) = explode(' ', $form_state['values']['solrsort']);
-    $query->set_solrsort($sort, $direction);
+    $query->setSolrsort($sort, $direction);
   }
 
-  $form_state['redirect'] = array($query->get_path(), $query->get_url_queryvalues());
+  $form_state['redirect'] = array($query->getPath(), $query->getSolrsortUrlQuery());
 }
