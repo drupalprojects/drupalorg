@@ -2,4 +2,3 @@ name = Mailing lists
 description = Mailing lists subscriptions services.
 package = Drupal.org
 core = 7.x
-

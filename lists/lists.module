@@ -113,7 +113,7 @@ function _lists_get_lists() {
  * @see lists_subscribe_form_validate()
  * @see lists_subscribe_form_submit()
  */
-function lists_subscribe_form() {
+function lists_subscribe_form($form, &$form_state) {
   global $user;
   $lists = _lists_get_lists();
   $output = '';
@@ -128,7 +128,7 @@ function lists_subscribe_form() {
     }
 
     $output .= '<h2>' . $info['name'] . "</h2>\n";
-    if (!$info['disabled']) {
+    if (empty($info['disabled'])) {
       $links[] = "<a href=\"http://lists.drupal.org/listinfo/$list\">mailman page</a>";
     }
     else {
@@ -141,8 +141,7 @@ function lists_subscribe_form() {
   $output .= '<h2>Subscribe</h2>';
 
   $form['intro'] = array(
-    '#type' => 'markup',
-    '#value' => $output,
+    '#markup' => $output,
   );
 
   $form['mail'] = array(
@@ -159,7 +158,7 @@ function lists_subscribe_form() {
     '#default_value' => '',
   );
   foreach ($lists as $list => $info) {
-    if (!$info['disabled']) {
+    if (empty($info['disabled'])) {
       $form[$list] = array(
         '#type' => 'checkbox',
         '#title' => $list,
@@ -283,22 +282,17 @@ function lists_user_update(&$edit, $account, $category) {
   // drupalorg_git_gateway_user().
   $lists = _lists_get_mailman_lists();
   $list = $lists['maintainer'];
+
+  // TODO requires drupalorg_git_gateway module
+  /*
   if (array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles)) {
     _lists_mailman_subscribe($list, $account);
   }
   else {
     _lists_mailman_unsubscribe($list, $account);
   }
+  */
 }
-
-/**
- * Implements hook_user().
- *
- * We need to hack this in, since user module does try to have a tight control
- * of management of these menu items, so we need to get it created through
- * this hook and then altered by hook_menu_alter(). Drupal 7 should do better.
- */
-function lists_user_OLD($op, &$edit, &$account, $category = NULL) { }
 
 /**
  * Implements hook_menu_alter().
@@ -316,7 +310,7 @@ function lists_menu_alter(&$callbacks) {
  * @ingroup forms
  * @see lists_mailman_user_form_submit()
  */
-function lists_mailman_user_form(&$form_state, $account = FALSE) {
+function lists_mailman_user_form($form, &$form_state, $account = FALSE) {
   $form = array();
 
   $form['newsletter'] = array(
@@ -357,9 +351,12 @@ function lists_mailman_user_form_submit($form, &$form_state) {
   foreach ($lists as $list => $data) {
     $old = (int) $form['newsletter'][$list]['#default_value'];
     $new = (int) $form_state['values'][$list];
+
     // Special handling for the maintainer newsletter.
-    if ($data['maintainer_auto']) {
-      $status = array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles);
+    if (!empty($data['maintainer_auto'])) {
+      // TODO requires drupalorg_git_gateway module
+
+      /*$status = array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles);
       // If Git account is enabled
       if ($status) {
         if (!$old) {
@@ -372,9 +369,9 @@ function lists_mailman_user_form_submit($form, &$form_state) {
         if ($old) {
           _lists_mailman_unsubscribe($data, $account);
         }
-      }
+      }*/
     }
-    elseif ($data['allow_sub'] && ($old != $new)) {
+    elseif (!empty($data['allow_sub']) && ($old != $new)) {
       if ($new) {
         _lists_mailman_subscribe($data, $account);
       }
@@ -430,7 +427,9 @@ function lists_form_alter(&$form, $form_state, $form_id) {
  * Implements hook_node_update().
  */
 function lists_node_update($node) {
-  if ($node->status && TRUE && user_access('post to newsletter')) {
+  global $user;
+
+  if ($node->status && user_access('post to newsletter')) {
     // We are going to return if $node->type is not one of the node
     // types assigned to the forum vocabulary.  If forum_nav_vocabulary
     // is undefined or the vocabulary does not exist, it clearly cannot
@@ -471,9 +470,13 @@ function lists_node_update($node) {
         $language = language_default();
         $params = array('node' => $node);
         drupal_mail('lists', 'mailman_newsletter', $list['mail'], $language, $params);
-        // TODO Please convert this statement to the D7 database API syntax.
-        /* db_query('INSERT INTO {lists_mailman} (nid, uid, timestamp) VALUES(%d, %d, %d)', $node->nid, $user->uid, REQUEST_TIME) */
-        NULL;
+        $nid = db_insert('lists_mailman') // Table name no longer needs {}
+          ->fields(array(
+            'nid' =>  $node->nid,
+            'uid' => $user->uid,
+            'created' => REQUEST_TIME,
+          ))
+          ->execute();
         drupal_set_message(t('Mail sent to !email.', array('!email' => $list['mail'])));
       }
       // Force comments to be disabled for these posts.  David doesn't like this.
@@ -486,14 +489,6 @@ function lists_node_update($node) {
         ->execute();
     }
   }
-}
-
-/**
- * Submit newsletter forum to mailman for mass mailing.
- */
-function lists_nodeapi_OLD(&$node, $op, $teaser, $page) {
-  // TODO Remaining code in this function needs to be moved to the appropriate new hook function.
-  global $user;
 }
 
 /**
@@ -519,9 +514,15 @@ function _lists_mailman_user_subscribed($list, $account) {
   );
   $url = url($list['url'] . '/members', array('query' => $query));
   $result = lists_mailman_query($url, $list);
-  // replace '@' with '--at--' to match the mailman internal representation so
-  // we don't match our own search query which would always result in a match.
-  return (bool) strpos(strtolower($result->data), str_replace('@', '--at--', $account->mail));
+
+  if ($result) {
+    // replace '@' with '--at--' to match the mailman internal representation so
+    // we don't match our own search query which would always result in a match.
+    return (bool) strpos(strtolower($result->data), str_replace('@', '--at--', $account->mail));
+  }
+  else {
+    return false;
+  }
 }
 
 /**
