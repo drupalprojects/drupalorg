@@ -1812,6 +1812,7 @@ function drupalorg_user_view($account, $view_mode) {
     if ($account->uid === $user->uid) {
       $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="https://association.drupal.org">Drupal Association</a> badges on your profile page? <a href="https://association.drupal.org/membership">Become a member today.</a>');
     }
+/* @todo D7 this ain't working.
     foreach (drupalorg_civimembership_load($account) as $membership) {
       $placeholders = array(
         '@username' => $account->name,
@@ -1853,6 +1854,7 @@ function drupalorg_user_view($account, $view_mode) {
         '#weight' => -1,
       );
     }
+*/
 
     // Documentation edits
     if ($drupalorg_documentation = drupalorg_documentation_contributions($account)) {
@@ -1888,7 +1890,7 @@ function drupalorg_user_OLD($op, &$edit, &$account, $category = NULL) { }
  * @see http://drupal.org/node/1354
  */
 function drupalorg_documentation_contributions($account) {
-  $count = (int) db_query("SELECT count(*) FROM node n INNER JOIN node_revisions nr ON n.nid = nr.nid AND nr.uid = %d WHERE n.type = :n.type AND n.status = :n.status", array(':n.type' => 'book', ':n.status' => 1, '' => $account->uid))->fetchField();
+  $count = (int) db_query("SELECT count(*) FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid AND nr.uid = :uid WHERE n.type = :type AND n.status = :status", array(':type' => 'book', ':status' => 1, ':uid' => $account->uid))->fetchField();
   if ($count > 0) {
     // This isn't a leaderboard.
     if ($count === 1) {
@@ -1978,11 +1980,13 @@ function drupalorg_civimembership_load($account, $reset = FALSE) {
  * @return
  */
 function drupalorg_has_civimembership($account, $type, $reset = FALSE) {
+/* @todo D7: This ain't working.
   foreach (drupalorg_civimembership_load($account, $reset) as $membership) {
     if ($membership->membership_type === $type && ($membership->status === 'New' || $membership->status === 'Current')) {
       return TRUE;
     }
   }
+*/
   return FALSE;
 }
 
