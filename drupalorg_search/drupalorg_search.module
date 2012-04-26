@@ -235,10 +235,11 @@ function drupalorg_search_block_view($delta) {
 }
 
 /**
- * Implementation of hook_form_search_form_alter().
+ * Implementation of hook_form_FORM_ID_alter().
  */
-function drupalorg_search_form_search_form_alter(&$form, $form_state) {
-  if (drupalorg_crosssite_apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
+function drupalorg_search_form_apachesolr_search_custom_page_search_form_alter(&$form, $form_state) {
+  $env_id = apachesolr_default_environment();
+  if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
     $form['#access'] = FALSE;
   }
 }
