@@ -76,6 +76,7 @@ function drupalorg_order_facet_block_view($delta) {
  * @see http://drupal.org/node/1354
  */
 function drupalorg_order_facet_content($delta) {
+/* @todo D7: No apachesolr module.
   if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
     $facets = drupalorg_order_facet_apachesolr_facets();
     if (isset($facets[$delta])) {
@@ -85,6 +86,7 @@ function drupalorg_order_facet_content($delta) {
       }
     }
   }
+*/
 }
 
 /**
