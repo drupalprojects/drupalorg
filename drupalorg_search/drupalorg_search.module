@@ -110,13 +110,14 @@ function drupalorg_search_block_info() {
       'cache' => BLOCK_NO_CACHE,
     ),
   );
-
+/*
   // Add the facet blocks.
   $enabled_facets = apachesolr_get_enabled_facets('drupalorg_search');
   $facets = drupalorg_search_apachesolr_facets();
   foreach ($enabled_facets as $delta => $facet_field) {
     $blocks[$delta] = $facets[$delta] + array('cache' => BLOCK_NO_CACHE);
   }
+*/
   return $blocks;
 }
 
@@ -126,8 +127,9 @@ function drupalorg_search_block_info() {
 function drupalorg_search_block_view($delta) {
   switch ($delta) {
     case 'search_box':
-      if (drupalorg_crosssite_apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
-        $querystring = $query->get_query_basic();
+      $env_id = apachesolr_default_environment();
+      if (drupalorg_crosssite_apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
+        $querystring = $query->getParam('q');
       }
       else {
         $querystring = '';
@@ -135,7 +137,6 @@ function drupalorg_search_block_view($delta) {
 
       // We need to special case POST requests, because the search module
       // doesn't trigger search on POST requests.
-
       if (!empty($querystring) || (arg(0) == 'search' && $_SERVER['REQUEST_METHOD'] == 'POST')) {
         return array(
           'subject' => t('Search again'),
