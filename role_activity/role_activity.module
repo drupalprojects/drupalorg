@@ -196,7 +196,7 @@ function role_activity_write($log, $action) {
     'referer' => $log['referer'],
     'ip' => $log['ip'],
     'action' => $action,
-    'link' => isset($log['link']) ?: '',
+    'link' => isset($log['link']) ? $log['link'] : '',
     'uri' => $log['request_uri'],
     'message' => t($log['message'], $log['variables']),
   ))
