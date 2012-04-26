@@ -31,3 +31,26 @@ function drupalorg_search_update_6301() {
   apachesolr_search_install();
   apachesolr_search_enable();
 }
+
+/**
+ * Set apachesolr 3.x to use the "core_search" as default.
+ */
+function drupalorg_search_update_6302() {
+  variable_set('apachesolr_search_default_search_page', 'core_search');
+  return array();
+}
+
+/**
+ * Change block placement to match new page urls.
+ */
+function drupalorg_search_update_6303() {
+  $ret = array();
+
+  // Change display pages for drupalorg_search_navigation block.
+  $pages = "search/site*\n";
+  // TODO more as needed.
+
+  $ret[] = update_sql("UPDATE {blocks} SET pages = '$pages' WHERE module = 'drupalorg_search' AND delta = 'drupalorg_search_navigation' AND theme = 'bluecheese'");
+
+  return $ret;
+}
