@@ -15,3 +15,19 @@ function drupalorg_search_update_6000() {
   $ret[] = update_sql("UPDATE {blocks} SET cache = -1 WHERE module = 'drupalorg_search'");
   return $ret;
 }
+
+/**
+ * After installation of apachesolr 6.x-3.x, runs all apachesolr installation
+ * scripts. This is necessary as there is no provided upgrade path from
+ * apachesolr 6.x-1.x to 6.x-3.x and required tables and data are absent.
+ */
+function drupalorg_search_update_6301() {
+  // Force Apachesolr's install when upgrading from 6.x-1.x to 6.x-3.x.
+  module_load_include('install', 'apachesolr');
+  apachesolr_install();
+
+  // Force Apachesolr Search's install when upgrading from 6.x-1.x to 6.x-3.x.
+  module_load_include('install', 'apachesolr_search');
+  apachesolr_search_install();
+  apachesolr_search_enable();
+}
