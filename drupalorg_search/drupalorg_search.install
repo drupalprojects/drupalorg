@@ -49,8 +49,12 @@ function drupalorg_search_update_6303() {
   // Change display pages for drupalorg_search_navigation block.
   $pages = "search/site*\n";
   // TODO more as needed.
-
   $ret[] = update_sql("UPDATE {blocks} SET pages = '$pages' WHERE module = 'drupalorg_search' AND delta = 'drupalorg_search_navigation' AND theme = 'bluecheese'");
+
+  // Change display pages for the search_box block.
+  $pages = "search/site*\n";
+  // TODO more as needed.
+  $ret[] =  update_sql("UPDATE {blocks} SET pages = '$pages' WHERE module = 'drupalorg_search' AND delta = 'search_box' AND theme = 'bluecheese'");
 
   return $ret;
 }
