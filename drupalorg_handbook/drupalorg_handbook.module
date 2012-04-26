@@ -261,11 +261,13 @@ function drupalorg_handbook_revision_maintainers() {
  */
 function drupalorg_handbook_get_recent_updates($limit = 50) {
   // TODO Please convert this statement to the D7 database API syntax.
+  /* @todo D7 re-write me.
   return db_query_range(db_rewrite_sql("SELECT n.nid, n.title, n.changed, r.log, u.uid, u.name
     FROM {node} n
     INNER JOIN {book} b ON n.nid = b.nid INNER JOIN {node_revisions} r ON n.vid = r.vid INNER JOIN {users} u ON u.uid = r.uid
     WHERE n.status = 1
     ORDER BY n.changed DESC"));
+  */
 }
 
 /**
