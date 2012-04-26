@@ -385,7 +385,7 @@ function drupalorg_handbook_preprocess_drupalorg_home(&$vars) {
   else {
     $result = drupalorg_handbook_get_recent_updates($count);
     $recent_updates = '';
-    while ($result as $node) {
+    foreach ($result as $node) {
       // Fake the created time for the theme function, so we can easily theme it.
       $node->created = $node->changed;
       // TODO Please change this theme call to use an associative array for the $variables parameter.
