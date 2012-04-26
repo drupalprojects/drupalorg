@@ -326,6 +326,20 @@ function drupalorg_activity_block() {
  * @see http://drupal.org/node/1354
  */
 function drupalorg_get_activity($_force = FALSE) {
+/* @todo D7: Temporary shiv to get rid of notices while things don't work. */
+  $stats = array();
+  $stats['number_of_modules'] = 0;
+  $stats['number_of_themes'] = 0;
+  $stats['number_of_distributions'] = 0;
+  $stats['number_of_git_accounts'] = 0;
+  $stats['number_of_git_commits'] = 0;
+  $stats['number_of_issue_comments'] = 0;
+  $stats['number_of_users'] = 0;
+  $stats['number_of_countries'] = 0;
+  $stats['number_of_languages'] = 0;
+  return $stats;
+}
+/* @todo D7: Fix all of this stuff.
   if (!$_force && ($cache = cache_get('drupalorg_front_counter_data', 'drupalorg'))) {
     $stats = $cache->data;
   }
@@ -362,7 +376,7 @@ function drupalorg_get_activity($_force = FALSE) {
     // All Distributions.
     $distributions = db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {taxonomy_term_node} tn ON n.vid = tn.vid WHERE tn.tid = :tid AND n.status = :status", array(':tid' => 96, ':status' => 1))->fetchField();
     $stats['number_of_distributions'] = number_format($distributions);
-*/
+    
     // Users: Count them.
     $stats['number_of_users'] = number_format(db_query('SELECT COUNT(*) FROM {users} WHERE uid > :uid AND status = :status AND login > :login', array(':uid' => 0, ':status' => 1, ':login' => 0))->fetchField());
 
@@ -388,12 +402,11 @@ function drupalorg_get_activity($_force = FALSE) {
     // Sites made with Drupal.
     $stats['sites_made'] = array();
 
-    /* @todo D7 This fails; not sure why atm.
     $view = views_get_view('drupalorg_casestudies');
     $view->preview('block_1');
     foreach ($view->style_plugin->rendered_fields as $row) {
       $stats['sites_made'][] = implode('', $row);
-    }*/
+    }
 
     cache_set('drupalorg_front_counter_data', $stats, 'drupalorg');
     lock_release('drupalorg_get_activity');
@@ -403,6 +416,7 @@ function drupalorg_get_activity($_force = FALSE) {
   }
   return $stats;
 }
+*/
 
 function drupalorg_set_home() {
   global $user;
@@ -481,30 +495,34 @@ function drupalorg_preprocess_page(&$variables) {
  * Implementation of template_preprocess_drupalorg_home().
  */
 function drupalorg_preprocess_drupalorg_home(&$variables) {
+  $variables['things_we_made'] = '';
   $variables['map_content'] = drupalorg_map_content();
 
+  $variables['sites_made'] = array();
+
   $recent_forums = '';
-/* @todo D7 Convert to DBTNG.
   // == Forums tab data/markup
-  $sql = db_rewrite_sql("SELECT mv.entity_id AS nid, mv.node_title AS title, n.created, n.uid, u.name FROM {mv_drupalorg_node_by_vocabulary} mv INNER JOIN {node} n ON n.nid = mv.entity_id INNER JOIN {users} u ON u.uid = n.uid WHERE mv.term_vid = 1 AND n.status = 1 ORDER BY mv.node_nid DESC");
+  //$sql = db_rewrite_sql("SELECT mv.entity_id AS nid, mv.node_title AS title, n.created, n.uid, u.name FROM {mv_drupalorg_node_by_vocabulary} mv INNER JOIN {node} n ON n.nid = mv.entity_id INNER JOIN {users} u ON u.uid = n.uid WHERE mv.term_vid = 1 AND n.status = 1 ORDER BY mv.node_nid DESC");
   // TODO Please convert this statement to the D7 database API syntax.
-  $result = db_query_range($sql, variable_get('forum_nav_vocabulary', ''));
-  while ($node = db_fetch_object($result)) {
+  //$result = db_query_range($sql, variable_get('forum_nav_vocabulary', ''));
+  //while ($node = db_fetch_object($result)) {
     // TODO Please change this theme call to use an associative array for the $variables parameter.
-    $recent_forums .= '<h6>' . l($node->title, 'node/' . $node->nid) . '</h6><p class="submitted">' . theme('node_submitted', $node) . '</p>';
-  }
-*/
+    //$recent_forums .= '<h6>' . l($node->title, 'node/' . $node->nid) . '</h6><p class="submitted">' . theme('node_submitted', $node) . '</p>';
+  //}
+
   $recent_forums .= '<p>' . l(t('More forums…'), 'forum') . '</p>';
   $variables['tab_content_forums'] = $recent_forums;
 
   // Retrieve or rebuild stats cache.
   $variables += drupalorg_get_activity();
 
+/* @todo D7 Convert to DBTNG.
   // Pick a random site made with Drupal from the cache.
   $variables['things_we_made'] = $variables['sites_made'][array_rand($variables['sites_made'])];
 
+ */
   // TODO Please change this theme call to use an associative array for the $variables parameter.
-  $variables['psa'] = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'Redesign_home');
+  $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'Redesign_home'));
 }
 
 /**
