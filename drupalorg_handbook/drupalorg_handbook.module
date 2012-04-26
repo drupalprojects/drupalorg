@@ -294,7 +294,9 @@ function drupalorg_handbook_block_info() {
  * Implements hook_block_view().
  */
 function drupalorg_handbook_block_view($delta) {
+  /* @todo D7 - Dependent on drupalorg_crossite module.
   $section = drupalorg_crosssite_section();
+  */
   $node = menu_get_object();
   switch ($delta) {
     case 'license':
