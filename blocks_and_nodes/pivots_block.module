@@ -26,6 +26,7 @@ define('LIMIT_MAX', 100); // maximum items to display in the block or on a page.
  */
 function pivots_block_output() {
   // Skip the Drupal core project.
+/* @todo D7: No project_get_project_from_menu() function.
   if (($node = project_get_project_from_menu()) && ($node->nid != DRUPALORG_CORE_NID)) {
 
     //HACK: randomize algorithm rotation
@@ -43,6 +44,7 @@ function pivots_block_output() {
     //$output .= _pivots_block_suggestbox($node->nid, $_pivots_block_pid_double);
     return $output;
   }
+*/
 }
 
 function _pivots_block_content($node_id, $pivot_id, $title, $limit) {
