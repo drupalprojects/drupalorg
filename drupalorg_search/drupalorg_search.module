@@ -88,19 +88,19 @@ function drupalorg_search_block_info() {
   $blocks = array(
     'search_box' => array(
       'info' => t('Drupalorg Search: Search box'),
-      'cache' => BLOCK_NO_CACHE,
+      'cache' => DRUPAL_NO_CACHE,
     ),
     'drupalorg_search_navigation' => array(
       'info' => t('Drupalorg Search: Navigation'),
-      'cache' => BLOCK_NO_CACHE,
+      'cache' => DRUPAL_NO_CACHE,
     ),
     'drupalorg_search_alternate' => array(
       'info' => t('Drupalorg Search: Alternate Searches'),
-      'cache' => BLOCK_NO_CACHE,
+      'cache' => DRUPAL_NO_CACHE,
     ),
     'drupalorg_search_users' => array(
       'info' => t('Drupalorg Search: User Search'),
-      'cache' => BLOCK_NO_CACHE,
+      'cache' => DRUPAL_NO_CACHE,
     ),
   );
 
