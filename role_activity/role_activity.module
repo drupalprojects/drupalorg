@@ -117,17 +117,16 @@ function role_activity_admin_settings($form, &$form_state) {
  * Implementation of hook_watchdog().
  */
 function role_activity_watchdog(array $log_entry) {
+  if (!role_activity_check_role($log_entry['user']->uid)) {
+    // If user is not among the roles we should check.
+    return;
+  }
+  if (!($action = role_activity_parse($log_entry['type'], $log_entry['message']))) {
+    // It the parser did not find that we should the action, skip.
+    return;
+  }
 
- if (!role_activity_check_role($log_entry['user']->uid)) {
-   // If user is not among the roles we should check.
-   return;
- }
- if (!($action = role_activity_parse($log_entry['type'], $log_entry['message']))) {
-  // It the parser did not find that we should the action, skip.
-  return;
- }
-
- role_activity_write($log_entry, $action);
+  role_activity_write($log_entry, $action);
 }
 
  /**
