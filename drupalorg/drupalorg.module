@@ -282,7 +282,7 @@ function drupalorg_block_view($delta) {
           $page = homebox_get_page('dashboard');
           $content = '';
           foreach ($blocks as $block) {
-            $options = array('attributes' => array('class' => 'add'));
+            $options = array('attributes' => array('class' => array('add')));
             if (isset($block[3])) {
               $options['query'] = $block[3];
             }
@@ -429,7 +429,7 @@ function drupalorg_set_home() {
   }
 
   $items[] = array(
-    '#value' => l(t($message), $_GET['q'], array('attributes' => array('class' => 'add'))),
+    '#value' => l(t($message), $_GET['q'], array('attributes' => array('class' => array('add')))),
   );
   $items['submit'] = array(
     '#type' => 'submit',
@@ -684,7 +684,7 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   }
   $modules[] = '<a href="/project/modules/index" class="all">View full index</a>';
   $module_index = '<h2>' . t('Module Index') . '</h2>';
-  $module_index .= theme('item_list', array('items' => $modules, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => 'flat')));
+  $module_index .= theme('item_list', array('items' => $modules, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => array('flat'))));
   $variables['module_index'] = $module_index;
 }
 
@@ -1065,7 +1065,7 @@ function drupalorg_download_drupal_link_button($text) {
 */
   // Assumes a drupal-$version alias exists for the given Drupal version, which
   // has been the tradition. Just keep that tradition, and this works wonders.
-  return l('<span>' . check_plain("$text $release->version") . '</span>', 'project/drupal', array('html' => TRUE, 'attributes' => array('class' => 'link-button')));
+  return l('<span>' . check_plain("$text $release->version") . '</span>', 'project/drupal', array('html' => TRUE, 'attributes' => array('class' => array('link-button'))));
 }
 
 /**
@@ -1739,7 +1739,7 @@ function drupalorg_views_pre_render(&$view) {
         $args[$n] = 'all';
         $content['column_' . ($n + 1)]['list'][] = array(
           '#prefix' => '<li>',
-          '#value' => l(t('@name (@count)', array('@name' => check_plain($argument['wildcard_substitution']), '@count' => $count)), preg_replace('!(/all)*$!', '', 'marketplace-preview/' . implode('/', $args)), array('attributes' => array('class' => 'all'))),
+          '#value' => l(t('@name (@count)', array('@name' => check_plain($argument['wildcard_substitution']), '@count' => $count)), preg_replace('!(/all)*$!', '', 'marketplace-preview/' . implode('/', $args)), array('attributes' => array('class' => array('all')))),
           '#suffix' => '</li>',
         );
 

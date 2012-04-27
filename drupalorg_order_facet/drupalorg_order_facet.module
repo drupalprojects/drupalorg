@@ -64,7 +64,7 @@ function drupalorg_order_facet_block_view($delta) {
       if (!empty($results)) {
         return array(
           'subject' => $facets[$delta]['info'],
-          'content' => theme('item_list', array('items' => $results, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => 'flat'))),
+          'content' => theme('item_list', array('items' => $results, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => array('flat')))),
         );
       }
     }

@@ -185,7 +185,7 @@ function drupalorg_marketplace_content_default_fields() {
     'attributes' => array(
       'target' => 'default',
       'rel' => '',
-      'class' => '',
+      'class' => array(),
       'title' => '',
     ),
     'display' => array(
@@ -572,7 +572,7 @@ Platform as a Service',
     'attributes' => array(
       'target' => 'default',
       'rel' => '',
-      'class' => '',
+      'class' => array(),
       'title' => '',
     ),
     'display' => array(

@@ -158,7 +158,7 @@ function drupalorg_search_block_view($delta) {
             $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
             $querystring = $new_query->get_url_queryvalues();
 
-            $entries[] = l(t('@facet (@count)', array('@facet' => $description, '@count' => $count)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => $active ? array('class' => 'selected') : array()));
+            $entries[] = l(t('@facet (@count)', array('@facet' => $description, '@count' => $count)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => $active ? array('class' => array('selected')) : array()));
           }
         }
         if (count($entries)) {
@@ -167,7 +167,7 @@ function drupalorg_search_block_view($delta) {
           $new_query->remove_filter('ss_meta_type');
           $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
           $querystring = $new_query->get_url_queryvalues();
-          array_unshift($entries, l(t('All (@count)', array('@count' => $total)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => !$has_active ? array('class' => 'selected') : array())));
+          array_unshift($entries, l(t('All (@count)', array('@count' => $total)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => !$has_active ? array('class' => array('selected')) : array())));
 
           return array(
             'subject' => t('or filter by…'),
@@ -390,7 +390,7 @@ function drupalorg_search_help_form(&$form_state) {
     '#id' => 'edit-search-term-autolookup',
     '#value' => check_url(url('drupalorg-search/help/js', array('absolute' => TRUE))),
     '#attributes' => array(
-      'class' => 'autolookup',
+      'class' => array('autolookup'),
     ),
   );
   return $form;

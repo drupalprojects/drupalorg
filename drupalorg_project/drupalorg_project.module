@@ -958,12 +958,12 @@ function drupalorg_project_meta_data($node) {
             $maintenance_status = $term->tid;
             switch ($term->tid) {
               case '13032':  // Abandoned
-                $options['attributes'] = array('class' => 'alert');
+                $options['attributes'] = array('class' => array('alert'));
                 break;
 
               case '9990':   // Seeking co-maintainer(s)
               case '9992':   // Seeking new maintainer
-                $options['attributes'] = array('class' => 'warning');
+                $options['attributes'] = array('class' => array('warning'));
                 break;
 
             }
@@ -972,12 +972,12 @@ function drupalorg_project_meta_data($node) {
             $development_status = $term->tid;
             switch ($term->tid) {
               case '9994':   // Obsolete
-                $options['attributes'] = array('class' => 'alert');
+                $options['attributes'] = array('class' => array('alert'));
                 break;
 
               case '13030':  // Maintenance fixes only
               case '16374':  // No futher development
-                $options['attributes'] = array('class' => 'warning');
+                $options['attributes'] = array('class' => array('warning'));
                 break;
 
             }

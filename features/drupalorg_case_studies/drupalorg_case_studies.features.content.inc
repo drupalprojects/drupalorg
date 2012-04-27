@@ -383,7 +383,7 @@ function drupalorg_case_studies_content_default_fields() {
     'attributes' => array(
       'target' => 'default',
       'rel' => '',
-      'class' => '',
+      'class' => array(),
       'title' => '',
     ),
     'display' => array(
