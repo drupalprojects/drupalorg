@@ -4,4 +4,4 @@ package = Drupal.org
 dependencies[] = versioncontrol_project
 dependencies[] = drupalorg_git_gateway
 dependencies[] = sshkey
-core = 6.x
+core = 7.x

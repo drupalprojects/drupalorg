@@ -27,6 +27,13 @@ function drupalorg_git_varnish_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['drupalorg/drupalorg-vcs-auth-fetch-user-hash'] = array(
+    'title' => 'User pass fetch',
+    'page callback' => 'drupalorg_git_varnish_vcs_auth_fetch_user_hash',
+    'access callback' => 'drupalorg_git_varnish_access_callback', // we're restricting in apache conf, this is always TRUE
+    'type' => MENU_CALLBACK,
+  );
+
   $items['drupalorg/pushctl-state'] = array(
     'title' => 'Fetch project vcs auth data',
     'page callback' => 'drupalorg_git_varnish_pushctl_state',
@@ -94,10 +101,24 @@ function drupalorg_git_varnish_ssh_user_key() {
 function drupalorg_git_varnish_vcs_auth_check_user_pass() {
   $username = $_GET['username'];
   $password = $_GET['password'];
+  $account = reset(user_load_multiple(array(), array('git_username' => $username)));
+  if (!empty($account) && isset($account->pass)) {
+    $len = strlen($account->pass);
+    $password = substr($password, 0, $len);
+    if ($len > 20 && $password == $account->pass) {
+      echo 'true';
+      exit;
+    }
+  }
+  echo 'false';
+  exit;
+}
 
-  $account = user_load(array('git_username' => $username));
-  if (!empty($account) && $password == $account->pass) {
-    echo 'true';
+function drupalorg_git_varnish_vcs_auth_fetch_user_hash() {
+  $username = $_GET['username'];
+  $account = reset(user_load_multiple(array(), array('git_username' => $username)));
+  if (!empty($account) && isset($account->pass)) {
+    echo json_encode($account->pass);
     exit;
   }
   echo 'false';
