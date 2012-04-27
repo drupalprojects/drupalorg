@@ -59,23 +59,16 @@ function role_activity_permission() {
 }
 
 /**
- * Gets a list of roles to record activity for.
- */
-function role_activity_role_list() {
-  $result = array();
-  foreach (user_roles(TRUE) as $rid => $name) {
-    if (variable_get('role_activity_rid_' . $rid, 0)) {
-      $result[$rid] = $name;
-    }
-  }
-  return $result;
-}
-
-/**
  * Checks whether the given user has any of the roles we shold monitor.
  */
 function role_activity_check_role($uid = 0) {
-  $roles = array_keys(role_activity_role_list());
+  global $user;
+
+  foreach ($user->roles as $rid => $name) {
+    if (variable_get('role_activity_rid_' . $rid, 0)) {
+      $roles[] = $rid;
+    }
+  }
 
   if (empty($roles)) {
     return false;
