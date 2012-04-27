@@ -421,7 +421,7 @@ function drupalorg_get_activity($_force = FALSE) {
 function drupalorg_set_home() {
   global $user;
   $items = array();
-  if ($user->drupalorg_set_home) {
+  if (isset($user->drupalorg_set_home)) {
     $message = t('Use Default Homepage');
   }
   else {
@@ -434,7 +434,7 @@ function drupalorg_set_home() {
   $items['submit'] = array(
     '#type' => 'submit',
     '#value' => $message,
-    '#drupalorg_set_home' => $user->drupalorg_set_home ? NULL : TRUE,
+    '#drupalorg_set_home' => empty($user->drupalorg_set_home) ? NULL : TRUE,
     '#ahah' => array(
       'path' => 'drupalorg_set_home_js',
       'event' => 'click',
