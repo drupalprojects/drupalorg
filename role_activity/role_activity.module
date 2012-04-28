@@ -62,47 +62,31 @@ function role_activity_permission() {
  * Checks whether the given user has any of the roles we shold monitor.
  */
 function role_activity_check_role($uid = 0) {
-  global $user;
-
-  foreach ($user->roles as $rid => $name) {
-    if (variable_get('role_activity_rid_' . $rid, 0)) {
-      $roles[] = $rid;
-    }
-  }
+  // todo d7 Check if this actually works
+  $roles = variable_get('role_activity', array());
 
   if (empty($roles)) {
-    return false;
+    return FALSE;
   }
 
-  // TODO Check if this actually works
-  $result = db_select('users_roles', 'u')
+  return (bool) db_select('users_roles', 'u')
     ->fields('u', array('uid'))
     ->condition('rid', $roles, 'IN')
     ->condition('uid', $uid)
     ->execute()
     ->fetchField();
-
-  return (bool) $result;
 }
 
 /**
  * Administrator settings page.
  */
 function role_activity_admin_settings($form, &$form_state) {
-  $form['group'] = array(
-    '#type' => 'fieldset',
-    '#collapsible' => TRUE,
-    '#description' => t('Activity will be monitored for these roles.'),
+  $form['role_activity'] = array(
+    '#type' => 'checkboxes',
     '#title' => t('Track activity for these roles'),
+    '#options' => user_roles(TRUE),
+    '#default_value' => variable_get('role_activity'),
   );
-  foreach (user_roles(TRUE) as $rid => $name) {
-    $form['group']['role_activity_rid_' . $rid] = array(
-      '#type' => 'checkbox',
-      '#title' => $name,
-      '#return_value' => 1,
-      '#default_value' => variable_get('role_activity_rid_' . $rid, 0),
-    );
-  }
   return system_settings_form($form);
 }
 
@@ -122,16 +106,12 @@ function role_activity_watchdog(array $log_entry) {
   role_activity_write($log_entry, $action);
 }
 
- /**
+/**
  * Parses the watchdog messages for certain patterns.
  *
  * @todo
  *   Ideally, we should move this to a rule engine via a textbox
  *   for regexps to look for.
- */
-/**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
  */
 function role_activity_parse($type = '', $message = '') {
   $action = '';
