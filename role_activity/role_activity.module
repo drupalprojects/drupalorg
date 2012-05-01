@@ -52,8 +52,7 @@ function role_activity_menu() {
 function role_activity_permission() {
   return array(
     'view role activity' => array(
-      'title' => t('view role activity'),
-      'description' => t('TODO Add a description for \'view role activity\''),
+      'title' => t('View role activity'),
     ),
   );
 }
