@@ -5,7 +5,6 @@ package = Drupal.org
 dependencies[] = comment
 dependencies[] = profile
 dependencies[] = homebox
-dependencies[] = materialized_view
 dependencies[] = ctools
 dependencies[] = views_content_cache
 ; @todo D7 - these are dependencies and should be marked as such.
