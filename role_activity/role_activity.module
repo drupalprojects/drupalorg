@@ -118,8 +118,8 @@ function role_activity_parse($type = '', $message = '') {
       elseif (preg_match('/@type: deleted/i', $message)) {
         $action = t('Content deleted');
       }
-      elseif (preg_match('/Comment: updated/i', $message)) {
-        $action = t('Comment updated');
+      elseif (preg_match('/Comment posted/i', $message)) {
+        $action = t('Comment updated or posted');
       }
       break;
 
