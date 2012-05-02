@@ -947,6 +947,14 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   }
 }
 
+/**
+ * Disable aggregator feed blocks, there are so many that they overwhelm the
+ * block admin UI.
+ */
+function drupalorg_form_aggregator_form_feed_alter(&$form) {
+  $form['block']['#default_value'] = 0;
+}
+
 // == User form functionality ==================================================
 
 /**

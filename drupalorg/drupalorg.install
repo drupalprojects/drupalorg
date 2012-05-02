@@ -69,3 +69,13 @@ function drupalorg_update_7001() {
     db_create_table($table, $schema);
   }
 }
+
+/**
+ * Disable aggregator feed blocks, there are so many that they overwhelm the
+ * block admin UI.
+ */
+function drupalorg_update_7002() {
+  db_update('aggregator_feed')
+    ->fields(array('block' => 0))
+    ->execute();
+}
