@@ -1,0 +1,10 @@
+name = Drupal.org user customizations
+description = Extra user fields, like geolocation
+core = 7.x
+package = Features
+dependencies[] = features
+dependencies[] = field_sql_storage
+dependencies[] = geolocation
+dependencies[] = geolocation_html5
+features[features_api][] = api:1
+features[field][] = user-user-field_user_geolocation
