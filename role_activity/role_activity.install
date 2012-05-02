@@ -2,9 +2,7 @@
 /**
  * @file
  * Install, update and uninstall functions for the role_activity module.
- *
  */
-
 
 /**
  * Implements hook_schema().
@@ -70,4 +68,16 @@ function role_activity_schema() {
   );
 
   return $schema;
+}
+
+/**
+ * Move settings into a single variable.
+ */
+function role_activity_update_7000() {
+  $role_activity = array();
+  foreach (user_roles(TRUE) as $rid => $role) {
+    $role_activity[$rid] = variable_get('role_activity_rid_' . $rid, FALSE);
+    variable_del('role_activity_rid_' . $rid);
+  }
+  variable_set('role_activity', drupal_map_assoc(array_keys(array_filter($role_activity))));
 }

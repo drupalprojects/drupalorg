@@ -61,8 +61,7 @@ function role_activity_permission() {
  * Checks whether the given user has any of the roles we shold monitor.
  */
 function role_activity_check_role($uid = 0) {
-  // todo d7 Check if this actually works
-  $roles = variable_get('role_activity', array());
+  $roles = array_filter(variable_get('role_activity', array()));
 
   if (empty($roles)) {
     return FALSE;
