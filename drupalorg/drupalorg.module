@@ -470,6 +470,7 @@ function drupalorg_set_home_submit($form, $form_state) {
  */
 function drupalorg_home() {
   drupal_add_library('system', 'ui.tabs');
+  drupal_add_js(drupal_get_path('module', 'geolocation_html5') . '/geolocation_html5.js');
   drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/home.js');
 
   return theme('drupalorg_home');
@@ -526,68 +527,60 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Get HTML for home page map.
  */
 function drupalorg_map_content($_force = FALSE) {
-/* @todo D7 Convert this stuff to DBTNG; requires migration of html5_user_geolocation data.
-
   if (!$_force && $cache = cache_get('drupalorg_map_content', 'drupalorg')) {
     $output = $cache->data;
   }
   else {
-    $output = theme('drupalorg_map_pin', array('classes' => array('homepage-pin', 'homepage-pin-commit', 'homepage-pin-west', 'drupalcon'), 'latitude' => variable_get('drupalcon_latitude', 41.836944), 'longitude' => variable_get('drupalcon_longitude', -87.684444), 'content' => variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011')));
-    $queries = array(
-      db_rewrite_sql("SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {node} n ON nr.nid = n.nid INNER JOIN {book} b ON b.nid = n.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = nr.uid WHERE n.status = 1 AND u.status = 1 ORDER BY nr.timestamp DESC"),
-      db_rewrite_sql("SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' AND n.status = 1 AND u.status = 1 ORDER BY n.created DESC"),
-      "SELECT DISTINCT vco.vc_op_id, vco.message title, vco.repo_id, vco.revision, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'committed' verb FROM {versioncontrol_operations} vco INNER JOIN {html5_user_geolocation} hug ON hug.uid = vco.author_uid INNER JOIN {users} u ON u.uid = vco.author_uid ORDER BY vco.date DESC",
+    $map = array(
+      0 => array(
+        'type' => 'commit', // For the pin color.
+        'message' => variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011'),
+        'latitude' => variable_get('drupalcon_latitude', 41.836944),
+        'longitude' => variable_get('drupalcon_longitude', -87.684444),
+      ),
     );
-    $map = array();
-    foreach ($queries as $q => $query) {
-      $n = 0;
-      // TODO Please convert this statement to the D7 database API syntax.
-      $result = db_query_range($query);
-      while ($row = db_fetch_object($result)) {
-        // Trim to maximum.
-        $row->title = truncate_utf8(trim($row->title), 45);
-        // If at max.
-        if (drupal_strlen($row->title) === 45) {
-          // Truncate at space in the last 10 characters.
-          if (preg_match('/\s/', drupal_substr($row->title, 35))) {
-            $row->title = preg_replace('/\s[^\s]*$/', '…', $row->title);
-          }
-          else {
-            $row->title .= '…';
-          }
+    $views = array('drupalorg_handbook_map', 'drupalorg_forum_map', 'drupalorg_commit_map');
+    foreach ($views as $q => $view) {
+      $view = views_get_view($view);
+      $view->preview();
+      $fields = array(
+        'message' => NULL,
+        'latitude' => NULL,
+        'longitude' => NULL,
+      );
+      foreach ($view->field as $id => $handler) {
+        if (array_key_exists($handler->ui_name(), $fields)) {
+          $fields[$handler->ui_name()] = $id;
         }
-        // Set link.
-        if ($row->type === 'commit') {
-          $row->link = l($row->title, 'commitlog/commit/' . $row->repo_id . '/' . $row->revision);
+      }
+      foreach ($view->style_plugin->rendered_fields as $n => $row) {
+        $map[$n * count($views) + $q + 1]['type'] = $view->get_title();
+        foreach ($fields as $field => $id) {
+          $map[$n * count($views) + $q + 1][$field] = $row[$id];
         }
-        else {
-          $row->link = l($row->title, 'node/' . $row->nid);
-        }
-        // Add for round-robin sorting.
-        $map[$n++ * count($queries) + $q] = $row;
       }
     }
     ksort($map);
     foreach ($map as $row) {
-      $output .= theme('drupalorg_map_pin', array('classes' => array('homepage-pin', 'homepage-pin-' . $row->type, 'homepage-pin-' . ($row->longitude > 0 ? 'east' : 'west')), 'latitude' => $row->latitude, 'longitude' => $row->longitude, 'content' => t('!name @verb<br />!page', array('!name' => theme('username', array('account' => $row)), '@verb' => $row->verb, '!page' => $row->link))));
+      $output .= theme('drupalorg_map_pin', $row);
     }
 
     cache_set('drupalorg_map_content', $output, 'drupalorg');
   }
 
   return $output;
-  */
 }
 
 /**
  * Generates HTML to plot a map pin.
  */
 function drupalorg_preprocess_drupalorg_map_pin(&$variables) {
-  $variables['classes'] = implode(' ', $variables['classes']);
+  $variables['classes_array'][] = 'homepage-pin';
+  $variables['classes_array'][] = 'homepage-pin-' . $variables['type'];
+  $variables['classes_array'][] = 'homepage-pin-' . ($variables['longitude'] > 0 ? 'east' : 'west');
 }
 
 /**
@@ -870,10 +863,9 @@ function drupalorg_theme() {
     ),
     'drupalorg_map_pin' => array(
       'variables' => array(
-        'classes' => NULL,
         'latitude' => NULL,
         'longitude' => NULL,
-        'content' => '',
+        'message' => '',
       ),
       'template' => 'drupalorg-map-pin',
     ),
@@ -1476,6 +1468,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
 
           // Map
           if (!empty($account->latitude) || !empty($account->longitude)) {
+            // todo d7 classes is no longer passed here, try using the default class.
             $content['column_3']['map']['#value'] .= theme('drupalorg_map_pin', array('classes' => array('pin'), 'latitude' => $account->latitude, 'longitude' => $account->longitude));
           }
         }

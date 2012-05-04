@@ -79,3 +79,28 @@ function drupalorg_update_7002() {
     ->fields(array('block' => 0))
     ->execute();
 }
+
+/**
+ * Migrate user locations.
+ */
+function drupalorg_update_7003() {
+  features_enable_feature('drupalorg_user');
+
+  $query = db_select('html5_user_geolocation', 'hug');
+  $query->addJoin('INNER', 'users', 'u', 'u.uid = hug.uid');
+  $query->fields('hug', array('uid', 'latitude', 'longitude'));
+  foreach ($query->execute() as $row) {
+    $account = user_load($row->uid);
+    $account->field_user_geolocation = array(
+      'und' => array(
+        array(
+          'lat' => $row->latitude,
+          'lng' => $row->longitude,
+        ),
+      ),
+    );
+    user_save($account);
+  }
+
+  db_drop_table('html5_user_geolocation');
+}
