@@ -85,6 +85,7 @@ function drupalorg_update_7002() {
  */
 function drupalorg_update_7003() {
   features_enable_feature('drupalorg_user');
+  features_enable_feature('drupalorg_home_support');
 
   $query = db_select('html5_user_geolocation', 'hug');
   $query->addJoin('INNER', 'users', 'u', 'u.uid = hug.uid');
