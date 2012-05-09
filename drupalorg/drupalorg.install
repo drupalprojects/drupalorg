@@ -113,3 +113,18 @@ function drupalorg_update_7003() {
 function drupalorg_update_7004() {
   variable_set('admin_theme', 'seven');
 }
+
+/**
+ * Position blocks
+ */
+function drupalorg_update_7005() {
+  db_update('block')
+    ->fields(array(
+      'status' => 1,
+      'region' => 'navigation',
+      'title' => '<nond>',
+    ))
+    ->condition('module', 'system', '=')
+    ->condition('delta', 'main-menu', '=')
+    ->execute();
+}
