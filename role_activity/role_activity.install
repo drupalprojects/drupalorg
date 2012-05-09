@@ -71,6 +71,20 @@ function role_activity_schema() {
 }
 
 /**
+ * Run role_activity_update_7000() after user_update_7007() so that
+ * user_roles() works.
+ */
+function role_activity_update_dependencies() {
+  return array(
+    'role_activity' => array(
+      7000 => array(
+        'user' => 7007,
+      ),
+    ),
+  );
+}
+
+/**
  * Move settings into a single variable.
  */
 function role_activity_update_7000() {
