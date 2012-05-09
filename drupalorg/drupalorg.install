@@ -122,7 +122,7 @@ function drupalorg_update_7005() {
     ->fields(array(
       'status' => 1,
       'region' => 'navigation',
-      'title' => '<nond>',
+      'title' => '<none>',
     ))
     ->condition('module', 'system', '=')
     ->condition('delta', 'main-menu', '=')
