@@ -853,6 +853,7 @@ function drupalorg_update_6605() {
 function drupalorg_update_6606() {
   // Enable feature for project images.
   features_install_modules(array('drupalorg_project_customizations'));
+  features_rebuild();
 
   // Move images to field_project_images.
   $result = db_query("SELECT ia.nid FROM {image_attach} ia INNER JOIN {node} n ON n.nid = ia.nid AND n.type = 'project_project'");
