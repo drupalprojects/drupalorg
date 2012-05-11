@@ -879,6 +879,7 @@ function drupalorg_update_6606() {
       node_delete($image->nid);
     }
     unset($node->iids);
+    $node->log = t('Migrating images, see http://drupal.org/node/371999.');
     node_save($node);
   }
 
