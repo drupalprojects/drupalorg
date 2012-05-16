@@ -31,6 +31,20 @@ function drupalorg_install() {
 }
 
 /**
+ * Run drupalorg_update_7003() after profile_update_7001() so that
+ * {profile_field} exists.
+ */
+function role_activity_update_dependencies() {
+  return array(
+    'drupalorg' => array(
+      7003 => array(
+        'profile' => 7001,
+      ),
+    ),
+  );
+}
+
+/**
  * Move users access column back to core default.
  */
 function drupalorg_update_7000() {
