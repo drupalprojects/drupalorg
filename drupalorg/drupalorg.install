@@ -99,8 +99,7 @@ function drupalorg_update_7002() {
  */
 function drupalorg_update_7003() {
   module_enable(array('drupalorg_user', 'drupalorg_home_support'));
-  features_enable_feature('drupalorg_user');
-  features_enable_feature('drupalorg_home_support');
+  features_flush_caches();
 
   $query = db_select('html5_user_geolocation', 'hug');
   $query->addJoin('INNER', 'users', 'u', 'u.uid = hug.uid');
@@ -132,6 +131,7 @@ function drupalorg_update_7004() {
  * Position blocks
  */
 function drupalorg_update_7005() {
+  block_flush_caches();
   db_update('block')
     ->fields(array(
       'status' => 1,
