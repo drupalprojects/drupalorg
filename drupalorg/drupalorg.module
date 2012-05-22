@@ -32,8 +32,6 @@ define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 7); // 7.x
  */
 define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 103); // 7.x
 
-// == Core hooks ===============================================================
-
 /**
  * @todo Please document this function.
  * @see http://drupal.org/node/1354
@@ -879,8 +877,6 @@ function drupalorg_theme() {
   );
 }
 
-// == Altering existing behavior ===============================================
-
 /**
  * Implements hook_form_alter().
  */
@@ -953,8 +949,6 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
 function drupalorg_form_aggregator_form_feed_alter(&$form) {
   $form['block']['#default_value'] = 0;
 }
-
-// == User form functionality ==================================================
 
 /**
  * Try to catch wildcard email address signups, such as joe+drupal@gmail.com.
