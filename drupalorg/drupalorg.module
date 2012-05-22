@@ -294,12 +294,6 @@ function drupalorg_block_view($delta) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
- */
-function drupalorg_block_OLD($op = 'list', $delta = 0, $edit = array()) { }
-
-/**
  * Overall quick stats for drupal.org.
  */
 function drupalorg_activity_block() {
@@ -1389,6 +1383,8 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         $node->content = $content;
       }
       else { // Page
+        global $user;
+
         $content = drupalorg_crosssite_grid_elements(array(3, 5, 4));
 
         // Link & logo
@@ -1634,15 +1630,6 @@ function drupalorg_node_update($node) {
  * @todo Please document this function.
  * @see http://drupal.org/node/1354
  */
-function drupalorg_nodeapi_OLD(&$node, $op, $a3 = NULL, $a4 = NULL) {
-  // TODO Remaining code in this function needs to be moved to the appropriate new hook function.
-  global $user;
-}
-
-/**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
- */
 function drupalorg_views_pre_render(&$view) {
   // Render the taxonomy filtering above the marketplace organization listing.
   if ($view->name === 'drupalorg_organizations') {
@@ -1864,11 +1851,6 @@ function drupalorg_user_view($account, $view_mode) {
     $account->content = $content;
   }
 }
-
-/**
- * Implements hook_user().
- */
-function drupalorg_user_OLD($op, &$edit, &$account, $category = NULL) { }
 
 /**
  * @todo Please document this function.
