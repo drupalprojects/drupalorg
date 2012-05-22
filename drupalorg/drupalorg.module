@@ -463,7 +463,14 @@ function drupalorg_set_home_submit($form, $form_state) {
   exit;
 }
 
-// == Major landing pages ======================================================
+/**
+ * Get rid of jQuery UI theme noise.
+ */
+function drupalorg_library_alter(&$libraries, $module) {
+  if ($module === 'system' && isset($libraries['ui'])) {
+    unset($libraries['ui']['css']['misc/ui/jquery.ui.theme.css']);
+  }
+}
 
 /**
  * Page callback for the frontpage.

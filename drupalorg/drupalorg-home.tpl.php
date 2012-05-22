@@ -67,28 +67,14 @@
 </div>
 
 <div id="front-bottom-right" class="grid-6 omega">
-  <div id="front-bottom-right-inner">
-    <div class="block-content">
-      <div id="rotate">
-        <ul class="ui-tabs-nav">
-          <li class="ui-tabs-selected"><a href="#fragment-1">News</a></li>
-          <li class="ui-tabs-docs-updates"><a href="#fragment-2"><span class="icon"></span>Docs Updates</a></li>
-          <li class="ui-tabs-forum-posts"><a href="#fragment-3"><span class="icon"></span>Forum Posts</a></li>
-          <li class="ui-tabs-commits"><a href="#fragment-4"><span class="icon"></span>Commits</a></li>
-        </ul>
-        <div id="fragment-1" class="ui-tabs-panel">
-          <?php print $tab_content_news; ?>
-        </div>
-        <div id="fragment-2" class="ui-tabs-panel ui-tabs-hide">
-          <?php print $tab_content_docs; ?>
-        </div>
-        <div id="fragment-3" class="ui-tabs-panel ui-tabs-hide">
-          <?php print $tab_content_forums; ?>
-        </div>
-        <div id="fragment-4" class="ui-tabs-panel ui-tabs-hide">
-          <?php print $tab_content_git; ?>
-        </div>
-      </div>
-    </div>
-  </div>
+  <ul>
+    <li><a href="#tab-news" id="tab-news-link">News</a></li>
+    <li><a href="#tab-docs" id="tab-docs-link"><span class="icon"></span>Docs Updates</a></li>
+    <li><a href="#tab-forum" id="tab-forum-link"><span class="icon"></span>Forum Posts</a></li>
+    <li><a href="#tab-commits" id="tab-commits-link"><span class="icon"></span>Commits</a></li>
+  </ul>
+  <div id="tab-news"><?php print $tab_content_news; ?></div>
+  <div id="tab-docs"><?php print $tab_content_docs; ?></div>
+  <div id="tab-forum"><?php print $tab_content_forums; ?></div>
+  <div id="tab-commits"><?php print $tab_content_git; ?></div>
 </div>

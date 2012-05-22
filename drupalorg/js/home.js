@@ -18,5 +18,5 @@
     $pins.eq(current).show();
   }, 4000);
 
-  $('#rotate > ul').tabs();
+  $('#front-bottom-right').tabs();
 })(jQuery);
