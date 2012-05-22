@@ -11,10 +11,44 @@
 function drupalorg_schema() {
   $system_schema = system_schema();
   $schema = array(
-    'cache_drupalorg_civimembership' => $system_schema['cache'],
     'drupalorg' => $system_schema['cache'],
+    'drupalorg_civimembership' => array(
+      'description' => 'Local copy of Drupal Association membership records from their API.',
+      'fields' => array(
+        'user_name' => array(
+          'description' => 'User name with membership.',
+          'type' => 'varchar',
+          'length' => 60,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'membership_type' => array(
+          'description' => 'Individual or Organization',
+          'type' => 'varchar',
+          'length' => 15,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'membership_status' => array(
+          'description' => 'Current, New, or Grace',
+          'type' => 'varchar',
+          'length' => 10,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'updated' => array(
+          'description' => 'Last updated date',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+      ),
+      'indexes' => array(
+        'membership' => array('user_name', 'membership_type', 'membership_status'),
+        'updated' => array('updated'),
+      ),
+    ),
   );
-  $schema['cache_drupalorg_civimembership']['description'] = 'Cache table for a CiviCRM membership from a remote CiviCRM instance.';
   $schema['drupalorg']['description'] = 'Cache table for home page map data, with a mediocre name.';
   return $schema;
 }
