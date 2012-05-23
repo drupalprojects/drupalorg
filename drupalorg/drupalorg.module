@@ -1769,87 +1769,89 @@ function drupalorg_views_pre_render(&$view) {
  * Implements hook_user_view().
  */
 function drupalorg_user_view($account, $view_mode) {
-  if (TRUE) {
-    global $user;
+  global $user;
 
-    // Column layout for profile pages.
-    $content = drupalorg_crosssite_grid_elements(array(8, 4));
+  // Column layout for profile pages.
+  $content = drupalorg_crosssite_grid_elements(array(8, 4));
 
-    // Link organization to organization node, if it exists.
-    if (!empty($account->profile_current_company_organization)) {
-      $nid = db_query("SELECT nid FROM {node} WHERE status = :status AND type = :type AND title = :title", array(':status' => 1, ':type' => 'organization', ':title' => $account->profile_current_company_organization))->fetchField();
-      if ($nid != 0) {
-        $organization = node_load($nid);
-        $link = check_plain($organization->title);
-        if (isset($organization->field_logo[0])) {
-          // TODO Please change this theme call to use an associative array for the $variables parameter.
-          $link = theme('imagecache', 'grid-3', $organization->field_logo[0]['filepath'], $organization->title, $organization->title);
-        }
-        $account->content['Work']['profile_current_company_organization']['#value'] = l($link, 'node/' . $nid, array('html' => TRUE));
-
-        if (drupalorg_has_civimembership($organization, 'Organization')) {
-          $content['column_2']['membership'][] = array(
-            '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
-            '#value' => t('My organization is a member of the <a href="https://association.drupal.org/">Drupal Association</a>. We’re supporting the Drupal.org infrastructure and other large community initiatives. <a href="https://association.drupal.org/membership">Join us</a>.'),
-            '#suffix' => '</p></div></div>',
-          );
-        }
+  // Link organization to organization node, if it exists.
+  if (!empty($account->profile_current_company_organization)) {
+    $nid = db_query("SELECT nid FROM {node} WHERE status = :status AND type = :type AND title = :title", array(':status' => 1, ':type' => 'organization', ':title' => $account->profile_current_company_organization))->fetchField();
+    if ($nid != 0) {
+      $organization = node_load($nid);
+      $link = check_plain($organization->title);
+      // todo D7 make sure logo works once marketplace feature is back #1595348
+      if (isset($organization->field_logo[0])) {
+        // TODO Please change this theme call to use an associative array for the $variables parameter.
+        $link = theme('imagecache', 'grid-3', $organization->field_logo[0]['filepath'], $organization->title, $organization->title);
       }
-    }
+      $account->content['Work']['profile_current_company_organization']['#markup'] = l($link, 'node/' . $nid, array('html' => TRUE));
 
-    // Get the membership display content
-    if ($account->uid === $user->uid) {
-      $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="https://association.drupal.org">Drupal Association</a> badges on your profile page? <a href="https://association.drupal.org/membership">Become a member today.</a>');
-    }
-    $result = db_query("SELECT DISTINCT membership_type, membership_status FROM {drupalorg_civimembership} WHERE user_name = '%s'", $account->name);
-    while ($membership = db_fetch_object($result)) {
-      // If membership is not the organization owner's.
-      if (!isset($organization) || $organization->uid !== $account->uid || $membership->membership_type !== 'Organization') {
-        $placeholders = array(
-          '@username' => $account->name,
-          '@membership_type' => drupal_strtolower($membership->membership_type),
-        );
+      if (drupalorg_has_civimembership($organization, 'Organization')) {
         $content['column_2']['membership'][] = array(
-          '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
-          '#value' => t('@username is an <a href="https://association.drupal.org/membership">@membership_type member</a> of the <a href="https://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
+          '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
+          '#markup' => t('My organization is a member of the <a href="https://association.drupal.org/">Drupal Association</a>. We’re supporting the Drupal.org infrastructure and other large community initiatives. <a href="https://association.drupal.org/membership">Join us</a>.'),
           '#suffix' => '</p></div></div>',
         );
       }
+    }
+  }
 
-      if ($account->uid === $user->uid) {
-        switch ($membership->status) {
-          case 'New':
-          case 'Current':
-            $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="https://association.drupal.org">Drupal Association</a> membership. Your support has helped us to support the Drupal community. We really appreciate your contribution to making Drupal and its community great.');
-            break;
+  // Get the membership display content
+  if ($account->uid === $user->uid) {
+    $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="https://association.drupal.org">Drupal Association</a> badges on your profile page? <a href="https://association.drupal.org/membership">Become a member today.</a>');
+  }
+  $query = db_select('drupalorg_civimembership', 'dc')
+    ->fields('dc', array('membership_type', 'membership_status'))
+    ->condition('user_name', $account->name, '=')
+    ->execute();
+  foreach ($query as $membership) {
+    // If membership is not the organization owner's.
+    if (!isset($organization) || $organization->uid !== $account->uid || $membership->membership_type !== 'Organization') {
+      $placeholders = array(
+        '@username' => $account->name,
+        '@membership_type' => drupal_strtolower($membership->membership_type),
+      );
+      $content['column_2']['membership'][] = array(
+        '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
+        '#markup' => t('@username is an <a href="https://association.drupal.org/membership">@membership_type member</a> of the <a href="https://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
+        '#suffix' => '</p></div></div>',
+      );
+    }
 
-          case 'Grace':
-            $membership_personal = t('<strong>Oh No!</strong> Your membership lapsed. You’re awesome, so we are leaving your membership badge up for a bit giving you time to renew. Continue supporting the <a href="https://association.drupal.org">Drupal Association</a> by <a href="https://association.drupal.org/membership">renewing your membership</a>');
-            break;
-        }
+    if ($account->uid === $user->uid) {
+      switch ($membership->status) {
+        case 'New':
+        case 'Current':
+          $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="https://association.drupal.org">Drupal Association</a> membership. Your support has helped us to support the Drupal community. We really appreciate your contribution to making Drupal and its community great.');
+          break;
+
+        case 'Grace':
+          $membership_personal = t('<strong>Oh No!</strong> Your membership lapsed. You’re awesome, so we are leaving your membership badge up for a bit giving you time to renew. Continue supporting the <a href="https://association.drupal.org">Drupal Association</a> by <a href="https://association.drupal.org/membership">renewing your membership</a>');
+          break;
       }
     }
-    if (isset($membership_personal)) {
-      $content['column_2']['membership'][] = array(
-        '#prefix' => '<p>',
-        '#value' => $membership_personal,
-        '#suffix' => '</p>',
-        '#weight' => -1,
-      );
-    }
-
-    // Documentation edits
-    if ($drupalorg_documentation = drupalorg_documentation_contributions($account)) {
-      $account->content['summary']['drupalorg_documentation'] = array(
-        '#type' => 'user_profile_item',
-        '#title' => t('Documentation'),
-        '#value' => $drupalorg_documentation,
-      );
-    }
-
-    $content['column_1'] = array_merge($content['column_1'], $account->content);
-    $account->content = $content;
   }
+  if (isset($membership_personal)) {
+    $content['column_2']['membership'][] = array(
+      '#prefix' => '<p>',
+      '#markup' => $membership_personal,
+      '#suffix' => '</p>',
+      '#weight' => -1,
+    );
+  }
+
+  // Documentation edits
+  if ($drupalorg_documentation = drupalorg_documentation_contributions($account)) {
+    $account->content['summary']['drupalorg_documentation'] = array(
+      '#type' => 'user_profile_item',
+      '#title' => t('Documentation'),
+      '#markup' => $drupalorg_documentation,
+    );
+  }
+
+  $content['column_1'] = array_merge($content['column_1'], $account->content);
+  $account->content = $content;
 }
 
 /**
@@ -1890,7 +1892,11 @@ function drupalorg_documentation_contributions($account) {
  *   Boolean, TRUE if membership exists.
  */
 function drupalorg_has_civimembership($account, $type) {
-  return (bool) db_result(db_query("SELECT 1 FROM {drupalorg_civimembership} WHERE user_name = '%s' AND membership_type = '%s'", $account->name, $type));
+  return (bool) db_select('drupalorg_civimembership', 'dc')
+    ->fields('dc', array('user_name'))
+    ->condition('user_name', $account->name, '=')
+    ->condition('membership_type', $type, '=')
+    ->range(0, 1)->execute()->fetchField();
 }
 
 /**

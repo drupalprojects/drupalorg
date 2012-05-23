@@ -68,5 +68,7 @@ function drush_drupalorg_civimembership() {
   }
 
   // Delete old data
-  db_query("DELETE FROM {drupalorg_civimembership} WHERE updated != %d", $_SERVER['REQUEST_TIME']);
+  db_delete('drupalorg_civimembership')
+    ->condition('updated', $_SERVER['REQUEST_TIME'], '!=')
+    ->execute();
 }
