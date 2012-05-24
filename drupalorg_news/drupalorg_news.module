@@ -38,13 +38,12 @@ function drupalorg_news_page() {
 }
 
 /**
- * Implements hook_form_alter().
+ * Remove the news vocabulary on forum forms, if the user is not an admin. Used
+ * to mark news forum topics with tags.
  */
-function drupalorg_news_form_alter(&$form, $form_state, $form_id) {
-  // Remove the news vocabulary on forum forms, if the user is not an admin.
-  // Used to mark news forum topics with tags.
-  if ($form_id == 'forum_node_form') {
-    $form['taxonomy'][DRUPALORG_NEWS_VID]['#access'] = user_access('administer nodes');
+function drupalorg_news_field_widget_form_alter(&$element, &$form_state, $context) {
+  if ($context['field']['field_name'] === 'taxonomy_vocabulary_' . DRUPALORG_NEWS_VID) {
+    $element['#access'] = user_access('administer nodes');
   }
 }
 
@@ -88,7 +87,7 @@ function drupalorg_news_short_block() {
       // Rest of the items have just their title displayed.
       $fresh_news .= '<p>' . l($node->title, 'node/' . $node->nid) . '</p>';
     }
-    $news_count++;
+    $news_count += 1;
 
   }
   // Finally, we have a link to the rest of the items
@@ -119,9 +118,25 @@ function drupalorg_news_block_info() {
 function drupalorg_news_block_view($delta) {
   switch ($delta) {
     case 'planet-list':
-      return array(
-        'content' => drupalorg_news_planet_drupal_block(),
-      );
+      $description = db_query("SELECT description FROM aggregator_category WHERE cid = :cid", array(':cid' => DRUPALORG_PLANET_CATEGORY))->fetchField();
+
+      $query = db_select('aggregator_feed', 'f')->fields('f');
+      $query->leftJoin('aggregator_category_feed', 'c', 'f.fid = c.fid');
+      $query->condition('c.cid', DRUPALORG_PLANET_CATEGORY)->orderBy('f.title', 'ASC');
+      $results = $query->execute();
+
+      $list = '<div class="item-list"><ul>';
+      $counter = 0;
+      foreach($results as $feed) {
+        $list .= '<li>' . l($feed->title, $feed->link) . ' (' . l(t('feed'), $feed->url) . ')</li>';
+        $counter += 1;
+      }
+      $list .= '</ul></div>';
+
+      $output = '<p>' . filter_xss_admin($description) . ' ' . t('Collecting posts from the following @num sources:', array('@num' => $counter)) . '</p>';
+      $output .= $list;
+      $output .= theme('feed_icon', array('url' => url('planet/rss.xml'), 'title' => t('Drupal planet')));
+      return array('content' => $output);
 
     case 'drupal-news':
       return array(
@@ -129,38 +144,4 @@ function drupalorg_news_block_view($delta) {
         'content' => drupalorg_news_short_block(),
       );
   }
-}
-
-/**
- * Block to show the list of sources for the Planet as well as their count.
- */
-function drupalorg_news_planet_drupal_block() {
-  $output = '';
-
-  $description = db_query("SELECT description FROM aggregator_category WHERE cid = :cid", array(':cid' => DRUPALORG_PLANET_CATEGORY))->fetchField();
-
-  $query = db_select('aggregator_feed', 'f')->fields('f');
-  $query->leftJoin('aggregator_category_feed', 'c', 'f.fid = c.fid');
-  $query->condition('c.cid', DRUPALORG_PLANET_CATEGORY)->orderBy('f.title', 'DESC');
-
-  $results = $query->execute();
-
-  $list = '<div class="item-list"><ul>';
-  $counter = 0;
-  foreach($results as $feed) {
-    $list .= '<li>' .  l($feed->title, $feed->link)  . ' (' . l('feed', $feed->url) . ')</li>';
-    $counter++;
-  }
-  $list .= '</ul></div>';
-
-  $output .= '<p>' . filter_xss_admin($description) . ' ' . t('Collecting posts from the following @num sources:', array('@num' => $counter)) . '</p>';
-  $output .= $list;
-
-  $variables = array(
-    'url' => url('planet/rss.xml'),
-    'title' => 'Drupal planet',
-  );
-  $output .= theme('feed_icon', $variables);
-
-  return $output;
 }
