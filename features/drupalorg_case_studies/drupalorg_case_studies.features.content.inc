@@ -11,7 +11,7 @@ function drupalorg_case_studies_content_default_fields() {
     'field_name' => 'field_community',
     'type_name' => 'casestudy',
     'display_settings' => array(
-      'weight' => '3',
+      'weight' => '4',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -63,7 +63,7 @@ function drupalorg_case_studies_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Community contributions',
-      'weight' => '3',
+      'weight' => '4',
       'description' => 'Community contributions are what make Drupal great. If this project contributed modules, themes, documentation, patches to core or a contributed module, introduced new community members, gained a sponsor for a Drupal event, or anything else that will benefit the community, share it here.',
       'type' => 'text_textarea',
       'module' => 'text',
@@ -75,7 +75,7 @@ function drupalorg_case_studies_content_default_fields() {
     'field_name' => 'field_developed',
     'type_name' => 'casestudy',
     'display_settings' => array(
-      'weight' => '6',
+      'weight' => '7',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -127,7 +127,7 @@ function drupalorg_case_studies_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Project team',
-      'weight' => '6',
+      'weight' => '7',
       'description' => 'Enter the names of organizations and team members that can\'t be referenced in the autocomplete fields above. Also, feel free to add more description about the team.',
       'type' => 'text_textarea',
       'module' => 'text',
@@ -139,7 +139,7 @@ function drupalorg_case_studies_content_default_fields() {
     'field_name' => 'field_developed_org',
     'type_name' => 'casestudy',
     'display_settings' => array(
-      'weight' => '4',
+      'weight' => '5',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -202,7 +202,7 @@ function drupalorg_case_studies_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Organizations involved',
-      'weight' => '4',
+      'weight' => '5',
       'description' => 'Include the organizations that contributed to this project. You can reference organizations that appear in <a href="http://drupal.org/marketplace-preview">Marketplace</a>. If the organization is not listed, enter it in the text field below.',
       'type' => 'nodereference_autocomplete',
       'module' => 'nodereference',
@@ -214,7 +214,7 @@ function drupalorg_case_studies_content_default_fields() {
     'field_name' => 'field_goals',
     'type_name' => 'casestudy',
     'display_settings' => array(
-      'weight' => '1',
+      'weight' => '2',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -265,7 +265,7 @@ function drupalorg_case_studies_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Describe the project (goals, requirements and outcome)',
-      'weight' => '1',
+      'weight' => '2',
       'description' => '',
       'type' => 'text_textarea',
       'module' => 'text',
@@ -277,7 +277,7 @@ function drupalorg_case_studies_content_default_fields() {
     'field_name' => 'field_images',
     'type_name' => 'casestudy',
     'display_settings' => array(
-      'weight' => '7',
+      'weight' => '8',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -287,7 +287,7 @@ function drupalorg_case_studies_content_default_fields() {
         'exclude' => 1,
       ),
       'full' => array(
-        'format' => 'image_plain',
+        'format' => 'grid-8_default',
         'exclude' => 0,
       ),
       '5' => array(
@@ -332,7 +332,7 @@ function drupalorg_case_studies_content_default_fields() {
       'default_image' => NULL,
       'use_default_image' => 0,
       'label' => 'Additional screenshots',
-      'weight' => '7',
+      'weight' => '8',
       'description' => 'Upload additional screenshots or images. Please include alternate text (for search engines and accessibility reasons). ',
       'type' => 'imagefield_widget',
       'module' => 'imagefield',
@@ -424,7 +424,7 @@ function drupalorg_case_studies_content_default_fields() {
         'exclude' => 0,
       ),
       'full' => array(
-        'format' => 'image_plain',
+        'format' => 'grid-8_default',
         'exclude' => 0,
       ),
       '5' => array(
@@ -620,7 +620,7 @@ function drupalorg_case_studies_content_default_fields() {
     'field_name' => 'field_overview',
     'type_name' => 'casestudy',
     'display_settings' => array(
-      'weight' => '-2',
+      'weight' => '-1',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -671,7 +671,7 @@ function drupalorg_case_studies_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Why Drupal was chosen',
-      'weight' => '-2',
+      'weight' => '-1',
       'description' => '',
       'type' => 'text_textarea',
       'module' => 'text',
@@ -683,7 +683,7 @@ function drupalorg_case_studies_content_default_fields() {
     'field_name' => 'field_profiles',
     'type_name' => 'casestudy',
     'display_settings' => array(
-      'weight' => '5',
+      'weight' => '6',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -748,10 +748,71 @@ function drupalorg_case_studies_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Team members',
-      'weight' => '5',
+      'weight' => '6',
       'description' => 'Include the Drupal.org profiles of the project team members. If anyone doesn\'t have an account on drupal.org, add them to the text box below.',
       'type' => 'userreference_autocomplete',
       'module' => 'userreference',
+    ),
+  );
+
+  // Exported field: field_status
+  $fields['casestudy-field_status'] = array(
+    'field_name' => 'field_status',
+    'type_name' => 'casestudy',
+    'display_settings' => array(
+      'weight' => '13',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 1,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 1,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '1',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => 'Community
+Featured',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'value' => 'Community',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Status',
+      'weight' => '13',
+      'description' => 'Choose "Featured" to promote case study to "Featured showcase" section.',
+      'type' => 'optionwidgets_buttons',
+      'module' => 'optionwidgets',
     ),
   );
 
@@ -765,6 +826,7 @@ function drupalorg_case_studies_content_default_fields() {
   t('Organizations involved');
   t('Primary screenshot');
   t('Project team');
+  t('Status');
   t('Team members');
   t('Why Drupal was chosen');
   t('Why these modules were chosen');

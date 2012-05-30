@@ -18,7 +18,7 @@ function drupalorg_case_studies_fieldgroup_default_groups() {
         'description' => '',
       ),
       'display' => array(
-        'weight' => '2',
+        'weight' => '3',
         'label' => 'above',
         'teaser' => array(
           'format' => 'hidden',
@@ -47,7 +47,7 @@ function drupalorg_case_studies_fieldgroup_default_groups() {
         ),
       ),
     ),
-    'weight' => '2',
+    'weight' => '3',
     'fields' => array(
       '0' => 'field_module',
       '1' => 'field_module_selection',
