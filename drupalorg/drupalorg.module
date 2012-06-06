@@ -1092,7 +1092,7 @@ function drupalorg_homebox() {
         4 => '#6b6b70',
         5 => '#4b97e5',
       ),
-      'widths' => array(),
+      'widths' => array(1 => 0, 2 => 0, 3 => 0),
       'blocks' => array(
         // Column 1
         'drupalorg_news_drupal-news' => array(
