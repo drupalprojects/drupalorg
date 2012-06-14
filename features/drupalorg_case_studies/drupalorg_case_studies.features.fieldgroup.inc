@@ -11,25 +11,23 @@ function drupalorg_case_studies_fieldgroup_default_groups() {
     'group_type' => 'standard',
     'type_name' => 'casestudy',
     'group_name' => 'group_modules',
-    'label' => 'Modules',
+    'label' => 'Modules/Themes/Distributions',
     'settings' => array(
       'form' => array(
         'style' => 'fieldset',
         'description' => '',
       ),
       'display' => array(
-        'weight' => '3',
-        'label' => 'above',
+        'description' => '',
+        '5' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
         'teaser' => array(
           'format' => 'hidden',
           'exclude' => 1,
         ),
         'full' => array(
-          'format' => 'fieldset',
-          'exclude' => 0,
-        ),
-        'description' => '',
-        '5' => array(
           'format' => 'fieldset',
           'exclude' => 0,
         ),
@@ -45,6 +43,7 @@ function drupalorg_case_studies_fieldgroup_default_groups() {
           'format' => 'fieldset',
           'exclude' => 0,
         ),
+        'label' => 'above',
       ),
     ),
     'weight' => '3',
@@ -56,7 +55,7 @@ function drupalorg_case_studies_fieldgroup_default_groups() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Modules');
+  t('Modules/Themes/Distributions');
 
   return $groups;
 }

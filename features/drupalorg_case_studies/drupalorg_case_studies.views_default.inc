@@ -45,7 +45,7 @@ function drupalorg_case_studies_views_default_views() {
       'hide_alter_empty' => 1,
       'link_to_node' => 0,
       'label_type' => 'none',
-      'format' => 'case198_default',
+      'format' => 'case198_linked',
       'multiple' => array(
         'group' => TRUE,
         'multiple_number' => '',
@@ -152,11 +152,12 @@ function drupalorg_case_studies_views_default_views() {
     ),
   ));
   $handler->override_option('sorts', array(
-    'status' => array(
-      'order' => 'ASC',
-      'id' => 'status',
+    'created' => array(
+      'order' => 'DESC',
+      'granularity' => 'second',
+      'id' => 'created',
       'table' => 'node',
-      'field' => 'status',
+      'field' => 'created',
       'relationship' => 'none',
     ),
   ));
@@ -470,7 +471,60 @@ function drupalorg_case_studies_views_default_views() {
     'separator' => '',
     'hide_empty' => 0,
   ));
-  $handler = $view->new_display('page', 'Page', 'page_1');
+  $handler = $view->new_display('page', 'Case studies landing page', 'page_1');
+  $handler->override_option('arguments', array());
+  $handler->override_option('filters', array(
+    'status' => array(
+      'operator' => '=',
+      'value' => '1',
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'status',
+      'table' => 'node',
+      'field' => 'status',
+      'relationship' => 'none',
+    ),
+    'type' => array(
+      'operator' => 'in',
+      'value' => array(
+        'casestudy' => 'casestudy',
+      ),
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'type',
+      'table' => 'node',
+      'field' => 'type',
+      'relationship' => 'none',
+    ),
+    'field_status_value' => array(
+      'operator' => '=',
+      'value' => 'Featured',
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+        'optional' => FALSE,
+      ),
+      'case' => 1,
+      'id' => 'field_status_value',
+      'table' => 'node_data_field_status',
+      'field' => 'field_status_value',
+      'override' => array(
+        'button' => 'Use default',
+      ),
+      'relationship' => 'none',
+    ),
+  ));
+  $handler->override_option('offset', 4);
   $handler->override_option('path', 'case-studies');
   $handler->override_option('menu', array(
     'type' => 'none',
@@ -1081,6 +1135,176 @@ function drupalorg_case_studies_views_default_views() {
   ));
   $handler->override_option('block_description', '');
   $handler->override_option('block_caching', -1);
+  $handler = $view->new_display('block', 'Featured slideshow', 'block_3');
+  $handler->override_option('fields', array(
+    'field_mainimage_fid' => array(
+      'label' => '',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'absolute' => 0,
+        'link_class' => '',
+        'alt' => '',
+        'rel' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'hide_alter_empty' => 1,
+      'link_to_node' => 0,
+      'label_type' => 'none',
+      'format' => 'case588x306_default',
+      'multiple' => array(
+        'group' => TRUE,
+        'multiple_number' => '',
+        'multiple_from' => '',
+        'multiple_reversed' => FALSE,
+      ),
+      'exclude' => 0,
+      'id' => 'field_mainimage_fid',
+      'table' => 'node_data_field_mainimage',
+      'field' => 'field_mainimage_fid',
+      'relationship' => 'none',
+      'override' => array(
+        'button' => 'Use default',
+      ),
+    ),
+    'title' => array(
+      'label' => '',
+      'alter' => array(
+        'alter_text' => 1,
+        'text' => '<h2>[title]</h2>',
+        'make_link' => 0,
+        'path' => '',
+        'absolute' => 0,
+        'link_class' => '',
+        'alt' => '',
+        'rel' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'hide_alter_empty' => 1,
+      'link_to_node' => 1,
+      'exclude' => 0,
+      'id' => 'title',
+      'table' => 'node',
+      'field' => 'title',
+      'relationship' => 'none',
+    ),
+  ));
+  $handler->override_option('arguments', array());
+  $handler->override_option('filters', array(
+    'status' => array(
+      'operator' => '=',
+      'value' => '1',
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'status',
+      'table' => 'node',
+      'field' => 'status',
+      'relationship' => 'none',
+    ),
+    'type' => array(
+      'operator' => 'in',
+      'value' => array(
+        'casestudy' => 'casestudy',
+      ),
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'type',
+      'table' => 'node',
+      'field' => 'type',
+      'relationship' => 'none',
+    ),
+    'field_status_value' => array(
+      'operator' => '=',
+      'value' => 'Featured',
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+        'optional' => FALSE,
+      ),
+      'case' => 1,
+      'id' => 'field_status_value',
+      'table' => 'node_data_field_status',
+      'field' => 'field_status_value',
+      'override' => array(
+        'button' => 'Use default',
+      ),
+      'relationship' => 'none',
+    ),
+  ));
+  $handler->override_option('title', '');
+  $handler->override_option('css_class', '');
+  $handler->override_option('items_per_page', 4);
+  $handler->override_option('use_pager', '0');
+  $handler->override_option('distinct', 0);
+  $handler->override_option('style_plugin', 'jcarousel');
+  $handler->override_option('style_options', array(
+    'wrap' => 'circular',
+    'skin' => '',
+    'visible' => '1',
+    'scroll' => '1',
+    'auto' => '3',
+    'navigation' => 'after',
+    'ajax' => 0,
+    'animation' => '',
+    'easing' => '',
+    'start' => '1',
+    'autoPause' => 1,
+    'vertical' => 0,
+  ));
+  $handler->override_option('block_description', '');
+  $handler->override_option('block_caching', -1);
+  $handler = $view->new_display('page', 'Inner pages', 'page_2');
+  $handler->override_option('path', 'case-studies/%');
+  $handler->override_option('menu', array(
+    'type' => 'none',
+    'title' => '',
+    'description' => '',
+    'weight' => 0,
+    'name' => 'navigation',
+  ));
+  $handler->override_option('tab_options', array(
+    'type' => 'none',
+    'title' => '',
+    'description' => '',
+    'weight' => 0,
+    'name' => 'navigation',
+  ));
 
   $views[$view->name] = $view;
 

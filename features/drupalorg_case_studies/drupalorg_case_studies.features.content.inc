@@ -317,13 +317,13 @@ function drupalorg_case_studies_content_default_fields() {
     'list_default' => 1,
     'description_field' => '1',
     'widget' => array(
-      'file_extensions' => 'png gif jpg jpeg',
+      'file_extensions' => 'png jpg jpeg',
       'file_path' => '',
       'progress_indicator' => 'bar',
       'max_filesize_per_file' => '',
       'max_filesize_per_node' => '',
       'max_resolution' => '1800x1800',
-      'min_resolution' => '400x300',
+      'min_resolution' => '620x440',
       'alt' => '',
       'custom_alt' => 1,
       'title' => '',
@@ -333,7 +333,8 @@ function drupalorg_case_studies_content_default_fields() {
       'use_default_image' => 0,
       'label' => 'Additional screenshots',
       'weight' => '8',
-      'description' => 'Upload additional screenshots or images. Please include alternate text (for search engines and accessibility reasons). ',
+      'description' => 'Upload additional screenshots or images. Please include alternate text (for search engines and accessibility reasons).
+Preferred file format - PNG.',
       'type' => 'imagefield_widget',
       'module' => 'imagefield',
     ),
@@ -454,13 +455,13 @@ function drupalorg_case_studies_content_default_fields() {
     'list_default' => 1,
     'description_field' => '0',
     'widget' => array(
-      'file_extensions' => 'png gif jpg jpeg',
+      'file_extensions' => 'png jpg jpeg',
       'file_path' => '',
       'progress_indicator' => 'bar',
       'max_filesize_per_file' => '',
       'max_filesize_per_node' => '',
       'max_resolution' => '1800x1800',
-      'min_resolution' => '400x300',
+      'min_resolution' => '620x440',
       'alt' => '',
       'custom_alt' => 1,
       'title' => '',
@@ -470,7 +471,9 @@ function drupalorg_case_studies_content_default_fields() {
       'use_default_image' => 0,
       'label' => 'Primary screenshot',
       'weight' => '-4',
-      'description' => 'Generally, the home page or a visually striking screenshot, with clear labeling/branding, should be used',
+      'description' => 'Generally, the home page or a visually striking screenshot, with clear labeling/branding, should be used. 
+Preferred file format - PNG. 
+Height must be equal to at least 70% of image\'s width for screenshots to look good with various imagecache presets we use.',
       'type' => 'imagefield_widget',
       'module' => 'imagefield',
     ),
@@ -521,6 +524,7 @@ function drupalorg_case_studies_content_default_fields() {
       'project_project' => 'project_project',
       'book' => 0,
       'casestudy' => 0,
+      'changenotice' => 0,
       'forum' => 0,
       'image' => 0,
       'project_issue' => 0,
@@ -528,7 +532,6 @@ function drupalorg_case_studies_content_default_fields() {
       'packaging_whitelist' => 0,
       'page' => 0,
       'project_release' => 0,
-      'showcase' => 0,
       'story' => 0,
     ),
     'advanced_view' => '--',
@@ -543,9 +546,9 @@ function drupalorg_case_studies_content_default_fields() {
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Key modules used',
+      'label' => 'Key modules/theme/distribution used',
       'weight' => '4',
-      'description' => 'Tell us the key modules used. In the future, we can use this data in other ways.
+      'description' => 'Tell us the key modules, theme or distribution used. In the future, we can use this data in other ways.
 ',
       'type' => 'nodereference_autocomplete',
       'module' => 'nodereference',
@@ -593,7 +596,7 @@ function drupalorg_case_studies_content_default_fields() {
     'multiple' => '0',
     'module' => 'text',
     'active' => '1',
-    'text_processing' => '0',
+    'text_processing' => '1',
     'max_length' => '',
     'allowed_values' => '',
     'allowed_values_php' => '',
@@ -607,9 +610,9 @@ function drupalorg_case_studies_content_default_fields() {
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Why these modules were chosen',
+      'label' => 'Why these modules/theme/distribution were chosen',
       'weight' => '5',
-      'description' => 'Why did you choose these modules over others available? Was the module created for the project? How was each module was integral to the success of your project?',
+      'description' => 'Why did you choose these modules, specific theme or distribution over others available? Were they created for the project? How was each of them an integral to the success of your project?',
       'type' => 'text_textarea',
       'module' => 'text',
     ),
@@ -822,14 +825,14 @@ Featured',
   t('Community contributions');
   t('Completed Drupal site or project URL');
   t('Describe the project (goals, requirements and outcome)');
-  t('Key modules used');
+  t('Key modules/theme/distribution used');
   t('Organizations involved');
   t('Primary screenshot');
   t('Project team');
   t('Status');
   t('Team members');
   t('Why Drupal was chosen');
-  t('Why these modules were chosen');
+  t('Why these modules/theme/distribution were chosen');
 
   return $fields;
 }
