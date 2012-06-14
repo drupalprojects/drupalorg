@@ -1270,6 +1270,7 @@ function drupalorg_case_studies_views_default_views() {
   $handler->override_option('title', '');
   $handler->override_option('css_class', '');
   $handler->override_option('items_per_page', 4);
+  $handler->override_option('offset', 0);
   $handler->override_option('use_pager', '0');
   $handler->override_option('distinct', 0);
   $handler->override_option('style_plugin', 'jcarousel');
