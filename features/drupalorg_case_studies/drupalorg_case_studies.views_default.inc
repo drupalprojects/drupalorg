@@ -766,6 +766,7 @@ function drupalorg_case_studies_views_default_views() {
     ),
   ));
   $handler->override_option('items_per_page', 10);
+  $handler->override_option('offset', 0);
   $handler->override_option('style_plugin', 'default');
   $handler->override_option('style_options', array());
   $handler->override_option('block_description', '');
