@@ -33,18 +33,15 @@ define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 7); // 7.x
 define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 103); // 7.x
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Implementation of hook_init().
  */
 function drupalorg_init() {
   global $user, $conf;
 
   // Use the dashboard as the home page if the user selected it.
-  if ($user->uid !== 0 && isset($user->drupalorg_set_home) && $_SERVER['REQUEST_URI'] === url('')) {
+  if ($user->uid !== 0 && !empty($user->data['drupalorg_set_home']) && $_SERVER['REQUEST_URI'] === url('')) {
     drupal_goto('user/' . $user->uid . '/dashboard');
   }
-
-  drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/general.js');
 
   // Add forum ads & tracking
   $forum_ads = variable_get('drupalorg_forum_ad', array());
@@ -155,13 +152,6 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['drupalorg_set_home_js'] = array(
-    'access arguments' => array('access content'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('drupalorg_set_home'),
-    'type' => MENU_CALLBACK,
-  );
-
   $items['admin/config/drupalorg'] = array(
     'title' => 'Drupal.org settings',
     'access arguments' => array('administer site configuration'),
@@ -229,10 +219,11 @@ function drupalorg_block_info() {
 function drupalorg_block_view($delta) {
   switch ($delta) {
     case 'set_home':
-      global $user;
-      if ($user->uid) {
+      if (user_is_logged_in()) {
         return array('content' => drupal_get_form('drupalorg_set_home'));
       }
+      break;
+
     case 'drupalorg_activity':
       return array(
         'subject' => t('Drupal.org Activity'),
@@ -240,8 +231,8 @@ function drupalorg_block_view($delta) {
       );
 
     case 'add_to_dashboard':
-      global $user;
-      if ($user->uid) {
+      if (user_is_logged_in()) {
+        global $user;
         $item = menu_get_item();
         $blocks = array();
         switch ($item['path']) {
@@ -410,49 +401,36 @@ function drupalorg_get_activity($_force = FALSE) {
 }
 */
 
+/**
+ * Set home link for Your Dashboard page.
+ */
 function drupalorg_set_home() {
   global $user;
-  $items = array();
-  if (isset($user->drupalorg_set_home)) {
-    $message = t('Use Default Homepage');
-  }
-  else {
-    $message = t('Make this your Homepage');
-  }
-
-  $items[] = array(
-    '#value' => l(t($message), $_GET['q'], array('attributes' => array('class' => array('add')))),
-  );
-  $items['submit'] = array(
-    '#type' => 'submit',
-    '#value' => $message,
-    '#drupalorg_set_home' => empty($user->drupalorg_set_home) ? NULL : TRUE,
-    '#ahah' => array(
-      'path' => 'drupalorg_set_home_js',
-      'event' => 'click',
-      'wrapper' => 'drupalorg-set-home',
-      'method' => 'replaceWith',
+  return array(
+    '#prefix' => '<div id="drupalorg-set-home-wrapper">',
+    '#suffix' => '</div>',
+    'set_home' => array(
+      '#type' => 'radios',
+      '#options' => array(
+        TRUE => t('Make this your Homepage'),
+        FALSE => t('Use Default Homepage'),
+      ),
+      '#default_value' => $user->data['drupalorg_set_home'],
+      '#ajax' => array(
+        'callback' => 'drupalorg_set_home_callback',
+        'wrapper' => 'drupalorg-set-home-wrapper',
+      ),
     ),
   );
-
-  return $items;
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * AJAX callback for drupalorg_set_home().
  */
-function drupalorg_set_home_submit($form, $form_state) {
+function drupalorg_set_home_callback($form, $form_state) {
   global $user;
-
-  $user = user_save($user, array('drupalorg_set_home' => $form_state['clicked_button']['#drupalorg_set_home']));
-
-  $_POST['form_id'] = NULL;
-  print drupal_json_output(array(
-    'status' => TRUE,
-    'data' => drupal_get_form('drupalorg_set_home'),
-  ));
-  exit;
+  user_save($user, array('data' => array('drupalorg_set_home' => $form_state['values']['set_home'])));
+  return $form;
 }
 
 /**
