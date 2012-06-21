@@ -10,49 +10,41 @@
  */
 function drupalorg_schema() {
   return array(
-    'cache_drupalorg_civimembership' => array(
-      'description' => 'Cache table for a CiviCRM membership from a remote CiviCRM instance.',
+    'drupalorg_civimembership' => array(
+      'description' => 'Local copy of Drupal Association membership records from their API.',
       'fields' => array(
-        'cid' => array(
-          'description' => 'Primary Key: Unique cache ID.',
+        'user_name' => array(
+          'description' => 'User name with membership.',
           'type' => 'varchar',
-          'length' => 255,
+          'length' => 60,
           'not null' => TRUE,
           'default' => '',
         ),
-        'data' => array(
-          'description' => 'A collection of data to cache.',
-          'type' => 'blob',
-          'not null' => FALSE,
-          'size' => 'big',
-        ),
-        'expire' => array(
-          'description' => 'A Unix timestamp indicating when the cache entry should expire, or 0 for never.',
-          'type' => 'int',
+        'membership_type' => array(
+          'description' => 'Individual or Organization',
+          'type' => 'varchar',
+          'length' => 15,
           'not null' => TRUE,
-          'default' => 0,
+          'default' => '',
         ),
-        'created' => array(
-          'description' => 'A Unix timestamp indicating when the cache entry was created.',
-          'type' => 'int',
+        'membership_status' => array(
+          'description' => 'Current, New, or Grace',
+          'type' => 'varchar',
+          'length' => 10,
           'not null' => TRUE,
-          'default' => 0,
+          'default' => '',
         ),
-        'headers' => array(
-          'description' => 'Any custom HTTP headers to be added to cached data.',
-          'type' => 'text',
-          'not null' => FALSE,
-        ),
-        'serialized' => array(
-          'description' => 'A flag to indicate whether content is serialized (1) or not (0).',
+        'updated' => array(
+          'description' => 'Last updated date',
           'type' => 'int',
-          'size' => 'small',
           'not null' => TRUE,
           'default' => 0,
         ),
       ),
-      'indexes' => array('expire' => array('expire')),
-      'primary key' => array('cid'),
+      'indexes' => array(
+        'membership' => array('user_name', 'membership_type', 'membership_status'),
+        'updated' => array('updated'),
+      ),
     ),
     'drupalorg' => array(
       'description' => 'Cache table for home page map data, with a mediocre name.',
@@ -845,6 +837,96 @@ function drupalorg_update_6605() {
   variable_del('drupalorg_featured_install_profiles');
 
   return array();
+}
+
+/**
+ * Move images attached to projects to a CCK field.
+ */
+function drupalorg_update_6606() {
+  // Enable feature for project images.
+  features_install_modules(array('drupalorg_project_customizations'));
+  features_rebuild();
+
+  // Move images to field_project_images.
+  $result = db_query("SELECT ia.nid FROM {image_attach} ia INNER JOIN {node} n ON n.nid = ia.nid AND n.type = 'project_project'");
+  while ($nid = db_result($result)) {
+    $node = node_load($nid);
+    if (!isset($node->field_project_images)) {
+      $node->field_project_images = array();
+    }
+    foreach ($node->iids as $iid) {
+      $image = node_load($iid);
+      $node->field_project_images[] = array(
+        'fid' => db_result(db_query("SELECT fid FROM {image} WHERE nid = %d AND image_size = '_original'", $image->nid)),
+        'list' => 1,
+        'data' => array(
+          'description' => $image->title,
+          'alt' => $image->title,
+          'title' => '',
+        ),
+      );
+      // Remove from image module tracking so deleting the image node will leave
+      // the file intact.
+      db_query("DELETE FROM {image} WHERE nid = %d AND image_size = '_original'", $image->nid);
+      node_delete($image->nid);
+    }
+    unset($node->iids);
+    $node->log = t('Migrating images, see http://drupal.org/node/371999.');
+    node_save($node);
+  }
+
+  // Disable image_attach.
+  module_disable(array('image_attach'));
+
+  return array();
+}
+
+/**
+ * New storage for Association membership.
+ */
+function drupalorg_update_6607() {
+  $return = array();
+
+  db_create_table($return, 'drupalorg_civimembership', array(
+    'description' => 'Local copy of Drupal Association membership records from their API.',
+    'fields' => array(
+      'user_name' => array(
+        'description' => 'User name with membership.',
+        'type' => 'varchar',
+        'length' => 60,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'membership_type' => array(
+        'description' => 'Individual or Organization',
+        'type' => 'varchar',
+        'length' => 15,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'membership_status' => array(
+        'description' => 'Current, New, or Grace',
+        'type' => 'varchar',
+        'length' => 10,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'updated' => array(
+        'description' => 'Last updated date',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'indexes' => array(
+      'membership' => array('user_name', 'membership_type', 'membership_status'),
+      'updated' => array('updated'),
+    ),
+  ));
+
+  db_drop_table($return, 'cache_drupalorg_civimembership');
+
+  return $return;
 }
 
 /**

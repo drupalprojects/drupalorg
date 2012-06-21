@@ -1,6 +1,67 @@
 <?php
 
 /**
+ * Implementation of hook_imagecache_default_presets().
+ */
+function drupalorg_case_studies_imagecache_default_presets() {
+  $items = array(
+    'case198' => array(
+      'presetname' => 'case198',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '300',
+            'height' => '100%',
+            'upscale' => 0,
+          ),
+        ),
+        '1' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_crop',
+          'data' => array(
+            'width' => '300',
+            'height' => '198',
+            'xoffset' => 'left',
+            'yoffset' => 'top',
+          ),
+        ),
+      ),
+    ),
+    'case588x306' => array(
+      'presetname' => 'case588x306',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '588',
+            'height' => '100%',
+            'upscale' => 0,
+          ),
+        ),
+        '1' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_crop',
+          'data' => array(
+            'width' => '588',
+            'height' => '306',
+            'xoffset' => 'left',
+            'yoffset' => 'top',
+          ),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
  * Implementation of hook_node_info().
  */
 function drupalorg_case_studies_node_info() {

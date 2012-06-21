@@ -181,12 +181,14 @@ function drupalorg_field_access($op, $field, $account, $node = NULL) {
 
   if ($op === 'edit') {
     switch ($field['field_name']) {
-      // Only allow admins, but not the node owner, to change an organization's visibility.
+      // Only allow admins, but not the node owner, to change an organization's
+      // visibility and status of case studies.
       case 'field_organization_list_rule':
       case 'field_organization_hosting_level':
       case 'field_organization_hosting_last':
       case 'field_organization_hosting_by':
       case 'field_organization_issue':
+      case 'field_status':
         if ($node !== NULL && $node->uid === $user->uid) {
           return FALSE;
         }
@@ -1003,7 +1005,7 @@ function drupalorg_download_drupal_link_button($text) {
 function drupalorg_homebox() {
   return array(
     'dashboard' => array(
-      'title' => 'Dashboard',
+      'title' => '@user',
       'path' => 'dashboard',
       'menu' => 0,
       'enabled' => 1,
@@ -1432,6 +1434,16 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       }
       $change_records->destroy();
     }
+    elseif ($node->type === 'casestudy') {
+      $breadcrumb = array(
+        l(t('Home'), ''),
+        l(t('Case Studies'), 'case-studies'),
+      );
+      if ($node->field_status[0]['value'] === 'Community') {
+        $breadcrumb[] = l(t('Community showcase'), 'case-studies/community');
+      }
+      drupal_set_breadcrumb($breadcrumb);
+    }
   }
   elseif ($op === 'insert' || $op === 'update') {
     if ($node->type === 'organization' && !isset($node->drupalorg_processed)) {
@@ -1447,7 +1459,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
             // Doing this on view would be slow, and require a bit of boolean
             // logic in the view. And saves surprises if an organization goes a
             // few days without renewing.
-            $node->field_organization_marketplace[0]['value'] = drupalorg_has_civimembership($node, 'Organization', TRUE);
+            $node->field_organization_marketplace[0]['value'] = drupalorg_has_civimembership($node, 'Organization');
             break;
 
           case 'always':
@@ -1646,15 +1658,14 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
     if ($account->uid === $user->uid) {
       $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="https://association.drupal.org">Drupal Association</a> badges on your profile page? <a href="https://association.drupal.org/membership">Become a member today.</a>');
     }
-    foreach (drupalorg_civimembership_load($account) as $membership) {
-      $placeholders = array(
-        '@username' => $account->name,
-        '@membership_type' => drupal_strtolower($membership->membership_type),
-        '@expires' => format_date(strtotime($membership->end_date), 'custom', 'M jS, Y'),
-      );
-
-      // If membership is new or current, and not the organization owner's.
-      if (($membership->status === 'New' || $membership->status === 'Current' || $membership->status === 'Grace') && (!isset($organization) || $organization->uid !== $account->uid || $membership->membership_type !== 'Organization')) {
+    $result = db_query("SELECT DISTINCT membership_type, membership_status FROM {drupalorg_civimembership} WHERE user_name = '%s'", $account->name);
+    while ($membership = db_fetch_object($result)) {
+      // If membership is not the organization owner's.
+      if (!isset($organization) || $organization->uid !== $account->uid || $membership->membership_type !== 'Organization') {
+        $placeholders = array(
+          '@username' => $account->name,
+          '@membership_type' => drupal_strtolower($membership->membership_type),
+        );
         $content['column_2']['membership'][] = array(
           '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
           '#value' => t('@username is an <a href="https://association.drupal.org/membership">@membership_type member</a> of the <a href="https://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
@@ -1666,15 +1677,11 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
         switch ($membership->status) {
           case 'New':
           case 'Current':
-            $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="https://association.drupal.org">Drupal Association</a> membership. Your support has helped us to support the Drupal community. We really appreciate your contribution to making Drupal and its community great.<br />Your Membership expires: @expires', $placeholders);
+            $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="https://association.drupal.org">Drupal Association</a> membership. Your support has helped us to support the Drupal community. We really appreciate your contribution to making Drupal and its community great.');
             break;
 
           case 'Grace':
-            $membership_personal = t('<strong>Oh No!</strong> Your membership lapsed on @expires. You’re awesome, so we are leaving your membership badge up for a bit giving you time to renew. Continue supporting the <a href="https://association.drupal.org">Drupal Association</a> by <a href="https://association.drupal.org/membership">renewing your membership</a>', $placeholders);
-            break;
-
-          case 'Expired':
-            $membership_personal = t('<strong>Uh oh!</strong> Your Drupal Association membership expired on @expires. Membership helps support the Drupal community and infrastructure improvements to drupal.org, take a minute to <a href="https://association.drupal.org/membership">renew your membership</a> today.', $placeholders);
+            $membership_personal = t('<strong>Oh No!</strong> Your membership lapsed. You’re awesome, so we are leaving your membership badge up for a bit giving you time to renew. Continue supporting the <a href="https://association.drupal.org">Drupal Association</a> by <a href="https://association.drupal.org/membership">renewing your membership</a>');
             break;
         }
       }
@@ -1700,10 +1707,6 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
     $content['column_1'] = array_merge($content['column_1'], $account->content);
     $account->content = $content;
   }
-  elseif ($op === 'after_update') {
-    // Refresh the Association membership cache.
-    drupalorg_civimembership_load($account, TRUE);
-  }
 }
 
 function drupalorg_documentation_contributions($account) {
@@ -1728,62 +1731,6 @@ function drupalorg_documentation_contributions($account) {
 }
 
 /**
- * Load a user's CiviCRM memberships from a remote CiviCRM instance.
- *
- * @param $account
- *   A fully-loaded account object representing the user who's membership
- *   details should be returned.
- * @param $reset
- *   Reset the static cache of memberships loaded during this request.
- *
- * @return
- *   An object containing the current membership.
- *
- * @todo do some sort of cross-site request to use
- *   association_drupalorg_get_memberships().
- * @todo remove entity_id, it is broken and we don't use it.
- */
-function drupalorg_civimembership_load($account, $reset = FALSE) {
-  static $member_cache;
-  global $db_url;
-
-  if (!is_array($db_url) || !isset($db_url['association_civicrm'])) {
-    return;
-  }
-
-  if (!isset($member_cache[$account->uid]) || $reset) {
-    if (!$reset && ($cache = cache_get($account->uid, 'cache_drupalorg_civimembership')) && !empty($cache->data)) {
-      $member_cache[$account->uid] = $cache->data;
-    }
-    else {
-      // Check if a record exists in CiviCRM for this particular user.
-      $remote_drupal_uid = db_result(db_query("SELECT slave_uid FROM {bakery_user} WHERE slave = 'https://association.drupal.org/' AND uid = %d", $account->uid));
-
-      // Get external CiviCRM DB DSN.
-      $previous_dsn = db_set_active('association_civicrm');
-
-      $contact_id = db_result(db_query("SELECT contact_id FROM {civicrm_uf_match} WHERE uf_id = %d", $remote_drupal_uid));
-
-      // If a matching contact is found in CiviCRM.
-      $member_cache[$account->uid] = array();
-      if ($contact_id) {
-        $result = db_query("SELECT cm.id as membership_id, cm.membership_type_id, cmt.name as membership_type, cm.end_date, cms.name as status, cmb.entity_id FROM {civicrm_membership} cm LEFT JOIN {civicrm_membership_type} cmt ON cm.membership_type_id = cmt.id LEFT JOIN {civicrm_membership_status} cms ON cm.status_id = cms.id LEFT JOIN {civicrm_membership_block} cmb ON cm.membership_type_id = cmb.membership_types WHERE cm.is_test = 0 AND cm.contact_id = %d GROUP BY cm.contact_id, cm.id ORDER BY cm.end_date ASC", $contact_id);
-        while ($membership = db_fetch_object($result)) {
-          $member_cache[$account->uid][] = $membership;
-        }
-      }
-
-      // Change the DSN back to default Drupal $db_url.
-      db_set_active($previous_dsn);
-
-      cache_set($account->uid, $member_cache[$account->uid], 'cache_drupalorg_civimembership', time() + (60 * 60 * 24));
-    }
-  }
-
-  return $member_cache[$account->uid];
-}
-
-/**
  * Check if an account has a Drupal Association membership.
  *
  * @param $account
@@ -1791,25 +1738,12 @@ function drupalorg_civimembership_load($account, $reset = FALSE) {
  *   details should be returned.
  * @param $type
  *   'Individual' or 'Organization' at time of writing.
- * @param $reset
- *   Reset the static cache of memberships loaded during this request.
  *
  * @return
+ *   Boolean, TRUE if membership exists.
  */
-function drupalorg_has_civimembership($account, $type, $reset = FALSE) {
-  foreach (drupalorg_civimembership_load($account, $reset) as $membership) {
-    if ($membership->membership_type === $type && ($membership->status === 'New' || $membership->status === 'Current')) {
-      return TRUE;
-    }
-  }
-  return FALSE;
-}
-
-/**
- * Implementation of hook_flush_caches().
- */
-function drupalorg_flush_caches() {
-  return array('cache_drupalorg_civimembership');
+function drupalorg_has_civimembership($account, $type) {
+  return (bool) db_result(db_query("SELECT 1 FROM {drupalorg_civimembership} WHERE user_name = '%s' AND membership_type = '%s'", $account->name, $type));
 }
 
 /**
@@ -1824,4 +1758,13 @@ function drupalorg_403_page() {
     return drupalorg_git_gateway_no_consent_error($user);
   }
   return t('You are not authorized to access this page.');
+}
+
+/**
+ * Only show one attached image on project teaser.
+ */
+function drupalorg_preprocess_content_field(&$v) {
+  if ($v['field']['field_name'] === 'field_project_images' && $v['teaser']) {
+    $v['items'] = array(reset($v['items']));
+  }
 }

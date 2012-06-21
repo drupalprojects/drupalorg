@@ -14,7 +14,7 @@
 <div id="front-top-middle" class="grid-4">
   <div id="front-top-middle-inner">
     <div class="block-content">
-     <h2><a href="cases">Sites Made with Drupal</a></h2>
+     <h2><a href="case-studies">Sites Made with Drupal</a></h2>
      <div class="things-we-made-wrapper"><?php print $things_we_made; ?></div>
      <p>Drupal is used by some of the biggest sites on the Web, like <a href="/node/915102">The Economist</a>, <a href="http://www.examiner.com/">Examiner.com</a> and <a href="http://www.whitehouse.gov">The White House</a>. Read more Drupal <a href="/case-studies">case studies</a>.</p>
     </div>
