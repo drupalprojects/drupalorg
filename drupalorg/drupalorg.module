@@ -210,13 +210,17 @@ function drupalorg_block_info() {
       'info' => t('Add to Dashboard links'),
       'cache' => DRUPAL_CACHE_PER_USER | DRUPAL_CACHE_PER_PAGE,
     ),
+    'tracker_user' => array(
+      'info' => t('Your posts'),
+      'cache' => DRUPAL_NO_CACHE,
+    ),
   );
 }
 
 /**
  * Implements hook_block_view().
  */
-function drupalorg_block_view($delta) {
+function drupalorg_block_view($delta, $block = NULL) {
   switch ($delta) {
     case 'set_home':
       if (user_is_logged_in()) {
@@ -281,6 +285,97 @@ function drupalorg_block_view($delta) {
         }
       }
       break;
+
+    case 'tracker_user':
+      global $user;
+
+      $query = db_select('tracker_user', 't');
+      $query->condition('t.uid', $user->uid);
+
+      // This array acts as a placeholder for the data selected later
+      // while keeping the correct order.
+      $nodes = $query
+        ->addTag('node_access')
+        ->fields('t', array('nid', 'changed'))
+        ->condition('t.published', 1)
+        ->orderBy('t.changed', 'DESC')
+        ->range(0, empty($block->count) ? 15 : $block->count)
+        ->execute()
+        ->fetchAllAssoc('nid');
+
+      if (empty($nodes)) {
+        $content = '<p>' . t('No content available.') . '</p>';
+      }
+      else {
+        // Now, get the data and put into the placeholder array.
+        $result = db_query('SELECT n.nid, n.title, n.type, n.changed, n.uid, u.name, l.comment_count FROM {node} n INNER JOIN {node_comment_statistics} l ON n.nid = l.nid INNER JOIN {users} u ON n.uid = u.uid WHERE n.nid IN (:nids)', array(':nids' => array_keys($nodes)), array('target' => 'slave'));
+        foreach ($result as $node) {
+          $node->last_activity = $nodes[$node->nid]->changed;
+          $nodes[$node->nid] = $node;
+        }
+
+        // Display the data.
+        $content = array(
+          '#sorted' => TRUE,
+          'tracker' => array(
+            '#items' => array(),
+            '#theme' => 'item_list',
+          ),
+          'more' => array(
+            '#theme' =>'more_link',
+            '#url' => 'user/' . $user->uid . '/track',
+            '#title' => t('Track posts'),
+          ),
+        );
+        foreach ($nodes as $node) {
+          $comments = '';
+          if ($node->comment_count) {
+            $comments = '<br />' . format_plural($node->comment_count, '1 comment', '@count comments');
+            if ($new = comment_num_new($node->nid)) {
+              $comments .= ', ' . l(format_plural($new, '1 new', '@count new'), 'node/' . $node->nid, array('fragment' => 'new'));
+            }
+          }
+          $content['tracker']['#items'][] = l($node->title, 'node/' . $node->nid) . ' ' . theme('mark', array('type' => node_mark($node->nid, $node->changed))) . $comments;
+        }
+      }
+      return array(
+        'subject' => t('Your Posts'),
+        'content' => $content,
+      );
+  }
+}
+
+/**
+ * Implementation of hook_homebox_block_keys(). The only configurable block is
+ * tracker_user, with a count field.
+ */
+function drupalorg_homebox_block_keys($block) {
+  return array('count');
+}
+
+/**
+ * Implementation of hook_homebox_block_edit_form(). The only configurable
+ * block is tracker_user, with a count field.
+ */
+function drupalorg_homebox_block_edit_form($block) {
+  return array(
+    'count' => array(
+      '#type' => 'textfield',
+      '#title' => t('Number of posts to show'),
+      '#default_value' => isset($block->count) ? $block->count : 15,
+      '#size' => 5,
+      '#required' => TRUE,
+      '#element_validate' => array('drupalorg_validate_int'),
+    ),
+  );
+}
+
+/**
+ * Validate for a postsitive integer.
+ */
+function drupalorg_validate_int($element) {
+  if (!preg_match('/^[0-9]+$/', $element['#value']) || (int) $element['#value'] <= 0) {
+    form_error($element, t('Number of posts must be a positive integer.'));
   }
 }
 
@@ -1096,21 +1191,9 @@ function drupalorg_homebox() {
           'weight' => -31,
         ),
         // Column 2
-        /* Waiting on #874790
-        'views_flag_bookmarks-block' => array(
-          'module' => 'views',
-          'delta' => 'flag_bookmarks-block',
-          'region' => 2,
-          'movable' => 1,
-          'status' => 1,
-          'open' => 1,
-          'closable' => 1,
-          'title' => '',
-          'weight' => -7,
-        ),*/
-        'tracker2_user' => array(
-          'module' => 'tracker2',
-          'delta' => 'user',
+        'drupalorg_tracker_user' => array(
+          'module' => 'drupalorg',
+          'delta' => 'tracker_user',
           'region' => 2,
           'movable' => 1,
           'status' => 1,

@@ -168,7 +168,7 @@ function drupalorg_update_7004() {
 }
 
 /**
- * Position blocks
+ * Position blocks.
  */
 function drupalorg_update_7005() {
   db_update('block')
@@ -180,4 +180,37 @@ function drupalorg_update_7005() {
     ->condition('module', 'system', '=')
     ->condition('delta', 'main-menu', '=')
     ->execute();
+}
+
+/**
+ * Populate tracker.
+ */
+function drupalorg_update_7006() {
+  module_enable(array('tracker'));
+  while (variable_get('tracker_index_nid', 0) > 0) {
+    tracker_cron();
+  }
+}
+
+/**
+ * Update renamed dashboard block.
+ */
+function drupalorg_update_7007() {
+  $query = db_select('homebox_users', 'hu');
+  $query->condition('settings', '%tracker2_user%', 'LIKE');
+  $query->fields('hu', array('uid', 'name', 'settings'));
+  foreach ($query->execute() as $row) {
+    $row->settings = unserialize($row->settings);
+    if (isset($row->settings['tracker2_user'])) {
+      $row->settings['drupalorg_tracker_user'] = $row->settings['tracker2_user'];
+      $row->settings['drupalorg_tracker_user']['module'] = 'drupalorg';
+      $row->settings['drupalorg_tracker_user']['delta'] = 'tracker_user';
+      unset($row->settings['tracker2_user']);
+      db_update('homebox_users')
+        ->fields(array('settings' => serialize($row->settings)))
+        ->condition('uid', $row->uid, '=')
+        ->condition('name', $row->name, '=')
+        ->execute();
+    }
+  }
 }
