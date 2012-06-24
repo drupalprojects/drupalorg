@@ -78,7 +78,12 @@ function drupalorg_update_dependencies() {
       // drupalorg_update_7005() after menu_update_7002() so that deltas are
       // renamed.
       7005 => array(
-        'menu' => 7002
+        'menu' => 7002,
+      ),
+      // drupalorg_update_7006() after tracker_update_7000() so that tracker
+      // tables exist.
+      7006 => array(
+        'tracker' => 7000,
       ),
     ),
   );
