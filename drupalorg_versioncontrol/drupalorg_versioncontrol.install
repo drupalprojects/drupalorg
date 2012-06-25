@@ -4,3 +4,102 @@ function drupalorg_versioncontrol_install() {
   // Set the weight even lower than drupalorg_git_gateway.
   db_query("UPDATE {system} SET weight = 15 WHERE name = 'drupalorg_versioncontrol'");
 }
+
+/**
+ * Update all repositories' default branch info, using some external data to
+ * make it a bit easier.
+ */
+function drupalorg_versioncontrol_update_6300() {
+  // first, manually set default branches for all repositories to master
+  db_query('UPDATE {versioncontrol_git_repositories} SET default_branch = "master"');
+
+  // fetch our pre-generated branch info
+  $f = new SplFileObject(dirname(__FILE__) . '/git-branch-data.txt');
+
+  // minimize mem overhead by disabling controller caching
+  $backend = versioncontrol_get_backends('git');
+  $backend->disableControllerCaching();
+
+  while ($line = $f->fgets()) {
+    list($path, $headbranch, $exists) = explode(';', $line);
+    $exists = trim($exists) == 'true';
+    if ('master' === $headbranch && TRUE === $exists) {
+      continue;
+    }
+    else if ('master' !== $headbranch) {
+      // there are only around 9 repos for which this is the case
+      $repo = versioncontrol_repository_load(array(), array('root' => $path));
+      $repo->default_branch = $headbranch;
+      $repo->update();
+    }
+    else if (FALSE === $exists) {
+      $repo = versioncontrol_repository_load(array(), array('root' => $path));
+      if (!$repo instanceof VersioncontrolGitRepository) {
+        continue;
+      }
+
+      // load branches, ensuring that release nid info is directly attached to them
+      $branches = $repo->loadBranches(array(), array(), array('callback' => 'versioncontrol_release_attach_release_label_query_alter'));
+      if (empty($branches)) {
+        // no branches in this repo which means no pushes have ever been made,
+        // so set init flag and update.
+        $repo->init = 1;
+        $repo->update();
+        continue;
+      }
+
+      uasort($branches, 'drupalorg_versioncontrol_update_sort_branches');
+      $branch = end($branches);
+
+      if (!$branch instanceof VersioncontrolBranch) {
+        // this never happens in tests, but include the check here to absolutely
+        // ensure there are no errors
+        continue;
+      }
+
+      $job = array(
+        'operation' => array(
+          'setDefaultBranch' => $branch->name,
+          'save' => array(),
+        ),
+        'repository' => $repo,
+      );
+      drupal_queue_include();
+      $queue = DrupalQueue::get('versioncontrol_repomgr');
+      $queue->createItem($job);
+    }
+  }
+
+  $backend->restoreControllerCachingDefaults();
+  return array();
+}
+
+function drupalorg_versioncontrol_update_sort_branches($a, $b) {
+  // if only one has a release, immediately favor that.
+  if (isset($a->release_id) XOR isset($b->release_id)) {
+    return isset($a->release_id) ? 1 : -1;
+  }
+
+  // now sort by version. see if we're dealing with proper versions & capture
+  // normalized versions if so
+  if ($a_conforms = preg_match('/^(\d+(\.\d+)?)\.x-(\d+)\.x$/', $a->name, $matches)) {
+    $a_version = $matches[1] . '.' . $matches[3];
+  }
+
+  if ($b_conforms = preg_match('/^(\d+(\.\d+)?)\.x-(\d+)\.x$/', $b->name, $matches)) {
+    $b_version = $matches[1] . '.' . $matches[3];
+  }
+
+  if (!$a_conforms && !$b_conforms) {
+    // neither conform, so equal.
+    return 0;
+  }
+  else if ($a_conforms && $b_conforms) {
+    // both conform, so rely on version_compare.
+    return version_compare($a_version, $b_version);
+  }
+  else {
+    // one conforms and the other doesn't, so always pick the conformer.
+    return $a_conforms ? 1 : -1;
+  }
+}
