@@ -59,7 +59,7 @@ function drupalorg_versioncontrol_update_6300() {
 
       $job = array(
         'operation' => array(
-          'setDefaultBranch' => $branch->name,
+          'setDefaultBranch' => array($branch->name),
           'save' => array(),
         ),
         'repository' => $repo,
