@@ -466,45 +466,6 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
 }
 
 /**
- * Log an incoming push event to our special logging tables.
- *
- * This is all a stopgap until we have a real activity stream system.
- *
- * @param array $data
- *   An array of push data, originating from the post-receive hook.
- */
-function drupalorg_git_gateway_versioncontrol_git_raw_push_data($data) {
-  $push_id = db_insert('drupalorg_git_push_log')->fields(array(
-      'uid' => $data['uid'],
-      'timestamp' => $data['timestamp'],
-      'repo_id' => $data['repo_id'],
-    ))->execute();
-
-  // Create a new insert object for multi-insert fun.
-  $insert = db_insert('drupalorg_git_push_log_refs')
-    ->fields(array('push_id', 'refname', 'reftype', 'old_obj', 'new_obj'));
-
-  $all_refdata = explode("\n", $data['data']);
-  foreach ($all_refdata as $refdata) {
-    if (empty($refdata)) {
-      continue; // last element is usually empty, skip it
-    }
-    list($start, $end, $refpath) = explode(' ', $refdata);
-    $_refpath = explode('/', $refpath);
-    $ref = array_pop($_refpath);
-
-    $insert->values(array(
-      'push_id' => $push_id,
-      'refname' => $ref,
-      'reftype' => $_refpath[1] == 'tags' ? 2 : 1,
-      'old_obj' => $start,
-      'new_obj' => $end,
-    ));
-  }
-  $insert->execute();
-}
-
-/**
  * Implements hook_mail()
  *
  * @param $key
