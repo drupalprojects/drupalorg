@@ -481,7 +481,7 @@ function drupalorg_map_content($_force = FALSE) {
     $queries = array(
       db_rewrite_sql("SELECT DISTINCT nr.nid, nr.title, hug.latitude, hug.longitude, u.name, u.uid, 'doc' type, 'updated' verb FROM {node_revisions} nr INNER JOIN {node} n ON nr.nid = n.nid INNER JOIN {book} b ON b.nid = n.nid INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = nr.uid WHERE n.status = 1 AND u.status = 1 ORDER BY nr.timestamp DESC"),
       db_rewrite_sql("SELECT DISTINCT n.nid, n.title, hug.latitude, hug.longitude, u.name, u.uid, 'forum' type, 'posted' verb FROM {node} n INNER JOIN {html5_user_geolocation} hug ON hug.uid = n.uid INNER JOIN {users} u ON u.uid = n.uid WHERE n.type = 'forum' AND n.status = 1 AND u.status = 1 ORDER BY n.created DESC"),
-      "SELECT DISTINCT vco.vc_op_id, vco.message title, vco.repo_id, vco.revision, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'committed' verb FROM {versioncontrol_operations} vco INNER JOIN {html5_user_geolocation} hug ON hug.uid = vco.author_uid INNER JOIN {users} u ON u.uid = vco.author_uid ORDER BY vco.date DESC",
+      "SELECT DISTINCT vco.vc_op_id, vco.message title, vco.repo_id, vco.revision, hug.latitude, hug.longitude, u.name, u.uid, 'commit' type, 'committed' verb FROM {versioncontrol_operations} vco INNER JOIN {html5_user_geolocation} hug ON hug.uid = vco.author_uid INNER JOIN {users} u ON u.uid = vco.author_uid ORDER BY vco.author_date DESC",
     );
     $map = array();
     foreach ($queries as $q => $query) {

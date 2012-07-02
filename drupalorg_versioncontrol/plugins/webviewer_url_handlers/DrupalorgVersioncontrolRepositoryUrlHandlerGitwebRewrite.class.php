@@ -40,7 +40,7 @@ class DrupalorgVersioncontrolRepositoryUrlHandlerGitwebRewrite extends Versionco
     ));
   }
 
-  public function getItemLogViewUrl(&$item) {
+  public function getItemLogViewUrl($item) {
     $placeholders = array(
       '%repo_name' => $this->repository->name,
       '%path'      => $item->path,
@@ -55,7 +55,7 @@ class DrupalorgVersioncontrolRepositoryUrlHandlerGitwebRewrite extends Versionco
     }
   }
 
-  public function getItemViewUrl(&$item) {
+  public function getItemViewUrl($item) {
     if ($item->isDeleted()) {
       // Do not link to deleted items.
       return '';
@@ -74,7 +74,7 @@ class DrupalorgVersioncontrolRepositoryUrlHandlerGitwebRewrite extends Versionco
     return strtr($view_url, $placeholders);
   }
 
-  public function getDiffUrl(&$file_item_new, $file_item_old) {
+  public function getDiffUrl($file_item_new, $file_item_old) {
     $placeholders = array(
       '%repo_name'    => $this->repository->name,
       '%path'         => $file_item_new->path,
