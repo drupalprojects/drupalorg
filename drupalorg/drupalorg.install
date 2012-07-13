@@ -166,13 +166,6 @@ function drupalorg_update_7003() {
 }
 
 /**
- * Switch to the new admin theme.
- */
-function drupalorg_update_7004() {
-  variable_set('admin_theme', 'seven');
-}
-
-/**
  * Position blocks.
  */
 function drupalorg_update_7005() {
