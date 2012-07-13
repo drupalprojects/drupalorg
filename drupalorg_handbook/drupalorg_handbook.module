@@ -23,23 +23,46 @@ function drupalorg_handbook_node_view($node, $view_mode = 'full') {
         break;
     }
 
-    $node->body['und'][0]['value'] .= $extra;
+    if (!is_string($extra)) {
+      $extra = drupal_render($extra);
+    }
+    $node->content['extra'] = array(
+      '#markup' => $extra,
+      '#weight' => 1,
+    );
 
-    // TODO http://drupal.org/project/drupalorg_crosssite needs to be ported
-    // TODO this module needs a dependency on that module
-    // TODO $node->content['body']['#prefix'] won't work
-    //$section = drupalorg_crosssite_section();
+    $section = drupalorg_crosssite_section();
 
-    if (isset($node->book['bid'])) { // && ($section === 'documentation' || $section === 'community')) {
+    if (isset($node->book['bid']) && ($section === 'documentation' || $section === 'community')) {
+
       // Prepend information about the page.
       $node->content['body']['#prefix'] = drupalorg_handbook_before_body($node);
-      // Mark the taxonomy terms as rendered so they don't display on the node.
-      foreach ($node->taxonomy as $term_id => $dummy) {
-        $node->taxonomy[$term_id]->rendered = TRUE;
+
+      // Mark the taxonomy items as rendered so they don't display on the node.
+      // These are elements of $node->content that are named
+      // 'taxonomy_vocabulary_*'.
+      foreach ($node->content as $key => $value) {
+        if (strpos($key, 'taxonomy_vocabulary_') === 0) {
+          hide($node->content[$key]);
+        }
       }
+
+      // Add the extra footer line.
       if ($section === 'documentation') {
-        $node->extra_footer = theme('drupalorg_handbook_footer_line');
+        $node->content['extra_footer'] = array(
+          '#markup' => theme('drupalorg_handbook_footer_line'),
+          '#weight' => 150,
+        );
       }
+
+      // Add a "report to moderator" link.
+      $node->content['links']['drupalorg_report'] = array(
+        '#theme' => 'links__node__drupalorg',
+        '#links' => array(
+          'report' => drupalorg_handbook_moderate_link_info($node),
+        ),
+        '#attributes' => array('class' => array('links', 'inline')),
+      );
     }
   }
 }
@@ -48,20 +71,9 @@ function drupalorg_handbook_node_view($node, $view_mode = 'full') {
  * Implements hook_node_insert().
  */
 function drupalorg_handbook_node_insert($node) {
-  if (TRUE && !empty($node->book) && !empty($node->book['bid'])) {
+  if (!empty($node->book) && !empty($node->book['bid'])) {
     // Remove all cached versions of recently updated data (home).
     cache_clear_all('drupalorg_handbook_recent_updates_', 'cache', TRUE);
-  }
-}
-
-/**
- * Implements hook_link().
- *
- * Adds links to the bottom of documentation pages.
- */
-function drupalorg_handbook_link($type, $object, $teaser = FALSE) {
-  if ($type === 'node' && isset($object->book['bid'])) {
-    return array('report' => drupalorg_handbook_moderate_link_info($object));
   }
 }
 
@@ -149,42 +161,57 @@ function drupalorg_handbook_meta_data() {
     $node = menu_get_object();
     $vocabularies = taxonomy_get_vocabularies();
 
-    foreach ($node->taxonomy as $term_id => $term) {
-      if (isset($vocabularies[$term->vid])) {
-        switch ($term->vid) {
-          case 31:
-            // Page status vocabulary: build status line.
-            $class = 'page-ok';
-            switch ($term_id) {
-              case 126: // Incomplete.
-              case 128: // Needs updating.
-              case 18960: // Needs tech review.
-              case 18962: // Needs copy/style review.
-              case 18964: // Needs dividing.
-                $class = 'page-needs-work';
+    if (!$node) {
+      return $about;
+    }
+
+    foreach (field_info_instances('node', $node->type) as $instance) {
+      $field = field_info_field($instance['field_name']);
+      if ($field['module'] === 'taxonomy') {
+        foreach (field_available_languages('node', $field) as $langcode) {
+          foreach ($node->{$field['field_name']}[$langcode] as $item) {
+            $term_id = $item['tid'];
+            $term = $item['taxonomy_term'];
+
+            if (isset($vocabularies[$term->vid])) {
+              switch ($term->vid) {
+              case 31:
+                // Page status vocabulary: build status line.
+                $class = 'page-ok';
+                switch ($term_id) {
+                case 126: // Incomplete.
+                case 128: // Needs updating.
+                case 18960: // Needs tech review.
+                case 18962: // Needs copy/style review.
+                case 18964: // Needs dividing.
+                  $class = 'page-needs-work';
+                  break;
+
+                case 127: // Insecure.
+                case 129: // Deprecated.
+                  $class = 'page-major-problem';
+                  break;
+                }
+                $about['status'] = '<p class="page-status ' . $class . '"><span>' . check_plain($term->name) . '</span></p>';
                 break;
 
-              case 127: // Insecure.
-              case 129: // Deprecated.
-                $class = 'page-major-problem';
+              case 54:
+                // Keywords vocabulary: print a link, separate section.
+                $keywords[] = l($term->name, taxonomy_term_path($term));
                 break;
+
+              default:
+                // Any other vocabulary: print the name.
+                $vocab_name = check_plain($vocabularies[$term->vid]->name);
+                $about[$vocab_name][] = check_plain($term->name);
+                break;
+              }
             }
-            $about['status'] = '<p class="page-status ' . $class . '"><span>' . check_plain($term->name) . '</span></p>';
-            break;
-
-          case 54:
-            // Keywords vocabulary: print a link, separate section.
-            $keywords[] = l($term->name, taxonomy_term_path($term));
-            break;
-
-          default:
-            // Any other vocabulary: print the name.
-            $vocab_name = check_plain($vocabularies[$term->vid]->name);
-            $about[$vocab_name][] = check_plain($term->name);
-            break;
+          }
         }
       }
     }
+
     if (!empty($keywords)) {
       // Keywords at the end.
       $about[t('Keywords')] = $keywords;
@@ -202,9 +229,9 @@ function drupalorg_handbook_site_maintainers() {
   $output .= '<ol>';
   $result = db_query("SELECT DISTINCT(u.uid), u.name
     FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.uid
-    WHERE r.rid = :r.rid OR r.rid = :r.rid OR r.rid = :r.rid
-    ORDER BY u.name ", array(':r.rid' => 3, ':r.rid' => 4, ':r.rid' => 9)); // 3 = site maintainer, 4 = administrator
-  while ($account = db_fetch_object($result)) {
+    WHERE r.rid = :role1 OR r.rid = :role2 OR r.rid = :role3
+    ORDER BY u.name ", array(':role1' => 3, ':role2' => 4, ':role3' => 9)); // 3 = site maintainer, 4 = administrator
+  foreach ($result as $account) {
     $output .= "<li>" . theme('username', array('account' => $account)) . "</li>";
   }
   $output .= '</ol>';
@@ -235,15 +262,15 @@ function drupalorg_handbook_revision_maintainers() {
   }
 
   $result = db_query("SELECT u.uid, u.name, COUNT(nr.vid) AS pages
-    FROM {node} n INNER JOIN {node_revisions} nr ON n.nid = nr.nid INNER JOIN {users} u ON u.uid = nr.uid
-    WHERE n.type = :n.type AND n.status = :n.status AND n.moderate = :n.moderate AND nr.timestamp > :nr.timestamp
+    FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid INNER JOIN {users} u ON u.uid = nr.uid
+    WHERE n.type = :ntype AND n.status = :nstatus AND nr.timestamp > :nrtimestamp
     GROUP BY u.name
-    ORDER BY pages DESC", array(':n.type' => 'book', ':n.status' => 1, ':n.moderate' => 0, ':nr.timestamp' => $since));
+    ORDER BY pages DESC", array(':ntype' => 'book', ':nstatus' => 1, ':nrtimestamp' => $since));
 
   $list = array();
   $total = 0;
   $count = 0;
-  while ($contributor = db_fetch_object($result)) {
+  foreach ($result as $contributor) {
     $list[] = theme('username', array('account' => $contributor)) . " (" . format_plural($contributor->pages, "@count revision", "@count revisions") . ")";
     $total += $contributor->pages;
     $count++;
@@ -260,14 +287,18 @@ function drupalorg_handbook_revision_maintainers() {
  * API function to get recent update information for the documentation pages.
  */
 function drupalorg_handbook_get_recent_updates($limit = 50) {
-  // TODO Please convert this statement to the D7 database API syntax.
-  /* @todo D7 re-write me.
-  return db_query_range(db_rewrite_sql("SELECT n.nid, n.title, n.changed, r.log, u.uid, u.name
-    FROM {node} n
-    INNER JOIN {book} b ON n.nid = b.nid INNER JOIN {node_revisions} r ON n.vid = r.vid INNER JOIN {users} u ON u.uid = r.uid
-    WHERE n.status = 1
-    ORDER BY n.changed DESC"));
-  */
+  $query = db_select('node', 'n');
+  $query->innerJoin('book', 'b', 'n.nid = b.nid');
+  $query->innerJoin('node_revision', 'r', 'n.vid = r.vid');
+  $query->innerJoin('users', 'u', 'u.uid = r.uid');
+  return $query
+    ->fields('n', array('nid', 'title', 'changed'))
+    ->fields('r', array('log'))
+    ->fields('u', array('uid', 'name'))
+    ->condition('n.status', 1)
+    ->orderBy('n.changed', 'DESC')
+    ->range(0, $limit)
+    ->execute();
 }
 
 /**
@@ -294,15 +325,13 @@ function drupalorg_handbook_block_info() {
  * Implements hook_block_view().
  */
 function drupalorg_handbook_block_view($delta) {
-  $section = '';
-  /* @todo D7 - Dependent on drupalorg_crossite module.
   $section = drupalorg_crosssite_section();
-  */
   $node = menu_get_object();
   switch ($delta) {
     case 'license':
       if ($section === 'documentation') {
         return array(
+          'subject' => '',
           'content' => t('Drupal’s online documentation is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>. Comments on documentation pages are used to improve content and then deleted.', array('!year' => date('Y'), '@ccl_url' => url('node/14307'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html'))),
         );
       }
@@ -346,11 +375,6 @@ function drupalorg_handbook_block_view($delta) {
 }
 
 /**
- * License and quick links blocks for docs.
- */
-function drupalorg_handbook_block_OLD($op = 'list', $delta = 0, $edit = array()) { }
-
-/**
  * Implements hook_theme().
  */
 function drupalorg_handbook_theme($existing, $type, $theme, $path) {
@@ -389,10 +413,11 @@ function drupalorg_handbook_preprocess_drupalorg_home(&$vars) {
     $result = drupalorg_handbook_get_recent_updates($count);
     $recent_updates = '';
     foreach ($result as $node) {
-      // Fake the created time for the theme function, so we can easily theme it.
-      $node->created = $node->changed;
-      // TODO Please change this theme call to use an associative array for the $variables parameter.
-      $recent_updates .= '<h6>' . l($node->title, 'node/' . $node->nid) . '</h6><p class="submitted">' . theme('node_submitted', $node) . '</p>';
+      $recent_updates .= '<h6>' . l($node->title, 'node/' . $node->nid) . '</h6><p class="submitted">';
+      $date = format_date($node->changed);
+      $name = theme('username', array('account' => $node));
+      $recent_updates .= t('Submitted by !username on !datetime', array('!username' => $name, '!datetime' => $date));
+      $recent_updates .= '</p>';
     }
     $recent_updates .= '<p>' . l(t('More documentation…'), 'documentation') . '</p>';
     cache_set('drupalorg_handbook_recent_updates_' . $count, $recent_updates);

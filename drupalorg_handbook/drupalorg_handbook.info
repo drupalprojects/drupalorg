@@ -1,6 +1,7 @@
 name = Drupal.org handbooks
 description = Handbook related customizations used on Drupal.org.
 dependencies[] = lists
+dependencies[] = drupalorg_crosssite
 package = Drupal.org
 core = 7.x
 
