@@ -18,7 +18,6 @@ function drupalorg_metrics_drush_command() {
 
   $items['drupalorg-metrics-generate'] = array(
     'description' => "Generate and cache metrics data.",
-    'drupal dependencies' => array('project_issue'),
     'aliases' => array('domg'),
   );
 

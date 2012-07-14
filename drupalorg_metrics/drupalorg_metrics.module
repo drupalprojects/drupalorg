@@ -32,15 +32,18 @@ function drupalorg_metrics_page() {
   $counts = cache_get('drupalorg_metrics_counts', 'drupalorg');
   $output = '';
   foreach ($counts->data as $type => $points) {
-    // TODO Please change this theme call to use an associative array for the $variables parameter.
-    $graph = theme('flot_graph', array('style' => 'width:940px;height:400px'), array(new flotData($points)), array(
-      'xaxis' => array('mode' => 'time', 'ticks' => 9),
-      'series' => array(
-        'lines' => array('show' => 'true'),
-        'points' => array('show' => 'true'),
-      ),
-      'grid' => array(
-        'borderwidth' => 1,
+    $graph = theme('flot_graph', array(
+      'element' => array('style' => 'width:940px;height:400px'),
+      'data' => array(new flotData($points)),
+      'options' => array(
+        'xaxis' => array('mode' => 'time', 'ticks' => 9),
+        'series' => array(
+          'lines' => array('show' => 'true'),
+          'points' => array('show' => 'true'),
+        ),
+        'grid' => array(
+          'borderwidth' => 1,
+        ),
       ),
     ));
     $output .= '<h2 id="' . $type . '">' . $map[$type] . '</h2>' . $graph;
@@ -54,8 +57,7 @@ function drupalorg_metrics_page() {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Record and cache stats.
  */
 function drupalorg_metrics_record_stats($start_year, $end_year) {
   if (lock_acquire('drupalorg_metrics_record_stats', 5)) {
@@ -70,11 +72,13 @@ function drupalorg_metrics_record_stats($start_year, $end_year) {
         // Javascript timestamps are in milliseconds since epoch.
         $start_js = $start * 1000;
 
-        $counts['nodes'][] = array($start_js, db_query("SELECT COUNT(*) FROM node WHERE created >= :created AND created < :created", array(':created' => $start, ':created' => $end))->fetchField());
-        $counts['users'][] = array($start_js, db_query("SELECT COUNT(*) FROM users WHERE status = :status AND created >= :created AND created < :created", array(':status' => 1, ':created' => $start, ':created' => $end))->fetchField());
-        $counts['comments'][] = array($start_js, db_query("SELECT COUNT(*) FROM comments WHERE status = :status AND timestamp >= :timestamp AND timestamp < :timestamp", array(':status' => COMMENT_PUBLISHED, ':timestamp' => $start, ':timestamp' => $end))->fetchField());
-        $counts['commits'][] = array($start_js, db_query("SELECT COUNT(DISTINCT(revision)) FROM versioncontrol_operations WHERE date >= :date AND date < :date AND author <> :author", array(':date' => $start, ':date' => $end, ':author' => 'tggm@no-reply.drupal.org'))->fetchField());
-        $counts['committers'][] = array($start_js, db_query("SELECT COUNT(DISTINCT(author_uid)) FROM versioncontrol_operations WHERE date >= :date AND date < :date", array(':date' => $start, ':date' => $end))->fetchField());
+        $counts['nodes'][] = array($start_js, db_query("SELECT COUNT(*) FROM node WHERE created >= :created1 AND created < :created2", array(':created1' => $start, ':created2' => $end))->fetchField());
+        $counts['users'][] = array($start_js, db_query("SELECT COUNT(*) FROM users WHERE status = :status AND created >= :created1 AND created < :created2", array(':status' => 1, ':created1' => $start, ':created2' => $end))->fetchField());
+        $counts['comments'][] = array($start_js, db_query("SELECT COUNT(*) FROM comment WHERE status = :status AND created >= :timestamp1 AND created < :timestamp2", array(':status' => COMMENT_PUBLISHED, ':timestamp1' => $start, ':timestamp2' => $end))->fetchField());
+        /* todo D7 Depends on versioncontrol_project module:
+        $counts['commits'][] = array($start_js, db_query("SELECT COUNT(DISTINCT(revision)) FROM versioncontrol_operations WHERE date >= :date1 AND date < :date2 AND author <> :author", array(':date1' => $start, ':date2' => $end, ':author' => 'tggm@no-reply.drupal.org'))->fetchField());
+        $counts['committers'][] = array($start_js, db_query("SELECT COUNT(DISTINCT(author_uid)) FROM versioncontrol_operations WHERE date >= :date1 AND date < :date2", array(':date1' => $start, ':date2' => $end))->fetchField());
+        */
       }
     }
     cache_set('drupalorg_metrics_counts', $counts, 'drupalorg');
