@@ -64,8 +64,8 @@ function drupalorg_metrics_record_stats($start_year, $end_year) {
         $counts['nodes'][] = array($start_js, db_result(db_query("SELECT COUNT(*) FROM node WHERE created >= %d AND created < %d", $start, $end)));
         $counts['users'][] = array($start_js, db_result(db_query("SELECT COUNT(*) FROM users WHERE status = 1 AND created >= %d AND created < %d", $start, $end)));
         $counts['comments'][] = array($start_js, db_result(db_query("SELECT COUNT(*) FROM comments WHERE status = %d AND timestamp >= %d AND timestamp < %d", COMMENT_PUBLISHED, $start, $end)));
-        $counts['commits'][] = array($start_js, db_result(db_query("SELECT COUNT(DISTINCT(revision)) FROM versioncontrol_operations WHERE date >= %d AND date < %d AND author <> 'tggm@no-reply.drupal.org'", $start, $end)));
-        $counts['committers'][] = array($start_js, db_result(db_query("SELECT COUNT(DISTINCT(author_uid)) FROM versioncontrol_operations WHERE date >= %d AND date < %d", $start, $end)));
+        $counts['commits'][] = array($start_js, db_result(db_query("SELECT COUNT(DISTINCT(revision)) FROM versioncontrol_operations WHERE author_date >= %d AND author_date < %d AND author <> 'tggm@no-reply.drupal.org'", $start, $end)));
+        $counts['committers'][] = array($start_js, db_result(db_query("SELECT COUNT(DISTINCT(author_uid)) FROM versioncontrol_operations WHERE author_date >= %d AND author_date < %d", $start, $end)));
       }
     }
     cache_set('drupalorg_metrics_counts', $counts, 'drupalorg');
