@@ -1,4 +1,0 @@
-name = Role activity
-description = "Activity for selected roles"
-package = Drupal.org
-core = 7.x
