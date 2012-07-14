@@ -1,8 +1,13 @@
 name = Drupal.org search
 description = Drupal.org search customizations
 package = Drupal.org
+
+core = 6.x
+
 dependencies[] = apachesolr_search
 dependencies[] = project_release
 dependencies[] = project_solr
 dependencies[] = drupalorg_crosssite
-core = 6.x
+
+files[] = plugins/facetapi/query_type_meta_type.inc
+files[] = plugins/facetapi/widget_constant.inc

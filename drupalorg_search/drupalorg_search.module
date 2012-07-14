@@ -51,6 +51,67 @@ function drupalorg_search_apachesolr_facets() {
 }
 
 /**
+ * Implementation of hook_facetapi_facet_info().
+ */
+function drupalorg_search_facetapi_facet_info($searcher_info) {
+  $facets = array();
+  if ('apachesolr' == $searcher_info['adapter']) {
+    if (isset($searcher_info['types']['node'])) {
+      $facets['ss_meta_type'] = array(
+        'name' => 'ss_meta_type',
+        'label' => t('Meta type'),
+        'description' => t('Filter by the meta type.'),
+        'field' => 'ss_meta_type',
+        'query types' => array('meta_type'),
+        'allowed operators' => array(FACETAPI_OPERATOR_AND => TRUE),
+        'map callback' => 'drupalorg_crosssite_meta_types',
+      );
+    }
+  }
+
+  return $facets;
+}
+
+/**
+ * Implements hook_facetapi_query_types().
+ */
+function drupalorg_search_facetapi_query_types() {
+  $path = drupal_get_path('module', 'drupalorg_search') . '/plugins/facetapi';
+  return array(
+    'meta_type' => array(
+      'handler' => array(
+        'class' => 'ApacheSolrFacetapiMetaType',
+        'parent' => 'query_type_term',
+        'file' => 'query_type_meta_type.inc',
+        'path' => $path,
+        'adapter' => 'apachesolr',
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_facetapi_widgets().
+ */
+function drupalorg_search_facetapi_widgets() {
+  $path = drupal_get_path('module', 'drupalorg_search') . '/plugins/facetapi';
+  return array(
+    'facetapi_constant' => array(
+      'handler' => array(
+        'label' => t('Constant'),
+        'class' => 'FacetapiWidgetConstant',
+        'query types' => array('term', 'meta_type'),
+        'path' => $path,
+        'file' => 'widget_constant.inc',
+        'requirements' => array(
+          'facetapi_requirement_facet_property' => array('name' => 'ss_meta_type')
+        ),
+      ),
+    ),
+  );
+}
+
+/**
  * Implementation of hook_apachesolr_multisitesearch_facets().
  */
 function drupalorg_search_apachesolr_multisitesearch_facets() {
@@ -58,15 +119,16 @@ function drupalorg_search_apachesolr_multisitesearch_facets() {
 }
 
 /**
- * Implementation of hook_apachesolr_prepare_query().
+ * Implementation of hook_apachesolr_query_prepare().
  * 
  * Add project sorts whenever we have an ss_meta_type of theme or module.
  */
-function drupalorg_search_apachesolr_prepare_query(&$query, &$params) {
+function drupalorg_search_apachesolr_query_prepare(&$query, &$params) {
   // The additional project sorts are only relevant if the query is filtering
   // on a project type (modules or themes).
-  if ($query->has_filter('ss_meta_type', 'theme') || $query->has_filter('ss_meta_type', 'module')) {
-    project_solr_add_sorts($query);
+  if ($query->hasFilter('ss_meta_type', 'theme') || $query->hasFilter('ss_meta_type', 'module')) {
+    // @todo: Add this back in once project_solr sorts have been ported.
+    // project_solr_add_sorts($query);
   }
 }
 
@@ -128,7 +190,7 @@ function drupalorg_search_block_view($delta) {
   switch ($delta) {
     case 'search_box':
       $env_id = apachesolr_default_environment();
-      if (drupalorg_crosssite_apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
+      if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
         $querystring = $query->getParam('q');
       }
       else {
@@ -146,7 +208,8 @@ function drupalorg_search_block_view($delta) {
       break;
 
     case 'meta_type':
-      if (drupalorg_crosssite_apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
+      $env_id = apachesolr_default_environment();
+      if (apachesolr_has_searched($env_id) && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query($env_id))) {
         $entries = array();
         $total = 0;
         $has_active = FALSE;
@@ -185,7 +248,7 @@ function drupalorg_search_block_view($delta) {
 
     case 'drupalorg_search_navigation':
       $env_id = apachesolr_default_environment();
-      if (drupalorg_crosssite_apachesolr_has_searched() && ($query = apachesolr_current_query($env_id)) && ($response = apachesolr_static_response_cache($query->getSearcher()))) {
+      if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id)) && ($response = apachesolr_static_response_cache($query->getSearcher()))) {
         $project_type_term = drupalorg_search_get_project_type_term($response);
         if (!isset($project_type_term)) {
           $form = drupal_get_form('drupalorg_search_sort_form'); 
