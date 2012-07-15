@@ -373,7 +373,7 @@ function drupalorg_git_gateway_gatectl($form, &$form_state) {
  */
 function drupalorg_git_gateway_gatectl_submit($form, &$form_state) {
   $pushctl = 0;
-  foreach(array_filter($form_state['values']['pushctl']) as $val) {
+  foreach (array_filter($form_state['values']['pushctl']) as $val) {
     $pushctl |= $val;
   }
 
