@@ -15,7 +15,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
     // This is needed to manually include it as a searchable path for drush
     // extensions, as this script's owner will not likely have a home
     // directory to search.
-    $this->conf['drush'] = '/usr/bin/php /var/www/drupal.org/tools/drush5/drush.php --include=/var/www/drupal.org/tools/drupalorg_drush';
+    $this->conf['drush'] = '/usr/bin/php /var/www/drupal.org/tools/drush5/drush.php --no-cache --include=/var/www/drupal.org/tools/drupalorg_drush';
   }
 
   public function createPackage(&$files) {

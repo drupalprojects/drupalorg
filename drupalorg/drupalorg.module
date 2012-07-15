@@ -178,12 +178,14 @@ function drupalorg_field_access($op, $field, $account, $node = NULL) {
 
   if ($op === 'edit') {
     switch ($field['field_name']) {
-      // Only allow admins, but not the node owner, to change an organization's visibility.
+      // Only allow admins, but not the node owner, to change an organization's
+      // visibility and status of case studies.
       case 'field_organization_list_rule':
       case 'field_organization_hosting_level':
       case 'field_organization_hosting_last':
       case 'field_organization_hosting_by':
       case 'field_organization_issue':
+      case 'field_status':
         if ($node !== NULL && $node->uid === $user->uid) {
           return FALSE;
         }
@@ -1573,6 +1575,16 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       }
       $change_records->destroy();
       */
+    }
+    elseif ($node->type === 'casestudy') {
+      $breadcrumb = array(
+        l(t('Home'), ''),
+        l(t('Case Studies'), 'case-studies'),
+      );
+      if ($node->field_status[0]['value'] === 'Community') {
+        $breadcrumb[] = l(t('Community showcase'), 'case-studies/community');
+      }
+      drupal_set_breadcrumb($breadcrumb);
     }
   }
 }

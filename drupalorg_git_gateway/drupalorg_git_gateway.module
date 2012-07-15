@@ -334,8 +334,8 @@ function drupalorg_git_gateway_gatectl($form, &$form_state) {
   $form = array();
 
   $push_options = array(
-    DRUPALORG_GIT_GATECTL_CORE => 'Disable pushes to core',
-    DRUPALORG_GIT_GATECTL_PROJECTS => 'Disable pushes to all full projects',
+    DRUPALORG_GIT_GATECTL_CORE      => 'Disable pushes to core',
+    DRUPALORG_GIT_GATECTL_PROJECTS  => 'Disable pushes to all full projects',
     DRUPALORG_GIT_GATECTL_SANDBOXES => 'Disable pushes to all sandbox projects',
   );
 
@@ -373,7 +373,7 @@ function drupalorg_git_gateway_gatectl($form, &$form_state) {
  */
 function drupalorg_git_gateway_gatectl_submit($form, &$form_state) {
   $pushctl = 0;
-  foreach (array_filter($form_state['values']['pushctl']) as $val) {
+  foreach(array_filter($form_state['values']['pushctl']) as $val) {
     $pushctl |= $val;
   }
 

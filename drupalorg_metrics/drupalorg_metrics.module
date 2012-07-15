@@ -76,8 +76,8 @@ function drupalorg_metrics_record_stats($start_year, $end_year) {
         $counts['users'][] = array($start_js, db_query("SELECT COUNT(*) FROM users WHERE status = :status AND created >= :created1 AND created < :created2", array(':status' => 1, ':created1' => $start, ':created2' => $end))->fetchField());
         $counts['comments'][] = array($start_js, db_query("SELECT COUNT(*) FROM comment WHERE status = :status AND created >= :timestamp1 AND created < :timestamp2", array(':status' => COMMENT_PUBLISHED, ':timestamp1' => $start, ':timestamp2' => $end))->fetchField());
         /* todo D7 Depends on versioncontrol_project module:
-        $counts['commits'][] = array($start_js, db_query("SELECT COUNT(DISTINCT(revision)) FROM versioncontrol_operations WHERE date >= :date1 AND date < :date2 AND author <> :author", array(':date1' => $start, ':date2' => $end, ':author' => 'tggm@no-reply.drupal.org'))->fetchField());
-        $counts['committers'][] = array($start_js, db_query("SELECT COUNT(DISTINCT(author_uid)) FROM versioncontrol_operations WHERE date >= :date1 AND date < :date2", array(':date1' => $start, ':date2' => $end))->fetchField());
+        $counts['commits'][] = array($start_js, db_query("SELECT COUNT(DISTINCT(revision)) FROM versioncontrol_operations WHERE author_date >= :date1 AND author_date < :date2 AND author <> :author", array(':date1' => $start, ':date2' => $end, ':author' => 'tggm@no-reply.drupal.org'))->fetchField());
+        $counts['committers'][] = array($start_js, db_query("SELECT COUNT(DISTINCT(author_uid)) FROM versioncontrol_operations WHERE author_date >= :date1 AND author_date < :date2", array(':date1' => $start, ':date2' => $end))->fetchField());
         */
       }
     }
