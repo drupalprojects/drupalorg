@@ -49,6 +49,7 @@ function drupalorg_init() {
     $forum_id = arg(1);
   }
   elseif (arg(0) === 'node' && is_numeric(arg(1)) && ($node = menu_get_object()) && $node->type === 'forum' && isset($forum_ads[$node->tid])) {
+    // @todo d7 - This is not right...
     $forum_id = $node->tid;
   }
   if (isset($forum_id)) {
@@ -396,28 +397,12 @@ function drupalorg_activity_block() {
 }
 
 /*
+ * Returns data on recent activity in the Drupal project.
+ *
  * If we do not have data or our data was generated an hour ago,
  * try to generate it again.
  */
-/**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
- */
 function drupalorg_get_activity($_force = FALSE) {
-/* @todo D7: Temporary shiv to get rid of notices while things don't work. */
-  $stats = array();
-  $stats['number_of_modules'] = 0;
-  $stats['number_of_themes'] = 0;
-  $stats['number_of_distributions'] = 0;
-  $stats['number_of_git_accounts'] = 0;
-  $stats['number_of_git_commits'] = 0;
-  $stats['number_of_issue_comments'] = 0;
-  $stats['number_of_users'] = 0;
-  $stats['number_of_countries'] = 0;
-  $stats['number_of_languages'] = 0;
-  return $stats;
-}
-/* @todo D7: Fix all of this stuff.
   if (!$_force && ($cache = cache_get('drupalorg_front_counter_data', 'drupalorg'))) {
     $stats = $cache->data;
   }
@@ -428,33 +413,32 @@ function drupalorg_get_activity($_force = FALSE) {
     // @todo D7 - Commented out until drupalorg_git* and drupalorg_versioncontrol* modules are ported.
     //$stats['number_of_git_accounts'] = number_format(drupalorg_git_gateway_get_total_accounts());
     //$stats['number_of_git_commits'] = number_format(drupalorg_versioncontrol_get_total_commits(NULL, 7 * 24 * 60 * 60));
+    $stats['number_of_git_accounts'] = 0;
+    $stats['number_of_git_commits'] = 0;
 
     // Issue comments this week
     $followups = db_query("SELECT COUNT(distinct c.nid) FROM {node} n INNER JOIN {comment} c ON n.nid = c.nid WHERE n.type = :type AND n.status = :status AND c.created > :created", array(':type' => 'project_issue', ':status' => 1, ':created' => strtotime("1 week ago")))->fetchField();
     $stats['number_of_issue_comments'] = number_format($followups);
 
     // Projects this week.
-    // @todo D7 - project_projects doesn't exist. Blocked on project module port.
-    $new_modules = 0; // @todo D7 remove me!
-    //$new_modules = db_query("SELECT COUNT(distinct p.nid) FROM {project_projects} p INNER JOIN {node} n ON p.nid = n.nid INNER JOIN {taxonomy_term_node} tn ON tn.nid = n.nid AND tn.tid = 14 WHERE n.created > :created", array(':created' => strtotime("1 week ago")))->fetchField();
+    $new_modules = db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {taxonomy_index} tn ON tn.nid = n.nid AND tn.tid = 14 WHERE n.created > :created", array(':created' => strtotime("1 week ago")))->fetchField();
     $stats['number_of_new_modules'] = number_format($new_modules);
-/* @todo D7 - taxonomy_term_node got renamed.
     // All Modules.
-    $modules = db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {taxonomy_term_node} tn ON n.vid = tn.vid WHERE tn.tid = :tid AND n.status = :status", array(':tid' => 14, ':status' => 1))->fetchField();
+    $modules = db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {taxonomy_index} tn ON n.nid = tn.nid WHERE tn.tid = :tid AND n.status = :status", array(':tid' => 14, ':status' => 1))->fetchField();
     // TODO would be nice to limit to D6 & D7
     //$modules = db_result(db_query("SELECT COUNT(distinct prn.pid) FROM node n INNER JOIN project_release_nodes prn ON n.nid = prn.nid INNER JOIN term_node tn on prn.pid = tn.nid WHERE tn.tid = 14 AND prn.version_api_tid IN (87, 103)"));
     $stats['number_of_modules'] = number_format($modules);
 
     // All Themes.
-    $themes = db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {taxonomy_term_node} tn ON n.vid = tn.vid WHERE tn.tid = :tid AND n.status = :status", array(':tid' => 15, ':status' => 1))->fetchField();
+    $themes = db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {taxonomy_index} tn ON n.nid = tn.nid WHERE tn.tid = :tid AND n.status = :status", array(':tid' => 15, ':status' => 1))->fetchField();
     // TODO would be nice to limit to D6 & D7
     //$themes = db_result(db_query("SELECT COUNT(distinct prn.pid) FROM node n INNER JOIN project_release_nodes prn ON n.nid = prn.nid INNER JOIN term_node tn on prn.pid = tn.nid WHERE tn.tid = 15 AND prn.version_api_tid IN (87, 103)"));
     $stats['number_of_themes'] = number_format($themes);
 
     // All Distributions.
-    $distributions = db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {taxonomy_term_node} tn ON n.vid = tn.vid WHERE tn.tid = :tid AND n.status = :status", array(':tid' => 96, ':status' => 1))->fetchField();
+    $distributions = db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {taxonomy_index} tn ON n.nid = tn.nid WHERE tn.tid = :tid AND n.status = :status", array(':tid' => 96, ':status' => 1))->fetchField();
     $stats['number_of_distributions'] = number_format($distributions);
-    
+
     // Users: Count them.
     $stats['number_of_users'] = number_format(db_query('SELECT COUNT(*) FROM {users} WHERE uid > :uid AND status = :status AND login > :login', array(':uid' => 0, ':status' => 1, ':login' => 0))->fetchField());
 
@@ -473,18 +457,21 @@ function drupalorg_get_activity($_force = FALSE) {
     // Sites: use project API.
     // @todo D7: dependent on project usage module port.
     //$stats['sites'] = number_format(project_usage_get_project_total_usage(DRUPALORG_CORE_NID));
+    $stats['sites'] = 0;
 
     // Comments: count comments.
-    $stats['comments'] = number_format(db_query("SELECT COUNT(*) FROM {comment} WHERE status = :status", array(':status' => 0))->fetchField());
+    $stats['comments'] = number_format(db_query("SELECT COUNT(*) FROM {comment} WHERE status = :status", array(':status' => 1))->fetchField());
 
     // Sites made with Drupal.
     $stats['sites_made'] = array();
 
+    /* @todo D7: This view is not on the dev site right now?!?
     $view = views_get_view('drupalorg_casestudies');
     $view->preview('block_1');
     foreach ($view->style_plugin->rendered_fields as $row) {
       $stats['sites_made'][] = implode('', $row);
     }
+    */
 
     cache_set('drupalorg_front_counter_data', $stats, 'drupalorg');
     lock_release('drupalorg_get_activity');
@@ -494,7 +481,6 @@ function drupalorg_get_activity($_force = FALSE) {
   }
   return $stats;
 }
-*/
 
 /**
  * Set home link for Your Dashboard page.
@@ -700,7 +686,11 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
   $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
 
+  /* @todo D7: Verify the sections at the bottom showing lists of modules
+     are working when Project is available. */
+
   // Create and cache a solr query for use by block elements.
+  /* @todo D7: We don't have Solr yet; when we do, put this back in.
   project_solr_run_project_query('project/modules', array(array(
       'key' => 'im_vid_' . _project_get_vid(),
       'value' => DRUPALORG_MODULE_TID,
@@ -719,6 +709,7 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   }
 
   $variables['version_form'] = drupal_get_form('project_solr_version_form', 'download', t('Show only modules for Drupal version'));
+  */
 
   // Rendering the block directly from views doesn't work nicely here, since
   // the resulting markup is harder to use with bluecheese. Plus, we're doing
@@ -769,13 +760,18 @@ function drupalorg_preprocess_drupalorg_community(&$variables) {
   if (module_exists('drupalorg_search')) {
     $variables['help_form'] = drupal_get_form('drupalorg_search_help_form');
   }
-  // "Recent activity" list at the bottom of /community.
-  $variables['recent_activity'] = '';
-  if (module_exists('tracker2')) {
-    // Load the tracker2.pages.inc file so we have access to the tracker2_query function.
-    module_load_include('inc', 'tracker2', 'tracker2.pages');
-    $variables['recent_activity'] = theme('drupalorg_recent_activity', array('nodes' => tracker2_query(variable_get('drupalorg_recent_activity_pager', 10))));
-  }
+  // "Recent activity" list at the side of /community.
+  $query = db_select('tracker_node', 't');
+  $query->innerJoin('node', 'n', 'n.nid = t.nid');
+  $recent = $query
+    ->addTag('node_access')
+    ->fields('t', array('nid', 'changed'))
+    ->fields('n', array('title'))
+    ->condition('t.published', 1)
+    ->orderBy('t.changed', 'DESC')
+    ->range(0,10)
+    ->execute();
+  $variables['recent_activity'] = theme('drupalorg_recent_activity', array('nodes' => $recent));
 }
 
 /**
@@ -791,16 +787,20 @@ function drupalorg_getting_involved() {
 function drupalorg_preprocess_drupalorg_getting_involved(&$variables) {
   // First, build and render a teaser of the old docs node.
   $docs_node = node_load(281873);
-  unset($docs_node->taxonomy); // Looks funny here.
+  // Get rid of the taxonomy properties so we don't render them.
+  $arr = (array) $docs_node;
+  foreach (array_keys($arr) as $key) {
+    if (strpos($key, 'taxonomy_vocabulary_') === 0) {
+      unset($docs_node->$key);
+    }
+  }
   unset($docs_node->title); // Looks funny here.
-  $docs_node = node_build_content($docs_node, TRUE, FALSE);
+  node_build_content($docs_node, 'teaser');
+  unset($docs_node->links);
   $content = drupal_render($docs_node->content);
 
-  $variables['docs_node'] = $docs_node->teaser;
+  $variables['docs_node'] = $content;
   $variables['docs_more'] = l(t('Getting Involved Guide'), 'node/281873');
-
-  // Load the book navigation for the docs node, if needed.
-  //$variables['docs_nav'] = theme('book_navigation', $docs_node->book);
 
   // Then, show the view for community spotlight.
   $view = views_get_view('drupalorg_community_spotlight');
@@ -881,7 +881,7 @@ function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
  * "Recent Activity" section.
  *
  * @param $nodes array
- *  An array of node objects, keyed by nid.
+ *  An array of node objects with title, changed, nid, and last_activity fields.
  */
 function theme_drupalorg_recent_activity($variables) {
   $nodes = $variables['nodes'];
@@ -891,7 +891,7 @@ function theme_drupalorg_recent_activity($variables) {
     foreach ($nodes as $node) {
       $rows[] =
         '<h6>' . l($node->title, "node/$node->nid") . ' ' . theme('mark', array('type' => node_mark($node->nid, $node->changed))) . '</h6>' .
-        '<p class="submitted">' . t('Last activity: ') . t('!time', array('!time' => format_date($node->last_activity, 'custom', 'F d, Y'))) . '</p>';
+        '<p class="submitted">' . t('Last activity: ') . t('!time', array('!time' => format_date($node->changed, 'custom', 'F d, Y'))) . '</p>';
     }
   }
   else {

@@ -4,6 +4,7 @@ description = "Customizations and tweaks for drupal.org"
 package = Drupal.org
 dependencies[] = comment
 dependencies[] = profile
+dependencies[] = tracker
 dependencies[] = homebox
 dependencies[] = ctools
 dependencies[] = views_content_cache
