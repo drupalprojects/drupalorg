@@ -44,6 +44,7 @@ function drupalorg_init() {
   }
 
   // Add forum ads & tracking
+  // @todo D7 - ad visibility has not been tested.
   $forum_ads = variable_get('drupalorg_forum_ad', array());
   if (arg(0) === 'forum' && isset($forum_ads[arg(1)])) {
     $forum_id = arg(1);
@@ -121,8 +122,8 @@ function drupalorg_menu() {
 
   $items['drupal-7.0'] = array(
     'title' => t('Drupal 7 - Easier and more powerful than ever'),
-    'page callback' => 'theme',
-    'page arguments' => array('drupalorg_d7_announcement', 1),
+    'page callback' => 'drupalorg_d7_announce_page',
+    'page arguments' => array(1),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -174,6 +175,8 @@ function drupalorg_menu() {
  * @see http://drupal.org/node/1354
  */
 function drupalorg_field_access($op, $field, $account, $node = NULL) {
+  // @todo D7 - This whole function has not been tested yet.
+
   global $user;
 
   if ($op === 'edit') {
@@ -257,20 +260,30 @@ function drupalorg_block_view($delta, $block = NULL) {
             break;
 
           case 'aggregator/categories/%':
-            $blocks[] = array($item['page_arguments'][0]['title'], 'aggregator', 'category-' . $item['page_arguments'][0]['cid']);
+            if ($item['page_arguments'][0]['cid'] == 2) {
+              // This is the Drupal Planet block. Other aggregator categories
+              // do not have blocks at this time.
+              $blocks[] = array($item['page_arguments'][0]['title'], 'aggregator', 'category-' . $item['page_arguments'][0]['cid']);
+            }
             break;
 
           case 'user/%/track':
             if ($item['map'][1]->uid === $user->uid) {
-              $blocks[] = array('Your Posts', 'tracker2', 'user');
+              $blocks[] = array('Your Posts', 'drupalorg', 'tracker_user');
             }
             break;
 
           case 'project/issues/user':
+            /* @todo d7 - Test this when Project is ready - should have a link
+             on project/issues/user to add the Your Issues block to dashboard,
+             and the link should work.*/
             $blocks[] = array('Your Issues', 'views', 'a512ec6dea837b33a2b010c2af17ed85');
             break;
 
           case 'getting-involved':
+            /* @todo d7 - Test this when Project is ready - should have a link
+             on /getting-involved to add the Contributor Links block to
+             dashboard, and the link should work.*/
             $blocks[] = array('Contributor Links', 'drupalorg_project', '0');
             break;
         }
@@ -374,7 +387,7 @@ function drupalorg_homebox_block_edit_form($block) {
 }
 
 /**
- * Validate for a postsitive integer.
+ * Validate for a positive integer.
  */
 function drupalorg_validate_int($element) {
   if (!preg_match('/^[0-9]+$/', $element['#value']) || (int) $element['#value'] <= 0) {
@@ -540,11 +553,6 @@ function drupalorg_home() {
  * Implementation of template_preprocess_page().
  */
 function drupalorg_preprocess_page(&$variables) {
-  if ($variables['is_front']) {
-    $variables['mission'] = '<h2>Come for the software, stay for the community</h2>
-    <p class="standfirst">Drupal is an open source content management platform powering millions of websites and applications. It’s built, used, and supported by an active and diverse community of people around the world.</p>';
-  }
-
   $router = menu_get_item();
   if ($router['path'] == 'drupal-7.0') {
     // Hide the page title on the D7 release announcement
@@ -561,15 +569,25 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
 
   $variables['sites_made'] = array();
 
+  // Get content for the Recent Forum Posts tab.
+  $query = db_select('node', 'n')
+    ->condition('n.type', 'forum')
+    ->condition('n.status', 1)
+    ->addTag('node_access')
+    ->fields('n', array('title', 'nid', 'created'))
+    ->orderBy('n.nid', 'DESC')
+    ->range(0, 5);
+  $query->innerJoin('users', 'u', 'n.uid = u.uid');
+  $query->fields('u', array('uid', 'name'));
+  $query->innerJoin('taxonomy_index', 'ti', 'n.nid = ti.nid');
+  $query->innerJoin('taxonomy_term_data', 't', 't.tid = ti.tid');
+  $result = $query
+    ->condition('t.vid', 1)
+    ->execute();
   $recent_forums = '';
-  // == Forums tab data/markup
-  //$sql = db_rewrite_sql("SELECT mv.entity_id AS nid, mv.node_title AS title, n.created, n.uid, u.name FROM {mv_drupalorg_node_by_vocabulary} mv INNER JOIN {node} n ON n.nid = mv.entity_id INNER JOIN {users} u ON u.uid = n.uid WHERE mv.term_vid = 1 AND n.status = 1 ORDER BY mv.node_nid DESC");
-  // TODO Please convert this statement to the D7 database API syntax.
-  //$result = db_query_range($sql, variable_get('forum_nav_vocabulary', ''));
-  //while ($node = db_fetch_object($result)) {
-    // TODO Please change this theme call to use an associative array for the $variables parameter.
-    //$recent_forums .= '<h6>' . l($node->title, 'node/' . $node->nid) . '</h6><p class="submitted">' . theme('node_submitted', $node) . '</p>';
-  //}
+  foreach ($result as $node) {
+    $recent_forums .= '<h6>' . l($node->title, 'node/' . $node->nid) . '</h6><p class="submitted">' . t('Posted by !author on @created.', array('!author' => theme('username', array('account' => $node)), '@created' => format_date($node->created, 'custom', 'F j, Y \a\t g:ia'))) . '</p>';
+  }
 
   $recent_forums .= '<p>' . l(t('More forums…'), 'forum') . '</p>';
   $variables['tab_content_forums'] = $recent_forums;
@@ -577,12 +595,11 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   // Retrieve or rebuild stats cache.
   $variables += drupalorg_get_activity();
 
-/* @todo D7 Convert to DBTNG.
+  /* @todo D7 When we have this view, make this work. */
   // Pick a random site made with Drupal from the cache.
   $variables['things_we_made'] = $variables['sites_made'][array_rand($variables['sites_made'])];
 
- */
-  // TODO Please change this theme call to use an associative array for the $variables parameter.
+  // @todo D7 - this ad is not showing up?
   $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'Redesign_home'));
 }
 
@@ -811,6 +828,13 @@ function drupalorg_preprocess_drupalorg_getting_involved(&$variables) {
 }
 
 /**
+ * Page callback: Calls theme function to generate D7 announcement page.
+ */
+function drupalorg_d7_announce_page($language = 'en') {
+  return theme('drupalorg_d7_announcement', array('language' => $language));
+}
+
+/**
  * Implementation of template_preprocess_drupalorg_d7_announcement().
  */
 function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
@@ -851,7 +875,7 @@ function drupalorg_preprocess_drupalorg_d7_announcement(&$variables) {
   // Valid language?
   if (isset($languages[$variables['language']])) {
     include DRUPAL_ROOT . '/' . drupal_get_path('module', 'drupalorg') . '/translations/drupalorg-d7-announcement.' . $variables['language'] . '.php';
-    $conf['locale_custom_strings_' . $variables['language']] = $strings;
+    $conf['locale_custom_strings_' . $variables['language']][''] = $strings;
     drupal_set_title(t(drupal_get_title(), array(), array('langcode' => $variables['language'])));
   }
   else {
@@ -957,6 +981,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
     $form['revision_information']['#weight'] = 50;
   }
 
+  // @todo D7 - This permission is probably renamed?
   // List of forms to check for overrides, and the corresponding permissions.
   $override_forms = array(
     'forum_node_form' => 'administer nodes',
@@ -964,6 +989,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
     'story_node_form' => 'administer nodes',
   );
 
+  // @todo D7 - This field is probably different in D7, using the File module?
   // Override the access for attachments if it's a forbidden form,
   // and the user does not have sufficient permissions.
   if (in_array($form_id, array_keys($override_forms)) && !user_access($override_forms[$form_id])) {
@@ -972,6 +998,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
     }
   }
 
+  // @todo D7 - this functionality has not been tested yet.
   // Ensure that wildcard email addresses are not abused.
   if ($form_id == 'user_register') {
     $form['#validate'][] = 'drupalorg_register_mail_validate';
@@ -1023,6 +1050,7 @@ function drupalorg_form_aggregator_form_feed_alter(&$form) {
  * Try to catch wildcard email address signups, such as joe+drupal@gmail.com.
  */
 function drupalorg_register_mail_validate($form, &$form_state) {
+  // @todo D7 - This functionality has not been tested yet.
   $hit = preg_match('/(.*)\+(.*)\@(.*)/', $form_state['values']['mail'], $match);
   if ($hit) {
     // TODO Please convert this statement to the D7 database API syntax.
@@ -1040,6 +1068,7 @@ function drupalorg_register_mail_validate($form, &$form_state) {
  * @todo Headers are blocked by some providers so this is not accurate.
  */
 function drupalorg_profile_user_edit_validate($form, &$form_state) {
+  // @todo D7 - This functionality has not been tested yet.
   if (!empty($form_state['values']['homepage']) && is_string($form_state['values']['homepage']) && (strlen($form_state['values']['homepage']) > 7)) {
     $result = db_query("SELECT mask FROM {access} WHERE type = :type AND status = :status", array(':type' => 'homepage', ':status' => 0));
     $masks = array();
@@ -1068,6 +1097,7 @@ function drupalorg_profile_user_edit_validate($form, &$form_state) {
  * Submit handler for the user profile form, to serialize languages to a string.
  */
 function drupalorg_profile_fix_languages(&$form, &$form_state) {
+  // @todo D7 - This functionality has not been tested yet.
   if (is_array($form_state['values']['profile_languages'])) {
     $form_state['values']['profile_languages'] = join('; ', array_keys($form_state['values']['profile_languages']));
   }
@@ -1079,6 +1109,7 @@ function drupalorg_profile_fix_languages(&$form, &$form_state) {
  * @todo Possibly remove as part of search migration.
  */
 function drupalorg_search($op = 'search', $keys = NULL) {
+  // @todo D7 - This searching has not been tested.
   switch ($op) {
     case 'name':
       if (user_access('access user profiles')) {
@@ -1144,6 +1175,7 @@ function drupalorg_download_drupal_link_button($text) {
  * @todo this is totally provisional at this point.
  */
 function drupalorg_homebox() {
+  // @todo D7 - This functionality has not been tested yet.
   return array(
     'dashboard' => array(
       'title' => '@user',
@@ -1375,6 +1407,9 @@ function drupalorg_ad_settings_form() {
  * Implements hook_node_view().
  */
 function drupalorg_node_view($node, $view_mode = 'full') {
+  // @todo D7 - This whole function has not been tested/updated yet.
+  // Anything with taxonomy needs to be fixed for sure!
+
   if (TRUE) {
     // Remove extra terms on SAs, section tabs handle them
     foreach (array(1852, 44, 1856) as $tid) {
@@ -1593,6 +1628,8 @@ function drupalorg_node_view($node, $view_mode = 'full') {
  * Implements hook_node_insert().
  */
 function drupalorg_node_insert($node) {
+  // @todo D7 - This whole function has not been tested yet.
+
   if (TRUE || TRUE) {
     if ($node->type === 'organization' && !isset($node->drupalorg_processed)) {
       // Determine if the organization should be listed in the marketplace.
@@ -1648,6 +1685,8 @@ function drupalorg_node_insert($node) {
  * Implements hook_node_update().
  */
 function drupalorg_node_update($node) {
+  // @todo D7 - This whole function has not been tested yet.
+
   if (TRUE || TRUE) {
     if ($node->type === 'organization' && !isset($node->drupalorg_processed)) {
       // Determine if the organization should be listed in the marketplace.
@@ -1704,6 +1743,8 @@ function drupalorg_node_update($node) {
  * @see http://drupal.org/node/1354
  */
 function drupalorg_views_pre_render(&$view) {
+  // @todo D7 - This functionality has not been tested yet.
+
   // Render the taxonomy filtering above the marketplace organization listing.
   if ($view->name === 'drupalorg_organizations') {
     $content = drupalorg_crosssite_grid_elements(array(2, 2, 2, 2));
@@ -1842,6 +1883,8 @@ function drupalorg_views_pre_render(&$view) {
  * Implements hook_user_view().
  */
 function drupalorg_user_view($account, $view_mode) {
+  // @todo D7 - This whole function has not been tested yet.
+
   global $user;
 
   // Column layout for profile pages.
@@ -1990,6 +2033,10 @@ function drupalorg_403_page() {
  * Only show one attached image on project teaser.
  */
 function drupalorg_preprocess_content_field(&$v) {
+  // @todo D7 - This whole function has not been tested yet.
+  // It's quite likely to be wrong -- the field name is probably wrong and
+  // not only that but the function name, since this was for CCK.
+
   if ($v['field']['field_name'] === 'field_project_images' && $v['teaser']) {
     $v['items'] = array(reset($v['items']));
   }
