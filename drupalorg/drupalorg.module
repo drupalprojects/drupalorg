@@ -498,7 +498,7 @@ function drupalorg_set_home() {
         TRUE => t('Make this your Homepage'),
         FALSE => t('Use Default Homepage'),
       ),
-      '#default_value' => $user->data['drupalorg_set_home'],
+      '#default_value' => isset($user->data['drupalorg_set_home']) ? $user->data['drupalorg_set_home'] : TRUE,
       '#ajax' => array(
         'callback' => 'drupalorg_set_home_callback',
         'wrapper' => 'drupalorg-set-home-wrapper',
