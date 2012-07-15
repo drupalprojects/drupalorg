@@ -18,5 +18,5 @@
     $pins.eq(current).show();
   }, 4000);
 
-  $('#front-bottom-right').tabs();
+  $('#community-updates').tabs();
 })(jQuery);
