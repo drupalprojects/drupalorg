@@ -81,7 +81,7 @@ $strings = array(
   'Drupal 7 is already in use on hundreds of sites. Some examples include:' =>
   'Drupal 7已经运行在几百个网站中。它们包括：',
   '<a href="@examiner-url">Examiner.com</a>' =>
-  '<a href="@examiner-url">Examiner.com</a>', 
+  '<a href="@examiner-url">Examiner.com</a>',
   '<a href="@gardens-url">Drupal Gardens</a>' =>
   '<a href="@gardens-url">Drupal Gardens</a>',
   '<a href="@subhub-url">SubHub</a>' =>

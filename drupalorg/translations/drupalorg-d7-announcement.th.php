@@ -2,7 +2,7 @@
 $strings = array(
   'Drupal 7 - Easier and more powerful than ever' =>
   'Drupal 7 - ใช้งานง่ายและมีประสิทธิภาพมากกว่าเคย',
-  'Friendly and powerful:' => 
+  'Friendly and powerful:' =>
      'เป็นมิตรและมีประสิทธิภาพ:',
   'Drupal 7' =>
   'Drupal 7',

@@ -12,7 +12,7 @@ $strings = array(
   'Почати роботу з Drupal 7',
   'Runs on Drupal 7: @site' =>
   'Працює на Drupal 7: @site',
-  'Easier to use' => 
+  'Easier to use' =>
   'Простота використання',
   'An entirely revamped administrative interface makes your daily tasks easier to find and carry out. Many improvements were added specifically for site builders and content editors.' =>
   'Повністю оновлений інтерфейс спростить Ваші щоденні завдання. Було додано багато нових функцій спеціально для адміністраторів і редакторів сайту.',

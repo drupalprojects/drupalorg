@@ -15,14 +15,14 @@ $strings = array(
   'Easier to use' =>
   'Enostavnejša  uporaba',
   'An entirely revamped administrative interface makes your daily tasks easier to find and carry out. Many improvements were added specifically for site builders and content editors.' =>
-  'Popolnoma prenovljen skrbniški vmesnik vam omogoča lažji dostop in hitrejšo izvedbo vsakodnevnih opravil. Dodanih je veliko izboljšav namenjenih izdelovalcem strani in urednikom vsebin.',  
+  'Popolnoma prenovljen skrbniški vmesnik vam omogoča lažji dostop in hitrejšo izvedbo vsakodnevnih opravil. Dodanih je veliko izboljšav namenjenih izdelovalcem strani in urednikom vsebin.',
   'More flexible' =>
   'Večja fleksibilnost',
-  'Define your own content structure and add custom fields to content, users, comments, and more. Extend your site with one of the over 800 modules already available for Drupal 7.' =>  
+  'Define your own content structure and add custom fields to content, users, comments, and more. Extend your site with one of the over 800 modules already available for Drupal 7.' =>
   'Samostojno določite stukturo vsebini ter dodajte poljubna polja vsebinam, uporabnikom, komentarjem. Nadgradite vaše spletno mesto z enim izmed 800 modulov, ki so že na voljo za Drupal 7',
   'More scalable' =>
   'Večja nadgradljivost',
-  'Your Drupal 7 site will be fast, responsive and handle huge amounts of traffic thanks to improved JavaScript and CSS optimization, better caching and more.' =>  
+  'Your Drupal 7 site will be fast, responsive and handle huge amounts of traffic thanks to improved JavaScript and CSS optimization, better caching and more.' =>
   'Vaše Drupal 7 spletno mesto bo hitro, odzivno in sposobno opraviti z velikimi obremenitvami zahvaljujoč izboljšani JS in CSS optimizaciji, boljšemu predpomnilniku in ostalim izboljšavam.',
   'Open source' =>
   'Odprta koda',
@@ -46,7 +46,7 @@ $strings = array(
   'Lastnosti',
   'Flexible content' =>
   'Fleksibilne vsebine',
-  'Define custom fields that can be used across content types, users, comments, terms and other entities. Store the data for these fields in SQL, <a href="@nosql-url">NoSQL</a>, or use remote storage.' =>  
+  'Define custom fields that can be used across content types, users, comments, terms and other entities. Store the data for these fields in SQL, <a href="@nosql-url">NoSQL</a>, or use remote storage.' =>
   'Določite poljubna vnosna polja, ki jih lahko uporabite za različne tipe vsebin, uporabnike, komentarje, izraze in druge entitete. Vsebino teh polj lahko hranite v SQL-u, <a href="@nosql-url">NoSQL-u</a>’, ali oddaljeni pomnilniški napravi.',
   'Better theming' =>
   'Teme',
@@ -58,7 +58,7 @@ $strings = array(
   'Skrbniški del je sedaj mnogo bolj dostopen. Nove izboljšave čelnega dela sistema, bodo olajšale gradnjo lahko dostopnih spletnih mest.',
   'Images and files' =>
   'Slike in datoteke',
-  'Adding images to content is now built in. Generate different versions for thumbnails, previews and other image styles. Private file handling can now be used alongside public files.' =>  
+  'Adding images to content is now built in. Generate different versions for thumbnails, previews and other image styles. Private file handling can now be used alongside public files.' =>
   'Podpora za dodajanje fotografij je sedaj že vključena. Za vaše fotografije generirajte predoglede različnih velikosti in stilov. Poleg tega je sedaj poleg javnega, na voljo tudi zasebno hranjenje datotek.',
   'Automated code testing' =>
   'Samodejno testiranje kode',
@@ -75,7 +75,7 @@ $strings = array(
   'Extend' =>
   'Nadgradnja',
   'Thanks to a great community effort, over 800 modules are available or under active development for Drupal 7, including <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a>, and <a href="@wysiwyg-url">WYSIWYG</a>, with more on the way every day.' =>
-  'Zahvaljujoč odličnemu delu skupnosti je za Drupal 7 na voljo že več kot 800 modulov. Med drugimi tudi: <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a> in <a href="@wysiwyg-url">WYSIWYG</a>’, katerim se vsak dan pridružujejo novi.', 
+  'Zahvaljujoč odličnemu delu skupnosti je za Drupal 7 na voljo že več kot 800 modulov. Med drugimi tudi: <a href="@views-url">Views</a>, <a href="@pathauto-url">Pathauto</a> in <a href="@wysiwyg-url">WYSIWYG</a>’, katerim se vsak dan pridružujejo novi.',
   'See Drupal 7 in action' =>
   'Poglej Drupal 7 v živo',
   'Drupal 7 is already in use on hundreds of sites. Some examples include:' =>

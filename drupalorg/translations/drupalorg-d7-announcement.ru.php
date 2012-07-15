@@ -12,7 +12,7 @@ $strings = array(
   'Начать работу с Drupal 7',
   'Runs on Drupal 7: @site' =>
   'Работает на Drupal 7: @site',
-  'Easier to use' => 
+  'Easier to use' =>
   'Простота использования',
   'An entirely revamped administrative interface makes your daily tasks easier to find and carry out. Many improvements were added specifically for site builders and content editors.' =>
   'Полностью обновленный интерфейс упростит Ваши повседневные задачи. Было добавлено множество новых функций специально для администраторов и редакторов сайта.',
@@ -61,7 +61,7 @@ $strings = array(
   'Adding images to content is now built in. Generate different versions for thumbnails, previews and other image styles. Private file handling can now be used alongside public files.' =>
   'Добавлена встроенная поддержка вставки графики в публикации. Генерация различных версий миниатюр, превью и стилей изображения. Публичный и приватный методы обработки файлов доступны одновременно.',
   'Automated code testing' =>
-  'Тестирование кода', 
+  'Тестирование кода',
   'A new automated testing framework with over 30,000 built-in tests allows for <a href="@qa-url">continuous integration testing</a> of all Drupal core patches and contributed modules.' =>
   'Новый фрэймворк с функцией автоматического тестирования имеет более чем 30000 встроенных тестов и позволяет <a href="@qa-url">проводить непрерывный контроль работы</a> всех патчей ядра Drupal и распространяемых сообществом модулей.',
   'Improved database support' =>
