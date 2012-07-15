@@ -1,20 +1,18 @@
-<div id="getting-started" class="grid-12 alpha omega">
-  <img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/gettingstarted-header1.png" alt="Download Drupal" />
-  <img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/gettingstarted-header2.png" alt="Extend Drupal" />
-  <img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/gettingstarted-header3.png" alt="Documentation" />
-  <img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/gettingstarted-header4.png" alt="Get Support" />
-</div>
-<div class="grid-3 alpha">
-  <div class="narrow-box">
+<div class="download-drupal">
+  <h2>Download Drupal</h2>
+    <div class="narrow-box">
     <p><a href="/project/drupal">Drupal core</a> contains the essential building blocks providing you a flexible foundation to get started with Drupal.</p>
     <p><?php print $core_download_button; ?></p>
     <p>Drupal <a href="/project/distributions">distributions</a> provide pre-configured installations, allowing you to quickly setup a fully featured Drupal site.</p>
     <p><a class="link-button" href="/project/distributions"><span>Find a Distribution</span></a></p>
-  </div>
-</div>
-<div class="grid-3">
-  <div class="narrow-box">
-    <p>Download hundreds of modules to customize and extend your site.</p>
+  </div><!--/narrow-box-->
+</div><!--/download-drupal-->
+
+
+<div class="extend-drupal">
+<h2>Extend Drupal</h2>
+    <div class="narrow-box"><p>Download hundreds of modules to customize and extend your site.</p>
+    </div><!--/narrow-box-->
     <div class="narrow-box-list">
       <h5 class="lined">Most popular modules</h5>
       <?php print $most_popular_modules; ?>
@@ -32,11 +30,13 @@
       </ul>
       <a href="http://localize.drupal.org/" class="all">All translations</a>
     </div><!--/narrow-box-list-->
-  </div>
-</div>
-<div class="grid-3">
+</div><!--/extend-drupal-->
+
+<div class="documentation">
+  <h2>Documentation</h2>
   <div class="narrow-box">
     <p>Want more information before you begin using Drupal? Our extensive documentation will tell you how.</p>
+  </div><!--/narrow-box-->
     <div class="narrow-box-list">
       <h5 class="lined">Most popular guides</h5>
       <ul>
@@ -53,13 +53,14 @@
       <p><a href="/books"><img src="<?php print url(drupal_get_path('module', 'drupalorg') . '/images/books-d7.png'); ?>" alt="Drupal book covers"></a></p>
       <p>There are many <a href="/books">Drupal books</a> available.</p>
     </div><!--/narrow-box-list-->
-  </div>
-</div>
-<div class="grid-3 omega">
+</div><!--/documentation-->
+
+<div class="get-support">
+   <h2>Get Support</h2>
   <div class="narrow-box">
     <p>Ask questions and get answers in <a href="/forum">our forums</a>.</p>
     <p>Get quick responses and friendly chat in the <a href="/irc">IRC channels</a>.</p>
     <p>Visit the Marketplace to find <a href="/marketplace">professional Drupal services</a> and <a href="/hosting">great Drupal hosting</a>.</p>
     <p>Find more ways to connect on the <a href="/community">Community and Support page</a>.</p>
-  </div>
-</div>
+  </div><!--/narrow-box-->
+</div><!--/main-wrapper-->

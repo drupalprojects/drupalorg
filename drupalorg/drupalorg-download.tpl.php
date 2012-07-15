@@ -1,6 +1,6 @@
 <p>Download Drupal core files, and extend your site with modules, themes, translations and installation profiles.</p>
-<div id="download" class="node-section grid-12 alpha omega">
-  <div class="grid-3 alpha core">
+<div id="download" class="node-section">
+  <div class="core">
     <h2>Core</h2>
     <ul class="flat">
       <li class="first download-core"><?php print $core_download_button; ?></li>
@@ -10,7 +10,7 @@
     </ul>
   </div>
 
-  <div class="grid-3">
+  <div class="distributions">
     <h2>Distributions</h2>
     <ul class="flat">
       <li><a href="/documentation/build/distributions">About Distributions</a></li>
@@ -21,7 +21,7 @@
     </ul>
   </div>
 
-  <div class="grid-3 themes">
+  <div class="themes">
     <h2>Themes</h2>
     <ul class="flat">
       <li class="first"><a href="node/221881">About Themes &amp; Subthemes</a></li>
@@ -31,8 +31,8 @@
       <li class="last all"><a class="all" href="/project/themes">Search for More Themes</a></li>
     </ul>
   </div>
-  
-  <div class="grid-3 omega translations">
+
+  <div class="translations">
     <h2>Translations</h2>
     <ul class="flat">
       <?php print $drupalorg_featured_translations; ?>
@@ -40,22 +40,22 @@
     </ul>
   </div>
 </div>
-  
-<div class="grid-12 alpha omega drupal-modules">
+
+<div class="drupal-modules">
   <h2>Drupal Modules</h2>
   <?php print $version_form; ?>
 </div>
 
-<div class="grid-12 alpha omega drupal-modules-facets">
+<div class="drupal-modules-facets">
 <?php /*
   NOTE: It would be super helpful if these dynamic lists were wrapped in a <ul class="flat">
         This class removes the padding and bullets from the list items
 */ ?>
-  <div class="grid-3 alpha">
+  <div class="most-installed">
     <?php print $sort_most_installed; ?>
   </div>
-  
-  <div class="grid-3">      
+
+  <div class="categories">
     <h2>Module Categories</h2>
     <ul class="flat">
       <li class="first"><a href="/project/modules?filters=tid:53">Administration</a></li>
@@ -65,12 +65,12 @@
       <li class="last all"><a href="/project/modules/categories" class="all">All Categories</a></li>
     </ul>
   </div>
-  
-  <div class="grid-3">      
+
+  <div class="created">
     <?php print $sort_created; ?>
   </div>
-  
-  <div class="grid-3 omega">        
+
+  <div class="index">
     <?php print $module_index; ?>
   </div>
 

@@ -1,6 +1,5 @@
-<div id="getting-involved">
-				
-	<div class="grid-4 alpha">
+
+	<div class="getting-involved">
 	<h2>Getting Involved</h2>
 	  <div id="node-281873" class="node node-type-book clear-block">
 	    <div class="node-content">
@@ -10,10 +9,9 @@
     </div>
 	</div>
 
-  <div class="grid-4 omega">
+  <div class="community-spotlight">
 	  <h2><?php print $spotlight_title ?></h2>
 	  <?php print $spotlight ?>
 	</div>
 	
   <div class="clear-block"></div>
-</div>
