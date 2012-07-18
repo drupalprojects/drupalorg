@@ -128,7 +128,7 @@ function drupalorg_search_apachesolr_query_prepare(&$query, &$params) {
   // on a project type (modules or themes).
   if ($query->hasFilter('ss_meta_type', 'theme') || $query->hasFilter('ss_meta_type', 'module')) {
     // @todo: Add this back in once project_solr sorts have been ported.
-    // project_solr_add_sorts($query);
+    project_solr_add_sorts($query);
   }
 }
 
