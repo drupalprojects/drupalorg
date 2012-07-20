@@ -802,7 +802,8 @@ Height must be equal to at least 70% of image\'s width for screenshots to look g
     'text_processing' => '0',
     'max_length' => '',
     'allowed_values' => 'Community
-Featured',
+Featured
+Hidden',
     'allowed_values_php' => '',
     'widget' => array(
       'default_value' => array(
