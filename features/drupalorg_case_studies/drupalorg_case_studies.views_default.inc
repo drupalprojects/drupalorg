@@ -457,6 +457,7 @@ function drupalorg_case_studies_views_default_views() {
   $handler->override_option('title', 'Drupal Case Studies');
   $handler->override_option('css_class', 'drupalorg-grid-4 drupalorg-2-col');
   $handler->override_option('items_per_page', 8);
+  $handler->override_option('offset', 0);
   $handler->override_option('use_pager', '1');
   $handler->override_option('distinct', 1);
   $handler->override_option('style_plugin', 'grid');
@@ -665,6 +666,7 @@ function drupalorg_case_studies_views_default_views() {
       'relationship' => 'none',
     ),
   ));
+  $handler->override_option('items_per_page', 8);
   $handler->override_option('offset', 4);
   $handler->override_option('path', 'case-studies');
   $handler->override_option('menu', array(
@@ -907,6 +909,7 @@ function drupalorg_case_studies_views_default_views() {
     ),
   ));
   $handler->override_option('items_per_page', 10);
+  $handler->override_option('offset', 0);
   $handler->override_option('style_plugin', 'default');
   $handler->override_option('style_options', array());
   $handler->override_option('block_description', '');
@@ -1270,6 +1273,7 @@ function drupalorg_case_studies_views_default_views() {
   ));
   $handler->override_option('title', 'Browse by category');
   $handler->override_option('items_per_page', 0);
+  $handler->override_option('offset', 0);
   $handler->override_option('use_pager', '0');
   $handler->override_option('style_plugin', 'default');
   $handler->override_option('style_options', array(
@@ -1412,6 +1416,7 @@ function drupalorg_case_studies_views_default_views() {
   $handler->override_option('title', '');
   $handler->override_option('css_class', '');
   $handler->override_option('items_per_page', 4);
+  $handler->override_option('offset', 0);
   $handler->override_option('use_pager', '0');
   $handler->override_option('distinct', 0);
   $handler->override_option('style_plugin', 'jcarousel');
