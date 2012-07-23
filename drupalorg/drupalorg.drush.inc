@@ -1,8 +1,7 @@
 <?php
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Implementation of hook_drush_help().
  */
 function drupalorg_drush_help($section) {
   switch ($section) {
@@ -12,14 +11,11 @@ function drupalorg_drush_help($section) {
       return dt('Update home page stats.');
     case 'drupalorg:aggregator':
       return dt('Run aggregator module cron.');
-    case 'drupalorg:civimembership':
-      return dt('Fetch Association membership records.');
   }
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Implementation of hook_drush_command();
  */
 function drupalorg_drush_command() {
   return array(
@@ -31,9 +27,6 @@ function drupalorg_drush_command() {
     ),
     'aggregator' => array(
       'description' => 'Run aggregator module cron.',
-    ),
-    'civimembership' => array(
-      'description' => 'Fetch Association membership records.'
     ),
   );
 }
@@ -48,27 +41,4 @@ function drush_drupalorg_rebuild_stats() {
 
 function drush_drupalorg_aggregator() {
   aggregator_not_cron();
-}
-
-function drush_drupalorg_civimembership() {
-  // Fetch data.
-  $response = drupal_http_request('https://association.drupal.org/api/association_members.json');
-  if (isset($response->error)) {
-    return drush_set_error('DRUSH_DRUPALORG_CIVIMEMBERSHIP_FETCH', dt('Failed to fetch memberhsip data.'));
-  }
-  $data = json_decode($response->data);
-  if (is_null($data)) {
-    return drush_set_error('DRUSH_DRUPALORG_CIVIMEMBERSHIP_PARSE', dt('Failed to parse membership data.'));
-  }
-
-  // Store data.
-  foreach ($data->users as $data_user) {
-    $data_user->user->updated = $_SERVER['REQUEST_TIME'];
-    drupal_write_record('drupalorg_civimembership', $data_user->user);
-  }
-
-  // Delete old data
-  db_delete('drupalorg_civimembership')
-    ->condition('updated', $_SERVER['REQUEST_TIME'], '!=')
-    ->execute();
 }

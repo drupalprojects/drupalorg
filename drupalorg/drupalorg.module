@@ -1917,7 +1917,7 @@ function drupalorg_user_view($account, $view_mode) {
   if ($account->uid === $user->uid) {
     $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="https://association.drupal.org">Drupal Association</a> badges on your profile page? <a href="https://association.drupal.org/membership">Become a member today.</a>');
   }
-  $query = db_select('drupalorg_civimembership', 'dc')
+  $query = db_select('drupalorg_crosssite_civimembership', 'dc')
     ->fields('dc', array('membership_type', 'membership_status'))
     ->condition('user_name', $account->name, '=')
     ->execute();
@@ -2008,7 +2008,7 @@ function drupalorg_documentation_contributions($account) {
  *   Boolean, TRUE if membership exists.
  */
 function drupalorg_has_civimembership($account, $type) {
-  return (bool) db_select('drupalorg_civimembership', 'dc')
+  return (bool) db_select('drupalorg_crosssite_civimembership', 'dc')
     ->fields('dc', array('user_name'))
     ->condition('user_name', $account->name, '=')
     ->condition('membership_type', $type, '=')
