@@ -33,7 +33,7 @@ define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 7); // 7.x
 define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 103); // 7.x
 
 /**
- * Implementation of hook_init().
+ * Implements hook_init().
  */
 function drupalorg_init() {
   global $user, $conf;
@@ -43,8 +43,8 @@ function drupalorg_init() {
     drupal_goto('user/' . $user->uid . '/dashboard');
   }
 
-  // Add forum ads & tracking
-  // @todo D7 - ad visibility has not been tested.
+  // Add tracking
+  // @todo D7 - tracking has not been tested.
   $forum_ads = variable_get('drupalorg_forum_ad', array());
   if (arg(0) === 'forum' && isset($forum_ads[arg(1)])) {
     $forum_id = arg(1);
@@ -57,11 +57,6 @@ function drupalorg_init() {
     // Tracking
     $term = taxonomy_term_load($forum_id);
     $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 1, 'Forum', '" . check_plain($term->name) . "', 3]);"; // 3 is page-level
-
-    // Ads
-    if (!empty($forum_ads[$forum_id])) {
-      drupal_add_region_content('right', drupalorg_crosssite_ad_block($forum_ads[$forum_id], FALSE));
-    }
   }
 
   // Temporary message about the Solr index being rebuilt.
@@ -70,6 +65,30 @@ function drupalorg_init() {
         (arg(0) == 'project' && (arg(1) == 'modules' || arg(1) == 'themes' || arg(1) == 'distributions' || arg(1) == 'theme engines'))) {
       drupal_set_message(t('We are rebuilding the search index for the update to drupal.org. The search results may produce broken or out-of-date results until the index is fully rebuilt. We will remove this message when the indexing is complete. Do not report any search errors at this time.'));
     }
+  }
+}
+
+/**
+ * Implements hook_page_build().
+ */
+function drupalorg_page_build(&$page) {
+  // Add forum ads.
+  $forum_ads = variable_get('drupalorg_forum_ad', array());
+  if (arg(0) === 'forum' && isset($forum_ads[arg(1)])) {
+    $forum_id = arg(1);
+  }
+  elseif (arg(0) === 'node' && is_numeric(arg(1)) && ($node = menu_get_object()) && $node->type === 'forum' && isset($forum_ads[$node->tid])) {
+    // @todo d7 - This is not right...
+    $forum_id = $node->tid;
+  }
+
+  if (isset($forum_id) && !empty($forum_ads[$forum_id])) {
+    // @todo D7 - This ad's markup is being printed, but the JS is not working
+    // because the ad JS function has not been defined. Some additional scripts
+    // need to be added to the page.
+    $page['sidebar_second']['google_ad'] = array(
+      '#markup' => drupalorg_crosssite_ad_block($forum_ads[$forum_id], FALSE),
+    );
   }
 }
 
@@ -154,13 +173,13 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['admin/config/drupalorg'] = array(
+  $items['admin/config/system/drupalorg'] = array(
     'title' => 'Drupal.org settings',
     'access arguments' => array('administer site configuration'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('drupalorg_settings_form'),
   );
-  $items['admin/config/drupalorg-ads'] = array(
+  $items['admin/config/system/drupalorg-ads'] = array(
     'title' => 'Drupal.org ad settings',
     'access arguments' => array('administer site configuration'),
     'page callback' => 'drupal_get_form',
@@ -626,7 +645,9 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   // Pick a random site made with Drupal from the cache.
   $variables['things_we_made'] = $variables['sites_made'][array_rand($variables['sites_made'])];
 
-  // @todo D7 - this ad is not showing up?
+  // @todo D7 - this ad is not showing up. The HTML is being printed, but the
+  // JS is not executing, because some scripts are not included that define
+  // the JS function being called.
   $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'Redesign_home'));
 }
 
@@ -1417,7 +1438,7 @@ function drupalorg_ad_settings_form() {
   $form['drupalorg_forum_ad'] = array(
     '#type' => 'fieldset',
     '#title' => t('Forum ads'),
-    '#description' => t('Configure available <a href="!url">ad units</a>', array('!url' => url('admin/config/google_admanager'))),
+    '#description' => t('Configure available <a href="!url">ad units</a>', array('!url' => url('admin/config/system/google_admanager'))),
     '#tree' => TRUE,
   );
   foreach (taxonomy_get_tree(1) as $term) {
@@ -1436,19 +1457,22 @@ function drupalorg_ad_settings_form() {
  * Implements hook_node_view().
  */
 function drupalorg_node_view($node, $view_mode = 'full') {
-  // @todo D7 - This whole function has not been tested/updated yet.
-  // Anything with taxonomy needs to be fixed for sure!
-
-  if (TRUE) {
-    // Remove extra terms on SAs, section tabs handle them
-    foreach (array(1852, 44, 1856) as $tid) {
-      if (isset($node->taxonomy[$tid])) {
-        $node->taxonomy[$tid]->rendered = TRUE;
+  // Hide extra SA forum taxonomy values, since they are handled by
+  // tabs.
+  if ($node->type == 'forum') {
+    foreach ($node->content['taxonomy_forums']['#items'] as $index => $item) {
+      if (isset($item['tid']) && in_array($item['tid'], array(1852, 44, 1856))) {
+        hide($node->content['taxonomy_forums'][$index]);
       }
     }
+  }
 
-    // Marketplace nodes
-    if ($node->type === 'organization') {
+  // Handle Marketplace nodes taxonomy.
+  // @todo D7 - When we have this content type and the view here, fix this!
+  // See drupalorg_handbook.module function drupalorg_handbook_meta_data() to
+  // see what to do.
+  /*
+    elseif ($node->type === 'organization') {
       // Group terms by vocabulary and link to marketplace browsing pages.
       $vocabularies = array();
       $info = array();
@@ -1622,13 +1646,14 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         }
       }
     }
+  */
+
+  // @todo D7 - Get this working when Project* is ready.
+  /*
     elseif ($node->type === 'project_issue') {
       // Load the view to make sure that there are actually some results.
       $change_records = views_get_view('change_records', 'block_1', array($node->nid));
 
-      // TODO is there a change_records view???
-
-      /*
       $change_records->execute('block_1');
       if (!empty($change_records->result)) {
         $node->content['change_records'] = array(
@@ -1638,8 +1663,11 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         );
       }
       $change_records->destroy();
-      */
     }
+  */
+
+  // @todo D7 - Get this working when case studies are ported to D7
+  /*
     elseif ($node->type === 'casestudy') {
       $breadcrumb = array(
         l(t('Home'), ''),
@@ -1653,7 +1681,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       }
       drupal_set_breadcrumb($breadcrumb);
     }
-  }
+  */
 }
 
 /**
@@ -1661,8 +1689,8 @@ function drupalorg_node_view($node, $view_mode = 'full') {
  */
 function drupalorg_node_insert($node) {
   // @todo D7 - This whole function has not been tested yet.
-
-  if (TRUE || TRUE) {
+  // Needs to wait for the organization/marketplace stuff to be ported to D7.
+  /*
     if ($node->type === 'organization' && !isset($node->drupalorg_processed)) {
       // Determine if the organization should be listed in the marketplace.
       if ($node->field_org_marketplace_request[0]['value']) {
@@ -1710,7 +1738,7 @@ function drupalorg_node_insert($node) {
       $node->drupalorg_processed = TRUE;
       node_save($node);
     }
-  }
+  */
 }
 
 /**
@@ -1718,8 +1746,8 @@ function drupalorg_node_insert($node) {
  */
 function drupalorg_node_update($node) {
   // @todo D7 - This whole function has not been tested yet.
-
-  if (TRUE || TRUE) {
+  // Needs to wait for the organization/marketplace stuff to be ported to D7.
+  /*
     if ($node->type === 'organization' && !isset($node->drupalorg_processed)) {
       // Determine if the organization should be listed in the marketplace.
       if ($node->field_org_marketplace_request[0]['value']) {
@@ -1767,7 +1795,7 @@ function drupalorg_node_update($node) {
       $node->drupalorg_processed = TRUE;
       node_save($node);
     }
-  }
+  */
 }
 
 /**
