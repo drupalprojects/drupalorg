@@ -235,11 +235,14 @@ function drupalorg_block_info() {
       'info' => t('Set user home page'),
       'cache' => DRUPAL_NO_CACHE,
     ),
+
     'drupalorg_activity' => array('info' => t('Drupal.org Activity')),
+
     'add_to_dashboard' => array(
       'info' => t('Add to Dashboard links'),
       'cache' => DRUPAL_CACHE_PER_USER | DRUPAL_CACHE_PER_PAGE,
     ),
+
     'tracker_user' => array(
       'info' => t('Your posts'),
       'cache' => DRUPAL_NO_CACHE,
@@ -1005,9 +1008,8 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
     $form['revision_information']['#weight'] = 50;
   }
 
-  // @todo D7 - this functionality has not been tested yet.
   // Ensure that wildcard email addresses are not abused.
-  if ($form_id == 'user_register') {
+  if ($form_id == 'user_register_form') {
     $form['#validate'][] = 'drupalorg_register_mail_validate';
   }
 
@@ -1057,11 +1059,9 @@ function drupalorg_form_aggregator_form_feed_alter(&$form) {
  * Try to catch wildcard email address signups, such as joe+drupal@gmail.com.
  */
 function drupalorg_register_mail_validate($form, &$form_state) {
-  // @todo D7 - This functionality has not been tested yet.
   $hit = preg_match('/(.*)\+(.*)\@(.*)/', $form_state['values']['mail'], $match);
   if ($hit) {
-    // TODO Please convert this statement to the D7 database API syntax.
-    if (db_query("SELECT uid FROM {users} WHERE LOWER(mail) LIKE LOWER('%s')", $match[1] . '+%%@' . $match[3])->fetchField() > 0) {
+    if (db_query("SELECT uid FROM {users} WHERE LOWER(mail) LIKE LOWER(:tomatch)", array(':tomatch' => $match[1] . '+%%@' . $match[3]))->fetchField() > 0) {
       form_set_error('mail', t('An e-mail address similar to %email is already registered. <a href="@password">Have you forgotten your password?</a>', array('%email' => $form_state['values']['mail'], '@password' => url('user/password'))));
     }
   }
@@ -1075,11 +1075,10 @@ function drupalorg_register_mail_validate($form, &$form_state) {
  * @todo Headers are blocked by some providers so this is not accurate.
  */
 function drupalorg_profile_user_edit_validate($form, &$form_state) {
-  // @todo D7 - This functionality has not been tested yet.
   if (!empty($form_state['values']['homepage']) && is_string($form_state['values']['homepage']) && (strlen($form_state['values']['homepage']) > 7)) {
     $result = db_query("SELECT mask FROM {access} WHERE type = :type AND status = :status", array(':type' => 'homepage', ':status' => 0));
     $masks = array();
-    while ($mask = db_fetch_object($result)) {
+    foreach ($result as $mask) {
       // Build masks array for preg_matching.
       $masks[] = '@' . strtr($mask->mask, array('.' => '\.', '%' => '.*', '_' => '.')) . '@';
     }
@@ -1104,39 +1103,58 @@ function drupalorg_profile_user_edit_validate($form, &$form_state) {
  * Submit handler for the user profile form, to serialize languages to a string.
  */
 function drupalorg_profile_fix_languages(&$form, &$form_state) {
-  // @todo D7 - This functionality has not been tested yet.
   if (is_array($form_state['values']['profile_languages'])) {
     $form_state['values']['profile_languages'] = join('; ', array_keys($form_state['values']['profile_languages']));
   }
 }
 
 /**
- * Add support for searching for users based on the fixed IRC nickname field.
+ * Implements hook_search_info().
  *
- * @todo Possibly remove as part of search migration.
+ * Defines an IRC nickname search.
  */
-function drupalorg_search($op = 'search', $keys = NULL) {
-  // @todo D7 - This searching has not been tested.
-  switch ($op) {
-    case 'name':
-      if (user_access('access user profiles')) {
-        return t('IRC nicks');
-      }
-    case 'search':
-      if (user_access('access user profiles')) {
-        $find = array();
-        // Replace wildcards with MySQL/PostgreSQL wildcards.
-        $keys = preg_replace('!\*+!', '%', $keys);
-        $result = pager_query("SELECT u.name, u.uid FROM {profile_values} pv INNER JOIN {users} u ON pv.uid = u.uid WHERE pv.fid = 35 AND LOWER(pv.value) LIKE LOWER('%%%s%%')", 15, 0, NULL, $keys);
-        while ($account = db_fetch_object($result)) {
-          $find[] = array(
-            'title' => $account->name,
-            'link' => url('user/' . $account->uid, array('html' => TRUE)),
-          );
-        }
-        return $find;
-      }
+function drupalorg_search_info() {
+  return array(
+    'title' => t('IRC nicks'),
+  );
+}
+
+/**
+ * Implements hook_search_access().
+ *
+ * Limits access to people who can access user profiles for the IRC nickname
+ * search.
+ */
+function drupalorg_search_access() {
+  return user_access('access user profiles');
+}
+
+/**
+ * Implements hook_search_execute().
+ *
+ * Performs the search for IRC nicknames.
+ */
+function drupalorg_search_execute($keys = NULL, $conditions = NULL) {
+  // Replace wildcards with MySQL/PostgreSQL wildcards.
+  $keys = '%' . preg_replace('!\*+!', '%', $keys) . '%';
+  $query = db_select('profile_value', 'pv');
+  $query->innerJoin('users', 'u', 'pv.uid = u.uid');
+  $query = $query->extend('PagerDefault');
+  $query
+    ->limit(15)
+    ->fields('u', array('name', 'uid'))
+    ->condition('pv.fid', 35)
+    ->where('LOWER(pv.value) LIKE LOWER(:keys)', array(':keys' => $keys));
+  $result = $query->execute();
+
+  $find = array();
+  foreach ($result as $account) {
+    $find[] = array(
+      'title' => $account->name,
+      'link' => url('user/' . $account->uid),
+    );
   }
+  return $find;
 }
 
 /**
@@ -1182,7 +1200,6 @@ function drupalorg_download_drupal_link_button($text) {
  * @todo this is totally provisional at this point.
  */
 function drupalorg_homebox() {
-  // @todo D7 - This functionality has not been tested yet.
   return array(
     'dashboard' => array(
       'title' => '@user',
@@ -1243,6 +1260,8 @@ function drupalorg_homebox() {
           'title' => 'Your Posts',
           'weight' => 1,
         ),
+        // @todo D7 - When Project is ported, make sure this block shows up
+        // by default when you reset your Dashboard.
         'views_a512ec6dea837b33a2b010c2af17ed85' => array(
           'module' => 'views',
           'delta' => 'a512ec6dea837b33a2b010c2af17ed85',
@@ -1255,6 +1274,8 @@ function drupalorg_homebox() {
           'weight' => 2,
         ),
         // Column 3
+        // @todo D7 - When Project is ported, make sure this block shows up
+        // in the available blocks.
         'project_issue_issue_cockpit' => array(
           'module' => 'project_issue',
           'delta' => 'issue_cockpit',
@@ -1267,6 +1288,8 @@ function drupalorg_homebox() {
           'title' => '',
           'weight' => -32,
         ),
+        // @todo D7 - When Project is ported, make sure this block shows up
+        // by default when you reset your Dashboard.
         'drupalorg_project_0' => array(
           'module' => 'drupalorg_project',
           'delta' => '0',
@@ -1348,8 +1371,7 @@ function drupalorg_block_render($module, $delta) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Form constructor for the Drupalorg custom settings form.
  */
 function drupalorg_settings_form($form, &$form_state) {
   $form = array();
@@ -1532,7 +1554,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
           '#value' => '',
           '#suffix' => '</div>',
         );
-        $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.latitude, hug.longitude FROM {profile_values} pv INNER JOIN {users} u ON u.uid = pv.uid AND u.status = 1 LEFT JOIN {profile_values} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {html5_user_geolocation} hug ON hug.uid = u.uid WHERE pv.value = :pv.value AND pv.fid = :pv.fid", array(':pv.value' => $node->title, ':pv.fid' => 72));
+        $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.latitude, hug.longitude FROM {profile_value} pv INNER JOIN {users} u ON u.uid = pv.uid AND u.status = 1 LEFT JOIN {profile_value} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {html5_user_geolocation} hug ON hug.uid = u.uid WHERE pv.value = :pv.value AND pv.fid = :pv.fid", array(':pv.value' => $node->title, ':pv.fid' => 72));
         while ($account = db_fetch_object($result)) {
           // Name & title
           $content['column_3'][$account->uid . 'name'] = array(
@@ -1754,6 +1776,7 @@ function drupalorg_node_update($node) {
  */
 function drupalorg_views_pre_render(&$view) {
   // @todo D7 - This functionality has not been tested yet.
+  // Wait for the marketplace feature to be ported (not in D7 yet).
 
   // Render the taxonomy filtering above the marketplace organization listing.
   if ($view->name === 'drupalorg_organizations') {
@@ -1893,14 +1916,14 @@ function drupalorg_views_pre_render(&$view) {
  * Implements hook_user_view().
  */
 function drupalorg_user_view($account, $view_mode) {
-  // @todo D7 - This whole function has not been tested yet.
-
   global $user;
 
   // Column layout for profile pages.
   $content = drupalorg_crosssite_grid_elements(array(8, 4));
 
   // Link organization to organization node, if it exists.
+  // @todo D7 - Make sure this works when we have the marketplace and
+  // organization nodes on D7.
   if (!empty($account->profile_current_company_organization)) {
     $nid = db_query("SELECT nid FROM {node} WHERE status = :status AND type = :type AND title = :title", array(':status' => 1, ':type' => 'organization', ':title' => $account->profile_current_company_organization))->fetchField();
     if ($nid != 0) {
@@ -1981,8 +2004,7 @@ function drupalorg_user_view($account, $view_mode) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Counts documentation edits for user profile view.
  */
 function drupalorg_documentation_contributions($account) {
   $count = (int) db_query("SELECT count(*) FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid AND nr.uid = :uid WHERE n.type = :type AND n.status = :status", array(':type' => 'book', ':status' => 1, ':uid' => $account->uid))->fetchField();
@@ -2044,6 +2066,7 @@ function drupalorg_403_page() {
  */
 function drupalorg_preprocess_content_field(&$v) {
   // @todo D7 - This whole function has not been tested yet.
+  // Wait for Project* to be ported.
   // It's quite likely to be wrong -- the field name is probably wrong and
   // not only that but the function name, since this was for CCK.
 
