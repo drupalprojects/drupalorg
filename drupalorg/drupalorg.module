@@ -177,7 +177,7 @@ function drupalorg_menu() {
  * - Forbids access to upload files on forum, page, and story nodes, except
  *   for people with 'administer nodes' permission.
  * - Forbids node owners from changing an organization's visibility.
- * - Forbids node owners from changing a cast study's status.
+ * - Forbids node owners from changing a case study's status.
  */
 function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
   if ($op != 'edit') {
@@ -191,8 +191,7 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
       switch ($entity_type) {
         case 'node':
           // Handle the case of file uploads on certain node types.
-          $types = array('forum', 'page', 'story');
-          if ($field['type'] == 'file' && isset($entity->type) && in_array($entity->type, $types)) {
+          if ($field['type'] == 'file' && isset($entity->type) && in_array($entity->type, array('forum', 'page', 'story'))) {
             return user_access('administer nodes', $account);
           }
 
@@ -214,6 +213,11 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
               }
               // For other users' nodes, allow administrators to edit.
               return user_access('administer nodes', $account);
+
+            case 'field_organization_marketplace':
+              // This is only set programatically by
+              // drupalorg_nodeapi('presave').
+              return FALSE;
           }
       }
   }
@@ -989,7 +993,6 @@ function drupalorg_theme() {
     ),
   );
 }
-
 
 /**
  * Implements hook_form_alter().
