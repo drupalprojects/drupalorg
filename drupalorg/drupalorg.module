@@ -171,34 +171,54 @@ function drupalorg_menu() {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Implements hook_field_access().
+ *
+ * This takes care of several file access tweaks:
+ * - Forbids access to upload files on forum, page, and story nodes, except
+ *   for people with 'administer nodes' permission.
+ * - Forbids node owners from changing an organization's visibility.
+ * - Forbids node owners from changing a cast study's status.
  */
-function drupalorg_field_access($op, $field, $account, $node = NULL) {
-  // @todo D7 - This whole function has not been tested yet.
-
-  global $user;
-
-  if ($op === 'edit') {
-    switch ($field['field_name']) {
-      // Only allow admins, but not the node owner, to change an organization's
-      // visibility and status of case studies.
-      case 'field_organization_list_rule':
-      case 'field_organization_hosting_level':
-      case 'field_organization_hosting_last':
-      case 'field_organization_hosting_by':
-      case 'field_organization_issue':
-      case 'field_status':
-        if ($node !== NULL && $node->uid === $user->uid) {
-          return FALSE;
-        }
-        return user_access('administer nodes');
-
-      // drupalorg_nodeapi('presave') handles this.
-      case 'field_organization_marketplace':
-        return FALSE;
-    }
+function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
+  if ($op != 'edit') {
+    // We are not interested in anything but edit permissions. Returning TRUE
+    // means "we are not interested" (only FALSE return values are significant).
+    return TRUE;
   }
+
+  switch ($op) {
+    case 'edit':
+      switch ($entity_type) {
+        case 'node':
+          // Handle the case of file uploads on certain node types.
+          $types = array('forum', 'page', 'story');
+          if ($field['type'] == 'file' && isset($entity->type) && in_array($entity->type, $types)) {
+            return user_access('administer nodes', $account);
+          }
+
+          // @todo D7 - The following fields do not actually exist currently on
+          // the case study or organization. Wait until the marketplace and
+          // case studies are finalized on D6 and then test these lines as well.
+
+          // Handle the case of the organization/status fields.
+          switch ($field['field_name']) {
+            case 'field_organization_list_rule':
+            case 'field_organization_hosting_level':
+            case 'field_organization_hosting_last':
+            case 'field_organization_hosting_by':
+            case 'field_organization_issue':
+            case 'field_status':
+              if (isset($entity->uid) && $entity->uid === $account->uid) {
+                // People cannot edit their own nodes for these fields.
+                return FALSE;
+              }
+              // For other users' nodes, allow administrators to edit.
+              return user_access('administer nodes', $account);
+          }
+      }
+  }
+
+  // All other cases: we don't care about this field/operation.
   return TRUE;
 }
 
@@ -970,6 +990,7 @@ function drupalorg_theme() {
   );
 }
 
+
 /**
  * Implements hook_form_alter().
  */
@@ -979,23 +1000,6 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
     $form['revision_information']['log']['#required'] = TRUE;
     $form['revision_information']['#collapsed'] = FALSE;
     $form['revision_information']['#weight'] = 50;
-  }
-
-  // @todo D7 - This permission is probably renamed?
-  // List of forms to check for overrides, and the corresponding permissions.
-  $override_forms = array(
-    'forum_node_form' => 'administer nodes',
-    'page_node_form' => 'administer nodes',
-    'story_node_form' => 'administer nodes',
-  );
-
-  // @todo D7 - This field is probably different in D7, using the File module?
-  // Override the access for attachments if it's a forbidden form,
-  // and the user does not have sufficient permissions.
-  if (in_array($form_id, array_keys($override_forms)) && !user_access($override_forms[$form_id])) {
-    if (isset($form['attachments']['#access'])) {
-      $form['attachments']['#access'] = FALSE;
-    }
   }
 
   // @todo D7 - this functionality has not been tested yet.
