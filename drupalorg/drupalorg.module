@@ -1439,7 +1439,10 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         l(t('Home'), ''),
         l(t('Case Studies'), 'case-studies'),
       );
-      if ($node->field_status[0]['value'] === 'Community') {
+      if ($node->field_status[0]['value'] === 'Featured') {
+        $breadcrumb[] = l(t('Featured showcase'), 'case-studies/featured');
+      }
+      elseif ($node->field_status[0]['value'] === 'Community') {
         $breadcrumb[] = l(t('Community showcase'), 'case-studies/community');
       }
       drupal_set_breadcrumb($breadcrumb);
