@@ -167,7 +167,7 @@ function drupalorg_handbook_meta_data() {
 
     foreach (field_info_instances('node', $node->type) as $instance) {
       $field = field_info_field($instance['field_name']);
-      if ($field['module'] === 'taxonomy') {
+      if ($field['module'] === 'taxonomy' && count($node->{$field['field_name']}) > 0) {
         foreach (field_available_languages('node', $field) as $langcode) {
           foreach ($node->{$field['field_name']}[$langcode] as $item) {
             $term_id = $item['tid'];
@@ -445,20 +445,16 @@ function theme_drupalorg_handbook_footer_line() {
  */
 function drupalorg_handbook_form_comment_form_alter(&$form, $form_state) {
   // Make sure we are on a form to add a new comment (not edit existing),
-  // and that the node ID is set.
-  if (isset($form['#parameters'][2]['nid']) && !isset($form['#parameters'][2]['cid'])) {
-    $node = node_load($form['#parameters'][2]['nid']);
-    if (isset($node) && isset($node->book['bid'])) {
-      // This is a node in a book. Display disclaimer.
-      $form['drupalorg-disclaimer'] = array(
-        '#type' => 'markup',
-        '#weight' => -2,
-        '#value' => '<p>' . t('Note:') . '</p>' .
-          '<ul>' .
-          '<li>' . t('Is your comment an addition, problem report, or example? Instead of adding a comment, edit the page content directly. Or, if you are unsure of the correct edits, add a comment here, and then edit the page to update the page status. Be aware that comments are removed after page edits are made.') . '</li>' .
-          '<li>' . t('Is your comment a question or request for support? Take it to the <a href="!forums">forums</a>. Questions are not answered here, and comments not providing useful information are removed.', array('!forums' => url('forum'))) . '</li>' .
-          '</ul>',
-      );
-    }
+  // and that the node is a book node.
+  if(isset($form['#node']->book['bid']) && !isset($form_state['comment']->cid)) {
+    // This is a node in a book. Display disclaimer.
+    $form['drupalorg-disclaimer'] = array(
+      '#weight' => -2,
+      '#markup' => '<p>' . t('Note:') . '</p>' .
+      '<ul>' .
+      '<li>' . t('Is your comment an addition, problem report, or example? Instead of adding a comment, edit the page content directly. Or, if you are unsure of the correct edits, add a comment here, and then edit the page to update the page status. Be aware that comments are removed after page edits are made.') . '</li>' .
+      '<li>' . t('Is your comment a question or request for support? Take it to the <a href="!forums">forums</a>. Questions are not answered here, and comments not providing useful information are removed.', array('!forums' => url('forum'))) . '</li>' .
+      '</ul>',
+    );
   }
 }
