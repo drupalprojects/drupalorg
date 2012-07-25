@@ -49,11 +49,17 @@ function drupalorg_init() {
   if (arg(0) === 'forum' && isset($forum_ads[arg(1)])) {
     $forum_id = arg(1);
   }
-  elseif (arg(0) === 'node' && is_numeric(arg(1)) && ($node = menu_get_object()) && $node->type === 'forum' && isset($forum_ads[$node->tid])) {
-    // @todo d7 - This is not right...
-    $forum_id = $node->tid;
+  elseif (arg(0) === 'node' && is_numeric(arg(1)) && ($node = menu_get_object()) && $node->type === 'forum' && isset($node->taxonomy_forums) && is_array($node->taxonomy_forums)) {
+    foreach ($node->taxonomy_forums as $langcode => $items) {
+      foreach ($items as $item) {
+        if (isset($forum_ads[$item['tid']])) {
+          $forum_id = $item['tid'];
+        }
+      }
+    }
   }
-  if (isset($forum_id)) {
+
+  if (isset($forum_id) && $forum_id) {
     // Tracking
     $term = taxonomy_term_load($forum_id);
     $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 1, 'Forum', '" . check_plain($term->name) . "', 3]);"; // 3 is page-level
@@ -77,12 +83,17 @@ function drupalorg_page_build(&$page) {
   if (arg(0) === 'forum' && isset($forum_ads[arg(1)])) {
     $forum_id = arg(1);
   }
-  elseif (arg(0) === 'node' && is_numeric(arg(1)) && ($node = menu_get_object()) && $node->type === 'forum' && isset($forum_ads[$node->tid])) {
-    // @todo d7 - This is not right...
-    $forum_id = $node->tid;
+  elseif (arg(0) === 'node' && is_numeric(arg(1)) && ($node = menu_get_object()) && $node->type === 'forum' && isset($node->taxonomy_forums) && is_array($node->taxonomy_forums)) {
+    foreach ($node->taxonomy_forums as $langcode => $items) {
+      foreach ($items as $item) {
+        if (isset($forum_ads[$item['tid']])) {
+          $forum_id = $item['tid'];
+        }
+      }
+    }
   }
 
-  if (isset($forum_id) && !empty($forum_ads[$forum_id])) {
+  if (isset($forum_id) && $forum_id && !empty($forum_ads[$forum_id])) {
     // @todo D7 - This ad's markup is being printed, but the JS is not working
     // because the ad JS function has not been defined. Some additional scripts
     // need to be added to the page.

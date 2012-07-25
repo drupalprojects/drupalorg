@@ -197,7 +197,7 @@ function drupalorg_handbook_meta_data() {
 
               case 54:
                 // Keywords vocabulary: print a link, separate section.
-                $keywords[] = l($term->name, taxonomy_term_path($term));
+                $keywords[] = l($term->name, 'taxonomy/term/' . $term->tid);
                 break;
 
               default:
