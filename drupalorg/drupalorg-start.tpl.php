@@ -6,7 +6,7 @@
 </div>
 <div class="grid-3 alpha">
   <div class="narrow-box">
-    <p><a href="/project/drupal">Drupal core</a> contains the essential building blocks providing you a flexible foundation to get started with Drupal.</p>
+    <p><a href="/project/drupal">Drupal core</a> contains the essential building blocks providing you a flexible foundation to get started with Drupal. You’ll also need a <a href="/hosting">web hosting provider</a>.</p>
     <p><?php print $core_download_button; ?></p>
     <p>Drupal <a href="/project/distributions">distributions</a> provide pre-configured installations, allowing you to quickly setup a fully featured Drupal site.</p>
     <p><a class="link-button" href="/project/distributions"><span>Find a Distribution</span></a></p>
