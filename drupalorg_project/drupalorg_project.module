@@ -1134,3 +1134,22 @@ function drupalorg_project_sandbox($node) {
     drupal_goto('node/' . $node->nid, NULL, NULL, 301);
   }
 }
+
+/**
+ * Implements hook_node_view().
+ *
+ * Hides issue metadata since it will be rendered in the sidebar.
+ */
+function drupalorg_project_node_view($node, $view_mode = 'full') {
+  if ($view_mode == 'full' && project_issue_node_is_issue($node)) {
+    // Since project_issue_metadata_build() is itself building a render array,
+    // array, we need to clone() the $node so that we can still render our own
+    // versions of everything left to display.
+    $metadata = project_issue_metadata_build(clone($node));
+    foreach (element_children($metadata) as $element) {
+      if (!empty($metadata[$element]['#access'])) {
+        hide($node->content[$element]);
+      }
+    }
+  }
+}
