@@ -137,6 +137,7 @@ function drupalorg_git_varnish_user($op, &$edit, &$account, $category = NULL) {
     $host = _drupalorg_git_varnish_get_host();
     $commands = drupalorg_git_varnish_clear_user_cmds($account->uid);
     $commands[] = "purge req.http.host == $host && req.url ~ ^/drupalorg/drupalorg-[a-z-]+.username={$account->git_username}&(password|fingerprint)=";
+    $commands[] = "purge req.http.host == $host && req.url ~ ^/drupalorg/drupalorg-vcs-auth-fetch-user-hash.username={$account->git_username}$";
 
     drupalorg_git_varnish_exec($commands);
   }
