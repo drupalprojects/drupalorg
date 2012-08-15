@@ -1665,15 +1665,17 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       // Load the view to make sure that there are actually some results.
       $change_records = views_get_view('change_records', 'block_1', array($node->nid));
 
-      $change_records->execute('block_1');
-      if (!empty($change_records->result)) {
-        $node->content['change_records'] = array(
-          '#prefix' => '<h3>' . check_plain($change_records->get_title()) . '</h3>',
-          '#value' => $change_records->preview('block_1', array($node->nid)),
-          '#weight' => 50,
-        );
+      if (!empty($change_records) {
+        $change_records->execute('block_1');
+        if (!empty($change_records->result)) {
+          $node->content['change_records'] = array(
+            '#prefix' => '<h3>' . check_plain($change_records->get_title()) . '</h3>',
+            '#value' => $change_records->preview('block_1', array($node->nid)),
+            '#weight' => 50,
+          );
+        }
+        $change_records->destroy();
       }
-      $change_records->destroy();
     }
   */
 
