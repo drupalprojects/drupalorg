@@ -8,6 +8,7 @@ dependencies[] = tracker
 dependencies[] = homebox
 dependencies[] = ctools
 dependencies[] = views_content_cache
+dependencies[] = features
 ; @todo D7 - these are dependencies and should be marked as such.
 ;dependencues[] = drupalorg_git_gateway
 ;dependencues[] = drupalorg_versioncontrol
