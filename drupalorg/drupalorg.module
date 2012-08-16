@@ -535,16 +535,18 @@ function drupalorg_get_activity($_force = FALSE) {
     $stats['comments'] = number_format(db_query("SELECT COUNT(*) FROM {comment} WHERE status = :status", array(':status' => 1))->fetchField());
 
     // Sites made with Drupal.
-    $stats['sites_made'] = array();
-
-    /* @todo D7: This view is not on the dev site right now?!?
-    $view = views_get_view('drupalorg_casestudies');
-    $view->preview('block_1');
-    foreach ($view->style_plugin->rendered_fields as $row) {
-      $stats['sites_made'][] = implode('', $row);
+    if (module_exists('drupalorg_case_studies')) {
+      $stats['sites_made'] = array();
+      /* @todo D7: This view is not on the dev site right now?!?
+      $view = views_get_view('drupalorg_casestudies');
+      if (!empty($view)) {
+        $view->preview('block_1');
+        foreach ($view->style_plugin->rendered_fields as $row) {
+          $stats['sites_made'][] = implode('', $row);
+        }
+      }
+      */
     }
-    */
-
     cache_set('drupalorg_front_counter_data', $stats, 'drupalorg');
     lock_release('drupalorg_get_activity');
   }
