@@ -14,7 +14,7 @@ function drupalorg_marketplace_node_info() {
       'has_body' => '1',
       'body_label' => t('Organization description'),
       'min_word_count' => '0',
-      'help' => t('Review the <a href="http://drupal.org/node/1108710">organization listings policy</a> first.
+      'help' => t('Review <a href="http://drupal.org/node/1735708">Marketplace guidelines</a> first.
 <br />Request improvements to vocabularies by <a href="http://drupal.org/project/webmasters">filing an issue</a>.
 <br />People with your organization name in the user profile field "current company or organization" will be shown on your organization page.'),
     ),
