@@ -935,8 +935,8 @@ function drupalorg_update_6607() {
 function drupalorg_update_6608() {
   $return = array();
 
-  $return[] = update_sql("UPDATE {content_type_organization} cto INNER JOIN {node} n ON n.vid = cto.vid SET cto.field_organization_list_rule_value = 'all' WHERE cto.field_organization_list_rule_value <> 'always'");
-  $return[] = update_sql("UPDATE {content_type_organization} cto INNER JOIN {node} n ON n.vid = cto.vid SET cto.field_organization_list_rule_value = 'featured' WHERE cto.field_organization_list_rule_value <> 'membership'");
+  $return[] = update_sql("UPDATE {content_type_organization} cto INNER JOIN {node} n ON n.vid = cto.vid SET cto.field_organization_list_rule_value = 'all' WHERE cto.field_organization_list_rule_value = 'always'");
+  $return[] = update_sql("UPDATE {content_type_organization} cto INNER JOIN {node} n ON n.vid = cto.vid SET cto.field_organization_list_rule_value = 'featured' WHERE cto.field_organization_list_rule_value = 'membership'");
 
   return $return;
 }
