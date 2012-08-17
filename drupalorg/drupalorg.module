@@ -293,9 +293,9 @@ function drupalorg_activity_block() {
   $items = array();
   $stats = drupalorg_get_activity();
   $items[] = t('<strong>@accounts</strong> people with Git accounts', array('@accounts' => $stats['number_of_git_accounts']));
- 	$items[] = t("<strong>@commits</strong> Git commits this week", array('@commits' => $stats['number_of_git_commits']));
- 	$items[] = t("<strong>@users</strong> users on drupal.org", array('@users' => $stats['number_of_users']));
- 	$items[] = t("<strong>@sites</strong> sites running Drupal", array('@sites' => $stats['sites']));
+  $items[] = t("<strong>@commits</strong> Git commits this week", array('@commits' => $stats['number_of_git_commits']));
+  $items[] = t("<strong>@users</strong> users on drupal.org", array('@users' => $stats['number_of_users']));
+  $items[] = t("<strong>@sites</strong> sites running Drupal", array('@sites' => $stats['sites']));
  	$items[] = t("<strong>@comments</strong> comments and issue followups", array('@comments' => $stats['comments']));
 
   $output = theme('item_list', $items);
