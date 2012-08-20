@@ -44,6 +44,12 @@ function drupalorg_init() {
 
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/general.js');
 
+  // TODO: This is a hack to get around a limitation in flot module until it's
+  // fixed there, see http://drupal.org/node/1565970.
+  if (function_exists('flot_add_js')) {
+    flot_add_js();
+  }
+
   // Add forum ads & tracking
   $forum_ads = variable_get('drupalorg_forum_ad', array());
   if (arg(0) === 'forum' && isset($forum_ads[arg(1)])) {
