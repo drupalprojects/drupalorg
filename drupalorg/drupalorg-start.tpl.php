@@ -12,7 +12,6 @@
 <div class="extend-drupal">
 <h2>Extend Drupal</h2>
     <div class="narrow-box"><p>Download hundreds of modules to customize and extend your site.</p>
-    </div><!--/narrow-box-->
     <div class="narrow-box-list">
       <h5 class="lined">Most popular modules</h5>
       <?php print $most_popular_modules; ?>
@@ -30,13 +29,13 @@
       </ul>
       <a href="http://localize.drupal.org/" class="all">All translations</a>
     </div><!--/narrow-box-list-->
+  </div><!--/narrow-box-->
 </div><!--/extend-drupal-->
 
 <div class="documentation">
   <h2>Documentation</h2>
   <div class="narrow-box">
     <p>Want more information before you begin using Drupal? Our extensive documentation will tell you how.</p>
-  </div><!--/narrow-box-->
     <div class="narrow-box-list">
       <h5 class="lined">Most popular guides</h5>
       <ul>
@@ -53,6 +52,7 @@
       <p><a href="/books"><img src="<?php print url(drupal_get_path('module', 'drupalorg') . '/images/books-d7.png'); ?>" alt="Drupal book covers"></a></p>
       <p>There are many <a href="/books">Drupal books</a> available.</p>
     </div><!--/narrow-box-list-->
+  </div><!--/narrow-box-->
 </div><!--/documentation-->
 
 <div class="get-support">
