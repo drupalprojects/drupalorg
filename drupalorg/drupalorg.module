@@ -1449,10 +1449,15 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
           drupal_set_message(t('This organization is a <a href="!listing">Drupal training provider</a>.', array('!listing' => url('training'))), 'status');
         }
 
-        // For organizations that request a services listing, show a link to
-        // their issue for the node owner and admins.
-        if ($node->field_org_marketplace_request[0]['value'] && ($node->uid === $user->uid || user_access('administer nodes')) && !empty($node->field_organization_issue[0]['nid'])) {
-          drupal_set_message(t('Communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_organization_issue[0]['nid']))), 'status');
+        // For organizations that request a services listing or training
+        // listing, show a link to their issue for the node owner and admins.
+        if (($node->uid === $user->uid || user_access('administer nodes'))) {
+          if ($node->field_org_marketplace_request[0]['value'] && !empty($node->field_organization_issue[0]['nid'])) {
+            drupal_set_message(t('Regarding <em>Services listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_organization_issue[0]['nid']))), 'status');
+          }
+          if ($node->field_org_training_request[0]['value'] && !empty($node->field_org_training_issue[0]['nid'])) {
+            drupal_set_message(t('Regarding <em>Training listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_org_training_issue[0]['nid']))), 'status');
+          }
         }
       }
     }
