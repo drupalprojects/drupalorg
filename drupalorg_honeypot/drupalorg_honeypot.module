@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * Implementation of hook_honeypot_timelimit
+ */
+function drupalorg_honeypot_honeypot_timelimit($timelimit, $form_values, $count) {
+  global $user;
+
+  $extra_time = 0;
+  if ($user->uid > 0 && isset($form_values['country']) && in_array($form_values['country'], variable_get('drupalorg_honeypot_likely_spam_countries', array()))) {
+    $extra_time = $timelimit * variable_get('drupalorg_honeypot_factor', 1);
+  }
+  elseif ($user->uid > 0) {
+    $country = db_result(db_query('SELECT value FROM {profile_values} WHERE fid = %d AND uid = %d', 17, $user->uid));
+    if ($country && in_array($country, variable_get('drupalorg_honeypot_likely_spam_countries', array()))) {
+      $extra_time = $timelimit * variable_get('drupalorg_honeypot_factor', 1);
+    }
+  }
+  if (!$extra_time) {
+    $match = FALSE;
+    if (isset($form_values['title']) && $form_values['title']) {
+      $match = drupalorg_honeypot_scan($form_values['title']);
+    }
+    if (!$match && isset($form_values['body']) && $form_values['body']) {
+      $match = drupalorg_honeypot_scan($form_values['body']);
+    }
+    if (!$match && isset($form_values['subject']) && $form_values['subject']) {
+      $match = drupalorg_honeypot_scan($form_values['subject']);
+    }
+    if (!$match && isset($form_values['comment']) && $form_values['comment']) {
+      $match = drupalorg_honeypot_scan($form_values['comment']);
+    }
+    if ($match) {
+      $extra_time = $timelimit * variable_get('drupalorg_honeypot_factor', 1);
+    }
+  }
+  if ($extra_time) {
+    static $message = TRUE;
+    if ($message) {
+      drupal_set_message(t('We have had bad experiences with spammers. Please <a href ="!url">apply for the "not a spammer" role</a> in order to avoid this message and be able to post faster.', array('!url' => '/node/add/project-issue/webmasters&component=Spam')));
+      $message = FALSE;
+    }
+  }
+  return $extra_time;
+}
+
+/**
+ * Super-simple text scanner
+ *
+ * @param $text (string) Text to scan
+ */
+function drupalorg_honeypot_scan($text) {
+  $needles = variable_get('drupalorg_honeypot_strings', array()); 
+  foreach ($needles as $needle) {
+    if (strpos($text, $needle) !== FALSE) {
+      return TRUE;
+    } 
+  }
+}
+
