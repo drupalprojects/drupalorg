@@ -5,7 +5,7 @@
     <h5>Online &amp; Local Groups</h5>
     <p><a href="http://groups.drupal.org">Groups.drupal.org</a> provides a place for groups to organize, meet, and work on projects based on interest or geographic location. It's a great way to get involved, learn more and get support.</p>
     <h5>Events &amp; Meetups</h5>
-    <p>Community members can also be found at Drupal <a href="http://groups.drupal.org/event">events</a> where you can meet face to face, swap tips, and get inspiration for your next Drupal project, making friends along the way.</p>
+    <p>Community members can also be found at Drupal <a href="http://groups.drupal.org/events">events</a> where you can meet face to face, swap tips, and get inspiration for your next Drupal project, making friends along the way.</p>
     <h5>Chat (IRC)</h5>
     <p><a href="/irc">IRC</a> is one means to communicate and interact with others. Whether you are asking questions or giving answers, IRC is a fast and effective way of getting involved with the community and getting the support you need.</p>
     <h5>Planet Drupal</h5>

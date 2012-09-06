@@ -1,4 +1,3 @@
-; Test
 name = Drupal.org
 description = "Customizations and tweaks for drupal.org"
 package = Drupal.org
@@ -10,7 +9,7 @@ dependencies[] = ctools
 dependencies[] = views_content_cache
 dependencies[] = features
 ; @todo D7 - these are dependencies and should be marked as such.
-;dependencues[] = drupalorg_git_gateway
-;dependencues[] = drupalorg_versioncontrol
+;dependencies[] = drupalorg_git_gateway
+;dependencies[] = drupalorg_versioncontrol
 scripts[] = js/general.js
 core = 7.x
