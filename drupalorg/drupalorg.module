@@ -1433,6 +1433,22 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
         $node->content = $content;
 
+        // Highlight a Service provider above the organization page.
+        switch ($node->field_organization_list_rule[0]['value']) {
+          case 'all':
+            drupal_set_message(t('This organization is a <a href="!listing">Drupal services provider</a>.', array('!listing' => url('drupal-services/all'))), 'status');
+            break;
+
+          case 'featured':
+            drupal_set_message(t('This organization is a <a href="!listing">Featured services provider</a>.', array('!listing' => url('drupal-services'))), 'status');
+            break;
+        }
+
+        // Highlight a Training provider above the organization page.
+        if (!empty($node->field_organization_hosting_level[0]['value'])) {
+          drupal_set_message(t('This organization is a <a href="!listing">Drupal training provider</a>.', array('!listing' => url('training'))), 'status');
+        }
+
         // For organizations that request a services listing, show a link to
         // their issue for the node owner and admins.
         if ($node->field_org_marketplace_request[0]['value'] && ($node->uid === $user->uid || user_access('administer nodes')) && !empty($node->field_organization_issue[0]['nid'])) {
