@@ -1575,7 +1575,7 @@ function drupalorg_views_pre_render(&$view) {
         $listing = array_shift($args);
         // If necessasry, fill default arguments.
         if ($n > count($args)) {
-          $args = array_merge(array_fill(count($args), $n - count($args), 'all'), $args);
+          $args = array_merge($args, array_fill(count($args), $n - count($args), 'all'));
         }
         // Link to this argument.
         $args[$n] = str_replace(' ', '-', $row->$name);
