@@ -862,7 +862,7 @@ featured|Featured providers',
     'widget' => array(
       'default_value' => array(
         '0' => array(
-          'value' => 'all',
+          'value' => 'never',
         ),
       ),
       'default_value_php' => NULL,

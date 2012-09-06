@@ -1826,6 +1826,19 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
   $handler->override_option('block_description', '');
   $handler->override_option('block_caching', -1);
   $handler = $view->new_display('page', 'Management view', 'page_2');
+  $handler->override_option('relationships', array(
+    'uid' => array(
+      'label' => 'user',
+      'required' => 0,
+      'id' => 'uid',
+      'table' => 'node_revisions',
+      'field' => 'uid',
+      'override' => array(
+        'button' => 'Use default',
+      ),
+      'relationship' => 'none',
+    ),
+  ));
   $handler->override_option('fields', array(
     'title' => array(
       'label' => 'Organization',
@@ -1864,7 +1877,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
       ),
     ),
     'name' => array(
-      'label' => 'Author',
+      'label' => 'Posted by',
       'alter' => array(
         'alter_text' => 0,
         'text' => '',
@@ -1901,8 +1914,83 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
       ),
       'relationship' => 'none',
     ),
+    'created' => array(
+      'label' => 'Posted on',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'absolute' => 0,
+        'link_class' => '',
+        'alt' => '',
+        'rel' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'hide_alter_empty' => 1,
+      'date_format' => 'small',
+      'custom_date_format' => '',
+      'exclude' => 0,
+      'id' => 'created',
+      'table' => 'node',
+      'field' => 'created',
+      'override' => array(
+        'button' => 'Use default',
+      ),
+      'relationship' => 'none',
+    ),
+    'name_1' => array(
+      'label' => 'Updated by',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'absolute' => 0,
+        'link_class' => '',
+        'alt' => '',
+        'rel' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'hide_alter_empty' => 1,
+      'link_to_user' => 1,
+      'overwrite_anonymous' => 0,
+      'anonymous_text' => '',
+      'exclude' => 0,
+      'id' => 'name_1',
+      'table' => 'users',
+      'field' => 'name',
+      'override' => array(
+        'button' => 'Use default',
+      ),
+      'relationship' => 'uid',
+    ),
     'changed' => array(
-      'label' => 'Updated',
+      'label' => 'Updated on',
       'alter' => array(
         'alter_text' => 0,
         'text' => '',
@@ -1941,7 +2029,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
   ));
   $handler->override_option('sorts', array(
     'changed' => array(
-      'order' => 'ASC',
+      'order' => 'DESC',
       'granularity' => 'second',
       'id' => 'changed',
       'table' => 'node',
@@ -1954,6 +2042,22 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
   ));
   $handler->override_option('arguments', array());
   $handler->override_option('filters', array(
+    'type' => array(
+      'operator' => 'in',
+      'value' => array(
+        'organization' => 'organization',
+      ),
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'type',
+      'table' => 'node',
+      'field' => 'type',
+      'relationship' => 'none',
+    ),
     'status' => array(
       'operator' => '=',
       'value' => '1',
@@ -1974,20 +2078,25 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
         'button' => 'Use default',
       ),
     ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'organization' => 'organization',
-      ),
+    'title' => array(
+      'operator' => 'contains',
+      'value' => '',
       'group' => '0',
-      'exposed' => FALSE,
+      'exposed' => TRUE,
       'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
+        'use_operator' => 0,
+        'operator' => 'title_op',
+        'identifier' => 'title',
+        'label' => 'Title',
+        'remember' => 0,
       ),
-      'id' => 'type',
+      'case' => 0,
+      'id' => 'title',
       'table' => 'node',
-      'field' => 'type',
+      'field' => 'title',
+      'override' => array(
+        'button' => 'Use default',
+      ),
       'relationship' => 'none',
     ),
     'field_org_marketplace_request_value_many_to_one' => array(
@@ -2000,7 +2109,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
       'expose' => array(
         'use_operator' => 0,
         'operator' => 'field_org_marketplace_request_value_many_to_one_op',
-        'identifier' => 'field_org_marketplace_request_value_many_to_one',
+        'identifier' => 'services_request',
         'label' => 'Request for Services section',
         'optional' => 1,
         'single' => 1,
@@ -2026,7 +2135,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
       'expose' => array(
         'use_operator' => 0,
         'operator' => 'field_organization_list_rule_value_many_to_one_op',
-        'identifier' => 'field_organization_list_rule_value_many_to_one',
+        'identifier' => 'services',
         'label' => 'Services listing',
         'optional' => 1,
         'single' => 1,
@@ -2050,7 +2159,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
       'expose' => array(
         'use_operator' => 0,
         'operator' => 'field_org_training_request_value_many_to_one_op',
-        'identifier' => 'field_org_training_request_value_many_to_one',
+        'identifier' => 'training_request',
         'label' => 'Request for Training section',
         'optional' => 1,
         'single' => 1,
@@ -2074,7 +2183,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
       'expose' => array(
         'use_operator' => 0,
         'operator' => 'field_organization_training_list_value_many_to_one_op',
-        'identifier' => 'field_organization_training_list_value_many_to_one',
+        'identifier' => 'training',
         'label' => 'Training listing',
         'optional' => 1,
         'single' => 1,
@@ -2098,8 +2207,8 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
     ),
   ));
   $handler->override_option('title', 'Marketplace management');
-  $handler->override_option('css_class', 'grid-8');
-  $handler->override_option('header', '');
+  $handler->override_option('css_class', 'grid-12');
+  $handler->override_option('header', '<a href="http://drupal.org/node/1735708">Marketplace guidelines</a>.  Guides for reviewers: <a href="http://drupal.org/node/1710338">marketplace listings</a>, <a href="http://drupal.org/node/1735864">training listings</a>.');
   $handler->override_option('empty', '');
   $handler->override_option('items_per_page', 50);
   $handler->override_option('style_plugin', 'table');
@@ -2107,11 +2216,13 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
     'grouping' => '',
     'override' => 1,
     'sticky' => 0,
-    'order' => 'asc',
+    'order' => 'desc',
     'summary' => '',
     'columns' => array(
       'title' => 'title',
       'name' => 'name',
+      'created' => 'created',
+      'name_1' => 'name_1',
       'changed' => 'changed',
     ),
     'info' => array(
@@ -2120,6 +2231,14 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
         'separator' => '',
       ),
       'name' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'created' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'name_1' => array(
         'sortable' => 1,
         'separator' => '',
       ),
