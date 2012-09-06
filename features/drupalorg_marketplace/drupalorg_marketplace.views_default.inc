@@ -2207,7 +2207,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?field_even
     ),
   ));
   $handler->override_option('title', 'Marketplace management');
-  $handler->override_option('css_class', 'grid-12');
+  $handler->override_option('css_class', 'grid-12 alpha omega');
   $handler->override_option('header', '<a href="http://drupal.org/node/1735708">Marketplace guidelines</a>.  Guides for reviewers: <a href="http://drupal.org/node/1710338">marketplace listings</a>, <a href="http://drupal.org/node/1735864">training listings</a>.');
   $handler->override_option('empty', '');
   $handler->override_option('items_per_page', 50);
