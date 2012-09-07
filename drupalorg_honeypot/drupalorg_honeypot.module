@@ -50,7 +50,8 @@ function drupalorg_honeypot_honeypot_timelimit($timelimit, $form_values, $count)
  * @param $text (string) Text to scan
  */
 function drupalorg_honeypot_scan($text) {
-  $needles = variable_get('drupalorg_honeypot_strings', array()); 
+  $needles = variable_get('drupalorg_honeypot_strings', array());
+  $text = strtolower($text);
   foreach ($needles as $needle) {
     if (strpos($text, $needle) !== FALSE) {
       return TRUE;
