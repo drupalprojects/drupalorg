@@ -109,7 +109,7 @@ function drupalorg_search_block_info() {
   $enabled_facets = apachesolr_get_enabled_facets('drupalorg_search');
   $facets = drupalorg_search_apachesolr_facets();
   foreach ($enabled_facets as $delta => $facet_field) {
-    $blocks[$delta] = $facets[$delta] + array('cache' => BLOCK_NO_CACHE);
+    $blocks[$delta] = $facets[$delta] + array('cache' => DRUPAL_NO_CACHE);
   }
   */
   return $blocks;
