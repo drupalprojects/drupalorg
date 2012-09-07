@@ -589,7 +589,7 @@ function drupalorg_set_home_callback($form, $form_state) {
  * Get rid of jQuery UI theme noise.
  */
 function drupalorg_library_alter(&$libraries, $module) {
-  if ($module === 'system' && isset($libraries['ui'])) {
+  if ($module === 'system' && isset($libraries['ui']) && arg(0) !== 'admin') {
     unset($libraries['ui']['css']['misc/ui/jquery.ui.theme.css']);
   }
 }
