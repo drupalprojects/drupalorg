@@ -16,24 +16,27 @@ function drupalorg_honeypot_honeypot_timelimit($timelimit, $form_values, $count)
       $extra_time = $timelimit * variable_get('drupalorg_honeypot_factor', 1);
     }
   }
-  if (!$extra_time) {
-    $match = FALSE;
-    if (isset($form_values['title']) && $form_values['title']) {
-      $match = drupalorg_honeypot_scan($form_values['title']);
-    }
-    if (!$match && isset($form_values['body']) && $form_values['body']) {
-      $match = drupalorg_honeypot_scan($form_values['body']);
-    }
-    if (!$match && isset($form_values['subject']) && $form_values['subject']) {
-      $match = drupalorg_honeypot_scan($form_values['subject']);
-    }
-    if (!$match && isset($form_values['comment']) && $form_values['comment']) {
-      $match = drupalorg_honeypot_scan($form_values['comment']);
-    }
-    if ($match) {
-      $extra_time = $timelimit * variable_get('drupalorg_honeypot_factor', 1);
-    }
+
+  $count = 0;
+  if (isset($form_values['title']) && $form_values['title']) {
+    $count += drupalorg_honeypot_scan($form_values['title']);
   }
+  if (isset($form_values['body']) && $form_values['body']) {
+    $count += drupalorg_honeypot_scan($form_values['body']);
+  }
+  if (isset($form_values['subject']) && $form_values['subject']) {
+    $count += drupalorg_honeypot_scan($form_values['subject']);
+  }
+  if (isset($form_values['comment']) && $form_values['comment']) {
+    $count += drupalorg_honeypot_scan($form_values['comment']);
+  }
+
+  if ($count) {
+    $extra_time += $count * $timelimit * variable_get('drupalorg_honeypot_factor', 1);
+    watchdog('honeypot', 'Spammer %uname (%uid) earned %count spam points and %time extra time.', array('%uname' => $user->name, '%uid' => $user->uid, '%count' => $count, '%time' => $extra_time));
+    sleep($count * variable_get('drupalorg_honeypot_factor', 1));
+  }
+
   if ($extra_time) {
     static $message = TRUE;
     if ($message) {
@@ -41,6 +44,7 @@ function drupalorg_honeypot_honeypot_timelimit($timelimit, $form_values, $count)
       $message = FALSE;
     }
   }
+
   return $extra_time;
 }
 
@@ -52,10 +56,12 @@ function drupalorg_honeypot_honeypot_timelimit($timelimit, $form_values, $count)
 function drupalorg_honeypot_scan($text) {
   $needles = variable_get('drupalorg_honeypot_strings', array());
   $text = strtolower($text);
+  $count = 0;
   foreach ($needles as $needle) {
     if (strpos($text, $needle) !== FALSE) {
-      return TRUE;
+      $count++;
     } 
   }
+  return $count;
 }
 
