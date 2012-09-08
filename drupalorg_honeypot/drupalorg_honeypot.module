@@ -46,7 +46,7 @@ function drupalorg_honeypot_honeypot_time_limit($timelimit, $form_values, $failu
   }
 
   if ($count) {
-    $extra_time += $count * $count * $timelimit * variable_get('drupalorg_honeypot_factor', 1);
+    $extra_time += $count * $timelimit * variable_get('drupalorg_honeypot_factor', 1);
     watchdog('honeypot', 'Spammer %uname (%uid) earned %count spam points and %time extra time.', array('%uname' => $user->name, '%uid' => $user->uid, '%count' => $count, '%time' => $extra_time));
     sleep($count * $failures * variable_get('drupalorg_honeypot_factor', 1));
   }
