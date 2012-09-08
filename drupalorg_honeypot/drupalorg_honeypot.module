@@ -76,9 +76,7 @@ function drupalorg_honeypot_scan($text) {
   $text = strtolower($text);
   $count = 0;
   foreach ($needles as $needle) {
-    if (strpos($text, $needle) !== FALSE) {
-      $count++;
-    } 
+    $count += substr_count($text, $needle);
   }
   return $count;
 }
