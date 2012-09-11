@@ -279,11 +279,6 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
     }
   }
 
-  // Add security update related checks to release forms.
-  if ($form_id == 'project_release_node_form') {
-    drupalorg_project_release_node_form_alter($form, $form_state);
-  }
-    
   if ($form_id == 'project_project_node_form') {
     // Deprecate the "license" field, as it must always be GPLv2+ anyway.
     if (! $form['project']['license']['#default_value']) {
@@ -319,84 +314,85 @@ function drupalorg_project_form_alter(&$form, $form_state, $form_id) {
   }
 }
 
-// == Security release restrictions ============================================
-
 /**
  * Alter release node forms properly for security updates.
  *
  * Ensure that only privileged users can modify a security release tag and when
  * people add this tag, they get to know about the process.
  */
-function drupalorg_project_release_node_form_alter(&$form, $form_state) {
-  // See if this is a release for a translation project, and if so, deny.
-  $project = $form['project']['#value'];
-  if (arg(2) != 'edit' && !empty($project->taxonomy[DRUPALORG_TRANSLATION_TID])) {
-    foreach (element_children($form) as $child) {
-      unset($form[$child]);
-    }
-    $form['translations_denied'] = array(
-      '#type' => 'markup',
-      '#value' => t('Translation projects have been moved and are now actively maintained at <a href="@localize-link">localize.drupal.org</a>. You are no longer allowed to create new releases of translation projects on drupal.org.', array('@localize-link' => 'http://localize.drupal.org/')),
-    );
-    return;
-  }
-
-  if (!empty($form['taxonomy'])) {
-    $vid = drupalorg_project_get_release_type_vid();
-    $security_tid = drupalorg_project_get_security_update_tid();
-    if (!empty($form['taxonomy'][$vid])) {
-      $form['taxonomy'][$vid]['#weight'] = 10;
-      if (empty($form['nid']['#value'])) {
-        // Adding a new release.
-        if (!empty($form['project_release']['rebuild']['#value'])) {
-          // This is a -dev, don't let anyone mark it a security update.
-          _drupalorg_project_remove_security_update($form);
-        }
-        else {
-          // Regular release
-          $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => url('node/'. DRUPALORG_RELEASE_TYPE_HANDBOOK_NID)));
-          // Add wrapper div for drupalorg_project.js
-          $form['taxonomy'][$vid]['#prefix'] = '<div class="release-type-select">';
-          $form['taxonomy'][$vid]['#suffix'] = '</div>';
-          $form['#validate'][] = 'drupalorg_project_security_release_form_validate';
-          $confirm_class = 'security-update-confirm';
-          // Hide the confirmation checkbox on page load unless 'Security
-          // update' is already selected.
-          if (empty($form_state['values']['taxonomy'][$vid]) || (array_search($security_tid, $form_state['values']['taxonomy'][$vid]) === FALSE)) {
-            $confirm_class .= ' js-hide';
-          }
-          $form['security_update_confirm'] = array(
-            '#type' => 'checkbox',
-            '#title' => t('Are you sure you want to mark this release as a <a href="@security_update_url">Security update</a>?', array('@security_update_url' => url('node/'. DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID))),
-            '#prefix' => '<div class="'. $confirm_class .'">',
-            '#suffix' => '</div>',
-            '#weight' => -2,
-            '#description' => t('If you select %security_update, your release will not be published without the manual intervention of the <a href="@security_url">Drupal Security Team</a>. You should have already <a href="@contact_url">contacted the Security Team</a> to coordinate a security advisory (SA) for your release before you committed any security-related patches.', array('%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL)),
-            '#default_value' => !empty($form_state['values']['security_update_confirm']),
-          );
-          $drupalorg_project_path = drupal_get_path('module', 'drupalorg_project');
-          drupal_add_js($drupalorg_project_path .'/drupalorg_project.js');
-          drupal_add_css($drupalorg_project_path .'/drupalorg_project.css');
-        }
+function drupalorg_project_form_node_form_alter($form, $form_state) {
+  if (project_release_node_is_release($form_state['node'])) {
+    // See if this is a release for a translation project, and if so, deny.
+    $project = node_load(project_release_get_release_project_nid($form_state['node']));
+    // TODO D7 all this taxonomy stuff needs to use the fields
+    if (arg(2) != 'edit' && !empty($project->taxonomy[DRUPALORG_TRANSLATION_TID])) {
+      foreach (element_children($form) as $child) {
+        unset($form[$child]);
       }
-      else {
-        // Editing an existing release.
-        if (array_search($security_tid, $form['taxonomy'][$vid]['#default_value']) !== FALSE) {
-          // If this release is already marked as a Security update, don't
-          // let regular users change it any futher.
-          if (!user_access('administer projects')) {
-            $form['taxonomy'][$vid]['#disabled'] = TRUE;
-            $form['taxonomy'][$vid]['#value'] = $form['taxonomy'][$vid]['#default_value'];
-          }
-          $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a> Since this release is already marked as a %security_update, you can no longer change the release type. If you believe you need to do so for some reason, you should <a href="@contact_url">contact</a> the <a href="@security_url">Drupal Security Team</a>.', array('@handbook_url' => url('node/'. DRUPALORG_RELEASE_TYPE_HANDBOOK_NID), '%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL));
-        }
-        else {
-          // Not a Security update, remove that option entirely if this is
-          // either a -dev snapshot or a non-admin user.
-          if (!empty($form['#node']->rebuild) || !user_access('administer projects')) {
+      $form['translations_denied'] = array(
+        '#type' => 'markup',
+        '#value' => t('Translation projects have been moved and are now actively maintained at <a href="@localize-link">localize.drupal.org</a>. You are no longer allowed to create new releases of translation projects on drupal.org.', array('@localize-link' => 'http://localize.drupal.org/')),
+      );
+      return;
+    }
+
+    if (!empty($form['taxonomy'])) {
+      $vid = drupalorg_project_get_release_type_vid();
+      $security_tid = drupalorg_project_get_security_update_tid();
+      if (!empty($form['taxonomy'][$vid])) {
+        $form['taxonomy'][$vid]['#weight'] = 10;
+        if (empty($form['nid']['#value'])) {
+          // Adding a new release.
+          if (!empty($form['project_release']['rebuild']['#value'])) {
+            // This is a -dev, don't let anyone mark it a security update.
             _drupalorg_project_remove_security_update($form);
           }
-          $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => url('node/'. DRUPALORG_RELEASE_TYPE_HANDBOOK_NID)));
+          else {
+            // Regular release
+            $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => url('node/'. DRUPALORG_RELEASE_TYPE_HANDBOOK_NID)));
+            // Add wrapper div for drupalorg_project.js
+            $form['taxonomy'][$vid]['#prefix'] = '<div class="release-type-select">';
+            $form['taxonomy'][$vid]['#suffix'] = '</div>';
+            $form['#validate'][] = 'drupalorg_project_security_release_form_validate';
+            $confirm_class = 'security-update-confirm';
+            // Hide the confirmation checkbox on page load unless 'Security
+            // update' is already selected.
+            if (empty($form_state['values']['taxonomy'][$vid]) || (array_search($security_tid, $form_state['values']['taxonomy'][$vid]) === FALSE)) {
+              $confirm_class .= ' js-hide';
+            }
+            $form['security_update_confirm'] = array(
+              '#type' => 'checkbox',
+              '#title' => t('Are you sure you want to mark this release as a <a href="@security_update_url">Security update</a>?', array('@security_update_url' => url('node/'. DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID))),
+              '#prefix' => '<div class="'. $confirm_class .'">',
+              '#suffix' => '</div>',
+              '#weight' => -2,
+              '#description' => t('If you select %security_update, your release will not be published without the manual intervention of the <a href="@security_url">Drupal Security Team</a>. You should have already <a href="@contact_url">contacted the Security Team</a> to coordinate a security advisory (SA) for your release before you committed any security-related patches.', array('%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL)),
+              '#default_value' => !empty($form_state['values']['security_update_confirm']),
+            );
+            $drupalorg_project_path = drupal_get_path('module', 'drupalorg_project');
+            drupal_add_js($drupalorg_project_path .'/drupalorg_project.js');
+            drupal_add_css($drupalorg_project_path .'/drupalorg_project.css');
+          }
+        }
+        else {
+          // Editing an existing release.
+          if (array_search($security_tid, $form['taxonomy'][$vid]['#default_value']) !== FALSE) {
+            // If this release is already marked as a Security update, don't
+            // let regular users change it any futher.
+            if (!user_access('administer projects')) {
+              $form['taxonomy'][$vid]['#disabled'] = TRUE;
+              $form['taxonomy'][$vid]['#value'] = $form['taxonomy'][$vid]['#default_value'];
+            }
+            $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a> Since this release is already marked as a %security_update, you can no longer change the release type. If you believe you need to do so for some reason, you should <a href="@contact_url">contact</a> the <a href="@security_url">Drupal Security Team</a>.', array('@handbook_url' => url('node/'. DRUPALORG_RELEASE_TYPE_HANDBOOK_NID), '%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL));
+          }
+          else {
+            // Not a Security update, remove that option entirely if this is
+            // either a -dev snapshot or a non-admin user.
+            if (!empty($form['#node']->rebuild) || !user_access('administer projects')) {
+              _drupalorg_project_remove_security_update($form);
+            }
+            $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => url('node/'. DRUPALORG_RELEASE_TYPE_HANDBOOK_NID)));
+          }
         }
       }
     }
