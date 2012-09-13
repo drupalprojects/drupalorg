@@ -1445,7 +1445,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         }
 
         // Highlight a Training provider above the organization page.
-        if (!empty($node->field_organization_hosting_level[0]['value'])) {
+        if (!empty($node->field_organization_training_list[0]['value'])) {
           drupal_set_message(t('This organization is a <a href="!listing">Drupal training provider</a>.', array('!listing' => url('training'))), 'status');
         }
 
