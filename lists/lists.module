@@ -449,10 +449,10 @@ function lists_node_update($node) {
     $generate_mail = FALSE;
     $lists_forum_tids = array_keys(_lists_get_forum_tids());
     if (is_array($node->taxonomy)) {
-      foreach ($node->taxonomy as $key => $tid) {
-        if (in_array($tid, $lists_forum_tids)) {
+      foreach ($node->taxonomy as $key => $term) {
+        if (in_array($term->tid, $lists_forum_tids)) {
           $generate_mail = TRUE;
-          $forum_tid = $tid;
+          $forum_tid = $term->tid;
           break;
         }
       }
