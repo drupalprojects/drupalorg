@@ -100,21 +100,33 @@ function drupalorg_update_7003() {
   module_enable(array('drupalorg_user', 'drupalorg_home_support'));
   features_flush_caches();
 
+  // This will generate the field data using the math functions built into the
+  // database instead of needing to run multiple queries and round-trip to php.
   $query = db_select('html5_user_geolocation', 'hug');
-  $query->addJoin('INNER', 'users', 'u', 'u.uid = hug.uid');
-  $query->fields('hug', array('uid', 'latitude', 'longitude'));
-  foreach ($query->execute() as $row) {
-    $account = user_load($row->uid);
-    $account->field_user_geolocation = array(
-      'und' => array(
-        array(
-          'lat' => $row->latitude,
-          'lng' => $row->longitude,
-        ),
-      ),
-    );
-    user_save($account);
-  }
+  $query->innerJoin('users', 'u', 'u.uid = hug.uid');
+  $query->addExpression(':entity_type', 'entity_type', array(':entity_type' => 'user'));
+  $query->addExpression(':bundle', 'bundle', array(':bundle' => 'user'));
+  $query->addExpression(':deleted', 'deleted', array(':deleted' => 0));
+  $query->addField('u', 'uid', 'entity_id');
+  $query->addField('u', 'uid', 'revision_id');
+  $query->addExpression(':language', 'language', array(':language' => LANGUAGE_NONE));
+  $query->addExpression(':delta', 'delta', array(':delta' => 0));
+  $query->addField('hug', 'latitude', 'field_user_geolocation_lat');
+  $query->addField('hug', 'longitude', 'field_user_geolocation_lng');
+  $query->addExpression('SIN(RADIANS(hug.latitude))', 'field_user_geolocation_lat_sin');
+  $query->addExpression('COS(RADIANS(hug.latitude))', 'field_user_geolocation_lat_cos');
+  $query->addExpression('RADIANS(hug.longitude))', 'field_user_geolocation_lng_rad');
+
+  $query2 = clone($query);
+  // Direct field injection for speed reasons.
+  db_insert('field_data_field_user_geolocation')
+    ->from($query)
+    ->execute();
+  db_insert('field_revision_field_user_geolocation')
+    ->from($query2)
+    ->execute();
+  // Since we have manually injected data, we need to explicitly clear the field cache.
+  field_cache_clear();
 
   db_drop_table('html5_user_geolocation');
 }
