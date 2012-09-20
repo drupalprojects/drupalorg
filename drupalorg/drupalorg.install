@@ -136,9 +136,21 @@ function drupalorg_update_7003() {
  */
 function drupalorg_update_7006() {
   module_enable(array('tracker'));
-  while (variable_get('tracker_index_nid', 0) > 0) {
-    tracker_cron();
-  }
+  // Tell the normal indexer that everything's up to date.
+  variable_set('tracker_index_nid', 0);
+  // Quickly recalculate the tracker using a few massive queries instead of
+  // indexing a single node at a time.
+  db_query('TRUNCATE {tracker_node}');
+  db_query('TRUNCATE {tracker_user}');
+  // Tracker entry for all nodes.
+  db_query("INSERT INTO {tracker_node} (nid, published, changed) (SELECT n.nid, n.status, GREATEST(n.changed, IFNULL(MAX(c.changed), 0)) FROM {node} n LEFT JOIN {comment} c ON n.nid = c.nid GROUP BY n.nid)");
+  // Add a temporary index to use for the next query.
+  db_add_index('comment', 'tmp_tracking_idx', array('nid', 'status', 'uid'));
+  // Tracker entries for commenters.
+  db_query("INSERT INTO {tracker_user} (nid, uid, published, changed) (SELECT t.nid, c.uid, t.published, t.changed FROM {tracker_node} t INNER JOIN {comment} c ON t.nid = c.nid WHERE c.status = 1 GROUP BY c.nid, c.uid)");
+  db_drop_index('comment', 'tmp_tracking_idx');
+  // Tracker entry for node authors.
+  db_query("INSERT IGNORE INTO {tracker_user} (nid, uid, published, changed) (SELECT n.nid, n.uid, t.published, t.changed FROM {tracker_node} t INNER JOIN {node} n ON t.nid = n.nid)");
 }
 
 /**
