@@ -61,12 +61,8 @@ function drupalorg_update_7000() {
   ));
 
   // Migrate data.
-  $result = db_select('users_access', 'ua')
-    ->fields('ua', array('uid', 'access'))
-    ->execute();
-  foreach ($result as $row) {
-    drupal_write_record('users', $row, array('uid'));
-  }
+  // Use a multi table update for speed reasons.
+  db_query('UPDATE {users}, {users_access} SET {users}.access = {users_access}.access WHERE {users}.uid = {users_access}.uid');
 
   // Remove table.
   db_drop_table('users_access');
