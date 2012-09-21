@@ -246,7 +246,7 @@ function _drupalorg_git_varnish_project_maintainer_update($nid) {
   }
   $nids[] = $nid;
 
-  $uri = db_result(db_query('SELECT uri FROM {project_projects} WHERE nid = %d', $nid));
+  $uri = db_query('SELECT field_project_machine_name_value FROM {field_data_field_project_machine_name} WHERE entity_id = :entity_id AND entity_type = :entity_type AND deleted = 0', array(':entity_id' => $nid, ':entity_type' => 'node'))->fetchField();
 
   $host = _drupalorg_git_varnish_get_host();
   $commands = array(
