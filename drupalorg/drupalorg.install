@@ -115,7 +115,7 @@ function drupalorg_update_7003() {
   $query->addField('hug', 'longitude', 'field_user_geolocation_lng');
   $query->addExpression('SIN(RADIANS(hug.latitude))', 'field_user_geolocation_lat_sin');
   $query->addExpression('COS(RADIANS(hug.latitude))', 'field_user_geolocation_lat_cos');
-  $query->addExpression('RADIANS(hug.longitude))', 'field_user_geolocation_lng_rad');
+  $query->addExpression('RADIANS(hug.longitude)', 'field_user_geolocation_lng_rad');
 
   $query2 = clone($query);
   // Direct field injection for speed reasons.
