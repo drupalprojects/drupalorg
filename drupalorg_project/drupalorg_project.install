@@ -6,7 +6,7 @@
  */
 
 /**
- * Implementation of hook_install().
+ * Implements hook_install().
  *
  * Set the system weight heavier than project* so project altering works.
  */
@@ -15,4 +15,64 @@ function drupalorg_project_install() {
     ->fields(array('weight' => 5))
     ->condition('name', 'drupalorg_project')
     ->execute();
+}
+
+/**
+ * Implements hook_update_dependencies().
+ */
+function drupalorg_project_update_dependencies() {
+  $dependencies['drupalorg_project'][7000] = array(
+    // Since we're editing the field_issue_status field, we need to wait
+    // until it actually exists...
+    'project_issue' => 7000,
+  );
+  return $dependencies;
+}
+
+/**
+ * Add missing statuses back into the field_issue_status field.
+ */
+function drupalorg_project_update_7000() {
+  $field = field_info_field('field_issue_status');
+
+  // Define the entire array again to preserve our ordering.
+  // Copied from drupal.org's {project_issue_state} table.
+  $field['settings']['allowed_values'] = array(
+    1 => 'Active',
+    13 => 'Needs work',
+    8 => 'Needs review',
+    14 => 'Reviewed & tested by the community', // d.o specific.
+    15 => 'Patch (to be ported)', // d.o specific.
+    2 => 'Fixed',
+    4 => 'Postponed',
+    16 => 'Postponed (maintainer needs more info)', // d.o specific.
+    3 => 'Closed (duplicate)',
+    5 => "Closed (won't fix)",
+    6 => 'Closed (works as designed)',
+    18 => 'Closed (cannot reproduce)',
+    7 => 'Closed (fixed)',
+  );
+  field_update_field($field);
+
+  // Update the project_issue_open_states variable to add more open states.
+  variable_set('project_issue_open_states', array(1,2,4,8,13,14,15,16));
+
+  // Drupal.org {project_issue_state}.
+  //+-----+----------------------------------------+--------+------------+---------------+
+  //| sid | name                                   | weight | author_has | default_query |
+  //+-----+----------------------------------------+--------+------------+---------------+
+  //|   1 | active                                 |    -15 |          0 |             1 |
+  //|  13 | needs work                             |    -14 |          0 |             1 |
+  //|   8 | needs review                           |    -13 |          0 |             1 |
+  //|  14 | reviewed & tested by the community     |    -12 |          0 |             1 |
+  //|  15 | patch (to be ported)                   |    -11 |          0 |             1 |
+  //|   2 | fixed                                  |    -10 |          0 |             1 |
+  //|   4 | postponed                              |     -9 |          0 |             1 |
+  //|  16 | postponed (maintainer needs more info) |     -8 |          0 |             1 |
+  //|   3 | closed (duplicate)                     |     -7 |          0 |             0 |
+  //|   5 | closed (won't fix)                     |     -6 |          0 |             0 |
+  //|   6 | closed (works as designed)             |     -5 |          0 |             0 |
+  //|  18 | closed (cannot reproduce)              |     -4 |          0 |             0 |
+  //|   7 | closed (fixed)                         |     -3 |          0 |             0 |
+  //+-----+----------------------------------------+--------+------------+---------------+
 }
