@@ -2,7 +2,7 @@ name = Drupal.org Metrics
 description = A community dashboard
 package = Drupal.org
 core = 7.x
-; todo D7 dependencies[] = versioncontrol_project
+dependencies[] = versioncontrol_project
 dependencies[] = project_issue
 dependencies[] = flot
 
