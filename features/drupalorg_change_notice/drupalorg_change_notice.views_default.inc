@@ -1,1179 +1,625 @@
 <?php
+/**
+ * @file
+ * drupalorg_change_notice.views_default.inc
+ */
 
 /**
- * Implementation of hook_views_default_views().
+ * Implements hook_views_default_views().
  */
 function drupalorg_change_notice_views_default_views() {
-  $views = array();
+  $export = array();
 
-  // Exported view: change_records
-  $view = new view;
+  $view = new view();
   $view->name = 'change_records';
   $view->description = 'List Change record nodes';
   $view->tag = '';
   $view->base_table = 'node';
+  $view->human_name = '';
   $view->core = 0;
-  $view->api_version = '2';
+  $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Defaults */
   $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-      'field_change_to_branch_value' => array(
-        'label' => 'Introduced in branch/version',
-        'alter' => array(
-          'alter_text' => 0,
-          'text' => '',
-          'make_link' => 0,
-          'path' => '',
-          'absolute' => 0,
-          'link_class' => '',
-          'alt' => '',
-          'rel' => '',
-          'prefix' => '',
-          'suffix' => '',
-          'target' => '',
-          'help' => '',
-          'trim' => 0,
-          'max_length' => '',
-          'word_boundary' => 1,
-          'ellipsis' => 1,
-          'html' => 0,
-          'strip_tags' => 0,
-        ),
-        'empty' => '',
-        'hide_empty' => 0,
-        'empty_zero' => 0,
-        'hide_alter_empty' => 1,
-        'link_to_node' => 0,
-        'label_type' => 'custom',
-        'format' => 'default',
-        'multiple' => array(
-          'group' => TRUE,
-          'multiple_number' => '',
-          'multiple_from' => '',
-          'multiple_reversed' => FALSE,
-        ),
-        'exclude' => 0,
-        'id' => 'field_change_to_branch_value',
-        'table' => 'node_data_field_change_to_branch',
-        'field' => 'field_change_to_branch_value',
-        'relationship' => 'none',
-        'override' => array(
-          'button' => 'Override',
-        ),
-      ),
-      'field_change_to_value' => array(
-        'id' => 'field_change_to_value',
-        'table' => 'node_data_field_change_to',
-        'field' => 'field_change_to_value',
-      ),
-      'created' => array(
-        'label' => 'Notice created',
-        'alter' => array(
-          'alter_text' => 0,
-          'text' => '',
-          'make_link' => 0,
-          'path' => '',
-          'absolute' => 0,
-          'link_class' => '',
-          'alt' => '',
-          'rel' => '',
-          'prefix' => '',
-          'suffix' => '',
-          'target' => '',
-          'help' => '',
-          'trim' => 0,
-          'max_length' => '',
-          'word_boundary' => 1,
-          'ellipsis' => 1,
-          'html' => 0,
-          'strip_tags' => 0,
-        ),
-        'empty' => '',
-        'hide_empty' => 0,
-        'empty_zero' => 0,
-        'hide_alter_empty' => 1,
-        'date_format' => 'custom',
-        'custom_date_format' => 'd-M-Y',
-        'exclude' => 0,
-        'id' => 'created',
-        'table' => 'node',
-        'field' => 'created',
-        'override' => array(
-          'button' => 'Override',
-        ),
-        'relationship' => 'none',
-      ),
-      'field_description_value' => array(
-        'label' => '',
-        'alter' => array(
-          'alter_text' => 0,
-          'text' => '',
-          'make_link' => 0,
-          'path' => '',
-          'absolute' => 0,
-          'link_class' => '',
-          'alt' => '',
-          'rel' => '',
-          'prefix' => '',
-          'suffix' => '',
-          'target' => '',
-          'help' => '',
-          'trim' => 1,
-          'max_length' => '200',
-          'word_boundary' => 1,
-          'ellipsis' => 1,
-          'html' => 1,
-          'strip_tags' => 1,
-        ),
-        'empty' => '',
-        'hide_empty' => 0,
-        'empty_zero' => 0,
-        'hide_alter_empty' => 1,
-        'link_to_node' => 0,
-        'label_type' => 'none',
-        'format' => 'default',
-        'multiple' => array(
-          'group' => TRUE,
-          'multiple_number' => '',
-          'multiple_from' => '',
-          'multiple_reversed' => FALSE,
-        ),
-        'exclude' => 1,
-        'id' => 'field_description_value',
-        'table' => 'node_data_field_description',
-        'field' => 'field_description_value',
-        'relationship' => 'none',
-      ),
-      'path' => array(
-        'label' => '',
-        'alter' => array(
-          'alter_text' => 0,
-          'text' => '',
-          'make_link' => 0,
-          'path' => '',
-          'absolute' => 0,
-          'link_class' => '',
-          'alt' => '',
-          'rel' => '',
-          'prefix' => '',
-          'suffix' => '',
-          'target' => '',
-          'help' => '',
-          'trim' => 0,
-          'max_length' => '',
-          'word_boundary' => 1,
-          'ellipsis' => 1,
-          'html' => 0,
-          'strip_tags' => 0,
-        ),
-        'empty' => '',
-        'hide_empty' => 0,
-        'empty_zero' => 0,
-        'hide_alter_empty' => 1,
-        'absolute' => 1,
-        'exclude' => 1,
-        'id' => 'path',
-        'table' => 'node',
-        'field' => 'path',
-        'relationship' => 'none',
-      ),
-      'title' => array(
-        'label' => 'Change',
-        'alter' => array(
-          'alter_text' => 0,
-          'text' => '<a href="[path]" title="[field_description_value]">[title]</a>',
-          'make_link' => 1,
-          'path' => '[path]',
-          'absolute' => 1,
-          'link_class' => '',
-          'alt' => '[field_description_value]',
-          'rel' => '',
-          'prefix' => '',
-          'suffix' => '',
-          'target' => '',
-          'help' => '',
-          'trim' => 0,
-          'max_length' => '',
-          'word_boundary' => 1,
-          'ellipsis' => 1,
-          'html' => 0,
-          'strip_tags' => 0,
-        ),
-        'empty' => '',
-        'hide_empty' => 0,
-        'empty_zero' => 0,
-        'hide_alter_empty' => 1,
-        'link_to_node' => 0,
-        'exclude' => 0,
-        'id' => 'title',
-        'table' => 'node',
-        'field' => 'title',
-        'relationship' => 'none',
-        'override' => array(
-          'button' => 'Override',
-        ),
-      ),
-    ));
-  $handler->override_option('arguments', array(
-      'field_project_nid' => array(
-        'default_action' => 'default',
-        'style_plugin' => 'default_summary',
-        'style_options' => array(),
-        'wildcard' => 'all',
-        'wildcard_substitution' => 'All',
-        'title' => 'Change records for %1',
-        'breadcrumb' => '',
-        'default_argument_type' => 'fixed',
-        'default_argument' => '',
-        'validate_type' => 'project_nid',
-        'validate_fail' => 'empty',
-        'break_phrase' => 0,
-        'not' => 0,
-        'id' => 'field_project_nid',
-        'table' => 'node_data_field_project',
-        'field' => 'field_project_nid',
-        'validate_user_argument_type' => 'uid',
-        'validate_user_roles' => array(
-          2 => 0,
-          18 => 0,
-          3 => 0,
-          5 => 0,
-          16 => 0,
-          22 => 0,
-          20 => 0,
-          24 => 0,
-          12 => 0,
-          4 => 0,
-          14 => 0,
-          7 => 0,
-        ),
-        'relationship' => 'none',
-        'default_options_div_prefix' => '',
-        'default_argument_fixed' => '3060',
-        'default_argument_user' => 0,
-        'default_argument_image_size' => '_original',
-        'default_argument_php' => '',
-        'validate_argument_node_type' => array(
-          'organization' => 0,
-          'image' => 0,
-          'forum' => 0,
-          'project_project' => 0,
-          'project_release' => 0,
-          'project_issue' => 0,
-          'book' => 0,
-          'changenotice' => 0,
-          'packaging_whitelist' => 0,
-          'page' => 0,
-          'showcase' => 0,
-          'story' => 0,
-        ),
-        'validate_argument_node_access' => 0,
-        'validate_argument_nid_type' => 'nid',
-        'validate_argument_vocabulary' => array(
-          1 => 0,
-          5 => 0,
-          38 => 0,
-          6 => 0,
-          4 => 0,
-          44 => 0,
-          46 => 0,
-          3 => 0,
-          48 => 0,
-          50 => 0,
-          52 => 0,
-          7 => 0,
-          2 => 0,
-          31 => 0,
-          32 => 0,
-          33 => 0,
-          34 => 0,
-          9 => 0,
-        ),
-        'validate_argument_type' => 'tid',
-        'validate_argument_transform' => 0,
-        'validate_user_restrict_roles' => 0,
-        'image_size' => array(
-          '_original' => '_original',
-          'thumbnail' => 'thumbnail',
-          'preview' => 'preview',
-        ),
-        'validate_argument_project_term_argument_type' => 'tid',
-        'validate_argument_project_term_argument_action_top_without' => 'pass',
-        'validate_argument_project_term_argument_action_top_with' => 'pass',
-        'validate_argument_project_term_argument_action_child' => 'pass',
-        'validate_argument_php' => '',
-      ),
-    ));
-  $handler->override_option('filters', array(
-      'status' => array(
-        'operator' => '=',
-        'value' => '1',
-        'group' => '0',
-        'exposed' => FALSE,
-        'expose' => array(
-          'operator' => FALSE,
-          'label' => '',
-        ),
-        'id' => 'status',
-        'table' => 'node',
-        'field' => 'status',
-        'relationship' => 'none',
-      ),
-      'type' => array(
-        'operator' => 'in',
-        'value' => array(
-          'changenotice' => 'changenotice',
-        ),
-        'group' => '0',
-        'exposed' => FALSE,
-        'expose' => array(
-          'operator' => FALSE,
-          'label' => '',
-        ),
-        'id' => 'type',
-        'table' => 'node',
-        'field' => 'type',
-        'relationship' => 'none',
-      ),
-      'field_description_value' => array(
-        'operator' => 'contains',
-        'value' => '',
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_description_value_op',
-          'identifier' => 'keywords_description',
-          'label' => 'Keywords',
-          'remember' => 0,
-        ),
-        'case' => 0,
-        'id' => 'field_description_value',
-        'table' => 'node_data_field_description',
-        'field' => 'field_description_value',
-        'relationship' => 'none',
-      ),
-      'field_change_to_branch_value' => array(
-        'operator' => '=',
-        'value' => '',
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_change_to_branch_value_op',
-          'identifier' => 'to_branch',
-          'label' => 'Branch changed in',
-          'optional' => 1,
-          'remember' => 0,
-        ),
-        'case' => 0,
-        'id' => 'field_change_to_branch_value',
-        'table' => 'node_data_field_change_to_branch',
-        'field' => 'field_change_to_branch_value',
-        'relationship' => 'none',
-      ),
-      'field_change_to_value' => array(
-        'operator' => '=',
-        'value' => '',
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_change_to_value_op',
-          'identifier' => 'version',
-          'label' => 'Introduced in version',
-          'optional' => 1,
-          'remember' => 0,
-        ),
-        'case' => 0,
-        'id' => 'field_change_to_value',
-        'table' => 'node_data_field_change_to',
-        'field' => 'field_change_to_value',
-        'relationship' => 'none',
-      ),
-      'created' => array(
-        'operator' => '>=',
-        'value' => array(
-          'type' => 'date',
-          'value' => '',
-          'min' => '',
-          'max' => '',
-        ),
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 1,
-          'operator' => 'created_op',
-          'identifier' => 'created',
-          'label' => 'Change node created',
-          'optional' => 1,
-          'remember' => 0,
-        ),
-        'id' => 'created',
-        'table' => 'node',
-        'field' => 'created',
-        'relationship' => 'none',
-      ),
-      'field_impacts_value_many_to_one' => array(
-        'operator' => 'or',
-        'value' => array(),
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_impacts_value_many_to_one_op',
-          'identifier' => 'impacts',
-          'label' => 'Impacts',
-          'optional' => 1,
-          'single' => 0,
-          'remember' => 0,
-          'reduce' => 0,
-        ),
-        'id' => 'field_impacts_value_many_to_one',
-        'table' => 'node_data_field_impacts',
-        'field' => 'field_impacts_value_many_to_one',
-        'override' => array(
-          'button' => 'Override',
-        ),
-        'relationship' => 'none',
-        'reduce_duplicates' => 0,
-      ),
-      'field_online_recorded_value_many_to_one' => array(
-        'operator' => 'or',
-        'value' => array(),
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_online_recorded_value_many_to_one_op',
-          'identifier' => 'online_doc_update',
-          'label' => 'Online doc update',
-          'optional' => 1,
-          'single' => 1,
-          'remember' => 0,
-          'reduce' => 0,
-        ),
-        'id' => 'field_online_recorded_value_many_to_one',
-        'table' => 'node_data_field_online_recorded',
-        'field' => 'field_online_recorded_value_many_to_one',
-        'relationship' => 'none',
-        'reduce_duplicates' => 0,
-      ),
-      'field_theme_recorded_value_many_to_one' => array(
-        'operator' => 'or',
-        'value' => array(),
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_theme_recorded_value_many_to_one_op',
-          'identifier' => 'theming_update',
-          'label' => 'Theming guide update',
-          'optional' => 1,
-          'single' => 1,
-          'remember' => 0,
-          'reduce' => 0,
-        ),
-        'id' => 'field_theme_recorded_value_many_to_one',
-        'table' => 'node_data_field_theme_recorded',
-        'field' => 'field_theme_recorded_value_many_to_one',
-        'relationship' => 'none',
-        'reduce_duplicates' => 0,
-      ),
-      'field_module_recorded_value_many_to_one' => array(
-        'operator' => 'or',
-        'value' => array(),
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_module_recorded_value_many_to_one_op',
-          'identifier' => 'module_dev_update',
-          'label' => 'Module developer doc update',
-          'optional' => 1,
-          'single' => 1,
-          'remember' => 0,
-          'reduce' => 0,
-        ),
-        'id' => 'field_module_recorded_value_many_to_one',
-        'table' => 'node_data_field_module_recorded',
-        'field' => 'field_module_recorded_value_many_to_one',
-        'relationship' => 'none',
-        'reduce_duplicates' => 0,
-      ),
-      'field_examples_recorded_value_many_to_one' => array(
-        'operator' => 'or',
-        'value' => array(),
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_examples_recorded_value_many_to_one_op',
-          'identifier' => 'examples_update',
-          'label' => 'Examples project update',
-          'optional' => 1,
-          'single' => 1,
-          'remember' => 0,
-          'reduce' => 0,
-        ),
-        'id' => 'field_examples_recorded_value_many_to_one',
-        'table' => 'node_data_field_examples_recorded',
-        'field' => 'field_examples_recorded_value_many_to_one',
-        'relationship' => 'none',
-        'reduce_duplicates' => 0,
-      ),
-      'field_coder_recorded_value_many_to_one' => array(
-        'operator' => 'or',
-        'value' => array(),
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_coder_recorded_value_many_to_one_op',
-          'identifier' => 'coder_update',
-          'label' => 'Coder Review update',
-          'optional' => 1,
-          'single' => 1,
-          'remember' => 0,
-          'reduce' => 0,
-        ),
-        'id' => 'field_coder_recorded_value_many_to_one',
-        'table' => 'node_data_field_coder_recorded',
-        'field' => 'field_coder_recorded_value_many_to_one',
-        'relationship' => 'none',
-        'reduce_duplicates' => 0,
-      ),
-      'field_coder_update_recorded_value_many_to_one' => array(
-        'operator' => 'or',
-        'value' => array(),
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_coder_update_recorded_value_many_to_one_op',
-          'identifier' => 'coder_upgrade_update',
-          'label' => 'Coder Upgrade update',
-          'optional' => 1,
-          'single' => 1,
-          'remember' => 0,
-          'reduce' => 0,
-        ),
-        'id' => 'field_coder_update_recorded_value_many_to_one',
-        'table' => 'node_data_field_coder_update_recorded',
-        'field' => 'field_coder_update_recorded_value_many_to_one',
-        'relationship' => 'none',
-        'reduce_duplicates' => 0,
-      ),
-      'field_other_recorded_value_many_to_one' => array(
-        'operator' => 'or',
-        'value' => array(),
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_other_recorded_value_many_to_one_op',
-          'identifier' => 'other_update',
-          'label' => 'Other update',
-          'optional' => 1,
-          'single' => 1,
-          'remember' => 0,
-          'reduce' => 0,
-        ),
-        'id' => 'field_other_recorded_value_many_to_one',
-        'table' => 'node_data_field_other_recorded',
-        'field' => 'field_other_recorded_value_many_to_one',
-        'relationship' => 'none',
-        'reduce_duplicates' => 0,
-      ),
-    ));
-  $handler->override_option('access', array(
-      'type' => 'none',
-    ));
-  $handler->override_option('cache', array(
-      'type' => 'none',
-    ));
-  $handler->override_option('title', 'Change records');
-  $handler->override_option('empty', 'Invalid project or no changes found.');
-  $handler->override_option('empty_format', '1');
-  $handler->override_option('items_per_page', 50);
-  $handler->override_option('use_pager', '1');
-  $handler->override_option('style_plugin', 'table');
-  $handler->override_option('style_options', array(
-      'grouping' => '',
-      'override' => 1,
-      'sticky' => 0,
-      'order' => 'desc',
-      'summary' => '',
-      'columns' => array(
-        'field_change_to_branch_value' => 'field_change_to_branch_value',
-        'field_change_to_value' => 'field_change_to_branch_value',
-        'created' => 'created',
-        'title' => 'title',
-      ),
-      'info' => array(
-        'field_change_to_branch_value' => array(
-          'sortable' => 1,
-          'separator' => ' / ',
-        ),
-        'field_change_to_value' => array(
-          'sortable' => 1,
-          'separator' => '',
-        ),
-        'created' => array(
-          'sortable' => 1,
-          'separator' => '',
-        ),
-        'title' => array(
-          'sortable' => 1,
-          'separator' => '',
-        ),
-      ),
-      'default' => 'created',
-    ));
-  $handler->override_option('row_plugin', 'node');
-  $handler->override_option('row_options', array(
-      'relationship' => 'none',
-      'build_mode' => 'teaser',
-      'links' => 0,
-      'comments' => 0,
-    ));
+  $handler->display->display_options['title'] = 'Change records';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['grouping'] = '';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'field_change_to_branch_value' => 'field_change_to_branch_value',
+    'field_change_to_value' => 'field_change_to_branch_value',
+    'created' => 'created',
+    'title' => 'title',
+  );
+  $handler->display->display_options['style_options']['default'] = 'created';
+  $handler->display->display_options['style_options']['info'] = array(
+    'field_change_to_branch_value' => array(
+      'sortable' => 1,
+      'separator' => ' / ',
+    ),
+    'field_change_to_value' => array(
+      'sortable' => 1,
+      'separator' => '',
+    ),
+    'created' => array(
+      'sortable' => 1,
+      'separator' => '',
+    ),
+    'title' => array(
+      'sortable' => 1,
+      'separator' => '',
+    ),
+  );
+  $handler->display->display_options['style_options']['order'] = 'desc';
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['text']['id'] = 'area';
+  $handler->display->display_options['empty']['text']['table'] = 'views';
+  $handler->display->display_options['empty']['text']['field'] = 'area';
+  $handler->display->display_options['empty']['text']['content'] = 'Invalid project or no changes found.';
+  $handler->display->display_options['empty']['text']['format'] = '1';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_project_target_id']['id'] = 'field_project_target_id';
+  $handler->display->display_options['relationships']['field_project_target_id']['table'] = 'field_data_field_project';
+  $handler->display->display_options['relationships']['field_project_target_id']['field'] = 'field_project_target_id';
+  /* Field: Content: Post date */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'node';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'Notice created';
+  $handler->display->display_options['fields']['created']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['created']['custom_date_format'] = 'd-M-Y';
+  /* Field: Content: Path */
+  $handler->display->display_options['fields']['path']['id'] = 'path';
+  $handler->display->display_options['fields']['path']['table'] = 'node';
+  $handler->display->display_options['fields']['path']['field'] = 'path';
+  $handler->display->display_options['fields']['path']['label'] = '';
+  $handler->display->display_options['fields']['path']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['path']['absolute'] = TRUE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Change';
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<a href="[path]" title="[field_description_value]">[title]</a>';
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['path'] = '[path]';
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['alt'] = '[field_description_value]';
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['relationship'] = 'field_project_target_id';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['nid']['default_argument_options']['argument'] = '3060';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['nid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['nid']['validate']['type'] = 'project_nid';
+  $handler->display->display_options['arguments']['nid']['validate']['fail'] = 'empty';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'changenotice' => 'changenotice',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Description (field_description) */
+  $handler->display->display_options['filters']['field_description_value_1']['id'] = 'field_description_value_1';
+  $handler->display->display_options['filters']['field_description_value_1']['table'] = 'field_data_field_description';
+  $handler->display->display_options['filters']['field_description_value_1']['field'] = 'field_description_value';
+  $handler->display->display_options['filters']['field_description_value_1']['operator'] = 'contains';
+  $handler->display->display_options['filters']['field_description_value_1']['group'] = 1;
+  $handler->display->display_options['filters']['field_description_value_1']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_description_value_1']['expose']['operator_id'] = 'field_description_value_1_op';
+  $handler->display->display_options['filters']['field_description_value_1']['expose']['label'] = 'Keywords';
+  $handler->display->display_options['filters']['field_description_value_1']['expose']['operator'] = 'field_description_value_1_op';
+  $handler->display->display_options['filters']['field_description_value_1']['expose']['identifier'] = 'field_description_value_1';
+  $handler->display->display_options['filters']['field_description_value_1']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Introduced in branch (field_change_to_branch) */
+  $handler->display->display_options['filters']['field_change_to_branch_value_1']['id'] = 'field_change_to_branch_value_1';
+  $handler->display->display_options['filters']['field_change_to_branch_value_1']['table'] = 'field_data_field_change_to_branch';
+  $handler->display->display_options['filters']['field_change_to_branch_value_1']['field'] = 'field_change_to_branch_value';
+  $handler->display->display_options['filters']['field_change_to_branch_value_1']['group'] = 1;
+  $handler->display->display_options['filters']['field_change_to_branch_value_1']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_change_to_branch_value_1']['expose']['operator_id'] = 'field_change_to_branch_value_1_op';
+  $handler->display->display_options['filters']['field_change_to_branch_value_1']['expose']['label'] = 'Introduced in branch';
+  $handler->display->display_options['filters']['field_change_to_branch_value_1']['expose']['operator'] = 'field_change_to_branch_value_1_op';
+  $handler->display->display_options['filters']['field_change_to_branch_value_1']['expose']['identifier'] = 'field_change_to_branch_value_1';
+  $handler->display->display_options['filters']['field_change_to_branch_value_1']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Introduced in version (field_change_to) */
+  $handler->display->display_options['filters']['field_change_to_value_1']['id'] = 'field_change_to_value_1';
+  $handler->display->display_options['filters']['field_change_to_value_1']['table'] = 'field_data_field_change_to';
+  $handler->display->display_options['filters']['field_change_to_value_1']['field'] = 'field_change_to_value';
+  $handler->display->display_options['filters']['field_change_to_value_1']['group'] = 1;
+  $handler->display->display_options['filters']['field_change_to_value_1']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_change_to_value_1']['expose']['operator_id'] = 'field_change_to_value_1_op';
+  $handler->display->display_options['filters']['field_change_to_value_1']['expose']['label'] = 'Introduced in version';
+  $handler->display->display_options['filters']['field_change_to_value_1']['expose']['operator'] = 'field_change_to_value_1_op';
+  $handler->display->display_options['filters']['field_change_to_value_1']['expose']['identifier'] = 'field_change_to_value_1';
+  $handler->display->display_options['filters']['field_change_to_value_1']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Post date */
+  $handler->display->display_options['filters']['created']['id'] = 'created';
+  $handler->display->display_options['filters']['created']['table'] = 'node';
+  $handler->display->display_options['filters']['created']['field'] = 'created';
+  $handler->display->display_options['filters']['created']['operator'] = '>=';
+  $handler->display->display_options['filters']['created']['group'] = 1;
+  $handler->display->display_options['filters']['created']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['operator_id'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['label'] = 'Change node created';
+  $handler->display->display_options['filters']['created']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['operator'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['identifier'] = 'created';
+  /* Filter criterion: Content: Impacts (field_impacts) */
+  $handler->display->display_options['filters']['field_impacts_value']['id'] = 'field_impacts_value';
+  $handler->display->display_options['filters']['field_impacts_value']['table'] = 'field_data_field_impacts';
+  $handler->display->display_options['filters']['field_impacts_value']['field'] = 'field_impacts_value';
+  $handler->display->display_options['filters']['field_impacts_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_impacts_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_impacts_value']['expose']['operator_id'] = 'field_impacts_value_op';
+  $handler->display->display_options['filters']['field_impacts_value']['expose']['label'] = 'Impacts';
+  $handler->display->display_options['filters']['field_impacts_value']['expose']['operator'] = 'field_impacts_value_op';
+  $handler->display->display_options['filters']['field_impacts_value']['expose']['identifier'] = 'field_impacts_value';
+  $handler->display->display_options['filters']['field_impacts_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Online documentation (field_online_recorded) */
+  $handler->display->display_options['filters']['field_online_recorded_value']['id'] = 'field_online_recorded_value';
+  $handler->display->display_options['filters']['field_online_recorded_value']['table'] = 'field_data_field_online_recorded';
+  $handler->display->display_options['filters']['field_online_recorded_value']['field'] = 'field_online_recorded_value';
+  $handler->display->display_options['filters']['field_online_recorded_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_online_recorded_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_online_recorded_value']['expose']['operator_id'] = 'field_online_recorded_value_op';
+  $handler->display->display_options['filters']['field_online_recorded_value']['expose']['label'] = 'Online doc update';
+  $handler->display->display_options['filters']['field_online_recorded_value']['expose']['operator'] = 'field_online_recorded_value_op';
+  $handler->display->display_options['filters']['field_online_recorded_value']['expose']['identifier'] = 'field_online_recorded_value';
+  $handler->display->display_options['filters']['field_online_recorded_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Theming guide (field_theme_recorded) */
+  $handler->display->display_options['filters']['field_theme_recorded_value']['id'] = 'field_theme_recorded_value';
+  $handler->display->display_options['filters']['field_theme_recorded_value']['table'] = 'field_data_field_theme_recorded';
+  $handler->display->display_options['filters']['field_theme_recorded_value']['field'] = 'field_theme_recorded_value';
+  $handler->display->display_options['filters']['field_theme_recorded_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_theme_recorded_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_theme_recorded_value']['expose']['operator_id'] = 'field_theme_recorded_value_op';
+  $handler->display->display_options['filters']['field_theme_recorded_value']['expose']['label'] = 'Theming guide update';
+  $handler->display->display_options['filters']['field_theme_recorded_value']['expose']['operator'] = 'field_theme_recorded_value_op';
+  $handler->display->display_options['filters']['field_theme_recorded_value']['expose']['identifier'] = 'field_theme_recorded_value';
+  $handler->display->display_options['filters']['field_theme_recorded_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Module developer documentation (field_module_recorded) */
+  $handler->display->display_options['filters']['field_module_recorded_value']['id'] = 'field_module_recorded_value';
+  $handler->display->display_options['filters']['field_module_recorded_value']['table'] = 'field_data_field_module_recorded';
+  $handler->display->display_options['filters']['field_module_recorded_value']['field'] = 'field_module_recorded_value';
+  $handler->display->display_options['filters']['field_module_recorded_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_module_recorded_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_module_recorded_value']['expose']['operator_id'] = 'field_module_recorded_value_op';
+  $handler->display->display_options['filters']['field_module_recorded_value']['expose']['label'] = 'Module developer doc update';
+  $handler->display->display_options['filters']['field_module_recorded_value']['expose']['operator'] = 'field_module_recorded_value_op';
+  $handler->display->display_options['filters']['field_module_recorded_value']['expose']['identifier'] = 'field_module_recorded_value';
+  $handler->display->display_options['filters']['field_module_recorded_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Examples project (field_examples_recorded) */
+  $handler->display->display_options['filters']['field_examples_recorded_value']['id'] = 'field_examples_recorded_value';
+  $handler->display->display_options['filters']['field_examples_recorded_value']['table'] = 'field_data_field_examples_recorded';
+  $handler->display->display_options['filters']['field_examples_recorded_value']['field'] = 'field_examples_recorded_value';
+  $handler->display->display_options['filters']['field_examples_recorded_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_examples_recorded_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_examples_recorded_value']['expose']['operator_id'] = 'field_examples_recorded_value_op';
+  $handler->display->display_options['filters']['field_examples_recorded_value']['expose']['label'] = 'Examples project update';
+  $handler->display->display_options['filters']['field_examples_recorded_value']['expose']['operator'] = 'field_examples_recorded_value_op';
+  $handler->display->display_options['filters']['field_examples_recorded_value']['expose']['identifier'] = 'field_examples_recorded_value';
+  $handler->display->display_options['filters']['field_examples_recorded_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Coder Review (field_coder_recorded) */
+  $handler->display->display_options['filters']['field_coder_recorded_value']['id'] = 'field_coder_recorded_value';
+  $handler->display->display_options['filters']['field_coder_recorded_value']['table'] = 'field_data_field_coder_recorded';
+  $handler->display->display_options['filters']['field_coder_recorded_value']['field'] = 'field_coder_recorded_value';
+  $handler->display->display_options['filters']['field_coder_recorded_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_coder_recorded_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_coder_recorded_value']['expose']['operator_id'] = 'field_coder_recorded_value_op';
+  $handler->display->display_options['filters']['field_coder_recorded_value']['expose']['label'] = 'Coder Review update';
+  $handler->display->display_options['filters']['field_coder_recorded_value']['expose']['operator'] = 'field_coder_recorded_value_op';
+  $handler->display->display_options['filters']['field_coder_recorded_value']['expose']['identifier'] = 'field_coder_recorded_value';
+  $handler->display->display_options['filters']['field_coder_recorded_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Coder Upgrade (field_coder_update_recorded) */
+  $handler->display->display_options['filters']['field_coder_update_recorded_value']['id'] = 'field_coder_update_recorded_value';
+  $handler->display->display_options['filters']['field_coder_update_recorded_value']['table'] = 'field_data_field_coder_update_recorded';
+  $handler->display->display_options['filters']['field_coder_update_recorded_value']['field'] = 'field_coder_update_recorded_value';
+  $handler->display->display_options['filters']['field_coder_update_recorded_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_coder_update_recorded_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_coder_update_recorded_value']['expose']['operator_id'] = 'field_coder_update_recorded_value_op';
+  $handler->display->display_options['filters']['field_coder_update_recorded_value']['expose']['label'] = 'Coder Upgrade update';
+  $handler->display->display_options['filters']['field_coder_update_recorded_value']['expose']['operator'] = 'field_coder_update_recorded_value_op';
+  $handler->display->display_options['filters']['field_coder_update_recorded_value']['expose']['identifier'] = 'field_coder_update_recorded_value';
+  $handler->display->display_options['filters']['field_coder_update_recorded_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Other (field_other_recorded) */
+  $handler->display->display_options['filters']['field_other_recorded_value']['id'] = 'field_other_recorded_value';
+  $handler->display->display_options['filters']['field_other_recorded_value']['table'] = 'field_data_field_other_recorded';
+  $handler->display->display_options['filters']['field_other_recorded_value']['field'] = 'field_other_recorded_value';
+  $handler->display->display_options['filters']['field_other_recorded_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_other_recorded_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_other_recorded_value']['expose']['operator_id'] = 'field_other_recorded_value_op';
+  $handler->display->display_options['filters']['field_other_recorded_value']['expose']['label'] = 'Other update';
+  $handler->display->display_options['filters']['field_other_recorded_value']['expose']['operator'] = 'field_other_recorded_value_op';
+  $handler->display->display_options['filters']['field_other_recorded_value']['expose']['identifier'] = 'field_other_recorded_value';
+  $handler->display->display_options['filters']['field_other_recorded_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+
+  /* Display: Change list page */
   $handler = $view->new_display('page', 'Change list page', 'page_1');
-  $handler->override_option('filters', array(
-      'status' => array(
-        'operator' => '=',
-        'value' => '1',
-        'group' => '0',
-        'exposed' => FALSE,
-        'expose' => array(
-          'operator' => FALSE,
-          'label' => '',
-        ),
-        'id' => 'status',
-        'table' => 'node',
-        'field' => 'status',
-        'relationship' => 'none',
-      ),
-      'type' => array(
-        'operator' => 'in',
-        'value' => array(
-          'changenotice' => 'changenotice',
-        ),
-        'group' => '0',
-        'exposed' => FALSE,
-        'expose' => array(
-          'operator' => FALSE,
-          'label' => '',
-        ),
-        'id' => 'type',
-        'table' => 'node',
-        'field' => 'type',
-        'relationship' => 'none',
-      ),
-      'field_description_value' => array(
-        'operator' => 'contains',
-        'value' => '',
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_description_value_op',
-          'identifier' => 'keywords_description',
-          'label' => 'Keywords',
-          'remember' => 0,
-        ),
-        'case' => 0,
-        'id' => 'field_description_value',
-        'table' => 'node_data_field_description',
-        'field' => 'field_description_value',
-        'override' => array(
-          'button' => 'Use default',
-        ),
-        'relationship' => 'none',
-      ),
-      'field_change_to_branch_value' => array(
-        'operator' => '=',
-        'value' => '',
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_change_to_branch_value_op',
-          'identifier' => 'to_branch',
-          'label' => 'Introduced in branch',
-          'optional' => 1,
-          'remember' => 0,
-        ),
-        'case' => 0,
-        'id' => 'field_change_to_branch_value',
-        'table' => 'node_data_field_change_to_branch',
-        'field' => 'field_change_to_branch_value',
-        'relationship' => 'none',
-        'override' => array(
-          'button' => 'Use default',
-        ),
-      ),
-      'field_change_to_value' => array(
-        'operator' => '=',
-        'value' => '',
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_change_to_value_op',
-          'identifier' => 'version',
-          'label' => 'Introduced in version',
-          'optional' => 1,
-          'remember' => 0,
-        ),
-        'case' => 0,
-        'id' => 'field_change_to_value',
-        'table' => 'node_data_field_change_to',
-        'field' => 'field_change_to_value',
-        'override' => array(
-          'button' => 'Use default',
-        ),
-        'relationship' => 'none',
-      ),
-      'created' => array(
-        'operator' => '>=',
-        'value' => array(
-          'type' => 'date',
-          'value' => '',
-          'min' => '',
-          'max' => '',
-        ),
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 1,
-          'operator' => 'created_op',
-          'identifier' => 'created',
-          'label' => 'Change node created',
-          'optional' => 1,
-          'remember' => 0,
-        ),
-        'id' => 'created',
-        'table' => 'node',
-        'field' => 'created',
-        'override' => array(
-          'button' => 'Use default',
-        ),
-        'relationship' => 'none',
-      ),
-      'field_impacts_value_many_to_one' => array(
-        'operator' => 'or',
-        'value' => array(),
-        'group' => '0',
-        'exposed' => TRUE,
-        'expose' => array(
-          'use_operator' => 0,
-          'operator' => 'field_impacts_value_many_to_one_op',
-          'identifier' => 'impacts',
-          'label' => 'Impacts',
-          'optional' => 1,
-          'single' => 0,
-          'remember' => 0,
-          'reduce' => 0,
-        ),
-        'id' => 'field_impacts_value_many_to_one',
-        'table' => 'node_data_field_impacts',
-        'field' => 'field_impacts_value_many_to_one',
-        'override' => array(
-          'button' => 'Override',
-        ),
-        'relationship' => 'none',
-        'reduce_duplicates' => 0,
-      ),
-    ));
-  $handler->override_option('header', '<a href="/node/add/changenotice">Add new change record</a>');
-  $handler->override_option('header_format', '1');
-  $handler->override_option('header_empty', 1);
-  $handler->override_option('path', 'list-changes');
-  $handler->override_option('menu', array(
-      'type' => 'none',
-      'title' => '',
-      'description' => '',
-      'weight' => 0,
-      'name' => 'navigation',
-    ));
-  $handler->override_option('tab_options', array(
-      'type' => 'none',
-      'title' => '',
-      'description' => '',
-      'weight' => 0,
-      'name' => 'navigation',
-    ));
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['text']['id'] = 'area';
+  $handler->display->display_options['header']['text']['table'] = 'views';
+  $handler->display->display_options['header']['text']['field'] = 'area';
+  $handler->display->display_options['header']['text']['empty'] = TRUE;
+  $handler->display->display_options['header']['text']['content'] = '<a href="/node/add/changenotice">Add new change record</a>';
+  $handler->display->display_options['header']['text']['format'] = '1';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'changenotice' => 'changenotice',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Post date */
+  $handler->display->display_options['filters']['created']['id'] = 'created';
+  $handler->display->display_options['filters']['created']['table'] = 'node';
+  $handler->display->display_options['filters']['created']['field'] = 'created';
+  $handler->display->display_options['filters']['created']['operator'] = '>=';
+  $handler->display->display_options['filters']['created']['group'] = '0';
+  $handler->display->display_options['filters']['created']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['operator_id'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['label'] = 'Change node created';
+  $handler->display->display_options['filters']['created']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['operator'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['identifier'] = 'created';
+  $handler->display->display_options['path'] = 'list-changes';
+
+  /* Display: Updates page */
   $handler = $view->new_display('page', 'Updates page', 'page_2');
-  $handler->override_option('title', 'Change records - Updates done');
-  $handler->override_option('path', 'list-change-updates');
-  $handler->override_option('menu', array(
-      'type' => 'none',
-      'title' => '',
-      'description' => '',
-      'weight' => 0,
-      'name' => 'navigation',
-    ));
-  $handler->override_option('tab_options', array(
-      'type' => 'none',
-      'title' => '',
-      'description' => '',
-      'weight' => 0,
-      'name' => 'navigation',
-    ));
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Change records - Updates done';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['path'] = 'list-change-updates';
+
+  /* Display: Related API changes for Issue page */
   $handler = $view->new_display('block', 'Related API changes for Issue page', 'block_1');
-  $handler->override_option('fields', array(
-      'title' => array(
-        'label' => '',
-        'alter' => array(
-          'alter_text' => 0,
-          'text' => '',
-          'make_link' => 0,
-          'path' => '',
-          'link_class' => '',
-          'alt' => '',
-          'prefix' => '',
-          'suffix' => '',
-          'target' => '',
-          'help' => '',
-          'trim' => 0,
-          'max_length' => '',
-          'word_boundary' => 1,
-          'ellipsis' => 1,
-          'html' => 0,
-          'strip_tags' => 0,
-        ),
-        'empty' => '',
-        'hide_empty' => 0,
-        'empty_zero' => 0,
-        'link_to_node' => 1,
-        'exclude' => 0,
-        'id' => 'title',
-        'table' => 'node',
-        'field' => 'title',
-        'relationship' => 'none',
-        'override' => array(
-          'button' => 'Use default',
-        ),
-      ),
-    ));
-  $handler->override_option('sorts', array(
-      'created' => array(
-        'order' => 'ASC',
-        'granularity' => 'second',
-        'id' => 'created',
-        'table' => 'node',
-        'field' => 'created',
-        'override' => array(
-          'button' => 'Use default',
-        ),
-        'relationship' => 'none',
-      ),
-    ));
-  $handler->override_option('arguments', array(
-      'field_issues_nid' => array(
-        'default_action' => 'default',
-        'style_plugin' => 'default_summary',
-        'style_options' => array(),
-        'wildcard' => 'all',
-        'wildcard_substitution' => 'All',
-        'title' => '',
-        'breadcrumb' => '',
-        'default_argument_type' => 'node',
-        'default_argument' => '',
-        'validate_type' => 'node',
-        'validate_fail' => 'not found',
-        'break_phrase' => 0,
-        'not' => 0,
-        'id' => 'field_issues_nid',
-        'table' => 'node_data_field_issues',
-        'field' => 'field_issues_nid',
-        'validate_user_argument_type' => 'uid',
-        'validate_user_roles' => array(
-          2 => 0,
-          18 => 0,
-          3 => 0,
-          5 => 0,
-          16 => 0,
-          22 => 0,
-          20 => 0,
-          24 => 0,
-          12 => 0,
-          4 => 0,
-          14 => 0,
-          7 => 0,
-        ),
-        'override' => array(
-          'button' => 'Use default',
-        ),
-        'relationship' => 'none',
-        'default_options_div_prefix' => '',
-        'default_argument_fixed' => '',
-        'default_argument_user' => 0,
-        'default_argument_image_size' => '_original',
-        'default_argument_php' => '',
-        'validate_argument_node_type' => array(
-          'project_issue' => 'project_issue',
-          'organization' => 0,
-          'image' => 0,
-          'forum' => 0,
-          'project_project' => 0,
-          'project_release' => 0,
-          'book' => 0,
-          'changenotice' => 0,
-          'packaging_whitelist' => 0,
-          'page' => 0,
-          'showcase' => 0,
-          'story' => 0,
-        ),
-        'validate_argument_node_access' => 0,
-        'validate_argument_nid_type' => 'nid',
-        'validate_argument_vocabulary' => array(
-          1 => 0,
-          5 => 0,
-          38 => 0,
-          6 => 0,
-          4 => 0,
-          44 => 0,
-          46 => 0,
-          3 => 0,
-          48 => 0,
-          50 => 0,
-          52 => 0,
-          7 => 0,
-          2 => 0,
-          31 => 0,
-          32 => 0,
-          33 => 0,
-          34 => 0,
-          9 => 0,
-        ),
-        'validate_argument_type' => 'tid',
-        'validate_argument_transform' => 0,
-        'validate_user_restrict_roles' => 0,
-        'image_size' => array(
-          '_original' => '_original',
-          'thumbnail' => 'thumbnail',
-          'preview' => 'preview',
-        ),
-        'validate_argument_project_term_argument_type' => 'tid',
-        'validate_argument_project_term_argument_action_top_without' => 'pass',
-        'validate_argument_project_term_argument_action_top_with' => 'pass',
-        'validate_argument_project_term_argument_action_child' => 'pass',
-        'validate_argument_php' => '',
-      ),
-    ));
-  $handler->override_option('filters', array(
-      'status' => array(
-        'operator' => '=',
-        'value' => '1',
-        'group' => '0',
-        'exposed' => FALSE,
-        'expose' => array(
-          'operator' => FALSE,
-          'label' => '',
-        ),
-        'id' => 'status',
-        'table' => 'node',
-        'field' => 'status',
-        'relationship' => 'none',
-      ),
-      'type' => array(
-        'operator' => 'in',
-        'value' => array(
-          'changenotice' => 'changenotice',
-        ),
-        'group' => '0',
-        'exposed' => FALSE,
-        'expose' => array(
-          'operator' => FALSE,
-          'label' => '',
-        ),
-        'id' => 'type',
-        'table' => 'node',
-        'field' => 'type',
-        'relationship' => 'none',
-      ),
-    ));
-  $handler->override_option('title', 'Change records for this issue');
-  $handler->override_option('empty', '');
-  $handler->override_option('items_per_page', 0);
-  $handler->override_option('use_pager', FALSE);
-  $handler->override_option('style_plugin', 'list');
-  $handler->override_option('style_options', array());
-  $handler->override_option('row_plugin', 'fields');
-  $handler->override_option('row_options', array());
-  $handler->override_option('block_description', 'Change records for issue page');
-  $handler->override_option('block_caching', -1);
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Change records for this issue';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_issues_target_id']['id'] = 'field_issues_target_id';
+  $handler->display->display_options['relationships']['field_issues_target_id']['table'] = 'field_data_field_issues';
+  $handler->display->display_options['relationships']['field_issues_target_id']['field'] = 'field_issues_target_id';
+  $handler->display->display_options['relationships']['field_issues_target_id']['required'] = TRUE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['relationship'] = 'field_issues_target_id';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'node';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['nid']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['nid']['validate_options']['types'] = array(
+    'project_issue' => 'project_issue',
+  );
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'changenotice' => 'changenotice',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  $handler->display->display_options['block_description'] = 'Change records for issue page';
+
+  /* Display: Feed */
   $handler = $view->new_display('feed', 'Feed', 'feed_1');
-  $handler->override_option('sorts', array(
-      'created' => array(
-        'order' => 'DESC',
-        'granularity' => 'second',
-        'id' => 'created',
-        'table' => 'node',
-        'field' => 'created',
-        'override' => array(
-          'button' => 'Use default',
-        ),
-        'relationship' => 'none',
-      ),
-    ));
-  $handler->override_option('arguments', array(
-      'field_project_nid' => array(
-        'default_action' => 'default',
-        'style_plugin' => 'default_summary',
-        'style_options' => array(),
-        'wildcard' => 'all',
-        'wildcard_substitution' => 'All',
-        'title' => '',
-        'breadcrumb' => '',
-        'default_argument_type' => 'project_plugin_argument_default_project_type',
-        'default_argument' => '',
-        'validate_type' => 'project_nid',
-        'validate_fail' => 'ignore',
-        'break_phrase' => 0,
-        'not' => 0,
-        'id' => 'field_project_nid',
-        'table' => 'node_data_field_project',
-        'field' => 'field_project_nid',
-        'validate_user_argument_type' => 'uid',
-        'validate_user_roles' => array(
-          2 => 0,
-          18 => 0,
-          3 => 0,
-          5 => 0,
-          16 => 0,
-          22 => 0,
-          20 => 0,
-          24 => 0,
-          12 => 0,
-          4 => 0,
-          14 => 0,
-          7 => 0,
-        ),
-        'override' => array(
-          'button' => 'Use default',
-        ),
-        'relationship' => 'none',
-        'default_options_div_prefix' => '',
-        'default_argument_fixed' => '',
-        'default_argument_user' => 0,
-        'default_argument_image_size' => '_original',
-        'default_argument_php' => '',
-        'validate_argument_node_type' => array(
-          'organization' => 0,
-          'image' => 0,
-          'forum' => 0,
-          'project_project' => 0,
-          'project_release' => 0,
-          'project_issue' => 0,
-          'book' => 0,
-          'changenotice' => 0,
-          'packaging_whitelist' => 0,
-          'page' => 0,
-          'showcase' => 0,
-          'story' => 0,
-        ),
-        'validate_argument_node_access' => 0,
-        'validate_argument_nid_type' => 'nid',
-        'validate_argument_vocabulary' => array(
-          1 => 0,
-          5 => 0,
-          38 => 0,
-          6 => 0,
-          4 => 0,
-          44 => 0,
-          46 => 0,
-          3 => 0,
-          48 => 0,
-          50 => 0,
-          52 => 0,
-          7 => 0,
-          2 => 0,
-          31 => 0,
-          32 => 0,
-          33 => 0,
-          34 => 0,
-          9 => 0,
-        ),
-        'validate_argument_type' => 'tid',
-        'validate_argument_transform' => 0,
-        'validate_user_restrict_roles' => 0,
-        'image_size' => array(
-          '_original' => '_original',
-          'thumbnail' => 'thumbnail',
-          'preview' => 'preview',
-        ),
-        'validate_argument_project_term_argument_type' => 'tid',
-        'validate_argument_project_term_argument_action_top_without' => 'pass',
-        'validate_argument_project_term_argument_action_top_with' => 'pass',
-        'validate_argument_project_term_argument_action_child' => 'pass',
-        'validate_argument_php' => '',
-      ),
-    ));
-  $handler->override_option('filters', array(
-      'status' => array(
-        'operator' => '=',
-        'value' => '1',
-        'group' => '0',
-        'exposed' => FALSE,
-        'expose' => array(
-          'operator' => FALSE,
-          'label' => '',
-        ),
-        'id' => 'status',
-        'table' => 'node',
-        'field' => 'status',
-        'relationship' => 'none',
-      ),
-      'type' => array(
-        'operator' => 'in',
-        'value' => array(
-          'changenotice' => 'changenotice',
-        ),
-        'group' => '0',
-        'exposed' => FALSE,
-        'expose' => array(
-          'operator' => FALSE,
-          'label' => '',
-        ),
-        'id' => 'type',
-        'table' => 'node',
-        'field' => 'type',
-        'relationship' => 'none',
-      ),
-    ));
-  $handler->override_option('style_plugin', 'rss');
-  $handler->override_option('style_options', array(
-      'mission_description' => FALSE,
-      'description' => '',
-    ));
-  $handler->override_option('row_plugin', 'node_rss');
-  $handler->override_option('row_options', array());
-  $handler->override_option('path', 'changes/%/rss.xml');
-  $handler->override_option('menu', array(
-      'type' => 'none',
-      'title' => '',
-      'description' => '',
-      'weight' => 0,
-      'name' => 'navigation',
-    ));
-  $handler->override_option('tab_options', array(
-      'type' => 'none',
-      'title' => '',
-      'description' => '',
-      'weight' => 0,
-      'name' => 'navigation',
-    ));
-  $handler->override_option('displays', array(
-      'page_1' => 'page_1',
-      'default' => 0,
-      'page_2' => 0,
-      'block_1' => 0,
-    ));
-  $handler->override_option('sitename_title', FALSE);
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['style_plugin'] = 'rss';
+  $handler->display->display_options['row_plugin'] = 'node_rss';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['relationship'] = 'field_project_target_id';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['nid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['nid']['validate']['type'] = 'project_nid';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'changenotice' => 'changenotice',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  $handler->display->display_options['path'] = 'changes/%/rss.xml';
+  $handler->display->display_options['displays'] = array(
+    'page_1' => 'page_1',
+    'default' => 0,
+    'page_2' => 0,
+    'block_1' => 0,
+  );
+  $export['change_records'] = $view;
 
-  $views[$view->name] = $view;
-
-  return $views;
+  return $export;
 }

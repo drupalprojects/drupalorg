@@ -1,0 +1,83 @@
+<?php
+
+/**
+ * @file
+ *   Upgrade fixes for the drupalorg_change_notice feature.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function drupalorg_change_notice_install() {
+  // Nothing to do.
+}
+
+/**
+ * Manually convert field_project and field_issues fields for change notices.
+ */
+function drupalorg_change_notice_update_7000() {
+  $query = db_select('content_type_changenotice', 'c');
+  // Lock to current revision.
+  $query->innerJoin('node', 'n', 'c.vid = n.vid');
+  $query->addExpression(':entity_type', 'entity_type', array(':entity_type' => 'node'));
+  $query->addExpression(':bundle', 'bundle', array(':bundle' => 'changenotice'));
+  $query->addExpression(':deleted', 'deleted', array(':deleted' => 0));
+  $query->addField('c', 'nid', 'entity_id');
+  $query->addField('c', 'vid', 'revision_id');
+  $query->addExpression(':language', 'language', array(':language' => LANGUAGE_NONE));
+  $query->addExpression(':delta', 'delta', array(':delta' => 0));
+  $query->addField('c', 'field_project_nid', 'field_project_target_id');
+
+  db_insert('field_data_field_project')
+    ->from($query)
+    ->execute();
+
+  $query = db_select('content_type_changenotice', 'c');
+  $query->addExpression(':entity_type', 'entity_type', array(':entity_type' => 'node'));
+  $query->addExpression(':bundle', 'bundle', array(':bundle' => 'changenotice'));
+  $query->addExpression(':deleted', 'deleted', array(':deleted' => 0));
+  $query->addField('c', 'nid', 'entity_id');
+  $query->addField('c', 'vid', 'revision_id');
+  $query->addExpression(':language', 'language', array(':language' => LANGUAGE_NONE));
+  $query->addExpression(':delta', 'delta', array(':delta' => 0));
+  $query->addField('c', 'field_project_nid', 'field_project_target_id');
+
+  db_insert('field_revision_field_project')
+    ->from($query)
+    ->execute();
+
+  $query = db_select('content_field_issues', 'i');
+  // Lock to current revision.
+  $query->innerJoin('node', 'n', 'i.vid = n.vid');
+  $query->addExpression(':entity_type', 'entity_type', array(':entity_type' => 'node'));
+  $query->addExpression(':bundle', 'bundle', array(':bundle' => 'changenotice'));
+  $query->addExpression(':deleted', 'deleted', array(':deleted' => 0));
+  $query->addField('i', 'nid', 'entity_id');
+  $query->addField('i', 'vid', 'revision_id');
+  $query->addExpression(':language', 'language', array(':language' => LANGUAGE_NONE));
+  $query->addField('i', 'delta', 'delta');
+  $query->addField('i', 'field_issues_nid', 'field_issues_target_id');
+  $query->condition('i.field_issues_nid', NULL, 'IS NOT NULL');
+
+  db_insert('field_data_field_issues')
+    ->from($query)
+    ->execute();
+
+  $query = db_select('content_field_issues', 'i');
+  $query->addExpression(':entity_type', 'entity_type', array(':entity_type' => 'node'));
+  $query->addExpression(':bundle', 'bundle', array(':bundle' => 'changenotice'));
+  $query->addExpression(':deleted', 'deleted', array(':deleted' => 0));
+  $query->addField('i', 'nid', 'entity_id');
+  $query->addField('i', 'vid', 'revision_id');
+  $query->addExpression(':language', 'language', array(':language' => LANGUAGE_NONE));
+  $query->addField('i', 'delta', 'delta');
+  $query->addField('i', 'field_issues_nid', 'field_issues_target_id');
+  $query->condition('i.field_issues_nid', NULL, 'IS NOT NULL');
+
+  db_insert('field_revision_field_issues')
+    ->from($query)
+    ->execute();
+
+  // Since we have manually injected data, we need to explicitly clear the field cache.
+  field_cache_clear();
+}
