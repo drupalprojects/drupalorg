@@ -25,6 +25,13 @@
   <div id="front-top-right-inner">
     <div class="block-content clear-block">
       <h2><a href="download">Develop with Drupal</a></h2>
+        <div class="block block-secondary block-element">
+          <div class="grid-1 alpha"><img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/icon-d8-100.png" alt="Drupal 8 icon" /></div>
+          <div>
+            <strong>Help build Drupal 8.</strong> We are already hard at work. But we need your help to <strong>develop</strong>, <strong>design</strong> and <strong>test</strong> the next version of Drupal.
+          <br /><a href="community-initiatives/drupal-core">Get started now.</a>
+          </div>
+        </div>
         <div class="clear-block">
           <table class="front-current-activity">
             <tr><td><?php print $number_of_modules; ?></td><td><a href="project/modules">Modules</a></td></tr>

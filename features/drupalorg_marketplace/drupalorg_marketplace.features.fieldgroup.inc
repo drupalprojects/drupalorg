@@ -46,7 +46,7 @@ function drupalorg_marketplace_fieldgroup_default_groups() {
         'label' => 'above',
       ),
     ),
-    'weight' => '12',
+    'weight' => '14',
     'fields' => array(
       '0' => 'field_organization_hosting_url',
       '1' => 'field_organization_hosting_categ',
@@ -93,12 +93,61 @@ function drupalorg_marketplace_fieldgroup_default_groups() {
         ),
       ),
     ),
-    'weight' => '13',
+    'weight' => '15',
     'fields' => array(
-      '0' => 'field_organization_marketplace',
-      '1' => 'field_organization_list_rule',
-      '2' => 'field_organization_issue',
-      '3' => 'field_organization_hosting_level',
+      '0' => 'field_organization_list_rule',
+      '1' => 'field_organization_issue',
+      '2' => 'field_organization_training_list',
+      '3' => 'field_org_training_issue',
+      '4' => 'field_organization_hosting_level',
+    ),
+  );
+
+  // Exported group: group_training
+  $groups['organization-group_training'] = array(
+    'group_type' => 'standard',
+    'type_name' => 'organization',
+    'group_name' => 'group_training',
+    'label' => 'Training',
+    'settings' => array(
+      'form' => array(
+        'style' => 'fieldset',
+        'description' => '',
+      ),
+      'display' => array(
+        'description' => '',
+        'label' => 'above',
+        '5' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'teaser' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'full' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        '4' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        '2' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        '3' => array(
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+      ),
+    ),
+    'weight' => '5',
+    'fields' => array(
+      '0' => 'field_org_training_request',
+      '1' => 'field_organization_training_url',
+      '2' => 'field_organization_training_desc',
     ),
   );
 
@@ -106,6 +155,7 @@ function drupalorg_marketplace_fieldgroup_default_groups() {
   // Included for use with string extractors like potx.
   t('Hosting');
   t('Moderation');
+  t('Training');
 
   return $groups;
 }

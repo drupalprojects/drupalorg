@@ -1,5 +1,6 @@
 core = "6.x"
-datestamp = "1339451503"
+datestamp = "1343774659"
+dependencies[] = "comment"
 dependencies[] = "drupalorg_grid"
 dependencies[] = "drupalorg_marketplace"
 dependencies[] = "features"

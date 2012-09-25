@@ -1,0 +1,83 @@
+<?php
+
+/**
+ * Implementation of hook_honeypot_timelimit
+ */
+function drupalorg_honeypot_honeypot_time_limit($timelimit, $form_values, $failures) {
+  global $user;
+
+  $extra_time = 0;
+  if ($user->uid > 0 && isset($form_values['country']) && in_array($form_values['country'], variable_get('drupalorg_honeypot_likely_spam_countries', array()))) {
+    $extra_time = $timelimit * variable_get('drupalorg_honeypot_factor', 1);
+  }
+  elseif ($user->uid > 0) {
+    $country = db_result(db_query('SELECT value FROM {profile_values} WHERE fid = %d AND uid = %d', 17, $user->uid));
+    if ($country && in_array($country, variable_get('drupalorg_honeypot_likely_spam_countries', array()))) {
+      $extra_time = $timelimit * variable_get('drupalorg_honeypot_factor', 1);
+    }
+  }
+
+  $count = 0;
+  // scan nodes
+  if (isset($form_values['title']) && $form_values['title']) {
+    $count += drupalorg_honeypot_scan($form_values['title']);
+  }
+  if (isset($form_values['body']) && $form_values['body']) {
+    $count += drupalorg_honeypot_scan($form_values['body']);
+  }
+
+  // scan comments
+  if (isset($form_values['subject']) && $form_values['subject']) {
+    $count += drupalorg_honeypot_scan($form_values['subject']);
+  }
+  if (isset($form_values['comment']) && $form_values['comment']) {
+    $count += drupalorg_honeypot_scan($form_values['comment']);
+  }
+
+  // scan profile text fields
+  if (isset($form_values['profile_personal_bio']) && $form_values['profile_personal_bio']) {
+    $count += drupalorg_honeypot_scan($form_values['profile_personal_bio']);
+  }
+  if (isset($form_values['profile_interests']) && $form_values['profile_interests']) {
+    $count += drupalorg_honeypot_scan($form_values['profile_interests']);
+  }
+  if (isset($form_values['profile_drupal_contributions']) && $form_values['profile_drupal_contributions']) {
+    $count += drupalorg_honeypot_scan($form_values['profile_drupal_contributions']);
+  }
+
+  if ($count) {
+    $extra_time += $count * $timelimit * variable_get('drupalorg_honeypot_factor', 1);
+    watchdog('honeypot', 'Spammer %uname (%uid) earned %count spam points and %time extra time.', array('%uname' => $user->name, '%uid' => $user->uid, '%count' => $count, '%time' => $extra_time));
+    sleep($count * $failures * variable_get('drupalorg_honeypot_factor', 1));
+  }
+
+  if ($extra_time) {
+    static $message = TRUE;
+    if ($message) {
+      drupal_set_message(t('We have had bad experiences with spammers. Please <a href ="!url">apply for the "not a spammer" role</a> in order to avoid this message and be able to post faster.', array('!url' => '/node/add/project-issue/webmasters&component=Spam')));
+      // display a taunt to likely spammers
+      if (($failures * $count) > variable_get('drupalorg_honeypot_taunt_threshold', 20)) {
+        drupal_set_message(strtr(variable_get('drupalorg_honeypot_taunt', "Yo %name! Druplicon doesn't like you. Better start running."), array('%name' => $user->name)), 'error');
+      }
+      $message = FALSE;
+    }
+  }
+
+  return $extra_time;
+}
+
+/**
+ * Super-simple text scanner
+ *
+ * @param $text (string) Text to scan
+ */
+function drupalorg_honeypot_scan($text) {
+  $needles = variable_get('drupalorg_honeypot_strings', array());
+  $text = strtolower($text);
+  $count = 0;
+  foreach ($needles as $needle) {
+    $count += substr_count($text, $needle);
+  }
+  return $count;
+}
+

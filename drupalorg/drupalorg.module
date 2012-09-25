@@ -44,6 +44,12 @@ function drupalorg_init() {
 
   drupal_add_js(drupal_get_path('module', 'drupalorg') .'/js/general.js');
 
+  // TODO: This is a hack to get around a limitation in flot module until it's
+  // fixed there, see http://drupal.org/node/1565970.
+  if (function_exists('flot_add_js')) {
+    flot_add_js();
+  }
+
   // Add forum ads & tracking
   $forum_ads = variable_get('drupalorg_forum_ad', array());
   if (arg(0) === 'forum' && isset($forum_ads[arg(1)])) {
@@ -184,19 +190,17 @@ function drupalorg_field_access($op, $field, $account, $node = NULL) {
       // Only allow admins, but not the node owner, to change an organization's
       // visibility and status of case studies.
       case 'field_organization_list_rule':
+      case 'field_organization_training_list':
       case 'field_organization_hosting_level':
       case 'field_organization_hosting_last':
       case 'field_organization_hosting_by':
       case 'field_organization_issue':
+      case 'field_org_training_issue':
       case 'field_status':
         if ($node !== NULL && $node->uid === $user->uid) {
           return FALSE;
         }
         return user_access('administer nodes');
-
-      // drupalorg_nodeapi('presave') handles this.
-      case 'field_organization_marketplace':
-        return FALSE;
     }
   }
   return TRUE;
@@ -214,6 +218,10 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
         'add_to_dashboard' => array(
           'info' => t('Add to Dashboard links'),
           'cache' => BLOCK_CACHE_PER_USER | BLOCK_CACHE_PER_PAGE,
+        ),
+        'marketplace_services' => array(
+          'info' => t('Marketplace services menu'),
+          'cache' => BLOCK_NO_CACHE,
         ),
       );
 
@@ -281,6 +289,29 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
             }
           }
           break;
+
+        case 'marketplace_services':
+          // Custom block to set the active link. The links are not first class
+          // menu items, so menu module does not figure it out. There isn't a
+          // great place to alter and other trickery would be too tricky.
+          $item = menu_get_item();
+          if ($item['href'] === 'drupal-services') {
+            $tree = menu_tree_page_data('menu-service-providers');
+            $args = $item['page_arguments'];
+            $name = array_shift($args);
+            $display_id = array_shift($args);
+            if ($view = views_get_view($name)) {
+              $view->set_arguments($args);
+              $view->build($display_id);
+              foreach (array_keys($tree) as $key) {
+                if ($tree[$key]['link']['href'] === arg(0) . '/' . $view->args[0]) {
+                  $tree[$key]['link']['in_active_trail'] = TRUE;
+                }
+              }
+            }
+            return array('content' => menu_tree_output($tree));
+          }
+          break;
       }
       break;
   }
@@ -293,9 +324,9 @@ function drupalorg_activity_block() {
   $items = array();
   $stats = drupalorg_get_activity();
   $items[] = t('<strong>@accounts</strong> people with Git accounts', array('@accounts' => $stats['number_of_git_accounts']));
- 	$items[] = t("<strong>@commits</strong> Git commits this week", array('@commits' => $stats['number_of_git_commits']));
- 	$items[] = t("<strong>@users</strong> users on drupal.org", array('@users' => $stats['number_of_users']));
- 	$items[] = t("<strong>@sites</strong> sites running Drupal", array('@sites' => $stats['sites']));
+  $items[] = t("<strong>@commits</strong> Git commits this week", array('@commits' => $stats['number_of_git_commits']));
+  $items[] = t("<strong>@users</strong> users on drupal.org", array('@users' => $stats['number_of_users']));
+  $items[] = t("<strong>@sites</strong> sites running Drupal", array('@sites' => $stats['sites']));
  	$items[] = t("<strong>@comments</strong> comments and issue followups", array('@comments' => $stats['comments']));
 
   $output = theme('item_list', $items);
@@ -362,11 +393,15 @@ function drupalorg_get_activity($_force = FALSE){
     $stats['comments'] = number_format(db_result(db_query("SELECT COUNT(*) FROM {comments} WHERE status = 0")));
 
     // Sites made with Drupal.
-    $stats['sites_made'] = array();
-    $view = views_get_view('drupalorg_casestudies');
-    $view->preview('block_1');
-    foreach ($view->style_plugin->rendered_fields as $row) {
-      $stats['sites_made'][] = implode('', $row);
+    if (module_exists('drupalorg_case_studies')) {
+      $stats['sites_made'] = array();
+      $view = views_get_view('drupalorg_casestudies');
+      if (!empty($view)) {
+        $view->preview('block_1');
+        foreach ($view->style_plugin->rendered_fields as $row) {
+          $stats['sites_made'][] = implode('', $row);
+        }
+      }
     }
 
     cache_set('drupalorg_front_counter_data', $stats, 'drupalorg');
@@ -1266,9 +1301,9 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         $vocabulary = taxonomy_vocabulary_load($vid);
         $links = array();
         foreach ($terms as $term) {
-          // Link to the drupalorg_organizations view, terms in order,
-          // truncating trailing '/all'.
-          $links[] = l($term->name, 'marketplace-preview/' . preg_replace('!(/all)*$!', '', implode('/', array_merge($default_args, array($vocabulary->name => str_replace(' ', '-', $term->name))))));
+          // Link to the drupalorg_organizations view, featured/all listing,
+          // then terms in order, truncating trailing '/all'.
+          $links[] = l($term->name, 'drupal-services/' . $node->field_organization_list_rule[0]['safe'] . '/' . preg_replace('!(/all)*$!', '', implode('/', array_merge($default_args, array($vocabulary->name => str_replace(' ', '-', $term->name))))));
         }
         if ($a3 && ($count = count($links)) > 3) { // Teaser
           shuffle($links);
@@ -1398,100 +1433,107 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
         $node->content = $content;
 
-        if ($node->field_org_marketplace_request[0]['value'] && ($node->uid === $user->uid || user_access('administer nodes'))) {
-          $placeholders = array('!marketplace' => url('marketplace-preview'));
-          if ($node->field_organization_marketplace[0]['value']) {
-            $status = t('This organization is listed in the <a href="!marketplace">marketplace</a>.', $placeholders);
+        // Highlight a Service provider above the organization page.
+        switch ($node->field_organization_list_rule[0]['value']) {
+          case 'all':
+            drupal_set_message(t('This organization is a <a href="!listing">Drupal services provider</a>.', array('!listing' => url('drupal-services/all'))), 'status');
+            break;
+
+          case 'featured':
+            drupal_set_message(t('This organization is a <a href="!listing">Featured services provider</a>.', array('!listing' => url('drupal-services'))), 'status');
+            break;
+        }
+
+        // Highlight a Training provider above the organization page.
+        if (!empty($node->field_organization_training_list[0]['value']) && $node->field_organization_training_list[0]['value'] == 'on') {
+          drupal_set_message(t('This organization is a <a href="!listing">Drupal training provider</a>.', array('!listing' => url('training'))), 'status');
+        }
+
+        // For organizations that request a services listing or training
+        // listing, show a link to their issue for the node owner and admins.
+        if (($node->uid === $user->uid || user_access('administer nodes'))) {
+          if ($node->field_org_marketplace_request[0]['value'] && !empty($node->field_organization_issue[0]['nid'])) {
+            drupal_set_message(t('Regarding <em>Services listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_organization_issue[0]['nid']))), 'status');
           }
-          else {
-            $status = t('This organization is <em>not</em> listed in the <a href="!marketplace">marketplace</a>.', $placeholders);
+          if ($node->field_org_training_request[0]['value'] && !empty($node->field_org_training_issue[0]['nid'])) {
+            drupal_set_message(t('Regarding <em>Training listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_org_training_issue[0]['nid']))), 'status');
           }
-          $moderation = array(
-            'always' => t('Community webmasters set this to <em>always</em> be listed.'),
-            'membership' => t('This listing is active when <a href="https://association.drupal.org/membership">Drupal Association membership</a> is current.'),
-            'never' => t('Community webmasters set this to <em>never</em> be listed.'),
-          );
-          if (empty($node->field_organization_issue[0]['nid'])) {
-            $message = '';
-          }
-          else {
-            $message = t('Communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_organization_issue[0]['nid'])));
-          }
-          drupal_set_message($status . ' ' . $moderation[$node->field_organization_list_rule[0]['value']] . ' ' . $message, 'status');
         }
       }
     }
     elseif ($node->type === 'project_issue') {
       // Load the view to make sure that there are actually some results.
       $change_records = views_get_view('change_records', 'block_1', array($node->nid));
-      $change_records->execute('block_1');
-      if (!empty($change_records->result)) {
-        $node->content['change_records'] = array(
-          '#prefix' => '<h3>' . check_plain($change_records->get_title()) . '</h3>',
-          '#value' => $change_records->preview('block_1', array($node->nid)),
-          '#weight' => 50,
-        );
+      if (!empty($change_records)) {
+        $change_records->execute('block_1');
+        if (!empty($change_records->result)) {
+          $node->content['change_records'] = array(
+            '#prefix' => '<h3>' . check_plain($change_records->get_title()) . '</h3>',
+            '#value' => $change_records->preview('block_1', array($node->nid)),
+            '#weight' => 50,
+          );
+        }
+        $change_records->destroy();
       }
-      $change_records->destroy();
     }
     elseif ($node->type === 'casestudy') {
       $breadcrumb = array(
         l(t('Home'), ''),
         l(t('Case Studies'), 'case-studies'),
       );
-      if ($node->field_status[0]['value'] === 'Community') {
+      if ($node->field_status[0]['value'] === 'Featured') {
+        $breadcrumb[] = l(t('Featured showcase'), 'case-studies/featured');
+      }
+      elseif ($node->field_status[0]['value'] === 'Community') {
         $breadcrumb[] = l(t('Community showcase'), 'case-studies/community');
       }
       drupal_set_breadcrumb($breadcrumb);
     }
   }
   elseif ($op === 'insert' || $op === 'update') {
-    if ($node->type === 'organization' && !isset($node->drupalorg_processed)) {
-      // Determine if the organization should be listed in the marketplace.
-      if ($node->field_org_marketplace_request[0]['value']) {
-        // Requested listing, see if there is any moderation.
-        switch ($node->field_organization_list_rule[0]['value']) {
-          case 'never':
-            $node->field_organization_marketplace[0]['value'] = 0;
-            break;
+    if ($node->type === 'organization') {
+      // If an organization wants to be listed in the Services section of the Marketplace.
+      if ($node->field_org_marketplace_request[0]['value'] && empty($node->field_organization_issue[0]['nid'])) {
+        // A new organization has been posted, create an issue to coordinate review.
+        $issue = new stdClass();
+        $issue->type = 'project_issue';
+        $issue->uid = $node->uid;
+        $issue->status = 1;
+        $issue->title = t('Review @title', array('@title' => $node->title));
+        $issue->body = t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid)));
+        $issue->pid = 3202;  // Webmasters, http://drupal.org/project/webmasters
+        $issue->priority = 2;  // normal
+        $issue->sid = 8;  // needs review
+        $issue->component = 'Marketplace listing';
+        $issue->category = 'task';
+        $issue->comment = 2; // read & write
+        node_save($issue);
 
-          case 'membership':
-            // Doing this on view would be slow, and require a bit of boolean
-            // logic in the view. And saves surprises if an organization goes a
-            // few days without renewing.
-            $node->field_organization_marketplace[0]['value'] = drupalorg_has_civimembership($node, 'Organization');
-            break;
-
-          case 'always':
-            $node->field_organization_marketplace[0]['value'] = 1;
-            break;
-        }
-
-        if (empty($node->field_organization_issue[0]['nid'])) {
-          // A new organization has been posted, create an issue to coordinate review.
-          $issue = new stdClass();
-          $issue->type = 'project_issue';
-          $issue->uid = $node->uid;
-          $issue->status = 1;
-          $issue->title = t('Review @title', array('@title' => $node->title));
-          $issue->body = t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid)));
-          $issue->pid = 3202;  // Webmasters, http://drupal.org/project/webmasters
-          $issue->priority = 2;  // normal
-          $issue->sid = 1;  // active
-          $issue->component = 'Marketplace listing';
-          $issue->category = 'task';
-          $issue->comment = 2; // read & write
-          node_save($issue);
-          $node->field_organization_issue[0]['nid'] = $issue->nid;
-        }
+        // Save the issue's nid for the organization.
+        $node->field_organization_issue[0]['nid'] = $issue->nid;
+        node_save($node);
       }
-      else {
-        // Didn't even request to be listed.
-        $node->field_organization_marketplace[0]['value'] = 0;
-      }
+      // If an organization wants to be listed in the Training section of the Marketplace.
+      if ($node->field_org_training_request[0]['value'] && empty($node->field_org_training_issue[0]['nid'])) {
+        // A new organization has been posted, create an issue to coordinate review.
+        $issue = new stdClass();
+        $issue->type = 'project_issue';
+        $issue->uid = $node->uid;
+        $issue->status = 1;
+        $issue->title = t('Add @title to the Training section', array('@title' => $node->title));
+        $issue->body = t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid)));
+        $issue->pid = 3202;  // Webmasters, http://drupal.org/project/webmasters
+        $issue->priority = 2;  // normal
+        $issue->sid = 8;  // needs review
+        $issue->component = 'Drupal training list';
+        $issue->category = 'task';
+        $issue->comment = 2; // read & write
+        node_save($issue);
 
-      $node->drupalorg_processed = TRUE;
-      node_save($node);
+        // Save the issue's nid for the organization.
+        $node->field_org_training_issue[0]['nid'] = $issue->nid;
+        node_save($node);
+      }
     }
   }
 }
@@ -1506,6 +1548,9 @@ function drupalorg_views_pre_render(&$view) {
     foreach ($view->display['default']->handler->options['arguments'] as $argument) {
       // Find that vocabulary.
       $vocabulary = taxonomy_vocabulary_load(reset(array_filter($argument['validate_argument_vocabulary'])));
+      if ($vocabulary === FALSE) {
+        continue;
+      }
 
       $content['column_' . ($n + 1)]['header'] = array('#value' => '<h3>' . check_plain($vocabulary->name) . '</h3>');
       $content['column_' . ($n + 1)]['list'] = array(
@@ -1515,11 +1560,11 @@ function drupalorg_views_pre_render(&$view) {
       ); // See comment on 3 #... items below if modified.
 
       // Query for terms in the vocabulary used by nodes in the current view.
-      if (isset($view->args[$n]) && $view->args[$n] !== 'all') {
+      if (isset($view->args[$n + 1]) && $view->args[$n + 1] !== 'all') {
         // Remove the current filter, since only one term in each vocab may be
         // selected.
         $copy = $view->clone_view();
-        $copy->args[$n] = 'all';
+        $copy->args[$n + 1] = 'all';
         $copy->build();
         $query = clone $copy->query;
       }
@@ -1547,14 +1592,16 @@ function drupalorg_views_pre_render(&$view) {
       while ($row = db_fetch_object($result)) {
         $c += 1;
         $args = $view->args;
+        // Remove the featured/all listing and save for later.
+        $listing = array_shift($args);
         // If necessasry, fill default arguments.
         if ($n > count($args)) {
-          $args = array_merge(array_fill(count($args), $n - count($args), 'all'), $args);
+          $args = array_merge($args, array_fill(count($args), $n - count($args), 'all'));
         }
         // Link to this argument.
         $args[$n] = str_replace(' ', '-', $row->$name);
 
-        $path = 'marketplace-preview/' . implode('/', $args);
+        $path = 'drupal-services/' . $listing . '/' . implode('/', $args);
         $item = array(
           '#prefix' => '<li' . ($c > 6 && $_GET['q'] !== $path ? ' class="show-more"' : '') . '>',
           '#value' => l(t('@name (@count)', array('@name' => $row->$name, '@count' => $row->$count)), $path, array('html' => TRUE)),
@@ -1586,13 +1633,16 @@ function drupalorg_views_pre_render(&$view) {
         $count = db_result(db_query('SELECT COUNT(*) FROM (' . str_replace(array_keys($replacements), $replacements, $copy->query->query(TRUE)) . ') count_alias', $copy->query->get_where_args()));
 
         $args = $view->args;
+        // Remove the featured/all listing and save for later.
+        $listing = array_shift($args);
+        // If necessasry, fill default arguments.
         if ($n > count($args)) {
           $args = array_merge(array_fill(count($args), $n - count($args), 'all'), $args);
         }
         $args[$n] = 'all';
         $content['column_' . ($n + 1)]['list'][] = array(
           '#prefix' => '<li>',
-          '#value' => l(t('@name (@count)', array('@name' => check_plain($argument['wildcard_substitution']), '@count' => $count)), preg_replace('!(/all)*$!', '', 'marketplace-preview/' . implode('/', $args)), array('attributes' => array('class' => 'all'))),
+          '#value' => l(t('@name (@count)', array('@name' => check_plain($argument['wildcard_substitution']), '@count' => $count)), preg_replace('!(/all)*$!', '', 'drupal-services/' . $listing . '/' . implode('/', $args)), array('attributes' => array('class' => 'all'))),
           '#suffix' => '</li>',
         );
 

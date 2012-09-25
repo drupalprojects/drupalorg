@@ -6,4 +6,5 @@ dependencies[] = homebox
 dependencies[] = materialized_view
 dependencies[] = ctools
 dependencies[] = views_content_cache
+dependencies[] = features
 core = 6.x
