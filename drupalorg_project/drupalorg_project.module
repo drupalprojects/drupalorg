@@ -731,26 +731,71 @@ function drupalorg_project_list_branches_core() {
 /**
  * SQL randomizer for issues.
  */
-function drupalorg_project_bingo_jump($type = NULL) {
-  $sql = array(
-    // Bug, core.
-    'bug-core' => "SELECT nid FROM {project_issues} WHERE sid IN (1) AND category = 'bug' AND pid = %d ORDER BY RAND() LIMIT 1",
-    // Bug, contrib.
-    'bug-contrib' => "SELECT nid FROM {project_issues} WHERE sid IN (1) AND category = 'bug' AND pid != %d ORDER BY RAND() LIMIT 1",
-    // Patch, core.
-    'patch-core' => "SELECT nid FROM {project_issues} WHERE sid IN (8,13,14) AND pid = %d ORDER BY RAND() LIMIT 1",
-    // Patch, contrib.
-    'patch-contrib' => "SELECT nid FROM {project_issues} WHERE sid IN (8,13,14) AND pid != %d ORDER BY RAND() LIMIT 1",
-  );
-  if (!isset($type) || !isset($sql[$type])) {
-    $type = 'bug-core';
+function drupalorg_project_bingo_jump($type = 'bug-core') {
+  $query = new EntityFieldQuery();
+  $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', project_issue_issue_node_types(), 'IN')
+    ->entityCondition('entity_id', 0, '>=') // Will be altered to a random value.
+    ->addTag('drupalorg_bug_bingo')
+    ->entityOrderBy('entity_id', 'asc')
+    ->range(0, 1);
+
+  list($category, $project) = explode('-', $type);
+
+  if ($category == 'bug') {
+    // Filter to "Active" status only.
+    $query->fieldCondition('field_issue_status', 'value', 1, '=');
+  }
+  else {
+    // Filter to the "has patch" statuses.
+    $status = array(
+      8,  // Needs review
+      13, // Needs work
+      14, // RTBC
+    );
+    $query->fieldCondition('field_issue_status', 'value', $status, 'IN');
   }
 
-  $nid = db_result(db_query($sql[$type], DRUPALORG_CORE_NID));
+  if ($project == 'core') {
+    $query->fieldCondition('field_project', 'target_id', DRUPALORG_CORE_NID, '=');
+  }
+  else {
+    $query->fieldCondition('field_project', 'target_id', DRUPALORG_CORE_NID, '<>');
+  }
+  $entities = $query->execute();
+  $entities = array_keys($entities['node']);
+  $nid = $entities[0];
   if ($_GET['stop'] != 1) {
     drupal_goto('node/'. $nid);
   }
 }
+
+/**
+ * Query alter for bug bingo. The actual randomization happens here.
+ */
+function drupalorg_project_query_drupalorg_bug_bingo_alter($query) {
+  if (!$query->hasTag('drupalorg_bug_bingo_skip')) {
+    // Flip the ordering around and execute to get an upper bound.
+    $maxquery = clone($query);
+    // Don't recurse.
+    $maxquery->addTag('drupalorg_bug_bingo_skip');
+    $order =& $maxquery->getOrderBy();
+    $order['field_data_field_issue_status0.entity_id'] = 'desc';
+    $entity = $maxquery->execute()->fetch();
+    // Grab a random nid in a quick fashion.
+    $conditions =& $query->conditions();
+    foreach ($conditions as $key => $condition) {
+      // Cut the deck in a random place.
+      if ($condition['field'] == 'field_data_field_issue_status0.entity_id') {
+        // @todo Start from the first known issue instead of zero to fix bias
+        // towards selecting the lowest issue repeatedly.
+        $conditions[$key]['value'] = mt_rand(0, $entity->entity_id);
+      }
+    }
+  }
+}
+
 
 /**
  * Implementation of hook_block().
