@@ -1319,11 +1319,9 @@ function drupalorg_homebox() {
           'title' => '',
           'weight' => -32,
         ),
-        // @todo D7 - When Project is ported, make sure this block shows up
-        // by default when you reset your Dashboard.
-        'drupalorg_project_0' => array(
+        'drupalorg_project_bingo-block' => array(
           'module' => 'drupalorg_project',
-          'delta' => '0',
+          'delta' => 'bingo-block',
           'region' => 3,
           'movable' => 1,
           'status' => 1,

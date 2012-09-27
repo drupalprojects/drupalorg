@@ -182,3 +182,16 @@ function drupalorg_update_7007() {
 function drupalorg_update_7008() {
   db_drop_table('drupalorg_civimembership');
 }
+
+/**
+ * Patch user settings for homebox blocks that had block delta changes.
+ */
+function drupalorg_update_7009() {
+  // Need to handle both 9 and 10 element arrays due to "color" key going away.
+  $old = 's:19:"drupalorg_project_0";a:10:{s:6:"module";s:17:"drupalorg_project";s:5:"delta";s:1:"0";';
+  $new = 's:29:"drupalorg_project_bingo-block";a:10:{s:6:"module";s:17:"drupalorg_project";s:5:"delta";s:11:"bingo-block";';
+  db_query("UPDATE {homebox_users} SET settings = REPLACE(settings, :old, :new)", array(':old' => $old, ':new' => $new));
+  $old = 's:19:"drupalorg_project_0";a:9:{s:6:"module";s:17:"drupalorg_project";s:5:"delta";s:1:"0";';
+  $new = 's:29:"drupalorg_project_bingo-block";a:9:{s:6:"module";s:17:"drupalorg_project";s:5:"delta";s:11:"bingo-block";';
+  db_query("UPDATE {homebox_users} SET settings = REPLACE(settings, :old, :new)", array(':old' => $old, ':new' => $new));
+}

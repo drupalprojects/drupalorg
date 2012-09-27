@@ -796,7 +796,29 @@ function drupalorg_project_query_drupalorg_bug_bingo_alter($query) {
   }
 }
 
+/**
+ * Implements hook_block_info().
+ */
+function drupalorg_project_block_info() {
+  return array(
+    'bingo-block' => array(
+      'info' => t('Contributor Links'),
+      'cache' => DRUPAL_CACHE_GLOBAL,
+    ),
+  );
+}
 
+/**
+ * Implements hook_block_view().
+ */
+function drupalorg_project_block_view($delta = '') {
+  if ($delta == 'bingo-block') {
+    return array(
+      'subject' => NULL,
+      'content' => drupalorg_project_bingo_block_output(),
+    );
+  }
+}
 /**
  * Implementation of hook_block().
  */
@@ -937,7 +959,7 @@ function drupalorg_project_bingo_block_output() {
     ),
   );
 
-  return theme('item_list', $links);
+  return theme('item_list', array('items' => $links));
 }
 
 /**
