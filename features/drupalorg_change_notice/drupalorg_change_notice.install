@@ -16,6 +16,18 @@ function drupalorg_change_notice_install() {
  * Manually convert field_project and field_issues fields for change notices.
  */
 function drupalorg_change_notice_update_7000() {
+  // Revert the drupalorg_change_notice feature now, as we're about to mess with it.
+  $module = 'drupalorg_change_notice';
+  $info = drupal_parse_info_file(drupal_get_path('module', $module) . '/' . $module . '.info');
+  $revert = array(
+    $module => array_keys($info['features']),
+  );
+  features_revert($revert);
+
+  // Try to ensure everything's lined up properly...
+  field_cache_clear();
+  node_types_rebuild();
+
   $query = db_select('content_type_changenotice', 'c');
   // Lock to current revision.
   $query->innerJoin('node', 'n', 'c.vid = n.vid');

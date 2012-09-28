@@ -1756,6 +1756,13 @@ function drupalorg_change_notice_field_default_fields() {
           ),
           'target_bundles' => array(
             'project' => 'project',
+            'project_core' => 'project_core',
+            'project_distribution' => 'project_distribution',
+            'project_drupalorg' => 'project_drupalorg',
+            'project_module' => 'project_module',
+            'project_theme' => 'project_theme',
+            'project_theme_engine' => 'project_theme_engine',
+            'project_translation' => 'project_translation',
           ),
         ),
         'handler_submit' => 'Change handler',
@@ -1797,13 +1804,24 @@ function drupalorg_change_notice_field_default_fields() {
       'label' => 'Project',
       'required' => 0,
       'settings' => array(
+        'handler_settings' => array(
+          'target_bundles' => array(
+            'project_core' => 'project_core',
+            'project_distribution' => 'project_distribution',
+            'project_drupalorg' => 'project_drupalorg',
+            'project_module' => 'project_module',
+            'project_theme' => 'project_theme',
+            'project_theme_engine' => 'project_theme_engine',
+            'project_translation' => 'project_translation',
+          ),
+        ),
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
         'module' => 'entityreference',
         'settings' => array(
-          'match_operator' => 'CONTAINS',
+          'match_operator' => 'STARTS_WITH',
           'path' => '',
           'size' => '60',
         ),
