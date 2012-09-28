@@ -26,6 +26,10 @@ function drupalorg_project_update_dependencies() {
     // until it actually exists...
     'project_issue' => 7000,
   );
+  $dependencies['drupalorg_project'][7001] = array(
+    // Make sure projects are fully migrated before we muck about with them.
+    'project' => 7004,
+  );
   return $dependencies;
 }
 
@@ -75,4 +79,118 @@ function drupalorg_project_update_7000() {
   //|  18 | closed (cannot reproduce)              |     -4 |          0 |             0 |
   //|   7 | closed (fixed)                         |     -3 |          0 |             0 |
   //+-----+----------------------------------------+--------+------------+---------------+
+}
+
+/**
+ * Get the project node type map used for migrating away from vocab 3 for
+ * identifying the type of project this is.
+ */
+function _drupalorg_project_types() {
+  return array(
+    'project_module' => array('tid' => 14, 'title' => 'Module project'),
+    'project_theme' => array('tid' => 15, 'title' => 'Theme project'),
+    'project_theme_engine' => array('tid' => 32, 'title' => 'Theme Engine project'),
+    'project_distribution' => array('tid' => 96, 'title' => 'Distribution project'),
+    'project_drupalorg' => array('tid' => 22588, 'title' => 'Drupal.org project'),
+    'project_core' => array('tid' => 13, 'title' => 'Drupal core'),
+    'project_translation' => array('tid' => 29, 'title' => 'Translation project'),
+  );
+}
+
+/**
+ * Create content types for project types.
+ */
+function drupalorg_project_update_7001() {
+  foreach (_drupalorg_project_types() as $project_type => $type_data) {
+    $type = node_type_load('project');
+    // We are cloning, not renaming.
+    unset($type->old_type);
+    $type->type = $project_type;
+    $type->name = $type_data['title'];
+    node_type_save($type);
+    node_types_rebuild();
+
+    // Define node workflow and comment settings.
+    variable_set('node_options_' . $type->type, array('status', 'revision'));
+    variable_set('comment_' . $type->type, COMMENT_NODE_CLOSED);
+
+    // Set the project behavior setting for this node type say it's a project.
+    variable_set('project_behavior_' . $type->type, 'project');
+
+    // Copy all but body field over.
+    $instances = field_read_instances(array('entity_type' => 'node', 'bundle' => 'project'));
+    foreach ($instances as $name => $instance) {
+      $instance['bundle'] = $type->type;
+      if (!field_read_instance('node', $instance['field_name'], $instance['bundle'])) {
+        field_create_instance($instance);
+      }
+    }
+
+    // Update field_project target bundles
+    foreach (array('field_project', 'field_release_project') as $field_name) {
+      $field = field_read_field($field_name);
+      $field['settings']['handler_settings']['target_bundles'][$type->type] = $type->type;
+      field_update_field($field);
+      $instances = field_read_instances(array('field_name' => $field_name));
+      foreach ($instances as $instance) {
+        $instance['settings']['handler_settings']['target_bundles'][$type->type] = $type->type;
+        field_update_instance($instance);
+      }
+    }
+  }
+}
+
+/**
+ * Shunt projects into their correct respective types.
+ */
+function drupalorg_project_update_7002() {
+  $instances = field_read_instances(array('entity_type' => 'node', 'bundle' => 'project'));
+  foreach (_drupalorg_project_types() as $type => $type_data) {
+    // Twiddle the node types of all the projects.
+    $tid = $type_data['tid'];
+    db_query('UPDATE {node}, {taxonomy_index} SET {node}.type = :type WHERE {node}.nid = {taxonomy_index}.nid AND {taxonomy_index}.tid = :tid', array(':type' => $type, ':tid' => $tid));
+    // Loop over all the fields and update the bundles.
+    foreach ($instances as $instance) {
+      foreach (array('field_data_' . $instance['field_name'], 'field_revision_' . $instance['field_name']) as $table) {
+        db_query('UPDATE {' . $table . '}, {taxonomy_index} SET {' . $table . '}.bundle = :bundle WHERE entity_type = :type AND entity_id = {taxonomy_index}.nid AND {taxonomy_index}.tid = :tid', array(':bundle' => $type, ':type' => 'node', ':tid' => $tid));
+      }
+    }
+  }
+
+  // Since we have manually mucked about in field tables, we need to clear the field cache.
+  field_cache_clear();
+
+  // Might as well rebuild node types again for safety.
+  node_types_rebuild();
+}
+
+/**
+ * Repurpose vocabulary 3 to be purely module categorization.
+ */
+function drupalorg_project_update_7003() {
+  // We will remove the project types from vocab 3 and leave just the module categorization terms.
+
+  // Update the vocabulary.
+  $vocab = taxonomy_vocabulary_load(3);
+  $vocab->name = 'Module categorization';
+  taxonomy_vocabulary_save($vocab);
+
+  // First, we need to move the categorization terms to the top level so they
+  // don't get deleted when 'Module' is deleted.
+  $terms = taxonomy_get_children(14);
+  foreach ($terms as $term) {
+    $term->parent = 0;
+    taxonomy_term_save($term);
+  }
+  // Now, we can delete the project type terms.
+  foreach (_drupalorg_project_types() as $type => $type_data) {
+    taxonomy_term_delete($type_data['tid']);
+    if ($type != 'project_module') {
+      $instance = field_read_instance('node', 'taxonomy_vocabulary_3', $type);
+      if ($instance) {
+        // Remove the association with the individual project types.
+        field_delete_instance($instance, FALSE);
+      }
+    }
+  }
 }
