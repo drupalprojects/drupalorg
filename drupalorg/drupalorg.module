@@ -1580,6 +1580,12 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         $content['column_2']['contributions_heading'] = array('#value' => '<h3>' . t('Drupal contributions') . '</h3>');
         $content['column_2']['contributions'] = $node->content['field_contributions']['field']['items'][0];
 
+        if (!empty($node->field_organization_training_desc[0]['value'])) {
+          $content['column_2']['training_heading'] = array('#value' => '<h3>' . t('Training') . '</h3>');
+          $content['column_2']['training_url'] = $node->content['field_organization_training_url']['field']['items'][0];
+          $content['column_2']['training_desc'] = $node->content['field_organization_training_desc']['field']['items'][0];
+        }
+
         // People
         $content['column_3']['map'] = array(
           '#prefix' => '<div id="organization-map">',
