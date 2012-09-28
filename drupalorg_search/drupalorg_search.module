@@ -31,26 +31,6 @@ function drupalorg_search_theme() {
 }
 
 /**
- * Implementation of hook_apachesolr_facets().
- *
- * Returns an array keyed by block delta.
- */
-function drupalorg_search_apachesolr_facets() {
-  return array(
-    'meta_type' => array(
-      'info' => t('Drupalorg Search: Filter by meta type'),
-      'facet_field' => '{!ex=meta_type}ss_meta_type',
-      'exclude_filter' => '',
-    ),
-    'sort_created' => array(
-      'info' => t('New content'),
-      'facet_field' => 'created',
-      'direction' => 'desc',
-    ),
-  );
-}
-
-/**
  * Implementation of hook_facetapi_facet_info().
  */
 function drupalorg_search_facetapi_facet_info($searcher_info) {
@@ -112,18 +92,11 @@ function drupalorg_search_facetapi_widgets() {
 }
 
 /**
- * Implementation of hook_apachesolr_multisitesearch_facets().
- */
-function drupalorg_search_apachesolr_multisitesearch_facets() {
-  return drupalorg_search_apachesolr_facets();
-}
-
-/**
  * Implementation of hook_apachesolr_query_prepare().
- * 
+ *
  * Add project sorts whenever we have an ss_meta_type of theme or module.
  */
-function drupalorg_search_apachesolr_query_prepare(&$query, &$params) {
+function drupalorg_search_apachesolr_query_prepare(&$query) {
   // The additional project sorts are only relevant if the query is filtering
   // on a project type (modules or themes).
   if ($query->hasFilter('ss_meta_type', 'theme') || $query->hasFilter('ss_meta_type', 'module')) {
@@ -142,7 +115,6 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
       return drupalorg_search_block_info();
-
     case 'view':
       return drupalorg_search_block_view($delta);
 
@@ -155,10 +127,6 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
  */
 function drupalorg_search_block_info() {
   $blocks = array(
-    'search_box' => array(
-      'info' => t('Drupalorg Search: Search box'),
-      'cache' => BLOCK_NO_CACHE,
-    ),
     'drupalorg_search_navigation' => array(
       'info' => t('Drupalorg Search: Navigation'),
       'cache' => BLOCK_NO_CACHE,
@@ -172,14 +140,6 @@ function drupalorg_search_block_info() {
       'cache' => BLOCK_NO_CACHE,
     ),
   );
-/*
-  // Add the facet blocks.
-  $enabled_facets = apachesolr_get_enabled_facets('drupalorg_search');
-  $facets = drupalorg_search_apachesolr_facets();
-  foreach ($enabled_facets as $delta => $facet_field) {
-    $blocks[$delta] = $facets[$delta] + array('cache' => BLOCK_NO_CACHE);
-  }
-*/
   return $blocks;
 }
 
@@ -188,76 +148,18 @@ function drupalorg_search_block_info() {
  */
 function drupalorg_search_block_view($delta) {
   switch ($delta) {
-    case 'search_box':
-      $env_id = apachesolr_default_environment();
-      if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
-        $querystring = $query->getParam('q');
-      }
-      else {
-        $querystring = '';
-      }
-
-      // We need to special case POST requests, because the search module
-      // doesn't trigger search on POST requests.
-      if (!empty($querystring) || (arg(0) == 'search' && $_SERVER['REQUEST_METHOD'] == 'POST')) {
-        return array(
-          'subject' => t('Search again'),
-          'content' => drupal_get_form('drupalorg_search_block_form', $querystring),
-        );
-      }
-      break;
-
-    case 'meta_type':
-      $env_id = apachesolr_default_environment();
-      if (apachesolr_has_searched($env_id) && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query($env_id))) {
-        $entries = array();
-        $total = 0;
-        $has_active = FALSE;
-        foreach (drupalorg_crosssite_meta_types() as $name => $description) {          
-          if (!empty($response->facet_counts->facet_fields->ss_meta_type->$name)) {
-            $count = $response->facet_counts->facet_fields->ss_meta_type->$name;
-            $total += $count;
-
-            $new_query = clone $query;
-            $active = $query->has_filter('ss_meta_type', $name);
-            $has_active |= $active;
-            $new_query->remove_filter('ss_meta_type');
-            $new_query->add_filter('ss_meta_type', $name);
-
-            $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
-            $querystring = $new_query->get_url_queryvalues();
-
-            $entries[] = l(t('@facet (@count)', array('@facet' => $description, '@count' => $count)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => $active ? array('class' => 'selected') : array()));
-          }
-        }
-        if (count($entries)) {
-          // Add the "All" entry.
-          $new_query = clone $query;
-          $new_query->remove_filter('ss_meta_type');
-          $path = 'search/' . arg(1) . '/' . $new_query->get_query_basic();
-          $querystring = $new_query->get_url_queryvalues();
-          array_unshift($entries, l(t('All (@count)', array('@count' => $total)), $path, array('query' => $querystring, 'html' => TRUE, 'attributes' => !$has_active ? array('class' => 'selected') : array())));
-
-          return array(
-            'subject' => t('or filter by…'),
-            'content' => theme('item_list', $entries),
-          );
-        }
-      }
-      break;
-
     case 'drupalorg_search_navigation':
       $env_id = apachesolr_default_environment();
-      if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id)) && ($response = apachesolr_static_response_cache($query->getSearcher()))) {
-        $project_type_term = drupalorg_search_get_project_type_term($response);
-        if (!isset($project_type_term)) {
-          $form = drupal_get_form('drupalorg_search_sort_form'); 
+      if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
+        $searcher = $query->getSearcher();
+        if ($response = apachesolr_static_response_cache($searcher)) {
+          $project_type_term = drupalorg_search_get_project_type_term($query, $response);
+          if (isset($project_type_term)) {
+            $form = drupal_get_form('project_solr_browse_projects_form', $project_type_term, 'search/' . arg(1) . '/' . $_GET['q']);
+          }
+          $block['content'] = $form;
+          return $block;
         }
-        else {
-          $form = drupal_get_form('project_solr_browse_projects_form', $project_type_term, 'search/' . arg(1) . '/' . $query->get_keys());
-        }
-        $block['content'] = $form;
-        return $block;
       }
       break;
     case 'drupalorg_search_alternate':
@@ -320,16 +222,18 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
   // Check to see if the project_solr_browse_projects form is being used in
   // our block on the core search page. We could test $form['path']['#value']
   // here instead, but it's not really any better that way, so arg() works.
-  if (arg(0) === 'search' && (arg(1) === 'apachesolr_search' || arg(1) === 'apachesolr_multisitesearch')) {
+  if (arg(0) === 'search' && (arg(1) === 'site')) {
     // If we're being reused on the core search results page, we add our own
     // submit handler so that we can properly handle the "meta type" stuff.
     $form['#submit'][] = 'drupalorg_search_project_solr_browse_project_form_submit';
 
-    // We default the text to our current search terms so that we don't get 
-    // errors when attempting to sort by relevancy. We make the access false, 
+    // We default the text to our current search terms so that we don't get
+    // errors when attempting to sort by relevancy. We make the access false,
     // so that the values aren't visible and we don't have 2 search forms.
-    $query = apachesolr_current_query();
-    $form['text']['#default_value'] = $query->get_keys();
+    $env_id = apachesolr_default_environment();
+    $query = apachesolr_current_query($env_id);
+    $params = $query->getParams();
+    $form['text']['#default_value'] = $params['q'];
     $form['text']['#access'] = FALSE;
   }
   else {
@@ -349,20 +253,25 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
  * value of "refine your search" that the user has selected.
  */
 function drupalorg_search_project_solr_browse_project_form_submit(&$form, &$form_state) {
-  $query = apachesolr_current_query();
+  $env_id = apachesolr_default_environment();
+  $query = apachesolr_current_query($env_id);
+
   // There might not be any filters yet. To avoid special-casing this, we just
   // explode() the existing space-delimited filters into an array,
   // conditionally append our filter into the array, and then when we're done,
   // we use implode() to re-create a space-delimited string and let implode()
   // handle the special cases of 0 or 1 filters for us.
-  $filters = explode(' ', $form_state['redirect']['query']['filters']);
-  foreach($query->get_filters() as $filter) {
+  foreach($query->getFilters() as $filter) {
     if ($filter['#name'] == 'ss_meta_type') {
-      $filters[] = $filter['#query']; 
+      // Add the query values into the redirect.
+      $filters[] = $filter['#name'] . ':' . $filter['#value'];
     }
   }
-  $form_state['redirect']['query']['filters'] = implode(' ', $filters);
-  unset($form_state['redirect']['query']['keys']);
+
+  if (isset($form_state['redirect'][1]['f'])) {
+    $previous_filters = $form_state['redirect'][1]['f'];
+  }
+  $form_state['redirect'][1]['f'] = array_merge($previous_filters, $filters);
 }
 
 /**
@@ -401,7 +310,7 @@ function drupalorg_search_block_form_submit($form, &$form_state) {
  * response. If one of the facets selected a "meta_type" for the search, and
  * the meta_type is either "module" or "theme", it loads the corresponding
  * taxonomy term object and returns that.
- * 
+ *
  * @param $response
  *   The ApacheSolr response object for the currently active search.
  *
@@ -411,24 +320,22 @@ function drupalorg_search_block_form_submit($form, &$form_state) {
  *
  * @see taxonomy_get_term()
  */
-function drupalorg_search_get_project_type_term($response) {
-  if (isset($response->responseHeader->params->fq)) {
+function drupalorg_search_get_project_type_term($query, $response) {
+  $fq = $query->getFilters();
+  if (isset($fq)) {
     // Depending on how many facets are in the currently active filter, fq
     // might either be a single value or an array. If there's a single facet,
     // we turn it into an array so the rest of this function can always assume
     // it needs to iterate.
-    $fq = $response->responseHeader->params->fq;
     if (!is_array($fq)) {
       $fq = array($fq);
     }
-    foreach ($fq as $query_snippet) {
-      if (preg_match('/^{!tag=meta_type}ss_meta_type:(.*)$/', $query_snippet, $matches)) {
-        $meta_type = trim($matches[1]);
-
-        if ($meta_type == 'theme') {
+    foreach ($fq as $filter) {
+      if ($filter['#name'] == 'ss_meta_type') {
+        if ($filter['#value'] == 'theme') {
           $tid = DRUPALORG_THEME_TID;
-        } 
-        elseif($meta_type == 'module') {
+        }
+        elseif($filter['#value'] == 'module') {
           $tid = DRUPALORG_MODULE_TID;
         }
         if (isset($tid)) {
@@ -448,13 +355,13 @@ function drupalorg_search_help_form(&$form_state) {
   // the autocomplete js + our js.
   drupal_add_js('misc/autocomplete.js');
   drupal_add_js(drupal_get_path('module', 'drupalorg_search') . '/js/community.js');
-  
+
   // Text field for searching documentation items.
   $form['search_term'] = array(
     '#type' => 'textfield',
     '#title' => t('Search Documentation'),
   );
-  
+
   // Hidden auto-lookup field for using auto-complete-like functionality.
   $form['search_term_autolookup'] = array(
     '#type' => 'hidden',
@@ -469,12 +376,12 @@ function drupalorg_search_help_form(&$form_state) {
 
 /**
  * Theme the results of our documentation search against Solr.
- * 
+ *
  * @param array $results
  *   An array of results containing, at minimum, a score, a title, and a link.
- * 
+ *
  * @return string $output
- *   An html ul representation of li items containing relevancy (score) + 
+ *   An html ul representation of li items containing relevancy (score) +
  *   a link to the content.
  */
 function theme_drupalorg_search_help_results($results) {
@@ -496,11 +403,11 @@ function theme_drupalorg_search_help_results($results) {
 /**
  * Menu callback. Retrieves and returns a themed list of documentation results
  * from Solr based on an initial search term or terms.
- * 
+ *
  * @param string $search_term
  *   A term or terms to search for in Solr.
- *   
- * @return 
+ *
+ * @return
  *   A json object representing a themed list of results from Solr.
  */
 function drupalorg_search_help_js($search_term = NULL) {
@@ -510,49 +417,4 @@ function drupalorg_search_help_js($search_term = NULL) {
   }
   $output = theme('drupalorg_search_help_results', $results);
   drupal_json($output);
-}
-
-
-/**
- * This generates a form containing sort selection and a submit button.
- * 
- * Generate a form with a sort selection to allow ordering page content
- * based on the available sorting methods. 
- */
-function drupalorg_search_sort_form(&$form_state) {
-  $form = array();
-
-  // Add the sort selection field to our form.
-  $form['solrsort'] = project_solr_get_solrsort_field();
-
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Search'),
-  );
-  return $form;
-}
-
-/**
- * Create a query with the right version filter and redirect to the right page.
- * 
- * Create a new query, add any version filtering if it was selected in the
- * form, and redirect back to the relevant page with the appropriate filter
- * string.
- */
-function drupalorg_search_sort_form_submit($form, &$form_state) {
-  $env_id = apachesolr_default_environment();
-  $query = apachesolr_current_query($env_id);
-  $path = $query->getPath();
-
-  // We create a new query with our base path so that we don't need to remove
-  // any existing drupal_core selection, and so that the implict type and 
-  // module tid filters don't end up in the url string.
-  $query = apachesolr_drupal_query('', array(), '', $path);
-
-  if (!empty($form_state['values']['solrsort'])) {
-    list($sort, $direction) = explode(' ', $form_state['values']['solrsort']);
-    $query->setSolrsort($sort, $direction);
-  }
-
-  $form_state['redirect'] = array($query->getPath(), $query->getSolrsortUrlQuery());
 }

@@ -31,7 +31,8 @@ function drupalorg_order_facet_apachesolr_facets() {
  */
 function drupalorg_order_facet_block($op = 'list', $delta = 0, $edit = array()) {
   if ($op == 'list') {
-    $enabled_facets = apachesolr_get_enabled_facets('drupalorg_order_facet');
+    $env_id = apachesolr_default_environment();
+    $enabled_facets = facetapi_get_enabled_facets($env_id);
     $facets = drupalorg_order_facet_apachesolr_facets();
     // Add the blocks
     $blocks = array();
@@ -45,22 +46,28 @@ function drupalorg_order_facet_block($op = 'list', $delta = 0, $edit = array()) 
     }
     return $blocks;
   }
-  elseif ($op == 'view' && apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
-    $facets = drupalorg_order_facet_apachesolr_facets();
-    if (isset($facets[$delta])) {
-      // Replace 'content' with 'Modules', 'Themes', etc.
-      foreach ($query->get_filters() as $filter) {
-        if ($filter['#name'] === 'im_vid_3') {
-          $term = taxonomy_get_term($filter['#value']);
-          $facets[$delta]['info'] = str_replace('content', check_plain($term->name), $facets[$delta]['info']);
+  elseif ($op == 'view') {
+    $env_id = apachesolr_default_environment();
+    if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
+      $searcher = $query->getSearcher();
+      if ($response = apachesolr_static_response_cache($searcher)) {
+        $facets = drupalorg_order_facet_apachesolr_facets();
+        if (isset($facets[$delta])) {
+          // Replace 'content' with 'Modules', 'Themes', etc.
+          foreach ($query->getFilters() as $filter) {
+            if ($filter['#name'] === 'im_vid_3') {
+              $term = taxonomy_get_term($filter['#value']);
+              $facets[$delta]['info'] = str_replace('content', check_plain($term->name), $facets[$delta]['info']);
+            }
+          }
+          $results = _drupalorg_order_facet_build($facets[$delta], $query, $response);
+          if (!empty($results)) {
+            return array(
+              'subject' => $facets[$delta]['info'],
+              'content' => theme('item_list', $results, NULL, 'ul', array('class' => 'flat')),
+            );
+          }
         }
-      }
-      $results = _drupalorg_order_facet_build($facets[$delta], $query, $response);
-      if (!empty($results)) {
-        return array(
-          'subject' => $facets[$delta]['info'],
-          'content' => theme('item_list', $results, NULL, 'ul', array('class' => 'flat')),
-        );
       }
     }
   }
@@ -89,9 +96,9 @@ function _drupalorg_order_facet_build($facet, $query, $response, $count = 4, $mo
 
   // Generate a new query based on the executed one.
   $order_query = clone $query;
-  $order_query->set_available_sort($facet['facet_field'], array('title' => $facet['info'],'default' => $facet['direction']));
-  $order_query->set_solrsort($facet['facet_field'], $facet['direction']);
-  
+  $order_query->setAvailableSort($facet['facet_field'], array('title' => $facet['info'],'default' => $facet['direction']));
+  $order_query->setSolrSort($facet['facet_field'], $facet['direction']);
+
   $params = array(
     // The fields to return.
     'fl' => 'id,nid,title',
@@ -102,13 +109,13 @@ function _drupalorg_order_facet_build($facet, $query, $response, $count = 4, $mo
     'sort' => $facet['facet_field'] . ' ' . $facet['direction'],
   );
 
-  $params['fq'] = array_merge($params['fq'], $order_query->get_fq());
+  $params['fq'] = array_merge($params['fq'], $order_query->getFilters());
 
   // Retrieve the query values first so everything is formatted correctly,
   // and we only have relevant values in the url.
   $query_values = $order_query->get_url_queryvalues();
 
-  apachesolr_modify_query($order_query, $params, '_drupalorg_order_facet_build');
+  //apachesolr_modify_query($order_query, $params, '_drupalorg_order_facet_build');
 
   // Execute the Solr query.
   $solr = apachesolr_get_solr();
