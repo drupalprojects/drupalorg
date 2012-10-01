@@ -942,6 +942,24 @@ function drupalorg_update_6608() {
 }
 
 /**
+ * Change Countries served vocabulary to Locations.
+ */
+function drupalorg_update_6609() {
+  $return = array();
+
+  // Change the vocabulary name and add a help text.
+  $return[] = update_sql("UPDATE {vocabulary} SET name = 'Locations', help = 'Please only select countries in which your company has a physical office.' WHERE name = 'Countries served'");
+
+  // Delete all references to this vocabulary.
+  $result = db_query("SELECT tid FROM {term_data} WHERE vid = %d", 52);
+  while ($tid = db_result($result)) {
+    db_query("DELETE FROM {term_node} WHERE tid = %d", $tid);
+  }
+
+  return $return;
+}
+
+/**
  * Utility function to add permissions to certain user roles.
  */
 function _drupalorg_add_permissions($permissions) {
