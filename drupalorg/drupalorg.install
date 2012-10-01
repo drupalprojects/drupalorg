@@ -34,9 +34,9 @@ function drupalorg_install() {
 function drupalorg_update_dependencies() {
   return array(
     'drupalorg' => array(
-      // drupalorg_update_7004() after profile_update_7001() so that
+      // drupalorg_update_7003() after profile_update_7001() so that
       // {profile_field} exists.
-      7004 => array(
+      7003 => array(
         'profile' => 7001,
       ),
       // drupalorg_update_7006() after tracker_update_7000() so that tracker
@@ -105,7 +105,7 @@ function drupalorg_update_7002() {
  * Enable new dependencies for change notice feature.
  */
 function drupalorg_update_7003() {
-  module_enable(array('entity', 'entityreference'));
+  module_enable(array('entity', 'entityreference', 'machine_name', 'file', 'list', 'field_group'));
   drupal_flush_all_caches();
 }
 
