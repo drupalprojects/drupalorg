@@ -956,7 +956,7 @@ function drupalorg_update_6609() {
   }
 
   // Delete all references to this vocabulary.
-  $result = db_result(db_query("SELECT tid FROM {term_data} WHERE vid = %d", 52));
+  $result = db_query("SELECT tid FROM {term_data} WHERE vid = %d", 52);
   while ($tid = db_result($result)) {
     db_query("DELETE FROM {term_node} WHERE tid = %d", $tid);
   }
