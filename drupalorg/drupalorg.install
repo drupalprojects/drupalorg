@@ -950,11 +950,6 @@ function drupalorg_update_6609() {
   // Change the vocabulary name and add a help text.
   $return[] = update_sql("UPDATE {vocabulary} SET name = 'Locations', help = 'Please only select countries in which your company has a physical office.' WHERE name = 'Countries served'");
 
-  // Delete the Worldwide term
-  if ($term = taxonomy_get_term_by_name('Worldwide')) {
-    taxonomy_del_term($term['tid']);
-  }
-
   // Delete all references to this vocabulary.
   $result = db_query("SELECT tid FROM {term_data} WHERE vid = %d", 52);
   while ($tid = db_result($result)) {
