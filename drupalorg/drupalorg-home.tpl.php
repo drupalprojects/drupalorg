@@ -15,14 +15,14 @@
 
 <div id="develop-with-drupal">
       <h2><a href="download">Develop with Drupal</a></h2>
-        <div class="block block-secondary block-element">
-          <div class="grid-1 alpha"><img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/icon-d8-100.png" alt="Drupal 8 icon" /></div>
-          <div>
+        <div class="intro">
+          <div class="logo"><img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/icon-d8-100.png" alt="Drupal 8 icon" /></div>
+          <div class="text">
             <strong>Help build Drupal 8.</strong> We are already hard at work. But we need your help to <strong>develop</strong>, <strong>design</strong> and <strong>test</strong> the next version of Drupal.
           <br /><a href="community-initiatives/drupal-core">Get started now.</a>
           </div>
         </div>
-        <div class="clearfix">
+        <div class="activities">
           <table class="front-current-activity">
             <tr><td><?php print $number_of_modules; ?></td><td><a href="project/modules">Modules</a></td></tr>
             <tr><td><?php print $number_of_themes; ?></td><td><a href="project/themes">Themes</a></td></tr>
@@ -36,7 +36,7 @@
           </table>
         </div>
 
-        <ul>
+        <ul class="links">
           <li><a href="project/drupal">Drupal Core</a></li>
           <li><a href="security">Security Info</a></li>
           <li><a href="contributors-guide">Developer Docs</a></li>
