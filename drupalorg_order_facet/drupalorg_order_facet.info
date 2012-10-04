@@ -2,4 +2,5 @@ name = Drupal.org Order Facets
 description = Manage order-based facets for Drupal.org.
 package = Drupal.org
 dependencies[] = apachesolr
+dependencies[] = facetapi
 core = 6.x
