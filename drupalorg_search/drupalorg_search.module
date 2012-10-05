@@ -115,6 +115,7 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
       return drupalorg_search_block_info();
+
     case 'view':
       return drupalorg_search_block_view($delta);
 
@@ -127,6 +128,10 @@ function drupalorg_search_block($op = 'list', $delta = 0, $edit = array()) {
  */
 function drupalorg_search_block_info() {
   $blocks = array(
+    'search_box' => array(
+      'info' => t('Drupalorg Search: Search box'),
+      'cache' => BLOCK_NO_CACHE,
+    ),
     'drupalorg_search_navigation' => array(
       'info' => t('Drupalorg Search: Navigation'),
       'cache' => BLOCK_NO_CACHE,
@@ -148,6 +153,16 @@ function drupalorg_search_block_info() {
  */
 function drupalorg_search_block_view($delta) {
   switch ($delta) {
+    case 'search_box':
+      $env_id = apachesolr_default_environment();
+      if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
+        return array(
+          'subject' => t('Search again'),
+          'content' => drupal_get_form('drupalorg_search_block_form', $query->getParam('q')),
+        );
+      }
+      break;
+
     case 'drupalorg_search_navigation':
       $env_id = apachesolr_default_environment();
       if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
