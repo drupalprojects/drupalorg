@@ -13,7 +13,7 @@ function drupalorg_order_facet_apachesolr_facets() {
   foreach (module_implements('apachesolr_facets') as $module) {
     if ($module != 'drupalorg_order_facet') {
       $module_facets[$module] = module_invoke($module, 'apachesolr_facets');
-      uasort($module_facets[$module], '_apachesolr_sort_facets');
+      uasort($module_facets[$module], 'facetapi_sort_weight');
     }
   }
 
