@@ -10,6 +10,7 @@ function drupalorg_order_facet_apachesolr_facets() {
   // Load the _apachesolr_sort_facets() function.
   require_once drupal_get_path('module', 'apachesolr') . '/apachesolr.admin.inc';
 
+  $module_facets = array();
   foreach (module_implements('apachesolr_facets') as $module) {
     if ($module != 'drupalorg_order_facet') {
       $module_facets[$module] = module_invoke($module, 'apachesolr_facets');
