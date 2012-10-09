@@ -66,6 +66,18 @@ function drupalorg_search_update_6302() {
   drupal_clear_css_cache();
 
   // just a report for the install page -- otherwise this update will show up as "FAILED"
-  $ret[] = array('success' => true, 'query' => "enabled some module, and some other module");
+  $ret[] = array('success' => true, 'query' => "enabled facetapi and apachesolr_multisitesearch");
   return $ret;
+}
+
+/**
+ * Set variables for apachesolr 6.x-3.x.
+ */
+function drupalorg_search_update_6303() {
+  $return = array();
+
+  variable_set('apachesolr_search_default_search_page', 'core_search');
+  variable_set('httprl_server_addr', -1);
+
+  return $return;
 }

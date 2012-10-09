@@ -13,6 +13,56 @@ function drupalorg_search_facetapi_default_facet_settings() {
   $facet = new stdClass;
   $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
   $facet->api_version = 1;
+  $facet->name = 'apachesolr@solr:block:ss_meta_type';
+  $facet->searcher = 'apachesolr@solr';
+  $facet->realm = 'block';
+  $facet->facet = 'ss_meta_type';
+  $facet->enabled = TRUE;
+  $facet->settings = array(
+    'operator' => 'and',
+    'hard_limit' => '50',
+    'dependencies' => array(),
+    'facet_mincount' => 1,
+    'facet_missing' => 0,
+    'flatten' => 0,
+    'query_type' => 'meta_type',
+    'weight' => 0,
+    'widget' => 'facetapi_constant',
+    'filters' => array(),
+    'active_sorts' => array(
+      'indexed' => 0,
+      'display' => 0,
+      'count' => 0,
+      'active' => 0,
+    ),
+    'sort_weight' => array(
+      'indexed' => '0',
+      'display' => '0',
+      'count' => '0',
+      'active' => '0',
+    ),
+    'sort_order' => array(
+      'indexed' => '4',
+      'display' => '4',
+      'count' => '4',
+      'active' => '4',
+    ),
+    'empty_behavior' => 'none',
+    'soft_limit' => '20',
+    'nofollow' => 1,
+    'show_expanded' => 0,
+    'empty_text' => '',
+    'format' => '1',
+    'submit_realm' => 'Save and go back to realm settings',
+    'cancel' => '',
+    'url' => '',
+    'title' => '',
+  );
+  $facets['apachesolr@solr:block:ss_meta_type'] = $facet;
+
+  $facet = new stdClass;
+  $facet->disabled = FALSE; /* Edit this to true to make a default facet disabled initially */
+  $facet->api_version = 1;
   $facet->name = 'apachesolr@solr:block:bs_project_sandbox';
   $facet->searcher = 'apachesolr@solr';
   $facet->realm = 'block';
