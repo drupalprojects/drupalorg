@@ -4,10 +4,12 @@ package = Drupal.org
 
 core = 6.x
 
+dependencies[] = apachesolr
 dependencies[] = apachesolr_search
 dependencies[] = project_release
 dependencies[] = project_solr
 dependencies[] = drupalorg_crosssite
+dependencies[] = facetapi
 
 files[] = plugins/facetapi/query_type_meta_type.inc
 files[] = plugins/facetapi/widget_constant.inc

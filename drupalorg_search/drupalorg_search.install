@@ -21,29 +21,11 @@ function drupalorg_search_update_6000() {
  * scripts. This is necessary as there is no provided upgrade path from
  * apachesolr 6.x-1.x to 6.x-3.x and required tables and data are absent.
  */
-function drupalorg_search_update_6301() {
-  // Force Apachesolr's install when upgrading from 6.x-1.x to 6.x-3.x.
-  module_load_include('install', 'apachesolr');
-  apachesolr_install();
-
-  // Force Apachesolr Search's install when upgrading from 6.x-1.x to 6.x-3.x.
-  module_load_include('install', 'apachesolr_search');
-  apachesolr_search_install();
-  apachesolr_search_enable();
-}
-
-/**
- * Set apachesolr 3.x to use the "core_search" as default.
- */
-function drupalorg_search_update_6302() {
-  variable_set('apachesolr_search_default_search_page', 'core_search');
-  return array();
-}
 
 /**
  * Change block placement to match new page urls.
  */
-function drupalorg_search_update_6303() {
+function drupalorg_search_update_6301() {
   $ret = array();
 
   // Change display pages for drupalorg_search_navigation block.
@@ -56,5 +38,34 @@ function drupalorg_search_update_6303() {
   // TODO more as needed.
   $ret[] =  update_sql("UPDATE {blocks} SET pages = '$pages' WHERE module = 'drupalorg_search' AND delta = 'search_box' AND theme = 'bluecheese'");
 
+  return $ret;
+}
+
+/**
+ * Enable the facetapi module since we need this for the upgrade
+ * @return array
+ */
+function drupalorg_search_update_6302() {
+  $ret = array();
+
+  // Array of modules we want to enable
+  $modules = array('facetapi', 'apachesolr_multisitesearch');
+
+  // You must rebuild the module cache for the system table to see the modules
+  module_rebuild_cache();
+
+  // enable modules first
+  module_enable($modules);
+
+  // now run their install files
+  drupal_install_modules($modules);
+
+  // other magic functions that are only called when admin/build/modules form is submitted
+  menu_rebuild();
+  node_types_rebuild();
+  drupal_clear_css_cache();
+
+  // just a report for the install page -- otherwise this update will show up as "FAILED"
+  $ret[] = array('success' => true, 'query' => "enabled some module, and some other module");
   return $ret;
 }

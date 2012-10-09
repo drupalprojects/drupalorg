@@ -470,6 +470,10 @@ function drupalorg_project_security_release_form_validate($form, &$form_state) {
 function drupalorg_project_project_page_link_alter(&$links, $node) {
   global $user;
 
+  if (!is_object($node)) {
+    return;
+  }
+
   // Make the development and resources sections actual core blocks.
   $links['development']['type'] = 'block';
   $links['resources']['type'] = 'block';

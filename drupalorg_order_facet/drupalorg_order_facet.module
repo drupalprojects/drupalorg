@@ -32,41 +32,45 @@ function drupalorg_order_facet_apachesolr_facets() {
  */
 function drupalorg_order_facet_block($op = 'list', $delta = 0, $edit = array()) {
   if ($op == 'list') {
-    $env_id = apachesolr_default_environment();
-    $enabled_facets = facetapi_get_enabled_facets($env_id);
-    $facets = drupalorg_order_facet_apachesolr_facets();
-    // Add the blocks
     $blocks = array();
-    foreach ($enabled_facets as $delta => $facet_field) {
-      if (isset($facets[$delta])) {
-        $blocks[$delta] = $facets[$delta] + array(
-          'cache' => BLOCK_NO_CACHE,
-        );
-        $blocks[$delta]['info'] = t('Solr result block: !facet_name', array('!facet_name' => $facets[$delta]['info']));
+    if (module_exists('facetapi')) {
+      $env_id = apachesolr_default_environment();
+      $enabled_facets = facetapi_get_enabled_facets($env_id);
+      $facets = drupalorg_order_facet_apachesolr_facets();
+      // Add the blocks
+      foreach ($enabled_facets as $delta => $facet_field) {
+        if (isset($facets[$delta])) {
+          $blocks[$delta] = $facets[$delta] + array(
+            'cache' => BLOCK_NO_CACHE,
+          );
+          $blocks[$delta]['info'] = t('Solr result block: !facet_name', array('!facet_name' => $facets[$delta]['info']));
+        }
       }
     }
     return $blocks;
   }
   elseif ($op == 'view') {
-    $env_id = apachesolr_default_environment();
-    if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
-      $searcher = $query->getSearcher();
-      if ($response = apachesolr_static_response_cache($searcher)) {
-        $facets = drupalorg_order_facet_apachesolr_facets();
-        if (isset($facets[$delta])) {
-          // Replace 'content' with 'Modules', 'Themes', etc.
-          foreach ($query->getFilters() as $filter) {
-            if ($filter['#name'] === 'im_vid_3') {
-              $term = taxonomy_get_term($filter['#value']);
-              $facets[$delta]['info'] = str_replace('content', check_plain($term->name), $facets[$delta]['info']);
+    if (module_exists('facetapi')) {
+      $env_id = apachesolr_default_environment();
+      if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
+        $searcher = $query->getSearcher();
+        if ($response = apachesolr_static_response_cache($searcher)) {
+          $facets = drupalorg_order_facet_apachesolr_facets();
+          if (isset($facets[$delta])) {
+            // Replace 'content' with 'Modules', 'Themes', etc.
+            foreach ($query->getFilters() as $filter) {
+              if ($filter['#name'] === 'im_vid_3') {
+                $term = taxonomy_get_term($filter['#value']);
+                $facets[$delta]['info'] = str_replace('content', check_plain($term->name), $facets[$delta]['info']);
+              }
             }
-          }
-          $results = _drupalorg_order_facet_build($facets[$delta], $query, $response);
-          if (!empty($results)) {
-            return array(
-              'subject' => $facets[$delta]['info'],
-              'content' => theme('item_list', $results, NULL, 'ul', array('class' => 'flat')),
-            );
+            $results = _drupalorg_order_facet_build($facets[$delta], $query, $response);
+            if (!empty($results)) {
+              return array(
+                'subject' => $facets[$delta]['info'],
+                'content' => theme('item_list', $results, NULL, 'ul', array('class' => 'flat')),
+              );
+            }
           }
         }
       }

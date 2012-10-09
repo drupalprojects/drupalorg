@@ -433,3 +433,18 @@ function drupalorg_search_help_js($search_term = NULL) {
   $output = theme('drupalorg_search_help_results', $results);
   drupal_json($output);
 }
+
+/**
+ * Implementation of hook_ctools_plugin_api().
+ */
+function drupalorg_search_ctools_plugin_api($module, $api) {
+  if ($module == 'apachesolr' && $api == 'apachesolr_environments') {
+    return array('version' => 1);
+  }
+  if ($module == 'apachesolr_search' && $api == 'apachesolr_search_defaults') {
+    return array('version' => 3);
+  }
+  if ($module == 'facetapi' && $api == 'facetapi_defaults') {
+    return array('version' => 1);
+  }
+}
