@@ -211,3 +211,49 @@ function drupalorg_update_7009() {
   $new = 's:29:"drupalorg_project_bingo-block";a:9:{s:6:"module";s:17:"drupalorg_project";s:5:"delta";s:11:"bingo-block";';
   db_query("UPDATE {homebox_users} SET settings = REPLACE(settings, :old, :new)", array(':old' => $old, ':new' => $new));
 }
+
+/**
+ * Bind updated project-related permissions to roles.
+ */
+function drupalorg_update_7010() {
+  $query = db_insert('role_permission')
+    ->fields(array('rid', 'permission', 'module'));
+
+  $types = array(
+    'project_distribution',
+    'project_core',
+    'project_drupalorg',
+    'project_module',
+    'project_theme',
+    'project_theme_engine',
+    'project_translation'
+  );
+
+  foreach ($types as $type) {
+    $query->values(array(
+      'rid' => 20,
+      'permission' => "create $type content",
+      'module' => 'node',
+    ));
+
+    $query->values(array(
+      'rid' => 20,
+      'permission' => "edit own $type content",
+      'module' => 'node',
+    ));
+
+    $query->values(array(
+      'rid' => 3,
+      'permission' => "delete any $type content",
+      'module' => 'node',
+    ));
+
+    $query->values(array(
+      'rid' => 3,
+      'permission' => "edit any $type content",
+      'module' => 'node',
+    ));
+  }
+
+  $query->execute();
+}
