@@ -213,9 +213,29 @@ function drupalorg_update_7009() {
 }
 
 /**
- * Bind updated project-related permissions to roles.
+ * Port ALL permissions/role bindings over to their new D7 equivalents.
+ *
+ * For the sake of brevity in our update hook numbers, we have agreed to
+ * retroactively update this hook as we discover new permissions issues.
+ * Normally this is a no-no, but since we have a structured migration
+ * process, it is acceptable to do until we launch the D7 switch.
  */
 function drupalorg_update_7010() {
+  // Forum permissions
+  $prefixes = array('create', 'edit own', 'edit any',
+                    'delete any', 'delete own');
+
+  foreach ($prefixes as $prefix) {
+    db_update('role_permission')
+      ->fields(array(
+        'permission' => "$prefix forum content",
+        'module' => 'node',
+      ))
+      ->condition('permission', "$prefix forum topic%", 'LIKE')
+      ->execute();
+  }
+
+  // Project* permissions
   $query = db_insert('role_permission')
     ->fields(array('rid', 'permission', 'module'));
 
