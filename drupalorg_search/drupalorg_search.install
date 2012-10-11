@@ -77,6 +77,7 @@ function drupalorg_search_update_6303() {
   $return = array();
 
   variable_set('apachesolr_search_default_search_page', 'core_search');
+  variable_set('project_solr_default_sort', 'iss_project_release_usage desc');
   variable_set('httprl_server_addr', -1);
 
   return $return;
