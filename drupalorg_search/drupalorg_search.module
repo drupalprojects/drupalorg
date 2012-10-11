@@ -186,7 +186,7 @@ function drupalorg_search_block_view($delta) {
 
       // Provide selections for all the site-search options.
       $searches = array(
-        'apachesolr_multisitesearch' => 'Posts',
+        'site' => 'Posts',
         'drupalorg' => 'IRC Nicks',
         'user_search' => 'Users',
       );
