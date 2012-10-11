@@ -1,4 +1,4 @@
-<div class="download-drupal">
+<div class="get-started download-drupal">
   <h2>Download Drupal</h2>
     <div class="narrow-box">
     <p><a href="/project/drupal">Drupal core</a> contains the essential building blocks providing you a flexible foundation to get started with Drupal. You’ll also need a <a href="/hosting">web hosting provider</a>.</p>
@@ -9,7 +9,7 @@
 </div><!--/download-drupal-->
 
 
-<div class="extend-drupal">
+<div class="get-started extend-drupal">
 <h2>Extend Drupal</h2>
     <div class="narrow-box"><p>Download hundreds of modules to customize and extend your site.</p>
     <div class="narrow-box-list">
@@ -32,7 +32,7 @@
   </div><!--/narrow-box-->
 </div><!--/extend-drupal-->
 
-<div class="documentation">
+<div class="get-started documentation">
   <h2>Documentation</h2>
   <div class="narrow-box">
     <p>Want more information before you begin using Drupal? Our extensive documentation will tell you how.</p>
@@ -55,7 +55,7 @@
   </div><!--/narrow-box-->
 </div><!--/documentation-->
 
-<div class="get-support">
+<div class="get-started get-support">
    <h2>Get Support</h2>
   <div class="narrow-box">
     <p>Ask questions and get answers in <a href="/forum">our forums</a>.</p>
