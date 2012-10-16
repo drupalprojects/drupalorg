@@ -52,22 +52,22 @@
         This class removes the padding and bullets from the list items
 */ ?>
   <div class="grid-3 alpha">
-    <?php print $sort_most_installed; ?>
+    <?php print $iss_project_release_usage; ?>
   </div>
 
   <div class="grid-3">
     <h2>Module Categories</h2>
     <ul class="flat">
-      <li class="first"><a href="/project/modules?f[0]=tid:53">Administration</a></li>
-      <li><a href="/project/modules?f[0]=tid:56">Community</a></li>
-      <li><a href="/project/modules?f[0]=tid:61">Event</a></li>
-      <li><a href="/project/modules?f[0]=tid:67">Media</a></li>
+      <li class="first"><a href="/project/modules?f[0]=im_vid_3:53">Administration</a></li>
+      <li><a href="/project/modules?f[0]=im_vid_3:56">Community</a></li>
+      <li><a href="/project/modules?f[0]=im_vid_3:61">Event</a></li>
+      <li><a href="/project/modules?f[0]=im_vid_3:67">Media</a></li>
       <li class="last all"><a href="/project/modules/categories" class="all">All Categories</a></li>
     </ul>
   </div>
 
   <div class="grid-3">
-    <?php print $sort_created; ?>
+    <?php print $ds_created; ?>
   </div>
 
   <div class="grid-3 omega">

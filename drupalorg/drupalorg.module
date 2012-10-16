@@ -610,8 +610,8 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   // delta as the unique key for the sake of brevity (both here and in the
   // $variables array).
   $facets = array(
-    'sort_most_installed' => 'drupalorg_order_facet',
-    'sort_created' => 'drupalorg_order_facet',
+    'iss_project_release_usage' => 'drupalorg_order_facet',
+    'ds_created' => 'drupalorg_order_facet',
   );
   // Render and save the facet blocks.
   foreach ($facets as $delta => $module) {
@@ -631,14 +631,15 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   $view->set_display('block_1');
   $view->set_arguments(array('modules'));
   // See if the version filter was used, and if so, have it impact the view.
-  if (!empty($_GET['filters'])) {
-    $matches = array();
-    if (preg_match('/drupal_core:(\d+)/', $_GET['filters'], $matches)) {
-      $core_version = $matches[1];
-      $filters = $view->display_handler->get_option('filters');
-      $filters['tid']['value'] = array($core_version);
-      $filters['tid']['exposed'] = FALSE;
-      $view->display_handler->set_option('filters', $filters);
+  if (!empty($_GET['f'])) {
+    foreach ($_GET['f'] as $f) {
+      if (preg_match('/drupal_core:(\d+)/', $f, $matches)) {
+        $core_version = $matches[1];
+        $filters = $view->display_handler->get_option('filters');
+        $filters['tid']['value'] = array($core_version);
+        $filters['tid']['exposed'] = FALSE;
+        $view->display_handler->set_option('filters', $filters);
+      }
     }
   }
   $view->pre_execute();
