@@ -430,7 +430,7 @@ function theme_drupalorg_search_help_results($results) {
 function drupalorg_search_help_js($search_term = NULL) {
   $results = array();
   if (!empty($search_term)) {
-    $results = apachesolr_search_execute($search_term, 'ss_meta_type:documentation', '');
+    $results = apachesolr_search_search_execute($search_term, array('fq' => array('ss_meta_type:documentation')));
   }
   $output = theme('drupalorg_search_help_results', $results);
   drupal_json($output);
