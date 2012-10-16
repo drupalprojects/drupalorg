@@ -37,7 +37,7 @@ function drupalorg_order_facet_block($op = 'list', $delta = 0, $edit = array()) 
       if (!empty($results)) {
         return array(
           'subject' => $blocks[$delta]['info'],
-          'content' => theme('item_list', $results),
+          'content' => theme('item_list', $results, NULL, 'ul', array('class' => 'flat')),
         );
       }
     }
