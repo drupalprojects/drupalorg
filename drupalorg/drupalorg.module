@@ -99,7 +99,8 @@ function drupalorg_menu() {
 
   $items['download'] = array(
     'title' => 'Download & Extend',
-    'page callback' => 'drupalorg_download',
+    'page callback' => 'theme',
+    'page arguments' => array('drupalorg_download'),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -590,13 +591,6 @@ function drupalorg_preprocess_drupalorg_start(&$variables) {
     'value' => DRUPALORG_THEME_TID,
   )));
   $variables['most_popular_themes'] = drupalorg_order_facet_content('sort_most_installed');
-}
-
-/**
- * Page callback for the download page.
- */
-function drupalorg_download() {
-  return theme('drupalorg_download');
 }
 
 /**
