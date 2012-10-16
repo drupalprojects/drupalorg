@@ -33,11 +33,11 @@ function drupalorg_order_facet_block($op = 'list', $delta = 0, $edit = array()) 
           $blocks[$delta]['info'] = str_replace('content', check_plain($term->name), $blocks[$delta]['info']);
         }
       }
-      $results = _drupalorg_order_facet_build($delta, $blocks[$delta], $query);
+      $results = drupalorg_order_facet_build($delta, $blocks[$delta], $query);
       if (!empty($results)) {
         return array(
           'subject' => $blocks[$delta]['info'],
-          'content' => theme('item_list', $results, NULL, 'ul', array('class' => 'flat')),
+          'content' => $results,
         );
       }
     }
@@ -47,7 +47,7 @@ function drupalorg_order_facet_block($op = 'list', $delta = 0, $edit = array()) 
 /**
  * Generate an order facet.
  */
-function _drupalorg_order_facet_build($sort, $info, $query, $count = 4, $more = TRUE) {
+function drupalorg_order_facet_build($sort, $info, $query, $more = TRUE) {
   // Generate a new query based on the executed one.
   $order_query = clone $query;
   $order_query->setSolrSort($sort, $info['direction']);
@@ -63,7 +63,7 @@ function _drupalorg_order_facet_build($sort, $info, $query, $count = 4, $more = 
   $order_query->addParams(array(
     'fl' => 'id,nid,title,url',
     'start' => 0,
-    'rows' => $count,
+    'rows' => 4,
   ));
   $response = $order_query->search();
 
@@ -81,5 +81,5 @@ function _drupalorg_order_facet_build($sort, $info, $query, $count = 4, $more = 
       'class' => 'all',
     );
   }
-  return $items;
+  return theme('item_list', $items, NULL, 'ul', array('class' => 'flat'));
 }

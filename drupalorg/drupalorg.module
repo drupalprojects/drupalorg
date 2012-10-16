@@ -580,17 +580,20 @@ function drupalorg_preprocess_drupalorg_start(&$variables) {
   $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
 
   // Create and cache a solr query for use by block elements.
+  $env_id = apachesolr_default_environment();
   project_solr_run_project_query('project/modules', array(array(
     'key' => 'im_vid_' . _project_get_vid(),
     'value' => DRUPALORG_MODULE_TID,
   )));
-  $variables['most_popular_modules'] = drupalorg_order_facet_content('sort_most_installed');
+  $query = apachesolr_current_query($env_id);
+  $variables['most_popular_modules'] = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
 
   project_solr_run_project_query('project/themes', array(array(
     'key' => 'im_vid_' . _project_get_vid(),
     'value' => DRUPALORG_THEME_TID,
   )));
-  $variables['most_popular_themes'] = drupalorg_order_facet_content('sort_most_installed');
+  $query = apachesolr_current_query($env_id);
+  $variables['most_popular_themes'] = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
 }
 
 /**
