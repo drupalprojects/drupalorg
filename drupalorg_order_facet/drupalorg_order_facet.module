@@ -61,7 +61,7 @@ function _drupalorg_order_facet_build($sort, $info, $query, $count = 4, $more = 
 
   // Execute the Solr query.
   $order_query->addParams(array(
-    'fl' => 'id,nid,title',
+    'fl' => 'id,nid,title,url',
     'start' => 0,
     'rows' => $count,
   ));
