@@ -17,6 +17,7 @@
     }
     $pins.eq(current).show();
   }, 4000);
-
-  $('#community-updates').tabs();
+  $(document).ready(function() {
+    $('#community-updates').tabs();
+  });
 })(jQuery);
