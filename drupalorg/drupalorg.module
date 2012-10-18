@@ -653,7 +653,10 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
 
   /* @todo D7 When we have this view, make this work. */
   // Pick a random site made with Drupal from the cache.
-  $variables['things_we_made'] = $variables['sites_made'][array_rand($variables['sites_made'])];
+
+  if (!empty($variables['sites_made'])){
+    $variables['things_we_made'] = $variables['sites_made'][array_rand($variables['sites_made'])];
+  }
 
   // @todo D7 - this ad is not showing up. The HTML is being printed, but the
   // JS is not executing, because some scripts are not included that define
