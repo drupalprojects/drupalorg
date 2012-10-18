@@ -33,8 +33,7 @@ function drupalorg_search_apachesolr_environments() {
       7 => 'page',
       8 => 'project_issue',
       9 => 'project_project',
-      10 => 'project_release',
-      11 => 'story',
+      10 => 'story',
     ),
   );
   $environments['solr'] = $environment;
