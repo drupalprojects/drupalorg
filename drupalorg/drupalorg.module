@@ -1978,7 +1978,7 @@ function drupalorg_user_view($account, $view_mode) {
     }
 
     if ($account->uid === $user->uid) {
-      switch ($membership->status) {
+      switch ($membership->membership_status) {
         case 'New':
         case 'Current':
           $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="https://association.drupal.org">Drupal Association</a> membership. Your support has helped us to support the Drupal community. We really appreciate your contribution to making Drupal and its community great.');
