@@ -1,2271 +1,792 @@
 <?php
+/**
+ * @file
+ * drupalorg_marketplace.views_default.inc
+ */
 
 /**
- * Implementation of hook_views_default_views().
+ * Implements hook_views_default_views().
  */
 function drupalorg_marketplace_views_default_views() {
-  $views = array();
+  $export = array();
 
-  // Exported view: drupalorg_marketplace_hosting
-  $view = new view;
+  $view = new view();
   $view->name = 'drupalorg_marketplace_hosting';
   $view->description = 'List of organizations providing hosting';
   $view->tag = '';
   $view->base_table = 'node';
+  $view->human_name = '';
   $view->core = 0;
-  $view->api_version = '2';
+  $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Defaults */
   $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'field_organization_hosting_level_value' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 1,
-      'id' => 'field_organization_hosting_level_value',
-      'table' => 'node_data_field_organization_hosting_level',
-      'field' => 'field_organization_hosting_level_value',
-      'relationship' => 'none',
-    ),
-    'field_organization_hosting_url_url' => array(
-      'label' => 'Hosting URL',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'widget',
-      'format' => 'plain',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 1,
-      'id' => 'field_organization_hosting_url_url',
-      'table' => 'node_data_field_organization_hosting_url',
-      'field' => 'field_organization_hosting_url_url',
-      'relationship' => 'none',
-    ),
-    'title' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<a href="[field_organization_hosting_url_url]">[title]</a>',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'exclude' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('sorts', array(
-    'field_organization_hosting_level_value' => array(
-      'order' => 'DESC',
-      'delta' => -1,
-      'id' => 'field_organization_hosting_level_value',
-      'table' => 'node_data_field_organization_hosting_level',
-      'field' => 'field_organization_hosting_level_value',
-      'relationship' => 'none',
-    ),
-    'title' => array(
-      'order' => 'ASC',
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'field_organization_hosting_level_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        1 => '1',
-        2 => '2',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_organization_hosting_level_value_many_to_one',
-      'table' => 'node_data_field_organization_hosting_level',
-      'field' => 'field_organization_hosting_level_value_many_to_one',
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'organization' => 'organization',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'field_organization_hosting_categ_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        'Shared' => 'Shared',
-        'Enterprise &amp; Managed' => 'Enterprise &amp; Managed',
-        'Platform as a Service' => 'Platform as a Service',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_organization_hosting_categ_value_many_to_one',
-      'table' => 'node_data_field_organization_hosting_categ',
-      'field' => 'field_organization_hosting_categ_value_many_to_one',
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('css_class', 'drupalorg-grid-2 drupalorg-4-col');
-  $handler->override_option('header', 'The following hosting companies are great choices not only because they provide quality services, but because they go out of their way to support the Drupal community directly. Through code contributions or sponsorship of the Drupal Association, these organizations help make Drupal successful.');
-  $handler->override_option('header_format', '1');
-  $handler->override_option('header_empty', 0);
-  $handler->override_option('footer', '<h2>Other great hosts that support Drupal</h2>');
-  $handler->override_option('footer_format', '1');
-  $handler->override_option('footer_empty', 0);
-  $handler->override_option('items_per_page', 0);
-  $handler->override_option('style_plugin', 'grid');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-    'columns' => '4',
-    'alignment' => 'horizontal',
-    'fill_single_line' => 0,
-    'summary' => '',
-  ));
+  $handler->display->display_options['css_class'] = 'drupalorg-grid-2 drupalorg-4-col';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['style_plugin'] = 'grid';
+  $handler->display->display_options['style_options']['grouping'] = '';
+  $handler->display->display_options['style_options']['fill_single_line'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['text']['id'] = 'area';
+  $handler->display->display_options['header']['text']['table'] = 'views';
+  $handler->display->display_options['header']['text']['field'] = 'area';
+  $handler->display->display_options['header']['text']['content'] = 'The following hosting companies are great choices not only because they provide quality services, but because they go out of their way to support the Drupal community directly. Through code contributions or sponsorship of the Drupal Association, these organizations help make Drupal successful.';
+  $handler->display->display_options['header']['text']['format'] = '1';
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['text']['id'] = 'area';
+  $handler->display->display_options['footer']['text']['table'] = 'views';
+  $handler->display->display_options['footer']['text']['field'] = 'area';
+  $handler->display->display_options['footer']['text']['content'] = '<h2>Other great hosts that support Drupal</h2>';
+  $handler->display->display_options['footer']['text']['format'] = '1';
+  /* Field: Broken/missing handler */
+  $handler->display->display_options['fields']['field_organization_hosting_level_value']['id'] = 'field_organization_hosting_level_value';
+  $handler->display->display_options['fields']['field_organization_hosting_level_value']['table'] = 'node_data_field_organization_hosting_level';
+  $handler->display->display_options['fields']['field_organization_hosting_level_value']['field'] = 'field_organization_hosting_level_value';
+  $handler->display->display_options['fields']['field_organization_hosting_level_value']['label'] = '';
+  $handler->display->display_options['fields']['field_organization_hosting_level_value']['exclude'] = TRUE;
+  /* Field: Broken/missing handler */
+  $handler->display->display_options['fields']['field_organization_hosting_url_url']['id'] = 'field_organization_hosting_url_url';
+  $handler->display->display_options['fields']['field_organization_hosting_url_url']['table'] = 'node_data_field_organization_hosting_url';
+  $handler->display->display_options['fields']['field_organization_hosting_url_url']['field'] = 'field_organization_hosting_url_url';
+  $handler->display->display_options['fields']['field_organization_hosting_url_url']['label'] = 'Hosting URL';
+  $handler->display->display_options['fields']['field_organization_hosting_url_url']['exclude'] = TRUE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<a href="[field_organization_hosting_url_url]">[title]</a>';
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Sort criterion: Broken/missing handler */
+  $handler->display->display_options['sorts']['field_organization_hosting_level_value']['id'] = 'field_organization_hosting_level_value';
+  $handler->display->display_options['sorts']['field_organization_hosting_level_value']['table'] = 'node_data_field_organization_hosting_level';
+  $handler->display->display_options['sorts']['field_organization_hosting_level_value']['field'] = 'field_organization_hosting_level_value';
+  $handler->display->display_options['sorts']['field_organization_hosting_level_value']['order'] = 'DESC';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['id'] = 'field_organization_hosting_level_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['table'] = 'node_data_field_organization_hosting_level';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['field'] = 'field_organization_hosting_level_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['value'] = array(
+    1 => '1',
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['id'] = 'field_organization_hosting_categ_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['table'] = 'node_data_field_organization_hosting_categ';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['field'] = 'field_organization_hosting_categ_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['value'] = array(
+    'Shared' => 'Shared',
+    'Enterprise &amp; Managed' => 'Enterprise &amp; Managed',
+    'Platform as a Service' => 'Platform as a Service',
+  );
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['expose']['operator'] = FALSE;
+
+  /* Display: Shared */
   $handler = $view->new_display('page', 'Shared', 'page_1');
-  $handler->override_option('filters', array(
-    'field_organization_hosting_level_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        1 => '1',
-        2 => '2',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_organization_hosting_level_value_many_to_one',
-      'table' => 'node_data_field_organization_hosting_level',
-      'field' => 'field_organization_hosting_level_value_many_to_one',
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'organization' => 'organization',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'field_organization_hosting_categ_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        'Shared' => 'Shared',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_organization_hosting_categ_value_many_to_one',
-      'table' => 'node_data_field_organization_hosting_categ',
-      'field' => 'field_organization_hosting_categ_value_many_to_one',
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-      'override' => array(
-        'button' => 'Use default',
-      ),
-    ),
-  ));
-  $handler->override_option('title', 'Shared Hosting Providers');
-  $handler->override_option('path', 'hosting/shared');
-  $handler->override_option('menu', array(
-    'type' => 'normal',
-    'title' => 'Shared Hosting',
-    'description' => 'Shared hosting',
-    'weight' => '0',
-    'name' => 'menu-hosting-types-menu',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'normal',
-    'title' => 'Hosting',
-    'description' => 'Drupal hosting providers',
-    'weight' => '0',
-    'name' => 'navigation',
-  ));
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Shared Hosting Providers';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['id'] = 'field_organization_hosting_level_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['table'] = 'node_data_field_organization_hosting_level';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['field'] = 'field_organization_hosting_level_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['value'] = array(
+    1 => '1',
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['id'] = 'field_organization_hosting_categ_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['table'] = 'node_data_field_organization_hosting_categ';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['field'] = 'field_organization_hosting_categ_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['value'] = array(
+    'Shared' => 'Shared',
+  );
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['expose']['operator'] = FALSE;
+  $handler->display->display_options['path'] = 'hosting/shared';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Shared Hosting';
+  $handler->display->display_options['menu']['description'] = 'Shared hosting';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'menu-hosting-types-menu';
+  $handler->display->display_options['tab_options']['type'] = 'normal';
+  $handler->display->display_options['tab_options']['title'] = 'Hosting';
+  $handler->display->display_options['tab_options']['description'] = 'Drupal hosting providers';
+  $handler->display->display_options['tab_options']['weight'] = '0';
+
+  /* Display: Enterprise */
   $handler = $view->new_display('page', 'Enterprise', 'page_2');
-  $handler->override_option('filters', array(
-    'field_organization_hosting_level_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        1 => '1',
-        2 => '2',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_organization_hosting_level_value_many_to_one',
-      'table' => 'node_data_field_organization_hosting_level',
-      'field' => 'field_organization_hosting_level_value_many_to_one',
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'organization' => 'organization',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'field_organization_hosting_categ_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        'Enterprise &amp; Managed' => 'Enterprise &amp; Managed',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_organization_hosting_categ_value_many_to_one',
-      'table' => 'node_data_field_organization_hosting_categ',
-      'field' => 'field_organization_hosting_categ_value_many_to_one',
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-      'override' => array(
-        'button' => 'Use default',
-      ),
-    ),
-  ));
-  $handler->override_option('title', 'Enterprise & Managed Hosting');
-  $handler->override_option('path', 'hosting/enterprise');
-  $handler->override_option('menu', array(
-    'type' => 'normal',
-    'title' => 'Enterprise & Managed',
-    'description' => 'Enterprise & Managed hosting',
-    'weight' => '1',
-    'name' => 'menu-hosting-types-menu',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Enterprise & Managed Hosting';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['id'] = 'field_organization_hosting_level_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['table'] = 'node_data_field_organization_hosting_level';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['field'] = 'field_organization_hosting_level_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['value'] = array(
+    1 => '1',
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['id'] = 'field_organization_hosting_categ_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['table'] = 'node_data_field_organization_hosting_categ';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['field'] = 'field_organization_hosting_categ_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['value'] = array(
+    'Enterprise &amp; Managed' => 'Enterprise &amp; Managed',
+  );
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['expose']['operator'] = FALSE;
+  $handler->display->display_options['path'] = 'hosting/enterprise';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Enterprise & Managed';
+  $handler->display->display_options['menu']['description'] = 'Enterprise & Managed hosting';
+  $handler->display->display_options['menu']['weight'] = '1';
+  $handler->display->display_options['menu']['name'] = 'menu-hosting-types-menu';
+
+  /* Display: PaaS */
   $handler = $view->new_display('page', 'PaaS', 'page_3');
-  $handler->override_option('filters', array(
-    'field_organization_hosting_level_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        1 => '1',
-        2 => '2',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_organization_hosting_level_value_many_to_one',
-      'table' => 'node_data_field_organization_hosting_level',
-      'field' => 'field_organization_hosting_level_value_many_to_one',
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'organization' => 'organization',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'field_organization_hosting_categ_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        'Platform as a Service' => 'Platform as a Service',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_organization_hosting_categ_value_many_to_one',
-      'table' => 'node_data_field_organization_hosting_categ',
-      'field' => 'field_organization_hosting_categ_value_many_to_one',
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-      'override' => array(
-        'button' => 'Use default',
-      ),
-    ),
-  ));
-  $handler->override_option('title', 'Platform as a Service');
-  $handler->override_option('path', 'hosting/paas');
-  $handler->override_option('menu', array(
-    'type' => 'normal',
-    'title' => 'Platform as a Service',
-    'description' => 'Platform as a Service hosting',
-    'weight' => '2',
-    'name' => 'menu-hosting-types-menu',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Platform as a Service';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['id'] = 'field_organization_hosting_level_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['table'] = 'node_data_field_organization_hosting_level';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['field'] = 'field_organization_hosting_level_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['value'] = array(
+    1 => '1',
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['id'] = 'field_organization_hosting_categ_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['table'] = 'node_data_field_organization_hosting_categ';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['field'] = 'field_organization_hosting_categ_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['value'] = array(
+    'Platform as a Service' => 'Platform as a Service',
+  );
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['expose']['operator'] = FALSE;
+  $handler->display->display_options['path'] = 'hosting/paas';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Platform as a Service';
+  $handler->display->display_options['menu']['description'] = 'Platform as a Service hosting';
+  $handler->display->display_options['menu']['weight'] = '2';
+  $handler->display->display_options['menu']['name'] = 'menu-hosting-types-menu';
+  $export['drupalorg_marketplace_hosting'] = $view;
 
-  $views[$view->name] = $view;
-
-  // Exported view: drupalorg_organizations
-  $view = new view;
+  $view = new view();
   $view->name = 'drupalorg_organizations';
   $view->description = 'Basic organizations list';
   $view->tag = '';
   $view->base_table = 'node';
+  $view->human_name = 'Marketplace Service Providers';
   $view->core = 0;
-  $view->api_version = '2';
+  $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Defaults */
   $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'title' => array(
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-    ),
-    'changed' => array(
-      'id' => 'changed',
-      'table' => 'node',
-      'field' => 'changed',
-    ),
-  ));
-  $handler->override_option('sorts', array(
-    'title' => array(
-      'order' => 'ASC',
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('arguments', array(
-    'field_organization_list_rule_value' => array(
-      'default_action' => 'default',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All',
-      'title' => '',
-      'breadcrumb' => '',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'none',
-      'validate_fail' => 'not found',
-      'add_table' => 0,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'id' => 'field_organization_list_rule_value',
-      'table' => 'node_data_field_organization_list_rule',
-      'field' => 'field_organization_list_rule_value',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        3 => 0,
-        16 => 0,
-        30 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        28 => 0,
-        26 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_taxonomy_tid_term_page' => 0,
-      'default_taxonomy_tid_node' => 0,
-      'default_taxonomy_tid_limit' => 0,
-      'default_taxonomy_tid_vids' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'default_argument_user' => 0,
-      'default_argument_fixed' => 'featured',
-      'default_argument_image_size' => '_original',
-      'default_argument_php' => '',
-      'validate_argument_node_type' => array(
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'tid',
-      'validate_argument_transform' => 0,
-      'validate_user_restrict_roles' => 0,
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-      'validate_argument_php' => '',
-    ),
-    'tid' => array(
-      'default_action' => 'ignore',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All services',
-      'title' => 'Marketplace: %2',
-      'breadcrumb' => '',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'taxonomy_term',
-      'validate_fail' => 'not found',
-      'break_phrase' => 0,
-      'add_table' => 1,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'set_breadcrumb' => 0,
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        3 => 0,
-        16 => 0,
-        30 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        28 => 0,
-        26 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_argument_fixed' => '',
-      'default_argument_user' => 0,
-      'default_argument_image_size' => '_original',
-      'default_argument_php' => '',
-      'validate_argument_node_type' => array(
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        48 => 48,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'convert',
-      'validate_argument_transform' => 1,
-      'validate_user_restrict_roles' => 0,
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-      'validate_argument_php' => '',
-      'default_taxonomy_tid_term_page' => 0,
-      'default_taxonomy_tid_node' => 0,
-      'default_taxonomy_tid_limit' => 0,
-      'default_taxonomy_tid_vids' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-    ),
-    'tid_1' => array(
-      'default_action' => 'ignore',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All sectors',
-      'title' => 'Marketplace: %3',
-      'breadcrumb' => '',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'taxonomy_term',
-      'validate_fail' => 'not found',
-      'break_phrase' => 0,
-      'add_table' => 1,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'set_breadcrumb' => 0,
-      'id' => 'tid_1',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        3 => 0,
-        16 => 0,
-        30 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        28 => 0,
-        26 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_argument_fixed' => '',
-      'default_argument_user' => 0,
-      'default_argument_image_size' => '_original',
-      'default_argument_php' => '',
-      'validate_argument_node_type' => array(
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        50 => 50,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'convert',
-      'validate_argument_transform' => 1,
-      'validate_user_restrict_roles' => 0,
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-      'validate_argument_php' => '',
-      'default_taxonomy_tid_term_page' => 0,
-      'default_taxonomy_tid_node' => 0,
-      'default_taxonomy_tid_limit' => 0,
-      'default_taxonomy_tid_vids' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-    ),
-    'tid_2' => array(
-      'default_action' => 'ignore',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All countries',
-      'title' => 'Marketplace: %4',
-      'breadcrumb' => '',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'taxonomy_term',
-      'validate_fail' => 'not found',
-      'break_phrase' => 0,
-      'add_table' => 1,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'set_breadcrumb' => 0,
-      'id' => 'tid_2',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        3 => 0,
-        16 => 0,
-        30 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        28 => 0,
-        26 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_argument_fixed' => '',
-      'default_argument_user' => 0,
-      'default_argument_image_size' => '_original',
-      'default_argument_php' => '',
-      'validate_argument_node_type' => array(
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        52 => 52,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'convert',
-      'validate_argument_transform' => 1,
-      'validate_user_restrict_roles' => 0,
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-      'validate_argument_php' => '',
-      'default_taxonomy_tid_term_page' => 0,
-      'default_taxonomy_tid_node' => 0,
-      'default_taxonomy_tid_limit' => 0,
-      'default_taxonomy_tid_vids' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'organization' => 'organization',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'field_org_marketplace_request_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        1 => '1',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_org_marketplace_request_value_many_to_one',
-      'table' => 'node_data_field_org_marketplace_request',
-      'field' => 'field_org_marketplace_request_value_many_to_one',
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'field_organization_list_rule_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        'all' => 'all',
-        'featured' => 'featured',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_organization_list_rule_value_many_to_one',
-      'table' => 'node_data_field_organization_list_rule',
-      'field' => 'field_organization_list_rule_value_many_to_one',
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('title', 'Marketplace');
-  $handler->override_option('use_pager', '1');
-  $handler->override_option('row_plugin', 'node');
-  $handler->override_option('row_options', array(
-    'relationship' => 'none',
-    'build_mode' => 'teaser',
-    'links' => 0,
-    'comments' => 0,
-  ));
+  $handler->display->display_options['title'] = 'Marketplace';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'node';
+  $handler->display->display_options['row_options']['links'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  /* Contextual filter: Content: Services listing (field_organization_list_rule) */
+  $handler->display->display_options['arguments']['field_organization_list_rule_value']['id'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['arguments']['field_organization_list_rule_value']['table'] = 'field_data_field_organization_list_rule';
+  $handler->display->display_options['arguments']['field_organization_list_rule_value']['field'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['arguments']['field_organization_list_rule_value']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_organization_list_rule_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_organization_list_rule_value']['default_argument_options']['argument'] = 'featured';
+  $handler->display->display_options['arguments']['field_organization_list_rule_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_organization_list_rule_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_organization_list_rule_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_organization_list_rule_value']['limit'] = '0';
+  /* Contextual filter: Content: Has taxonomy term ID */
+  $handler->display->display_options['arguments']['tid']['id'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['table'] = 'taxonomy_index';
+  $handler->display->display_options['arguments']['tid']['field'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['exception']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['exception']['title'] = 'All services';
+  $handler->display->display_options['arguments']['tid']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['title'] = 'Marketplace: %2';
+  $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['tid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['tid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['tid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['tid']['validate_options']['vocabularies'] = array(
+    'services' => 'services',
+  );
+  $handler->display->display_options['arguments']['tid']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['arguments']['tid']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['add_table'] = TRUE;
+  /* Contextual filter: Content: Has taxonomy term ID */
+  $handler->display->display_options['arguments']['tid_1']['id'] = 'tid_1';
+  $handler->display->display_options['arguments']['tid_1']['table'] = 'taxonomy_index';
+  $handler->display->display_options['arguments']['tid_1']['field'] = 'tid';
+  $handler->display->display_options['arguments']['tid_1']['exception']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid_1']['exception']['title'] = 'All sectors';
+  $handler->display->display_options['arguments']['tid_1']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid_1']['title'] = 'Marketplace: %3';
+  $handler->display->display_options['arguments']['tid_1']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['tid_1']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['tid_1']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['tid_1']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['tid_1']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['tid_1']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['tid_1']['validate_options']['vocabularies'] = array(
+    'sectors' => 'sectors',
+  );
+  $handler->display->display_options['arguments']['tid_1']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['arguments']['tid_1']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['tid_1']['add_table'] = TRUE;
+  /* Contextual filter: Content: Has taxonomy term ID */
+  $handler->display->display_options['arguments']['tid_2']['id'] = 'tid_2';
+  $handler->display->display_options['arguments']['tid_2']['table'] = 'taxonomy_index';
+  $handler->display->display_options['arguments']['tid_2']['field'] = 'tid';
+  $handler->display->display_options['arguments']['tid_2']['exception']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid_2']['exception']['title'] = 'All locations';
+  $handler->display->display_options['arguments']['tid_2']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid_2']['title'] = 'Marketplace: %4';
+  $handler->display->display_options['arguments']['tid_2']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['tid_2']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['tid_2']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['tid_2']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['tid_2']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['tid_2']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['tid_2']['validate_options']['vocabularies'] = array(
+    'locations' => 'locations',
+  );
+  $handler->display->display_options['arguments']['tid_2']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['arguments']['tid_2']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['tid_2']['add_table'] = TRUE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+
+  /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
-  $handler->override_option('path', 'drupal-services');
-  $handler->override_option('menu', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['path'] = 'drupal-services';
+  $export['drupalorg_organizations'] = $view;
 
-  $views[$view->name] = $view;
-
-  // Exported view: drupalorg_training
-  $view = new view;
+  $view = new view();
   $view->name = 'drupalorg_training';
   $view->description = 'List of organizations providing training services';
   $view->tag = '';
   $view->base_table = 'node';
+  $view->human_name = '';
   $view->core = 6;
-  $view->api_version = '2';
+  $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'field_logo_fid' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<div class="grid-3 alpha">[field_logo_fid]</div>',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'grid-3_default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_logo_fid',
-      'table' => 'node_data_field_logo',
-      'field' => 'field_logo_fid',
-      'relationship' => 'none',
-    ),
-    'title' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<div class="grid-5 omega">[title]</div>',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 1,
-      'exclude' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-    ),
-    'field_organization_training_desc_value' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<div class="grid-5 omega">[field_organization_training_desc_value]</div>',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_organization_training_desc_value',
-      'table' => 'node_data_field_organization_training_desc',
-      'field' => 'field_organization_training_desc_value',
-      'relationship' => 'none',
-    ),
-    'field_organization_training_url_url' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<div class="grid-5 omega">[field_organization_training_url_url]</div>
-',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_organization_training_url_url',
-      'table' => 'node_data_field_organization_training_url',
-      'field' => 'field_organization_training_url_url',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('sorts', array(
-    'title' => array(
-      'order' => 'ASC',
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('arguments', array(
-    'tid' => array(
-      'default_action' => 'ignore',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All',
-      'title' => 'Training in %1',
-      'breadcrumb' => '',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'taxonomy_term',
-      'validate_fail' => 'not found',
-      'break_phrase' => 0,
-      'add_table' => 0,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'set_breadcrumb' => 0,
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        3 => 0,
-        16 => 0,
-        30 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        28 => 0,
-        26 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_argument_fixed' => '',
-      'default_argument_user' => 0,
-      'default_argument_image_size' => '_original',
-      'default_argument_php' => '',
-      'validate_argument_node_type' => array(
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        52 => 52,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'tid',
-      'validate_argument_transform' => 1,
-      'validate_user_restrict_roles' => 0,
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-      'validate_argument_php' => '',
-      'default_taxonomy_tid_term_page' => 0,
-      'default_taxonomy_tid_node' => 0,
-      'default_taxonomy_tid_limit' => 0,
-      'default_taxonomy_tid_vids' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-      'override' => array(
-        'button' => 'Override',
-      ),
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'organization' => 'organization',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'field_org_training_request_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        1 => '1',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_org_training_request_value_many_to_one',
-      'table' => 'node_data_field_org_training_request',
-      'field' => 'field_org_training_request_value_many_to_one',
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'field_organization_training_list_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        'on' => 'on',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_organization_training_list_value_many_to_one',
-      'table' => 'node_data_field_organization_training_list',
-      'field' => 'field_organization_training_list_value_many_to_one',
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('title', 'Training');
-  $handler->override_option('header', 'The following is a list of organizations that indicate they provide Drupal training services. 
 
-For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=training">Events section</a> and <a href="http://drupal.org/learn-drupal">Global Training Days 2012</a>.');
-  $handler->override_option('header_format', '1');
-  $handler->override_option('header_empty', 0);
-  $handler->override_option('empty', 'Sorry, no training companies found for this country.');
-  $handler->override_option('empty_format', '1');
-  $handler->override_option('use_pager', '1');
-  $handler->override_option('row_options', array(
-    'inline' => array(),
-    'separator' => '',
-    'hide_empty' => 0,
-  ));
+  /* Display: Defaults */
+  $handler = $view->new_display('default', 'Defaults', 'default');
+  $handler->display->display_options['title'] = 'Training';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['text']['id'] = 'area';
+  $handler->display->display_options['header']['text']['table'] = 'views';
+  $handler->display->display_options['header']['text']['field'] = 'area';
+  $handler->display->display_options['header']['text']['content'] = 'The following is a list of organizations that indicate they provide Drupal training services.
+
+For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=training">Events section</a> and <a href="http://drupal.org/learn-drupal">Global Training Days 2012</a>.';
+  $handler->display->display_options['header']['text']['format'] = '1';
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['text']['id'] = 'area';
+  $handler->display->display_options['empty']['text']['table'] = 'views';
+  $handler->display->display_options['empty']['text']['field'] = 'area';
+  $handler->display->display_options['empty']['text']['content'] = 'Sorry, no training companies found for this country.';
+  $handler->display->display_options['empty']['text']['format'] = '1';
+  /* Field: Broken/missing handler */
+  $handler->display->display_options['fields']['field_logo_fid']['id'] = 'field_logo_fid';
+  $handler->display->display_options['fields']['field_logo_fid']['table'] = 'node_data_field_logo';
+  $handler->display->display_options['fields']['field_logo_fid']['field'] = 'field_logo_fid';
+  $handler->display->display_options['fields']['field_logo_fid']['label'] = '';
+  $handler->display->display_options['fields']['field_logo_fid']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_logo_fid']['alter']['text'] = '<div class="grid-3 alpha">[field_logo_fid]</div>';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<div class="grid-5 omega">[title]</div>';
+  /* Field: Broken/missing handler */
+  $handler->display->display_options['fields']['field_organization_training_desc_value']['id'] = 'field_organization_training_desc_value';
+  $handler->display->display_options['fields']['field_organization_training_desc_value']['table'] = 'node_data_field_organization_training_desc';
+  $handler->display->display_options['fields']['field_organization_training_desc_value']['field'] = 'field_organization_training_desc_value';
+  $handler->display->display_options['fields']['field_organization_training_desc_value']['label'] = '';
+  $handler->display->display_options['fields']['field_organization_training_desc_value']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_organization_training_desc_value']['alter']['text'] = '<div class="grid-5 omega">[field_organization_training_desc_value]</div>';
+  $handler->display->display_options['fields']['field_organization_training_desc_value']['alter']['max_length'] = '390';
+  $handler->display->display_options['fields']['field_organization_training_desc_value']['alter']['trim'] = TRUE;
+  $handler->display->display_options['fields']['field_organization_training_desc_value']['alter']['html'] = TRUE;
+  /* Field: Broken/missing handler */
+  $handler->display->display_options['fields']['field_organization_training_url_url']['id'] = 'field_organization_training_url_url';
+  $handler->display->display_options['fields']['field_organization_training_url_url']['table'] = 'node_data_field_organization_training_url';
+  $handler->display->display_options['fields']['field_organization_training_url_url']['field'] = 'field_organization_training_url_url';
+  $handler->display->display_options['fields']['field_organization_training_url_url']['label'] = '';
+  $handler->display->display_options['fields']['field_organization_training_url_url']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_organization_training_url_url']['alter']['text'] = '<div class="grid-5 omega">[field_organization_training_url_url]</div>
+';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  /* Contextual filter: Content: Has taxonomy term ID */
+  $handler->display->display_options['arguments']['tid']['id'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['table'] = 'taxonomy_index';
+  $handler->display->display_options['arguments']['tid']['field'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['exception']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['title'] = 'Training in %1';
+  $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['tid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['validate']['type'] = 'taxonomy_term';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['id'] = 'field_org_training_request_value_many_to_one';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['table'] = 'node_data_field_org_training_request';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['field'] = 'field_org_training_request_value_many_to_one';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['value'] = array(
+    1 => '1',
+  );
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['expose']['operator'] = FALSE;
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['id'] = 'field_organization_training_list_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['table'] = 'node_data_field_organization_training_list';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['field'] = 'field_organization_training_list_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['value'] = array(
+    'on' => 'on',
+  );
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['expose']['operator'] = FALSE;
+
+  /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
-  $handler->override_option('path', 'training');
-  $handler->override_option('menu', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['path'] = 'training';
+
+  /* Display: Sidebar navigation */
   $handler = $view->new_display('block', 'Sidebar navigation', 'block_1');
-  $handler->override_option('fields', array(
-    'name' => array(
-      'label' => 'Term',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_taxonomy' => 0,
-      'exclude' => 0,
-      'id' => 'name',
-      'table' => 'term_data',
-      'field' => 'name',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('arguments', array(
-    'tid' => array(
-      'default_action' => 'summary asc',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(
-        'base_path' => '',
-        'count' => 1,
-        'override' => 0,
-        'items_per_page' => '25',
-      ),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All services',
-      'title' => 'Training: %1',
-      'breadcrumb' => '',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'taxonomy_term',
-      'validate_fail' => 'not found',
-      'break_phrase' => 0,
-      'add_table' => 1,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'set_breadcrumb' => 0,
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        3 => 0,
-        16 => 0,
-        30 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        28 => 0,
-        26 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_argument_fixed' => '',
-      'default_argument_user' => 0,
-      'default_argument_image_size' => '_original',
-      'default_argument_php' => '',
-      'validate_argument_node_type' => array(
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        52 => 52,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'tid',
-      'validate_argument_transform' => 1,
-      'validate_user_restrict_roles' => 0,
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-      'validate_argument_php' => '',
-      'default_taxonomy_tid_term_page' => 0,
-      'default_taxonomy_tid_node' => 0,
-      'default_taxonomy_tid_limit' => 0,
-      'default_taxonomy_tid_vids' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'organization' => 'organization',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'field_org_training_request_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        1 => '1',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_org_training_request_value_many_to_one',
-      'table' => 'node_data_field_org_training_request',
-      'field' => 'field_org_training_request_value_many_to_one',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'field_organization_training_list_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        'on' => 'on',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'field_organization_training_list_value_many_to_one',
-      'table' => 'node_data_field_organization_training_list',
-      'field' => 'field_organization_training_list_value_many_to_one',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'vid' => array(
-      'operator' => 'in',
-      'value' => array(
-        52 => '52',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'vid',
-      'table' => 'term_data',
-      'field' => 'vid',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('title', 'Browse by country');
-  $handler->override_option('header', '');
-  $handler->override_option('empty', '');
-  $handler->override_option('items_per_page', 30);
-  $handler->override_option('distinct', 1);
-  $handler->override_option('block_description', '');
-  $handler->override_option('block_caching', -1);
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Browse by country';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Taxonomy term: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = 'Term';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Has taxonomy term ID */
+  $handler->display->display_options['arguments']['tid']['id'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['table'] = 'taxonomy_index';
+  $handler->display->display_options['arguments']['tid']['field'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['default_action'] = 'summary';
+  $handler->display->display_options['arguments']['tid']['exception']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['exception']['title'] = 'All services';
+  $handler->display->display_options['arguments']['tid']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['title'] = 'Training: %1';
+  $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['tid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['tid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['tid']['add_table'] = TRUE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['id'] = 'field_org_training_request_value_many_to_one';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['table'] = 'node_data_field_org_training_request';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['field'] = 'field_org_training_request_value_many_to_one';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['value'] = array(
+    1 => '1',
+  );
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['expose']['operator'] = FALSE;
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['id'] = 'field_organization_training_list_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['table'] = 'node_data_field_organization_training_list';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['field'] = 'field_organization_training_list_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['value'] = array(
+    'on' => 'on',
+  );
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['expose']['operator'] = FALSE;
+  /* Filter criterion: Taxonomy term: Vocabulary */
+  $handler->display->display_options['filters']['vid']['id'] = 'vid';
+  $handler->display->display_options['filters']['vid']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['filters']['vid']['field'] = 'vid';
+  $handler->display->display_options['filters']['vid']['value'] = array(
+    52 => '52',
+  );
+  $handler->display->display_options['filters']['vid']['group'] = '0';
+  $handler->display->display_options['filters']['vid']['expose']['operator'] = FALSE;
+
+  /* Display: Management view */
   $handler = $view->new_display('page', 'Management view', 'page_2');
-  $handler->override_option('relationships', array(
-    'uid' => array(
-      'label' => 'user',
-      'required' => 0,
-      'id' => 'uid',
-      'table' => 'node_revisions',
-      'field' => 'uid',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('fields', array(
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Marketplace management';
+  $handler->display->display_options['defaults']['css_class'] = FALSE;
+  $handler->display->display_options['css_class'] = 'grid-12 alpha omega';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    2 => 2,
+  );
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['grouping'] = '';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'title' => 'title',
+    'name' => 'name',
+    'created' => 'created',
+    'name_1' => 'name_1',
+    'changed' => 'changed',
+  );
+  $handler->display->display_options['style_options']['default'] = 'changed';
+  $handler->display->display_options['style_options']['info'] = array(
     'title' => array(
-      'label' => 'Organization',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<div class="grid-4">[title]</div>',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 1,
-      'exclude' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Use default',
-      ),
+      'sortable' => 1,
+      'separator' => '',
     ),
     'name' => array(
-      'label' => 'Posted by',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_user' => 1,
-      'overwrite_anonymous' => 0,
-      'anonymous_text' => '',
-      'exclude' => 0,
-      'id' => 'name',
-      'table' => 'users',
-      'field' => 'name',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
+      'sortable' => 1,
+      'separator' => '',
     ),
     'created' => array(
-      'label' => 'Posted on',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'date_format' => 'small',
-      'custom_date_format' => '',
-      'exclude' => 0,
-      'id' => 'created',
-      'table' => 'node',
-      'field' => 'created',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
+      'sortable' => 1,
+      'separator' => '',
     ),
     'name_1' => array(
-      'label' => 'Updated by',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_user' => 1,
-      'overwrite_anonymous' => 0,
-      'anonymous_text' => '',
-      'exclude' => 0,
-      'id' => 'name_1',
-      'table' => 'users',
-      'field' => 'name',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'uid',
+      'sortable' => 1,
+      'separator' => '',
     ),
     'changed' => array(
-      'label' => 'Updated on',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'date_format' => 'small',
-      'custom_date_format' => '',
-      'exclude' => 0,
-      'id' => 'changed',
-      'table' => 'node',
-      'field' => 'changed',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
+      'sortable' => 1,
+      'separator' => '',
     ),
-  ));
-  $handler->override_option('sorts', array(
-    'changed' => array(
-      'order' => 'DESC',
-      'granularity' => 'second',
-      'id' => 'changed',
-      'table' => 'node',
-      'field' => 'changed',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('arguments', array());
-  $handler->override_option('filters', array(
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'organization' => 'organization',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'operator' => '',
-        'identifier' => 'status',
-        'label' => 'Published',
-        'optional' => 0,
-        'remember' => 0,
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-    ),
-    'title' => array(
-      'operator' => 'contains',
-      'value' => '',
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'use_operator' => 0,
-        'operator' => 'title_op',
-        'identifier' => 'title',
-        'label' => 'Title',
-        'remember' => 0,
-      ),
-      'case' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-    'field_org_marketplace_request_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        1 => '1',
-      ),
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'use_operator' => 0,
-        'operator' => 'field_org_marketplace_request_value_many_to_one_op',
-        'identifier' => 'services_request',
-        'label' => 'Request for Services section',
-        'optional' => 1,
-        'single' => 1,
-        'remember' => 0,
-        'reduce' => 0,
-      ),
-      'id' => 'field_org_marketplace_request_value_many_to_one',
-      'table' => 'node_data_field_org_marketplace_request',
-      'field' => 'field_org_marketplace_request_value_many_to_one',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'field_organization_list_rule_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(
-        'featured' => 'featured',
-      ),
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'use_operator' => 0,
-        'operator' => 'field_organization_list_rule_value_many_to_one_op',
-        'identifier' => 'services',
-        'label' => 'Services listing',
-        'optional' => 1,
-        'single' => 1,
-        'remember' => 0,
-        'reduce' => 0,
-      ),
-      'id' => 'field_organization_list_rule_value_many_to_one',
-      'table' => 'node_data_field_organization_list_rule',
-      'field' => 'field_organization_list_rule_value_many_to_one',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'field_org_training_request_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(),
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'use_operator' => 0,
-        'operator' => 'field_org_training_request_value_many_to_one_op',
-        'identifier' => 'training_request',
-        'label' => 'Request for Training section',
-        'optional' => 1,
-        'single' => 1,
-        'remember' => 0,
-        'reduce' => 0,
-      ),
-      'id' => 'field_org_training_request_value_many_to_one',
-      'table' => 'node_data_field_org_training_request',
-      'field' => 'field_org_training_request_value_many_to_one',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'field_organization_training_list_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(),
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'use_operator' => 0,
-        'operator' => 'field_organization_training_list_value_many_to_one_op',
-        'identifier' => 'training',
-        'label' => 'Training listing',
-        'optional' => 1,
-        'single' => 1,
-        'remember' => 0,
-        'reduce' => 0,
-      ),
-      'id' => 'field_organization_training_list_value_many_to_one',
-      'table' => 'node_data_field_organization_training_list',
-      'field' => 'field_organization_training_list_value_many_to_one',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'role',
-    'role' => array(
-      2 => 2,
-    ),
-  ));
-  $handler->override_option('title', 'Marketplace management');
-  $handler->override_option('css_class', 'grid-12 alpha omega');
-  $handler->override_option('header', '<a href="http://drupal.org/node/1735708">Marketplace guidelines</a>.  Guides for reviewers: <a href="http://drupal.org/node/1710338">marketplace listings</a>, <a href="http://drupal.org/node/1735864">training listings</a>.');
-  $handler->override_option('empty', '');
-  $handler->override_option('items_per_page', 50);
-  $handler->override_option('style_plugin', 'table');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-    'override' => 1,
-    'sticky' => 0,
-    'order' => 'desc',
-    'summary' => '',
-    'columns' => array(
-      'title' => 'title',
-      'name' => 'name',
-      'created' => 'created',
-      'name_1' => 'name_1',
-      'changed' => 'changed',
-    ),
-    'info' => array(
-      'title' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-      'name' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-      'created' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-      'name_1' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-      'changed' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-    ),
-    'default' => 'changed',
-  ));
-  $handler->override_option('path', 'drupal-services/manage');
-  $handler->override_option('menu', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
+  );
+  $handler->display->display_options['style_options']['order'] = 'desc';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['text']['id'] = 'area';
+  $handler->display->display_options['header']['text']['table'] = 'views';
+  $handler->display->display_options['header']['text']['field'] = 'area';
+  $handler->display->display_options['header']['text']['content'] = '<a href="http://drupal.org/node/1735708">Marketplace guidelines</a>.  Guides for reviewers: <a href="http://drupal.org/node/1710338">marketplace listings</a>, <a href="http://drupal.org/node/1735864">training listings</a>.';
+  $handler->display->display_options['header']['text']['format'] = '1';
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content revision: User */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node_revision';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['label'] = 'user';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Organization';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<div class="grid-4">[title]</div>';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = 'Posted by';
+  /* Field: Content: Post date */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'node';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'Posted on';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name_1']['id'] = 'name_1';
+  $handler->display->display_options['fields']['name_1']['table'] = 'users';
+  $handler->display->display_options['fields']['name_1']['field'] = 'name';
+  $handler->display->display_options['fields']['name_1']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name_1']['label'] = 'Updated by';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['label'] = 'Updated on';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Updated date */
+  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['table'] = 'node';
+  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
+  $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = '0';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_org_marketplace_request_value_many_to_one']['id'] = 'field_org_marketplace_request_value_many_to_one';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value_many_to_one']['table'] = 'node_data_field_org_marketplace_request';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value_many_to_one']['field'] = 'field_org_marketplace_request_value_many_to_one';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value_many_to_one']['value'] = array(
+    1 => '1',
+  );
+  $handler->display->display_options['filters']['field_org_marketplace_request_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value_many_to_one']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_org_marketplace_request_value_many_to_one']['expose']['operator_id'] = 'field_org_marketplace_request_value_many_to_one_op';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value_many_to_one']['expose']['label'] = 'Request for Services section';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value_many_to_one']['expose']['operator'] = 'field_org_marketplace_request_value_many_to_one_op';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value_many_to_one']['expose']['identifier'] = 'services_request';
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_organization_list_rule_value_many_to_one']['id'] = 'field_organization_list_rule_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_list_rule_value_many_to_one']['table'] = 'node_data_field_organization_list_rule';
+  $handler->display->display_options['filters']['field_organization_list_rule_value_many_to_one']['field'] = 'field_organization_list_rule_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_list_rule_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_organization_list_rule_value_many_to_one']['value'] = array(
+    'featured' => 'featured',
+  );
+  $handler->display->display_options['filters']['field_organization_list_rule_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_organization_list_rule_value_many_to_one']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_list_rule_value_many_to_one']['expose']['operator_id'] = 'field_organization_list_rule_value_many_to_one_op';
+  $handler->display->display_options['filters']['field_organization_list_rule_value_many_to_one']['expose']['label'] = 'Services listing';
+  $handler->display->display_options['filters']['field_organization_list_rule_value_many_to_one']['expose']['operator'] = 'field_organization_list_rule_value_many_to_one_op';
+  $handler->display->display_options['filters']['field_organization_list_rule_value_many_to_one']['expose']['identifier'] = 'services';
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['id'] = 'field_org_training_request_value_many_to_one';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['table'] = 'node_data_field_org_training_request';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['field'] = 'field_org_training_request_value_many_to_one';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['value'] = array();
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['expose']['operator_id'] = 'field_org_training_request_value_many_to_one_op';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['expose']['label'] = 'Request for Training section';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['expose']['operator'] = 'field_org_training_request_value_many_to_one_op';
+  $handler->display->display_options['filters']['field_org_training_request_value_many_to_one']['expose']['identifier'] = 'training_request';
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['id'] = 'field_organization_training_list_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['table'] = 'node_data_field_organization_training_list';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['field'] = 'field_organization_training_list_value_many_to_one';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['value'] = array();
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['group'] = '0';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['expose']['operator_id'] = 'field_organization_training_list_value_many_to_one_op';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['expose']['label'] = 'Training listing';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['expose']['operator'] = 'field_organization_training_list_value_many_to_one_op';
+  $handler->display->display_options['filters']['field_organization_training_list_value_many_to_one']['expose']['identifier'] = 'training';
+  $handler->display->display_options['path'] = 'drupal-services/manage';
+  $export['drupalorg_training'] = $view;
 
-  $views[$view->name] = $view;
-
-  return $views;
+  return $export;
 }
