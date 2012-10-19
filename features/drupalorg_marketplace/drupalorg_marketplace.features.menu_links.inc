@@ -1,7 +1,11 @@
 <?php
+/**
+ * @file
+ * drupalorg_marketplace.features.menu_links.inc
+ */
 
 /**
- * Implementation of hook_menu_default_menu_links().
+ * Implements hook_menu_default_menu_links().
  */
 function drupalorg_marketplace_menu_default_menu_links() {
   $menu_links = array();
