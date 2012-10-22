@@ -194,3 +194,32 @@ function drupalorg_project_update_7003() {
     }
   }
 }
+
+/**
+ * Place new blocks in theme.
+ */
+ function drupalorg_project_update_7004() {
+   // Update maintainers block visibility
+   db_update('block')
+     ->fields(array('status' => 1, 'visibility' => 0))
+     ->condition('theme', 'bluecheese')
+     ->condition('module', 'versioncontrol_project')
+     ->condition('delta', 'project_maintainers')
+     ->execute();
+
+  // Update project issue metadata placement
+  db_update('block')
+   ->fields(array('status' => 1, 'visibility' => 0))
+   ->condition('theme', 'bluecheese')
+   ->condition('module', 'project_issue')
+   ->condition('delta', 'issue-metadata')
+   ->execute();
+
+  // Update change records block placement
+  db_update('block')
+    ->fields(array('status' => 1, 'visibility' => 0, 'weight' => -10, 'region' => 'sidebar_second'))
+    ->condition('theme', 'bluecheese')
+    ->condition('module', 'views')
+    ->condition('delta', 'change_records-block_1')
+    ->execute();
+}
