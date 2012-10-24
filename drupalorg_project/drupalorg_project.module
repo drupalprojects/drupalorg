@@ -1177,6 +1177,15 @@ function drupalorg_project_ctools_plugin_directory($module, $plugin) {
 }
 
 /**
+ * Implements hook_ctools_plugin_api().
+ */
+function drupalorg_project_ctools_plugin_api($module, $api) {
+  if ($module == 'field_group' && $api == 'field_group') {
+    return array('version' => 1);
+  }
+}
+
+/**
  * Implements hook_views_pre_render().
  *
  * Sets the breadcrumb up for project navigation for the change records views.
@@ -1228,4 +1237,46 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
       }
     }
   }
+}
+
+/**
+ * Return an array of project node types used on d.o.
+ *
+ * @return array
+ *   An associative array indexed by bundle name with the following properties:
+ *   - title: The human-readable title of the project type.
+ *   - tid: The legacy taxonomy ID for the corresponding term in the D6
+ *     "Project types" vocabulary.
+ */
+function drupalorg_project_project_types() {
+  return array(
+    'project_module' => array(
+      'title' => 'Module project',
+      'tid' => 14,
+    ),
+    'project_theme' => array(
+      'title' => 'Theme project',
+      'tid' => 15,
+    ),
+    'project_theme_engine' => array(
+      'title' => 'Theme Engine project',
+      'tid' => 32,
+    ),
+    'project_distribution' => array(
+      'title' => 'Distribution project',
+      'tid' => 96,
+    ),
+    'project_drupalorg' => array(
+      'title' => 'Drupal.org project',
+      'tid' => 22588,
+    ),
+    'project_core' => array(
+      'title' => 'Drupal core',
+      'tid' => 13,
+    ),
+    'project_translation' => array(
+      'title' => 'Translation project',
+      'tid' => 29,
+    ),
+  );
 }

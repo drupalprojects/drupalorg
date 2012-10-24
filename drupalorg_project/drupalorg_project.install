@@ -82,26 +82,10 @@ function drupalorg_project_update_7000() {
 }
 
 /**
- * Get the project node type map used for migrating away from vocab 3 for
- * identifying the type of project this is.
- */
-function _drupalorg_project_types() {
-  return array(
-    'project_module' => array('tid' => 14, 'title' => 'Module project'),
-    'project_theme' => array('tid' => 15, 'title' => 'Theme project'),
-    'project_theme_engine' => array('tid' => 32, 'title' => 'Theme Engine project'),
-    'project_distribution' => array('tid' => 96, 'title' => 'Distribution project'),
-    'project_drupalorg' => array('tid' => 22588, 'title' => 'Drupal.org project'),
-    'project_core' => array('tid' => 13, 'title' => 'Drupal core'),
-    'project_translation' => array('tid' => 29, 'title' => 'Translation project'),
-  );
-}
-
-/**
  * Create content types for project types.
  */
 function drupalorg_project_update_7001() {
-  foreach (_drupalorg_project_types() as $project_type => $type_data) {
+  foreach (drupalorg_project_project_types() as $project_type => $type_data) {
     $type = node_type_load('project');
     // We are cloning, not renaming.
     unset($type->old_type);
@@ -145,7 +129,7 @@ function drupalorg_project_update_7001() {
  */
 function drupalorg_project_update_7002() {
   $instances = field_read_instances(array('entity_type' => 'node', 'bundle' => 'project'));
-  foreach (_drupalorg_project_types() as $type => $type_data) {
+  foreach (drupalorg_project_project_types() as $type => $type_data) {
     // Twiddle the node types of all the projects.
     $tid = $type_data['tid'];
     db_query('UPDATE {node}, {taxonomy_index} SET {node}.type = :type WHERE {node}.nid = {taxonomy_index}.nid AND {taxonomy_index}.tid = :tid', array(':type' => $type, ':tid' => $tid));
@@ -183,7 +167,7 @@ function drupalorg_project_update_7003() {
     taxonomy_term_save($term);
   }
   // Now, we can delete the project type terms.
-  foreach (_drupalorg_project_types() as $type => $type_data) {
+  foreach (drupalorg_project_project_types() as $type => $type_data) {
     taxonomy_term_delete($type_data['tid']);
     if ($type != 'project_module') {
       $instance = field_read_instance('node', 'taxonomy_vocabulary_3', $type);
