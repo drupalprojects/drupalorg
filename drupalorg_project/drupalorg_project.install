@@ -156,7 +156,7 @@ function drupalorg_project_update_7003() {
 
   // Update the vocabulary.
   $vocab = taxonomy_vocabulary_load(3);
-  $vocab->name = 'Module categorization';
+  $vocab->name = 'Module categories';
   taxonomy_vocabulary_save($vocab);
 
   // First, we need to move the categorization terms to the top level so they
@@ -177,6 +177,13 @@ function drupalorg_project_update_7003() {
       }
     }
   }
+
+  // Finally, we need to fix the field instance on module projects.
+  $instance = field_read_instance('node', 'taxonomy_vocabulary_3', 'project_module');
+  $instance['label'] = 'Module categories';
+  $instance['required'] = FALSE;
+  $instance['description'] = '';
+  field_update_instance($instance);
 }
 
 /**
