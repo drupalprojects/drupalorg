@@ -111,5 +111,47 @@ function drupalorg_project_field_group_info() {
     $field_groups[$field_group->identifier] = $field_group;
   }
 
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->group_name = 'group_project_classification';
+  $field_group->entity_type = 'node';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Project classification',
+    'weight' => '3',
+    'children' => array(
+      0 => 'taxonomy_vocabulary_44',
+      1 => 'taxonomy_vocabulary_46',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+
+  foreach (drupalorg_project_project_types() as $bundle => $info) {
+    if ($bundle == 'project_module') {
+      continue;
+    }
+    $field_group = clone($field_group);
+    $field_group->bundle = $bundle;
+    $field_group->identifier = "group_project_classification|node|$bundle|form";
+    $field_groups[$field_group->identifier] = $field_group;
+  }
+  // Special case for module projects, since we need to add another field.
+  $bundle = 'project_module';
+  $field_group = clone($field_group);
+  $field_group->data['children'][2] = 'taxonomy_vocabulary_3';
+  $field_group->bundle = $bundle;
+  $field_group->identifier = "group_project_classification|node|$bundle|form";
+  $field_groups[$field_group->identifier] = $field_group;
+
   return $field_groups;
 }
