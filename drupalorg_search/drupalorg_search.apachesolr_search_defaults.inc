@@ -21,7 +21,7 @@ function drupalorg_search_apachesolr_search_default_searchers() {
   $searcher->env_id = 'solr';
   $searcher->settings = array(
     'apachesolr_search_search_type' => 'custom',
-    'apachesolr_search_per_page' => 10,
+    'apachesolr_search_per_page' => 25,
     'apachesolr_search_browse' => 'browse',
     'apachesolr_search_spellcheck' => TRUE,
     'apachesolr_search_not_removable' => TRUE,
@@ -40,7 +40,7 @@ function drupalorg_search_apachesolr_search_default_searchers() {
   $searcher->env_id = '';
   $searcher->settings = array(
     'apachesolr_search_search_type' => 'tid',
-    'apachesolr_search_per_page' => 10,
+    'apachesolr_search_per_page' => 25,
     'apachesolr_search_browse' => 'results',
     'apachesolr_search_spellcheck' => FALSE,
     'apachesolr_search_search_box' => FALSE,
