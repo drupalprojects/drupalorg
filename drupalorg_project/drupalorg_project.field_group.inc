@@ -75,5 +75,41 @@ function drupalorg_project_field_group_info() {
     $field_groups[$field_group->identifier] = $field_group;
   }
 
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->group_name = 'group_project_resources';
+  $field_group->entity_type = 'node';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Resources',
+    'weight' => '6',
+    'children' => array(
+      0 => 'field_project_homepage',
+      1 => 'field_project_changelog',
+      2 => 'field_project_demo',
+      3 => 'field_project_documentation',
+      4 => 'field_project_screenshots',
+      5 => 'field_project_license',
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+
+  foreach (drupalorg_project_project_types() as $bundle => $info) {
+    $field_group = clone($field_group);
+    $field_group->bundle = $bundle;
+    $field_group->identifier = 'group_project_resources|node|$bundle|form';
+    $field_groups[$field_group->identifier] = $field_group;
+  }
+
   return $field_groups;
 }
