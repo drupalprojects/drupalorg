@@ -1195,7 +1195,7 @@ function drupalorg_project_views_pre_render(&$view) {
     case 'change_records':
       if (count($view->args) > 0) {
         // Note: this returns FALSE if it isn't a project node.
-        $proj_node = project_node_load($view->args[0]);
+        $proj_node = project_load($view->args[0]);
         if ($proj_node) {
           $extra[] = l($proj_node->title, 'node/' . $proj_node->nid);
           project_project_set_breadcrumb($proj_node, $extra);
