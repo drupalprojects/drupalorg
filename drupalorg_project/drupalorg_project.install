@@ -193,7 +193,7 @@ function drupalorg_project_update_7003() {
 
   // Update project issue metadata placement
   db_update('block')
-   ->fields(array('status' => 1, 'visibility' => 0))
+   ->fields(array('status' => 1, 'visibility' => 0, 'region' => 'sidebar_second'))
    ->condition('theme', 'bluecheese')
    ->condition('module', 'project_issue')
    ->condition('delta', 'issue-metadata')
