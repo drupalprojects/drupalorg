@@ -1083,7 +1083,7 @@ function drupalorg_theme() {
  * Implements hook_form_alter().
  */
 function drupalorg_form_alter(&$form, $form_state, $form_id) {
-  // Force a revision log entry when editing existing book or issue nodes.
+  // Force a revision log entry when editing existing book nodes.
   if ($form_id == 'book_node_form' && isset($form['revision_information']['log']) && arg(1) != 'add') {
     $form['revision_information']['log']['#required'] = TRUE;
     $form['revision_information']['#collapsed'] = FALSE;
