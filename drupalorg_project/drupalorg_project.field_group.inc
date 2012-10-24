@@ -107,7 +107,7 @@ function drupalorg_project_field_group_info() {
   foreach (drupalorg_project_project_types() as $bundle => $info) {
     $field_group = clone($field_group);
     $field_group->bundle = $bundle;
-    $field_group->identifier = 'group_project_resources|node|$bundle|form';
+    $field_group->identifier = "group_project_resources|node|$bundle|form";
     $field_groups[$field_group->identifier] = $field_group;
   }
 
