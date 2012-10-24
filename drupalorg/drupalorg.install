@@ -277,3 +277,11 @@ function drupalorg_update_7010() {
 
   $query->execute();
 }
+
+/**
+ * Enable User Restrictions module.
+ */
+function drupalorg_update_7011() {
+  // See #1699246.
+  module_enable(array('user_restrictions'));
+}
