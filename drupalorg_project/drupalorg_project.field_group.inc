@@ -8,7 +8,7 @@
 /**
  * Implements hook_field_group_info().
  */
-function project_issue_field_group_info() {
+function drupalorg_project_field_group_info() {
   $field_groups = array();
 
   $field_group = new stdClass();
@@ -37,6 +37,7 @@ function project_issue_field_group_info() {
   );
 
   foreach (drupalorg_project_project_types() as $bundle => $info) {
+    $field_group = clone($field_group);
     $field_group->bundle = $bundle;
     $field_group->identifier = "group_issues|node|$bundle|form";
     $field_groups[$field_group->identifier] = $field_group;
@@ -68,6 +69,7 @@ function project_issue_field_group_info() {
   );
 
   foreach (drupalorg_project_project_types() as $bundle => $info) {
+    $field_group = clone($field_group);
     $field_group->bundle = $bundle;
     $field_group->identifier = "group_releases|node|$bundle|form";
     $field_groups[$field_group->identifier] = $field_group;
