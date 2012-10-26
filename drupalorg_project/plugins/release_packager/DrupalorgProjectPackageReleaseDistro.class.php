@@ -7,8 +7,8 @@
  */
 class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface {
 
-  public function __construct($release_node, $file_destination_root, $file_destination_subdir, $temp_directory) {
-    parent::__construct($release_node, $file_destination_root, $file_destination_subdir, $temp_directory);
+  public function __construct($release_node, $temp_directory) {
+    parent::__construct($release_node, $temp_directory);
 
     // Full path to the drush executable. This also needs to define --include
     // with the full path to the directory where drupalorg_drush is located.

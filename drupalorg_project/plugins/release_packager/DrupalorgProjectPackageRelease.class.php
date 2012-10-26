@@ -22,15 +22,13 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   protected $project_short_name = '';
   protected $filenames = array();
 
-  protected $file_destination_root = '';
-  protected $file_destination_subdirectory = '';
   protected $temp_directory = '';
   protected $project_build_root = '';
 
   /// Have we initialized our shared static data yet?
   protected static $shared_init = FALSE;
 
-  public function __construct($release_node, $file_destination_root, $file_destination_subdir, $temp_directory) {
+  public function __construct($release_node, $temp_directory) {
     $this->conf['git'] = _versioncontrol_git_get_binary_path();
     // Make sure the shared data is initialized.
     self::shared_init();
@@ -39,26 +37,25 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     $this->release_node = $release_node;
 
     // Save all the directory information.
-    $this->file_destination_root = $file_destination_root;
-    $this->file_destination_subdir = $file_destination_subdir;
     $this->temp_directory = $temp_directory;
 
     // Load the project for this release, using our static node_load() cache.
-    $this->project_node = project_release_packager_node_load($release_node->project_release['pid']);
+    $this->project_node = node_load(project_release_get_release_project_nid($release_node));
 
     // We use all of these a lot in a number of functions, so initialize them
     // once here so we can just reuse them whenever we need them.
-    $this->project_short_name = escapeshellcmd($this->project_node->project['uri']);
-    $this->release_version = escapeshellcmd($release_node->project_release['version']);
+    $this->project_short_name = escapeshellcmd($this->project_node->field_project_machine_name[$this->project_node->language][0]['value']);
+    $this->release_version = escapeshellcmd($release_node->field_release_version[$release_node->language][0]['value']);
     $this->release_file_id = $this->project_short_name . '-' . $this->release_version;
     $this->release_node_view_link = l(t('view'), 'node/' . $this->release_node->nid);
     $this->project_build_root = $this->temp_directory . '/' . $this->project_short_name;
 
     // Figure out the filenames we're going to be using for our packages.
-    $this->filenames['file_path_tgz'] = $file_destination_subdir . '/' . $this->release_file_id . '.tar.gz';
-    $this->filenames['full_dest_tgz'] = $file_destination_root . '/' . $this->filenames['file_path_tgz'];
-    $this->filenames['file_path_zip'] = $file_destination_subdir . '/' . $this->release_file_id . '.zip';
-    $this->filenames['full_dest_zip'] = $file_destination_root . '/' . $this->filenames['file_path_zip'];
+    $field = field_info_field('field_release_file');
+    $instance = field_info_instance('field_collection_item', 'field_release_file', 'field_release_files');
+    $file_destination_root = file_field_widget_uri($field, $instance);
+    $this->filenames['full_dest_tgz'] = $file_destination_root . '/' . $this->release_file_id . '.tar.gz';
+    $this->filenames['full_dest_zip'] = $file_destination_root . '/' . $this->release_file_id . '.zip';
   }
 
   /**
@@ -161,7 +158,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     if (!drupal_exec("{$this->conf['tar']} -ch --file=- $export_to | {$this->conf['gzip']} -9 --no-name > {$this->filenames['full_dest_tgz']}")) {
       return 'error';
     }
-    $files[$this->filenames['file_path_tgz']] = 0;
+    $files[$this->filenames['full_dest_tgz']] = 0;
 
     // If we're rebuilding, make sure the previous .zip is gone, since just
     // running zip again with the same zip archive won't give us the semantics
@@ -171,7 +168,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     if (!drupal_exec("{$this->conf['zip']} -rq {$this->filenames['full_dest_zip']} $export_to")) {
       return 'error';
     }
-    $files[$this->filenames['file_path_zip']] = 1;
+    $files[$this->filenames['full_dest_zip']] = 1;
 
     return $tgz_exists ? 'rebuild' : 'success';
   }
