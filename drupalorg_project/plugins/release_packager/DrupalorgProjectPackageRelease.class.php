@@ -61,22 +61,17 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     $tgz_exists = is_file($this->filenames['full_dest_tgz']);
 
     if (empty($this->project_node->versioncontrol_project['repo'])) {
-      wd_err('ERROR: %project_title does not have a VCS repository defined', array('%project_title' => $this->project_node->title));
+      watchdog('package_error', '%project_title does not have a VCS repository defined', array('%project_title' => $this->project_node->title), WATCHDOG_ERROR);
       return 'error';
     }
     $repo = $this->project_node->versioncontrol_project['repo'];
 
-    // Clean up any old build directory if it exists.
-    // Don't use drupal_exec or return if this fails, we expect it to be empty.
-    exec("{$this->conf['rm']} -rf {$this->project_build_root}");
-
-    // Make a fresh build directory and move inside it.
-    if (!mkdir($this->project_build_root) || !drupal_chdir($this->project_build_root)) {
+    // Figure out how to check this thing out from Git.
+    if (empty($this->release_node->field_release_vcs_label)) {
+      watchdog('package_error', '%release_title does not have a VCS repository defined', array('%release_title' => $this->release_node->title), WATCHDOG_ERROR);
       return 'error';
     }
-
-    // Figure out how to check this thing out from Git.
-    $git_tag = escapeshellcmd($this->release_node->project_release['tag']);
+    $git_tag = escapeshellcmd($this->release_node->field_release_vcs_label[$this->release_node->language][0]['value']);
 
     // For core, we want to checkout into a directory named via the version,
     // e.g. "drupal-7.0".
@@ -100,11 +95,12 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     $git_export .= ' | ' . $this->conf['tar'] . ' x';
 
     // Checkout this release from Git, and see if we need to rebuild it
-    if (!drupal_exec($git_export)) {
+    if (!drush_shell_cd_and_exec($this->temp_directory, $git_export)) {
+      watchdog('package_error', 'Git export failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())));
       return 'error';
     }
     if (!is_dir("{$this->project_build_root}/$export_to")) {
-      wd_err("ERROR: %export_to does not exist after cvs export -r %cvs_tag -d %export_to %cvs_export_from", array('%export_to' => $export_to, '%cvs_tag' =>  $cvs_tag, '%cvs_export_dir' => $cvs_export_from), $release_node_view_link);
+      watchdog('package_error', "%export_to does not exist after %git_export", array('%export_to' => $export_to, '%git_export' =>  $git_export), $this->release_node_view_link);
       return 'error';
     }
 
@@ -126,18 +122,20 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // Update any .info files with packaging metadata.
     foreach ($info_files as $file) {
       if (!$this->fixInfoFileVersion($file)) {
-        wd_err("ERROR: Failed to update version in %file, aborting packaging", array('%file' => $file), $release_node_view_link);
+        watchdog('package_error', "Failed to update version in %file, aborting packaging", array('%file' => $file), $this->release_node_view_link);
         return 'error';
       }
     }
 
     // Link not copy, since we want to preserve the date...
-    if (!drupal_exec("{$this->conf['ln']} -sf {$this->conf['license']} $export_to/LICENSE.txt")) {
+    if (!drush_shell_cd_and_exec($this->temp_directory, "{$this->conf['ln']} -sf {$this->conf['license']} $export_to/LICENSE.txt")) {
+      watchdog('package_error', 'Adding LICENSE.txt failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())));
       return 'error';
     }
 
     // 'h' is for dereference, we want to include the files, not the links
-    if (!drupal_exec("{$this->conf['tar']} -ch --file=- $export_to | {$this->conf['gzip']} -9 --no-name > {$this->filenames['full_dest_tgz']}")) {
+    if (!drush_shell_cd_and_exec($this->temp_directory, "{$this->conf['tar']} -ch --file=- $export_to | {$this->conf['gzip']} -9 --no-name > {$this->filenames['full_dest_tgz']}")) {
+      watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())));
       return 'error';
     }
     $files[$this->filenames['full_dest_tgz']] = 0;
@@ -147,7 +145,8 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // we want. For example, files that are removed in CVS will still be left
     // in the .zip archive.
     @unlink($this->filenames['full_dest_zip']);
-    if (!drupal_exec("{$this->conf['zip']} -rq {$this->filenames['full_dest_zip']} $export_to")) {
+    if (!drush_shell_cd_and_exec($this->temp_directory, "{$this->conf['zip']} -rq {$this->filenames['full_dest_zip']} $export_to")) {
+      watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())));
       return 'error';
     }
     $files[$this->filenames['full_dest_zip']] = 1;
@@ -226,15 +225,15 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     $info .= "\n";
 
     if (!chmod($file, 0644)) {
-      wd_err("ERROR: chmod(@file, 0644) failed", array('@file' => $file));
+      watchdog('package_error', "chmod(@file, 0644) failed", array('@file' => $file));
       return FALSE;
     }
     if (!$info_fd = fopen($file, 'ab')) {
-      wd_err("ERROR: fopen(@file, 'ab') failed", array('@file' => $file));
+      watchdog('package_error', "fopen(@file, 'ab') failed", array('@file' => $file));
       return FALSE;
     }
     if (!fwrite($info_fd, $info)) {
-      wd_err("ERROR: fwrite(@file) failed". '<pre>' . $info, array('@file' => $file));
+      watchdog('package_error', "fwrite(@file) failed". '<pre>' . $info, array('@file' => $file));
       return FALSE;
     }
     return TRUE;
