@@ -29,6 +29,8 @@ function drupalorg_project_update_dependencies() {
   $dependencies['drupalorg_project'][7001] = array(
     // Make sure projects are fully migrated before we muck about with them.
     'project' => 7004,
+    // Make sure releases are too!
+    'project_release' => 7011,
   );
   return $dependencies;
 }
