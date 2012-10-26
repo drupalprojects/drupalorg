@@ -155,23 +155,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     return $tgz_exists ? 'rebuild' : 'success';
   }
 
-  public function cleanupFailedBuild() {
-    $extensions = array('.tar.gz', '.zip');
-    $release_file_base = $this->file_destination_root . '/' . $this->file_destination_subdir . '/' . $this->release_file_id;
-
-    // Remove the main release files.
-    foreach ($extensions as $extension) {
-      $filename = $release_file_base . $extension;
-      if (file_exists($filename)) {
-        unlink($filename);
-      }
-    }
-  }
-
-  public function cleanupSuccessfulBuild() {
-    drupal_exec("{$this->conf['rm']} -rf {$this->project_build_root}");
-  }
-
   /**
    * Compute and save the 'rebuild version' string for this release.
    *

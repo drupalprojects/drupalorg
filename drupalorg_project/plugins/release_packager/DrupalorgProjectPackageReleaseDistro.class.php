@@ -287,20 +287,6 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
     }
   }
 
-  public function cleanupFailedBuild() {
-    $extensions = array('.tar.gz', '.zip');
-    $release_file_base = $this->file_destination_root . '/' . $this->file_destination_subdir . '/' . $this->release_file_id;
-
-    foreach (array('', '-no-core', '-core') as $variant) {
-      foreach ($extensions as $extension) {
-        $filename = $release_file_base . $variant . $extension;
-        if (file_exists($filename)) {
-          unlink($filename);
-        }
-      }
-    }
-  }
-
   /**
    * Construct a .make file which will build Drupal core.
    *
