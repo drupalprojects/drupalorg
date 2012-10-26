@@ -25,13 +25,8 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   protected $temp_directory = '';
   protected $project_build_root = '';
 
-  /// Have we initialized our shared static data yet?
-  protected static $shared_init = FALSE;
-
   public function __construct($release_node, $temp_directory) {
     $this->conf['git'] = _versioncontrol_git_get_binary_path();
-    // Make sure the shared data is initialized.
-    self::shared_init();
 
     // Stash the release node this packager is going to be working on.
     $this->release_node = $release_node;
@@ -56,19 +51,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     $file_destination_root = file_field_widget_uri($field, $instance);
     $this->filenames['full_dest_tgz'] = $file_destination_root . '/' . $this->release_file_id . '.tar.gz';
     $this->filenames['full_dest_zip'] = $file_destination_root . '/' . $this->release_file_id . '.zip';
-  }
-
-  /**
-   * One-time initialization shared across all instances of this class.
-   */
-  protected static function shared_init() {
-    if (self::$shared_init) {
-      return;
-    }
-
-    putenv("TERM=vt100");  // drush requires a terminal.
-
-    self::$shared_init = TRUE;
   }
 
   public function createPackage(&$files) {
