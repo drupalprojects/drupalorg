@@ -1,143 +1,83 @@
 <?php
 
 /**
- * Implements hook_apachesolr_facets().
- *
- * Reexport all the facets defined by other modules, and give the possibility
- * to define them as "order facets".
- */
-function drupalorg_order_facet_apachesolr_facets() {
-  // Load the _apachesolr_sort_facets() function.
-  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'apachesolr') . '/apachesolr.admin.inc';
-
-  foreach (module_implements('apachesolr_facets') as $module) {
-    if ($module != 'drupalorg_order_facet') {
-      $module_facets[$module] = module_invoke($module, 'apachesolr_facets');
-      uasort($module_facets[$module], '_apachesolr_sort_facets');
-    }
-  }
-
-  $all_facets = array();
-  foreach ($module_facets as $module => $facets) {
-    foreach ($facets as $facet_name => $facet_info) {
-      $all_facets[$facet_name] = $facet_info;
-    }
-  }
-  return $all_facets;
-}
-
-/**
  * Implements hook_block_info().
  */
-/* todo D7
 function drupalorg_order_facet_block_info() {
-  $enabled_facets = apachesolr_get_enabled_facets('drupalorg_order_facet');
-  $facets = drupalorg_order_facet_apachesolr_facets();
-  // Add the blocks
-  $blocks = array();
-  foreach ($enabled_facets as $delta => $facet_field) {
-    if (isset($facets[$delta])) {
-      $blocks[$delta] = $facets[$delta] + array(
-        'cache' => DRUPAL_NO_CACHE,
-      );
-      $blocks[$delta]['info'] = t('Solr result block: !facet_name', array('!facet_name' => $facets[$delta]['info']));
-    }
-  }
-  return $blocks;
+  return array(
+    'ds_created' => array(
+      'info' => t('New content'),
+      'direction' => 'desc',
+      'cache' => DRUPAL_NO_CACHE,
+    ),
+    'iss_project_release_usage' => array(
+      'info' => t('Most installed'),
+      'direction' => 'desc',
+      'cache' => DRUPAL_NO_CACHE,
+    ),
+  );
 }
 
 /**
  * Implements hook_block_view().
  */
-function drupalorg_order_facet_block_view($delta) {
-  if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
-    $facets = drupalorg_order_facet_apachesolr_facets();
-    if (isset($facets[$delta])) {
-      // Replace 'content' with 'Modules', 'Themes', etc.
-      foreach ($query->get_filters() as $filter) {
-        if ($filter['#name'] === 'im_vid_3') {
-          $term = taxonomy_term_load($filter['#value']);
-          $facets[$delta]['info'] = str_replace('content', check_plain($term->name), $facets[$delta]['info']);
-        }
-      }
-      $results = _drupalorg_order_facet_build($facets[$delta], $query, $response);
-      if (!empty($results)) {
-        return array(
-          'subject' => $facets[$delta]['info'],
-          'content' => theme('item_list', array('items' => $results, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => array('flat')))),
-        );
+function drupalorg_order_facet_block_view($delta = '') {
+  $env_id = apachesolr_default_environment();
+  if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
+    $blocks = drupalorg_order_facet_block_info();
+    // Replace 'content' with 'Modules', 'Themes', etc.
+    foreach ($query->getFilters() as $filter) {
+      if ($filter['#name'] === 'im_vid_3') {
+        $term = taxonomy_get_term($filter['#value']);
+        $blocks[$delta]['info'] = str_replace('content', check_plain($term->name), $blocks[$delta]['info']);
       }
     }
-  }
-}
-
-/**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
- */
-function drupalorg_order_facet_content($delta) {
-/* @todo D7: No apachesolr module.
-  if (apachesolr_has_searched() && ($response = apachesolr_static_response_cache()) && ($query = apachesolr_current_query())) {
-    $facets = drupalorg_order_facet_apachesolr_facets();
-    if (isset($facets[$delta])) {
-      $results = _drupalorg_order_facet_build($facets[$delta], $query, $response, 4, FALSE);
-      if (!empty($results)) {
-        return theme('item_list', array('items' => $results, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => 'flat')));
-      }
+    $results = drupalorg_order_facet_build($delta, $blocks[$delta], $query);
+    if (!empty($results)) {
+      return array(
+        'subject' => $blocks[$delta]['info'],
+        'content' => $results,
+      );
     }
   }
-*/
 }
 
 /**
  * Generate an order facet.
  */
-function _drupalorg_order_facet_build($facet, $query, $response, $count = 4, $more = TRUE) {
-  // Merge in defaults.
-  $facet += array(
-    'direction' => 'asc',
-  );
-
+function drupalorg_order_facet_build($sort, $info, $query, $more = TRUE) {
   // Generate a new query based on the executed one.
   $order_query = clone $query;
-  $order_query->set_available_sort($facet['facet_field'], array('title' => $facet['info'], 'default' => $facet['direction']));
-  $order_query->set_solrsort($facet['facet_field'], $facet['direction']);
-
-  $params = array(
-    // The fields to return.
-    'fl' => 'id,nid,title',
-    'start' => 0,
-    'rows' => $count,
-    // Reuse additional criterias from the parent query.
-    'fq' => $response->responseHeader->params->fq,
-    'sort' => $facet['facet_field'] . ' ' . $facet['direction'],
-  );
-
-  $params['fq'] = array_merge($params['fq'], $order_query->get_fq());
+  $order_query->setSolrSort($sort, $info['direction']);
 
   // Retrieve the query values first so everything is formatted correctly,
   // and we only have relevant values in the url.
-  $query_values = $order_query->get_url_queryvalues();
-
-  apachesolr_modify_query($order_query, $params, '_drupalorg_order_facet_build');
+  $query_values = $order_query->getSolrsortUrlQuery();
+  foreach ($order_query->getFilters() as $filter) {
+    $query_values['f'][] = $filter['#name'] . ':' . $filter['#value'];
+  }
 
   // Execute the Solr query.
-  $solr = apachesolr_get_solr();
-  $response = $solr->search($order_query->get_query_basic(), $params['start'], $params['rows'], $params);
+  $order_query->addParams(array(
+    'fl' => 'id,nid,title,url',
+    'start' => 0,
+    'rows' => 4,
+  ));
+  $response = $order_query->search();
 
   $items = array();
   if ($response->response->numFound > 0) {
     foreach ($response->response->docs as $doc) {
-      $items[] = l($doc->title, 'node/' . $doc->nid);
+      $items[] = l($doc->label, $doc->url);
     }
   }
 
   if ($items && $more) {
     // Add the "more" link.
     $items[] = array(
-      'data' => l(t('More @title', array('@title' => $facet['info'])), $order_query->get_path(), array('query' => $query_values)),
+      'data' => l(t('More @title', array('@title' => $info['info'])), $order_query->getPath(), array('query' => $query_values)),
       'class' => 'all',
     );
   }
-  return $items;
+  return theme('item_list', array('items' => $items, 'attributes' => array('class' => 'flat')));
 }

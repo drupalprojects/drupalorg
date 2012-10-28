@@ -14,7 +14,7 @@
     <h2>Distributions</h2>
     <ul class="flat">
       <li><a href="/documentation/build/distributions">About Distributions</a></li>
-      <li><a href="/project/distributions?solrsort=sis_project_release_usage%20desc">Most Installed Distributions</a></li>
+      <li><a href="/project/distributions?solrsort=iss_project_release_usage%20desc">Most Installed Distributions</a></li>
       <li><a href="/project/distributions?solrsort=created%20desc">New Distributions</a></li>
       <li><a href="/project/distributions?solrsort=ds_project_latest_activity%20desc">Most Active Distribitions</a></li>
       <li class="last all"><a class="all" href="/project/distributions">Search for More Distributions</a></li>
@@ -25,7 +25,7 @@
     <h2>Themes</h2>
     <ul class="flat">
       <li class="first"><a href="node/221881">About Themes &amp; Subthemes</a></li>
-      <li><a href="/project/themes?solrsort=sis_project_release_usage%20desc">Most Installed Themes</a></li>
+      <li><a href="/project/themes?solrsort=iss_project_release_usage%20desc">Most Installed Themes</a></li>
       <li><a href="/project/themes?solrsort=created%20desc">New Themes</a></li>
       <li><a href="/project/themes?solrsort=ds_project_latest_activity%20desc">Most Active Themes</a></li>
       <li class="last all"><a class="all" href="/project/themes">Search for More Themes</a></li>
@@ -52,22 +52,22 @@
         This class removes the padding and bullets from the list items
 */ ?>
   <div class="most-installed">
-    <?php print $sort_most_installed; ?>
+    <?php print $iss_project_release_usage; ?>
   </div>
 
   <div class="categories">
     <h2>Module Categories</h2>
     <ul class="flat">
-      <li class="first"><a href="/project/modules?filters=tid:53">Administration</a></li>
-      <li><a href="/project/modules?filters=tid:56">Community</a></li>
-      <li><a href="/project/modules?filters=tid:61">Event</a></li>
-      <li><a href="/project/modules?filters=tid:67">Media</a></li>
+      <li class="first"><a href="/project/modules?f[0]=im_vid_3:53">Administration</a></li>
+      <li><a href="/project/modules?f[0]=im_vid_3:56">Community</a></li>
+      <li><a href="/project/modules?f[0]=im_vid_3:61">Event</a></li>
+      <li><a href="/project/modules?f[0]=im_vid_3:67">Media</a></li>
       <li class="last all"><a href="/project/modules/categories" class="all">All Categories</a></li>
     </ul>
   </div>
 
   <div class="created">
-    <?php print $sort_created; ?>
+    <?php print $ds_created; ?>
   </div>
 
   <div class="index">
