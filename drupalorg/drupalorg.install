@@ -53,6 +53,14 @@ function drupalorg_update_dependencies() {
         'drupalorg' => 7003,
       ),
     ),
+    // project_release_update_7000() needs to run after profile_update_7001()
+    // because enabling field_collection module ends up using the
+    // {profile_field} table.
+    'project_release' => array(
+      7000 => array(
+        'profile' => 7001,
+      ),
+    ),
   );
 }
 
