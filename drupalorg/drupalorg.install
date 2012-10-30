@@ -453,61 +453,558 @@ function drupalorg_update_7009() {
  * process, it is acceptable to do until we launch the D7 switch.
  */
 function drupalorg_update_7010() {
-  // Forum permissions
-  $prefixes = array('create', 'edit own', 'edit any',
-                    'delete any', 'delete own');
 
-  foreach ($prefixes as $prefix) {
-    db_update('role_permission')
-      ->fields(array(
-        'permission' => "$prefix forum content",
-        'module' => 'node',
-      ))
-      ->condition('permission', "$prefix forum topic%", 'LIKE')
-      ->execute();
-  }
+  // Define the d.o D7 permission matrix. The top-level keys are role id. The
+  // nested associative arrays are keyed by module name and define the
+  // permissions for that module.
+  $perm_matrix = array(
+    // Anonymous
+    '1' => array(
+      'aggregator' => array(
+        'access news feeds',
+      ),
+      'comment' => array(
+        'access comments',
+      ),
+      'commitlog' => array(
+        'access commit messages',
+      ),
+      'contact' => array(
+        'access site-wide contact form',
+      ),
+      'filter' => array(
+        'use text format 1',
+      ),
+      'node' => array(
+        'access content',
+      ),
+      'project_usage' => array(
+        'view project usage',
+      ),
+      'search' => array(
+        'search content',
+        'use advanced search',
+      ),
+      'user' => array(
+        'access user profiles',
+      ),
+    ),
 
-  // Project* permissions
+    // Authenticated
+    '2' => array(
+      'aggregator' => array(
+        'access news feeds',
+      ),
+      'book' => array(
+        'access printer-friendly version',
+        'add content to books',
+      ),
+      'comment' => array(
+        'access comments',
+        'post comments',
+        'skip comment approval',
+      ),
+      'commitlog' => array(
+        'access commit messages',
+      ),
+      'contact' => array(
+        'access site-wide contact form',
+        'access user contact forms',
+      ),
+      'filter' => array(
+        'use text format 1',
+      ),
+      'multiple_email' => array(
+        'use multiple emails',
+      ),
+      'node' => array(
+        'access content',
+        'create book content',
+        'create casestudy content',
+        'create changenotice content',
+        'create forum content',
+        'create organization content',
+        'create project_issue content',
+        'delete own organization content',
+        'edit any book content',
+        'edit any changenotice content',
+        'edit own casestudy content',
+        'edit own forum content',
+        'edit own organization content',
+        'edit any project_issue content',
+        'view own unpublished content',
+        'view revisions',
+      ),
+      // TODO pift
+      /*
+      'pift' => array(
+        'pift re-test files',
+      ),
+      */
+      'project_usage' => array(
+        'view project usage',
+      ),
+      'search' => array(
+        'search content',
+        'use advanced search',
+      ),
+      'sshkey' => array(
+        'manage own SSH public keys',
+        'view own SSH public keys',
+      ),
+      'user' => array(
+        'access user profiles',
+        'change own username',
+      ),
+    ),
+
+    // Administrator
+    '3' => array(
+      'aggregator' => array(
+        'administer news feeds',
+      ),
+      'block' => array(
+        'administer blocks',
+      ),
+      'book' => array(
+        'administer book outlines',
+        'create new books',
+      ),
+      'bueditor' => array(
+        'administer bueditor',
+      ),
+      'comment' => array(
+        'administer comments',
+      ),
+      'contact' => array(
+        'administer contact forms',
+      ),
+      'devel' => array(
+        'access devel information',
+      ),
+      'facetapi' => array(
+        'administer facets',
+      ),
+      'fasttoggle' => array(
+        'administer fasttoggle',
+        'moderate comments',
+        'moderate posts',
+        'moderate users',
+      ),
+      'features' => array(
+        'administer features',
+        'manage features',
+      ),
+      'field_collection' => array(
+        'administer field collections',
+      ),
+      'field_group' => array(
+        'administer fieldgroups',
+      ),
+      'filter' => array(
+        'administer filters',
+        'use text format 3',
+      ),
+      'flag' => array(
+        'administer flags' => 'flag',
+      ),
+      'forum' => array(
+        'administer forums',
+      ),
+      'googleanalytics' => array(
+        'administer google analytics',
+        'opt-in or out of tracking',
+      ),
+      'google_admanager' => array(
+        'administer google admanager',
+      ),
+      'homebox' => array(
+        'administer homebox',
+      ),
+      'honeypot' => array(
+        'administer honeypot',
+        'bypass honeypot protection',
+      ),
+      'httpbl' => array(
+        'admin httpbl',
+        'report httpbl',
+      ),
+      'image' => array(
+        'administer image styles',
+      ),
+      'menu' => array(
+        'administer menu',
+      ),
+      'node' => array(
+        'access content overview',
+        'administer nodes',
+        'bypass node access',
+        // All the other explicit delete/edit perms are pointless given that
+        // this role already has 'administer nodes'.
+      ),
+      'path' => array(
+        'administer url aliases',
+        'create url aliases',
+      ),
+      'project' => array(
+        'administer projects',
+      ),
+      'redirect' => array(
+        'administer redirects',
+      ),
+      'role_activity' => array(
+        'view role activity',
+      ),
+      'search' => array(
+        'administer search',
+      ),
+      'sshkey' => array(
+        'view any SSH public keys',
+        'manage any SSH public keys',
+        'administer SSH public keys',
+      ),
+      'system' => array(
+        'administer modules',
+        'administer site configuration',
+        'administer themes',
+        'administer software updates',
+        'administer actions',
+        'access administration pages',
+        'access site in maintenance mode',
+        'view the administration theme',
+        'access site reports',
+        'block IP addresses',
+      ),
+      'taxonomy' => array(
+        'administer taxonomy',
+      ),
+      'user' => array(
+        'administer permissions',
+        'administer users',
+      ),
+      'versioncontrol' => array(
+        'administer version control systems',
+      ),
+      'views' => array(
+        'administer views',
+      ),
+    ),
+
+    // Site maintainer
+    '4' => array(
+      'aggregator' => array(
+        'administer news feeds',
+      ),
+      'book' => array(
+        'administer book outlines',
+        'create new books',
+      ),
+      'comment' => array(
+        'administer comments',
+      ),
+      'fasttoggle' => array(
+        'moderate comments',
+        'moderate posts',
+      ),
+      'filter' => array(
+        'use text format 3',
+      ),
+      'googleanalytics' => array(
+        'opt-in or out of tracking',
+      ),
+      'honeypot' => array(
+        'bypass honeypot protection',
+      ),
+      'node' => array(
+        'access content overview',
+        'administer nodes',
+        'bypass node access',
+        // All the other explicit delete/edit perms are pointless given that
+        // this role already has 'administer nodes'.
+      ),
+      'path' => array(
+        'administer url aliases',
+        'create url aliases',
+      ),
+      'redirect' => array(
+        'administer redirects',
+      ),
+      'system' => array(
+        'access administration pages',
+        'access site reports',
+        'view the administration theme',
+      ),
+      'taxonomy' => array(
+        'administer taxonomy',
+      ),
+    ),
+
+    // User administrator
+    '7' => array(
+      'fasttoggle' => array(
+        'moderate users',
+      ),
+      'googleanalytics' => array(
+        'opt-in or out of tracking',
+      ),
+      'honeypot' => array(
+        'bypass honeypot protection',
+      ),
+      'role_activity' => array(
+        'view role activity',
+      ),
+      'sshkey' => array(
+        'manage any SSH public keys',
+        'view any SSH public keys',
+      ),
+      'system' => array(
+        'access administration pages',
+        'view the administration theme',
+      ),
+      'user' => array(
+        'administer users',
+      ),
+    ),
+
+    // List maintainer
+    '12' => array(
+      'googleanalytics' => array(
+        'opt-in or out of tracking',
+      ),
+      'honeypot' => array(
+        'bypass honeypot protection',
+      ),
+      'lists' => array(
+        'post to newsletter',
+      ),
+    ),
+
+    // Testing administrator
+    '14' => array(
+      'googleanalytics' => array(
+        'opt-in or out of tracking',
+      ),
+      'honeypot' => array(
+        'bypass honeypot protection',
+      ),
+      // TODO pift
+      /*
+      'pift' => array(
+        'pift enable project testing',
+      ),
+      */
+      'project' => array(
+        'administer projects',
+      ),
+      'system' => array(
+        'access administration pages',
+        'view the administration theme',
+      ),
+    ),
+
+    // drupal.org issue queue squad
+    '16' => array(
+      'googleanalytics' => array(
+        'opt-in or out of tracking',
+      ),
+      'honeypot' => array(
+        'bypass honeypot protection',
+      ),
+      'project_issue' => array(
+        'assign and be assigned project issues',
+      ),
+    ),
+
+    // Git user
+    '20' => array(
+      'project' => array(
+        'create sandbox projects',
+        'delete own sandbox projects',
+      ),
+      'project_issue' => array(
+        'access issue statistics',
+      ),
+      'node' => array(
+        'create project_core content',
+        'edit own project_core content',
+        'create project_distribution content',
+        'edit own project_distribution content',
+        'create project_drupalorg content',
+        'edit own project_drupalorg content',
+        'create project_module content',
+        'edit own project_module content',
+        'create project_theme content',
+        'edit own project_theme content',
+        'create project_theme_engine content',
+        'edit own project_theme_engine content',
+        'create project_translation',
+        'edit own project_translation',
+      ),
+    ),
+
+    // Git administrator
+    '22' => array(
+      'googleanalytics' => array(
+        'opt-in or out of tracking',
+      ),
+      'honeypot' => array(
+        'bypass honeypot protection',
+      ),
+      'project' => array(
+        'administer projects',
+      ),
+      'system' => array(
+        'access administration pages',
+        'access site reports',
+        'view the administration theme',
+      ),
+      'versioncontrol' => array(
+        'administer version control systems',
+      ),
+    ),
+
+    // Git vetted user
+    '24' => array(
+      'googleanalytics' => array(
+        'opt-in or out of tracking',
+      ),
+      'honeypot' => array(
+        'bypass honeypot protection',
+      ),
+      'project' => array(
+        'create full projects',
+      ),
+      // TODO pift
+      /*
+      'pift' => array(
+        'pift enable project testing',
+        'pift access project testing tab',
+      ),
+      */
+    ),
+
+    // Security team
+    '26' => array(
+      'comment' => array(
+        'administer comments',
+      ),
+      'filter' => array(
+        'use text format 3',
+      ),
+      'googleanalytics' => array(
+        'opt-in or out of tracking',
+      ),
+      'honeypot' => array(
+        'bypass honeypot protection',
+      ),
+      'lists' => array(
+        'post to newsletter',
+      ),
+      'node' => array(
+        'access content overview',
+        'administer nodes',
+        'bypass node access',
+      ),
+      'system' => array(
+        'access administration pages',
+        'view the administration theme',
+      ),
+      'user' => array(
+        'administer users',
+      ),
+    ),
+
+    // Packaging whitelist maintainer
+    '28' => array(
+      'honeypot' => array(
+        'bypass honeypot protection'
+      ),
+      'node' => array(
+        'create packaging_whitelist content',
+        'delete any packaging_whitelist content',
+        'edit any packaging_whitelist content',
+      ),
+    ),
+
+    // Full HTML user
+    '30' => array(
+      'filter' => array(
+        'use text format 3',
+      ),
+    ),
+
+    // Documentation moderator
+    '32' => array(
+      'book' => array(
+        'administer book outlines',
+        'create new books',
+      ),
+      'comment' => array(
+        'administer comments',
+      ),
+      'filter' => array(
+        'use text format 3',
+      ),
+      'honeypot' => array(
+        'bypass honeypot protection'
+      ),
+      'node' => array(
+        'access content overview',
+        'administer nodes',
+        'bypass node access',
+      ),
+      'path' => array(
+        'administer url aliases',
+        'create url aliases',
+      ),
+      'redirect' => array(
+        'administer redirects',
+      ),
+    ),
+
+    // case studies editor
+    '34' => array(
+      'honeypot' => array(
+        'bypass honeypot protection'
+      ),
+      'node' => array(
+        'edit any casestudy content',
+      ),
+    ),
+
+    // Not a spammer
+    '36' => array(
+      'honeypot' => array(
+        'bypass honeypot protection'
+      ),
+    ),
+  );
+
+  // Start with a clean slate:
+  db_delete('role_permission')->execute();
+
+  // Build up a query to insert everything from the matrix.
   $query = db_insert('role_permission')
     ->fields(array('rid', 'permission', 'module'));
 
-  $types = array(
-    'project_distribution',
-    'project_core',
-    'project_drupalorg',
-    'project_module',
-    'project_theme',
-    'project_theme_engine',
-    'project_translation'
-  );
-
-  foreach ($types as $type) {
-    $query->values(array(
-      'rid' => 20,
-      'permission' => "create $type content",
-      'module' => 'node',
-    ));
-
-    $query->values(array(
-      'rid' => 20,
-      'permission' => "edit own $type content",
-      'module' => 'node',
-    ));
-
-    $query->values(array(
-      'rid' => 3,
-      'permission' => "delete any $type content",
-      'module' => 'node',
-    ));
-
-    $query->values(array(
-      'rid' => 3,
-      'permission' => "edit any $type content",
-      'module' => 'node',
-    ));
+  foreach ($perm_matrix as $rid => $role_info) {
+    foreach ($role_info as $module => $perms) {
+      foreach ($perms as $perm) {
+        $query->values(
+          array(
+            'rid' => $rid,
+            'permission' => $perm,
+            'module' => $module,
+          )
+        );
+      }
+    }
   }
-
   $query->execute();
+
+  // Configure our 'Administrator' role to get all future permissions.
+  variable_set('user_admin_role', 3);
+
 }
 
 /**
