@@ -276,9 +276,10 @@ function drupalorg_update_dependencies() {
   // Force all contributed modules to run after core updates.
   foreach ($contrib_modules as $module) {
     $dependencies[$module][7000] = array(
-      'system' = 7074,
+      'system' => 7074,
       'forum' => 7012,
       'comment' => 7009,
+      'menu' => 7003,
       'node' => 7013,
       'user' => 7018,
       'profile' => 7002,
