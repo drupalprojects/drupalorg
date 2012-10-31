@@ -174,9 +174,15 @@ function drupalorg_search_block_view($delta) {
 
     case 'drupalorg_search_alternate':
       // Pull any existing search terms to use in our links.
-      $search_term = search_get_keys();
+      $env_id = apachesolr_default_environment();
+      if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
+        $search_term = $query->getParam('q');
+      }
       if (empty($search_term) && isset($_GET['text'])) {
         $search_term = $_GET['text'];
+      }
+      if (empty($search_term)) {
+        return;
       }
 
       // Provide selections for all the site-search options.
