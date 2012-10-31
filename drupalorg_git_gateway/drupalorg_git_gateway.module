@@ -219,8 +219,8 @@ function drupalorg_git_gateway_user_git_json_output($account) {
  * Modify the base user account editing form to disable the Git user and Git
  * vetted user roles from being modified directly.
  */
-function drupalorg_git_gateway_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id != 'user_profile_form' || $form['#user_category'] != 'account') {
+function drupalorg_git_gateway_form_user_profile_form_alter(&$form, &$form_state) {
+  if ($form['#user_category'] !== 'account') {
     return;
   }
 
@@ -240,8 +240,7 @@ function drupalorg_git_gateway_form_alter(&$form, &$form_state, $form_id) {
       // Remove the role from the original set of checkboxes.
       unset($options[$rid]);
     }
-    $desc = t('The "Git user" and "Git vetted user" roles cannot be changed directly here. Manage them on the !link tab.', array('!link' => l('Git access', 'user/' . $form['#user']->uid . '/edit/git')));
-    $form['account']['roles'][DRUPALORG_GIT_GATEWAY_VETTED_RID]['#description'] = $desc;
+    $form['account']['roles'][DRUPALORG_GIT_GATEWAY_VETTED_RID]['#description'] = t('The "Git user" and "Git vetted user" roles cannot be changed directly here. Manage them on the !link tab.', array('!link' => l('Git access', 'user/' . $form['#user']->uid . '/edit/git')));
   }
 }
 
