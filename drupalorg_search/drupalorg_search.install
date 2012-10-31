@@ -1,0 +1,18 @@
+<?php
+/**
+ * @file
+ * Update hooks for drupalorg_search module.
+ */
+
+/**
+ * Enable the search block. Search on d.o. was previously provided by a theme
+ * feature rather than the search block.
+ */
+function drupalorg_search_update_7001() {
+  db_update('block')
+    ->fields(array('region' => 'header', 'status' => 1))
+    ->condition('module', 'search', '=')
+    ->condition('delta', 'form', '=')
+    ->condition('theme', 'bluecheese', '=')
+    ->execute();
+}
