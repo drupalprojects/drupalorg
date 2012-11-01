@@ -1015,3 +1015,12 @@ function drupalorg_update_7011() {
   // See #1699246.
   module_enable(array('user_restrictions'));
 }
+
+/**
+ * Enable and configure Flag Tracker
+ */
+function drupalorg_update_7011() {
+  module_enable(array('flag_tracker'));
+  variable_set('flag_tracker_track_flag_project_issue', 'project_issue_follow');
+  variable_set('flag_tracker_show_followers_project_issue', 1);
+}
