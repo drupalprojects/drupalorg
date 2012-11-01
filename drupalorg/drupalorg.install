@@ -1019,7 +1019,7 @@ function drupalorg_update_7011() {
 /**
  * Enable and configure Flag Tracker
  */
-function drupalorg_update_7011() {
+function drupalorg_update_7012() {
   module_enable(array('flag_tracker'));
   variable_set('flag_tracker_track_flag_project_issue', 'project_issue_follow');
   variable_set('flag_tracker_show_followers_project_issue', 1);
