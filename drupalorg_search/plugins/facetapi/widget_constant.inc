@@ -35,16 +35,20 @@ class FacetapiWidgetConstant extends FacetapiWidgetLinks {
       // @todo: There _must_ be a better way to do this. Find it.
       $array = $this->build[$this->facet['field alias']];
       $all = array_pop($array);
-      $all['#value'] = t('All');
+      $all['#markup'] = t('All');
       $all['#count'] = $total_count;
       $all['#active'] = $all_active;
-      unset ($all['#query']);
+      $all['#query'] = array();
       $element = array('all' => $all) + $element;
     }
 
     // Sets each item's theme hook, builds item list.
     $this->setThemeHooks($element);
-    $element = theme('item_list', $this->buildListItems($element), NULL, 'ul', $this->build['#attributes']);
+    $element = array(
+      '#theme' => 'item_list',
+      '#items' => $this->buildListItems($element),
+      '#attributes' => $this->build['#attributes'],
+    );
   }
 
   /**
@@ -87,7 +91,7 @@ class FacetapiWidgetConstant extends FacetapiWidgetLinks {
 
       // Initializes variables passed to theme hook.
       $variables = array(
-        'text' => $item['#value'],
+        'text' => $item['#markup'],
         'path' => $item['#path'],
         'count' => $item['#count'],
         'options' => array(
@@ -125,8 +129,6 @@ class FacetapiWidgetConstant extends FacetapiWidgetLinks {
       // Themes the link, adds row to items.
       $row['data'] = theme($item['#theme'], $variables);
 
-      // Drupal 6 does not allow classes to be in an array
-      $row['class'] = implode(' ', $row['class']);
       $items[] = $row;
     }
 
