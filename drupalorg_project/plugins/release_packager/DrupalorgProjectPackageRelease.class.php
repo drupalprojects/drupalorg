@@ -20,7 +20,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   protected $project_node;
   protected $project_short_name = '';
   protected $filenames = array();
-
+  protected $file_destination_root = '';
   protected $temp_directory = '';
 
   public function __construct($release_node, $temp_directory) {
@@ -46,10 +46,10 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // Figure out the filenames we're going to be using for our packages.
     $field = field_info_field('field_release_file');
     $instance = field_info_instance('field_collection_item', 'field_release_file', 'field_release_files');
-    $file_destination_root = file_field_widget_uri($field, $instance);
-    $this->filenames['path_tgz'] = $file_destination_root . '/' . $this->release_file_id . '.tar.gz';
+    $this->file_destination_root = file_field_widget_uri($field, $instance);
+    $this->filenames['path_tgz'] = $this->file_destination_root . '/' . $this->release_file_id . '.tar.gz';
     $this->filenames['full_dest_tgz'] = file_stream_wrapper_get_instance_by_uri($this->filenames['path_tgz'])->realpath();
-    $this->filenames['path_zip'] = $file_destination_root . '/' . $this->release_file_id . '.zip';
+    $this->filenames['path_zip'] = $this->file_destination_root . '/' . $this->release_file_id . '.zip';
     $this->filenames['full_dest_zip'] = file_stream_wrapper_get_instance_by_uri($this->filenames['path_zip'])->realpath();
   }
 
