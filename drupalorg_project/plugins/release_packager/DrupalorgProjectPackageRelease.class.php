@@ -5,7 +5,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
    * Configuration settings.
    */
   protected $conf = array(
-    'license' => '/var/www/drupal.org/htdocs/sites/all/modules/drupalorg/drupalorg_project/plugins/release_packager/LICENSE.txt',
     'tar' => '/bin/tar',
     'gzip' => '/bin/gzip',
     'zip' => '/usr/bin/zip',
@@ -23,10 +22,10 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   protected $filenames = array();
 
   protected $temp_directory = '';
-  protected $project_build_root = '';
 
   public function __construct($release_node, $temp_directory) {
     $this->conf['git'] = _versioncontrol_git_get_binary_path();
+    $this->conf['license'] = realpath(drupal_get_path('module', 'drupalorg_project') . '/plugins/release_packager/LICENSE.txt');
 
     // Stash the release node this packager is going to be working on.
     $this->release_node = $release_node;
@@ -39,18 +38,19 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
 
     // We use all of these a lot in a number of functions, so initialize them
     // once here so we can just reuse them whenever we need them.
-    $this->project_short_name = escapeshellcmd($this->project_node->field_project_machine_name[$this->project_node->language][0]['value']);
-    $this->release_version = escapeshellcmd($release_node->field_release_version[$release_node->language][0]['value']);
+    $this->project_short_name = $this->project_node->field_project_machine_name[$this->project_node->language][0]['value'];
+    $this->release_version = $release_node->field_release_version[$release_node->language][0]['value'];
     $this->release_file_id = $this->project_short_name . '-' . $this->release_version;
     $this->release_node_view_link = l(t('view'), 'node/' . $this->release_node->nid);
-    $this->project_build_root = $this->temp_directory . '/' . $this->project_short_name;
 
     // Figure out the filenames we're going to be using for our packages.
     $field = field_info_field('field_release_file');
     $instance = field_info_instance('field_collection_item', 'field_release_file', 'field_release_files');
     $file_destination_root = file_field_widget_uri($field, $instance);
-    $this->filenames['full_dest_tgz'] = $file_destination_root . '/' . $this->release_file_id . '.tar.gz';
-    $this->filenames['full_dest_zip'] = $file_destination_root . '/' . $this->release_file_id . '.zip';
+    $this->filenames['path_tgz'] = $file_destination_root . '/' . $this->release_file_id . '.tar.gz';
+    $this->filenames['full_dest_tgz'] = file_stream_wrapper_get_instance_by_uri($this->filenames['path_tgz'])->realpath();
+    $this->filenames['path_zip'] = $file_destination_root . '/' . $this->release_file_id . '.zip';
+    $this->filenames['full_dest_zip'] = file_stream_wrapper_get_instance_by_uri($this->filenames['path_zip'])->realpath();
   }
 
   public function createPackage(&$files) {
@@ -71,7 +71,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       watchdog('package_error', '%release_title does not have a VCS repository defined', array('%release_title' => $this->release_node->title), WATCHDOG_ERROR);
       return 'error';
     }
-    $git_tag = escapeshellcmd($this->release_node->field_release_vcs_label[$this->release_node->language][0]['value']);
+    $git_tag = $this->release_node->field_release_vcs_label[$this->release_node->language][0]['value'];
 
     // For core, we want to checkout into a directory named via the version,
     // e.g. "drupal-7.0".
@@ -86,27 +86,27 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     /// @todo: Fix this to not assume direct FS access to the Git repositories.
     /// @see http://drupal.org/node/1028950
     // Invoke git pointing to the right repo.
-    $git_export = $this->conf['git'] . ' --git-dir=' . escapeshellcmd($repo->root);
+    $git_export = '%s --git-dir=%s';
     // Tell it we want a tar archive with a the right subdirectory prefix.
-    $git_export .= ' archive --format=tar --prefix=' . $export_to . '/';
+    $git_export .= ' archive --format=tar --prefix=%s/';
     // Use the right Git tag
-    $git_export .= ' ' . $git_tag;
+    $git_export .= ' %s';
     // Pipe the tarball through tar to extract it locally for post-processing.
-    $git_export .= ' | ' . $this->conf['tar'] . ' x';
+    $git_export .= ' | %s x';
 
     // Checkout this release from Git, and see if we need to rebuild it
-    if (!drush_shell_cd_and_exec($this->temp_directory, $git_export)) {
+    if (!drush_shell_cd_and_exec($this->temp_directory, $git_export, $this->conf['git'], $repo->root, $export_to, $git_tag, $this->conf['tar'])) {
       watchdog('package_error', 'Git export failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())));
       return 'error';
     }
-    if (!is_dir("{$this->project_build_root}/$export_to")) {
+    if (!is_dir($this->temp_directory . '/' . $export_to)) {
       watchdog('package_error', '%export_to does not exist after %git_export', array('%export_to' => $export_to, '%git_export' =>  $git_export), WATCHDOG_ERROR, $this->release_node_view_link);
       return 'error';
     }
 
     $info_files = array();
-    $youngest = $this->fileFindYoungest($export_to, 0, $exclude, $info_files);
-    if (!empty($this->release_node->project_release['rebuild']) && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $youngest) {
+    $youngest = $this->fileFindYoungest($this->temp_directory . '/' . $export_to, 0, $exclude, $info_files);
+    if ($this->release_node->field_release_build_type[$this->release_node->language][0]['value'] === 'dynamic' && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $youngest) {
       // The existing tarball for this release is newer than the youngest
       // file in the directory, we're done.
       return 'no-op';
@@ -115,7 +115,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // If this is a -dev release, do some magic to determine a spiffy
     // "rebuild_version" string which we'll put into any .info files and
     // save in the DB for other uses.
-    if (!empty($this->release_node->project_release['rebuild'])) {
+    if ($this->release_node->field_release_build_type[$this->release_node->language][0]['value'] === 'dynamic') {
       $this->computeRebuildVersion();
     }
 
@@ -128,28 +128,28 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     }
 
     // Link not copy, since we want to preserve the date...
-    if (!drush_shell_cd_and_exec($this->temp_directory, "{$this->conf['ln']} -sf {$this->conf['license']} $export_to/LICENSE.txt")) {
+    if (!drush_shell_cd_and_exec($this->temp_directory, '%s -sf %s %s', $this->conf['ln'], $this->conf['license'], $export_to . '/LICENSE.txt')) {
       watchdog('package_error', 'Adding LICENSE.txt failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
       return 'error';
     }
 
     // 'h' is for dereference, we want to include the files, not the links
-    if (!drush_shell_cd_and_exec($this->temp_directory, "{$this->conf['tar']} -ch --file=- $export_to | {$this->conf['gzip']} -9 --no-name > {$this->filenames['full_dest_tgz']}")) {
+    if (!drush_shell_cd_and_exec($this->temp_directory, "%s -ch --file=- %s | %s -9 --no-name > %s", $this->conf['tar'], $export_to, $this->conf['gzip'], $this->filenames['full_dest_tgz'])) {
       watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
       return 'error';
     }
-    $files[$this->filenames['full_dest_tgz']] = 0;
+    $files[$this->filenames['path_tgz']] = 0;
 
     // If we're rebuilding, make sure the previous .zip is gone, since just
     // running zip again with the same zip archive won't give us the semantics
     // we want. For example, files that are removed in CVS will still be left
     // in the .zip archive.
     @unlink($this->filenames['full_dest_zip']);
-    if (!drush_shell_cd_and_exec($this->temp_directory, "{$this->conf['zip']} -rq {$this->filenames['full_dest_zip']} $export_to")) {
+    if (!drush_shell_cd_and_exec($this->temp_directory, "%s -rq %s %s", $this->conf['zip'], $this->filenames['full_dest_zip'], $export_to)) {
       watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
       return 'error';
     }
-    $files[$this->filenames['full_dest_zip']] = 1;
+    $files[$this->filenames['path_zip']] = 1;
 
     return $tgz_exists ? 'rebuild' : 'success';
   }
@@ -169,23 +169,20 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
    * value, either.
    */
   protected function computeRebuildVersion() {
-    $git = $this->conf['git'] . ' --git-dir=' . escapeshellcmd($this->project_node->versioncontrol_project['repo']->root);
     // This is called tag but in reality this is the branch for dev releases.
-    $branch = $this->release_node->project_release['tag'];
-    // Prepare for preg later.
-    $branch_preg = preg_quote(substr($branch, 0, -1));
-    // Prepare for execution now.
-    $branch = escapeshellcmd($branch);
+    $branch = $this->release_node->field_release_vcs_label[$this->release_node->language][0]['value'];
     // Try to find a tag.
-    exec("$git rev-list --topo-order --max-count=1 $branch 2>&1", $last_tag_hash);
+    drush_shell_cd_and_exec($this->temp_directory, "%s --git-dir=%s rev-list --topo-order --max-count=1 %s 2>&1", $this->conf['git'], $this->project_node->versioncontrol_project['repo']->root, $branch);
+    $last_tag_hash = drush_shell_exec_output();
     if ($last_tag_hash) {
-      exec("$git describe  --tags $last_tag_hash[0] 2>&1", $last_tag);
+      drush_shell_cd_and_exec($this->temp_directory, "%s --git-dir=%s describe --tags %s 2>&1", $this->conf['git'], $this->project_node->versioncontrol_project['repo']->root, $last_tag_hash[0]);
+      $last_tag = drush_shell_exec_output();
       if ($last_tag) {
         $last_tag = $last_tag[0];
         // Make sure the tag starts as Drupal formatted (for eg.
         // 7.x-1.0-alpha1) and if we are on a proper branch (ie. not master)
         // then it's on that branch.
-        if (preg_match('/^(?<drupalversion>' . $branch_preg . '\d+(?:-[^-]+)?)(?<gitextra>-(?<numberofcommits>\d+-)g[0-9a-f]{7})?$/', $last_tag, $matches)) {
+        if (preg_match('/^(?<drupalversion>' . preg_quote(substr($branch, 0, -1)) . '\d+(?:-[^-]+)?)(?<gitextra>-(?<numberofcommits>\d+-)g[0-9a-f]{7})?$/', $last_tag, $matches)) {
           // If we found additional git metadata (in particular, number of
           // commits) then use that info to build the version string.
           if (isset($matches['gitextra'])) {
