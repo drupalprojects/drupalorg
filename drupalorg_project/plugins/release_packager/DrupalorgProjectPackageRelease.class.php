@@ -100,7 +100,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return 'error';
     }
     if (!is_dir("{$this->project_build_root}/$export_to")) {
-      watchdog('package_error', "%export_to does not exist after %git_export", array('%export_to' => $export_to, '%git_export' =>  $git_export), $this->release_node_view_link);
+      watchdog('package_error', '%export_to does not exist after %git_export', array('%export_to' => $export_to, '%git_export' =>  $git_export), WATCHDOG_ERROR, $this->release_node_view_link);
       return 'error';
     }
 
@@ -122,20 +122,20 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // Update any .info files with packaging metadata.
     foreach ($info_files as $file) {
       if (!$this->fixInfoFileVersion($file)) {
-        watchdog('package_error', "Failed to update version in %file, aborting packaging", array('%file' => $file), $this->release_node_view_link);
+        watchdog('package_error', 'Failed to update version in %file, aborting packaging', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
         return 'error';
       }
     }
 
     // Link not copy, since we want to preserve the date...
     if (!drush_shell_cd_and_exec($this->temp_directory, "{$this->conf['ln']} -sf {$this->conf['license']} $export_to/LICENSE.txt")) {
-      watchdog('package_error', 'Adding LICENSE.txt failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())));
+      watchdog('package_error', 'Adding LICENSE.txt failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
       return 'error';
     }
 
     // 'h' is for dereference, we want to include the files, not the links
     if (!drush_shell_cd_and_exec($this->temp_directory, "{$this->conf['tar']} -ch --file=- $export_to | {$this->conf['gzip']} -9 --no-name > {$this->filenames['full_dest_tgz']}")) {
-      watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())));
+      watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
       return 'error';
     }
     $files[$this->filenames['full_dest_tgz']] = 0;
@@ -146,7 +146,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // in the .zip archive.
     @unlink($this->filenames['full_dest_zip']);
     if (!drush_shell_cd_and_exec($this->temp_directory, "{$this->conf['zip']} -rq {$this->filenames['full_dest_zip']} $export_to")) {
-      watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())));
+      watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
       return 'error';
     }
     $files[$this->filenames['full_dest_zip']] = 1;
@@ -225,15 +225,15 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     $info .= "\n";
 
     if (!chmod($file, 0644)) {
-      watchdog('package_error', "chmod(@file, 0644) failed", array('@file' => $file));
+      watchdog('package_error', "chmod(@file, 0644) failed", array('@file' => $file), WATCHDOG_ERROR);
       return FALSE;
     }
     if (!$info_fd = fopen($file, 'ab')) {
-      watchdog('package_error', "fopen(@file, 'ab') failed", array('@file' => $file));
+      watchdog('package_error', "fopen(@file, 'ab') failed", array('@file' => $file), WATCHDOG_ERROR);
       return FALSE;
     }
     if (!fwrite($info_fd, $info)) {
-      watchdog('package_error', "fwrite(@file) failed". '<pre>' . $info, array('@file' => $file));
+      watchdog('package_error', "fwrite(@file) failed". '<pre>' . $info, array('@file' => $file), WATCHDOG_ERROR);
       return FALSE;
     }
     return TRUE;
