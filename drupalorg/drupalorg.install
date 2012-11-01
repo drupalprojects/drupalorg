@@ -400,6 +400,9 @@ function drupalorg_update_7006() {
   db_drop_index('comment', 'tmp_tracking_idx');
   // Tracker entry for node authors.
   db_query("INSERT IGNORE INTO {tracker_user} (nid, uid, published, changed) (SELECT n.nid, n.uid, t.published, t.changed FROM {tracker_node} t INNER JOIN {node} n ON t.nid = n.nid)");
+  // Tracker entry for issue following.
+  // @note I'm pretty sure core's reindexing would erase this if it kicks in. Filed as https://drupal.org/node/1829320
+  db_query("INSERT IGNORE INTO {tracker_user} (nid, uid, published, changed) (SELECT f.content_id, f.uid, t.published, t.changed FROM {tracker_node} t INNER JOIN {flag_content} f ON t.nid = f.content_id AND f.content_type = 'node' AND f.fid = 4)");
 }
 
 /**
