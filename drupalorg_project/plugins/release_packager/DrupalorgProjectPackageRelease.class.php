@@ -240,12 +240,12 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   }
 
   /**
-   * Find the youngest (newest) file in a directory tree.
-   * Stolen wholesale from the original package-drupal.php script.
-   * Modified to also notice any files that end with ".info" and store
-   * all of them in the array passed in as an argument. Since we have to
-   *  recurse through the whole directory tree already, we should just
-   * record all the info we need in one pass instead of doing it twice.
+   * Find the youngest (newest) file in a directory tree. Stolen wholesale from
+   * the original package-drupal.php script. Modified to also notice any files
+   * that end with ".info" and store all of them in the array passed in as an
+   * argument. Since we have to recurse through the whole directory tree
+   * already, we should just record all the info we need in one pass instead of
+   * doing it twice.
    */
   public function fileFindYoungest($dir, $timestamp, $exclude, &$info_files) {
     if (is_dir($dir)) {
@@ -268,5 +268,4 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     }
     return $timestamp;
   }
-
 }
