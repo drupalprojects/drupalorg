@@ -161,9 +161,9 @@ function drupalorg_search_block_view($delta) {
       if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
         $searcher = $query->getSearcher();
         if ($response = apachesolr_static_response_cache($searcher)) {
-          $project_type_term = drupalorg_search_get_project_type_term($query, $response);
-          if (isset($project_type_term)) {
-            return array('content' => drupal_get_form('project_solr_browse_projects_form', $project_type_term, 'search/' . arg(1)));
+          $project_type = drupalorg_search_get_project_type($query, $response);
+          if ($project_type) {
+            return array('content' => drupal_get_form('project_solr_browse_projects_form', $project_type, 'search/' . arg(1)));
           }
           else {
             return array('content' => drupal_get_form('drupalorg_search_sort_form'));
@@ -231,8 +231,14 @@ function drupalorg_search_form_apachesolr_search_custom_page_search_form_alter(&
  */
 function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &$form_state) {
   global $pager_total_items;
-  // The type being searched for, this is always plural
-  $type = $form['#parameters'][2]->name;
+
+  // The meta type being searched on.
+  $type = $form['#project_type'];
+
+  // Update text search title.
+  $meta_types = drupalorg_crosssite_meta_types();
+  $form['text']['#title'] = t('Search @type', array('@type' => $meta_types[$type]));
+
   $results = t('@result @type match your search', array('@result' => $pager_total_items[0], '@type' => $type));
 
   // Check to see if the project_solr_browse_projects form is being used in
@@ -320,23 +326,20 @@ function drupalorg_search_block_form_submit($form, &$form_state) {
 }
 
 /**
- * Get the taxonomy term for the project type (if any) in a given Solr search.
+ * Get the project type (if any) in a given Solr search.
  *
  * This function loops over all of the active facets in the given Solr query
  * response. If one of the facets selected a "meta_type" for the search, and
- * the meta_type is either "module" or "theme", it loads the corresponding
- * taxonomy term object and returns that.
+ * the meta_type is either "module" or "theme", it returns with that.
  *
  * @param $response
  *   The ApacheSolr response object for the currently active search.
  *
  * @return
- *   The taxonomy $term object if the search's meta_type is "module" or
+ *   The search's meta_type of "module" or
  *   "theme", otherwise NULL.
- *
- * @see taxonomy_get_term()
  */
-function drupalorg_search_get_project_type_term($query, $response) {
+function drupalorg_search_get_project_type($query, $response) {
   $fq = $query->getFilters();
   if (isset($fq)) {
     // Depending on how many facets are in the currently active filter, fq
@@ -348,14 +351,8 @@ function drupalorg_search_get_project_type_term($query, $response) {
     }
     foreach ($fq as $filter) {
       if ($filter['#name'] == 'ss_meta_type') {
-        if ($filter['#value'] == 'theme') {
-          $tid = DRUPALORG_THEME_TID;
-        }
-        elseif ($filter['#value'] == 'module') {
-          $tid = DRUPALORG_MODULE_TID;
-        }
-        if (isset($tid)) {
-          return taxonomy_term_load($tid);
+        if (in_array($filter['#value'], array('module', 'theme'))) {
+          return $filter['#value'];
         }
       }
     }
@@ -446,7 +443,21 @@ function drupalorg_search_sort_form($form, &$form_state) {
   $form = array();
 
   // Add the sort selection field to our form.
-  $form['solrsort'] = project_solr_get_solrsort_field();
+  $form['solrsort'] = array(
+    '#type' => 'select',
+    '#title' => t('Sort by'),
+    '#options' => array(
+      'score' => t('Relevency'),
+      'label' => t('Title'),
+      'ss_name' => t('Author'),
+      'ds_created desc' => t('Created date'),
+      'ds_project_latest_release desc' => t('Last release'),
+      'ds_project_latest_activity desc' => t('Last build'),
+    ),
+  );
+  if (module_exists('project_usage')) {
+    $form['solrsort']['#options']['iss_project_release_usage desc'] = t('Most installed');
+  }
 
   $form['submit'] = array(
     '#type' => 'submit',
