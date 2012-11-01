@@ -1017,7 +1017,7 @@ function drupalorg_update_7011() {
 }
 
 /**
- * Enable and configure Flag Tracker
+ * Enable and configure Flag Tracker.
  */
 function drupalorg_update_7012() {
   module_enable(array('flag_tracker'));
