@@ -1,4 +1,6 @@
-$(document).ready(function() {
+(function ($) {
+  Drupal.behaviors.drupalorgD7 = {
+    attach: function (context, settings) {
   var launched = false;
   $('.slideshow').cycle({
     fx: 'scrollLeft',
@@ -19,4 +21,6 @@ $(document).ready(function() {
     $('object').attr('width', 690);
     $('object').attr('height', 388);
   });
-});
+}
+}
+})(jQuery);
