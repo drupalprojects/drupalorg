@@ -191,7 +191,7 @@ function drupalorg_project_update_7003() {
 /**
  * Place new blocks in theme.
  */
- function drupalorg_project_update_7004() {
+function drupalorg_project_update_7004() {
    // Update maintainers block visibility
    db_update('block')
      ->fields(array('status' => 1, 'visibility' => 0))
@@ -215,4 +215,13 @@ function drupalorg_project_update_7003() {
     ->condition('module', 'views')
     ->condition('delta', 'change_records-block_1')
     ->execute();
+}
+
+/**
+ * Attempt to work around a dependency issue by resaving issue node types.
+ */
+function drupalorg_project_update_7005() {
+  module_load_install('project_release');
+  // It's safe to run this an arbitrary number of times.
+  project_release_update_7011();
 }
