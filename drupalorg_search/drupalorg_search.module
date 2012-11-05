@@ -233,13 +233,15 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
   global $pager_total_items;
 
   // The meta type being searched on.
-  $type = $form['#project_type'];
+  $node_type = $form['#project_type'];
 
   // Update text search title.
   $meta_types = drupalorg_crosssite_meta_types();
-  $form['text']['#title'] = t('Search @type', array('@type' => $meta_types[$type]));
+  $meta_type_rules = drupalorg_crosssite_get_meta_type_rules();
+  $label = $meta_types[$meta_type_rules['type'][$node_type->type]];
+  $form['text']['#title'] = t('Search @type', array('@type' => $label));
 
-  $results = t('@result @type match your search', array('@result' => $pager_total_items[0], '@type' => $type));
+  $results = t('@result @type match your search', array('@result' => $pager_total_items[0], '@type' => $label));
 
   // Check to see if the project_solr_browse_projects form is being used in
   // our block on the core search page. We could test $form['path']['#value']
