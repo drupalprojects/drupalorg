@@ -112,6 +112,29 @@ function drupalorg_project_update_7001() {
       }
     }
 
+    // Fix up any legacy cck fields.
+    $result = db_query('SELECT * FROM {content_node_field_instance} WHERE type_name = :type', array(':type' => 'project_project'));
+    foreach ($result as $cckfield) {
+      try {
+        db_insert('content_node_field_instance')->fields(array(
+          'field_name' => $cckfield->field_name,
+          'type_name' => $project_type,
+          'weight' => $cckfield->weight,
+          'label' => $cckfield->label,
+          'widget_type' => $cckfield->widget_type,
+          'widget_settings' => $cckfield->widget_settings,
+          'display_settings' => $cckfield->display_settings,
+          'description' => $cckfield->description,
+          'widget_module' => $cckfield->widget_module,
+          'widget_active' => $cckfield->widget_active,
+        ))
+        ->execute();
+      }
+      catch (Exception $e) {
+        // Do nothing, is harmless.
+      }
+    }
+
     // Update field_project target bundles
     foreach (array('field_project', 'field_release_project') as $field_name) {
       $field = field_read_field($field_name);
@@ -124,6 +147,8 @@ function drupalorg_project_update_7001() {
       }
     }
   }
+  // Delete the old project_project instances now that we're done.
+  db_query('DELETE FROM {content_node_field_instance} WHERE type_name = :type', array(':type' => 'project_project'));
 }
 
 /**
