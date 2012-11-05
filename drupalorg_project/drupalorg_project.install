@@ -225,3 +225,10 @@ function drupalorg_project_update_7005() {
   // It's safe to run this an arbitrary number of times.
   project_release_update_7011();
 }
+
+/**
+ * Force the project selection widget to use auto-complete.
+ */
+function drupalorg_project_update_7006() {
+  variable_set('project_selection_widget', 'auto');
+}
