@@ -336,7 +336,7 @@ function drupalorg_search_block_form_submit($form, &$form_state) {
  *   The ApacheSolr response object for the currently active search.
  *
  * @return
- *   The search's meta_type of "module" or
+ *   The node type object corresponding to search's meta_type of "module" or
  *   "theme", otherwise NULL.
  */
 function drupalorg_search_get_project_type($query, $response) {
@@ -352,7 +352,9 @@ function drupalorg_search_get_project_type($query, $response) {
     foreach ($fq as $filter) {
       if ($filter['#name'] == 'ss_meta_type') {
         if (in_array($filter['#value'], array('module', 'theme'))) {
-          return $filter['#value'];
+          $meta_type_rules = drupalorg_crosssite_get_meta_type_rules();
+          $meta_type_rules = array_flip($meta_type_rules['type']);
+          return node_type_get_type($meta_type_rules[$filter['#value']]);
         }
       }
     }
