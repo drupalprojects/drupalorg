@@ -225,9 +225,9 @@ function drupalorg_versioncontrol_views_default_views_alter(&$views) {
 /**
  * Implements hook_form_alter().
  */
-function drupalorg_versioncontrol_form_alter(&$form, $form_state, $form_id) {
+function drupalorg_versioncontrol_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'project_release_node_form' && !empty($form['error']) && !empty($form['retry'])) {
-    $project = $form['project']['#value'];
+    $project = node_load(project_release_get_release_project_nid($form['#node']));
     $msg = '<strong>' . t('No valid branches or tags found.') . '</strong>';
     $msg .= '<p>' . t('Your release needs to have a tag or branch that follows the <a href="http://drupal.org/node/1015226">naming conventions</a> and have no other release attached to it.') . '</p>';
     $msg .= '<p>' . t('Valid release <strong>tag</strong> examples:') . '</p>';
@@ -238,7 +238,7 @@ function drupalorg_versioncontrol_form_alter(&$form, $form_state, $form_id) {
     $msg .= theme('item_list', $examples);
     $msg .= '<p>' . t('For more help, see <a href="http://drupal.org/node/1066342">Creating a Tag or Branch in Git</a> or the <a href="@git_instructions_url">Git instructions</a> page for your project.', array('@git_instructions_url' => url('node/' . $project->nid . '/git-instructions'))) . '</p>';
     $msg .= '<p>' . t('Once you have added a valid branch or tag, <a href="@retry">try again</a>.', array('@retry' => url('node/add/project_release/' . $project->nid))) . '</p>';
-    $form['error']['#value'] = $msg;
+    $form['error']['#markup'] = $msg;
     unset($form['retry']);
   }
 }

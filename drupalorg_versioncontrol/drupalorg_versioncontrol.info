@@ -5,4 +5,4 @@ dependencies[] = versioncontrol
 dependencies[] = versioncontrol_git
 dependencies[] = multiple_email
 dependencies[] = views_litepager
-core = 6.x
+core = 7.x
