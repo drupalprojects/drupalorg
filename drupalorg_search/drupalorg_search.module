@@ -106,17 +106,8 @@ function drupalorg_search_apachesolr_query_prepare(&$query) {
 }
 
 /**
- * Implements hook_block().
- */
-function drupalorg_search_block_OLD($op = 'list', $delta = 0, $edit = array()) {
-  // TODO Remaining code in this function needs to be moved to the appropriate new hook function.
-  // Instead of a monolithic function, split out this code into separate
-  // functions for each operation (which we're going to need when we port to
-  // D7, anyway).
-}
-
-
-/**
+ * Implements hook_block_info().
+ *
  * Declare all the blocks provided by drupalorg_search.
  */
 function drupalorg_search_block_info() {
@@ -142,6 +133,8 @@ function drupalorg_search_block_info() {
 }
 
 /**
+ * Implements hook_block_view().
+ *
  * Render the content for the requested drupalorg_search block.
  */
 function drupalorg_search_block_view($delta) {
