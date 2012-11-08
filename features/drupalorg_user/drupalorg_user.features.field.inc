@@ -10,7 +10,7 @@
 function drupalorg_user_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'user-user-field_user_geolocation'
+  // Exported field: 'user-user-field_user_geolocation'.
   $fields['user-user-field_user_geolocation'] = array(
     'field_config' => array(
       'active' => '1',
@@ -27,6 +27,7 @@ function drupalorg_user_field_default_fields() {
           0 => 'lng',
         ),
       ),
+      'locked' => '0',
       'module' => 'geolocation',
       'settings' => array(),
       'translatable' => '0',
@@ -40,10 +41,9 @@ function drupalorg_user_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'geolocation',
           'settings' => array(),
-          'type' => 'geolocation_text',
-          'weight' => 0,
+          'type' => 'hidden',
+          'weight' => '0',
         ),
       ),
       'entity_type' => 'user',
