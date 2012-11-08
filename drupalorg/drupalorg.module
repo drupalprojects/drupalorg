@@ -119,7 +119,7 @@ function drupalorg_menu() {
     'title' => 'Get Started with Drupal',
     'page callback' => 'drupalorg_start',
     'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
+    'type' => MENU_NORMAL_ITEM,
   );
 
   $items['download'] = array(
