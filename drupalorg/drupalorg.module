@@ -278,7 +278,7 @@ function drupalorg_block_info() {
 
     'marketplace_services' => array(
       'info' => t('Marketplace services menu'),
-      'cache' => BLOCK_NO_CACHE,
+      'cache' => DRUPAL_NO_CACHE,
     ),
   );
 }
