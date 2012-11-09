@@ -1027,3 +1027,30 @@ function drupalorg_update_7012() {
   variable_set('flag_tracker_track_flag_project_issue', 'project_issue_follow');
   variable_set('flag_tracker_show_followers_project_issue', 1);
 }
+
+/**
+ * Properly associate organizations with hosting levels (taxonomy)
+ */
+function drupalorg_update_7013() {
+  $query = db_select('field_data_field_organization_hosting_categ', 'cat');
+  $query
+    ->fields('cat', array('entity_id', 'field_organization_hosting_categ_value'))
+    ->condition('field_organization_hosting_categ_value', array(0,1,2,3), 'NOT IN');
+  $result = $query->execute();
+  foreach ($result as $org) {
+    $node = node_load($org->entity_id);
+    if (($node->field_organization_hosting_categ['und']['0']['value']) == 'Not listed for hosting') {
+      $node->field_organization_hosting_categ['und']['0']['value'] = 0;
+      node_save($node);
+    } else if (($node->field_organization_hosting_categ['und']['0']['value']) == 'Shared') {
+      $node->field_organization_hosting_categ['und']['0']['value'] = 1;
+      node_save($node);
+    } else if (($node->field_organization_hosting_categ['und']['0']['value']) == 'Enterprise &amp; Managed') {
+      $node->field_organization_hosting_categ['und']['0']['value'] = 2;
+      node_save($node);
+    } else if (($node->field_organization_hosting_categ['und']['0']['value']) == 'Platform as a Service') {
+      $node->field_organization_hosting_categ['und']['0']['value'] = 3;
+      node_save($node);
+    }
+  }
+}

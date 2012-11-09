@@ -1867,12 +1867,9 @@ function drupalorg_node_update($node) {
  * @see http://drupal.org/node/1354
  */
 function drupalorg_views_pre_render(&$view) {
-  // @todo D7 - This functionality has not been tested yet.
-  // Wait for the marketplace feature to be ported (not in D7 yet).
-
   // Render the taxonomy filtering above the marketplace organization listing.
   if ($view->name === 'drupalorg_organizations') {
-    $content = drupalorg_crosssite_grid_elements(array(2, 2, 2, 2));
+    $content = drupalorg_crosssite_grid_elements(array(3, 3, 3, 3));
 
     // Each argument should be a term restricted to a vocabulary.
     $n = 0;
@@ -1893,125 +1890,119 @@ function drupalorg_views_pre_render(&$view) {
         '#sorted' => TRUE,
       ); // See comment on 3 #... items below if modified.
 
-      // // Query for terms in the vocabulary used by nodes in the current view.
-      // if (isset($view->args[$n + 1]) && $view->args[$n + 1] !== 'all') {
-      //   // Remove the current filter, since only one term in each vocab may be
-      //   // selected.
-      //   $copy = $view->clone_view();
-      //   $copy->args[$n + 1] = 'all';
-      //   $copy->build();
-      //   $query = clone $copy->query;
-      // }
-      // else {
-      //   $query = clone $view->query;
-      // }
-      // // Clear out what we don't need.
-      // $query->fields = array();
-      // $query->orderby = array();
-      // // Join back to all terms
-      // $term_node = $query->add_table('taxonomy_term_node');
-      // $term_data = $query->add_table('taxonomy_term_data');
-      // $query->table_queue[$term_data]['join']->left_table = $term_node;
-      // $query->table_queue[$term_data]['join']->definition['left_table'] = $term_node;
-      // // … in our vid
-      // $query->add_where(0, $term_data . '.vid = %d', $vocabulary->vid);
-      // $name = $query->add_field($term_data, 'name');
-      // // group by term, count & order by
-      // $query->add_groupby($term_node . '.tid');
-      // $count = $query->add_field(NULL, 'count(*)', 'count', array('aggregate' => TRUE));
-      // $query->add_orderby(NULL, NULL, 'DESC', $count);
+      // Query for terms in the vocabulary used by nodes in the current view.
+      if (isset($view->args[$n + 1]) && $view->args[$n + 1] !== 'all') {
+        // Remove the current filter, since only one term in each vocab may be
+        // selected.
+        $copy = $view->clone_view();
+        $copy->args[$n + 1] = 'all';
+        $copy->build();
+        $query = clone $copy->query;
+      }
+      else {
+        $query = clone $view->query;
+      }
 
-      // // TODO Please convert this statement to the D7 database API syntax.
-      // $result = db_query($query->query(), $query->get_where_args());
-      // $c = 0;
-      // while ($row = db_fetch_object($result)) {
-      //   $c += 1;
-      //   $args = $view->args;
-      //   // Remove the featured/all listing and save for later.
-      //   $listing = array_shift($args);
-      //   // If necessasry, fill default arguments.
-      //   if ($n > count($args)) {
-      //     $args = array_merge($args, array_fill(count($args), $n - count($args), 'all'));
-      //   }
-      //   // Link to this argument.
-      //   $args[$n] = str_replace(' ', '-', $row->$name);
+      // Clear out what we don't need.
+      $view->query->fields = array();
+      $view->query->orderby = array();
 
-      //   $path = 'drupal-services/' . $listing . '/' . implode('/', $args);
-      //   $item = array(
-      //     '#prefix' => '<li' . ($c > 6 && $_GET['q'] !== $path ? ' class="show-more"' : '') . '>',
-      //     '#value' => l(t('@name (@count)', array('@name' => $row->$name, '@count' => $row->$count)), $path, array('html' => TRUE)),
-      //     '#suffix' => '</li>',
-      //   );
-      //   // Ensure active is in slot 6 or lower.
-      //   if ($_GET['q'] === $path && $c > 6) {
-      //     array_splice($content['column_' . ($n + 1)]['list'], 8, 0, array($item)); // 8 = 5 + 3 #... items
-      //     $content['column_' . ($n + 1)]['list'][6]['#prefix'] = '<li class="show-more">';
-      //   }
-      //   else {
-      //     $content['column_' . ($n + 1)]['list'][] = $item;
-      //   }
-      // }
+      //Get the D7 db_query
+      $query = $query->query();
 
-      // // If there are more than 6, show more/less links.
-      // if ($c > 6) {
-      //   $content['column_' . ($n + 1)]['list']['show-more'] = array(
-      //     '#value' => '<li class="show-link">' . l(t('Show more'), $_GET['q']) . '</li>',
-      //   );
-      //   $content['column_' . ($n + 1)]['list']['show-less'] = array(
-      //     '#value' => '<li class="hide-link">' . l(t('Show fewer'), $_GET['q']) . '</li>',
-      //   );
-      // }
+      // Join back to all terms
+      $query->join('taxonomy_index', 'ti', 'node.nid = ti.nid');
+      $query->join('taxonomy_term_data', 'ttd', 'ttd.tid = ti.tid');
+      $query->addField('ttd', 'name');
+      // … in our vid
+      $query->condition('ttd.vid', $vocabulary->vid);
+      // group by term, count & order by
+      $query->addField('ti', 'tid', 'term_id');
+      $query->groupBy('term_id');
+      $query->groupBy('name');
+      $query->addExpression('COUNT(*)', 'count');
+      $query->orderBy('count', 'DESC');
 
-      // // If there is a copy, show an all link.
-      // if (isset($copy)) {
-      //   $replacements = module_invoke_all('views_query_substitutions', $copy);
-      //   // TODO Please convert this statement to the D7 database API syntax.
-      //   $count = db_query('SELECT COUNT(*) FROM (' . str_replace(array_keys($replacements), $replacements, $copy->query->query(TRUE)) . ') count_alias', $copy->query->get_where_args())->fetchField();
+      $c = 0;
+      $result = $query->execute();
+      foreach ($result as $row) {
+        $c += 1;
+        $args = $view->args;
+        // Remove the featured/all listing and save for later.
+        $listing = array_shift($args);
+        // If necessasry, fill default arguments.
+        if ($n > count($args)) {
+          $args = array_merge($args, array_fill(count($args), $n - count($args), 'all'));
+        }
+        // Link to this argument.
+        $args[$n] = str_replace(' ', '-', $row->name);
 
-      //   $args = $view->args;
-      //   // Remove the featured/all listing and save for later.
-      //   $listing = array_shift($args);
-      //   // If necessasry, fill default arguments.
-      //   if ($n > count($args)) {
-      //     $args = array_merge(array_fill(count($args), $n - count($args), 'all'), $args);
-      //   }
-      //   $args[$n] = 'all';
-      //   $content['column_' . ($n + 1)]['list'][] = array(
-      //     '#prefix' => '<li>',
-      //     '#value' => l(t('@name (@count)', array('@name' => check_plain($argument['wildcard_substitution']), '@count' => $count)), preg_replace('!(/all)*$!', '', 'drupal-services/' . $listing . '/' . implode('/', $args)), array('attributes' => array('class' => array('all')))),
-      //     '#suffix' => '</li>',
-      //   );
+        $path = 'drupal-services/' . $listing . '/' . implode('/', $args);
+        $item = array(
+          '#prefix' => '<li' . ($c > 6 && $_GET['q'] !== $path ? ' class="show-more"' : '') . '>',
+          '#markup' => l(t('@name (@count)', array('@name' => $row->name, '@count' => $row->count)), $path, array('html' => TRUE)),
+          '#suffix' => '</li>',
+        );
+        // Ensure active is in slot 6 or lower.
+        if ($_GET['q'] === $path && $c > 6) {
+          array_splice($content['column_' . ($n + 1)]['list'], 8, 0, array($item)); // 8 = 5 + 3 #... items
+          $content['column_' . ($n + 1)]['list'][6]['#prefix'] = '<li class="show-more">';
+        }
+        else {
+          $content['column_' . ($n + 1)]['list'][] = $item;
+        }
+      }
+      // If there are more than 6, show more/less links.
+      if ($c > 6) {
+        $content['column_' . ($n + 1)]['list']['show-more'] = array(
+          '#markup' => '<li class="show-link">' . l(t('Show more'), $_GET['q']) . '</li>',
+        );
+        $content['column_' . ($n + 1)]['list']['show-less'] = array(
+          '#markup' => '<li class="hide-link">' . l(t('Show fewer'), $_GET['q']) . '</li>',
+        );
+      }
+      // If there is a copy, show an all link.
+      if (isset($copy)) {
+        $replacements = module_invoke_all('views_query_substitutions', $copy);
 
-      //   unset($copy);
-      // }
+        $args = $view->args;
+        // Remove the featured/all listing and save for later.
+        $listing = array_shift($args);
+        // If necessasry, fill default arguments.
+        if ($n > count($args)) {
+          $args = array_merge(array_fill(count($args), $n - count($args), 'all'), $args);
+        }
+        $args[$n] = 'all';
+        $content['column_' . ($n + 1)]['list'][] = array(
+          '#prefix' => '<li>',
+          '#markup' => l(t('All @name (@count)', array('@name' => $vocabulary->name, '@count' => $c)), preg_replace('!(/all)*$!', '', 'drupal-services/' . $listing . '/' . implode('/', $args)), array('attributes' => array('class' => array('all')))),
+          '#suffix' => '</li>',
+        );
 
-      // $n += 1;
+        unset($copy);
+      }
+
+      $n += 1;
     }
-    $handler = &$view->display['default']->handler;
-    $handler->set_option('header', drupal_render($content));
-    $handler->set_option('header_format', 3); // Full HTML
+    $view->set_item_option('default', 'header', 'area', 'format', 3);
+    $view->set_item_option('default', 'header', 'area', 'content', drupal_render($content));
   }
   elseif ($view->name === 'drupalorg_marketplace_hosting') {
     // Add gold-level hosting ads
-    $page = drupal_strtolower($view->display[$view->current_display]->display_title);
-
-    // TODO Please change this theme call to use an associative array for the $variables parameter.
-    // TODO Please change this theme call to use an associative array for the $variables parameter.
-    // TODO Please change this theme call to use an associative array for the $variables parameter.
-    // TODO Please change this theme call to use an associative array for the $variables parameter.
-    $content = theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-a-300x100') .
-      theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-b-300x100') .
-      theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-c-300x100') .
-      theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-d-300x100');
-    if ($page === 'enterprise' || $page === 'shared') {
-      // TODO Please change this theme call to use an associative array for the $variables parameter.
-      // TODO Please change this theme call to use an associative array for the $variables parameter.
-      $content .= theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-e-300x100') .
-        theme('google_admanager_block', variable_get('google_admanager_account', ''), 'hosting-' . $page . '-f-300x100');
+    $type = drupal_strtolower($view->display[$view->current_display]->display_title);
+    $ads_markup = theme('google_admanager_block', (array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'hosting-' . $type . '-a-300x100'))) .
+      theme('google_admanager_block', (array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'hosting-' . $type . '-b-300x100'))) .
+      theme('google_admanager_block', (array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'hosting-' . $type . '-c-300x100'))).
+      theme('google_admanager_block', (array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'hosting-' . $type . '-d-300x100')));
+    if ($type === 'enterprise' || $type === 'shared') {
+      $ads_markup .= theme('google_admanager_block', (array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'hosting-' . $type . '-e-300x100'))).
+        theme('google_admanager_block', (array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'hosting-' . $type . '-f-300x100')));
     }
-    $view->display['default']->handler->options['header'] .= $content . $view->display['default']->handler->options['footer'];
-    $view->display['default']->handler->options['footer'] = NULL;
-    $view->display['default']->handler->options['header_format'] = 3; // Full HTML
+    $header_text = $view->get_item('default', 'header', 'text');
+    $footer_text = $view->get_item('default', 'footer', 'text');
+    $view->set_item_option('default', 'header', 'text', 'format', 3);
+    $view->set_item_option('default', 'header', 'text', 'content', $header_text['content'] . $ads_markup . $footer_text['content']);
+    $view->set_item_option('default', 'footer', 'text', 'content', NULL);
   }
 }
 
