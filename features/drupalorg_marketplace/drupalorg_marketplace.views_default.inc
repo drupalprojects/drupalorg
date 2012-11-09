@@ -1239,11 +1239,11 @@ function drupalorg_marketplace_views_default_views() {
         'suffix' => '',
         'target' => '',
         'help' => '',
-        'trim' => 0,
-        'max_length' => '',
+        'trim' => 1,
+        'max_length' => '390',
         'word_boundary' => 1,
         'ellipsis' => 1,
-        'html' => 0,
+        'html' => 1,
         'strip_tags' => 0,
       ),
       'empty' => '',
@@ -1524,7 +1524,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->override_option('title', 'Training');
   $handler->override_option('header', 'The following is a list of organizations that indicate they provide Drupal training services. 
 
-For upcoming Trainings check <a href="http://groups.drupal.org/events?field_event_type_value_many_to_one[]=training">Events section</a> and <a href="http://drupal.org/learn-drupal">Global Training Days 2012</a>.');
+For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=training">Events section</a> and <a href="http://drupal.org/learn-drupal">Global Training Days 2012</a>.');
   $handler->override_option('header_format', '1');
   $handler->override_option('header_empty', 0);
   $handler->override_option('empty', 'Sorry, no training companies found for this country.');

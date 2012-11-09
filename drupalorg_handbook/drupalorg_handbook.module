@@ -37,6 +37,12 @@ function drupalorg_handbook_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page
         $node->extra_footer = theme('drupalorg_handbook_footer_line');
       }
     }
+    elseif ($node->type == 'book_listing') {
+      // Mark the taxonomy terms as rendered so they don't display on the node.
+      foreach ($node->taxonomy as $term_id => $dummy) {
+        $node->taxonomy[$term_id]->rendered = TRUE;
+      }
+    }
   }
   elseif (($op == 'update' || $op == 'insert') && !empty($node->book) && !empty($node->book['bid'])) {
     // Remove all cached versions of recently updated data (home).
@@ -66,15 +72,15 @@ function drupalorg_handbook_link($type, $object, $teaser = FALSE) {
  *   does not have permission to create issues.
  */
 function drupalorg_handbook_moderate_link_info($node) {
-  if (!user_access('create project issues') || drupalorg_crosssite_section() !== 'documentation') {
+  if (!user_access('create project issues') || (drupalorg_crosssite_section() !== 'documentation')) {
     return NULL;
   }
   return array(
     'title' => t('Report to moderator'),
-    'href' => 'node/add/project-issue/documentation',
+    'href' => 'node/add/project-issue/webmasters',
     'query' => array(
       'categories' => 'task',
-      'component' => 'Vandalism/Spam',
+      'component' => 'Spam',
       'title' => t('Moderation report for !title', array('!title' => $node->title)),
       'body' => t('I am reporting !url to moderators because:', array('!url' => url('node/' . $node->nid, array('absolute' => TRUE)))),
     ),
@@ -156,6 +162,22 @@ function drupalorg_handbook_meta_data() {
 
               case 127: // Insecure.
               case 129: // Deprecated.
+                $class = 'page-major-problem';
+                break;
+            }
+            $about['status'] = '<p class="page-status ' . $class . '"><span>' . check_plain($term->name) . '</span></p>';
+            break;
+
+          case 60:
+            // Book availability: use as status line.
+            $class = 'page-ok';
+            switch ($term_id) {
+              case 38418: // Out of print
+              case 38420: // Upcoming
+                $class = 'page-needs-work';
+                break;
+
+              case 38416: // Canceled
                 $class = 'page-major-problem';
                 break;
             }
@@ -276,6 +298,14 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
           'info' => t('Documentation about'),
           'cache' => BLOCK_NO_CACHE,
         ),
+        'book-listing-info' => array(
+          'info' => t('Book listings information'),
+          'cache' => BLOCK_NO_CACHE,
+        ),
+        'book-listing-link' => array(
+          'info' => t('Book listing add link'),
+          'cache' => BLOCK_NO_CACHE,
+        ),
       );
 
     case 'view':
@@ -291,13 +321,13 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
           break;
 
         case 'meta-sidebar':
-          if (($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) {
+          if ((($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) || (isset($node) && $node->type == 'book_listing')) {
             $about = drupalorg_handbook_meta_data();
             $links = array();
-            if (node_access('update', $node)) {
+            if (node_access('update', $node) && $node->type !== 'book_listing') {
               $links['edit'] = t('<a href="!url">Edit</a> this page', array('!url' => url('node/' . $node->nid . '/edit')));
             }
-            elseif (!user_is_logged_in()) {
+            elseif (!user_is_logged_in() && $node->type !== 'book_listing') {
               $links['edit'] = l(t('Log in to edit this page'), 'user', array('query' => drupal_get_destination()));
             }
             $report_link = drupalorg_handbook_moderate_link_info($node);
@@ -305,23 +335,52 @@ function drupalorg_handbook_block($op = 'list', $delta = 0, $edit = array()) {
               $links['report'] = l($report_link['title'], $report_link['href'], array('query' => $report_link['query']));
             }
 
+            $title =  (isset($node) && $node->type == 'book_listing') ? t('Book status') : t('Page status');
             return array(
-              'subject' => t('Page status'),
+              'subject' => $title,
               'content' => $about['status'] . '<p>' . implode('<br />', $links) . '</p>',
             );
           }
           break;
 
         case 'about-page':
-          if (($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) {
+          if ((($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) || (isset($node) && $node->type == 'book_listing')) {
             $about = drupalorg_handbook_meta_data();
             unset($about['status']);
             if (!empty($about)) {
+              $title =  (isset($node) && $node->type == 'book_listing') ? t('About this book') : t('About this page');
               return array(
-                'subject' => t('About this page'),
+                'subject' => $title,
                 'content' => theme('drupalorg_handbook_meta_sidebar', $about),
               );
             }
+          }
+          break;
+
+       case 'book-listing-info':
+          if ((isset($node) && $node->type == 'book_listing') ||
+            drupalorg_crosssite_child_of('node/add/book-listing') ||
+            drupalorg_crosssite_child_of('books')) {
+            return array(
+              'subject' => '',
+              'content' => drupalorg_handbook_book_listing_block(),
+            );
+          }
+          break;
+
+       case 'book-listing-link':
+          if ((isset($node) && $node->type == 'book_listing') ||
+            drupalorg_crosssite_child_of('node/add/book-listing')) {
+            return array(
+              'subject' => '',
+              'content' => drupalorg_handbook_book_link_block(FALSE),
+            );
+          }
+          elseif (drupalorg_crosssite_child_of('books')) {
+            return array(
+              'subject' => '',
+              'content' => drupalorg_handbook_book_link_block(TRUE),
+            );
           }
           break;
      }
@@ -411,6 +470,61 @@ function drupalorg_handbook_form_comment_form_alter(&$form, $form_state) {
           '<li>' . t('Is your comment a question or request for support? Take it to the <a href="!forums">forums</a>. Questions are not answered here, and comments not providing useful information are removed.', array('!forums' => url('forum'))) . '</li>' .
           '</ul>',
       );
+    }
+  }
+}
+
+/**
+ * Returns block content for the book listing sidebar block.
+ */
+function drupalorg_handbook_book_listing_block() {
+  $content = '';
+
+  $content .= '<p>' . t('Drupal.org’s online content is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. Book descriptions are generally copyrighted by the book author or publisher, and are added to this web site with permission.', array('!year' => date('Y'), '@ccl_url' => url('node/14307'))) . '</p>';
+
+  return $content;
+}
+
+/**
+ * Returns block content for the book add link sidebar block.
+ */
+function drupalorg_handbook_book_link_block($include_add_link) {
+  $content = '';
+
+  if ($include_add_link && user_access('create book_listing content')) {
+    $content .= '<p>' . l(t('Add book listing'), 'node/add/book-listing', array('attributes' => array('class' => 'action-button'))) . '</p>';
+  }
+
+  $content .= '<p>' . l(t('Book listing guidelines'), 'node/1691562') . '</p>';
+
+  return $content;
+}
+
+
+/**
+ * Implementation of template_preprocess_content_field().
+ *
+ * Turn ISBN-10 field into affiliate link to purchase from Amazon.
+ * Rewrite or unset Packt purchase link (unset if not to packtpub.com)
+ */
+function drupalorg_handbook_preprocess_content_field(&$variables){
+  if ($variables['field_name'] == 'field_book_isbn_10') {
+    $amazon_link = '<a class="amazon-link" '
+      . ' title="Ordering via this link benefits the Drupal Association"'
+      . ' href="http://www.amazon.com/dp/' . $variables['items'][0]['view']
+      . '/?tag=drupal0a-20" rel="nofollow">Order from Amazon.com</a>';
+    $variables['items'][0]['view'] = $amazon_link;
+  }
+  if ($variables['field_name'] == 'field_book_purchase_link') {
+    if (!strpos($variables['items'][0]['url'], 'packtpub')) {
+      unset($variables['items'][0]['view']);
+    }
+    else {
+      $packt_link = '<a class="packt-link" '
+        . ' title="Ordering via this link benefits the Drupal Association"'
+        . ' href="' . $variables['items'][0]['url'] . '" rel="nofollow">'
+        . 'Order from Packt</a>';
+      $variables['items'][0]['view'] = $packt_link;
     }
   }
 }

@@ -99,7 +99,8 @@ function drupalorg_menu() {
 
   $items['download'] = array(
     'title' => 'Download & Extend',
-    'page callback' => 'drupalorg_download',
+    'page callback' => 'theme',
+    'page arguments' => array('drupalorg_download'),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -579,24 +580,20 @@ function drupalorg_preprocess_drupalorg_start(&$variables) {
   $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
 
   // Create and cache a solr query for use by block elements.
+  $env_id = apachesolr_default_environment();
   project_solr_run_project_query('project/modules', array(array(
     'key' => 'im_vid_' . _project_get_vid(),
     'value' => DRUPALORG_MODULE_TID,
   )));
-  $variables['most_popular_modules'] = drupalorg_order_facet_content('sort_most_installed');
+  $query = apachesolr_current_query($env_id);
+  $variables['most_popular_modules'] = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
 
   project_solr_run_project_query('project/themes', array(array(
     'key' => 'im_vid_' . _project_get_vid(),
     'value' => DRUPALORG_THEME_TID,
   )));
-  $variables['most_popular_themes'] = drupalorg_order_facet_content('sort_most_installed');
-}
-
-/**
- * Page callback for the download page.
- */
-function drupalorg_download() {
-  return theme('drupalorg_download');
+  $query = apachesolr_current_query($env_id);
+  $variables['most_popular_themes'] = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
 }
 
 /**
@@ -616,8 +613,8 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   // delta as the unique key for the sake of brevity (both here and in the
   // $variables array).
   $facets = array(
-    'sort_most_installed' => 'drupalorg_order_facet',
-    'sort_created' => 'drupalorg_order_facet',
+    'iss_project_release_usage' => 'drupalorg_order_facet',
+    'ds_created' => 'drupalorg_order_facet',
   );
   // Render and save the facet blocks.
   foreach ($facets as $delta => $module) {
@@ -637,14 +634,15 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   $view->set_display('block_1');
   $view->set_arguments(array('modules'));
   // See if the version filter was used, and if so, have it impact the view.
-  if (!empty($_GET['filters'])) {
-    $matches = array();
-    if (preg_match('/drupal_core:(\d+)/', $_GET['filters'], $matches)) {
-      $core_version = $matches[1];
-      $filters = $view->display_handler->get_option('filters');
-      $filters['tid']['value'] = array($core_version);
-      $filters['tid']['exposed'] = FALSE;
-      $view->display_handler->set_option('filters', $filters);
+  if (!empty($_GET['f'])) {
+    foreach ($_GET['f'] as $f) {
+      if (preg_match('/drupal_core:(\d+)/', $f, $matches)) {
+        $core_version = $matches[1];
+        $filters = $view->display_handler->get_option('filters');
+        $filters['tid']['value'] = array($core_version);
+        $filters['tid']['exposed'] = FALSE;
+        $view->display_handler->set_option('filters', $filters);
+      }
     }
   }
   $view->pre_execute();
@@ -1383,6 +1381,12 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         $content['column_2']['contributions_heading'] = array('#value' => '<h3>' . t('Drupal contributions') . '</h3>');
         $content['column_2']['contributions'] = $node->content['field_contributions']['field']['items'][0];
 
+        if (!empty($node->field_organization_training_desc[0]['value'])) {
+          $content['column_2']['training_heading'] = array('#value' => '<h3>' . t('Training') . '</h3>');
+          $content['column_2']['training_url'] = $node->content['field_organization_training_url']['field']['items'][0];
+          $content['column_2']['training_desc'] = $node->content['field_organization_training_desc']['field']['items'][0];
+        }
+
         // People
         $content['column_3']['map'] = array(
           '#prefix' => '<div id="organization-map">',
@@ -1445,7 +1449,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         }
 
         // Highlight a Training provider above the organization page.
-        if (!empty($node->field_organization_hosting_level[0]['value'])) {
+        if (!empty($node->field_organization_training_list[0]['value']) && $node->field_organization_training_list[0]['value'] == 'on') {
           drupal_set_message(t('This organization is a <a href="!listing">Drupal training provider</a>.', array('!listing' => url('training'))), 'status');
         }
 

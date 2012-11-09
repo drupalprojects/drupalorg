@@ -474,6 +474,11 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   $links['development']['type'] = 'block';
   $links['resources']['type'] = 'block';
 
+  // Exit early if we are not on a node, such as block rehashing.
+  if (!is_object($node)) {
+    return;
+  }
+
   // Provide contextual links for sandboxes.
   $project_tids = array();
   if (!empty($node->taxonomy)) {
