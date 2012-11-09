@@ -221,6 +221,9 @@ function drupalorg_search_form_apachesolr_search_custom_page_search_form_alter(&
 
 /**
  * Implements hook_form_FORM_ID_alter().
+ *
+ * This drastically alters the project solr form, which we essentially still use
+ * only for the logic that populates the proper facets for a given project type.
  */
 function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &$form_state) {
   global $pager_total_items;
@@ -260,6 +263,67 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
       '#weight' => -10,
     );
   }
+
+  // Add any additional query filters that are already set.
+  $env_id = apachesolr_default_environment();
+  if (!isset($form['f'])) {
+    $form['f'] = array('#tree' => TRUE);
+  }
+  if ($query = apachesolr_current_query($env_id)) {
+    foreach ($query->getFilters() as $key => $filter) {
+      $form['f'][$key] = array(
+        '#type' => 'hidden',
+        '#value' => $filter['#name'] . ':' . $filter['#value'],
+      );
+    }
+  }
+
+  // Convert project_solr's form elements into proper facet:value pairs.
+  foreach (element_children($form) as $key) {
+    if (strpos($key, 'term_vid_') !== FALSE) {
+      if ($key === 'term_vid_6') {
+        // Special handling for the core API compatibility filter.
+        $form['drupal_core'] = $form[$key];
+        unset($form[$key]);
+        $key = 'drupal_core';
+      }
+
+      if ($form[$key]['#type'] == 'select') {
+        // Change options to facet:value pairs.
+        $options = $form[$key]['#options'];
+        $form[$key]['#options'] = array();
+        foreach ($options as $value => $label) {
+          if ($value) {
+            $value = $key . ':' . $value;
+          }
+          $form[$key]['#options'][$value] = $label;
+        }
+
+        // Set default value.
+        if ($query) {
+          foreach ($query->getFilters() as $filter) {
+            if ($filter['#name'] === $key) {
+              $form[$key]['#default_value'] = $filter['#name'] . ':' . $filter['#value'];
+            }
+            elseif ($filter['#name'] === 'im_project_release_api_tids' && $key === 'drupal_core') {
+              $form[$key]['#default_value'] = $key . ':' . $filter['#value'];
+            }
+          }
+        }
+
+        $form['f'][] = $form[$key];
+        unset($form[$key]);
+      }
+    }
+  }
+
+  // Unset form_id etc.
+  if (strtolower($form['#method']) == 'get') {
+    unset($form['form_id'], $form['form_build_id'], $form['token']);
+  }
+
+  // Sort should be at the bottom.
+  $form['solrsort']['#weight'] = 100;
 }
 
 /**
@@ -455,6 +519,9 @@ function drupalorg_search_sort_form($form, &$form_state) {
   if (module_exists('project_usage')) {
     $form['solrsort']['#options']['iss_project_release_usage desc'] = t('Most installed');
   }
+
+  // Use GET instead of POST to avoid double bootstrapping.
+  $form['#method'] = 'GET';
 
   $form['submit'] = array(
     '#type' => 'submit',
