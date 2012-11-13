@@ -264,55 +264,15 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
     );
   }
 
-  // Add any additional query filters that are already set.
+  // Set ss_meta_type as a hidden form item.
   $env_id = apachesolr_default_environment();
-  if (!isset($form['f'])) {
-    $form['f'] = array('#tree' => TRUE);
-  }
   if ($query = apachesolr_current_query($env_id)) {
     foreach ($query->getFilters() as $key => $filter) {
-      $form['f'][$key] = array(
-        '#type' => 'hidden',
-        '#value' => $filter['#name'] . ':' . $filter['#value'],
-      );
-    }
-  }
-
-  // Convert project_solr's form elements into proper facet:value pairs.
-  foreach (element_children($form) as $key) {
-    if (strpos($key, 'term_vid_') !== FALSE) {
-      if ($key === 'term_vid_6') {
-        // Special handling for the core API compatibility filter.
-        $form['drupal_core'] = $form[$key];
-        unset($form[$key]);
-        $key = 'drupal_core';
-      }
-
-      if ($form[$key]['#type'] == 'select') {
-        // Change options to facet:value pairs.
-        $options = $form[$key]['#options'];
-        $form[$key]['#options'] = array();
-        foreach ($options as $value => $label) {
-          if ($value) {
-            $value = $key . ':' . $value;
-          }
-          $form[$key]['#options'][$value] = $label;
-        }
-
-        // Set default value.
-        if ($query) {
-          foreach ($query->getFilters() as $filter) {
-            if ($filter['#name'] === $key) {
-              $form[$key]['#default_value'] = $filter['#name'] . ':' . $filter['#value'];
-            }
-            elseif ($filter['#name'] === 'im_project_release_api_tids' && $key === 'drupal_core') {
-              $form[$key]['#default_value'] = $key . ':' . $filter['#value'];
-            }
-          }
-        }
-
-        $form['f'][] = $form[$key];
-        unset($form[$key]);
+      if ($filter['#name'] == 'ss_meta_type') {
+        $form['f'][] = array(
+          '#type' => 'hidden',
+          '#value' => $filter['#name'] . ':' . $filter['#value'],
+        );
       }
     }
   }
