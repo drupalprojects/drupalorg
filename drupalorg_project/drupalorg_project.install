@@ -168,6 +168,22 @@ function drupalorg_project_update_7002() {
     }
   }
 
+  if (function_exists('apachesolr_environment_variable_get')) {
+    $env_id = apachesolr_default_environment();
+    $bias = apachesolr_environment_variable_get($env_id, 'apachesolr_search_type_boosts');
+    foreach (drupalorg_project_project_types() as $type => $type_data) {
+      // Update apachesolr configuration.
+      db_query("INSERT IGNORE INTO {apachesolr_index_bundles} (env_id, entity_type, bundle) VALUES ('solr', 'node', :bundle)", array(':bundle' => $type));
+      // Copy legacy project bias into all project node types.
+      $bias[$type] = $bias['project_project'];
+    }
+    // Since we have tweaked the apachesolr configuration, we need to clear the apachesolr cache.
+    db_query('TRUNCATE {cache_apachesolr}');
+
+    // Write out the updated biases.
+    apachesolr_environment_variable_set($env_id, 'apachesolr_search_type_boosts', $bias);
+  }
+
   // Since we have manually mucked about in field tables, we need to clear the field cache.
   field_cache_clear();
 
