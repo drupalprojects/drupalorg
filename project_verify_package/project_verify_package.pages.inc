@@ -87,64 +87,6 @@ function project_verify_package_run_drush_via_pipe($command, $input) {
 }
 
 /**
- * Helper to get file contents from a URL using a variety of methods.
- *
- * If PHP is configured to allow URLs in fopen(), use file_get_contents().
- * Otherwise, if PHP has libcurl loaded, use that. Finally, fall back to
- * attempting to execute wget from a pipe.
- *
- * @param $url
- *   URL for the file to fetch.
- * @return
- *   An array, first element is a return status string (one of 'success',
- *   'failure', or 'not found'), second element is the .make file on success,
- *   possibly an error message on failure, and nothing if the file is not
- *   found.
- */
-function project_verify_package_get_remote_file($url) {
-  $result = 'not found';
-  $data = 'not found';
-
-  // Use fopen if allowed.
-  if (ini_get('allow_url_fopen')) {
-    if ($output = file_get_contents($url)) {
-      $result = 'success';
-      $data = $output;
-    }
-  }
-  // Fallback to cURL if it exists.
-  elseif (function_exists('curl_init')) {
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 50);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-    $output = curl_exec($ch);
-    // Most likely a server error.
-    if ($output === FALSE) {
-      $result = 'failure';
-      $data = curl_error($ch);
-    }
-    // All HTTP codes other than 200 assume that the file does not exist on
-    // the server.
-    elseif (curl_getinfo($ch, CURLINFO_HTTP_CODE) == "200") {
-      $result = 'success';
-      $data = $output;
-    }
-    curl_close($ch);
-  }
-  // Last try, wget.
-  else {
-    $output = passthru('wget -q -O - ' . escapeshellarg($url), $return_value);
-    if ($return_value === 0) {
-      $result = 'success';
-      $data = $output;
-    }
-  }
-
-  return array($result, $data);
-}
-
-/**
  * Format the output returned from an exec() call.
  *
  * @param $output
@@ -177,26 +119,25 @@ function project_verify_package_clean_output($output) {
  */
 function _project_verify_package_verify_release_node($form, &$form_state) {
   // It's the final release form, not the VCS tag picker.
-  if (!empty($form_state['values']['project_release']['version'])) {
+  if (!empty($form_state['values']['field_release_version'][$form_state['node']->language][0]['value'])) {
     // Check that it's a project category we want to verify.
-    $project = node_load(array('nid' => $form['#node']->project_release['pid']));
-    if (!empty($project->taxonomy[PROJECT_VERIFY_PACKAGE_PROJECT_TYPE_TID])) {
-      $vcs_label = $form_state['values']['project_release']['tag'];
+    $project = node_load(project_release_get_release_project_nid($form_state['node']));
+    if ($project->type === 'project_distribution') {
+      $vcs_label = $form_state['values']['field_release_vcs_label'][$form_state['node']->language][0]['value'];
       $token_args = array(
         '%project_title' => $project->title,
-        '%project_shortname' => $project->project['uri'],
+        '%project_shortname' => $project->field_project_machine_name[$project->language][0]['value'],
         '%makefile' => PROJECT_VERIFY_PACKAGE_MAKE_FILE,
         '%vcs_label' => $vcs_label,
         '!doc_link' => DOCUMENTATION_LINK,
       );
       // Try to grab the .make file to verify.
       $url = strtr(PROJECT_VERIFY_PACKAGE_MAKE_FILE_URI, $token_args);
-      list($result, $data) = project_verify_package_get_remote_file($url);
-      if ($result == 'success') {
-        $makefile = $data;
+      $result = drupal_http_request($url);
+      if (!isset($result->error)) {
         // Run the 'verify-makefile' drush command. We only diplay a message
         // for errors.
-        list ($output, $errors, $return) = project_verify_package_run_drush_via_pipe('verify-makefile', $makefile);
+        list($output, $errors, $return) = project_verify_package_run_drush_via_pipe('verify-makefile', $result->data);
         if (!($return === 0)) {
           // Reformat the output.
           list($raw_output, $escaped_output) = project_verify_package_clean_output($output);
@@ -212,14 +153,16 @@ function _project_verify_package_verify_release_node($form, &$form_state) {
           form_set_error('title', $message);
         }
       }
-      elseif ($result == 'not found') {
+      // drupalcode.org currently returns 500 instead of 404 for not found, see
+      // [#1043414].
+      elseif ($result->code == 404 || $result->code == 500) {
         // If there is no drupal-org.make file at all, we just want to return
         // without a validation error so that distributions which don't
         // use the Drupal.org packaging system can still create releases.
         return;
       }
       else {
-        form_set_error('title', t("Pre-packaging verification failed -- unable to retrieve %makefile from %url: %error", array('%makefile' => PROJECT_VERIFY_PACKAGE_MAKE_FILE, '%url' => $url, '%error' => $data)));
+        form_set_error('title', t("Pre-packaging verification failed -- unable to retrieve %makefile from %url: %error", array('%makefile' => PROJECT_VERIFY_PACKAGE_MAKE_FILE, '%url' => $url, '%error' => $result->error)));
       }
     }
   }

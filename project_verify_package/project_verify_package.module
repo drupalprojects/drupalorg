@@ -9,31 +9,15 @@
  * require some custom hacking to work in any other environment.
  */
 
-// -------------------
-// BEGIN CONFIGURATION
-// -------------------
-
-// The term ID that a release node must have in order to require verification.
-define('PROJECT_VERIFY_PACKAGE_PROJECT_TYPE_TID', 96);
-
-// NOTE: Other configuration settings need to be defined at the top of the
-// project_verify_package.pages.inc file.
-
-// -----------------
-// END CONFIGURATION
-// -----------------
-
 /**
  * Implement hook_form_alter().
  */
-function project_verify_package_form_alter(&$form, $form_state, $form_id) {
-  switch ($form_id) {
-    case 'project_release_node_form':
-      // Can't conditionally add the validation to the final release form,
-      // as the form is cached and we don't get back to the alter hook. So,
-      // just always add the validator and check for the final form there.
-      $form['#validate'][] = 'project_verify_package_verify_release_node';
-      break;
+function project_verify_package_form_node_form_alter(&$form, $form_state, $form_id) {
+  if (project_release_node_is_release($form_state['node'])) {
+    // Can't conditionally add the validation to the final release form,
+    // as the form is cached and we don't get back to the alter hook. So,
+    // just always add the validator and check for the final form there.
+    $form['#validate'][] = 'project_verify_package_verify_release_node';
   }
 }
 
@@ -45,6 +29,6 @@ function project_verify_package_form_alter(&$form, $form_state, $form_id) {
  * the internal validation function.
  */
 function project_verify_package_verify_release_node($form, &$form_state) {
-  require_once(drupal_get_path('module', 'project_verify_package') . '/project_verify_package.pages.inc');
+  module_load_include('inc', 'project_verify_package', 'project_verify_package.pages');
   _project_verify_package_verify_release_node($form, $form_state);
 }

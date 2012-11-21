@@ -4,4 +4,4 @@ package = Project
 dependencies[] = project
 dependencies[] = project_release
 dependencies[] = project_package
-core = 6.x
+core = 7.x
