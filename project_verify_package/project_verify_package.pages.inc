@@ -47,7 +47,6 @@ define('PROJECT_VERIFY_PACKAGE_MAKE_FILE', 'drupal-org.make');
  *   any error output, and the third element is the command return value.
  */
 function project_verify_package_run_drush_via_pipe($command, $input) {
-
   $descriptorspec = array(
      0 => array("pipe", "r"),  // STDIN
      1 => array("pipe", "w"),  // STDOUT
@@ -60,22 +59,22 @@ function project_verify_package_run_drush_via_pipe($command, $input) {
   $process = proc_open(PROJECT_VERIFY_PACKAGE_DRUSH_BIN . ' --include=' . PROJECT_VERIFY_PACKAGE_DRUPALORG_DRUSH_PATH . " $command -", $descriptorspec, $pipes, NULL, $env);
 
   if (is_resource($process)) {
-      // $pipes now looks like this:
-      // 0 => writeable handle connected to child STDIN.
-      // 1 => readable handle connected to child STDOUT.
-      // 2 => readable handle connected to child STDERR.
-      fwrite($pipes[0], $input);
-      fclose($pipes[0]);
+    // $pipes now looks like this:
+    // 0 => writeable handle connected to child STDIN.
+    // 1 => readable handle connected to child STDOUT.
+    // 2 => readable handle connected to child STDERR.
+    fwrite($pipes[0], $input);
+    fclose($pipes[0]);
 
-      $output = stream_get_contents($pipes[1]);
-      fclose($pipes[1]);
+    $output = stream_get_contents($pipes[1]);
+    fclose($pipes[1]);
 
-      $errors = stream_get_contents($pipes[2]);
-      fclose($pipes[2]);
+    $errors = stream_get_contents($pipes[2]);
+    fclose($pipes[2]);
 
-      // It is important that you close any pipes before calling
-      // proc_close in order to avoid a deadlock.
-      $return_value = proc_close($process);
+    // It is important that you close any pipes before calling
+    // proc_close in order to avoid a deadlock.
+    $return_value = proc_close($process);
   }
   else {
     $output = '';
