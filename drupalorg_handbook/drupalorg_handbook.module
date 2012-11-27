@@ -65,9 +65,13 @@ function drupalorg_handbook_node_view($node, $view_mode = 'full') {
       );
     }
     elseif ($node->type == 'book_listing') {
-      // Mark the taxonomy terms as rendered so they don't display on the node.
-      foreach ($node->taxonomy as $term_id => $dummy) {
-        $node->taxonomy[$term_id]->rendered = TRUE;
+      // Mark the taxonomy items as rendered so they don't display on the node.
+      // These are elements of $node->content that are named
+      // 'taxonomy_vocabulary_*'.
+      foreach ($node->content as $key => $value) {
+        if (strpos($key, 'taxonomy_vocabulary_') === 0) {
+          hide($node->content[$key]);
+        }
       }
     }
   }
@@ -177,6 +181,9 @@ function drupalorg_handbook_meta_data() {
         foreach (field_available_languages('node', $field) as $langcode) {
           foreach ($node->{$field['field_name']}[$langcode] as $item) {
             $term_id = $item['tid'];
+            if (!isset($item['taxonomy_term'])) {
+              continue;
+            }
             $term = $item['taxonomy_term'];
 
             if (isset($vocabularies[$term->vid])) {
@@ -368,13 +375,13 @@ function drupalorg_handbook_block_view($delta) {
       break;
 
     case 'meta-sidebar':
-      if (($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) {
+      if ((($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) || (isset($node) && $node->type == 'book_listing')) {
         $about = drupalorg_handbook_meta_data();
         $links = array();
-        if (node_access('update', $node)) {
+        if (node_access('update', $node) && $node->type !== 'book_listing') {
           $links['edit'] = t('<a href="!url">Edit</a> this page', array('!url' => url('node/' . $node->nid . '/edit')));
         }
-        elseif (!user_is_logged_in()) {
+        elseif (!user_is_logged_in() && $node->type != 'book_listing') {
           $links['edit'] = l(t('Log in to edit this page'), 'user', array('query' => drupal_get_destination()));
         }
         $report_link = drupalorg_handbook_moderate_link_info($node);
@@ -382,20 +389,22 @@ function drupalorg_handbook_block_view($delta) {
           $links['report'] = l($report_link['title'], $report_link['href'], array('query' => $report_link['query']));
         }
 
+        $title =  (isset($node) && $node->type == 'book_listing') ? t('Book status') : t('Page status');
         return array(
-          'subject' => t('Page status'),
+          'subject' => $title,
           'content' => $about['status'] . '<p>' . implode('<br />', $links) . '</p>',
         );
       }
       break;
 
     case 'about-page':
-      if (($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) {
+      if ((($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) || (isset($node) && $node->type == 'book_listing')) {
         $about = drupalorg_handbook_meta_data();
         unset($about['status']);
         if (!empty($about)) {
+          $title =  (isset($node) && $node->type == 'book_listing') ? t('About this book') : t('About this page');
           return array(
-            'subject' => t('About this page'),
+            'subject' => $title,
             'content' => theme('drupalorg_handbook_meta_sidebar', array('about' => $about)),
           );
         }
@@ -549,24 +558,26 @@ function drupalorg_handbook_book_link_block($include_add_link) {
  * Turn ISBN-10 field into affiliate link to purchase from Amazon.
  * Rewrite or unset Packt purchase link (unset if not to packtpub.com)
  */
-function drupalorg_handbook_preprocess_content_field(&$variables){
-  if ($variables['field_name'] == 'field_book_isbn_10') {
-    $amazon_link = '<a class="amazon-link" '
+function drupalorg_handbook_process_field(&$variables){
+  $element = $variables['element'];
+  if ($element['#field_name'] == 'field_book_isbn_10' && isset($variables['items'][0]['#markup'])) {
+   $amazon_link = '<a class="amazon-link" '
       . ' title="Ordering via this link benefits the Drupal Association"'
-      . ' href="http://www.amazon.com/dp/' . $variables['items'][0]['view']
+      . ' href="http://www.amazon.com/dp/' . $variables['items'][0]['#markup']
       . '/?tag=drupal0a-20" rel="nofollow">Order from Amazon.com</a>';
-    $variables['items'][0]['view'] = $amazon_link;
+    $variables['items'][0]['#markup'] = $amazon_link;
   }
-  if ($variables['field_name'] == 'field_book_purchase_link') {
-    if (!strpos($variables['items'][0]['url'], 'packtpub')) {
-      unset($variables['items'][0]['view']);
+  if ($element['#field_name'] == 'field_book_purchase_link' && isset($element['#items'][0]['url'])) {
+    if (!strpos($element['#items'][0]['url'], 'packtpub')) {
+      unset($variables['element']);
+      unset($variables['items']);
     }
     else {
       $packt_link = '<a class="packt-link" '
         . ' title="Ordering via this link benefits the Drupal Association"'
-        . ' href="' . $variables['items'][0]['url'] . '" rel="nofollow">'
+        . ' href="' . $element['#items'][0]['url'] . '" rel="nofollow">'
         . 'Order from Packt</a>';
-      $variables['items'][0]['view'] = $packt_link;
+      $variables['items'][0]['#markup'] = $packt_link;
     }
   }
 }
