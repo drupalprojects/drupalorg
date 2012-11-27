@@ -11,7 +11,7 @@ function drupalorg_honeypot_honeypot_time_limit($timelimit, $form_values, $failu
     $extra_time = $timelimit * variable_get('drupalorg_honeypot_factor', 1);
   }
   elseif ($user->uid > 0) {
-    $country = db_result(db_query('SELECT value FROM {profile_values} WHERE fid = %d AND uid = %d', 17, $user->uid));
+    $country = db_query('SELECT value FROM {profile_value} WHERE fid = :fid AND uid = :uid', array(':fid' => 17, ':uid' => $user->uid))->fetchField();
     if ($country && in_array($country, variable_get('drupalorg_honeypot_likely_spam_countries', array()))) {
       $extra_time = $timelimit * variable_get('drupalorg_honeypot_factor', 1);
     }
@@ -22,27 +22,16 @@ function drupalorg_honeypot_honeypot_time_limit($timelimit, $form_values, $failu
   if (isset($form_values['title']) && $form_values['title']) {
     $count += drupalorg_honeypot_scan($form_values['title']);
   }
-  if (isset($form_values['body']) && $form_values['body']) {
-    $count += drupalorg_honeypot_scan($form_values['body']);
+  if (isset($form_values['comment_body']) && $form_values['comment_body']['und'][0]['value']) {
+    $count += drupalorg_honeypot_scan($form_values['comment_body']['und'][0]['value']);
   }
 
   // scan comments
   if (isset($form_values['subject']) && $form_values['subject']) {
     $count += drupalorg_honeypot_scan($form_values['subject']);
   }
-  if (isset($form_values['comment']) && $form_values['comment']) {
-    $count += drupalorg_honeypot_scan($form_values['comment']);
-  }
-
-  // scan profile text fields
-  if (isset($form_values['profile_personal_bio']) && $form_values['profile_personal_bio']) {
-    $count += drupalorg_honeypot_scan($form_values['profile_personal_bio']);
-  }
-  if (isset($form_values['profile_interests']) && $form_values['profile_interests']) {
-    $count += drupalorg_honeypot_scan($form_values['profile_interests']);
-  }
-  if (isset($form_values['profile_drupal_contributions']) && $form_values['profile_drupal_contributions']) {
-    $count += drupalorg_honeypot_scan($form_values['profile_drupal_contributions']);
+  if (isset($form_values['comment_body']) && $form_values['comment_body']['und'][0]['value']) {
+    $count += drupalorg_honeypot_scan($form_values['comment_body']['und'][0]['value']);
   }
 
   if ($count) {
