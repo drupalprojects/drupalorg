@@ -2,5 +2,4 @@ name = Drupal.org
 description = "Extra sticky honeypot for special cases"
 package = Drupal.org
 dependencies[] = honeypot
-core = 6.x
-
+core = 7.x
