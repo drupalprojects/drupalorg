@@ -1746,22 +1746,19 @@ function drupalorg_node_view($node, $view_mode = 'full') {
     }
   */
 
-  // @todo D7 - Get this working when case studies are ported to D7
-  /*
     elseif ($node->type === 'casestudy') {
       $breadcrumb = array(
         l(t('Home'), ''),
         l(t('Case Studies'), 'case-studies'),
       );
-      if ($node->field_status[0]['value'] === 'Featured') {
+      if ($node->field_status[$node->language][0]['value'] === '1') {
         $breadcrumb[] = l(t('Featured showcase'), 'case-studies/featured');
       }
-      elseif ($node->field_status[0]['value'] === 'Community') {
+      elseif ($node->field_status[$node->language][0]['value'] === '2') {
         $breadcrumb[] = l(t('Community showcase'), 'case-studies/community');
       }
       drupal_set_breadcrumb($breadcrumb);
     }
-  */
 }
 
 /**
