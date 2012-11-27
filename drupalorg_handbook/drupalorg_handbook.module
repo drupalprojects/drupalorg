@@ -389,9 +389,8 @@ function drupalorg_handbook_block_view($delta) {
           $links['report'] = l($report_link['title'], $report_link['href'], array('query' => $report_link['query']));
         }
 
-        $title =  (isset($node) && $node->type == 'book_listing') ? t('Book status') : t('Page status');
         return array(
-          'subject' => $title,
+          'subject' => (isset($node) && $node->type == 'book_listing') ? t('Book status') : t('Page status'),
           'content' => $about['status'] . '<p>' . implode('<br />', $links) . '</p>',
         );
       }
@@ -402,9 +401,8 @@ function drupalorg_handbook_block_view($delta) {
         $about = drupalorg_handbook_meta_data();
         unset($about['status']);
         if (!empty($about)) {
-          $title =  (isset($node) && $node->type == 'book_listing') ? t('About this book') : t('About this page');
           return array(
-            'subject' => $title,
+            'subject' => (isset($node) && $node->type == 'book_listing') ? t('About this book') : t('About this page'),
             'content' => theme('drupalorg_handbook_meta_sidebar', array('about' => $about)),
           );
         }
@@ -558,7 +556,7 @@ function drupalorg_handbook_book_link_block($include_add_link) {
  * Turn ISBN-10 field into affiliate link to purchase from Amazon.
  * Rewrite or unset Packt purchase link (unset if not to packtpub.com)
  */
-function drupalorg_handbook_process_field(&$variables){
+function drupalorg_handbook_process_field(&$variables) {
   $element = $variables['element'];
   if ($element['#field_name'] == 'field_book_isbn_10' && isset($variables['items'][0]['#markup'])) {
    $amazon_link = '<a class="amazon-link" '
