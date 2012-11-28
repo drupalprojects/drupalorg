@@ -1,2172 +1,772 @@
 <?php
+/**
+ * @file
+ * drupalorg_case_studies.views_default.inc
+ */
 
 /**
- * Implementation of hook_views_default_views().
+ * Implements hook_views_default_views().
  */
 function drupalorg_case_studies_views_default_views() {
-  $views = array();
+  $export = array();
 
-  // Exported view: drupalorg_casestudies
-  $view = new view;
+  $view = new view();
   $view->name = 'drupalorg_casestudies';
-  $view->description = 'List of case studies';
-  $view->tag = '';
+  $view->description = '';
+  $view->tag = 'default';
   $view->base_table = 'node';
-  $view->core = 0;
-  $view->api_version = '2';
+  $view->human_name = 'Drupal case studies';
+  $view->core = 7;
+  $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'field_mainimage_fid' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'case198_linked',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_mainimage_fid',
-      'table' => 'node_data_field_mainimage',
-      'field' => 'field_mainimage_fid',
-      'relationship' => 'none',
-    ),
-    'title' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<h2>[title]</h2>',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 1,
-      'exclude' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-    ),
-    'tid' => array(
-      'label' => 'Categories',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 1,
-        'path' => 'case-studies/%1/[tid-tid]',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'type' => 'separator',
-      'separator' => ', ',
-      'link_to_taxonomy' => 0,
-      'limit' => 1,
-      'vids' => array(
-        50 => 50,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'exclude' => 0,
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('sorts', array(
-    'created' => array(
-      'order' => 'DESC',
-      'granularity' => 'second',
-      'id' => 'created',
-      'table' => 'node',
-      'field' => 'created',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('arguments', array(
-    'field_status_value' => array(
-      'default_action' => 'default',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All',
-      'title' => '',
-      'breadcrumb' => '%1',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'none',
-      'validate_fail' => 'not found',
-      'add_table' => 0,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'id' => 'field_status_value',
-      'table' => 'node_data_field_status',
-      'field' => 'field_status_value',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        3 => 0,
-        34 => 0,
-        32 => 0,
-        16 => 0,
-        30 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        28 => 0,
-        26 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_taxonomy_tid_term_page' => 0,
-      'default_taxonomy_tid_node' => 0,
-      'default_taxonomy_tid_limit' => 0,
-      'default_taxonomy_tid_vids' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'default_argument_user' => 0,
-      'default_argument_fixed' => 'featured',
-      'default_argument_image_size' => '_original',
-      'validate_argument_node_type' => array(
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'tid',
-      'validate_argument_transform' => 0,
-      'validate_user_restrict_roles' => 0,
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-      'default_argument_php' => '',
-      'validate_argument_php' => '',
-    ),
-    'tid' => array(
-      'default_action' => 'ignore',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All',
-      'title' => 'Drupal Case Studies: %2',
-      'breadcrumb' => '%2',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'taxonomy_term',
-      'validate_fail' => 'not found',
-      'break_phrase' => 0,
-      'add_table' => 0,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'set_breadcrumb' => 0,
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        3 => 0,
-        16 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        28 => 0,
-        26 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_taxonomy_tid_term_page' => 0,
-      'default_taxonomy_tid_node' => 0,
-      'default_taxonomy_tid_limit' => 0,
-      'default_taxonomy_tid_vids' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'default_argument_user' => 0,
-      'default_argument_fixed' => '',
-      'default_argument_image_size' => '_original',
-      'default_argument_php' => '',
-      'validate_argument_node_type' => array(
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        50 => 50,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'tid',
-      'validate_argument_transform' => 0,
-      'validate_user_restrict_roles' => 0,
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-      'validate_argument_php' => '',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'casestudy' => 'casestudy',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('title', 'Drupal Case Studies');
-  $handler->override_option('css_class', 'drupalorg-grid-4 drupalorg-2-col');
-  $handler->override_option('items_per_page', 8);
-  $handler->override_option('offset', 0);
-  $handler->override_option('use_pager', '1');
-  $handler->override_option('distinct', 1);
-  $handler->override_option('style_plugin', 'grid');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-    'columns' => '2',
-    'alignment' => 'horizontal',
-    'fill_single_line' => 1,
-    'summary' => 'Thumbnails and descriptions of case studies',
-  ));
-  $handler->override_option('row_options', array(
-    'inline' => array(
-      'title' => 'title',
-    ),
-    'separator' => '',
-    'hide_empty' => 0,
-  ));
-  $handler = $view->new_display('page', 'Case studies landing page', 'page_1');
-  $handler->override_option('fields', array(
-    'field_mainimage_fid' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'case198_linked',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_mainimage_fid',
-      'table' => 'node_data_field_mainimage',
-      'field' => 'field_mainimage_fid',
-      'relationship' => 'none',
-    ),
-    'title' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<h2>[title]</h2>',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 1,
-      'exclude' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-    ),
-    'tid' => array(
-      'label' => 'Categories',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 1,
-        'path' => 'case-studies/featured/[tid-tid]',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'type' => 'separator',
-      'separator' => ', ',
-      'link_to_taxonomy' => 0,
-      'limit' => 1,
-      'vids' => array(
-        50 => 50,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'exclude' => 0,
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-    ),
-  ));
-  $handler->override_option('arguments', array());
-  $handler->override_option('filters', array(
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'casestudy' => 'casestudy',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'field_status_value' => array(
-      'operator' => '=',
-      'value' => 'Featured',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-        'optional' => FALSE,
-      ),
-      'case' => 1,
-      'id' => 'field_status_value',
-      'table' => 'node_data_field_status',
-      'field' => 'field_status_value',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('items_per_page', 8);
-  $handler->override_option('offset', 4);
-  $handler->override_option('path', 'case-studies');
-  $handler->override_option('menu', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
-  $handler = $view->new_display('block', 'Home page', 'block_1');
-  $handler->override_option('fields', array(
-    'field_mainimage_fid' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'grid-4_linked',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_mainimage_fid',
-      'table' => 'node_data_field_mainimage',
-      'field' => 'field_mainimage_fid',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-    ),
-    'title' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 1,
-      'exclude' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-    ),
-  ));
-  $handler->override_option('arguments', array(
-    'tid' => array(
-      'default_action' => 'ignore',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All sectors',
-      'title' => 'Drupal case studies: %1',
-      'breadcrumb' => '',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'taxonomy_term',
-      'validate_fail' => 'not found',
-      'break_phrase' => 0,
-      'add_table' => 0,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'set_breadcrumb' => 0,
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        18 => 0,
-        3 => 0,
-        5 => 0,
-        16 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_argument_fixed' => '',
-      'default_argument_user' => 0,
-      'default_argument_image_size' => '_original',
-      'validate_argument_node_type' => array(
-        'organization' => 0,
-        'showcase' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'casestudy' => 0,
-        'packaging_whitelist' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        50 => 50,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        52 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'convert',
-      'validate_argument_transform' => 1,
-      'validate_user_restrict_roles' => 0,
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'casestudy' => 'casestudy',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'field_status_value' => array(
-      'operator' => '=',
-      'value' => 'Featured',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-        'optional' => FALSE,
-      ),
-      'case' => 1,
-      'id' => 'field_status_value',
-      'table' => 'node_data_field_status',
-      'field' => 'field_status_value',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('items_per_page', 10);
-  $handler->override_option('offset', 0);
-  $handler->override_option('style_plugin', 'default');
-  $handler->override_option('style_options', array());
-  $handler->override_option('block_description', '');
-  $handler->override_option('block_caching', -1);
-  $handler = $view->new_display('block', 'Sidebar navigation', 'block_2');
-  $handler->override_option('fields', array(
-    'name' => array(
-      'label' => 'Term',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => 'case-studies/%1/[tid]',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_taxonomy' => 0,
-      'exclude' => 0,
-      'id' => 'name',
-      'table' => 'term_data',
-      'field' => 'name',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('sorts', array());
-  $handler->override_option('arguments', array(
-    'field_status_value' => array(
-      'default_action' => 'default',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All',
-      'title' => '',
-      'breadcrumb' => '',
-      'default_argument_type' => 'php',
-      'default_argument' => '',
-      'validate_type' => 'none',
-      'validate_fail' => 'not found',
-      'add_table' => 0,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'id' => 'field_status_value',
-      'table' => 'node_data_field_status',
-      'field' => 'field_status_value',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        3 => 0,
-        16 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        28 => 0,
-        26 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_taxonomy_tid_term_page' => 0,
-      'default_taxonomy_tid_node' => 0,
-      'default_taxonomy_tid_limit' => 0,
-      'default_taxonomy_tid_vids' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'default_argument_user' => 0,
-      'default_argument_fixed' => 'featured',
-      'default_argument_image_size' => '_original',
-      'validate_argument_node_type' => array(
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'tid',
-      'validate_argument_transform' => 0,
-      'validate_user_restrict_roles' => 0,
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'default_argument_php' => 'if (arg(0) == \'case-studies\') {
-  if (arg(1) != \'\') { return arg(1); }
-  else { return \'featured\'; }
-}',
-      'validate_argument_php' => '',
-    ),
-    'tid' => array(
-      'default_action' => 'summary asc',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(
-        'base_path' => 'case-studies',
-        'count' => 1,
-        'override' => 0,
-        'items_per_page' => '25',
-      ),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All',
-      'title' => '',
-      'breadcrumb' => '',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'taxonomy_term',
-      'validate_fail' => 'not found',
-      'break_phrase' => 0,
-      'add_table' => 0,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'set_breadcrumb' => 0,
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        3 => 0,
-        16 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        28 => 0,
-        26 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_taxonomy_tid_term_page' => 0,
-      'default_taxonomy_tid_node' => 0,
-      'default_taxonomy_tid_limit' => 0,
-      'default_taxonomy_tid_vids' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'default_argument_user' => 0,
-      'default_argument_fixed' => '',
-      'default_argument_image_size' => '_original',
-      'default_argument_php' => '',
-      'validate_argument_node_type' => array(
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        50 => 50,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'tid',
-      'validate_argument_transform' => 0,
-      'validate_user_restrict_roles' => 0,
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-      'validate_argument_php' => '',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'casestudy' => 'casestudy',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'vid' => array(
-      'operator' => 'in',
-      'value' => array(
-        50 => '50',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'vid',
-      'table' => 'term_data',
-      'field' => 'vid',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('title', 'Browse by category');
-  $handler->override_option('css_class', '');
-  $handler->override_option('items_per_page', 0);
-  $handler->override_option('offset', 0);
-  $handler->override_option('use_pager', '0');
-  $handler->override_option('style_plugin', 'default');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-  ));
-  $handler->override_option('block_description', '');
-  $handler->override_option('block_caching', -1);
-  $handler = $view->new_display('block', 'Featured slideshow', 'block_3');
-  $handler->override_option('fields', array(
-    'field_mainimage_fid' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'case588x306_default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_mainimage_fid',
-      'table' => 'node_data_field_mainimage',
-      'field' => 'field_mainimage_fid',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-    ),
-    'title' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<h2>[title]</h2>',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 1,
-      'exclude' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('arguments', array());
-  $handler->override_option('filters', array(
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'casestudy' => 'casestudy',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'field_status_value' => array(
-      'operator' => '=',
-      'value' => 'Featured',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-        'optional' => FALSE,
-      ),
-      'case' => 1,
-      'id' => 'field_status_value',
-      'table' => 'node_data_field_status',
-      'field' => 'field_status_value',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('title', '');
-  $handler->override_option('css_class', '');
-  $handler->override_option('items_per_page', 4);
-  $handler->override_option('offset', 0);
-  $handler->override_option('use_pager', '0');
-  $handler->override_option('distinct', 0);
-  $handler->override_option('style_plugin', 'jcarousel');
-  $handler->override_option('style_options', array(
-    'wrap' => 'circular',
-    'skin' => '',
-    'visible' => '1',
-    'scroll' => '1',
-    'auto' => '3',
-    'navigation' => 'after',
-    'ajax' => 0,
-    'animation' => '',
-    'easing' => '',
-    'start' => '1',
-    'autoPause' => 1,
-    'vertical' => 0,
-  ));
-  $handler->override_option('block_description', '');
-  $handler->override_option('block_caching', -1);
-  $handler = $view->new_display('page', 'Inner pages', 'page_2');
-  $handler->override_option('arguments', array(
-    'field_status_value' => array(
-      'default_action' => 'default',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All',
-      'title' => '',
-      'breadcrumb' => '%1',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'none',
-      'validate_fail' => 'not found',
-      'add_table' => 0,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'id' => 'field_status_value',
-      'table' => 'node_data_field_status',
-      'field' => 'field_status_value',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        3 => 0,
-        16 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        28 => 0,
-        26 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_taxonomy_tid_term_page' => 0,
-      'default_taxonomy_tid_node' => 0,
-      'default_taxonomy_tid_limit' => 0,
-      'default_taxonomy_tid_vids' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'default_argument_user' => 0,
-      'default_argument_fixed' => 'featured',
-      'default_argument_image_size' => '_original',
-      'validate_argument_node_type' => array(
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'tid',
-      'validate_argument_transform' => 0,
-      'validate_user_restrict_roles' => 0,
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-      'default_argument_php' => '',
-      'validate_argument_php' => '',
-    ),
-    'tid' => array(
-      'default_action' => 'ignore',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All',
-      'title' => 'Category: %2',
-      'breadcrumb' => '%2',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'taxonomy_term',
-      'validate_fail' => 'not found',
-      'break_phrase' => 0,
-      'add_table' => 0,
-      'require_value' => 0,
-      'reduce_duplicates' => 0,
-      'set_breadcrumb' => 0,
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        2 => 0,
-        3 => 0,
-        34 => 0,
-        32 => 0,
-        16 => 0,
-        30 => 0,
-        22 => 0,
-        20 => 0,
-        24 => 0,
-        12 => 0,
-        28 => 0,
-        26 => 0,
-        4 => 0,
-        14 => 0,
-        7 => 0,
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_taxonomy_tid_term_page' => 0,
-      'default_taxonomy_tid_node' => 0,
-      'default_taxonomy_tid_limit' => 0,
-      'default_taxonomy_tid_vids' => array(
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'default_argument_user' => 0,
-      'default_argument_fixed' => '',
-      'default_argument_image_size' => '_original',
-      'default_argument_php' => '',
-      'validate_argument_node_type' => array(
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'image' => 0,
-        'forum' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'project_issue' => 0,
-        'book' => 0,
-        'page' => 0,
-        'story' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        50 => 50,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'validate_argument_type' => 'tid',
-      'validate_argument_transform' => 0,
-      'validate_user_restrict_roles' => 0,
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-      'image_size' => array(
-        '_original' => '_original',
-        'thumbnail' => 'thumbnail',
-        'preview' => 'preview',
-      ),
-      'validate_argument_project_term_argument_type' => 'tid',
-      'validate_argument_project_term_argument_action_top_without' => 'pass',
-      'validate_argument_project_term_argument_action_top_with' => 'pass',
-      'validate_argument_project_term_argument_action_child' => 'pass',
-      'validate_argument_php' => '',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-    ),
-  ));
-  $handler->override_option('path', 'case-studies/%');
-  $handler->override_option('menu', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
-  $handler = $view->new_display('page', 'Management view', 'page_3');
-  $handler->override_option('fields', array(
-    'title' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 1,
-      'exclude' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-    ),
-    'field_status_value' => array(
-      'label' => 'Status',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'label_type' => 'widget',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_status_value',
-      'table' => 'node_data_field_status',
-      'field' => 'field_status_value',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-    'new_comments' => array(
-      'label' => 'Comments',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '[comment_count] ([new_comments])',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'set_precision' => FALSE,
-      'precision' => 0,
-      'decimal' => '.',
-      'separator' => ',',
-      'format_plural' => 0,
-      'format_plural_singular' => '1',
-      'format_plural_plural' => '@count',
-      'prefix' => '',
-      'suffix' => '',
-      'link_to_comment' => 1,
-      'exclude' => 1,
-      'id' => 'new_comments',
-      'table' => 'node',
-      'field' => 'new_comments',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-    'comment_count' => array(
-      'label' => 'Comments',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '[comment_count] [new_comments]',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '0',
-      'hide_empty' => 0,
-      'empty_zero' => 1,
-      'hide_alter_empty' => 0,
-      'set_precision' => FALSE,
-      'precision' => 0,
-      'decimal' => '.',
-      'separator' => ',',
-      'format_plural' => 0,
-      'format_plural_singular' => '1',
-      'format_plural_plural' => '@count',
-      'prefix' => '',
-      'suffix' => '',
-      'exclude' => 0,
-      'id' => 'comment_count',
-      'table' => 'node_comment_statistics',
-      'field' => 'comment_count',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-    'changed' => array(
-      'label' => 'Updated',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'date_format' => 'small',
-      'custom_date_format' => '',
-      'exclude' => 0,
-      'id' => 'changed',
-      'table' => 'node',
-      'field' => 'changed',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-    'timestamp' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'comments' => 0,
-      'exclude' => 0,
-      'id' => 'timestamp',
-      'table' => 'history_user',
-      'field' => 'timestamp',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('arguments', array());
-  $handler->override_option('filters', array(
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'operator' => '',
-        'identifier' => 'status',
-        'label' => 'Published',
-        'optional' => 1,
-        'remember' => 0,
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'casestudy' => 'casestudy',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'field_status_value_many_to_one' => array(
-      'operator' => 'or',
-      'value' => array(),
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'use_operator' => 0,
-        'operator' => 'field_status_value_many_to_one_op',
-        'identifier' => 'field_status_value_many_to_one',
-        'label' => 'Status',
-        'optional' => 1,
-        'single' => 1,
-        'remember' => 0,
-        'reduce' => 0,
-      ),
-      'id' => 'field_status_value_many_to_one',
-      'table' => 'node_data_field_status',
-      'field' => 'field_status_value_many_to_one',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'timestamp' => array(
-      'operator' => '=',
-      'value' => '',
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'operator' => '',
-        'identifier' => 'timestamp',
-        'label' => 'New',
-      ),
-      'id' => 'timestamp',
-      'table' => 'history_user',
-      'field' => 'timestamp',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-    'title' => array(
-      'operator' => 'contains',
-      'value' => '',
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'use_operator' => 0,
-        'operator' => 'title_op',
-        'identifier' => 'title',
-        'label' => 'Title contains',
-        'remember' => 0,
-      ),
-      'case' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-    ),
-    'tid' => array(
-      'operator' => 'or',
-      'value' => array(),
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'use_operator' => 0,
-        'operator' => 'tid_op',
-        'identifier' => 'tid',
-        'label' => 'Category',
-        'optional' => 1,
-        'single' => 1,
-        'remember' => 0,
-        'reduce' => 0,
-      ),
-      'type' => 'select',
-      'limit' => TRUE,
-      'vid' => '50',
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'hierarchy' => 0,
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'role',
-    'role' => array(
-      2 => 2,
-    ),
-  ));
-  $handler->override_option('title', 'Case Studies management');
-  $handler->override_option('css_class', '');
-  $handler->override_option('empty', 'Sorry, nothing found.');
-  $handler->override_option('empty_format', '1');
-  $handler->override_option('items_per_page', 50);
-  $handler->override_option('offset', 0);
-  $handler->override_option('distinct', 0);
-  $handler->override_option('style_plugin', 'table');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-    'override' => 1,
-    'sticky' => 0,
-    'order' => 'asc',
-    'summary' => '',
-    'columns' => array(
-      'title' => 'title',
-      'tid' => 'tid',
-      'field_status_value' => 'field_status_value',
-      'comment_count' => 'comment_count',
-      'edit_node' => 'edit_node',
-      'timestamp' => 'timestamp',
-      'created' => 'created',
-      'changed' => 'changed',
-    ),
-    'info' => array(
-      'title' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-      'tid' => array(
-        'separator' => '',
-      ),
-      'field_status_value' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-      'comment_count' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-      'edit_node' => array(
-        'separator' => '',
-      ),
-      'timestamp' => array(
-        'separator' => '',
-      ),
-      'created' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-      'changed' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-    ),
-    'default' => 'title',
-  ));
-  $handler->override_option('path', 'case-studies/manage');
-  $handler->override_option('menu', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
 
-  $views[$view->name] = $view;
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Drupal Case Studies';
+  $handler->display->display_options['css_class'] = 'drupalorg-grid-4 drupalorg-2-col';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '50';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['style_plugin'] = 'grid';
+  $handler->display->display_options['style_options']['columns'] = '2';
+  $handler->display->display_options['style_options']['summary'] = 'Thumbnails and descriptions of case studies';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Field: Content: Primary screenshot */
+  $handler->display->display_options['fields']['field_mainimage']['id'] = 'field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['table'] = 'field_data_field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['field'] = 'field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['label'] = '';
+  $handler->display->display_options['fields']['field_mainimage']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_mainimage']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_mainimage']['settings'] = array(
+    'image_style' => 'case198',
+    'image_link' => 'content',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Status */
+  $handler->display->display_options['fields']['field_status']['id'] = 'field_status';
+  $handler->display->display_options['fields']['field_status']['table'] = 'field_data_field_status';
+  $handler->display->display_options['fields']['field_status']['field'] = 'field_status';
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
+  $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['status']['expose']['required'] = TRUE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'casestudy' => 'casestudy',
+  );
 
-  return $views;
+  /* Display: Case Studies Landing Page */
+  $handler = $view->new_display('page', 'Case Studies Landing Page', 'page_1');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '8';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Primary screenshot */
+  $handler->display->display_options['fields']['field_mainimage']['id'] = 'field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['table'] = 'field_data_field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['field'] = 'field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['label'] = '';
+  $handler->display->display_options['fields']['field_mainimage']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_mainimage']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_mainimage']['settings'] = array(
+    'image_style' => 'case198',
+    'image_link' => 'content',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Sectors */
+  $handler->display->display_options['fields']['taxonomy_vocabulary_50']['id'] = 'taxonomy_vocabulary_50';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_50']['table'] = 'field_data_taxonomy_vocabulary_50';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_50']['field'] = 'taxonomy_vocabulary_50';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_50']['label'] = 'Categories';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_50']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['taxonomy_vocabulary_50']['alter']['path'] = 'case-studies/featured/[taxonomy_vocabulary_50-tid]';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_50']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_50']['delta_offset'] = '0';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'casestudy' => 'casestudy',
+  );
+  /* Filter criterion: Content: Status (field_status) */
+  $handler->display->display_options['filters']['field_status_value']['id'] = 'field_status_value';
+  $handler->display->display_options['filters']['field_status_value']['table'] = 'field_data_field_status';
+  $handler->display->display_options['filters']['field_status_value']['field'] = 'field_status_value';
+  $handler->display->display_options['filters']['field_status_value']['value'] = array(
+    'Featured' => 'Featured',
+  );
+  $handler->display->display_options['path'] = 'case-studies';
+
+  /* Display: Home Page */
+  $handler = $view->new_display('block', 'Home Page', 'block_1');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'title' => 'title',
+  );
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Primary screenshot */
+  $handler->display->display_options['fields']['field_mainimage']['id'] = 'field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['table'] = 'field_data_field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['field'] = 'field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['label'] = '';
+  $handler->display->display_options['fields']['field_mainimage']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_mainimage']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_mainimage']['settings'] = array(
+    'image_style' => 'grid-4',
+    'image_link' => 'content',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Has taxonomy term ID */
+  $handler->display->display_options['arguments']['tid']['id'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['table'] = 'taxonomy_index';
+  $handler->display->display_options['arguments']['tid']['field'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['title'] = 'Drupal case studies: %1';
+  $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['tid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['tid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['tid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['tid']['validate_options']['vocabularies'] = array(
+    'vocabulary_50' => 'vocabulary_50',
+  );
+  $handler->display->display_options['arguments']['tid']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['arguments']['tid']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'casestudy' => 'casestudy',
+  );
+  /* Filter criterion: Content: Status (field_status) */
+  $handler->display->display_options['filters']['field_status_value']['id'] = 'field_status_value';
+  $handler->display->display_options['filters']['field_status_value']['table'] = 'field_data_field_status';
+  $handler->display->display_options['filters']['field_status_value']['field'] = 'field_status_value';
+  $handler->display->display_options['filters']['field_status_value']['value'] = array(
+    'Featured' => 'Featured',
+  );
+
+  /* Display: Sidebar Navigation */
+  $handler = $view->new_display('block', 'Sidebar Navigation', 'block_2');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Taxonomy terms on node */
+  $handler->display->display_options['relationships']['term_node_tid']['id'] = 'term_node_tid';
+  $handler->display->display_options['relationships']['term_node_tid']['table'] = 'node';
+  $handler->display->display_options['relationships']['term_node_tid']['field'] = 'term_node_tid';
+  $handler->display->display_options['relationships']['term_node_tid']['required'] = TRUE;
+  $handler->display->display_options['relationships']['term_node_tid']['vocabularies'] = array(
+    'vocabulary_50' => 'vocabulary_50',
+    'vocabulary_1' => 0,
+    'vocabulary_5' => 0,
+    'vocabulary_38' => 0,
+    'vocabulary_54' => 0,
+    'vocabulary_56' => 0,
+    'vocabulary_6' => 0,
+    'vocabulary_4' => 0,
+    'vocabulary_44' => 0,
+    'vocabulary_46' => 0,
+    'vocabulary_3' => 0,
+    'vocabulary_48' => 0,
+    'vocabulary_60' => 0,
+    'vocabulary_62' => 0,
+    'vocabulary_58' => 0,
+    'vocabulary_52' => 0,
+    'vocabulary_7' => 0,
+    'vocabulary_2' => 0,
+    'vocabulary_31' => 0,
+    'vocabulary_32' => 0,
+    'vocabulary_33' => 0,
+    'vocabulary_34' => 0,
+    'vocabulary_9' => 0,
+  );
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Taxonomy term: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'term_node_tid';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Status (field_status) */
+  $handler->display->display_options['arguments']['field_status_value']['id'] = 'field_status_value';
+  $handler->display->display_options['arguments']['field_status_value']['table'] = 'field_data_field_status';
+  $handler->display->display_options['arguments']['field_status_value']['field'] = 'field_status_value';
+  $handler->display->display_options['arguments']['field_status_value']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_status_value']['default_argument_type'] = 'php';
+  $handler->display->display_options['arguments']['field_status_value']['default_argument_options']['code'] = '// @todo Replace this eval code with a default value plugin.
+if (arg(0) == \'case-studies\') {
+  if (arg(1) != \'\') {
+    return arg(1);
+  }
+  else {
+    return \'featured\';
+  }
+}';
+  $handler->display->display_options['arguments']['field_status_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_status_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_status_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_status_value']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_status_value']['validate']['type'] = 'php';
+  $handler->display->display_options['arguments']['field_status_value']['validate_options']['code'] = '// @todo Replace this eval code with a default value plugin.
+// The actual url has for example "featured" or "community" but the data is stared as numbers,
+// so first load the options which are Uppercase versions like "Featured" and then find the number in the database.
+
+// Get the options.
+$field = field_info_field(\'field_status\');
+$instance = field_info_instances(\'node\', \'field_status\', \'casestudy\');
+$allowed = list_allowed_values($field, $instance, \'node\');
+$allowed_key = array_flip(array_map(\'drupal_strtolower\', $allowed));
+
+if (isset($allowed_key[$argument])) {
+  $handler->argument = $allowed_key[$argument];
+  $handler->validated_title = check_plain($allowed[$handler->argument]);
+}
+
+return TRUE;';
+  $handler->display->display_options['arguments']['field_status_value']['limit'] = '0';
+  /* Contextual filter: Taxonomy term: Name */
+  $handler->display->display_options['arguments']['name']['id'] = 'name';
+  $handler->display->display_options['arguments']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['arguments']['name']['field'] = 'name';
+  $handler->display->display_options['arguments']['name']['relationship'] = 'term_node_tid';
+  $handler->display->display_options['arguments']['name']['default_action'] = 'summary';
+  $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['name']['validate_options']['vocabularies'] = array(
+    'vocabulary_50' => 'vocabulary_50',
+  );
+  $handler->display->display_options['arguments']['name']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['arguments']['name']['limit'] = '0';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'casestudy' => 'casestudy',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+
+  /* Display: Featured Slideshow */
+  $handler = $view->new_display('block', 'Featured Slideshow', 'block_3');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '4';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'jcarousel';
+  $handler->display->display_options['style_options']['wrap'] = '0';
+  $handler->display->display_options['style_options']['skin'] = '';
+  $handler->display->display_options['style_options']['visible'] = '1';
+  $handler->display->display_options['style_options']['scroll'] = '1';
+  $handler->display->display_options['style_options']['auto'] = '3';
+  $handler->display->display_options['style_options']['autoPause'] = 1;
+  $handler->display->display_options['style_options']['easing'] = '';
+  $handler->display->display_options['style_options']['vertical'] = 0;
+  $handler->display->display_options['style_options']['navigation'] = 'after';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'title' => 'title',
+  );
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Primary screenshot */
+  $handler->display->display_options['fields']['field_mainimage']['id'] = 'field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['table'] = 'field_data_field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['field'] = 'field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['label'] = '';
+  $handler->display->display_options['fields']['field_mainimage']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_mainimage']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_mainimage']['settings'] = array(
+    'image_style' => 'case588x306',
+    'image_link' => 'content',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+
+  /* Display: Inner Pages */
+  $handler = $view->new_display('page', 'Inner Pages', 'page_2');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '8';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'grid';
+  $handler->display->display_options['style_options']['columns'] = '2';
+  $handler->display->display_options['style_options']['summary'] = 'Thumbnails and descriptions of case studies';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Primary screenshot */
+  $handler->display->display_options['fields']['field_mainimage']['id'] = 'field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['table'] = 'field_data_field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['field'] = 'field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['label'] = '';
+  $handler->display->display_options['fields']['field_mainimage']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_mainimage']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_mainimage']['settings'] = array(
+    'image_style' => 'case198',
+    'image_link' => 'content',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  /* Field: Content: All taxonomy terms */
+  $handler->display->display_options['fields']['term_node_tid']['id'] = 'term_node_tid';
+  $handler->display->display_options['fields']['term_node_tid']['table'] = 'node';
+  $handler->display->display_options['fields']['term_node_tid']['field'] = 'term_node_tid';
+  $handler->display->display_options['fields']['term_node_tid']['label'] = 'Categories';
+  $handler->display->display_options['fields']['term_node_tid']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['term_node_tid']['alter']['path'] = 'case-studies/%1/[term_node_tid-name]';
+  $handler->display->display_options['fields']['term_node_tid']['alter']['path_case'] = 'lower';
+  $handler->display->display_options['fields']['term_node_tid']['link_to_taxonomy'] = FALSE;
+  $handler->display->display_options['fields']['term_node_tid']['vocabularies'] = array(
+    'vocabulary_1' => 0,
+    'vocabulary_5' => 0,
+    'vocabulary_38' => 0,
+    'vocabulary_54' => 0,
+    'vocabulary_56' => 0,
+    'vocabulary_6' => 0,
+    'vocabulary_4' => 0,
+    'vocabulary_44' => 0,
+    'vocabulary_46' => 0,
+    'vocabulary_3' => 0,
+    'vocabulary_48' => 0,
+    'vocabulary_50' => 0,
+    'vocabulary_60' => 0,
+    'vocabulary_62' => 0,
+    'vocabulary_58' => 0,
+    'vocabulary_52' => 0,
+    'vocabulary_7' => 0,
+    'vocabulary_2' => 0,
+    'vocabulary_31' => 0,
+    'vocabulary_32' => 0,
+    'vocabulary_33' => 0,
+    'vocabulary_34' => 0,
+    'vocabulary_9' => 0,
+  );
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Status (field_status) */
+  $handler->display->display_options['arguments']['field_status_value']['id'] = 'field_status_value';
+  $handler->display->display_options['arguments']['field_status_value']['table'] = 'field_data_field_status';
+  $handler->display->display_options['arguments']['field_status_value']['field'] = 'field_status_value';
+  $handler->display->display_options['arguments']['field_status_value']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_status_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_status_value']['default_argument_options']['argument'] = 'featured';
+  $handler->display->display_options['arguments']['field_status_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_status_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_status_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_status_value']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_status_value']['validate']['type'] = 'php';
+  $handler->display->display_options['arguments']['field_status_value']['validate_options']['code'] = '// @todo Replace this eval code with a default value plugin.
+// The actual url has for example "featured" or "community" but the data is stared as numbers,
+// so first load the options which are Uppercase versions like "Featured" and then find the number in the database.
+
+// Get the options.
+$field = field_info_field(\'field_status\');
+$instance = field_info_instances(\'node\', \'field_status\', \'casestudy\');
+$allowed = list_allowed_values($field, $instance, \'node\');
+$allowed_key = array_flip(array_map(\'drupal_strtolower\', $allowed));
+
+if (isset($allowed_key[$argument])) {
+  $handler->argument = $allowed_key[$argument];
+  $handler->validated_title = check_plain($allowed[$handler->argument]);
+}
+
+return TRUE;';
+  $handler->display->display_options['arguments']['field_status_value']['limit'] = '0';
+  /* Contextual filter: Content: Has taxonomy term ID */
+  $handler->display->display_options['arguments']['tid']['id'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['table'] = 'taxonomy_index';
+  $handler->display->display_options['arguments']['tid']['field'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['title'] = 'Category: %2';
+  $handler->display->display_options['arguments']['tid']['breadcrumb_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['breadcrumb'] = '%2';
+  $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['tid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['tid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['tid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['tid']['validate_options']['vocabularies'] = array(
+    'vocabulary_50' => 'vocabulary_50',
+  );
+  $handler->display->display_options['arguments']['tid']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
+  $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['status']['expose']['required'] = TRUE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'casestudy' => 'casestudy',
+  );
+  $handler->display->display_options['path'] = 'case-studies/%/%';
+
+  /* Display: Management View */
+  $handler = $view->new_display('page', 'Management View', 'page_3');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    2 => '2',
+  );
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Status */
+  $handler->display->display_options['fields']['field_status']['id'] = 'field_status';
+  $handler->display->display_options['fields']['field_status']['table'] = 'field_data_field_status';
+  $handler->display->display_options['fields']['field_status']['field'] = 'field_status';
+  /* Field: Content: New comments */
+  $handler->display->display_options['fields']['new_comments']['id'] = 'new_comments';
+  $handler->display->display_options['fields']['new_comments']['table'] = 'node';
+  $handler->display->display_options['fields']['new_comments']['field'] = 'new_comments';
+  $handler->display->display_options['fields']['new_comments']['label'] = 'Comments';
+  $handler->display->display_options['fields']['new_comments']['exclude'] = TRUE;
+  /* Field: Content: Comment count */
+  $handler->display->display_options['fields']['comment_count']['id'] = 'comment_count';
+  $handler->display->display_options['fields']['comment_count']['table'] = 'node_comment_statistics';
+  $handler->display->display_options['fields']['comment_count']['field'] = 'comment_count';
+  $handler->display->display_options['fields']['comment_count']['label'] = 'Comments';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['label'] = 'Updated';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'long';
+  /* Field: Content: Has new content */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'history';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['label'] = '';
+  $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
+  $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'casestudy' => 'casestudy',
+  );
+  /* Filter criterion: Content: Status (field_status) */
+  $handler->display->display_options['filters']['field_status_value']['id'] = 'field_status_value';
+  $handler->display->display_options['filters']['field_status_value']['table'] = 'field_data_field_status';
+  $handler->display->display_options['filters']['field_status_value']['field'] = 'field_status_value';
+  $handler->display->display_options['filters']['field_status_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_status_value']['expose']['operator_id'] = 'field_status_value_op';
+  $handler->display->display_options['filters']['field_status_value']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_status_value']['expose']['operator'] = 'field_status_value_op';
+  $handler->display->display_options['filters']['field_status_value']['expose']['identifier'] = 'field_status_value';
+  $handler->display->display_options['filters']['field_status_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Has new content */
+  $handler->display->display_options['filters']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['filters']['timestamp']['table'] = 'history';
+  $handler->display->display_options['filters']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['filters']['timestamp']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['timestamp']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['timestamp']['expose']['label'] = 'New';
+  $handler->display->display_options['filters']['timestamp']['expose']['operator'] = 'timestamp_op';
+  $handler->display->display_options['filters']['timestamp']['expose']['identifier'] = 'timestamp';
+  $handler->display->display_options['filters']['timestamp']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Title contains';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  /* Filter criterion: Content: Has taxonomy term */
+  $handler->display->display_options['filters']['tid']['id'] = 'tid';
+  $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
+  $handler->display->display_options['filters']['tid']['field'] = 'tid';
+  $handler->display->display_options['filters']['tid']['value'] = '';
+  $handler->display->display_options['filters']['tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['tid']['expose']['operator_id'] = 'tid_op';
+  $handler->display->display_options['filters']['tid']['expose']['label'] = 'Category';
+  $handler->display->display_options['filters']['tid']['expose']['operator'] = 'tid_op';
+  $handler->display->display_options['filters']['tid']['expose']['identifier'] = 'tid';
+  $handler->display->display_options['filters']['tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    14 => 0,
+    7 => 0,
+  );
+  $handler->display->display_options['filters']['tid']['type'] = 'select';
+  $handler->display->display_options['filters']['tid']['vocabulary'] = 'vocabulary_50';
+  $handler->display->display_options['path'] = 'case-studies/manage';
+  $export['drupalorg_casestudies'] = $view;
+
+  return $export;
 }

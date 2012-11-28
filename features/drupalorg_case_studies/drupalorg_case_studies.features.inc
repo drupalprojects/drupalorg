@@ -1,91 +1,126 @@
 <?php
+/**
+ * @file
+ * drupalorg_case_studies.features.inc
+ */
 
 /**
- * Implementation of hook_imagecache_default_presets().
+ * Implements hook_ctools_plugin_api().
  */
-function drupalorg_case_studies_imagecache_default_presets() {
-  $items = array(
-    'case198' => array(
-      'presetname' => 'case198',
-      'actions' => array(
-        '0' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_scale',
-          'data' => array(
-            'width' => '300',
-            'height' => '100%',
-            'upscale' => 0,
-          ),
-        ),
-        '1' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_crop',
-          'data' => array(
-            'width' => '300',
-            'height' => '198',
-            'xoffset' => 'left',
-            'yoffset' => 'top',
-          ),
-        ),
-      ),
-    ),
-    'case588x306' => array(
-      'presetname' => 'case588x306',
-      'actions' => array(
-        '0' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_scale',
-          'data' => array(
-            'width' => '588',
-            'height' => '100%',
-            'upscale' => 0,
-          ),
-        ),
-        '1' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_crop',
-          'data' => array(
-            'width' => '588',
-            'height' => '306',
-            'xoffset' => 'left',
-            'yoffset' => 'top',
-          ),
-        ),
-      ),
-    ),
-  );
-  return $items;
+function drupalorg_case_studies_ctools_plugin_api() {
+  list($module, $api) = func_get_args();
+  if ($module == "field_group" && $api == "field_group") {
+    return array("version" => "1");
+  }
 }
 
 /**
- * Implementation of hook_node_info().
+ * Implements hook_views_api().
+ */
+function drupalorg_case_studies_views_api() {
+  return array("version" => "3.0");
+}
+
+/**
+ * Implements hook_image_default_styles().
+ */
+function drupalorg_case_studies_image_default_styles() {
+  $styles = array();
+
+  // Exported image style: case198.
+  $styles['case198'] = array(
+    'name' => 'case198',
+    'effects' => array(
+      1 => array(
+        'label' => 'Scale',
+        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
+        'effect callback' => 'image_scale_effect',
+        'dimensions callback' => 'image_scale_dimensions',
+        'form callback' => 'image_scale_form',
+        'summary theme' => 'image_scale_summary',
+        'module' => 'image',
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => '300',
+          'height' => '',
+          'upscale' => 0,
+        ),
+        'weight' => '1',
+      ),
+      2 => array(
+        'label' => 'Crop',
+        'help' => 'Cropping will remove portions of an image to make it the specified dimensions.',
+        'effect callback' => 'image_crop_effect',
+        'dimensions callback' => 'image_resize_dimensions',
+        'form callback' => 'image_crop_form',
+        'summary theme' => 'image_crop_summary',
+        'module' => 'image',
+        'name' => 'image_crop',
+        'data' => array(
+          'width' => '300',
+          'height' => '198',
+          'anchor' => 'left-top',
+        ),
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported image style: case588x306.
+  $styles['case588x306'] = array(
+    'name' => 'case588x306',
+    'effects' => array(
+      3 => array(
+        'label' => 'Scale',
+        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
+        'effect callback' => 'image_scale_effect',
+        'dimensions callback' => 'image_scale_dimensions',
+        'form callback' => 'image_scale_form',
+        'summary theme' => 'image_scale_summary',
+        'module' => 'image',
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => '588',
+          'height' => '',
+          'upscale' => 0,
+        ),
+        'weight' => '1',
+      ),
+      4 => array(
+        'label' => 'Crop',
+        'help' => 'Cropping will remove portions of an image to make it the specified dimensions.',
+        'effect callback' => 'image_crop_effect',
+        'dimensions callback' => 'image_resize_dimensions',
+        'form callback' => 'image_crop_form',
+        'summary theme' => 'image_crop_summary',
+        'module' => 'image',
+        'name' => 'image_crop',
+        'data' => array(
+          'width' => '588',
+          'height' => '306',
+          'anchor' => 'left-top',
+        ),
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  return $styles;
+}
+
+/**
+ * Implements hook_node_info().
  */
 function drupalorg_case_studies_node_info() {
   $items = array(
     'casestudy' => array(
       'name' => t('Case study'),
-      'module' => 'features',
+      'base' => 'node_content',
       'description' => t('The Case studies will be used to feature well-built and well-designed Drupal sites.'),
       'has_title' => '1',
       'title_label' => t('Project name'),
-      'has_body' => '1',
-      'body_label' => t('Brief overview'),
-      'min_word_count' => '0',
       'help' => t('Refer to the <a href="http://drupal.org/style-guide">Drupal.org Style Guide</a> for formatting and editorial tips.'),
     ),
   );
   return $items;
-}
-
-/**
- * Implementation of hook_views_api().
- */
-function drupalorg_case_studies_views_api() {
-  return array(
-    'api' => '2',
-  );
 }
