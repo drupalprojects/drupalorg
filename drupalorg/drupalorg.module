@@ -1643,87 +1643,87 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         );
       }
 
-      // $content['column_2']['body'] = $node->content['body'];
-      // $content['column_2']['contributions_heading'] = array('#value' => '<h3>' . t('Drupal contributions') . '</h3>');
-      // $content['column_2']['contributions'] = $node->content['field_contributions']['field']['items'][0];
+      $content['column_2']['body'] = $node->content['body'];
+      $content['column_2']['contributions_heading'] = array('#markup' => '<h3>' . t('Drupal contributions') . '</h3>');
+      $content['column_2']['contributions'] = $node->content['field_contributions'];
 
       // // People
-      // $content['column_3']['map'] = array(
-      //   '#prefix' => '<div id="organization-map">',
-      //   '#value' => '',
-      //   '#suffix' => '</div>',
-      // );
-      // $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.latitude, hug.longitude FROM {profile_value} pv INNER JOIN {users} u ON u.uid = pv.uid AND u.status = 1 LEFT JOIN {profile_value} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {html5_user_geolocation} hug ON hug.uid = u.uid WHERE pv.value = :pv.value AND pv.fid = :pv.fid", array(':pv.value' => $node->title, ':pv.fid' => 72));
-      // while ($account = db_fetch_object($result)) {
+      $content['column_3']['map'] = array(
+        '#prefix' => '<div id="organization-map">',
+        '#markup' => '',
+        '#suffix' => '</div>',
+      );
+      $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.field_user_geolocation_lat, hug.field_user_geolocation_lng FROM {profile_value} pv INNER JOIN {users} u ON u.uid = pv.uid AND u.status = 1 LEFT JOIN {profile_value} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {field_data_field_user_geolocation} hug ON hug.entity_id = u.uid WHERE pv.value = :company AND pv.fid = :field_id", array(':company' => $node->title, ':field_id' => '72'));
+      foreach ($result as $account) {
       //   // Name & title
-      //   $content['column_3'][$account->uid . 'name'] = array(
-      //     '#prefix' => '<h3>',
-      //     '#value' => theme('username', array('account' => $account)),
-      //     '#suffix' => '</h3>',
-      //   );
-      //   if (!empty($account->title)) {
-      //     $content['column_3'][$account->uid . 'name']['#value'] .= ', ' . check_plain($account->title);
-      //   }
+        $content['column_3'][$account->uid . 'name'] = array(
+          '#prefix' => '<h3>',
+          '#markup' => theme('username', array('account' => $account)),
+          '#suffix' => '</h3>',
+        );
+        if (!empty($account->title)) {
+          $content['column_3'][$account->uid . 'name']['#markup'] .= ', ' . check_plain($account->title);
+        }
 
       //   // Quick info
-      //   $content['column_3'][$account->uid . 'info'] = array(
-      //     '#prefix' => '<p>',
-      //     '#value' => t('On Drupal.org for @for', array('@for' => format_interval(REQUEST_TIME - $account->created))),
-      //     '#suffix' => '</p>',
-      //   );
+        $content['column_3'][$account->uid . 'info'] = array(
+          '#prefix' => '<p>',
+          '#markup' => t('On Drupal.org for @for', array('@for' => format_interval(REQUEST_TIME - $account->created))),
+          '#suffix' => '</p>',
+        );
 
-      //   if ($drupalorg_documentation = drupalorg_documentation_contributions($account)) {
-      //     $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . $drupalorg_documentation . t(' to documentation');
-      //   }
+        if ($drupalorg_documentation = drupalorg_documentation_contributions($account)) {
+          $content['column_3'][$account->uid . 'info']['#markup'] .= '<br />' . $drupalorg_documentation . t(' to documentation');
+        }
 
-      //   $projects = array();
-      //   // @see versioncontrol_project_user() for the following query.
-      //   $result_projects = db_query("SELECT DISTINCT(vcp.nid), n.title, COUNT(o.vc_op_id) AS commits FROM {versioncontrol_operations} o INNER JOIN {versioncontrol_project_projects} vcp ON vcp.repo_id = o.repo_id INNER JOIN {node} n ON n.status = 1 AND n.nid = vcp.nid INNER JOIN {project_projects} pp ON n.nid = pp.nid WHERE o.author_uid = :o.author_uid AND pp.sandbox = :pp.sandbox GROUP BY vcp.nid, n.title ORDER BY commits DESC", array(':o.author_uid' => $account->uid, ':pp.sandbox' => 0));
-      //   while ($project = db_fetch_object($result_projects)) {
-      //     $projects[] = l($project->title, 'node/' . $project->nid);
-      //   }
-      //   if (count($projects) > 3) {
-      //     $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Contributor to !projects, and <a href="!more">@count more</a>', array('!projects' => implode(', ', array_slice($projects, 0, 3)), '@count' => count($projects) - 3, '!more' => url('user/' . $account->uid)));
-      //   }
-      //   elseif (count($projects) > 1) {
-      //     $content['column_3'][$account->uid . 'info']['#value'] .= '<br />' . t('Contributor to !projects', array('!projects' => implode(', ', $projects)));
-      //   }
+        $projects = array();
+        // @see versioncontrol_project_user() for the following query.
+        $result_projects = db_query("SELECT DISTINCT(vcp.nid), n.title, COUNT(o.vc_op_id) AS commits FROM {versioncontrol_operations} o INNER JOIN {versioncontrol_project_projects} vcp ON vcp.repo_id = o.repo_id INNER JOIN {node} n ON n.status = 1 AND n.nid = vcp.nid INNER JOIN {project_projects} pp ON n.nid = pp.nid WHERE o.author_uid = :author_uid AND pp.sandbox = :sandbox GROUP BY vcp.nid, n.title ORDER BY commits DESC", array(':author_uid' => $account->uid, ':sandbox' => 0));
+        foreach ($result_projects as $project) {
+          $projects[] = l($project->title, 'node/' . $project->nid);
+        }
+        if (count($projects) > 3) {
+          $content['column_3'][$account->uid . 'info']['#markup'] .= '<br />' . t('Contributor to !projects, and <a href="!more">@count more</a>', array('!projects' => implode(', ', array_slice($projects, 0, 3)), '@count' => count($projects) - 3, '!more' => url('user/' . $account->uid)));
+        }
+        elseif (count($projects) > 1) {
+          $content['column_3'][$account->uid . 'info']['#markup'] .= '<br />' . t('Contributor to !projects', array('!projects' => implode(', ', $projects)));
+        }
 
-      //   // Map
-      //   if (!empty($account->latitude) || !empty($account->longitude)) {
-      //     // todo d7 classes is no longer passed here, try using the default class.
-      //     $content['column_3']['map']['#value'] .= theme('drupalorg_map_pin', array('classes' => array('pin'), 'latitude' => $account->latitude, 'longitude' => $account->longitude));
-      //   }
-      // }
+        // Map
+        if (!empty($account->latitude) || !empty($account->longitude)) {
+          // todo d7 classes is no longer passed here, try using the default class.
+          $content['column_3']['map']['#markup'] .= theme('drupalorg_map_pin', array('classes' => array('pin'), 'latitude' => $account->latitude, 'longitude' => $account->longitude));
+        }
+      }
 
       $node->content = $content;
 
-      // // Highlight a Service provider above the organization page.
-      // switch ($node->field_organization_list_rule[0]['value']) {
-      //   case 'all':
-      //     drupal_set_message(t('This organization is a <a href="!listing">Drupal services provider</a>.', array('!listing' => url('drupal-services/all'))), 'status');
-      //     break;
+      // Highlight a Service provider above the organization page.
+      switch ($node->field_organization_list_rule[$node->language][0]['value']) {
+        case 'all':
+          drupal_set_message(t('This organization is a <a href="!listing">Drupal services provider</a>.', array('!listing' => url('drupal-services/all'))), 'status');
+          break;
 
-      //   case 'featured':
-      //     drupal_set_message(t('This organization is a <a href="!listing">Featured services provider</a>.', array('!listing' => url('drupal-services'))), 'status');
-      //     break;
-      // }
+        case 'featured':
+          drupal_set_message(t('This organization is a <a href="!listing">Featured services provider</a>.', array('!listing' => url('drupal-services'))), 'status');
+          break;
+      }
 
-      // // Highlight a Training provider above the organization page.
-      // if (!empty($node->field_organization_training_list[0]['value']) && $node->field_organization_training_list[0]['value'] == 'on') {
-      //   drupal_set_message(t('This organization is a <a href="!listing">Drupal training provider</a>.', array('!listing' => url('training'))), 'status');
-      // }
+      // Highlight a Training provider above the organization page.
+      if (!empty($node->field_organization_training_list[$node->language][0]['value']) && $node->field_organization_training_list[$node->language][0]['value'] == 'on') {
+        drupal_set_message(t('This organization is a <a href="!listing">Drupal training provider</a>.', array('!listing' => url('training'))), 'status');
+      }
 
-      // // For organizations that request a services listing or training
-      // // listing, show a link to their issue for the node owner and admins.
-      // if (($node->uid === $user->uid || user_access('administer nodes'))) {
-      //   if ($node->field_org_marketplace_request[0]['value'] && !empty($node->field_organization_issue[0]['nid'])) {
-      //     drupal_set_message(t('Regarding <em>Services listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_organization_issue[0]['nid']))), 'status');
-      //   }
-      //   if ($node->field_org_training_request[0]['value'] && !empty($node->field_org_training_issue[0]['nid'])) {
-      //     drupal_set_message(t('Regarding <em>Training listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_org_training_issue[0]['nid']))), 'status');
-      //   }
-      // }
+      // For organizations that request a services listing or training
+      // listing, show a link to their issue for the node owner and admins.
+       if (($node->uid === $user->uid || user_access('administer nodes'))) {
+         if (($node->field_org_marketplace_request[$node->language][0]['value'] == '1') && !empty($node->field_organization_issue[$node->language][0]['target_id'])) {
+           drupal_set_message(t('Regarding <em>Services listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_organization_issue[$node->language][0]['target_id']))), 'status');
+         }
+         if (($node->field_org_training_request[$node->language][0]['value'] == '1') && !empty($node->field_org_training_issue[$node->language][0]['target_id'])) {
+           drupal_set_message(t('Regarding <em>Training listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_org_training_issue[$node->language][0]['target_id']))), 'status');
+         }
+       }
     }
   }
 
@@ -1797,66 +1797,74 @@ function drupalorg_generate_marketplace_link($term, $listing = 'featured') {
 }
 
 /**
+ * Create issue for organizations requesting services or training listing
+ */
+function drupalorg_org_request_issue($node) {
+  // If an organization wants to be listed in the Services section of the Marketplace.
+  if (($node->field_org_marketplace_request[$node->language][0]['value'] == '1') && empty($node->field_organization_issue[$node->language][0]['target_id'])) {
+    // A new organization has been posted, create an issue to coordinate review.
+    $issue = new stdClass();
+    $issue->type = 'project_issue';
+    $issue->uid = $node->uid;
+    $issue->language = $node->language;
+    $issue->status = 1;
+    $issue->title = t('Review @title', array('@title' => $node->title));
+    $issue->body[$node->language][]['value'] = t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid)));
+    $issue->field_project[$node->language][]['target_id'] = 3202;  // Webmasters, http://drupal.org/project/webmasters
+    $issue->field_project[$node->language][]['target_type'] = 'node';
+    $issue->field_issue_priority[$node->language][]['value'] = 200;  // normal
+    $issue->field_issue_status[$node->language][]['value'] = 8;  // needs review
+    $issue->field_issue_component[$node->language][]['value'] = 'Marketplace listing';
+    $issue->field_issue_category[$node->language][]['value'] = 2; //task
+    $issue->comment = 2; // read & write
+    node_save($issue);
+
+    // Save the issue's nid for the organization.
+    $node->field_organization_issue[$node->language][]['target_id'] = $issue->nid;
+    $node->field_organization_issue[$node->language][]['target_type'] = 'node';
+    node_save($node);
+  }
+  // If an organization wants to be listed in the Training section of the Marketplace.
+  if (($node->field_org_training_request[$node->language][0]['value'] == '1') && empty($node->field_org_training_issue[$node->language][0]['target_id'])) {
+    // A new organization has been posted, create an issue to coordinate review.
+    $issue = new stdClass();
+    $issue->type = 'project_issue';
+    $issue->uid = $node->uid;
+    $issue->language = $node->language;
+    $issue->status = 1;
+    $issue->title = t('Add @title to the Training section', array('@title' => $node->title));
+    $issue->body[$node->language][]['value'] = t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid)));
+    $issue->field_project[$node->language][]['target_id'] = 3202;  // Webmasters, http://drupal.org/project/webmasters
+    $issue->field_project[$node->language][]['target_type'] = 'node';
+    $issue->field_issue_priority[$node->language][]['value'] = 200;  // normal
+    $issue->field_issue_status[$node->language][]['value'] = 8;  // needs review
+    $issue->field_issue_component[$node->language][]['value'] = 'Drupal training list';
+    $issue->field_issue_category[$node->language][]['value'] = 2; //task
+    $issue->comment = 2; // read & write
+    node_save($issue);
+
+    // Save the issue's nid for the organization.
+    $node->field_org_training_issue[$node->language][]['target_id'] = $issue->nid;
+    $node->field_org_training_issue[$node->language][]['target_type'] = 'node';
+    node_save($node);
+  }
+}
+/**
  * Implements hook_node_insert().
  */
 function drupalorg_node_insert($node) {
-  // @todo D7 - This whole function has not been tested yet.
-  // Needs to wait for the organization/marketplace stuff to be ported to D7.
-  /*
-    if ($node->type === 'organization') {
-      // If an organization wants to be listed in the Services section of the Marketplace.
-      if ($node->field_org_marketplace_request[0]['value'] && empty($node->field_organization_issue[0]['nid'])) {
-        // A new organization has been posted, create an issue to coordinate review.
-        $issue = new stdClass();
-        $issue->type = 'project_issue';
-        $issue->uid = $node->uid;
-        $issue->status = 1;
-        $issue->title = t('Review @title', array('@title' => $node->title));
-        $issue->body = t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid)));
-        $issue->pid = 3202;  // Webmasters, http://drupal.org/project/webmasters
-        $issue->priority = 2;  // normal
-        $issue->sid = 8;  // needs review
-        $issue->component = 'Marketplace listing';
-        $issue->category = 'task';
-        $issue->comment = 2; // read & write
-        node_save($issue);
-
-        // Save the issue's nid for the organization.
-        $node->field_organization_issue[0]['nid'] = $issue->nid;
-        node_save($node);
-      }
-      // If an organization wants to be listed in the Training section of the Marketplace.
-      if ($node->field_org_training_request[0]['value'] && empty($node->field_org_training_issue[0]['nid'])) {
-        // A new organization has been posted, create an issue to coordinate review.
-        $issue = new stdClass();
-        $issue->type = 'project_issue';
-        $issue->uid = $node->uid;
-        $issue->status = 1;
-        $issue->title = t('Add @title to the Training section', array('@title' => $node->title));
-        $issue->body = t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid)));
-        $issue->pid = 3202;  // Webmasters, http://drupal.org/project/webmasters
-        $issue->priority = 2;  // normal
-        $issue->sid = 8;  // needs review
-        $issue->component = 'Drupal training list';
-        $issue->category = 'task';
-        $issue->comment = 2; // read & write
-        node_save($issue);
-
-        // Save the issue's nid for the organization.
-        $node->field_org_training_issue[0]['nid'] = $issue->nid;
-        node_save($node);
-      }
-    }
-  */
+  if ($node->type === 'organization') {
+    drupalorg_org_request_issue($node);
+  }
 }
 
 /**
  * Implements hook_node_update().
  */
 function drupalorg_node_update($node) {
-  // @todo D7 - This whole function has not been tested yet.
-  // Needs to wait for the organization/marketplace stuff to be ported to D7.
-  // probably the same as drupalorg_node_insert()
+  if ($node->type === 'organization') {
+    drupalorg_org_request_issue($node);
+  }
 }
 
 /**
@@ -2013,17 +2021,13 @@ function drupalorg_user_view($account, $view_mode) {
   $content = drupalorg_crosssite_grid_elements(array(8, 4));
 
   // Link organization to organization node, if it exists.
-  // @todo D7 - Make sure this works when we have the marketplace and
-  // organization nodes on D7.
   if (!empty($account->profile_current_company_organization)) {
     $nid = db_query("SELECT nid FROM {node} WHERE status = :status AND type = :type AND title = :title", array(':status' => 1, ':type' => 'organization', ':title' => $account->profile_current_company_organization))->fetchField();
     if ($nid != 0) {
       $organization = node_load($nid);
       $link = check_plain($organization->title);
-      // todo D7 make sure logo works once marketplace feature is back #1595348
-      if (isset($organization->field_logo[0])) {
-        // TODO Please change this theme call to use an associative array for the $variables parameter.
-        $link = theme('imagecache', 'grid-3', $organization->field_logo[0]['filepath'], $organization->title, $organization->title);
+      if (isset($organization->field_logo[$organization->language][0])) {
+        $link = theme_image_style(array('style_name' => 'grid-3', 'path' => $organization->field_logo[$organization->language][0]['uri'], 'alt' => $organization->title, 'title' => $organization->title));
       }
       $account->content['Work']['profile_current_company_organization']['#markup'] = l($link, 'node/' . $nid, array('html' => TRUE));
 
