@@ -1505,10 +1505,10 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         $issue->status = 1;
         $issue->title = t('Review @title', array('@title' => $node->title));
         $issue->body = t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid)));
-        $issue->pid = 3202;  // Webmasters, http://drupal.org/project/webmasters
+        $issue->pid = 1848824;  // Content project, http://drupal.org/project/content
         $issue->priority = 2;  // normal
         $issue->sid = 8;  // needs review
-        $issue->component = 'Marketplace listing';
+        $issue->component = 'Services listing';
         $issue->category = 'task';
         $issue->comment = 2; // read & write
         node_save($issue);
@@ -1526,10 +1526,10 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         $issue->status = 1;
         $issue->title = t('Add @title to the Training section', array('@title' => $node->title));
         $issue->body = t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid)));
-        $issue->pid = 3202;  // Webmasters, http://drupal.org/project/webmasters
+        $issue->pid = 1848824;  // Content project, http://drupal.org/project/content
         $issue->priority = 2;  // normal
         $issue->sid = 8;  // needs review
-        $issue->component = 'Drupal training list';
+        $issue->component = 'Training listing';
         $issue->category = 'task';
         $issue->comment = 2; // read & write
         node_save($issue);
