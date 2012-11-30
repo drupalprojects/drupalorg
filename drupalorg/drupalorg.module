@@ -1810,11 +1810,11 @@ function drupalorg_org_request_issue($node) {
     $issue->status = 1;
     $issue->title = t('Review @title', array('@title' => $node->title));
     $issue->body[$node->language][]['value'] = t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid)));
-    $issue->field_project[$node->language][]['target_id'] = 3202;  // Webmasters, http://drupal.org/project/webmasters
+    $issue->field_project[$node->language][]['target_id'] = 1848824;  // Content project, http://drupal.org/project/content
     $issue->field_project[$node->language][]['target_type'] = 'node';
     $issue->field_issue_priority[$node->language][]['value'] = 200;  // normal
     $issue->field_issue_status[$node->language][]['value'] = 8;  // needs review
-    $issue->field_issue_component[$node->language][]['value'] = 'Marketplace listing';
+    $issue->field_issue_component[$node->language][]['value'] = 'Services listing';
     $issue->field_issue_category[$node->language][]['value'] = 2; //task
     $issue->comment = 2; // read & write
     node_save($issue);
@@ -1834,11 +1834,11 @@ function drupalorg_org_request_issue($node) {
     $issue->status = 1;
     $issue->title = t('Add @title to the Training section', array('@title' => $node->title));
     $issue->body[$node->language][]['value'] = t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid)));
-    $issue->field_project[$node->language][]['target_id'] = 3202;  // Webmasters, http://drupal.org/project/webmasters
+    $issue->field_project[$node->language][]['target_id'] = 1848824;  // Content project, http://drupal.org/project/content
     $issue->field_project[$node->language][]['target_type'] = 'node';
     $issue->field_issue_priority[$node->language][]['value'] = 200;  // normal
     $issue->field_issue_status[$node->language][]['value'] = 8;  // needs review
-    $issue->field_issue_component[$node->language][]['value'] = 'Drupal training list';
+    $issue->field_issue_component[$node->language][]['value'] = 'Training listing';
     $issue->field_issue_category[$node->language][]['value'] = 2; //task
     $issue->comment = 2; // read & write
     node_save($issue);
