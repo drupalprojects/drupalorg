@@ -2027,7 +2027,7 @@ function drupalorg_user_view($account, $view_mode) {
       $organization = node_load($nid);
       $link = check_plain($organization->title);
       if (isset($organization->field_logo[$organization->language][0])) {
-        $link = theme_image_style(array('style_name' => 'grid-3', 'path' => $organization->field_logo[$organization->language][0]['uri'], 'alt' => $organization->title, 'title' => $organization->title));
+        $link = theme('image_style', array('style_name' => 'grid-3', 'path' => $organization->field_logo[$organization->language][0]['uri'], 'alt' => $organization->title, 'title' => $organization->title));
       }
       $account->content['Work']['profile_current_company_organization']['#markup'] = l($link, 'node/' . $nid, array('html' => TRUE));
 
