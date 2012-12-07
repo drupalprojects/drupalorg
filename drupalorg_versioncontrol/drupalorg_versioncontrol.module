@@ -33,17 +33,17 @@ function drupalorg_versioncontrol_get_total_commits($rid = NULL, $interval = -1)
 
 function drupalorg_versioncontrol_node_insert($node) {
   // Operate only on node types beginning with 'project'.
-  if (strpos('project', $node->type) !== 0) {
+  if (!project_node_is_project($node)) {
     return;
   }
 
   // Determine the appropriate path & alias pattern
   if ($node->field_project_type[LANGUAGE_NONE][0]['value'] === 'sandbox') {
     $user = user_load($node->uid);
-    $alias = "sandbox/{$user->git_username}/{$node->field_project_machinname['value'][][0]}";
+    $alias = 'sandbox/' . $user->git_username . '/' . $node->field_project_machine_name[LANGUAGE_NONE][0]['value'];
   }
   else if ($node->field_project_type[LANGUAGE_NONE][0]['value'] === 'full') {
-    $alias = "project/{$node->field_project_machinname['value'][][0]}";
+    $alias = 'project/' . $node->field_project_machine_name[LANGUAGE_NONE][0]['value'];
   }
   else {
     $error_info = array(
@@ -107,7 +107,6 @@ function drupalorg_versioncontrol_node_insert($node) {
     'repository' => $repo,
   );
 
-  drupal_queue_include();
   $queue = DrupalQueue::get('versioncontrol_repomgr');
   if (!$queue->createItem($job)) {
     $error_info = array(
@@ -135,7 +134,6 @@ function drupalorg_versioncontrol_node_delete(&$node) {
     'repository' => $repo,
   );
 
-  drupal_queue_include();
   $queue = DrupalQueue::get('versioncontrol_repomgr');
   if (!$queue->createItem($job)) {
     $error_info = array(
@@ -165,14 +163,14 @@ function drupalorg_versioncontrol_project_promote_sandbox($project) {
 
   $repo = $project->versioncontrol_project['repo'];
   // Update the name to the new project shortname.
-  $repo->name = $project->field_project_machinname['value'][][0];
+  $repo->name = $project->field_project_machine_name[LANGUAGE_NONE][0]['value'];
   // Just in case, until dbtng fixes hook_query_alter().
   $repo->project_nid = $project->nid;
 
   $job = array(
     'operation' => array(
       // Relocate the repo on disk and update the repo root.
-      'move' => array(variable_get('drupalorg_git_basedir', '/var/git') . '/repositories/project/' . $project->field_project_machinname['value'][][0] . '.git'),
+      'move' => array(variable_get('drupalorg_git_basedir', '/var/git') . '/repositories/project/' . $project->field_project_machine_name[LANGUAGE_NONE][0]['value'] . '.git'),
       // The repository needs to be reinit-ed with project hooks, replacing the old sandbox hooks.
       // FIXME replacing the config file means we lose any custom settings. Make this more robust.
       'reInit' => array(array('hooks', 'config')),
@@ -184,11 +182,10 @@ function drupalorg_versioncontrol_project_promote_sandbox($project) {
     'repository' => $repo,
   );
 
-  drupal_queue_include();
   $queue = DrupalQueue::get('versioncontrol_repomgr');
   if (!$queue->createItem($job)) {
     $error_info = array(
-      '%machinename' => $project->field_project_machinname['value'][][0],
+      '%machinename' => $project->field_project_machine_name[LANGUAGE_NONE][0]['value'],
     );
     watchdog('drupalorg', t("Failed to enqueue promotion of sandbox '%machinenname'.", $error_info));
   }
