@@ -255,10 +255,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
     }
 
     // Record all the local projects themselves.
-    if (!empty($local_projects)) {
-      project_package_record_local_items($this->release_node->nid, $local_projects);
-    }
-
+    project_package_record_local_items($this->release_node->nid, $local_projects);
   }
 
   /**
