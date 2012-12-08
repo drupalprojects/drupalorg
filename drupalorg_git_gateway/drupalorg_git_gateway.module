@@ -175,10 +175,10 @@ function drupalorg_git_gateway_user_view($account, $view_mode) {
     $attribution .= '<em>' . t('Learn more about <a href="@attribution-url">proper Git attribution</a>.', array(
       '@attribution-url' => url('node/1146430'),
     )) . '</em>';
-    $account->content['column_1']['Personal information']['git_attribution'] = array(
+    $account->content['main']['Personal information']['git_attribution'] = array(
       '#type' => 'user_profile_item',
       '#title' => t('Git attribution'),
-      '#value' => $attribution,
+      '#markup' => $attribution,
       '#weight' => 15,
     );
   }
