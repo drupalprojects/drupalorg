@@ -32,6 +32,11 @@ function drupalorg_project_update_dependencies() {
     // Make sure releases are too!
     'project_release' => 7011,
   );
+  $dependencies['project'][7006] = array(
+    // Make sure we have drupal.org custom node types before allowing project
+    // to make pathauto aliases.
+    'drupalorg_project' => 7001,
+  );
   return $dependencies;
 }
 
