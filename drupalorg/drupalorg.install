@@ -1049,4 +1049,12 @@ function drupalorg_update_7015() {
   variable_set('pathauto_user_pattern', '');
   variable_set('pathauto_forum_pattern', '');
   variable_set('pathauto_taxonomy_term_pattern', '');
+
+  // Preserve underscores.
+  variable_set('pathauto_punctuation_underscore', 2);
+
+  // Aliases for sandboxes.
+  foreach (project_project_node_types() as $type) {
+    variable_set('pathauto_node_' . $type . '_pattern_sandbox', 'sandbox/[node:author:git-username]/[node:field_project_machine_name]');
+  }
 }

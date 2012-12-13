@@ -37,31 +37,6 @@ function drupalorg_versioncontrol_node_insert($node) {
     return;
   }
 
-  // Determine the appropriate path & alias pattern
-  if ($node->field_project_type[LANGUAGE_NONE][0]['value'] === 'sandbox') {
-    $user = user_load($node->uid);
-    $alias = 'sandbox/' . $user->git_username . '/' . $node->field_project_machine_name[LANGUAGE_NONE][0]['value'];
-  }
-  else if ($node->field_project_type[LANGUAGE_NONE][0]['value'] === 'full') {
-    $alias = 'project/' . $node->field_project_machine_name[LANGUAGE_NONE][0]['value'];
-  }
-  else {
-    $error_info = array(
-      '%nid' => $node->nid,
-      '%value' => $node->field_project_type[LANGUAGE_NONE][0]['value'],
-    );
-    watchdog('drupalorg', t("Project with nid %nid is classified neither as a full or sandbox project, but instead with value %value.", $error_info));
-    return;
-  }
-
-  $path = array(
-    'source' => "node/{$node->nid}",
-    'alias' => $alias,
-    'pid' => '',
-  );
-
-  path_save($path);
-
   $repo_root = variable_get('drupalorg_git_basedir', '/var/git') . '/repositories/' . $alias . '.git';
 
   $description = 'For more information about this repository, visit the project page at ' . url('node/' . $node->nid, array('absolute' => TRUE));
