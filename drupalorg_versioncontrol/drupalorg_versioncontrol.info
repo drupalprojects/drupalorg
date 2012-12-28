@@ -6,3 +6,5 @@ dependencies[] = versioncontrol_git
 dependencies[] = multiple_email
 dependencies[] = views_litepager
 core = 7.x
+
+files[] = plugins/label_version_mapper/DrupalorgVersioncontrolLabelVersionMapperGit.class.php
