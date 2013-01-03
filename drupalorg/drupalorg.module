@@ -1722,9 +1722,9 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
         $account->content['Work']['profile_current_company_organization']['#value'] = l($link, 'node/' . $nid, array('html' => TRUE));
       }
 
-      if (drupalorg_has_civimembership($organization->title, 'Organization')) {
+      if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Organization')) {
         $placeholders = array(
-          '@org_name' => $organization->title,
+          '@org_name' => $account->profile_current_company_organization,
         );
         $content['column_2']['membership'][] = array(
           '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
@@ -1732,13 +1732,14 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
           '#suffix' => '</p></div></div>',
         );
       }
-      if (drupalorg_has_civimembership($organization->title, 'Supporting')) {
+      if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Supporting')) {
         $placeholders = array(
-          '@org_name' => $organization->title,
+          '@org_name' => $account->profile_current_company_organization,
         );
         $content['column_2']['membership'][] = array(
           '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-supporting.png') . '" alt="' . t('Drupal Association Supporting Partner') . '" /></a></div><div class="grid-3 omega"><p>',
-          '#value' => t('As a Supporting partner, @org_name helps fund the <a href="https://association.drupal.org/">Drupal Association\'s</a> key initiatives that strategically support and grow the Drupal community. <a href="https://association.drupal.org/membership">Join us</a>.', $placeholders),          '#suffix' => '</p></div></div>',
+          '#value' => t('As a Supporting partner, @org_name helps fund the <a href="https://association.drupal.org/">Drupal Association\'s</a> key initiatives that strategically support and grow the Drupal community. <a href="https://association.drupal.org/membership">Join us</a>.', $placeholders),
+          '#suffix' => '</p></div></div>',
         );
       }
     }
