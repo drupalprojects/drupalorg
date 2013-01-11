@@ -1726,21 +1726,39 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
         $placeholders = array(
           '@org_name' => $account->profile_current_company_organization,
         );
-        $content['column_2']['membership'][] = array(
-          '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
-          '#value' => t('@org_name is a member of the <a href="https://association.drupal.org/">Drupal Association</a>. We’re supporting the Drupal.org infrastructure and other large community initiatives. <a href="https://association.drupal.org/membership">Join us</a>.', $placeholders),
-          '#suffix' => '</p></div></div>',
-        );
+        if ($account->uid === $user->uid) {
+          $content['column_2']['membership'][] = array(
+            '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
+            '#value' => t('@org_name is a member of the <a href="https://association.drupal.org/">Drupal Association</a>. Thanks to your support, Drupal.org infrastructure and other large community initiatives are funded', $placeholders),
+            '#suffix' => '</p></div></div>',
+          );
+        }
+        else {
+          $content['column_2']['membership'][] = array(
+            '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
+            '#value' => t('@org_name is an <a href="https://association.drupal.org/membership">Organization Member</a> of the <a href="https://association.drupal.org/">Drupal Association</a>. We’re supporting the Drupal.org infrastructure and other large community initiatives.', $placeholders),
+            '#suffix' => '</p></div></div>',
+          );
+        }
       }
       if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Supporting')) {
         $placeholders = array(
           '@org_name' => $account->profile_current_company_organization,
         );
-        $content['column_2']['membership'][] = array(
-          '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-supporting.png') . '" alt="' . t('Drupal Association Supporting Partner') . '" /></a></div><div class="grid-3 omega"><p>',
-          '#value' => t('As a Supporting partner, @org_name helps fund the <a href="https://association.drupal.org/">Drupal Association\'s</a> key initiatives that strategically support and grow the Drupal community. <a href="https://association.drupal.org/membership">Join us</a>.', $placeholders),
-          '#suffix' => '</p></div></div>',
-        );
+        if ($account->uid === $user->uid) {
+          $content['column_2']['membership'][] = array(
+            '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-supporting.png') . '" alt="' . t('Drupal Association Supporting Partner') . '" /></a></div><div class="grid-3 omega"><p>',
+            '#value' => t('Thanks for being a <a href="https://association.drupal.org/supporting-partners">Supporting Partner</a> of the <a href="https://association.drupal.org/">Drupal Association</a>. @org_name helps fund key initiatives that strategically support and grow the Drupal community.', $placeholders),
+            '#suffix' => '</p></div></div>',
+          );
+        }
+        else {
+          $content['column_2']['membership'][] = array(
+            '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-supporting.png') . '" alt="' . t('Drupal Association Supporting Partner') . '" /></a></div><div class="grid-3 omega"><p>',
+            '#value' => t('As a <a href="https://association.drupal.org/supporting-partners">Supporting Partner</a>, @org_name helps fund the <a href="https://association.drupal.org/">Drupal Association\'s</a> key initiatives that strategically support and grow the Drupal community.', $placeholders),
+            '#suffix' => '</p></div></div>',
+          );
+        }
       }
     }
 
@@ -1763,6 +1781,17 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
       $ind_membership = drupalorg_civimembership_data($account->name, 'Individual');
       switch ($ind_membership->membership_status) {
         case 'New':
+          $placeholders = array(
+            '@username' => $account->name,
+            '@membership_type' =>'individual',
+          );
+          $content['column_2']['membership'][] = array(
+            '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
+            '#value' => t('@username, you rock! Thank you for purchasing a <a href="https://association.drupal.org/">Drupal Association</a> membership. We depend on your support to help foster the Drupal community. Check out your <a href="http://association.drupal.org/membership/benefits">membership benefits</a> and <a href="http://association.drupal.org/contact">say hello</a> anytime.', $placeholders),
+            '#suffix' => '</p></div></div>',
+          );
+          break;
+
         case 'Current':
           $placeholders = array(
             '@username' => $account->name,
@@ -1771,7 +1800,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
           );
           $content['column_2']['membership'][] = array(
             '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
-            '#value' => t('@username, you rock! Thanks for being an  <a href="https://association.drupal.org/membership">@membership_type member</a> of the <a href="https://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth. Your membership will expire on @expiration', $placeholders),
+            '#value' => t('@username, you rock! Thanks for being an  <a href="https://association.drupal.org/membership">@membership_type member</a> of the <a href="https://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth. Your membership will expire on @expiration. Check out your <a href="http://association.drupal.org/membership/benefits">membership benefits</a> and <a href="http://association.drupal.org/contact">say hello</a> anytime.', $placeholders),
             '#suffix' => '</p></div></div>',
           );
           break;
@@ -1784,7 +1813,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
           );
           $content['column_2']['membership'][] = array(
             '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
-            '#value' => t('Oh no @username! Your <a href="https://association.drupal.org/membership">@membership_type membership</a> of the <a href="https://association.drupal.org/">Drupal Association</a> expired on @expiration. We\'ll leave your badge up for a bit because you\'re awesome. But don\'t forget to <a href="https://association.drupal.org/membership">renew</a>. ', $placeholders),
+            '#value' => t('Oh no @username! Your membership expired on @expiration. The <a href="https://association.drupal.org">Drupal Association</a> depends on your continued support. <a href="https://association.drupal.org/membership">Renew your membership</a> today so your badge stays visible and your access to benefits continues. Thank you!', $placeholders),
             '#suffix' => '</p></div></div>',
           );
           break;
