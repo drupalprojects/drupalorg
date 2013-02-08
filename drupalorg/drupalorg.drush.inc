@@ -43,26 +43,7 @@ function drush_drupalorg_aggregator() {
 }
 
 function drush_drupalorg_civimembership() {
-  // Fetch data.
-  $response = drupal_http_request('https://association.drupal.org/api/association_members.json');
-  if (isset($response->error)) {
-    return drush_set_error('DRUSH_DRUPALORG_CIVIMEMBERSHIP_FETCH', dt('Failed to fetch membership data.'));
-  }
-  $data = json_decode($response->data);
-  if (is_null($data)) {
-    return drush_set_error('DRUSH_DRUPALORG_CIVIMEMBERSHIP_PARSE', dt('Failed to parse membership data.'));
-  }
-
-  // Store data.
-  foreach ($data->users as $data_user) {
-    $data_user->user->updated = $_SERVER['REQUEST_TIME'];
-    drupal_write_record('drupalorg_civimembership', $data_user->user);
-  }
-
-  // Delete old data
-  db_query("DELETE FROM {drupalorg_civimembership} WHERE updated != %d", $_SERVER['REQUEST_TIME']);
-
-  // Fetch data 2 - Organizations.
+  // Fetch organization memberships.
   $response = drupal_http_request('https://association.drupal.org/api/membership/org_partner_memberships.json');
   if (isset($response->error)) {
     return drush_set_error('DRUSH_DRUPALORG_ORG_CIVIMEMBERSHIP_FETCH', dt('Failed to fetch organization membership data.'));
@@ -81,7 +62,7 @@ function drush_drupalorg_civimembership() {
   // Delete old data
   db_query("DELETE FROM {drupalorg_org_civimembership} WHERE updated != %d", $_SERVER['REQUEST_TIME']);
 
-  // Fetch data 3 - Individuals.
+  // Fetch individual memberships.
   $response = drupal_http_request('https://association.drupal.org/api/membership/ind_memberships.json');
   if (isset($response->error)) {
     return drush_set_error('DRUSH_DRUPALORG_IND_CIVIMEMBERSHIP_FETCH', dt('Failed to fetch individual membership data.'));

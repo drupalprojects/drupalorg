@@ -1151,3 +1151,12 @@ function drupalorg_update_6610() {
 
   return $return;
 }
+
+/**
+ * Remove old combined drupalorg_civimembership table.
+ */
+function drupalorg_update_6611() {
+  $return = array();
+  db_drop_table($return, 'drupalorg_civimembership');
+  return $return;
+}
