@@ -56,6 +56,7 @@ function drush_drupalorg_civimembership() {
   // Store data.
   foreach ($data->orgs as $data_org) {
     $data_org->org->updated = $_SERVER['REQUEST_TIME'];
+    $data_org->org->org_name = decode_entities($data_org->org->org_name);
     drupal_write_record('drupalorg_org_civimembership', $data_org->org);
   }
 
@@ -75,6 +76,7 @@ function drush_drupalorg_civimembership() {
   // Store data.
   foreach ($data->users as $data_user) {
     $data_user->user->updated = $_SERVER['REQUEST_TIME'];
+    $data_user->user->user_name = decode_entities($data_user->user->user_name);
     drupal_write_record('drupalorg_ind_civimembership', $data_user->user);
   }
 
