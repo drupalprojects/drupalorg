@@ -194,136 +194,141 @@ function drupalorg_project_issue_counts() {
     $issue_rids = array();
     /// @todo Further optimize this if/when {node}.status is denormalized into
     /// {project_release_nodes}.
-    $version_placeholders = db_placeholders($value);
-    $args = array_merge(array(DRUPALORG_CORE_NID), $value);
 //    db_query("SELECT n.nid FROM {node} n INNER JOIN {field_data_taxonomy_vocabulary_6} t ON n.nid = t.entity_id AND t.entity_type = 'node' WHERE t.bundle IN (:types) AND n.status = 1")
-    $query = db_query("SELECT prn.nid FROM {project_release_nodes} prn INNER JOIN {node} n ON prn.nid = n.nid WHERE prn.pid = %d AND prn.version_api_tid IN ($version_placeholders) AND n.status = 1", $args);
-    while ($release = db_fetch_object($query)) {
+    $result = db_query("SELECT prn.nid FROM {project_release_nodes} prn INNER JOIN {node} n ON prn.nid = n.nid WHERE prn.pid = :pid AND prn.version_api_tid IN (:versions) AND n.status = 1", array(':pid' => DRUPALORG_CORE_NID, ':versions' => $value))->execute();
+    foreach ($result as $release) {
       $issue_rids[] = $release->nid;
     }
-    $issue_rid_placeholders = db_placeholders($issue_rids);
-    $args = array_merge(array(DRUPALORG_CORE_NID), $issue_rids);
-
-    $issue_counts[$version]['Critical bugs'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND category = 'bug' AND sid IN (1,8,13,14,15) AND priority = 1 AND rid IN ($issue_rid_placeholders)", $args));
-    $issue_counts[$version]['Major bugs'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND category = 'bug' AND sid IN (1,8,13,14,15) AND priority = 4 AND rid IN ($issue_rid_placeholders)", $args));
-    $issue_counts[$version]['Critical tasks'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND category = 'task' AND sid IN (1,8,13,14,15) AND priority = 1 AND rid IN ($issue_rid_placeholders)", $args));
-    $issue_counts[$version]['Major tasks'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND category = 'task' AND sid IN (1,8,13,14,15) AND priority = 4 AND rid IN ($issue_rid_placeholders)", $args));
-    $issue_counts[$version]['Patch queue'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND sid IN (8,13,14) AND rid IN ($issue_rid_placeholders)", $args));
-    $issue_counts[$version]['Pending bugs'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = %d AND category = 'bug' AND sid IN(1,8,13,14,15) AND rid IN ($issue_rid_placeholders)", $args));
+    $args = array(':pid' => DRUPALORG_CORE_NID, ':issue_rids' => $issue_rids);
+    $issue_counts[$version]['Critical bugs'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND category = 'bug' AND sid IN (1,8,13,14,15) AND priority = 1 AND rid IN (:issue_rids)", $args)->fetchField();
+    $issue_counts[$version]['Major bugs'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND category = 'bug' AND sid IN (1,8,13,14,15) AND priority = 4 AND rid IN (:issue_rids)", $args)->fetchField();
+    $issue_counts[$version]['Critical tasks'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND category = 'task' AND sid IN (1,8,13,14,15) AND priority = 1 AND rid IN (:issue_rids)", $args)->fetchField();
+    $issue_counts[$version]['Major tasks'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND category = 'task' AND sid IN (1,8,13,14,15) AND priority = 4 AND rid IN (:issue_rids)", $args)->fetchField();
+    $issue_counts[$version]['Patch queue'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND sid IN (8,13,14) AND rid IN (:issue_rids)", $args)->fetchField();
+    $issue_counts[$version]['Pending bugs'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND category = 'bug' AND sid IN(1,8,13,14,15) AND rid IN (:issue_rids)", $args)->fetchField();
   }
-  $issue_counts['Novice issues'] = db_result(db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {term_node} tn ON pi.nid = tn.nid INNER JOIN {term_data} td on tn.tid = td.tid WHERE td.name = 'Novice' AND pi.sid IN (1, 8, 13, 14, 15)"));
+  $issue_counts['Novice issues'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {term_node} tn ON pi.nid = tn.nid INNER JOIN {term_data} td on tn.tid = td.tid WHERE td.name = 'Novice' AND pi.sid IN (1, 8, 13, 14, 15)")->fetchField();
   variable_set('drupalorg_project_issue_counts', $issue_counts);
 }
 
 // == Altering of various forms ================================================
 
 /**
- * Implementation of hook_form_alter().
+ * Alter the project_issue_node_form form.
  */
-function drupalorg_project_form_alter(&$form, &$form_state, $form_id) {
-  // Add a description for the Priority and Status values.
-  if ($form_id == 'project_issue_node_form') {
-    $priority_status_description = array(
-      // The "standard" class adds a clear so the description is positioned
-      // below the floated pull-downs.  "fieldset-description" is from
-      // bluebeach to make the font size smaller.
-      '#prefix' => '<div class="standard fieldset-description">',
-      '#markup' => t('Descriptions of the <a href="!priority_url">Priority</a> and <a href="!status_url">Status</a> values can be found in the <a href="!issue_queue_url">Issue queue handbook</a>.', array('!priority_url' => '/node/45111', '!status_url' => '/node/156119', '!issue_queue_url' => '/node/317')),
-      '#suffix' => '</div>',
+function drupalorg_project_form_project_issue_node_form_alter($form, $form_state) {
+  $priority_status_description = array(
+    // The "standard" class adds a clear so the description is positioned
+    // below the floated pull-downs.  "fieldset-description" is from
+    // bluebeach to make the font size smaller.
+    '#prefix' => '<div class="standard fieldset-description">',
+    '#markup' => t('Descriptions of the <a href="!priority_url">Priority</a> and <a href="!status_url">Status</a> values can be found in the <a href="!issue_queue_url">Issue queue handbook</a>.', array('!priority_url' => '/node/45111', '!status_url' => '/node/156119', '!issue_queue_url' => '/node/317')),
+    '#suffix' => '</div>',
+  );
+
+  // Make the "Issue tags" vocabulary not so prominent on issue nodes.
+  $form['taxonomy']['#type'] = 'fieldset';
+  $form['taxonomy']['#title'] = t('Tags');
+  $form['taxonomy']['#collapsible'] = TRUE;
+  $form['taxonomy']['#collapsed'] = TRUE;
+  // We want this fieldset at the very bottom, just above the buttons, but
+  // we need different weights for that depending on if it's a new issue or
+  // a follow-up comment.
+  // @note Noticed while moving from hook_form_alter() to
+  // hook_form_FORMID_alter() that the else condition below can never be fired
+  // because the $form_id always equals 'project_issue_node_form'. In the
+  // previous version it was even underneath another copy of the exact same if
+  // statement. Leaving it here commented out for posterity.
+  //if ($form_id == 'project_issue_node_form') {
+    $form['taxonomy']['#weight'] = 35;
+    $form['issue_info']['description'] = $priority_status_description;
+  /*}
+  else {
+    $form['taxonomy']['#weight'] = 4;
+    $form['original_issue']['issue_info']['description'] = $priority_status_description;
+  }*/
+
+  // Prefill values from $_GET.
+  if (isset($_GET['version'])) {
+    // @todo D7 Fix this after version field is in!
+    $form['project_info']['rid']['#default_value'] = $_GET['version'];
+  }
+  if (isset($_GET['component'])) {
+    $form['field_issue_component'][LANGUAGE_NONE]['#default_value'] = array($_GET['component']);
+  }
+  if (isset($_GET['categories'])) {
+    $form['field_issue_category'][LANGUAGE_NONE]['#default_value'] = array((int)$_GET['categories']);
+  }
+  if (isset($_GET['priorities'])) {
+    $form['field_issue_priority'][LANGUAGE_NONE]['#default_value'] = array((int)$_GET['priorities']);
+  }
+  if (isset($_GET['assigned'])) {
+    $form['field_issue_assigned'][LANGUAGE_NONE]['#default_value'] = array((int)$_GET['assigned']);
+  }
+  if (isset($_GET['status'])) {
+    $form['field_issue_status'][LANGUAGE_NONE]['#default_value'] = array((int)$_GET['status']);
+  }
+  if (isset($_GET['title'])) {
+    $form['title']['#default_value'] = $_GET['title'];
+  }
+  if (isset($_GET['body'])) {
+    $form['body'][LANGUAGE_NONE][0]['#default_value'] = $_GET['body'];
+  }
+  if (isset($_GET['tags'])) {
+    $form['taxonomy_vocabulary_9'][LANGUAGE_NONE]['#default_value'] = $_GET['tags'];
+  }
+}
+
+/**
+ * Alter the form_project_node_form form.
+ */
+function drupalorg_project_form_project_node_form_alter($form, $form_state) {
+  // Deprecate the "license" field, as it must always be GPLv2+ anyway.
+  // @note D7 The license field went missing anyway.
+  /*
+  if (! $form['project']['license']['#default_value']) {
+     $form['project']['license'] = array(
+      '#type' => 'item',
+      '#title' => $form['project']['license']['#title'],
+      '#value' => t('<a href="@link_url">@link_name</a>', array(
+        // Constants defined in drupalorg_project.module.
+        '@link_url' => DRUPALORG_DEFAULT_LICENSE_LINK,
+        '@link_name' => DRUPALORG_DEFAULT_LICENSE,
+      )),
     );
+  }
+  */
 
-    // Make the "Issue tags" vocabulary not so prominent on issue nodes.
-    $form['taxonomy']['#type'] = 'fieldset';
-    $form['taxonomy']['#title'] = t('Tags');
-    $form['taxonomy']['#collapsible'] = TRUE;
-    $form['taxonomy']['#collapsed'] = TRUE;
-    // We want this fieldset at the very bottom, just above the buttons, but
-    // we need different weights for that depending on if it's a new issue or
-    // a follow-up comment.
-    if ($form_id == 'project_issue_node_form') {
-      $form['taxonomy']['#weight'] = 35;
-      $form['issue_info']['description'] = $priority_status_description;
-    }
-    else {
-      $form['taxonomy']['#weight'] = 4;
-      $form['original_issue']['issue_info']['description'] = $priority_status_description;
-    }
-
-    // Prefill values from $_GET.
-    if (isset($_GET['version'])) {
-      // @todo D7 Fix this after version field is in!
-      $form['project_info']['rid']['#default_value'] = $_GET['version'];
-    }
-    if (isset($_GET['component'])) {
-      $form['field_issue_component'][LANGUAGE_NONE]['#default_value'] = array($_GET['component']);
-    }
-    if (isset($_GET['categories'])) {
-      $form['field_issue_category'][LANGUAGE_NONE]['#default_value'] = array((int)$_GET['categories']);
-    }
-    if (isset($_GET['priorities'])) {
-      $form['field_issue_priority'][LANGUAGE_NONE]['#default_value'] = array((int)$_GET['priorities']);
-    }
-    if (isset($_GET['assigned'])) {
-      $form['field_issue_assigned'][LANGUAGE_NONE]['#default_value'] = array((int)$_GET['assigned']);
-    }
-    if (isset($_GET['status'])) {
-      $form['field_issue_status'][LANGUAGE_NONE]['#default_value'] = array((int)$_GET['status']);
-    }
-    if (isset($_GET['title'])) {
-      $form['title']['#default_value'] = $_GET['title'];
-    }
-    if (isset($_GET['body'])) {
-      $form['body'][LANGUAGE_NONE][0]['#default_value'] = $_GET['body'];
-    }
-    if (isset($_GET['tags'])) {
-      $form['taxonomy_vocabulary_9'][LANGUAGE_NONE]['#default_value'] = $_GET['tags'];
+  // Don't allow promoting certain types of projects on drupal.org.
+  // @todo D7 Fix this after the vocab 3 mess is sorted.
+  foreach (drupalorg_project_get_no_promote_project_tids() as $tid) {
+    if (!empty($form['#node']->taxonomy[$tid])) {
+      $form['field_project_type']['#access'] = FALSE;
     }
   }
 
-  if ($form_id == 'project_node_form') {
-    // Deprecate the "license" field, as it must always be GPLv2+ anyway.
-    // @note D7 The license field went missing anyway.
-    /*
-    if (! $form['project']['license']['#default_value']) {
-       $form['project']['license'] = array(
-        '#type' => 'item',
-        '#title' => $form['project']['license']['#title'],
-        '#value' => t('<a href="@link_url">@link_name</a>', array(
-          // Constants defined in drupalorg_project.module.
-          '@link_url' => DRUPALORG_DEFAULT_LICENSE_LINK,
-          '@link_name' => DRUPALORG_DEFAULT_LICENSE,
-        )),
-      );
-    }
-    */
-
-    // Don't allow promoting certain types of projects on drupal.org.
-    // @todo D7 Fix this after the vocab 3 mess is sorted.
-    foreach (drupalorg_project_get_no_promote_project_tids() as $tid) {
-      if (!empty($form['#node']->taxonomy[$tid])) {
-        $form['field_project_type']['#access'] = FALSE;
-      }
-    }
-
-    if (!empty($form['field_project_type'][LANGUAGE_NONE]['project']['sandbox_help']) && !drupalorg_project_promote_project_access($form['#node'])) {
-      $form['project_node']['project']['sandbox_help']['#value'] = t('This project is a sandbox.');
-    }
-
-    // Translation projects on drupal.org are being phased out in favor of
-    // localize.drupal.org, so prevent new translation projects from being
-    // created.
-    if ($form['project_taxonomy']['project_type']['#default_value'] != DRUPALORG_TRANSLATION_TID) {
-      unset($form['project_taxonomy']['project_type']['#options'][DRUPALORG_TRANSLATION_TID]);
-    }
-    $form['project_taxonomy']['project_type']['#description'] = t('Note: Translation projects have been moved and are now actively maintained at <a href="@localize-link">localize.drupal.org</a>.', array('@localize-link' => 'http://localize.drupal.org/'));
+  if (!empty($form['field_project_type'][LANGUAGE_NONE]['project']['sandbox_help']) && !drupalorg_project_promote_project_access($form['#node'])) {
+    $form['project_node']['project']['sandbox_help']['#value'] = t('This project is a sandbox.');
   }
 
-  // Since drupal.org has so many projects, it'd be insane to allow people to
-  // get e-mail notifications for all issues for all projects. Remove that
-  // option entirely on the per-user notification settings form.
-  if ($form_id == 'project_issue_notification_user_form') {
-    unset($form['projects']['default']['level']['#options'][PROJECT_ISSUE_NOTIFICATION_ALL]);
+  // Translation projects on drupal.org are being phased out in favor of
+  // localize.drupal.org, so prevent new translation projects from being
+  // created.
+  if ($form['project_taxonomy']['project_type']['#default_value'] != DRUPALORG_TRANSLATION_TID) {
+    unset($form['project_taxonomy']['project_type']['#options'][DRUPALORG_TRANSLATION_TID]);
   }
+  $form['project_taxonomy']['project_type']['#description'] = t('Note: Translation projects have been moved and are now actively maintained at <a href="@localize-link">localize.drupal.org</a>.', array('@localize-link' => 'http://localize.drupal.org/'));
+}
+
+/**
+ * Alter the project_issue_notification_user_form form.
+ *
+ * Since drupal.org has so many projects, it'd be insane to allow people to
+ * get e-mail notifications for all issues for all projects. Remove that
+ * option entirely on the per-user notification settings form.
+ */
+function drupalorg_project_form_project_issue_notification_user_form_alter($form, $form_state) {
+  unset($form['projects']['default']['level']['#options'][PROJECT_ISSUE_NOTIFICATION_ALL]);
 }
 
 /**
@@ -436,7 +441,7 @@ function drupalorg_project_get_release_type_vid() {
   if (empty($vid)) {
     $vid = variable_get('project_release_type_vid', 0);
     if (empty($vid)) {
-      $vid = db_result(db_query("SELECT v.vid FROM {vocabulary} v INNER JOIN {vocabulary_node_types} n ON v.vid = n.vid WHERE n.type = 'project_release' AND v.name = 'Release type'"));
+      $vid = db_query("SELECT v.vid FROM {vocabulary} v INNER JOIN {vocabulary_node_types} n ON v.vid = n.vid WHERE n.type = 'project_release' AND v.name = 'Release type'")->fetchField();
       variable_set('project_release_type_vid', $vid);
     }
   }
@@ -451,7 +456,7 @@ function drupalorg_project_get_security_update_tid() {
   if (empty($tid)) {
     $tid = variable_get('project_release_type_security_update_tid', 0);
     if (empty($tid)) {
-      $tid = db_result(db_query("SELECT tid FROM {term_data} WHERE vid = %d AND name = '%s'", drupalorg_project_get_release_type_vid(), 'Security update'));
+      $tid = db_query("SELECT tid FROM {term_data} WHERE vid = :vid AND name = :name", array(':vid' => drupalorg_project_get_release_type_vid(), ':name' => 'Security update'))->fetchField();
       variable_set('project_release_type_security_update_tid', $tid);
     }
   }
@@ -525,7 +530,7 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   }
   elseif (!empty($node->project_release['releases'])) {
     // Otherwise only include links if we have releases and at least one supported.
-    $has_supported = db_result(db_query_range(db_rewrite_sql('SELECT 1 FROM {project_release_supported_versions} WHERE nid = %d AND supported = 1'), $node->nid, 0, 1));
+    $has_supported = db_query('SELECT 1 FROM {project_release_supported_versions} WHERE nid = :nid AND supported = 1', array(':nid' => $node->nid))->range(0, 1)->addTag('node_access')->fetchField();
     if ($has_supported > 0) {
       $translation_download = 'http://localize.drupal.org/translate/projects/';
     }
@@ -592,11 +597,26 @@ function drupalorg_project_global_issue_link($text, $query = array(), $absolute 
 
 // == Node overrides ===========================================================
 
+
 /**
- * Implementation of hook_nodeapi().
+ * Implements hook_node_view().
+ *
+ * Hides issue metadata since it will be rendered in the sidebar.
  */
-function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page = FALSE) {
-  if ($op == 'view' && $page) {
+function drupalorg_project_node_view($node, $view_mode = 'full') {
+  if ($view_mode == 'full') {
+    if (project_issue_node_is_issue($node)) {
+      // @todo D7: Need Version field. It doesn't seem to exist yet?
+      // Since project_issue_metadata_build() is itself building a render array,
+      // array, we need to clone() the $node so that we can still render our own
+      // versions of everything left to display.
+      $metadata = project_issue_metadata_build(clone($node));
+      foreach (element_children($metadata) as $element) {
+        if (!empty($metadata[$element]['#access'])) {
+          hide($node->content[$element]);
+        }
+      }
+    }
     switch ($node->nid) {
       case 199251: // List projects with commit RSS feeds.
         $node->content['body']['#value'] .= drupalorg_project_list_commit_rss();
@@ -642,8 +662,7 @@ function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page 
         header('Location: '. $url_tasks);
         exit;
     }
-
-    if ($node->type == 'project_project') {
+    if (project_node_is_project($node)) {
       if ($node->project['sandbox']) {
         $user_link = l(t("!name's sandbox", array('!name' => $node->name)), 'project/user/'. $node->uid);
         drupal_set_title($user_link .': '. check_plain($node->title));
@@ -655,14 +674,20 @@ function drupalorg_project_nodeapi(&$node, $op = 'view', $teaser = FALSE, $page 
         $node->content['project_info']['#weight'] = 1;
       }
     }
-    elseif ($node->type === 'project_issue') {
+    elseif (project_issue_node_is_issue($node)) {
       // Add header label and last updated information to node body.
       $node->content['project_issue_header']['#value'] = '<h2>' . t('Issue Summary') . '</h2>';
     }
   }
+}
 
-  // Add a breadcrumb to API Change nodes.
-  if ($op == 'alter' && !$teaser && $page && $node->type == 'changenotice') {
+/**
+ * Implements hook_preprocess_node().
+ * Add a breadcrumb to API Change nodes.
+ */
+function drupalorg_project_preprocess_node(&$variables) {
+  $view_mode = $variables['elements']['#view_mode'];
+  if ($view_mode == 'full' && $node->type == 'changenotice') {
     if (isset($node->field_project[0]['nid'])) {
       $proj_nid = $node->field_project[0]['nid'];
       $proj_node = node_load($proj_nid);
@@ -704,8 +729,8 @@ function drupalorg_project_list_branches_contrib() {
   $query = db_query("SELECT DISTINCT name, COUNT(*) AS total
     FROM {versioncontrol_labels} vcl
     INNER JOIN {versioncontrol_project_projects} vcp ON vcp.repo_id = vcl.repo_id
-    WHERE vcp.nid != %d AND vcl.type = %d
-    GROUP BY name ORDER BY name DESC", DRUPALORG_CORE_NID, VERSIONCONTROL_OPERATION_BRANCH);
+    WHERE vcp.nid != :nid AND vcl.type = :type
+    GROUP BY name ORDER BY name DESC", array(':nid' => DRUPALORG_CORE_NID, ':type' => VERSIONCONTROL_OPERATION_BRANCH));
   while($tag = db_fetch_object($query)) {
     $output .= ' <li>' . check_plain($tag->tag) . ' ('. format_plural($tag->total, '1 project', '@count projects') .')</li>';
   }
@@ -721,8 +746,8 @@ function drupalorg_project_list_branches_core() {
   $query = db_query("SELECT name
     FROM {versioncontrol_labels} vcl
     INNER JOIN {versioncontrol_project_projects} vcp ON vcp.repo_id = vcl.repo_id
-    WHERE vcp.nid = %d AND type = %d
-    ORDER BY name DESC", DRUPALORG_CORE_NID, VERSIONCONTROL_OPERATION_BRANCH);
+    WHERE vcp.nid = :nid AND type = :type
+    ORDER BY name DESC", array(':nid' => DRUPALORG_CORE_NID, ':type' => VERSIONCONTROL_OPERATION_BRANCH));
   while($tag = db_fetch_object($query)) {
     $output .= ' <li>' . check_plain($tag->tag) . '</li>';
   }
@@ -734,8 +759,8 @@ function drupalorg_project_list_branches_core() {
   $query = db_query("SELECT name
     FROM {versioncontrol_labels} vcl
     INNER JOIN {versioncontrol_project_projects} vcp ON vcp.repo_id = vcl.repo_id
-    WHERE vcp.nid = %d AND type = %d
-    ORDER BY name DESC", DRUPALORG_CORE_NID, VERSIONCONTROL_OPERATION_TAG);
+    WHERE vcp.nid = :nid AND type = :type
+    ORDER BY name DESC", array(':nid' => DRUPALORG_CORE_NID, ':type' => VERSIONCONTROL_OPERATION_TAG));
   while($tag = db_fetch_object($query)) {
     $output .= ' <li>' . check_plain($tag->tag) . '</li>';
   }
@@ -1094,7 +1119,8 @@ function drupalorg_project_meta_data($node) {
   }
   
   // Usage stats.
-  $total_usage = project_usage_get_project_total_usage($node->nid);
+  // @todo project_usage_get_project_total_usage is currently broken.
+  $total_usage = 0; //project_usage_get_project_total_usage($node->nid);
   if ($total_usage) {
     $info[t('Reported installs')] = format_plural($total_usage,
       '<strong>1</strong> site currently reports using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
@@ -1107,14 +1133,15 @@ function drupalorg_project_meta_data($node) {
   }
 
   // Download stats.
-  $downloads = db_result(db_query("SELECT sum(prf.downloads) FROM {project_release_nodes} prn INNER JOIN {project_release_file} prf ON prf.nid = prn.nid WHERE prn.pid = %d", $node->nid));
+  // @todo commented out because dfletcher's test database doesn't have these.
+  $downloads = 0; // db_query("SELECT sum(prf.downloads) FROM {project_release_nodes} prn INNER JOIN {project_release_file} prf ON prf.nid = prn.nid WHERE prn.pid = :pid", array(':pid' => $node->nid))->fetchField();
   if ($downloads > 0) {
     $info[t('Downloads')] = number_format($downloads);
   }
 
   // Automated tests.
   if (module_exists('pift')) {
-    $has_auto_tests = db_result(db_query("SELECT pid FROM {pift_project} WHERE pid = %d", $node->nid));
+    $has_auto_tests = db_query("SELECT pid FROM {pift_project} WHERE pid = :pid", array(':pid' => $node->nid))->fetchField();
     if (!empty($has_auto_tests)) {
       /// @todo Indicate if the tests are passing or not.
       $info[t('Automated tests')] = t('Enabled');
@@ -1221,26 +1248,6 @@ function drupalorg_project_sandbox($node) {
   else {
     // Not a sandbox project, redirect to the node's usual path.
     drupal_goto('node/' . $node->nid, NULL, NULL, 301);
-  }
-}
-
-/**
- * Implements hook_node_view().
- *
- * Hides issue metadata since it will be rendered in the sidebar.
- */
-function drupalorg_project_node_view($node, $view_mode = 'full') {
-  if ($view_mode == 'full' && project_issue_node_is_issue($node)) {
-    // @todo D7: Need Version field. It doesn't seem to exist yet?
-    // Since project_issue_metadata_build() is itself building a render array,
-    // array, we need to clone() the $node so that we can still render our own
-    // versions of everything left to display.
-    $metadata = project_issue_metadata_build(clone($node));
-    foreach (element_children($metadata) as $element) {
-      if (!empty($metadata[$element]['#access'])) {
-        hide($node->content[$element]);
-      }
-    }
   }
 }
 
