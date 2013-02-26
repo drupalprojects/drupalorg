@@ -21,6 +21,10 @@ function drupalorg_search_update_7001() {
  * drupalorg_crosssite now owns the "Search again" block.
  */
 function drupalorg_search_update_7002() {
+  db_delete('block')
+    ->condition('module', 'drupalorg_crosssite')
+    ->condition('delta', 'search_box')
+    ->execute();
   db_update('block')
     ->fields(array('module' => 'drupalorg_crosssite'))
     ->condition('module', 'drupalorg_search', '=')
