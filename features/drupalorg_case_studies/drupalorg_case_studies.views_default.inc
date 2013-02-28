@@ -2165,6 +2165,181 @@ function drupalorg_case_studies_views_default_views() {
     'weight' => 0,
     'name' => 'navigation',
   ));
+  $handler = $view->new_display('feed', 'Feed', 'feed_1');
+  $handler->override_option('arguments', array(
+    'field_status_value' => array(
+      'default_action' => 'not found',
+      'style_plugin' => 'default_summary',
+      'style_options' => array(),
+      'wildcard' => 'all',
+      'wildcard_substitution' => 'All',
+      'title' => 'Drupal.org: %1 case studies',
+      'breadcrumb' => '',
+      'default_argument_type' => 'fixed',
+      'default_argument' => '',
+      'validate_type' => 'php',
+      'validate_fail' => 'not found',
+      'add_table' => 0,
+      'require_value' => 0,
+      'reduce_duplicates' => 0,
+      'id' => 'field_status_value',
+      'table' => 'node_data_field_status',
+      'field' => 'field_status_value',
+      'validate_user_argument_type' => 'uid',
+      'validate_user_roles' => array(
+        2 => 0,
+        3 => 0,
+        34 => 0,
+        32 => 0,
+        16 => 0,
+        30 => 0,
+        22 => 0,
+        20 => 0,
+        24 => 0,
+        12 => 0,
+        36 => 0,
+        28 => 0,
+        26 => 0,
+        4 => 0,
+        14 => 0,
+        7 => 0,
+      ),
+      'override' => array(
+        'button' => 'Use default',
+      ),
+      'relationship' => 'none',
+      'default_options_div_prefix' => '',
+      'default_taxonomy_tid_term_page' => 0,
+      'default_taxonomy_tid_node' => 0,
+      'default_taxonomy_tid_limit' => 0,
+      'default_taxonomy_tid_vids' => array(
+        1 => 0,
+        5 => 0,
+        38 => 0,
+        54 => 0,
+        56 => 0,
+        6 => 0,
+        44 => 0,
+        46 => 0,
+        3 => 0,
+        48 => 0,
+        50 => 0,
+        60 => 0,
+        62 => 0,
+        58 => 0,
+        52 => 0,
+        7 => 0,
+        2 => 0,
+        31 => 0,
+        34 => 0,
+        9 => 0,
+      ),
+      'default_argument_user' => 0,
+      'default_argument_fixed' => 'Featured',
+      'default_argument_image_size' => '_original',
+      'default_argument_php' => '',
+      'validate_argument_node_type' => array(
+        'book_listing' => 0,
+        'casestudy' => 0,
+        'changenotice' => 0,
+        'organization' => 0,
+        'packaging_whitelist' => 0,
+        'image' => 0,
+        'forum' => 0,
+        'project_project' => 0,
+        'project_release' => 0,
+        'project_issue' => 0,
+        'book' => 0,
+        'page' => 0,
+        'story' => 0,
+      ),
+      'validate_argument_node_access' => 0,
+      'validate_argument_nid_type' => 'nid',
+      'validate_argument_vocabulary' => array(
+        1 => 0,
+        5 => 0,
+        38 => 0,
+        54 => 0,
+        56 => 0,
+        6 => 0,
+        44 => 0,
+        46 => 0,
+        3 => 0,
+        48 => 0,
+        50 => 0,
+        60 => 0,
+        62 => 0,
+        58 => 0,
+        52 => 0,
+        7 => 0,
+        2 => 0,
+        31 => 0,
+        34 => 0,
+        9 => 0,
+      ),
+      'validate_argument_type' => 'tid',
+      'validate_argument_transform' => 0,
+      'validate_user_restrict_roles' => 0,
+      'validate_argument_node_flag_name' => '*relationship*',
+      'validate_argument_node_flag_test' => 'flaggable',
+      'validate_argument_node_flag_id_type' => 'id',
+      'validate_argument_user_flag_name' => '*relationship*',
+      'validate_argument_user_flag_test' => 'flaggable',
+      'validate_argument_user_flag_id_type' => 'id',
+      'image_size' => array(
+        '_original' => '_original',
+        'thumbnail' => 'thumbnail',
+        'preview' => 'preview',
+      ),
+      'validate_argument_project_term_argument_type' => 'tid',
+      'validate_argument_project_term_argument_action_top_without' => 'pass',
+      'validate_argument_project_term_argument_action_top_with' => 'pass',
+      'validate_argument_project_term_argument_action_child' => 'pass',
+      'validate_argument_php' => 'IF (($argument == \'featured\') || ($argument == \'community\')) {
+return TRUE;
+}
+else {
+return FALSE;
+}',
+    ),
+  ));
+  $handler->override_option('css_class', '');
+  $handler->override_option('items_per_page', 50);
+  $handler->override_option('style_plugin', 'rss');
+  $handler->override_option('style_options', array(
+    'mission_description' => 0,
+    'description' => 'Feed of Drupal case studies from Drupal.org',
+  ));
+  $handler->override_option('row_plugin', 'node_rss');
+  $handler->override_option('row_options', array(
+    'relationship' => 'none',
+    'item_length' => 'default',
+  ));
+  $handler->override_option('path', 'case-studies/%/feed');
+  $handler->override_option('menu', array(
+    'type' => 'none',
+    'title' => '',
+    'description' => '',
+    'weight' => 0,
+    'name' => 'navigation',
+  ));
+  $handler->override_option('tab_options', array(
+    'type' => 'none',
+    'title' => '',
+    'description' => '',
+    'weight' => 0,
+    'name' => 'navigation',
+  ));
+  $handler->override_option('displays', array(
+    'page_2' => 'page_2',
+    'default' => 0,
+    'page_1' => 0,
+    'block_1' => 0,
+    'block_2' => 0,
+    'block_3' => 0,
+    'page_3' => 0,
+  ));
+  $handler->override_option('sitename_title', FALSE);
 
   $views[$view->name] = $view;
 
