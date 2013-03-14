@@ -26,6 +26,11 @@ define('DRUPALORG_CORE_STABLE_VERSION_NAME', '7.x');
 define('DRUPALORG_CORE_STABLE_VERSION_TID', '103');
 
 /**
+ * Project categories vocabulary ID.
+ */
+define('DRUPALORG_PROJECT_CATEGORIES_VID', '3');
+
+/**
  * URL for the Drupal Security Team.
  */
 define('DRUPALORG_SECURITY_TEAM_URL', 'http://drupal.org/security-team');
@@ -663,14 +668,14 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
         exit;
     }
     if (project_node_is_project($node)) {
-      if ($node->project['sandbox']) {
+      if ($node->field_project_type[$node->language][0]['value'] === 'sandbox') {
         $user_link = l(t("!name's sandbox", array('!name' => $node->name)), 'project/user/'. $node->uid);
         drupal_set_title($user_link .': '. check_plain($node->title));
         $node->content['project_sandbox_warning']['#value'] = '<div class="meta"><h5>Experimental Project</h5><p>This is a <a href="/node/1011196">sandbox project</a>, which contains experimental code for developer use only.</p></div>';
         $node->content['project_sandbox_warning']['#weight'] = -1;
       }
       else {
-        $node->content['project_info']['#value'] = drupalorg_project_meta_data($node);
+        $node->content['project_info']['#markup'] = drupalorg_project_meta_data($node);
         $node->content['project_info']['#weight'] = 1;
       }
     }
@@ -687,7 +692,7 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
  */
 function drupalorg_project_preprocess_node(&$variables) {
   $view_mode = $variables['elements']['#view_mode'];
-  if ($view_mode == 'full' && $node->type == 'changenotice') {
+  if ($view_mode == 'full' && $variables['node']->type === 'changenotice') {
     if (isset($node->field_project[0]['nid'])) {
       $proj_nid = $node->field_project[0]['nid'];
       $proj_node = node_load($proj_nid);
@@ -1031,91 +1036,71 @@ function drupalorg_project_meta_data($node) {
   if ($node->nid == DRUPALORG_CORE_NID) {
     return;
   }
-  if (count($node->taxonomy)) {
-    $project_vid = _project_get_vid();
-    // It's pointless to query, since we need to hard-code singular
-    // versions while the term names are plural.
-    $project_types = drupalorg_project_get_project_types(TRUE);
+  foreach (taxonomy_vocabulary_get_names() as $vocabulary) {
+    if (isset($node->{'taxonomy_' . $vocabulary->machine_name})) {
+      $class = '';
+      $links = array();
+      foreach ($node->{'taxonomy_' . $vocabulary->machine_name}[$node->language] as $term) {
+        $options = array();
+        if ($term['taxonomy_term']->vid == '44') { // Maintenance status
+          $maintenance_status = $term['taxonomy_term']->tid;
+          switch ($term['taxonomy_term']->tid) {
+            case '13032':  // Abandoned
+              $options['attributes'] = array('class' => array('alert'));
+              break;
 
-    $vocabularies = taxonomy_get_vocabularies();
-    // Group the terms by vid.
-    $taxonomy = array();
-    foreach ($node->taxonomy as $term_id => $term) {
-      // Ignore the project type terms (the top level terms from the
-      // project vocabulary) since those are already visible on the page.
-      if (!empty($project_types[$term->tid])) {
-        $project_type = $term;
-        $project_type->label = $project_types[$term->tid];
-      }
-      else {
-        $taxonomy[$term->vid][] = $term;
-      }
-      $term->rendered = TRUE;
-    }
+            case '9990':   // Seeking co-maintainer(s)
+            case '9992':   // Seeking new maintainer
+              $options['attributes'] = array('class' => array('warning'));
+              break;
 
-    foreach ($vocabularies as $vocabulary) {
-      if (isset($taxonomy[$vocabulary->vid])) {
-        $class = '';
-        $links = array();
-        foreach ($taxonomy[$vocabulary->vid] as $term) {
-          $options = array();
-          if ($term->vid == '44') { // Maintenance status
-            $maintenance_status = $term->tid;
-            switch ($term->tid) {
-              case '13032':  // Abandoned
-                $options['attributes'] = array('class' => array('alert'));
-                break;
-
-              case '9990':   // Seeking co-maintainer(s)
-              case '9992':   // Seeking new maintainer
-                $options['attributes'] = array('class' => array('warning'));
-                break;
-
-            }
           }
-          elseif ($term->vid == '46') { // Development status
-            $development_status = $term->tid;
-            switch ($term->tid) {
-              case '9994':   // Obsolete
-                $options['attributes'] = array('class' => array('alert'));
-                break;
-
-              case '13030':  // Maintenance fixes only
-              case '16374':  // No futher development
-                $options['attributes'] = array('class' => array('warning'));
-                break;
-
-            }
-          }
-          // Special-case module category terms to link to download+extend.
-          if ($term->vid == $project_vid && $project_type->tid == '14') {
-            // Only use the 'terms' style for module categories.
-            $class = 'terms';
-            $term_path = 'project/modules';
-            $options['query'] = array('filters' => 'tid:' . $term->tid);
-          }
-          else {
-            $term_path = taxonomy_term_path($term);
-          }
-
-          $links[] = l($term->name, $term_path, $options);
         }
-        if ($vocabulary->vid == $project_vid) {
-          // These are hard-coded, don't incur cost of check_plain().
-          $label = t('!project_type categories', array('!project_type' => $project_type->label));
+        elseif ($term['taxonomy_term']->vid == '46') { // Development status
+          $development_status = $term['taxonomy_term']->tid;
+          switch ($term['taxonomy_term']->tid) {
+            case '9994':   // Obsolete
+              $options['attributes'] = array('class' => array('alert'));
+              break;
+
+            case '13030':  // Maintenance fixes only
+            case '16374':  // No futher development
+              $options['attributes'] = array('class' => array('warning'));
+              break;
+
+          }
+        }
+        // Special-case module category terms to link to download+extend.
+        // todo d7 update for project_solr's URL.
+        // todo no reason this can't work for all project node types.
+        if ($term['taxonomy_term']->vid == DRUPALORG_PROJECT_CATEGORIES_VID && $node->type == 'project_module') {
+          // Only use the 'terms' style for module categories.
+          $class = 'terms';
+          $term_path = 'project/modules';
+          $options['query'] = array('filters' => 'tid:' . $term['taxonomy_term']->tid);
         }
         else {
-          $label = check_plain($vocabulary->name);
+          $uri = entity_uri('taxonomy_term', $term['taxonomy_term']);
+          $term_path = $uri['path'];
         }
-        $info[$label] = '<span class="' . $class . '">' . implode(', ', $links) . '</span>';
+
+        $links[] = l($term['taxonomy_term']->name, $term_path, $options);
       }
+      if ($vocabulary->vid == DRUPALORG_PROJECT_CATEGORIES_VID) {
+        // These are hard-coded, don't incur cost of check_plain().
+        $label = t('!project_type categories', array('!project_type' => node_type_get_name($node)));
+      }
+      else {
+        $label = check_plain($vocabulary->name);
+      }
+      $info[$label] = '<span class="' . $class . '">' . implode(', ', $links) . '</span>';
     }
-    if (empty($maintenance_status)) {
-      $info[t('Maintenance status')] = '<span class="warning">' . t('Unknown') . '</span>';
-    }
-    if (empty($development_status) && !empty($node->versioncontrol_project['repo_id'])) {
-      $info[t('Development status')] = '<span class="warning">' . t('Unknown') . '</span>';
-    }
+  }
+  if (empty($maintenance_status)) {
+    $info[t('Maintenance status')] = '<span class="warning">' . t('Unknown') . '</span>';
+  }
+  if (empty($development_status) && !empty($node->versioncontrol_project['repo_id'])) {
+    $info[t('Development status')] = '<span class="warning">' . t('Unknown') . '</span>';
   }
   
   // Usage stats.
@@ -1150,7 +1135,7 @@ function drupalorg_project_meta_data($node) {
 
   $modified = format_date($node->changed, 'custom', 'F j, Y');
 
-  return theme('drupalorg_project_meta_data', $info, $modified);
+  return theme('drupalorg_project_meta_data', array('info' => $info, 'modified' => $modified));
 }
 
 /**
@@ -1174,6 +1159,7 @@ function drupalorg_project_theme($existing, $type, $theme, $path) {
  * @param boolean $singular
  *   Should the name be singular or plural. Defaults to plural.
  */
+// todo D7 remove or rewrite
 function drupalorg_project_get_project_types($singular = FALSE) {
   if ($singular) {
     return array(
