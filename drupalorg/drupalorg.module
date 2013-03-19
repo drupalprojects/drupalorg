@@ -1264,12 +1264,10 @@ function drupalorg_views_default_views_alter(&$views) {
  *   HTML string with link to the release node.
  */
 function drupalorg_download_drupal_link_button($text) {
-/* @todo D7: No such function.
   $release = project_release_get_current_recommended(DRUPALORG_CORE_NID, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID, DRUPALORG_DOWNLOAD_MAJOR_VERSION, 'recommended');
-*/
   // Assumes a drupal-$version alias exists for the given Drupal version, which
   // has been the tradition. Just keep that tradition, and this works wonders.
-  return l('<span>' . check_plain("$text $release->version") . '</span>', 'project/drupal', array('html' => TRUE, 'attributes' => array('class' => array('link-button'))));
+  return l('<span>' . check_plain($text . ' ' . $release->field_release_version[$release->language][0]['safe_value']) . '</span>', 'project/drupal', array('html' => TRUE, 'attributes' => array('class' => array('link-button'))));
 }
 
 /**
