@@ -809,15 +809,11 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
   $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
 
-  /* @todo D7: Verify the sections at the bottom showing lists of modules
-     are working when Project is available. */
-
   // Create and cache a solr query for use by block elements.
-  /* @todo D7: We don't have Solr yet; when we do, put this back in.
   project_solr_run_project_query('project/modules', array(array(
-      'key' => 'im_vid_' . _project_get_vid(),
-      'value' => DRUPALORG_MODULE_TID,
-    )));
+    'key' => 'bundle',
+    'value' => 'project_module',
+  )));
 
   // Since we control what facets we're building, we can just utilize the
   // delta as the unique key for the sake of brevity (both here and in the
@@ -828,11 +824,12 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   );
   // Render and save the facet blocks.
   foreach ($facets as $delta => $module) {
-    $variables[$delta] = drupalorg_block_render($module, $delta);
+    $block = drupalorg_block_render($module, $delta);
+    $variables[$delta] = drupal_render($block);
   }
 
-  $variables['version_form'] = drupal_get_form('project_solr_version_form', 'download', t('Show only modules for Drupal version'));
-  */
+  $form = drupal_get_form('project_solr_version_form', 'download', t('Show only modules for Drupal version'));
+  $variables['version_form'] = drupal_render($form);
 
   // Rendering the block directly from views doesn't work nicely here, since
   // the resulting markup is harder to use with bluecheese. Plus, we're doing
@@ -1417,19 +1414,18 @@ function drupalorg_block_render($module, $delta) {
   global $theme;
   $title = db_query("SELECT title FROM {block} WHERE module = :module AND delta = :delta AND theme = :theme", array(':module' => $module, ':delta' => $delta, ':theme' => $theme))->fetchField();
 
-  $block_output = module_invoke($module, 'block', 'view', $delta);
+  $block = module_invoke($module, 'block_view', $delta);
   // Make sure our block gave us any output at all.
-  if (empty($block_output) || !is_array($block_output)) {
+  if (empty($block) || !is_array($block)) {
     return '';
   }
-  foreach ($block_output as $k => $v) {
-    $block->$k = $v;
-  }
+  $block = (object) $block;
 
   // Set the module and delta so that the blocks contain
   // at least the minimum of expected information.
   $block->module = $module;
   $block->delta = $delta;
+  $block->region = 'drupalorg';
 
   if (isset($block->content) && $block->content) {
     // Override default block title if a custom display title is present.
@@ -1441,7 +1437,11 @@ function drupalorg_block_render($module, $delta) {
       $block->subject = '';
     }
   }
-  return theme('block', $block);
+  $return = $block->content;
+  unset($block->content);
+  $return['#block'] = $block;
+  $return['#theme_wrappers'][] = 'block';
+  return $return;
 }
 
 /**

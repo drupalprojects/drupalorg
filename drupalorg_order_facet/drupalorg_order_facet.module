@@ -76,8 +76,8 @@ function drupalorg_order_facet_build($sort, $info, $query, $more = TRUE) {
     // Add the "more" link.
     $items[] = array(
       'data' => l(t('More @title', array('@title' => $info['info'])), $order_query->getPath(), array('query' => $query_values)),
-      'class' => 'all',
+      'class' => array('all'),
     );
   }
-  return theme('item_list', array('items' => $items, 'attributes' => array('class' => 'flat')));
+  return array('#theme' => 'item_list', '#items' => $items, '#attributes' => array('class' => 'flat'));
 }
