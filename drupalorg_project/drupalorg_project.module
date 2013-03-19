@@ -135,31 +135,47 @@ function drupalorg_project_menu() {
 /**
  * Menu callback to map legacy project solr urls to the D7 equivilent.
  */
-function _drupalorg_project_legacy_solr_redirect($type) {
+function _drupalorg_project_legacy_solr_redirect($type, $text = '') {
   $params = drupal_get_query_parameters();
 
-  // Arg(2) in d6 == textual search param.
-  $params['text'] = arg(2);
+  // Trailing argument in D6 was textual search param.
+  if (!empty($text)) {
+    $params['text'] = $text;
+  }
 
   // D6 to D7 mapping of parameters.
-  foreach ($params['f'] as $k => $v) {
-    // Vocab changes.
-    $params['f'][$k] = str_replace('im_vid_', 'im_taxonomy_vocabulary_', $v);
-    $params['f'][$k] = str_replace('drupal_core', 'im_taxonomy_vocabulary_6', $v);
+  if (isset($params['f'])) {
+    $f = array();
+    $dummy = array();
+    $form = project_solr_browse_projects_form(array(), $dummy, node_type_load($type));
 
-    // Sandbox remap
-    if ($v == 'bs_project_sandbox:0') {
-      $params['sm_field_project_type'] = 'full';
-      $params['f'][$k] = '';
+    foreach ($params['f'] as $k => $v) {
+      // Sandbox remap
+      if ($v == 'bs_project_sandbox:0') {
+        $params['sm_field_project_type'] = 'full';
+      }
+      elseif ($v == 'bs_project_sandbox:1') {
+        $params['sm_field_project_type'] = 'sandbox';
+      }
+      elseif ($v == 'bs_project_sandbox:[* TO *]') {
+        $params['sm_field_project_type'] = '';
+      }
+      else {
+        // Map to specific f[] elements so the select boxes pass form API
+        // validation.
+        foreach (element_children($form['f']) as $element) {
+          if (isset($form['f'][$element]['#options'][$v])) {
+            $f[$element] = $v;
+          }
+        }
+      }
     }
-    if ($v == 'bs_project_sandbox:1') {
-      $params['sm_field_project_type'] = 'sandbox';
-      $params['f'][$k] = '';
-    }
-    if ($v == 'bs_project_sandbox:[* TO *]') {
-      $params['sm_field_project_type'] = '';
-      $params['f'][$k] = '';
-    }
+    $params['f'] = $f;
+  }
+
+  // Unset invalid solr sort.
+  if (isset($params['solrsort']) && !isset($form['solrsort']['#options'][$params['solrsort']])) {
+    unset($params['solrsort']);
   }
 
   drupal_goto('search/project/' . $type, array('query' => $params), 301);
