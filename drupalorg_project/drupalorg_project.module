@@ -109,7 +109,60 @@ function drupalorg_project_menu() {
     'type'               => MENU_CALLBACK,
   );
 
+  // Callbacks to process legacy urls.
+  $map = array(
+    'project/modules' => 'project_module',
+    'project/themes' => 'project_theme',
+    'project/distributions' => 'project_distribution',
+    'project/theme engines' => 'project_theme_engine',
+    'project/drupal.org projects' => 'project_drupalorg',
+    'project/translations' => 'project_translation',
+    'project/drupal core' => 'project_core',
+  );
+  foreach ($map as $k => $v) {
+    $items[$k] = array(
+      'title' => 'Redirect',
+      'type' => MENU_CALLBACK,
+      'page callback' => '_drupalorg_project_legacy_solr_redirect',
+      'page arguments' => array($v),
+      'access arguments' => array('access content'),
+    );
+  }
+
   return $items;
+}
+
+/**
+ * Menu callback to map legacy project solr urls to the D7 equivilent.
+ */
+function _drupalorg_project_legacy_solr_redirect($type) {
+  $params = drupal_get_query_parameters();
+
+  // Arg(2) in d6 == textual search param.
+  $params['text'] = arg(2);
+
+  // D6 to D7 mapping of parameters.
+  foreach ($params['f'] as $k => $v) {
+    // Vocab changes.
+    $params['f'][$k] = str_replace('im_vid_', 'im_taxonomy_vocabulary_', $v);
+    $params['f'][$k] = str_replace('drupal_core', 'im_taxonomy_vocabulary_6', $v);
+
+    // Sandbox remap
+    if ($v == 'bs_project_sandbox:0') {
+      $params['sm_field_project_type'] = 'full';
+      $params['f'][$k] = '';
+    }
+    if ($v == 'bs_project_sandbox:1') {
+      $params['sm_field_project_type'] = 'sandbox';
+      $params['f'][$k] = '';
+    }
+    if ($v == 'bs_project_sandbox:[* TO *]') {
+      $params['sm_field_project_type'] = '';
+      $params['f'][$k] = '';
+    }
+  }
+
+  drupal_goto('search/project/' . $type, array('query' => $params), 301);
 }
 
 /**
