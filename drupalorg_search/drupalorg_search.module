@@ -97,11 +97,9 @@ function drupalorg_search_facetapi_widgets() {
  * Add project sorts whenever we have an ss_meta_type of theme or module.
  */
 function drupalorg_search_apachesolr_query_prepare(&$query) {
-  // The additional project sorts are only relevant if the query is filtering
-  // on a project type (modules or themes).
-  if ($query->hasFilter('ss_meta_type', 'theme') || $query->hasFilter('ss_meta_type', 'module')) {
-    // @todo: Add this back in once project_solr sorts have been ported.
-    project_solr_add_sorts($query);
+  if (isset($_GET['solrsort'])) {
+    list($sort, $direction) = explode(' ', $_GET['solrsort']);
+    $query->setSolrsort($sort, $direction);
   }
 }
 
@@ -425,13 +423,14 @@ function drupalorg_search_sort_form($form, &$form_state) {
     '#type' => 'select',
     '#title' => t('Sort by'),
     '#options' => array(
-      'score' => t('Relevency'),
-      'label' => t('Title'),
-      'ss_name' => t('Author'),
+      'score asc' => t('Relevency'),
+      'sort_label asc' => t('Title'),
+      'sort_name asc' => t('Author'),
       'ds_created desc' => t('Created date'),
       'ds_project_latest_release desc' => t('Last release'),
       'ds_project_latest_activity desc' => t('Last build'),
     ),
+    '#default_value' => isset($_GET['solrsort']) ? $_GET['solrsort'] : 'score asc'
   );
   if (module_exists('project_usage')) {
     $form['solrsort']['#options']['iss_project_release_usage desc'] = t('Most installed');
@@ -445,31 +444,6 @@ function drupalorg_search_sort_form($form, &$form_state) {
     '#value' => t('Search'),
   );
   return $form;
-}
-
-/**
- * Create a query with the right version filter and redirect to the right page.
- *
- * Create a new query, add any version filtering if it was selected in the
- * form, and redirect back to the relevant page with the appropriate filter
- * string.
- */
-function drupalorg_search_sort_form_submit($form, &$form_state) {
-  $env_id = apachesolr_default_environment();
-  $query = apachesolr_current_query($env_id);
-
-  // Sets the Solr sort, gets query string parameters.
-  list($sort, $direction) = explode(' ', $form_state['values']['solrsort']);
-  $query->setSolrsort($sort, $direction);
-  $params = array_merge($_GET, $query->getSolrsortUrlQuery());
-  $params = drupal_get_query_parameters($params, array('q', 'page'));
-
-  // The default, score, does not have a parameter.
-  if ('score' == $sort) {
-    $params = array();
-  }
-  // Redirect to a URL with the solrsort params included.
-  $form_state['redirect'] = array($query->getPath(), $params);
 }
 
 /**
