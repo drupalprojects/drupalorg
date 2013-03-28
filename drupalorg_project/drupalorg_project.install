@@ -278,3 +278,47 @@ function drupalorg_project_update_7005() {
 function drupalorg_project_update_7006() {
   variable_set('project_selection_widget', 'auto');
 }
+
+/**
+ * Drupal.org customizations for the D7 project_issue node type.
+ *
+ * Enables and configures the 'File Metadata Table' field formatter.
+ */
+function drupalorg_project_update_7007() {
+  // Enable new dependencies.
+  module_enable(array('field_formatter_settings', 'file_metadata_table'));
+
+  // Set up formatter settings.
+  $display = array(
+    'label' => 'above',
+    'type' => 'file_metadata_table',
+    'settings' => array(
+      'filetypes' => 'all',
+      'extensions' => 'patch,diff',
+      'columns' => array('cid', 'filename', 'filesize', 'uid'),
+      'showhidden' => 'fieldset',
+      'sortby' => 'cid',
+      'sortorder' => 'desc',
+    ),
+    'module' => 'file_metadata_table',
+    'weight' => 4,
+  );
+
+  // Cycle through each project_issue node type, and set the field_issue_files
+  // field to use the file metadata table field formatter.
+  $bundles = project_issue_issue_node_types();
+  foreach ($bundles as $bundle) {
+    // Update the display formatter for each bundle
+    if (field_info_instance('node', 'field_issue_files', $bundle)) {
+      $instance = array(
+        'entity_type' => 'node',
+        'bundle' => $bundle,
+        'field_name' => 'field_issue_files',
+        'display' => array(
+          'default' => $display,
+        ),
+      );
+      field_update_instance($instance);
+    }
+  }
+}
