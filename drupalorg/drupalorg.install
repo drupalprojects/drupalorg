@@ -1058,3 +1058,13 @@ function drupalorg_update_7015() {
     variable_set('pathauto_node_' . $type . '_pattern_sandbox', 'sandbox/[node:author:git-username]/[node:field_project_machine_name]');
   }
 }
+
+/**
+ * Update order facet blocks for new project solr paths.
+ */
+function drupalorg_update_7016() {
+  db_update('block')
+    ->condition('module', 'drupalorg_order_facet')
+    ->fields(array('pages' => "project/project_module\nproject/project_theme"))
+    ->execute();
+}
