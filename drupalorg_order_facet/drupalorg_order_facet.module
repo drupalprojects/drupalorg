@@ -26,6 +26,7 @@ function drupalorg_order_facet_block_view($delta = '') {
   if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
     $blocks = drupalorg_order_facet_block_info();
     // Replace 'content' with 'Modules', 'Themes', etc.
+    // todo d7 project terms -> node type
     foreach ($query->getFilters() as $filter) {
       if ($filter['#name'] === 'im_vid_3') {
         $term = taxonomy_get_term($filter['#value']);

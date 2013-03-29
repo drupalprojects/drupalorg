@@ -151,22 +151,25 @@ function _drupalorg_project_legacy_solr_redirect($type, $text = '') {
 
     foreach ($params['f'] as $k => $v) {
       // Sandbox remap
-      if ($v == 'bs_project_sandbox:0') {
-        $params['sm_field_project_type'] = 'full';
-      }
-      elseif ($v == 'bs_project_sandbox:1') {
-        $params['sm_field_project_type'] = 'sandbox';
-      }
-      elseif ($v == 'bs_project_sandbox:[* TO *]') {
-        $params['sm_field_project_type'] = '';
-      }
-      else {
-        // Map to specific f[] elements so the select boxes pass form API
-        // validation.
-        foreach (element_children($form['f']) as $element) {
-          if (isset($form['f'][$element]['#options'][$v])) {
-            $f[$element] = $v;
+      if (strpos($v, ':') !== FALSE) {
+        list($field, $value) = explode(':', $v);
+        if ($field === 'bs_project_sandbox') {
+          if ($value === '0') {
+            $v = 'ss_field_project_type:full';
           }
+          elseif ($value === '1') {
+            $v = 'ss_field_project_type:sandbox';
+          }
+          else {
+            $v = 'ss_field_project_type:[* TO *]';
+          }
+        }
+      }
+      // Map to specific f[] elements so the select boxes pass form API
+      // validation.
+      foreach (element_children($form['f']) as $element) {
+        if (isset($form['f'][$element]['#options'][$v])) {
+          $f[$element] = $v;
         }
       }
     }
@@ -178,7 +181,7 @@ function _drupalorg_project_legacy_solr_redirect($type, $text = '') {
     unset($params['solrsort']);
   }
 
-  drupal_goto('search/project/' . $type, array('query' => $params), 301);
+  drupal_goto('project/' . $type, array('query' => $params), 301);
 }
 
 /**
@@ -1346,4 +1349,37 @@ function drupalorg_project_project_types() {
       'tid' => 29,
     ),
   );
+}
+
+/**
+ * Get human-readable lables for project-related node types on Drupal.org.
+ */
+function drupalorg_project_node_type_label($node_type, $label_type) {
+  static $labels = array(
+    'project' => array(
+      'plural' => 'Projects',
+    ),
+    'project_core' => array(
+      'plural' => 'Drupal Cores',
+    ),
+    'project_distribution' => array(
+      'plural' => 'Distributions',
+    ),
+    'project_drupalorg' => array(
+      'plural' => 'Drupal.org projects',
+    ),
+    'project_module' => array(
+      'plural' => 'Modules',
+    ),
+    'project_theme' => array(
+      'plural' => 'Themes',
+    ),
+    'project_theme_engine' => array(
+      'plural' => 'Theme engines',
+    ),
+    'project_translation' => array(
+      'plural' => 'Translations',
+    ),
+  );
+  return $labels[$node_type][$label_type];
 }

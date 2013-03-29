@@ -8,6 +8,7 @@ dependencies[] = apachesolr
 dependencies[] = apachesolr_search
 dependencies[] = project_release
 dependencies[] = project_solr
+dependencies[] = drupalorg_project
 dependencies[] = drupalorg_crosssite
 dependencies[] = facetapi
 

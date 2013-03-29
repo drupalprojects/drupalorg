@@ -155,11 +155,11 @@ function drupalorg_search_block_view($delta) {
       if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
         $search_term = $query->getParam('q');
       }
-      if (empty($search_term) && isset($_GET['text'])) {
+      elseif (isset($_GET['text'])) { // For advanced issues.
         $search_term = $_GET['text'];
       }
-      if (empty($search_term)) {
-        return;
+      else { // For other search pages.
+        $search_term = arg(2);
       }
 
       // Provide selections for all the site-search options.
@@ -210,18 +210,8 @@ function drupalorg_search_form_apachesolr_search_custom_page_search_form_alter(&
  * only for the logic that populates the proper facets for a given project type.
  */
 function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &$form_state) {
-  global $pager_total_items;
-
-  // The meta type being searched on.
-  $node_type = $form['#project_type'];
-
-  // Update text search title.
-  $meta_types = drupalorg_crosssite_meta_types();
-  $meta_type_rules = drupalorg_crosssite_get_meta_type_rules();
-  $label = $meta_types[$meta_type_rules['type'][$node_type->type]];
-  $form['text']['#title'] = t('Search @type', array('@type' => $label));
-
-  $results = t('@result @type match your search', array('@result' => $pager_total_items[0], '@type' => $label));
+  $env_id = apachesolr_default_environment();
+  $query = apachesolr_current_query($env_id);
 
   // Check to see if the project_solr_browse_projects form is being used in
   // our block on the core search page. We could test $form['path']['#value']
@@ -234,23 +224,26 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
     // We default the text to our current search terms so that we don't get
     // errors when attempting to sort by relevancy. We make the access false,
     // so that the values aren't visible and we don't have 2 search forms.
-    $env_id = apachesolr_default_environment();
-    $query = apachesolr_current_query($env_id);
     $params = $query->getParams();
     $form['text']['#default_value'] = $params['q'];
     $form['text']['#access'] = FALSE;
   }
   else {
+    global $pager_total_items;
+
+    // Update text search title.
+    $label = drupalorg_project_node_type_label($form['#project_type']->type, 'plural');
+    $form['text']['#title'] = t('Search @type', array('@type' => $label));
+
     // If not on the core search page, add a results count title to the form
     $form['results'] = array(
-      '#value' => '<h3 class="results-count">' . $results . '</h3>',
+      '#markup' => '<h3 class="results-count">' . t('@result @type match your search', array('@result' => number_format($pager_total_items[0]), '@type' => $label)) . '</h3>',
       '#weight' => -10,
     );
   }
 
   // Set ss_meta_type as a hidden form item.
-  $env_id = apachesolr_default_environment();
-  if ($query = apachesolr_current_query($env_id)) {
+  if ($query) {
     foreach ($query->getFilters() as $key => $filter) {
       if ($filter['#name'] == 'ss_meta_type') {
         $form['f'][] = array(
