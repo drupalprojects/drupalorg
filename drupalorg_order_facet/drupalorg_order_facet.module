@@ -53,8 +53,30 @@ function drupalorg_order_facet_build($sort, $info, $query, $more = TRUE) {
   // Retrieve the query values first so everything is formatted correctly,
   // and we only have relevant values in the url.
   $query_values = $order_query->getSolrsortUrlQuery();
+  $f = array();
   foreach ($order_query->getFilters() as $filter) {
-    $query_values['f'][] = $filter['#name'] . ':' . $filter['#value'];
+    if ($filter['#name'] === 'bundle') {
+      // Find project node type.
+      $type = $filter['#value'];
+    }
+    else {
+      // Keep track of filters.
+      if ($filter['#name'] === 'im_project_release_api_tids') {
+        // Use "drupal_core" facet alias.
+        $f[] = variable_get('project_solr_project_release_api_tids_alias', 'drupal_core') . ':' . $filter['#value'];
+      }
+      else {
+        $f[] = $filter['#name'] . ':' . $filter['#value'];
+      }
+    }
+  }
+  // Match up filters to form array.
+  $dummy = array();
+  $form = project_solr_browse_projects_form(array(), $dummy, node_type_load($type));
+  foreach (element_children($form['f']) as $element) {
+    if ($intersect = array_intersect($f, array_keys($form['f'][$element]['#options']))) {
+      $query_values['f'][$element] = reset($intersect);
+    }
   }
 
   // Execute the Solr query.
