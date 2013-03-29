@@ -98,6 +98,7 @@ function drupalorg_project_update_7001() {
     unset($type->old_type);
     $type->type = $project_type;
     $type->name = $type_data['title'];
+    $type->description = taxonomy_term_load($type_data['tid'])->description;
     node_type_save($type);
     node_types_rebuild();
 
