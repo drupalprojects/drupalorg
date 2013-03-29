@@ -90,7 +90,8 @@ function drupalorg_order_facet_build($sort, $info, $query, $more = TRUE) {
   $items = array();
   if ($response->response->numFound > 0) {
     foreach ($response->response->docs as $doc) {
-      $items[] = l($doc->label, $doc->url);
+      // $doc->label is already sanitized, do not double encode.
+      $items[] = l($doc->label, $doc->url, array('html' => TRUE));
     }
   }
 
