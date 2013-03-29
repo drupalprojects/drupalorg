@@ -1226,38 +1226,6 @@ function drupalorg_project_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Return an array mapping term ID to name for the top-level project types.
- *
- * @param boolean $singular
- *   Should the name be singular or plural. Defaults to plural.
- */
-// todo D7 remove or rewrite
-function drupalorg_project_get_project_types($singular = FALSE) {
-  if ($singular) {
-    return array(
-      '13' => t('Drupal core'),
-      '22588' => t('Drupal.org project'),
-      '14' => t('Module'),
-      '15' => t('Theme'),
-      '32' => t('Theme engine'),
-      '29' => t('Translation'),
-      '96' => t('Distribution'),
-    );
-  }
-  else {
-    return array(
-      '13' => t('Drupal core'),
-      '22588' => t('Drupal.org projects'),
-      '14' => t('Modules'),
-      '15' => t('Themes'),
-      '32' => t('Theme engines'),
-      '29' => t('Translations'),
-      '96' => t('Distributions'),
-    );
-  }
-}
-
-/**
  * Implement hook_ctools_plugin_directory().
  */
 function drupalorg_project_ctools_plugin_directory($module, $plugin) {
