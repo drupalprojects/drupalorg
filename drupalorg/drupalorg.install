@@ -1068,3 +1068,14 @@ function drupalorg_update_7016() {
     ->fields(array('pages' => "project/project_module\nproject/project_theme"))
     ->execute();
 }
+
+/**
+ * Add project/project_module/categories path alias.
+ */
+function drupalorg_update_7017() {
+  $path = array(
+    'source' => 'project/project_module/vocabulary_3',
+    'alias' => 'project/project_module/categories',
+  );
+  path_save($path);
+}
