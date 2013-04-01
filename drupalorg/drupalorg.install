@@ -1070,7 +1070,7 @@ function drupalorg_update_7016() {
 }
 
 /**
- * Add project/project_module/categories path alias.
+ * Add project/project_module/categories path alias and legacy redirect.
  */
 function drupalorg_update_7017() {
   $path = array(
@@ -1078,4 +1078,10 @@ function drupalorg_update_7017() {
     'alias' => 'project/project_module/categories',
   );
   path_save($path);
+
+  $redirect = new stdClass();
+  redirect_object_prepare($redirect);
+  $redirect->source = 'project/modules/categories';
+  $redirect->redirect = 'project/project_module/categories';
+  redirect_save($redirect);
 }
