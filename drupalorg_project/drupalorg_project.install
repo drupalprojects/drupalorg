@@ -323,3 +323,12 @@ function drupalorg_project_update_7007() {
     }
   }
 }
+
+/**
+ * Configure conflict module to be active for issues.
+ */
+function drupalorg_project_update_7008() {
+  foreach (project_issue_issue_node_types() as $type) {
+    variable_set('conflict_enable_' . $type, TRUE);
+  }
+}
