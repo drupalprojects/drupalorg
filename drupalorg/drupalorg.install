@@ -34,7 +34,6 @@ function drupalorg_install() {
 function drupalorg_update_dependencies() {
   // List of all contrib modules used on drupal.org.
   $contrib_modules = array(
-    'admin_menu',
     'apachesolr',
     'apachesolr_search',
     'apachesolr_test',
@@ -102,7 +101,6 @@ function drupalorg_update_dependencies() {
     'conflict',
     'field_collection',
     'lists',
-    'admin_menu_toolbar',
     'drupalorg_case_studies',
     'drupalorg_change_notice',
     'project_verify_package',
