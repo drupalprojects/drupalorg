@@ -646,6 +646,7 @@ function drupalorg_update_7010() {
         'access content overview',
         'administer nodes',
         'bypass node access',
+        'administer content types',
         // All the other explicit delete/edit perms are pointless given that
         // this role already has 'administer nodes'.
       ),
