@@ -2031,7 +2031,7 @@ function drupalorg_user_view($account, $view_mode) {
 
       if (drupalorg_has_civimembership($organization, 'Organization')) {
         $content['column_2']['membership'][] = array(
-          '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
+          '#prefix' => '<div class="clearfix"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-organization.png') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div><div class="grid-3 omega"><p>',
           '#markup' => t('My organization is a member of the <a href="https://association.drupal.org/">Drupal Association</a>. We’re supporting the Drupal.org infrastructure and other large community initiatives. <a href="https://association.drupal.org/membership">Join us</a>.'),
           '#suffix' => '</p></div></div>',
         );
@@ -2055,7 +2055,7 @@ function drupalorg_user_view($account, $view_mode) {
         '@membership_type' => drupal_strtolower($membership->membership_type),
       );
       $content['column_2']['membership'][] = array(
-        '#prefix' => '<div class="clear-block"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
+        '#prefix' => '<div class="clearfix"><div class="grid-1 alpha"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="grid-3 omega"><p>',
         '#markup' => t('@username is an <a href="https://association.drupal.org/membership">@membership_type member</a> of the <a href="https://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
         '#suffix' => '</p></div></div>',
       );
