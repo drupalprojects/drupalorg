@@ -1084,3 +1084,12 @@ function drupalorg_update_7017() {
   $redirect->redirect = 'project/project_module/categories';
   redirect_save($redirect);
 }
+
+/**
+ * Do not display the forums field.
+ */
+function drupalorg_update_7018() {
+  $instance = field_read_instance('node', 'taxonomy_forums', 'forum');
+  $instance['display']['default']['type'] = 'hidden';
+  field_update_instance($instance);
+}

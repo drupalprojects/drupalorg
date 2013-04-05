@@ -1510,18 +1510,8 @@ function drupalorg_ad_settings_form() {
  * Implements hook_node_view().
  */
 function drupalorg_node_view($node, $view_mode = 'full') {
-  // Hide extra SA forum taxonomy values, since they are handled by
-  // tabs.
-  if ($node->type == 'forum') {
-    foreach ($node->content['taxonomy_forums']['#items'] as $index => $item) {
-      if (isset($item['tid']) && in_array($item['tid'], array(1852, 44, 1856))) {
-        hide($node->content['taxonomy_forums'][$index]);
-      }
-    }
-  }
-
   // Handle Marketplace nodes taxonomy.
-  elseif ($node->type === 'organization') {
+  if ($node->type === 'organization') {
     // Group terms by vocabulary and link to marketplace browsing pages.
     $default_args = array();
 
