@@ -1176,15 +1176,14 @@ function drupalorg_project_meta_data($node) {
   }
   
   // Usage stats.
-  // @todo project_usage_get_project_total_usage is currently broken.
-  $total_usage = 0; //project_usage_get_project_total_usage($node->nid);
+  $total_usage = project_usage_get_project_total_usage($node->nid);
   if ($total_usage) {
     $info[t('Reported installs')] = format_plural($total_usage,
       '<strong>1</strong> site currently reports using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
       '<strong>@count</strong> sites currently report using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
       array(
-        '@project-type' => drupal_strtolower($project_type->label),
-        '!project-shortname' => $node->project['uri'],
+        '@project-type' => drupal_strtolower(drupalorg_project_node_type_label($node->type, 'singular')),
+        '!project-shortname' => $node->field_project_machine_name[$node->language][0]['value'],
       )
     );
   }
@@ -1325,27 +1324,35 @@ function drupalorg_project_project_types() {
 function drupalorg_project_node_type_label($node_type, $label_type) {
   static $labels = array(
     'project' => array(
+      'singular' => 'Project',
       'plural' => 'Projects',
     ),
     'project_core' => array(
+      'singular' => 'Drupal Core',
       'plural' => 'Drupal Cores',
     ),
     'project_distribution' => array(
+      'singular' => 'Distribution',
       'plural' => 'Distributions',
     ),
     'project_drupalorg' => array(
+      'singular' => 'Drupal.org project',
       'plural' => 'Drupal.org projects',
     ),
     'project_module' => array(
+      'singular' => 'Module',
       'plural' => 'Modules',
     ),
     'project_theme' => array(
+      'singular' => 'Theme',
       'plural' => 'Themes',
     ),
     'project_theme_engine' => array(
+      'singular' => 'Theme engine',
       'plural' => 'Theme engines',
     ),
     'project_translation' => array(
+      'singular' => 'Translation',
       'plural' => 'Translations',
     ),
   );
