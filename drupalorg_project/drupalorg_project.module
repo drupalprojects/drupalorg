@@ -1160,7 +1160,7 @@ function drupalorg_project_meta_data($node) {
       }
       if ($vocabulary->vid == DRUPALORG_PROJECT_CATEGORIES_VID) {
         // These are hard-coded, don't incur cost of check_plain().
-        $label = t('!project_type categories', array('!project_type' => node_type_get_name($node)));
+        $label = t('!project_type categories', array('!project_type' => drupalorg_project_node_type_label($node->type, 'singular')));
       }
       else {
         $label = check_plain($vocabulary->name);
