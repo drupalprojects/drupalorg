@@ -1093,3 +1093,17 @@ function drupalorg_update_7018() {
   $instance['display']['default']['type'] = 'hidden';
   field_update_instance($instance);
 }
+
+/**
+ * Do not display taxonomy for projects (drupalorg_project renders them elsewhere).
+ */
+function drupalorg_update_7019() {
+  foreach (project_project_node_types() as $type) {
+    foreach (array('taxonomy_vocabulary_3', 'taxonomy_vocabulary_44', 'taxonomy_vocabulary_46') as $field) {
+      if ($instance = field_read_instance('node', $field, $type)) {
+        $instance['display']['default']['type'] = 'hidden';
+        field_update_instance($instance);
+      }
+    }
+  }
+}

@@ -1118,51 +1118,53 @@ function drupalorg_project_meta_data($node) {
       $class = '';
       $links = array();
       foreach ($node->{'taxonomy_' . $vocabulary->machine_name}[$node->language] as $term) {
-        $options = array();
-        if ($term['taxonomy_term']->vid == '44') { // Maintenance status
-          $maintenance_status = $term['taxonomy_term']->tid;
-          switch ($term['taxonomy_term']->tid) {
-            case '13032':  // Abandoned
-              $options['attributes'] = array('class' => array('alert'));
-              break;
+        if ($term_entity = taxonomy_term_load($term['tid'])) {
+          $options = array();
+          if ($vocabulary->vid == '44') { // Maintenance status
+            $maintenance_status = $term['tid'];
+            switch ($term['tid']) {
+              case '13032':  // Abandoned
+                $options['attributes'] = array('class' => array('alert'));
+                break;
 
-            case '9990':   // Seeking co-maintainer(s)
-            case '9992':   // Seeking new maintainer
-              $options['attributes'] = array('class' => array('warning'));
-              break;
-          }
-        }
-        elseif ($term['taxonomy_term']->vid == '46') { // Development status
-          $development_status = $term['taxonomy_term']->tid;
-          switch ($term['taxonomy_term']->tid) {
-            case '9994':   // Obsolete
-              $options['attributes'] = array('class' => array('alert'));
-              break;
-
-            case '13030':  // Maintenance fixes only
-            case '16374':  // No futher development
-              $options['attributes'] = array('class' => array('warning'));
-              break;
-          }
-        }
-        // Special-case module category terms to link to download+extend.
-        if ($term['taxonomy_term']->vid == DRUPALORG_PROJECT_CATEGORIES_VID) {
-          // Only use the 'terms' style for module categories.
-          $class = 'terms';
-          $term_path = 'project/' . $node->type;
-          $solr_arg = 'im_vid_' . $term['taxonomy_term']->vid . ':' . $term['taxonomy_term']->tid;
-          foreach (element_children($form['f']) as $element) {
-            if (isset($form['f'][$element]['#options'][$solr_arg])) {
-              $options['query'] = array('f' => array($element => $solr_arg));
+              case '9990':   // Seeking co-maintainer(s)
+              case '9992':   // Seeking new maintainer
+                $options['attributes'] = array('class' => array('warning'));
+                break;
             }
           }
-        }
-        else {
-          $uri = entity_uri('taxonomy_term', $term['taxonomy_term']);
-          $term_path = $uri['path'];
-        }
+          elseif ($vocabulary->vid == '46') { // Development status
+            $development_status = $term['tid'];
+            switch ($term['tid']) {
+              case '9994':   // Obsolete
+                $options['attributes'] = array('class' => array('alert'));
+                break;
 
-        $links[] = l($term['taxonomy_term']->name, $term_path, $options);
+              case '13030':  // Maintenance fixes only
+              case '16374':  // No futher development
+                $options['attributes'] = array('class' => array('warning'));
+                break;
+            }
+          }
+          // Special-case module category terms to link to download+extend.
+          if ($vocabulary->vid == DRUPALORG_PROJECT_CATEGORIES_VID) {
+            // Only use the 'terms' style for module categories.
+            $class = 'terms';
+            $term_path = 'project/' . $node->type;
+            $solr_arg = 'im_vid_' . $vocabulary->vid . ':' . $term['tid'];
+            foreach (element_children($form['f']) as $element) {
+              if (isset($form['f'][$element]['#options'][$solr_arg])) {
+                $options['query'] = array('f' => array($element => $solr_arg));
+              }
+            }
+          }
+          else {
+            $uri = entity_uri('taxonomy_term', $term_entity);
+            $term_path = $uri['path'];
+          }
+
+          $links[] = l($term_entity->name, $term_path, $options);
+        }
       }
       if ($vocabulary->vid == DRUPALORG_PROJECT_CATEGORIES_VID) {
         // These are hard-coded, don't incur cost of check_plain().
