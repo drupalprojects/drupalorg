@@ -742,7 +742,7 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
     if (project_node_is_project($node)) {
       if ($node->field_project_type[$node->language][0]['value'] === 'sandbox') {
         drupal_set_title(l(t("!name's sandbox", array('!name' => $node->name)), 'project/user/' . $node->uid) . ': ' . check_plain($node->title), PASS_THROUGH);
-        $node->content['project_sandbox_warning']['#value'] = '<div class="meta"><h5>Experimental Project</h5><p>This is a <a href="/node/1011196">sandbox project</a>, which contains experimental code for developer use only.</p></div>';
+        $node->content['project_sandbox_warning']['#markup'] = '<div class="meta"><h5>Experimental Project</h5><p>This is a <a href="/node/1011196">sandbox project</a>, which contains experimental code for developer use only.</p></div>';
         $node->content['project_sandbox_warning']['#weight'] = -1;
       }
       else {
