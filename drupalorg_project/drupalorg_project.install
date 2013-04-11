@@ -283,16 +283,16 @@ function drupalorg_project_update_7006() {
 /**
  * Drupal.org customizations for the D7 project_issue node type.
  *
- * Enables and configures the 'File Metadata Table' field formatter.
+ * Enables and configures the 'Extended File Field' field formatter.
  */
 function drupalorg_project_update_7007() {
   // Enable new dependencies.
-  module_enable(array('field_formatter_settings', 'file_metadata_table'));
+  module_enable(array('field_formatter_settings', 'extended_file_field'));
 
   // Set up formatter settings.
   $display = array(
     'label' => 'above',
-    'type' => 'file_metadata_table',
+    'type' => 'extended_file_field',
     'settings' => array(
       'filetypes' => 'all',
       'extensions' => 'patch,diff',
@@ -301,12 +301,19 @@ function drupalorg_project_update_7007() {
       'sortby' => 'cid',
       'sortorder' => 'desc',
     ),
-    'module' => 'file_metadata_table',
+    'module' => 'extended_file_field',
     'weight' => 4,
   );
 
+  // Set up widget settings.
+  $widget_settings = array(
+    'extended_file_field_show_remove' => 0,
+    'extended_file_field_hide_operations' => 1,
+    'extended_file_field_hidden_toggle' => 1,
+  );
+
   // Cycle through each project_issue node type, and set the field_issue_files
-  // field to use the file metadata table field formatter.
+  // field to use the extended file field formatter.
   $bundles = project_issue_issue_node_types();
   foreach ($bundles as $bundle) {
     // Update the display formatter for each bundle
@@ -317,6 +324,9 @@ function drupalorg_project_update_7007() {
         'field_name' => 'field_issue_files',
         'display' => array(
           'default' => $display,
+        ),
+        'widget' => array(
+          'settings' => $widget_settings,
         ),
       );
       field_update_instance($instance);
