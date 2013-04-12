@@ -22,7 +22,7 @@ class VersioncontrolUserMapperDrupalorg implements VersioncontrolUserMapperInter
     preg_match('/^.*@(\d{1,8})\.no-reply\.drupal\.org$/', $email, $matches);
     if (!empty($matches[1])) {
       // It's a special d.o anonymized email addresses. If the uid exists in the db, return it directly.
-      if (db_result(db_query('SELECT uid FROM {users} WHERE uid = %d', $matches[1]))) {
+      if (db_query('SELECT uid FROM {users} WHERE uid = %d', $matches[1])->fetchField()) {
         return $matches[1];
       }
     }
