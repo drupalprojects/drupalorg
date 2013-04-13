@@ -829,9 +829,6 @@ function drupalorg_update_7010() {
         'create sandbox projects',
         'delete own sandbox projects',
       ),
-      'project_issue' => array(
-        'access issue statistics',
-      ),
       'node' => array(
         'create project_core content',
         'edit own project_core content',
