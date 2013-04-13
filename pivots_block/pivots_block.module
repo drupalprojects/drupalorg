@@ -17,83 +17,42 @@
  */
 
 define('PID_DOUBLE', 5008); // double pivot algorithm ID that displays related projects in different algorithms.
-define('LIMIT_DOUBLE', 5);
-define('LIMIT_MAX', 100); // maximum items to display in the block or on a page.
 
-/**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
- */
-function pivots_block_output() {
-  // Skip the Drupal core project.
-/* @todo D7: No project_get_project_from_menu() function.
-  if (($node = project_get_project_from_menu()) && ($node->nid != DRUPALORG_CORE_NID)) {
-
-    //HACK: randomize algorithm rotation
-    $_pivots_block_pid_double = PID_DOUBLE; // double pivot ID defaults to conversation pivots
-    switch (rand(0, 1)) {
-      case 0:
-        $_pivots_block_pid_double = 5008; // conversation pivots
-        break;
-      case 1:
-        $_pivots_block_pid_double = 5009; // solr10
-        break;
-    }
-
-    $output = _pivots_block_content($node->nid, $_pivots_block_pid_double, t("Related projects"), LIMIT_DOUBLE);
-    //$output .= _pivots_block_suggestbox($node->nid, $_pivots_block_pid_double);
-    return $output;
-  }
-*/
-}
-
-function _pivots_block_content($node_id, $pivot_id, $title, $limit) {
-  $output = '';
-  $ga_event = "$node_id";
-  $items = _pivots_block_generate_items($node_id, $pivot_id, $limit);
+function _pivots_block_content($node_id, $pivot_id) {
+  $items = _pivots_block_generate_items($node_id, $pivot_id);
   if (!empty($items)) {
+    $ga_event = $node_id;
     foreach ($items as $position => $item) {
-      $items[$position] = l($item['title'], "node/{$item['nid']}", array('attributes' => array(
-          "onClick" => "javascript:_gaq.push(['_trackEvent', 'PivotsClick_${pivot_id}', '${node_id}_{$item['nid']}']);",
-          "rel" => "nofollow",
-        )));
-      $ga_event .= "_{$item['nid']}";
+      $items[$position] = l($item['title'], 'node/' . $item['nid'], array('attributes' => array(
+        'onClick' => "javascript:_gaq.push(['_trackEvent', 'PivotsClick_" . $pivot_id . "', '" . $node_id . '_' . $item['nid'] . "']);",
+        'rel' => 'nofollow',
+      )));
+      $ga_event .= '_' . $item['nid'];
     }
-    //$output = theme('item_list', $items, $title);
-    $output = theme('item_list', array('items' => $items)); // hack: don't show title
+    drupal_add_js("jQuery(document).ready(function() {
+      _gaq.push(['_trackEvent', 'PivotsPageview_" . $pivot_id . "', '" . $ga_event . "']);
+    });", array('type' => 'inline', 'scope' => 'footer'));
+    return array('#theme' => 'item_list', '#items' => $items);
   }
-  drupal_add_js("$(document).ready(function() {
-    _gaq.push(['_trackEvent', 'PivotsPageview_{$pivot_id}', '{$ga_event}']);
-  });", array('type' => 'inline', 'scope' => 'footer'));
-  return $output;
 }
 
-function _pivots_block_generate_items($node_id, $pivot_id, $limit) {
-  if ($limit <= 0) {
-    $limit = LIMIT_MAX;
-  }
-
+function _pivots_block_generate_items($node_id, $pivot_id) {
   db_set_active('pivots'); // NOTE: here we activate the pivots database.
   // if there's database failure, we just pretend nothing happens whatsoever. pivots_block returns nothing in this case.
-  $matches = @db_query("SELECT DISTINCT dest_id FROM {pivots_match} WHERE pivot_id = :pivot_id AND src_id = :src_id
-        AND dest_id< > :dest_id< ORDER BY score DESC", array(':pivot_id' => $pivot_id, ':src_id' => $node_id, ':dest_id<' => $node_id));
+  $matches = @db_query_range('SELECT DISTINCT dest_id FROM {pivots_match} WHERE pivot_id = :pivot_id AND src_id = :src_id AND dest_id <> :dest_id ORDER BY score DESC', 0, 5, array(':pivot_id' => $pivot_id, ':src_id' => $node_id, ':dest_id' => $node_id));
   db_set_active(); // NOTE: change back to use the default database
 
-  $count = 0;
   $items = array();
-  while (($match = @db_fetch_array($matches)) && $count < $limit) {
-    $dest_id = $match['dest_id'];
-    $result = db_query("SELECT title FROM {node} WHERE nid = :nid AND status = :status", array(':nid' => $dest_id, ':status' => 1));
-    // there might be cases that the node was deleted, or set to unpublished between pivots database refresh
-    // so here we only count the valid node.
-    $title = $result->fetchField();
+  foreach ($matches as $match) {
+    // There might be cases that the node was deleted, or set to unpublished
+    // between pivots database refresh so here we only count the valid node.
+    $title = db_query('SELECT title FROM {node} WHERE nid = :nid AND status = :status', array(':nid' => $match->dest_id, ':status' => 1))->fetchField();
     if ($title) {
       $items[] = array(
-        'nid' => $dest_id,
+        'nid' => $match->dest_id,
         'title' => $title,
         'pid' => $pivot_id,
       );
-      $count++;
     }
   }
   return $items;
@@ -154,7 +113,23 @@ function pivots_block_block_info() {
  * Implements hook_block_view().
  */
 function pivots_block_block_view($delta) {
-  $block['subject'] = t('Related projects');
-  $block['content'] = pivots_block_output();
-  return $block;
+  // Skip the Drupal core project.
+  if (($node = project_get_project_from_menu()) && ($node->nid != DRUPALORG_CORE_NID)) {
+    // Randomize algorithm rotation
+    $_pivots_block_pid_double = PID_DOUBLE; // double pivot ID defaults to conversation pivots
+    switch (rand(0, 1)) {
+      case 0:
+        $_pivots_block_pid_double = 5008; // conversation pivots
+        break;
+
+      case 1:
+        $_pivots_block_pid_double = 5009; // solr10
+        break;
+    }
+
+    return array(
+      'subject' => t('Related projects'),
+      'content' => _pivots_block_content($node->nid, $_pivots_block_pid_double),
+    );
+  }
 }
