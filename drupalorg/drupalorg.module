@@ -1708,7 +1708,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
          if (($node->field_org_marketplace_request[$node->language][0]['value'] == '1') && !empty($node->field_organization_issue[$node->language][0]['target_id'])) {
            drupal_set_message(t('Regarding <em>Services listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_organization_issue[$node->language][0]['target_id']))), 'status');
          }
-         if (($node->field_org_training_request[$node->language][0]['value'] == '1') && !empty($node->field_org_training_issue[$node->language][0]['target_id'])) {
+         if (!empty($node->field_org_training_request) && ($node->field_org_training_request[$node->language][0]['value'] == '1') && !empty($node->field_org_training_issue[$node->language][0]['target_id'])) {
            drupal_set_message(t('Regarding <em>Training listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_org_training_issue[$node->language][0]['target_id']))), 'status');
          }
        }
