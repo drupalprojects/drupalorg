@@ -342,3 +342,12 @@ function drupalorg_project_update_7008() {
     variable_set('conflict_enable_' . $type, TRUE);
   }
 }
+
+/**
+ * Add security update information to field description.
+ */
+function drupalorg_project_update_7009() {
+  $instance = field_read_instance('node', 'taxonomy_vocabulary_7', 'project_release');
+  $instance['description'] = '<a href="/documentation/releases/types">What is a release type?</a>';
+  field_update_instance($instance);
+}

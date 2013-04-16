@@ -41,20 +41,10 @@ define('DRUPALORG_SECURITY_TEAM_URL', 'http://drupal.org/security-team');
 define('DRUPALORG_SECURITY_CONTACT_URL', 'http://drupal.org/security-team#report-issue');
 
 /**
- * URL for the handbook page that describes the "Release type" vocabulary.
- */
-define('DRUPALORG_RELEASE_TYPE_HANDBOOK_NID', 1025122);
-
-/**
  * URL specifically to describe the "Security update" term.
  * For now, the general page for release types is the best we've got.
  */
-define('DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID', DRUPALORG_RELEASE_TYPE_HANDBOOK_NID);
-
-/**
- * Term ID for translation projects.
- */
-define('DRUPALORG_TRANSLATION_TID', 29);
+define('DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID', 1025122);
 
 /**
  * Defaults for project_project_node_form
@@ -62,8 +52,6 @@ define('DRUPALORG_TRANSLATION_TID', 29);
 define('DRUPALORG_DEFAULT_LICENSE', 'GNU public license, version 2');
 define('DRUPALORG_DEFAULT_LICENSE_LINK', 'http://www.gnu.org/licenses/old-licenses/gpl-2.0.html');
 
-
-// == Basic core hooks =========================================================
 
 /**
  * Implementation of hook_menu().
@@ -209,22 +197,16 @@ function drupalorg_project_menu_alter(&$items) {
  *   The project object to check access against.
  */
 function drupalorg_project_promote_project_access($node) {
-  $forbidden_tids = drupalorg_project_get_no_promote_project_tids();
-  foreach ($forbidden_tids as $tid) {
-    if (!empty($node->taxonomy[$tid])) {
-      return FALSE;
-    }
-  }
-  return project_promote_project_access($node);
+  return !in_array($node->type, drupalorg_project_get_no_promote_project_types()) && project_promote_project_access($node);
 }
 
 /**
- * Return an array of project type tids that cannot be promoted.
+ * Return an array of project types that cannot be promoted.
  *
  * This helper function only exists since you can't define() an array in PHP.
  */
-function drupalorg_project_get_no_promote_project_tids() {
-  return array(13, 22588);
+function drupalorg_project_get_no_promote_project_types() {
+  return array('project_core', 'project_drupalorg');
 }
 
 /**
@@ -249,8 +231,6 @@ function drupalorg_project_cron() {
   drupalorg_project_issue_counts();
 }
 
-// == Issue counter ============================================================
-
 /**
  * Count number of issues in various issue queues on drupal.org.
  *
@@ -262,20 +242,13 @@ function drupalorg_project_cron() {
  * @see DRUPALORG_CORE_VERSION_NAME
  */
 function drupalorg_project_issue_counts() {
-  // @todo D7 Fix this after version field is readded to issues!
-  // Fetch issue counts for the current development release, and a combined count
-  // for the development release and the latest stable release.
+  // @todo D7 replace {project_issues} with EntityFieldQuery.
+  // Fetch issue counts for the current development release, and a combined
+  // count for the development release and the latest stable release.
   $versions = array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID => array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID), 'both' => array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID, DRUPALORG_CORE_STABLE_VERSION_TID));
 
   foreach ($versions as $version => $value) {
-    $issue_rids = array();
-    /// @todo Further optimize this if/when {node}.status is denormalized into
-    /// {project_release_nodes}.
-//    db_query("SELECT n.nid FROM {node} n INNER JOIN {field_data_taxonomy_vocabulary_6} t ON n.nid = t.entity_id AND t.entity_type = 'node' WHERE t.bundle IN (:types) AND n.status = 1")
-    $result = db_query("SELECT prn.nid FROM {project_release_nodes} prn INNER JOIN {node} n ON prn.nid = n.nid WHERE prn.pid = :pid AND prn.version_api_tid IN (:versions) AND n.status = 1", array(':pid' => DRUPALORG_CORE_NID, ':versions' => $value))->execute();
-    foreach ($result as $release) {
-      $issue_rids[] = $release->nid;
-    }
+    $issue_rids = db_query("SELECT prn.nid FROM {project_release_nodes} prn INNER JOIN {node} n ON prn.nid = n.nid AND n.status = 1 WHERE prn.pid = :pid AND prn.version_api_tid IN (:versions)", array(':pid' => DRUPALORG_CORE_NID, ':versions' => $value))->fetchCol();
     $args = array(':pid' => DRUPALORG_CORE_NID, ':issue_rids' => $issue_rids);
     $issue_counts[$version]['Critical bugs'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND category = 'bug' AND sid IN (1,8,13,14,15) AND priority = 1 AND rid IN (:issue_rids)", $args)->fetchField();
     $issue_counts[$version]['Major bugs'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND category = 'bug' AND sid IN (1,8,13,14,15) AND priority = 4 AND rid IN (:issue_rids)", $args)->fetchField();
@@ -288,13 +261,20 @@ function drupalorg_project_issue_counts() {
   variable_set('drupalorg_project_issue_counts', $issue_counts);
 }
 
-// == Altering of various forms ================================================
-
 /**
  * Alter the project_issue_node_form form.
  */
-function drupalorg_project_form_project_issue_node_form_alter($form, $form_state) {
-  $priority_status_description = array(
+function drupalorg_project_form_project_issue_node_form_alter(&$form, $form_state) {
+  // Make the "Issue tags" vocabulary not so prominent on issue nodes.
+  $form['taxonomy_vocabulary_9']['#type'] = 'fieldset';
+  $form['taxonomy_vocabulary_9']['#title'] = t('Tags');
+  $form['taxonomy_vocabulary_9']['#collapsible'] = TRUE;
+  $form['taxonomy_vocabulary_9']['#collapsed'] = TRUE;
+  // We want this fieldset at the very bottom, just above the buttons, but
+  // we need different weights for that depending on if it's a new issue or
+  // a follow-up comment.
+  $form['taxonomy_vocabulary_9']['#weight'] = 35;
+  $form['issue_info']['description'] = array(
     // The "standard" class adds a clear so the description is positioned
     // below the floated pull-downs.  "fieldset-description" is from
     // bluebeach to make the font size smaller.
@@ -303,32 +283,9 @@ function drupalorg_project_form_project_issue_node_form_alter($form, $form_state
     '#suffix' => '</div>',
   );
 
-  // Make the "Issue tags" vocabulary not so prominent on issue nodes.
-  $form['taxonomy']['#type'] = 'fieldset';
-  $form['taxonomy']['#title'] = t('Tags');
-  $form['taxonomy']['#collapsible'] = TRUE;
-  $form['taxonomy']['#collapsed'] = TRUE;
-  // We want this fieldset at the very bottom, just above the buttons, but
-  // we need different weights for that depending on if it's a new issue or
-  // a follow-up comment.
-  // @note Noticed while moving from hook_form_alter() to
-  // hook_form_FORMID_alter() that the else condition below can never be fired
-  // because the $form_id always equals 'project_issue_node_form'. In the
-  // previous version it was even underneath another copy of the exact same if
-  // statement. Leaving it here commented out for posterity.
-  //if ($form_id == 'project_issue_node_form') {
-    $form['taxonomy']['#weight'] = 35;
-    $form['issue_info']['description'] = $priority_status_description;
-  /*}
-  else {
-    $form['taxonomy']['#weight'] = 4;
-    $form['original_issue']['issue_info']['description'] = $priority_status_description;
-  }*/
-
   // Prefill values from $_GET.
   if (isset($_GET['version'])) {
-    // @todo D7 Fix this after version field is in!
-    $form['project_info']['rid']['#default_value'] = $_GET['version'];
+    $form['field_issue_version'][LANGUAGE_NONE]['#default_value'] = $_GET['version'];
   }
   if (isset($_GET['component'])) {
     $form['field_issue_component'][LANGUAGE_NONE]['#default_value'] = array($_GET['component']);
@@ -337,7 +294,7 @@ function drupalorg_project_form_project_issue_node_form_alter($form, $form_state
     $form['field_issue_category'][LANGUAGE_NONE]['#default_value'] = array((int)$_GET['categories']);
   }
   if (isset($_GET['priorities'])) {
-    $form['field_issue_priority'][LANGUAGE_NONE]['#default_value'] = array((int)$_GET['priorities']);
+    $form['field_issue_priority'][LANGUAGE_NONE]['#default_value'] = $_GET['priorities'];
   }
   if (isset($_GET['assigned'])) {
     $form['field_issue_assigned'][LANGUAGE_NONE]['#default_value'] = array((int)$_GET['assigned']);
@@ -357,47 +314,6 @@ function drupalorg_project_form_project_issue_node_form_alter($form, $form_state
 }
 
 /**
- * Alter the form_project_node_form form.
- */
-function drupalorg_project_form_project_node_form_alter($form, $form_state) {
-  // Deprecate the "license" field, as it must always be GPLv2+ anyway.
-  // @note D7 The license field went missing anyway.
-  /*
-  if (! $form['project']['license']['#default_value']) {
-     $form['project']['license'] = array(
-      '#type' => 'item',
-      '#title' => $form['project']['license']['#title'],
-      '#value' => t('<a href="@link_url">@link_name</a>', array(
-        // Constants defined in drupalorg_project.module.
-        '@link_url' => DRUPALORG_DEFAULT_LICENSE_LINK,
-        '@link_name' => DRUPALORG_DEFAULT_LICENSE,
-      )),
-    );
-  }
-  */
-
-  // Don't allow promoting certain types of projects on drupal.org.
-  // @todo D7 Fix this after the vocab 3 mess is sorted.
-  foreach (drupalorg_project_get_no_promote_project_tids() as $tid) {
-    if (!empty($form['#node']->taxonomy[$tid])) {
-      $form['field_project_type']['#access'] = FALSE;
-    }
-  }
-
-  if (!empty($form['field_project_type'][LANGUAGE_NONE]['project']['sandbox_help']) && !drupalorg_project_promote_project_access($form['#node'])) {
-    $form['project_node']['project']['sandbox_help']['#value'] = t('This project is a sandbox.');
-  }
-
-  // Translation projects on drupal.org are being phased out in favor of
-  // localize.drupal.org, so prevent new translation projects from being
-  // created.
-  if ($form['project_taxonomy']['project_type']['#default_value'] != DRUPALORG_TRANSLATION_TID) {
-    unset($form['project_taxonomy']['project_type']['#options'][DRUPALORG_TRANSLATION_TID]);
-  }
-  $form['project_taxonomy']['project_type']['#description'] = t('Note: Translation projects have been moved and are now actively maintained at <a href="@localize-link">localize.drupal.org</a>.', array('@localize-link' => 'http://localize.drupal.org/'));
-}
-
-/**
  * Alter the project_issue_notification_user_form form.
  *
  * Since drupal.org has so many projects, it'd be insane to allow people to
@@ -414,150 +330,99 @@ function drupalorg_project_form_project_issue_notification_user_form_alter($form
  * Ensure that only privileged users can modify a security release tag and when
  * people add this tag, they get to know about the process.
  */
-function drupalorg_project_form_node_form_alter($form, $form_state) {
-  if (project_release_node_is_release($form_state['node'])) {
+function drupalorg_project_form_node_form_alter(&$form, $form_state) {
+  if (project_node_is_project($form_state['node'])) {
+    // Deprecate the "license" field, as it must always be GPLv2+ anyway.
+    $form['field_project_license']['#access'] = FALSE;
+    $form['field_project_license'][LANGUAGE_NONE][0]['#default_value']['url'] = DRUPALORG_DEFAULT_LICENSE_LINK;
+    $form['field_project_license'][LANGUAGE_NONE][0]['#default_value']['title'] = DRUPALORG_DEFAULT_LICENSE;
+
+    // Don't allow promoting certain types of projects on Drupal.org.
+    if (in_array($form_state['node']->type, drupalorg_project_get_no_promote_project_types())) {
+      $form['field_project_type'][LANGUAGE_NONE]['#default_value'] = 'sandbox';
+      $form['field_project_type']['#access'] = FALSE;
+    }
+  }
+  elseif (project_release_node_is_release($form_state['node'])) {
     // See if this is a release for a translation project, and if so, deny.
     $project = node_load(project_release_get_release_project_nid($form_state['node']));
-    // @todo D7 all this taxonomy stuff needs to use the fields
-    if (arg(2) != 'edit' && !empty($project->taxonomy[DRUPALORG_TRANSLATION_TID])) {
-      foreach (element_children($form) as $child) {
-        unset($form[$child]);
-      }
-      $form['translations_denied'] = array(
-        '#type' => 'markup',
-        '#markup' => t('Translation projects have been moved and are now actively maintained at <a href="@localize-link">localize.drupal.org</a>. You are no longer allowed to create new releases of translation projects on drupal.org.', array('@localize-link' => 'http://localize.drupal.org/')),
-      );
-      return;
+    if ($project->type === 'project_translation') {
+      // todo d7 ^ currently entire page errors out from drupalorg_versioncontrol.
     }
 
-    if (!empty($form['taxonomy'])) {
-      $vid = drupalorg_project_get_release_type_vid();
-      $security_tid = drupalorg_project_get_security_update_tid();
-      if (!empty($form['taxonomy'][$vid])) {
-        $form['taxonomy'][$vid]['#weight'] = 10;
-        if (empty($form['nid']['#value'])) {
-          // Adding a new release.
-          if (!empty($form['project_release']['rebuild']['#value'])) {
-            // This is a -dev, don't let anyone mark it a security update.
-            _drupalorg_project_remove_security_update($form);
-          }
-          else {
-            // Regular release
-            $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => url('node/'. DRUPALORG_RELEASE_TYPE_HANDBOOK_NID)));
-            // Add wrapper div for drupalorg_project.js
-            $form['taxonomy'][$vid]['#prefix'] = '<div class="release-type-select">';
-            $form['taxonomy'][$vid]['#suffix'] = '</div>';
-            $form['#validate'][] = 'drupalorg_project_security_release_form_validate';
-            $confirm_class = 'security-update-confirm';
-            // Hide the confirmation checkbox on page load unless 'Security
-            // update' is already selected.
-            if (empty($form_state['values']['taxonomy'][$vid]) || (array_search($security_tid, $form_state['values']['taxonomy'][$vid]) === FALSE)) {
-              $confirm_class .= ' js-hide';
-            }
-            $form['security_update_confirm'] = array(
-              '#type' => 'checkbox',
-              '#title' => t('Are you sure you want to mark this release as a <a href="@security_update_url">Security update</a>?', array('@security_update_url' => url('node/'. DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID))),
-              '#prefix' => '<div class="'. $confirm_class .'">',
-              '#suffix' => '</div>',
-              '#weight' => -2,
-              '#description' => t('If you select %security_update, your release will not be published without the manual intervention of the <a href="@security_url">Drupal Security Team</a>. You should have already <a href="@contact_url">contacted the Security Team</a> to coordinate a security advisory (SA) for your release before you committed any security-related patches.', array('%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL)),
-              '#default_value' => !empty($form_state['values']['security_update_confirm']),
-            );
-            $drupalorg_project_path = drupal_get_path('module', 'drupalorg_project');
-            drupal_add_js($drupalorg_project_path .'/drupalorg_project.js');
-            drupal_add_css($drupalorg_project_path .'/drupalorg_project.css');
-          }
+    $security_term = taxonomy_term_load(variable_get('project_release_security_update_tid', FALSE));
+    $release_type_field = &$form['taxonomy_' . $security_term->vocabulary_machine_name][$form_state['node']->language];
+    if (empty($form['nid']['#value'])) {
+      // Adding a new release.
+      // @todo d7
+      if (!empty($form['project_release']['rebuild']['#value'])) {
+        // This is a -dev, don't let anyone mark it a security update.
+        unset($release_type_field['#options'][$security_term->tid]);
+      }
+      else {
+        // Regular release
+        // Add wrapper div for drupalorg_project.js
+        $form['taxonomy'][$vid]['#prefix'] = '<div class="release-type-select">';
+        $form['taxonomy'][$vid]['#suffix'] = '</div>';
+        $form['#validate'][] = 'drupalorg_project_security_release_form_validate';
+        $confirm_class = 'security-update-confirm';
+        // Hide the confirmation checkbox on page load unless 'Security
+        // update' is already selected.
+        if (empty($form_state['values']['taxonomy'][$vid]) || (array_search($security_tid, $form_state['values']['taxonomy'][$vid]) === FALSE)) {
+          $confirm_class .= ' js-hide';
         }
-        else {
-          // Editing an existing release.
-          if (array_search($security_tid, $form['taxonomy'][$vid]['#default_value']) !== FALSE) {
-            // If this release is already marked as a Security update, don't
-            // let regular users change it any futher.
-            if (!user_access('administer projects')) {
-              $form['taxonomy'][$vid]['#disabled'] = TRUE;
-              $form['taxonomy'][$vid]['#value'] = $form['taxonomy'][$vid]['#default_value'];
-            }
-            $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a> Since this release is already marked as a %security_update, you can no longer change the release type. If you believe you need to do so for some reason, you should <a href="@contact_url">contact</a> the <a href="@security_url">Drupal Security Team</a>.', array('@handbook_url' => url('node/'. DRUPALORG_RELEASE_TYPE_HANDBOOK_NID), '%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL));
-          }
-          else {
-            // Not a Security update, remove that option entirely if this is
-            // either a -dev snapshot or a non-admin user.
-            if (!empty($form['#node']->rebuild) || !user_access('administer projects')) {
-              _drupalorg_project_remove_security_update($form);
-            }
-            $form['taxonomy'][$vid]['#description'] = t('<a href="@handbook_url">What is a release type?</a>', array('@handbook_url' => url('node/'. DRUPALORG_RELEASE_TYPE_HANDBOOK_NID)));
-          }
+        $form['security_update_confirm'] = array(
+          '#type' => 'checkbox',
+          '#title' => t('Are you sure you want to mark this release as a <a href="@security_update_url">Security update</a>?', array('@security_update_url' => url('node/' . DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID))),
+          '#prefix' => '<div class="' . $confirm_class . '">',
+          '#suffix' => '</div>',
+          '#weight' => -2,
+          '#description' => t('If you select %security_update, your release will not be published without the manual intervention of the <a href="@security_url">Drupal Security Team</a>. You should have already <a href="@contact_url">contacted the Security Team</a> to coordinate a security advisory (SA) for your release before you committed any security-related patches.', array('%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL)),
+          '#default_value' => !empty($form_state['values']['security_update_confirm']),
+        );
+        $drupalorg_project_path = drupal_get_path('module', 'drupalorg_project');
+        drupal_add_js($drupalorg_project_path . '/drupalorg_project.js');
+        drupal_add_css($drupalorg_project_path . '/drupalorg_project.css');
+      }
+    }
+    else {
+      // Editing an existing release.
+      if (project_release_is_security_update($form_state['node'])) {
+        // If this release is already marked as a Security update, don't let
+        // regular users change it any futher.
+        if (!user_access('administer projects')) {
+          $release_type_field['#access'] = FALSE;
+        }
+        $release_type_field['#description'] .= ' ' . t('Since this release is already marked as a %security_update, you can no longer change the release type. If you believe you need to do so for some reason, you should <a href="@contact_url">contact</a> the <a href="@security_url">Drupal Security Team</a>.', array('%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL));
+      }
+      else {
+        // Not a Security update, remove that option entirely if this is either
+        // a -dev snapshot or a non-admin user.
+        if ($form_state['node']->field_release_build_type[$form_state['node']->language][0]['value'] === 'dynamic' || !user_access('administer projects')) {
+          unset($release_type_field['#options'][$security_term->tid]);
         }
       }
     }
   }
-}
-
-/**
- * Utility function to remove the security update term on node forms.
- */
-function _drupalorg_project_remove_security_update(&$form) {
-  $vid = drupalorg_project_get_release_type_vid();
-  $security_tid = drupalorg_project_get_security_update_tid();
-  foreach ($form['taxonomy'][$vid]['#options'] as $i => $option) {
-    if (!empty($option->option)) {
-      $tid = key($option->option);
-      if ($tid == $security_tid) {
-        unset($form['taxonomy'][$vid]['#options'][$i]);
-        return;
-      }
-    }
-  }
-}
-
-/**
- * Set the project_release_type_vid Drupal variable and return its value.
- */
-function drupalorg_project_get_release_type_vid() {
-  static $vid = 0;
-  if (empty($vid)) {
-    $vid = variable_get('project_release_type_vid', 0);
-    if (empty($vid)) {
-      $vid = db_query("SELECT v.vid FROM {vocabulary} v INNER JOIN {vocabulary_node_types} n ON v.vid = n.vid WHERE n.type = 'project_release' AND v.name = 'Release type'")->fetchField();
-      variable_set('project_release_type_vid', $vid);
-    }
-  }
-  return $vid;
-}
-
-/**
- * Set the project_release_type_security_update_tid Drupal variable and return its value.
- */
-function drupalorg_project_get_security_update_tid() {
-  static $tid = 0;
-  if (empty($tid)) {
-    $tid = variable_get('project_release_type_security_update_tid', 0);
-    if (empty($tid)) {
-      $tid = db_query("SELECT tid FROM {term_data} WHERE vid = :vid AND name = :name", array(':vid' => drupalorg_project_get_release_type_vid(), ':name' => 'Security update'))->fetchField();
-      variable_set('project_release_type_security_update_tid', $tid);
-    }
-  }
-  return $tid;
 }
 
 /**
  * Form validation function for security release tag check.
  */
 function drupalorg_project_security_release_form_validate($form, &$form_state) {
-  $vid = drupalorg_project_get_release_type_vid();
-  $security_tid = drupalorg_project_get_security_update_tid();
+  // todo d7 make sure this is called, and update taxonomy field.
+  $security_tid = variable_get('project_release_security_update_tid', FALSE);
   if (!empty($form_state['values']['taxonomy'][$vid][$security_tid]) && empty($form_state['values']['security_update_confirm'])) {
     // Ensure the user confirms that this release should be marked security.
-    form_set_error('security_update_confirm', t('You must confirm you want this release to be a <a href="@security_update_url">Security update</a>', array('@security_update_url' => url('node/'. DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID))));
+    form_set_error('security_update_confirm', t('You must confirm you want this release to be a <a href="@security_update_url">Security update</a>', array('@security_update_url' => url('node/' . DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID))));
   }
 }
-
-// == Project links ============================================================
 
 /**
  * Implemenation of hook_project_page_link_alter().
  */
 function drupalorg_project_project_page_link_alter(&$links, $node) {
+  // todo D7 review
   global $user;
 
   // Make the development and resources sections actual core blocks.
@@ -570,13 +435,7 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   }
 
   // Provide contextual links for sandboxes.
-  $project_tids = array();
-  if (!empty($node->taxonomy)) {
-    $project_tids = array_keys($node->taxonomy);
-  }
-  $no_promote_tids = drupalorg_project_get_no_promote_project_tids();
-  $forbidden_tids = array_intersect($no_promote_tids, $project_tids);
-  if ($node->project['sandbox'] == 1 && empty($forbidden_tids) && $user->uid == $node->uid) {
+  if ($node->field_project_type[$node->language][0]['value'] === 'sandbox' && !in_array($form_state['node']->type, drupalorg_project_get_no_promote_project_types()) && $user->uid == $node->uid) {
     $links['sandbox']['weight'] = 1;
     if (!user_access('create full projects')) {
       $links['sandbox']['links']['apply_full'] = l(t('Apply for full project access'), 'node/1011698');
@@ -587,7 +446,7 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   }
 
   // Link to security handbook page.
-  if ($node->project['sandbox']) {
+  if ($node->field_project_type[$node->language][0]['value'] === 'sandbox') {
     $links['development']['links']['report_security_issue'] = l(t('Sandbox security policy'), 'security-advisory-policy');
   }
   else {
@@ -601,7 +460,7 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
 
   // Link to translation downloads.
   $translation_download = '';
-  if (is_array($node->taxonomy) && isset($node->taxonomy[DRUPALORG_TRANSLATION_TID])) {
+  if ($node->type === 'project_translation') {
     // Language projects get links to their language teams.
     $translation_download = 'http://localize.drupal.org/translate/languages/';
   }
@@ -617,8 +476,6 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
   }
   unset($links['resources']['links']['project_usage']);
 }
-
-// == Utility functions ========================================================
 
 /**
  * Project issue URL generator for Drupal issues.
@@ -672,21 +529,16 @@ function drupalorg_project_global_issue_link($text, $query = array(), $absolute 
   return l($text, 'project/issues/search', array('query' => $query, 'absolute' => $absolute));
 }
 
-// == Node overrides ===========================================================
-
-
 /**
  * Implements hook_node_view().
- *
- * Hides issue metadata since it will be rendered in the sidebar.
  */
 function drupalorg_project_node_view($node, $view_mode = 'full') {
   if ($view_mode == 'full') {
     if (project_issue_node_is_issue($node)) {
-      // @todo D7: Need Version field. It doesn't seem to exist yet?
-      // Since project_issue_metadata_build() is itself building a render array,
-      // array, we need to clone() the $node so that we can still render our own
-      // versions of everything left to display.
+      // Hide issue metadata since it will be rendered in the sidebar. Since
+      // project_issue_metadata_build() is itself building a render array,
+      // array, we need to clone() the $node so that we can still render our
+      // own versions of everything left to display.
       $metadata = project_issue_metadata_build(clone($node));
       foreach (element_children($metadata) as $element) {
         if (!empty($metadata[$element]['#access'])) {
@@ -843,8 +695,6 @@ function drupalorg_project_list_branches_core() {
   $output .= '</ul>';
   return $output;
 }
-
-// == Bug bingo ================================================================
 
 /**
  * SQL randomizer for issues.
@@ -1210,7 +1060,7 @@ function drupalorg_project_meta_data($node) {
   if (module_exists('pift')) {
     $has_auto_tests = db_query("SELECT pid FROM {pift_project} WHERE pid = :pid", array(':pid' => $node->nid))->fetchField();
     if (!empty($has_auto_tests)) {
-      /// @todo Indicate if the tests are passing or not.
+      /// @todo d7 Indicate if the tests are passing or not.
       $info[t('Automated tests')] = t('Enabled');
     }
   }
