@@ -289,6 +289,12 @@ function drupalorg_project_update_7007() {
   // Enable new dependencies.
   module_enable(array('field_formatter_settings', 'extended_file_field'));
 
+  // Enable the 'Display' bit on the file field attached to issues:
+  $file_field = field_info_field('field_issue_files');
+  $file_field['settings']['display_field'] = 1;
+  $file_field['settings']['display_default'] = 1;
+  field_update_field($file_field);
+
   // Set up formatter settings.
   $display = array(
     'label' => 'above',
@@ -298,8 +304,8 @@ function drupalorg_project_update_7007() {
       'extensions' => 'patch,diff',
       'columns' => array('cid', 'filename', 'filesize', 'uid'),
       'showhidden' => 'fieldset',
-      'sortby' => 'cid',
-      'sortorder' => 'desc',
+      'sortby' => 'default',
+      'sortorder' => 'asc',
     ),
     'module' => 'extended_file_field',
     'weight' => 4,
@@ -308,27 +314,22 @@ function drupalorg_project_update_7007() {
   // Set up widget settings.
   $widget_settings = array(
     'extended_file_field_show_remove' => 0,
-    'extended_file_field_hide_operations' => 1,
     'extended_file_field_hidden_toggle' => 1,
+    'extended_file_field_widget_metadata' => array(
+      'uid' => 'uid',
+      'cid' => 'cid',
+    ),
   );
 
-  // Cycle through each project_issue node type, and set the field_issue_files
-  // field to use the extended file field formatter.
+  // Cycle through each project_issue node type, and update the
+  // field_issue_files instances.
   $bundles = project_issue_issue_node_types();
   foreach ($bundles as $bundle) {
     // Update the display formatter for each bundle
-    if (field_info_instance('node', 'field_issue_files', $bundle)) {
-      $instance = array(
-        'entity_type' => 'node',
-        'bundle' => $bundle,
-        'field_name' => 'field_issue_files',
-        'display' => array(
-          'default' => $display,
-        ),
-        'widget' => array(
-          'settings' => $widget_settings,
-        ),
-      );
+    $instance = field_info_instance('node', 'field_issue_files', $bundle);
+    if (!empty($instance)) {
+      $instance['display']['default'] = $display;
+      $instance['widget']['settings'] = $widget_settings;
       field_update_instance($instance);
     }
   }
