@@ -1104,3 +1104,14 @@ function drupalorg_update_7019() {
     }
   }
 }
+
+/**
+ * Core doesn't do us any favors updating the body field.
+ */
+function drupalorg_update_7020() {
+  foreach (array('casestudy', 'organization', 'packaging_whitelist', 'forum', 'book', 'page', 'project_issue', 'story') as $type) {
+    $instance = field_read_instance('node', 'body', $type);
+    $instance['description'] = '';
+    field_update_instance($instance);
+  }
+}
