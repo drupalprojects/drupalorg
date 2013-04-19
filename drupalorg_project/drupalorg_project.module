@@ -1013,14 +1013,16 @@ function drupalorg_project_meta_data($node) {
           $links[] = l($term_entity->name, $term_path, $options);
         }
       }
-      if ($vocabulary->vid == DRUPALORG_PROJECT_CATEGORIES_VID) {
-        // These are hard-coded, don't incur cost of check_plain().
-        $label = t('!project_type categories', array('!project_type' => drupalorg_project_node_type_label($node->type, 'singular')));
+      if (!empty($links)) {
+        if ($vocabulary->vid == DRUPALORG_PROJECT_CATEGORIES_VID) {
+          // These are hard-coded, don't incur cost of check_plain().
+          $label = t('!project_type categories', array('!project_type' => drupalorg_project_node_type_label($node->type, 'singular')));
+        }
+        else {
+          $label = check_plain($vocabulary->name);
+        }
+        $info[$label] = '<span class="' . $class . '">' . implode(', ', $links) . '</span>';
       }
-      else {
-        $label = check_plain($vocabulary->name);
-      }
-      $info[$label] = '<span class="' . $class . '">' . implode(', ', $links) . '</span>';
     }
   }
   if (empty($maintenance_status)) {
