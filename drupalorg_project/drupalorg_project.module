@@ -597,10 +597,8 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
         $node->content['project_sandbox_warning']['#markup'] = '<div class="meta"><h5>Experimental Project</h5><p>This is a <a href="/node/1011196">sandbox project</a>, which contains experimental code for developer use only.</p></div>';
         $node->content['project_sandbox_warning']['#weight'] = -1;
       }
-      else {
-        $node->content['project_info']['#markup'] = drupalorg_project_meta_data($node);
-        $node->content['project_info']['#weight'] = 1;
-      }
+      $node->content['project_info']['#markup'] = drupalorg_project_meta_data($node);
+      $node->content['project_info']['#weight'] = 1;
     }
     elseif (project_issue_node_is_issue($node)) {
       // Add header label and last updated information to node body.
@@ -963,7 +961,7 @@ function drupalorg_project_meta_data($node) {
   $form = project_solr_browse_projects_form(array(), $dummy, node_type_load($node->type));
 
   foreach (taxonomy_vocabulary_get_names() as $vocabulary) {
-    if (isset($node->{'taxonomy_' . $vocabulary->machine_name})) {
+    if (!empty($node->{'taxonomy_' . $vocabulary->machine_name})) {
       $class = '';
       $links = array();
       foreach ($node->{'taxonomy_' . $vocabulary->machine_name}[$node->language] as $term) {
