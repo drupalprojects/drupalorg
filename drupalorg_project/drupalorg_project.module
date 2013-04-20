@@ -1131,7 +1131,7 @@ function drupalorg_project_sandbox($node) {
   }
   else {
     // Not a sandbox project, redirect to the node's usual path.
-    drupal_goto('node/' . $node->nid, NULL, NULL, 301);
+    drupal_goto('node/' . $node->nid, array(), 301);
   }
 }
 
