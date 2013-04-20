@@ -188,7 +188,7 @@ function drupalorg_search_block_view($delta) {
     case 'drupalorg_search_users':
       return array(
         'title' => t('Search Users'),
-        'content' => drupal_get_form('search_form', NULL, '', 'user_search', t('Username')),
+        'content' => drupal_get_form('search_form', '', '', 'user', t('Username')),
       );
   }
 }
