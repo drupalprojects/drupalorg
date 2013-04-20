@@ -25,8 +25,8 @@
     <ul class="flat">
       <li class="first"><a href="node/221881">About Themes &amp; Subthemes</a></li>
       <li><a href="/project/project_theme?solrsort=iss_project_release_usage%20desc">Most Installed Themes</a></li>
-      <li><a href="/project/project_type?solrsort=ds_created%20desc">New Themes</a></li>
-      <li><a href="/project/project_type?solrsort=ds_project_latest_activity%20desc">Most Active Themes</a></li>
+      <li><a href="/project/project_theme?solrsort=ds_created%20desc">New Themes</a></li>
+      <li><a href="/project/project_theme?solrsort=ds_project_latest_activity%20desc">Most Active Themes</a></li>
       <li class="last all"><a class="all" href="/project/project_type">Search for More Themes</a></li>
     </ul>
   </div>
