@@ -43,7 +43,7 @@ function drupalorg_honeypot_honeypot_time_limit($timelimit, $form_values, $failu
   if ($extra_time) {
     static $message = TRUE;
     if ($message) {
-      drupal_set_message(t('We have had bad experiences with spammers. Please <a href ="!url">apply for the "not a spammer" role</a> in order to avoid this message and be able to post faster.', array('!url' => '/node/add/project-issue/webmasters&component=Spam')));
+      drupal_set_message(t('We have had bad experiences with spammers. To avoid this message, and be able to post faster, you can <a href ="!issue_url">request the “not a spammer” role</a>. For more information, see <a href="!help_url">Applying for the “not a spammer” role</a>.', array('!issue_url' => '/node/add/project-issue/webmasters&component=User%20account&categories=support&title=Request%20for%20%27not%20a%20spammer%27%20role', '!help_url' => '/node/1887616')));
       // display a taunt to likely spammers
       if (($failures * $count) > variable_get('drupalorg_honeypot_taunt_threshold', 20)) {
         drupal_set_message(strtr(variable_get('drupalorg_honeypot_taunt', "Yo %name! Druplicon doesn't like you. Better start running."), array('%name' => $user->name)), 'error');
