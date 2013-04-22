@@ -220,7 +220,6 @@ function drupalorg_marketplace_views_default_views() {
     'type' => 'none',
   ));
   $handler->override_option('css_class', 'drupalorg-grid-2 drupalorg-4-col');
-  $handler->override_option('header', 'The following hosting companies are great choices not only because they provide quality services, but because they go out of their way to support the Drupal community directly. Through code contributions or sponsorship of the Drupal Association, these organizations help make Drupal successful.');
   $handler->override_option('header_format', '1');
   $handler->override_option('header_empty', 1);
   $handler->override_option('footer', '<h2>Other great hosts that support Drupal</h2>');

@@ -46,10 +46,11 @@ function drupalorg_marketplace_fieldgroup_default_groups() {
         'label' => 'above',
       ),
     ),
-    'weight' => '14',
+    'weight' => '13',
     'fields' => array(
       '0' => 'field_organization_hosting_url',
       '1' => 'field_organization_hosting_categ',
+      '2' => 'field_organization_security',
     ),
   );
 
@@ -143,7 +144,7 @@ function drupalorg_marketplace_fieldgroup_default_groups() {
         ),
       ),
     ),
-    'weight' => '5',
+    'weight' => '7',
     'fields' => array(
       '0' => 'field_org_training_request',
       '1' => 'field_organization_training_url',

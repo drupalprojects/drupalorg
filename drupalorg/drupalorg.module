@@ -195,6 +195,7 @@ function drupalorg_field_access($op, $field, $account, $node = NULL) {
       case 'field_organization_hosting_level':
       case 'field_organization_hosting_last':
       case 'field_organization_hosting_by':
+      case 'field_organization_security':
       case 'field_organization_issue':
       case 'field_org_training_issue':
       case 'field_status':
@@ -1379,6 +1380,10 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         // Budget may be replaced by taxonomy, see #371966
         if (!empty($node->field_budget[0]['safe'])) {
           $info[t('Usual project budget')] = $node->field_budget[0]['safe'];
+        }
+        // Security review results
+        if (!empty($node->field_organization_security[0]['safe'])) {
+          $info[t('Security review')] = $node->field_organization_security[0]['safe'];
         }
 
         $content['column_1']['info'] = array(

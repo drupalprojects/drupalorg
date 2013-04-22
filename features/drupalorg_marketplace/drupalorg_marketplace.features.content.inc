@@ -62,7 +62,7 @@ function drupalorg_marketplace_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Usual project budget (optional)',
-      'weight' => '4',
+      'weight' => '5',
       'description' => 'Helps potential clients know what they are getting into.',
       'type' => 'text_textfield',
       'module' => 'text',
@@ -874,6 +874,68 @@ featured|Featured providers',
     ),
   );
 
+  // Exported field: field_organization_security
+  $fields['organization-field_organization_security'] = array(
+    'field_name' => 'field_organization_security',
+    'type_name' => 'organization',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => 5,
+      'size' => '60',
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_organization_security][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Security review',
+      'weight' => '14',
+      'description' => 'Specify the date hosting provider passed security review. Format: \'passed on Month Day, Year\'',
+      'type' => 'text_textfield',
+      'module' => 'text',
+    ),
+  );
+
   // Exported field: field_organization_training_desc
   $fields['organization-field_organization_training_desc'] = array(
     'field_name' => 'field_organization_training_desc',
@@ -1077,6 +1139,7 @@ on|List in the Training section',
   t('List in Training section');
   t('List in marketplace');
   t('Logo');
+  t('Security review');
   t('Services listing');
   t('Training description');
   t('Training issue');
