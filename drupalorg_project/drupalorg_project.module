@@ -262,6 +262,22 @@ function drupalorg_project_issue_counts() {
 }
 
 /**
+ * Implements hook_field_group_pre_render_alter().
+ *
+ * Injects custom help text to the issue settings fieldset on issue nodes.
+ */
+function drupalorg_project_field_group_pre_render_alter(&$element, $group, &$form) {
+  if ($group->group_name == 'group_issue_metadata') {
+    $element['drupalorg-issue-description'] = array(
+      '#weight' => 100,
+      '#prefix' => '<div class="description">',
+      '#markup' =>  t('Descriptions of the <a href="!priority_url">Priority</a> and <a href="!status_url">Status</a> values can be found in the <a href="!issue_queue_url">Issue queue handbook</a>.', array('!priority_url' => '/node/45111', '!status_url' => '/node/156119', '!issue_queue_url' => '/node/317')),
+      '#suffix' => '</div>',
+    );
+  }
+}
+
+/**
  * Alter the project_issue_node_form form.
  */
 function drupalorg_project_form_project_issue_node_form_alter(&$form, $form_state) {
@@ -274,14 +290,6 @@ function drupalorg_project_form_project_issue_node_form_alter(&$form, $form_stat
   // we need different weights for that depending on if it's a new issue or
   // a follow-up comment.
   $form['taxonomy_vocabulary_9']['#weight'] = 35;
-  $form['issue_info']['description'] = array(
-    // The "standard" class adds a clear so the description is positioned
-    // below the floated pull-downs.  "fieldset-description" is from
-    // bluebeach to make the font size smaller.
-    '#prefix' => '<div class="standard fieldset-description">',
-    '#markup' => t('Descriptions of the <a href="!priority_url">Priority</a> and <a href="!status_url">Status</a> values can be found in the <a href="!issue_queue_url">Issue queue handbook</a>.', array('!priority_url' => '/node/45111', '!status_url' => '/node/156119', '!issue_queue_url' => '/node/317')),
-    '#suffix' => '</div>',
-  );
 
   // Prefill values from $_GET.
   if (isset($_GET['version'])) {
