@@ -281,16 +281,6 @@ function drupalorg_project_field_group_pre_render_alter(&$element, $group, &$for
  * Alter the project_issue_node_form form.
  */
 function drupalorg_project_form_project_issue_node_form_alter(&$form, $form_state) {
-  // Make the "Issue tags" vocabulary not so prominent on issue nodes.
-  $form['taxonomy_vocabulary_9']['#type'] = 'fieldset';
-  $form['taxonomy_vocabulary_9']['#title'] = t('Tags');
-  $form['taxonomy_vocabulary_9']['#collapsible'] = TRUE;
-  $form['taxonomy_vocabulary_9']['#collapsed'] = TRUE;
-  // We want this fieldset at the very bottom, just above the buttons, but
-  // we need different weights for that depending on if it's a new issue or
-  // a follow-up comment.
-  $form['taxonomy_vocabulary_9']['#weight'] = 35;
-
   // Prefill values from $_GET.
   if (isset($_GET['version'])) {
     $form['field_issue_version'][LANGUAGE_NONE]['#default_value'] = $_GET['version'];

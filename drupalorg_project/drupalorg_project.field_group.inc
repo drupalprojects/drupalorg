@@ -153,5 +153,34 @@ function drupalorg_project_field_group_info() {
   $field_group->identifier = "group_project_classification|node|$bundle|form";
   $field_groups[$field_group->identifier] = $field_group;
 
+
+  // Field group for the Issue tags taxonomy vocab on issue nodes.
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_project_issue_tags|node|project_issue|form';
+  $field_group->group_name = 'group_project_issue_tags';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'project_issue';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Issue tags',
+    'weight' => '20',
+    'children' => array(
+      0 => 'taxonomy_vocabulary_9',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 0,
+      ),
+    ),
+  );
+  $field_groups[$field_group->identifier] = $field_group;
+
   return $field_groups;
 }
