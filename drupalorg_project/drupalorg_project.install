@@ -349,6 +349,25 @@ function drupalorg_project_update_7008() {
  */
 function drupalorg_project_update_7009() {
   $instance = field_read_instance('node', 'taxonomy_vocabulary_7', 'project_release');
-  $instance['description'] = '<a href="/documentation/releases/types">What is a release type?</a>';
-  field_update_instance($instance);
+  if (!empty($instance)) {
+    $instance['description'] = '<a href="/documentation/releases/types">What is a release type?</a>';
+    field_update_instance($instance);
+  }
+}
+
+/**
+ * Configure the "Show upload link" setting on the file field on issues.
+ */
+function drupalorg_project_update_7010() {
+  // Cycle through each project_issue node type, and update the
+  // field_issue_files instances.
+  $bundles = project_issue_issue_node_types();
+  foreach ($bundles as $bundle) {
+    // Update the display formatter for each bundle
+    $instance = field_info_instance('node', 'field_issue_files', $bundle);
+    if (!empty($instance)) {
+      $instance['display']['default']['settings']['showuploadlink'] = 1;
+      field_update_instance($instance);
+    }
+  }
 }
