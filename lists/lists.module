@@ -283,15 +283,12 @@ function lists_user_update(&$edit, $account, $category) {
   $lists = _lists_get_mailman_lists();
   $list = $lists['maintainer'];
 
-  // TODO D7 requires drupalorg_git_gateway module to be ported.
-  /*
   if (array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles)) {
     _lists_mailman_subscribe($list, $account);
   }
   else {
     _lists_mailman_unsubscribe($list, $account);
   }
-  */
 }
 
 /**
@@ -356,9 +353,7 @@ function lists_mailman_user_form_submit($form, &$form_state) {
 
     // Special handling for the maintainer newsletter.
     if (!empty($data['maintainer_auto'])) {
-      // TODO D7 requires drupalorg_git_gateway module to be ported
-
-      /*$status = array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles);
+      $status = array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles);
       // If Git account is enabled
       if ($status) {
         if (!$old) {
@@ -371,7 +366,7 @@ function lists_mailman_user_form_submit($form, &$form_state) {
         if ($old) {
           _lists_mailman_unsubscribe($data, $account);
         }
-      }*/
+      }
     }
     elseif (!empty($data['allow_sub']) && ($old != $new)) {
       if ($new) {
