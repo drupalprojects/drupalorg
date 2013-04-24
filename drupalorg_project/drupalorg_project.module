@@ -602,24 +602,12 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
       // Add header label and last updated information to node body.
       $node->content['project_issue_header']['#value'] = '<h2>' . t('Issue Summary') . '</h2>';
     }
-  }
-}
-
-/**
- * Implements hook_preprocess_node().
- * Add a breadcrumb to API Change nodes.
- */
-function drupalorg_project_preprocess_node(&$variables) {
-  $view_mode = $variables['elements']['#view_mode'];
-  if ($view_mode == 'full' && $variables['node']->type === 'changenotice') {
-    if (isset($node->field_project[0]['nid'])) {
-      $proj_nid = $node->field_project[0]['nid'];
-      $proj_node = node_load($proj_nid);
-      $proj_shortcode = $proj_node->project['uri'];
-      $extra = array();
-      $extra[] = l($node->field_project[0]['safe']['title'], 'node/' . $proj_nid);
-      $extra[] = l(t('Change records'), 'list-changes/' . $proj_shortcode);
-      project_project_set_breadcrumb($proj_node, $extra);
+    elseif ($node->type === 'changenotice') {
+      if ($field_project = field_get_items('node', $node, 'field_project')) {
+        $project = node_load($field_project[0]['target_id']);
+        $machine_name = field_get_items('node', $project, 'field_project_machine_name');
+        project_project_set_breadcrumb($project, TRUE, array(l(t('Change records'), 'list-changes/' . $machine_name[0]['value'])));
+      }
     }
   }
 }
@@ -1111,10 +1099,8 @@ function drupalorg_project_views_pre_render(&$view) {
     case 'change_records':
       if (count($view->args) > 0) {
         // Note: this returns FALSE if it isn't a project node.
-        $proj_node = project_load($view->args[0]);
-        if ($proj_node) {
-          $extra[] = l($proj_node->title, 'node/' . $proj_node->nid);
-          project_project_set_breadcrumb($proj_node, $extra);
+        if ($project = project_load($view->args[0])) {
+          project_project_set_breadcrumb($project, TRUE);
         }
       }
       break;
