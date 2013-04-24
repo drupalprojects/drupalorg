@@ -257,10 +257,23 @@ function drupalorg_project_update_7004() {
 
   // Update change records block placement
   db_update('block')
-    ->fields(array('status' => 1, 'visibility' => 0, 'weight' => -10, 'region' => 'sidebar_second'))
+    ->fields(array(
+      'status' => 1,
+      'visibility' => 0,
+      'pages' => 'node/*/edit',
+      'weight' => -10,
+      'region' => 'sidebar_second',
+    ))
     ->condition('theme', 'bluecheese')
     ->condition('module', 'views')
     ->condition('delta', 'change_records-block_1')
+    ->execute();
+  db_insert('block_node_type')
+    ->fields(array(
+      'module' => 'views',
+      'delta' => 'change_records-block_1',
+      'type' => 'project_issue',
+    ))
     ->execute();
 }
 
