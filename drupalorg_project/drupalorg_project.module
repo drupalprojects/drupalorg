@@ -420,17 +420,8 @@ function drupalorg_project_security_release_form_validate($form, &$form_state) {
  * Implemenation of hook_project_page_link_alter().
  */
 function drupalorg_project_project_page_link_alter(&$links, $node) {
-  // todo D7 review
+  // todo D7 move to a node_view or form_alter
   global $user;
-
-  // Make the development and resources sections actual core blocks.
-  $links['development']['type'] = 'block';
-  $links['resources']['type'] = 'block';
-
-  // Exit early if we are not on a node, such as block rehashing.
-  if (!is_object($node)) {
-    return;
-  }
 
   // Provide contextual links for sandboxes.
   if ($node->field_project_type[$node->language][0]['value'] === 'sandbox' && !in_array($form_state['node']->type, drupalorg_project_get_no_promote_project_types()) && $user->uid == $node->uid) {
@@ -442,37 +433,6 @@ function drupalorg_project_project_page_link_alter(&$links, $node) {
       $links['sandbox']['links']['no_releases'] = l(t('Promote to full project'), "node/$node->nid/edit/promote");
     }
   }
-
-  // Link to security handbook page.
-  if ($node->field_project_type[$node->language][0]['value'] === 'sandbox') {
-    $links['development']['links']['report_security_issue'] = l(t('Sandbox security policy'), 'security-advisory-policy');
-  }
-  else {
-    $links['development']['links']['report_security_issue'] = l(t('Report a security issue'), 'https://security.drupal.org/node/add/project-issue/' . $node->project['uri']);
-  }
-
-  // Link to change records page.
-  if (!empty($node->project['uri'])) {
-    $links['development']['links']['change_records'] = l(t('View change records'), 'list-changes/' . $node->project['uri']);
-  }
-
-  // Link to translation downloads.
-  $translation_download = '';
-  if ($node->type === 'project_translation') {
-    // Language projects get links to their language teams.
-    $translation_download = 'http://localize.drupal.org/translate/languages/';
-  }
-  elseif (!empty($node->project_release['releases'])) {
-    // Otherwise only include links if we have releases and at least one supported.
-    $has_supported = db_query('SELECT 1 FROM {project_release_supported_versions} WHERE nid = :nid AND supported = 1', array(':nid' => $node->nid))->range(0, 1)->addTag('node_access')->fetchField();
-    if ($has_supported > 0) {
-      $translation_download = 'http://localize.drupal.org/translate/projects/';
-    }
-  }
-  if (!empty($translation_download)) {
-    $links['resources']['links']['view_translations'] = l(t('View project translations'), $translation_download . $node->project['uri']);
-  }
-  unset($links['resources']['links']['project_usage']);
 }
 
 /**
@@ -757,6 +717,14 @@ function drupalorg_project_block_info() {
       'info' => t('Contributor Links'),
       'cache' => DRUPAL_CACHE_GLOBAL,
     ),
+    'resources' => array(
+      'info' => t('Project links: Resources'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    ),
+    'development' => array(
+      'info' => t('Project links: Development'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    ),
   );
 }
 
@@ -764,11 +732,147 @@ function drupalorg_project_block_info() {
  * Implements hook_block_view().
  */
 function drupalorg_project_block_view($delta = '') {
-  if ($delta == 'bingo-block') {
-    return array(
-      'subject' => NULL,
-      'content' => drupalorg_project_bingo_block_output(),
-    );
+  switch ($delta) {
+    case 'bingo-block':
+      return array(
+        'subject' => NULL,
+        'content' => drupalorg_project_bingo_block_output(),
+      );
+
+    case 'resources':
+      if (($project = menu_get_object()) && project_node_is_project($project)) {
+        $links = array();
+        // Home page
+        $home_link = field_get_items('node', $project, 'field_project_homepage');
+        if (!empty($home_link[0]['url'])) {
+          $links[] = array(
+            'title' => t('Home page'),
+            'href' => $home_link[0]['url'],
+          );
+        }
+        // Documentation
+        $documentation_link = field_get_items('node', $project, 'field_project_documentation');
+        if (!empty($documentation_link[0]['url'])) {
+          $links[] = array(
+            'title' => t('Read documentation'),
+            'href' => $documentation_link[0]['url'],
+          );
+        }
+        // License
+        $license_link = field_get_items('node', $project, 'field_project_license');
+        if (!empty($license_link[0]['url'])) {
+          $links[] = array(
+            'title' => t('Read license'),
+            'href' => $license_link[0]['url'],
+          );
+        }
+        // Changes
+        $changes_link = field_get_items('node', $project, 'field_project_changelog');
+        if (!empty($changes_link[0]['url'])) {
+          $links[] = array(
+            'title' => t('Read complete log of changes'),
+            'href' => $changes_link[0]['url'],
+          );
+        }
+        // Demo
+        $demo_link = field_get_items('node', $project, 'field_project_demo');
+        if (!empty($demo_link[0]['url'])) {
+          $links[] = array(
+            'title' => t('Try out a demonstration'),
+            'href' => $demo_link[0]['url'],
+          );
+        }
+        // Screenshots
+        $screenshots_link = field_get_items('node', $project, 'field_project_screenshots');
+        if (!empty($screenshots_link[0]['url'])) {
+          $links[] = array(
+            'title' => t('Look at screenshots'),
+            'href' => $screenshots_link[0]['url'],
+          );
+        }
+        // Link to translation downloads.
+        $translation_download = '';
+        if ($project->type === 'project_translation') {
+          // Language projects get links to their language teams.
+          $translation_download = 'http://localize.drupal.org/translate/languages/';
+        }
+        elseif (db_query_range('SELECT 1 FROM {project_release_supported_versions} WHERE nid = :nid AND supported = 1', 0, 1, array(':nid' => $project->nid))->fetchField()) {
+          // Otherwise only include links if we have releases and at least one supported.
+          $translation_download = 'http://localize.drupal.org/translate/projects/';
+        }
+        if (!empty($translation_download)) {
+          $machine_name = field_get_items('node', $project, 'field_project_machine_name');
+          $machine_name = $machine_name[0]['value'];
+          $links[] = array(
+            'title' => t('View project translations'),
+            'href' => $translation_download . $machine_name,
+          );
+        }
+
+        if (!empty($links)) {
+          return array(
+            'subject' => t('Resources'),
+            'content' => array(
+              '#theme' => 'links',
+              '#links' => $links,
+            ),
+          );
+        }
+      }
+      break;
+
+    case 'development':
+      if (($project = menu_get_object()) && project_node_is_project($project)) {
+        $machine_name = field_get_items('node', $project, 'field_project_machine_name');
+        $machine_name = $machine_name[0]['value'];
+        $links = array(
+          array(
+            'title' => t('View pending patches'),
+            'href' => 'project/issues/search/' . $machine_name,
+            'query' => array('status' => array(8, 13, 14)),
+          ),
+        );
+        // VCS links
+        if (!empty($project->versioncontrol_project['repo'])) {
+          // Force the link for now, see http://drupal.org/node/1026594
+          $repo = $project->versioncontrol_project['repo'];
+          $links[] = array(
+            'title' => t('Repository viewer'),
+            'href' => $repo->getUrlHandler()->getRepositoryViewUrl(),
+          );
+          $links[] = array(
+            'title' => t('View commits'),
+            'href' => 'node/' . $project->nid . '/commits',
+          );
+        }
+        // Link to security handbook page.
+        if (project_promote_project_is_sandbox($project)) {
+          $links[] = array(
+            'title' => t('Sandbox security policy'),
+            'href' => 'security-advisory-policy',
+          );
+        }
+        else {
+          $links[] = array(
+            'title' => t('Report a security issue'),
+            'href' => 'https://security.drupal.org/node/add/project-issue/' . $machine_name,
+          );
+        }
+        // Link to change records page.
+        $links[] = array(
+          'title' => t('View change records'),
+          'href' => 'list-changes/' . $machine_name,
+        );
+
+        return array(
+          'subject' => t('Development'),
+          'content' => array(
+            '#theme' => 'links',
+            '#links' => $links,
+          ),
+        );
+      }
+      break;
   }
 }
 /**

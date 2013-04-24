@@ -18,16 +18,13 @@ class DrupalorgVersioncontrolRepositoryUrlHandlerGitwebRewrite extends Versionco
     parent::__construct($repository, $base_url, $template_urls);
 
     // Figure out if this is a sandbox project's repo, and the owner's git_username.
-    $select = db_select('versioncontrol_project_projects', 'vp');
-    $select->join('project_projects', 'p', 'vp.nid = p.nid');
-    $select->join('node', 'n', 'p.nid = n.nid');
-    $select->join('users', 'u', 'n.uid = u.uid');
-    $result = $select->fields('p', array('sandbox'))
-      ->fields('u', array('git_username'))
-      ->condition('vp.repo_id', $this->repository->repo_id)
-      ->execute()->fetchAssoc();
-
-    $this->prefix = $result['sandbox'] ? 'sandbox/' . $result['git_username'] : 'project';
+    $project = node_load($this->repository->project_nid);
+    if (project_promote_project_is_sandbox($project)) {
+      $this->prefix = 'sandbox/' . user_load($project->nid)->git_username;
+    }
+    else {
+      $this->prefix = 'project';
+    }
   }
 
   public function getTemplateUrl($name) {

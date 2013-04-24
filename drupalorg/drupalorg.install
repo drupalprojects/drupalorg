@@ -1115,3 +1115,18 @@ function drupalorg_update_7020() {
     field_update_instance($instance);
   }
 }
+
+/**
+ * Do not display many fields for projects (drupalorg_project renders them
+ * elsewhere).
+ */
+function drupalorg_update_7021() {
+  foreach (project_project_node_types() as $type) {
+    foreach (array('field_project_homepage', 'field_project_documentation', 'field_project_license', 'field_project_changelog', 'field_project_demo', 'field_project_screenshots', 'field_project_type', 'field_project_machine_name', 'field_project_has_issue_queue', 'field_project_has_releases', 'field_release_version_format') as $field) {
+      if ($instance = field_read_instance('node', $field, $type)) {
+        $instance['display']['default']['type'] = 'hidden';
+        field_update_instance($instance);
+      }
+    }
+  }
+}
