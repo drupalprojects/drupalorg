@@ -453,7 +453,7 @@ function lists_node_update($node) {
       // This is an ugly kludge.
       db_update('node')
         ->fields(array(
-          'comment' => COMMENT_NODE_DISABLED,
+          'comment' => COMMENT_NODE_CLOSED,
         ))
         ->condition('nid', $node->nid)
         ->execute();
