@@ -146,36 +146,49 @@ function drupalorg_git_varnish_user($op, &$edit, &$account, $category = NULL) {
 function drupalorg_git_varnish_clear_user_cmds($uid) {
   $commands = array();
   // FIXME this needs improving when sandboxes get properly namespaced.
-  $select = db_select('project_projects', 'p')->fields('p', array('uri'));
-  $vpp_alias = $select->addJoin('INNER', 'versioncontrol_project_projects', 'vpp', 'p.nid = vpp.nid');
+  $select = db_select('versioncontrol_project_projects', 'vpp')
+    ->fields('vpp', array('nid'));
   $vaa_alias = $select->addJoin('INNER', 'versioncontrol_auth_account', 'vaa', $vpp_alias . '.repo_id = vaa.repo_id');
-  $uris = $select->condition($vaa_alias . '.uid', $uid)
+  $nids = $select->condition($vaa_alias . '.uid', $uid)
     ->execute()->fetchAll(PDO::FETCH_COLUMN);
 
   $host = _drupalorg_git_varnish_get_host();
   $purge_base = "purge req.http.host == $host && ";
-  foreach ($uris as $uri) {
-    $commands[] = $purge_base . "req.url ~ ^/drupalorg/vcs-auth-data.project_uri=$uri$";
+  foreach (node_load_multiple($nids) as $project) {
+    $machine_name = field_get_items('node', $project, 'field_project_machine_name');
+    $commands[] = $purge_base . 'req.url ~ ^/drupalorg/vcs-auth-data.project_uri=' . $machine_name[0]['value'] . '$';
   }
 
   return $commands;
 }
 
-function drupalorg_git_varnish_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
-  if (in_array($op, array('update', 'insert', 'delete')) && in_array($node->type, array('project_project', 'project_release'))) {
-    if ($node->type == 'project_project') {
-      $uri = $node->project['uri'];
-    }
-    else if ($node->type == 'project_release') {
-      $uri = db_query('SELECT uri FROM {project_projects} WHERE nid = :release_nid', array(':release_nid' => $node->project_release['pid']))->fetchField();
-    }
+function drupalorg_git_varnish_node_update($node) {
+  drupalorg_git_varnish_node_change($node);
+}
 
-    $host = _drupalorg_git_varnish_get_host();
-    $commands = array(
-      'purge req.http.host == ' . $host . ' && req.url ~ ^/drupalorg/vcs-auth-data.project_uri=' . $uri . '$',
-    );
-    drupalorg_git_varnish_exec($commands);
+function drupalorg_git_varnish_node_insert($node) {
+  drupalorg_git_varnish_node_change($node);
+}
+
+function drupalorg_git_varnish_node_delete($node) {
+  drupalorg_git_varnish_node_change($node);
+}
+
+function drupalorg_git_varnish_node_change($node) {
+  if (project_node_is_project($node)) {
+    $project = $node;
   }
+  elseif (project_release_node_is_release($node)) {
+    $project = node_load(project_release_get_release_project_nid($node));
+  }
+  else {
+    return;
+  }
+
+  $machine_name = field_get_items('node', $project, 'field_project_machine_name');
+  drupalorg_git_varnish_exec(array(
+    'purge req.http.host == ' . _drupalorg_git_varnish_get_host() . ' && req.url ~ ^/drupalorg/vcs-auth-data.project_uri=' . $machine_name[0]['value'] . '$',
+  ));
 }
 
 function drupalorg_git_varnish_drupalorg_pushctl_changed($pushctl) {
