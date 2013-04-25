@@ -167,7 +167,7 @@ function drupalorg_git_varnish_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       $uri = $node->project['uri'];
     }
     else if ($node->type == 'project_release') {
-      $uri = db_result(db_query('SELECT uri FROM {project_projects} WHERE nid = %d', $node->project_release['pid']));
+      $uri = db_query('SELECT uri FROM {project_projects} WHERE nid = %d', $node->project_release['pid'])->fetchField();
     }
 
     $host = _drupalorg_git_varnish_get_host();

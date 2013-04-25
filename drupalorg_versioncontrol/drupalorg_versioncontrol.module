@@ -28,7 +28,7 @@ function drupalorg_versioncontrol_get_total_commits($rid = NULL, $interval = -1)
     $interval = 60 * 60 * 24 * 30;
   }
   $where = isset($rid) ? ' AND repo_id = %d' : '';
-  return db_result(db_query('SELECT count(*) FROM {versioncontrol_operations} WHERE author_date > %d'. $where, time() - $interval, $rid));
+  return db_query('SELECT count(vc_op_id) FROM {versioncontrol_operations} WHERE author_date > %d'. $where, time() - $interval, $rid)->fetchField();
 }
 
 function drupalorg_versioncontrol_node_insert($node) {

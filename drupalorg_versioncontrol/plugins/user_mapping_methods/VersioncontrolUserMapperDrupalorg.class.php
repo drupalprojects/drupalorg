@@ -28,7 +28,7 @@ class VersioncontrolUserMapperDrupalorg implements VersioncontrolUserMapperInter
     }
 
     // Otherwise, check against the multiple_email module, but only use confirmed emails.
-    if ($uid = db_result(db_query("SELECT uid FROM {multiple_email} WHERE email = '%s' AND confirmed = 1", $email))) {
+    if ($uid = db_query("SELECT uid FROM {multiple_email} WHERE email = '%s' AND confirmed = 1", $email)->fetchField()) {
       return $uid;
     }
 
