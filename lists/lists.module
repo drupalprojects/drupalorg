@@ -468,7 +468,8 @@ function lists_mail($key, &$message, $params) {
   if ($key == 'mailman_newsletter') {
     // Just copy over the subject and body as provided.
     $message['subject'] = $params['node']->title;
-    $message['body'][] = drupal_html_to_text('<p>' . t('View online: !url', array('!url' => url('node/' . $params['node']->nid, array('absolute' => TRUE)))) . '</p>' . $params['node']->body);
+    $body = field_get_items('node', $params['node'], 'body');
+    $message['body'][] = drupal_html_to_text('<p>' . t('View online: !url', array('!url' => url('node/' . $params['node']->nid, array('absolute' => TRUE)))) . '</p>' . $body[0]['value']);
   }
 }
 
