@@ -639,6 +639,9 @@ function drupalorg_update_7010() {
       'image' => array(
         'administer image styles',
       ),
+      'lists' => array(
+        'post to newsletter',
+      ),
       'menu' => array(
         'administer menu',
       ),

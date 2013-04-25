@@ -343,8 +343,6 @@ function lists_mailman_user_form($form, &$form_state, $account = FALSE) {
  * Subscribe/unsubscribe from mailman mailing lists.
  */
 function lists_mailman_user_form_submit($form, &$form_state) {
-  // @todo D7 - Test this on the live D7 site. Dev sites do not have the
-  // data for Mailman lists (by design).
   $account = user_load($form_state['values']['uid']);
   $lists = _lists_get_mailman_lists();
   foreach ($lists as $list => $data) {
@@ -417,14 +415,11 @@ function lists_node_update($node) {
   global $user;
 
   if ($node->status && user_access('post to newsletter')) {
-    // @todo D7 - Test this on the live site. We don't want to send email
-    // from dev sites and the list for forum tids is not defined on them either.
-
     // Only generate mail for configured forum types.
     $generate_mail = FALSE;
     $lists_forum_tids = array_keys(_lists_get_forum_tids());
-    if (isset($node->taxonomy_forums) && is_array($node->taxonomy_forums)) {
-      foreach ($node->taxonomy_forums as $key => $item) {
+    if ($taxonomy_forums = field_get_items('node', $node, 'taxonomy_forums')) {
+      foreach ($taxonomy_forums as $item) {
         if (in_array($item['tid'], $lists_forum_tids)) {
           $generate_mail = TRUE;
           $forum_tid = $item['tid'];
