@@ -444,7 +444,7 @@ function lists_node_update($node) {
           ->fields(array(
             'nid' =>  $node->nid,
             'uid' => $user->uid,
-            'created' => REQUEST_TIME,
+            'timestamp' => REQUEST_TIME,
           ))
           ->execute();
         drupal_set_message(t('Mail sent to !email.', array('!email' => $list['mail'])));
