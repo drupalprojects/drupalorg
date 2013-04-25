@@ -20,7 +20,7 @@ class DrupalorgVersioncontrolRepositoryUrlHandlerGitwebRewrite extends Versionco
     // Figure out if this is a sandbox project's repo, and the owner's git_username.
     $project = node_load($this->repository->project_nid);
     if (project_promote_project_is_sandbox($project)) {
-      $this->prefix = 'sandbox/' . user_load($project->nid)->git_username;
+      $this->prefix = 'sandbox/' . user_load($project->uid)->git_username;
     }
     else {
       $this->prefix = 'project';
