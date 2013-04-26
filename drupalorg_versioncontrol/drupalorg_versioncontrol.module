@@ -37,7 +37,14 @@ function drupalorg_versioncontrol_node_insert($node) {
     return;
   }
 
-  $repo_root = variable_get('drupalorg_git_basedir', '/var/git') . '/repositories/' . $alias . '.git';
+  if (project_promote_project_is_sandbox($node)) {
+    $top_path = 'sandbox/' . user_load($node->uid)->git_username;
+  }
+  else {
+    $top_path = 'project';
+  }
+  $top_path .= '/' . $node->field_project_machine_name[$node->language][0]['value'];
+  $repo_root = variable_get('drupalorg_git_basedir', '/var/git') . '/repositories/' . $top_path . '.git';
 
   $description = 'For more information about this repository, visit the project page at ' . url('node/' . $node->nid, array('absolute' => TRUE));
 
