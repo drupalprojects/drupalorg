@@ -2091,23 +2091,13 @@ function drupalorg_user_view($account, $view_mode) {
   if ($account->uid === $user->uid) {
     $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="https://association.drupal.org">Drupal Association</a> badges on your profile page? <a href="https://association.drupal.org/membership">Become a member today.</a>');
   }
-  $query = db_select('drupalorg_crosssite_civimembership', 'dc')
-    ->fields('dc', array('membership_type', 'membership_status'))
-    ->condition('user_name', $account->name, '=')
-    ->execute();
-  foreach ($query as $membership) {
+  foreach (drupalorg_civimembership_data($account->name, 'Individual') as $membership) {
     // If membership is not the organization owner's.
-    if (!isset($organization) || $organization->uid !== $account->uid || $membership->membership_type !== 'Organization') {
-      $placeholders = array(
-        '@username' => $account->name,
-        '@membership_type' => drupal_strtolower($membership->membership_type),
-      );
-      $content['aside']['membership'][] = array(
-        '#prefix' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-' . $placeholders['@membership_type'] . '.png') . '" alt="' . t('Drupal Association @membership_type member', $placeholders) . '" /></a></div><div class="da-membership"><p>',
-        '#markup' => t('@username is an <a href="https://association.drupal.org/membership">@membership_type member</a> of the <a href="https://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', $placeholders),
-        '#suffix' => '</p></div></div>',
-      );
-    }
+    $content['aside']['membership'][] = array(
+      '#prefix' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-individual.png') . '" alt="' . t('Drupal Association Individual member') . '" /></a></div><div class="da-membership"><p>',
+      '#markup' => t('@username is an <a href="https://association.drupal.org/membership">Individual member</a> of the <a href="https://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', array('@username' => $account->name)),
+      '#suffix' => '</p></div></div>',
+    );
 
     if ($account->uid === $user->uid) {
       switch ($membership->membership_status) {
