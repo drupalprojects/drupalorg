@@ -2091,8 +2091,7 @@ function drupalorg_user_view($account, $view_mode) {
   if ($account->uid === $user->uid) {
     $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="https://association.drupal.org">Drupal Association</a> badges on your profile page? <a href="https://association.drupal.org/membership">Become a member today.</a>');
   }
-  foreach (drupalorg_civimembership_data($account->name, 'Individual') as $membership) {
-    // If membership is not the organization owner's.
+  if ($membership = drupalorg_civimembership_data($account->name, 'Individual')) {
     $content['aside']['membership'][] = array(
       '#prefix' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-individual.png') . '" alt="' . t('Drupal Association Individual member') . '" /></a></div><div class="da-membership"><p>',
       '#markup' => t('@username is an <a href="https://association.drupal.org/membership">Individual member</a> of the <a href="https://association.drupal.org/">Drupal Association</a>, which fosters and supports the Drupal software project, the community and its growth.', array('@username' => $account->name)),
