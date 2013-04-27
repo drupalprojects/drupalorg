@@ -484,3 +484,16 @@ function drupalorg_project_update_7012() {
   );
   field_bundle_settings('node', 'project_issue', $bundle_settings);
 }
+
+/**
+ * Set the nodechanges display configuration on issue comments.
+ *
+ * @todo: Remove this update after the next full rebuild of git7site,
+ * since this configuration is done on the default issue node type now.
+ */
+function drupalorg_project_update_7013() {
+  $instance = field_info_instance('comment', 'field_issue_changes', 'comment_node_project_issue');
+  $instance['display']['default']['label'] = 'hidden';
+  $instance['display']['default']['weight'] = '-1';
+  field_update_instance($instance);
+}
