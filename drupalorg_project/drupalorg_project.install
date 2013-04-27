@@ -249,7 +249,12 @@ function drupalorg_project_update_7004() {
 
   // Update project issue metadata placement
   db_update('block')
-   ->fields(array('status' => 1, 'visibility' => 0, 'region' => 'sidebar_second'))
+   ->fields(array(
+     'status' => 1,
+     'visibility' => 0,
+     'region' => 'sidebar_second',
+     'title' => '<none>',
+   ))
    ->condition('theme', 'bluecheese')
    ->condition('module', 'project_issue')
    ->condition('delta', 'issue-metadata')
@@ -413,4 +418,69 @@ function drupalorg_project_update_7011() {
       'pages' => 'node/*/edit',
     ))
     ->execute();
+}
+
+/**
+ * Fix field configuration for issue metadata sidebar block.
+ */
+function drupalorg_project_update_7012() {
+  // First, configure the proper label and weight for all fields in the block.
+  $issue_fields = array(
+    'field_issue_status' => 'hidden',
+    'field_project' => 'inline',
+    'field_issue_version' => 'inline',
+    'field_issue_component' => 'inline',
+    'field_issue_priority' => 'inline',
+    'field_issue_category' => 'inline',
+    'field_issue_assigned' => 'inline',
+  );
+  $weight = 0;
+  foreach ($issue_fields as $field_name => $label) {
+    $instance = field_info_instance('node', $field_name, 'project_issue');	 
+    if (!empty($instance)) {
+      $instance['display']['issuemetadata']['weight'] = $weight++;
+      $instance['display']['issuemetadata']['label'] = $label;
+      field_update_instance($instance);
+    }
+  }
+
+  // Issue tags require a bit more help, so handle that separately:
+  $instance = field_info_instance('node', 'taxonomy_vocabulary_9', 'project_issue');
+  if (!empty($instance)) {
+    $instance['display']['issuemetadata']['weight'] = $weight++;
+    // @todo: Issue tag links https://drupal.org/node/1979000.
+    $instance['display']['issuemetadata']['type'] = 'taxonomy_term_reference_plain';
+    $instance['display']['issuemetadata']['label'] = 'above';
+    foreach (array('default', 'teaser') as $view_mode) {
+      $instance['display'][$view_mode]['type'] = 'hidden';
+      $instance['display'][$view_mode]['label'] = 'hidden';
+    }
+    field_update_instance($instance);
+  }
+
+  // Now handle the psuedo fields for the update and follow links/buttons.
+  $bundle_settings = field_bundle_settings('node', 'project_issue');
+  $bundle_settings['extra_fields']['display'] = array(
+    'update_link' => array(
+      'issuemetadata' => array(
+        'weight' => '100',
+        'visible' => TRUE,
+      ),
+      'default' => array(
+        'weight' => '100',
+        'visible' => FALSE,
+      ),
+    ),
+    'follow_link' => array(
+      'issuemetadata' => array(
+        'weight' => '110',
+        'visible' => FALSE,
+      ),
+      'default' => array(
+        'weight' => '-10',
+        'visible' => TRUE,
+      ),
+    ),
+  );
+  field_bundle_settings('node', 'project_issue', $bundle_settings);
 }
