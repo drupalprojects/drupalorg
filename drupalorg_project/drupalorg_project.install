@@ -511,3 +511,10 @@ function drupalorg_project_update_7013() {
   $instance['display']['default']['weight'] = '-1';
   field_update_instance($instance);
 }
+
+/**
+ * Disable comment subjects on issue nodes.
+ */
+function drupalorg_project_update_7014() {
+  variable_set('comment_subject_field_project_issue', 0);
+}
