@@ -518,3 +518,48 @@ function drupalorg_project_update_7013() {
 function drupalorg_project_update_7014() {
   variable_set('comment_subject_field_project_issue', 0);
 }
+
+/**
+ * Configure issue relation blocks on issue nodes, and hide field display.
+ */
+function drupalorg_project_update_7015() {
+  $deltas = array(
+    'deb687bce1ed862530ee17833e2de05e', // parent issue
+    'e84165300884f34464eebe80f5010454', // child issues
+    '832b2e34e4d83ebfd2981cda953551a4', // related issues
+    '31d45e0a42c85425807efd40ac52b63a', // referenced issues
+  );
+  $weight = 1;
+  foreach ($deltas as $delta) {
+    db_update('block')
+      ->fields(array(
+        'status' => 1,
+        'visibility' => 0,
+        'pages' => 'node/*/*',
+        'weight' => $weight++,
+        'region' => 'sidebar_second',
+      ))
+      ->condition('theme', 'bluecheese')
+      ->condition('module', 'views')
+      ->condition('delta', $delta)
+      ->execute();
+    db_insert('block_node_type')
+      ->fields(array(
+        'module' => 'views',
+        'delta' => $delta,
+        'type' => 'project_issue',
+      ))
+      ->execute();
+  }
+
+  // Now that we're displaying the parent and related issues via blocks, hide
+  // those fields from the issue view modes.
+  $view_modes = array('default', 'teaser', 'issuemetadata');
+  foreach (array('field_issue_parent', 'field_issue_related') as $field_name) {
+    $instance = field_info_instance('node', $field_name, 'project_issue');
+    foreach ($view_modes as $view_mode) {
+      $instance['display'][$view_mode]['type'] = 'hidden';
+    }
+    field_update_instance($instance);
+  }
+}
