@@ -249,23 +249,24 @@ function drupalorg_project_update_7004() {
 
   // Update project issue metadata placement
   db_update('block')
-   ->fields(array(
-     'status' => 1,
-     'visibility' => 0,
-     'region' => 'sidebar_second',
-     'title' => '<none>',
-   ))
-   ->condition('theme', 'bluecheese')
-   ->condition('module', 'project_issue')
-   ->condition('delta', 'issue-metadata')
-   ->execute();
+    ->fields(array(
+      'status' => 1,
+      'visibility' => 0,
+      'pages' => 'node/*/*',
+      'region' => 'sidebar_second',
+      'title' => '<none>',
+    ))
+    ->condition('theme', 'bluecheese')
+    ->condition('module', 'project_issue')
+    ->condition('delta', 'issue-metadata')
+    ->execute();
 
   // Update change records block placement
   db_update('block')
     ->fields(array(
       'status' => 1,
       'visibility' => 0,
-      'pages' => 'node/*/edit',
+      'pages' => 'node/*/*',
       'weight' => -10,
       'region' => 'sidebar_second',
     ))
@@ -403,7 +404,7 @@ function drupalorg_project_update_7011() {
       'weight' => 11,
       'region' => 'sidebar_second',
       'visibility' => 0,
-      'pages' => 'node/*/edit',
+      'pages' => 'node/*/*',
     ))
     ->execute();
   db_update('block')
@@ -415,7 +416,7 @@ function drupalorg_project_update_7011() {
       'weight' => 12,
       'region' => 'sidebar_second',
       'visibility' => 0,
-      'pages' => 'node/*/edit',
+      'pages' => 'node/*/*',
     ))
     ->execute();
 }
@@ -436,10 +437,15 @@ function drupalorg_project_update_7012() {
   );
   $weight = 0;
   foreach ($issue_fields as $field_name => $label) {
-    $instance = field_info_instance('node', $field_name, 'project_issue');	 
+    $instance = field_info_instance('node', $field_name, 'project_issue');
     if (!empty($instance)) {
       $instance['display']['issuemetadata']['weight'] = $weight++;
       $instance['display']['issuemetadata']['label'] = $label;
+      // For assigned, we also want to force the entity reference display to
+      // render as a link to the user.
+      if ($field_name == 'field_issue_assigned') {
+        $instance['display']['issuemetadata']['settings'] = array('link' => TRUE);
+      }
       field_update_instance($instance);
     }
   }
@@ -470,6 +476,10 @@ function drupalorg_project_update_7012() {
         'weight' => '100',
         'visible' => FALSE,
       ),
+      'teaser' => array(
+        'weight' => '100',
+        'visible' => FALSE,
+      ),
     ),
     'follow_link' => array(
       'issuemetadata' => array(
@@ -479,6 +489,10 @@ function drupalorg_project_update_7012() {
       'default' => array(
         'weight' => '-10',
         'visible' => TRUE,
+      ),
+      'teaser' => array(
+        'weight' => '-10',
+        'visible' => FALSE,
       ),
     ),
   );
