@@ -327,7 +327,7 @@ function drupalorg_project_update_7007() {
       'sortorder' => 'asc',
     ),
     'module' => 'extended_file_field',
-    'weight' => 4,
+    'weight' => 50,
   );
 
   // Set up widget settings.
