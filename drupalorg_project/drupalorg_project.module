@@ -573,6 +573,16 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
 }
 
 /**
+ * Implements hook_preprocess_node().
+ */
+function drupalorg_project_preprocess_node(&$variables) {
+  // Hide 'Add new comment' link on issue pages.
+  if (project_issue_node_is_issue($variables['node'])) {
+    unset($variables['content']['links']);
+  }
+}
+
+/**
  * List projects with commit RSS links.
  */
 function drupalorg_project_list_commit_rss() {
