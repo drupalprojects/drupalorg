@@ -1026,7 +1026,7 @@ function drupalorg_project_preprocess_drupalorg_home(&$vars) {
   $recent_updates = '';
   foreach ($result as $message) {
     $recent_updates .= '<h6>' . l(truncate_utf8($message->message, 80) . '…', 'commitlog/commit/' . $message->repo_id . '/' . $message->revision) . '</h6>'
-      . '<p class="submitted">' . t('Posted by !user on %author_date', array('!user' => l($message->name, 'user/' . $message->uid), '%author_date' => format_date($message->author_date))) . '</p>';
+      . '<p class="submitted">' . t('Posted by !user on %author_date', array('!user' => l($message->name, 'user/' . $message->uid), '%author_date' => format_date($message->author_date, 'custom', 'F j, Y \a\t g:ia'))) . '</p>';
   }
   // We have no place to link this to in a nice way.
   $recent_updates .= '<p>' . l(t('More commit messages…'), 'commitlog') . '</p>';
