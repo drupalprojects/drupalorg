@@ -1025,7 +1025,10 @@ function drupalorg_project_preprocess_drupalorg_home(&$vars) {
   $result = db_query_range('SELECT vco.message, vco.author_date, vco.repo_id, vco.revision, u.name, u.uid FROM {versioncontrol_operations} vco INNER JOIN {users} u ON vco.author_uid = u.uid ORDER BY vco.author_date DESC', 0, 5);
   $recent_updates = '';
   foreach ($result as $message) {
-    $recent_updates .= '<h6>' . l(truncate_utf8($message->message, 80) . '…', 'commitlog/commit/' . $message->repo_id . '/' . $message->revision) . '</h6>'
+    if (drupal_strlen($message->message) > 80) {
+      $message->message = truncate_utf8($message->message, 80) . '…';
+    }
+    $recent_updates .= '<h6>' . l($message->message, 'commitlog/commit/' . $message->repo_id . '/' . $message->revision) . '</h6>'
       . '<p class="submitted">' . t('Posted by !user on %author_date', array('!user' => l($message->name, 'user/' . $message->uid), '%author_date' => format_date($message->author_date, 'custom', 'F j, Y \a\t g:ia'))) . '</p>';
   }
   // We have no place to link this to in a nice way.
