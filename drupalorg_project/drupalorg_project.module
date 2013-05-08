@@ -583,6 +583,13 @@ function drupalorg_project_preprocess_node(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_project_issue_issue_update_link().
+ */
+function drupalorg_project_preprocess_project_issue_issue_update_link(&$variables) {
+  $variables['last_update'] = t('Last updated on %date', array('%date' => format_date($variables['node']->changed, 'custom', 'M j, Y \a\t g:ia')));
+}
+
+/**
  * List projects with commit RSS links.
  */
 function drupalorg_project_list_commit_rss() {
