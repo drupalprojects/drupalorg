@@ -416,7 +416,7 @@ function drupalorg_search_sort_form($form, &$form_state) {
     '#type' => 'select',
     '#title' => t('Sort by'),
     '#options' => array(
-      'score asc' => t('Relevency'),
+      'score asc' => t('Relevancy'),
       'sort_label asc' => t('Title'),
       'sort_name asc' => t('Author'),
       'ds_created desc' => t('Created date'),
