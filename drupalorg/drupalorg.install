@@ -1160,3 +1160,20 @@ function drupalorg_update_6611() {
   db_drop_table($return, 'drupalorg_civimembership');
   return $return;
 }
+
+/**
+ * Remove users.access core hack.
+ */
+function drupalorg_update_6612() {
+  $return = array();
+
+  db_add_field($return, 'users', 'access', array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 0,
+    'description' => 'Timestamp for previous time user accessed the site.',
+  ));
+  $return[] = update_sql('UPDATE {users}, {users_access} SET {users}.access = {users_access}.access WHERE {users}.uid = {users_access}.uid');
+
+  return $return;
+}
