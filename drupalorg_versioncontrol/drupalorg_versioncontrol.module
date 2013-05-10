@@ -227,7 +227,7 @@ function drupalorg_versioncontrol_form_alter(&$form, &$form_state, $form_id) {
     $examples = array('7.x-1.x', '6.x-2.x');
     $msg .= theme('item_list', $examples);
     $msg .= '<p>' . t('For more help, see <a href="http://drupal.org/node/1066342">Creating a Tag or Branch in Git</a> or the <a href="@git_instructions_url">Git instructions</a> page for your project.', array('@git_instructions_url' => url('node/' . $project->nid . '/git-instructions'))) . '</p>';
-    $msg .= '<p>' . t('Once you have added a valid branch or tag, <a href="@retry">try again</a>.', array('@retry' => url('node/add/project_release/' . $project->nid))) . '</p>';
+    $msg .= '<p>' . t('Once you have added a valid branch or tag, <a href="@retry">try again</a>.', array('@retry' => url('node/add/project-release/' . $project->nid))) . '</p>';
     $form['error']['#markup'] = $msg;
     unset($form['retry']);
   }
