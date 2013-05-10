@@ -417,25 +417,6 @@ function drupalorg_project_security_release_form_validate($form, &$form_state) {
 }
 
 /**
- * Implemenation of hook_project_page_link_alter().
- */
-function drupalorg_project_project_page_link_alter(&$links, $node) {
-  // todo D7 move to a node_view or form_alter
-  global $user;
-
-  // Provide contextual links for sandboxes.
-  if ($node->field_project_type[$node->language][0]['value'] === 'sandbox' && !in_array($form_state['node']->type, drupalorg_project_get_no_promote_project_types()) && $user->uid == $node->uid) {
-    $links['sandbox']['weight'] = 1;
-    if (!user_access('create full projects')) {
-      $links['sandbox']['links']['apply_full'] = l(t('Apply for full project access'), 'node/1011698');
-    }
-    else {
-      $links['sandbox']['links']['no_releases'] = l(t('Promote to full project'), "node/$node->nid/edit/promote");
-    }
-  }
-}
-
-/**
  * Project issue URL generator for Drupal issues.
  *
  * @param $query
