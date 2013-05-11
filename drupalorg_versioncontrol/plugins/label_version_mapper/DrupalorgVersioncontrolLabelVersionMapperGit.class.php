@@ -66,14 +66,16 @@ class DrupalorgVersioncontrolLabelVersionMapperGit implements VersioncontrolRele
       }
     }
 
-    if (!empty($api_term) && ($tree = project_release_get_api_taxonomy())) {
+    if (!empty($api_term)) {
       // If we're using the compatibility taxonomy, find the right tid.
-      foreach ($tree as $i => $term) {
-        if ($term->name == $api_term) {
-          $version->version_api_tid = $term->tid;
-          break;
-        }
-      }
+      $query = new EntityFieldQuery();
+      $result = $query->entityCondition('entity_type', 'taxonomy_term')
+        ->propertyCondition('vid', variable_get('project_release_api_vocabulary', ''))
+        ->propertyCondition('name', $api_term)
+        ->execute();
+      $tids = array_keys($result['taxonomy_term']);
+      $version->version_api_tid = reset($tids);
+      $version->version_api = $api_term;
     }
 
     return !empty($version->version_api_tid) ? $version : FALSE;
