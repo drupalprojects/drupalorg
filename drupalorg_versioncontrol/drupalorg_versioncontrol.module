@@ -104,7 +104,7 @@ function drupalorg_versioncontrol_node_insert($node) {
 
 }
 
-function drupalorg_versioncontrol_node_delete(&$node) {
+function drupalorg_versioncontrol_node_delete($node) {
   if (!$node->versioncontrol_project['repo'] instanceof VersioncontrolGitRepository) {
     watchdog('drupalorg', 'No repo found for project %title when deleting node.', array('%title' => $node->title), WATCHDOG_WARNING);
     return;
