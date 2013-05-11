@@ -370,6 +370,8 @@ function drupalorg_project_update_7009() {
   $instance = field_read_instance('node', 'taxonomy_vocabulary_7', 'project_release');
   if (!empty($instance)) {
     $instance['description'] = '<a href="/documentation/releases/types">What is a release type?</a>';
+    $instance['widget']['type'] = 'options_buttons';
+    $instance['widget']['module'] = 'options';
     field_update_instance($instance);
   }
 }

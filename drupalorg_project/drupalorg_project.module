@@ -352,35 +352,32 @@ function drupalorg_project_form_node_form_alter(&$form, $form_state) {
     $release_type_field = &$form['taxonomy_' . $security_term->vocabulary_machine_name][$form_state['node']->language];
     if (empty($form['nid']['#value'])) {
       // Adding a new release.
-      // @todo d7
       if (!empty($form['project_release']['rebuild']['#value'])) {
         // This is a -dev, don't let anyone mark it a security update.
         unset($release_type_field['#options'][$security_term->tid]);
       }
       else {
         // Regular release
-        // Add wrapper div for drupalorg_project.js
-        $form['taxonomy'][$vid]['#prefix'] = '<div class="release-type-select">';
-        $form['taxonomy'][$vid]['#suffix'] = '</div>';
         $form['#validate'][] = 'drupalorg_project_security_release_form_validate';
-        $confirm_class = 'security-update-confirm';
-        // Hide the confirmation checkbox on page load unless 'Security
-        // update' is already selected.
-        if (empty($form_state['values']['taxonomy'][$vid]) || (array_search($security_tid, $form_state['values']['taxonomy'][$vid]) === FALSE)) {
-          $confirm_class .= ' js-hide';
-        }
-        $form['security_update_confirm'] = array(
+        $release_type_field['security_update_confirm'] = array(
           '#type' => 'checkbox',
           '#title' => t('Are you sure you want to mark this release as a <a href="@security_update_url">Security update</a>?', array('@security_update_url' => url('node/' . DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID))),
-          '#prefix' => '<div class="' . $confirm_class . '">',
-          '#suffix' => '</div>',
-          '#weight' => -2,
+          '#weight' => 99,
           '#description' => t('If you select %security_update, your release will not be published without the manual intervention of the <a href="@security_url">Drupal Security Team</a>. You should have already <a href="@contact_url">contacted the Security Team</a> to coordinate a security advisory (SA) for your release before you committed any security-related patches.', array('%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL)),
           '#default_value' => !empty($form_state['values']['security_update_confirm']),
+          // We'll be among expanded checkboxes with #tree, but we don't want
+          // to really be a child of $release_type_field.
+          '#parents' => array('security_update_confirm'),
+          // Hide the confirmation checkbox on page load unless 'Security
+          // update' is selected.
+          '#states' => array(
+            'visible' => array(
+              ':input[name^="taxonomy_' . $security_term->vocabulary_machine_name . '"]' => array(
+                'value' => $security_term->tid,
+              ),
+            ),
+          ),
         );
-        $drupalorg_project_path = drupal_get_path('module', 'drupalorg_project');
-        drupal_add_js($drupalorg_project_path . '/drupalorg_project.js');
-        drupal_add_css($drupalorg_project_path . '/drupalorg_project.css');
       }
     }
     else {
@@ -408,11 +405,15 @@ function drupalorg_project_form_node_form_alter(&$form, $form_state) {
  * Form validation function for security release tag check.
  */
 function drupalorg_project_security_release_form_validate($form, &$form_state) {
-  // todo d7 make sure this is called, and update taxonomy field.
-  $security_tid = variable_get('project_release_security_update_tid', FALSE);
-  if (!empty($form_state['values']['taxonomy'][$vid][$security_tid]) && empty($form_state['values']['security_update_confirm'])) {
-    // Ensure the user confirms that this release should be marked security.
-    form_set_error('security_update_confirm', t('You must confirm you want this release to be a <a href="@security_update_url">Security update</a>', array('@security_update_url' => url('node/' . DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID))));
+  $security_term = taxonomy_term_load(variable_get('project_release_security_update_tid', FALSE));
+  foreach ($form_state['values']['taxonomy_' . $security_term->vocabulary_machine_name][$form_state['node']->language] as $value) {
+    if ($value['tid'] == $security_term->tid) {
+      // Ensure the user confirms that this release should be marked security.
+      if (empty($form_state['values']['security_update_confirm'])) {
+        form_set_error('security_update_confirm', t('You must confirm you want this release to be a <a href="@security_update_url">Security update</a>.', array('@security_update_url' => url('node/' . DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID))));
+      }
+      break;
+    }
   }
 }
 
