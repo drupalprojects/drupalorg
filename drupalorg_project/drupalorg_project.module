@@ -345,7 +345,13 @@ function drupalorg_project_form_node_form_alter(&$form, $form_state) {
     // See if this is a release for a translation project, and if so, deny.
     $project = node_load(project_release_get_release_project_nid($form_state['node']));
     if ($project->type === 'project_translation') {
-      // todo d7 ^ currently entire page errors out from drupalorg_versioncontrol.
+      foreach (element_children($form) as $child) {
+        unset($form[$child]);
+      }
+      $form['translations_denied'] = array(
+        '#markup' => t('Translation projects have been moved and are now actively maintained at <a href="@localize-link">localize.drupal.org</a>. You are no longer allowed to create new releases of translation projects on Drupal.org.', array('@localize-link' => 'http://localize.drupal.org/')),
+      );
+      return;
     }
 
     $security_term = taxonomy_term_load(variable_get('project_release_security_update_tid', FALSE));
