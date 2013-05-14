@@ -232,32 +232,78 @@ function drupalorg_project_cron() {
 }
 
 /**
- * Count number of issues in various issue queues on drupal.org.
+ * Count number of issues in various issue queues on Drupal.org.
  *
  * This function only counts issues for core releases that we're currently
  * tracking.
  *
  * @see drupalorg_project_bingo_block_output()
- * @see DRUPALORG_CORE_VERSION_TID
- * @see DRUPALORG_CORE_VERSION_NAME
  */
 function drupalorg_project_issue_counts() {
-  // @todo D7 replace {project_issues} with EntityFieldQuery.
+  // Fetch version strings for the development and main versions.
+  $api_vocabulary = taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary', ''));
+  $versions = array();
+  foreach (project_release_query_releases(DRUPALORG_CORE_NID, array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID, DRUPALORG_CORE_STABLE_VERSION_TID)) as $release) {
+    $versions[$release->{'taxonomy_' . $api_vocabulary->machine_name}[$release->language][0]['tid']][] = $release->field_release_version[$release->language][0]['value'];
+  }
   // Fetch issue counts for the current development release, and a combined
   // count for the development release and the latest stable release.
-  $versions = array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID => array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID), 'both' => array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID, DRUPALORG_CORE_STABLE_VERSION_TID));
+  $versions = array(
+    'main' => $versions[DRUPALORG_CORE_DEVELOPMENT_VERSION_TID],
+    'both' => array_merge($versions[DRUPALORG_CORE_DEVELOPMENT_VERSION_TID], $versions[DRUPALORG_CORE_STABLE_VERSION_TID]),
+  );
 
-  foreach ($versions as $version => $value) {
-    $issue_rids = db_query("SELECT prn.nid FROM {project_release_nodes} prn INNER JOIN {node} n ON prn.nid = n.nid AND n.status = 1 WHERE prn.pid = :pid AND prn.version_api_tid IN (:versions)", array(':pid' => DRUPALORG_CORE_NID, ':versions' => $value))->fetchCol();
-    $args = array(':pid' => DRUPALORG_CORE_NID, ':issue_rids' => $issue_rids);
-    $issue_counts[$version]['Critical bugs'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND category = 'bug' AND sid IN (1,8,13,14,15) AND priority = 1 AND rid IN (:issue_rids)", $args)->fetchField();
-    $issue_counts[$version]['Major bugs'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND category = 'bug' AND sid IN (1,8,13,14,15) AND priority = 4 AND rid IN (:issue_rids)", $args)->fetchField();
-    $issue_counts[$version]['Critical tasks'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND category = 'task' AND sid IN (1,8,13,14,15) AND priority = 1 AND rid IN (:issue_rids)", $args)->fetchField();
-    $issue_counts[$version]['Major tasks'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND category = 'task' AND sid IN (1,8,13,14,15) AND priority = 4 AND rid IN (:issue_rids)", $args)->fetchField();
-    $issue_counts[$version]['Patch queue'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND sid IN (8,13,14) AND rid IN (:issue_rids)", $args)->fetchField();
-    $issue_counts[$version]['Pending bugs'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {node} n ON pi.nid = n.nid WHERE n.status = 1 AND pid = :pid AND category = 'bug' AND sid IN(1,8,13,14,15) AND rid IN (:issue_rids)", $args)->fetchField();
+  foreach ($versions as $version => $issue_versions) {
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+      ->propertyCondition('status', NODE_PUBLISHED)
+      ->entityCondition('bundle', project_issue_issue_node_types())
+      ->fieldCondition('field_project', 'target_id', DRUPALORG_CORE_NID)
+      ->fieldCondition('field_issue_version', 'value', $issue_versions)
+      ->count();
+
+    $q = clone $query;
+    $issue_counts[$version]['Critical bugs'] = $q
+      ->fieldCondition('field_issue_status', 'value', array(1, 8, 13, 14, 15)) // Open
+      ->fieldCondition('field_issue_priority', 'value', 400) // Critical
+      ->fieldCondition('field_issue_category', 'value', 1) // Bug
+      ->execute();
+    $q = clone $query;
+    $issue_counts[$version]['Major bugs'] = $q
+      ->fieldCondition('field_issue_status', 'value', array(1, 8, 13, 14, 15)) // Open
+      ->fieldCondition('field_issue_priority', 'value', 300) // Major
+      ->fieldCondition('field_issue_category', 'value', 1) // Bug
+      ->execute();
+    $q = clone $query;
+    $issue_counts[$version]['Critical tasks'] = $q
+      ->fieldCondition('field_issue_status', 'value', array(1, 8, 13, 14, 15)) // Open
+      ->fieldCondition('field_issue_priority', 'value', 400) // Critical
+      ->fieldCondition('field_issue_category', 'value', 2) // Task
+      ->execute();
+    $q = clone $query;
+    $issue_counts[$version]['Major tasks'] = $q
+      ->fieldCondition('field_issue_status', 'value', array(1, 8, 13, 14, 15)) // Open
+      ->fieldCondition('field_issue_priority', 'value', 300) // Major
+      ->fieldCondition('field_issue_category', 'value', 2) // Task
+      ->execute();
+    $q = clone $query;
+    $issue_counts[$version]['Patch queue'] = $q
+      ->fieldCondition('field_issue_status', 'value', array(8, 13, 14)) // Open
+      ->execute();
+    $q = clone $query;
+    $issue_counts[$version]['Pending bugs'] = $q
+      ->fieldCondition('field_issue_status', 'value', array(1, 8, 13, 14, 15)) // Open
+      ->fieldCondition('field_issue_category', 'value', 1) // Bug
+      ->execute();
   }
-  $issue_counts['Novice issues'] = db_query("SELECT COUNT(*) FROM {project_issues} pi INNER JOIN {term_node} tn ON pi.nid = tn.nid INNER JOIN {term_data} td on tn.tid = td.tid WHERE td.name = 'Novice' AND pi.sid IN (1, 8, 13, 14, 15)")->fetchField();
+  $query = new EntityFieldQuery();
+  $issue_counts['Novice issues'] = $query->entityCondition('entity_type', 'node')
+    ->propertyCondition('status', NODE_PUBLISHED)
+    ->entityCondition('bundle', project_issue_issue_node_types())
+    ->fieldCondition('field_issue_status', 'value', array(1, 8, 13, 14, 15)) // Open
+    ->fieldCondition('taxonomy_vocabulary_9', 'tid', 772) // Novice
+    ->count()->execute();
+
   variable_set('drupalorg_project_issue_counts', $issue_counts);
 }
 
@@ -653,9 +699,7 @@ function drupalorg_project_bingo_jump($type = 'bug-core') {
   $query
     ->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', project_issue_issue_node_types(), 'IN')
-    ->entityCondition('entity_id', 0, '>=') // Will be altered to a random value.
     ->addTag('drupalorg_bug_bingo')
-    ->entityOrderBy('entity_id', 'asc')
     ->range(0, 1);
 
   list($category, $project) = explode('-', $type);
@@ -683,34 +727,14 @@ function drupalorg_project_bingo_jump($type = 'bug-core') {
   $entities = $query->execute();
   $entities = array_keys($entities['node']);
   $nid = $entities[0];
-  if ($_GET['stop'] != 1) {
-    drupal_goto('node/'. $nid);
-  }
+  drupal_goto('node/' . $nid);
 }
 
 /**
  * Query alter for bug bingo. The actual randomization happens here.
  */
 function drupalorg_project_query_drupalorg_bug_bingo_alter($query) {
-  if (!$query->hasTag('drupalorg_bug_bingo_skip')) {
-    // Flip the ordering around and execute to get an upper bound.
-    $maxquery = clone($query);
-    // Don't recurse.
-    $maxquery->addTag('drupalorg_bug_bingo_skip');
-    $order =& $maxquery->getOrderBy();
-    $order['field_data_field_issue_status0.entity_id'] = 'desc';
-    $entity = $maxquery->execute()->fetch();
-    // Grab a random nid in a quick fashion.
-    $conditions =& $query->conditions();
-    foreach ($conditions as $key => $condition) {
-      // Cut the deck in a random place.
-      if ($condition['field'] == 'field_data_field_issue_status0.entity_id') {
-        // @todo Start from the first known issue instead of zero to fix bias
-        // towards selecting the lowest issue repeatedly.
-        $conditions[$key]['value'] = mt_rand(0, $entity->entity_id);
-      }
-    }
-  }
+  $query->orderRandom();
 }
 
 /**
@@ -880,21 +904,6 @@ function drupalorg_project_block_view($delta = '') {
       break;
   }
 }
-/**
- * Implementation of hook_block().
- */
-function drupalorg_project_block($op = 'list', $delta = 0, $edit = array()) {
-  switch ($op) {
-    case 'list':
-      $blocks[0]['info'] = t('Contributor Links');
-      return $blocks;
-
-    case 'view':
-      $block['subject'] = t('Contributor Links');
-      $block['content'] = drupalorg_project_bingo_block_output();
-      return $block;
-  }
-}
 
 /**
  * Output links with issue counts for different types of issues.
@@ -907,14 +916,6 @@ function drupalorg_project_bingo_block_output() {
   // @todo: find out why.
   $versions = array(DRUPALORG_CORE_DEVELOPMENT_VERSION_NAME, DRUPALORG_CORE_STABLE_VERSION_NAME);
 
-  $counts_critical_bugs = $counts['both']['Critical bugs'];
-  $counts_major_bugs = $counts['both']['Major bugs'];
-  $counts_critical_tasks = $counts['both']['Critical tasks'];
-  $counts_major_tasks = $counts['both']['Major tasks'];
-  $counts_pending_bugs = $counts['both']['Pending bugs'];
-  $counts_queue = $counts[DRUPALORG_CORE_DEVELOPMENT_VERSION_TID]['Patch queue'];
-  $counts_novice = $counts['Novice issues'];
-
   $links = array(
     l('Community initiatives', 'community-initiatives'),
     array(
@@ -922,72 +923,72 @@ function drupalorg_project_bingo_block_output() {
       'children' => array(
         l('Your issues', 'project/issues/user'),
         drupalorg_project_global_issue_link(
-          $counts_novice . t(' Novice issues'),
+          $counts['Novice issues'] . ' Novice issues',
           array(
-               'status' => array(1, 8, 13, 14, 15),
-               'issue_tags_op' => 'or',
-               'issue_tags' => 'Novice',
+            'status' => array(1, 8, 13, 14, 15),
+            'issue_tags_op' => 'or',
+            'issue_tags' => 'Novice',
           )
         ),
         drupalorg_project_core_issue_link(
-          $counts_critical_bugs .' Critical bugs (D8 + D7)',
+          $counts['both']['Critical bugs'] . ' Critical bugs (D8 + D7)',
           array(
-               'version' => $versions,
-               'status' => array(1, 8, 13, 14, 15),
-               'priorities' => array(1),
-               'categories' => array('bug'),
+            'version' => $versions,
+            'status' => array(1, 8, 13, 14, 15),
+            'priorities' => array(400),
+            'categories' => array(1),
           )
         ),
         drupalorg_project_core_issue_link(
-          $counts_major_bugs .' Major bugs (D8 + D7)',
+          $counts['both']['Major bugs'] . ' Major bugs (D8 + D7)',
           array(
-               'version' => $versions,
-               'status' => array(1, 8, 13, 14, 15),
-               'priorities' => array(4),
-               'categories' => array('bug'),
+            'version' => $versions,
+            'status' => array(1, 8, 13, 14, 15),
+            'priorities' => array(300),
+            'categories' => array(1),
           )
         ),
         drupalorg_project_core_issue_link(
-         $counts_critical_tasks .' Critical tasks (D8 + D7)',
+         $counts['both']['Critical tasks'] . ' Critical tasks (D8 + D7)',
           array(
-               'version' => $versions,
-               'status' => array(1, 8, 13, 14, 15),
-               'priorities' => array(1),
-               'categories' => array('task'),
+            'version' => $versions,
+            'status' => array(1, 8, 13, 14, 15),
+            'priorities' => array(400),
+            'categories' => array(2),
           )
         ),
         drupalorg_project_core_issue_link(
-          $counts_major_tasks .' Major tasks (D8 + D7)',
+          $counts['both']['Major tasks'] . ' Major tasks (D8 + D7)',
           array(
-               'version' => $versions,
-               'status' => array(1, 8, 13, 14, 15),
-               'priorities' => array(4),
-               'categories' => array('task'),
+            'version' => $versions,
+            'status' => array(1, 8, 13, 14, 15),
+            'priorities' => array(300),
+            'categories' => array(2),
           )
         ),
         drupalorg_project_core_issue_link(
-          $counts_pending_bugs .' Pending bugs (D8 + D7)',
+          $counts['both']['Pending bugs'] . ' Pending bugs (D8 + D7)',
           array(
-               'version' => $versions,
-               'status' => array(1, 8, 13, 14, 15),
-               'categories' => array('bug'),
+            'version' => $versions,
+            'status' => array(1, 8, 13, 14, 15),
+            'categories' => array(1),
           )
         ),
         drupalorg_project_core_issue_link(
-          $counts_queue .' Patch queue (D8)',
+          $counts['main']['Patch queue'] . ' Patch queue (D8)',
           array(
-               'version' => array(DRUPALORG_CORE_DEVELOPMENT_VERSION_NAME),
-               'status' => array(8, 13, 14),
+            'version' => array(DRUPALORG_CORE_DEVELOPMENT_VERSION_NAME),
+            'status' => array(8, 13, 14),
           )
         ),
         drupalorg_project_core_issue_link(
           'Issues needing triage',
           array(
-               'version' => $versions,
-               'status' => array(1, 8, 13),
-               'categories' => array('bug', 'task'),
-               'order' => 'comment_count',
-               'sort' => 'asc',
+            'version' => $versions,
+            'status' => array(1, 8, 13),
+            'categories' => array(1, 2),
+            'order' => 'comment_count',
+            'sort' => 'asc',
           )
         ),
       ),
