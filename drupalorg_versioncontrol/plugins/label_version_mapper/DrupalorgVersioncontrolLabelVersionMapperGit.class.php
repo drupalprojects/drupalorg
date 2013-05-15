@@ -73,6 +73,13 @@ class DrupalorgVersioncontrolLabelVersionMapperGit implements VersioncontrolRele
         ->propertyCondition('vid', variable_get('project_release_api_vocabulary', ''))
         ->propertyCondition('name', $api_term)
         ->execute();
+
+      // Bail if $api_term exists but the EFQ did not return a tid, to avoid
+      // throwing an undefined index notice on $result['taxonomy_term'].
+      if (empty($result)) {
+        return FALSE;
+      }
+
       $tids = array_keys($result['taxonomy_term']);
       $version->version_api_tid = reset($tids);
       $version->version_api = $api_term;
@@ -122,6 +129,13 @@ class DrupalorgVersioncontrolLabelVersionMapperGit implements VersioncontrolRele
         ->propertyCondition('vid', variable_get('project_release_api_vocabulary', ''))
         ->propertyCondition('name', $api_term)
         ->execute();
+
+      // Bail if $api_term exists but the EFQ did not return a tid, to avoid
+      // throwing an undefined index notice on $result['taxonomy_term'].
+      if (empty($result)) {
+        return FALSE;
+      }
+
       $tids = array_keys($result['taxonomy_term']);
       $version->version_api_tid = reset($tids);
       $version->version_api = $api_term;
