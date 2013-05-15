@@ -343,10 +343,7 @@ function drupalorg_block_view($delta, $block = NULL) {
             break;
 
           case 'getting-involved':
-            /* @todo d7 - Test this when Project is ready - should have a link
-             on /getting-involved to add the Contributor Links block to
-             dashboard, and the link should work.*/
-            $blocks[] = array('Contributor Links', 'drupalorg_project', '0');
+            $blocks[] = array('Contributor Links', 'drupalorg_project', 'bingo-block');
             break;
         }
         if (count($blocks) > 0) {
