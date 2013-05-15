@@ -1149,8 +1149,10 @@ function drupalorg_project_meta_data($node) {
   // Download stats.
   $downloads = 0;
   foreach (project_release_query_releases($node->nid) as $release) {
-    foreach (array_map('field_collection_field_get_entity', $release->field_release_files[$release->language]) as $collection) {
-      $downloads += $collection->field_release_file_downloads[$release->language][0]['value'];
+    if (!empty($release->field_release_files[$release->language])) {
+      foreach (array_map('field_collection_field_get_entity', $release->field_release_files[$release->language]) as $collection) {
+        $downloads += $collection->field_release_file_downloads[$release->language][0]['value'];
+      }
     }
   }
   if ($downloads > 0) {
