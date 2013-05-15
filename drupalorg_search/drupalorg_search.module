@@ -331,12 +331,23 @@ function drupalorg_search_get_project_type($query, $response) {
 /**
  * Generates the "How can we help you" block for use on the community page.
  */
-function drupalorg_search_help_form(&$form_state) {
-  $form = array();
-  // We're going to leverage some existing autocomplete functionality, so add
-  // the autocomplete js + our js.
-  drupal_add_js('misc/autocomplete.js');
-  drupal_add_js(drupal_get_path('module', 'drupalorg_search') . '/js/community.js');
+function drupalorg_search_help_form() {
+  $form = array(
+    // We're going to leverage some existing autocomplete functionality, so add
+    // the autocomplete js + our js.
+    '#attached' => array(
+      'js' => array(
+        array(
+          'type' => 'file',
+          'data' => 'misc/autocomplete.js',
+        ),
+        array(
+          'type' => 'file',
+          'data' => drupal_get_path('module', 'drupalorg_search') . '/js/community.js',
+        ),
+      ),
+    ),
+  );
 
   // Text field for searching documentation items.
   $form['search_term'] = array(
@@ -347,9 +358,9 @@ function drupalorg_search_help_form(&$form_state) {
   // Hidden auto-lookup field for using auto-complete-like functionality.
   $form['search_term_autolookup'] = array(
     '#type' => 'hidden',
-    '#id' => 'edit-search-term-autolookup',
     '#value' => check_url(url('drupalorg-search/help/js', array('absolute' => TRUE))),
     '#attributes' => array(
+      'id' => 'edit-search-term-autolookup',
       'class' => array('autolookup'),
     ),
   );
