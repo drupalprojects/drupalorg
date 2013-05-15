@@ -1855,8 +1855,7 @@ function drupalorg_node_update($node) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Implements hook_views_pre_render().
  */
 function drupalorg_views_pre_render(&$view) {
   // Render the taxonomy filtering above the marketplace organization listing.
