@@ -712,9 +712,6 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
     $variables['things_we_made'] = $variables['sites_made'][array_rand($variables['sites_made'])];
   }
 
-  // @todo D7 - this ad is not showing up. The HTML is being printed, but the
-  // JS is not executing, because some scripts are not included that define
-  // the JS function being called.
   $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'Redesign_home'));
 }
 
