@@ -1351,8 +1351,6 @@ function drupalorg_homebox() {
           'weight' => 2,
         ),
         // Column 3
-        // @todo D7 - When Project is ported, make sure this block shows up
-        // in the available blocks.
         'project_issue_issue_cockpit' => array(
           'module' => 'project_issue',
           'delta' => 'issue_cockpit',
