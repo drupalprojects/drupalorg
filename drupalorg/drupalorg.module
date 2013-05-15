@@ -545,23 +545,18 @@ function drupalorg_get_activity($_force = FALSE) {
     $followups = db_query("SELECT COUNT(distinct c.nid) FROM {node} n INNER JOIN {comment} c ON n.nid = c.nid WHERE n.type = :type AND n.status = :status AND c.created > :created", array(':type' => 'project_issue', ':status' => 1, ':created' => strtotime("1 week ago")))->fetchField();
     $stats['number_of_issue_comments'] = number_format($followups);
 
-    // Projects this week.
-    $new_modules = db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {taxonomy_index} tn ON tn.nid = n.nid AND tn.tid = 14 WHERE n.created > :created", array(':created' => strtotime("1 week ago")))->fetchField();
-    $stats['number_of_new_modules'] = number_format($new_modules);
     // All Modules.
-    $modules = db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {taxonomy_index} tn ON n.nid = tn.nid WHERE tn.tid = :tid AND n.status = :status", array(':tid' => 14, ':status' => 1))->fetchField();
+    $modules = db_query("SELECT COUNT(n.nid) FROM {node} n WHERE n.type = 'project_module' AND n.status = :status", array(':status' => NODE_PUBLISHED))->fetchField();
     // TODO would be nice to limit to D6 & D7
-    //$modules = db_result(db_query("SELECT COUNT(distinct prn.pid) FROM node n INNER JOIN project_release_nodes prn ON n.nid = prn.nid INNER JOIN term_node tn on prn.pid = tn.nid WHERE tn.tid = 14 AND prn.version_api_tid IN (87, 103)"));
     $stats['number_of_modules'] = number_format($modules);
 
     // All Themes.
-    $themes = db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {taxonomy_index} tn ON n.nid = tn.nid WHERE tn.tid = :tid AND n.status = :status", array(':tid' => 15, ':status' => 1))->fetchField();
+    $themes = db_query("SELECT COUNT(n.nid) FROM {node} n WHERE n.type = 'project_theme' AND n.status = :status", array(':status' => NODE_PUBLISHED))->fetchField();
     // TODO would be nice to limit to D6 & D7
-    //$themes = db_result(db_query("SELECT COUNT(distinct prn.pid) FROM node n INNER JOIN project_release_nodes prn ON n.nid = prn.nid INNER JOIN term_node tn on prn.pid = tn.nid WHERE tn.tid = 15 AND prn.version_api_tid IN (87, 103)"));
     $stats['number_of_themes'] = number_format($themes);
 
     // All Distributions.
-    $distributions = db_query("SELECT COUNT(n.nid) FROM {node} n INNER JOIN {taxonomy_index} tn ON n.nid = tn.nid WHERE tn.tid = :tid AND n.status = :status", array(':tid' => 96, ':status' => 1))->fetchField();
+    $distributions = db_query("SELECT COUNT(n.nid) FROM {node} n WHERE n.type = 'project_distribution' AND n.status = :status", array(':status' => NODE_PUBLISHED))->fetchField();
     $stats['number_of_distributions'] = number_format($distributions);
 
     // Users: Count them.
