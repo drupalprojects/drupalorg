@@ -565,3 +565,10 @@ function drupalorg_project_update_7015() {
     field_update_instance($instance);
   }
 }
+
+/**
+ * Tell project_issue to use our issue tags vocab for the issue queue.
+ */
+function drupalorg_project_update_7016() {
+  variable_set('project_issue_taxonomy_vocabulary_issue_queue_9', 'autocomplete');
+}
