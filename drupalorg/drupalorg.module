@@ -538,11 +538,8 @@ function drupalorg_get_activity($_force = FALSE) {
     $stats = array();
 
     // GIT: retrieve info via API.
-    // @todo D7 - Commented out until drupalorg_git* and drupalorg_versioncontrol* modules are ported.
-    //$stats['number_of_git_accounts'] = number_format(drupalorg_git_gateway_get_total_accounts());
-    //$stats['number_of_git_commits'] = number_format(drupalorg_versioncontrol_get_total_commits(NULL, 7 * 24 * 60 * 60));
-    $stats['number_of_git_accounts'] = 0;
-    $stats['number_of_git_commits'] = 0;
+    $stats['number_of_git_accounts'] = number_format(drupalorg_git_gateway_get_total_accounts());
+    $stats['number_of_git_commits'] = number_format(drupalorg_versioncontrol_get_total_commits(7 * 24 * 60 * 60));
 
     // Issue comments this week
     $followups = db_query("SELECT COUNT(distinct c.nid) FROM {node} n INNER JOIN {comment} c ON n.nid = c.nid WHERE n.type = :type AND n.status = :status AND c.created > :created", array(':type' => 'project_issue', ':status' => 1, ':created' => strtotime("1 week ago")))->fetchField();
@@ -583,9 +580,7 @@ function drupalorg_get_activity($_force = FALSE) {
     $stats['number_of_languages'] = count($languages);
 
     // Sites: use project API.
-    // @todo D7: dependent on project usage module port.
-    //$stats['sites'] = number_format(project_usage_get_project_total_usage(DRUPALORG_CORE_NID));
-    $stats['sites'] = 0;
+    $stats['sites'] = number_format(project_usage_get_project_total_usage(DRUPALORG_CORE_NID));
 
     // Comments: count comments.
     $stats['comments'] = number_format(db_query("SELECT COUNT(*) FROM {comment} WHERE status = :status", array(':status' => 1))->fetchField());
