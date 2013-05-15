@@ -1160,12 +1160,8 @@ function drupalorg_project_meta_data($node) {
   }
 
   // Automated tests.
-  if (module_exists('pift')) {
-    $has_auto_tests = db_query("SELECT pid FROM {pift_project} WHERE pid = :pid", array(':pid' => $node->nid))->fetchField();
-    if (!empty($has_auto_tests)) {
-      /// @todo d7 Indicate if the tests are passing or not.
-      $info[t('Automated tests')] = t('Enabled');
-    }
+  if (module_exists('pift') && pift_project_enabled($node->nid)) {
+    $info[t('Automated tests')] = t('Enabled');
   }
 
   $modified = format_date($node->changed, 'custom', 'F j, Y');
