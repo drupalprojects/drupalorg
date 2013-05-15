@@ -800,23 +800,24 @@ function drupalorg_start() {
 function drupalorg_preprocess_drupalorg_start(&$variables) {
   $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
   $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
-/* @todo D7: project_solr not ported yet.
+
   // Create and cache a solr query for use by block elements.
   $env_id = apachesolr_default_environment();
   project_solr_run_project_query('project/modules', array(array(
-    'key' => 'im_vid_' . _project_get_vid(),
-    'value' => DRUPALORG_MODULE_TID,
+    'key' => 'bundle',
+    'value' => 'project_module',
   )));
   $query = apachesolr_current_query($env_id);
-  $variables['most_popular_modules'] = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
+  $list = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
+  $variables['most_popular_modules'] = drupal_render($list);
 
   project_solr_run_project_query('project/themes', array(array(
-    'key' => 'im_vid_' . _project_get_vid(),
-    'value' => DRUPALORG_THEME_TID,
+    'key' => 'bundle',
+    'value' => 'project_theme',
   )));
   $query = apachesolr_current_query($env_id);
-  $variables['most_popular_themes'] = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
-  */
+  $list = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
+  $variables['most_popular_themes'] = drupal_render($list);
 }
 
 /**
