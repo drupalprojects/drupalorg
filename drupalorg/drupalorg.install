@@ -1121,3 +1121,19 @@ function drupalorg_update_7021() {
     }
   }
 }
+
+/**
+ * Do not display taxonomy fields on books and book listings.
+ */
+function drupalorg_update_7022() {
+  foreach (array('taxonomy_vocabulary_31', 'taxonomy_vocabulary_38', 'taxonomy_vocabulary_5 ', 'taxonomy_vocabulary_54', 'taxonomy_vocabulary_56') as $field) {
+    $instance = field_read_instance('node', $field, 'book');
+    $instance['display']['default']['type'] = 'hidden';
+    field_update_instance($instance);
+  }
+  foreach (array('taxonomy_vocabulary_38', 'taxonomy_vocabulary_5', 'taxonomy_vocabulary_54', 'taxonomy_vocabulary_56', 'taxonomy_vocabulary_60', 'taxonomy_vocabulary_62') as $field) {
+    $instance = field_read_instance('node', $field, 'book_listing');
+    $instance['display']['default']['type'] = 'hidden';
+    field_update_instance($instance);
+  }
+}
