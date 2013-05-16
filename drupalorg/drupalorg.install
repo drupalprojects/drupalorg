@@ -251,9 +251,11 @@ function drupalorg_update_dependencies() {
         'tracker' => 7000,
       ),
       // drupalorg_update_7015() after project_update_7006(), which enables
-      // pathauto.
+      // pathauto, and drupalorg_project_update_7003(), which sets up project
+      // node types.
       7015 => array(
         'project' => 7006,
+        'drupalorg_project' => 7003,
       ),
     ),
     // drupalorg_update_7003() needs to run before any call to module_enable()
