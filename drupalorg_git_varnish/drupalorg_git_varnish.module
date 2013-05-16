@@ -224,8 +224,9 @@ function drupalorg_git_varnish_clear_sshkey_cmds($key) {
 function drupalorg_git_varnish_project_promote_sandbox($project) {
   // This will probably cause some redundant cache clearing, but oh well.
   $host = _drupalorg_git_varnish_get_host();
+  $machine_name = field_get_items('node', $project, 'field_project_machine_name');
   $commands = array(
-    "purge req.http.host == $host && req.url ~ ^/drupalorg/vcs-auth-data.project_uri={$project->project['uri']}$",
+    "purge req.http.host == $host && req.url ~ ^/drupalorg/vcs-auth-data.project_uri=" . $machine_name[0]['value'] . '$',
     // And also clear the old sandbox uri.
     "purge req.http.host == $host && req.url ~ ^/drupalorg/vcs-auth-data.project_uri={$project->nid}$",
   );

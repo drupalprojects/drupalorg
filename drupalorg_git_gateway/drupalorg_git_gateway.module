@@ -432,7 +432,7 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
     $data['repo_group'] = DRUPALORG_GIT_GATECTL_CORE;
   }
   else {
-    $data['repo_group'] = empty($project->project['sandbox']) ? DRUPALORG_GIT_GATECTL_PROJECTS : DRUPALORG_GIT_GATECTL_SANDBOXES;
+    $data['repo_group'] = project_promote_project_is_sandbox($project) ? DRUPALORG_GIT_GATECTL_SANDBOXES : DRUPALORG_GIT_GATECTL_PROJECTS;
   }
 
   // Attach project published/unpublished information.
