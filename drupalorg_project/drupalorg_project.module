@@ -1138,8 +1138,9 @@ function drupalorg_project_meta_data($node) {
   if ($total_usage) {
     $info[t('Reported installs')] = format_plural($total_usage,
       '<strong>1</strong> site currently reports using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
-      '<strong>@count</strong> sites currently report using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
+      '<strong>@formatted-count</strong> sites currently report using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
       array(
+        '@formatted-count' => number_format($total_usage),
         '@project-type' => drupal_strtolower(drupalorg_project_node_type_label($node->type, 'singular')),
         '!project-shortname' => $node->field_project_machine_name[$node->language][0]['value'],
       )
