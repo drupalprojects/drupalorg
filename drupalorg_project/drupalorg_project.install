@@ -443,11 +443,6 @@ function drupalorg_project_update_7012() {
     if (!empty($instance)) {
       $instance['display']['issuemetadata']['weight'] = $weight++;
       $instance['display']['issuemetadata']['label'] = $label;
-      // For assigned, we also want to force the entity reference display to
-      // render as a link to the user.
-      if ($field_name == 'field_issue_assigned') {
-        $instance['display']['issuemetadata']['settings'] = array('link' => TRUE);
-      }
       field_update_instance($instance);
     }
   }
