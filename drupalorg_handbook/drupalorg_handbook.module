@@ -180,18 +180,14 @@ function drupalorg_handbook_meta_data() {
       if ($field['module'] === 'taxonomy' && count($node->{$field['field_name']}) > 0) {
         foreach (field_available_languages('node', $field) as $langcode) {
           foreach ($node->{$field['field_name']}[$langcode] as $item) {
-            $term_id = $item['tid'];
-            if (!isset($item['taxonomy_term'])) {
-              continue;
-            }
-            $term = $item['taxonomy_term'];
+            $term = taxonomy_term_load($item['tid']);
 
             if (isset($vocabularies[$term->vid])) {
               switch ($term->vid) {
               case 31:
                 // Page status vocabulary: build status line.
                 $class = 'page-ok';
-                switch ($term_id) {
+                switch ($term->tid) {
                 case 126: // Incomplete.
                 case 128: // Needs updating.
                 case 18960: // Needs tech review.
@@ -211,7 +207,7 @@ function drupalorg_handbook_meta_data() {
               case 60:
                 // Book availability: use as status line.
                 $class = 'page-ok';
-                switch ($term_id) {
+                switch ($term->tid) {
                   case 38418: // Out of print
                   case 38420: // Upcoming
                     $class = 'page-needs-work';
