@@ -142,7 +142,8 @@ function drupalorg_menu() {
 
   $items['getting-involved'] = array(
     'title' => 'Getting Involved',
-    'page callback' => 'drupalorg_getting_involved',
+    'page callback' => 'theme',
+    'page arguments' => array('drupalorg_getting_involved'),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -895,31 +896,20 @@ function drupalorg_preprocess_drupalorg_community(&$variables) {
 }
 
 /**
- * Page callback for the getting involved page.
- */
-function drupalorg_getting_involved() {
-  return theme('drupalorg_getting_involved');
-}
-
-/**
  * Implementation of template_preprocess_drupalorg_getting_involved().
  */
 function drupalorg_preprocess_drupalorg_getting_involved(&$variables) {
   // First, build and render a teaser of the old docs node.
   $docs_node = node_load(281873);
-  // Get rid of the taxonomy properties so we don't render them.
-  $arr = (array) $docs_node;
-  foreach (array_keys($arr) as $key) {
+  node_build_content($docs_node, 'teaser');
+  // Get rid of links and taxonomy properties so we don't render them.
+  hide($docs_node->content['links']);
+  foreach (element_children($docs_node->content) as $key) {
     if (strpos($key, 'taxonomy_vocabulary_') === 0) {
-      unset($docs_node->$key);
+      hide($docs_node->content[$key]);
     }
   }
-  unset($docs_node->title); // Looks funny here.
-  node_build_content($docs_node, 'teaser');
-  unset($docs_node->links);
-  $content = drupal_render($docs_node->content);
-
-  $variables['docs_node'] = $content;
+  $variables['docs_node'] = drupal_render($docs_node->content);
   $variables['docs_more'] = l(t('Getting Involved Guide'), 'node/281873');
 
   // Then, show the view for community spotlight.

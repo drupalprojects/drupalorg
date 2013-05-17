@@ -1079,6 +1079,7 @@ function drupalorg_update_7017() {
 function drupalorg_update_7018() {
   $instance = field_read_instance('node', 'taxonomy_forums', 'forum');
   $instance['display']['default']['type'] = 'hidden';
+  $instance['display']['teaser']['type'] = 'hidden';
   field_update_instance($instance);
 }
 
@@ -1135,5 +1136,22 @@ function drupalorg_update_7022() {
     $instance = field_read_instance('node', $field, 'book_listing');
     $instance['display']['default']['type'] = 'hidden';
     field_update_instance($instance);
+  }
+}
+
+/**
+ * Add <!--> to allowed tags to work around http://drupal.org/node/881006.
+ */
+function drupalorg_update_7023() {
+  foreach (filter_formats() as $format) {
+    $format->filters = filter_list_format($format->format);
+    if (isset($format->filters['filter_html'])) {
+      $format->filters['filter_html']->settings['allowed_html'] .= ' <!-->';
+      // Cast to array for saving.
+      foreach (array_keys($format->filters) as $key) {
+        $format->filters[$key] = (array) $format->filters[$key];
+      }
+      filter_format_save($format);
+    }
   }
 }
