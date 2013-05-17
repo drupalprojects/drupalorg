@@ -184,52 +184,52 @@ function drupalorg_handbook_meta_data() {
 
             if (isset($vocabularies[$term->vid])) {
               switch ($term->vid) {
-              case 31:
-                // Page status vocabulary: build status line.
-                $class = 'page-ok';
-                switch ($term->tid) {
-                case 126: // Incomplete.
-                case 128: // Needs updating.
-                case 18960: // Needs tech review.
-                case 18962: // Needs copy/style review.
-                case 18964: // Needs dividing.
-                  $class = 'page-needs-work';
+                case 31:
+                  // Page status vocabulary: build status line.
+                  $class = 'page-ok';
+                  switch ($term->tid) {
+                    case 126: // Incomplete.
+                    case 128: // Needs updating.
+                    case 18960: // Needs tech review.
+                    case 18962: // Needs copy/style review.
+                    case 18964: // Needs dividing.
+                      $class = 'page-needs-work';
+                      break;
+
+                    case 127: // Insecure.
+                    case 129: // Deprecated.
+                      $class = 'page-major-problem';
+                      break;
+                  }
+                  $about['status'] = '<p class="page-status ' . $class . '"><span>' . check_plain($term->name) . '</span></p>';
                   break;
 
-                case 127: // Insecure.
-                case 129: // Deprecated.
-                  $class = 'page-major-problem';
+                case 60:
+                  // Book availability: use as status line.
+                  $class = 'page-ok';
+                  switch ($term->tid) {
+                    case 38418: // Out of print
+                    case 38420: // Upcoming
+                      $class = 'page-needs-work';
+                      break;
+
+                    case 38416: // Canceled
+                      $class = 'page-major-problem';
+                      break;
+                  }
+                  $about['status'] = '<p class="page-status ' . $class . '"><span>' . check_plain($term->name) . '</span></p>';
                   break;
-                }
-                $about['status'] = '<p class="page-status ' . $class . '"><span>' . check_plain($term->name) . '</span></p>';
-                break;
 
-              case 60:
-                // Book availability: use as status line.
-                $class = 'page-ok';
-                switch ($term->tid) {
-                  case 38418: // Out of print
-                  case 38420: // Upcoming
-                    $class = 'page-needs-work';
-                    break;
+                case 54:
+                  // Keywords vocabulary: print a link, separate section.
+                  $keywords[] = l($term->name, 'taxonomy/term/' . $term->tid);
+                  break;
 
-                  case 38416: // Canceled
-                    $class = 'page-major-problem';
-                    break;
-                }
-                $about['status'] = '<p class="page-status ' . $class . '"><span>' . check_plain($term->name) . '</span></p>';
-                break;
-
-              case 54:
-                // Keywords vocabulary: print a link, separate section.
-                $keywords[] = l($term->name, 'taxonomy/term/' . $term->tid);
-                break;
-
-              default:
-                // Any other vocabulary: print the name.
-                $vocab_name = check_plain($vocabularies[$term->vid]->name);
-                $about[$vocab_name][] = check_plain($term->name);
-                break;
+                default:
+                  // Any other vocabulary: print the name.
+                  $vocab_name = check_plain($vocabularies[$term->vid]->name);
+                  $about[$vocab_name][] = check_plain($term->name);
+                  break;
               }
             }
           }
