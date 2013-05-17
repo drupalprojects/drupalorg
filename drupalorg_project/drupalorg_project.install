@@ -456,8 +456,7 @@ function drupalorg_project_update_7012() {
   $instance = field_info_instance('node', 'taxonomy_vocabulary_9', 'project_issue');
   if (!empty($instance)) {
     $instance['display']['issuemetadata']['weight'] = $weight++;
-    // @todo: Issue tag links https://drupal.org/node/1979000.
-    $instance['display']['issuemetadata']['type'] = 'taxonomy_term_reference_plain';
+    $instance['display']['issuemetadata']['type'] = 'taxonomy_term_reference_link';
     $instance['display']['issuemetadata']['label'] = 'above';
     foreach (array('default', 'teaser') as $view_mode) {
       $instance['display'][$view_mode]['type'] = 'hidden';
@@ -482,6 +481,10 @@ function drupalorg_project_update_7012() {
         'weight' => '100',
         'visible' => FALSE,
       ),
+      'nodechanges' => array(
+        'weight' => '100',
+        'visible' => FALSE,
+      ),
     ),
     'follow_link' => array(
       'issuemetadata' => array(
@@ -493,6 +496,10 @@ function drupalorg_project_update_7012() {
         'visible' => TRUE,
       ),
       'teaser' => array(
+        'weight' => '-10',
+        'visible' => FALSE,
+      ),
+      'nodechanges' => array(
         'weight' => '-10',
         'visible' => FALSE,
       ),
@@ -571,4 +578,27 @@ function drupalorg_project_update_7015() {
  */
 function drupalorg_project_update_7016() {
   variable_set('project_issue_taxonomy_vocabulary_issue_queue_9', 'autocomplete');
+}
+
+/**
+ * More weight and view mode configuration for the default issue node type.
+ */
+function drupalorg_project_update_7017() {
+  // Fix the weight on the body field (again).
+  $instance = field_info_instance('node', 'body', 'project_issue');
+  $instance['widget']['weight'] = 40;
+  field_update_instance($instance);
+
+  $instance = field_info_instance('node', 'taxonomy_vocabulary_9', 'project_issue');
+  if (!empty($instance)) {
+    $instance['display']['issuemetadata']['type'] = 'taxonomy_term_reference_link';
+    $instance['display']['nodechanges'] = array(
+      'label' => 'inline',
+      'type' => 'taxonomy_term_reference_link',
+      'weight' => '20',
+      'settings' => array(),
+      'module' => 'taxonomy',
+    );
+    field_update_instance($instance);
+  }
 }
