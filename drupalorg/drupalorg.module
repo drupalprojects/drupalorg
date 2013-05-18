@@ -1109,6 +1109,11 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'dblog_admin_settings') {
     $form['dblog_row_limit']['#options'] = drupal_map_assoc(array(100, 1000, 10000, 100000, 250000, 500000, 1000000));
   }
+
+  // Ensure that duplicate case-insensitive usernames are not created.
+  if ($form_id == 'user_profile_form' || $form_id == 'user_register_form') {
+    $form['#validate'][] = 'drupalorg_username_validate';
+  }
 }
 
 /**
@@ -1160,6 +1165,27 @@ function drupalorg_profile_user_edit_validate($form, &$form_state) {
         form_set_error('homepage', t("Your website does not seem to be a Drupal site. If you think we are wrong, please open an issue in the webmasters' queue."));
       }
     }*/
+  }
+}
+
+/**
+ * Perform a case-insensitive check on usernames to prevent duplicates.
+ *
+ * @see user_account_form()
+ * @see user_account_form_validate()
+ * @see http://drupal.org/node/1034852
+ */
+function drupalorg_username_validate($form, &$form_state) {
+  $account = $form['#user'];
+  $name = $form_state['values']['name'];
+  $existing_name = $account->uid > 0 ? $account->name : FALSE;
+  // Only check if there isn't an existing error, to prevent confusion.
+  if (!empty($name) && ($existing_name !== $name) && !form_get_error($form['account']['name'])) {
+    // Check for duplicate usernames. This is taken from
+    // user_account_form_validate(), but converts names to lowercase first.
+    if ((bool) db_select('users')->fields('users', array('uid'))->condition('uid', $account->uid, '<>')->where('LOWER(name) LIKE :name', array(':name' => db_like(strtolower($name))))->range(0, 1)->execute()->fetchField()) {
+      form_set_error('name', t('The name %name is already taken.', array('%name' => $name)));
+    }
   }
 }
 
