@@ -88,6 +88,32 @@ function drupalorg_handbook_node_insert($node) {
 }
 
 /**
+ * Implements hook_node_access().
+ */
+function drupalorg_handbook_node_access($node, $op, $account) {
+  if ($op == 'update') {
+    // The documentation team lock pages by setting the body filter format to
+    // a format which only privileged accounts have access to. This behaviour
+    // worked in D6 but not D7, so we need to workaround this by restricting
+    // node editing access based on the body filter format.
+    // @see http://drupal.org/node/1824490
+    if (isset($node->body)) {
+      foreach ($node->body as $langcode => $items) {
+        foreach ($items as $delta => $item) {
+          // filter_access() only checks the ->format member, which $item
+          // provides, so using it directly saves calling filter_format_load().
+          if (!filter_access((object)$item, $account)) {
+            // The user doesn't have permissions to use the body filter format,
+            // so deny access to edit the page.
+            return NODE_ACCESS_DENY;
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
  * Returns the link information for the Report to moderator link.
  *
  * @param $node
