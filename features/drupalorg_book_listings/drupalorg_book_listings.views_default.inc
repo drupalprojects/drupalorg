@@ -902,7 +902,7 @@ function drupalorg_book_listings_views_default_views() {
         'make_link' => 1,
         'path' => 'node/[nid]',
         'absolute' => 0,
-        'link_class' => 'clear-block',
+        'link_class' => 'clearfix',
         'alt' => 'View additional information about this book or leave a comment about it.',
         'rel' => '',
         'prefix' => '',
