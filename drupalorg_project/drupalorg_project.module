@@ -135,7 +135,7 @@ function _drupalorg_project_legacy_solr_redirect($type, $text = '') {
   if (isset($params['f'])) {
     $f = array();
     $dummy = array();
-    $form = project_solr_browse_projects_form(array(), $dummy, node_type_load($type));
+    $form = module_exists('project_solr') ? project_solr_browse_projects_form(array(), $dummy, node_type_load($type)) : array();
 
     foreach ($params['f'] as $k => $v) {
       // Sandbox remap
@@ -1059,7 +1059,7 @@ function drupalorg_project_meta_data($node) {
 
   // Project solr is currently finnicky about f query parameter indexing.
   $dummy = array();
-  $form = project_solr_browse_projects_form(array(), $dummy, node_type_load($node->type));
+  $form = module_exists('project_solr') ? project_solr_browse_projects_form(array(), $dummy, node_type_load($type)) : array();
 
   foreach (taxonomy_vocabulary_get_names() as $vocabulary) {
     if (!empty($node->{'taxonomy_' . $vocabulary->machine_name})) {
