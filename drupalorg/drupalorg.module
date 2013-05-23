@@ -1700,10 +1700,13 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         foreach ($result_projects as $project) {
           $projects[] = l($project->title, 'node/' . $project->nid);
         }
-        if (count($projects) > 3) {
+        $project_count = count($projects);
+        // If more than 3, show the first 3 and a count of the rest.
+        if ($project_count > 3) {
           $content['column_3'][$account->uid . 'info']['#markup'] .= '<br />' . t('Contributor to !projects, and <a href="!more">@count more</a>', array('!projects' => implode(', ', array_slice($projects, 0, 3)), '@count' => count($projects) - 3, '!more' => url('user/' . $account->uid)));
         }
-        elseif (count($projects) >= 1) {
+        // If between 1 and 3, just show them all.
+        elseif ($project_count > 0) {
           $content['column_3'][$account->uid . 'info']['#markup'] .= '<br />' . t('Contributor to !projects', array('!projects' => implode(', ', $projects)));
         }
 
