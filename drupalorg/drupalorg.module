@@ -1703,7 +1703,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         if (count($projects) > 3) {
           $content['column_3'][$account->uid . 'info']['#markup'] .= '<br />' . t('Contributor to !projects, and <a href="!more">@count more</a>', array('!projects' => implode(', ', array_slice($projects, 0, 3)), '@count' => count($projects) - 3, '!more' => url('user/' . $account->uid)));
         }
-        elseif (count($projects) > 1) {
+        elseif (count($projects) >= 1) {
           $content['column_3'][$account->uid . 'info']['#markup'] .= '<br />' . t('Contributor to !projects', array('!projects' => implode(', ', $projects)));
         }
 
