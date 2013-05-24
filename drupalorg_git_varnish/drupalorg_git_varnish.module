@@ -131,6 +131,9 @@ function drupalorg_git_varnish_vcs_auth_data() {
   exit;
 }
 
+/**
+ * Implements hook_user().
+ */
 function drupalorg_git_varnish_user($op, &$edit, &$account, $category = NULL) {
   if ($op == 'after_update' && !empty($account->git_username)) {
     // Clear the cache for both ssh keys and passwords, just to be safe
@@ -139,7 +142,7 @@ function drupalorg_git_varnish_user($op, &$edit, &$account, $category = NULL) {
     $commands[] = "purge req.http.host == $host && req.url ~ ^/drupalorg/drupalorg-[a-z-]+.username={$account->git_username}&(password|fingerprint)=";
     $commands[] = "purge req.http.host == $host && req.url ~ ^/drupalorg/drupalorg-vcs-auth-fetch-user-hash.username={$account->git_username}$";
 
-    drupalorg_git_varnish_exec($commands);
+    _varnish_terminal_run($commands);
   }
 }
 
@@ -148,7 +151,7 @@ function drupalorg_git_varnish_clear_user_cmds($uid) {
   // FIXME this needs improving when sandboxes get properly namespaced.
   $select = db_select('versioncontrol_project_projects', 'vpp')
     ->fields('vpp', array('nid'));
-  $vaa_alias = $select->addJoin('INNER', 'versioncontrol_auth_account', 'vaa', $vpp_alias . '.repo_id = vaa.repo_id');
+  $vaa_alias = $select->addJoin('INNER', 'versioncontrol_auth_account', 'vaa', 'vpp.repo_id = vaa.repo_id');
   $nids = $select->condition($vaa_alias . '.uid', $uid)
     ->execute()->fetchAll(PDO::FETCH_COLUMN);
 
@@ -162,14 +165,23 @@ function drupalorg_git_varnish_clear_user_cmds($uid) {
   return $commands;
 }
 
+/**
+ * Implements hook_node_update().
+ */
 function drupalorg_git_varnish_node_update($node) {
   drupalorg_git_varnish_node_change($node);
 }
 
+/**
+ * Implements hook_node_insert().
+ */
 function drupalorg_git_varnish_node_insert($node) {
   drupalorg_git_varnish_node_change($node);
 }
 
+/**
+ * Implements hook_node_delete().
+ */
 function drupalorg_git_varnish_node_delete($node) {
   drupalorg_git_varnish_node_change($node);
 }
@@ -186,30 +198,42 @@ function drupalorg_git_varnish_node_change($node) {
   }
 
   $machine_name = field_get_items('node', $project, 'field_project_machine_name');
-  drupalorg_git_varnish_exec(array(
+  _varnish_terminal_run(array(
     'purge req.http.host == ' . _drupalorg_git_varnish_get_host() . ' && req.url ~ ^/drupalorg/vcs-auth-data.project_uri=' . $machine_name[0]['value'] . '$',
   ));
 }
 
+/**
+ * Implements hook_drupalorg_pushctl_changed().
+ */
 function drupalorg_git_varnish_drupalorg_pushctl_changed($pushctl) {
   $host = _drupalorg_git_varnish_get_host();
   $command = "purge req.http.host == $host && req.url == /drupalorg/pushctl-state";
-  drupalorg_git_varnish_exec(array($command));
+  _varnish_terminal_run(array($command));
 }
 
+/**
+ * Implements hook_sshkey_insert().
+ */
 function drupalorg_git_varnish_sshkey_insert($key) {
   $commands = drupalorg_git_varnish_clear_sshkey_cmds($key);
-  drupalorg_git_varnish_exec($commands);
+  _varnish_terminal_run($commands);
 }
 
+/**
+ * Implements hook_sshkey_update().
+ */
 function drupalorg_git_varnish_sshkey_update($key) {
   $commands = drupalorg_git_varnish_clear_sshkey_cmds($key);
-  drupalorg_git_varnish_exec($commands);
+  _varnish_terminal_run($commands);
 }
 
+/**
+ * Implements hook_sshkey_delete().
+ */
 function drupalorg_git_varnish_sshkey_delete($key) {
   $commands = drupalorg_git_varnish_clear_sshkey_cmds($key);
-  drupalorg_git_varnish_exec($commands);
+  _varnish_terminal_run($commands);
 }
 
 function drupalorg_git_varnish_clear_sshkey_cmds($key) {
@@ -221,6 +245,9 @@ function drupalorg_git_varnish_clear_sshkey_cmds($key) {
   return $commands;
 }
 
+/**
+ * Implements hook_project_promote_sandbox().
+ */
 function drupalorg_git_varnish_project_promote_sandbox($project) {
   // This will probably cause some redundant cache clearing, but oh well.
   $host = _drupalorg_git_varnish_get_host();
@@ -230,13 +257,11 @@ function drupalorg_git_varnish_project_promote_sandbox($project) {
     // And also clear the old sandbox uri.
     "purge req.http.host == $host && req.url ~ ^/drupalorg/vcs-auth-data.project_uri={$project->nid}$",
   );
-  drupalorg_git_varnish_exec($commands);
+  _varnish_terminal_run($commands);
 }
 
 /**
  * Implements hook_project_maintainer_save().
- *
- * Clear varnish cache for a project when its maintainers list is updated.
  */
 function drupalorg_git_varnish_project_maintainer_save($nid, $uid, $permissions) {
   _drupalorg_git_varnish_project_maintainer_update($nid);
@@ -244,13 +269,14 @@ function drupalorg_git_varnish_project_maintainer_save($nid, $uid, $permissions)
 
 /**
  * Implements hook_project_maintainer_remove().
- *
- * Clear varnish cache for a project when its maintainers list is updated.
  */
 function drupalorg_git_varnish_project_maintainer_remove($nid, $uid) {
   _drupalorg_git_varnish_project_maintainer_update($nid);
 }
 
+/**
+ * Clear varnish cache for a project when its maintainers list is updated.
+ */
 function _drupalorg_git_varnish_project_maintainer_update($nid) {
   static $nids = array();
   // This function is likely to get hit multiple times on a given operation, so
@@ -260,6 +286,7 @@ function _drupalorg_git_varnish_project_maintainer_update($nid) {
   }
   $nids[] = $nid;
 
+  // @todo Use field api?
   $uri = db_query('SELECT field_project_machine_name_value FROM {field_data_field_project_machine_name} WHERE entity_id = :entity_id AND entity_type = :entity_type AND deleted = 0', array(':entity_id' => $nid, ':entity_type' => 'node'))->fetchField();
 
   $host = _drupalorg_git_varnish_get_host();
@@ -267,83 +294,12 @@ function _drupalorg_git_varnish_project_maintainer_update($nid) {
     'purge req.http.host == ' . $host . ' && req.url ~ ^/drupalorg/vcs-auth-data.project_uri=' . $uri . '$',
   );
 
-  drupalorg_git_varnish_exec($commands);
+  _varnish_terminal_run($commands);
 }
 
 /**
- * Help[er function to parse the host from the global $base_url
+ * Retrieves the host url that varnish will request.
  */
 function _drupalorg_git_varnish_get_host() {
   return variable_get('drupalorg_git_varnish_http.host', 'git-dev.drupal.org:8080');
-}
-
-function _drupalorg_git_varnish_get_connection_info() {
-  $defaults = array(
-    'host' => '127.0.0.1',
-    'port' => 6082,
-    'version' => '2.1',
-  );
-  return variable_get('drupalorg_git_varnish_connection_info', $defaults);
-}
-
-/**
- * Connect to our varnish cache and send an arbitrary number of commands.
- *
- * Unceremoniously pilfered from varnish.module, with minor adaptations.
- */
-function drupalorg_git_varnish_exec($commands) {
-  if (!extension_loaded('sockets')) {
-    // Prevent fatal errors if people don't have requirements.
-    return FALSE;
-  }
-
-  $ret = array();
-  $client = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
-  $conn_info = _drupalorg_git_varnish_get_connection_info();
-  if (!socket_connect($client, $conn_info['host'], $conn_info['port'])) {
-    watchdog('varnish', 'Unable to connect to server socket !server:!port', array('!server' => $server, '!port' => $port), WATCHDOG_ERROR);
-    $ret[] = FALSE;
-    return $ret;
-  }
-
-  socket_set_option($client, SOL_SOCKET, SO_RCVTIMEO, array('sec'=>0, 'usec'=>500));
-
-  if (version_compare($conn_info['version'], '2.1', 'ge')) {
-    // If there is a CLI banner message (varnish >= 2.1.x), try to read it and move on.
-    $status = _drupalorg_git_varnish_read_socket($client);
-  }
-
-  foreach ($commands as $command) {
-    // Send command and get response.
-    $result = socket_write($client, "$command\n");
-    $status = _drupalorg_git_varnish_read_socket($client);
-
-    if ($status['code'] != 200) {
-      watchdog('varnish', 'Recieved status code !code running %command. Full response text: !error', array('!code' => $status['code'], '%command' => $command, '!error' => $status['msg']), WATCHDOG_ERROR);
-      $ret[] = FALSE;
-    }
-    else {
-      // successful connection
-      $ret[] = $status;
-    }
-  }
-
-  socket_close($client);
-  return $ret;
-}
-
-function _drupalorg_git_varnish_read_socket($client) {
-  // status and length info is always 13 characters.
-  $header = socket_read($client, 13, PHP_BINARY_READ);
-  if ($header == FALSE) {
-    $error = socket_last_error();
-    watchdog('varnish', 'Socket error: !error', array('!error' => socket_strerror($error)), WATCHDOG_ERROR);
-  }
-  $msg_len = (int)substr($header,4,6) + 1;
-  $status = array(
-    'code' => substr($header,0,3),
-    'msg' => socket_read($client, $msg_len, PHP_BINARY_READ)
-  );
-
-  return $status;
 }
