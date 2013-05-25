@@ -1,6 +1,20 @@
 <?php
 
+/**
+ * Implements hook_install().
+ */
 function drupalorg_git_varnish_install() {
   // Set the weight below drupalorg_versioncontrol and drupalorg_git_gateway.
   db_query("UPDATE {system} SET weight = 20 WHERE name = 'drupalorg_git_varnish'");
+}
+
+/**
+ * Enables varnish module.
+ */
+function drupalorg_git_varnish_update_7000() {
+  if (!module_enable(array('varnish'))) {
+    $t = get_t();
+    throw new Exception($t('The varnish module could not be enabled.'));
+  }
+  return t('The varnish module was enabled successfully.');
 }
