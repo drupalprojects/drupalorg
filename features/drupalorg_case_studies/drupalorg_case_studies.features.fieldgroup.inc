@@ -15,9 +15,17 @@ function drupalorg_case_studies_fieldgroup_default_groups() {
     'settings' => array(
       'form' => array(
         'style' => 'fieldset',
-        'description' => '',
+        'description' => 'Use the autocomplete widget to select significant contributed projects used, and expand on their use in the text area that follows. The reader will benefit from a greater understanding of what other developers and themers selected and why. This also rewards those who contribute to modules, themes and distributions. 
+<br /><br />
+Specify at least 4 key contributed projects.
+<br /><br />',
       ),
       'display' => array(
+        'weight' => '3',
+        '4' => array(
+          'format' => 'fieldset',
+          'exclude' => 1,
+        ),
         'description' => '',
         '5' => array(
           'format' => 'fieldset',
@@ -28,10 +36,6 @@ function drupalorg_case_studies_fieldgroup_default_groups() {
           'exclude' => 1,
         ),
         'full' => array(
-          'format' => 'fieldset',
-          'exclude' => 0,
-        ),
-        '4' => array(
           'format' => 'fieldset',
           'exclude' => 0,
         ),

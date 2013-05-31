@@ -311,6 +311,7 @@ $handler->override_option('access', array(
   'role' => array(
     '3' => 3,
     '4' => 4,
+    '7' => 7,
   ),
 ));
 $handler->override_option('cache', array(

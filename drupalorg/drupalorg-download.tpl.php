@@ -15,7 +15,7 @@
     <ul class="flat">
       <li><a href="/documentation/build/distributions">About Distributions</a></li>
       <li><a href="/project/distributions?solrsort=iss_project_release_usage%20desc">Most Installed Distributions</a></li>
-      <li><a href="/project/distributions?solrsort=created%20desc">New Distributions</a></li>
+      <li><a href="/project/distributions?solrsort=ds_created%20desc">New Distributions</a></li>
       <li><a href="/project/distributions?solrsort=ds_project_latest_activity%20desc">Most Active Distribitions</a></li>
       <li class="last all"><a class="all" href="/project/distributions">Search for More Distributions</a></li>
     </ul>
@@ -26,7 +26,7 @@
     <ul class="flat">
       <li class="first"><a href="node/221881">About Themes &amp; Subthemes</a></li>
       <li><a href="/project/themes?solrsort=iss_project_release_usage%20desc">Most Installed Themes</a></li>
-      <li><a href="/project/themes?solrsort=created%20desc">New Themes</a></li>
+      <li><a href="/project/themes?solrsort=ds_created%20desc">New Themes</a></li>
       <li><a href="/project/themes?solrsort=ds_project_latest_activity%20desc">Most Active Themes</a></li>
       <li class="last all"><a class="all" href="/project/themes">Search for More Themes</a></li>
     </ul>

@@ -10,18 +10,18 @@
  */
 function drupalorg_schema() {
   return array(
-    'drupalorg_civimembership' => array(
-      'description' => 'Local copy of Drupal Association membership records from their API.',
+    'drupalorg_org_civimembership' => array(
+      'description' => 'Local copy of Drupal Association organization membership records from their API.',
       'fields' => array(
-        'user_name' => array(
-          'description' => 'User name with membership.',
+        'org_name' => array(
+          'description' => 'Organization name with membership.',
           'type' => 'varchar',
           'length' => 60,
           'not null' => TRUE,
           'default' => '',
         ),
         'membership_type' => array(
-          'description' => 'Individual or Organization',
+          'description' => 'Organization or Supporting',
           'type' => 'varchar',
           'length' => 15,
           'not null' => TRUE,
@@ -34,6 +34,12 @@ function drupalorg_schema() {
           'not null' => TRUE,
           'default' => '',
         ),
+        'expiration_date' => array(
+          'description' => 'Membership expiration date. Unix, day granularity',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ),
         'updated' => array(
           'description' => 'Last updated date',
           'type' => 'int',
@@ -42,7 +48,42 @@ function drupalorg_schema() {
         ),
       ),
       'indexes' => array(
-        'membership' => array('user_name', 'membership_type', 'membership_status'),
+        'membership' => array('org_name', 'membership_type', 'membership_status'),
+        'updated' => array('updated'),
+      ),
+    ),
+    'drupalorg_ind_civimembership' => array(
+      'description' => 'Local copy of Drupal Association Individual membership records from their API.',
+      'fields' => array(
+        'user_name' => array(
+          'description' => 'User name with membership.',
+          'type' => 'varchar',
+          'length' => 60,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'membership_status' => array(
+          'description' => 'Current, New, or Grace',
+          'type' => 'varchar',
+          'length' => 10,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'expiration_date' => array(
+          'description' => 'Membership expiration date. Unix, day granularity',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+        'updated' => array(
+          'description' => 'Last updated date',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+      ),
+      'indexes' => array(
+        'membership' => array('user_name', 'membership_status'),
         'updated' => array('updated'),
       ),
     ),
@@ -1021,4 +1062,118 @@ function _drupalorg_update_enable_filters($filter_list, $search_module = 'apache
 
   // Store all of the enabled facets back.
   variable_set($search_module . '_enabled_facets', $enabled_filters);
+}
+
+/**
+ * Set up new tables for Membership info
+ */
+function drupalorg_update_6610() {
+  $return = array();
+
+  db_create_table($return, 'drupalorg_org_civimembership', array(
+      'description' => 'Local copy of Drupal Association organization membership records from their API.',
+      'fields' => array(
+        'org_name' => array(
+          'description' => 'Organization name with membership.',
+          'type' => 'varchar',
+          'length' => 60,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'membership_type' => array(
+          'description' => 'Organization or Supporting',
+          'type' => 'varchar',
+          'length' => 15,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'membership_status' => array(
+          'description' => 'Current, New, or Grace',
+          'type' => 'varchar',
+          'length' => 10,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'expiration_date' => array(
+          'description' => 'Membership expiration date. Unix, day granularity',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+        'updated' => array(
+          'description' => 'Last updated date',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+      ),
+      'indexes' => array(
+        'membership' => array('org_name', 'membership_type', 'membership_status'),
+        'updated' => array('updated'),
+      ),
+    ));
+
+  db_create_table($return, 'drupalorg_ind_civimembership', array(
+      'description' => 'Local copy of Drupal Association Individual membership records from their API.',
+      'fields' => array(
+        'user_name' => array(
+          'description' => 'User name with membership.',
+          'type' => 'varchar',
+          'length' => 60,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'membership_status' => array(
+          'description' => 'Current, New, or Grace',
+          'type' => 'varchar',
+          'length' => 10,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'expiration_date' => array(
+          'description' => 'Membership expiration date. Unix, day granularity',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+        'updated' => array(
+          'description' => 'Last updated date',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ),
+      ),
+      'indexes' => array(
+        'membership' => array('user_name', 'membership_status'),
+        'updated' => array('updated'),
+      ),
+    ));
+
+  return $return;
+}
+
+/**
+ * Remove old combined drupalorg_civimembership table.
+ */
+function drupalorg_update_6611() {
+  $return = array();
+  db_drop_table($return, 'drupalorg_civimembership');
+  return $return;
+}
+
+/**
+ * Remove users.access core hack.
+ */
+function drupalorg_update_6612() {
+  $return = array();
+
+  db_add_field($return, 'users', 'access', array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 0,
+    'description' => 'Timestamp for previous time user accessed the site.',
+  ));
+  $return[] = update_sql('UPDATE {users}, {users_access} SET {users}.access = {users_access}.access WHERE {users}.uid = {users_access}.uid');
+
+  return $return;
 }
