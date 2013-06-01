@@ -291,19 +291,17 @@ $handler->override_option('style_options', array(
   'execution_type' => '2',
   'display_type' => '1',
   'hide_select_all' => 0,
-  'skip_confirmation' => 0,
   'display_result' => 1,
   'merge_single_action' => 0,
-  'selected_operations' => array(
-    'views_bulk_operations_delete_comment_action' => 'views_bulk_operations_delete_comment_action',
-    'comment_unpublish_action' => 'comment_unpublish_action',
-    'system_message_action' => 0,
-    'views_bulk_operations_action' => 0,
-    'views_bulk_operations_script_action' => 0,
-    'views_bulk_operations_argument_selector_action' => 0,
-    'system_goto_action' => 0,
-    'system_send_email_action' => 0,
-    'comment_unpublish_by_keyword_action' => 0,
+  'operations' => array(
+    'views_bulk_operations_delete_comment_action' => array(
+      'selected' => TRUE,
+      'skip_confirmation' => 0,
+    ),
+    'comment_unpublish_action' => array(
+      'selected' => TRUE,
+      'skip_confirmation' => 0,
+    ),
   ),
 ));
 $handler = $view->new_display('page', 'Page', 'page_1');
