@@ -21,15 +21,19 @@ function drupalorg_case_studies_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modules/Themes/Distributions',
-    'weight' => '3',
+    'weight' => '5',
     'children' => array(
       0 => 'field_module',
       1 => 'field_module_selection',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'label' => 'Modules/Themes/Distributions',
+      'instance_settings' => array(
+        'classes' => '',
+        'description' => '',
+      ),
+      'formatter' => 'open',
     ),
   );
   $export['group_modules|node|casestudy|default'] = $field_group;
@@ -45,15 +49,23 @@ function drupalorg_case_studies_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modules/Themes/Distributions',
-    'weight' => '3',
+    'weight' => '7',
     'children' => array(
       0 => 'field_module',
       1 => 'field_module_selection',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'label' => 'Modules/Themes/Distributions',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => '',
+        'description' => 'Use the autocomplete widget to select significant contributed projects used, and expand on their use in the text area that follows. The reader will benefit from a greater understanding of what other developers and themers selected and why. This also rewards those who contribute to modules, themes and distributions. 
+<br /><br />
+Specify at least 4 key contributed projects.
+<br /><br />',
+      ),
+      'formatter' => 'open',
     ),
   );
   $export['group_modules|node|casestudy|form'] = $field_group;

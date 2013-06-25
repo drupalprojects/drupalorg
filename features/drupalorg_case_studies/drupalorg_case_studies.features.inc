@@ -116,10 +116,12 @@ function drupalorg_case_studies_node_info() {
     'casestudy' => array(
       'name' => t('Case study'),
       'base' => 'node_content',
-      'description' => t('The Case studies will be used to feature well-built and well-designed Drupal sites.'),
+      'description' => t('Case studies used to feature well-built and well-designed Drupal sites.'),
       'has_title' => '1',
       'title_label' => t('Project name'),
-      'help' => t('Refer to the <a href="http://drupal.org/style-guide">Drupal.org Style Guide</a> for formatting and editorial tips.'),
+      'help' => t('Refer to the <a href="/case-studies/guidelines">Case study guidelines</a> for info on how to write a case study, <a href="/style-guide">Drupal.org Style Guide</a> for formatting and editorial tips. <br />Field-by-field guidance is provided above or below each section of this form.
+<br /><br />
+<strong>Project name field</strong>: Use only the title of the site/project you are writing about. Do not use your company name or words "case study," "success story," and the like. Maximum length - 40 characters.'),
     ),
   );
   return $items;
