@@ -253,6 +253,9 @@ function drupalorg_project_issue_counts() {
     'both' => array_merge($versions[DRUPALORG_CORE_DEVELOPMENT_VERSION_TID], $versions[DRUPALORG_CORE_STABLE_VERSION_TID]),
   );
 
+  // Thresholds include active, postponed, NR, NW, RTBC, and PTBP.
+  $threshold_statuses = array(1, 4, 8, 13, 14, 15);
+
   foreach ($versions as $version => $issue_versions) {
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
@@ -264,25 +267,25 @@ function drupalorg_project_issue_counts() {
 
     $q = clone $query;
     $issue_counts[$version]['Critical bugs'] = $q
-      ->fieldCondition('field_issue_status', 'value', array(1, 8, 13, 14, 15)) // Open
+      ->fieldCondition('field_issue_status', 'value', $threshold_statuses)
       ->fieldCondition('field_issue_priority', 'value', 400) // Critical
       ->fieldCondition('field_issue_category', 'value', 1) // Bug
       ->execute();
     $q = clone $query;
     $issue_counts[$version]['Major bugs'] = $q
-      ->fieldCondition('field_issue_status', 'value', array(1, 8, 13, 14, 15)) // Open
+      ->fieldCondition('field_issue_status', 'value', $threshold_statuses)
       ->fieldCondition('field_issue_priority', 'value', 300) // Major
       ->fieldCondition('field_issue_category', 'value', 1) // Bug
       ->execute();
     $q = clone $query;
     $issue_counts[$version]['Critical tasks'] = $q
-      ->fieldCondition('field_issue_status', 'value', array(1, 8, 13, 14, 15)) // Open
+      ->fieldCondition('field_issue_status', 'value', $threshold_statuses)
       ->fieldCondition('field_issue_priority', 'value', 400) // Critical
       ->fieldCondition('field_issue_category', 'value', 2) // Task
       ->execute();
     $q = clone $query;
     $issue_counts[$version]['Major tasks'] = $q
-      ->fieldCondition('field_issue_status', 'value', array(1, 8, 13, 14, 15)) // Open
+      ->fieldCondition('field_issue_status', 'value', $threshold_statuses)
       ->fieldCondition('field_issue_priority', 'value', 300) // Major
       ->fieldCondition('field_issue_category', 'value', 2) // Task
       ->execute();
@@ -914,7 +917,23 @@ function drupalorg_project_bingo_block_output() {
   // For all issues to show up in searches, the versions must be ordered
   // newest first.
   // @todo: find out why.
-  $versions = array(DRUPALORG_CORE_DEVELOPMENT_VERSION_NAME, DRUPALORG_CORE_STABLE_VERSION_NAME);
+
+  $both_versions = array(DRUPALORG_CORE_DEVELOPMENT_VERSION_NAME, DRUPALORG_CORE_STABLE_VERSION_NAME);
+  $both_names = check_plain(implode(" + ", $both_versions));
+  // Early in the release cycle, count both the stable and development versions
+  // for issue thresholds.
+  // $threshold_version_key = 'both';
+  // $threshold_versions = $both_versions;
+  // Late in the release cycle, count thresholds separately for the development
+  // and stable versions.
+  $threshold_version_key = 'main';
+  $threshold_versions = array(DRUPALORG_CORE_DEVELOPMENT_VERSION_NAME);
+
+  // Include active, postponed, NR, NW, RTBC, and PTBP issues for thresholds.
+  $threshold_statuses = array(1, 4, 8, 13, 14, 15);
+
+  // Format the version names for display.
+  $threshold_names = check_plain(implode(" + ", $threshold_versions));
 
   $links = array(
     l('Community initiatives', 'community-initiatives'),
@@ -931,60 +950,60 @@ function drupalorg_project_bingo_block_output() {
           )
         ),
         drupalorg_project_core_issue_link(
-          $counts['both']['Critical bugs'] . ' Critical bugs (D8 + D7)',
+          $counts[$threshold_version_key]['Critical bugs'] . " Critical bugs ($threshold_names)",
           array(
-            'version' => $versions,
-            'status' => array(1, 8, 13, 14, 15),
+            'version' => $threshold_versions,
+            'status' => $threshold_statuses,
             'priorities' => array(400),
             'categories' => array(1),
           )
         ),
         drupalorg_project_core_issue_link(
-          $counts['both']['Major bugs'] . ' Major bugs (D8 + D7)',
+          $counts[$threshold_version_key]['Major bugs'] . " Major bugs ($threshold_names)",
           array(
-            'version' => $versions,
-            'status' => array(1, 8, 13, 14, 15),
+            'version' => $threshold_versions,
+            'status' => $threshold_statuses,
             'priorities' => array(300),
             'categories' => array(1),
           )
         ),
         drupalorg_project_core_issue_link(
-         $counts['both']['Critical tasks'] . ' Critical tasks (D8 + D7)',
+         $counts[$threshold_version_key]['Critical tasks'] . " Critical tasks ($threshold_names)",
           array(
-            'version' => $versions,
-            'status' => array(1, 8, 13, 14, 15),
+            'version' => $threshold_versions,
+            'status' => $threshold_statuses,
             'priorities' => array(400),
             'categories' => array(2),
           )
         ),
         drupalorg_project_core_issue_link(
-          $counts['both']['Major tasks'] . ' Major tasks (D8 + D7)',
+          $counts[$threshold_version_key]['Major tasks'] . " Major tasks ($threshold_names)",
           array(
-            'version' => $versions,
-            'status' => array(1, 8, 13, 14, 15),
+            'version' => $threshold_versions,
+            'status' => $threshold_statuses,
             'priorities' => array(300),
             'categories' => array(2),
           )
         ),
         drupalorg_project_core_issue_link(
-          $counts['both']['Pending bugs'] . ' Pending bugs (D8 + D7)',
+          $counts[$threshold_version_key]['Patch queue'] . " Patch queue ($threshold_names)",
           array(
-            'version' => $versions,
-            'status' => array(1, 8, 13, 14, 15),
-            'categories' => array(1),
-          )
-        ),
-        drupalorg_project_core_issue_link(
-          $counts['main']['Patch queue'] . ' Patch queue (D8)',
-          array(
-            'version' => array(DRUPALORG_CORE_DEVELOPMENT_VERSION_NAME),
+            'version' => $threshold_versions,
             'status' => array(8, 13, 14),
+          )
+        ),
+        drupalorg_project_core_issue_link(
+          $counts['both']['Pending bugs'] . " Pending bugs ($both_names)",
+          array(
+            'version' => $both_versions,
+            'status' => array(1, 8, 13, 14, 15),
+            'categories' => array(1),
           )
         ),
         drupalorg_project_core_issue_link(
           'Issues needing triage',
           array(
-            'version' => $versions,
+            'version' => $both_versions,
             'status' => array(1, 8, 13),
             'categories' => array(1, 2),
             'order' => 'comment_count',
