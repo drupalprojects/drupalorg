@@ -11,252 +11,11 @@ function drupalorg_marketplace_views_default_views() {
   $export = array();
 
   $view = new view();
-  $view->name = 'drupalorg_marketplace_hosting';
-  $view->description = 'List of organizations providing hosting';
-  $view->tag = '';
-  $view->base_table = 'node';
-  $view->human_name = '';
-  $view->core = 0;
-  $view->api_version = '3.0';
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-
-  /* Display: Defaults */
-  $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->display->display_options['css_class'] = 'drupalorg-grid-2 drupalorg-4-col';
-  $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'none';
-  $handler->display->display_options['cache']['type'] = 'none';
-  $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['pager']['type'] = 'none';
-  $handler->display->display_options['style_plugin'] = 'grid';
-  $handler->display->display_options['style_options']['grouping'] = '';
-  $handler->display->display_options['style_options']['fill_single_line'] = FALSE;
-  $handler->display->display_options['row_plugin'] = 'fields';
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['text']['id'] = 'area';
-  $handler->display->display_options['header']['text']['table'] = 'views';
-  $handler->display->display_options['header']['text']['field'] = 'area';
-  $handler->display->display_options['header']['text']['content'] = 'The following hosting companies are great choices not only because they provide quality services, but because they go out of their way to support the Drupal community directly. Through code contributions or sponsorship of the Drupal Association, these organizations help make Drupal successful.';
-  $handler->display->display_options['header']['text']['format'] = '1';
-  /* Footer: Global: Text area */
-  $handler->display->display_options['footer']['text']['id'] = 'area';
-  $handler->display->display_options['footer']['text']['table'] = 'views';
-  $handler->display->display_options['footer']['text']['field'] = 'area';
-  $handler->display->display_options['footer']['text']['content'] = '<h2>Other great hosts that support Drupal</h2>';
-  $handler->display->display_options['footer']['text']['format'] = '1';
-  /* Field: Content: Hosting URL */
-  $handler->display->display_options['fields']['field_organization_hosting_url']['id'] = 'field_organization_hosting_url';
-  $handler->display->display_options['fields']['field_organization_hosting_url']['table'] = 'field_data_field_organization_hosting_url';
-  $handler->display->display_options['fields']['field_organization_hosting_url']['field'] = 'field_organization_hosting_url';
-  $handler->display->display_options['fields']['field_organization_hosting_url']['label'] = '';
-  $handler->display->display_options['fields']['field_organization_hosting_url']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_organization_hosting_url']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_organization_hosting_url']['click_sort_column'] = 'url';
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['alter']['text'] = '<a href="[field_organization_hosting_url_url]">[title]</a>';
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['path'] = '[field_organization_hosting_url]';
-  $handler->display->display_options['fields']['title']['alter']['external'] = TRUE;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Sort criterion: Content: Title */
-  $handler->display->display_options['sorts']['title']['id'] = 'title';
-  $handler->display->display_options['sorts']['title']['table'] = 'node';
-  $handler->display->display_options['sorts']['title']['field'] = 'title';
-  /* Filter criterion: Broken/missing handler */
-  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['id'] = 'field_organization_hosting_level_value_many_to_one';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['table'] = 'node_data_field_organization_hosting_level';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['field'] = 'field_organization_hosting_level_value_many_to_one';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['operator'] = 'or';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['value'] = array(
-    1 => '1',
-    2 => '2',
-  );
-  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['group'] = '0';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value_many_to_one']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = '1';
-  $handler->display->display_options['filters']['status']['group'] = '0';
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'organization' => 'organization',
-  );
-  $handler->display->display_options['filters']['type']['group'] = '0';
-  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
-  /* Filter criterion: Broken/missing handler */
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['id'] = 'field_organization_hosting_categ_value_many_to_one';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['table'] = 'node_data_field_organization_hosting_categ';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['field'] = 'field_organization_hosting_categ_value_many_to_one';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['operator'] = 'or';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['value'] = array(
-    'Shared' => 'Shared',
-    'Enterprise &amp; Managed' => 'Enterprise &amp; Managed',
-    'Platform as a Service' => 'Platform as a Service',
-  );
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['group'] = '0';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value_many_to_one']['expose']['operator'] = FALSE;
-
-  /* Display: Shared */
-  $handler = $view->new_display('page', 'Shared', 'page_1');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Shared Hosting Providers';
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = '1';
-  $handler->display->display_options['filters']['status']['group'] = '0';
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'organization' => 'organization',
-  );
-  $handler->display->display_options['filters']['type']['group'] = '0';
-  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Hosting category (field_organization_hosting_categ) */
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value']['id'] = 'field_organization_hosting_categ_value';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value']['table'] = 'field_data_field_organization_hosting_categ';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value']['field'] = 'field_organization_hosting_categ_value';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value']['value'] = array(
-    1 => '1',
-  );
-  /* Filter criterion: Content: Hosting level (field_organization_hosting_level) */
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['id'] = 'field_organization_hosting_level_value';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['table'] = 'field_data_field_organization_hosting_level';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['field'] = 'field_organization_hosting_level_value';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['operator'] = 'not';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['value'] = array(
-    0 => '0',
-    3 => '3',
-  );
-  $handler->display->display_options['path'] = 'hosting/shared';
-  $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Shared Hosting';
-  $handler->display->display_options['menu']['description'] = 'Shared hosting';
-  $handler->display->display_options['menu']['weight'] = '0';
-  $handler->display->display_options['menu']['name'] = 'menu-hosting-types-menu';
-  $handler->display->display_options['tab_options']['type'] = 'normal';
-  $handler->display->display_options['tab_options']['title'] = 'Hosting';
-  $handler->display->display_options['tab_options']['description'] = 'Drupal hosting providers';
-  $handler->display->display_options['tab_options']['weight'] = '0';
-
-  /* Display: Enterprise */
-  $handler = $view->new_display('page', 'Enterprise', 'page_2');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Enterprise & Managed Hosting';
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = '1';
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'organization' => 'organization',
-  );
-  $handler->display->display_options['filters']['type']['group'] = 1;
-  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Hosting category (field_organization_hosting_categ) */
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value']['id'] = 'field_organization_hosting_categ_value';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value']['table'] = 'field_data_field_organization_hosting_categ';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value']['field'] = 'field_organization_hosting_categ_value';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value']['value'] = array(
-    2 => '2',
-  );
-  /* Filter criterion: Content: Hosting level (field_organization_hosting_level) */
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['id'] = 'field_organization_hosting_level_value';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['table'] = 'field_data_field_organization_hosting_level';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['field'] = 'field_organization_hosting_level_value';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['operator'] = 'not';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['value'] = array(
-    0 => '0',
-    3 => '3',
-  );
-  $handler->display->display_options['path'] = 'hosting/enterprise';
-  $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Enterprise & Managed';
-  $handler->display->display_options['menu']['description'] = 'Enterprise & Managed hosting';
-  $handler->display->display_options['menu']['weight'] = '1';
-  $handler->display->display_options['menu']['name'] = 'menu-hosting-types-menu';
-
-  /* Display: PaaS */
-  $handler = $view->new_display('page', 'PaaS', 'page_3');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Platform as a Service';
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = '1';
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'organization' => 'organization',
-  );
-  $handler->display->display_options['filters']['type']['group'] = 1;
-  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Hosting category (field_organization_hosting_categ) */
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value']['id'] = 'field_organization_hosting_categ_value';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value']['table'] = 'field_data_field_organization_hosting_categ';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value']['field'] = 'field_organization_hosting_categ_value';
-  $handler->display->display_options['filters']['field_organization_hosting_categ_value']['value'] = array(
-    3 => '3',
-  );
-  /* Filter criterion: Content: Hosting level (field_organization_hosting_level) */
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['id'] = 'field_organization_hosting_level_value';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['table'] = 'field_data_field_organization_hosting_level';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['field'] = 'field_organization_hosting_level_value';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['operator'] = 'not';
-  $handler->display->display_options['filters']['field_organization_hosting_level_value']['value'] = array(
-    0 => '0',
-    3 => '3',
-  );
-  $handler->display->display_options['path'] = 'hosting/paas';
-  $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Platform as a Service';
-  $handler->display->display_options['menu']['description'] = 'Platform as a Service hosting';
-  $handler->display->display_options['menu']['weight'] = '2';
-  $handler->display->display_options['menu']['name'] = 'menu-hosting-types-menu';
-  $export['drupalorg_marketplace_hosting'] = $view;
-
-  $view = new view();
   $view->name = 'drupalorg_organizations';
-  $view->description = 'Basic organizations list';
-  $view->tag = '';
+  $view->description = 'List of organizations for drupal-services page';
+  $view->tag = 'marketplace';
   $view->base_table = 'node';
-  $view->human_name = 'Marketplace Service Providers';
+  $view->human_name = 'Drupal.org Marketplace: Services';
   $view->core = 0;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -303,6 +62,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['arguments']['field_organization_list_rule_value']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['field_organization_list_rule_value']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['field_organization_list_rule_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_organization_list_rule_value']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['field_organization_list_rule_value']['limit'] = '0';
   /* Contextual filter: Content: Has taxonomy term ID */
   $handler->display->display_options['arguments']['tid']['id'] = 'tid';
@@ -380,6 +140,13 @@ function drupalorg_marketplace_views_default_views() {
   );
   $handler->display->display_options['filters']['type']['group'] = '0';
   $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: List in marketplace (field_org_marketplace_request) */
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['id'] = 'field_org_marketplace_request_value';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['table'] = 'field_data_field_org_marketplace_request';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['field'] = 'field_org_marketplace_request_value';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['value'] = array(
+    1 => '1',
+  );
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
@@ -392,7 +159,7 @@ function drupalorg_marketplace_views_default_views() {
   $view->description = 'List of organizations providing training services';
   $view->tag = '';
   $view->base_table = 'node';
-  $view->human_name = '';
+  $view->human_name = 'Drupal.org Marketplace: Training';
   $view->core = 6;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -407,15 +174,19 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Header: Global: Text area */
-  $handler->display->display_options['header']['text']['id'] = 'area';
+  $handler->display->display_options['header']['text']['id'] = 'text';
   $handler->display->display_options['header']['text']['table'] = 'views';
   $handler->display->display_options['header']['text']['field'] = 'area';
   $handler->display->display_options['header']['text']['content'] = 'The following is a list of organizations that indicate they provide Drupal training services.
 
-For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=training">Events section</a> and <a href="http://drupal.org/learn-drupal">Global Training Days 2012</a>.';
+For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=training">Events section</a> and <a href="http://drupal.org/learn-drupal">Global Training Days</a>.';
   $handler->display->display_options['header']['text']['format'] = '1';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['text']['id'] = 'area';
@@ -545,6 +316,74 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Logo */
+  $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
+  $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['label'] = '';
+  $handler->display->display_options['fields']['field_logo']['alter']['text'] = '<div class="grid-3 alpha">[field_logo]</div>';
+  $handler->display->display_options['fields']['field_logo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_logo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_logo']['settings'] = array(
+    'image_style' => 'grid-3',
+    'image_link' => 'content',
+  );
+  $handler->display->display_options['fields']['field_logo']['group_column'] = 'entity_id';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<div class="grid-5 omega">[title]</div>';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  /* Field: Content: Training description */
+  $handler->display->display_options['fields']['field_organization_training_desc']['id'] = 'field_organization_training_desc';
+  $handler->display->display_options['fields']['field_organization_training_desc']['table'] = 'field_data_field_organization_training_desc';
+  $handler->display->display_options['fields']['field_organization_training_desc']['field'] = 'field_organization_training_desc';
+  $handler->display->display_options['fields']['field_organization_training_desc']['label'] = '';
+  $handler->display->display_options['fields']['field_organization_training_desc']['alter']['text'] = '<div class="grid-5 omega">[field_organization_training_desc-value]</div>';
+  $handler->display->display_options['fields']['field_organization_training_desc']['alter']['max_length'] = '390';
+  $handler->display->display_options['fields']['field_organization_training_desc']['alter']['trim'] = TRUE;
+  $handler->display->display_options['fields']['field_organization_training_desc']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_organization_training_desc']['group_columns'] = array(
+    'format' => 'format',
+  );
+  /* Field: Content: Training url */
+  $handler->display->display_options['fields']['field_organization_training_url']['id'] = 'field_organization_training_url';
+  $handler->display->display_options['fields']['field_organization_training_url']['table'] = 'field_data_field_organization_training_url';
+  $handler->display->display_options['fields']['field_organization_training_url']['field'] = 'field_organization_training_url';
+  $handler->display->display_options['fields']['field_organization_training_url']['label'] = '';
+  $handler->display->display_options['fields']['field_organization_training_url']['alter']['text'] = '<div class="grid-5 omega">[field_organization_training_url]</div>';
+  $handler->display->display_options['fields']['field_organization_training_url']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_organization_training_url']['click_sort_column'] = 'url';
+  $handler->display->display_options['fields']['field_organization_training_url']['group_column'] = 'entity_id';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Taxonomy term: Name */
+  $handler->display->display_options['arguments']['name']['id'] = 'name';
+  $handler->display->display_options['arguments']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['arguments']['name']['field'] = 'name';
+  $handler->display->display_options['arguments']['name']['relationship'] = 'term_node_tid';
+  $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['name']['validate_options']['vocabularies'] = array(
+    'vocabulary_52' => 'vocabulary_52',
+  );
+  $handler->display->display_options['arguments']['name']['validate_options']['type'] = 'name';
+  $handler->display->display_options['arguments']['name']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['name']['limit'] = '0';
+  $handler->display->display_options['arguments']['name']['path_case'] = 'lower';
+  $handler->display->display_options['arguments']['name']['transform_dash'] = TRUE;
   $handler->display->display_options['path'] = 'training';
 
   /* Display: Sidebar navigation */
@@ -552,8 +391,42 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Browse by country';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['empty'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Taxonomy terms on node */
+  $handler->display->display_options['relationships']['term_node_tid']['id'] = 'term_node_tid';
+  $handler->display->display_options['relationships']['term_node_tid']['table'] = 'node';
+  $handler->display->display_options['relationships']['term_node_tid']['field'] = 'term_node_tid';
+  $handler->display->display_options['relationships']['term_node_tid']['required'] = TRUE;
+  $handler->display->display_options['relationships']['term_node_tid']['vocabularies'] = array(
+    'vocabulary_52' => 'vocabulary_52',
+    'vocabulary_1' => 0,
+    'vocabulary_5' => 0,
+    'vocabulary_38' => 0,
+    'vocabulary_54' => 0,
+    'vocabulary_56' => 0,
+    'vocabulary_6' => 0,
+    'vocabulary_4' => 0,
+    'vocabulary_44' => 0,
+    'vocabulary_46' => 0,
+    'vocabulary_3' => 0,
+    'vocabulary_48' => 0,
+    'vocabulary_50' => 0,
+    'vocabulary_60' => 0,
+    'vocabulary_62' => 0,
+    'vocabulary_58' => 0,
+    'vocabulary_7' => 0,
+    'vocabulary_2' => 0,
+    'vocabulary_31' => 0,
+    'vocabulary_32' => 0,
+    'vocabulary_33' => 0,
+    'vocabulary_34' => 0,
+    'vocabulary_9' => 0,
+  );
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Locations */
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['id'] = 'taxonomy_vocabulary_52';
@@ -577,7 +450,10 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['arguments']['name']['validate_options']['vocabularies'] = array(
     'vocabulary_52' => 'vocabulary_52',
   );
+  $handler->display->display_options['arguments']['name']['validate_options']['transform'] = TRUE;
   $handler->display->display_options['arguments']['name']['limit'] = '0';
+  $handler->display->display_options['arguments']['name']['path_case'] = 'lower';
+  $handler->display->display_options['arguments']['name']['transform_dash'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -623,6 +499,12 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['access']['role'] = array(
     2 => 2,
   );
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '30';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['grouping'] = '';

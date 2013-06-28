@@ -32,8 +32,7 @@ function drupalorg_marketplace_node_info() {
       'description' => t('Listings for the marketplace section of the site.'),
       'has_title' => '1',
       'title_label' => t('Organization name'),
-      'help' => t('Review <a href="http://drupal.org/node/1735708">Marketplace guidelines</a> first.
-<br />Request improvements to vocabularies by <a href="http://drupal.org/project/webmasters">filing an issue</a>.
+      'help' => t('Review <a href="/marketplace/guidelines">Marketplace guidelines</a> first.
 <br />People with your organization name in the user profile field "current company or organization" will be shown on your organization page.'),
     ),
   );

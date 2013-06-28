@@ -89,14 +89,14 @@ function drupalorg_marketplace_field_default_fields() {
       'bundle' => 'organization',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Listings for the marketplace section of the site.',
+      'description' => 'Describe your organization: who you are, what you do.',
       'display' => array(
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '1',
+          'weight' => '8',
         ),
         'issuemetadata' => array(
           'label' => 'above',
@@ -108,30 +108,30 @@ function drupalorg_marketplace_field_default_fields() {
           'label' => 'hidden',
           'module' => 'text',
           'settings' => array(
-            'trim_length' => 600,
+            'trim_length' => '200',
           ),
-          'trim_length' => '1400',
-          'type' => 'text_summary_or_trimmed',
+          'type' => 'text_trimmed',
           'weight' => '1',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'body',
       'label' => 'Organization description',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
-        'display_summary' => TRUE,
-        'text_processing' => 1,
+        'display_summary' => 0,
+        'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
+        'active' => 1,
         'module' => 'text',
         'settings' => array(
-          'rows' => 20,
+          'rows' => '20',
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '1',
+        'weight' => '9',
       ),
     ),
   );
@@ -185,7 +185,7 @@ function drupalorg_marketplace_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '4',
+          'weight' => '7',
         ),
         'full' => array(
           'label' => 'above',
@@ -230,10 +230,9 @@ function drupalorg_marketplace_field_default_fields() {
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '4',
+          'type' => 'hidden',
+          'weight' => '10',
         ),
       ),
       'entity_type' => 'node',
@@ -254,7 +253,7 @@ function drupalorg_marketplace_field_default_fields() {
           'size' => '20',
         ),
         'type' => 'text_textfield',
-        'weight' => '4',
+        'weight' => '7',
       ),
       'widget_type' => 'text_textfield',
     ),
@@ -325,7 +324,7 @@ function drupalorg_marketplace_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '-1',
+          'weight' => '9',
         ),
         'full' => array(
           'label' => 'above',
@@ -369,11 +368,10 @@ function drupalorg_marketplace_field_default_fields() {
           'weight' => '-1',
         ),
         'teaser' => array(
-          'label' => 'above',
-          'module' => 'text',
+          'label' => 'hidden',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '-1',
+          'type' => 'hidden',
+          'weight' => '7',
         ),
       ),
       'entity_type' => 'node',
@@ -394,7 +392,7 @@ function drupalorg_marketplace_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'text_textarea',
-        'weight' => '-1',
+        'weight' => '10',
       ),
       'widget_type' => 'text_textarea',
     ),
@@ -443,11 +441,11 @@ function drupalorg_marketplace_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'link',
           'settings' => array(),
           'type' => 'link_default',
-          'weight' => '-4',
+          'weight' => '0',
         ),
         'full' => array(
           'label' => 'above',
@@ -491,11 +489,11 @@ function drupalorg_marketplace_field_default_fields() {
           'weight' => '-4',
         ),
         'teaser' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'link',
           'settings' => array(),
-          'type' => 'link_default',
-          'weight' => '-4',
+          'type' => 'link_url',
+          'weight' => '2',
         ),
       ),
       'entity_type' => 'node',
@@ -528,7 +526,7 @@ function drupalorg_marketplace_field_default_fields() {
           'default_value_php' => NULL,
         ),
         'type' => 'link_field',
-        'weight' => '-4',
+        'weight' => '2',
       ),
       'widget_type' => 'link',
     ),
@@ -575,14 +573,14 @@ function drupalorg_marketplace_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'image',
           'settings' => array(
             'image_link' => '',
             'image_style' => '',
           ),
           'type' => 'image',
-          'weight' => '-2',
+          'weight' => '1',
         ),
         'full' => array(
           'label' => 'above',
@@ -641,14 +639,14 @@ function drupalorg_marketplace_field_default_fields() {
           'weight' => '-2',
         ),
         'teaser' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'image',
           'settings' => array(
-            'image_link' => '',
-            'image_style' => '',
+            'image_link' => 'content',
+            'image_style' => 'grid-3',
           ),
           'type' => 'image',
-          'weight' => '-2',
+          'weight' => '0',
         ),
       ),
       'entity_type' => 'node',
@@ -676,7 +674,7 @@ function drupalorg_marketplace_field_default_fields() {
           'use_default_image' => 0,
         ),
         'type' => 'image_image',
-        'weight' => '-2',
+        'weight' => '1',
       ),
       'widget_type' => 'imagefield_widget',
     ),
@@ -722,19 +720,13 @@ function drupalorg_marketplace_field_default_fields() {
         ),
       ),
       'deleted' => '0',
-      'description' => 'If you request a listing, please review <a href="http://drupal.org/node/1735708">Marketplace guidelines</a>. Community webmasters will review your request. If you are not listed, you will still have the page and some features, like your logo replacing company name on profile pages.',
+      'description' => 'If you request a listing, please review <a href="/marketplace/guidelines">Marketplace guidelines</a>. Volunteer moderators will review your request. If you are not listed, you will still have the page and some features, like your logo replacing company name on profile pages.',
       'display' => array(
         'default' => array(
-          'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '0',
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '11',
         ),
         'full' => array(
           'label' => 'above',
@@ -803,22 +795,16 @@ function drupalorg_marketplace_field_default_fields() {
           'weight' => '0',
         ),
         'teaser' => array(
-          'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '0',
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '8',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_org_marketplace_request',
       'label' => 'List in marketplace',
-      'required' => FALSE,
+      'required' => 0,
       'settings' => array(
         'max' => '',
         'min' => '',
@@ -828,14 +814,13 @@ function drupalorg_marketplace_field_default_fields() {
       ),
       'weight' => '0',
       'widget' => array(
-        'active' => '1',
+        'active' => 1,
         'module' => 'options',
         'settings' => array(
-          'default_value_php' => NULL,
           'display_label' => 0,
         ),
         'type' => 'options_onoff',
-        'weight' => '0',
+        'weight' => '8',
       ),
       'widget_type' => 'optionwidgets_onoff',
     ),
@@ -881,19 +866,14 @@ function drupalorg_marketplace_field_default_fields() {
         ),
       ),
       'deleted' => '0',
-      'description' => 'Before requesting to be listed in the Training section, please review <a href="http://drupal.org/node/1735708">Marketplace guidelines</a>.
+      'description' => 'Before requesting to be listed in the Training section, please review <a href="/marketplace/guidelines">Marketplace guidelines</a>.
 ',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
           'weight' => '8',
         ),
         'full' => array(
@@ -964,21 +944,15 @@ function drupalorg_marketplace_field_default_fields() {
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
+          'settings' => array(),
+          'type' => 'hidden',
           'weight' => '8',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_org_training_request',
       'label' => 'List in Training section',
-      'required' => FALSE,
+      'required' => 0,
       'settings' => array(
         'max' => '',
         'min' => '',
@@ -988,10 +962,9 @@ function drupalorg_marketplace_field_default_fields() {
       ),
       'weight' => '8',
       'widget' => array(
-        'active' => '1',
+        'active' => 1,
         'module' => 'options',
         'settings' => array(
-          'default_value_php' => NULL,
           'display_label' => 0,
         ),
         'type' => 'options_onoff',
@@ -1050,7 +1023,7 @@ function drupalorg_marketplace_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '2',
+          'weight' => '5',
         ),
         'full' => array(
           'label' => 'above',
@@ -1095,10 +1068,9 @@ function drupalorg_marketplace_field_default_fields() {
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '2',
+          'type' => 'hidden',
+          'weight' => '9',
         ),
       ),
       'entity_type' => 'node',
@@ -1119,421 +1091,9 @@ function drupalorg_marketplace_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '2',
+        'weight' => '6',
       ),
       'widget_type' => 'text_textfield',
-    ),
-  );
-
-  // Exported field: 'node-organization-field_organization_hosting_categ'.
-  $fields['node-organization-field_organization_hosting_categ'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_organization_hosting_categ',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => 'Not listed for hosting',
-          1 => 'Shared',
-          2 => 'Enterprise & Managed',
-          3 => 'Platform as a Service',
-        ),
-        'allowed_values_function' => '',
-        'allowed_values_php' => '',
-        'text_processing' => '0',
-      ),
-      'translatable' => '0',
-      'type' => 'list_text',
-      'type_name' => 'organization',
-    ),
-    'field_instance' => array(
-      'bundle' => 'organization',
-      'default_value' => array(
-        0 => array(
-          'value' => 'Not listed for hosting',
-        ),
-      ),
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '13',
-        ),
-        'full' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '13',
-        ),
-        'issuemetadata' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'print' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '13',
-        ),
-        'rss' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '13',
-        ),
-        'search_index' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '13',
-        ),
-        'search_result' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '13',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '13',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_organization_hosting_categ',
-      'label' => 'Hosting category',
-      'required' => FALSE,
-      'settings' => array(
-        'text_processing' => '0',
-        'user_register_form' => FALSE,
-      ),
-      'weight' => '13',
-      'widget' => array(
-        'active' => '1',
-        'module' => 'options',
-        'settings' => array(
-          'default_value_php' => NULL,
-        ),
-        'type' => 'options_buttons',
-        'weight' => '13',
-      ),
-      'widget_type' => 'optionwidgets_buttons',
-    ),
-  );
-
-  // Exported field: 'node-organization-field_organization_hosting_level'.
-  $fields['node-organization-field_organization_hosting_level'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_organization_hosting_level',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => 'Not listed for hosting',
-          1 => 'Bronze',
-          2 => 'Silver',
-          3 => 'Gold - placeholder only, ads are served via DoubleClick',
-        ),
-        'allowed_values_function' => '',
-        'allowed_values_php' => '',
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_integer',
-      'type_name' => 'organization',
-    ),
-    'field_instance' => array(
-      'bundle' => 'organization',
-      'default_value' => array(
-        0 => array(
-          'value' => '0',
-        ),
-      ),
-      'deleted' => '0',
-      'description' => 'See the <a href="https://association.drupal.org/advertising/hosting">policy</a>.',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '28',
-        ),
-        'full' => array(
-          'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '28',
-        ),
-        'issuemetadata' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'print' => array(
-          'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '28',
-        ),
-        'rss' => array(
-          'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '28',
-        ),
-        'search_index' => array(
-          'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '28',
-        ),
-        'search_result' => array(
-          'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '28',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '28',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_organization_hosting_level',
-      'label' => 'Hosting level',
-      'required' => FALSE,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'user_register_form' => FALSE,
-      ),
-      'weight' => '28',
-      'widget' => array(
-        'active' => '1',
-        'module' => 'options',
-        'settings' => array(
-          'default_value_php' => NULL,
-        ),
-        'type' => 'options_buttons',
-        'weight' => '28',
-      ),
-      'widget_type' => 'optionwidgets_buttons',
-    ),
-  );
-
-  // Exported field: 'node-organization-field_organization_hosting_url'.
-  $fields['node-organization-field_organization_hosting_url'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_organization_hosting_url',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'link',
-      'settings' => array(
-        'attributes' => array(
-          'class' => '',
-          'rel' => '',
-          'target' => 'default',
-        ),
-        'display' => array(
-          'url_cutoff' => 80,
-        ),
-        'enable_tokens' => 1,
-        'title' => 'optional',
-        'title_maxlength' => 128,
-        'title_value' => '',
-        'url' => 0,
-      ),
-      'translatable' => '0',
-      'type' => 'link_field',
-      'type_name' => 'organization',
-    ),
-    'field_instance' => array(
-      'bundle' => 'organization',
-      'default_value' => array(
-        0 => array(
-          'url' => '',
-        ),
-      ),
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'link',
-          'settings' => array(),
-          'type' => 'link_default',
-          'weight' => '12',
-        ),
-        'full' => array(
-          'label' => 'above',
-          'module' => 'link',
-          'settings' => array(),
-          'type' => 'link_default',
-          'weight' => '12',
-        ),
-        'issuemetadata' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'print' => array(
-          'label' => 'above',
-          'module' => 'link',
-          'settings' => array(),
-          'type' => 'link_default',
-          'weight' => '12',
-        ),
-        'rss' => array(
-          'label' => 'above',
-          'module' => 'link',
-          'settings' => array(),
-          'type' => 'link_default',
-          'weight' => '12',
-        ),
-        'search_index' => array(
-          'label' => 'above',
-          'module' => 'link',
-          'settings' => array(),
-          'type' => 'link_default',
-          'weight' => '12',
-        ),
-        'search_result' => array(
-          'label' => 'above',
-          'module' => 'link',
-          'settings' => array(),
-          'type' => 'link_default',
-          'weight' => '12',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'module' => 'link',
-          'settings' => array(),
-          'type' => 'link_default',
-          'weight' => '12',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_organization_hosting_url',
-      'label' => 'Hosting URL',
-      'required' => FALSE,
-      'settings' => array(
-        'attributes' => array(
-          'class' => '',
-          'rel' => '',
-          'target' => 'default',
-          'title' => '',
-        ),
-        'display' => array(
-          'url_cutoff' => '80',
-        ),
-        'enable_tokens' => '',
-        'title' => 'none',
-        'title_maxlength' => 128,
-        'title_value' => '',
-        'url' => 0,
-        'user_register_form' => FALSE,
-        'validate_url' => 1,
-      ),
-      'weight' => '12',
-      'widget' => array(
-        'active' => '1',
-        'module' => 'link',
-        'settings' => array(
-          'default_value_php' => NULL,
-        ),
-        'type' => 'link_field',
-        'weight' => '12',
-      ),
-      'widget_type' => 'link',
     ),
   );
 
@@ -1575,14 +1135,13 @@ function drupalorg_marketplace_field_default_fields() {
         ),
       ),
       'deleted' => '0',
-      'description' => 'Make sure to follow <a href="http://drupal.org/node/1735708">Marketplace guidelines</a> and "<a href="http://drupal.org/node/1710338">Review marketplace listings</a>" guide.',
+      'description' => 'Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1710338">Review marketplace listings</a>" guide.',
       'display' => array(
         'default' => array(
-          'label' => 'above',
-          'module' => 'text',
+          'label' => 'hidden',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '24',
+          'type' => 'hidden',
+          'weight' => '14',
         ),
         'full' => array(
           'label' => 'above',
@@ -1627,27 +1186,24 @@ function drupalorg_marketplace_field_default_fields() {
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
+          'type' => 'hidden',
           'weight' => '24',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_organization_list_rule',
       'label' => 'Services listing',
-      'required' => FALSE,
+      'required' => 1,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
       'weight' => '24',
       'widget' => array(
-        'active' => '1',
+        'active' => 1,
         'module' => 'options',
-        'settings' => array(
-          'default_value_php' => NULL,
-        ),
+        'settings' => array(),
         'type' => 'options_buttons',
         'weight' => '24',
       ),
@@ -1655,162 +1211,121 @@ function drupalorg_marketplace_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-organization-field_organization_marketplace'.
-  $fields['node-organization-field_organization_marketplace'] = array(
+  // Exported field: 'node-organization-field_organization_security'.
+  $fields['node-organization-field_organization_security'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_organization_marketplace',
-      'foreign keys' => array(),
+      'field_name' => 'field_organization_security',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
       'indexes' => array(
-        'value' => array(
-          0 => 'value',
+        'format' => array(
+          0 => 'format',
         ),
       ),
       'locked' => '0',
-      'module' => 'list',
+      'module' => 'text',
       'settings' => array(
-        'allowed_values' => array(
-          0 => 'Unlisted',
-          1 => 'List in Marketplace',
-        ),
-        'allowed_values_function' => '',
+        'allowed_values' => '',
         'allowed_values_php' => '',
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '',
+        'max_length' => 255,
+        'text_processing' => '0',
       ),
       'translatable' => '0',
-      'type' => 'list_boolean',
+      'type' => 'text',
       'type_name' => 'organization',
     ),
     'field_instance' => array(
       'bundle' => 'organization',
       'default_value' => array(
         0 => array(
-          'value' => 1,
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_organization_security][0][value',
         ),
       ),
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Specify the date hosting provider passed security review. Format: \'passed on Month Day, Year\'',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '23',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '6',
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '23',
-        ),
-        'issuemetadata' => array(
-          'label' => 'above',
+          'module' => 'text',
           'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'type' => 'text_default',
+          'weight' => '14',
         ),
         'print' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '23',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '14',
         ),
         'rss' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '23',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '14',
         ),
         'search_index' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '23',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '14',
         ),
         'search_result' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '23',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '14',
         ),
         'teaser' => array(
-          'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '23',
+          'label' => 'inline',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_plain',
+          'weight' => '6',
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_organization_marketplace',
-      'label' => 'List in marketplace (computed)',
+      'field_name' => 'field_organization_security',
+      'label' => 'Security review',
       'required' => FALSE,
       'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '',
+        'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
-      'weight' => '23',
+      'weight' => '14',
       'widget' => array(
-        'active' => '0',
-        'module' => 'options',
+        'active' => '1',
+        'module' => 'text',
         'settings' => array(
           'default_value_php' => NULL,
-          'display_label' => 0,
+          'rows' => 5,
+          'size' => '60',
         ),
-        'type' => 'options_onoff',
-        'weight' => '23',
+        'type' => 'text_textfield',
+        'weight' => '14',
       ),
-      'widget_type' => 'optionwidgets_onoff',
+      'widget_type' => 'text_textfield',
     ),
   );
 
@@ -1909,9 +1424,8 @@ function drupalorg_marketplace_field_default_fields() {
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
+          'type' => 'hidden',
           'weight' => '10',
         ),
       ),
@@ -1976,14 +1490,13 @@ function drupalorg_marketplace_field_default_fields() {
         ),
       ),
       'deleted' => '0',
-      'description' => 'Make sure to follow <a href="http://drupal.org/node/1735708">Marketplace guidelines</a> and "<a href="http://drupal.org/node/1735864">Review training listings</a>" guide.',
+      'description' => 'Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1735864">Review training listings</a>" guide.',
       'display' => array(
         'default' => array(
-          'label' => 'above',
-          'module' => 'text',
+          'label' => 'hidden',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '26',
+          'type' => 'hidden',
+          'weight' => '15',
         ),
         'full' => array(
           'label' => 'above',
@@ -2028,27 +1541,24 @@ function drupalorg_marketplace_field_default_fields() {
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
+          'type' => 'hidden',
           'weight' => '26',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_organization_training_list',
       'label' => 'Training listing',
-      'required' => FALSE,
+      'required' => 1,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
       'weight' => '26',
       'widget' => array(
-        'active' => '1',
+        'active' => 1,
         'module' => 'options',
-        'settings' => array(
-          'default_value_php' => NULL,
-        ),
+        'settings' => array(),
         'type' => 'options_buttons',
         'weight' => '26',
       ),
@@ -2147,9 +1657,8 @@ function drupalorg_marketplace_field_default_fields() {
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'link',
           'settings' => array(),
-          'type' => 'link_default',
+          'type' => 'hidden',
           'weight' => '9',
         ),
       ),
@@ -2227,7 +1736,7 @@ function drupalorg_marketplace_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 10,
+          'weight' => '2',
         ),
         'issuemetadata' => array(
           'label' => 'above',
@@ -2236,11 +1745,11 @@ function drupalorg_marketplace_field_default_fields() {
           'weight' => 0,
         ),
         'teaser' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 10,
+          'weight' => '3',
         ),
       ),
       'entity_type' => 'node',
@@ -2254,7 +1763,7 @@ function drupalorg_marketplace_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 0,
+        'weight' => '3',
       ),
     ),
   );
@@ -2297,7 +1806,7 @@ function drupalorg_marketplace_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 10,
+          'weight' => '3',
         ),
         'issuemetadata' => array(
           'label' => 'above',
@@ -2306,11 +1815,11 @@ function drupalorg_marketplace_field_default_fields() {
           'weight' => 0,
         ),
         'teaser' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 10,
+          'weight' => '4',
         ),
       ),
       'entity_type' => 'node',
@@ -2324,7 +1833,7 @@ function drupalorg_marketplace_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 0,
+        'weight' => '4',
       ),
     ),
   );
@@ -2360,14 +1869,14 @@ function drupalorg_marketplace_field_default_fields() {
       'bundle' => 'organization',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Please only select countries in which your company has a physical office.',
+      'description' => 'Only select countries in which your company has a physical office.',
       'display' => array(
         'default' => array(
           'label' => 'above',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 10,
+          'weight' => '4',
         ),
         'issuemetadata' => array(
           'label' => 'above',
@@ -2376,25 +1885,26 @@ function drupalorg_marketplace_field_default_fields() {
           'weight' => 0,
         ),
         'teaser' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 10,
+          'weight' => '5',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'taxonomy_vocabulary_52',
       'label' => 'Locations',
-      'required' => '0',
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
+        'active' => 1,
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => 0,
+        'weight' => '5',
       ),
     ),
   );
@@ -2417,32 +1927,29 @@ function drupalorg_marketplace_field_default_fields() {
 <li>Marketing contributions - Published <a href="http://drupal.org/case-studies">case studies</a> on drupal.org? Shared some Drupal brochures with the community? Tell us!</li>
 </ul>
 ');
-  t('Before requesting to be listed in the Training section, please review <a href="http://drupal.org/node/1735708">Marketplace guidelines</a>.
+  t('Before requesting to be listed in the Training section, please review <a href="/marketplace/guidelines">Marketplace guidelines</a>.
 ');
   t('Comment');
+  t('Describe your organization: who you are, what you do.');
   t('Describe your trainings: main topics, audience, locations, cost range etc. This will be shown in the Training listing only.');
   t('Drupal contributions');
   t('Headquarters');
   t('Helps potential clients know what they are getting into.');
-  t('Hosting URL');
-  t('Hosting category');
-  t('Hosting level');
-  t('If you request a listing, please review <a href="http://drupal.org/node/1735708">Marketplace guidelines</a>. Community webmasters will review your request. If you are not listed, you will still have the page and some features, like your logo replacing company name on profile pages.');
+  t('If you request a listing, please review <a href="/marketplace/guidelines">Marketplace guidelines</a>. Volunteer moderators will review your request. If you are not listed, you will still have the page and some features, like your logo replacing company name on profile pages.');
   t('List in Training section');
   t('List in marketplace');
-  t('List in marketplace (computed)');
   t('List related sector(s)');
-  t('Listings for the marketplace section of the site.');
   t('Locations');
   t('Logo');
-  t('Make sure to follow <a href="http://drupal.org/node/1735708">Marketplace guidelines</a> and "<a href="http://drupal.org/node/1710338">Review marketplace listings</a>" guide.');
-  t('Make sure to follow <a href="http://drupal.org/node/1735708">Marketplace guidelines</a> and "<a href="http://drupal.org/node/1735864">Review training listings</a>" guide.');
+  t('Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1710338">Review marketplace listings</a>" guide.');
+  t('Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1735864">Review training listings</a>" guide.');
+  t('Only select countries in which your company has a physical office.');
   t('Organization description');
-  t('Please only select countries in which your company has a physical office.');
   t('Sectors');
-  t('See the <a href="https://association.drupal.org/advertising/hosting">policy</a>.');
+  t('Security review');
   t('Services');
   t('Services listing');
+  t('Specify the date hosting provider passed security review. Format: \'passed on Month Day, Year\'');
   t('Such as development, theming, design, training, or hosting.');
   t('The url for your trainings landing page (the page specifically for Drupal trainings preferred). This will be shown in the Training listing only.');
   t('Training description');

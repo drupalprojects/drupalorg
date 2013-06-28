@@ -26,7 +26,7 @@ function drupalorg_marketplace_field_group_info() {
       0 => 'field_organization_hosting_categ',
       1 => 'field_organization_hosting_url',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'hidden',
     'format_settings' => array(
       'formatter' => 'collapsible',
       'instance_settings' => array(),
@@ -45,10 +45,9 @@ function drupalorg_marketplace_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Hosting',
-    'weight' => '14',
+    'weight' => '12',
     'children' => array(
-      0 => 'field_organization_hosting_categ',
-      1 => 'field_organization_hosting_url',
+      0 => 'field_organization_security',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -69,12 +68,12 @@ function drupalorg_marketplace_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Hosting',
-    'weight' => '14',
+    'weight' => '12',
     'children' => array(
       0 => 'field_organization_hosting_categ',
       1 => 'field_organization_hosting_url',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'hidden',
     'format_settings' => array(
       'formatter' => 'collapsible',
       'instance_settings' => array(),
@@ -93,15 +92,13 @@ function drupalorg_marketplace_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Moderation',
-    'weight' => '15',
+    'weight' => '13',
     'children' => array(
       0 => 'field_organization_hosting_level',
-      1 => 'field_organization_issue',
-      2 => 'field_organization_list_rule',
-      3 => 'field_organization_training_list',
-      4 => 'field_org_training_issue',
+      1 => 'field_organization_list_rule',
+      2 => 'field_organization_training_list',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'hidden',
     'format_settings' => array(
       'formatter' => 'collapsible',
       'instance_settings' => array(),
@@ -120,13 +117,11 @@ function drupalorg_marketplace_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Moderation',
-    'weight' => '15',
+    'weight' => '13',
     'children' => array(
       0 => 'field_organization_hosting_level',
-      1 => 'field_organization_issue',
-      2 => 'field_organization_list_rule',
-      3 => 'field_organization_training_list',
-      4 => 'field_org_training_issue',
+      1 => 'field_organization_list_rule',
+      2 => 'field_organization_training_list',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -147,15 +142,13 @@ function drupalorg_marketplace_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Moderation',
-    'weight' => '15',
+    'weight' => '13',
     'children' => array(
       0 => 'field_organization_hosting_level',
-      1 => 'field_organization_issue',
-      2 => 'field_organization_list_rule',
-      3 => 'field_organization_training_list',
-      4 => 'field_org_training_issue',
+      1 => 'field_organization_list_rule',
+      2 => 'field_organization_training_list',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'hidden',
     'format_settings' => array(
       'formatter' => 'collapsible',
       'instance_settings' => array(),
@@ -174,11 +167,11 @@ function drupalorg_marketplace_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Training',
-    'weight' => '5',
+    'weight' => '10',
     'children' => array(
-      0 => 'field_organization_training_desc',
-      1 => 'field_organization_training_url',
-      2 => 'field_org_training_request',
+      0 => 'field_org_training_request',
+      1 => 'field_organization_training_desc',
+      2 => 'field_organization_training_url',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -199,11 +192,11 @@ function drupalorg_marketplace_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Training',
-    'weight' => '5',
+    'weight' => '11',
     'children' => array(
-      0 => 'field_organization_training_desc',
-      1 => 'field_organization_training_url',
-      2 => 'field_org_training_request',
+      0 => 'field_org_training_request',
+      1 => 'field_organization_training_desc',
+      2 => 'field_organization_training_url',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -224,13 +217,13 @@ function drupalorg_marketplace_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Training',
-    'weight' => '5',
+    'weight' => '11',
     'children' => array(
-      0 => 'field_organization_training_desc',
-      1 => 'field_organization_training_url',
-      2 => 'field_org_training_request',
+      0 => 'field_org_training_request',
+      1 => 'field_organization_training_desc',
+      2 => 'field_organization_training_url',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'hidden',
     'format_settings' => array(
       'formatter' => 'collapsible',
       'instance_settings' => array(),
