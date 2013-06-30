@@ -1160,3 +1160,11 @@ function drupalorg_update_7023() {
     }
   }
 }
+
+/**
+ * Enable node_reference and user_reference to recieve migrated CCK fields.
+ */
+function drupalorg_update_7024() {
+  module_enable(array('references'));
+  module_enable(array('node_reference', 'user_reference'));
+}
