@@ -856,7 +856,7 @@ Platform as a Service',
     'text_processing' => '0',
     'max_length' => '',
     'allowed_values' => 'never|Do not list
-all|All providers
+all-providers|All providers
 featured|Featured providers',
     'allowed_values_php' => '',
     'widget' => array(
