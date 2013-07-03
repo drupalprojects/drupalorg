@@ -1168,3 +1168,14 @@ function drupalorg_update_7024() {
   module_enable(array('references'));
   module_enable(array('node_reference', 'user_reference'));
 }
+
+/**
+ * Turn off summary for organization body field.
+ */
+function drupalorg_update_7025() {
+  $instance = field_read_instance('node', 'body', 'organization');
+  $instance['settings']['display_summary'] = FALSE;
+  field_update_instance($instance);
+
+  db_query("UPDATE {field_data_body} fdb INNER JOIN {node} n ON n.nid = fdb.entity_id AND n.type = 'organization' SET fdb.body_summary = NULL");
+}
