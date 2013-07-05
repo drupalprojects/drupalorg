@@ -51,8 +51,8 @@ function drupalorg_case_studies_field_group_info() {
     'label' => 'Modules/Themes/Distributions',
     'weight' => '7',
     'children' => array(
-      0 => 'field_module',
-      1 => 'field_module_selection',
+      0 => 'field_module_selection',
+      1 => 'field_module',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

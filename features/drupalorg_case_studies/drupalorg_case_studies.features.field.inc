@@ -50,6 +50,12 @@ function drupalorg_case_studies_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'nodechanges' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'rss' => array(
           'label' => 'hidden',
           'module' => 'text',
@@ -84,7 +90,7 @@ function drupalorg_case_studies_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '4',
+        'weight' => '3',
       ),
     ),
   );
@@ -143,6 +149,12 @@ function drupalorg_case_studies_field_default_fields() {
           'weight' => '4',
         ),
         'issuemetadata' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'nodechanges' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -263,6 +275,12 @@ function drupalorg_case_studies_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'nodechanges' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'print' => array(
           'label' => 'above',
           'module' => 'text',
@@ -328,66 +346,73 @@ function drupalorg_case_studies_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_developed_org',
       'foreign keys' => array(
-        'node' => array(
+        'nid' => array(
           'columns' => array(
-            'target_id' => 'nid',
+            'nid' => 'nid',
           ),
           'table' => 'node',
         ),
       ),
       'indexes' => array(
-        'target_entity' => array(
-          0 => 'target_id',
-        ),
-        'target_id' => array(
-          0 => 'target_id',
+        'nid' => array(
+          0 => 'nid',
         ),
       ),
       'locked' => '0',
-      'module' => 'entityreference',
+      'module' => 'node_reference',
       'settings' => array(
-        'handler' => 'base',
-        'handler_settings' => array(
-          'behaviors' => array(
-            'views-select-list' => array(
-              'status' => 0,
-            ),
-          ),
-          'sort' => array(
-            'type' => 'none',
-          ),
-          'target_bundles' => array(
-            'organization' => 'organization',
-          ),
+        'referenceable_types' => array(
+          'book' => 0,
+          'book_listing' => 0,
+          'casestudy' => 0,
+          'changenotice' => 0,
+          'forum' => 0,
+          'image' => 0,
+          'organization' => 'organization',
+          'packaging_whitelist' => 0,
+          'page' => 0,
+          'project_issue' => 0,
+          'project_project' => 0,
+          'project_release' => 0,
+          'story' => 0,
         ),
-        'handler_submit' => 'Change handler',
-        'target_type' => 'node',
+        'view' => array(
+          'args' => array(
+            0 => '',
+          ),
+          'display_name' => 'default',
+          'view_name' => '--',
+        ),
       ),
       'translatable' => '0',
-      'type' => 'entityreference',
+      'type' => 'node_reference',
+      'type_name' => 'casestudy',
     ),
     'field_instance' => array(
       'bundle' => 'casestudy',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'nid' => NULL,
+          '_error_element' => 'default_value_widget][field_developed_org][0][nid][nid',
+        ),
+      ),
       'deleted' => '0',
-      'description' => 'Include the organizations that contributed to this project. Use the autocomplete widget if they exist on Drupal.org as organization nodes; otherwise, use the Project team text field below.',
+      'description' => 'Include the organizations that contributed to this project. Use the autocomplete widget if they exist on Drupal.org as organization nodes; otherwise, use the Project team text field below.
+
+',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
-          'weight' => '7',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => '5',
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
           'weight' => '5',
         ),
         'issuemetadata' => array(
@@ -396,64 +421,69 @@ function drupalorg_case_studies_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'nodechanges' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'print' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
           'weight' => '5',
         ),
         'rss' => array(
           'label' => 'above',
+          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'hidden',
+          'type' => 'node_reference_default',
           'weight' => '5',
         ),
         'search_index' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
           'weight' => '5',
         ),
         'search_result' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
           'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
+          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'hidden',
+          'type' => 'node_reference_default',
           'weight' => '5',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_developed_org',
       'label' => 'Organizations involved',
-      'required' => 0,
+      'required' => FALSE,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
+      'weight' => '5',
       'widget' => array(
-        'active' => 1,
-        'module' => 'entityreference',
+        'active' => '1',
+        'module' => 'node_reference',
         'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'path' => '',
+          'autocomplete_match' => 'starts_with',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'default_value_php' => NULL,
           'size' => '60',
         ),
-        'type' => 'entityreference_autocomplete',
+        'type' => 'node_reference_autocomplete',
         'weight' => '9',
       ),
+      'widget_type' => 'nodereference_autocomplete',
     ),
   );
 
@@ -511,6 +541,12 @@ function drupalorg_case_studies_field_default_fields() {
           'weight' => '2',
         ),
         'issuemetadata' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'nodechanges' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -633,6 +669,12 @@ function drupalorg_case_studies_field_default_fields() {
           'weight' => '8',
         ),
         'issuemetadata' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'nodechanges' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -772,6 +814,12 @@ function drupalorg_case_studies_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'nodechanges' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'print' => array(
           'label' => 'above',
           'module' => 'link',
@@ -837,7 +885,7 @@ function drupalorg_case_studies_field_default_fields() {
           'default_value_php' => NULL,
         ),
         'type' => 'link_field',
-        'weight' => '3',
+        'weight' => '4',
       ),
       'widget_type' => 'link',
     ),
@@ -904,6 +952,12 @@ function drupalorg_case_studies_field_default_fields() {
           'weight' => '-4',
         ),
         'issuemetadata' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'nodechanges' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -999,64 +1053,71 @@ function drupalorg_case_studies_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_module',
       'foreign keys' => array(
-        'node' => array(
+        'nid' => array(
           'columns' => array(
-            'target_id' => 'nid',
+            'nid' => 'nid',
           ),
           'table' => 'node',
         ),
       ),
       'indexes' => array(
-        'target_entity' => array(
-          0 => 'target_id',
-        ),
-        'target_id' => array(
-          0 => 'target_id',
+        'nid' => array(
+          0 => 'nid',
         ),
       ),
       'locked' => '0',
-      'module' => 'entityreference',
+      'module' => 'node_reference',
       'settings' => array(
-        'handler' => 'base',
-        'handler_settings' => array(
-          'behaviors' => array(
-            'views-select-list' => array(
-              'status' => 0,
-            ),
-          ),
-          'sort' => array(
-            'type' => 'none',
-          ),
-          'target_bundles' => array(),
+        'referenceable_types' => array(
+          'book' => 0,
+          'book_listing' => 0,
+          'casestudy' => 0,
+          'changenotice' => 0,
+          'forum' => 0,
+          'image' => 0,
+          'organization' => 0,
+          'packaging_whitelist' => 0,
+          'page' => 0,
+          'project_issue' => 0,
+          'project_project' => 'project_project',
+          'project_release' => 0,
+          'story' => 0,
         ),
-        'handler_submit' => 'Change handler',
-        'target_type' => 'node',
+        'view' => array(
+          'args' => array(
+            0 => '',
+          ),
+          'display_name' => 'default',
+          'view_name' => '--',
+        ),
       ),
       'translatable' => '0',
-      'type' => 'entityreference',
+      'type' => 'node_reference',
+      'type_name' => 'casestudy',
     ),
     'field_instance' => array(
       'bundle' => 'casestudy',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'nid' => NULL,
+          '_error_element' => 'default_value_widget][field_module][0][nid][nid',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
           'weight' => '4',
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
           'weight' => '4',
         ),
         'issuemetadata' => array(
@@ -1065,64 +1126,69 @@ function drupalorg_case_studies_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'nodechanges' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'print' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
           'weight' => '4',
         ),
         'rss' => array(
           'label' => 'above',
+          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'hidden',
+          'type' => 'node_reference_default',
           'weight' => '4',
         ),
         'search_index' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
           'weight' => '4',
         ),
         'search_result' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
           'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
+          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'hidden',
+          'type' => 'node_reference_default',
           'weight' => '4',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_module',
       'label' => 'Key modules/theme/distribution used',
-      'required' => 0,
+      'required' => FALSE,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
+      'weight' => '4',
       'widget' => array(
-        'active' => 1,
-        'module' => 'entityreference',
+        'active' => '1',
+        'module' => 'node_reference',
         'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'path' => '',
+          'autocomplete_match' => 'starts_with',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'default_value_php' => NULL,
           'size' => '60',
         ),
-        'type' => 'entityreference_autocomplete',
+        'type' => 'node_reference_autocomplete',
         'weight' => '4',
       ),
+      'widget_type' => 'nodereference_autocomplete',
     ),
   );
 
@@ -1180,6 +1246,12 @@ function drupalorg_case_studies_field_default_fields() {
           'weight' => '5',
         ),
         'issuemetadata' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'nodechanges' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -1300,6 +1372,12 @@ function drupalorg_case_studies_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'nodechanges' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'print' => array(
           'label' => 'above',
           'module' => 'text',
@@ -1365,64 +1443,75 @@ function drupalorg_case_studies_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_profiles',
       'foreign keys' => array(
-        'users' => array(
+        'uid' => array(
           'columns' => array(
-            'target_id' => 'uid',
+            'uid' => 'uid',
           ),
           'table' => 'users',
         ),
       ),
       'indexes' => array(
-        'target_entity' => array(
-          0 => 'target_id',
-        ),
-        'target_id' => array(
-          0 => 'target_id',
+        'uid' => array(
+          0 => 'uid',
         ),
       ),
       'locked' => '0',
-      'module' => 'entityreference',
+      'module' => 'user_reference',
       'settings' => array(
-        'handler' => 'base',
-        'handler_settings' => array(
-          'behaviors' => array(
-            'views-select-list' => array(
-              'status' => 0,
-            ),
-          ),
-          'sort' => array(
-            'type' => 'none',
-          ),
-          'target_bundles' => array(),
+        'referenceable_roles' => array(
+          2 => 0,
+          3 => 0,
+          4 => 0,
+          7 => 0,
+          12 => 0,
+          14 => 0,
+          16 => 0,
+          20 => 0,
+          22 => 0,
+          24 => 0,
+          26 => 0,
+          28 => 0,
+          30 => 0,
+          32 => 0,
+          34 => 0,
+          36 => 0,
         ),
-        'handler_submit' => 'Change handler',
-        'target_type' => 'user',
+        'referenceable_status' => '1',
+        'view' => array(
+          'args' => array(
+            0 => '',
+          ),
+          'display_name' => 'default',
+          'view_name' => '--',
+        ),
       ),
       'translatable' => '0',
-      'type' => 'entityreference',
+      'type' => 'user_reference',
+      'type_name' => 'casestudy',
     ),
     'field_instance' => array(
       'bundle' => 'casestudy',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'uid' => NULL,
+          '_error_element' => 'default_value_widget][field_profiles][0][uid][uid',
+        ),
+      ),
       'deleted' => '0',
       'description' => 'Use the autocomplete widget if team members or significant contributors are Drupal.org users; otherwise, use the Project team text field below.',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
-          'weight' => '8',
+          'module' => 'user_reference',
+          'settings' => array(),
+          'type' => 'user_reference_default',
+          'weight' => '6',
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'user_reference',
+          'settings' => array(),
+          'type' => 'user_reference_default',
           'weight' => '6',
         ),
         'issuemetadata' => array(
@@ -1431,64 +1520,70 @@ function drupalorg_case_studies_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'nodechanges' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'print' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'user_reference',
+          'settings' => array(),
+          'type' => 'user_reference_default',
           'weight' => '6',
         ),
         'rss' => array(
           'label' => 'above',
+          'module' => 'user_reference',
           'settings' => array(),
-          'type' => 'hidden',
+          'type' => 'user_reference_default',
           'weight' => '6',
         ),
         'search_index' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'user_reference',
+          'settings' => array(),
+          'type' => 'user_reference_default',
           'weight' => '6',
         ),
         'search_result' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => TRUE,
-          ),
-          'type' => 'entityreference_label',
+          'module' => 'user_reference',
+          'settings' => array(),
+          'type' => 'user_reference_default',
           'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
+          'module' => 'user_reference',
           'settings' => array(),
-          'type' => 'hidden',
+          'type' => 'user_reference_default',
           'weight' => '6',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_profiles',
       'label' => 'Team members',
-      'required' => 0,
+      'required' => FALSE,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
+      'weight' => '6',
       'widget' => array(
-        'active' => 1,
-        'module' => 'entityreference',
+        'active' => '1',
+        'module' => 'user_reference',
         'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'path' => '',
+          'autocomplete_match' => 'starts_with',
+          'autocomplete_path' => 'user_reference/autocomplete',
+          'default_value_php' => NULL,
+          'reverse_link' => 0,
           'size' => '60',
         ),
-        'type' => 'entityreference_autocomplete',
+        'type' => 'user_reference_autocomplete',
         'weight' => '10',
       ),
+      'widget_type' => 'userreference_autocomplete',
     ),
   );
 
@@ -1546,6 +1641,12 @@ function drupalorg_case_studies_field_default_fields() {
           'weight' => '13',
         ),
         'issuemetadata' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'nodechanges' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -1653,6 +1754,12 @@ function drupalorg_case_studies_field_default_fields() {
           'type' => 'hidden',
           'weight' => 0,
         ),
+        'nodechanges' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'rss' => array(
           'label' => 'above',
           'settings' => array(),
@@ -1700,7 +1807,7 @@ function drupalorg_case_studies_field_default_fields() {
       'module' => 'file',
       'settings' => array(
         'default_file' => 0,
-        'display_default' => 1,
+        'display_default' => '1',
         'display_field' => 1,
         'uri_scheme' => 'public',
       ),
@@ -1717,6 +1824,18 @@ function drupalorg_case_studies_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => '13',
+        ),
+        'issuemetadata' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'nodechanges' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
         'rss' => array(
           'label' => 'above',
@@ -1770,7 +1889,9 @@ function drupalorg_case_studies_field_default_fields() {
   t('Discuss the project\'s goals and requirements, timeline and major milestones. What makes your project special? What project management approach you used? What was the outcome of the project? What business problems were solved? What results were achieved (e.g., increased traffic, better performance, etc.) as a result of using Drupal for this project?<br /><br />');
   t('Enter the names of organizations and team members that can\'t be referenced in the autocomplete fields above. Also, feel free to add more description about the team.<br /><br />');
   t('File attachments');
-  t('Include the organizations that contributed to this project. Use the autocomplete widget if they exist on Drupal.org as organization nodes; otherwise, use the Project team text field below.');
+  t('Include the organizations that contributed to this project. Use the autocomplete widget if they exist on Drupal.org as organization nodes; otherwise, use the Project team text field below.
+
+');
   t('Key modules/theme/distribution used');
   t('List related sector(s)');
   t('Organizations involved');
