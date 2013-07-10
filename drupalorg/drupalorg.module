@@ -1470,7 +1470,7 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
         // Highlight a Service provider above the organization page.
         switch ($node->field_organization_list_rule[0]['value']) {
-          case 'all':
+          case 'all-providers':
             drupal_set_message(t('This organization is a <a href="!listing">Drupal services provider</a>.', array('!listing' => url('drupal-services/all'))), 'status');
             break;
 
