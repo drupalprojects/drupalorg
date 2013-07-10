@@ -540,12 +540,9 @@ function drupalorg_update_7010() {
         'view own unpublished content',
         'view revisions',
       ),
-      // TODO pift
-      /*
       'pift' => array(
         'pift re-test files',
       ),
-      */
       'project_usage' => array(
         'view project usage',
       ),
@@ -654,6 +651,12 @@ function drupalorg_update_7010() {
       'path' => array(
         'administer url aliases',
         'create url aliases',
+      ),
+      'pift' => array(
+        'access pift project testing tab',
+        'access pift settings for all projects',
+        'access pift settings for own projects',
+        'pift re-test files',
       ),
       'project' => array(
         'administer projects',
@@ -796,12 +799,9 @@ function drupalorg_update_7010() {
       'honeypot' => array(
         'bypass honeypot protection',
       ),
-      // TODO pift
-      /*
       'pift' => array(
-        'pift enable project testing',
+        'access pift settings for all projects',
       ),
-      */
       'project' => array(
         'administer projects',
       ),
@@ -880,13 +880,10 @@ function drupalorg_update_7010() {
       'project' => array(
         'create full projects',
       ),
-      // TODO pift
-      /*
       'pift' => array(
-        'pift enable project testing',
-        'pift access project testing tab',
+        'access pift settings for own projects',
+        'access pift project testing tab',
       ),
-      */
     ),
 
     // Security team
