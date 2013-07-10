@@ -512,7 +512,7 @@ function _lists_mailman_subscribe($list, $account) {
   $result = lists_mailman_query($url, $list);
   if ($result !== FALSE) {
     watchdog('lists', t('User %email subscribed to !list mailman list.', array('%email' => $account->mail, '!list' => $list['name'])));
-    drupal_set_message(t('%email subscribed to %list.', array('%email' => $account->mail, '%list' => $list['name'])));
+    drupal_set_message(t('Subscribed to %list.', array('%list' => $list['name'])));
   }
   else {
     drupal_set_message(t('Failed to subscribe %email to %list. Please try again later.', array('%email' => $account->mail, '%list' => $list['name'])));
