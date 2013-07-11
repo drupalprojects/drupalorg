@@ -1089,7 +1089,7 @@ function drupalorg_marketplace_views_default_views() {
     'field_organization_list_rule_value_many_to_one' => array(
       'operator' => 'or',
       'value' => array(
-        'all' => 'all',
+        'all-providers' => 'all-providers',
         'featured' => 'featured',
       ),
       'group' => '0',
@@ -1103,6 +1103,9 @@ function drupalorg_marketplace_views_default_views() {
       'field' => 'field_organization_list_rule_value_many_to_one',
       'relationship' => 'none',
       'reduce_duplicates' => 0,
+      'override' => array(
+        'button' => 'Override',
+      ),
     ),
   ));
   $handler->override_option('access', array(
