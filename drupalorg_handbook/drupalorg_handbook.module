@@ -124,7 +124,7 @@ function drupalorg_handbook_node_access($node, $op, $account) {
  *   does not have permission to create issues.
  */
 function drupalorg_handbook_moderate_link_info($node) {
-  if (!user_access('create project issues') || (drupalorg_crosssite_section() !== 'documentation')) {
+  if (!user_access('create project_issue content') || (drupalorg_crosssite_section() !== 'documentation')) {
     return NULL;
   }
   return array(
