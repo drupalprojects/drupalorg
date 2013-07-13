@@ -1179,3 +1179,16 @@ function drupalorg_update_7025() {
 
   db_query("UPDATE {field_data_body} fdb INNER JOIN {node} n ON n.nid = fdb.entity_id AND n.type = 'organization' SET fdb.body_summary = NULL");
 }
+
+/**
+ * Position pivots block.
+ */
+function drupalorg_update_7026() {
+  db_update('block')
+    ->condition('theme', 'bluecheese')
+    ->condition('module', 'pivots_block')
+    ->fields(array(
+      'weight' => 13,
+    ))
+    ->execute();
+}

@@ -1071,9 +1071,14 @@ function drupalorg_project_preprocess_drupalorg_home(&$vars) {
  *   The HTML code for the book meta information.
  */
 function drupalorg_project_meta_data($node) {
-  $info = array();
   if ($node->nid == DRUPALORG_CORE_NID) {
     return;
+  }
+  $info = array(
+    t('Maintenance status') => '<span class="warning">' . t('Unknown') . '</span>',
+  );
+  if (!empty($node->versioncontrol_project['repo_id'])) {
+    $info[t('Development status')] = '<span class="warning">' . t('Unknown') . '</span>';
   }
 
   // Project solr is currently finnicky about f query parameter indexing.
@@ -1144,12 +1149,6 @@ function drupalorg_project_meta_data($node) {
         $info[$label] = '<span class="' . $class . '">' . implode(', ', $links) . '</span>';
       }
     }
-  }
-  if (empty($maintenance_status)) {
-    $info[t('Maintenance status')] = '<span class="warning">' . t('Unknown') . '</span>';
-  }
-  if (empty($development_status) && !empty($node->versioncontrol_project['repo_id'])) {
-    $info[t('Development status')] = '<span class="warning">' . t('Unknown') . '</span>';
   }
   
   // Usage stats.
