@@ -1636,7 +1636,7 @@ function drupalorg_marketplace_field_default_fields() {
       'description' => 'Describe your trainings: main topics, audience, locations, cost range etc. This will be shown in the Training listing only.',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
@@ -1869,7 +1869,7 @@ function drupalorg_marketplace_field_default_fields() {
       'description' => 'The url for your trainings landing page (the page specifically for Drupal trainings preferred). This will be shown in the Training listing only.',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'link',
           'settings' => array(),
           'type' => 'link_default',
