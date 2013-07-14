@@ -1553,10 +1553,6 @@ function drupalorg_node_view($node, $view_mode = 'full') {
 
           $links[] = drupalorg_generate_marketplace_link($term, $org_list['value']);
         }
-        // Security review results
-        if (!empty($node->field_organization_security[0]['safe'])) {
-          $info[t('Security review')] = $node->field_organization_security[0]['safe'];
-        }
 
         // On teaser views, we want to limit the terms that are displayed.
         if ($view_mode == 'teaser' && ($count = count($links)) > 3) {
@@ -1628,6 +1624,11 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       // Budget may be replaced by taxonomy, see #371966
       if ($field_items = field_get_items('node', $node, 'field_budget')) {
         $info[t('Usual project budget')] = field_view_value('node', $node, 'field_budget', $field_items[0]);
+      }
+
+      // Security review results
+      if ($field_items = field_get_items('node', $node, 'field_organization_security')) {
+        $info[t('Security review')] = field_view_value('node', $node, 'field_organization_security', $field_items[0]);
       }
 
       $content['intro']['info'] = array(
