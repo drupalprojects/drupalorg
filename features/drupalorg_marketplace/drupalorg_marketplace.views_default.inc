@@ -147,6 +147,14 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['filters']['field_org_marketplace_request_value']['value'] = array(
     1 => '1',
   );
+  /* Filter criterion: Content: Services listing (field_organization_list_rule) */
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['id'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['table'] = 'field_data_field_organization_list_rule';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['field'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['value'] = array(
+    'all-providers' => 'all-providers',
+    'featured' => 'featured',
+  );
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
