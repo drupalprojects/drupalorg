@@ -1893,7 +1893,12 @@ function drupalorg_node_update($node) {
 function drupalorg_views_pre_render(&$view) {
   // Render the taxonomy filtering above the marketplace organization listing.
   if ($view->name === 'drupalorg_organizations') {
-    $content = drupalorg_crosssite_grid_elements(array(3, 3, 3, 3));
+    $content = array(
+      'nav' => array(
+        '#prefix' => '<div class="nav">',
+        '#suffix' => '</div>',
+      ),
+    );
 
     // Each argument should be a term restricted to a vocabulary.
     $n = 0;
@@ -1907,8 +1912,14 @@ function drupalorg_views_pre_render(&$view) {
         continue;
       }
 
-      $content['column_' . ($n + 1)]['header'] = array('#markup' => '<h3>' . check_plain($vocabulary->name) . '</h3>');
-      $content['column_' . ($n + 1)]['list'] = array(
+      $content['nav']['column_' . ($n + 1)] = array(
+        '#prefix' => '<div class="nav-column">',
+        '#suffix' => '</div>',
+        '#sorted' => TRUE,
+        '#weight' => $n,
+      );
+      $content['nav']['column_' . ($n + 1)]['header'] = array('#markup' => '<h3>' . check_plain($vocabulary->name) . '</h3>');
+      $content['nav']['column_' . ($n + 1)]['list'] = array(
         '#prefix' => '<ul>',
         '#suffix' => '</ul>',
         '#sorted' => TRUE,
@@ -1969,19 +1980,19 @@ function drupalorg_views_pre_render(&$view) {
         );
         // Ensure active is in slot 6 or lower.
         if ($_GET['q'] === $path && $c > 6) {
-          array_splice($content['column_' . ($n + 1)]['list'], 8, 0, array($item)); // 8 = 5 + 3 #... items
-          $content['column_' . ($n + 1)]['list'][6]['#prefix'] = '<li class="show-more">';
+          array_splice($content['nav']['column_' . ($n + 1)]['list'], 8, 0, array($item)); // 8 = 5 + 3 #... items
+          $content['nav']['column_' . ($n + 1)]['list'][6]['#prefix'] = '<li class="show-more">';
         }
         else {
-          $content['column_' . ($n + 1)]['list'][] = $item;
+          $content['nav']['column_' . ($n + 1)]['list'][] = $item;
         }
       }
       // If there are more than 6, show more/less links.
       if ($c > 6) {
-        $content['column_' . ($n + 1)]['list']['show-more'] = array(
+        $content['nav']['column_' . ($n + 1)]['list']['show-more'] = array(
           '#markup' => '<li class="show-link">' . l(t('Show more'), $_GET['q']) . '</li>',
         );
-        $content['column_' . ($n + 1)]['list']['show-less'] = array(
+        $content['nav']['column_' . ($n + 1)]['list']['show-less'] = array(
           '#markup' => '<li class="hide-link">' . l(t('Show fewer'), $_GET['q']) . '</li>',
         );
       }
@@ -1997,7 +2008,7 @@ function drupalorg_views_pre_render(&$view) {
           $args = array_merge(array_fill(count($args), $n - count($args), 'all'), $args);
         }
         $args[$n] = 'all';
-        $content['column_' . ($n + 1)]['list'][] = array(
+        $content['nav']['column_' . ($n + 1)]['list'][] = array(
           '#prefix' => '<li>',
           '#markup' => l(t('All @name (@count)', array('@name' => $vocabulary->name, '@count' => $c)), preg_replace('!(/all)*$!', '', 'drupal-services/' . $listing . '/' . implode('/', $args)), array('attributes' => array('class' => array('all')))),
           '#suffix' => '</li>',
