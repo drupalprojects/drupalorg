@@ -1575,14 +1575,6 @@ function drupalorg_node_view($node, $view_mode = 'full') {
     if ($view_mode == 'full') {
       global $user;
 
-      /* todo D7 put this somewhere
-        if (!empty($node->field_organization_training_desc[0]['value'])) {
-          $content['column_2']['training_heading'] = array('#value' => '<h3>' . t('Training') . '</h3>');
-          $content['column_2']['training_url'] = $node->content['field_organization_training_url']['field']['items'][0];
-          $content['column_2']['training_desc'] = $node->content['field_organization_training_desc']['field']['items'][0];
-        }
-      */
-
       $content = drupalorg_crosssite_grid_elements(array(3, 5, 4));
 
       // Organisation logo.
@@ -1661,11 +1653,20 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         );
       }
 
+      // Organization description
       $content['column_2']['body'] = $node->content['body'];
+      // Drupal contributions
       $content['column_2']['contributions_heading'] = array('#markup' => '<h3>' . t('Drupal contributions') . '</h3>');
       $content['column_2']['contributions'] = $node->content['field_contributions'];
 
-      // // People
+      // Training fields
+      if (!empty($node->field_organization_training_desc[$node->language][0]['value'])) {
+        $content['column_2']['training_heading'] = array('#markup' => '<h3>' . t('Training') . '</h3>');
+        $content['column_2']['training_url'] = $node->content['field_organization_training_url'];
+        $content['column_2']['training_desc'] = $node->content['field_organization_training_desc'];
+      }
+
+      // People
       $content['column_3']['map'] = array(
         '#prefix' => '<div id="organization-map">',
         '#markup' => '',
