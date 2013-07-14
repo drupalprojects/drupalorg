@@ -1993,23 +1993,6 @@ function drupalorg_views_pre_render(&$view) {
     $view->set_item_option('default', 'header', 'area', 'format', 3);
     $view->set_item_option('default', 'header', 'area', 'content', drupal_render($content));
   }
-  elseif ($view->name === 'drupalorg_marketplace_hosting') {
-    // Add gold-level hosting ads
-    $type = drupal_strtolower($view->display[$view->current_display]->display_title);
-    $ads_markup = theme('google_admanager_block', (array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'hosting-' . $type . '-a-300x100'))) .
-      theme('google_admanager_block', (array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'hosting-' . $type . '-b-300x100'))) .
-      theme('google_admanager_block', (array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'hosting-' . $type . '-c-300x100'))).
-      theme('google_admanager_block', (array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'hosting-' . $type . '-d-300x100')));
-    if ($type === 'enterprise' || $type === 'shared') {
-      $ads_markup .= theme('google_admanager_block', (array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'hosting-' . $type . '-e-300x100'))).
-        theme('google_admanager_block', (array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'hosting-' . $type . '-f-300x100')));
-    }
-    $header_text = $view->get_item('default', 'header', 'text');
-    $footer_text = $view->get_item('default', 'footer', 'text');
-    $view->set_item_option('default', 'header', 'text', 'format', 3);
-    $view->set_item_option('default', 'header', 'text', 'content', $header_text['content'] . $ads_markup . $footer_text['content']);
-    $view->set_item_option('default', 'footer', 'text', 'content', NULL);
-  }
 }
 
 /**
