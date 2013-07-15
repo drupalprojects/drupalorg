@@ -326,6 +326,9 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['row_class'] = 'views-row';
+  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
@@ -337,7 +340,9 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
   $handler->display->display_options['fields']['field_logo']['label'] = '';
   $handler->display->display_options['fields']['field_logo']['alter']['text'] = '<div class="grid-3 alpha">[field_logo]</div>';
+  $handler->display->display_options['fields']['field_logo']['element_class'] = 'intro';
   $handler->display->display_options['fields']['field_logo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_logo']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_logo']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_logo']['settings'] = array(
     'image_style' => 'grid-3',
@@ -349,6 +354,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
   $handler->display->display_options['fields']['title']['alter']['text'] = '<div class="grid-5 omega">[title]</div>';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   /* Field: Content: Training description */
@@ -356,6 +362,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['fields']['field_organization_training_desc']['table'] = 'field_data_field_organization_training_desc';
   $handler->display->display_options['fields']['field_organization_training_desc']['field'] = 'field_organization_training_desc';
   $handler->display->display_options['fields']['field_organization_training_desc']['label'] = '';
+  $handler->display->display_options['fields']['field_organization_training_desc']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_organization_training_desc']['alter']['text'] = '<div class="grid-5 omega">[field_organization_training_desc-value]</div>';
   $handler->display->display_options['fields']['field_organization_training_desc']['alter']['max_length'] = '390';
   $handler->display->display_options['fields']['field_organization_training_desc']['alter']['trim'] = TRUE;
@@ -368,9 +375,15 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['fields']['field_organization_training_url']['table'] = 'field_data_field_organization_training_url';
   $handler->display->display_options['fields']['field_organization_training_url']['field'] = 'field_organization_training_url';
   $handler->display->display_options['fields']['field_organization_training_url']['label'] = '';
-  $handler->display->display_options['fields']['field_organization_training_url']['alter']['text'] = '<div class="grid-5 omega">[field_organization_training_url]</div>';
+  $handler->display->display_options['fields']['field_organization_training_url']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_organization_training_url']['alter']['text'] = '<div class="main"><h2>[title]</h2>
+[field_organization_training_desc] 
+<p>[field_organization_training_url]</p>
+</div>';
   $handler->display->display_options['fields']['field_organization_training_url']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_organization_training_url']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_organization_training_url']['click_sort_column'] = 'url';
+  $handler->display->display_options['fields']['field_organization_training_url']['type'] = 'link_url';
   $handler->display->display_options['fields']['field_organization_training_url']['group_column'] = 'entity_id';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Taxonomy term: Name */
