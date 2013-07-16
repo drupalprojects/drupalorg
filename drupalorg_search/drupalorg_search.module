@@ -166,7 +166,7 @@ function drupalorg_search_block_view($delta) {
       $searches = array(
         'site' => 'Posts',
         'drupalorg' => 'IRC Nicks',
-        'user_search' => 'Users',
+        'user' => 'Users',
       );
       $items = array();
       foreach ($searches as $module => $title) {
