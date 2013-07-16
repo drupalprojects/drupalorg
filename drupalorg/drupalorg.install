@@ -1201,8 +1201,9 @@ function drupalorg_update_7027() {
   field_delete_field('field_organization_hosting_categ');
   field_delete_field('field_organization_hosting_level');
 
+  path_delete(array('alias' => 'hosting'));
   $path = array(
-    'alias' => 'hosting/shared',
+    'alias' => 'hosting',
     'source' => 'node/2029631',
     'language' => LANGUAGE_NONE,
   );
@@ -1219,4 +1220,9 @@ function drupalorg_update_7027() {
     'language' => LANGUAGE_NONE,
   );
   path_save($path);
+  $redirect = new stdClass();
+  redirect_object_prepare($redirect);
+  $redirect->source = 'hosting/shared';
+  $redirect->redirect = 'hosting';
+  redirect_save($redirect);
 }
