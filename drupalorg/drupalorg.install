@@ -1192,3 +1192,31 @@ function drupalorg_update_7026() {
     ))
     ->execute();
 }
+
+/**
+ * Remove deprcated marketplace hosting fields.
+ */
+function drupalorg_update_7027() {
+  field_delete_field('field_organization_hosting_url');
+  field_delete_field('field_organization_hosting_categ');
+  field_delete_field('field_organization_hosting_level');
+
+  $path = array(
+    'alias' => 'hosting/shared',
+    'source' => 'node/2029631',
+    'language' => LANGUAGE_NONE,
+  );
+  path_save($path);
+  $path = array(
+    'alias' => 'hosting/enterprise',
+    'source' => 'node/2029703',
+    'language' => LANGUAGE_NONE,
+  );
+  path_save($path);
+  $path = array(
+    'alias' => 'hosting/paas',
+    'source' => 'node/2029743',
+    'language' => LANGUAGE_NONE,
+  );
+  path_save($path);
+}
