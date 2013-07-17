@@ -1,1112 +1,347 @@
 <?php
+/**
+ * @file
+ * drupalorg_book_listings.views_default.inc
+ */
 
 /**
- * Implementation of hook_views_default_views().
+ * Implements hook_views_default_views().
  */
 function drupalorg_book_listings_views_default_views() {
-  $views = array();
+  $export = array();
 
-  // Exported view: book_listings
-  $view = new view;
+  $view = new view();
   $view->name = 'book_listings';
-  $view->description = 'Provides displays for book listings (printed books about Drupal)';
-  $view->tag = '';
+  $view->description = '';
+  $view->tag = 'default';
   $view->base_table = 'node';
-  $view->core = 6;
-  $view->api_version = '2';
+  $view->human_name = 'Book listings';
+  $view->core = 7;
+  $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'nid' => array(
-      'label' => 'Nid',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'link_to_node' => 0,
-      'exclude' => 1,
-      'id' => 'nid',
-      'table' => 'node',
-      'field' => 'nid',
-      'relationship' => 'none',
-    ),
-    'title' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<h2><a href="node/[nid]">[title]</a></h2>',
-        'make_link' => 0,
-        'path' => 'node/[nid]',
-        'absolute' => 0,
-        'link_class' => 'clear',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'link_to_node' => 0,
-      'exclude' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-    ),
-    'field_cover_image_fid' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 1,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 1,
-      'label_type' => 'none',
-      'format' => 'grid-2_default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_cover_image_fid',
-      'table' => 'node_data_field_cover_image',
-      'field' => 'field_cover_image_fid',
-      'relationship' => 'none',
-      'override' => array(
-        'button' => 'Override',
-      ),
-    ),
-    'field_book_subtitle_value' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_book_subtitle_value',
-      'table' => 'node_data_field_book_subtitle',
-      'field' => 'field_book_subtitle_value',
-      'relationship' => 'none',
-    ),
-    'field_book_listing_authors_value' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_book_listing_authors_value',
-      'table' => 'node_data_field_book_listing_authors',
-      'field' => 'field_book_listing_authors_value',
-      'relationship' => 'none',
-    ),
-    'tid' => array(
-      'label' => 'Drupal version',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '<strong>Drupal version:</strong> [tid]',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 1,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'type' => 'separator',
-      'separator' => ', ',
-      'link_to_taxonomy' => 0,
-      'limit' => 1,
-      'vids' => array(
-        5 => 5,
-        1 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        59 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'exclude' => 0,
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'relationship' => 'none',
-    ),
-    'tid_1' => array(
-      'label' => 'Audience',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 1,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'type' => 'separator',
-      'separator' => ', ',
-      'link_to_taxonomy' => 0,
-      'limit' => 1,
-      'vids' => array(
-        38 => 38,
-        1 => 0,
-        5 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        59 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'exclude' => 0,
-      'id' => 'tid_1',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'relationship' => 'none',
-    ),
-    'tid_2' => array(
-      'label' => 'Level',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 1,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'type' => 'separator',
-      'separator' => ', ',
-      'link_to_taxonomy' => 0,
-      'limit' => 1,
-      'vids' => array(
-        56 => 56,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        59 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'exclude' => 0,
-      'id' => 'tid_2',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'relationship' => 'none',
-    ),
-    'tid_3' => array(
-      'label' => 'Keywords',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 1,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'type' => 'separator',
-      'separator' => ', ',
-      'link_to_taxonomy' => 0,
-      'limit' => 1,
-      'vids' => array(
-        54 => 54,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        59 => 0,
-        52 => 0,
-        58 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'exclude' => 0,
-      'id' => 'tid_3',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'relationship' => 'none',
-    ),
-    'tid_4' => array(
-      'label' => 'Format',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'type' => 'separator',
-      'separator' => ', ',
-      'link_to_taxonomy' => 0,
-      'limit' => 1,
-      'vids' => array(
-        62 => 62,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        60 => 0,
-        58 => 0,
-        52 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'exclude' => 0,
-      'id' => 'tid_4',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'relationship' => 'none',
-    ),
-    'field_book_listing_date_value' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 1,
-      'repeat' => array(
-        'show_repeat_rule' => '',
-      ),
-      'fromto' => array(
-        'fromto' => 'both',
-      ),
-      'id' => 'field_book_listing_date_value',
-      'table' => 'node_data_field_book_listing_date',
-      'field' => 'field_book_listing_date_value',
-      'relationship' => 'none',
-    ),
-    'field_book_page_count_value' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'us_0',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 1,
-      'id' => 'field_book_page_count_value',
-      'table' => 'node_data_field_book_page_count',
-      'field' => 'field_book_page_count_value',
-      'relationship' => 'none',
-    ),
-    'field_publisher_value' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 1,
-      'id' => 'field_publisher_value',
-      'table' => 'node_data_field_publisher',
-      'field' => 'field_publisher_value',
-      'relationship' => 'none',
-    ),
-    'nothing_1' => array(
-      'label' => 'Published by',
-      'alter' => array(
-        'text' => '[field_publisher_value] in [field_book_listing_date_value] ([field_book_page_count_value] pages)',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'exclude' => 0,
-      'id' => 'nothing_1',
-      'table' => 'views',
-      'field' => 'nothing',
-      'relationship' => 'none',
-    ),
-    'field_official_website_url' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '[field_official_website_url]',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => 'This is a site created by the author specially for this book which may include errata, code, etc.',
-        'rel' => 'nofollow',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 1,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_official_website_url',
-      'table' => 'node_data_field_official_website',
-      'field' => 'field_official_website_url',
-      'relationship' => 'none',
-    ),
-    'field_book_isbn_13_value' => array(
-      'label' => 'ISBN',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '<strong>ISBN: </strong>[field_book_isbn_13_value]',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 0,
-        'ellipsis' => 0,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'custom',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_book_isbn_13_value',
-      'table' => 'node_data_field_book_isbn_13',
-      'field' => 'field_book_isbn_13_value',
-      'relationship' => 'none',
-    ),
-    'tid_5' => array(
-      'label' => 'Availability',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 1,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'type' => 'separator',
-      'separator' => ', ',
-      'link_to_taxonomy' => 0,
-      'limit' => 1,
-      'vids' => array(
-        60 => 60,
-        1 => 0,
-        5 => 0,
-        38 => 0,
-        54 => 0,
-        56 => 0,
-        6 => 0,
-        4 => 0,
-        44 => 0,
-        46 => 0,
-        3 => 0,
-        48 => 0,
-        50 => 0,
-        62 => 0,
-        58 => 0,
-        52 => 0,
-        7 => 0,
-        2 => 0,
-        31 => 0,
-        32 => 0,
-        33 => 0,
-        34 => 0,
-        9 => 0,
-      ),
-      'exclude' => 0,
-      'id' => 'tid_5',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'relationship' => 'none',
-    ),
-    'field_book_purchase_link_url' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<a href="[field_book_purchase_link_url]" rel="nofollow">Order from [field_publisher_value]</a>',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 1,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 1,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'plain',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_book_purchase_link_url',
-      'table' => 'node_data_field_book_purchase_link',
-      'field' => 'field_book_purchase_link_url',
-      'relationship' => 'none',
-    ),
-    'field_book_isbn_10_value' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 1,
-        'text' => '<a rel="nofollow" class="amazon-link" href="http://www.amazon.com/dp/[field_book_isbn_10_value]/?tag=drupal0a-20" title="Ordering via this link benefits the Drupal Association">Order from Amazon.com</a>',
-        'make_link' => 0,
-        'path' => '',
-        'absolute' => 0,
-        'link_class' => '',
-        'alt' => '',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_book_isbn_10_value',
-      'table' => 'node_data_field_book_isbn_10',
-      'field' => 'field_book_isbn_10_value',
-      'relationship' => 'none',
-    ),
-    'nothing' => array(
-      'label' => '',
-      'alter' => array(
-        'text' => 'More information',
-        'make_link' => 1,
-        'path' => 'node/[nid]',
-        'absolute' => 0,
-        'link_class' => 'clearfix',
-        'alt' => 'View additional information about this book or leave a comment about it.',
-        'rel' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'hide_alter_empty' => 0,
-      'exclude' => 0,
-      'id' => 'nothing',
-      'table' => 'views',
-      'field' => 'nothing',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('sorts', array(
-    'field_book_listing_date_value' => array(
-      'order' => 'DESC',
-      'delta' => -1,
-      'id' => 'field_book_listing_date_value',
-      'table' => 'node_data_field_book_listing_date',
-      'field' => 'field_book_listing_date_value',
-      'override' => array(
-        'button' => 'Override',
-      ),
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'book_listing' => 'book_listing',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-    'status_extra' => array(
-      'id' => 'status_extra',
-      'table' => 'node',
-      'field' => 'status_extra',
-    ),
-    'tid' => array(
-      'operator' => 'or',
-      'value' => array(
-        38414 => '38414',
-      ),
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'use_operator' => 0,
-        'operator' => 'tid_op',
-        'identifier' => 'availability',
-        'label' => 'Status',
-        'optional' => 1,
-        'single' => 0,
-        'remember' => 0,
-        'reduce' => 0,
-      ),
-      'type' => 'select',
-      'limit' => TRUE,
-      'vid' => '60',
-      'id' => 'tid',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'hierarchy' => 0,
-      'override' => array(
-        'button' => 'Override',
-      ),
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-    'tid_1' => array(
-      'operator' => 'or',
-      'value' => array(
-        102 => '102',
-        120 => '120',
-        20236 => '20236',
-      ),
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'use_operator' => 0,
-        'operator' => 'tid_1_op',
-        'identifier' => 'version',
-        'label' => 'Drupal version',
-        'optional' => 1,
-        'single' => 0,
-        'remember' => 0,
-        'reduce' => 0,
-      ),
-      'type' => 'select',
-      'limit' => TRUE,
-      'vid' => '5',
-      'id' => 'tid_1',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'hierarchy' => 0,
-      'override' => array(
-        'button' => 'Override',
-      ),
-      'relationship' => 'none',
-      'reduce_duplicates' => 1,
-    ),
-    'tid_2' => array(
-      'operator' => 'or',
-      'value' => array(),
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'use_operator' => 0,
-        'operator' => 'tid_2_op',
-        'identifier' => 'audience',
-        'label' => 'Audience',
-        'optional' => 1,
-        'single' => 0,
-        'remember' => 0,
-        'reduce' => 0,
-      ),
-      'type' => 'select',
-      'limit' => TRUE,
-      'vid' => '38',
-      'id' => 'tid_2',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'hierarchy' => 0,
-      'relationship' => 'none',
-      'reduce_duplicates' => 1,
-    ),
-    'tid_3' => array(
-      'operator' => 'or',
-      'value' => array(),
-      'group' => '0',
-      'exposed' => TRUE,
-      'expose' => array(
-        'use_operator' => 0,
-        'operator' => 'tid_3_op',
-        'identifier' => 'format',
-        'label' => 'Format',
-        'optional' => 1,
-        'single' => 0,
-        'remember' => 0,
-        'reduce' => 0,
-      ),
-      'type' => 'select',
-      'limit' => TRUE,
-      'vid' => '62',
-      'id' => 'tid_3',
-      'table' => 'term_node',
-      'field' => 'tid',
-      'hierarchy' => 0,
-      'relationship' => 'none',
-      'reduce_duplicates' => 0,
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('title', 'Books about Drupal');
-  $handler->override_option('empty', 'No books currently listed match your filters. Try a less restrictive set of filters.');
-  $handler->override_option('empty_format', '1');
-  $handler->override_option('use_pager', '1');
-  $handler->override_option('distinct', 1);
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-  ));
-  $handler = $view->new_display('page', 'Books page', 'page_1');
-  $handler->override_option('path', 'books');
-  $handler->override_option('menu', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
 
-  $views[$view->name] = $view;
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Books about Drupal';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_wrapper_type'] = 'h2';
+  /* Field: Content: Cover image */
+  $handler->display->display_options['fields']['field_cover_image']['id'] = 'field_cover_image';
+  $handler->display->display_options['fields']['field_cover_image']['table'] = 'field_data_field_cover_image';
+  $handler->display->display_options['fields']['field_cover_image']['field'] = 'field_cover_image';
+  $handler->display->display_options['fields']['field_cover_image']['label'] = '';
+  $handler->display->display_options['fields']['field_cover_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_cover_image']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['field_cover_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_cover_image']['settings'] = array(
+    'image_style' => 'grid-2',
+    'image_link' => 'content',
+  );
+  /* Field: Content: Sub-title */
+  $handler->display->display_options['fields']['field_book_subtitle']['id'] = 'field_book_subtitle';
+  $handler->display->display_options['fields']['field_book_subtitle']['table'] = 'field_data_field_book_subtitle';
+  $handler->display->display_options['fields']['field_book_subtitle']['field'] = 'field_book_subtitle';
+  $handler->display->display_options['fields']['field_book_subtitle']['label'] = '';
+  $handler->display->display_options['fields']['field_book_subtitle']['element_label_colon'] = FALSE;
+  /* Field: Content: Authors */
+  $handler->display->display_options['fields']['field_book_listing_authors']['id'] = 'field_book_listing_authors';
+  $handler->display->display_options['fields']['field_book_listing_authors']['table'] = 'field_data_field_book_listing_authors';
+  $handler->display->display_options['fields']['field_book_listing_authors']['field'] = 'field_book_listing_authors';
+  $handler->display->display_options['fields']['field_book_listing_authors']['label'] = '';
+  $handler->display->display_options['fields']['field_book_listing_authors']['element_label_colon'] = FALSE;
+  /* Field: Content: Drupal version */
+  $handler->display->display_options['fields']['taxonomy_vocabulary_5']['id'] = 'taxonomy_vocabulary_5';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_5']['table'] = 'field_data_taxonomy_vocabulary_5';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_5']['field'] = 'taxonomy_vocabulary_5';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_5']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['taxonomy_vocabulary_5']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_5']['delta_offset'] = '0';
+  /* Field: Content: Audience */
+  $handler->display->display_options['fields']['taxonomy_vocabulary_38']['id'] = 'taxonomy_vocabulary_38';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_38']['table'] = 'field_data_taxonomy_vocabulary_38';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_38']['field'] = 'taxonomy_vocabulary_38';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_38']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['taxonomy_vocabulary_38']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_38']['delta_offset'] = '0';
+  /* Field: Content: Level */
+  $handler->display->display_options['fields']['taxonomy_vocabulary_56']['id'] = 'taxonomy_vocabulary_56';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_56']['table'] = 'field_data_taxonomy_vocabulary_56';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_56']['field'] = 'taxonomy_vocabulary_56';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_56']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['taxonomy_vocabulary_56']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_56']['delta_offset'] = '0';
+  /* Field: Content: Keywords */
+  $handler->display->display_options['fields']['taxonomy_vocabulary_54']['id'] = 'taxonomy_vocabulary_54';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_54']['table'] = 'field_data_taxonomy_vocabulary_54';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_54']['field'] = 'taxonomy_vocabulary_54';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_54']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['taxonomy_vocabulary_54']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_54']['delta_offset'] = '0';
+  /* Field: Content: Book format */
+  $handler->display->display_options['fields']['taxonomy_vocabulary_62']['id'] = 'taxonomy_vocabulary_62';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_62']['table'] = 'field_data_taxonomy_vocabulary_62';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_62']['field'] = 'taxonomy_vocabulary_62';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_62']['label'] = 'Format';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_62']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_62']['delta_offset'] = '0';
+  /* Field: Content: Page count */
+  $handler->display->display_options['fields']['field_book_page_count']['id'] = 'field_book_page_count';
+  $handler->display->display_options['fields']['field_book_page_count']['table'] = 'field_data_field_book_page_count';
+  $handler->display->display_options['fields']['field_book_page_count']['field'] = 'field_book_page_count';
+  $handler->display->display_options['fields']['field_book_page_count']['label'] = '';
+  $handler->display->display_options['fields']['field_book_page_count']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_book_page_count']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_book_page_count']['settings'] = array(
+    'thousand_separator' => ',',
+    'prefix_suffix' => 1,
+  );
+  /* Field: Content: Publication date */
+  $handler->display->display_options['fields']['field_book_listing_date']['id'] = 'field_book_listing_date';
+  $handler->display->display_options['fields']['field_book_listing_date']['table'] = 'field_data_field_book_listing_date';
+  $handler->display->display_options['fields']['field_book_listing_date']['field'] = 'field_book_listing_date';
+  $handler->display->display_options['fields']['field_book_listing_date']['label'] = '';
+  $handler->display->display_options['fields']['field_book_listing_date']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_book_listing_date']['element_label_colon'] = FALSE;
+  /* Field: Content: Publisher */
+  $handler->display->display_options['fields']['field_publisher']['id'] = 'field_publisher';
+  $handler->display->display_options['fields']['field_publisher']['table'] = 'field_data_field_publisher';
+  $handler->display->display_options['fields']['field_publisher']['field'] = 'field_publisher';
+  $handler->display->display_options['fields']['field_publisher']['label'] = '';
+  $handler->display->display_options['fields']['field_publisher']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_publisher']['alter']['text'] = '[field_publisher-value] in [field_book_listing_date] ([field_book_page_count] pages)';
+  $handler->display->display_options['fields']['field_publisher']['element_label_colon'] = FALSE;
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = 'Published by';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '[field_publisher] in [field_book_listing_date] ([field_book_page_count] pages)';
+  /* Field: Content: Website */
+  $handler->display->display_options['fields']['field_official_website']['id'] = 'field_official_website';
+  $handler->display->display_options['fields']['field_official_website']['table'] = 'field_data_field_official_website';
+  $handler->display->display_options['fields']['field_official_website']['field'] = 'field_official_website';
+  $handler->display->display_options['fields']['field_official_website']['label'] = '';
+  $handler->display->display_options['fields']['field_official_website']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_official_website']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['field_official_website']['click_sort_column'] = 'url';
+  /* Field: Content: ISBN-13 */
+  $handler->display->display_options['fields']['field_book_isbn_13']['id'] = 'field_book_isbn_13';
+  $handler->display->display_options['fields']['field_book_isbn_13']['table'] = 'field_data_field_book_isbn_13';
+  $handler->display->display_options['fields']['field_book_isbn_13']['field'] = 'field_book_isbn_13';
+  $handler->display->display_options['fields']['field_book_isbn_13']['label'] = 'ISBN';
+  /* Field: Content: Book availability */
+  $handler->display->display_options['fields']['taxonomy_vocabulary_60']['id'] = 'taxonomy_vocabulary_60';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_60']['table'] = 'field_data_taxonomy_vocabulary_60';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_60']['field'] = 'taxonomy_vocabulary_60';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_60']['label'] = 'Availability';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_60']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['taxonomy_vocabulary_60']['type'] = 'taxonomy_term_reference_plain';
+  /* Field: Content: Direct purchase link */
+  $handler->display->display_options['fields']['field_book_purchase_link']['id'] = 'field_book_purchase_link';
+  $handler->display->display_options['fields']['field_book_purchase_link']['table'] = 'field_data_field_book_purchase_link';
+  $handler->display->display_options['fields']['field_book_purchase_link']['field'] = 'field_book_purchase_link';
+  $handler->display->display_options['fields']['field_book_purchase_link']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_book_purchase_link']['alter']['text'] = '<a href="[field_book_purchase_link-url]" rel="nofollow">Order from [field_publisher]</a>';
+  $handler->display->display_options['fields']['field_book_purchase_link']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['field_book_purchase_link']['click_sort_column'] = 'url';
+  /* Field: Content: ISBN-10 */
+  $handler->display->display_options['fields']['field_book_isbn_10']['id'] = 'field_book_isbn_10';
+  $handler->display->display_options['fields']['field_book_isbn_10']['table'] = 'field_data_field_book_isbn_10';
+  $handler->display->display_options['fields']['field_book_isbn_10']['field'] = 'field_book_isbn_10';
+  $handler->display->display_options['fields']['field_book_isbn_10']['label'] = '';
+  $handler->display->display_options['fields']['field_book_isbn_10']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_book_isbn_10']['alter']['text'] = '<a rel="nofollow" class="amazon-link" href="http://www.amazon.com/dp/[field_book_isbn_10-value]/?tag=drupal0a-20" title="Ordering via this link benefits the Drupal Association">Order from Amazon.com</a>';
+  $handler->display->display_options['fields']['field_book_isbn_10']['element_label_colon'] = FALSE;
+  /* Field: Content: Link */
+  $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
+  $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['view_node']['field'] = 'view_node';
+  $handler->display->display_options['fields']['view_node']['label'] = '';
+  $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['view_node']['text'] = 'More information';
+  /* Sort criterion: Content: Publication date (field_book_listing_date) */
+  $handler->display->display_options['sorts']['field_book_listing_date_value']['id'] = 'field_book_listing_date_value';
+  $handler->display->display_options['sorts']['field_book_listing_date_value']['table'] = 'field_data_field_book_listing_date';
+  $handler->display->display_options['sorts']['field_book_listing_date_value']['field'] = 'field_book_listing_date_value';
+  $handler->display->display_options['sorts']['field_book_listing_date_value']['order'] = 'DESC';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'book_listing' => 'book_listing',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Book availability (taxonomy_vocabulary_60) */
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['id'] = 'taxonomy_vocabulary_60_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['table'] = 'field_data_taxonomy_vocabulary_60';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['field'] = 'taxonomy_vocabulary_60_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['value'] = array(
+    38414 => '38414',
+  );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['group'] = 1;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['expose']['operator_id'] = 'taxonomy_vocabulary_60_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['expose']['operator'] = 'taxonomy_vocabulary_60_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['expose']['identifier'] = 'availability';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_60_tid']['vocabulary'] = 'vocabulary_60';
+  /* Filter criterion: Content: Drupal version (taxonomy_vocabulary_5) */
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['id'] = 'taxonomy_vocabulary_5_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['table'] = 'field_data_taxonomy_vocabulary_5';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['field'] = 'taxonomy_vocabulary_5_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['value'] = array(
+    102 => '102',
+    120 => '120',
+    20236 => '20236',
+  );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['group'] = 1;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['expose']['operator_id'] = 'taxonomy_vocabulary_5_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['expose']['label'] = 'Drupal version';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['expose']['operator'] = 'taxonomy_vocabulary_5_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['expose']['identifier'] = 'version';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['reduce_duplicates'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_5_tid']['vocabulary'] = 'vocabulary_5';
+  /* Filter criterion: Content: Audience (taxonomy_vocabulary_38) */
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['id'] = 'taxonomy_vocabulary_38_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['table'] = 'field_data_taxonomy_vocabulary_38';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['field'] = 'taxonomy_vocabulary_38_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['group'] = 1;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['expose']['operator_id'] = 'taxonomy_vocabulary_38_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['expose']['label'] = 'Audience';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['expose']['operator'] = 'taxonomy_vocabulary_38_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['expose']['identifier'] = 'audience';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['reduce_duplicates'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_38_tid']['vocabulary'] = 'vocabulary_38';
+  /* Filter criterion: Content: Book format (taxonomy_vocabulary_62) */
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['id'] = 'taxonomy_vocabulary_62_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['table'] = 'field_data_taxonomy_vocabulary_62';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['field'] = 'taxonomy_vocabulary_62_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['group'] = 1;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['expose']['operator_id'] = 'taxonomy_vocabulary_62_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['expose']['label'] = 'Format';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['expose']['operator'] = 'taxonomy_vocabulary_62_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['expose']['identifier'] = 'format';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_62_tid']['vocabulary'] = 'vocabulary_62';
 
-  return $views;
+  /* Display: Page */
+  $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['path'] = 'books';
+  $export['book_listings'] = $view;
+
+  return $export;
 }
