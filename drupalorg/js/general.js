@@ -13,10 +13,10 @@
   Drupal.behaviors.drupalorgCompany = {
     attach: function () {
       var $map = $('#organization-map');
-      $map.find('>.pin').each(function () {
+      $map.find('>.drupalorg-map-pin').each(function () {
         $(this).css({
-          left: '' + Drupal.html5UserGeolocationLongitudeToPx($('>.longitude', this).text(), -168, $map.width()) + 'px',
-          bottom: '' + Drupal.html5UserGeolocationLatitudeToPx($('>.latitude', this).text(), 74, -58, $map.height()) + 'px'
+          left: '' + Drupal.longitudeToPx($('>.longitude', this).text(), -168, $map.width()) + 'px',
+          bottom: '' + Drupal.latitudeToPx($('>.latitude', this).text(), 75, -57, $map.height()) + 'px'
         });
       });
     }

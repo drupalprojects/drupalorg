@@ -1049,6 +1049,7 @@ function drupalorg_theme() {
         'latitude' => NULL,
         'longitude' => NULL,
         'message' => '',
+        'type' => 'default',
       ),
       'template' => 'drupalorg-map-pin',
     ),
@@ -1717,6 +1718,11 @@ function drupalorg_node_view($node, $view_mode = 'full') {
           '#prefix' => '<h3>',
           '#markup' => theme('username', array('account' => $account)),
           '#suffix' => '</h3>',
+          '#attached' => array(
+            'js' => array(
+              drupal_get_path('module', 'geolocation_html5') . '/geolocation_html5.js',
+            ),
+          ),
         );
         if (!empty($account->title)) {
           $content['aside'][$account->uid . 'name']['#markup'] .= ', ' . check_plain($account->title);
@@ -1750,9 +1756,8 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         }
 
         // Map
-        if (!empty($account->latitude) || !empty($account->longitude)) {
-          // todo d7 classes is no longer passed here, try using the default class.
-          $content['aside']['map']['#markup'] .= theme('drupalorg_map_pin', array('classes' => array('pin'), 'latitude' => $account->latitude, 'longitude' => $account->longitude));
+        if (!empty($account->field_user_geolocation_lat) && !empty($account->field_user_geolocation_lng)) {
+          $content['aside']['map']['#markup'] .= theme('drupalorg_map_pin', array('latitude' => $account->field_user_geolocation_lat, 'longitude' => $account->field_user_geolocation_lng));
         }
       }
 
