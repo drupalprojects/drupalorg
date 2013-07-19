@@ -584,7 +584,6 @@ function drupalorg_get_activity($_force = FALSE) {
     // Sites made with Drupal.
     if (module_exists('drupalorg_case_studies')) {
       $stats['sites_made'] = array();
-      /* @todo D7: This view is not on the dev site right now?!?
       $view = views_get_view('drupalorg_casestudies');
       if (!empty($view)) {
         $view->preview('block_1');
@@ -592,7 +591,6 @@ function drupalorg_get_activity($_force = FALSE) {
           $stats['sites_made'][] = implode('', $row);
         }
       }
-      */
     }
     cache_set('drupalorg_front_counter_data', $stats, 'drupalorg');
     lock_release('drupalorg_get_activity');
@@ -673,8 +671,6 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   $variables['things_we_made'] = '';
   $variables['map_content'] = drupalorg_map_content();
 
-  $variables['sites_made'] = array();
-
   // Get content for the Recent Forum Posts tab.
   $query = db_select('node', 'n')
     ->condition('n.type', 'forum')
@@ -701,9 +697,7 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   // Retrieve or rebuild stats cache.
   $variables += drupalorg_get_activity();
 
-  /* @todo D7 When we have this view, make this work. */
   // Pick a random site made with Drupal from the cache.
-
   if (!empty($variables['sites_made'])){
     $variables['things_we_made'] = $variables['sites_made'][array_rand($variables['sites_made'])];
   }
