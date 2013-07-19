@@ -1135,7 +1135,6 @@ function drupalorg_register_mail_validate($form, &$form_state) {
  *
  * @todo Core almost supports it with above form_alter but listings are bad
  *   (when the value is homepage, core does not know about it, so does not print it).
- * @todo Headers are blocked by some providers so this is not accurate.
  */
 function drupalorg_profile_user_edit_validate($form, &$form_state) {
   if (!empty($form_state['values']['homepage']) && is_string($form_state['values']['homepage']) && (strlen($form_state['values']['homepage']) > 7)) {
@@ -1151,14 +1150,6 @@ function drupalorg_profile_user_edit_validate($form, &$form_state) {
         form_set_error('homepage', t('Unsuitable Drupal site detected. This address cannot be set as your Drupal site link.'));
       }
     }
-    // Did not work due to several hosts rewriting headers.
-    /*if (!user_access('administer users')) {
-      // Check for Drupal-ness of website. Try only once.
-      $response = drupal_http_request($form_state['values']['homepage'], array(), 'GET', NULL, 1);
-      if ($response->headers['Expires'] != 'Sun, 19 Nov 1978 05:00:00 GMT') {
-        form_set_error('homepage', t("Your website does not seem to be a Drupal site. If you think we are wrong, please open an issue in the webmasters' queue."));
-      }
-    }*/
   }
 }
 
@@ -1278,8 +1269,6 @@ function drupalorg_download_drupal_link_button($text) {
 
 /**
  * Default dashboard content.
- *
- * @todo this is totally provisional at this point.
  */
 function drupalorg_homebox() {
   return array(
