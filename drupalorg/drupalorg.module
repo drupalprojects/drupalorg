@@ -223,10 +223,6 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
             return user_access('administer nodes', $account);
           }
 
-          // @todo D7 - The following fields do not actually exist currently on
-          // the case study or organization. Wait until the marketplace and
-          // case studies are finalized on D6 and then test these lines as well.
-
           // Handle the case of the organization/status fields.
           switch ($field['field_name']) {
             case 'field_organization_list_rule':
