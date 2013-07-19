@@ -2266,3 +2266,17 @@ function drupalorg_preprocess_field(&$v) {
     $v['items'] = array(reset($v['items']));
   }
 }
+
+/**
+ * Do not process aggregator feeds during regular cron run.
+ */
+function drupalorg_cron_queue_info_alter(&$queues) {
+  // If we are in drush, leave the queue intact for queue commands.
+  if (function_exists('drush_get_command')) {
+    $command = drush_get_command();
+    if ($command['command'] !== 'core-cron') {
+      return;
+    }
+  }
+  unset($queues['aggregator_feeds']);
+}
