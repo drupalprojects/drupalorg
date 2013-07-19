@@ -1226,3 +1226,14 @@ function drupalorg_update_7027() {
   $redirect->redirect = 'hosting';
   redirect_save($redirect);
 }
+
+/**
+ * Ensure proper view modes enabled for casestudy content type.
+ */
+function drupalorg_update_7028() {
+  $bundle_settings = field_bundle_settings('node', 'casestudy');
+  $bundle_settings['view_modes']['nodechanges']['custom_settings'] = FALSE;
+  $bundle_settings['view_modes']['issuemetadata']['custom_settings'] = FALSE;
+  $bundle_settings['view_modes']['rss']['custom_settings'] = TRUE;
+  $bundle_settings = field_bundle_settings('node', 'casestudy', $bundle_settings);
+}
