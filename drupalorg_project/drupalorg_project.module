@@ -377,17 +377,20 @@ function drupalorg_project_form_project_issue_notification_user_form_alter($form
  * Ensure that only privileged users can modify a security release tag and when
  * people add this tag, they get to know about the process.
  */
-function drupalorg_project_form_node_form_alter(&$form, $form_state) {
+function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
   if (project_node_is_project($form_state['node'])) {
     // Deprecate the "license" field, as it must always be GPLv2+ anyway.
     $form['field_project_license']['#access'] = FALSE;
     $form['field_project_license'][LANGUAGE_NONE][0]['#default_value']['url'] = DRUPALORG_DEFAULT_LICENSE_LINK;
     $form['field_project_license'][LANGUAGE_NONE][0]['#default_value']['title'] = DRUPALORG_DEFAULT_LICENSE;
 
-    // Don't allow promoting certain types of projects on Drupal.org.
-    if (in_array($form_state['node']->type, drupalorg_project_get_no_promote_project_types())) {
+    // Don't allow promoting certain types of projects on Drupal.org, excpet for admins
+    if (!user_access('administer projects') && in_array($form_state['node']->type, drupalorg_project_get_no_promote_project_types())) {
       $form['field_project_type'][LANGUAGE_NONE]['#default_value'] = 'sandbox';
       $form['field_project_type']['#access'] = FALSE;
+      $form_state['input']['field_project_type'][LANGUAGE_NONE] = 'sandbox';
+      $form['field_project_has_releases'][LANGUAGE_NONE]['#default_value'] = FALSE;
+      $form['field_project_machine_name']['#access'] = FALSE;
     }
   }
   elseif (project_release_node_is_release($form_state['node'])) {
