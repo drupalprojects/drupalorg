@@ -786,11 +786,7 @@ function drupalorg_case_studies_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'casestudy',
-      'default_value' => array(
-        0 => array(
-          'url' => '',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -858,10 +854,11 @@ function drupalorg_case_studies_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_link',
       'label' => 'Completed Drupal site or project URL',
-      'required' => FALSE,
+      'required' => 1,
       'settings' => array(
         'attributes' => array(
           'class' => '',
+          'configurable_title' => 0,
           'rel' => '',
           'target' => 'default',
           'title' => '',
@@ -869,9 +866,10 @@ function drupalorg_case_studies_field_default_fields() {
         'display' => array(
           'url_cutoff' => '80',
         ),
-        'enable_tokens' => '',
+        'enable_tokens' => 0,
+        'rel_remove' => 'default',
         'title' => 'none',
-        'title_maxlength' => 128,
+        'title_maxlength' => '128',
         'title_value' => '',
         'url' => 0,
         'user_register_form' => FALSE,
@@ -879,11 +877,9 @@ function drupalorg_case_studies_field_default_fields() {
       ),
       'weight' => '0',
       'widget' => array(
-        'active' => '1',
+        'active' => 0,
         'module' => 'link',
-        'settings' => array(
-          'default_value_php' => NULL,
-        ),
+        'settings' => array(),
         'type' => 'link_field',
         'weight' => '4',
       ),
@@ -1294,7 +1290,7 @@ function drupalorg_case_studies_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_module_selection',
       'label' => 'Why these modules/theme/distribution were chosen',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'text_processing' => '1',
         'user_register_form' => FALSE,
@@ -1415,7 +1411,7 @@ function drupalorg_case_studies_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_overview',
       'label' => 'Why Drupal was chosen',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'text_processing' => '1',
         'user_register_form' => FALSE,
