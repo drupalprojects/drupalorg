@@ -1563,8 +1563,10 @@ function drupalorg_node_view($node, $view_mode = 'full') {
 
         // Logo
         $field_items = field_get_items('node', $node, 'field_logo');
-        $content['intro']['logo'] = field_view_value('node', $node, 'field_logo', $field_items[0]);
-        $content['intro']['logo']['#image_style'] = 'grid-3';
+        if (!empty($field_items)) {
+          $content['intro']['logo'] = field_view_value('node', $node, 'field_logo', $field_items[0]);
+          $content['intro']['logo']['#image_style'] = 'grid-3';
+        }
 
         // Body
         $content['main']['body'] = array('#markup' => check_markup(text_summary($node->body[$node->language][0]['value'], $node->body[$node->language][0]['format'], 200), $node->body[$node->language][0]['format']));
@@ -1611,8 +1613,10 @@ function drupalorg_node_view($node, $view_mode = 'full') {
 
       // Organisation logo.
       $field_items = field_get_items('node', $node, 'field_logo');
-      $content['intro']['logo'] = field_view_value('node', $node, 'field_logo', $field_items[0]);
-      $content['intro']['logo']['#image_style'] = 'grid-3';
+      if (!empty($field_items)) {
+        $content['intro']['logo'] = field_view_value('node', $node, 'field_logo', $field_items[0]);
+        $content['intro']['logo']['#image_style'] = 'grid-3';
+      }
 
       // Organisation website.
       $field_items = field_get_items('node', $node, 'field_link');
