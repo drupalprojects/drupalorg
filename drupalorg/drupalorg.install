@@ -1196,13 +1196,9 @@ function drupalorg_update_7026() {
 }
 
 /**
- * Remove deprcated marketplace hosting fields.
+ * Add path aliases for hosting nodes.
  */
 function drupalorg_update_7027() {
-  field_delete_field('field_organization_hosting_url');
-  field_delete_field('field_organization_hosting_categ');
-  field_delete_field('field_organization_hosting_level');
-
   path_delete(array('alias' => 'hosting'));
   $path = array(
     'alias' => 'hosting',
