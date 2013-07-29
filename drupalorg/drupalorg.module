@@ -1696,7 +1696,9 @@ function drupalorg_node_view($node, $view_mode = 'full') {
 
       $content['main']['body'] = $node->content['body'];
       $content['main']['contributions_heading'] = array('#markup' => '<h3>' . t('Drupal contributions') . '</h3>');
-      $content['main']['contributions'] = $node->content['field_contributions'];
+      if (isset($node->content['field_contributions'])) {
+        $content['main']['contributions'] = $node->content['field_contributions'];
+      }
 
       // Training fields
       if (!empty($node->field_organization_training_desc[$node->language][0]['value'])) {
