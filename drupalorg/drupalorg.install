@@ -339,11 +339,13 @@ function drupalorg_update_7002() {
  * Enable new dependencies for features.
  */
 function drupalorg_update_7003() {
-  // For channge notice.
+  // For change notice.
   module_enable(array('entity', 'entityreference', 'machine_name', 'file', 'list', 'field_group'));
   // For marketplace and case studies.
   module_enable(array('references'));
   module_enable(array('node_reference', 'user_reference'));
+  // For beanstalk
+  module_enable(array('libraries'));
 
   drupal_flush_all_caches();
 }
