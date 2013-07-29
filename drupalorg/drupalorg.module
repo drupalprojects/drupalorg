@@ -1848,8 +1848,9 @@ function drupalorg_generate_marketplace_link($term, $listing = 'featured') {
  * Create issue for organizations requesting services or training listing
  */
 function drupalorg_org_request_issue($node) {
+  $changed = FALSE;
   // If an organization wants to be listed in the Services section of the Marketplace.
-  if (($node->field_org_marketplace_request[$node->language][0]['value'] == '1') && empty($node->field_organization_issue[$node->language][0]['target_id'])) {
+  if (($node->field_org_marketplace_request[$node->language][0]['value'] == '1') && empty($node->field_organization_issue[$node->language][0]['nid'])) {
     // A new organization has been posted, create an issue to coordinate review.
     $issue = new stdClass();
     $issue->type = 'project_issue';
@@ -1871,12 +1872,11 @@ function drupalorg_org_request_issue($node) {
     node_save($issue);
 
     // Save the issue's nid for the organization.
-    $node->field_organization_issue[$node->language][]['target_id'] = $issue->nid;
-    $node->field_organization_issue[$node->language][]['target_type'] = 'node';
-    node_save($node);
+    $node->field_organization_issue[$node->language][0]['nid'] = $issue->nid;
+    $changed = TRUE;
   }
   // If an organization wants to be listed in the Training section of the Marketplace.
-  if (($node->field_org_training_request[$node->language][0]['value'] == '1') && empty($node->field_org_training_issue[$node->language][0]['target_id'])) {
+  if (($node->field_org_training_request[$node->language][0]['value'] == '1') && empty($node->field_org_training_issue[$node->language][0]['nid'])) {
     // A new organization has been posted, create an issue to coordinate review.
     $issue = new stdClass();
     $issue->type = 'project_issue';
@@ -1898,9 +1898,11 @@ function drupalorg_org_request_issue($node) {
     node_save($issue);
 
     // Save the issue's nid for the organization.
-    $node->field_org_training_issue[$node->language][]['target_id'] = $issue->nid;
-    $node->field_org_training_issue[$node->language][]['target_type'] = 'node';
-    node_save($node);
+    $node->field_org_training_issue[$node->language][0]['nid'] = $issue->nid;
+    $changed = TRUE;
+  }
+  if ($changed) {
+    field_attach_update('node', $node);
   }
 }
 /**
