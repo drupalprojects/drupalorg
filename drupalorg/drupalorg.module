@@ -739,6 +739,7 @@ function drupalorg_map_content($_force = FALSE) {
       }
     }
     ksort($map);
+    $output = '';
     foreach ($map as $row) {
       $output .= theme('drupalorg_map_pin', $row);
     }
