@@ -1235,3 +1235,31 @@ function drupalorg_update_7028() {
   $bundle_settings['view_modes']['rss']['custom_settings'] = TRUE;
   $bundle_settings = field_bundle_settings('node', 'casestudy', $bundle_settings);
 }
+
+/**
+ * Migrate codefilter configuration to the new filter table.
+ */
+function drupalorg_update_7029() {
+  $query = db_select('d6_upgrade_filter')
+    ->fields('d6_upgrade_filter', array('format', 'weight'))
+    ->condition('module', 'codefilter')
+    ->condition('delta', 0);
+  db_delete('filter')->condition('module', 'codefilter')->execute();
+
+  foreach ($query->execute() as $record) {
+    db_insert('filter')
+      ->fields(array(
+        'format' => $record->format,
+        'module' => 'codefilter',
+        'name' => 'codefilter',
+        'weight' => $record->weight,
+        'settings' => serialize(array()),
+        'status' => 1,
+      ))
+      ->execute();
+  }
+
+  db_delete('d6_upgrade_filter')
+    ->condition('module', 'codefilter')
+    ->execute();
+}
