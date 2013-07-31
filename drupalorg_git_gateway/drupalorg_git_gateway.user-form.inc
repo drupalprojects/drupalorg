@@ -113,7 +113,7 @@ function drupalorg_git_gateway_admin_user_form($form, &$form_state) {
       '#type' => 'item',
       '#title' => t('Git username'),
       '#disabled' => TRUE,
-      '#value' => $account->git_username,
+      '#markup' => $account->git_username,
       '#weight' => -20,
     );
   }
@@ -122,7 +122,7 @@ function drupalorg_git_gateway_admin_user_form($form, &$form_state) {
       '#type' => 'item',
       '#title' => t('Git username'),
       '#disabled' => TRUE,
-      '#value' => t('(User has not yet chosen a Git username)'),
+      '#markup' => t('(User has not yet chosen a Git username)'),
       '#weight' => -20,
     );
   }
@@ -130,7 +130,7 @@ function drupalorg_git_gateway_admin_user_form($form, &$form_state) {
   $form['user_info']['consent'] = array(
     '#type' => 'item',
     '#title' => t('Git access agreement'),
-    '#value' => empty($account->git_consent) ? t('User has <strong>not</strong> consented to the Git agreement.') : t('User has consented to the Git agreement.'),
+    '#markup' => empty($account->git_consent) ? t('User has <strong>not</strong> consented to the Git agreement.') : t('User has consented to the Git agreement.'),
   );
 
   $form['git_administration'] = _drupalorg_git_gateway_user_admin($account, FALSE);
@@ -161,7 +161,7 @@ function _drupalorg_git_gateway_user_tos($account) {
   $form['terms'] = array(
     '#type' => 'item',
     '#title' => t("To use Drupal's version control systems you must agree to the following"),
-    '#value' => theme('item_list', array('items' => array(
+    '#markup' => theme('item_list', array('items' => array(
       t('I agree to the <a href="!url">Drupal Code Repository Terms of Service</a>.', array('!url' => url('node/1001544'))),
       t('I have read and will adhere to the <a href="!url">Drupal Code of Conduct</a>.', array('!url' => url('dcoc', array('alias' => TRUE)))),
       t('I will cooperate with the <a href="!url">Drupal Security Team</a> as needed.', array('!url' => url('security-team', array('alias' => TRUE)))),
@@ -192,7 +192,7 @@ function _drupalorg_git_gateway_username_display($account) {
     '#type' => 'item',
     '#title' => t('Your Git username'),
     '#disabled' => TRUE,
-    '#value' => $account->git_username,
+    '#markup' => $account->git_username,
     '#description' => t('You use this as your SSH username when authenticating with Git to Drupal.org. Drupal.org uses this username to generate your personalized sandbox URIs.'),
     '#weight' => -20,
   );
@@ -240,7 +240,7 @@ function _drupalorg_git_gateway_user_config($account) {
   $form['user_config'] = array(
     '#type' => 'item',
     '#title' => t('Git user configuration'),
-    '#value' => $user_config,
+    '#markup' => $user_config,
   );
 
   return $form;
