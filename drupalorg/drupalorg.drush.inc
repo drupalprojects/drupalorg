@@ -9,8 +9,6 @@ function drupalorg_drush_help($section) {
       return dt('Update home page map pins.');
     case 'drupalorg:rebuild-stats':
       return dt('Update home page stats.');
-    case 'drupalorg:aggregator':
-      return dt('Run aggregator module cron.');
   }
 }
 
@@ -25,9 +23,6 @@ function drupalorg_drush_command() {
     'rebuild-stats' => array(
       'description' => 'Update home page stats.',
     ),
-    'aggregator' => array(
-      'description' => 'Run aggregator module cron.',
-    ),
     'cyclic-solr-reindex' => array(
       'description' => 'Continuously reindex the site. (Part of the Drupal.org D7 upgrade machinery.)',
     ),
@@ -40,10 +35,6 @@ function drush_drupalorg_map_content() {
 
 function drush_drupalorg_rebuild_stats() {
   drupalorg_get_activity(TRUE);
-}
-
-function drush_drupalorg_aggregator() {
-  aggregator_not_cron();
 }
 
 function drush_drupalorg_cyclic_solr_reindex() {
