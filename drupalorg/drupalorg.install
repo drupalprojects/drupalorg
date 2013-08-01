@@ -1265,3 +1265,19 @@ function drupalorg_update_7029() {
 
   filter_formats_reset();
 }
+
+/**
+ * Set up default project types on which to display the PIFT 'Automated Testing' tab.
+ */
+function drupalorg_update_7030() {
+  variable_set('pift_project_types', array(
+    'project_core' => 'project_core',
+    'project_module' => 'project_module',
+    'project' => 0,
+    'project_distribution' => 0,
+    'project_drupalorg' => 0,
+    'project_theme' => 0,
+    'project_theme_engine' => 0,
+    'project_translation' => 0,
+  ));
+}
