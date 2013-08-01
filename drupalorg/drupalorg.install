@@ -1262,4 +1262,6 @@ function drupalorg_update_7029() {
   db_delete('d6_upgrade_filter')
     ->condition('module', 'codefilter')
     ->execute();
+
+  filter_formats_reset();
 }
