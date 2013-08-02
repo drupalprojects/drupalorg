@@ -1117,6 +1117,16 @@ function drupalorg_form_aggregator_form_feed_alter(&$form) {
 }
 
 /**
+ * Node form alter.
+ */
+function drupalorg_form_node_form_alter(&$form) {
+  // Put log message at the top to encourage use of log messages.
+  if (isset($form['revision_information'])) {
+    $form['revision_information']['#weight'] = -100;
+  }
+}
+
+/**
  * Try to catch wildcard email address signups, such as joe+drupal@gmail.com.
  */
 function drupalorg_register_mail_validate($form, &$form_state) {
