@@ -1281,3 +1281,12 @@ function drupalorg_update_7030() {
     'project_translation' => 0,
   ));
 }
+
+/**
+ * Require forum's body field.
+ */
+function drupalorg_update_7031() {
+  $instance = field_read_instance('node', 'body', 'forum');
+  $instance['required'] = TRUE;
+  field_update_instance($instance);
+}
