@@ -176,12 +176,7 @@ function drupalorg_book_listings_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'book_listing',
-      'default_value' => array(
-        0 => array(
-          'value' => '',
-          '_error_element' => 'default_value_widget][field_book_isbn_10][0][value',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => 'Note: The ISBN-10 is also the Amazon ID (ASIN) for books. It is used to build the Amazon purchase links.',
       'display' => array(
@@ -250,18 +245,16 @@ function drupalorg_book_listings_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_book_isbn_10',
       'label' => 'ISBN-10',
-      'required' => FALSE,
+      'required' => 1,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
       'weight' => '6',
       'widget' => array(
-        'active' => '1',
+        'active' => 1,
         'module' => 'text',
         'settings' => array(
-          'default_value_php' => NULL,
-          'rows' => 5,
           'size' => '10',
         ),
         'type' => 'text_textfield',
@@ -306,12 +299,7 @@ function drupalorg_book_listings_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'book_listing',
-      'default_value' => array(
-        0 => array(
-          'value' => '',
-          '_error_element' => 'default_value_widget][field_book_isbn_13][0][value',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => 'All books have an ISBN-13, which is the new standard for book identification.',
       'display' => array(
@@ -380,18 +368,16 @@ function drupalorg_book_listings_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_book_isbn_13',
       'label' => 'ISBN-13',
-      'required' => FALSE,
+      'required' => 1,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
       'weight' => '5',
       'widget' => array(
-        'active' => '1',
+        'active' => 1,
         'module' => 'text',
         'settings' => array(
-          'default_value_php' => NULL,
-          'rows' => 5,
           'size' => '14',
         ),
         'type' => 'text_textfield',
@@ -436,13 +422,7 @@ function drupalorg_book_listings_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'book_listing',
-      'default_value' => array(
-        0 => array(
-          'value' => '',
-          'format' => '1',
-          '_error_element' => 'default_value_widget][field_book_listing_authors][0][value',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => 'Enter list of authors\' full names (as shown by publisher), with each one linked to that author\'s Drupal.org user profile. Include a title attribute on each link showing the Drupal.org username; e.g., <code>&lt;a href=&quot;/user/1773&quot; title=&quot;emmajane | drupal.org&quot;&gt;Emma Jane Hogbin&lt;/a&gt;</code>',
       'display' => array(
@@ -511,22 +491,20 @@ function drupalorg_book_listings_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_book_listing_authors',
       'label' => 'Authors',
-      'required' => FALSE,
+      'required' => 1,
       'settings' => array(
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
       'weight' => '0',
       'widget' => array(
-        'active' => '1',
+        'active' => 1,
         'module' => 'text',
         'settings' => array(
-          'default_value_php' => NULL,
           'rows' => '5',
-          'size' => 60,
         ),
         'type' => 'text_textarea',
-        'weight' => '0',
+        'weight' => 0,
       ),
       'widget_type' => 'text_textarea',
     ),
@@ -567,12 +545,7 @@ function drupalorg_book_listings_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'book_listing',
-      'default_value' => array(
-        0 => array(
-          'value' => '',
-          '_error_element' => 'default_value_widget][field_book_listing_date][0][value',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => 'Enter the publication year and month in the format 2012-05',
       'display' => array(
@@ -641,18 +614,16 @@ function drupalorg_book_listings_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_book_listing_date',
       'label' => 'Publication date',
-      'required' => FALSE,
+      'required' => 1,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
       'weight' => '2',
       'widget' => array(
-        'active' => '1',
+        'active' => 1,
         'module' => 'text',
         'settings' => array(
-          'default_value_php' => NULL,
-          'rows' => 5,
           'size' => '7',
         ),
         'type' => 'text_textfield',
