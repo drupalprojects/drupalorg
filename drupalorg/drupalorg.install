@@ -481,9 +481,6 @@ function drupalorg_update_7010() {
       'commitlog' => array(
         'access commit messages',
       ),
-      'contact' => array(
-        'access site-wide contact form',
-      ),
       'filter' => array(
         'use text format 1',
       ),
