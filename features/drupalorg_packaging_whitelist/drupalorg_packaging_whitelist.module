@@ -23,12 +23,22 @@ function drupalorg_packaging_whitelist_menu() {
 function drupalorg_packaging_whitelist_json_output() {
   $whitelist = array();
 
-  $result = db_query("SELECT nid FROM {node} WHERE type = 'packaging_whitelist' AND status = 1");
-  while ($row = db_fetch_object($result)) {
+  $result = db_select('node', 'n')
+    ->fields('n', array('nid'))
+    ->condition('type', 'packaging_whitelist')
+    ->condition('status', 1)
+    ->execute()
+    ->fetchAllAssoc('nid');
+
+  foreach($result as $row) {
     $node = node_load($row->nid);
-    $urls = preg_split('/(\r\n?|\n)/', $node->body, NULL, PREG_SPLIT_NO_EMPTY);
+    $language = $node->language;
+    if (empty($language)) {
+      $language = LANGUAGE_NONE;
+    }
+    $urls = preg_split('/(\r\n?|\n)/', $node->body[$language][0]['value'], NULL, PREG_SPLIT_NO_EMPTY);
     $whitelist = array_merge($whitelist, $urls);
   }
 
-  drupal_json($whitelist);
+  drupal_json_output($whitelist);
 }
