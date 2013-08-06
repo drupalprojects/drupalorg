@@ -597,3 +597,12 @@ function drupalorg_project_update_7017() {
     field_update_instance($instance);
   }
 }
+
+/**
+ * Hide the remove button on release files.
+ */
+function drupalorg_project_update_7018() {
+  $instance = field_read_instance('field_collection_item', 'field_release_file', 'field_release_files');
+  $instance['widget']['settings']['extended_file_field_show_remove'] = FALSE;
+  field_update_instance($instance);
+}
