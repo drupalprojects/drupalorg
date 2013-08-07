@@ -160,7 +160,7 @@ function _drupalorg_git_gateway_user_tos($account) {
 
   $form['terms'] = array(
     '#type' => 'item',
-    '#title' => t("To use Drupal's version control systems you must agree to the following"),
+    '#title' => t("To use Drupal's version control systems you, as an individual, must agree to the following"),
     '#markup' => theme('item_list', array('items' => array(
       t('I agree to the <a href="!url">Drupal Code Repository Terms of Service</a>.', array('!url' => url('node/1001544'))),
       t('I have read and will adhere to the <a href="!url">Drupal Code of Conduct</a>.', array('!url' => url('dcoc', array('alias' => TRUE)))),
