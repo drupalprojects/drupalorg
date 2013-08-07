@@ -1312,3 +1312,39 @@ function drupalorg_update_7032() {
   $instance['display']['diff_standard']['type'] = 'issue_id';
   field_update_instance($instance);
 }
+
+/**
+ * Improve diff view, part 2.
+ */
+function drupalorg_update_7033() {
+  $instance = field_read_instance('node', 'body', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'text_default';
+  field_update_instance($instance);
+  $instance = field_read_instance('node', 'field_issue_assigned', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'token_formatters_entity_reference';
+  field_update_instance($instance);
+  $instance = field_read_instance('node', 'field_issue_category', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'list_default';
+  field_update_instance($instance);
+  $instance = field_read_instance('node', 'field_issue_component', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'list_default';
+  field_update_instance($instance);
+  $instance = field_read_instance('node', 'field_issue_files', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'extended_file_field';
+  field_update_instance($instance);
+  $instance = field_read_instance('node', 'field_issue_priority', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'list_default';
+  field_update_instance($instance);
+  $instance = field_read_instance('node', 'field_issue_status', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'list_default';
+  field_update_instance($instance);
+  $instance = field_read_instance('node', 'field_issue_version', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'list_default';
+  field_update_instance($instance);
+  $instance = field_read_instance('node', 'field_project', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'entityreference_label';
+  field_update_instance($instance);
+  $instance = field_read_instance('node', 'upload', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'file_default';
+  field_update_instance($instance);
+}
