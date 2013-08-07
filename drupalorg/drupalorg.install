@@ -1289,3 +1289,26 @@ function drupalorg_update_7031() {
   $instance['required'] = TRUE;
   field_update_instance($instance);
 }
+
+/**
+ * Improve issue diff view.
+ */
+function drupalorg_update_7032() {
+  // Enable revision comparison view mode.
+  $bundle_settings = field_bundle_settings('node', 'project_issue');
+  $bundle_settings['view_modes']['diff_standard']['custom_settings'] = TRUE;
+  $bundle_settings = field_bundle_settings('node', 'project_issue', $bundle_settings);
+
+  // Show issue tags.
+  $instance = field_read_instance('node', 'taxonomy_vocabulary_9', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'taxonomy_term_reference_plain';
+  field_update_instance($instance);
+
+  // Show parent and related issues.
+  $instance = field_read_instance('node', 'field_issue_parent', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'issue_id';
+  field_update_instance($instance);
+  $instance = field_read_instance('node', 'field_issue_related', 'project_issue');
+  $instance['display']['diff_standard']['type'] = 'issue_id';
+  field_update_instance($instance);
+}
