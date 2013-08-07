@@ -355,23 +355,23 @@ function lists_mailman_user_form_submit($form, &$form_state) {
       // If Git account is enabled
       if ($status) {
         if (!$old) {
-          _lists_mailman_subscribe($data, $account);
+          _lists_mailman_subscribe($data, $account, TRUE);
         }
       }
       // If not agreed to Git terms, be sure user is not subscribed to the
       // maintainer newsletter.
       else {
         if ($old) {
-          _lists_mailman_unsubscribe($data, $account);
+          _lists_mailman_unsubscribe($data, $account, TRUE);
         }
       }
     }
     elseif (!empty($data['allow_sub']) && ($old != $new)) {
       if ($new) {
-        _lists_mailman_subscribe($data, $account);
+        _lists_mailman_subscribe($data, $account, TRUE);
       }
       else {
-        _lists_mailman_unsubscribe($data, $account);
+        _lists_mailman_unsubscribe($data, $account, TRUE);
       }
     }
   }
@@ -501,7 +501,7 @@ function _lists_mailman_user_subscribed($list, $account) {
  *
  * Some code borrowed from the mailmain_api module.
  */
-function _lists_mailman_subscribe($list, $account) {
+function _lists_mailman_subscribe($list, $account, $show_message = FALSE) {
   $query = array(
     'subscribe_or_invite' => variable_get('lists_mailman_invite', 0),
     'send_welcome_msg_to_this_batch' => variable_get('lists_mailman_notify', 0),
@@ -512,10 +512,14 @@ function _lists_mailman_subscribe($list, $account) {
   $result = lists_mailman_query($url, $list);
   if ($result !== FALSE) {
     watchdog('lists', t('User %email subscribed to !list mailman list.', array('%email' => $account->mail, '!list' => $list['name'])));
-    drupal_set_message(t('Subscribed to %list.', array('%list' => $list['name'])));
+    if ($show_message) {
+      drupal_set_message(t('Subscribed to %list.', array('%list' => $list['name'])));
+    }
   }
   else {
-    drupal_set_message(t('Failed to subscribe %email to %list. Please try again later.', array('%email' => $account->mail, '%list' => $list['name'])));
+    if ($show_message) {
+      drupal_set_message(t('Failed to subscribe %email to %list. Please try again later.', array('%email' => $account->mail, '%list' => $list['name'])));
+    }
   }
 }
 
@@ -524,7 +528,7 @@ function _lists_mailman_subscribe($list, $account) {
  *
  * Some code borrowed from the mailmain_api module.
  */
-function _lists_mailman_unsubscribe($list, $account) {
+function _lists_mailman_unsubscribe($list, $account, $show_message = FALSE) {
   $query = array(
     'send_unsub_ack_to_this_batch' => variable_get('lists_mailman_notify', 0),
     'send_unsub_notifications_to_list_owner' => variable_get('lists_mailman_notify_admin', 0),
@@ -534,10 +538,14 @@ function _lists_mailman_unsubscribe($list, $account) {
   $result = lists_mailman_query($url, $list);
   if ($result !== FALSE) {
     watchdog('lists', t('User %email unsubscribed from !list mailman list.', array('%email' => $account->mail, '!list' => $list['name'])));
-    drupal_set_message(t('%email unsubscribed from %list.', array('%email' => $account->mail, '%list' => $list['name'])));
+    if ($show_message) {
+      drupal_set_message(t('%email unsubscribed from %list.', array('%email' => $account->mail, '%list' => $list['name'])));
+    }
   }
   else {
-    drupal_set_message(t('Failed to unsubscribe %email from %list.  Please try again later.', array('%email' => $account->mail, '%list' => $list['name'])));
+    if ($show_message) {
+      drupal_set_message(t('Failed to unsubscribe %email from %list.  Please try again later.', array('%email' => $account->mail, '%list' => $list['name'])));
+    }
   }
 }
 
