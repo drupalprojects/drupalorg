@@ -153,7 +153,7 @@ function _drupalorg_git_gateway_user_tos($account) {
 
   $form['terms'] = array(
     '#type' => 'item',
-    '#title' => t("To use Drupal's version control systems you must agree to the following"),
+    '#title' => t("To use Drupal's version control systems you, as an individual, must agree to the following"),
     '#value' => theme('item_list', array(
       t('I will only commit <a href="!url">GPL V2+-licensed</a> code and resources to Drupal code repositories.', array('!url' => url('licensing/faq', array('alias' => TRUE)))),
       t('I will only commit code and resources that I own or am permitted to distribute.'),
