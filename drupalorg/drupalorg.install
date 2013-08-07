@@ -1344,7 +1344,4 @@ function drupalorg_update_7033() {
   $instance = field_read_instance('node', 'field_project', 'project_issue');
   $instance['display']['diff_standard']['type'] = 'entityreference_label';
   field_update_instance($instance);
-  $instance = field_read_instance('node', 'upload', 'project_issue');
-  $instance['display']['diff_standard']['type'] = 'file_default';
-  field_update_instance($instance);
 }
