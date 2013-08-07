@@ -306,7 +306,7 @@ function drupalorg_block_view($delta, $block = NULL) {
         $blocks = array();
         switch ($item['path']) {
           case 'node/%':
-            if ($item['page_arguments'][0]->type === 'project_project') {
+            if (project_node_is_project($item['page_arguments'][0])) {
               $blocks[] = array('Issues for ' . $item['page_arguments'][0]->title, 'project_issue', 'issue_cockpit', array('nid' => $item['page_arguments'][0]->nid));
             }
             elseif ($item['page_arguments'][0]->nid === '24572') {
