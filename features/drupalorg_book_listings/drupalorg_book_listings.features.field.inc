@@ -768,7 +768,7 @@ function drupalorg_book_listings_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_book_page_count',
       'label' => 'Page count',
-      'required' => FALSE,
+      'required' => 1,
       'settings' => array(
         'max' => '10000',
         'min' => '40',
