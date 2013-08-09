@@ -1345,3 +1345,13 @@ function drupalorg_update_7033() {
   $instance['display']['diff_standard']['type'] = 'entityreference_label';
   field_update_instance($instance);
 }
+
+/**
+ * Show VCS label on Release teaser.
+ */
+function drupalorg_update_7034() {
+  $instance = field_read_instance('node', 'field_release_vcs_label', 'project_release');
+  $instance['display']['teaser']['type'] = 'text_plain';
+  $instance['display']['teaser']['label'] = 'inline';
+  field_update_instance($instance);
+}
