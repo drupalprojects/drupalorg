@@ -143,13 +143,13 @@ function _drupalorg_project_legacy_solr_redirect($type, $text = '') {
         list($field, $value) = explode(':', $v);
         if ($field === 'bs_project_sandbox') {
           if ($value === '0') {
-            $v = 'ss_field_project_type:full';
+            $v = 'sm_field_project_type:full';
           }
           elseif ($value === '1') {
-            $v = 'ss_field_project_type:sandbox';
+            $v = 'sm_field_project_type:sandbox';
           }
           else {
-            $v = 'ss_field_project_type:[* TO *]';
+            $v = 'sm_field_project_type:[* TO *]';
           }
         }
       }
