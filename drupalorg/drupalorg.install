@@ -1356,3 +1356,15 @@ function drupalorg_update_7034() {
   $instance['display']['teaser']['weight'] = 1;
   field_update_instance($instance);
 }
+
+/**
+ * Only show contact page help to authenticated users who have access.
+ */
+function drupalorg_update_7035() {
+  db_insert('block_role')
+    ->fields(array(
+      'module' => 'block',
+      'delta' => db_query("SELECT bid FROM {block_custom} WHERE info = 'Contact page help'")->fetchField(),
+      'rid' => DRUPAL_AUTHENTICATED_RID,
+    ))->execute();
+}
