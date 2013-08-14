@@ -1,5 +1,5 @@
-name = drupalorg_change_notice
-description = Change notices for Drupal
+name = Change notices
+description = Change notices for Drupal.org
 core = 7.x
 package = Features
 php = 5.2.4

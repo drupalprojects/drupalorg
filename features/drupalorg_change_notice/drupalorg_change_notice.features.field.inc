@@ -59,7 +59,7 @@ function drupalorg_change_notice_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '-2',
+          'weight' => '2',
         ),
         'full' => array(
           'label' => 'inline',
@@ -183,7 +183,7 @@ function drupalorg_change_notice_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '-3',
+          'weight' => '1',
         ),
         'full' => array(
           'label' => 'inline',
@@ -302,14 +302,9 @@ function drupalorg_change_notice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
           'weight' => '16',
         ),
         'full' => array(
@@ -460,15 +455,10 @@ function drupalorg_change_notice_field_default_fields() {
       'description' => 'Upgrade routines in the <a href="http://drupal.org/project/coder">Coder Upgrade module</a>',
       'display' => array(
         'default' => array(
-          'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
+          'label' => 'inline',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
           'weight' => '17',
         ),
         'full' => array(
@@ -626,7 +616,7 @@ function drupalorg_change_notice_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '0',
+          'weight' => '4',
         ),
         'full' => array(
           'label' => 'above',
@@ -745,14 +735,9 @@ function drupalorg_change_notice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
           'weight' => '15',
         ),
         'full' => array(
@@ -905,15 +890,10 @@ function drupalorg_change_notice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
-          'weight' => '1',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '6',
         ),
         'full' => array(
           'label' => 'above',
@@ -1074,12 +1054,10 @@ function drupalorg_change_notice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'entityreference',
-          'settings' => array(
-            'link' => FALSE,
-          ),
-          'type' => 'entityreference_label',
-          'weight' => 22,
+          'module' => 'project_issue',
+          'settings' => array(),
+          'type' => 'issue_id',
+          'weight' => '3',
         ),
         'issuemetadata' => array(
           'label' => 'above',
@@ -1159,14 +1137,9 @@ function drupalorg_change_notice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
           'weight' => '14',
         ),
         'full' => array(
@@ -1318,14 +1291,9 @@ function drupalorg_change_notice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
           'weight' => '12',
         ),
         'full' => array(
@@ -1602,14 +1570,9 @@ function drupalorg_change_notice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
           'weight' => '18',
         ),
         'full' => array(
@@ -1778,13 +1741,13 @@ function drupalorg_change_notice_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'entityreference',
           'settings' => array(
-            'link' => FALSE,
+            'link' => 1,
           ),
           'type' => 'entityreference_label',
-          'weight' => 21,
+          'weight' => '0',
         ),
         'issuemetadata' => array(
           'label' => 'above',
@@ -1875,14 +1838,9 @@ function drupalorg_change_notice_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => '',
-          ),
-          'type' => 'number_integer',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
           'weight' => '13',
         ),
         'full' => array(
@@ -2148,7 +2106,7 @@ function drupalorg_change_notice_field_default_fields() {
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_table',
-          'weight' => 0,
+          'weight' => '5',
         ),
         'full' => array(
           'label' => 'hidden',
