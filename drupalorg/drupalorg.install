@@ -1368,3 +1368,13 @@ function drupalorg_update_7035() {
       'rid' => DRUPAL_AUTHENTICATED_RID,
     ))->execute();
 }
+
+/**
+ * Ensure proper view modes enabled for changenotice content type.
+ */
+function drupalorg_update_7036() {
+  $bundle_settings = field_bundle_settings('node', 'changenotice');
+  $bundle_settings['view_modes']['nodechanges']['custom_settings'] = FALSE;
+  $bundle_settings['view_modes']['issuemetadata']['custom_settings'] = FALSE;
+  $bundle_settings = field_bundle_settings('node', 'changenotice', $bundle_settings);
+}
