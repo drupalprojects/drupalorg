@@ -267,7 +267,7 @@ function drupalorg_project_update_7004() {
       'status' => 1,
       'visibility' => 0,
       'pages' => 'node/*/*',
-      'weight' => -10,
+      'weight' => 1,
       'region' => 'sidebar_second',
     ))
     ->condition('theme', 'bluecheese')

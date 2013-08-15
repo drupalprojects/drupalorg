@@ -30,33 +30,50 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['grouping'] = '';
   $handler->display->display_options['style_options']['columns'] = array(
-    'field_change_to_branch_value' => 'field_change_to_branch_value',
-    'field_change_to_value' => 'field_change_to_branch_value',
+    'field_change_to_branch' => 'field_change_to_branch',
+    'field_change_to' => 'field_change_to_branch',
     'created' => 'created',
+    'path' => 'path',
     'title' => 'title',
   );
   $handler->display->display_options['style_options']['default'] = 'created';
   $handler->display->display_options['style_options']['info'] = array(
-    'field_change_to_branch_value' => array(
+    'field_change_to_branch' => array(
       'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
       'separator' => ' / ',
+      'empty_column' => 0,
     ),
-    'field_change_to_value' => array(
-      'sortable' => 1,
+    'field_change_to' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
       'separator' => '',
+      'empty_column' => 0,
     ),
     'created' => array(
       'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
       'separator' => '',
+      'empty_column' => 0,
+    ),
+    'path' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
     ),
     'title' => array(
       'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
       'separator' => '',
+      'empty_column' => 0,
     ),
   );
-  $handler->display->display_options['style_options']['order'] = 'desc';
+  $handler->display->display_options['style_options']['sticky'] = TRUE;
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['text']['id'] = 'area';
   $handler->display->display_options['empty']['text']['table'] = 'views';
@@ -67,6 +84,15 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['relationships']['field_project_target_id']['id'] = 'field_project_target_id';
   $handler->display->display_options['relationships']['field_project_target_id']['table'] = 'field_data_field_project';
   $handler->display->display_options['relationships']['field_project_target_id']['field'] = 'field_project_target_id';
+  /* Field: Content: Introduced in branch */
+  $handler->display->display_options['fields']['field_change_to_branch']['id'] = 'field_change_to_branch';
+  $handler->display->display_options['fields']['field_change_to_branch']['table'] = 'field_data_field_change_to_branch';
+  $handler->display->display_options['fields']['field_change_to_branch']['field'] = 'field_change_to_branch';
+  $handler->display->display_options['fields']['field_change_to_branch']['label'] = 'Introduced in branch/version';
+  /* Field: Content: Introduced in version */
+  $handler->display->display_options['fields']['field_change_to']['id'] = 'field_change_to';
+  $handler->display->display_options['fields']['field_change_to']['table'] = 'field_data_field_change_to';
+  $handler->display->display_options['fields']['field_change_to']['field'] = 'field_change_to';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -74,30 +100,23 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['fields']['created']['label'] = 'Notice created';
   $handler->display->display_options['fields']['created']['date_format'] = 'custom';
   $handler->display->display_options['fields']['created']['custom_date_format'] = 'd-M-Y';
-  /* Field: Content: Path */
-  $handler->display->display_options['fields']['path']['id'] = 'path';
-  $handler->display->display_options['fields']['path']['table'] = 'node';
-  $handler->display->display_options['fields']['path']['field'] = 'path';
-  $handler->display->display_options['fields']['path']['label'] = '';
-  $handler->display->display_options['fields']['path']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['path']['absolute'] = TRUE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Change';
   $handler->display->display_options['fields']['title']['alter']['text'] = '<a href="[path]" title="[field_description_value]">[title]</a>';
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['title']['alter']['path'] = '[path]';
   $handler->display->display_options['fields']['title']['alter']['absolute'] = TRUE;
   $handler->display->display_options['fields']['title']['alter']['alt'] = '[field_description_value]';
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   /* Contextual filter: Content: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
   $handler->display->display_options['arguments']['nid']['field'] = 'nid';
   $handler->display->display_options['arguments']['nid']['relationship'] = 'field_project_target_id';
   $handler->display->display_options['arguments']['nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['nid']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['nid']['title'] = 'Change records for %1';
   $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['nid']['default_argument_options']['argument'] = '3060';
   $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
@@ -159,7 +178,7 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['filters']['field_change_to_branch_value_1']['group'] = 1;
   $handler->display->display_options['filters']['field_change_to_branch_value_1']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_change_to_branch_value_1']['expose']['operator_id'] = 'field_change_to_branch_value_1_op';
-  $handler->display->display_options['filters']['field_change_to_branch_value_1']['expose']['label'] = 'Introduced in branch';
+  $handler->display->display_options['filters']['field_change_to_branch_value_1']['expose']['label'] = 'Branch changed in';
   $handler->display->display_options['filters']['field_change_to_branch_value_1']['expose']['operator'] = 'field_change_to_branch_value_1_op';
   $handler->display->display_options['filters']['field_change_to_branch_value_1']['expose']['identifier'] = 'field_change_to_branch_value_1';
   $handler->display->display_options['filters']['field_change_to_branch_value_1']['expose']['remember_roles'] = array(
@@ -178,8 +197,9 @@ function drupalorg_change_notice_views_default_views() {
     28 => 0,
     26 => 0,
     4 => 0,
-    14 => 0,
     7 => 0,
+    14 => 0,
+    38 => 0,
   );
   /* Filter criterion: Content: Introduced in version (field_change_to) */
   $handler->display->display_options['filters']['field_change_to_value_1']['id'] = 'field_change_to_value_1';
@@ -232,6 +252,7 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['filters']['field_impacts_value']['expose']['label'] = 'Impacts';
   $handler->display->display_options['filters']['field_impacts_value']['expose']['operator'] = 'field_impacts_value_op';
   $handler->display->display_options['filters']['field_impacts_value']['expose']['identifier'] = 'field_impacts_value';
+  $handler->display->display_options['filters']['field_impacts_value']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_impacts_value']['expose']['remember_roles'] = array(
     2 => '2',
     3 => 0,
@@ -248,8 +269,9 @@ function drupalorg_change_notice_views_default_views() {
     28 => 0,
     26 => 0,
     4 => 0,
-    14 => 0,
     7 => 0,
+    14 => 0,
+    38 => 0,
   );
   /* Filter criterion: Content: Online documentation (field_online_recorded) */
   $handler->display->display_options['filters']['field_online_recorded_value']['id'] = 'field_online_recorded_value';
@@ -473,7 +495,7 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '1';
-  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
@@ -482,20 +504,142 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'changenotice' => 'changenotice',
   );
-  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['group'] = 1;
   $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Description (field_description) */
+  $handler->display->display_options['filters']['field_description_value']['id'] = 'field_description_value';
+  $handler->display->display_options['filters']['field_description_value']['table'] = 'field_data_field_description';
+  $handler->display->display_options['filters']['field_description_value']['field'] = 'field_description_value';
+  $handler->display->display_options['filters']['field_description_value']['operator'] = 'contains';
+  $handler->display->display_options['filters']['field_description_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_description_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_description_value']['expose']['operator_id'] = 'field_description_value_op';
+  $handler->display->display_options['filters']['field_description_value']['expose']['label'] = 'Keywords';
+  $handler->display->display_options['filters']['field_description_value']['expose']['operator'] = 'field_description_value_op';
+  $handler->display->display_options['filters']['field_description_value']['expose']['identifier'] = 'keywords_description';
+  $handler->display->display_options['filters']['field_description_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  /* Filter criterion: Content: Introduced in branch (field_change_to_branch) */
+  $handler->display->display_options['filters']['field_change_to_branch_value']['id'] = 'field_change_to_branch_value';
+  $handler->display->display_options['filters']['field_change_to_branch_value']['table'] = 'field_data_field_change_to_branch';
+  $handler->display->display_options['filters']['field_change_to_branch_value']['field'] = 'field_change_to_branch_value';
+  $handler->display->display_options['filters']['field_change_to_branch_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_change_to_branch_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_change_to_branch_value']['expose']['operator_id'] = 'field_change_to_branch_value_op';
+  $handler->display->display_options['filters']['field_change_to_branch_value']['expose']['label'] = 'Introduced in branch';
+  $handler->display->display_options['filters']['field_change_to_branch_value']['expose']['operator'] = 'field_change_to_branch_value_op';
+  $handler->display->display_options['filters']['field_change_to_branch_value']['expose']['identifier'] = 'to_branch';
+  $handler->display->display_options['filters']['field_change_to_branch_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  /* Filter criterion: Content: Introduced in version (field_change_to) */
+  $handler->display->display_options['filters']['field_change_to_value']['id'] = 'field_change_to_value';
+  $handler->display->display_options['filters']['field_change_to_value']['table'] = 'field_data_field_change_to';
+  $handler->display->display_options['filters']['field_change_to_value']['field'] = 'field_change_to_value';
+  $handler->display->display_options['filters']['field_change_to_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_change_to_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_change_to_value']['expose']['operator_id'] = 'field_change_to_value_op';
+  $handler->display->display_options['filters']['field_change_to_value']['expose']['label'] = 'Introduced in version';
+  $handler->display->display_options['filters']['field_change_to_value']['expose']['operator'] = 'field_change_to_value_op';
+  $handler->display->display_options['filters']['field_change_to_value']['expose']['identifier'] = 'version';
+  $handler->display->display_options['filters']['field_change_to_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
   /* Filter criterion: Content: Post date */
   $handler->display->display_options['filters']['created']['id'] = 'created';
   $handler->display->display_options['filters']['created']['table'] = 'node';
   $handler->display->display_options['filters']['created']['field'] = 'created';
   $handler->display->display_options['filters']['created']['operator'] = '>=';
-  $handler->display->display_options['filters']['created']['group'] = '0';
+  $handler->display->display_options['filters']['created']['group'] = 1;
   $handler->display->display_options['filters']['created']['exposed'] = TRUE;
   $handler->display->display_options['filters']['created']['expose']['operator_id'] = 'created_op';
   $handler->display->display_options['filters']['created']['expose']['label'] = 'Change node created';
   $handler->display->display_options['filters']['created']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['created']['expose']['operator'] = 'created_op';
   $handler->display->display_options['filters']['created']['expose']['identifier'] = 'created';
+  /* Filter criterion: Content: Impacts (field_impacts) */
+  $handler->display->display_options['filters']['field_impacts_value']['id'] = 'field_impacts_value';
+  $handler->display->display_options['filters']['field_impacts_value']['table'] = 'field_data_field_impacts';
+  $handler->display->display_options['filters']['field_impacts_value']['field'] = 'field_impacts_value';
+  $handler->display->display_options['filters']['field_impacts_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_impacts_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_impacts_value']['expose']['operator_id'] = 'field_impacts_value_op';
+  $handler->display->display_options['filters']['field_impacts_value']['expose']['label'] = 'Impacts';
+  $handler->display->display_options['filters']['field_impacts_value']['expose']['operator'] = 'field_impacts_value_op';
+  $handler->display->display_options['filters']['field_impacts_value']['expose']['identifier'] = 'impacts';
+  $handler->display->display_options['filters']['field_impacts_value']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_impacts_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
   $handler->display->display_options['path'] = 'list-changes';
 
   /* Display: Updates page */
