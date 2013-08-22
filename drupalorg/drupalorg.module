@@ -2293,22 +2293,28 @@ function drupalorg_cron_queue_info_alter(&$queues) {
 /**
  * Implements hook_node_view_alter().
  *
- * Adds a 'report spam' link to the action links in nodes. This link
+ * Adds a 'report spam' link to the action links in forum nodes. This link
  * directs to the webmaster queue, passing some values in the URL in order to
  * pre-populate the issue form in the queue, allowing users to report spam.
  */
 function drupalorg_node_view_alter(&$build) {
-  if (node_access('create', 'project_issue')) {
+  if ($build['#node']->type === 'forum' && node_access('create', 'project_issue')) {
     $node = $build['#node'];
-    $build['links']['node']['#links']['comment-report'] = array(
-      'title' => t('Report spam'),
-      'href' => 'node/add/project-issue/webmasters',
-      'query' => array(
-        'component' => 'Spam',
-        'categories' => 'task',
-        'title' => 'Spam Report',
-        'body' => 'Reporting the following node as spam: ' . url('node/' . $node->nid, array('absolute' => TRUE)),
+    $build['links']['drupalorg'] = array(
+      '#theme' => 'links__node__drupalorg',
+      '#links' => array(
+        'comment-report' => array(
+          'title' => t('Report spam'),
+          'href' => 'node/add/project-issue/webmasters',
+          'query' => array(
+            'component' => 'Spam',
+            'categories' => 'task',
+            'title' => 'Spam Report',
+            'body' => 'Reporting the following node as spam: ' . url('node/' . $node->nid, array('absolute' => TRUE)),
+          ),
+        ),
       ),
+      '#attributes' => array('class' => array('links', 'inline')),
     );
   }
 }
