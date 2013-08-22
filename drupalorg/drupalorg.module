@@ -2289,3 +2289,49 @@ function drupalorg_cron_queue_info_alter(&$queues) {
   }
   unset($queues['aggregator_feeds']);
 }
+
+/**
+ * Implements hook_node_view_alter().
+ *
+ * Adds a 'report spam' link to the action links in nodes. This link
+ * directs to the webmaster queue, passing some values in the URL in order to
+ * pre-populate the issue form in the queue, allowing users to report spam.
+ */
+function drupalorg_node_view_alter(&$build) {
+  if (node_access('create', 'project_issue')) {
+    $node = $build['#node'];
+    $build['links']['node']['#links']['comment-report'] = array(
+      'title' => t('Report spam'),
+      'href' => 'node/add/project-issue/webmasters',
+      'query' => array(
+        'component' => 'Spam',
+        'categories' => 'task',
+        'title' => 'Spam Report',
+        'body' => 'Reporting the following node as spam: ' . url('node/' . $node->nid, array('absolute' => TRUE)),
+      ),
+    );
+  }
+}
+
+/**
+ * Implements hook_comment_view_alter().
+ *
+ * Adds a 'report spam' link to the action links in comments. This link
+ * directs to the webmaster queue, passing some values in the URL in order to
+ * pre-populate the issue form in the queue, allowing users to report spam.
+ */
+function drupalorg_comment_view_alter(&$build) {
+  if (node_access('create', 'project_issue')) {
+    $comment = $build['#comment'];
+    $build['links']['comment']['#links']['comment-report'] = array(
+      'title' => t('report spam'),
+      'href' => 'node/add/project-issue/webmasters',
+      'query' => array(
+        'component' => 'Spam',
+        'categories' => 'task',
+        'title' => 'Spam Report',
+        'body' => 'Reporting the following comment as spam: ' . url('node/' . $comment->nid, array('absolute' => TRUE, 'fragment' => 'comment-' . $comment->cid)),
+      ),
+    );
+  }
+}
