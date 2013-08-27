@@ -24,6 +24,7 @@ function drupalorg_project_field_group_info() {
     'children' => array(
       0 => 'field_project_has_issue_queue',
       1 => 'field_project_components',
+      2 => 'field_project_default_component',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
