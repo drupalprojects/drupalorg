@@ -537,7 +537,7 @@ function drupalorg_update_7010() {
         'create project_issue content',
         'delete own organization content',
         'edit any book content',
-        'edit any book_listing content',
+        'edit own book_listing content',
         'edit any changenotice content',
         'edit own casestudy content',
         'edit own forum content',
