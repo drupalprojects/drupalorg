@@ -394,36 +394,6 @@ function drupalorg_project_update_7010() {
 }
 
 /**
- * Position the Development block on project node pages.
- */
-function drupalorg_project_update_7011() {
-  db_update('block')
-    ->condition('theme', 'bluecheese')
-    ->condition('module', 'drupalorg_project')
-    ->condition('delta', 'resources')
-    ->fields(array(
-      'status' => 1,
-      'weight' => 11,
-      'region' => 'sidebar_second',
-      'visibility' => 0,
-      'pages' => 'node/*/*',
-    ))
-    ->execute();
-  db_update('block')
-    ->condition('theme', 'bluecheese')
-    ->condition('module', 'drupalorg_project')
-    ->condition('delta', 'development')
-    ->fields(array(
-      'status' => 1,
-      'weight' => 12,
-      'region' => 'sidebar_second',
-      'visibility' => 0,
-      'pages' => 'node/*/*',
-    ))
-    ->execute();
-}
-
-/**
  * Fix field configuration for issue metadata sidebar block.
  */
 function drupalorg_project_update_7012() {
@@ -605,4 +575,34 @@ function drupalorg_project_update_7018() {
   $instance = field_read_instance('field_collection_item', 'field_release_file', 'field_release_files');
   $instance['widget']['settings']['extended_file_field_show_remove'] = FALSE;
   field_update_instance($instance);
+}
+
+/**
+ * Position the Development block on project node pages.
+ */
+function drupalorg_project_update_7019() {
+  db_update('block')
+    ->condition('theme', 'bluecheese')
+    ->condition('module', 'drupalorg_project')
+    ->condition('delta', 'resources')
+    ->fields(array(
+      'status' => 1,
+      'weight' => 11,
+      'region' => 'sidebar_second',
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+      'pages' => '',
+    ))
+    ->execute();
+  db_update('block')
+    ->condition('theme', 'bluecheese')
+    ->condition('module', 'drupalorg_project')
+    ->condition('delta', 'development')
+    ->fields(array(
+      'status' => 1,
+      'weight' => 12,
+      'region' => 'sidebar_second',
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+      'pages' => '',
+    ))
+    ->execute();
 }

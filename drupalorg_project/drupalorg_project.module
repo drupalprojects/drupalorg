@@ -775,7 +775,7 @@ function drupalorg_project_block_view($delta = '') {
       );
 
     case 'resources':
-      if (($project = menu_get_object()) && project_node_is_project($project)) {
+      if ($project = project_get_project_from_menu()) {
         $links = array();
         // Home page
         $home_link = field_get_items('node', $project, 'field_project_homepage');
@@ -857,7 +857,7 @@ function drupalorg_project_block_view($delta = '') {
       break;
 
     case 'development':
-      if (($project = menu_get_object()) && project_node_is_project($project)) {
+      if ($project = project_get_project_from_menu()) {
         $machine_name = field_get_items('node', $project, 'field_project_machine_name');
         $machine_name = $machine_name[0]['value'];
         $links = array(
