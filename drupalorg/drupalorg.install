@@ -1393,3 +1393,21 @@ function drupalorg_update_7037() {
   variable_del('project_git_instructions_sandbox_new_maintainer');
   variable_del('project_git_instructions_sandbox_nonmaintainer');
 }
+
+/**
+ * Add project index redirects.
+ */
+function drupalorg_update_7038() {
+  foreach (array(
+    'modules' => 'project_module',
+    'themes' => 'project_theme',
+    'theme engines' => 'project_theme_engine',
+    'distributions' => 'project_distribution',
+  ) as $old => $new) {
+    $redirect = new stdClass();
+    redirect_object_prepare($redirect);
+    $redirect->source = 'project/' . $old . '/index';
+    $redirect->redirect = 'project/' . $new . '/index';
+    redirect_save($redirect);
+  }
+}
