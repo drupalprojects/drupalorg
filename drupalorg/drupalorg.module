@@ -1916,6 +1916,19 @@ function drupalorg_org_request_issue($node) {
     field_attach_update('node', $node);
   }
 }
+
+/**
+ * Implements hook_field_storage_pre_insert().
+ */
+function drupalorg_field_storage_pre_insert($entity_type, $entity, &$skip_fields) {
+  if ($entity_type === 'node' && $entity->type === 'changenotice' && $entity->field_impacts[LANGUAGE_NONE][0]['value'] === '') {
+    // List of integer field needs to be really empty instead of an empty
+    // string; that would raise an exception since '' is not an int. Likely is
+    // a core bug we are working around.
+    unset($entity->field_impacts[LANGUAGE_NONE][0]);
+  }
+}
+
 /**
  * Implements hook_node_insert().
  */
