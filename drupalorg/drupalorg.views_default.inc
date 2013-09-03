@@ -31,8 +31,8 @@ function _drupalorg_views_default_views_alter(&$views) {
   if (isset($views['project_index'])) {
     $views['project_index']->set_display('default');
     $filters = $views['project_index']->display_handler->get_option('filters');
-    $filters['tid']['expose']['identifier'] = 'drupal_core';
-    $filters['tid']['expose']['label'] = 'Filter by Drupal core version';
+    $filters['project_release_api_vocabulary']['expose']['identifier'] = 'drupal_core';
+    $filters['project_release_api_vocabulary']['expose']['label'] = 'Drupal core version';
     $views['project_index']->display_handler->set_option('filters', $filters);
     $views['project_index']->display_handler->override_option('cache', array(
       'type' => 'views_content_cache',

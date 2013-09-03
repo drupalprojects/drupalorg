@@ -830,15 +830,15 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   // instead of having it in its own div.
   $view = views_get_view('project_index');
   $view->set_display('block_1');
-  $view->set_arguments(array('modules'));
+  $view->set_arguments(array('project_module'));
   // See if the version filter was used, and if so, have it impact the view.
   if (!empty($_GET['f'])) {
     foreach ($_GET['f'] as $f) {
       if (preg_match('/drupal_core:(\d+)/', $f, $matches)) {
         $core_version = $matches[1];
+
         $filters = $view->display_handler->get_option('filters');
-        $filters['tid']['value'] = array($core_version);
-        $filters['tid']['exposed'] = FALSE;
+        $filters['project_release_api_vocabulary']['value'] = array($core_version);
         $view->display_handler->set_option('filters', $filters);
       }
     }
@@ -849,7 +849,7 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   foreach ($results as $result) {
     $modules[] = l($result->node_title, 'node/' . $result->nid);
   }
-  $modules[] = '<a href="/project/modules/index" class="all">View full index</a>';
+  $modules[] = '<a href="/project/project_module/index" class="all">View full index</a>';
   $module_index = '<h2>' . t('Module Index') . '</h2>';
   $module_index .= theme('item_list', array('items' => $modules, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => array('flat'))));
   $variables['module_index'] = $module_index;
