@@ -61,7 +61,7 @@ function drupalorg_packaging_whitelist_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = 'To request changes to this list, visit the <a href="/project/drupalorg_whitelist">Drupal.org Library Packaging Whitelist</a> project page.';
-  $handler->display->display_options['header']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['header']['area']['format'] = '1';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
