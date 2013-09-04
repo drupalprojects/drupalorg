@@ -144,7 +144,7 @@ function drupalorg_packaging_whitelist_views_default_views() {
   /* Display: Feed */
   $handler = $view->new_display('feed', 'Feed', 'feed_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Feed';
+  $handler->display->display_options['title'] = 'Packaging whitelist URLs';
   $handler->display->display_options['defaults']['link_display'] = FALSE;
   $handler->display->display_options['link_display'] = 'feed_1';
   $handler->display->display_options['pager']['type'] = 'some';
