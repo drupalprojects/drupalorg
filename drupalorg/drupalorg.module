@@ -240,6 +240,11 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
               }
               // For other users' nodes, allow administrators to edit.
               return user_access('administer nodes', $account);
+
+            case 'field_project_has_releases':
+            case 'field_project_has_issue_queue':
+              // Only allow admins to disable releases and issue tracking.
+              return user_access('administer nodes');
           }
       }
   }
