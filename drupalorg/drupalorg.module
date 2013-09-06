@@ -1174,6 +1174,10 @@ function drupalorg_profile_user_edit_validate($form, &$form_state) {
  * @see http://drupal.org/node/1034852
  */
 function drupalorg_username_validate($form, &$form_state) {
+  // Do not attempt to validate secondary profile forms
+  if (!isset($form_state['values']['name'])) {
+    return;
+  }
   $account = $form['#user'];
   $name = $form_state['values']['name'];
   $existing_name = $account->uid > 0 ? $account->name : FALSE;
