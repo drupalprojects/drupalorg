@@ -447,7 +447,10 @@ function drupalorg_block_view($delta, $block = NULL) {
     case 'org_memberships':
       $org_name = arg(2);
       $block = array('content' => NULL);
-      if (drupalorg_has_civimembership($org_name, 'Supporting')) {
+      if (drupalorg_has_civimembership($org_name, 'Supporting Partner Premium')) {
+        return array('content' => l('<br /><img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-premium-supporting-2.png" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association Premium Supporting Partner')))));
+      }
+      if (drupalorg_has_civimembership($org_name, 'Supporting Partner')) {
         return array('content' => l('<br /><img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-supporting-2.png" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association Supporting Partner')))));
       }
       if (drupalorg_has_civimembership($org_name, 'Organization')) {
@@ -1685,7 +1688,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       }
 
       // Association membership
-      if (drupalorg_has_civimembership($node->title, 'Supporting')) {
+      if (drupalorg_has_civimembership($node->title, 'Supporting Partner')) {
         $content['intro']['association_partner'] = array(
           '#markup' => l(
             theme('image', array(
@@ -2146,7 +2149,7 @@ function drupalorg_user_view($account, $view_mode) {
         );
       }
     }
-    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Supporting')) {
+    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Supporting Partner')) {
       $placeholders = array(
         '@org_name' => $account->profile_current_company_organization,
       );
@@ -2251,6 +2254,10 @@ function drupalorg_documentation_contributions($account) {
  */
 function drupalorg_has_civimembership($name, $type) {
   if (is_object(drupalorg_civimembership_data($name, $type))) {
+    return TRUE;
+  }
+  // "Organization" is also known as "Organization Membership - USD"
+  if ($type === 'Organization' && is_object(drupalorg_civimembership_data($name, 'Organization Membership - USD'))) {
     return TRUE;
   }
 }
