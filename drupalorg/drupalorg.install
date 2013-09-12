@@ -23,7 +23,7 @@ function drupalorg_schema() {
         'membership_type' => array(
           'description' => 'Organization or Supporting',
           'type' => 'varchar',
-          'length' => 15,
+          'length' => 40,
           'not null' => TRUE,
           'default' => '',
         ),
@@ -1174,6 +1174,23 @@ function drupalorg_update_6612() {
     'description' => 'Timestamp for previous time user accessed the site.',
   ));
   $return[] = update_sql('UPDATE {users}, {users_access} SET {users}.access = {users_access}.access WHERE {users}.uid = {users_access}.uid');
+
+  return $return;
+}
+
+/**
+ * Lengthen organization membership type.
+ */
+function drupalorg_update_6613() {
+  $return = array();
+
+  db_change_field($return, 'drupalorg_org_civimembership', 'membership_type', 'membership_type', array(
+    'description' => 'Organization or Supporting',
+    'type' => 'varchar',
+    'length' => 40,
+    'not null' => TRUE,
+    'default' => '',
+  ));
 
   return $return;
 }
