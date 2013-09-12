@@ -327,7 +327,7 @@ function drupalorg_block($op = 'list', $delta = 0, $edit = array()) {
         case 'org_memberships':
           $org_name = arg(2);
           $block = array('content' => NULL);
-          if (drupalorg_has_civimembership($org_name, 'Supporting')) {
+          if (drupalorg_has_civimembership($org_name, 'Supporting Partner')) {
             $block['content'] = l('<br /><img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-supporting-2.png" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association organization member'))));
           }
           if (drupalorg_has_civimembership($org_name, 'Organization')) {
@@ -1398,7 +1398,10 @@ function drupalorg_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         }
 
         // Association membership
-        if (drupalorg_has_civimembership($node->title, 'Supporting')) {
+        if (drupalorg_has_civimembership($node->title, 'Supporting Partner Premium')) {
+          $content['column_1']['association_partner'] = array('#value' => l('<img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-premium-supporting-2.png" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association Premium Supporting Partner')))));
+        }
+        elseif (drupalorg_has_civimembership($node->title, 'Supporting Partner')) {
           $content['column_1']['association_partner'] = array('#value' => l('<img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association-supporting-2.png" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association Supporting Partner')))));
         }
         if (drupalorg_has_civimembership($node->title, 'Organization')) {
@@ -1749,7 +1752,7 @@ function drupalorg_user($op, &$edit, &$account, $category = NULL) {
           );
         }
       }
-      if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Supporting')) {
+      if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Supporting Partner')) {
         $placeholders = array(
           '@org_name' => $account->profile_current_company_organization,
         );
@@ -1887,6 +1890,10 @@ function drupalorg_has_civimembership($name, $type) {
   if (is_object(drupalorg_civimembership_data($name, $type))) {
     return TRUE;
   }
+  // "Organization" is also known as "Organization Membership - USD"
+  if ($type === 'Organization' && is_object(drupalorg_civimembership_data($name, 'Organization Membership - USD'))) {
+    return TRUE;
+  }
 }
 
 /**
@@ -1904,10 +1911,7 @@ function drupalorg_civimembership_data($name, $type) {
   if ($type == 'Individual') {
     $membership = db_fetch_object(db_query("SELECT cm.user_name, cm.membership_status, cm.expiration_date FROM {drupalorg_ind_civimembership} cm  WHERE user_name = '%s' AND membership_status IN ('New', 'Current', 'Grace')", $name));
   }
-  elseif ($type == 'Organization') {
-    $membership = db_fetch_object(db_query("SELECT cmo.org_name, cmo.membership_type, cmo.membership_status, cmo.expiration_date FROM {drupalorg_org_civimembership} cmo WHERE org_name = '%s' AND membership_type = '%s' AND membership_status IN ('New', 'Current', 'Grace')", $name, $type));
-  }
-  elseif ($type == 'Supporting') {
+  else {
     $membership = db_fetch_object(db_query("SELECT cmo.org_name, cmo.membership_type, cmo.membership_status, cmo.expiration_date FROM {drupalorg_org_civimembership} cmo WHERE org_name = '%s' AND membership_type = '%s' AND membership_status IN ('New', 'Current', 'Grace')", $name, $type));
   }
   return $membership;
