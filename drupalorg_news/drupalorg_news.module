@@ -135,7 +135,7 @@ function drupalorg_news_block_view($delta) {
 
       $output = '<p>' . filter_xss_admin($description) . ' ' . t('Collecting posts from the following @num sources:', array('@num' => $counter)) . '</p>';
       $output .= $list;
-      $output .= theme('feed_icon', array('url' => url('planet/rss.xml'), 'title' => t('Drupal planet')));
+      $output .= theme('feed_icon', array('url' => 'planet/rss.xml', 'title' => t('Drupal planet')));
       return array('content' => $output);
 
     case 'drupal-news':
