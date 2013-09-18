@@ -324,9 +324,8 @@ function drupalorg_block_view($delta, $block = NULL) {
             break;
 
           case 'aggregator/categories/%':
-            if ($item['page_arguments'][0]['cid'] == 2) {
-              // This is the Drupal Planet block. Other aggregator categories
-              // do not have blocks at this time.
+            // Planet Drupal and Drupal talk only.
+            if ($item['page_arguments'][0]['cid'] == 2 || $item['page_arguments'][0]['cid'] == 1) {
               $blocks[] = array($item['page_arguments'][0]['title'], 'aggregator', 'category-' . $item['page_arguments'][0]['cid']);
             }
             break;
@@ -1327,6 +1326,17 @@ function drupalorg_homebox() {
           'closable' => 1,
           'title' => '',
           'weight' => -33,
+        ),
+        'aggregator_category-1' => array(
+          'module' => 'aggregator',
+          'delta' => 'category-1',
+          'region' => 1,
+          'movable' => 1,
+          'status' => 0,
+          'open' => 1,
+          'closable' => 1,
+          'title' => 'Drupal talk',
+          'weight' => -31,
         ),
         'aggregator_category-2' => array(
           'module' => 'aggregator',
