@@ -16,7 +16,7 @@
 <div id="develop-with-drupal">
       <h2><a href="download">Develop with Drupal</a></h2>
         <div class="intro">
-          <div class="logo"><img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/icon-d8-100.png" alt="Drupal 8 icon" /></div>
+          <div class="logo"><img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/d8.svg" alt="Drupal 8" width="100"></div>
           <div class="text">
             <strong>Help build Drupal 8.</strong> We are already hard at work. But we need your help to <strong>develop</strong>, <strong>design</strong> and <strong>test</strong> the next version of Drupal.
           <br /><a href="community-initiatives/drupal-core">Get started now.</a>
