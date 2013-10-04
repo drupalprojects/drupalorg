@@ -37,7 +37,7 @@ function drupalorg_change_notice_field_group_info() {
     'format_settings' => array(
       'label' => 'Updates Done (doc team, etc.)',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-recorded field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'open',
@@ -71,7 +71,9 @@ function drupalorg_change_notice_field_group_info() {
     'format_type' => 'fieldset',
     'format_settings' => array(
       'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'classes' => ' group-recorded field-group-fieldset',
+      ),
     ),
   );
   $export['group_recorded|node|changenotice|form'] = $field_group;
@@ -102,7 +104,9 @@ function drupalorg_change_notice_field_group_info() {
     'format_type' => 'hidden',
     'format_settings' => array(
       'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'classes' => ' group-recorded field-group-hidden',
+      ),
     ),
   );
   $export['group_recorded|node|changenotice|teaser'] = $field_group;
