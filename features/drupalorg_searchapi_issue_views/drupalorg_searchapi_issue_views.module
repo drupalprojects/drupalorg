@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Drupal.org SearchAPI Issue Views feature.
+ */
+
+include_once 'drupalorg_searchapi_issue_views.features.inc';
