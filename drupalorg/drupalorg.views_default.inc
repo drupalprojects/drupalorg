@@ -28,6 +28,13 @@ function drupalorg_views_default_views() {
  * Implement hook_views_default_views_alter().
  */
 function _drupalorg_views_default_views_alter(&$views) {
+  // Get out of the way of SearchAPI-based views.
+  foreach (array('project_issue_user_issues') as $name) {
+    if (isset($views[$name])) {
+      $views[$name]->disabled = TRUE;
+    }
+  }
+
   if (isset($views['project_index'])) {
     $views['project_index']->set_display('default');
     $filters = $views['project_index']->display_handler->get_option('filters');

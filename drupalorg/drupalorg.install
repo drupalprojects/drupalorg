@@ -1411,3 +1411,17 @@ function drupalorg_update_7038() {
     redirect_save($redirect);
   }
 }
+
+/**
+ * Add project links to SearchAPI views.
+ */
+function drupalorg_update_7039() {
+  variable_set('project_issue_query_link_views', array(
+    'project_issue_all_projects',
+    'project_issue_project',
+    'project_issue_search_all',
+    'project_issue_search_project',
+    'project_issue_user_issues',
+    'project_issue_user_issues_searchapi',
+  ));
+}
