@@ -26,7 +26,9 @@ function drupalorg_marketplace_field_group_info() {
     'format_type' => 'hidden',
     'format_settings' => array(
       'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'classes' => ' group-hosting field-group-hidden',
+      ),
     ),
   );
   $export['group_hosting|node|organization|default'] = $field_group;
@@ -49,7 +51,9 @@ function drupalorg_marketplace_field_group_info() {
     'format_type' => 'fieldset',
     'format_settings' => array(
       'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'classes' => ' group-hosting field-group-fieldset',
+      ),
     ),
   );
   $export['group_hosting|node|organization|form'] = $field_group;
@@ -70,7 +74,9 @@ function drupalorg_marketplace_field_group_info() {
     'format_type' => 'hidden',
     'format_settings' => array(
       'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'classes' => ' group-hosting field-group-hidden',
+      ),
     ),
   );
   $export['group_hosting|node|organization|teaser'] = $field_group;
@@ -94,7 +100,9 @@ function drupalorg_marketplace_field_group_info() {
     'format_type' => 'hidden',
     'format_settings' => array(
       'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'classes' => ' group-moderation field-group-hidden',
+      ),
     ),
   );
   $export['group_moderation|node|organization|default'] = $field_group;
@@ -120,7 +128,9 @@ function drupalorg_marketplace_field_group_info() {
     'format_type' => 'fieldset',
     'format_settings' => array(
       'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'classes' => ' group-moderation field-group-fieldset',
+      ),
     ),
   );
   $export['group_moderation|node|organization|form'] = $field_group;
@@ -144,7 +154,9 @@ function drupalorg_marketplace_field_group_info() {
     'format_type' => 'hidden',
     'format_settings' => array(
       'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'classes' => ' group-moderation field-group-hidden',
+      ),
     ),
   );
   $export['group_moderation|node|organization|teaser'] = $field_group;
@@ -168,7 +180,9 @@ function drupalorg_marketplace_field_group_info() {
     'format_type' => 'fieldset',
     'format_settings' => array(
       'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'classes' => ' group-training field-group-fieldset',
+      ),
     ),
   );
   $export['group_training|node|organization|default'] = $field_group;
@@ -193,7 +207,9 @@ function drupalorg_marketplace_field_group_info() {
     'format_type' => 'fieldset',
     'format_settings' => array(
       'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'classes' => ' group-training field-group-fieldset',
+      ),
     ),
   );
   $export['group_training|node|organization|form'] = $field_group;
@@ -218,7 +234,9 @@ function drupalorg_marketplace_field_group_info() {
     'format_type' => 'hidden',
     'format_settings' => array(
       'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'classes' => ' group-training field-group-hidden',
+      ),
     ),
   );
   $export['group_training|node|organization|teaser'] = $field_group;
