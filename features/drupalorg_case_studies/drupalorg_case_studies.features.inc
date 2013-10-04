@@ -64,6 +64,7 @@ function drupalorg_case_studies_image_default_styles() {
         'weight' => '2',
       ),
     ),
+    'label' => 'case198',
   );
 
   // Exported image style: case588x306.
@@ -103,6 +104,7 @@ function drupalorg_case_studies_image_default_styles() {
         'weight' => '2',
       ),
     ),
+    'label' => 'case588x306',
   );
 
   return $styles;

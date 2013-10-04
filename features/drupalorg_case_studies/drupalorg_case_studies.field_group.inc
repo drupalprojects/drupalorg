@@ -30,7 +30,7 @@ function drupalorg_case_studies_field_group_info() {
     'format_settings' => array(
       'label' => 'Modules/Themes/Distributions',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-modules field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'open',
@@ -59,7 +59,7 @@ function drupalorg_case_studies_field_group_info() {
       'label' => 'Modules/Themes/Distributions',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-modules field-group-fieldset',
         'description' => 'Use the autocomplete widget to select significant contributed projects used, and expand on their use in the text area that follows. The reader will benefit from a greater understanding of what other developers and themers selected and why. This also rewards those who contribute to modules, themes and distributions. 
 <br /><br />
 Specify at least 4 key contributed projects.
@@ -89,7 +89,9 @@ Specify at least 4 key contributed projects.
     'format_type' => 'hidden',
     'format_settings' => array(
       'formatter' => 'collapsible',
-      'instance_settings' => array(),
+      'instance_settings' => array(
+        'classes' => ' group-modules field-group-hidden',
+      ),
     ),
   );
   $export['group_modules|node|casestudy|teaser'] = $field_group;
