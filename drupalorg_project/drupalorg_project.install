@@ -305,6 +305,8 @@ function drupalorg_project_update_7006() {
  * Enables and configures the 'Extended File Field' field formatter.
  */
 function drupalorg_project_update_7007() {
+  $t = get_t();
+
   // Enable new dependencies.
   module_enable(array('field_formatter_settings', 'extended_file_field'));
 
@@ -319,12 +321,15 @@ function drupalorg_project_update_7007() {
     'label' => 'above',
     'type' => 'extended_file_field',
     'settings' => array(
+      'columns' => array('cid', 'filename', 'filesize', 'uid'),
+      'sortby' => 'reverse',
+      'showuploadlink' => TRUE,
+      'restrictdisplay' => 5,
       'filetypes' => 'all',
       'extensions' => 'patch,diff',
-      'columns' => array('cid', 'filename', 'filesize', 'uid'),
-      'showhidden' => 'fieldset',
-      'sortby' => 'cid',
-      'sortorder' => 'desc',
+      'extensionbehavior' => 'table',
+      'showhidden' => 'table',
+      'usefieldset' => TRUE,
     ),
     'module' => 'extended_file_field',
     'weight' => 50,
@@ -349,6 +354,7 @@ function drupalorg_project_update_7007() {
     if (!empty($instance)) {
       $instance['display']['default'] = $display;
       $instance['widget']['settings'] = $widget_settings;
+      $instance['label'] = $t('Recent Files');
       field_update_instance($instance);
     }
   }
