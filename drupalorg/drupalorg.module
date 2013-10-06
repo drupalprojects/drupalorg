@@ -1363,9 +1363,9 @@ function drupalorg_homebox() {
         ),
         // @todo D7 - When Project is ported, make sure this block shows up
         // by default when you reset your Dashboard.
-        'views_a512ec6dea837b33a2b010c2af17ed85' => array(
+        'views_1764f77afedbacb7539d78cc3f1d414f' => array(
           'module' => 'views',
-          'delta' => 'a512ec6dea837b33a2b010c2af17ed85',
+          'delta' => '1764f77afedbacb7539d78cc3f1d414f',
           'region' => 2,
           'movable' => 1,
           'status' => 1,

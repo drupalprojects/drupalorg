@@ -1425,3 +1425,18 @@ function drupalorg_update_7039() {
     'project_issue_user_issues_searchapi',
   ));
 }
+
+/**
+ * Enable SearchAPI-driven issue views.
+ */
+function drupalorg_update_7040() {
+  module_enable(array('search_api', 'search_api_db', 'search_api_views', 'drupalorg_searchapi_issue_views'));
+  drupal_flush_all_caches();
+}
+
+/**
+ * Patch user settings for homebox My Issues block delta change.
+ */
+function drupalorg_update_7041() {
+  db_query("UPDATE {homebox_users} SET settings = REPLACE(settings, 'a512ec6dea837b33a2b010c2af17ed85', '1764f77afedbacb7539d78cc3f1d414f') WHERE settings LIKE '%a512ec6dea837b33a2b010c2af17ed85%'", array(':old' => $old, ':new' => $new));
+}
