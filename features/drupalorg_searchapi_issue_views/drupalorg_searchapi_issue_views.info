@@ -1,6 +1,7 @@
 name = Drupal.org SearchAPI Issue Views
 core = 7.x
 package = Features
+php = 5.2.4
 dependencies[] = ctools
 dependencies[] = entity
 dependencies[] = search_api

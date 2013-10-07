@@ -166,68 +166,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     14 => 0,
     38 => 0,
   );
-  /* Filter criterion: Broken/missing handler */
-  $handler->display->display_options['filters']['field_project_title']['id'] = 'field_project_title';
-  $handler->display->display_options['filters']['field_project_title']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['filters']['field_project_title']['field'] = 'field_project_title';
-  $handler->display->display_options['filters']['field_project_title']['ui_name'] = 'Project';
-  $handler->display->display_options['filters']['field_project_title']['group'] = 1;
-  $handler->display->display_options['filters']['field_project_title']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_project_title']['expose']['operator_id'] = 'field_project_title_op';
-  $handler->display->display_options['filters']['field_project_title']['expose']['label'] = 'Project';
-  $handler->display->display_options['filters']['field_project_title']['expose']['operator'] = 'field_project_title_op';
-  $handler->display->display_options['filters']['field_project_title']['expose']['identifier'] = 'projects';
-  $handler->display->display_options['filters']['field_project_title']['expose']['remember_roles'] = array(
-    2 => '2',
-    3 => 0,
-    1 => 0,
-    34 => 0,
-    32 => 0,
-    16 => 0,
-    30 => 0,
-    22 => 0,
-    20 => 0,
-    24 => 0,
-    12 => 0,
-    36 => 0,
-    28 => 0,
-    26 => 0,
-    4 => 0,
-    7 => 0,
-    14 => 0,
-    38 => 0,
-  );
-  /* Filter criterion: Broken/missing handler */
-  $handler->display->display_options['filters']['search_api_aggregation_1']['id'] = 'search_api_aggregation_1';
-  $handler->display->display_options['filters']['search_api_aggregation_1']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['filters']['search_api_aggregation_1']['field'] = 'search_api_aggregation_1';
-  $handler->display->display_options['filters']['search_api_aggregation_1']['group'] = 1;
-  $handler->display->display_options['filters']['search_api_aggregation_1']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['search_api_aggregation_1']['expose']['operator_id'] = 'search_api_aggregation_1_op';
-  $handler->display->display_options['filters']['search_api_aggregation_1']['expose']['label'] = 'Assigned';
-  $handler->display->display_options['filters']['search_api_aggregation_1']['expose']['description'] = 'Enter a comma separated list of users.';
-  $handler->display->display_options['filters']['search_api_aggregation_1']['expose']['operator'] = 'search_api_aggregation_1_op';
-  $handler->display->display_options['filters']['search_api_aggregation_1']['expose']['identifier'] = 'assigned';
-  $handler->display->display_options['filters']['search_api_aggregation_1']['expose']['remember_roles'] = array(
-    2 => '2',
-    3 => 0,
-    1 => 0,
-    34 => 0,
-    32 => 0,
-    16 => 0,
-    30 => 0,
-    22 => 0,
-    20 => 0,
-    24 => 0,
-    12 => 0,
-    36 => 0,
-    28 => 0,
-    26 => 0,
-    4 => 0,
-    7 => 0,
-    14 => 0,
-    38 => 0,
-  );
   /* Filter criterion: Indexed Node: Status */
   $handler->display->display_options['filters']['field_issue_status']['id'] = 'field_issue_status';
   $handler->display->display_options['filters']['field_issue_status']['table'] = 'search_api_index_project_issues';
@@ -345,7 +283,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['title'] = 'My issues';
   $handler->display->display_options['use_more_always'] = TRUE;
   $handler->display->display_options['access']['type'] = 'project_issue_access_per_user_queue';
-  $handler->display->display_options['access']['project_issue_user_argument'] = 'project_issue_participants';
+  $handler->display->display_options['access']['project_issue_user_argument'] = 'project_issue_followers';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
@@ -535,25 +473,20 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['sorts']['changed']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['sorts']['changed']['field'] = 'changed';
   $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
-  /* Contextual filter: Indexed Node: Participants */
-  $handler->display->display_options['arguments']['project_issue_participants']['id'] = 'project_issue_participants';
-  $handler->display->display_options['arguments']['project_issue_participants']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['arguments']['project_issue_participants']['field'] = 'project_issue_participants';
-  $handler->display->display_options['arguments']['project_issue_participants']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['project_issue_participants']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['project_issue_participants']['title'] = 'Issues for %1';
-  $handler->display->display_options['arguments']['project_issue_participants']['default_argument_type'] = 'current_user';
-  $handler->display->display_options['arguments']['project_issue_participants']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['project_issue_participants']['summary_options']['override'] = TRUE;
-  $handler->display->display_options['arguments']['project_issue_participants']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['project_issue_participants']['validate']['type'] = 'user';
-  $handler->display->display_options['arguments']['project_issue_participants']['validate_options']['type'] = 'either';
-  $handler->display->display_options['arguments']['project_issue_participants']['validate_options']['restrict_roles'] = TRUE;
-  $handler->display->display_options['arguments']['project_issue_participants']['validate_options']['roles'] = array(
-    2 => '2',
-  );
-  $handler->display->display_options['arguments']['project_issue_participants']['break_phrase'] = 0;
-  $handler->display->display_options['arguments']['project_issue_participants']['not'] = 0;
+  /* Contextual filter: Indexed Node: Followers */
+  $handler->display->display_options['arguments']['project_issue_followers']['id'] = 'project_issue_followers';
+  $handler->display->display_options['arguments']['project_issue_followers']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['arguments']['project_issue_followers']['field'] = 'project_issue_followers';
+  $handler->display->display_options['arguments']['project_issue_followers']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['project_issue_followers']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['project_issue_followers']['title'] = 'Issues for %1';
+  $handler->display->display_options['arguments']['project_issue_followers']['default_argument_type'] = 'current_user';
+  $handler->display->display_options['arguments']['project_issue_followers']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['project_issue_followers']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['project_issue_followers']['validate']['type'] = 'user';
+  $handler->display->display_options['arguments']['project_issue_followers']['validate_options']['type'] = 'either';
+  $handler->display->display_options['arguments']['project_issue_followers']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['project_issue_followers']['not'] = 0;
   /* Filter criterion: Search: Fulltext search */
   $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
   $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_project_issues';
