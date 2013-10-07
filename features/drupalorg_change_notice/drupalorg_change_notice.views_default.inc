@@ -52,7 +52,7 @@ function drupalorg_change_notice_views_default_views() {
     ),
     'field_change_to' => array(
       'sortable' => 0,
-      'default_sort_order' => 'asc',
+      'default_sort_order' => 'desc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
