@@ -97,27 +97,24 @@ function drupalorg_versioncontrol_node_insert($node) {
 }
 
 function drupalorg_versioncontrol_node_delete($node) {
-  if (!$node->versioncontrol_project['repo'] instanceof VersioncontrolGitRepository) {
-    watchdog('drupalorg', 'No repo found for project %title when deleting node.', array('%title' => $node->title), WATCHDOG_WARNING);
-    return;
-  }
-
-  $repo = $node->versioncontrol_project['repo'];
-  $job = array(
-    'operation' => 'delete',
-    'repository' => $repo,
-  );
-
-  $queue = DrupalQueue::get('versioncontrol_repomgr');
-  if (!$queue->createItem($job)) {
-    $error_info = array(
-      '%nid' => $node->nid,
+  if (isset($node->versioncontrol_project) && $node->versioncontrol_project['repo'] instanceof VersioncontrolGitRepository) {
+    $repo = $node->versioncontrol_project['repo'];
+    $job = array(
+      'operation' => 'delete',
+      'repository' => $repo,
     );
-    drupal_set_message(t('Failed to enqueue Git repository for deletion.'), 'error');
-    watchdog('drupalorg', t("Failed to enqueue repository deletion job for node '%nid'.", $error_info));
-  }
-  else {
-    drupal_set_message(t('Git repository enqueued for deletion.'));
+
+    $queue = DrupalQueue::get('versioncontrol_repomgr');
+    if (!$queue->createItem($job)) {
+      $error_info = array(
+        '%nid' => $node->nid,
+      );
+      drupal_set_message(t('Failed to enqueue Git repository for deletion.'), 'error');
+      watchdog('drupalorg', t("Failed to enqueue repository deletion job for node '%nid'.", $error_info));
+    }
+    else {
+      drupal_set_message(t('Git repository enqueued for deletion.'));
+    }
   }
 }
 
