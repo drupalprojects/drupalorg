@@ -521,11 +521,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['filters']['field_project']['id'] = 'field_project';
   $handler->display->display_options['filters']['field_project']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['filters']['field_project']['field'] = 'field_project';
+  $handler->display->display_options['filters']['field_project']['operator'] = 'in';
   $handler->display->display_options['filters']['field_project']['group'] = 1;
   $handler->display->display_options['filters']['field_project']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_project']['expose']['operator_id'] = 'field_project_op';
   $handler->display->display_options['filters']['field_project']['expose']['label'] = 'Project';
-  $handler->display->display_options['filters']['field_project']['expose']['description'] = 'Enter a comma separated list of projects.';
   $handler->display->display_options['filters']['field_project']['expose']['operator'] = 'field_project_op';
   $handler->display->display_options['filters']['field_project']['expose']['identifier'] = 'projects';
   $handler->display->display_options['filters']['field_project']['expose']['multiple'] = TRUE;
@@ -549,6 +549,8 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     14 => 0,
     38 => 0,
   );
+  $handler->display->display_options['filters']['field_project']['project_source'] = 'participant';
+  $handler->display->display_options['filters']['field_project']['project_uid_argument'] = 'project_issue_followers';
   /* Filter criterion: Indexed Node: Status */
   $handler->display->display_options['filters']['field_issue_status']['id'] = 'field_issue_status';
   $handler->display->display_options['filters']['field_issue_status']['table'] = 'search_api_index_project_issues';
