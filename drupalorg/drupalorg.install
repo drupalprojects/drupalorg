@@ -1440,3 +1440,12 @@ function drupalorg_update_7040() {
 function drupalorg_update_7041() {
   db_query("UPDATE {homebox_users} SET settings = REPLACE(settings, 'a512ec6dea837b33a2b010c2af17ed85', '1764f77afedbacb7539d78cc3f1d414f') WHERE settings LIKE '%a512ec6dea837b33a2b010c2af17ed85%'", array(':old' => $old, ':new' => $new));
 }
+
+/**
+ * Move revision comment up.
+ */
+function drupalorg_update_7042() {
+  $bundle_settings = field_bundle_settings('node', 'project_issue');
+  $bundle_settings['extra_fields']['form']['nodechanges_comment_body']['weight'] = 3;
+  field_bundle_settings('node', 'project_issue', $bundle_settings);
+}
