@@ -1449,3 +1449,12 @@ function drupalorg_update_7042() {
   $bundle_settings['extra_fields']['form']['nodechanges_comment_body']['weight'] = 3;
   field_bundle_settings('node', 'project_issue', $bundle_settings);
 }
+
+/**
+ * Add project issue help.
+ */
+function drupalorg_update_7043() {
+  $type = node_type_load('project_issue');
+  $type->help = 'Learn <a href="/node/73179">how to report an issue</a>. Use the <a href="/node/1155816">issue summary template</a> to summarize the issue in the Description field below. Others can also change the summary. Editing the summary does not subscribe you to the issue or notify subscribers, so add a comment describing your changes after any significant edit.';
+  node_type_save($type);
+}
