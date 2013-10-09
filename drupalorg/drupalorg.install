@@ -1413,20 +1413,6 @@ function drupalorg_update_7038() {
 }
 
 /**
- * Add project links to SearchAPI views.
- */
-function drupalorg_update_7039() {
-  variable_set('project_issue_query_link_views', array(
-    'project_issue_all_projects',
-    'project_issue_project',
-    'project_issue_search_all',
-    'project_issue_search_project',
-    'project_issue_user_issues',
-    'project_issue_user_issues_searchapi',
-  ));
-}
-
-/**
  * Enable SearchAPI-driven issue views.
  */
 function drupalorg_update_7040() {
@@ -1457,4 +1443,19 @@ function drupalorg_update_7043() {
   $type = node_type_load('project_issue');
   $type->help = 'Learn <a href="/node/73179">how to report an issue</a>. Use the <a href="/node/1155816">issue summary template</a> to summarize the issue in the Description field below. Others can also change the summary. Editing the summary does not subscribe you to the issue or notify subscribers, so add a comment describing your changes after any significant edit.';
   node_type_save($type);
+}
+
+/**
+ * Add project links to SearchAPI views.
+ */
+function drupalorg_update_7044() {
+  variable_set('project_issue_query_link_views', array(
+    'project_issue_all_projects',
+    'project_issue_all_projects_searchapi',
+    'project_issue_project',
+    'project_issue_search_all',
+    'project_issue_search_project',
+    'project_issue_user_issues',
+    'project_issue_user_issues_searchapi',
+  ));
 }
