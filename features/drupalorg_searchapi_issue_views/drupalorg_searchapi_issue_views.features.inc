@@ -162,7 +162,8 @@ function drupalorg_searchapi_issue_views_default_search_api_server() {
             "boost" : "1.0"
           },
           "search_api_language" : {
-            "table" : "search_api_db_project_issues_search_api_language",
+            "table" : "search_api_db_project_issues",
+            "column" : "search_api_language",
             "type" : "string",
             "boost" : "1.0"
           },
@@ -176,6 +177,12 @@ function drupalorg_searchapi_issue_views_default_search_api_server() {
             "table" : "search_api_db_project_issues",
             "column" : "changed",
             "type" : "date",
+            "boost" : "1.0"
+          },
+          "project_issue_participants" : {
+            "table" : "search_api_db_project_issues_project_issue_participants",
+            "column" : "value",
+            "type" : "list\\u003Cinteger\\u003E",
             "boost" : "1.0"
           },
           "field_issue_category" : {
@@ -249,12 +256,6 @@ function drupalorg_searchapi_issue_views_default_search_api_server() {
           },
           "project_issue_followers" : {
             "table" : "search_api_db_project_issues_project_issue_followers",
-            "column" : "value",
-            "type" : "list\\u003Cinteger\\u003E",
-            "boost" : "1.0"
-          },
-          "project_issue_participants" : {
-            "table" : "search_api_db_project_issues_project_issue_participants",
             "column" : "value",
             "type" : "list\\u003Cinteger\\u003E",
             "boost" : "1.0"
