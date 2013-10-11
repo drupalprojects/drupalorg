@@ -124,7 +124,7 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
         "search_api_language" : { "type" : "string" },
         "search_api_aggregation_1" : { "type" : "text", "boost" : "2.0" },
         "project_issue_followers" : { "type" : "list\\u003Cinteger\\u003E" },
-        "project_issue_participants" : { "type" : "list\\u003Cinteger\\u003E" },
+        "project_issue_participants" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "user" },
         "body:value" : { "type" : "text" },
         "comments:comment_body:value" : { "type" : "list\\u003Ctext\\u003E", "boost" : "0.5" }
       }
@@ -162,8 +162,7 @@ function drupalorg_searchapi_issue_views_default_search_api_server() {
             "boost" : "1.0"
           },
           "search_api_language" : {
-            "table" : "search_api_db_project_issues",
-            "column" : "search_api_language",
+            "table" : "search_api_db_project_issues_search_api_language",
             "type" : "string",
             "boost" : "1.0"
           },
@@ -177,12 +176,6 @@ function drupalorg_searchapi_issue_views_default_search_api_server() {
             "table" : "search_api_db_project_issues",
             "column" : "changed",
             "type" : "date",
-            "boost" : "1.0"
-          },
-          "project_issue_participants" : {
-            "table" : "search_api_db_project_issues_project_issue_participants",
-            "column" : "value",
-            "type" : "list\\u003Cinteger\\u003E",
             "boost" : "1.0"
           },
           "field_issue_category" : {
@@ -256,6 +249,12 @@ function drupalorg_searchapi_issue_views_default_search_api_server() {
           },
           "project_issue_followers" : {
             "table" : "search_api_db_project_issues_project_issue_followers",
+            "column" : "value",
+            "type" : "list\\u003Cinteger\\u003E",
+            "boost" : "1.0"
+          },
+          "project_issue_participants" : {
+            "table" : "search_api_db_project_issues_project_issue_participants",
             "column" : "value",
             "type" : "list\\u003Cinteger\\u003E",
             "boost" : "1.0"
