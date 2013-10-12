@@ -205,7 +205,9 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['filters']['field_issue_status']['id'] = 'field_issue_status';
   $handler->display->display_options['filters']['field_issue_status']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['filters']['field_issue_status']['field'] = 'field_issue_status';
-  $handler->display->display_options['filters']['field_issue_status']['value'] = array();
+  $handler->display->display_options['filters']['field_issue_status']['value'] = array(
+    'Open' => 'Open',
+  );
   $handler->display->display_options['filters']['field_issue_status']['group'] = 1;
   $handler->display->display_options['filters']['field_issue_status']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_issue_status']['expose']['operator_id'] = 'field_issue_status_op';
@@ -233,7 +235,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     38 => 0,
   );
   $handler->display->display_options['filters']['field_issue_status']['expose']['reduce'] = 0;
-  $handler->display->display_options['filters']['field_issue_status']['is_grouped'] = TRUE;
   $handler->display->display_options['filters']['field_issue_status']['group_info']['label'] = 'Status';
   $handler->display->display_options['filters']['field_issue_status']['group_info']['identifier'] = 'status';
   $handler->display->display_options['filters']['field_issue_status']['group_info']['group_items'] = array(
@@ -997,6 +998,38 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     14 => 0,
     38 => 0,
   );
+  /* Filter criterion: Indexed Node: Status */
+  $handler->display->display_options['filters']['field_issue_status']['id'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_status']['field'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['value'] = array();
+  $handler->display->display_options['filters']['field_issue_status']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator_id'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['identifier'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_status']['expose']['reduce'] = 0;
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
@@ -1290,13 +1323,36 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['filters']['field_issue_status']['id'] = 'field_issue_status';
   $handler->display->display_options['filters']['field_issue_status']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['filters']['field_issue_status']['field'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['value'] = array(
+    'Open' => 'Open',
+  );
   $handler->display->display_options['filters']['field_issue_status']['group'] = 1;
   $handler->display->display_options['filters']['field_issue_status']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_issue_status']['expose']['operator_id'] = 'field_issue_status_op';
   $handler->display->display_options['filters']['field_issue_status']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_issue_status']['expose']['operator'] = 'field_issue_status_op';
   $handler->display->display_options['filters']['field_issue_status']['expose']['identifier'] = 'field_issue_status';
-  $handler->display->display_options['filters']['field_issue_status']['is_grouped'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_status']['expose']['reduce'] = 0;
   $handler->display->display_options['filters']['field_issue_status']['group_info']['label'] = 'Status';
   $handler->display->display_options['filters']['field_issue_status']['group_info']['identifier'] = 'status';
   $handler->display->display_options['filters']['field_issue_status']['group_info']['default_group'] = '1';
