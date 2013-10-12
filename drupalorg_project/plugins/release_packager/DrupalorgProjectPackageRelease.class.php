@@ -295,10 +295,13 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
             $timestamp = $this->fileFindYoungest("$dir/$file", $timestamp, $exclude, $info_files);
           }
           else {
-            $mtime = filemtime("$dir/$file");
-            $timestamp = ($mtime > $timestamp) ? $mtime : $timestamp;
-            if (preg_match('/^.+\.info$/', $file)) {
-              $info_files[] = "$dir/$file";
+            // There can be dangling links checked into Git.
+            if (file_exists("$dir/$file")) {
+              $mtime = filemtime("$dir/$file");
+              $timestamp = ($mtime > $timestamp) ? $mtime : $timestamp;
+              if (preg_match('/^.+\.info$/', $file)) {
+                $info_files[] = "$dir/$file";
+              }
             }
           }
         }
