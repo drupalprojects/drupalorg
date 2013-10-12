@@ -325,6 +325,7 @@ function drupalorg_project_update_7007() {
       'sortby' => 'reverse',
       'showuploadlink' => TRUE,
       'restrictdisplay' => 5,
+      'restrictbehavior' => 'toggle',
       'filetypes' => 'all',
       'extensions' => 'patch,diff',
       'extensionbehavior' => 'table',
@@ -338,10 +339,13 @@ function drupalorg_project_update_7007() {
   // Set up widget settings.
   $widget_settings = array(
     'extended_file_field_show_remove' => 0,
+    'extended_file_field_reverse_display' => 1,
+    'extended_file_field_restrict_display' => 1,
     'extended_file_field_hidden_toggle' => 1,
     'extended_file_field_widget_metadata' => array(
       'uid' => 'uid',
       'cid' => 'cid',
+      'pift_message' => 'pift_message',
     ),
   );
 
