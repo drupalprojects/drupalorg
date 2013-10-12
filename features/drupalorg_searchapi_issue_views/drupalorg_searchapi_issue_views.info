@@ -12,4 +12,5 @@ features[features_api][] = api:1
 features[search_api_index][] = project_issues
 features[search_api_server][] = project_issues
 features[views_view][] = project_issue_all_projects_searchapi
+features[views_view][] = project_issue_search_all_searchapi
 features[views_view][] = project_issue_user_issues_searchapi
