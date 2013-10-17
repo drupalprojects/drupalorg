@@ -175,7 +175,7 @@ function _drupalorg_project_legacy_solr_redirect($type, $text = '') {
 /**
  * Implementation of hook_menu_alter().
  */
-function drupalorg_project_menu_alter(&$items) { 
+function drupalorg_project_menu_alter(&$items) {
   // Clobber the menu item from project_solr with a redirect.
   $items['project'] = array(
     'access arguments' => array('access content'),
@@ -479,7 +479,7 @@ function drupalorg_project_security_release_form_validate($form, &$form_state) {
  * Project issue URL generator for Drupal issues.
  *
  * @param $query
- *   A keyed array of options to pass to the query parameter of url(). 
+ *   A keyed array of options to pass to the query parameter of url().
  *     - version (An array of release node IDs)
  *     - status (An array of status IDs)
  *     - priorities (An array of priority IDs)
@@ -1153,7 +1153,7 @@ function drupalorg_project_meta_data($node) {
       }
     }
   }
-  
+
   // Usage stats.
   $total_usage = project_usage_get_project_total_usage($node->nid);
   if ($total_usage) {
