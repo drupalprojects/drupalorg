@@ -464,11 +464,11 @@ function drupalorg_project_update_7012() {
     'follow_link' => array(
       'issuemetadata' => array(
         'weight' => '110',
-        'visible' => FALSE,
+        'visible' => TRUE,
       ),
       'default' => array(
         'weight' => '-10',
-        'visible' => TRUE,
+        'visible' => FALSE,
       ),
       'teaser' => array(
         'weight' => '-10',
