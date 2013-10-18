@@ -172,7 +172,7 @@ function drupalorg_search_block_view($delta) {
       foreach ($searches as $module => $title) {
         $items[$module] = l(t($title), 'search/' . $module . ($search_term ? '/' . $search_term : ''));
       }
-      $items['issues'] = l(t('Advanced Issues'), 'search/issues', array('query' => array('text' => $search_term)));
+      $items['issues'] = l(t('Advanced Issues'), 'project/issues/search', array('query' => array('text' => $search_term)));
 
       // Remove our current search (since the list should simply be other options).
       if (arg(0) == 'search' && arg(1)) {

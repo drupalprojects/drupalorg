@@ -29,7 +29,7 @@ function drupalorg_views_default_views() {
  */
 function _drupalorg_views_default_views_alter(&$views) {
   // Get out of the way of SearchAPI-based views.
-  foreach (array('project_issue_user_issues', 'project_issue_all_projects') as $name) {
+  foreach (array('project_issue_user_issues', 'project_issue_all_projects', 'project_issue_search_all', 'project_issue_project', 'project_issue_search_project') as $name) {
     if (isset($views[$name])) {
       $views[$name]->disabled = TRUE;
     }

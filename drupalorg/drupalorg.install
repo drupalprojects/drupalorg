@@ -1453,9 +1453,23 @@ function drupalorg_update_7044() {
     'project_issue_all_projects',
     'project_issue_all_projects_searchapi',
     'project_issue_project',
+    'project_issue_project_searchapi',
     'project_issue_search_all',
+    'project_issue_search_all_searchapi',
     'project_issue_search_project',
+    'project_issue_search_project_searchapi',
     'project_issue_user_issues',
     'project_issue_user_issues_searchapi',
   ));
+}
+
+/**
+ * Redirect search/issues to project/issues/search.
+ */
+function drupalorg_update_7045() {
+  $redirect = new stdClass();
+  redirect_object_prepare($redirect);
+  $redirect->source = 'search/issues';
+  $redirect->redirect = 'project/issues/search';
+  redirect_save($redirect);
 }
