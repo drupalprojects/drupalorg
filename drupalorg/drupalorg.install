@@ -1473,3 +1473,13 @@ function drupalorg_update_7045() {
   $redirect->redirect = 'project/issues/search';
   redirect_save($redirect);
 }
+
+/**
+ * Trigger users to update their timezone at login.
+ */
+function drupalorg_update_7046() {
+  // Remind users at login if their time zone is not set.
+  variable_set('empty_timezone_message', TRUE);
+  // Users may set their own time zone at registration.
+  variable_set('user_default_timezone', DRUPAL_USER_TIMEZONE_SELECT);
+}
