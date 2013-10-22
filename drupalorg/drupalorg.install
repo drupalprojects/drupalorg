@@ -1483,3 +1483,10 @@ function drupalorg_update_7046() {
   // Users may set their own time zone at registration.
   variable_set('user_default_timezone', DRUPAL_USER_TIMEZONE_SELECT);
 }
+
+/**
+ * Set variable so that project releases are not published by default.
+ */
+function drupalorg_update_7047() {
+  variable_set('node_options_project_release', array('revision'));
+}
