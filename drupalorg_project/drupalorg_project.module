@@ -1253,6 +1253,20 @@ function drupalorg_project_views_pre_render(&$view) {
 }
 
 /**
+ * Implementation of hook_form_FORM_ID_alter().
+ */
+function drupalorg_project_form_views_exposed_form_alter(&$form, &$form_state) {
+  switch ($form_state['view']->name) {
+    case 'project_issue_all_projects_searchapi':
+    case 'project_issue_user_issues_searchapi':
+    case 'project_issue_project_searchapi':
+      // Force status default value.
+      $form['status']['#default_value'] = 'Open';
+      break;
+  }
+}
+
+/**
  * Menu callback for serving up sandbox projects (or redirecting to full).
  */
 function drupalorg_project_sandbox($node) {
