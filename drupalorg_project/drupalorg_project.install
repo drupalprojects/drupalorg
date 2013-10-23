@@ -460,6 +460,10 @@ function drupalorg_project_update_7012() {
         'weight' => '100',
         'visible' => FALSE,
       ),
+      'diff_standard' => array(
+        'weight' => '100',
+        'visible' => FALSE,
+      ),
     ),
     'follow_link' => array(
       'issuemetadata' => array(
@@ -476,6 +480,32 @@ function drupalorg_project_update_7012() {
       ),
       'nodechanges' => array(
         'weight' => '-10',
+        'visible' => FALSE,
+      ),
+      'diff_standard' => array(
+        'weight' => '100',
+        'visible' => FALSE,
+      ),
+    ),
+    'jump_link' => array(
+      'issuemetadata' => array(
+        'weight' => '110',
+        'visible' => TRUE,
+      ),
+      'default' => array(
+        'weight' => '-10',
+        'visible' => FALSE,
+      ),
+      'teaser' => array(
+        'weight' => '-10',
+        'visible' => FALSE,
+      ),
+      'nodechanges' => array(
+        'weight' => '-10',
+        'visible' => FALSE,
+      ),
+      'diff_standard' => array(
+        'weight' => '100',
         'visible' => FALSE,
       ),
     ),
