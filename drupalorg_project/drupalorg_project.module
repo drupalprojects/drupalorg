@@ -1265,6 +1265,16 @@ function drupalorg_project_views_pre_render(&$view) {
 }
 
 /**
+ * Implementation of hook_preprocess_views_view_field().
+ */
+function drupalorg_project_preprocess_views_view_field(&$v) {
+  // Do not render anonymous in issue tables.
+  if ($v['field']->field === 'field_issue_assigned' && strip_tags($v['output']) === variable_get('anonymous', t('Anonymous'))) {
+    $v['output'] = '';
+  }
+}
+
+/**
  * Implementation of hook_form_FORM_ID_alter().
  */
 function drupalorg_project_form_views_exposed_form_alter(&$form, &$form_state) {
