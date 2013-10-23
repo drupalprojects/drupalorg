@@ -1761,10 +1761,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['search_api_relevance']['alter']['trim'] = TRUE;
   $handler->display->display_options['fields']['search_api_relevance']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['search_api_relevance']['link_to_entity'] = 0;
-  /* Field: Indexed Node: Short name */
-  $handler->display->display_options['fields']['field_project_machine_name']['id'] = 'field_project_machine_name';
-  $handler->display->display_options['fields']['field_project_machine_name']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['fields']['field_project_machine_name']['field'] = 'field_project_machine_name';
   /* Sort criterion: Indexed Node: Date changed */
   $handler->display->display_options['sorts']['changed']['id'] = 'changed';
   $handler->display->display_options['sorts']['changed']['table'] = 'search_api_index_project_issues';
