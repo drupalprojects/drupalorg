@@ -36,6 +36,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'field_project_machine_name' => 'field_project_machine_name',
     'field_project' => 'field_project',
     'title' => 'title',
+    'has_new_content' => 'title',
     'field_issue_status' => 'field_issue_status',
     'field_issue_priority' => 'field_issue_priority',
     'field_issue_category' => 'field_issue_category',
@@ -69,6 +70,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'title' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'has_new_content' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -181,6 +187,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Summary';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
+  /* Field: Indexed Node: Has new content */
+  $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['has_new_content']['field'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['has_new_content']['alter']['text'] = '<span class="marker">[has_new_content]</span>';
+  $handler->display->display_options['fields']['has_new_content']['link_to_entity'] = 0;
   /* Field: Indexed Node: Status */
   $handler->display->display_options['fields']['field_issue_status']['id'] = 'field_issue_status';
   $handler->display->display_options['fields']['field_issue_status']['table'] = 'search_api_index_project_issues';
@@ -763,6 +776,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'url' => 'url',
     'title' => 'title',
+    'has_new_content' => 'title',
     'field_issue_status' => 'field_issue_status',
     'field_issue_priority' => 'field_issue_priority',
     'field_issue_category' => 'field_issue_category',
@@ -785,6 +799,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'title' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'has_new_content' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -879,6 +898,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Summary';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
+  /* Field: Indexed Node: Has new content */
+  $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['has_new_content']['field'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['has_new_content']['alter']['text'] = '<span class="marker">[has_new_content]</span>';
+  $handler->display->display_options['fields']['has_new_content']['link_to_entity'] = 0;
   /* Field: Indexed Node: Status */
   $handler->display->display_options['fields']['field_issue_status']['id'] = 'field_issue_status';
   $handler->display->display_options['fields']['field_issue_status']['table'] = 'search_api_index_project_issues';
@@ -1507,8 +1533,10 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'project_issue_table';
   $handler->display->display_options['style_options']['columns'] = array(
     'url' => 'url',
+    'field_project_machine_name_1' => 'field_project_machine_name_1',
     'field_project' => 'field_project',
     'title' => 'title',
+    'has_new_content' => 'title',
     'field_issue_status' => 'field_issue_status',
     'field_issue_priority' => 'field_issue_priority',
     'field_issue_category' => 'field_issue_category',
@@ -1519,10 +1547,16 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'field_issue_assigned' => 'field_issue_assigned',
     'created' => 'created',
     'search_api_relevance' => 'search_api_relevance',
+    'field_project_machine_name' => 'field_project_machine_name',
   );
   $handler->display->display_options['style_options']['default'] = 'changed';
   $handler->display->display_options['style_options']['info'] = array(
     'url' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_project_machine_name_1' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -1537,6 +1571,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'title' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'has_new_content' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -1609,6 +1648,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'field_project_machine_name' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
   );
   /* Relationship: Indexed Node: Project */
   $handler->display->display_options['relationships']['field_project']['id'] = 'field_project';
@@ -1642,6 +1686,14 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Summary';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
+  /* Field: Node: Has new content */
+  $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['table'] = 'entity_node';
+  $handler->display->display_options['fields']['has_new_content']['field'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['relationship'] = 'field_project';
+  $handler->display->display_options['fields']['has_new_content']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['has_new_content']['alter']['text'] = '<span class="marker">[has_new_content]</span>';
+  $handler->display->display_options['fields']['has_new_content']['link_to_entity'] = 0;
   /* Field: Indexed Node: Status */
   $handler->display->display_options['fields']['field_issue_status']['id'] = 'field_issue_status';
   $handler->display->display_options['fields']['field_issue_status']['table'] = 'search_api_index_project_issues';
@@ -2092,6 +2144,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'url' => 'url',
     'title' => 'title',
+    'has_new_content' => 'title',
     'field_issue_status' => 'field_issue_status',
     'field_issue_priority' => 'field_issue_priority',
     'field_issue_category' => 'field_issue_category',
@@ -2114,6 +2167,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'title' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'has_new_content' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -2214,6 +2272,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Summary';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
+  /* Field: Indexed Node: Has new content */
+  $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['has_new_content']['field'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['has_new_content']['alter']['text'] = '<span class="marker">[has_new_content]</span>';
+  $handler->display->display_options['fields']['has_new_content']['link_to_entity'] = 0;
   /* Field: Indexed Node: Status */
   $handler->display->display_options['fields']['field_issue_status']['id'] = 'field_issue_status';
   $handler->display->display_options['fields']['field_issue_status']['table'] = 'search_api_index_project_issues';
@@ -2977,8 +3042,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'project_issue_table';
   $handler->display->display_options['style_options']['columns'] = array(
+    'url' => 'url',
+    'field_project_machine_name' => 'field_project_machine_name',
     'field_project' => 'field_project',
     'title' => 'title',
+    'has_new_content' => 'title',
     'field_issue_status' => 'field_issue_status',
     'field_issue_priority' => 'field_issue_priority',
     'field_issue_category' => 'field_issue_category',
@@ -2992,6 +3060,16 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   );
   $handler->display->display_options['style_options']['default'] = 'changed';
   $handler->display->display_options['style_options']['info'] = array(
+    'url' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_project_machine_name' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'field_project' => array(
       'sortable' => 1,
       'default_sort_order' => 'desc',
@@ -3000,6 +3078,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'empty_column' => 0,
     ),
     'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'has_new_content' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -3105,6 +3190,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Summary';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
+  /* Field: Indexed Node: Has new content */
+  $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['has_new_content']['field'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['has_new_content']['alter']['text'] = '<span class="marker">[has_new_content]</span>';
+  $handler->display->display_options['fields']['has_new_content']['link_to_entity'] = 0;
   /* Field: Indexed Node: Status */
   $handler->display->display_options['fields']['field_issue_status']['id'] = 'field_issue_status';
   $handler->display->display_options['fields']['field_issue_status']['table'] = 'search_api_index_project_issues';
@@ -3699,6 +3791,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'project_issue_table';
   $handler->display->display_options['style_options']['columns'] = array(
+    'url' => 'url',
     'field_project' => 'field_project',
     'title' => 'field_project',
     'field_issue_status' => 'field_project',
@@ -3706,9 +3799,15 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'field_issue_category' => 'field_project',
     'comment_count' => 'field_project',
     'comment_count_new' => 'field_project',
+    'has_new_content' => 'field_project',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
+    'url' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'field_project' => array(
       'sortable' => 0,
       'default_sort_order' => 'desc',
@@ -3717,6 +3816,8 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'empty_column' => 0,
     ),
     'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -3750,6 +3851,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'empty_column' => 0,
     ),
     'comment_count_new' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'has_new_content' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -3822,6 +3928,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['comment_count_new']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['comment_count_new']['empty_zero'] = TRUE;
   $handler->display->display_options['fields']['comment_count_new']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Has new content */
+  $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['has_new_content']['field'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['has_new_content']['alter']['text'] = '<span class="marker">[has_new_content]</span>';
+  $handler->display->display_options['fields']['has_new_content']['link_to_entity'] = 0;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Indexed Node: Status */
