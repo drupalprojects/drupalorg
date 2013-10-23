@@ -2406,3 +2406,23 @@ function drupalorg_preprocess_comment(&$v) {
     $v['title'] = '';
   }
 }
+
+/**
+ * Implements hook_entity_property_info_alter().
+ */
+function drupalorg_entity_property_info_alter(&$info) {
+  // Used in project issue views using SearchAPI. Would be great to get into
+  // entity module.
+  $info['node']['properties']['has_new_content'] = array(
+    'label' => t('Has new content'),
+    'description' => t('Show a marker if the content is new or updated.'),
+    'computed' => TRUE,
+    'type' => 'text',
+    'sanitized' => TRUE,
+    'getter callback' => 'drupalorg_has_new_content',
+  );
+}
+
+function drupalorg_has_new_content($node, array &$options, $name, $type, &$info) {
+  return theme('mark', array('type' => node_mark($node->nid, $node->changed)));
+}
