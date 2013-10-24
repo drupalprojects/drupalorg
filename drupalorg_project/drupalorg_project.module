@@ -1265,6 +1265,29 @@ function drupalorg_project_views_pre_render(&$view) {
 }
 
 /**
+ * Implementation of hook_views_pre_view().
+ */
+function drupalorg_project_views_pre_view(&$view) {
+  switch ($view->name) {
+    case 'project_issue_search_all_searchapi':
+    case 'project_issue_all_projects_searchapi':
+    case 'project_issue_user_issues_searchapi':
+    case 'project_issue_project_searchapi':
+    case 'project_issue_search_project_searchapi':
+      if ($view->current_display === 'page') {
+        // If searching for text in an issue queue, show and default sort by
+        // score.
+        $input = $view->get_exposed_input();
+        if (!empty($input['text'])) {
+          $view->set_item_option('page', 'field', 'search_api_relevance', 'exclude', FALSE);
+          $view->display_handler->default_display->options['style_options']['default'] = 'search_api_relevance';
+        }
+      }
+      break;
+  }
+}
+
+/**
  * Implementation of hook_preprocess_views_view_field().
  */
 function drupalorg_project_preprocess_views_view_field(&$v) {
