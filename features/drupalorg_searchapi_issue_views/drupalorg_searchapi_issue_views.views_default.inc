@@ -1935,7 +1935,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['filters']['field_issue_status']['expose']['operator_id'] = 'field_issue_status_op';
   $handler->display->display_options['filters']['field_issue_status']['expose']['label'] = 'Status';
   $handler->display->display_options['filters']['field_issue_status']['expose']['operator'] = 'field_issue_status_op';
-  $handler->display->display_options['filters']['field_issue_status']['expose']['identifier'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['identifier'] = 'status';
   $handler->display->display_options['filters']['field_issue_status']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_issue_status']['expose']['remember_roles'] = array(
     2 => '2',
