@@ -968,6 +968,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['search_api_relevance']['id'] = 'search_api_relevance';
   $handler->display->display_options['fields']['search_api_relevance']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['search_api_relevance']['field'] = 'search_api_relevance';
+  $handler->display->display_options['fields']['search_api_relevance']['label'] = 'Score';
   $handler->display->display_options['fields']['search_api_relevance']['exclude'] = TRUE;
   $handler->display->display_options['fields']['search_api_relevance']['link_to_entity'] = 0;
   /* Sort criterion: Indexed Node: Date changed */
@@ -2338,6 +2339,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['search_api_relevance']['id'] = 'search_api_relevance';
   $handler->display->display_options['fields']['search_api_relevance']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['search_api_relevance']['field'] = 'search_api_relevance';
+  $handler->display->display_options['fields']['search_api_relevance']['label'] = 'Score';
   $handler->display->display_options['fields']['search_api_relevance']['exclude'] = TRUE;
   $handler->display->display_options['fields']['search_api_relevance']['link_to_entity'] = 0;
   /* Sort criterion: Indexed Node: Date changed */
