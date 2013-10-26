@@ -885,6 +885,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     ),
   );
   $handler->display->display_options['style_options']['sticky'] = TRUE;
+  /* No results behavior: Global: Unfiltered text */
+  $handler->display->display_options['empty']['area_text_custom']['id'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['table'] = 'views';
+  $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area_text_custom']['content'] = 'No issues match your criteria.';
   /* Field: Indexed Node: URL */
   $handler->display->display_options['fields']['url']['id'] = 'url';
   $handler->display->display_options['fields']['url']['table'] = 'search_api_index_project_issues';
@@ -1655,6 +1661,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* No results behavior: Global: Unfiltered text */
+  $handler->display->display_options['empty']['area_text_custom']['id'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['table'] = 'views';
+  $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area_text_custom']['content'] = 'No issues match your criteria.';
   /* Relationship: Indexed Node: Project */
   $handler->display->display_options['relationships']['field_project']['id'] = 'field_project';
   $handler->display->display_options['relationships']['field_project']['table'] = 'search_api_index_project_issues';
@@ -3156,6 +3168,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* No results behavior: Global: Unfiltered text */
+  $handler->display->display_options['empty']['area_text_custom']['id'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['table'] = 'views';
+  $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area_text_custom']['content'] = 'No issues match your criteria.';
   /* Relationship: Indexed Node: Project */
   $handler->display->display_options['relationships']['field_project']['id'] = 'field_project';
   $handler->display->display_options['relationships']['field_project']['table'] = 'search_api_index_project_issues';
