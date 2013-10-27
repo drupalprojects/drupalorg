@@ -1490,3 +1490,12 @@ function drupalorg_update_7046() {
 function drupalorg_update_7047() {
   variable_set('node_options_project_release', array('revision'));
 }
+
+/**
+ * Remove the 'plain text' input format added by D7 core.
+ */
+function drupalorg_update_7048() {
+  // Reset the fallback filter to "Filtered HTML".
+  variable_set('filter_fallback_format', "1");
+  filter_format_disable("6");
+}
