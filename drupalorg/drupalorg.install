@@ -1499,3 +1499,10 @@ function drupalorg_update_7048() {
   variable_set('filter_fallback_format', "1");
   filter_format_disable("6");
 }
+
+/**
+ * Enable user_restrictions_ui module.
+ */
+function drupalorg_update_7049() {
+  module_enable(array('user_restrictions_ui'));
+}
