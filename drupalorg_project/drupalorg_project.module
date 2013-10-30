@@ -948,7 +948,7 @@ function drupalorg_project_bingo_block_output() {
           $counts['Novice issues'] . ' Novice issues',
           array(
             'status' => array(1, 8, 13, 14, 15),
-            'issue_tags_op' => 'or',
+            'issue_tags_op' => '=',
             'issue_tags' => 'Novice',
           )
         ),
