@@ -603,6 +603,7 @@ function drupalorg_update_7010() {
         'moderate comments',
         'moderate posts',
         'moderate users',
+        "toggle role 'Not a spammer'",
       ),
       'features' => array(
         'administer features',
@@ -766,6 +767,7 @@ function drupalorg_update_7010() {
     '7' => array(
       'fasttoggle' => array(
         'moderate users',
+        "toggle role 'Not a spammer'",
       ),
       'googleanalytics' => array(
         'opt-in or out of tracking',
@@ -990,6 +992,13 @@ function drupalorg_update_7010() {
     '36' => array(
       'honeypot' => array(
         'bypass honeypot protection'
+      ),
+    ),
+
+    // Spam fighter
+    '38' => array(
+      'fasttoggle' => array(
+        "toggle role 'Not a spammer'",
       ),
     ),
   );
