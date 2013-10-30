@@ -18,8 +18,8 @@
         <div class="intro">
           <div class="logo"><img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/d8.svg" alt="Drupal 8"></div>
           <div class="text">
-            <strong>Help build Drupal 8.</strong> We are already hard at work. But we need your help to <strong>develop</strong>, <strong>design</strong> and <strong>test</strong> the next version of Drupal.
-          <br /><a href="community-initiatives/drupal-core">Get started now.</a>
+            <strong>Drupal 8 is coming soon</strong> and you can <a href="/drupal-8.0">read all about it here</a>. You can also help build Drupal 8 by volunteering for development, design and testing work.
+          <br /><a href="/community-initiatives/drupal-core">Get started now.</a>
           </div>
         </div>
         <div class="activities">
