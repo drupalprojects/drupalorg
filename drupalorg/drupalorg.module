@@ -676,7 +676,7 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   $variables['map_content'] = drupalorg_map_content();
 
   // Get content for the Recent Forum Posts tab.
-  $result = db_query_range('SELECT f.nid, f.title, f.created, u.name FROM {forum_index} f INNER JOIN {node} n ON n.nid = f.nid INNER JOIN {users} u ON u.uid = n.uid ORDER BY f.nid DESC', 0, 5);
+  $result = db_query_range('SELECT f.nid, f.title, f.created, u.uid, u.name FROM {forum_index} f INNER JOIN {node} n ON n.nid = f.nid INNER JOIN {users} u ON u.uid = n.uid ORDER BY f.nid DESC', 0, 5);
   $recent_forums = '';
   foreach ($result as $node) {
     $recent_forums .= '<h6>' . l($node->title, 'node/' . $node->nid) . '</h6><p class="submitted">' . t('Posted by !author on @created.', array('!author' => theme('username', array('account' => $node)), '@created' => format_date($node->created, 'custom', 'F j, Y \a\t g:ia'))) . '</p>';
