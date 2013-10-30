@@ -276,6 +276,11 @@ function drupalorg_update_dependencies() {
         'drupalorg' => 7003,
       ),
     ),
+    'drupalorg_change_notice' => array(
+      7000 => array(
+        'drupalorg' => 7003,
+      ),
+    ),
     // project_release_update_7000() needs to run after
     'project_release' => array(
       7000 => array(
