@@ -1506,3 +1506,15 @@ function drupalorg_update_7048() {
 function drupalorg_update_7049() {
   module_enable(array('user_restrictions_ui'));
 }
+
+/**
+ * Make sure filter_html_image_secure is really enabled.
+ */
+function drupalorg_update_7050() {
+  db_update('filter')
+    ->condition('module', 'filter_html_image_secure')
+    ->condition('format', 1)
+    ->fields(array('status' => 1))
+    ->execute();
+  filter_formats_reset();
+}
