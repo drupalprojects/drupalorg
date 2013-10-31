@@ -1538,6 +1538,7 @@ function drupalorg_update_7051() {
   $revert = array(
     $module => array_keys($info['features']),
   );
+  module_load_include('inc', 'features', 'features.admin');
   features_revert($revert);
 
   // Try to ensure everything's lined up properly...
