@@ -191,11 +191,20 @@ function drupalorg_versioncontrol_views_default_views_alter(&$views) {
       // Use views_litepager and remove inner file listings, except on individual commit views.
       if ($view_name != 'commitlog_individual_commit' && $view_name != 'vc_git_individual_commit') {
         if (isset($views[$view_name]->display['default']->display_options)) {
-          $views[$view_name]->display['default']->display_options['use_pager'] = 'lite';
+          $views[$view_name]->display['default']->display_options['pager']['type'] = 'lite';
         }
         if (isset($views[$view_name]->display['default']->display_options['fields']['view'])) {
           unset($views[$view_name]->display['default']->display_options['fields']['view']);
         }
+      }
+      // Disable paging completely on the global commit view because it
+      // really doesn't scale.
+      if ($view_name == 'vc_git_project_global_commits') {
+        $views[$view_name]->display['default']->display_options['pager']['type'] = 'some';
+        $views[$view_name]->display['default']->display_options['pager']['options'] = array(
+          'items_per_page' => '50',
+          'offset' => '0',
+        );
       }
     }
   }
