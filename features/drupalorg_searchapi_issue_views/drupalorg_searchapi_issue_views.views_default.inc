@@ -1699,11 +1699,10 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Summary';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
-  /* Field: Node: Has new content */
+  /* Field: Indexed Node: Has new content */
   $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
-  $handler->display->display_options['fields']['has_new_content']['table'] = 'entity_node';
+  $handler->display->display_options['fields']['has_new_content']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['has_new_content']['field'] = 'has_new_content';
-  $handler->display->display_options['fields']['has_new_content']['relationship'] = 'field_project';
   $handler->display->display_options['fields']['has_new_content']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['has_new_content']['alter']['text'] = '<span class="marker">[has_new_content]</span>';
   $handler->display->display_options['fields']['has_new_content']['link_to_entity'] = 0;
