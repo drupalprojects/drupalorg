@@ -1409,3 +1409,14 @@ function drupalorg_project_node_type_label($node_type, $label_type) {
   );
   return $labels[$node_type][$label_type];
 }
+
+/**
+ * Implements hook_field_extra_fields_display_alter.
+ */
+function drupalorg_project_field_extra_fields_display_alter(&$displays, $context) {
+  if ($context['entity_type'] == 'node' && $context['bundle'] == 'project_issue' && $context['view_mode'] != 'issuemetadata') {
+    $displays['update_link']['visible'] = FALSE;
+    $displays['follow_link']['visible'] = FALSE;
+    $displays['jump_links']['visible'] = FALSE;
+  }
+}
