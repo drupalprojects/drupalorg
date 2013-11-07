@@ -1309,6 +1309,14 @@ function drupalorg_project_form_views_exposed_form_alter(&$form, &$form_state) {
     case 'project_issue_project_searchapi':
       // Force status default value.
       $form['status']['#default_value'] = 'Open';
+      // Intended fall-through.
+    case 'project_issue_search_all_searchapi':
+    case 'project_issue_search_project_searchapi':
+      // Do not allow anonymous users to search.
+      if (!user_is_logged_in()) {
+        $form['text']['#disabled'] = TRUE;
+        $form['text']['#description'] = t('Log in to search.');
+      }
       break;
   }
 }
