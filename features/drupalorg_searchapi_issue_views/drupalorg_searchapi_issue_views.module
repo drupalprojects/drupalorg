@@ -5,3 +5,36 @@
  */
 
 include_once 'drupalorg_searchapi_issue_views.features.inc';
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function drupalorg_searchapi_issue_views_entity_info_alter(&$info) {
+  $info['taxonomy_term']['uri callback'] = 'drupalorg_searchapi_issue_views_taxonomy_term_uri';
+}
+
+/**
+ * Entity URI callback for taxonomy terms.
+ *
+ * Since the Drupal.org SearchAPI issue queue views expect different GET
+ * arguments than the default views provided by project_issue, we need to make
+ * sure that issue tag terms link to the right search queries.
+ */
+function drupalorg_searchapi_issue_views_taxonomy_term_uri($term) {
+  $uri = array();
+  // Issue tags are vocabulary 9
+  if ($term->vid == 9) {
+    $uri = array(
+      'path' => 'project/issues/search',
+      'options' => array(
+        'query' => array(
+          'issue_tags' => $term->name,
+        ),
+      ),
+    );
+  }
+  else {
+    $uri = project_issue_taxonomy_term_uri($term);
+  }
+  return $uri;
+}

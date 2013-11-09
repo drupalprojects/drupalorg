@@ -1,0 +1,29 @@
+<?php
+/**
+ * @file
+ * Install and update functions for drupalorg_searchapi_issue_views.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * Set the system weight heavier than Project* so term URI altering works.
+ */
+function drupalorg_searchapi_issue_views_install() {
+  db_update('system')
+    ->fields(array('weight' => 5))
+    ->condition('name', 'drupalorg_searchapi_issue_views')
+    ->execute();
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Set the system weight heavier than Project* so term URI altering works.
+ */
+function drupalorg_searchapi_issue_views_update_7000() {
+  db_update('system')
+    ->fields(array('weight' => 5))
+    ->condition('name', 'drupalorg_searchapi_issue_views')
+    ->execute();
+}
