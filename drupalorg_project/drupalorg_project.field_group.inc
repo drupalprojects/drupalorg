@@ -167,15 +167,16 @@ function drupalorg_project_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Issue tags',
+    'label' => '',
     'weight' => '20',
     'children' => array(
       0 => 'taxonomy_vocabulary_9',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'div',
     'format_settings' => array(
-      'formatter' => 'collapsed',
+      'formatter' => 'open',
       'instance_settings' => array(
+        'show_label' => '0',
         'description' => '',
         'classes' => '',
         'required_fields' => 0,
@@ -185,4 +186,13 @@ function drupalorg_project_field_group_info() {
   $field_groups[$field_group->identifier] = $field_group;
 
   return $field_groups;
+}
+
+/**
+ * Implements hook_field_group_info_alter().
+ */
+function drupalorg_project_field_group_info_alter(&$groups) {
+  if (!empty($groups['group_issue_metadata|node|project_issue|form'])) {
+    $groups['group_issue_metadata|node|project_issue|form']->data['children'][] = 'group_project_issue_tags';
+  }
 }

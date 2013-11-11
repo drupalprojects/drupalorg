@@ -318,7 +318,7 @@ function drupalorg_project_issue_counts() {
 function drupalorg_project_field_group_pre_render_alter(&$element, $group, &$form) {
   if ($group->group_name == 'group_issue_metadata') {
     $element['drupalorg-issue-description'] = array(
-      '#weight' => 100,
+      '#weight' => 10,
       '#prefix' => '<div class="description">',
       '#markup' =>  t('Descriptions of the <a href="!priority_url">Priority</a> and <a href="!status_url">Status</a> values can be found in the <a href="!issue_queue_url">Issue queue handbook</a>.', array('!priority_url' => '/node/45111', '!status_url' => '/node/156119', '!issue_queue_url' => '/node/317')),
       '#suffix' => '</div>',
