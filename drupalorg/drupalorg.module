@@ -242,9 +242,20 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
               return user_access('administer nodes', $account);
 
             case 'field_project_has_releases':
+              // Always allow admins to configure releases. Otherwise restrict
+              // access to maintainers with 'administer releases' permission on
+              // the project.
+              return (!empty($entity->project['maintainers'][$account->uid]['permissions']['administer releases'])
+                || $entity->uid == $account->uid
+                || user_access('administer nodes'));
+
             case 'field_project_has_issue_queue':
-              // Only allow admins to disable releases and issue tracking.
-              return user_access('administer nodes');
+              // Always allow admins to configure issue tracking. Otherwise
+              // restrict access to maintainers with 'maintain issues'
+              // permission on the project.
+              return (!empty($entity->project['maintainers'][$account->uid]['permissions']['maintain issues'])
+                || $entity->uid == $account->uid
+                || user_access('administer nodes'));
           }
       }
   }
