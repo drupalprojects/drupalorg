@@ -391,15 +391,6 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     $form['field_project_license']['#access'] = FALSE;
     $form['field_project_license'][LANGUAGE_NONE][0]['#default_value']['url'] = DRUPALORG_DEFAULT_LICENSE_LINK;
     $form['field_project_license'][LANGUAGE_NONE][0]['#default_value']['title'] = DRUPALORG_DEFAULT_LICENSE;
-
-    // Don't allow promoting certain types of projects on Drupal.org, excpet for admins
-    if (!user_access('administer projects') && in_array($form_state['node']->type, drupalorg_project_get_no_promote_project_types())) {
-      $form['field_project_type'][LANGUAGE_NONE]['#default_value'] = 'sandbox';
-      $form['field_project_type']['#access'] = FALSE;
-      $form_state['input']['field_project_type'][LANGUAGE_NONE] = 'sandbox';
-      $form['field_project_has_releases'][LANGUAGE_NONE]['#default_value'] = FALSE;
-      $form['field_project_machine_name']['#access'] = FALSE;
-    }
   }
   elseif (project_release_node_is_release($form_state['node'])) {
     // See if this is a release for a translation project, and if so, deny.
