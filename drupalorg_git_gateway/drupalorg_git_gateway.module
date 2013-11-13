@@ -438,20 +438,19 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
   // Attach project published/unpublished information.
   $data['status'] = (int) $project->status;
 
-  $select = db_select('project_release_nodes', 'prn')->fields('prn', array('tag', 'rebuild'));
-  $vpp_alias = $select->addJoin('INNER', 'versioncontrol_project_projects', 'vpp', 'prn.pid = vpp.nid');
-  $result = $select->condition($vpp_alias . '.repo_id', $repository->repo_id)
-    ->execute()->fetchAllKeyed();
-
   $tags = $branches = array();
-  foreach ($result as $label_name => $branch) {
-    if (empty($branch)) {
-      $tags[] = $label_name;
+  foreach (project_release_query_releases($project->nid) as $release_node) {
+    if (empty($release_node->field_release_build_type[LANGUAGE_NONE][0]['value']) || empty($release_node->field_release_version[LANGUAGE_NONE][0]['value'])) {
+      continue;
     }
-    else {
-      $branches[] = $label_name;
+    if ($release_node->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'static') {
+      $tags[] = $release_node->field_release_version[LANGUAGE_NONE][0]['value'];
+    }
+    elseif ($release_node->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic') {
+      $branches[] = $release_node->field_release_version[LANGUAGE_NONE][0]['value'];
     }
   }
+
   $data['protected_labels'] = array(
     'tags' => $tags,
     'branches' => $branches,
