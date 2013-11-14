@@ -2419,6 +2419,11 @@ function drupalorg_entity_property_info_alter(&$info) {
     'sanitized' => TRUE,
     'getter callback' => 'drupalorg_has_new_content',
   );
+  $info['node']['properties']['last_comment_timestamp'] = array(
+    'label' => t('Last comment timestamp'),
+    'description' => t('The Unix timestamp of the last comment, or the timestamp of the node creation if there are no comments yet.'),
+    'type' => 'integer',
+  );
 }
 
 function drupalorg_has_new_content($node, array &$options, $name, $type, &$info) {
