@@ -43,12 +43,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'field_issue_version' => 'field_issue_version',
     'comment_count' => 'comment_count',
     'comment_count_new' => 'comment_count',
-    'changed' => 'changed',
+    'last_comment_timestamp' => 'last_comment_timestamp',
     'field_issue_assigned' => 'field_issue_assigned',
     'created' => 'created',
     'search_api_relevance' => 'search_api_relevance',
   );
-  $handler->display->display_options['style_options']['default'] = 'changed';
+  $handler->display->display_options['style_options']['default'] = 'last_comment_timestamp';
   $handler->display->display_options['style_options']['info'] = array(
     'url' => array(
       'align' => '',
@@ -119,7 +119,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'changed' => array(
+    'last_comment_timestamp' => array(
       'sortable' => 1,
       'default_sort_order' => 'desc',
       'align' => '',
@@ -227,13 +227,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['comment_count_new']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['comment_count_new']['empty_zero'] = TRUE;
   $handler->display->display_options['fields']['comment_count_new']['link_to_entity'] = 0;
-  /* Field: Indexed Node: Date changed */
-  $handler->display->display_options['fields']['changed']['id'] = 'changed';
-  $handler->display->display_options['fields']['changed']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['label'] = 'Last updated';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'raw time ago';
-  $handler->display->display_options['fields']['changed']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['fields']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['label'] = 'Last updated';
+  $handler->display->display_options['fields']['last_comment_timestamp']['date_format'] = 'raw time ago';
+  $handler->display->display_options['fields']['last_comment_timestamp']['link_to_entity'] = 0;
   /* Field: Indexed Node: Assigned */
   $handler->display->display_options['fields']['field_issue_assigned']['id'] = 'field_issue_assigned';
   $handler->display->display_options['fields']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
@@ -256,11 +256,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['search_api_relevance']['label'] = 'Score';
   $handler->display->display_options['fields']['search_api_relevance']['exclude'] = TRUE;
   $handler->display->display_options['fields']['search_api_relevance']['link_to_entity'] = 0;
-  /* Sort criterion: Indexed Node: Date changed */
-  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
+  /* Sort criterion: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['sorts']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['order'] = 'DESC';
   /* Filter criterion: Search: Fulltext search */
   $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
   $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_project_issues';
@@ -784,12 +784,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'field_issue_component' => 'field_issue_component',
     'comment_count' => 'comment_count',
     'comment_count_new' => 'comment_count',
-    'changed' => 'changed',
+    'last_comment_timestamp' => 'last_comment_timestamp',
     'field_issue_assigned' => 'field_issue_assigned',
     'created' => 'created',
     'search_api_relevance' => 'search_api_relevance',
   );
-  $handler->display->display_options['style_options']['default'] = 'changed';
+  $handler->display->display_options['style_options']['default'] = 'last_comment_timestamp';
   $handler->display->display_options['style_options']['info'] = array(
     'url' => array(
       'align' => '',
@@ -855,7 +855,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'changed' => array(
+    'last_comment_timestamp' => array(
       'sortable' => 1,
       'default_sort_order' => 'desc',
       'align' => '',
@@ -948,13 +948,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['comment_count_new']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['comment_count_new']['empty_zero'] = TRUE;
   $handler->display->display_options['fields']['comment_count_new']['link_to_entity'] = 0;
-  /* Field: Indexed Node: Date changed */
-  $handler->display->display_options['fields']['changed']['id'] = 'changed';
-  $handler->display->display_options['fields']['changed']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['label'] = 'Last updated';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'raw time ago';
-  $handler->display->display_options['fields']['changed']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['fields']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['label'] = 'Last updated';
+  $handler->display->display_options['fields']['last_comment_timestamp']['date_format'] = 'raw time ago';
+  $handler->display->display_options['fields']['last_comment_timestamp']['link_to_entity'] = 0;
   /* Field: Indexed Node: Assigned */
   $handler->display->display_options['fields']['field_issue_assigned']['id'] = 'field_issue_assigned';
   $handler->display->display_options['fields']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
@@ -977,11 +977,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['search_api_relevance']['label'] = 'Score';
   $handler->display->display_options['fields']['search_api_relevance']['exclude'] = TRUE;
   $handler->display->display_options['fields']['search_api_relevance']['link_to_entity'] = 0;
-  /* Sort criterion: Indexed Node: Date changed */
-  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
+  /* Sort criterion: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['sorts']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['order'] = 'DESC';
   /* Contextual filter: Indexed Node: Project */
   $handler->display->display_options['arguments']['field_project']['id'] = 'field_project';
   $handler->display->display_options['arguments']['field_project']['table'] = 'search_api_index_project_issues';
@@ -1550,13 +1550,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'field_issue_version' => 'field_issue_version',
     'comment_count' => 'comment_count',
     'comment_count_new' => 'comment_count',
-    'changed' => 'changed',
+    'last_comment_timestamp' => 'last_comment_timestamp',
     'field_issue_assigned' => 'field_issue_assigned',
     'created' => 'created',
     'search_api_relevance' => 'search_api_relevance',
-    'field_project_machine_name' => 'field_project_machine_name',
   );
-  $handler->display->display_options['style_options']['default'] = 'changed';
+  $handler->display->display_options['style_options']['default'] = 'last_comment_timestamp';
   $handler->display->display_options['style_options']['info'] = array(
     'url' => array(
       'align' => '',
@@ -1627,7 +1626,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'changed' => array(
+    'last_comment_timestamp' => array(
       'sortable' => 1,
       'default_sort_order' => 'desc',
       'align' => '',
@@ -1651,11 +1650,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'search_api_relevance' => array(
       'sortable' => 1,
       'default_sort_order' => 'desc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_project_machine_name' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -1738,13 +1732,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['comment_count_new']['alter']['path'] = '[url]#new';
   $handler->display->display_options['fields']['comment_count_new']['empty_zero'] = TRUE;
   $handler->display->display_options['fields']['comment_count_new']['link_to_entity'] = 0;
-  /* Field: Indexed Node: Date changed */
-  $handler->display->display_options['fields']['changed']['id'] = 'changed';
-  $handler->display->display_options['fields']['changed']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['label'] = 'Last updated';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'raw time ago';
-  $handler->display->display_options['fields']['changed']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['fields']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['label'] = 'Last updated';
+  $handler->display->display_options['fields']['last_comment_timestamp']['date_format'] = 'raw time ago';
+  $handler->display->display_options['fields']['last_comment_timestamp']['link_to_entity'] = 0;
   /* Field: Indexed Node: Assigned */
   $handler->display->display_options['fields']['field_issue_assigned']['id'] = 'field_issue_assigned';
   $handler->display->display_options['fields']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
@@ -1773,11 +1767,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['search_api_relevance']['alter']['trim'] = TRUE;
   $handler->display->display_options['fields']['search_api_relevance']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['search_api_relevance']['link_to_entity'] = 0;
-  /* Sort criterion: Indexed Node: Date changed */
-  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
+  /* Sort criterion: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['sorts']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['order'] = 'DESC';
   /* Filter criterion: Search: Fulltext search */
   $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
   $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_project_issues';
@@ -2160,12 +2154,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'field_issue_component' => 'field_issue_component',
     'comment_count' => 'comment_count',
     'comment_count_new' => 'comment_count',
-    'changed' => 'changed',
+    'last_comment_timestamp' => 'last_comment_timestamp',
     'field_issue_assigned' => 'field_issue_assigned',
     'created' => 'created',
     'search_api_relevance' => 'search_api_relevance',
   );
-  $handler->display->display_options['style_options']['default'] = 'changed';
+  $handler->display->display_options['style_options']['default'] = 'last_comment_timestamp';
   $handler->display->display_options['style_options']['info'] = array(
     'url' => array(
       'align' => '',
@@ -2231,7 +2225,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'changed' => array(
+    'last_comment_timestamp' => array(
       'sortable' => 1,
       'default_sort_order' => 'desc',
       'align' => '',
@@ -2324,13 +2318,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['comment_count_new']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['comment_count_new']['empty_zero'] = TRUE;
   $handler->display->display_options['fields']['comment_count_new']['link_to_entity'] = 0;
-  /* Field: Indexed Node: Date changed */
-  $handler->display->display_options['fields']['changed']['id'] = 'changed';
-  $handler->display->display_options['fields']['changed']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['label'] = 'Last updated';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'raw time ago';
-  $handler->display->display_options['fields']['changed']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['fields']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['label'] = 'Last updated';
+  $handler->display->display_options['fields']['last_comment_timestamp']['date_format'] = 'raw time ago';
+  $handler->display->display_options['fields']['last_comment_timestamp']['link_to_entity'] = 0;
   /* Field: Indexed Node: Assigned */
   $handler->display->display_options['fields']['field_issue_assigned']['id'] = 'field_issue_assigned';
   $handler->display->display_options['fields']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
@@ -2353,11 +2347,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['search_api_relevance']['label'] = 'Score';
   $handler->display->display_options['fields']['search_api_relevance']['exclude'] = TRUE;
   $handler->display->display_options['fields']['search_api_relevance']['link_to_entity'] = 0;
-  /* Sort criterion: Indexed Node: Date changed */
-  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
+  /* Sort criterion: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['sorts']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['order'] = 'DESC';
   /* Contextual filter: Indexed Node: Project */
   $handler->display->display_options['arguments']['field_project']['id'] = 'field_project';
   $handler->display->display_options['arguments']['field_project']['table'] = 'search_api_index_project_issues';
@@ -3062,12 +3056,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'field_issue_version' => 'field_issue_version',
     'comment_count' => 'comment_count',
     'comment_count_new' => 'comment_count',
-    'changed' => 'changed',
+    'last_comment_timestamp' => 'last_comment_timestamp',
     'field_issue_assigned' => 'field_issue_assigned',
     'created' => 'created',
     'search_api_relevance' => 'search_api_relevance',
   );
-  $handler->display->display_options['style_options']['default'] = 'changed';
+  $handler->display->display_options['style_options']['default'] = 'last_comment_timestamp';
   $handler->display->display_options['style_options']['info'] = array(
     'url' => array(
       'align' => '',
@@ -3138,7 +3132,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'changed' => array(
+    'last_comment_timestamp' => array(
       'sortable' => 1,
       'default_sort_order' => 'desc',
       'align' => '',
@@ -3244,13 +3238,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['comment_count_new']['empty_zero'] = TRUE;
   $handler->display->display_options['fields']['comment_count_new']['suffix'] = ' new';
   $handler->display->display_options['fields']['comment_count_new']['link_to_entity'] = 0;
-  /* Field: Indexed Node: Date changed */
-  $handler->display->display_options['fields']['changed']['id'] = 'changed';
-  $handler->display->display_options['fields']['changed']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['label'] = 'Last updated';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'raw time ago';
-  $handler->display->display_options['fields']['changed']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['fields']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['label'] = 'Last updated';
+  $handler->display->display_options['fields']['last_comment_timestamp']['date_format'] = 'raw time ago';
+  $handler->display->display_options['fields']['last_comment_timestamp']['link_to_entity'] = 0;
   /* Field: Indexed Node: Assigned */
   $handler->display->display_options['fields']['field_issue_assigned']['id'] = 'field_issue_assigned';
   $handler->display->display_options['fields']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
@@ -3272,11 +3266,11 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['search_api_relevance']['label'] = 'Score';
   $handler->display->display_options['fields']['search_api_relevance']['exclude'] = TRUE;
   $handler->display->display_options['fields']['search_api_relevance']['link_to_entity'] = 0;
-  /* Sort criterion: Indexed Node: Date changed */
-  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
+  /* Sort criterion: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['sorts']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['order'] = 'DESC';
   /* Contextual filter: Indexed Node: Followers */
   $handler->display->display_options['arguments']['project_issue_followers']['id'] = 'project_issue_followers';
   $handler->display->display_options['arguments']['project_issue_followers']['table'] = 'search_api_index_project_issues';
