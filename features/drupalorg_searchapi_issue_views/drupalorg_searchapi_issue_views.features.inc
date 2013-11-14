@@ -113,13 +113,14 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
         "changed" : { "type" : "date" },
         "author" : { "type" : "integer", "entity_type" : "user" },
         "comment_count" : { "type" : "integer" },
+        "last_comment_timestamp" : { "type" : "date" },
         "taxonomy_vocabulary_9" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "taxonomy_term" },
-        "field_project" : { "type" : "integer", "entity_type" : "node" },
         "field_issue_status" : { "type" : "integer" },
         "field_issue_priority" : { "type" : "integer" },
         "field_issue_category" : { "type" : "integer" },
         "field_issue_component" : { "type" : "string" },
         "field_issue_assigned" : { "type" : "integer", "entity_type" : "user" },
+        "field_project" : { "type" : "integer", "entity_type" : "node" },
         "field_issue_version" : { "type" : "string" },
         "search_api_language" : { "type" : "string" },
         "search_api_aggregation_1" : { "type" : "text", "boost" : "2.0" },
@@ -258,6 +259,12 @@ function drupalorg_searchapi_issue_views_default_search_api_server() {
             "table" : "search_api_db_project_issues_project_issue_followers",
             "column" : "value",
             "type" : "list\\u003Cinteger\\u003E",
+            "boost" : "1.0"
+          },
+          "last_comment_timestamp" : {
+            "table" : "search_api_db_project_issues",
+            "column" : "last_comment_timestamp",
+            "type" : "date",
             "boost" : "1.0"
           }
         }
