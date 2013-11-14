@@ -1853,6 +1853,10 @@ function drupalorg_node_view($node, $view_mode = 'full') {
     }
     drupal_set_breadcrumb($breadcrumb);
   }
+  //Temporarily display a message on project and release nodes, remove when packaging is fixed.
+  if (($node->type === 'project_module') || ($node->type === 'project_theme') || ($node->type === 'project_distribution') || ($node->type === 'project_release')) {
+    drupal_set_message(t('Some features of project release packaging are broken after the Drupal.org upgrade to Drupal 7. It does not affect all projects, so please keep creating releases as you normally would. However, if you do experience any trouble please see <a href="!issue">this issue</a> and comment about your experience to help identify the source of the bug.', array('!issue' => url('node/2132659'))), 'status', FALSE);
+  }
 }
 
 /**
