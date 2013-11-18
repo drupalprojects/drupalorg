@@ -56,7 +56,7 @@ function drupalorg_change_notice_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Updates Done (doc team, etc.)',
-    'weight' => '2',
+    'weight' => '7',
     'children' => array(
       0 => 'field_coder_recorded',
       1 => 'field_coder_update_recorded',
@@ -89,7 +89,7 @@ function drupalorg_change_notice_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Updates Done (doc team, etc.)',
-    'weight' => '2',
+    'weight' => '7',
     'children' => array(
       0 => 'field_coder_recorded',
       1 => 'field_coder_update_recorded',
