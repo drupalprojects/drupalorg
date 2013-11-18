@@ -2385,17 +2385,20 @@ function drupalorg_node_view_alter(&$build) {
  */
 function drupalorg_comment_view_alter(&$build) {
   if (node_access('create', 'project_issue')) {
-    $comment = $build['#comment'];
-    $build['links']['comment']['#links']['comment-report'] = array(
-      'title' => t('report spam'),
-      'href' => 'node/add/project-issue/webmasters',
-      'query' => array(
-        'component' => 'Spam',
-        'categories' => 'task',
-        'title' => 'Spam Report',
-        'body' => 'Reporting the following comment as spam: ' . url('node/' . $comment->nid, array('absolute' => TRUE, 'fragment' => 'comment-' . $comment->cid)),
-      ),
-    );
+    global $user;
+    if ($build['#comment']->uid != $user->uid) {
+      $comment = $build['#comment'];
+      $build['links']['comment']['#links']['comment-report'] = array(
+        'title' => t('report spam'),
+        'href' => 'node/add/project-issue/webmasters',
+        'query' => array(
+          'component' => 'Spam',
+          'categories' => 'task',
+          'title' => 'Spam Report',
+          'body' => 'Reporting the following comment as spam: ' . url('node/' . $comment->nid, array('absolute' => TRUE, 'fragment' => 'comment-' . $comment->cid)),
+        ),
+      );
+    }
   }
 }
 
