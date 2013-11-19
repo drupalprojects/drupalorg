@@ -1113,6 +1113,11 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'user_profile_form' || $form_id == 'user_register_form') {
     $form['#validate'][] = 'drupalorg_username_validate';
   }
+
+  // Hide the taxonomy_field_extras field on forum node forms
+  if ($form_id == 'forum_node_form' && !user_access('administer content')) {
+    $form['taxonomyextra']['#access'] = FALSE;
+  }
 }
 
 /**
