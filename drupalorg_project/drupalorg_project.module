@@ -399,11 +399,6 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         $form['field_project_has_releases']['#disabled'] = TRUE;
       }
     }
-
-    // Do not allow users to disable project issue queues once enabled.
-    if (!user_access('administer projects') && !empty($form_state['node']->field_project_has_issue_queue['und'][0]['value'])) {
-      $form['field_project_has_issue_queue']['#disabled'] = TRUE;
-    }
   }
   elseif (project_release_node_is_release($form_state['node'])) {
     // See if this is a release for a translation project, and if so, deny.
