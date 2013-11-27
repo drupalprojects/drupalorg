@@ -1003,7 +1003,7 @@ function drupalorg_change_notice_field_default_fields() {
   $fields['node-changenotice-field_issues'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_issues',
@@ -1032,9 +1032,8 @@ function drupalorg_change_notice_field_default_fields() {
           ),
           'sort' => array(
             'direction' => 'ASC',
-            'field' => 'taxonomy_vocabulary_5:tid',
             'property' => 'nid',
-            'type' => 'none',
+            'type' => 'property',
           ),
           'target_bundles' => array(
             'project_issue' => 'project_issue',
