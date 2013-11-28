@@ -24,7 +24,7 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
     "item_type" : "node",
     "options" : {
       "index_directly" : 1,
-      "cron_limit" : "1000",
+      "cron_limit" : "500",
       "data_alter_callbacks" : {
         "search_api_alter_bundle_filter" : {
           "status" : 1,
