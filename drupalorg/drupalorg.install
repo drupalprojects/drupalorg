@@ -1610,3 +1610,22 @@ function drupalorg_update_7051() {
   // Since we have manually injected data, we need to explicitly clear the field cache.
   field_cache_clear();
 }
+
+/**
+ * Replace lost issues on change records.
+ */
+function drupalorg_update_7052() {
+  $data = array();
+  $result = db_query('SELECT old.nid, old.field_issues_nid FROM content_field_issues old LEFT JOIN field_data_field_issues new ON new.entity_id = old.nid AND new.field_issues_target_id = old.field_issues_nid WHERE new.entity_id IS NULL AND old.field_issues_nid IS NOT NULL AND vid IN (SELECT max(vid) FROM content_field_issues GROUP BY nid) ORDER BY old.nid');
+  foreach ($result as $row) {
+    $data[$row->nid][] = $row->field_issues_nid;
+  }
+
+  foreach ($data as $nid => $issue_nids) {
+    $node = node_load($nid);
+    foreach ($issue_nids as $issue_nid) {
+      $node->field_issues[LANGUAGE_NONE][]['target_id'] = $issue_nid;
+    }
+    node_save($node);
+  }
+}
