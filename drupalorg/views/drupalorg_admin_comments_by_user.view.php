@@ -181,6 +181,11 @@ $handler->display->display_options['fields']['status']['table'] = 'comment';
 $handler->display->display_options['fields']['status']['field'] = 'status';
 $handler->display->display_options['fields']['status']['label'] = 'Published';
 $handler->display->display_options['fields']['status']['not'] = 1;
+/* Sort criterion: Comment: Updated date */
+$handler->display->display_options['sorts']['changed']['id'] = 'changed';
+$handler->display->display_options['sorts']['changed']['table'] = 'comment';
+$handler->display->display_options['sorts']['changed']['field'] = 'changed';
+$handler->display->display_options['sorts']['changed']['order'] = 'DESC';
 /* Contextual filter: User: Uid */
 $handler->display->display_options['arguments']['uid']['id'] = 'uid';
 $handler->display->display_options['arguments']['uid']['table'] = 'users';

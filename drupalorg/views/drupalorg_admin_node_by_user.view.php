@@ -249,6 +249,11 @@ $handler->display->display_options['fields']['views_bulk_operations']['vbo']['di
 $handler->display->display_options['fields']['views_bulk_operations']['vbo']['display_result'] = 1;
 $handler->display->display_options['fields']['views_bulk_operations']['vbo']['merge_single_action'] = 0;
 $handler->display->display_options['fields']['views_bulk_operations']['vbo']['force_single'] = 0;
+/* Sort criterion: Content: Post date */
+$handler->display->display_options['sorts']['created']['id'] = 'created';
+$handler->display->display_options['sorts']['created']['table'] = 'node';
+$handler->display->display_options['sorts']['created']['field'] = 'created';
+$handler->display->display_options['sorts']['created']['order'] = 'DESC';
 /* Contextual filter: User: Uid */
 $handler->display->display_options['arguments']['uid']['id'] = 'uid';
 $handler->display->display_options['arguments']['uid']['table'] = 'users';
