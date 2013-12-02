@@ -646,3 +646,70 @@ function drupalorg_project_update_7019() {
     ))
     ->execute();
 }
+
+/**
+ * Repair core release nodes with faulty version element fields.
+ *
+ * @see https://drupal.org/node/2137201
+ * @see https://drupal.org/node/2145679
+ */
+function drupalorg_project_update_7020() {
+  // Perform any node updates as dww so people know who to blame. ;)
+  $dww_user = user_load(46549);
+  if (!empty($dww_user)) {
+    drupal_save_session(FALSE);
+    $original_user = $GLOBALS['user'];
+    $GLOBALS['user'] = $dww_user;
+  }
+
+  // Find all the broken releases. Nothing should have version_minor
+  // defined if version_major > 4.
+  $result = db_query('SELECT n.nid, n.title FROM {node} n INNER JOIN {field_data_field_release_version_minor} vmin ON n.nid = vmin.entity_id INNER JOIN {field_data_field_release_version_major} vmaj ON n.nid = vmaj.entity_id WHERE vmin.field_release_version_minor_value IS NOT NULL AND vmaj.field_release_version_major_value > 4');
+  foreach ($result as $release) {
+    $release_node = node_load($release->nid);
+    $project_node = node_load(project_release_get_release_project_nid($release_node));
+    $vcs_label = $release_node->versioncontrol_release['label'];
+    // Parse the VCS label to get all the right version subelements.
+    $version = versioncontrol_release_get_version_from_label($vcs_label['name'], $vcs_label['type'], $project_node);
+    // Repair the main version element fields.
+    $version_parts = array('major', 'minor', 'patch');
+    foreach ($version_parts as $part) {
+      if (isset($version->{'version_' . $part})) {
+        $release_node->{'field_release_version_' . $part}[$release_node->language][0]['value'] = $version->{'version_' . $part};
+      }
+      else {
+        $release_node->{'field_release_version_' . $part}[$release_node->language][0] = array();
+      }
+    }
+    // If this release has an 'extra' element, fix it and parse
+    // version_extra for the extra meta fields (ext_weight and ext_delta).
+    if (isset($version->version_extra)) {
+      $release_node->field_release_version_extra[$release_node->language][0]['value'] = $version->version_extra;
+      $extra_meta = project_release_parse_version_extra($version->version_extra);
+      foreach (array('weight', 'delta') as $extra_key) {
+        $release_node->{'field_release_version_ext_' . $extra_key}[$release_node->language][0]['value'] = $extra_meta[$extra_key];
+      }
+    }
+    // Otherwise, clear out all the extra-related subfields.
+    else {
+      foreach (array('version_extra', 'version_ext_weight', 'version_ext_delta') as $extra_key) {
+        $release_node->{$extra_key}[$release_node->language][0] = array();
+      }
+    }
+
+    // Tell project_release_node_presave() not to undo all this work.
+    $release_node->project_release_preserve_version_elements = TRUE;
+
+    // Create a new revision explaining what we did.
+    $release_node->revision = TRUE;
+    $release_node->log = '[#2145679] Repairing version element fields.';
+
+    // Finally, save the updated node to the DB.
+    node_save($release_node);
+  }
+
+  if (!empty($dww_user)) {
+    $GLOBALS['user'] = $original_user;
+    drupal_save_session(TRUE);
+  }
+}
