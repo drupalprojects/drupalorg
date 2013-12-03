@@ -185,7 +185,7 @@ function drupalorg_versioncontrol_views_default_views_alter(&$views) {
   );
   foreach ($views_with_tracker_url as $view_name) {
     if (isset($views[$view_name])) {
-      if (isset($views[$view_name]->display['default']->display_options['fields']['message']['issue_tracker_url'])) {
+      if (isset($views[$view_name]->display['default']->display_options['fields']['message'])) {
         $views[$view_name]->display['default']->display_options['fields']['message']['issue_tracker_url'] = 'http://drupal.org/node/%issue_id';
       }
       // Use views_litepager and remove inner file listings, except on individual commit views.
