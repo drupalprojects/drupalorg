@@ -204,7 +204,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
    * Fix the given .info file with the specified version string
    */
   protected function fixInfoFileVersion($file) {
-    global $site_name;
+    $site_name = variable_get('site_name', 'Drupal.org');
 
     $info = "\n; Information added by $site_name packaging script on " . gmdate('Y-m-d') . "\n";
     $info .= 'version = "' . $this->release_version . "\"\n";
