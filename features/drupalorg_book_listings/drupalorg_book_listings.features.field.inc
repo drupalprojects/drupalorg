@@ -1105,8 +1105,8 @@ function drupalorg_book_listings_field_default_fields() {
           'label' => 'hidden',
           'module' => 'image',
           'settings' => array(
-            'image_link' => '',
-            'image_style' => '',
+            'image_link' => 'file',
+            'image_style' => 'grid-3',
           ),
           'type' => 'image',
           'weight' => '-2',
@@ -1521,7 +1521,7 @@ function drupalorg_book_listings_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 10,
+          'weight' => '10',
         ),
         'issuemetadata' => array(
           'label' => 'above',
@@ -1597,7 +1597,7 @@ function drupalorg_book_listings_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 10,
+          'weight' => '10',
         ),
         'issuemetadata' => array(
           'label' => 'above',
@@ -1673,7 +1673,7 @@ function drupalorg_book_listings_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 10,
+          'weight' => '10',
         ),
         'issuemetadata' => array(
           'label' => 'above',
@@ -1752,7 +1752,7 @@ function drupalorg_book_listings_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 10,
+          'weight' => '10',
         ),
         'issuemetadata' => array(
           'label' => 'above',
@@ -1828,7 +1828,7 @@ function drupalorg_book_listings_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 10,
+          'weight' => '10',
         ),
         'issuemetadata' => array(
           'label' => 'above',
@@ -1904,7 +1904,7 @@ function drupalorg_book_listings_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 10,
+          'weight' => '10',
         ),
         'issuemetadata' => array(
           'label' => 'above',
