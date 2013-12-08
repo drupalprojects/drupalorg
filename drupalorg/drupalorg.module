@@ -2500,21 +2500,17 @@ function drupalorg_has_new_content($node, array &$options, $name, $type, &$info)
  * Implements HOOK_element_info_alter().
  */
 function drupalorg_element_info_alter(&$type) {
-  $type['text_format']['#process'][] = 'drupalorg_text_format_process';
+  $type['text_format']['#process'][] = 'drupalorg_element_process_text_format';
 }
 
 /**
  * Process function for text_format element.
  *
- * @see drupalorg_element_info_alter()
+ * @see drupalorg_element_info_alter().
  */
-function drupalorg_text_format_process($element) {
-  // Set fieldset with information collapsible
+function drupalorg_element_process_text_format($element) {
   $element['format']['#collapsible'] = TRUE;
-  // Set fieldset collapsed by default
   $element['format']['#collapsed'] = TRUE;
-  // Set title of collapsible trigger
   $element['format']['#title'] = t('Text format');
-
   return $element;
 }
