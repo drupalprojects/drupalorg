@@ -1129,7 +1129,7 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
 function drupalorg_form_comment_form_alter(&$form, &$form_state) {
   // Increase default comment textarea height
   if (!empty($form['comment_body'][LANGUAGE_NONE][0])) {
-    $form['comment_body'][LANGUAGE_NONE][0]['#rows'] = 20;
+    $form['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
   }
 }
 
@@ -1148,6 +1148,9 @@ function drupalorg_form_node_form_alter(&$form) {
   // Put log message at the top to encourage use of log messages.
   if (isset($form['revision_information'])) {
     $form['revision_information']['#weight'] = -100;
+  }
+  if (isset($form['nodechanges_comment_body'])) {
+    $form['nodechanges_comment_body']['#rows'] = 15;
   }
 }
 
