@@ -1124,6 +1124,16 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
 }
 
 /**
+ * Impelements hook_form_FORM_BASE_alter().
+ */
+function drupalorg_form_comment_form_alter(&$form, &$form_state) {
+  // Increase default comment textarea height
+  if (!empty($form['comment_body'][LANGUAGE_NONE][0])) {
+    $form['comment_body'][LANGUAGE_NONE][0]['#rows'] = 20;
+  }
+}
+
+/**
  * Disable aggregator feed blocks, there are so many that they overwhelm the
  * block admin UI.
  */
