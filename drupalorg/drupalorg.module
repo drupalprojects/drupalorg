@@ -2495,3 +2495,26 @@ function drupalorg_entity_property_info_alter(&$info) {
 function drupalorg_has_new_content($node, array &$options, $name, $type, &$info) {
   return theme('mark', array('type' => node_mark($node->nid, $node->changed)));
 }
+
+/**
+ * Implements HOOK_element_info_alter().
+ */
+function drupalorg_element_info_alter(&$type) {
+  $type['text_format']['#process'][] = 'drupalorg_text_format_process';
+}
+
+/**
+ * Process function for text_format element.
+ *
+ * @see drupalorg_element_info_alter()
+ */
+function drupalorg_text_format_process($element) {
+  // Set fieldset with information collapsible
+  $element['format']['#collapsible'] = TRUE;
+  // Set fieldset collapsed by default
+  $element['format']['#collapsed'] = TRUE;
+  // Set title of collapsible trigger
+  $element['format']['#title'] = t('Text format');
+
+  return $element;
+}
