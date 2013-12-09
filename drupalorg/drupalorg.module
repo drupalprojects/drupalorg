@@ -2228,44 +2228,43 @@ function drupalorg_user_view($account, $view_mode) {
         );
       }
     }
-  }
-  if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Premium Supporting Partner')) {
-    $placeholders = array(
-      '@org_name' => $account->profile_current_company_organization,
-    );
-    if ($account->uid === $user->uid) {
-      $content['aside']['membership'][] = array(
-        '#prefix' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-premium-supporting.png') . '" alt="' . t('Drupal Association Premium Supporting Partner') . '" /></a></div><div class="da-membership"><p>',
-        '#markup' => t('Thanks for being a <a href="https://association.drupal.org/supporting-partners">Premium Supporting Partner</a> of the <a href="https://association.drupal.org/">Drupal Association</a>. @org_name helps fund key initiatives that strategically support and grow the Drupal community.', $placeholders),
-        '#suffix' => '</p></div></div>',
+    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Supporting Partner Premium')) {
+      $placeholders = array(
+        '@org_name' => $account->profile_current_company_organization,
       );
+      if ($account->uid === $user->uid) {
+        $content['aside']['membership'][] = array(
+          '#prefix' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-premium-supporting.png') . '" alt="' . t('Drupal Association Premium Supporting Partner') . '" /></a></div><div class="da-membership"><p>',
+          '#markup' => t('Thanks for being a <a href="https://association.drupal.org/supporting-partners">Premium Supporting Partner</a> of the <a href="https://association.drupal.org/">Drupal Association</a>. @org_name helps fund key initiatives that strategically support and grow the Drupal community.', $placeholders),
+          '#suffix' => '</p></div></div>',
+        );
+      }
+      else {
+        $content['aside']['membership'][] = array(
+          '#prefix' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-premium-supporting.png') . '" alt="' . t('Drupal Association Premium Supporting Partner') . '" /></a></div><div class="da-membership"><p>',
+          '#markup' => t('Thanks for being a <a href="https://association.drupal.org/supporting-partners">Premium Supporting Partner</a> of the <a href="https://association.drupal.org/">Drupal Association</a>. @org_name helps fund key initiatives that strategically support and grow the Drupal community.', $placeholders),
+          '#suffix' => '</p></div></div>',
+        );
+      }
     }
-    else {
-      $content['aside']['membership'][] = array(
-        '#prefix' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-premium-supporting.png') . '" alt="' . t('Drupal Association Premium Supporting Partner') . '" /></a></div><div class="da-membership"><p>',
-        '#markup' => t('Thanks for being a <a href="https://association.drupal.org/supporting-partners">Premium Supporting Partner</a> of the <a href="https://association.drupal.org/">Drupal Association</a>. @org_name helps fund key initiatives that strategically support and grow the Drupal community.', $placeholders),
-        '#suffix' => '</p></div></div>',
+    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Technology Partner')) {
+      $placeholders = array(
+        '@org_name' => $account->profile_current_company_organization,
       );
-    }
-  }
-
-  if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Technology Partner')) {
-    $placeholders = array(
-      '@org_name' => $account->profile_current_company_organization,
-    );
-    if ($account->uid === $user->uid) {
-      $content['aside']['membership'][] = array(
-        '#prefix' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-technology-partner.png') . '" alt="' . t('Drupal Association Technology Partner') . '" /></a></div><div class="da-membership"><p>',
-        '#markup' => t('Thanks for being a <a href="https://association.drupal.org/technology-partners">Technology Partner</a> of the <a href="https://association.drupal.org/">Drupal Association</a>. @org_name helps financially support Drupal.org team, making it possible to maintain and improve the site.', $placeholders),
-        '#suffix' => '</p></div></div>',
-      );
-    }
-    else {
-      $content['aside']['membership'][] = array(
-        '#prefix' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-technology-partner.png') . '" alt="' . t('Drupal Association Technology Partner') . '" /></a></div><div class="da-membership"><p>',
-        '#markup' => t('As a <a href="https://association.drupal.org/technology-partners">Technology Partner</a>, @org_name helps financially support Drupal.org team, making it possible to maintain and improve the site.', $placeholders),
-        '#suffix' => '</p></div></div>',
-      );
+      if ($account->uid === $user->uid) {
+        $content['aside']['membership'][] = array(
+          '#prefix' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-technology-partner.png') . '" alt="' . t('Drupal Association Technology Partner') . '" /></a></div><div class="da-membership"><p>',
+          '#markup' => t('Thanks for being a <a href="https://association.drupal.org/technology-partners">Technology Partner</a> of the <a href="https://association.drupal.org/">Drupal Association</a>. @org_name helps financially support Drupal.org team, making it possible to maintain and improve the site.', $placeholders),
+          '#suffix' => '</p></div></div>',
+        );
+      }
+      else {
+        $content['aside']['membership'][] = array(
+          '#prefix' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association-technology-partner.png') . '" alt="' . t('Drupal Association Technology Partner') . '" /></a></div><div class="da-membership"><p>',
+          '#markup' => t('As a <a href="https://association.drupal.org/technology-partners">Technology Partner</a>, @org_name helps financially support Drupal.org team, making it possible to maintain and improve the site.', $placeholders),
+          '#suffix' => '</p></div></div>',
+        );
+      }
     }
   }
 
