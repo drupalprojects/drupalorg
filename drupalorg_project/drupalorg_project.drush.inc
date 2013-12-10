@@ -47,10 +47,9 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
   $map = array();
   $pcmap = array();
 
-  $result = db_query(
-    'SELECT frf.field_release_file_fid AS fid,
+  $result = db_query("SELECT frf.field_release_file_fid AS fid,
       frf.entity_id AS entity_id,
-      CONCAT("files", SUBSTRING(fm.uri FROM 9)) AS filepath,
+      CONCAT('files', SUBSTRING(fm.uri FROM 9)) AS filepath,
       frp.field_release_project_target_id AS pid,
       api.taxonomy_vocabulary_6_tid AS version_api_tid
     FROM {field_data_field_release_files} frfs
@@ -58,7 +57,7 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
       LEFT JOIN {file_managed} fm ON frf.field_release_file_fid = fm.fid
       LEFT JOIN {field_data_field_release_project} frp ON frfs.entity_id = frp.entity_id
       LEFT JOIN {field_data_taxonomy_vocabulary_6} api ON frfs.entity_id = api.entity_id
-    WHERE frf.field_release_file_display = 1 AND api.bundle = "project_release"');
+    WHERE frf.field_release_file_display = 1 AND api.bundle = 'project_release'");
 
   foreach ($result as $record) {
     $map[$record->filepath] = $record->entity_id;
