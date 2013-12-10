@@ -74,6 +74,7 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
   $globalcounts = array();
   $mcounts = array();
   foreach ($files as $file) {
+    drush_log(dt('Parsing @file.', array('@file' => $file)), 'ok');
     $month = array();
     preg_match('/awstats(\d{2})(\d{4})/', $file, $month);
     if (!isset($month[1]) || !isset($month[2])) {
@@ -105,6 +106,8 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
     db_query('SELECT 1'); // Ping the database to keep our connection alive.
   }
 
+  /* Disabling storing monthly stats for now.
+  drush_log('Writing statistics to Mongo', 'ok');
   $conn = new Mongo();
   $m = $conn->selectDB("download-statistics");
   $coll = $m->selectCollection('data');
@@ -120,6 +123,7 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
     }
     $coll->insert(array('pid' => (int)$project, 'downloads' => $data));
   }
+  */
 
   drush_log('Writing statistics to database', 'ok');
   foreach ($map as $k => $v) {
