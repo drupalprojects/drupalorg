@@ -46,16 +46,28 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
   $now = time();
   $map = array();
   $pcmap = array();
-  $result = db_query('SELECT f.fid, f.filepath, n.pid, n.version_api_tid FROM {files} f INNER JOIN {project_release_file} r ON f.fid = r.fid INNER JOIN {project_release_nodes} n ON r.nid = n.nid');
-  while ($row = db_fetch_object($result)) {
-    $map[$row->filepath] = $row->fid;
-    $pcmap[$row->filepath] = array($row->pid, !empty($row->version_api_tid) ? $row->version_api_tid : -1);
+
+  $result = db_query(
+    'SELECT frf.field_release_file_fid AS fid,
+      frf.entity_id AS entity_id,
+      CONCAT("files", SUBSTRING(fm.uri FROM 9)) AS filepath,
+      frp.field_release_project_target_id AS pid,
+      api.taxonomy_vocabulary_6_tid AS version_api_tid
+    FROM {field_data_field_release_files} frfs
+      LEFT JOIN {field_data_field_release_file} frf ON frfs.field_release_files_value = frf.entity_id
+      LEFT JOIN {file_managed} fm ON frf.field_release_file_fid = fm.fid
+      LEFT JOIN {field_data_field_release_project} frp ON frfs.entity_id = frp.entity_id
+      LEFT JOIN {field_data_taxonomy_vocabulary_6} api ON frfs.entity_id = api.entity_id
+    WHERE frf.field_release_file_display = 1 AND api.bundle = "project_release"');
+
+  foreach ($result as $record) {
+    $map[$record->filepath] = $record->entity_id;
+    $pcmap[$record->filepath] = array($record->pid, !empty($record->version_api_tid) ? $record->version_api_tid : -1);
   }
 
-  $result = db_query('SELECT tid, name FROM {term_data} WHERE vid = %d', _project_release_get_api_vid());
   $coremap = array();
-  while ($row = db_fetch_object($result)) {
-    $coremap[$row->tid] = $row->name;
+  foreach (taxonomy_get_tree(variable_get('project_release_api_vocabulary', '-1')) as $term) {
+    $coremap[$term->tid] = $term->name;
   }
   $coremap[-1] = 'Unknown';
 
@@ -113,7 +125,7 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
   drush_log('Writing statistics to database', 'ok');
   foreach ($map as $k => $v) {
     if (!empty($globalcounts[$k])) {
-      db_query('UPDATE {project_release_file} SET downloads = %d WHERE fid = %d', $globalcounts[$k], $v);
+      db_query('UPDATE {field_data_field_release_file_downloads} SET field_release_file_downloads_value = :downloadcount WHERE entity_id = :entity_id', array(':downloadcount' => $globalcounts[$k], ':entity_id' => $v));
     }
   }
   drush_log('Completed.', 'ok');
