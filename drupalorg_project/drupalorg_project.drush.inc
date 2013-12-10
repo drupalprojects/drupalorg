@@ -99,12 +99,14 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
       else {
         $globalcounts[$arr[0]] = (int) $arr[1];
       }
-      $curr = $pcmap[$arr[0]];
-      if (isset($mcounts[$curr[0]][$month][$curr[1]])) {
-        $mcounts[$curr[0]][$month][$curr[1]] += (int) $arr[1];
-      }
-      else {
-        $mcounts[$curr[0]][$month][$curr[1]] = (int) $arr[1];
+      if (isset($pcmap[$arr[0]])) {
+        $curr = $pcmap[$arr[0]];
+        if (isset($mcounts[$curr[0]][$month][$curr[1]])) {
+          $mcounts[$curr[0]][$month][$curr[1]] += (int) $arr[1];
+        }
+        else {
+          $mcounts[$curr[0]][$month][$curr[1]] = (int) $arr[1];
+        }
       }
       $count++;
     }
