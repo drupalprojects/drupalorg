@@ -192,6 +192,10 @@ function drupalorg_git_varnish_node_change($node) {
   }
   elseif (project_release_node_is_release($node)) {
     $project = node_load(project_release_get_release_project_nid($node));
+    if ($project === FALSE) {
+      // The release node was orpaned.
+      return;
+    }
   }
   else {
     return;
