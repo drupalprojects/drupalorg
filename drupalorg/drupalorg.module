@@ -1148,6 +1148,12 @@ function drupalorg_form_node_form_alter(&$form) {
   // Put log message at the top to encourage use of log messages.
   if (isset($form['revision_information'])) {
     $form['revision_information']['#weight'] = -100;
+
+    // Hide revision fields on node add form.
+    // @TODO Should be removed in D8 #308820.
+    if (!isset($form['#node']->nid)) {
+      $form['revision_information']['#access'] = FALSE;
+    }
   }
   if (isset($form['nodechanges_comment_body'])) {
     $form['nodechanges_comment_body']['#rows'] = 15;
