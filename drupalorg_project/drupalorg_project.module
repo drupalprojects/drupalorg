@@ -179,8 +179,7 @@ function drupalorg_project_menu_alter(&$items) {
   // Clobber the menu item from project_solr with a redirect.
   $items['project'] = array(
     'access arguments' => array('access content'),
-    'page callback' => 'drupal_goto',
-    'page arguments' => array('download'),
+    'page callback' => 'drupalorg_project_redirect_to_download',
     'type' => MENU_CALLBACK,
   );
 
@@ -188,6 +187,10 @@ function drupalorg_project_menu_alter(&$items) {
   // own special rules in a few cases.
   $items['node/%project_edit_project/edit/promote']['access callback'] = 'drupalorg_project_promote_project_access';
   $items['node/%project_edit_project/edit/promote/confirm']['access callback'] = 'drupalorg_project_promote_project_access';
+}
+
+function drupalorg_project_redirect_to_download() {
+  drupal_goto('download');
 }
 
 /**
