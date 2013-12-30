@@ -1,4 +1,4 @@
-name = Drupal.org
+name = Drupal.org Honeypot
 description = "Extra sticky honeypot for special cases"
 package = Drupal.org
 dependencies[] = honeypot
