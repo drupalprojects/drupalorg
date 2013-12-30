@@ -96,6 +96,13 @@ function drupalorg_project_menu() {
     'access arguments'   => array('view', 2),
     'type'               => MENU_CALLBACK,
   );
+  $items['project/%project/maintainers.json'] = array(
+    'page callback' => 'drupalorg_maintainers_json',
+    'page arguments' => array(1),
+    'access callback' => 'node_access',
+    'access arguments' => array('view', 1),
+    'type' => MENU_CALLBACK,
+  );
 
   // Callbacks to process legacy urls.
   $map = array(
@@ -1426,4 +1433,16 @@ function drupalorg_project_field_extra_fields_display_alter(&$displays, $context
     $displays['follow_link']['visible'] = FALSE;
     $displays['jump_links']['visible'] = FALSE;
   }
+}
+
+/**
+ * Returns json of maintainers mostly for S.D.O.
+ * For now, we will only add people who can create releases.
+ * This might change
+ */
+function drupalorg_maintainers_json($project) {
+  if (!empty($project->project['maintainers'])) {
+    return drupal_json_output(json_encode($project->project['maintainers']));
+  }
+  drupal_json_output(array());
 }
