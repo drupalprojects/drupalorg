@@ -608,6 +608,21 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
       // Add header label and last updated information to node body.
       $node->content['project_issue_header']['#value'] = '<h2>' . t('Issue Summary') . '</h2>';
     }
+    elseif (project_release_node_is_release($node)) {
+      // Add link to change notices relating to this release.
+      if ($field_project = field_get_items('node', $node, 'field_release_project')) {
+        $project = node_load($field_project[0]['target_id']);
+        $machine_name = field_get_items('node', $project, 'field_project_machine_name');
+
+        if ($field_version = field_get_items('node', $node, 'field_release_version')) {
+          $node->content['project_release_change_notices']['#markup'] = l('View change notices for this release', 'list-changes/' . $machine_name[0]['value'], array(
+            'query' => array(
+              'version' => $field_version[0]['value'],
+            ),
+          ));
+        }
+      }
+    }
     elseif ($node->type === 'changenotice') {
       if ($field_project = field_get_items('node', $node, 'field_project')) {
         $project = node_load($field_project[0]['target_id']);
