@@ -140,7 +140,11 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
   drush_log('Writing statistics to database', 'ok');
   foreach ($map as $k => $v) {
     if (!empty($globalcounts[$k])) {
-      db_query('UPDATE {field_data_field_release_file_downloads} SET field_release_file_downloads_value = :downloadcount WHERE entity_id = :entity_id', array(':downloadcount' => $globalcounts[$k], ':entity_id' => $v));
+      $collection = field_collection_item_load($v);
+      if (empty($collection->field_release_file_downloads) || $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] != $globalcounts[$k]) {
+        $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] = $globalcounts[$k];
+        $collection->save(TRUE);
+      }
     }
   }
   drush_log('Completed.', 'ok');
