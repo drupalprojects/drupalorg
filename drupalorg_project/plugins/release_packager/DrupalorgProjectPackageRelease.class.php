@@ -105,7 +105,8 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     }
 
     $info_files = array();
-    $youngest = $this->fileFindYoungest($this->temp_directory . '/' . $export_to, 0, $exclude, $info_files);
+    // Use the request time if the youngest file is from the future.
+    $youngest = min($this->fileFindYoungest($this->temp_directory . '/' . $export_to, 0, $exclude, $info_files), DRUSH_REQUEST_TIME);
     if ($this->release_node->field_release_build_type[$this->release_node->language][0]['value'] === 'dynamic' && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $youngest) {
       // The existing tarball for this release is newer than the youngest
       // file in the directory, we're done.
