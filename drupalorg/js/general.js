@@ -48,4 +48,18 @@
         });
     }
   };
+
+  /**
+   * Randomize children, used on Hosting PaaS and Enterprise pages.
+   */
+  Drupal.behaviors.drupalorgRandom = {
+    attach: function (context) {
+      $('.drupalorg-random:not(.drupalorg-random-processed)', context).addClass('drupalorg-random-processed').each(function () {
+        var $this = $(this),
+          elements = $this.children().get();
+        for (var j, x, i = elements.length; i; j = Math.floor(Math.random() * i), x = elements[--i], elements[i] = elements[j], elements[j] = x);
+        $this.html(elements);
+      });
+    }
+  };
 })(jQuery);
