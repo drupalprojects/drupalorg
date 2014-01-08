@@ -1457,7 +1457,7 @@ function drupalorg_project_field_extra_fields_display_alter(&$displays, $context
  */
 function drupalorg_maintainers_json($project) {
   if (!empty($project->project['maintainers'])) {
-    return drupal_json_output(json_encode($project->project['maintainers']));
+    return drupal_json_output($project->project['maintainers']);
   }
   drupal_json_output(array());
 }
