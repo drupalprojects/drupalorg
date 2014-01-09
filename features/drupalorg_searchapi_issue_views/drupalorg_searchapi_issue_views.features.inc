@@ -241,17 +241,17 @@ function drupalorg_searchapi_issue_views_default_search_api_server() {
             "boost" : "1.0"
           },
           "search_api_aggregation_1" : {
-            "table" : "search_api_db_project_issues_search_api_aggregation_1",
+            "table" : "search_api_db_project_issues_text",
             "type" : "text",
             "boost" : "2.0"
           },
           "body:value" : {
-            "table" : "search_api_db_project_issues_body_value",
+            "table" : "search_api_db_project_issues_text",
             "type" : "text",
             "boost" : "1.0"
           },
           "comments:comment_body:value" : {
-            "table" : "search_api_db_project_issues_comments_comment_body_value",
+            "table" : "search_api_db_project_issues_text",
             "type" : "list\\u003Ctext\\u003E",
             "boost" : "0.5"
           },
