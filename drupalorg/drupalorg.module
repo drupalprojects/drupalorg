@@ -2515,21 +2515,3 @@ function drupalorg_has_new_content($node, array &$options, $name, $type, &$info)
   return theme('mark', array('type' => node_mark($node->nid, $node->changed)));
 }
 
-/**
- * Implements HOOK_element_info_alter().
- */
-function drupalorg_element_info_alter(&$type) {
-  $type['text_format']['#process'][] = 'drupalorg_element_process_text_format';
-}
-
-/**
- * Process function for text_format element.
- *
- * @see drupalorg_element_info_alter().
- */
-function drupalorg_element_process_text_format($element) {
-  $element['format']['#collapsible'] = TRUE;
-  $element['format']['#collapsed'] = TRUE;
-  $element['format']['#title'] = t('Text format');
-  return $element;
-}
