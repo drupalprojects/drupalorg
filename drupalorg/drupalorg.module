@@ -2465,8 +2465,7 @@ function drupalorg_comment_view_alter(&$build) {
     if ($build['#comment']->uid != $user->uid) {
       $comment = $build['#comment'];
       $build['links']['comment']['#links']['comment-report'] = array(
-        'title' => t('report spam<span class="element-invisible"> on user @name</span>', array('@name' => $user->name)),
-        'html' => TRUE,
+        'title' => t('report spam'),
         'href' => 'node/add/project-issue/webmasters',
         'query' => array(
           'component' => 'Spam',
