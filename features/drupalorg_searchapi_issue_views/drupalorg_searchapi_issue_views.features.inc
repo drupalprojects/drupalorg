@@ -82,17 +82,21 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
               "body:value" : true,
               "comments:comment_body:value" : true
             },
-            "spaces" : "[^[:alnum:]]",
+            "spaces" : "[^[:alnum:]_$#*\\\\\\\\]",
             "ignorable" : "[\\u0027]"
           }
         },
         "search_api_stopwords" : {
-          "status" : 0,
+          "status" : 1,
           "weight" : "30",
           "settings" : {
-            "fields" : [],
-            "file" : "",
-            "stopwords" : "but\\r\\ndid\\r\\nthe this that those\\r\\netc"
+            "fields" : {
+              "search_api_aggregation_1" : true,
+              "body:value" : true,
+              "comments:comment_body:value" : true
+            },
+            "file" : "sites\\/default\\/stopwords.txt",
+            "stopwords" : ""
           }
         },
         "search_api_highlighting" : {
