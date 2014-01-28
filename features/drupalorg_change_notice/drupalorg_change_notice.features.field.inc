@@ -10,6 +10,75 @@
 function drupalorg_change_notice_field_default_fields() {
   $fields = array();
 
+  // Exported field: 'node-changenotice-field_change_record_status'.
+  $fields['node-changenotice-field_change_record_status'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_change_record_status',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'Draft',
+          1 => 'Published',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'changenotice',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'By default, change records are created in a draft state. Making the change published will make it appear on the default change list.',
+      'display' => array(
+        'default' => array(
+          'label' => 'inline',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '-3',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_change_record_status',
+      'label' => 'Change record status',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '2',
+      ),
+    ),
+  );
+
   // Exported field: 'node-changenotice-field_change_to'.
   $fields['node-changenotice-field_change_to'] = array(
     'field_config' => array(
@@ -59,7 +128,7 @@ function drupalorg_change_notice_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '2',
+          'weight' => '3',
         ),
         'full' => array(
           'label' => 'inline',
@@ -128,7 +197,7 @@ function drupalorg_change_notice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '3',
+        'weight' => '4',
       ),
       'widget_type' => 'text_textfield',
     ),
@@ -183,7 +252,7 @@ function drupalorg_change_notice_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '1',
+          'weight' => '2',
         ),
         'full' => array(
           'label' => 'inline',
@@ -252,7 +321,7 @@ function drupalorg_change_notice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '2',
+        'weight' => '3',
       ),
       'widget_type' => 'text_textfield',
     ),
@@ -616,7 +685,7 @@ function drupalorg_change_notice_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '4',
+          'weight' => '5',
         ),
         'full' => array(
           'label' => 'above',
@@ -685,7 +754,7 @@ function drupalorg_change_notice_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'text_textarea',
-        'weight' => '5',
+        'weight' => '6',
       ),
       'widget_type' => 'text_textarea',
     ),
@@ -893,7 +962,7 @@ function drupalorg_change_notice_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '6',
+          'weight' => '7',
         ),
         'full' => array(
           'label' => 'above',
@@ -993,7 +1062,7 @@ function drupalorg_change_notice_field_default_fields() {
           'default_value_php' => NULL,
         ),
         'type' => 'options_buttons',
-        'weight' => '7',
+        'weight' => '9',
       ),
       'widget_type' => 'optionwidgets_buttons',
     ),
@@ -1056,7 +1125,7 @@ function drupalorg_change_notice_field_default_fields() {
           'module' => 'project_issue',
           'settings' => array(),
           'type' => 'issue_id',
-          'weight' => '3',
+          'weight' => '4',
         ),
         'issuemetadata' => array(
           'label' => 'above',
@@ -1087,7 +1156,7 @@ function drupalorg_change_notice_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -2105,7 +2174,7 @@ function drupalorg_change_notice_field_default_fields() {
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_table',
-          'weight' => '5',
+          'weight' => '6',
         ),
         'full' => array(
           'label' => 'hidden',
@@ -2152,7 +2221,7 @@ function drupalorg_change_notice_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -2160,6 +2229,8 @@ function drupalorg_change_notice_field_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Anything not included in categories above. Add details to the Details field below.');
+  t('By default, change records are created in a draft state. Making the change published will make it appear on the default change list.');
+  t('Change record status');
   t('Check all that apply - who does this change impact?');
   t('Coder Review');
   t('Coder Upgrade');

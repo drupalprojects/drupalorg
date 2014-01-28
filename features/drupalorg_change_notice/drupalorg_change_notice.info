@@ -19,6 +19,7 @@ datestamp = 1384835458
 features[ctools][] = field_group:field_group:1
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:1
+features[field][] = node-changenotice-field_change_record_status
 features[field][] = node-changenotice-field_change_to
 features[field][] = node-changenotice-field_change_to_branch
 features[field][] = node-changenotice-field_coder_recorded

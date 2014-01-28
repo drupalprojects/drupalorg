@@ -1,3 +1,53 @@
 <?php
 
 include_once('drupalorg_change_notice.features.inc');
+
+/**
+ * Implements hook_node_insert().
+ *
+ * If the user created a draft change record, provide a link to the drafts.
+ */
+function drupalorg_change_notice_node_insert($node) {
+  if ($node->type == 'changenotice') {
+    if ($node->field_change_record_status[LANGUAGE_NONE][0]['value'] == 0) {
+      // Redirect to the draft change record listing.
+      drupal_set_message(t('Created draft change record. <a href="@url">View all draft change records</a>.', array('@url' => url('list-changes/drafts'))));
+    }
+  }
+}
+
+/**
+ * Implements hook_node_presave().
+ *
+ * Resets the node publish date when a change record is made published.
+ */
+function drupalorg_change_notice_node_presave($node) {
+  if ($node->type == 'changenotice' && !empty($node->original) && !empty($node->original->field_change_record_status[LANGUAGE_NONE][0]) && !empty($node->field_change_record_status[LANGUAGE_NONE][0]['value'])) {
+    // Only reset the created time if the value was exactly zero before, so
+    // that we don't inadvertently update change records that existed before
+    // the field was added.
+    if (is_numeric($node->original->field_change_record_status[LANGUAGE_NONE][0]['value']) && $node->original->field_change_record_status[LANGUAGE_NONE][0]['value'] == 0 && $node->field_change_record_status[LANGUAGE_NONE][0]['value'] == 1) {
+      $node->created = time();
+    }
+  }
+}
+
+/**
+ * Implements hook_field_attach_view_alter().
+ *
+ * Add a link to view all published or draft changes.
+ */
+function drupalorg_change_notice_field_attach_view_alter(&$output, $context) {
+  if ($context['entity_type'] == 'node' && $context['view_mode'] == 'full' && !empty($context['entity'])) {
+    if ($context['entity']->type == 'changenotice') {
+      if (!empty($output['field_change_record_status']['#items'][0])) {
+        if ($output['field_change_record_status']['#items'][0]['value']) {
+          $output['field_change_record_status'][0]['#suffix'] = ' (' . t('<a href="@url">View all published change records</a>', array('@url' => url('list-changes'))) . ')';
+        }
+        else {
+          $output['field_change_record_status'][0]['#suffix'] = ' (' . t('<a href="@url">View all draft change records</a>', array('@url' => url('list-changes/drafts'))) . ')';
+        }
+      }
+    }
+  }
+}
