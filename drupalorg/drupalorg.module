@@ -348,10 +348,7 @@ function drupalorg_block_view($delta, $block = NULL) {
             break;
 
           case 'project/issues/user':
-            /* @todo d7 - Test this when Project is ready - should have a link
-             on project/issues/user to add the Your Issues block to dashboard,
-             and the link should work.*/
-            $blocks[] = array('Your Issues', 'views', 'a512ec6dea837b33a2b010c2af17ed85');
+            $blocks[] = array('Your Issues', 'views', '1764f77afedbacb7539d78cc3f1d414f');
             break;
 
           case 'getting-involved':
