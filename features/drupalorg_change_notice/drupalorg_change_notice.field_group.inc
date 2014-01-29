@@ -70,10 +70,13 @@ function drupalorg_change_notice_field_group_info() {
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Updates Done (doc team, etc.)',
       'instance_settings' => array(
+        'required_fields' => 1,
         'classes' => ' group-recorded field-group-fieldset',
+        'description' => '',
       ),
+      'formatter' => 'collapsed',
     ),
   );
   $export['group_recorded|node|changenotice|form'] = $field_group;

@@ -670,13 +670,7 @@ function drupalorg_change_notice_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'changenotice',
-      'default_value' => array(
-        0 => array(
-          'value' => '',
-          'format' => '1',
-          '_error_element' => 'default_value_widget][field_description][0][value',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => 'Describe the change, and its impact on site users, site builders, themers, and module developers. If appropriate, give before/after code samples. Good examples: <a href="http://drupal.org/update/modules/6/7#drupal_set_title">6/7 module update guide section</a>, <a href="http://drupal.org/update/themes/6/7#search-result-headings">6/7 theme update guide section</a> (though it is not necessary to link to the issue).',
       'display' => array(
@@ -1780,9 +1774,6 @@ function drupalorg_change_notice_field_default_fields() {
             ),
           ),
           'sort' => array(
-            'direction' => 'ASC',
-            'field' => 'taxonomy_vocabulary_5:tid',
-            'property' => 'nid',
             'type' => 'none',
           ),
           'target_bundles' => array(
@@ -1833,7 +1824,7 @@ function drupalorg_change_notice_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_project',
       'label' => 'Project',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'handler_settings' => array(
           'target_bundles' => array(
