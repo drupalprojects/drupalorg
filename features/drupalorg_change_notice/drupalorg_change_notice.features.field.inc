@@ -1086,7 +1086,7 @@ function drupalorg_change_notice_field_default_fields() {
       'locked' => '0',
       'module' => 'entityreference',
       'settings' => array(
-        'handler' => 'base',
+        'handler' => 'issues',
         'handler_settings' => array(
           'behaviors' => array(
             'views-select-list' => array(
@@ -1095,7 +1095,7 @@ function drupalorg_change_notice_field_default_fields() {
           ),
           'sort' => array(
             'direction' => 'ASC',
-            'property' => 'nid',
+            'property' => 'title',
             'type' => 'property',
           ),
           'target_bundles' => array(
