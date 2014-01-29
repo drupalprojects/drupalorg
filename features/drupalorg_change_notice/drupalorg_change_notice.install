@@ -1,0 +1,27 @@
+<?php
+/**
+ * @file
+ * Install and update functions for drupalorg_change_notice.
+ */
+
+/**
+ * Give existing change records "published change" status.
+ */
+function drupalorg_change_notice_update_7000() {
+  // Find all existing change notices with a null value for the status field.
+  $nids = db_query(
+    "SELECT n.nid
+     FROM {node} n
+     LEFT JOIN {field_data_field_change_record_status} f ON n.nid = f.entity_id
+     WHERE n.type = 'changenotice'
+     AND f.field_change_record_status_value IS NULL
+    ")
+    ->fetchCol();
+
+  // Re-save each as a live change record.
+  $nodes = node_load_multiple($nids);
+  foreach ($nodes as $node) {
+    $node->field_change_record_status[LANGUAGE_NONE][0]['value'] = 1;
+    node_save($node);
+  }
+}
