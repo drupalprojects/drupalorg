@@ -357,14 +357,6 @@ function drupalorg_project_form_project_issue_node_form_alter(&$form, $form_stat
   if (isset($_GET['tags'])) {
     $form['taxonomy_vocabulary_9'][LANGUAGE_NONE]['#default_value'] = $_GET['tags'];
   }
-  // These apparently can't be altered via the Field UI.
-  $form['title']['#size'] = 120;
-  $form['field_issue_parent'][LANGUAGE_NONE][0]['target_id']['#size'] = 120;
-  if (!empty($form['field_issue_related'][LANGUAGE_NONE])) {
-    foreach (element_children($form['field_issue_related'][LANGUAGE_NONE]) as $key) {
-      $form['field_issue_related'][LANGUAGE_NONE][$key]['target_id']['#size'] = 120;
-    }
-  }
 }
 
 /**
