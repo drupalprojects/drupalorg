@@ -1079,16 +1079,6 @@ function drupalorg_project_preprocess_drupalorg_home(&$vars) {
 }
 
 /**
- * Implementation of template_preprocess_comment_wrapper().
- */
-function drupalorg_project_preprocess_comment_wrapper(&$variables) {
-  if (project_issue_node_type_is_issue($variables['node']->type) && !empty($variables['content']['comment_form'])) {
-    $update_link = 'node/' . $variables['content']['comment_form']['#node']->nid . '/edit';
-    $variables['comment_form_title'] = t('Add new comment') . ' | ' . l(t('Update this issue'), $update_link);
-  }
-}
-
-/**
  * Gather information for the bottom of project pages.
  *
  * @param $node
