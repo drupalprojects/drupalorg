@@ -1,5 +1,5 @@
 name = Drupal.org Git/Varnish Control
-description = "Provides a Varnish-cacheable alternative to drush for getting data necessary for Drupal.org Git SSH auth.'
+description = "Provides a Varnish-cacheable alternative to drush for getting data necessary for Drupal.org Git SSH auth."
 package = Drupal.org
 dependencies[] = varnish
 dependencies[] = versioncontrol_project
