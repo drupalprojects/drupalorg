@@ -603,6 +603,15 @@ function drupalorg_get_activity($_force = FALSE) {
       $view = views_get_view('drupalorg_casestudies');
       if (!empty($view)) {
         $view->preview('block_1');
+        // Ensure the derivative gets generated
+        $style = 'grid-4';
+        foreach ($view->result as $result) {
+          $uri = $result->field_field_mainimage[0]['rendered']['#item']['uri'];
+          $destination = image_style_path($style, $uri);
+          if (!file_exists($destination)) {
+            image_style_create_derivative(image_style_load($style), $uri, $destination);
+          }
+        }
         foreach ($view->style_plugin->rendered_fields as $row) {
           $stats['sites_made'][] = implode('', $row);
         }
