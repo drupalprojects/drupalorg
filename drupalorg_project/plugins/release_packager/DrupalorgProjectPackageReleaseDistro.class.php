@@ -104,8 +104,8 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
       if (!drush_shell_cd_and_exec($profile_dir, $this->conf['drush'] . ' make --drupal-org=contrib --drupal-org-build-root=%s --drupal-org-log-errors-to-file --drupal-org-log-package-metadata=metadata-contrib.json %s .', $this->temp_directory, $drupalorg_makefile)) {
         // The build failed, get any output error messages and include them
         // in the packaging error report.
-        if (file_exists($profile_dir . '/build_errors.txt')) {
-          $lines = file($profile_dir . '/build_errors.txt', FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+        if (file_exists($this->temp_directory . '/build_errors.txt')) {
+          $lines = file($this->temp_directory . '/build_errors.txt', FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
         }
         else {
           $lines = drush_shell_exec_output();
