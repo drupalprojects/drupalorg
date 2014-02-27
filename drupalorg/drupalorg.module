@@ -2560,7 +2560,7 @@ function drupalorg_menu_local_tasks_alter(&$data, $router_item, $root_path) {
       break;
 
     case 'forum/%':
-      if (menu_get_object('forum_forum')->container) {
+      if (!empty(menu_get_object('forum_forum')->container)) {
         unset($data['actions']['output']['forum']);
       }
       break;
