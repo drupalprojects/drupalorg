@@ -2516,7 +2516,7 @@ function drupalorg_comment_view_alter(&$build) {
     if ($build['#comment']->uid != $user->uid) {
       $comment = $build['#comment'];
       $build['links']['comment']['#links']['comment-report'] = array(
-        'title' => t('report spam'),
+        'title' => t('report spam<span class="element-invisible"> on user @name</span>', array('@name' => $build['#comment']->name)),
         'href' => 'node/add/project-issue/webmasters',
         'query' => array(
           'component' => 'Spam',
@@ -2524,6 +2524,7 @@ function drupalorg_comment_view_alter(&$build) {
           'title' => 'Spam Report',
           'body' => 'Reporting the following comment as spam: ' . url('node/' . $comment->nid, array('absolute' => TRUE, 'fragment' => 'comment-' . $comment->cid)),
         ),
+        'html' => TRUE,
       );
     }
   }
