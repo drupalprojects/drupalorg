@@ -62,4 +62,22 @@
       });
     }
   };
+
+  /**
+   * Load block content from other sites.
+   */
+  Drupal.behaviors.drupalorgBlockLoad = {
+    attach: function () {
+      var $block = $('#drupalorg-security-issues-placeholder');
+      if ($block.length > 0) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://security.drupal.org/dofeed', true);
+        xhr.withCredentials = true;
+        xhr.onload = function () {
+          $block.parent().html(this.responseText);
+        };
+        xhr.send();
+      }
+    }
+  };
 })(jQuery);
