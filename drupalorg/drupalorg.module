@@ -199,6 +199,21 @@ function drupalorg_menu() {
 }
 
 /**
+ * Implements hook_menu_alter().
+ */
+function drupalorg_menu_alter(&$menu) {
+  // As the forum topic is prepopulated based on the forum key in the URL (see
+  // drupalorg_form_alter()) accessing the node/add/forum page directly throws
+  // an error. As such direct access to this page should be denied access. To
+  // access this form, users will need to go to node/add/form/<forum id>
+  if (isset($menu['node/add/forum'])) {
+    $menu['node/add/forum/%'] = $menu['node/add/forum'];
+    $menu['node/add/forum/%']['page arguments'] = array('forum', 3);
+    $menu['node/add/forum']['access callback'] = FALSE;
+  }
+}
+
+/**
  * Implements hook_field_access().
  *
  * This takes care of several file access tweaks:
@@ -1125,8 +1140,18 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   }
 
   // Hide the taxonomy_field_extras field on forum node forms
-  if ($form_id == 'forum_node_form' && !user_access('administer content')) {
-    $form['taxonomyextra']['#access'] = FALSE;
+  if ($form_id == 'forum_node_form') {
+    if (!user_access('administer content')) {
+      $form['taxonomyextra']['#access'] = FALSE;
+    }
+    // If the node is being newly created, we want to set the value of the
+    // forum to not be editable, as users will be creating the forum topic from
+    // within the forum to which it is to be posted. However, we want to allow
+    // users to move threads after they have been created.
+    if (empty($form_state['node']->nid)) {
+      $form['taxonomy_forums'][LANGUAGE_NONE]['#type'] = 'value';
+      $form['taxonomy_forums']['#suffix'] = '<p>' . t('Forum: %forum', array('%forum' => preg_replace('/^[- ]*/', '', $form['taxonomy_forums'][LANGUAGE_NONE]['#options'][$form['taxonomy_forums'][LANGUAGE_NONE]['#default_value']]))) . '</p>';
+    }
   }
 }
 
@@ -2519,3 +2544,25 @@ function drupalorg_has_new_content($node, array &$options, $name, $type, &$info)
   return theme('mark', array('type' => node_mark($node->nid, $node->changed)));
 }
 
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function drupalorg_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  switch ($root_path) {
+    // We want to remove the 'add forum topic if we are on the forum top page,
+    // so users can only add forum topics from within a forum. This prevents
+    // users from having to guess at the forum which is best suited to the
+    // topic they are creating. By forcing them to go to a forum, they will be
+    // more likely to read the forum descriptions, thereby posting in the
+    // correct forum.
+    case 'forum':
+      unset($data['actions']['output']['forum']);
+      break;
+
+    case 'forum/%':
+      if (menu_get_object('forum_forum')->container) {
+        unset($data['actions']['output']['forum']);
+      }
+      break;
+  }
+}
