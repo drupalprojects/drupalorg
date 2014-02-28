@@ -1286,6 +1286,8 @@ function drupalorg_project_views_pre_view(&$view) {
         if (!empty($input['text'])) {
           $view->set_item_option('page', 'field', 'search_api_relevance', 'exclude', FALSE);
           $view->display_handler->default_display->options['style_options']['default'] = 'search_api_relevance';
+          // Hide pager because count query is expensive.
+          $view->display_handler->default_display->options['pager']['type'] = 'lite';
         }
       }
       break;

@@ -9,7 +9,6 @@ dependencies[] = entity
 dependencies[] = search_api
 dependencies[] = search_api_db
 dependencies[] = views
-dependencies[] = views_litepager
 datestamp = 1389777511
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:1
