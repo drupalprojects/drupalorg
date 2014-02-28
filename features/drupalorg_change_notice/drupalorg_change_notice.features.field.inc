@@ -1774,7 +1774,9 @@ function drupalorg_change_notice_field_default_fields() {
             ),
           ),
           'sort' => array(
-            'type' => 'none',
+            'direction' => 'ASC',
+            'property' => 'title',
+            'type' => 'property',
           ),
           'target_bundles' => array(
             'project' => 'project',
