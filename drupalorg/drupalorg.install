@@ -1629,3 +1629,10 @@ function drupalorg_update_7052() {
     node_save($node);
   }
 }
+
+/**
+ * Delete module categories path which is being replaced by a menu item.
+ */
+function drupalorg_update_7053() {
+  path_delete(array('alias' => 'project/project_module/categories'));
+}

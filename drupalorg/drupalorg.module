@@ -125,6 +125,12 @@ function drupalorg_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+  $items['project/project_module/categories'] = array(
+    'title' => 'Module Categories',
+    'page callback' => 'drupalorg_module_categories_page',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
 
   $items['home'] = array(
     'title' => 'Drupal - Open Source CMS',
@@ -895,6 +901,14 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   $module_index = '<h2>' . t('Module Index') . '</h2>';
   $module_index .= theme('item_list', array('items' => $modules, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => array('flat'))));
   $variables['module_index'] = $module_index;
+}
+
+/**
+ * Page callback for browsing modules by category.
+ */
+function drupalorg_module_categories_page() {
+  module_load_include('inc', 'project_solr', 'project_solr.pages');
+  return project_solr_category_page('project_module', taxonomy_vocabulary_load(3));
 }
 
 /**
