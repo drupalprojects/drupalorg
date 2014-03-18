@@ -536,11 +536,10 @@ function drupalorg_handbook_form_comment_form_alter(&$form, $form_state) {
     // This is a node in a book. Display disclaimer.
     $form['drupalorg-disclaimer'] = array(
       '#weight' => -2,
-      '#markup' => '<p>' . t('Note:') . '</p>' .
-      '<ul>' .
-      '<li>' . t('Is your comment an addition, problem report, or example? Instead of adding a comment, edit the page content directly. Or, if you are unsure of the correct edits, add a comment here, and then edit the page to update the page status. Be aware that comments are removed after page edits are made.') . '</li>' .
-      '<li>' . t('Is your comment a question or request for support? Take it to the <a href="!forums">forums</a>. Questions are not answered here, and comments not providing useful information are removed.', array('!forums' => url('forum'))) . '</li>' .
-      '</ul>',
+      '#markup' => '<div class="messages warning">' .
+      '<p>' . t('<strong>Is your comment an addition, problem report, or example?</strong><br />Instead of adding a comment, edit the page content directly. If you are unsure of the correct edits, add a comment here and then edit the page to update the page status. Once a solution for the page has been agreed upon, edit the page accordingly and read <a href="!incorporating_comments">incorporating comments</a> on how to remove the related comment(s).', array('!incorporating_comments' => url('node/135589'))) . '</p>' .
+      '<p>' . t('<strong>Is your comment a question or request for support?</strong><br />Take it to the <a href="!forums">forums</a>. Questions are not answered here, and comments not providing useful information may be removed at any time.', array('!forums' => url('forum'))) . '</p>' .
+      '</div>',
     );
   }
 }
