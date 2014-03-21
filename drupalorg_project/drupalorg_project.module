@@ -49,7 +49,7 @@ define('DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID', 1025122);
 /**
  * Defaults for project_project_node_form
  */
-define('DRUPALORG_DEFAULT_LICENSE', 'GNU public license, version 2');
+define('DRUPALORG_DEFAULT_LICENSE', 'GNU General Public License, version 2 or later');
 define('DRUPALORG_DEFAULT_LICENSE_LINK', 'http://www.gnu.org/licenses/old-licenses/gpl-2.0.html');
 
 
