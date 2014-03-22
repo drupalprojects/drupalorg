@@ -337,7 +337,19 @@ function drupalorg_project_form_project_issue_node_form_alter(&$form, $form_stat
     $form['field_issue_component'][LANGUAGE_NONE]['#default_value'] = array($_GET['component']);
   }
   if (isset($_GET['categories'])) {
-    $form['field_issue_category'][LANGUAGE_NONE]['#default_value'] = array((int)$_GET['categories']);
+    $category_map = array(
+      'bug' => 1,
+      'task' => 2,
+      'feature' => 3,
+      'support' => 4,
+    );
+    if (!empty($category_map[$_GET['categories']])) {
+      $category = $category_map[$_GET['categories']];
+    }
+    else {
+      $category = (int)$_GET['categories'];
+    }
+    $form['field_issue_category'][LANGUAGE_NONE]['#default_value'] = array($category);
   }
   if (isset($_GET['priorities'])) {
     $form['field_issue_priority'][LANGUAGE_NONE]['#default_value'] = $_GET['priorities'];
