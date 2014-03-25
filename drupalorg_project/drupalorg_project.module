@@ -1038,6 +1038,14 @@ function drupalorg_project_bingo_block_output() {
             'sort' => 'asc',
           )
         ),
+        drupalorg_project_core_issue_link(
+          'Issues needing review',
+          array(
+            'version' => $both_versions,
+            'status' => array(8),
+            'sort' => 'asc',
+          )
+        ),
       ),
     ),
     array(
