@@ -75,7 +75,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
 
     // For core, we want to checkout into a directory named via the version,
     // e.g. "drupal-7.0".
-    if ($this->project_node->nid == DRUPALORG_CORE_NID) {
+    if ($this->project_node->type == 'project_core') {
       $export_to = $this->release_file_id;
     }
     // For everything else, just use the project shortname.
