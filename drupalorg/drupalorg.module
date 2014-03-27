@@ -406,7 +406,6 @@ function drupalorg_block_view($delta, $block = NULL) {
       global $user;
 
       $query = db_select('tracker_user', 't');
-      $query->join('node_comment_statistics', 'nc', 't.nid = nc.nid');
       $query->condition('t.uid', $user->uid);
 
       // This array acts as a placeholder for the data selected later
@@ -415,7 +414,7 @@ function drupalorg_block_view($delta, $block = NULL) {
         ->addTag('node_access')
         ->fields('t', array('nid', 'changed'))
         ->condition('t.published', 1)
-        ->orderBy('nc.last_comment_timestamp', 'DESC')
+        ->orderBy('t.changed', 'DESC')
         ->range(0, empty($block->count) ? 15 : $block->count)
         ->execute()
         ->fetchAllAssoc('nid');
