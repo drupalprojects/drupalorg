@@ -304,7 +304,7 @@ function drupalorg_book_listings_field_default_fields() {
       'description' => 'All books have an ISBN-13, which is the new standard for book identification.',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
@@ -427,7 +427,7 @@ function drupalorg_book_listings_field_default_fields() {
       'description' => 'Enter list of authors\' full names (as shown by publisher), with each one linked to that author\'s Drupal.org user profile. Include a title attribute on each link showing the Drupal.org username; e.g., <code>&lt;a href=&quot;/user/1773&quot; title=&quot;emmajane | drupal.org&quot;&gt;Emma Jane Hogbin&lt;/a&gt;</code>',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
@@ -550,7 +550,7 @@ function drupalorg_book_listings_field_default_fields() {
       'description' => 'Enter the publication year and month in the format 2012-05',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
@@ -669,7 +669,7 @@ function drupalorg_book_listings_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => ', ',
@@ -837,7 +837,7 @@ function drupalorg_book_listings_field_default_fields() {
           'label' => 'hidden',
           'module' => 'link',
           'settings' => array(),
-          'type' => 'link_default',
+          'type' => 'link_label',
           'weight' => '7',
         ),
         'full' => array(
@@ -976,7 +976,7 @@ function drupalorg_book_listings_field_default_fields() {
       'description' => 'If the book has a "sub-title", add it in this field. E.g. Book title: "Cracking Drupal" has sub-title "A Drop in the Bucket", which in the Views display is shown on a second line, below the title.',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
@@ -1398,7 +1398,7 @@ function drupalorg_book_listings_field_default_fields() {
       'description' => 'The listed publisher of the book.',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
