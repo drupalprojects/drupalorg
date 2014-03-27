@@ -1896,19 +1896,19 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     14 => 0,
     38 => 0,
   );
-  /* Filter criterion: Indexed Node: Participants */
-  $handler->display->display_options['filters']['project_issue_participants']['id'] = 'project_issue_participants';
-  $handler->display->display_options['filters']['project_issue_participants']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['filters']['project_issue_participants']['field'] = 'project_issue_participants';
-  $handler->display->display_options['filters']['project_issue_participants']['group'] = 1;
-  $handler->display->display_options['filters']['project_issue_participants']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['operator_id'] = 'project_issue_participants_op';
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['label'] = 'Participant';
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['description'] = 'Enter a comma separated list of users.';
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['operator'] = 'project_issue_participants_op';
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['identifier'] = 'participant';
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['remember_roles'] = array(
+  /* Filter criterion: Indexed Node: Followers */
+  $handler->display->display_options['filters']['project_issue_followers']['id'] = 'project_issue_followers';
+  $handler->display->display_options['filters']['project_issue_followers']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['project_issue_followers']['field'] = 'project_issue_followers';
+  $handler->display->display_options['filters']['project_issue_followers']['group'] = 1;
+  $handler->display->display_options['filters']['project_issue_followers']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['operator_id'] = 'project_issue_followers_op';
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['label'] = 'Followers';
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['description'] = 'Enter a comma separated list of users.';
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['operator'] = 'project_issue_followers_op';
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['identifier'] = 'project_issue_followers';
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['remember_roles'] = array(
     2 => '2',
     3 => 0,
     1 => 0,
@@ -2456,18 +2456,18 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     14 => 0,
     38 => 0,
   );
-  /* Filter criterion: Indexed Node: Participants */
-  $handler->display->display_options['filters']['project_issue_participants']['id'] = 'project_issue_participants';
-  $handler->display->display_options['filters']['project_issue_participants']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['filters']['project_issue_participants']['field'] = 'project_issue_participants';
-  $handler->display->display_options['filters']['project_issue_participants']['group'] = 1;
-  $handler->display->display_options['filters']['project_issue_participants']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['operator_id'] = 'project_issue_participants_op';
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['label'] = 'Participant';
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['operator'] = 'project_issue_participants_op';
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['identifier'] = 'participant';
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['project_issue_participants']['expose']['remember_roles'] = array(
+  /* Filter criterion: Indexed Node: Followers */
+  $handler->display->display_options['filters']['project_issue_followers']['id'] = 'project_issue_followers';
+  $handler->display->display_options['filters']['project_issue_followers']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['project_issue_followers']['field'] = 'project_issue_followers';
+  $handler->display->display_options['filters']['project_issue_followers']['group'] = 1;
+  $handler->display->display_options['filters']['project_issue_followers']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['operator_id'] = 'project_issue_followers_op';
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['label'] = 'Followers';
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['operator'] = 'project_issue_followers_op';
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['identifier'] = 'project_issue_followers';
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['project_issue_followers']['expose']['remember_roles'] = array(
     2 => '2',
     3 => 0,
     1 => 0,

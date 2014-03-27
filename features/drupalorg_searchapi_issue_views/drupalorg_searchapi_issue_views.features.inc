@@ -126,7 +126,7 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
         "field_issue_version" : { "type" : "string" },
         "field_project" : { "type" : "integer", "entity_type" : "node" },
         "last_comment_timestamp" : { "type" : "date" },
-        "project_issue_followers" : { "type" : "list\\u003Cinteger\\u003E" },
+        "project_issue_followers" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "user" },
         "project_issue_participants" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "user" },
         "search_api_aggregation_1" : { "type" : "text", "boost" : "2.0" },
         "search_api_language" : { "type" : "string" },
