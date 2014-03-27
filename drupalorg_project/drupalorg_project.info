@@ -6,7 +6,6 @@ dependencies[] = project_release
 dependencies[] = project_issue
 dependencies[] = project_usage
 dependencies[] = versioncontrol_git
-files[] = drupalorg_project.migrate.inc
 files[] = plugins/release_packager/DrupalorgProjectPackageRelease.class.php
 files[] = plugins/release_packager/DrupalorgProjectPackageReleaseDistro.class.php
 core = 7.x

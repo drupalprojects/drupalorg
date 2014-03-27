@@ -1260,18 +1260,6 @@ function drupalorg_project_ctools_plugin_api($module, $api) {
 }
 
 /**
- * Implements hook_migrate_api().
- */
-function drupalorg_project_migrate_api() {
-  return array(
-    'api' => 2,
-    'migrations' => array(
-      'DrupalorgProjectSearchApi' => array('class_name' => 'DrupalorgProjectSearchApiMigration'),
-    ),
-  );
-}
-
-/**
  * Implements hook_views_pre_render().
  *
  * Sets the breadcrumb up for project navigation for the change records views.
