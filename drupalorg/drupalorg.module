@@ -448,7 +448,15 @@ function drupalorg_block_view($delta, $block = NULL) {
           if ($node->comment_count) {
             $comments = '<br />' . format_plural($node->comment_count, '1 comment', '@count comments');
             if ($new = comment_num_new($node->nid)) {
-              $comments .= ', ' . l(format_plural($new, '1 new', '@count new'), 'node/' . $node->nid, array('fragment' => 'new'));
+              $query = db_select('comment', 'c')
+                ->fields('c', array('cid'))
+                ->condition('c.nid', $node->nid)
+                ->condition('c.created', max(node_last_viewed($node->nid), NODE_NEW_LIMIT), '>')
+                ->condition('c.status', COMMENT_PUBLISHED)
+                ->orderBy('c.cid')
+                ->range(0, 1);
+              $uri = entity_uri('comment', comment_load($query->execute()->fetchField()));
+              $comments .= ', ' . l(format_plural($new, '1 new', '@count new'), $uri['path'], $uri['options']);
             }
           }
           $content['tracker']['#items'][] = l($node->title, 'node/' . $node->nid) . ' ' . theme('mark', array('type' => node_mark($node->nid, $node->changed))) . $comments;
