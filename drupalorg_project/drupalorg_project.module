@@ -402,6 +402,10 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         $form['field_project_has_releases']['#disabled'] = TRUE;
       }
     }
+
+    // Validate full project short name.
+    $language = $form['field_project_machine_name']['#language'];
+    $form['field_project_machine_name'][$language][0]['value']['#element_validate'][] = 'drupalorg_project_machine_name_validate';
   }
   elseif (project_release_node_is_release($form_state['node'])) {
     // See if this is a release for a translation project, and if so, deny.
@@ -1452,4 +1456,19 @@ function drupalorg_maintainers_json($project) {
     return drupal_json_output($project->project['maintainers']);
   }
   drupal_json_output(array());
+}
+
+/**
+ * Perform a project short name for full projects.
+ * @see drupalorg_project_form_node_form_alter()
+ * @see http://www.php.net/manual/en/functions.user-defined.php
+ * @see https://drupal.org/node/2172891
+ */
+function drupalorg_project_machine_name_validate($element, &$form_state, $form) {
+  if ($form_state['values']['field_project_type'][$element['#language']][0]['value'] == 'full'
+    && !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $element['#value'])) {
+    form_error($element, t('@title must follow <a href="@url">PHP naming convention</a>.', array(
+      '@title' => $element['#title'],
+      '@url' => 'http://www.php.net/manual/en/functions.user-defined.php')));
+  }
 }
