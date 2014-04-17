@@ -47,6 +47,7 @@ function drupalorg_home_support_views_default_views() {
   $handler->display->display_options['fields']['message']['exclude'] = TRUE;
   $handler->display->display_options['fields']['message']['alter']['max_length'] = '45';
   $handler->display->display_options['fields']['message']['alter']['trim'] = TRUE;
+  $handler->display->display_options['fields']['message']['alter']['html'] = TRUE;
   $handler->display->display_options['fields']['message']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['message']['issue_tracker_url'] = '/node/%issue_id';
   /* Field: User: Name */
