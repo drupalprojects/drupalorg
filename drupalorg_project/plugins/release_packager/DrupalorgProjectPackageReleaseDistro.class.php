@@ -101,7 +101,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
       // --drupal-org-log-errors-to-file: Store build errors for later output.
       // --drupal-org-log-package-metadata: Store package metadata for
       //   later recording in the database.
-      if (!drush_shell_cd_and_exec($profile_dir, $this->conf['drush'] . ' make --drupal-org=contrib --drupal-org-project=%s --drupal-org-build-root=%s --drupal-org-log-errors-to-file --drupal-org-log-package-metadata=metadata-contrib.json %s .', $this->temp_directory, $this->project_short_name, $drupalorg_makefile)) {
+      if (!drush_shell_cd_and_exec($profile_dir, $this->conf['drush'] . ' make --drupal-org=contrib --drupal-org-project=%s --drupal-org-build-root=%s --drupal-org-log-errors-to-file --drupal-org-log-package-metadata=metadata-contrib.json %s .', $this->project_short_name, $this->temp_directory, $drupalorg_makefile)) {
         // The build failed, get any output error messages and include them
         // in the packaging error report.
         if (file_exists($this->temp_directory . '/build_errors.txt')) {
@@ -147,7 +147,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
       // --drupal-org-log-errors-to-file: Store build errors for later output.
       // --drupal-org-log-package-metadata: Store package metadata for
       //   later recording in the database.
-      if (!drush_shell_cd_and_exec($this->temp_directory, $this->conf['drush'] . ' make --drupal-org=core --drupal-org-project=%s --drupal-org-build-root=%s --drupal-org-log-errors-to-file --drupal-org-log-package-metadata=metadata-core.json %s %s', $this->temp_directory, $this->project_short_name, $drupalorg_core_makefile, $core_build_dir)) {
+      if (!drush_shell_cd_and_exec($this->temp_directory, $this->conf['drush'] . ' make --drupal-org=core --drupal-org-project=%s --drupal-org-build-root=%s --drupal-org-log-errors-to-file --drupal-org-log-package-metadata=metadata-core.json %s %s', $this->project_short_name, $this->temp_directory, $drupalorg_core_makefile, $core_build_dir)) {
         // The build failed, get any output error messages and include them
         // in the packaging error report.
         if (file_exists($this->temp_directory . '/build_errors.txt')) {
