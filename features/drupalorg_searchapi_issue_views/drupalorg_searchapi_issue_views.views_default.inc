@@ -2036,6 +2036,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['operator_id'] = 'issue_tags_op';
   $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['label'] = 'Issue tags';
   $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['operator_label'] = 'Issue tags operator';
   $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['operator'] = 'taxonomy_vocabulary_9_op';
   $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['identifier'] = 'issue_tags';
   $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['multiple'] = TRUE;
@@ -2933,6 +2934,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['operator_id'] = 'issue_tags_op';
   $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['label'] = 'Issue tags';
   $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['operator_label'] = 'Issue tags operator';
   $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['operator'] = 'taxonomy_vocabulary_9_op';
   $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['identifier'] = 'issue_tags';
   $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['multiple'] = TRUE;
