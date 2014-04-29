@@ -27,3 +27,10 @@ function drupalorg_searchapi_issue_views_update_7000() {
     ->condition('name', 'drupalorg_searchapi_issue_views')
     ->execute();
 }
+
+/**
+ * Fill the index project_title table.
+ */
+function drupalorg_searchapi_issue_views_update_7001() {
+  db_query('UPDATE search_api_db_project_issues AS issues INNER JOIN field_data_field_project AS fp ON issues.item_id = fp.entity_id INNER JOIN node n ON n.nid = fp.field_project_target_id SET issues.field_project_title = n.title');
+}

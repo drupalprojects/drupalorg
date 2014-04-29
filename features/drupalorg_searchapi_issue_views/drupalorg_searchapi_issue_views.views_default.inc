@@ -34,7 +34,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'url' => 'url',
     'field_project_machine_name' => 'field_project_machine_name',
-    'field_project' => 'field_project',
+    'field_project_title' => 'field_project_title',
     'title' => 'title',
     'has_new_content' => 'title',
     'field_issue_status' => 'field_issue_status',
@@ -60,7 +60,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_project' => array(
+    'field_project_title' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -172,15 +172,14 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['field_project_machine_name']['field'] = 'field_project_machine_name';
   $handler->display->display_options['fields']['field_project_machine_name']['relationship'] = 'field_project';
   $handler->display->display_options['fields']['field_project_machine_name']['exclude'] = TRUE;
-  /* Field: Indexed Node: Project */
-  $handler->display->display_options['fields']['field_project']['id'] = 'field_project';
-  $handler->display->display_options['fields']['field_project']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['fields']['field_project']['field'] = 'field_project';
-  $handler->display->display_options['fields']['field_project']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_project']['alter']['path'] = 'project/issues/[field_project_machine_name]';
-  $handler->display->display_options['fields']['field_project']['link_to_entity'] = 0;
-  $handler->display->display_options['fields']['field_project']['view_mode'] = 'full';
-  $handler->display->display_options['fields']['field_project']['bypass_access'] = 0;
+  /* Field: Project: Title (indexed) */
+  $handler->display->display_options['fields']['field_project_title']['id'] = 'field_project_title';
+  $handler->display->display_options['fields']['field_project_title']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_project_title']['field'] = 'field_project_title';
+  $handler->display->display_options['fields']['field_project_title']['label'] = 'Project';
+  $handler->display->display_options['fields']['field_project_title']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_project_title']['alter']['path'] = 'project/issues/[field_project_machine_name]';
+  $handler->display->display_options['fields']['field_project_title']['link_to_entity'] = 0;
   /* Field: Indexed Node: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
@@ -1540,6 +1539,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'url' => 'url',
     'field_project_machine_name_1' => 'field_project_machine_name_1',
     'field_project' => 'field_project',
+    'field_project_title' => 'field_project_title',
     'title' => 'title',
     'has_new_content' => 'title',
     'field_issue_status' => 'field_issue_status',
@@ -1566,6 +1566,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'empty_column' => 0,
     ),
     'field_project' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_project_title' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -1676,15 +1683,14 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['field_project_machine_name_1']['field'] = 'field_project_machine_name';
   $handler->display->display_options['fields']['field_project_machine_name_1']['relationship'] = 'field_project';
   $handler->display->display_options['fields']['field_project_machine_name_1']['exclude'] = TRUE;
-  /* Field: Indexed Node: Project */
-  $handler->display->display_options['fields']['field_project']['id'] = 'field_project';
-  $handler->display->display_options['fields']['field_project']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['fields']['field_project']['field'] = 'field_project';
-  $handler->display->display_options['fields']['field_project']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_project']['alter']['path'] = 'project/issues/search/[field_project_machine_name_1]';
-  $handler->display->display_options['fields']['field_project']['link_to_entity'] = 0;
-  $handler->display->display_options['fields']['field_project']['view_mode'] = 'full';
-  $handler->display->display_options['fields']['field_project']['bypass_access'] = 0;
+  /* Field: Project: Title (indexed) */
+  $handler->display->display_options['fields']['field_project_title']['id'] = 'field_project_title';
+  $handler->display->display_options['fields']['field_project_title']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_project_title']['field'] = 'field_project_title';
+  $handler->display->display_options['fields']['field_project_title']['label'] = 'Project';
+  $handler->display->display_options['fields']['field_project_title']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_project_title']['alter']['path'] = 'project/issues/search/[field_project_machine_name_1]';
+  $handler->display->display_options['fields']['field_project_title']['link_to_entity'] = 0;
   /* Field: Indexed Node: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
@@ -3047,6 +3053,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'url' => 'url',
     'field_project_machine_name' => 'field_project_machine_name',
     'field_project' => 'field_project',
+    'field_project_title' => 'field_project_title',
     'title' => 'title',
     'has_new_content' => 'title',
     'field_issue_status' => 'field_issue_status',
@@ -3073,6 +3080,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'empty_column' => 0,
     ),
     'field_project' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_project_title' => array(
       'sortable' => 1,
       'default_sort_order' => 'desc',
       'align' => '',
@@ -3183,15 +3197,14 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['field_project_machine_name']['field'] = 'field_project_machine_name';
   $handler->display->display_options['fields']['field_project_machine_name']['relationship'] = 'field_project';
   $handler->display->display_options['fields']['field_project_machine_name']['exclude'] = TRUE;
-  /* Field: Indexed Node: Project */
-  $handler->display->display_options['fields']['field_project']['id'] = 'field_project';
-  $handler->display->display_options['fields']['field_project']['table'] = 'search_api_index_project_issues';
-  $handler->display->display_options['fields']['field_project']['field'] = 'field_project';
-  $handler->display->display_options['fields']['field_project']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_project']['alter']['path'] = 'project/issues/[field_project_machine_name]';
-  $handler->display->display_options['fields']['field_project']['link_to_entity'] = 0;
-  $handler->display->display_options['fields']['field_project']['view_mode'] = 'full';
-  $handler->display->display_options['fields']['field_project']['bypass_access'] = 0;
+  /* Field: Project: Title (indexed) */
+  $handler->display->display_options['fields']['field_project_title']['id'] = 'field_project_title';
+  $handler->display->display_options['fields']['field_project_title']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_project_title']['field'] = 'field_project_title';
+  $handler->display->display_options['fields']['field_project_title']['label'] = 'Project';
+  $handler->display->display_options['fields']['field_project_title']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_project_title']['alter']['path'] = 'project/issues/[field_project_machine_name]';
+  $handler->display->display_options['fields']['field_project_title']['link_to_entity'] = 0;
   /* Field: Indexed Node: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
