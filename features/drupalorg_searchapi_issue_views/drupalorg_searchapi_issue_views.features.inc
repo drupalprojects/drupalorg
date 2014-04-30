@@ -59,6 +59,7 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
               "title" : true,
               "search_api_aggregation_1" : true,
               "body:value" : true,
+              "field_project:title" : true,
               "comments:comment_body:value" : true
             }
           }
