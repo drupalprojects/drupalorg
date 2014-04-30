@@ -15,7 +15,7 @@ function drupalorg_marketplace_menu_default_menu_links() {
     'menu_name' => 'menu-hosting-types-menu',
     'link_path' => 'node/2029631',
     'router_path' => 'node/%',
-    'link_title' => 'Shared Hosting',
+    'link_title' => 'Shared Hosting Providers',
     'options' => array(
       'attributes' => array(
         'title' => '',
@@ -33,7 +33,7 @@ function drupalorg_marketplace_menu_default_menu_links() {
     'menu_name' => 'menu-hosting-types-menu',
     'link_path' => 'node/2029703',
     'router_path' => 'node/%',
-    'link_title' => 'Enterprise & Managed',
+    'link_title' => 'Managed/Enterprise Hosting Providers',
     'options' => array(
       'attributes' => array(
         'title' => '',
@@ -51,7 +51,7 @@ function drupalorg_marketplace_menu_default_menu_links() {
     'menu_name' => 'menu-hosting-types-menu',
     'link_path' => 'node/2029743',
     'router_path' => 'node/%',
-    'link_title' => 'Platform as a Service',
+    'link_title' => 'Cloud Hosting Providers',
     'options' => array(
       'attributes' => array(
         'title' => '',
@@ -103,10 +103,10 @@ function drupalorg_marketplace_menu_default_menu_links() {
   // Translatables
   // Included for use with string extractors like potx.
   t('All providers');
-  t('Enterprise & Managed');
+  t('Cloud Hosting Providers');
   t('Featured providers');
-  t('Platform as a Service');
-  t('Shared Hosting');
+  t('Managed/Enterprise Hosting Providers');
+  t('Shared Hosting Providers');
 
 
   return $menu_links;
