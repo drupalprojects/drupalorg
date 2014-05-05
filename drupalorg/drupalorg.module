@@ -1834,8 +1834,9 @@ function drupalorg_node_view($node, $view_mode = 'full') {
           ))
         );
       }
-      elseif (drupalorg_has_civimembership($node->title, 'Technology Supporter')) {
-        $content['intro']['association_partner'] = array(
+      // Technology Supporter
+      if (drupalorg_has_civimembership($node->title, 'Technology Supporter')) {
+        $content['intro']['association_technology_supporter'] = array(
           '#markup' => l(
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_badge.svg',
@@ -1849,7 +1850,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         );
       }
       elseif (drupalorg_has_civimembership($node->title, 'Premium Technology Supporter')) {
-        $content['intro']['association_partner'] = array(
+        $content['intro']['association_technology_supporter'] = array(
           '#markup' => l(
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_prem_tech_sp_badge.svg',
@@ -1863,7 +1864,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         );
       }
       elseif (drupalorg_has_civimembership($node->title, 'Inaugural Technology Supporter')) {
-        $content['intro']['association_partner'] = array(
+        $content['intro']['association_technology_supporter'] = array(
           '#markup' => l(
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_inaug_badge.svg',
@@ -1877,7 +1878,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         );
       }
       elseif (drupalorg_has_civimembership($node->title, 'Inaugural Premium Technology Supporter')) {
-        $content['intro']['association_partner'] = array(
+        $content['intro']['association_technology_supporter'] = array(
           '#markup' => l(
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_prem_techsupp_inaug_badge.svg',
@@ -1891,8 +1892,8 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         );
       }
       /* We do not have badges yet.
-      elseif (drupalorg_has_civimembership($node->title, 'Hosting Supporter')) {
-        $content['intro']['association_partner'] = array(
+      if (drupalorg_has_civimembership($node->title, 'Hosting Supporter')) {
+        $content['intro']['association_hosting_partner'] = array(
           '#markup' => l(
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_host_badge.svg',
@@ -1906,7 +1907,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         );
       }
       elseif (drupalorg_has_civimembership($node->title, 'Premium Hosting Supporter')) {
-        $content['intro']['association_partner'] = array(
+        $content['intro']['association_hosting_partner'] = array(
           '#markup' => l(
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_prem_host_badge.svg',
