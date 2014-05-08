@@ -1636,3 +1636,22 @@ function drupalorg_update_7052() {
 function drupalorg_update_7053() {
   path_delete(array('alias' => 'project/project_module/categories'));
 }
+
+/**
+ * Move issues from the Webmasters queue to the new Project Ownership queue.
+ */
+function drupalorg_update_7054() {
+  $result = db_query("SELECT fp.entity_id FROM {field_data_field_project} fp INNER JOIN {field_data_field_issue_component} fic ON fp.entity_id = fic.entity_id INNER JOIN {node} ON fic.entity_id = node.nid WHERE fp.field_project_target_id = 3202 AND fic.field_issue_component_value = 'Project ownership'");
+  $account = user_load(variable_get('project_issue_followup_user', 0));
+
+  foreach ($result as $row) {
+    $node = node_load($row->entity_id);
+    $node->field_project[LANGUAGE_NONE][0]['target_id'] = 2209259;
+    $node->field_issue_component[LANGUAGE_NONE][0]['value'] = 'Ownership transfer';
+    $node->nodechanges_uid = $account->uid;
+    $node->nodechanges_comment_attributes = array(
+      'project_issue_no_email' => TRUE,
+    );
+    node_save($node);
+  }
+}
