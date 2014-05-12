@@ -127,6 +127,17 @@ function drupalorg_git_varnish_vcs_auth_fetch_user_hash() {
 
 function drupalorg_git_varnish_vcs_auth_data() {
   $project_uri = $_GET['project_uri'];
+
+  // If the project_uri does not correspond to a project, try looking for a
+  // mis-matched repository name.
+  if (project_get_nid_from_machinename($project_uri) === FALSE) {
+    foreach (versioncontrol_repository_load_multiple(array(), array('name' => array($project_uri))) as $repository) {
+      if (isset($repository->project_nid) && $project = project_load($repository->project_nid)) {
+        $project_uri = $project->field_project_machine_name[LANGUAGE_NONE][0]['value'];
+      }
+    }
+  }
+
   echo json_encode(versioncontrol_project_get_auth_data($project_uri));
   exit;
 }
