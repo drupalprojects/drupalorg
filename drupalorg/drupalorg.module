@@ -2329,11 +2329,17 @@ function drupalorg_user_view($account, $view_mode) {
       '#suffix' => '</div>',
       '#sorted' => TRUE,
     ),
+    'contact' => array(
+      '#prefix' => '<div class="contact">',
+      '#suffix' => '</div>',
+      '#sorted' => TRUE,
+      '#weight' => 2,
+    ),
     'aside' => array(
       '#prefix' => '<div class="aside">',
       '#suffix' => '</div>',
       '#sorted' => TRUE,
-      '#weight' => 1,
+      '#weight' => 2,
     ),
   );
 
@@ -2457,6 +2463,10 @@ function drupalorg_user_view($account, $view_mode) {
       '#markup' => $drupalorg_documentation,
     );
   }
+
+  // User picture
+  $content['contact']['user_picture'] = $account->content['user_picture'];
+  unset($account->content['user_picture']);
 
   $content['main'] = array_merge($content['main'], $account->content);
   $account->content = $content;
