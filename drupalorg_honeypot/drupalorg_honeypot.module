@@ -22,8 +22,8 @@ function drupalorg_honeypot_honeypot_time_limit($timelimit, $form_values, $failu
   if (isset($form_values['title']) && $form_values['title']) {
     $count += drupalorg_honeypot_scan($form_values['title']);
   }
-  if (isset($form_values['comment_body']) && $form_values['comment_body']['und'][0]['value']) {
-    $count += drupalorg_honeypot_scan($form_values['comment_body']['und'][0]['value']);
+  if (isset($form_values['body']) && $form_values['body']['und'][0]['value']) {
+    $count += drupalorg_honeypot_scan($form_values['body']['und'][0]['value']);
   }
 
   // scan comments
