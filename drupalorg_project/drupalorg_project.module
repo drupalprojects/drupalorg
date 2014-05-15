@@ -559,10 +559,6 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
       }
     }
     switch ($node->nid) {
-      case 199251: // List projects with commit RSS feeds.
-        $node->content['body']['#value'] .= drupalorg_project_list_commit_rss();
-        break;
-
       case 97084: // List branches ever created in contrib.
         $node->content['body']['#value'] .= drupalorg_project_list_branches_contrib();
         break;
@@ -656,27 +652,6 @@ function drupalorg_project_preprocess_node(&$variables) {
  */
 function drupalorg_project_preprocess_project_issue_issue_update_link(&$variables) {
   $variables['last_update'] = t('Last updated on %date', array('%date' => format_date($variables['node']->changed, 'custom', 'M j, Y \a\t g:ia')));
-}
-
-/**
- * List projects with commit RSS links.
- */
-function drupalorg_project_list_commit_rss() {
-  $count_query = "SELECT COUNT(*) FROM {node} WHERE type = 'project' AND status = 1";
-  $total = db_query($count_query)->fetchField();
-  $header = array(array('data' => t('Number'), 'field' => 'nid', 'sort' => 'desc'), t('Title'), t('Commits RSS'));
-  $result = pager_query("SELECT nid, title, status FROM {node} WHERE type = 'project_project' AND status = 1 ". tablesort_sql($header), 100, 0, $count_query);
-  $rows = array();
-  $page = (int)$_GET['page'];
-  $count = $total - $page * 100;
-  while($row = db_fetch_array($result)) {
-    // @TODO Need RSS feeds and commitlog/project views, see http://drupal.org/node/1024958
-    $url = url('commitlog');
-    $rows[]= array($count--, l($row['title'], 'node/'. $row['nid']), theme('feed_icon', $url, $row['title']));
-  }
-  drupal_set_message("There are $total projects.");
-
-  return theme('table', $header, $rows). theme('pager');
 }
 
 /**
