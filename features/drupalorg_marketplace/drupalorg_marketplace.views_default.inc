@@ -194,35 +194,6 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['empty']['text']['empty'] = TRUE;
   $handler->display->display_options['empty']['text']['content'] = 'No organizations found.';
   $handler->display->display_options['empty']['text']['format'] = '1';
-  /* Relationship: Content: Taxonomy terms on node */
-  $handler->display->display_options['relationships']['term_node_tid']['id'] = 'term_node_tid';
-  $handler->display->display_options['relationships']['term_node_tid']['table'] = 'node';
-  $handler->display->display_options['relationships']['term_node_tid']['field'] = 'term_node_tid';
-  $handler->display->display_options['relationships']['term_node_tid']['vocabularies'] = array(
-    'vocabulary_52' => 'vocabulary_52',
-    'vocabulary_1' => 0,
-    'vocabulary_5' => 0,
-    'vocabulary_38' => 0,
-    'vocabulary_54' => 0,
-    'vocabulary_56' => 0,
-    'vocabulary_6' => 0,
-    'vocabulary_4' => 0,
-    'vocabulary_44' => 0,
-    'vocabulary_46' => 0,
-    'vocabulary_3' => 0,
-    'vocabulary_48' => 0,
-    'vocabulary_50' => 0,
-    'vocabulary_60' => 0,
-    'vocabulary_62' => 0,
-    'vocabulary_58' => 0,
-    'vocabulary_7' => 0,
-    'vocabulary_2' => 0,
-    'vocabulary_31' => 0,
-    'vocabulary_32' => 0,
-    'vocabulary_33' => 0,
-    'vocabulary_34' => 0,
-    'vocabulary_9' => 0,
-  );
   /* Field: Content: Logo */
   $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
   $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
@@ -243,45 +214,18 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['text'] = '<div class="grid-5 omega">[title]</div>';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Content: Training description */
-  $handler->display->display_options['fields']['field_organization_training_desc']['id'] = 'field_organization_training_desc';
-  $handler->display->display_options['fields']['field_organization_training_desc']['table'] = 'field_data_field_organization_training_desc';
-  $handler->display->display_options['fields']['field_organization_training_desc']['field'] = 'field_organization_training_desc';
-  $handler->display->display_options['fields']['field_organization_training_desc']['label'] = '';
-  $handler->display->display_options['fields']['field_organization_training_desc']['alter']['text'] = '<div class="grid-5 omega">[field_organization_training_desc-value]</div>';
-  $handler->display->display_options['fields']['field_organization_training_desc']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_organization_training_desc']['group_columns'] = array(
-    'format' => 'format',
-  );
-  /* Field: Content: Training url */
-  $handler->display->display_options['fields']['field_organization_training_url']['id'] = 'field_organization_training_url';
-  $handler->display->display_options['fields']['field_organization_training_url']['table'] = 'field_data_field_organization_training_url';
-  $handler->display->display_options['fields']['field_organization_training_url']['field'] = 'field_organization_training_url';
-  $handler->display->display_options['fields']['field_organization_training_url']['label'] = '';
-  $handler->display->display_options['fields']['field_organization_training_url']['alter']['text'] = '<div class="grid-5 omega">[field_organization_training_url]</div>';
-  $handler->display->display_options['fields']['field_organization_training_url']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_organization_training_url']['click_sort_column'] = 'url';
-  $handler->display->display_options['fields']['field_organization_training_url']['group_column'] = 'entity_id';
+  /* Field: Content: Description */
+  $handler->display->display_options['fields']['body']['id'] = 'body';
+  $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
+  $handler->display->display_options['fields']['body']['field'] = 'body';
+  $handler->display->display_options['fields']['body']['label'] = '';
+  $handler->display->display_options['fields']['body']['alter']['max_length'] = '390';
+  $handler->display->display_options['fields']['body']['alter']['trim'] = TRUE;
+  $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
-  /* Contextual filter: Taxonomy term: Name */
-  $handler->display->display_options['arguments']['name']['id'] = 'name';
-  $handler->display->display_options['arguments']['name']['table'] = 'taxonomy_term_data';
-  $handler->display->display_options['arguments']['name']['field'] = 'name';
-  $handler->display->display_options['arguments']['name']['relationship'] = 'term_node_tid';
-  $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
-  $handler->display->display_options['arguments']['name']['validate_options']['vocabularies'] = array(
-    'vocabulary_52' => 'vocabulary_52',
-  );
-  $handler->display->display_options['arguments']['name']['validate_options']['type'] = 'convert';
-  $handler->display->display_options['arguments']['name']['limit'] = '0';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -310,67 +254,7 @@ function drupalorg_marketplace_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
-  $handler->display->display_options['style_plugin'] = 'default';
-  $handler->display->display_options['style_options']['row_class'] = 'views-row';
-  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
-  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
-  $handler->display->display_options['defaults']['style_options'] = FALSE;
-  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
-  $handler->display->display_options['row_plugin'] = 'fields';
-  $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Logo */
-  $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
-  $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
-  $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
-  $handler->display->display_options['fields']['field_logo']['label'] = '';
-  $handler->display->display_options['fields']['field_logo']['alter']['text'] = '<div class="grid-3 alpha">[field_logo]</div>';
-  $handler->display->display_options['fields']['field_logo']['element_class'] = 'intro';
-  $handler->display->display_options['fields']['field_logo']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_logo']['element_default_classes'] = FALSE;
-  $handler->display->display_options['fields']['field_logo']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_logo']['settings'] = array(
-    'image_style' => 'grid-3',
-    'image_link' => 'content',
-  );
-  $handler->display->display_options['fields']['field_logo']['group_column'] = 'entity_id';
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['text'] = '<div class="grid-5 omega">[title]</div>';
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Content: Description */
-  $handler->display->display_options['fields']['body']['id'] = 'body';
-  $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
-  $handler->display->display_options['fields']['body']['field'] = 'body';
-  $handler->display->display_options['fields']['body']['label'] = '';
-  $handler->display->display_options['fields']['body']['alter']['max_length'] = '390';
-  $handler->display->display_options['fields']['body']['alter']['trim'] = TRUE;
-  $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Taxonomy term: Name */
-  $handler->display->display_options['arguments']['name']['id'] = 'name';
-  $handler->display->display_options['arguments']['name']['table'] = 'taxonomy_term_data';
-  $handler->display->display_options['arguments']['name']['field'] = 'name';
-  $handler->display->display_options['arguments']['name']['relationship'] = 'term_node_tid';
-  $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
-  $handler->display->display_options['arguments']['name']['validate_options']['vocabularies'] = array(
-    'vocabulary_52' => 'vocabulary_52',
-  );
-  $handler->display->display_options['arguments']['name']['validate_options']['type'] = 'name';
-  $handler->display->display_options['arguments']['name']['validate_options']['transform'] = TRUE;
-  $handler->display->display_options['arguments']['name']['limit'] = '0';
-  $handler->display->display_options['arguments']['name']['path_case'] = 'lower';
-  $handler->display->display_options['arguments']['name']['transform_dash'] = TRUE;
   $handler->display->display_options['path'] = 'supporting-technologies';
   $export['drupalorg_supporting_technologies'] = $view;
 
