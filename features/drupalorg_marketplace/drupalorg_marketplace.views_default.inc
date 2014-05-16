@@ -230,6 +230,7 @@ function drupalorg_marketplace_views_default_views() {
 </div>';
   $handler->display->display_options['fields']['body']['alter']['max_length'] = '390';
   $handler->display->display_options['fields']['body']['alter']['trim'] = TRUE;
+  $handler->display->display_options['fields']['body']['alter']['html'] = TRUE;
   $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
