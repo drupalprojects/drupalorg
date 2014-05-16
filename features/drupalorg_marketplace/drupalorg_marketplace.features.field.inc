@@ -1686,6 +1686,85 @@ function drupalorg_marketplace_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-organization-field_organization_technologies'.
+  $fields['node-organization-field_organization_technologies'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_organization_technologies',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'off' => 'Do not list',
+          'on' => 'List in the Supporting Technologies section',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'organization',
+      'default_value' => array(
+        0 => array(
+          'value' => 'off',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 16,
+        ),
+        'issuemetadata' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'nodechanges' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_organization_technologies',
+      'label' => 'Supporting Technologies listing',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '28',
+      ),
+    ),
+  );
+
   // Exported field: 'node-organization-field_organization_training_desc'.
   $fields['node-organization-field_organization_training_desc'] = array(
     'field_config' => array(
@@ -2345,6 +2424,7 @@ function drupalorg_marketplace_field_default_fields() {
   t('Services listing');
   t('Specify the date hosting provider passed security review. Format: \'passed on Month Day, Year\'');
   t('Such as development, theming, design, training, or hosting.');
+  t('Supporting Technologies listing');
   t('The url for your trainings landing page (the page specifically for Drupal trainings preferred). This will be shown in the Training listing only.');
   t('Training description');
   t('Training issue');

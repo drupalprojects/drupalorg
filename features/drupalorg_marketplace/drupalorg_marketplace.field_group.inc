@@ -120,10 +120,12 @@ function drupalorg_marketplace_field_group_info() {
     'label' => 'Moderation',
     'weight' => '13',
     'children' => array(
-      0 => 'field_organization_list_rule',
-      1 => 'field_organization_training_list',
-      2 => 'field_organization_issue',
-      3 => 'field_org_training_issue',
+      0 => 'field_org_training_issue',
+      1 => 'field_organization_issue',
+      2 => 'field_organization_list_rule',
+      3 => 'field_organization_training_list',
+      4 => 'field_organization_technologies',
+      5 => '_add_existing_field',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
