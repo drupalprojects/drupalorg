@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Drupal.org Projects feature.
+ */
+
+include_once 'drupalorg_projects.features.inc';
