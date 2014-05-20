@@ -2689,3 +2689,33 @@ function drupalorg_menu_local_tasks_alter(&$data, $router_item, $root_path) {
       break;
   }
 }
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function drupalorg_module_implements_alter(&$implementations, $hook) {
+  // Execute drupalorg_user_update() before bakery to add data to the
+  // transmitted data.
+  if ($hook === 'user_update') {
+    unset($implementations['drupalorg']);
+    $implementations = array('drupalorg' => NULL) + $implementations;
+  }
+}
+
+/**
+ * Implements hook_user_update().
+ */
+function drupalorg_user_update(&$edit, $account, $category) {
+  // If the account hasa user picture, generate all styles that subsites use,
+  // and include URLs in bakery-transmitted data.
+  if ($account->picture > 0) {
+    $picture = file_load($account->picture);
+    foreach (array('thumbnail', 'grid-2', 'drupalorg_user_picture') as $style) {
+      $destination = image_style_path($style, $picture->uri);
+      if (!file_exists($destination)) {
+        image_style_create_derivative(image_style_load($style), $picture->uri, $destination);
+      }
+      $_SESSION['bakery']['data']['drupalorg_picture'][$style] = file_create_url($destination);
+    }
+  }
+}
