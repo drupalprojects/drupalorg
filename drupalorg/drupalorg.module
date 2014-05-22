@@ -2641,6 +2641,12 @@ function drupalorg_preprocess_comment(&$v) {
   if (!variable_get('comment_subject_field_' . $v['node']->type, 1)) {
     $v['title'] = '';
   }
+
+  // Add headings for issue comments, which do not have subjects, for
+  // accessibility.
+  if (project_issue_node_is_issue($v['node'])) {
+    $v['permalink'] = '<h3 class="permalink-wrapper">' . $v['permalink'] . '</h3>';
+  }
 }
 
 /**
