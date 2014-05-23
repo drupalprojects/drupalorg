@@ -2647,6 +2647,22 @@ function drupalorg_preprocess_comment(&$v) {
   if (project_issue_node_is_issue($v['node'])) {
     $v['permalink'] = '<h3 class="permalink-wrapper">' . $v['permalink'] . '</h3>';
   }
+
+  // Add properly-sized user pictures.
+  if (!empty($v['comment']->picture)) {
+    $v['classes_array'][] = 'with-picture';
+    $v['picture'] = l(theme('image_style', array(
+      'style_name' => 'drupalorg_user_picture',
+      'path' => $v['comment']->picture->uri,
+      'alt' => t('@user’s picture', array('@user' => format_username($v['comment']))),
+    )), 'user/' . $v['comment']->uid, array(
+      'attributes' => array(
+        'title' => t('View user profile.'),
+        'class' => 'picture',
+      ),
+      'html' => TRUE,
+    ));
+  }
 }
 
 /**
