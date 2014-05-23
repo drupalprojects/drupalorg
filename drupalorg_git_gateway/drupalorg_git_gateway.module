@@ -440,14 +440,14 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
 
   $tags = $branches = array();
   foreach (project_release_query_releases($project->nid) as $release_node) {
-    if (empty($release_node->field_release_build_type[LANGUAGE_NONE][0]['value']) || empty($release_node->field_release_version[LANGUAGE_NONE][0]['value'])) {
+    if (empty($release_node->field_release_build_type[LANGUAGE_NONE][0]['value']) || empty($release_node->field_release_vcs_label[LANGUAGE_NONE][0]['value'])) {
       continue;
     }
     if ($release_node->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'static') {
-      $tags[] = $release_node->field_release_version[LANGUAGE_NONE][0]['value'];
+      $tags[] = $release_node->field_release_vcs_label[LANGUAGE_NONE][0]['value'];
     }
     elseif ($release_node->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic') {
-      $branches[] = $release_node->field_release_version[LANGUAGE_NONE][0]['value'];
+      $branches[] = $release_node->field_release_vcs_label[LANGUAGE_NONE][0]['value'];
     }
   }
 
