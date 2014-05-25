@@ -2650,6 +2650,12 @@ function drupalorg_preprocess_comment(&$v) {
 
   // Add properly-sized user pictures.
   if (!empty($v['comment']->picture)) {
+    if (is_numeric($v['comment']->picture)) {
+      $file = file_load($account->picture);
+    }
+    else {
+      $file = $v['comment']->picture;
+    }
     $v['classes_array'][] = 'with-picture';
     $v['picture'] = l(theme('image_style', array(
       'style_name' => 'drupalorg_user_picture',
