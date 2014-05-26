@@ -3,4 +3,4 @@
  * @file
  */
 
-// Drupal needs this blank file.
+include_once 'drupalorg_user.features.inc';
