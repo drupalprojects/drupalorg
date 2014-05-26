@@ -2659,7 +2659,7 @@ function drupalorg_preprocess_comment(&$v) {
     $v['classes_array'][] = 'with-picture';
     $v['picture'] = l(theme('image_style', array(
       'style_name' => 'drupalorg_user_picture',
-      'path' => $v['comment']->picture->uri,
+      'path' => $file->uri,
       'alt' => t('@user’s picture', array('@user' => format_username($v['comment']))),
     )), 'user/' . $v['comment']->uid, array(
       'attributes' => array(
