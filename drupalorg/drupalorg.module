@@ -2651,7 +2651,7 @@ function drupalorg_preprocess_comment(&$v) {
   // Add properly-sized user pictures.
   if (!empty($v['comment']->picture)) {
     if (is_numeric($v['comment']->picture)) {
-      $filepath = file_load($v['comment']->picture->uri);
+      $filepath = file_load($v['comment']->picture)->uri;
     }
     else {
       $filepath = $v['comment']->picture->uri;
