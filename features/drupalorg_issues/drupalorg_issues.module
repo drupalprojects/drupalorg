@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Drupal.org Issues feature.
+ */
+
+include_once 'drupalorg_issues.features.inc';
