@@ -474,6 +474,14 @@ function drupalorg_book_pages_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'upload',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
       'indexes' => array(
         'fid' => array(
           0 => 'fid',
@@ -483,7 +491,7 @@ function drupalorg_book_pages_field_default_fields() {
       'module' => 'file',
       'settings' => array(
         'default_file' => 0,
-        'display_default' => '1',
+        'display_default' => 1,
         'display_field' => 1,
         'uri_scheme' => 'public',
       ),
@@ -543,13 +551,21 @@ function drupalorg_book_pages_field_default_fields() {
       'settings' => array(
         'description_field' => 1,
         'file_directory' => '',
-        'file_extensions' => 'jpg jpeg gif png txt xls pdf ppt pps odt ods odp gz tgz patch diff zip test info po pot psd',
+        'file_extensions' => 'jpg jpeg gif png txt xls pdf ppt pps odt ods odp gz tgz patch diff zip test info po pot psd yml mov mp4 avi mkv',
         'max_filesize' => '1 MB',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
+        'active' => 1,
         'module' => 'file',
         'settings' => array(
+          'extended_file_field_collapsible' => 0,
+          'extended_file_field_hidden_toggle' => 0,
+          'extended_file_field_restrict_display' => 0,
+          'extended_file_field_reverse_display' => 0,
+          'extended_file_field_show_clear_contents' => 0,
+          'extended_file_field_show_remove' => 1,
+          'extended_file_field_widget_metadata' => array(),
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
