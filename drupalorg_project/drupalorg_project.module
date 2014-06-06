@@ -893,7 +893,7 @@ function drupalorg_project_block_view($delta = '') {
         }
         else {
           $links[] = array(
-            'title' => t('Report a security issue'),
+            'title' => t('Report a security vulnerability'),
             'href' => 'https://security.drupal.org/node/add/project-issue/' . $machine_name,
           );
         }
