@@ -195,7 +195,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['empty']['text']['table'] = 'views';
   $handler->display->display_options['empty']['text']['field'] = 'area';
   $handler->display->display_options['empty']['text']['empty'] = TRUE;
-  $handler->display->display_options['empty']['text']['content'] = 'No organizations found.';
+  $handler->display->display_options['empty']['text']['content'] = 'Coming soon.';
   $handler->display->display_options['empty']['text']['format'] = '1';
   /* Field: Content: Logo */
   $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
