@@ -128,7 +128,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
 
     // Link not copy, since we want to preserve the date...
     @unlink($this->temp_directory . '/' . $export_to . '/LICENSE.txt');
-    if (!link($this->conf['license'], $this->temp_directory . '/' . $export_to . '/LICENSE.txt')) {
+    if (!symlink($this->conf['license'], $this->temp_directory . '/' . $export_to . '/LICENSE.txt')) {
       watchdog('package_error', 'Adding LICENSE.txt failed.', array(), WATCHDOG_ERROR);
       return 'error';
     }
