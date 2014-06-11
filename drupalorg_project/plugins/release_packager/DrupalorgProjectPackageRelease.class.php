@@ -8,8 +8,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     'tar' => '/bin/tar',
     'gzip' => '/bin/gzip',
     'zip' => '/usr/bin/zip',
-    'ln' => '/bin/ln',
-    'rm' => '/bin/rm',
   );
 
   /// Protected data members of the class
@@ -129,8 +127,9 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     }
 
     // Link not copy, since we want to preserve the date...
-    if (!drush_shell_cd_and_exec($this->temp_directory, '%s -sf %s %s', $this->conf['ln'], $this->conf['license'], $export_to . '/LICENSE.txt')) {
-      watchdog('package_error', 'Adding LICENSE.txt failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
+    @unlink($this->temp_directory . '/' . $export_to . '/LICENSE.txt');
+    if (!link($this->conf['license'], $this->temp_directory . '/' . $export_to . '/LICENSE.txt')) {
+      watchdog('package_error', 'Adding LICENSE.txt failed.', array(), WATCHDOG_ERROR);
       return 'error';
     }
 
@@ -151,6 +150,12 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return 'error';
     }
     $files[$this->filenames['path_zip']] = 1;
+
+    // We must remove the link before Drush runs drush_delete_dir_contents.
+    // Drush cleanup will briefly set all files to 777, including the file
+    // LICENSE.txt is linked to. Remove when
+    // https://github.com/drush-ops/drush/issues/672 is fixed.
+    @unlink($this->temp_directory . '/' . $export_to . '/LICENSE.txt');
 
     return $tgz_exists ? 'rebuild' : 'success';
   }
