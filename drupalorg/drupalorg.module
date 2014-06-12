@@ -217,6 +217,13 @@ function drupalorg_menu_alter(&$menu) {
     $menu['node/add/forum/%']['page arguments'] = array('forum', 3);
     $menu['node/add/forum']['access callback'] = FALSE;
   }
+  // Prevent abuse of heavy page callbacks by anonymous users, like spiders.
+  if (isset($menu['profile'])) {
+    $menu['profile']['access callback'] = 'user_is_logged_in';
+    $menu['profile']['access arguments'] = array();
+    $menu['profile/autocomplete']['access callback'] = 'user_is_logged_in';
+    $menu['profile/autocomplete']['access arguments'] = array();
+  }
 }
 
 /**
