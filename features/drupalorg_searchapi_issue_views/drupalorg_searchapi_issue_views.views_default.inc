@@ -290,6 +290,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     14 => 0,
     38 => 0,
   );
+  $handler->display->display_options['filters']['search_api_views_fulltext']['min_length'] = '3';
   /* Filter criterion: Indexed Node: Project */
   $handler->display->display_options['filters']['field_project']['id'] = 'field_project';
   $handler->display->display_options['filters']['field_project']['table'] = 'search_api_index_project_issues';
@@ -1024,6 +1025,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     14 => 0,
     38 => 0,
   );
+  $handler->display->display_options['filters']['search_api_views_fulltext']['min_length'] = '3';
   /* Filter criterion: Indexed Node: Status */
   $handler->display->display_options['filters']['field_issue_status']['id'] = 'field_issue_status';
   $handler->display->display_options['filters']['field_issue_status']['table'] = 'search_api_index_project_issues';
@@ -1806,6 +1808,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     14 => 0,
     38 => 0,
   );
+  $handler->display->display_options['filters']['search_api_views_fulltext']['min_length'] = '3';
   /* Filter criterion: Indexed Node: Project */
   $handler->display->display_options['filters']['field_project']['id'] = 'field_project';
   $handler->display->display_options['filters']['field_project']['table'] = 'search_api_index_project_issues';
@@ -2401,6 +2404,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     14 => 0,
     38 => 0,
   );
+  $handler->display->display_options['filters']['search_api_views_fulltext']['min_length'] = '3';
   /* Filter criterion: Indexed Node: Assigned */
   $handler->display->display_options['filters']['field_issue_assigned']['id'] = 'field_issue_assigned';
   $handler->display->display_options['filters']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
@@ -3327,6 +3331,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     14 => 0,
     38 => 0,
   );
+  $handler->display->display_options['filters']['search_api_views_fulltext']['min_length'] = '3';
   /* Filter criterion: Indexed Node: Project */
   $handler->display->display_options['filters']['field_project']['id'] = 'field_project';
   $handler->display->display_options['filters']['field_project']['table'] = 'search_api_index_project_issues';
