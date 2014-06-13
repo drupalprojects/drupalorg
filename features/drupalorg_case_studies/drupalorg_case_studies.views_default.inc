@@ -86,7 +86,6 @@ function drupalorg_case_studies_views_default_views() {
 
   /* Display: Case Studies Landing Page */
   $handler = $view->new_display('page', 'Case Studies Landing Page', 'page_1');
-  $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'none';
