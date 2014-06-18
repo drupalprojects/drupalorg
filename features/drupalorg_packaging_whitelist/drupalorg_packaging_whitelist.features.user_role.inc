@@ -13,7 +13,7 @@ function drupalorg_packaging_whitelist_user_default_roles() {
   // Exported role: Packaging whitelist maintainer.
   $roles['Packaging whitelist maintainer'] = array(
     'name' => 'Packaging whitelist maintainer',
-    'weight' => '0',
+    'weight' => 0,
   );
 
   return $roles;
