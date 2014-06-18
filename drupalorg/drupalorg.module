@@ -2680,6 +2680,35 @@ function drupalorg_preprocess_comment(&$v) {
       'html' => TRUE,
     ));
   }
+
+  // System messages in the issue queue.
+  if ($v['comment']->uid != 0 && $v['comment']->uid == variable_get('project_issue_followup_user', 0)) {
+    // Remove picture & username.
+    unset($v['picture']);
+    $v['submitted'] = t('<time pubdate datetime="!created_date_iso">!created_date</time>', array(
+      // The ISO 8601 formatted date, needed for relative times to work properly.
+      '!created_date_iso' => format_date($v['comment']->created, 'custom', 'c'),
+      // The formatted date to display when users have JS disabled or they have
+      // manually opted out of relative times.
+      '!created_date' => format_date($v['comment']->created, 'custom', 'F j, Y \a\t g:ia'),
+    ));
+
+    // Add extra classes.
+    $v['classes_array'][] = 'system-message';
+    if (preg_match('/^The last submitted patch, .*, failed testing.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
+      $v['classes_array'][] = 'testing-failed';
+    }
+    elseif (preg_match('#Commit <a href=".*">.*</a> on .*:#', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
+      $v['classes_array'][] = 'committed';
+    }
+    elseif (!empty($v['comment']->field_issue_changes)) {
+      foreach ($v['comment']->field_issue_changes[LANGUAGE_NONE] as $change) {
+        if ($change['field_name'] === 'field_issue_status' && $change['old_value'][0]['value'] == PROJECT_ISSUE_STATE_FIXED && $change['new_value'][0]['value'] == PROJECT_ISSUE_STATE_CLOSED) {
+          $v['classes_array'][] = 'closed';
+        }
+      }
+    }
+  }
 }
 
 /**
