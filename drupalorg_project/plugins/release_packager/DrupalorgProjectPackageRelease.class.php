@@ -102,7 +102,10 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return 'error';
     }
 
-    $info_files = array();
+    $info_files = array(
+      'info' => array(),
+      'yml' => array(),
+    );
     // Use the request time if the youngest file is from the future.
     $youngest = min($this->fileFindYoungest($this->temp_directory . '/' . $export_to, 0, $exclude, $info_files), DRUSH_REQUEST_TIME);
     if ($this->release_node->field_release_build_type[$this->release_node->language][0]['value'] === 'dynamic' && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $youngest) {
@@ -119,9 +122,15 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     }
 
     // Update any .info files with packaging metadata.
-    foreach ($info_files as $file) {
+    foreach ($info_files['info'] as $file) {
       if (!$this->fixInfoFileVersion($file)) {
-        watchdog('package_error', 'Failed to update version in %file, aborting packaging', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
+        watchdog('package_error', 'Failed to update version in %file, aborting packaging.', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
+        return 'error';
+      }
+    }
+    foreach ($info_files['yml'] as $file) {
+      if (!$this->fixInfoYmlFileVersion($file)) {
+        watchdog('package_error', 'Failed to update version in %file, aborting packaging.', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
         return 'error';
       }
     }
@@ -236,7 +245,39 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return FALSE;
     }
     if (!fwrite($info_fd, $info)) {
-      watchdog('package_error', "fwrite(@file) failed". '<pre>' . $info, array('@file' => $file), WATCHDOG_ERROR);
+      watchdog('package_error', 'fwrite(@file) failed', array('@file' => $file), WATCHDOG_ERROR);
+      return FALSE;
+    }
+    return TRUE;
+  }
+
+  /**
+   * Fix the given .info.yml file with the specified version string.
+   */
+  protected function fixInfoYmlFileVersion($file) {
+    $site_name = variable_get('site_name', 'Drupal.org');
+
+    $doc = file_get_contents($file);
+
+    // Comment out the keys we're going to add.
+    $doc = preg_replace('/^((?:version|core|project|datestamp)\s*:.*)$/m', '# $1', $doc);
+
+    // Add Drupal.org packaging keys.
+    $doc .= "\n# Information added by $site_name packaging script on " . gmdate('Y-m-d') . "\n";
+    $doc .= "version: '" . $this->release_version . "'\n";
+    $api_term = taxonomy_term_load(project_release_get_release_api_tid($this->release_node));
+    if ($api_term !== FALSE) {
+      $doc .= "core: '" . $api_term->name . "'\n";
+    }
+    $doc .= "project: '" . $this->project_short_name . "'\n";
+    $doc .= "datestamp: " . time() . "\n";
+
+    if (!chmod($file, 0644)) {
+      watchdog('package_error', 'chmod(@file, 0644) failed.', array('@file' => $file), WATCHDOG_ERROR);
+      return FALSE;
+    }
+    if (file_put_contents($file, $doc) === FALSE) {
+      watchdog('package_error', 'Writing @file failed.', array('@file' => $file), WATCHDOG_ERROR);
       return FALSE;
     }
     return TRUE;
@@ -264,7 +305,10 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
               $mtime = filemtime("$dir/$file");
               $timestamp = ($mtime > $timestamp) ? $mtime : $timestamp;
               if (preg_match('/^.+\.info$/', $file)) {
-                $info_files[] = "$dir/$file";
+                $info_files['info'][] = $dir . '/' . $file;
+              }
+              elseif (preg_match('/^.+\.info\.yml$/', $file)) {
+                $info_files['yml'][] = $dir . '/' . $file;
               }
             }
           }
