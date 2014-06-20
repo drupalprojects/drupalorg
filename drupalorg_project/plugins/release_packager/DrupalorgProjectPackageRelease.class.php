@@ -207,7 +207,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   }
 
   /**
-   * Fix the given .info file with the specified version string
+   * Fix the given .info file with the specified version string.
    */
   protected function fixInfoFileVersion($file) {
     $site_name = variable_get('site_name', 'Drupal.org');
@@ -224,11 +224,11 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       $info .= "core = \"$matches[1]\"\n";
     }
     $info .= 'project = "' . $this->project_short_name . "\"\n";
-    $info .= 'datestamp = "'. time() ."\"\n";
+    $info .= 'datestamp = "' . time() . "\"\n";
     $info .= "\n";
 
     if (!chmod($file, 0644)) {
-      watchdog('package_error', "chmod(@file, 0644) failed", array('@file' => $file), WATCHDOG_ERROR);
+      watchdog('package_error', 'chmod(@file, 0644) failed', array('@file' => $file), WATCHDOG_ERROR);
       return FALSE;
     }
     if (!$info_fd = fopen($file, 'ab')) {
