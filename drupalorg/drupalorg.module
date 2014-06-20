@@ -1144,11 +1144,6 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
     $form['revision_information']['#weight'] = 50;
   }
 
-  // Ensure that wildcard email addresses are not abused.
-  if ($form_id == 'user_register_form') {
-    $form['#validate'][] = 'drupalorg_register_mail_validate';
-  }
-
   // Core search index is not used, so clear off wipe option.
   if ($form_id == 'search_admin_settings') {
     unset($form['status']['wipe']);
@@ -1201,6 +1196,34 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
       $form['taxonomy_forums']['#suffix'] = '<p>' . t('Forum: %forum', array('%forum' => preg_replace('/^[- ]*/', '', $form['taxonomy_forums'][LANGUAGE_NONE]['#options'][$form['taxonomy_forums'][LANGUAGE_NONE]['#default_value']]))) . '</p>';
     }
   }
+}
+
+/**
+ * Impelements hook_form_FORM_BASE_alter().
+ */
+function drupalorg_form_user_login_alter(&$form) {
+  // Do not autocapitalize on mobile browsers.
+  $form['name']['#attributes']['autocapitalize'] = 'none';
+}
+
+/**
+ * Impelements hook_form_FORM_BASE_alter().
+ */
+function drupalorg_form_user_register_form_alter(&$form) {
+  // Ensure that wildcard email addresses are not abused.
+  $form['#validate'][] = 'drupalorg_register_mail_validate';
+
+  // Do not autocapitalize on mobile browsers.
+  $form['account']['name']['#attributes']['autocapitalize'] = 'none';
+  $form['account']['mail']['#attributes']['autocapitalize'] = 'none';
+}
+
+/**
+ * Impelements hook_form_FORM_BASE_alter().
+ */
+function drupalorg_form_multiple_email_manage_alter(&$form) {
+  // Do not autocapitalize on mobile browsers.
+  $form['new']['email']['#attributes']['autocapitalize'] = 'none';
 }
 
 /**
