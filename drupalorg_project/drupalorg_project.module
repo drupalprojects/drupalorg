@@ -1304,10 +1304,25 @@ function drupalorg_project_form_views_exposed_form_alter(&$form, &$form_state) {
       // Intended fall-through.
     case 'project_issue_search_all_searchapi':
     case 'project_issue_search_project_searchapi':
+      unset($form['#info']['filter-search_api_views_fulltext']['label']);
+
       // Do not allow anonymous users to search.
       if (!user_is_logged_in()) {
         $form['text']['#disabled'] = TRUE;
-        $form['text']['#description'] = t('Log in to search.');
+
+        // Override the form label.
+        $form['text']['#title'] = l(t('Search for'), 'user/login', array(
+          'html' => TRUE,
+          'attributes' => array(
+            'title' => t('Log in to enter search terms'),
+          ),
+          'query' => array(
+            'destination' => current_path(),
+          ),
+        ));
+      }
+      else {
+        $form['text']['#title'] = t('Search for');
       }
       break;
   }
