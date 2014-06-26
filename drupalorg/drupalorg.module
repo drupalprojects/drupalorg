@@ -263,6 +263,7 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
             case 'field_org_training_issue':
             case 'field_status':
             case 'field_organization_technologies':
+            case 'field_organization_support':
               if (isset($entity->uid) && $entity->uid === $account->uid) {
                 // People cannot edit their own nodes for these fields.
                 return FALSE;
