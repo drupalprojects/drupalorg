@@ -3970,6 +3970,8 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     14 => '14',
     15 => '15',
     2 => '2',
+    4 => '4',
+    16 => '16'
   );
   $handler->display->display_options['filters']['field_issue_status']['expose']['operator_id'] = 'field_issue_status_op';
   $handler->display->display_options['filters']['field_issue_status']['expose']['label'] = 'Status';
