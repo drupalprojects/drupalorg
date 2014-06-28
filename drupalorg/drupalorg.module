@@ -2728,6 +2728,9 @@ function drupalorg_preprocess_comment(&$v) {
     if (preg_match('/^The last submitted patch, .*, failed testing.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
       $v['classes_array'][] = 'testing-failed';
     }
+    elseif (preg_match('/queued .* for re-testing\.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
+      $v['classes_array'][] = 'queued-retesting';
+    }
     elseif (preg_match('#(Commit <a href=".*">.*</a> on .*:|class="versioncontrol-project-commits")#', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
       $v['classes_array'][] = 'committed';
     }
