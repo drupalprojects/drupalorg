@@ -22,7 +22,7 @@ function drupalorg_supporters_image_default_styles() {
     'name' => 'supporters-large',
     'label' => 'supporters-large',
     'effects' => array(
-      3 => array(
+      1 => array(
         'label' => 'Scale',
         'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
         'effect callback' => 'image_scale_effect',
@@ -32,8 +32,8 @@ function drupalorg_supporters_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale',
         'data' => array(
-          'width' => 280,
-          'height' => 130,
+          'width' => 275,
+          'height' => 100,
           'upscale' => 0,
         ),
         'weight' => 2,
@@ -46,7 +46,7 @@ function drupalorg_supporters_image_default_styles() {
     'name' => 'supporters-small',
     'label' => 'supporters-small',
     'effects' => array(
-      4 => array(
+      2 => array(
         'label' => 'Scale',
         'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
         'effect callback' => 'image_scale_effect',
@@ -56,8 +56,8 @@ function drupalorg_supporters_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale',
         'data' => array(
-          'width' => 110,
-          'height' => 55,
+          'width' => 140,
+          'height' => 80,
           'upscale' => 0,
         ),
         'weight' => 1,

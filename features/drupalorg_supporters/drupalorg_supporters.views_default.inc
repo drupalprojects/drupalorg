@@ -22,8 +22,8 @@ function drupalorg_supporters_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Technology Partners';
   $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -46,11 +46,10 @@ function drupalorg_supporters_views_default_views() {
     'image_link' => 'content',
   );
   $handler->display->display_options['fields']['field_logo']['group_column'] = 'entity_id';
-  /* Sort criterion: Content: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'node';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -82,7 +81,7 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p><a href="https://association.drupal.org/supporting-partners">Supporting Partners</a> financially support the Drupal.org team, making it possible to maintain and improve the site.</p>
+  $handler->display->display_options['header']['area']['content'] = '<p>Through their generous support, these great <a href="https://assoc.drupal.org/supporting-partners">Supporting Partner</a> companies help pay for the team that maintains and improves Drupal.org.</p>
 
 <h2>Supporting Partners Premium</h2>';
   $handler->display->display_options['header']['area']['format'] = '1';
@@ -190,10 +189,31 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p><a href="https://association.drupal.org/technology-partners">Drupal Technology Supporters</a> provide amazing technology that can be used with Drupal in many different ways. They also financially support the Drupal.org team, making it possible to maintain and improve the site</p>
+  $handler->display->display_options['header']['area']['content'] = 'Through their generous support, these great <a href="https://assoc.drupal.org/technology-supporters">Technology Supporter</a> companies help pay for the team that maintains and improves Drupal.org.
+
+Check out <a href="https://www.drupal.org/technology-supporter-resources">Technology Supporters Resource Center</a> for useful resources from these companies.
 
 <h2>Premium Technology Supporters</h2>';
   $handler->display->display_options['header']['area']['format'] = '1';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Logo */
+  $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
+  $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['label'] = '';
+  $handler->display->display_options['fields']['field_logo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_logo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_logo']['settings'] = array(
+    'image_style' => 'supporters-large',
+    'image_link' => 'content',
+  );
+  $handler->display->display_options['fields']['field_logo']['group_column'] = 'entity_id';
+  /* Field: Content: Short description */
+  $handler->display->display_options['fields']['field_short_description']['id'] = 'field_short_description';
+  $handler->display->display_options['fields']['field_short_description']['table'] = 'field_data_field_short_description';
+  $handler->display->display_options['fields']['field_short_description']['field'] = 'field_short_description';
+  $handler->display->display_options['fields']['field_short_description']['label'] = '';
+  $handler->display->display_options['fields']['field_short_description']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -226,6 +246,8 @@ function drupalorg_supporters_views_default_views() {
 
   /* Display: Technology */
   $handler = $view->new_display('attachment', 'Technology', 'attachment_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Technology Partners';
   $handler->display->display_options['display_description'] = 'Technology partner organizations.';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
@@ -276,7 +298,7 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['filters']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
   $handler->display->display_options['filters']['field_organization_support_value']['field'] = 'field_organization_support_value';
   $handler->display->display_options['filters']['field_organization_support_value']['value'] = array(
-    'supporting_premium' => 'supporting_premium',
+    'technology' => 'technology',
   );
   /* Filter criterion: Content: Logo (field_logo:fid) */
   $handler->display->display_options['filters']['field_logo_fid']['id'] = 'field_logo_fid';
@@ -295,17 +317,18 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Hosting Partners';
   $handler->display->display_options['display_description'] = 'Premium hosting partner organizations.';
-  $handler->display->display_options['defaults']['group_by'] = FALSE;
-  $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['defaults']['query'] = FALSE;
   $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<h2>Premium Hosting Partners</h2>';
+  $handler->display->display_options['header']['area']['content'] = 'Through their generous support, these great <a href="https://assoc.drupal.org/drupal-hosting-supporter-program">Hosting Supporter</a> companies help pay for the team that maintains and improves Drupal.org.<br>
+
+Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.
+
+<h2>Premium Hosting Partners</h2>';
   $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
@@ -313,6 +336,25 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['table'] = 'field_data_taxonomy_vocabulary_52';
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['field'] = 'taxonomy_vocabulary_52_tid';
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['label'] = 'Locations';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Logo */
+  $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
+  $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['label'] = '';
+  $handler->display->display_options['fields']['field_logo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_logo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_logo']['settings'] = array(
+    'image_style' => 'supporters-large',
+    'image_link' => 'content',
+  );
+  $handler->display->display_options['fields']['field_logo']['group_column'] = 'entity_id';
+  /* Field: Content: Short description */
+  $handler->display->display_options['fields']['field_short_description']['id'] = 'field_short_description';
+  $handler->display->display_options['fields']['field_short_description']['table'] = 'field_data_field_short_description';
+  $handler->display->display_options['fields']['field_short_description']['field'] = 'field_short_description';
+  $handler->display->display_options['fields']['field_short_description']['label'] = '';
+  $handler->display->display_options['fields']['field_short_description']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Taxonomy term: Name */
   $handler->display->display_options['arguments']['name']['id'] = 'name';
