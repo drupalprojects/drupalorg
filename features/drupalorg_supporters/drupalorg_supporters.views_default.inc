@@ -118,7 +118,8 @@ function drupalorg_supporters_views_default_views() {
   /* Display: Supporters */
   $handler = $view->new_display('attachment', 'Supporters', 'attachment_1');
   $handler->display->display_options['display_description'] = 'Supporting partner organizations.';
-  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['style_options']['class'] = 'grid cols-4';
@@ -250,7 +251,8 @@ Check out <a href="https://www.drupal.org/technology-supporter-resources">Techno
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Technology Partners';
   $handler->display->display_options['display_description'] = 'Technology partner organizations.';
-  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['style_options']['class'] = 'grid cols-4';
