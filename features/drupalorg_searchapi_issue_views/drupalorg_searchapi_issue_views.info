@@ -4,6 +4,7 @@ package = Features
 version = 7.x-3.x-dev
 project = drupalorg_searchapi_issue_views
 dependencies[] = project_issue
+dependencies[] = search_api
 dependencies[] = search_api_db
 dependencies[] = views
 datestamp = 1398817075
