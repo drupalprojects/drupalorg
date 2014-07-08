@@ -7,7 +7,7 @@ dependencies[] = tracker
 dependencies[] = homebox
 dependencies[] = ctools
 dependencies[] = views_content_cache
-dependencies[] = features
+dependencies[] = features (>=2.x)
 dependencies[] = drupalorg_git_gateway
 dependencies[] = drupalorg_versioncontrol
 scripts[] = js/general.js

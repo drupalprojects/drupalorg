@@ -11,6 +11,3392 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $export = array();
 
   $view = new view();
+  $view->name = 'drupalorg_project_issues_searchapi';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'search_api_index_project_issues';
+  $view->human_name = 'BETA Project Issue Project (SearchAPI)';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Backlog Issues for all projects (assign to move to current)';
+  $handler->display->display_options['use_more'] = TRUE;
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['use_more_text'] = 'View all backlog issues';
+  $handler->display->display_options['link_display'] = 'page_2';
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '50';
+  $handler->display->display_options['style_plugin'] = 'project_issue_table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'url' => 'url',
+    'title' => 'title',
+    'has_new_content' => 'has_new_content',
+    'field_issue_category' => 'field_issue_category',
+    'field_issue_version' => 'field_issue_version',
+    'field_issue_component' => 'field_issue_component',
+    'last_comment_timestamp' => 'last_comment_timestamp',
+    'created' => 'created',
+    'nothing' => 'nothing',
+    'field_issue_status' => 'field_issue_status',
+    'field_issue_priority' => 'field_issue_priority',
+    'comment_count' => 'comment_count',
+    'comment_count_new' => 'comment_count',
+    'field_issue_assigned' => 'field_issue_assigned',
+    'search_api_relevance' => 'search_api_relevance',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'url' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'has_new_content' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_issue_category' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_issue_version' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_issue_component' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'last_comment_timestamp' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'created' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'nothing' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_issue_status' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_issue_priority' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'comment_count' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'comment_count_new' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_issue_assigned' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'search_api_relevance' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['style_options']['sticky'] = TRUE;
+  /* Header: Global: Result summary */
+  $handler->display->display_options['header']['result']['id'] = 'result';
+  $handler->display->display_options['header']['result']['table'] = 'views';
+  $handler->display->display_options['header']['result']['field'] = 'result';
+  /* Header: Global: Unfiltered text */
+  $handler->display->display_options['header']['area_text_custom']['id'] = 'area_text_custom';
+  $handler->display->display_options['header']['area_text_custom']['table'] = 'views';
+  $handler->display->display_options['header']['area_text_custom']['field'] = 'area_text_custom';
+  /* No results behavior: Global: Unfiltered text */
+  $handler->display->display_options['empty']['area_text_custom']['id'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['table'] = 'views';
+  $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area_text_custom']['content'] = 'No issues match your criteria.';
+  /* Field: Indexed Node: URL */
+  $handler->display->display_options['fields']['url']['id'] = 'url';
+  $handler->display->display_options['fields']['url']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['url']['field'] = 'url';
+  $handler->display->display_options['fields']['url']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['url']['display_as_link'] = FALSE;
+  $handler->display->display_options['fields']['url']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
+  /* Field: Indexed Node: Has new content */
+  $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['has_new_content']['field'] = 'has_new_content';
+  $handler->display->display_options['fields']['has_new_content']['label'] = '';
+  $handler->display->display_options['fields']['has_new_content']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['has_new_content']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['has_new_content']['alter']['text'] = '<span class="marker">[has_new_content]</span>';
+  $handler->display->display_options['fields']['has_new_content']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['has_new_content']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Category */
+  $handler->display->display_options['fields']['field_issue_category']['id'] = 'field_issue_category';
+  $handler->display->display_options['fields']['field_issue_category']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_issue_category']['field'] = 'field_issue_category';
+  $handler->display->display_options['fields']['field_issue_category']['label'] = '';
+  $handler->display->display_options['fields']['field_issue_category']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_issue_category']['element_label_colon'] = FALSE;
+  /* Field: Indexed Node: Version */
+  $handler->display->display_options['fields']['field_issue_version']['id'] = 'field_issue_version';
+  $handler->display->display_options['fields']['field_issue_version']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_issue_version']['field'] = 'field_issue_version';
+  $handler->display->display_options['fields']['field_issue_version']['label'] = '';
+  $handler->display->display_options['fields']['field_issue_version']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_issue_version']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_issue_version']['alter']['text'] = ', [field_issue_version]';
+  $handler->display->display_options['fields']['field_issue_version']['element_label_colon'] = FALSE;
+  /* Field: Indexed Node: Component */
+  $handler->display->display_options['fields']['field_issue_component']['id'] = 'field_issue_component';
+  $handler->display->display_options['fields']['field_issue_component']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_issue_component']['field'] = 'field_issue_component';
+  $handler->display->display_options['fields']['field_issue_component']['label'] = '';
+  $handler->display->display_options['fields']['field_issue_component']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_issue_component']['element_label_colon'] = FALSE;
+  /* Field: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['fields']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['label'] = 'Last updated';
+  $handler->display->display_options['fields']['last_comment_timestamp']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['last_comment_timestamp']['date_format'] = 'time ago';
+  $handler->display->display_options['fields']['last_comment_timestamp']['second_date_format'] = 'long';
+  $handler->display->display_options['fields']['last_comment_timestamp']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Date created */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'Created';
+  $handler->display->display_options['fields']['created']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['created']['date_format'] = 'time ago';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
+  $handler->display->display_options['fields']['created']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Comment count */
+  $handler->display->display_options['fields']['comment_count']['id'] = 'comment_count';
+  $handler->display->display_options['fields']['comment_count']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['comment_count']['field'] = 'comment_count';
+  $handler->display->display_options['fields']['comment_count']['label'] = '';
+  $handler->display->display_options['fields']['comment_count']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['comment_count']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['comment_count']['format_plural'] = TRUE;
+  $handler->display->display_options['fields']['comment_count']['format_plural_singular'] = '1 comment';
+  $handler->display->display_options['fields']['comment_count']['format_plural_plural'] = '@count comments';
+  $handler->display->display_options['fields']['comment_count']['link_to_entity'] = 0;
+  /* Field: Indexed Node: New comment count */
+  $handler->display->display_options['fields']['comment_count_new']['id'] = 'comment_count_new';
+  $handler->display->display_options['fields']['comment_count_new']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['comment_count_new']['field'] = 'comment_count_new';
+  $handler->display->display_options['fields']['comment_count_new']['label'] = '';
+  $handler->display->display_options['fields']['comment_count_new']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['comment_count_new']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['comment_count_new']['alter']['text'] = '[comment_count_new] new';
+  $handler->display->display_options['fields']['comment_count_new']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['comment_count_new']['alter']['path'] = '[url]#new';
+  $handler->display->display_options['fields']['comment_count_new']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['comment_count_new']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['comment_count_new']['empty_zero'] = TRUE;
+  $handler->display->display_options['fields']['comment_count_new']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Priority */
+  $handler->display->display_options['fields']['field_issue_priority']['id'] = 'field_issue_priority';
+  $handler->display->display_options['fields']['field_issue_priority']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_issue_priority']['field'] = 'field_issue_priority';
+  $handler->display->display_options['fields']['field_issue_priority']['label'] = '';
+  $handler->display->display_options['fields']['field_issue_priority']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_issue_priority']['element_label_colon'] = FALSE;
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = 'Summary';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<h4>[title]</h4>
+<strong>[field_issue_priority] [field_issue_category]</strong> for [field_issue_component] [field_issue_version]<br />
+Created [created]<br />
+[comment_count] [comment_count_new] [last_comment_timestamp]
+';
+  /* Field: Indexed Node: Status */
+  $handler->display->display_options['fields']['field_issue_status']['id'] = 'field_issue_status';
+  $handler->display->display_options['fields']['field_issue_status']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_issue_status']['field'] = 'field_issue_status';
+  /* Field: Indexed Node: Assigned */
+  $handler->display->display_options['fields']['field_issue_assigned']['id'] = 'field_issue_assigned';
+  $handler->display->display_options['fields']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_issue_assigned']['field'] = 'field_issue_assigned';
+  $handler->display->display_options['fields']['field_issue_assigned']['label'] = 'Assigned to';
+  $handler->display->display_options['fields']['field_issue_assigned']['link_to_entity'] = 1;
+  $handler->display->display_options['fields']['field_issue_assigned']['view_mode'] = 'full';
+  $handler->display->display_options['fields']['field_issue_assigned']['bypass_access'] = 0;
+  /* Field: Search: Relevance */
+  $handler->display->display_options['fields']['search_api_relevance']['id'] = 'search_api_relevance';
+  $handler->display->display_options['fields']['search_api_relevance']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['search_api_relevance']['field'] = 'search_api_relevance';
+  $handler->display->display_options['fields']['search_api_relevance']['label'] = 'Score';
+  $handler->display->display_options['fields']['search_api_relevance']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['search_api_relevance']['link_to_entity'] = 0;
+  /* Sort criterion: Indexed Node: Priority */
+  $handler->display->display_options['sorts']['field_issue_priority']['id'] = 'field_issue_priority';
+  $handler->display->display_options['sorts']['field_issue_priority']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['sorts']['field_issue_priority']['field'] = 'field_issue_priority';
+  $handler->display->display_options['sorts']['field_issue_priority']['order'] = 'DESC';
+  /* Sort criterion: Indexed Node: Date created */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  /* Sort criterion: Indexed Node: Status */
+  $handler->display->display_options['sorts']['field_issue_status']['id'] = 'field_issue_status';
+  $handler->display->display_options['sorts']['field_issue_status']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['sorts']['field_issue_status']['field'] = 'field_issue_status';
+  /* Contextual filter: Indexed Node: Project */
+  $handler->display->display_options['arguments']['field_project']['id'] = 'field_project';
+  $handler->display->display_options['arguments']['field_project']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['arguments']['field_project']['field'] = 'field_project';
+  $handler->display->display_options['arguments']['field_project']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_project']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['title'] = 'Issues for %1';
+  $handler->display->display_options['arguments']['field_project']['default_argument_type'] = 'raw';
+  $handler->display->display_options['arguments']['field_project']['default_argument_options']['index'] = '3';
+  $handler->display->display_options['arguments']['field_project']['default_argument_options']['use_alias'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_project']['summary_options']['override'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['validate']['type'] = 'project_nid_having_issue_queue';
+  $handler->display->display_options['arguments']['field_project']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_project']['not'] = 0;
+  /* Filter criterion: Search: Fulltext search */
+  $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['field'] = 'search_api_views_fulltext';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['group'] = 1;
+  $handler->display->display_options['filters']['search_api_views_fulltext']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator_id'] = 'search_api_views_fulltext_op';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['label'] = 'Search for';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator'] = 'search_api_views_fulltext_op';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['identifier'] = 'text';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  /* Filter criterion: Indexed Node: Status */
+  $handler->display->display_options['filters']['field_issue_status']['id'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_status']['field'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['value'] = array(
+    'Open' => 'Open',
+  );
+  $handler->display->display_options['filters']['field_issue_status']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator_id'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_status']['expose']['reduce'] = 0;
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['identifier'] = 'status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => '- Open issues -',
+      'operator' => '=',
+      'value' => array(
+        1 => '1',
+        13 => '13',
+        8 => '8',
+        14 => '14',
+        15 => '15',
+        2 => '2',
+        4 => '4',
+        16 => '16',
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    2 => array(
+      'title' => 'Active',
+      'operator' => '=',
+      'value' => array(
+        1 => '1',
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    3 => array(
+      'title' => 'Needs work',
+      'operator' => '=',
+      'value' => array(
+        13 => '13',
+        1 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    4 => array(
+      'title' => 'Needs review',
+      'operator' => '=',
+      'value' => array(
+        8 => '8',
+        1 => 0,
+        13 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    5 => array(
+      'title' => 'Reviewed and tested by the community',
+      'operator' => '=',
+      'value' => array(
+        14 => '14',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    6 => array(
+      'title' => 'Patch (to be ported)',
+      'operator' => '=',
+      'value' => array(
+        15 => '15',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    7 => array(
+      'title' => 'Fixed',
+      'operator' => '=',
+      'value' => array(
+        2 => '2',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    8 => array(
+      'title' => 'Postponed',
+      'operator' => '=',
+      'value' => array(
+        4 => '4',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    9 => array(
+      'title' => 'Postponed (maintainer needs more info)',
+      'operator' => '=',
+      'value' => array(
+        16 => '16',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    10 => array(
+      'title' => 'Closed (duplicate)',
+      'operator' => '=',
+      'value' => array(
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    11 => array(
+      'title' => 'Closed (won\'t fix)',
+      'operator' => '=',
+      'value' => array(
+        5 => '5',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    12 => array(
+      'title' => 'Closed (works as designed)',
+      'operator' => '=',
+      'value' => array(
+        6 => '6',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    13 => array(
+      'title' => 'Closed (cannot reproduce)',
+      'operator' => '=',
+      'value' => array(
+        18 => '18',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        7 => 0,
+      ),
+    ),
+    14 => array(
+      'title' => 'Closed (fixed)',
+      'operator' => '=',
+      'value' => array(
+        7 => '7',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+      ),
+    ),
+  );
+  /* Filter criterion: Indexed Node: Priority */
+  $handler->display->display_options['filters']['field_issue_priority']['id'] = 'field_issue_priority';
+  $handler->display->display_options['filters']['field_issue_priority']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_priority']['field'] = 'field_issue_priority';
+  $handler->display->display_options['filters']['field_issue_priority']['value'] = array();
+  $handler->display->display_options['filters']['field_issue_priority']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_priority']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['operator_id'] = 'field_issue_priority_op';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['label'] = 'Priority';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['operator'] = 'field_issue_priority_op';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['identifier'] = 'priorities';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['reduce'] = 0;
+  /* Filter criterion: Indexed Node: Category */
+  $handler->display->display_options['filters']['field_issue_category']['id'] = 'field_issue_category';
+  $handler->display->display_options['filters']['field_issue_category']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_category']['field'] = 'field_issue_category';
+  $handler->display->display_options['filters']['field_issue_category']['value'] = array();
+  $handler->display->display_options['filters']['field_issue_category']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_category']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_category']['expose']['operator_id'] = 'field_issue_category_op';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['label'] = 'Category';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['operator'] = 'field_issue_category_op';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['identifier'] = 'categories';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_category']['expose']['reduce'] = 0;
+  /* Filter criterion: Indexed Node: Version */
+  $handler->display->display_options['filters']['field_issue_version']['id'] = 'field_issue_version';
+  $handler->display->display_options['filters']['field_issue_version']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_version']['field'] = 'field_issue_version';
+  $handler->display->display_options['filters']['field_issue_version']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_version']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_version']['expose']['operator_id'] = 'field_issue_version_op';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['label'] = 'Version';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['operator'] = 'field_issue_version_op';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['identifier'] = 'version';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_version']['project_argument'] = 'field_project';
+  /* Filter criterion: Indexed Node: Component */
+  $handler->display->display_options['filters']['field_issue_component']['id'] = 'field_issue_component';
+  $handler->display->display_options['filters']['field_issue_component']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_component']['field'] = 'field_issue_component';
+  $handler->display->display_options['filters']['field_issue_component']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_component']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_component']['expose']['operator_id'] = 'field_issue_component_op';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['label'] = 'Component';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['operator'] = 'field_issue_component_op';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['identifier'] = 'component';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_component']['project_argument'] = 'field_project';
+  /* Filter criterion: Indexed Node: Assigned */
+  $handler->display->display_options['filters']['field_issue_assigned']['id'] = 'field_issue_assigned';
+  $handler->display->display_options['filters']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_assigned']['field'] = 'field_issue_assigned';
+  $handler->display->display_options['filters']['field_issue_assigned']['operator'] = 'not empty';
+  /* Filter criterion: Indexed Node: Issue tags */
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['id'] = 'taxonomy_vocabulary_9';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['field'] = 'taxonomy_vocabulary_9';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['operator_id'] = 'taxonomy_vocabulary_9_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['label'] = 'Issue tags';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['operator'] = 'taxonomy_vocabulary_9_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['identifier'] = 'taxonomy_vocabulary_9';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+
+  /* Display: Current issues by project (page) */
+  $handler = $view->new_display('page', 'Current issues by project (page)', 'page');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Current Issues for all projects';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Result summary */
+  $handler->display->display_options['header']['result']['id'] = 'result';
+  $handler->display->display_options['header']['result']['table'] = 'views';
+  $handler->display->display_options['header']['result']['field'] = 'result';
+  $handler->display->display_options['header']['result']['content'] = '<p>Displaying @total issues assigned and active.</p>';
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<a href="/node/add/project-issue/!1">Create a new issue</a>';
+  $handler->display->display_options['header']['area']['format'] = '1';
+  $handler->display->display_options['header']['area']['tokenize'] = TRUE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Indexed Node: Project */
+  $handler->display->display_options['arguments']['field_project']['id'] = 'field_project';
+  $handler->display->display_options['arguments']['field_project']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['arguments']['field_project']['field'] = 'field_project';
+  $handler->display->display_options['arguments']['field_project']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_project']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['title'] = '%1: Current';
+  $handler->display->display_options['arguments']['field_project']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_project']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_project']['summary_options']['override'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['validate']['type'] = 'project_nid_having_issue_queue';
+  $handler->display->display_options['arguments']['field_project']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_project']['not'] = 0;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Search: Fulltext search */
+  $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['field'] = 'search_api_views_fulltext';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['group'] = 1;
+  $handler->display->display_options['filters']['search_api_views_fulltext']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator_id'] = 'search_api_views_fulltext_op';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['label'] = 'Search for';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator'] = 'search_api_views_fulltext_op';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['identifier'] = 'text';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  /* Filter criterion: Indexed Node: Status */
+  $handler->display->display_options['filters']['field_issue_status']['id'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_status']['field'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['value'] = array(
+    1 => '1',
+    13 => '13',
+    8 => '8',
+    14 => '14',
+    15 => '15',
+  );
+  $handler->display->display_options['filters']['field_issue_status']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator_id'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['identifier'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['identifier'] = 'status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => '- Open issues -',
+      'operator' => '=',
+      'value' => array(
+        1 => '1',
+        13 => '13',
+        8 => '8',
+        14 => '14',
+        15 => '15',
+        2 => '2',
+        4 => '4',
+        16 => '16',
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    2 => array(
+      'title' => 'Active',
+      'operator' => '=',
+      'value' => array(
+        1 => '1',
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    3 => array(
+      'title' => 'Needs work',
+      'operator' => '=',
+      'value' => array(
+        13 => '13',
+        1 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    4 => array(
+      'title' => 'Needs review',
+      'operator' => '=',
+      'value' => array(
+        8 => '8',
+        1 => 0,
+        13 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    5 => array(
+      'title' => 'Reviewed and tested by the community',
+      'operator' => '=',
+      'value' => array(
+        14 => '14',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    6 => array(
+      'title' => 'Patch (to be ported)',
+      'operator' => '=',
+      'value' => array(
+        15 => '15',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    7 => array(
+      'title' => 'Fixed',
+      'operator' => '=',
+      'value' => array(
+        2 => '2',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    8 => array(
+      'title' => 'Postponed',
+      'operator' => '=',
+      'value' => array(
+        4 => '4',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    9 => array(
+      'title' => 'Postponed (maintainer needs more info)',
+      'operator' => '=',
+      'value' => array(
+        16 => '16',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    10 => array(
+      'title' => 'Closed (duplicate)',
+      'operator' => '=',
+      'value' => array(
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    11 => array(
+      'title' => 'Closed (won\'t fix)',
+      'operator' => '=',
+      'value' => array(
+        5 => '5',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    12 => array(
+      'title' => 'Closed (works as designed)',
+      'operator' => '=',
+      'value' => array(
+        6 => '6',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    13 => array(
+      'title' => 'Closed (cannot reproduce)',
+      'operator' => '=',
+      'value' => array(
+        18 => '18',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        7 => 0,
+      ),
+    ),
+    14 => array(
+      'title' => 'Closed (fixed)',
+      'operator' => '=',
+      'value' => array(
+        7 => '7',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+      ),
+    ),
+  );
+  /* Filter criterion: Indexed Node: Priority */
+  $handler->display->display_options['filters']['field_issue_priority']['id'] = 'field_issue_priority';
+  $handler->display->display_options['filters']['field_issue_priority']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_priority']['field'] = 'field_issue_priority';
+  $handler->display->display_options['filters']['field_issue_priority']['value'] = array();
+  $handler->display->display_options['filters']['field_issue_priority']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_priority']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['operator_id'] = 'field_issue_priority_op';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['label'] = 'Priority';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['operator'] = 'field_issue_priority_op';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['identifier'] = 'priorities';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['reduce'] = 0;
+  /* Filter criterion: Indexed Node: Category */
+  $handler->display->display_options['filters']['field_issue_category']['id'] = 'field_issue_category';
+  $handler->display->display_options['filters']['field_issue_category']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_category']['field'] = 'field_issue_category';
+  $handler->display->display_options['filters']['field_issue_category']['value'] = array();
+  $handler->display->display_options['filters']['field_issue_category']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_category']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_category']['expose']['operator_id'] = 'field_issue_category_op';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['label'] = 'Category';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['operator'] = 'field_issue_category_op';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['identifier'] = 'categories';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_category']['expose']['reduce'] = 0;
+  /* Filter criterion: Indexed Node: Version */
+  $handler->display->display_options['filters']['field_issue_version']['id'] = 'field_issue_version';
+  $handler->display->display_options['filters']['field_issue_version']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_version']['field'] = 'field_issue_version';
+  $handler->display->display_options['filters']['field_issue_version']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_version']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_version']['expose']['operator_id'] = 'field_issue_version_op';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['label'] = 'Version';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['operator'] = 'field_issue_version_op';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['identifier'] = 'version';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_version']['project_argument'] = 'field_project';
+  /* Filter criterion: Indexed Node: Component */
+  $handler->display->display_options['filters']['field_issue_component']['id'] = 'field_issue_component';
+  $handler->display->display_options['filters']['field_issue_component']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_component']['field'] = 'field_issue_component';
+  $handler->display->display_options['filters']['field_issue_component']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_component']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_component']['expose']['operator_id'] = 'field_issue_component_op';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['label'] = 'Component';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['operator'] = 'field_issue_component_op';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['identifier'] = 'component';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_component']['project_argument'] = 'field_project';
+  /* Filter criterion: Indexed Node: Assigned */
+  $handler->display->display_options['filters']['field_issue_assigned']['id'] = 'field_issue_assigned';
+  $handler->display->display_options['filters']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_assigned']['field'] = 'field_issue_assigned';
+  $handler->display->display_options['filters']['field_issue_assigned']['operator'] = 'not empty';
+  $handler->display->display_options['path'] = 'beta/project/issues/%';
+
+  /* Display: Backlog issues by project (attached) */
+  $handler = $view->new_display('attachment', 'Backlog issues by project (attached)', 'attachment_1');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Unfiltered text */
+  $handler->display->display_options['header']['area_text_custom']['id'] = 'area_text_custom';
+  $handler->display->display_options['header']['area_text_custom']['table'] = 'views';
+  $handler->display->display_options['header']['area_text_custom']['field'] = 'area_text_custom';
+  $handler->display->display_options['header']['area_text_custom']['content'] = '<h2>%1: Backlog</h2>';
+  $handler->display->display_options['header']['area_text_custom']['tokenize'] = TRUE;
+  /* Header: Global: Result summary */
+  $handler->display->display_options['header']['result']['id'] = 'result';
+  $handler->display->display_options['header']['result']['table'] = 'views';
+  $handler->display->display_options['header']['result']['field'] = 'result';
+  $handler->display->display_options['header']['result']['content'] = '<p>Displaying @current_record_count issues of @total unassigned or postponed.</p>';
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Unfiltered text */
+  $handler->display->display_options['empty']['area_text_custom']['id'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['table'] = 'views';
+  $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area_text_custom']['content'] = 'There are no issues in the %1 backlog.';
+  $handler->display->display_options['empty']['area_text_custom']['tokenize'] = TRUE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Indexed Node: Project */
+  $handler->display->display_options['arguments']['field_project']['id'] = 'field_project';
+  $handler->display->display_options['arguments']['field_project']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['arguments']['field_project']['field'] = 'field_project';
+  $handler->display->display_options['arguments']['field_project']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_project']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['title'] = '%1: Backlog';
+  $handler->display->display_options['arguments']['field_project']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_project']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_project']['summary_options']['override'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['validate']['type'] = 'project_nid_having_issue_queue';
+  $handler->display->display_options['arguments']['field_project']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_project']['not'] = 0;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'OR',
+  );
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Search: Fulltext search */
+  $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['field'] = 'search_api_views_fulltext';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['group'] = 1;
+  $handler->display->display_options['filters']['search_api_views_fulltext']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator_id'] = 'search_api_views_fulltext_op';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['label'] = 'Search for';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator'] = 'search_api_views_fulltext_op';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['identifier'] = 'text';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  /* Filter criterion: Indexed Node: Priority */
+  $handler->display->display_options['filters']['field_issue_priority']['id'] = 'field_issue_priority';
+  $handler->display->display_options['filters']['field_issue_priority']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_priority']['field'] = 'field_issue_priority';
+  $handler->display->display_options['filters']['field_issue_priority']['value'] = array();
+  $handler->display->display_options['filters']['field_issue_priority']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_priority']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['operator_id'] = 'field_issue_priority_op';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['label'] = 'Priority';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['operator'] = 'field_issue_priority_op';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['identifier'] = 'priorities';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['reduce'] = 0;
+  /* Filter criterion: Indexed Node: Category */
+  $handler->display->display_options['filters']['field_issue_category']['id'] = 'field_issue_category';
+  $handler->display->display_options['filters']['field_issue_category']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_category']['field'] = 'field_issue_category';
+  $handler->display->display_options['filters']['field_issue_category']['value'] = array();
+  $handler->display->display_options['filters']['field_issue_category']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_category']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_category']['expose']['operator_id'] = 'field_issue_category_op';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['label'] = 'Category';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['operator'] = 'field_issue_category_op';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['identifier'] = 'categories';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_category']['expose']['reduce'] = 0;
+  /* Filter criterion: Indexed Node: Version */
+  $handler->display->display_options['filters']['field_issue_version']['id'] = 'field_issue_version';
+  $handler->display->display_options['filters']['field_issue_version']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_version']['field'] = 'field_issue_version';
+  $handler->display->display_options['filters']['field_issue_version']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_version']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_version']['expose']['operator_id'] = 'field_issue_version_op';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['label'] = 'Version';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['operator'] = 'field_issue_version_op';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['identifier'] = 'version';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_version']['project_argument'] = 'field_project';
+  /* Filter criterion: Indexed Node: Component */
+  $handler->display->display_options['filters']['field_issue_component']['id'] = 'field_issue_component';
+  $handler->display->display_options['filters']['field_issue_component']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_component']['field'] = 'field_issue_component';
+  $handler->display->display_options['filters']['field_issue_component']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_component']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_component']['expose']['operator_id'] = 'field_issue_component_op';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['label'] = 'Component';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['operator'] = 'field_issue_component_op';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['identifier'] = 'component';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_component']['project_argument'] = 'field_project';
+  /* Filter criterion: Indexed Node: Assigned */
+  $handler->display->display_options['filters']['field_issue_assigned']['id'] = 'field_issue_assigned';
+  $handler->display->display_options['filters']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_assigned']['field'] = 'field_issue_assigned';
+  $handler->display->display_options['filters']['field_issue_assigned']['operator'] = 'empty';
+  $handler->display->display_options['filters']['field_issue_assigned']['group'] = 2;
+  /* Filter criterion: Indexed Node: Status */
+  $handler->display->display_options['filters']['field_issue_status']['id'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_status']['field'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['value'] = array(
+    4 => '4',
+    16 => '16',
+  );
+  $handler->display->display_options['filters']['field_issue_status']['group'] = 2;
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator_id'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_status']['expose']['reduce'] = 0;
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['identifier'] = 'status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => '- Open issues -',
+      'operator' => '=',
+      'value' => array(
+        1 => '1',
+        13 => '13',
+        8 => '8',
+        14 => '14',
+        15 => '15',
+        2 => '2',
+        4 => '4',
+        16 => '16',
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    2 => array(
+      'title' => 'Active',
+      'operator' => '=',
+      'value' => array(
+        1 => '1',
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    3 => array(
+      'title' => 'Needs work',
+      'operator' => '=',
+      'value' => array(
+        13 => '13',
+        1 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    4 => array(
+      'title' => 'Needs review',
+      'operator' => '=',
+      'value' => array(
+        8 => '8',
+        1 => 0,
+        13 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    5 => array(
+      'title' => 'Reviewed and tested by the community',
+      'operator' => '=',
+      'value' => array(
+        14 => '14',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    6 => array(
+      'title' => 'Patch (to be ported)',
+      'operator' => '=',
+      'value' => array(
+        15 => '15',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    7 => array(
+      'title' => 'Fixed',
+      'operator' => '=',
+      'value' => array(
+        2 => '2',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    8 => array(
+      'title' => 'Postponed',
+      'operator' => '=',
+      'value' => array(
+        4 => '4',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    9 => array(
+      'title' => 'Postponed (maintainer needs more info)',
+      'operator' => '=',
+      'value' => array(
+        16 => '16',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    10 => array(
+      'title' => 'Closed (duplicate)',
+      'operator' => '=',
+      'value' => array(
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    11 => array(
+      'title' => 'Closed (won\'t fix)',
+      'operator' => '=',
+      'value' => array(
+        5 => '5',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    12 => array(
+      'title' => 'Closed (works as designed)',
+      'operator' => '=',
+      'value' => array(
+        6 => '6',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    13 => array(
+      'title' => 'Closed (cannot reproduce)',
+      'operator' => '=',
+      'value' => array(
+        18 => '18',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        7 => 0,
+      ),
+    ),
+    14 => array(
+      'title' => 'Closed (fixed)',
+      'operator' => '=',
+      'value' => array(
+        7 => '7',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+      ),
+    ),
+  );
+  /* Filter criterion: Indexed Node: Status */
+  $handler->display->display_options['filters']['field_issue_status_1']['id'] = 'field_issue_status_1';
+  $handler->display->display_options['filters']['field_issue_status_1']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_status_1']['field'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status_1']['operator'] = '<>';
+  $handler->display->display_options['filters']['field_issue_status_1']['value'] = array(
+    2 => '2',
+    3 => '3',
+    5 => '5',
+    6 => '6',
+    18 => '18',
+    7 => '7',
+  );
+  $handler->display->display_options['filters']['field_issue_status_1']['group'] = 1;
+  $handler->display->display_options['displays'] = array(
+    'page' => 'page',
+    'default' => 0,
+  );
+  $handler->display->display_options['attachment_position'] = 'after';
+  $handler->display->display_options['inherit_exposed_filters'] = TRUE;
+
+  /* Display: Backlog issues by project (page) */
+  $handler = $view->new_display('page', 'Backlog issues by project (page)', 'page_2');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Result summary */
+  $handler->display->display_options['header']['result']['id'] = 'result';
+  $handler->display->display_options['header']['result']['table'] = 'views';
+  $handler->display->display_options['header']['result']['field'] = 'result';
+  $handler->display->display_options['header']['result']['content'] = '<p>Displaying @start - @end of @total issues that are not assigned or have been postponed.</p>';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['sorts']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Indexed Node: Project */
+  $handler->display->display_options['arguments']['field_project']['id'] = 'field_project';
+  $handler->display->display_options['arguments']['field_project']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['arguments']['field_project']['field'] = 'field_project';
+  $handler->display->display_options['arguments']['field_project']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_project']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['title'] = 'Backlog issues for %1';
+  $handler->display->display_options['arguments']['field_project']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_project']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_project']['summary_options']['override'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['validate']['type'] = 'project_nid_having_issue_queue';
+  $handler->display->display_options['arguments']['field_project']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_project']['not'] = 0;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'OR',
+  );
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Search: Fulltext search */
+  $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['field'] = 'search_api_views_fulltext';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['group'] = 1;
+  $handler->display->display_options['filters']['search_api_views_fulltext']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator_id'] = 'search_api_views_fulltext_op';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['label'] = 'Search for';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator'] = 'search_api_views_fulltext_op';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['identifier'] = 'text';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  /* Filter criterion: Indexed Node: Priority */
+  $handler->display->display_options['filters']['field_issue_priority']['id'] = 'field_issue_priority';
+  $handler->display->display_options['filters']['field_issue_priority']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_priority']['field'] = 'field_issue_priority';
+  $handler->display->display_options['filters']['field_issue_priority']['value'] = array();
+  $handler->display->display_options['filters']['field_issue_priority']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_priority']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['operator_id'] = 'field_issue_priority_op';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['label'] = 'Priority';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['operator'] = 'field_issue_priority_op';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['identifier'] = 'priorities';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['reduce'] = 0;
+  /* Filter criterion: Indexed Node: Category */
+  $handler->display->display_options['filters']['field_issue_category']['id'] = 'field_issue_category';
+  $handler->display->display_options['filters']['field_issue_category']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_category']['field'] = 'field_issue_category';
+  $handler->display->display_options['filters']['field_issue_category']['value'] = array();
+  $handler->display->display_options['filters']['field_issue_category']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_category']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_category']['expose']['operator_id'] = 'field_issue_category_op';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['label'] = 'Category';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['operator'] = 'field_issue_category_op';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['identifier'] = 'categories';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_category']['expose']['reduce'] = 0;
+  /* Filter criterion: Indexed Node: Version */
+  $handler->display->display_options['filters']['field_issue_version']['id'] = 'field_issue_version';
+  $handler->display->display_options['filters']['field_issue_version']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_version']['field'] = 'field_issue_version';
+  $handler->display->display_options['filters']['field_issue_version']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_version']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_version']['expose']['operator_id'] = 'field_issue_version_op';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['label'] = 'Version';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['operator'] = 'field_issue_version_op';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['identifier'] = 'version';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_version']['project_argument'] = 'field_project';
+  /* Filter criterion: Indexed Node: Component */
+  $handler->display->display_options['filters']['field_issue_component']['id'] = 'field_issue_component';
+  $handler->display->display_options['filters']['field_issue_component']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_component']['field'] = 'field_issue_component';
+  $handler->display->display_options['filters']['field_issue_component']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_component']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_component']['expose']['operator_id'] = 'field_issue_component_op';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['label'] = 'Component';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['operator'] = 'field_issue_component_op';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['identifier'] = 'component';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_component']['project_argument'] = 'field_project';
+  /* Filter criterion: Indexed Node: Status */
+  $handler->display->display_options['filters']['field_issue_status']['id'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_status']['field'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['operator'] = '<>';
+  $handler->display->display_options['filters']['field_issue_status']['value'] = array(
+    2 => '2',
+    3 => '3',
+    5 => '5',
+    6 => '6',
+    18 => '18',
+    7 => '7',
+  );
+  $handler->display->display_options['filters']['field_issue_status']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator_id'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_status']['expose']['reduce'] = 0;
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['identifier'] = 'status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => '- Open issues -',
+      'operator' => '=',
+      'value' => array(
+        1 => '1',
+        13 => '13',
+        8 => '8',
+        14 => '14',
+        15 => '15',
+        2 => '2',
+        4 => '4',
+        16 => '16',
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    2 => array(
+      'title' => 'Active',
+      'operator' => '=',
+      'value' => array(
+        1 => '1',
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    3 => array(
+      'title' => 'Needs work',
+      'operator' => '=',
+      'value' => array(
+        13 => '13',
+        1 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    4 => array(
+      'title' => 'Needs review',
+      'operator' => '=',
+      'value' => array(
+        8 => '8',
+        1 => 0,
+        13 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    5 => array(
+      'title' => 'Reviewed and tested by the community',
+      'operator' => '=',
+      'value' => array(
+        14 => '14',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    6 => array(
+      'title' => 'Patch (to be ported)',
+      'operator' => '=',
+      'value' => array(
+        15 => '15',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    7 => array(
+      'title' => 'Fixed',
+      'operator' => '=',
+      'value' => array(
+        2 => '2',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    8 => array(
+      'title' => 'Postponed',
+      'operator' => '=',
+      'value' => array(
+        4 => '4',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    9 => array(
+      'title' => 'Postponed (maintainer needs more info)',
+      'operator' => '=',
+      'value' => array(
+        16 => '16',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    10 => array(
+      'title' => 'Closed (duplicate)',
+      'operator' => '=',
+      'value' => array(
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    11 => array(
+      'title' => 'Closed (won\'t fix)',
+      'operator' => '=',
+      'value' => array(
+        5 => '5',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    12 => array(
+      'title' => 'Closed (works as designed)',
+      'operator' => '=',
+      'value' => array(
+        6 => '6',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    13 => array(
+      'title' => 'Closed (cannot reproduce)',
+      'operator' => '=',
+      'value' => array(
+        18 => '18',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        7 => 0,
+      ),
+    ),
+    14 => array(
+      'title' => 'Closed (fixed)',
+      'operator' => '=',
+      'value' => array(
+        7 => '7',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+      ),
+    ),
+  );
+  /* Filter criterion: Indexed Node: Assigned */
+  $handler->display->display_options['filters']['field_issue_assigned']['id'] = 'field_issue_assigned';
+  $handler->display->display_options['filters']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_assigned']['field'] = 'field_issue_assigned';
+  $handler->display->display_options['filters']['field_issue_assigned']['operator'] = 'empty';
+  $handler->display->display_options['filters']['field_issue_assigned']['group'] = 2;
+  /* Filter criterion: Indexed Node: Status */
+  $handler->display->display_options['filters']['field_issue_status_1']['id'] = 'field_issue_status_1';
+  $handler->display->display_options['filters']['field_issue_status_1']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_status_1']['field'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status_1']['value'] = array(
+    4 => '4',
+    16 => '16',
+  );
+  $handler->display->display_options['filters']['field_issue_status_1']['group'] = 2;
+  $handler->display->display_options['path'] = 'beta/project/issues/%/backlog';
+
+  /* Display: Fixed issues by project (block) */
+  $handler = $view->new_display('block', 'Fixed issues by project (block)', 'block_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Recently closed issues';
+  $handler->display->display_options['defaults']['use_more'] = FALSE;
+  $handler->display->display_options['use_more'] = TRUE;
+  $handler->display->display_options['defaults']['use_more_always'] = FALSE;
+  $handler->display->display_options['defaults']['use_more_always'] = FALSE;
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['defaults']['use_more_text'] = FALSE;
+  $handler->display->display_options['use_more_text'] = 'View all fixed issues';
+  $handler->display->display_options['defaults']['link_display'] = FALSE;
+  $handler->display->display_options['link_display'] = 'custom_url';
+  $handler->display->display_options['link_url'] = 'beta/project/issues/fixed/!1';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'project_issue_table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'url' => 'url',
+    'field_issue_status' => 'field_issue_status',
+    'field_issue_priority' => 'field_issue_priority',
+    'field_issue_version' => 'field_issue_version',
+    'search_api_relevance' => 'search_api_relevance',
+    'title' => 'title',
+    'last_comment_timestamp' => 'last_comment_timestamp',
+    'nothing' => 'nothing',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'url' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_issue_status' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_issue_priority' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_issue_version' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'search_api_relevance' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'last_comment_timestamp' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'nothing' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Result summary */
+  $handler->display->display_options['header']['result']['id'] = 'result';
+  $handler->display->display_options['header']['result']['table'] = 'views';
+  $handler->display->display_options['header']['result']['field'] = 'result';
+  $handler->display->display_options['header']['result']['content'] = '<p>Last @current_record_count fixed or closed issues.</p>';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Indexed Node: URL */
+  $handler->display->display_options['fields']['url']['id'] = 'url';
+  $handler->display->display_options['fields']['url']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['url']['field'] = 'url';
+  $handler->display->display_options['fields']['url']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['url']['display_as_link'] = FALSE;
+  $handler->display->display_options['fields']['url']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Status */
+  $handler->display->display_options['fields']['field_issue_status']['id'] = 'field_issue_status';
+  $handler->display->display_options['fields']['field_issue_status']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_issue_status']['field'] = 'field_issue_status';
+  $handler->display->display_options['fields']['field_issue_status']['exclude'] = TRUE;
+  /* Field: Indexed Node: Priority */
+  $handler->display->display_options['fields']['field_issue_priority']['id'] = 'field_issue_priority';
+  $handler->display->display_options['fields']['field_issue_priority']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_issue_priority']['field'] = 'field_issue_priority';
+  $handler->display->display_options['fields']['field_issue_priority']['exclude'] = TRUE;
+  /* Field: Indexed Node: Version */
+  $handler->display->display_options['fields']['field_issue_version']['id'] = 'field_issue_version';
+  $handler->display->display_options['fields']['field_issue_version']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_issue_version']['field'] = 'field_issue_version';
+  $handler->display->display_options['fields']['field_issue_version']['exclude'] = TRUE;
+  /* Field: Search: Relevance */
+  $handler->display->display_options['fields']['search_api_relevance']['id'] = 'search_api_relevance';
+  $handler->display->display_options['fields']['search_api_relevance']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['search_api_relevance']['field'] = 'search_api_relevance';
+  $handler->display->display_options['fields']['search_api_relevance']['label'] = 'Score';
+  $handler->display->display_options['fields']['search_api_relevance']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['search_api_relevance']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
+  /* Field: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['fields']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['fields']['last_comment_timestamp']['label'] = '';
+  $handler->display->display_options['fields']['last_comment_timestamp']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['last_comment_timestamp']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['last_comment_timestamp']['date_format'] = 'raw time ago';
+  $handler->display->display_options['fields']['last_comment_timestamp']['second_date_format'] = 'long';
+  $handler->display->display_options['fields']['last_comment_timestamp']['link_to_entity'] = 0;
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '[title] [field_issue_status] [last_comment_timestamp] ago';
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['sorts']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Indexed Node: Project */
+  $handler->display->display_options['arguments']['field_project']['id'] = 'field_project';
+  $handler->display->display_options['arguments']['field_project']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['arguments']['field_project']['field'] = 'field_project';
+  $handler->display->display_options['arguments']['field_project']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_project']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['title'] = 'Fixed/Closed issues for %1';
+  $handler->display->display_options['arguments']['field_project']['default_argument_type'] = 'raw';
+  $handler->display->display_options['arguments']['field_project']['default_argument_options']['index'] = '3';
+  $handler->display->display_options['arguments']['field_project']['default_argument_options']['use_alias'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['default_argument_skip_url'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_project']['summary_options']['override'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['validate']['type'] = 'project_nid_having_issue_queue';
+  $handler->display->display_options['arguments']['field_project']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_project']['not'] = 0;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Search: Fulltext search */
+  $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['field'] = 'search_api_views_fulltext';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['group'] = 1;
+  $handler->display->display_options['filters']['search_api_views_fulltext']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator_id'] = 'search_api_views_fulltext_op';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['label'] = 'Search for';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator'] = 'search_api_views_fulltext_op';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['identifier'] = 'text';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  /* Filter criterion: Indexed Node: Status */
+  $handler->display->display_options['filters']['field_issue_status']['id'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_status']['field'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['value'] = array(
+    2 => '2',
+    3 => '3',
+    5 => '5',
+    6 => '6',
+    18 => '18',
+    7 => '7',
+  );
+  $handler->display->display_options['filters']['field_issue_status']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator_id'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_status']['expose']['reduce'] = 0;
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['identifier'] = 'status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => '- Open issues -',
+      'operator' => '=',
+      'value' => array(
+        1 => '1',
+        13 => '13',
+        8 => '8',
+        14 => '14',
+        15 => '15',
+        2 => '2',
+        4 => '4',
+        16 => '16',
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    2 => array(
+      'title' => 'Active',
+      'operator' => '=',
+      'value' => array(
+        1 => '1',
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    3 => array(
+      'title' => 'Needs work',
+      'operator' => '=',
+      'value' => array(
+        13 => '13',
+        1 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    4 => array(
+      'title' => 'Needs review',
+      'operator' => '=',
+      'value' => array(
+        8 => '8',
+        1 => 0,
+        13 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    5 => array(
+      'title' => 'Reviewed and tested by the community',
+      'operator' => '=',
+      'value' => array(
+        14 => '14',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    6 => array(
+      'title' => 'Patch (to be ported)',
+      'operator' => '=',
+      'value' => array(
+        15 => '15',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    7 => array(
+      'title' => 'Fixed',
+      'operator' => '=',
+      'value' => array(
+        2 => '2',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    8 => array(
+      'title' => 'Postponed',
+      'operator' => '=',
+      'value' => array(
+        4 => '4',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    9 => array(
+      'title' => 'Postponed (maintainer needs more info)',
+      'operator' => '=',
+      'value' => array(
+        16 => '16',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    10 => array(
+      'title' => 'Closed (duplicate)',
+      'operator' => '=',
+      'value' => array(
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    11 => array(
+      'title' => 'Closed (won\'t fix)',
+      'operator' => '=',
+      'value' => array(
+        5 => '5',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    12 => array(
+      'title' => 'Closed (works as designed)',
+      'operator' => '=',
+      'value' => array(
+        6 => '6',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    13 => array(
+      'title' => 'Closed (cannot reproduce)',
+      'operator' => '=',
+      'value' => array(
+        18 => '18',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        7 => 0,
+      ),
+    ),
+    14 => array(
+      'title' => 'Closed (fixed)',
+      'operator' => '=',
+      'value' => array(
+        7 => '7',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+      ),
+    ),
+  );
+  $handler->display->display_options['block_description'] = 'Closed issues by project';
+
+  /* Display: Fixed issues by project (page) */
+  $handler = $view->new_display('page', 'Fixed issues by project (page)', 'page_1');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Result summary */
+  $handler->display->display_options['header']['result']['id'] = 'result';
+  $handler->display->display_options['header']['result']['table'] = 'views';
+  $handler->display->display_options['header']['result']['field'] = 'result';
+  $handler->display->display_options['header']['result']['content'] = '<p>Displaying @start - @end of @total issues marked as fixed for this project.</p>';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Indexed Node: Last comment timestamp */
+  $handler->display->display_options['sorts']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
+  $handler->display->display_options['sorts']['last_comment_timestamp']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Indexed Node: Project */
+  $handler->display->display_options['arguments']['field_project']['id'] = 'field_project';
+  $handler->display->display_options['arguments']['field_project']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['arguments']['field_project']['field'] = 'field_project';
+  $handler->display->display_options['arguments']['field_project']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_project']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['title'] = 'Fixed issues for %1';
+  $handler->display->display_options['arguments']['field_project']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_project']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_project']['summary_options']['override'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_project']['validate']['type'] = 'project_nid_having_issue_queue';
+  $handler->display->display_options['arguments']['field_project']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_project']['not'] = 0;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Search: Fulltext search */
+  $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['field'] = 'search_api_views_fulltext';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['group'] = 1;
+  $handler->display->display_options['filters']['search_api_views_fulltext']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator_id'] = 'search_api_views_fulltext_op';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['label'] = 'Search for';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator'] = 'search_api_views_fulltext_op';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['identifier'] = 'text';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  /* Filter criterion: Indexed Node: Status */
+  $handler->display->display_options['filters']['field_issue_status']['id'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_status']['field'] = 'field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status']['value'] = array(
+    2 => '2',
+    3 => '3',
+    5 => '5',
+    6 => '6',
+    18 => '18',
+    7 => '7',
+  );
+  $handler->display->display_options['filters']['field_issue_status']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator_id'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['operator'] = 'field_issue_status_op';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['field_issue_status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_status']['expose']['reduce'] = 0;
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['identifier'] = 'status';
+  $handler->display->display_options['filters']['field_issue_status']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => '- Open issues -',
+      'operator' => '=',
+      'value' => array(
+        1 => '1',
+        13 => '13',
+        8 => '8',
+        14 => '14',
+        15 => '15',
+        2 => '2',
+        4 => '4',
+        16 => '16',
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    2 => array(
+      'title' => 'Active',
+      'operator' => '=',
+      'value' => array(
+        1 => '1',
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    3 => array(
+      'title' => 'Needs work',
+      'operator' => '=',
+      'value' => array(
+        13 => '13',
+        1 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    4 => array(
+      'title' => 'Needs review',
+      'operator' => '=',
+      'value' => array(
+        8 => '8',
+        1 => 0,
+        13 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    5 => array(
+      'title' => 'Reviewed and tested by the community',
+      'operator' => '=',
+      'value' => array(
+        14 => '14',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    6 => array(
+      'title' => 'Patch (to be ported)',
+      'operator' => '=',
+      'value' => array(
+        15 => '15',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    7 => array(
+      'title' => 'Fixed',
+      'operator' => '=',
+      'value' => array(
+        2 => '2',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    8 => array(
+      'title' => 'Postponed',
+      'operator' => '=',
+      'value' => array(
+        4 => '4',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    9 => array(
+      'title' => 'Postponed (maintainer needs more info)',
+      'operator' => '=',
+      'value' => array(
+        16 => '16',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    10 => array(
+      'title' => 'Closed (duplicate)',
+      'operator' => '=',
+      'value' => array(
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    11 => array(
+      'title' => 'Closed (won\'t fix)',
+      'operator' => '=',
+      'value' => array(
+        5 => '5',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        6 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    12 => array(
+      'title' => 'Closed (works as designed)',
+      'operator' => '=',
+      'value' => array(
+        6 => '6',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        18 => 0,
+        7 => 0,
+      ),
+    ),
+    13 => array(
+      'title' => 'Closed (cannot reproduce)',
+      'operator' => '=',
+      'value' => array(
+        18 => '18',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        7 => 0,
+      ),
+    ),
+    14 => array(
+      'title' => 'Closed (fixed)',
+      'operator' => '=',
+      'value' => array(
+        7 => '7',
+        1 => 0,
+        13 => 0,
+        8 => 0,
+        14 => 0,
+        15 => 0,
+        2 => 0,
+        4 => 0,
+        16 => 0,
+        3 => 0,
+        5 => 0,
+        6 => 0,
+        18 => 0,
+      ),
+    ),
+  );
+  /* Filter criterion: Indexed Node: Priority */
+  $handler->display->display_options['filters']['field_issue_priority']['id'] = 'field_issue_priority';
+  $handler->display->display_options['filters']['field_issue_priority']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_priority']['field'] = 'field_issue_priority';
+  $handler->display->display_options['filters']['field_issue_priority']['value'] = array();
+  $handler->display->display_options['filters']['field_issue_priority']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_priority']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['operator_id'] = 'field_issue_priority_op';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['label'] = 'Priority';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['operator'] = 'field_issue_priority_op';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['identifier'] = 'priorities';
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_priority']['expose']['reduce'] = 0;
+  /* Filter criterion: Indexed Node: Category */
+  $handler->display->display_options['filters']['field_issue_category']['id'] = 'field_issue_category';
+  $handler->display->display_options['filters']['field_issue_category']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_category']['field'] = 'field_issue_category';
+  $handler->display->display_options['filters']['field_issue_category']['value'] = array();
+  $handler->display->display_options['filters']['field_issue_category']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_category']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_category']['expose']['operator_id'] = 'field_issue_category_op';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['label'] = 'Category';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['operator'] = 'field_issue_category_op';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['identifier'] = 'categories';
+  $handler->display->display_options['filters']['field_issue_category']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_category']['expose']['reduce'] = 0;
+  /* Filter criterion: Indexed Node: Version */
+  $handler->display->display_options['filters']['field_issue_version']['id'] = 'field_issue_version';
+  $handler->display->display_options['filters']['field_issue_version']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_version']['field'] = 'field_issue_version';
+  $handler->display->display_options['filters']['field_issue_version']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_version']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_version']['expose']['operator_id'] = 'field_issue_version_op';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['label'] = 'Version';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['operator'] = 'field_issue_version_op';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['identifier'] = 'version';
+  $handler->display->display_options['filters']['field_issue_version']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_version']['project_argument'] = 'field_project';
+  /* Filter criterion: Indexed Node: Component */
+  $handler->display->display_options['filters']['field_issue_component']['id'] = 'field_issue_component';
+  $handler->display->display_options['filters']['field_issue_component']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['field_issue_component']['field'] = 'field_issue_component';
+  $handler->display->display_options['filters']['field_issue_component']['group'] = 1;
+  $handler->display->display_options['filters']['field_issue_component']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_component']['expose']['operator_id'] = 'field_issue_component_op';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['label'] = 'Component';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['operator'] = 'field_issue_component_op';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['identifier'] = 'component';
+  $handler->display->display_options['filters']['field_issue_component']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['filters']['field_issue_component']['project_argument'] = 'field_project';
+  /* Filter criterion: Indexed Node: Issue tags */
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['id'] = 'taxonomy_vocabulary_9';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['field'] = 'taxonomy_vocabulary_9';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['operator_id'] = 'taxonomy_vocabulary_9_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['label'] = 'Issue tags';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['operator'] = 'taxonomy_vocabulary_9_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['identifier'] = 'taxonomy_vocabulary_9';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_9']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    36 => 0,
+    28 => 0,
+    26 => 0,
+    4 => 0,
+    7 => 0,
+    14 => 0,
+    38 => 0,
+  );
+  $handler->display->display_options['path'] = 'beta/project/issues/%/fixed';
+  $export['drupalorg_project_issues_searchapi'] = $view;
+
+  $view = new view();
   $view->name = 'project_issue_all_projects_searchapi';
   $view->description = '';
   $view->tag = 'default';
