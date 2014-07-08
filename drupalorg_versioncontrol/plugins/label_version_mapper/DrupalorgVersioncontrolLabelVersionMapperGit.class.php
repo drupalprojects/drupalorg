@@ -27,19 +27,28 @@ class DrupalorgVersioncontrolLabelVersionMapperGit implements VersioncontrolRele
       // 7.0-unstable3
       // 7.0
       if (preg_match('/^(\d+)\.(\d+)(\.(\d+))?(-((unstable|alpha|beta|rc)\d+))?$/', $tag_name, $matches)) {
-        // Starting with version 5, we only have 2 digits, major and patch.
-        if ($matches[1] >= 5) {
+        // Starting with version 5 through version 8.0 alphas, we only had 2 digits, major and patch.
+        if (($matches[1] >= 5 && $matches[1] <= 7) || ($matches[1] == 8 && $matches[4] == '')) {
           $version->version_major = $matches[1];
           $version->version_patch = $matches[2];
           $api_term = $version->version_major . '.x';
         }
-        // Prior to 5, we had all 3: major, minor and patch.
+        // Prior to 5 and from 8 onward we have all 3: major, minor and patch.
         else {
           $version->version_major = $matches[1];
           $version->version_minor = $matches[2];
           // Match 4 contains the patch level without the leading '.'.
           $version->version_patch = $matches[4];
-          $api_term = $version->version_major . '.' . $version->version_minor . '.x';
+          if ($matches[1] <= 5) {
+            // For version 4 and prior, the API compatibility prefix had 3 components
+            // e.g., 4.4.x-1.0
+            $api_term = $version->version_major . '.' . $version->version_minor . '.x';
+          }
+          else {
+            // For version 5 and onward the API compatibility prefix has 2 components
+            // e.g., 8.x-1.0
+            $api_term = $version->version_major . '.x';
+          }
         }
         // Match 6 contains the version extra without the leading '-'.
         if (!empty($matches[6])) {
@@ -100,7 +109,7 @@ class DrupalorgVersioncontrolLabelVersionMapperGit implements VersioncontrolRele
       // 10.x
       if (preg_match('/^(\d+)(\.(\d+))?\.x$/', $branch_name, $matches)) {
         $version->version_major = $matches[1];
-        if (isset($matches[3])) {
+        if (isset($matches[3]) && $matches[1] <= 4) {
           $version->version_minor = $matches[3];
         }
         // The whole thing should match the API compatibliity term.
