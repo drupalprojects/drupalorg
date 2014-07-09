@@ -106,14 +106,20 @@ class DrupalorgVersioncontrolLabelVersionMapperGit implements VersioncontrolRele
       // Core branches can be any of these:
       // 4.7.x
       // 7.x
+      // 8.1.x
       // 10.x
       if (preg_match('/^(\d+)(\.(\d+))?\.x$/', $branch_name, $matches)) {
         $version->version_major = $matches[1];
-        if (isset($matches[3]) && $matches[1] <= 4) {
+        if (isset($matches[3]) && ($matches[1] <= 4 || $matches[1] >= 8)) {
           $version->version_minor = $matches[3];
         }
-        // The whole thing should match the API compatibliity term.
-        $api_term = $matches[0];
+        // The whole thing should match the API compatibility term, for 7 and lower.
+        if ($version->version_major <= 7) {
+          $api_term = $branch_name;
+        }
+        else {
+          $api_term = $version->version_major . '.x';
+        }
       }
     }
     else {
