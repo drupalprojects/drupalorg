@@ -10,5 +10,6 @@ dependencies[] = views_content_cache
 dependencies[] = features (>=2.x)
 dependencies[] = drupalorg_git_gateway
 dependencies[] = drupalorg_versioncontrol
+dependencies[] = render_cache_comment
 scripts[] = js/general.js
 core = 7.x

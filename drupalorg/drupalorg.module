@@ -2818,3 +2818,59 @@ function drupalorg_user_update(&$edit, $account, $category) {
     }
   }
 }
+
+/**
+ * Implements hook_render_cache_entity_default_cache_info_alter().
+ */
+function drupalorg_render_cache_entity_default_cache_info_alter(&$cache_info, $context) {
+  // Disable entity_view() render caching by default to avoid side effects.
+  $cache_info['granularity'] = DRUPAL_NO_CACHE;
+}
+
+/**
+ * Implements hook_render_cache_entity_cache_info_alter().
+ */
+function drupalorg_render_cache_entity_cache_info_alter(&$cache_info, $entity, $context) {
+  // Allow to disable render caching via variable.
+  if (!variable_get('drupalorg_render_cache_enabled', TRUE)) {
+    return;
+  }
+
+  // Always render_to_markup if possible.
+  // Yes, please save rendered data.
+  $cache_info['render_cache_render_to_markup'] = TRUE;
+
+  // Check if render caching should be enabled for comments.
+  if (variable_get('drupalorg_render_cache_comment_enabled', TRUE)
+      && $context['entity_type'] == 'comment'
+      && $context['view_mode'] == 'full') {
+    $cache_info['granularity'] = DRUPAL_CACHE_PER_ROLE;
+    // Store that this needs special comment processing.
+    $cache_info['drupalorg_comment_processing'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_render_cache_entity_hash_alter().
+ */
+function drupalorg_render_cache_entity_hash_alter(&$hash, $entity, $cache_info, $context) {
+  if (!empty($cache_info['drupalorg_comment_processing'])) {
+    // Comment is displaying users, so need to add this to the hash, entity is already added.
+    $hash['comment_uid'] = $entity->uid;
+    if (!empty($entity->uid)) {
+      $hash['comment_uid_modified'] = entity_modified_last_id('user', $entity->uid);
+    }
+
+    $hash['is_viewer'] = $entity->uid == $GLOBALS['user']->uid;
+
+    $node = node_load($entity->nid);
+    $hash['is_author'] = $entity->uid == $node->uid;
+
+    $hash['is_new'] = !empty($entity->new);
+    $hash['first_new'] = !empty($entity->first_new);
+
+    // @todo Maybe disable caching for threaded comments?
+    $hash['divs'] = isset($entity->divs) ? $entity->divs : '';
+    $hash['divs_final'] = isset($entity->divs_final) ? $entity->divs_final : '';
+  }
+}
