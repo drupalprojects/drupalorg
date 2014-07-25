@@ -2869,7 +2869,6 @@ function drupalorg_render_cache_entity_hash_alter(&$hash, $entity, $cache_info, 
     $hash['is_new'] = !empty($entity->new);
     $hash['first_new'] = !empty($entity->first_new);
 
-    // @todo Maybe disable caching for threaded comments?
     $hash['divs'] = isset($entity->divs) ? $entity->divs : '';
     $hash['divs_final'] = isset($entity->divs_final) ? $entity->divs_final : '';
   }
