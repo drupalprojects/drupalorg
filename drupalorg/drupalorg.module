@@ -2711,7 +2711,7 @@ function drupalorg_preprocess_comment(&$v) {
   // System messages in the issue queue.
   if ($v['comment']->uid != 0 && $v['comment']->uid == variable_get('project_issue_followup_user', 0)) {
     // Remove picture & username.
-    unset($v['picture']);
+    $v['picture'] = '';
     $v['submitted'] = t('<time pubdate datetime="!created_date_iso">!created_date</time>', array(
       // The ISO 8601 formatted date, needed for relative times to work properly.
       '!created_date_iso' => format_date($v['comment']->created, 'custom', 'c'),
