@@ -2217,6 +2217,35 @@ function drupalorg_node_update($node) {
 }
 
 /**
+ * Implements hook_node_delete().
+ */
+function drupalorg_node_delete($node) {
+  if (_forum_node_check_node_type($node)) {
+    // Flush the forum block cache.
+    drupalorg_forum_blocks_flush();
+  }
+}
+
+/**
+ * Flush the render cache for the core forum blocks.
+ */
+function drupalorg_forum_blocks_flush() {
+  // Flush all the forum module provided blocks.
+  $blocks = forum_block_info();
+  foreach ($blocks as $delta => $info) {
+    // At the moment, there's only two core forum blocks, but let's ensure that
+    // if any are added, we don't fail.
+    if (isset($info['cache']) && ($info['cache'] == DRUPAL_CACHE_CUSTOM)) {
+      // Get the render array from forum module.
+      $block = forum_block_view($delta);
+      $cid = drupal_render_cid_create($block['content']);
+      $bin = isset($block['content']['#cache']['bin']) ? $block['content']['#cache']['bin'] : 'cache';
+      cache_clear_all($cid, $bin);
+    }
+  }
+}
+
+/**
  * Implements hook_views_pre_render().
  */
 function drupalorg_views_pre_render(&$view) {
