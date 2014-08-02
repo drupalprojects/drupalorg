@@ -1183,21 +1183,79 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'user_profile_form' || $form_id == 'user_register_form') {
     $form['#validate'][] = 'drupalorg_username_validate';
   }
+}
 
-  // Hide the taxonomy_field_extras field on forum node forms
-  if ($form_id == 'forum_node_form') {
-    if (!user_access('administer content')) {
-      $form['taxonomyextra']['#access'] = FALSE;
+/**
+ * Impelements hook_form_FORM_BASE_alter().
+ */
+function drupalorg_form_forum_node_form_alter(&$form, $form_state) {
+  // Hide the taxonomy_field_extras field on forum node forms.
+  if (!user_access('administer content')) {
+    $form['taxonomyextra']['#access'] = FALSE;
+  }
+
+  // If the node is being newly created, we want to set the value of the forum
+  // to not be editable, as users will be creating the forum topic from within
+  // the forum to which it is to be posted. However, we want to allow users to
+  // move threads after they have been created. So we check to see if the node
+  // has a Node ID (nid) to determine whether the user is creating a new post,
+  // or editing an existing post.
+  if (empty($form_state['node']->nid)) {
+    $form['taxonomy_forums'][LANGUAGE_NONE]['#type'] = 'value';
+    $form['taxonomy_forums']['forum_display'] = array(
+      '#prefix' => '<div>',
+      '#suffix' => '</div>',
+      '#markup' => t('<strong>Forum:</strong> @forum', array('@forum' => preg_replace('/^[- ]*/', '', $form['taxonomy_forums'][LANGUAGE_NONE]['#options'][$form['taxonomy_forums'][LANGUAGE_NONE]['#default_value']]))),
+    );
+    // We load the term to get the description to show at the top of the
+    // forum topic creation page.
+    $term = taxonomy_term_load($form['taxonomy_forums'][LANGUAGE_NONE]['#default_value']);
+  }
+  else {
+    // Users must choose a forum, so we remove the _none option
+    // from the forum list
+    unset($form['taxonomy_forums'][LANGUAGE_NONE]['#options']['_none']);
+
+    // Add a wrapper for use in our #ajax
+    $form['taxonomy_forums']['#prefix'] = '<div id="taxonomy_forums_selector_wrapper">';
+    $form['taxonomy_forums']['#suffix'] = '</div>';
+    // Set #ajax on the forum selector. This will show the forum description
+    // to the user when they change the forum.
+    $form['taxonomy_forums'][LANGUAGE_NONE]['#ajax'] = array(
+      'wrapper' => 'taxonomy_forums_selector_wrapper',
+      'callback' => 'drupalorg_taxonomy_forums_ajax_callback',
+    );
+
+    // We need to load a term to use in the forum description. The location
+    // of the Taxonomy ID (tid) is different depending on whether the forum
+    // is being newly generated, or generated on an #ajax submit.
+    if (isset($form_state['values']['taxonomy_forums'])) {
+      // #ajax page load
+      $term = taxonomy_term_load($form_state['values']['taxonomy_forums'][LANGUAGE_NONE][0]['tid']);
     }
-    // If the node is being newly created, we want to set the value of the
-    // forum to not be editable, as users will be creating the forum topic from
-    // within the forum to which it is to be posted. However, we want to allow
-    // users to move threads after they have been created.
-    if (empty($form_state['node']->nid)) {
-      $form['taxonomy_forums'][LANGUAGE_NONE]['#type'] = 'value';
-      $form['taxonomy_forums']['#suffix'] = '<p>' . t('Forum: %forum', array('%forum' => preg_replace('/^[- ]*/', '', $form['taxonomy_forums'][LANGUAGE_NONE]['#options'][$form['taxonomy_forums'][LANGUAGE_NONE]['#default_value']]))) . '</p>';
+    else {
+      // Original page load
+      $term = taxonomy_term_load($form['taxonomy_forums'][LANGUAGE_NONE]['#default_value'][0]);
     }
   }
+  // Add the forum description to the form so users can see the description
+  // for the forum they are considering posting to.
+  $form['taxonomy_forums']['forum_description'] = array(
+    '#prefix' => '<p><em>',
+    '#suffix' => '</em></p>',
+    '#markup' => filter_xss($term->description),
+  );
+}
+
+/**
+ * Ajax callback for the taxonomy forum selector in
+ * drupalorg_form_alter when $form_id is equal to
+ * forum_node_form
+ *
+ * @see drupalorg_form_alter()
+ */
+function drupalorg_taxonomy_forums_ajax_callback($form, &$form_state) {
+  return $form['taxonomy_forums'];
 }
 
 /**
