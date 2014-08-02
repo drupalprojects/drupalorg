@@ -10,6 +10,88 @@
 function drupalorg_projects_field_default_field_bases() {
   $field_bases = array();
 
+  // Exported field_base: 'field_how_they_helped'
+  $field_bases['field_how_they_helped'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_how_they_helped',
+    'foreign keys' => array(
+      'format' => array(
+        'columns' => array(
+          'format' => 'format',
+        ),
+        'table' => 'filter_format',
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'max_length' => 255,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+  );
+
+  // Exported field_base: 'field_organization'
+  $field_bases['field_organization'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_organization',
+    'foreign keys' => array(
+      'nid' => array(
+        'columns' => array(
+          'nid' => 'nid',
+        ),
+        'table' => 'node',
+      ),
+    ),
+    'indexes' => array(
+      'nid' => array(
+        0 => 'nid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'node_reference',
+    'settings' => array(
+      'referenceable_types' => array(
+        'book' => 0,
+        'book_listing' => 0,
+        'casestudy' => 0,
+        'changenotice' => 0,
+        'forum' => 0,
+        'organization' => 'organization',
+        'packaging_whitelist' => 0,
+        'page' => 0,
+        'project_core' => 0,
+        'project_distribution' => 0,
+        'project_drupalorg' => 0,
+        'project_issue' => 0,
+        'project_module' => 0,
+        'project_release' => 0,
+        'project_theme' => 0,
+        'project_theme_engine' => 0,
+        'project_translation' => 0,
+        'story' => 0,
+      ),
+      'view' => array(
+        'args' => array(),
+        'display_name' => '',
+        'view_name' => '',
+      ),
+    ),
+    'translatable' => 0,
+    'type' => 'node_reference',
+  );
+
   // Exported field_base: 'field_project_changelog'
   $field_bases['field_project_changelog'] = array(
     'active' => 1,
@@ -439,6 +521,25 @@ function drupalorg_projects_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'text',
+  );
+
+  // Exported field_base: 'field_supporting_organizations'
+  $field_bases['field_supporting_organizations'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_supporting_organizations',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'field_collection',
+    'settings' => array(
+      'hide_blank_items' => 1,
+      'path' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'field_collection',
   );
 
   // Exported field_base: 'taxonomy_vocabulary_3'
