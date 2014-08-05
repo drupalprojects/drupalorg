@@ -606,7 +606,7 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
         $node->content['project_sandbox_warning']['#weight'] = -1;
       }
       $node->content['project_info']['#markup'] = drupalorg_project_meta_data($node);
-      $node->content['project_info']['#weight'] = 1;
+      $node->content['project_info']['#weight'] = 9; // project_release_downloads is hard-coded to 10.
     }
     elseif (project_issue_node_is_issue($node)) {
       // Add header label and last updated information to node body.
