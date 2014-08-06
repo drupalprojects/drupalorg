@@ -2977,3 +2977,12 @@ function drupalorg_render_cache_entity_hash_alter(&$hash, $entity, $cache_info, 
     $hash['divs_final'] = isset($entity->divs_final) ? $entity->divs_final : '';
   }
 }
+
+/**
+ * Implements hook_restws_resource_info_alter().
+ */
+function drupalorg_restws_resource_info_alter(&$resource_info) {
+  foreach ($resource_info as $name => &$info) {
+    $info['menu_path'] = 'api-d7/' . $name;
+  }
+}
