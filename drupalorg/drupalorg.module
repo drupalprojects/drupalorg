@@ -2982,6 +2982,9 @@ function drupalorg_render_cache_entity_hash_alter(&$hash, $entity, $cache_info, 
  * Implements hook_restws_resource_info_alter().
  */
 function drupalorg_restws_resource_info_alter(&$resource_info) {
+  // Move menu paths so that RestWS doesn't interfere with the core, or already
+  // altered menu items; and completely different paths to work around page
+  // cache problems https://www.drupal.org/node/1969466.
   foreach ($resource_info as $name => &$info) {
     $info['menu_path'] = 'api-d7/' . $name;
   }
