@@ -276,7 +276,7 @@ function drupalorg_handbook_meta_data() {
  * List usernames with site maintainer role.
  */
 function drupalorg_handbook_site_maintainers() {
-  $output = 'If you have been around for a while, and you want to help maintain Drupal.org and are willing to accept the added responsibilities that come with it, sign up on the <a href="http://drupal.org/mailing-lists">Infrastructure team</a> list.';
+  $output = 'If you have been around for a while, and you want to help maintain Drupal.org and are willing to accept the <a href="https://www.drupal.org/drupalorg-site-maintainers-guide">added responsibilities</a> that come with it, create an issue in the <a href="https://www.drupal.org/node/add/project-issue/webmasters?title=Request%20for%20%22site-maintainer%22%20role&categories=2&component=User%20account">Webmasters issue queue</a>.';
   $output .= '<ol>';
   $result = db_query("SELECT DISTINCT(u.uid), u.name
     FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.uid
