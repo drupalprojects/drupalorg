@@ -86,6 +86,12 @@ function drupalorg_packaging_whitelist_views_default_views() {
   $handler->display->display_options['fields']['body']['alter']['preserve_tags'] = '<br>';
   $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['body']['hide_empty'] = TRUE;
+  /* Field: Content: License */
+  $handler->display->display_options['fields']['taxonomy_vocabulary_58']['id'] = 'taxonomy_vocabulary_58';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_58']['table'] = 'field_data_taxonomy_vocabulary_58';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_58']['field'] = 'taxonomy_vocabulary_58';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_58']['label'] = 'Licenses';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_58']['delta_offset'] = '0';
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
