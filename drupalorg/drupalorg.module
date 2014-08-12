@@ -2968,6 +2968,9 @@ function drupalorg_render_cache_entity_hash_alter(&$hash, $entity, $cache_info, 
       $hash['comment_uid_modified'] = entity_modified_last_id('user', $entity->uid);
     }
 
+    // Fasttoggle changes the comment's status without changing the modified date.
+    $hash['status'] = $entity->status;
+
     $hash['is_viewer'] = $entity->uid == $GLOBALS['user']->uid;
 
     $node = node_load($entity->nid);
