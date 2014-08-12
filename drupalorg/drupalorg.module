@@ -1878,16 +1878,16 @@ function drupalorg_node_view($node, $view_mode = 'full') {
 
       // Headquarters.
       if ($wrapper->field_organization_headquarters->value()) {
-        $info[t('Headquarters')] = $wrapper->field_organization_headquarters->value();
+        $info[t('Headquarters')] = $wrapper->field_organization_headquarters->value(array('sanitize' => TRUE));
       }
       // Budget may be replaced by taxonomy, see #371966
       if ($wrapper->field_budget->value()) {
-        $info[t('Usual project budget')] = $wrapper->field_budget->value();
+        $info[t('Usual project budget')] = $wrapper->field_budget->value(array('sanitize' => TRUE));
       }
 
       // Security review results
       if ($wrapper->field_organization_security->value()) {
-        $info[t('Security review')] = $wrapper->field_organization_security->value();
+        $info[t('Security review')] = $wrapper->field_organization_security->value(array('sanitize' => TRUE));
       }
 
       $content['intro']['info'] = array(
