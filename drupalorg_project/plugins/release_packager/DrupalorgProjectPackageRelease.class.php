@@ -62,7 +62,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       watchdog('package_error', '%project_title does not have a VCS repository defined', array('%project_title' => $this->project_node->title), WATCHDOG_ERROR);
       return 'error';
     }
-    $repo = $this->project_node->versioncontrol_project['repo'];
+    $repo = variable_get('git_base_url', 'git://git.drupal.org/project/') . $this->project_node->versioncontrol_project['repo']->name . '.git';
 
     // Figure out how to check this thing out from Git.
     if (empty($this->release_node->field_release_vcs_label)) {
@@ -81,24 +81,22 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       $export_to = $this->project_short_name;
     }
 
-    /// @todo: Fix this to not assume direct FS access to the Git repositories.
-    /// @see http://drupal.org/node/1028950
-    // Invoke git pointing to the right repo.
-    $git_export = '%s --git-dir=%s';
-    // Tell it we want a tar archive with a the right subdirectory prefix.
-    $git_export .= ' archive --format=tar --prefix=%s/';
-    // Use the right Git tag
-    $git_export .= ' %s';
-    // Pipe the tarball through tar to extract it locally for post-processing.
-    $git_export .= ' | %s x';
+    // Full path to the Git clone and exported archive.
+    $this->repository = $this->temp_directory . '/clone';
+    $this->export = $this->temp_directory . '/' . $export_to;
 
-    // Checkout this release from Git, and see if we need to rebuild it
-    if (!drush_shell_cd_and_exec($this->temp_directory, $git_export, $this->conf['git'], $repo->root, $export_to, $git_tag, $this->conf['tar'])) {
-      watchdog('package_error', 'Git export failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())));
+    // Clone this release from Git, and see if we need to rebuild it.
+    if (!drush_shell_exec('%s clone --branch=%s %s %s', $this->conf['git'], $git_tag, $repo, $this->repository)) {
+      watchdog('package_error', 'Git clone failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR, $this->release_node_view_link);
       return 'error';
     }
-    if (!is_dir($this->temp_directory . '/' . $export_to)) {
-      watchdog('package_error', '%export_to does not exist after %git_export', array('%export_to' => $export_to, '%git_export' =>  $git_export), WATCHDOG_ERROR, $this->release_node_view_link);
+    // Archive and expand to preserve timestamps.
+    if (!drush_shell_cd_and_exec($this->temp_directory, '%s --git-dir=%s archive --format=tar --prefix=%s/ %s | %s x', $this->conf['git'], $this->repository . '/.git', $export_to, $git_tag, $this->conf['tar'])) {
+      watchdog('package_error', 'Git archive failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR, $this->release_node_view_link);
+      return 'error';
+    }
+    if (!is_dir($this->export)) {
+      watchdog('package_error', '%export does not exist after clone and archive.', array('%export' => $export), WATCHDOG_ERROR, $this->release_node_view_link);
       return 'error';
     }
 
