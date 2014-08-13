@@ -110,7 +110,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
         else {
           $lines = drush_shell_exec_output();
         }
-        watchdog('error', 'Build for %profile failed: <pre>@output</pre>', array('%profile' => $no_core_id, '@output' => implode("\n", $lines)), WATCHDOG_ERROR, $this->release_node_view_link);
+        watchdog('error', 'Build for %profile failed: <pre>@output</pre>', array('%profile' => $drupalorg_makefile, '@output' => implode("\n", $lines)), WATCHDOG_ERROR, $this->release_node_view_link);
         return 'error';
       }
 
@@ -156,7 +156,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
         else {
           $lines = drush_shell_exec_output();
         }
-        watchdog('error', 'Build for %profile failed: <pre>@output</pre>', array('%profile' => $no_core_id, '@output' => implode("\n", $lines)), WATCHDOG_ERROR, $this->release_node_view_link);
+        watchdog('error', 'Build for %profile failed: <pre>@output</pre>', array('%profile' => $drupalorg_core_makefile, '@output' => implode("\n", $lines)), WATCHDOG_ERROR, $this->release_node_view_link);
         return 'error';
       }
 
