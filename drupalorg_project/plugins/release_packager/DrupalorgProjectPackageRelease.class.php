@@ -105,7 +105,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       'yml' => array(),
     );
     // Use the request time if the youngest file is from the future.
-    $youngest = min($this->fileFindYoungest($this->temp_directory . '/' . $export_to, 0, $exclude, $info_files), DRUSH_REQUEST_TIME);
+    $youngest = min($this->fileFindYoungest($this->export, 0, $exclude, $info_files), DRUSH_REQUEST_TIME);
     if ($this->release_node->field_release_build_type[$this->release_node->language][0]['value'] === 'dynamic' && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $youngest) {
       // The existing tarball for this release is newer than the youngest
       // file in the directory, we're done.
@@ -134,8 +134,8 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     }
 
     // Link not copy, since we want to preserve the date...
-    @unlink($this->temp_directory . '/' . $export_to . '/LICENSE.txt');
-    if (!symlink($this->conf['license'], $this->temp_directory . '/' . $export_to . '/LICENSE.txt')) {
+    @unlink($this->export . '/LICENSE.txt');
+    if (!symlink($this->conf['license'], $this->export . '/LICENSE.txt')) {
       watchdog('package_error', 'Adding LICENSE.txt failed.', array(), WATCHDOG_ERROR);
       return 'error';
     }
@@ -162,7 +162,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // Drush cleanup will briefly set all files to 777, including the file
     // LICENSE.txt is linked to. Remove when
     // https://github.com/drush-ops/drush/issues/672 is fixed.
-    @unlink($this->temp_directory . '/' . $export_to . '/LICENSE.txt');
+    @unlink($this->export . '/LICENSE.txt');
 
     return $tgz_exists ? 'rebuild' : 'success';
   }
@@ -185,10 +185,10 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // This is called tag but in reality this is the branch for dev releases.
     $branch = $this->release_node->field_release_vcs_label[$this->release_node->language][0]['value'];
     // Try to find a tag.
-    drush_shell_cd_and_exec($this->temp_directory, "%s --git-dir=%s rev-list --topo-order --max-count=1 %s 2>&1", $this->conf['git'], $this->project_node->versioncontrol_project['repo']->root, $branch);
+    drush_shell_cd_and_exec($this->repository, '%s rev-list --topo-order --max-count=1 %s 2>&1', $this->conf['git'], $branch);
     $last_tag_hash = drush_shell_exec_output();
     if ($last_tag_hash) {
-      drush_shell_cd_and_exec($this->temp_directory, "%s --git-dir=%s describe --tags %s 2>&1", $this->conf['git'], $this->project_node->versioncontrol_project['repo']->root, $last_tag_hash[0]);
+      drush_shell_cd_and_exec($this->repository, '%s describe --tags %s 2>&1', $this->conf['git'], $last_tag_hash[0]);
       $last_tag = drush_shell_exec_output();
       if ($last_tag) {
         $last_tag = $last_tag[0];
