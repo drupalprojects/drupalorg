@@ -167,7 +167,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
 
     // Clean up the clone because drush_delete_tmp_dir() is slow, and disk use
     // can pile up as multiple releases are packaged.
-    drush_delete_dir($this->repository);
+    drush_shell_exec('rm -rf %s', $this->repository);
 
     return $tgz_exists ? 'rebuild' : 'success';
   }
