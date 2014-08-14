@@ -93,10 +93,12 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // Archive and expand to preserve timestamps.
     if (!drush_shell_cd_and_exec($this->temp_directory, '%s --git-dir=%s archive --format=tar --prefix=%s/ %s | %s x', $this->conf['git'], $this->repository . '/.git', $export_to, $git_tag, $this->conf['tar'])) {
       watchdog('package_error', 'Git archive failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR, $this->release_node_view_link);
+      drush_shell_exec('rm -rf %s', $this->repository);
       return 'error';
     }
     if (!is_dir($this->export)) {
       watchdog('package_error', '%export does not exist after clone and archive.', array('%export' => $export), WATCHDOG_ERROR, $this->release_node_view_link);
+      drush_shell_exec('rm -rf %s', $this->repository);
       return 'error';
     }
 
@@ -109,6 +111,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     if ($this->release_node->field_release_build_type[$this->release_node->language][0]['value'] === 'dynamic' && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $youngest) {
       // The existing tarball for this release is newer than the youngest
       // file in the directory, we're done.
+      drush_shell_exec('rm -rf %s', $this->repository);
       return 'no-op';
     }
 
@@ -123,12 +126,14 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     foreach ($info_files['info'] as $file) {
       if (!$this->fixInfoFileVersion($file)) {
         watchdog('package_error', 'Failed to update version in %file, aborting packaging.', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
+        drush_shell_exec('rm -rf %s', $this->repository);
         return 'error';
       }
     }
     foreach ($info_files['yml'] as $file) {
       if (!$this->fixInfoYmlFileVersion($file)) {
         watchdog('package_error', 'Failed to update version in %file, aborting packaging.', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
+        drush_shell_exec('rm -rf %s', $this->repository);
         return 'error';
       }
     }
@@ -137,12 +142,14 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     @unlink($this->export . '/LICENSE.txt');
     if (!symlink($this->conf['license'], $this->export . '/LICENSE.txt')) {
       watchdog('package_error', 'Adding LICENSE.txt failed.', array(), WATCHDOG_ERROR);
+      drush_shell_exec('rm -rf %s', $this->repository);
       return 'error';
     }
 
     // 'h' is for dereference, we want to include the files, not the links
     if (!drush_shell_cd_and_exec($this->temp_directory, "%s -ch --file=- %s | %s -9 --no-name > %s", $this->conf['tar'], $export_to, $this->conf['gzip'], $this->filenames['full_dest_tgz'])) {
       watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
+      drush_shell_exec('rm -rf %s', $this->repository);
       return 'error';
     }
     $files[$this->filenames['path_tgz']] = 0;
@@ -154,6 +161,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     @unlink($this->filenames['full_dest_zip']);
     if (!drush_shell_cd_and_exec($this->temp_directory, "%s -rq %s %s", $this->conf['zip'], $this->filenames['full_dest_zip'], $export_to)) {
       watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
+      drush_shell_exec('rm -rf %s', $this->repository);
       return 'error';
     }
     $files[$this->filenames['path_zip']] = 1;
