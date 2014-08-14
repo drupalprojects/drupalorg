@@ -164,6 +164,11 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // https://github.com/drush-ops/drush/issues/672 is fixed.
     @unlink($this->export . '/LICENSE.txt');
 
+
+    // Clean up the clone because drush_delete_tmp_dir() is slow, and disk use
+    // can pile up as multiple releases are packaged.
+    drush_delete_dir($this->repository);
+
     return $tgz_exists ? 'rebuild' : 'success';
   }
 
