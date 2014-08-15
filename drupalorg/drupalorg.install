@@ -1664,16 +1664,13 @@ function drupalorg_update_7055(&$sandbox) {
     $sandbox['progress'] = 0;
     $sandbox['max'] = db_query("SELECT COUNT(*) FROM {users} u INNER JOIN {profile_value} pv ON (u.uid = pv.uid) LEFT JOIN {field_data_field_current_company_org} cco ON (cco.entity_id = u.uid) WHERE u.status = 1 AND pv.fid = 72 AND pv.value <> '' AND cco.field_current_company_org_value IS NULL")->fetchField();
   }
-
   $batch_size = 200;
-  $rows = db_query_range("SELECT u.uid, pv.value as company FROM {users} u INNER JOIN {profile_value} pv ON (u.uid = pv.uid) LEFT JOIN {field_data_field_current_company_org} cco ON (cco.entity_id = u.uid) WHERE u.status = 1 AND pv.fid = 72 AND pv.value <> '' AND cco.field_current_company_org_value IS NULL ORDER BY u.uid ASC", 0, $batch_size);
 
-  foreach ($rows as $row) {
+  foreach (user_load_multiple(db_query_range("SELECT u.uid FROM {users} u INNER JOIN {profile_value} pv ON (u.uid = pv.uid) LEFT JOIN {field_data_field_current_company_org} cco ON (cco.entity_id = u.uid) WHERE u.status = 1 AND pv.fid = 72 AND pv.value <> '' AND cco.field_current_company_org_value IS NULL ORDER BY u.uid ASC", 0, $batch_size)->fetchCol()) as $account) {
     $sandbox['progress']++;
 
-    $account = user_load($row->uid);
     $wrapper = entity_metadata_wrapper('user', $account);
-    $wrapper->field_current_company_org = array($row->company);
+    $wrapper->field_current_company_org = array($account->profile_current_company_organization);
     $wrapper->save();
 
     $sandbox['#finished'] = ($sandbox['progress'] < $sandbox['max']) ? $sandbox['progress'] / $sandbox['max'] : 1;
