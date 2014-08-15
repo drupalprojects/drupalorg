@@ -2553,6 +2553,7 @@ function drupalorg_user_view($account, $view_mode) {
     }
   }
   // Board and Advisory Board memberships
+  /*
   if (drupalorg_civimembership_data($account->name, 'Board')) {
     $content['aside']['membership'][] = array(
       '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_board_badge.svg') . '" alt="' . t('Drupal Association Board Member') . '" /></a></div></div>',
@@ -2563,6 +2564,7 @@ function drupalorg_user_view($account, $view_mode) {
       '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_advisory_board_badge.svg') . '" alt="' . t('Drupal Association Advisory Board Member') . '" /></a></div></div>',
     );
   }
+  */
 
   // Check if user has any membership and display relevant text
   if (!empty($content['aside']['membership'])) {
