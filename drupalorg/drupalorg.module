@@ -321,15 +321,6 @@ function drupalorg_block_info() {
       'info' => t('Marketplace services menu'),
       'cache' => DRUPAL_NO_CACHE,
     ),
-    'org_memberships' => array(
-      'info' => t('Organization Membership Badges'),
-      'weight' => -50,
-      'cache' => DRUPAL_CACHE_PER_PAGE,
-      'status' => 1,
-      'region' => 'right',
-      'visibility' => 1,
-      'pages' => 'profile/profile_current_company_organization/*',
-    ),
   );
 }
 
@@ -498,32 +489,6 @@ function drupalorg_block_view($delta, $block = NULL) {
           }
         }
         return array('content' => menu_tree_output($tree));
-      }
-      break;
-
-    case 'org_memberships':
-      $org_name = arg(2);
-      $block = array('content' => NULL);
-      if (drupalorg_has_civimembership($org_name, 'Supporting Partner Premium')) {
-        return array('content' => l('<br /><img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association_prem_sp_badge.svg" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association Premium Supporting Partner')))));
-      }
-      elseif (drupalorg_has_civimembership($org_name, 'Supporting Partner')) {
-        return array('content' => l('<br /><img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association_sup_partner_badge.svg" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association Supporting Partner')))));
-      }
-      elseif (drupalorg_has_civimembership($org_name, 'Technology Supporter')) {
-        return array('content' => l('<br /><img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_badge.svg" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association Technology Supporter')))));
-      }
-      elseif (drupalorg_has_civimembership($org_name, 'Premium Technology Supporter')) {
-        return array('content' => l('<br /><img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association_prem_tech_sp_badge.svg" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association Technology Supporter')))));
-      }
-      elseif (drupalorg_has_civimembership($org_name, 'Inaugural Technology Supporter')) {
-        return array('content' => l('<br /><img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_inaug_badge.svg" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association Inaugural Technology Supporter')))));
-      }
-      elseif (drupalorg_has_civimembership($org_name, 'Inaugural Premium Technology Supporter')) {
-        return array('content' => l('<br /><img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association_prem_techsupp_inaug_badge.svg" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association Inaugural Premium Technology Supporter')))));
-      }
-      if (drupalorg_has_civimembership($org_name, 'Organization')) {
-        return array('content' => $block['content'] . l('<img src="' . base_path() . drupal_get_path('module', 'drupalorg') . '/images/association_org_member_badge.svg" />', 'https://association.drupal.org/membership', array('html' => TRUE, 'attributes' => array('title' => t('Drupal Association Organization Member')))));
       }
       break;
   }
