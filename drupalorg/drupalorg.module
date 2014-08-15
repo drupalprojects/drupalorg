@@ -1138,7 +1138,7 @@ function drupalorg_theme() {
 /**
  * Implements hook_form_alter().
  */
-function drupalorg_form_alter(&$form, $form_state, $form_id) {
+function drupalorg_form_alter(&$form, &$form_state, $form_id) {
   // Force a revision log entry when editing existing book nodes.
   if ($form_id == 'book_node_form' && isset($form['revision_information']['log']) && arg(1) != 'add') {
     $form['revision_information']['log']['#required'] = TRUE;
@@ -1171,6 +1171,26 @@ function drupalorg_form_alter(&$form, $form_state, $form_id) {
       $form['Personal information']['profile_languages']['#multiple'] = TRUE;
       $form['Personal information']['profile_languages']['#default_value'] = explode('; ', $form['Personal information']['profile_languages']['#default_value']);
       $form['#submit'] = array_merge(array('drupalorg_profile_fix_languages'), $form['#submit']);
+    }
+    if ($form['#user_category'] == 'account' && isset($form['field_current_company_org'])) {
+      unset($form['field_current_company_org']);
+    }
+    else if ($form['#user_category'] == 'Work') {
+      // TODO: Remove this custom code in favour of field groups.
+      // Get the current company or organization(s) field
+      $edit = array();
+      field_attach_form('user', $form['#user'], $edit, $form_state, NULL, array('field_name' => 'field_current_company_org'));
+
+      // Fix weights
+      $i = 1;
+      $elements = element_children($form['Work'], true);
+      foreach ($elements as $element) {
+        $form['Work'][$element]['#weight'] = ($i == 2) ? ++$i : $i++;
+      }
+
+      // Add Current company or organization(s) field.
+      $form['Work']['field_current_company_org'] = $edit['field_current_company_org'];
+      $form['Work']['field_current_company_org']['#weight'] = 2;
     }
   }
 
@@ -2054,7 +2074,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         '#markup' => '',
         '#suffix' => '</div>',
       );
-      $result = db_query("SELECT pv.uid, u.name, u.created, pv_title.value title, hug.field_user_geolocation_lat, hug.field_user_geolocation_lng FROM {profile_value} pv INNER JOIN {users} u ON u.uid = pv.uid AND u.status = 1 LEFT JOIN {profile_value} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {field_data_field_user_geolocation} hug ON hug.entity_id = u.uid WHERE pv.value = :company AND pv.fid = :field_id", array(':company' => $node->title, ':field_id' => '72'));
+      $result = db_query("SELECT u.uid, u.name, u.created, pv_title.value title, hug.field_user_geolocation_lat, hug.field_user_geolocation_lng FROM {field_data_field_current_company_org} cco INNER JOIN {users} u ON u.uid = cco.entity_id AND u.status = 1 LEFT JOIN {profile_value} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {field_data_field_user_geolocation} hug ON hug.entity_id = u.uid WHERE cco.entity_type = 'user' AND cco.bundle = 'user' AND cco.field_current_company_org_value = :company", array(':company' => $node->title));
       foreach ($result as $account) {
         // Name & title
         $content['aside'][$account->uid . 'name'] = array(
@@ -2470,63 +2490,82 @@ function drupalorg_user_view($account, $view_mode) {
     ),
   );
 
-  // Link organization to organization node, if it exists.
-  if (!empty($account->profile_current_company_organization)) {
-    $nid = db_query("SELECT nid FROM {node} WHERE status = :status AND type = :type AND title = :title", array(':status' => 1, ':type' => 'organization', ':title' => $account->profile_current_company_organization))->fetchField();
-    if ($nid != 0) {
-      $organization = node_load($nid);
-      $link = check_plain($organization->title);
-      if (isset($organization->field_logo[$organization->language][0])) {
-        $link = theme('image_style', array('style_name' => 'grid-3', 'path' => $organization->field_logo[$organization->language][0]['uri'], 'alt' => $organization->title, 'title' => $organization->title));
-      }
-      $account->content['Work']['profile_current_company_organization']['#markup'] = l($link, 'node/' . $nid, array('html' => TRUE));
-    }
+  // Move "Current company or organization(s)" field to the Work section
+  // TODO: Remove this custom code in favour of field groups.
+  $account->content['Work']['field_current_company_org'] = $account->content['field_current_company_org'];
+  $account->content['Work']['field_current_company_org']['#weight'] = $account->content['Work']['profile_job']['#weight'] + 1;
+  unset($account->content['field_current_company_org']);
 
-    // Organization Memberships and Supporting Partner/Technology and Hosting Supporters
-    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Organization')) {
-      $content['aside']['membership'][] = array(
-        '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_org_member_badge.svg') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div></div>',
-      );
+  // Link organization to organization node, if it exists.
+  $wrapper = entity_metadata_wrapper('user', $account);
+  if ($company_titles = $wrapper->field_current_company_org->value()) {
+    // Load the organization nodes for companies that have an organization node.
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'organization')
+      ->propertyCondition('status', NODE_PUBLISHED)
+      ->propertyCondition('title', $company_titles, 'IN');
+    $result = $query->execute();
+
+    // Replace values with links to organization pages that exist.
+    $company_nodes = array();
+    if (isset($result['node'])) {
+      // Index company nodes by title.
+      foreach (node_load_multiple(array_keys($result['node'])) as $node) {
+        $company_nodes[$node->title] = $node;
+      }
     }
-    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Supporting Partner')) {
-      $content['aside']['membership'][] = array(
-        '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_sup_partner_badge.svg') . '" alt="' . t('Drupal Association Supporting Partner') . '" /></a></div></div>',
-      );
-    }
-    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Supporting Partner Premium')) {
-      $content['aside']['membership'][] = array(
-        '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Supporting Partner') . '" /></a></div></div>',
-      );
-    }
-    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Technology Supporter')) {
-      $content['aside']['membership'][] = array(
-        '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_badge.svg') . '" alt="' . t('Drupal Association Technology Supporter') . '" /></a></div></div>',
-      );
-    }
-    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Premium Technology Supporter')) {
-      $content['aside']['membership'][] = array(
-        '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_tech_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Technology Supporter') . '" /></a></div></div>',
-      );
-    }
-    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Inaugural Technology Supporter')) {
-      $content['aside']['membership'][] = array(
-        '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_inaug_badge.svg') . '" alt="' . t('Drupal Association Inaugural Technology Supporter') . '" /></a></div></div>',
-      );
-    }
-    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Inaugural Premium Technology Supporter')) {
-      $content['aside']['membership'][] = array(
-        '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_techsupp_inaug_badge.svg') . '" alt="' . t('Drupal Association Inaugural Premium Technology Supporter') . '" /></a></div></div>',
-      );
-    }
-    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Hosting Supporter')) {
-      $content['aside']['membership'][] = array(
-        '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_host_supp.svg') . '" alt="' . t('Drupal Association Hosting Supporter') . '" /></a></div></div>',
-      );
-    }
-    if (drupalorg_has_civimembership($account->profile_current_company_organization, 'Premium Hosting Supporter')) {
-      $content['aside']['membership'][] = array(
-        '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_host_supp.svg') . '" alt="' . t('Drupal Association Premium Hosting Supporter') . '" /></a></div></div>',
-      );
+    foreach ($company_titles as $company_index => $company) {
+      if (isset($company_nodes[$company])) {
+        $account->content['Work']['field_current_company_org'][$company_index]['#markup'] = l($company_nodes[$company]->title, 'node/' . $company_nodes[$company]->nid);
+      }
+
+      // Organization Memberships and Supporting Partner/Technology and Hosting Supporters
+      if (drupalorg_has_civimembership($company, 'Organization')) {
+        $content['aside']['membership'][] = array(
+          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_org_member_badge.svg') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div></div>',
+        );
+      }
+      if (drupalorg_has_civimembership($company, 'Supporting Partner')) {
+        $content['aside']['membership'][] = array(
+          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_sup_partner_badge.svg') . '" alt="' . t('Drupal Association Supporting Partner') . '" /></a></div></div>',
+        );
+      }
+      if (drupalorg_has_civimembership($company, 'Supporting Partner Premium')) {
+        $content['aside']['membership'][] = array(
+          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Supporting Partner') . '" /></a></div></div>',
+        );
+      }
+      if (drupalorg_has_civimembership($company, 'Technology Supporter')) {
+        $content['aside']['membership'][] = array(
+          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_badge.svg') . '" alt="' . t('Drupal Association Technology Supporter') . '" /></a></div></div>',
+        );
+      }
+      if (drupalorg_has_civimembership($company, 'Premium Technology Supporter')) {
+        $content['aside']['membership'][] = array(
+          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_tech_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Technology Supporter') . '" /></a></div></div>',
+        );
+      }
+      if (drupalorg_has_civimembership($company, 'Inaugural Technology Supporter')) {
+        $content['aside']['membership'][] = array(
+          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_inaug_badge.svg') . '" alt="' . t('Drupal Association Inaugural Technology Supporter') . '" /></a></div></div>',
+        );
+      }
+      if (drupalorg_has_civimembership($company, 'Inaugural Premium Technology Supporter')) {
+        $content['aside']['membership'][] = array(
+          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_techsupp_inaug_badge.svg') . '" alt="' . t('Drupal Association Inaugural Premium Technology Supporter') . '" /></a></div></div>',
+        );
+      }
+      if (drupalorg_has_civimembership($company, 'Hosting Supporter')) {
+        $content['aside']['membership'][] = array(
+          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_host_supp.svg') . '" alt="' . t('Drupal Association Hosting Supporter') . '" /></a></div></div>',
+        );
+      }
+      if (drupalorg_has_civimembership($company, 'Premium Hosting Supporter')) {
+        $content['aside']['membership'][] = array(
+          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_host_supp.svg') . '" alt="' . t('Drupal Association Premium Hosting Supporter') . '" /></a></div></div>',
+        );
+      }
     }
   }
 
