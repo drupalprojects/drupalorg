@@ -2657,11 +2657,18 @@ function drupalorg_has_civimembership($name, $type) {
  *   Object containing membership info
  */
 function drupalorg_civimembership_data($name, $type) {
+  static $memberships = array();
+
   if ($type == 'Individual') {
     return db_query("SELECT cm.user_name, cm.membership_status, cm.expiration_date FROM {drupalorg_crosssite_ind_civimembership} cm WHERE user_name = :name AND membership_status IN ('New', 'Current', 'Grace')", array(':name' => $name))->fetchObject();
   }
   else {
-    return db_query("SELECT cmo.org_name, cmo.membership_type, cmo.membership_status, cmo.expiration_date FROM {drupalorg_crosssite_org_civimembership} cmo WHERE org_name = :name AND membership_type = :type AND membership_status IN ('New', 'Current', 'Grace')", array(':name' => $name, ':type' => $type))->fetchObject();
+    if (!isset($memberships['organization'][$name])) {
+      $memberships['organization'][$name] = db_query("SELECT cmo.org_name, cmo.membership_type, cmo.membership_status, cmo.expiration_date FROM {drupalorg_crosssite_org_civimembership} cmo WHERE org_name = :name AND membership_status IN ('New', 'Current', 'Grace')", array(':name' => $name))->fetchAllAssoc('membership_type');
+    }
+    if (isset($memberships['organization'][$name][$type])) {
+      return $memberships['organization'][$name][$type];
+    }
   }
 }
 
