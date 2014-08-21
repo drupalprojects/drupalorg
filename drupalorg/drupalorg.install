@@ -1676,3 +1676,27 @@ function drupalorg_update_7055(&$sandbox) {
     $sandbox['#finished'] = ($sandbox['progress'] < $sandbox['max']) ? $sandbox['progress'] / $sandbox['max'] : 1;
   }
 }
+
+/**
+ * Change and consolidate components in the infrastructure issue queue.
+ */
+function drupalorg_update_7056() {
+  _drupalorg_issue_component_changer('infrastructure', array('field_issue_component' => array('updates.drupal.org')), 'Updates System');
+  _drupalorg_issue_component_changer('infrastructure', array('field_issue_component' => array('drupalcode.org', 'BZR')), 'Git');
+  _drupalorg_issue_component_changer('infrastructure', array('field_issue_component' => array('Database', 'File server', 'Mail', 'Operating system', 'Puppet', 'Solr', 'VMs', 'Webserver')), 'Servers');
+  _drupalorg_issue_component_changer('infrastructure', array('field_issue_component' => array('Association intranet', 'Bluebeach', 'driphop.drupal.org', 'PHP', 'redesign.drupal.org', 'staging.drupal.org', 'SVN', 'CVS', 'docs.drupal.org')), 'Other');
+}
+
+/**
+ * Move infrastructure issues with component names to more relevant queues.
+ */
+function drupalorg_update_7057() {
+  _drupalorg_issue_mover('infrastructure', 'drupalorg', array('field_issue_component' => 'Drupal.org module'), 'Miscellaneous');
+  _drupalorg_issue_mover('infrastructure', 'securitydrupalorg', array('field_issue_component' => 'security.drupal.org'), 'Miscellaneous');
+  _drupalorg_issue_mover('infrastructure', 'apidrupalorg', array('field_issue_component' => 'api.drupal.org'), 'Miscellaneous');
+  _drupalorg_issue_mover('infrastructure', 'associationdrupalorg', array('field_issue_component' => 'association.drupal.org'), 'Other');
+  _drupalorg_issue_mover('infrastructure', 'bluecheese', array('field_issue_component' => 'Drupal.org theme'), 'Miscellaneous');
+  _drupalorg_issue_mover('infrastructure', 'groupsdrupalorg', array('field_issue_component' => 'groups.drupal.org'), 'Other');
+  _drupalorg_issue_mover('infrastructure', 'documentation', array('field_issue_component' => 'docs.drupal.org'), 'Other documentation issues');
+  _drupalorg_issue_mover('infrastructure', 'testbot', array('field_issue_component' => 'qa.drupal.org'), 'Miscellaneous');
+}
