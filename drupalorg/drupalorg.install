@@ -1693,7 +1693,7 @@ function drupalorg_update_7056() {
 function drupalorg_update_7057() {
   _drupalorg_issue_mover('infrastructure', 'drupalorg', array('field_issue_component' => 'Drupal.org module'), 'Miscellaneous');
   _drupalorg_issue_mover('infrastructure', 'securitydrupalorg', array('field_issue_component' => 'security.drupal.org'), 'Miscellaneous');
-  _drupalorg_issue_mover('infrastructure', 'associationdrupalorg', array('field_issue_component' => 'association.drupal.org'), 'Other');
+  _drupalorg_issue_mover('infrastructure', 'association_drupalorg', array('field_issue_component' => 'association.drupal.org'), 'Other');
   _drupalorg_issue_mover('infrastructure', 'bluecheese', array('field_issue_component' => 'Drupal.org theme'), 'Miscellaneous');
   _drupalorg_issue_mover('infrastructure', 'groupsdrupalorg', array('field_issue_component' => 'groups.drupal.org'), 'Other');
   _drupalorg_issue_mover('infrastructure', 'documentation', array('field_issue_component' => 'docs.drupal.org'), 'Other documentation issues');
