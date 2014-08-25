@@ -1699,3 +1699,164 @@ function drupalorg_update_7057() {
   _drupalorg_issue_mover('infrastructure', 'documentation', array('field_issue_component' => 'docs.drupal.org'), 'Other documentation issues');
   _drupalorg_issue_mover('infrastructure', 'testbot', array('field_issue_component' => 'qa.drupal.org'), 'Miscellaneous');
 }
+
+/**
+ * Migrate Industries worked in.
+ */
+function drupalorg_update_7058() {
+  $result = db_query("SELECT pv.uid, pv.value FROM {profile_value} pv INNER JOIN {users} u ON u.uid = pv.uid AND u.status = 1 WHERE pv.fid = 26 AND pv.value <> ''");
+  $data = db_insert('field_data_field_industries_worked_in')->fields(array(
+    'entity_type', 'bundle', 'entity_id', 'revision_id', 'language',
+    'field_industries_worked_in_value', 'delta',
+  ));
+  $revision = db_insert('field_revision_field_industries_worked_in')->fields(array(
+    'entity_type', 'bundle', 'entity_id', 'revision_id', 'language',
+    'field_industries_worked_in_value', 'delta',
+  ));
+  $count = 0;
+  foreach ($result as $row) {
+    foreach (array_values(array_filter(array_map('trim', preg_split("/[,\n\r]/", $row->value)))) as $n => $value) {
+      $new = array(
+        'entity_type' => 'user',
+        'bundle' => 'user',
+        'entity_id' => $row->uid,
+        'revision_id' => $row->uid,
+        'language' => LANGUAGE_NONE,
+        'field_industries_worked_in_value' => mb_strcut($value, 0, 255),
+        'delta' => $n,
+      );
+      $data->values($new);
+      $revision->values($new);
+      $count += 1;
+      if ($count > 100) {
+        $data->execute();
+        $revision->execute();
+        $data = db_insert('field_data_field_industries_worked_in')->fields(array(
+          'entity_type', 'bundle', 'entity_id', 'revision_id', 'language',
+          'field_industries_worked_in_value', 'delta',
+        ));
+        $revision = db_insert('field_revision_field_industries_worked_in')->fields(array(
+          'entity_type', 'bundle', 'entity_id', 'revision_id', 'language',
+          'field_industries_worked_in_value', 'delta',
+        ));
+        $count = 0;
+      }
+    }
+  }
+  $data->execute();
+  $revision->execute();
+  field_cache_clear();
+}
+
+/**
+ * Migrate field_current_company_org to field_organization_name, profile_job,
+ * and profile_companies.
+ */
+function drupalorg_update_7059() {
+  $result = db_query("SELECT u.uid, co.field_current_company_org_value, pv.value, co.delta FROM {users} u LEFT JOIN {profile_value} pv ON u.uid = pv.uid AND pv.fid = 8 AND pv.value <> '' LEFT JOIN {field_data_field_current_company_org} co ON co.entity_id = u.uid WHERE u.status = 1 AND (co.field_current_company_org_value IS NOT NULL OR pv.value IS NOT NULL)");
+  $user_organization = array();
+  $data = db_insert('field_data_field_organizations')->fields(array(
+    'entity_type', 'bundle', 'entity_id', 'revision_id', 'language',
+    'field_organizations_value', 'field_organizations_revision_id', 'delta',
+  ));
+  $revision = db_insert('field_revision_field_organizations')->fields(array(
+    'entity_type', 'bundle', 'entity_id', 'revision_id', 'language',
+    'field_organizations_value', 'field_organizations_revision_id', 'delta',
+  ));
+  $count = 0;
+  foreach ($result as $row) {
+    $user_organization[$row->uid][] = $row->field_current_company_org_value;
+
+    $collection = entity_create('field_collection_item', array('field_name' => 'field_organizations'));
+    $collection->setHostEntity('user', $row);
+    $wrapper = entity_metadata_wrapper('field_collection_item', $collection);
+    $wrapper->field_organization_name = $row->field_current_company_org_value;
+    $wrapper->field_job_title = mb_strcut($row->value, 0, 255);
+    $collection->save(TRUE);
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'field_organizations_value' => $collection->item_id,
+      'field_organizations_revision_id' => $collection->revision_id,
+      'delta' => (int) $row->delta,
+    );
+    $data->values($new);
+    $revision->values($new);
+    $count += 1;
+    if ($count > 100) {
+      $data->execute();
+      $revision->execute();
+      $data = db_insert('field_data_field_organizations')->fields(array(
+        'entity_type', 'bundle', 'entity_id', 'revision_id', 'language',
+        'field_organizations_value', 'field_organizations_revision_id', 'delta',
+      ));
+      $revision = db_insert('field_revision_field_organizations')->fields(array(
+        'entity_type', 'bundle', 'entity_id', 'revision_id', 'language',
+        'field_organizations_value', 'field_organizations_revision_id', 'delta',
+      ));
+      $count = 0;
+    }
+  }
+  $data->execute();
+  $revision->execute();
+  field_cache_clear();
+
+  $result = db_query("SELECT pv.uid, pv.value FROM {profile_value} pv INNER JOIN {users} u ON u.uid = pv.uid AND u.status = 1 WHERE pv.fid = 25 AND pv.value <> ''");
+  $data = db_insert('field_data_field_organizations')->fields(array(
+    'entity_type', 'bundle', 'entity_id', 'revision_id', 'language',
+    'field_organizations_value', 'field_organizations_revision_id', 'delta',
+  ));
+  $revision = db_insert('field_revision_field_organizations')->fields(array(
+    'entity_type', 'bundle', 'entity_id', 'revision_id', 'language',
+    'field_organizations_value', 'field_organizations_revision_id', 'delta',
+  ));
+  $count = 0;
+  foreach ($result as $row) {
+    $values = array_filter(array_map('trim', preg_split("/[,\n\r]\s+(?!inc\.?|llc)/i", $row->value)));
+    $offset = 0;
+    if (isset($user_organization[$row->uid])) {
+      $values = array_diff($values, $user_organization[$row->uid]);
+      $offset = count($user_organization[$row->uid]);
+    }
+    foreach (array_values($values) as $n => $value) {
+      $collection = entity_create('field_collection_item', array('field_name' => 'field_organizations'));
+      $collection->setHostEntity('user', $row);
+      $wrapper = entity_metadata_wrapper('field_collection_item', $collection);
+      $wrapper->field_organization_name = mb_strcut($value, 0, 255);
+      $wrapper->field_current = FALSE;
+      $collection->save(TRUE);
+      $new = array(
+        'entity_type' => 'user',
+        'bundle' => 'user',
+        'entity_id' => $row->uid,
+        'revision_id' => $row->uid,
+        'language' => LANGUAGE_NONE,
+        'field_organizations_value' => $collection->item_id,
+        'field_organizations_revision_id' => $collection->revision_id,
+        'delta' => $n + $offset,
+      );
+      $data->values($new);
+      $revision->values($new);
+      $count += 1;
+      if ($count > 100) {
+        $data->execute();
+        $revision->execute();
+        $data = db_insert('field_data_field_organizations')->fields(array(
+          'entity_type', 'bundle', 'entity_id', 'revision_id', 'language',
+          'field_organizations_value', 'field_organizations_revision_id', 'delta',
+        ));
+        $revision = db_insert('field_revision_field_organizations')->fields(array(
+          'entity_type', 'bundle', 'entity_id', 'revision_id', 'language',
+          'field_organizations_value', 'field_organizations_revision_id', 'delta',
+        ));
+        $count = 0;
+      }
+    }
+  }
+  $data->execute();
+  $revision->execute();
+  field_cache_clear();
+}

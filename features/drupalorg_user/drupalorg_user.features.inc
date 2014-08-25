@@ -5,6 +5,15 @@
  */
 
 /**
+ * Implements hook_ctools_plugin_api().
+ */
+function drupalorg_user_ctools_plugin_api($module = NULL, $api = NULL) {
+  if ($module == "field_group" && $api == "field_group") {
+    return array("version" => "1");
+  }
+}
+
+/**
  * Implements hook_image_default_styles().
  */
 function drupalorg_user_image_default_styles() {
@@ -25,10 +34,10 @@ function drupalorg_user_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
-          'width' => '80',
-          'height' => '80',
+          'width' => 80,
+          'height' => 80,
         ),
-        'weight' => '2',
+        'weight' => 2,
       ),
     ),
   );
