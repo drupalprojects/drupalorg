@@ -2028,53 +2028,70 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         '#markup' => '',
         '#suffix' => '</div>',
       );
-      $result = db_query("SELECT u.uid, u.name, u.created, pv_title.value title, hug.field_user_geolocation_lat, hug.field_user_geolocation_lng FROM {field_data_field_current_company_org} cco INNER JOIN {users} u ON u.uid = cco.entity_id AND u.status = 1 LEFT JOIN {profile_value} pv_title ON pv_title.uid = u.uid AND pv_title.fid = 8 LEFT JOIN {field_data_field_user_geolocation} hug ON hug.entity_id = u.uid WHERE cco.entity_type = 'user' AND cco.bundle = 'user' AND cco.field_current_company_org_value = :company", array(':company' => $node->title));
-      foreach ($result as $account) {
-        // Name & title
-        $content['aside'][$account->uid . 'name'] = array(
-          '#prefix' => '<h3>',
-          '#markup' => theme('username', array('account' => $account)),
-          '#suffix' => '</h3>',
-          '#attached' => array(
-            'js' => array(
-              drupal_get_path('module', 'geolocation_html5') . '/geolocation_html5.js',
-            ),
-          ),
-        );
-        if (!empty($account->title)) {
-          $content['aside'][$account->uid . 'name']['#markup'] .= ', ' . check_plain($account->title);
-        }
 
-        // Quick info
-        $content['aside'][$account->uid . 'info'] = array(
-          '#prefix' => '<p>',
-          '#markup' => t('On Drupal.org for @for', array('@for' => format_interval(REQUEST_TIME - $account->created))),
-          '#suffix' => '</p>',
-        );
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'field_collection_item')
+        ->fieldCondition('field_organization_name', 'value', $node->title)
+        ->fieldCondition('field_current', 'value', 1);
+      $result = $query->execute();
+      if (!empty($result['field_collection_item'])) {
+        $query = new EntityFieldQuery();
+        $query->entityCondition('entity_type', 'user')
+          ->propertyCondition('status', 1)
+          ->fieldCondition('field_organizations', 'value', array_keys($result['field_collection_item']));
+        $result = $query->execute();
+        if (!empty($result['user'])) {
+          foreach (user_load_multiple(array_keys($result['user'])) as $account) {
+            // Name & title
+            $content['aside'][$account->uid . 'name'] = array(
+              '#prefix' => '<h3>',
+              '#markup' => theme('username', array('account' => $account)),
+              '#suffix' => '</h3>',
+              '#attached' => array(
+                'js' => array(
+                  drupal_get_path('module', 'geolocation_html5') . '/geolocation_html5.js',
+                ),
+              ),
+            );
+            $account_wrapper = entity_metadata_wrapper('user', $account);
+            foreach ($account_wrapper->field_organizations as $organization) {
+              if ($organization->field_organization_name->value() === $node->title && $organization->field_job_title->value()) {
+                $content['aside'][$account->uid . 'name']['#markup'] .= ', ' . $organization->field_job_title->value(array('sanitize' => TRUE));
+              }
+            }
 
-        if ($drupalorg_documentation = drupalorg_documentation_contributions($account)) {
-          $content['aside'][$account->uid . 'info']['#markup'] .= '<br />' . $drupalorg_documentation . t(' to documentation');
-        }
+            // Quick info
+            $content['aside'][$account->uid . 'info'] = array(
+              '#prefix' => '<p>',
+              '#markup' => t('On Drupal.org for @for', array('@for' => format_interval(REQUEST_TIME - $account->created))),
+              '#suffix' => '</p>',
+            );
 
-        $projects = array();
-        // @see versioncontrol_project_user() for the following query.
-        $result_projects = db_query("SELECT DISTINCT(vcp.nid), n.title, COUNT(o.vc_op_id) AS commits FROM {versioncontrol_operations} o INNER JOIN {versioncontrol_project_projects} vcp ON vcp.repo_id = o.repo_id INNER JOIN {node} n ON n.status = 1 AND n.nid = vcp.nid INNER JOIN {project_projects} pp ON n.nid = pp.nid WHERE o.author_uid = :author_uid AND pp.sandbox = :sandbox GROUP BY vcp.nid, n.title ORDER BY commits DESC", array(':author_uid' => $account->uid, ':sandbox' => 0));
-        foreach ($result_projects as $project) {
-          $projects[] = l($project->title, 'node/' . $project->nid);
-        }
-        $project_count = count($projects);
-        // If more than 3, show the first 3 and a count of the rest.
-        if ($project_count > 3) {
-          $content['aside'][$account->uid . 'info']['#markup'] .= '<br />' . t('Contributor to !projects, and <a href="!more">@count more</a>', array('!projects' => implode(', ', array_slice($projects, 0, 3)), '@count' => count($projects) - 3, '!more' => url('user/' . $account->uid)));
-        }
-        // If between 1 and 3, just show them all.
-        elseif ($project_count > 0) {
-          $content['aside'][$account->uid . 'info']['#markup'] .= '<br />' . t('Contributor to !projects', array('!projects' => implode(', ', $projects)));
-        }
+            if ($drupalorg_documentation = drupalorg_documentation_contributions($account)) {
+              $content['aside'][$account->uid . 'info']['#markup'] .= '<br />' . $drupalorg_documentation . t(' to documentation');
+            }
 
-        // Map
-        if (!empty($account->field_user_geolocation_lat) && !empty($account->field_user_geolocation_lng)) {
-          $content['aside']['map']['#markup'] .= theme('drupalorg_map_pin', array('latitude' => $account->field_user_geolocation_lat, 'longitude' => $account->field_user_geolocation_lng));
+            $projects = array();
+            // @see versioncontrol_project_user() for the following query.
+            $result_projects = db_query("SELECT DISTINCT(vcp.nid), n.title, COUNT(o.vc_op_id) AS commits FROM {versioncontrol_operations} o INNER JOIN {versioncontrol_project_projects} vcp ON vcp.repo_id = o.repo_id INNER JOIN {node} n ON n.status = 1 AND n.nid = vcp.nid INNER JOIN {project_projects} pp ON n.nid = pp.nid WHERE o.author_uid = :author_uid AND pp.sandbox = :sandbox GROUP BY vcp.nid, n.title ORDER BY commits DESC", array(':author_uid' => $account->uid, ':sandbox' => 0));
+            foreach ($result_projects as $project) {
+              $projects[] = l($project->title, 'node/' . $project->nid);
+            }
+            $project_count = count($projects);
+            // If more than 3, show the first 3 and a count of the rest.
+            if ($project_count > 3) {
+              $content['aside'][$account->uid . 'info']['#markup'] .= '<br />' . t('Contributor to !projects, and <a href="!more">@count more</a>', array('!projects' => implode(', ', array_slice($projects, 0, 3)), '@count' => count($projects) - 3, '!more' => url('user/' . $account->uid)));
+            }
+            // If between 1 and 3, just show them all.
+            elseif ($project_count > 0) {
+              $content['aside'][$account->uid . 'info']['#markup'] .= '<br />' . t('Contributor to !projects', array('!projects' => implode(', ', $projects)));
+            }
+
+            // Map
+            if (!empty($account->field_user_geolocation)) {
+              $content['aside']['map']['#markup'] .= theme('drupalorg_map_pin', array('latitude' => $account->field_user_geolocation[LANGUAGE_NONE][0]['lat'], 'longitude' => $account->field_user_geolocation[LANGUAGE_NONE][0]['lng']));
+            }
+          }
         }
       }
 
