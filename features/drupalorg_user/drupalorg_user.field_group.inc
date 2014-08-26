@@ -87,8 +87,8 @@ function drupalorg_user_field_group_info() {
     'label' => 'Contact',
     'weight' => '2',
     'children' => array(
-      0 => 'field_organizations',
-      1 => 'field_industries_worked_in',
+      0 => 'field_industries_worked_in',
+      1 => 'field_organizations',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -151,8 +151,8 @@ function drupalorg_user_field_group_info() {
     'weight' => '4',
     'children' => array(
       0 => 'field_current_company_org',
-      1 => 'field_organizations',
-      2 => 'field_industries_worked_in',
+      1 => 'field_industries_worked_in',
+      2 => 'field_organizations',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
