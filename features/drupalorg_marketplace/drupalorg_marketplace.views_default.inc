@@ -11,6 +11,74 @@ function drupalorg_marketplace_views_default_views() {
   $export = array();
 
   $view = new view();
+  $view->name = 'drupalorg_organization_supported_projects';
+  $view->description = 'Embedded on organization node view.';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'Drupalorg organization supported projects';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
+  /* Relationship: Content: Supporting organizations (field_supporting_organizations) */
+  $handler->display->display_options['relationships']['field_supporting_organizations_value']['id'] = 'field_supporting_organizations_value';
+  $handler->display->display_options['relationships']['field_supporting_organizations_value']['table'] = 'field_data_field_supporting_organizations';
+  $handler->display->display_options['relationships']['field_supporting_organizations_value']['field'] = 'field_supporting_organizations_value';
+  $handler->display->display_options['relationships']['field_supporting_organizations_value']['required'] = TRUE;
+  $handler->display->display_options['relationships']['field_supporting_organizations_value']['delta'] = '-1';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Contextual filter: Field collection item: Organization (field_organization) */
+  $handler->display->display_options['arguments']['field_organization_nid']['id'] = 'field_organization_nid';
+  $handler->display->display_options['arguments']['field_organization_nid']['table'] = 'field_data_field_organization';
+  $handler->display->display_options['arguments']['field_organization_nid']['field'] = 'field_organization_nid';
+  $handler->display->display_options['arguments']['field_organization_nid']['relationship'] = 'field_supporting_organizations_value';
+  $handler->display->display_options['arguments']['field_organization_nid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_organization_nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_organization_nid']['default_argument_skip_url'] = TRUE;
+  $handler->display->display_options['arguments']['field_organization_nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_organization_nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_organization_nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_organization_nid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_organization_nid']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['field_organization_nid']['validate_options']['types'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['arguments']['field_organization_nid']['validate_options']['access'] = TRUE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  $export['drupalorg_organization_supported_projects'] = $view;
+
+  $view = new view();
   $view->name = 'drupalorg_organizations';
   $view->description = 'List of organizations for drupal-services page';
   $view->tag = 'marketplace';

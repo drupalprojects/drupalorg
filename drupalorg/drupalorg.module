@@ -2015,6 +2015,19 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         }
       }
 
+      $view = views_get_view('drupalorg_organization_supported_projects');
+      $view->preview(NULL, array($node->nid));
+      if (isset($view->style_plugin->rendered_fields)) {
+        $projects = array();
+        foreach ($view->style_plugin->rendered_fields as $row) {
+          $projects[] = $row['title'];
+        }
+        $content['main']['contributions_projects'] = array(
+          '#prefix' => '<h4>' . t('Projects supported') .  '</h4>',
+          '#markup' => '<p>' . implode(', ', $projects) . '</p>',
+        );
+      }
+
       // Training fields
       if (!empty($node->field_organization_training_desc[$node->language][0]['value'])) {
         $content['main']['training_heading'] = array('#markup' => '<h3>' . t('Training') . '</h3>');

@@ -225,7 +225,7 @@ function drupalorg_marketplace_field_default_field_instances() {
 ',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
