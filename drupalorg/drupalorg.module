@@ -97,6 +97,15 @@ function drupalorg_page_build(&$page) {
       '#markup' => drupalorg_crosssite_ad_block($forum_ads[$forum_id], FALSE),
     );
   }
+
+  if (user_is_logged_in()) {
+    $account = user_load($GLOBALS['user']->uid);
+
+    // Nag about agreeing to ToS.
+    if (empty($account->field_terms_of_service) || empty($account->field_terms_of_service[LANGUAGE_NONE][0]['value'])) {
+      drupal_set_message(t('We’ve <a href="/news/drupalorg-tos-and-privacy-policy">introduced</a> Drupal.org <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>. Please, read both documents and <a href="!edit">accept them on your user profile</a> to continue using Drupal.org.', array('!edit' => url('user/' . $account->uid . '/edit'))));
+    }
+  }
 }
 
 /**
@@ -287,6 +296,21 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
               return (!empty($entity->project['maintainers'][$account->uid]['permissions']['maintain issues'])
                 || $entity->uid == $account->uid
                 || user_access('administer nodes'));
+          }
+
+        case 'user':
+          switch ($field['field_name']) {
+            case 'field_terms_of_service':
+              // You can only agree for yourself.
+              if ($entity->uid != $account->uid) {
+                return FALSE;
+              }
+
+              // Once agreed to, hide.
+              if (!empty($entity->field_terms_of_service) && $entity->field_terms_of_service[LANGUAGE_NONE][0]['value']) {
+                return FALSE;
+              }
+              return TRUE;
           }
       }
   }
@@ -1176,6 +1200,17 @@ function drupalorg_form_user_cancel_confirm_form_alter(&$form, $form_state) {
   }
   else {
     drupal_set_title(t('Are you sure you want to delete the account %name?', array('%name' => $form['_account']['#value']->name)), PASS_THROUGH);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_BASE_alter().
+ */
+function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
+  // If the terms of service is hidden by drupalorg_field_access(), do not
+  // require it.
+  if (isset($form['field_terms_of_service']['#access']) && !$form['field_terms_of_service']['#access']) {
+    $form['field_terms_of_service'][LANGUAGE_NONE]['#required'] = FALSE;
   }
 }
 

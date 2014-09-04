@@ -181,6 +181,42 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_terms_of_service'
+  $field_instances['user-user-field_terms_of_service'] = array(
+    'bundle' => 'user',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 6,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_terms_of_service',
+    'label' => 'Terms of Service',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => 1,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 0,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 37,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_user_geolocation'
   $field_instances['user-user-field_user_geolocation'] = array(
     'bundle' => 'user',
@@ -220,6 +256,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Location');
   t('Organization');
   t('Organizations');
+  t('Terms of Service');
   t('Your general location may appear on the Drupal.org home page map, and potentially more future uses.');
 
   return $field_instances;
