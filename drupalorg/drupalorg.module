@@ -1212,6 +1212,13 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
   if (isset($form['field_terms_of_service']['#access']) && !$form['field_terms_of_service']['#access']) {
     $form['field_terms_of_service'][LANGUAGE_NONE]['#required'] = FALSE;
   }
+
+  // Change cancel button to a link.
+  if (isset($form['actions']['cancel'])) {
+    $form['actions']['cancel'] = array(
+      '#markup' => l($form['actions']['cancel']['#value'], 'user/' . $GLOBALS['user']->uid . '/cancel')
+    );
+  }
 }
 
 /**
