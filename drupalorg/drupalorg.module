@@ -1157,8 +1157,25 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
   // Change cancel button to a link.
   if (isset($form['actions']['cancel'])) {
     $form['actions']['cancel'] = array(
-      '#markup' => l($form['actions']['cancel']['#value'], 'user/' . $GLOBALS['user']->uid . '/cancel')
+      '#markup' => l(t('Delete account'), 'user/' . $form['#user']->uid . '/cancel'),
+      '#access' => $form['actions']['cancel']['#access'],
     );
+  }
+}
+
+/**
+ * Implements hook_form_FORM_BASE_alter().
+ */
+function drupalorg_form_user_cancel_confirm_form_alter(&$form, $form_state) {
+  // Make label distinct from cancel link.
+  $form['actions']['submit']['#value'] = t('Delete account');
+
+  // Set title to match.
+  if ($form['_account']['#value']->uid == $GLOBALS['user']->uid) {
+    drupal_set_title(t('Are you sure you want to delete your account?'), PASS_THROUGH);
+  }
+  else {
+    drupal_set_title(t('Are you sure you want to delete the account %name?', array('%name' => $form['_account']['#value']->name)), PASS_THROUGH);
   }
 }
 
