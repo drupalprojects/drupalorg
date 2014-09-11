@@ -83,7 +83,7 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['content'] = '<p>Through their generous support, these great <a href="https://assoc.drupal.org/supporting-partners">Supporting Partner</a> companies help pay for the team that maintains and improves Drupal.org.</p>
 
-<h2>Supporting Partners Premium</h2>';
+<h2>Premium Supporting Partners</h2>';
   $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
