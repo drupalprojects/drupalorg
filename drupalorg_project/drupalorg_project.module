@@ -180,35 +180,6 @@ function _drupalorg_project_legacy_solr_redirect($type, $text = '') {
 }
 
 /**
- * Implementation of hook_menu_alter().
- */
-function drupalorg_project_menu_alter(&$items) {
-  // Override the access callback on the project promote page to enforce our
-  // own special rules in a few cases.
-  $items['node/%project_edit_project/edit/promote']['access callback'] = 'drupalorg_project_promote_project_access';
-  $items['node/%project_edit_project/edit/promote/confirm']['access callback'] = 'drupalorg_project_promote_project_access';
-}
-
-/**
- * Menu access callback for the form to promote sandboxes to full projects.
- *
- * @param $node
- *   The project object to check access against.
- */
-function drupalorg_project_promote_project_access($node) {
-  return !in_array($node->type, drupalorg_project_get_no_promote_project_types()) && project_promote_project_access($node);
-}
-
-/**
- * Return an array of project types that cannot be promoted.
- *
- * This helper function only exists since you can't define() an array in PHP.
- */
-function drupalorg_project_get_no_promote_project_types() {
-  return array('project_core', 'project_drupalorg');
-}
-
-/**
  * Implementation of hook_help().
  */
 function drupalorg_project_help($path, $arg) {
