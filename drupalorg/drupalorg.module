@@ -97,6 +97,19 @@ function drupalorg_page_build(&$page) {
       '#markup' => drupalorg_crosssite_ad_block($forum_ads[$forum_id], FALSE),
     );
   }
+
+  // Add Optimizely JS to pages using it. Set drupalorg_optimizely_pattern to
+  // the full, specific regexp. Such as '#^site-building$#'.
+  if ($pattern = variable_get('drupalorg_optimizely_pattern', FALSE)) {
+    if (preg_match($pattern, drupal_get_path_alias($_GET['q']))) {
+      drupal_add_html_head(array(
+        '#weight' => -1001,
+        '#tag' => 'script',
+        '#attributes' => array('src' => '//cdn.optimizely.com/js/190102229.js'),
+        '#value' => '',
+      ), 'drupalorg_optimizely');
+    }
+  }
 }
 
 /**
