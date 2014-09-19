@@ -114,6 +114,40 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_bio'
+  $field_instances['user-user-field_bio'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Describe yourself, your relevant past experiences.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 6,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_bio',
+    'label' => 'Bio',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 36,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_industries_worked_in'
   $field_instances['user-user-field_industries_worked_in'] = array(
     'bundle' => 'user',
@@ -145,6 +179,40 @@ function drupalorg_user_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 35,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_irc_nick'
+  $field_instances['user-user-field_irc_nick'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'The nickname you use on various channels of irc.freenode.net',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 7,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_irc_nick',
+    'label' => 'IRC nick',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 37,
     ),
   );
 
@@ -213,13 +281,17 @@ function drupalorg_user_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Bio');
   t('Current');
+  t('Describe yourself, your relevant past experiences.');
+  t('IRC nick');
   t('Industries Worked In');
   t('Job Title');
   t('List companies or institutions you have worked for or are working for now.');
   t('Location');
   t('Organization');
   t('Organizations');
+  t('The nickname you use on various channels of irc.freenode.net');
   t('Your general location may appear on the Drupal.org home page map, and potentially more future uses.');
 
   return $field_instances;
