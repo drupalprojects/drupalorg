@@ -1940,7 +1940,7 @@ function drupalorg_update_7061(&$sandbox) {
 
   foreach (user_load_multiple($query->execute()->fetchCol()) as $account) {
     $sandbox['progress']++;
-drush_print_r($account->uid);
+
     $wrapper = entity_metadata_wrapper('user', $account);
     $wrapper->field_irc_nick->set($account->profile_irc_nick);
     $wrapper->save();
