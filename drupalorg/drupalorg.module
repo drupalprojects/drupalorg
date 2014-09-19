@@ -97,6 +97,19 @@ function drupalorg_page_build(&$page) {
       '#markup' => drupalorg_crosssite_ad_block($forum_ads[$forum_id], FALSE),
     );
   }
+
+  // Add Optimizely JS to pages using it. Set drupalorg_optimizely_pattern to
+  // the full, specific regexp. Such as '#^site-building$#'.
+  if ($pattern = variable_get('drupalorg_optimizely_pattern', FALSE)) {
+    if (preg_match($pattern, drupal_get_path_alias($_GET['q']))) {
+      drupal_add_html_head(array(
+        '#weight' => -1001,
+        '#tag' => 'script',
+        '#attributes' => array('src' => '//cdn.optimizely.com/js/190102229.js'),
+        '#value' => '',
+      ), 'drupalorg_optimizely');
+    }
+  }
 }
 
 /**
@@ -1147,6 +1160,35 @@ function drupalorg_form_alter(&$form, &$form_state, $form_id) {
   // Ensure that duplicate case-insensitive usernames are not created.
   if ($form_id == 'user_profile_form' || $form_id == 'user_register_form') {
     $form['#validate'][] = 'drupalorg_username_validate';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_BASE_alter().
+ */
+function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
+  // Change cancel button to a link.
+  if (isset($form['actions']['cancel'])) {
+    $form['actions']['cancel'] = array(
+      '#markup' => l(t('Delete account'), 'user/' . $form['#user']->uid . '/cancel'),
+      '#access' => $form['actions']['cancel']['#access'],
+    );
+  }
+}
+
+/**
+ * Implements hook_form_FORM_BASE_alter().
+ */
+function drupalorg_form_user_cancel_confirm_form_alter(&$form, $form_state) {
+  // Make label distinct from cancel link.
+  $form['actions']['submit']['#value'] = t('Delete account');
+
+  // Set title to match.
+  if ($form['_account']['#value']->uid == $GLOBALS['user']->uid) {
+    drupal_set_title(t('Are you sure you want to delete your account?'), PASS_THROUGH);
+  }
+  else {
+    drupal_set_title(t('Are you sure you want to delete the account %name?', array('%name' => $form['_account']['#value']->name)), PASS_THROUGH);
   }
 }
 
