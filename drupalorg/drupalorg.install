@@ -1860,3 +1860,47 @@ function drupalorg_update_7059() {
   $revision->execute();
   field_cache_clear();
 }
+
+/**
+ * Migrate profile_personal_bio to field_bio.
+ */
+function drupalorg_update_7060(&$sandbox) {
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_bio', 'b', 'b.entity_id = u.uid');
+  $query
+    ->fields('u', array('uid'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 74)
+    ->condition('pv.value', '', '!=')
+    ->isNull('b.field_bio_value');
+
+  if (!isset($sandbox['progress'])) {
+    $sandbox['progress'] = 0;
+    $sandbox['max'] = $query->execute()->rowCount();
+  }
+
+  $batch_size = 200;
+
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_bio', 'b', 'b.entity_id = u.uid');
+  $query
+    ->fields('u', array('uid'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 74)
+    ->condition('pv.value', '', '!=')
+    ->isNull('b.field_bio_value')
+    ->orderBy('u.uid')
+    ->range(0, $batch_size);
+
+  foreach (user_load_multiple($query->execute()->fetchCol()) as $account) {
+    $sandbox['progress']++;
+
+    $wrapper = entity_metadata_wrapper('user', $account);
+    $wrapper->field_bio->set($account->profile_personal_bio);
+    $wrapper->save();
+
+    $sandbox['#finished'] = ($sandbox['progress'] < $sandbox['max']) ? $sandbox['progress'] / $sandbox['max'] : 1;
+  }
+}
