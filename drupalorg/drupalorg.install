@@ -1948,3 +1948,48 @@ function drupalorg_update_7061(&$sandbox) {
     $sandbox['#finished'] = ($sandbox['progress'] < $sandbox['max']) ? $sandbox['progress'] / $sandbox['max'] : 1;
   }
 }
+
+/**
+ * Migrate profile_gender to field_gender.
+ */
+function drupalorg_update_7062(&$sandbox) {
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_gender', 'g', 'g.entity_id = u.uid');
+  $query
+    ->fields('u', array('uid'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 35)
+    ->condition('pv.value', '', '!=')
+    ->isNull('g.field_gender_value');
+
+  if (!isset($sandbox['progress'])) {
+    $sandbox['progress'] = 0;
+    $sandbox['max'] = $query->execute()->rowCount();
+  }
+
+  $batch_size = 200;
+
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_gender', 'g', 'g.entity_id = u.uid');
+  $query
+    ->fields('u', array('uid'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 7)
+    ->condition('pv.value', '', '!=')
+    ->isNull('g.field_gender_value')
+    ->orderBy('u.uid')
+    ->range(0, $batch_size);
+
+  foreach (user_load_multiple($query->execute()->fetchCol()) as $account) {
+    $sandbox['progress']++;
+
+    $wrapper = entity_metadata_wrapper('user', $account);
+    $wrapper->field_gender->set($account->profile_gender);
+    $wrapper->save();
+
+    $sandbox['#finished'] = ($sandbox['progress'] < $sandbox['max']) ? $sandbox['progress'] / $sandbox['max'] : 1;
+  }
+}
+
