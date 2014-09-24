@@ -80,4 +80,51 @@
       }
     }
   };
+
+  /**
+   * Issue credit helping. See drupalorg_issue_credit_form().
+   */
+  Drupal.behaviors.drupalorgIssueCredit = {
+    attach: function (context) {
+      $('#drupalorg-issue-credit-form', context).once('drupalorg-issue-credit', function () {
+        // Store command template.
+        Drupal.settings.drupalorgIssueCreditTemplate = $('#edit-command', this).val();
+        Drupal.settings.drupalorgIssueCreditMessageTemplate = $('#edit-command-message', this).val();
+
+        // Attach event handlers.
+        $('#edit-message', this).keyup(Drupal.drupalorgUpdateIssueCredit);
+        $('input[type=checkbox][id^=by-]', this).change(Drupal.drupalorgUpdateIssueCredit);
+        $('input[name=author]', this).change(Drupal.drupalorgUpdateIssueCredit);
+        $('#edit-command, #edit-command-message', this).click(function () {
+          $(this).select();
+        });
+
+        // Initially fill out field.
+        Drupal.drupalorgUpdateIssueCredit();
+      });
+    }
+  };
+
+  Drupal.drupalorgUpdateIssueCredit = function () {
+    var $author = jQuery('#drupalorg-issue-credit-form input[name=author]:checked');
+
+    $('#drupalorg-issue-credit-form #by-' + $author.val()).attr('checked', 'checked');
+
+    // Collect names for 'by …'
+    var by = [];
+    $('#drupalorg-issue-credit-form input[type=checkbox][id^=by-]:checked').each(function () {
+      by.push($(this).data('by'));
+    });
+
+    // Fill out template. It has already been translated server-side.
+    $('#edit-command').val(Drupal.formatString(Drupal.settings.drupalorgIssueCreditTemplate, {
+      '!message': $('#edit-message').val().replace(/'/g, "'\\''"),
+      '!by': by.join(', ').replace(/'/g, "'\\''"),
+      '!author': $author.data('author').replace(/'/g, "'\\''")
+    }));
+    $('#edit-command-message').val(Drupal.formatString(Drupal.settings.drupalorgIssueCreditMessageTemplate, {
+      '!message': $('#edit-message').val(),
+      '!by': by.join(', ')
+    }));
+  }
 })(jQuery);

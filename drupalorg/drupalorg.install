@@ -2257,3 +2257,17 @@ function drupalorg_update_7065() {
   // Clear the field cache.
   field_cache_clear();
 }
+
+/**
+ * Set up new Credit & committing form.
+ */
+function drupalorg_update_7066() {
+  // Do not show BUEditor for new Git command text area.
+  $excludes = db_query('SELECT excludes FROM {bueditor_editors} WHERE eid = 10')->fetchField();
+  db_update('bueditor_editors')
+    ->fields(array('excludes' => $excludes . "\nedit-command\nedit-command-message"))
+    ->condition('eid', 10)
+    ->execute();
+
+  // TODO - set up displays if needed
+}
