@@ -1862,7 +1862,7 @@ function drupalorg_update_7059() {
 }
 
 /**
- * Migrate profile_bio to field_bio.
+ * Migrate profile_personal_bio to field_bio.
  */
 function drupalorg_update_7060() {
   // Get the profile data.
