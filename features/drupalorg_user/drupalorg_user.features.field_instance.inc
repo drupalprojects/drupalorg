@@ -119,7 +119,7 @@ function drupalorg_user_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Describe yourself, your relevant past experiences.',
+    'description' => 'Please include a short blurb about yourself to let us know who you are outside of Drupal.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -283,7 +283,7 @@ function drupalorg_user_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Bio');
   t('Current');
-  t('Describe yourself, your relevant past experiences.');
+  t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('IRC nick');
   t('Industries Worked In');
   t('Job Title');
