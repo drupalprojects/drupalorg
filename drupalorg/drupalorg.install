@@ -1993,3 +1993,76 @@ function drupalorg_update_7062(&$sandbox) {
   }
 }
 
+/**
+ * Migrate profile_bio to field_bio.
+ */
+function drupalorg_update_7063() {
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_bio', 'b', 'b.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 74)
+    ->condition('pv.value', '', '!=')
+    ->isNull('b.field_bio_value');
+
+  $result = $query->execute();
+
+  // Define the fields.
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_bio_value',
+    'field_bio_format',
+  );
+
+  $data = db_insert('field_data_field_bio')->fields($fields);
+  $revision = db_insert('field_revision_field_bio')->fields($fields);
+
+  foreach ($result as $row) {
+    // Start creating the record to insert.
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => 0,
+      'deleted' => 0,
+      'field_bio_value' => mb_strcut($row->value, 0, 255),
+      'field_bio_format' => NULL,
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count += 1;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_bio')->fields($fields);
+      $revision = db_insert('field_revision_field_bio')->fields($fields); 
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
+
