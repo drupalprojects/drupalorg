@@ -2007,3 +2007,77 @@ function drupalorg_update_7061() {
   field_cache_clear();
 }
 
+/**
+ * Migrate profile_homepage to field_websites.
+ */
+function drupalorg_update_7062() {
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_websites', 'w', 'w.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 13)
+    ->condition('pv.value', '', '!=')
+    ->isNull('w.field_websites_url');
+
+  $result = $query->execute();
+
+  // Define the fields.
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_websites_url',
+    'field_websites_title',
+    'field_websites_attributes',
+  );
+
+  $data = db_insert('field_data_field_websites')->fields($fields);
+  $revision = db_insert('field_revision_field_websites')->fields($fields);
+
+  foreach ($result as $row) {
+    // Start creating the record to insert.
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => 0,
+      'deleted' => 0,
+      'field_websites_url' => mb_strcut($row->value, 0, 255),
+      'field_websites_title' => NULL,
+      'field_websites_attributes' => '',
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count += 1;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_websites')->fields($fields);
+      $revision = db_insert('field_revision_field_websites')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
