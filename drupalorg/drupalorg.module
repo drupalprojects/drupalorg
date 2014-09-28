@@ -1440,24 +1440,30 @@ function drupalorg_search_access() {
 function drupalorg_search_execute($keys = NULL, $conditions = NULL) {
   // Replace wildcards with MySQL/PostgreSQL wildcards.
   $keys = '%' . preg_replace('!\*+!', '%', $keys) . '%';
-  $query = db_select('profile_value', 'pv');
-  $query->innerJoin('users', 'u', 'pv.uid = u.uid');
-  $query = $query->extend('PagerDefault');
+
+  $query = new EntityFieldQuery();
+
   $query
-    ->limit(15)
-    ->fields('u', array('name', 'uid'))
-    ->condition('pv.fid', 35)
-    ->where('LOWER(pv.value) LIKE LOWER(:keys)', array(':keys' => $keys));
+    ->entityCondition('entity_type', 'user')
+    ->propertyCondition('status', 1)
+    ->fieldCondition('field_irc_nick', 'value', $keys, 'LIKE')
+    ->pager(15)
+    ->propertyOrderBy('name');
+
   $result = $query->execute();
 
-  $find = array();
-  foreach ($result as $account) {
-    $find[] = array(
-      'title' => $account->name,
-      'link' => url('user/' . $account->uid),
-    );
+  if (isset($result['user'])) {
+    $find = array();
+
+    foreach (user_load_multiple(array_keys($result['user'])) as $account) {
+      $find[] = array(
+        'title' => $account->name,
+        'link' => url('user/' . $account->uid),
+      );
+    }
+
+    return $find;
   }
-  return $find;
 }
 
 /**
