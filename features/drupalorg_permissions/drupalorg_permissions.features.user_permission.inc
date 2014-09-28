@@ -158,6 +158,8 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'access resource field_collection_item',
     'roles' => array(
       'administrator' => 'administrator',
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
     ),
     'module' => 'restws',
   );
@@ -236,6 +238,8 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'access resource taxonomy_vocabulary',
     'roles' => array(
       'administrator' => 'administrator',
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
     ),
     'module' => 'restws',
   );
