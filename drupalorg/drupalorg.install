@@ -2081,3 +2081,75 @@ function drupalorg_update_7062() {
   // Clear the field cache.
   field_cache_clear();
 }
+
+/**
+ * Migrate country to field_country.
+ */
+function drupalorg_update_7063() {
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_country', 'c', 'c.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 17)
+    ->condition('pv.value', '', '!=')
+    ->isNull('c.field_country_value');
+
+  $result = $query->execute();
+
+  // Define the fields.
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_country_value',
+  );
+
+  $data = db_insert('field_data_field_country')->fields($fields);
+  $revision = db_insert('field_revision_field_country')->fields($fields);
+
+  foreach ($result as $row) {
+    // Start creating the record to insert.
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => 0,
+      'deleted' => 0,
+      'field_country_value' => mb_strcut($row->value, 0, 255),
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count += 1;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_country')->fields($fields);
+      $revision = db_insert('field_revision_field_country')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
+
