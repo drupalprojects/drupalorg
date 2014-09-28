@@ -152,6 +152,7 @@ function drupalorg_user_field_group_info() {
     'children' => array(
       0 => 'field_bio',
       1 => 'field_irc_nick',
+      2 => 'field_websites',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
