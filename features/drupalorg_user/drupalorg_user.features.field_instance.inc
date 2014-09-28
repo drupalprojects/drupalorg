@@ -144,7 +144,7 @@ function drupalorg_user_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 36,
+      'weight' => 9,
     ),
   );
 
@@ -212,7 +212,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 37,
+      'weight' => 10,
     ),
   );
 
@@ -275,7 +275,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'geolocation_html5',
       'settings' => array(),
       'type' => 'geolocation_html5_widget',
-      'weight' => 3,
+      'weight' => 1,
     ),
   );
 
@@ -283,7 +283,6 @@ function drupalorg_user_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Bio');
   t('Current');
-  t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('IRC nick');
   t('Industries Worked In');
   t('Job Title');
@@ -291,6 +290,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Location');
   t('Organization');
   t('Organizations');
+  t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Your general location may appear on the Drupal.org home page map, and potentially more future uses.');
 
