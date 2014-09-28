@@ -1452,18 +1452,18 @@ function drupalorg_search_execute($keys = NULL, $conditions = NULL) {
 
   $result = $query->execute();
 
-  if (isset($result['user'])) {
-    $find = array();
+  $find = array();
 
+  if (isset($result['user'])) {
     foreach (user_load_multiple(array_keys($result['user'])) as $account) {
       $find[] = array(
         'title' => $account->name,
         'link' => url('user/' . $account->uid),
       );
     }
-
-    return $find;
   }
+
+  return $find;
 }
 
 /**
