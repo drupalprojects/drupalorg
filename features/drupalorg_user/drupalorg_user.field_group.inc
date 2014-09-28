@@ -155,12 +155,13 @@ function drupalorg_user_field_group_info() {
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Personal information',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => 'group-user-personal field-group-fieldset',
         'required_fields' => 1,
+        'classes' => 'group-user-personal field-group-fieldset',
+        'description' => '',
       ),
+      'formatter' => 'open',
     ),
   );
   $export['group_user_personal|user|user|form'] = $field_group;
