@@ -240,6 +240,25 @@ function drupalorg_menu_alter(&$menu) {
 }
 
 /**
+ * Implements hook_field_extra_fields().
+ */
+function drupalorg_field_extra_fields() {
+  return array(
+    'user' => array(
+      'user' => array(
+        'display' => array(
+          'drupalorg_companies_worked_for' => array(
+            'label' => t('Companies Worked For'),
+            'description' => t('Companies Worked For derived from companies or organizations'),
+            'weight' => 0,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/**
  * Implements hook_field_access().
  *
  * This takes care of several file access tweaks:
@@ -2527,7 +2546,6 @@ function drupalorg_user_view($account, $view_mode) {
   $account->content['#group_children']['Drupal'] = 'group_profile_main';
   $account->content['#group_children']['versioncontrol_project'] = 'group_profile_main';
   $account->content['#group_children']['user_picture'] = 'group_profile_contact';
-  $account->content['#group_children']['companies_worked_for'] = 'group_profile_contact';
   $account->content['#group_children']['membership'] = 'group_profile_aside';
 
   // Link organization to organization node, if it exists.
@@ -2639,7 +2657,7 @@ function drupalorg_user_view($account, $view_mode) {
 
     // Add companies worked for.
     if (!empty($companies_worked_for)) {
-      $account->content['companies_worked_for'] = array(
+      $account->content['drupalorg_companies_worked_for'] = array(
         '#prefix' => '<div class="field field-name-companies-worked-for"><div class="field-label">' . t('Companies Worked For') . '</div><div class="field-items">',
         '#markup' => implode(', ', $companies_worked_for),
         '#suffix' => '</div></div>',

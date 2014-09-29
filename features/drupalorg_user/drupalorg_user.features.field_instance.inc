@@ -160,7 +160,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 5,
+        'weight' => 6,
       ),
     ),
     'entity_type' => 'user',
@@ -190,7 +190,7 @@ function drupalorg_user_field_default_field_instances() {
     'description' => 'The nickname you use on various channels of irc.freenode.net',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -199,7 +199,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
     'entity_type' => 'user',
     'field_name' => 'field_irc_nick',
-    'label' => 'IRC nick',
+    'label' => 'IRC',
     'required' => 0,
     'settings' => array(
       'text_processing' => 0,
@@ -287,10 +287,10 @@ function drupalorg_user_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'link',
         'settings' => array(),
-        'type' => 'link_default',
+        'type' => 'link_url',
         'weight' => 8,
       ),
     ),
@@ -331,7 +331,7 @@ function drupalorg_user_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Bio');
   t('Current');
-  t('IRC nick');
+  t('IRC');
   t('Industries Worked In');
   t('Job Title');
   t('List companies or institutions you have worked for or are working for now.');

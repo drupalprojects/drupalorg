@@ -89,6 +89,9 @@ function drupalorg_user_field_group_info() {
     'children' => array(
       0 => 'field_industries_worked_in',
       1 => 'field_organizations',
+      2 => 'field_irc_nick',
+      3 => 'field_websites',
+      4 => 'drupalorg_companies_worked_for',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -119,7 +122,8 @@ function drupalorg_user_field_group_info() {
     'label' => 'Main',
     'weight' => '0',
     'children' => array(
-      0 => 'summary',
+      0 => 'field_bio',
+      1 => 'summary',
     ),
     'format_type' => 'div',
     'format_settings' => array(
