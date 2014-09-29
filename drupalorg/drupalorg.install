@@ -2166,6 +2166,7 @@ function drupalorg_update_7064() {
     ->condition('u.status', 1)
     ->condition('pv.fid', 7)
     ->condition('pv.value', '', '!=')
+    ->condition('pv.value', 0, '!=')
     ->isNull('g.field_gender_value');
 
   $result = $query->execute();
