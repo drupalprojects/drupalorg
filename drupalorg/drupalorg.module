@@ -684,7 +684,7 @@ function drupalorg_get_activity($_force = FALSE) {
  * Set home link for Your Dashboard page.
  */
 function drupalorg_set_home() {
-  global $user;
+  $account = user_load($GLOBALS['user']->uid);
   return array(
     '#prefix' => '<div id="drupalorg-set-home-wrapper">',
     '#suffix' => '</div>',
@@ -694,7 +694,7 @@ function drupalorg_set_home() {
         TRUE => t('Make this your Homepage'),
         FALSE => t('Use Default Homepage'),
       ),
-      '#default_value' => isset($user->data['drupalorg_set_home']) ? $user->data['drupalorg_set_home'] : TRUE,
+      '#default_value' => isset($account->data['drupalorg_set_home']) ? $account->data['drupalorg_set_home'] : TRUE,
       '#ajax' => array(
         'callback' => 'drupalorg_set_home_callback',
         'wrapper' => 'drupalorg-set-home-wrapper',
@@ -707,8 +707,8 @@ function drupalorg_set_home() {
  * AJAX callback for drupalorg_set_home().
  */
 function drupalorg_set_home_callback($form, $form_state) {
-  global $user;
-  user_save($user, array('data' => array('drupalorg_set_home' => $form_state['values']['set_home'])));
+  $account = user_load($GLOBALS['user']->uid);
+  user_save($account, array('data' => array('drupalorg_set_home' => $form_state['values']['set_home'])));
   return $form;
 }
 
