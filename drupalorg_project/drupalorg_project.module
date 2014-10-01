@@ -914,15 +914,17 @@ function drupalorg_project_bingo_block_output() {
   $threshold_names = check_plain(implode(" + ", $threshold_versions));
 
   $links = array(
+    l('Getting involved', 'getting-involved'),
+    l('New contributor tasks', 'new-contributors'),
     l('Community initiatives', 'community-initiatives'),
     array(
-      'data' => '<strong>Queues</strong>',
+      'data' => '<strong>Issue queues</strong>',
       'children' => array(
         l('Your issues', 'project/issues/user'),
         drupalorg_project_global_issue_link(
           $counts['Novice issues'] . ' Novice issues',
           array(
-            'status' => array(1, 8, 13, 14, 15),
+            'status' => array(1, 8, 13),
             'issue_tags_op' => '=',
             'issue_tags' => 'Novice',
           )
@@ -998,30 +1000,15 @@ function drupalorg_project_bingo_block_output() {
         ),
       ),
     ),
-    array(
-      'data' => '<strong>Play patch bingo!</strong>',
-      'children' => array(
-        l('Drupal Core', 'patch-bingo', array('attributes' => array('title' => 'Select a random patch for review'))),
-        l('Contributions', 'contrib-patch-bingo', array('attributes' => array('title' => 'Select a random patch for review from the contributions'))),
-      ),
-    ),
-    array(
-      'data' => '<strong>Play bug bingo!</strong>',
-      'children' => array(
-        l('Drupal Core', 'bug-bingo', array('attributes' => array('title' => 'Select a random bug to fix'))),
-        l('Contributions', 'contrib-bug-bingo', array('attributes' => array('title' => 'Select a random bug to fix from the contributions'))),
-      ),
-    ),
-    l('Mailing list archives', 'mailing-lists'),
     l('Drupal.org webmasters', 'project/issues/webmasters'),
     l('Drupal.org server administrators', 'project/issues/infrastructure'),
     l('Drupal.org Project applications', 'project/issues/projectapplications'),
     array(
-      'data' => '<strong>Web links</strong>',
+      'data' => '<strong>Community resources</strong>',
       'children' => array(
         l('Planet Drupal', 'planet'),
-        l('Drupal talk', 'talk'),
         l('Drupal dojo', 'http://groups.drupal.org/drupal-dojo'),
+        l('Mailing list archives', 'mailing-lists'),
       ),
     ),
   );
