@@ -2153,3 +2153,40 @@ function drupalorg_update_7063() {
   field_cache_clear();
 }
 
+
+/**
+ * Fix missing information within field_bio.
+ */
+function drupalorg_update_7063() {
+  // Find users with a profile_value bio of more that 255 characters.
+  $query = db_select('profile_value', 'pv');
+  $query->join('users', 'u', 'u.uid = pv.uid');
+  $query
+    ->fields('u', array('uid'))
+    ->fields('pv', array('value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 74);
+
+  $query->addExpression('LENGTH(value)', 'vlength');
+  $query->havingCondition('vlength', 255, '>');
+
+  $result = $query->execute();
+
+  foreach ($result->fetchAll() as $row) {
+    $original_bio = $row->value;
+    $uid = $row->uid;
+
+    // Check that the truncated version within field_bio_value matches profile_value.
+    $new_bio = db_query('SELECT field_bio_value FROM {field_data_field_bio} WHERE entity_id = :id', array(':id' => $uid))->fetchField();
+
+    // if ($new_bio != $original_bio) {
+      drush_log(dt('Updating field_bio for user :id', array(':id' => $uid)));
+
+      // Update the row.
+      db_update('field_data_field_bio')
+        ->fields(array('field_bio_value' => $original_bio))
+        ->condition('entity_id', $uid)
+        ->execute();
+    // }
+  }
+}
