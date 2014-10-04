@@ -2089,27 +2089,24 @@ function drupalorg_update_7063() {
   // Find users with a profile_value bio of more that 255 characters.
   $query = db_select('profile_value', 'pv');
   $query->join('users', 'u', 'u.uid = pv.uid');
+  $query->join('field_data_field_bio', 'b', 'b.entity_id = pv.uid');
   $query
-    ->fields('u', array('uid'))
-    ->fields('pv', array('value'))
+    ->fields('pv', array('uid', 'value'))
     ->condition('u.status', 1)
     ->condition('pv.fid', 74);
-  $query->addExpression('LENGTH(value)', 'vlength');
-  $query->havingCondition('vlength', 255, '>');
-
+  $query->where('length(pv.value) > 255');
+  // Check that the truncated version within field_bio_value matches profile_value.
+  $query->where('substring(pv.value, 1, 254) = substring(b.field_bio_value, 1, 254)');
   $result = $query->execute();
 
-  foreach ($result->fetchAll() as $row) {
-    $original_bio = $row->value;
-    $uid = $row->uid;
-
-    // Check that the truncated version within field_bio_value matches profile_value.
-    $new_bio = db_query('SELECT field_bio_value FROM {field_data_field_bio} WHERE entity_id = :id', array(':id' => $uid))->fetchField();
-
+  foreach ($result as $row) {
     // Update the row.
     db_update('field_data_field_bio')
-      ->fields(array('field_bio_value' => $original_bio))
-      ->condition('entity_id', $uid)
+      ->fields(array('field_bio_value' => $row->value))
+      ->condition('entity_id', $row->uid)
       ->execute();
   }
+
+  // Clear the field cache.
+  field_cache_clear();
 }
