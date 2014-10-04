@@ -2094,7 +2094,6 @@ function drupalorg_update_7063() {
     ->fields('pv', array('value'))
     ->condition('u.status', 1)
     ->condition('pv.fid', 74);
-
   $query->addExpression('LENGTH(value)', 'vlength');
   $query->havingCondition('vlength', 255, '>');
 
@@ -2107,14 +2106,10 @@ function drupalorg_update_7063() {
     // Check that the truncated version within field_bio_value matches profile_value.
     $new_bio = db_query('SELECT field_bio_value FROM {field_data_field_bio} WHERE entity_id = :id', array(':id' => $uid))->fetchField();
 
-    // if ($new_bio != $original_bio) {
-      drush_log(dt('Updating field_bio for user :id', array(':id' => $uid)));
-
-      // Update the row.
-      db_update('field_data_field_bio')
-        ->fields(array('field_bio_value' => $original_bio))
-        ->condition('entity_id', $uid)
-        ->execute();
-    // }
+    // Update the row.
+    db_update('field_data_field_bio')
+      ->fields(array('field_bio_value' => $original_bio))
+      ->condition('entity_id', $uid)
+      ->execute();
   }
 }
