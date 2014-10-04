@@ -2859,6 +2859,7 @@ function drupalorg_node_view_alter(&$build) {
             'categories' => 'task',
             'title' => 'Spam Report',
             'body' => 'Reporting the following node as spam: ' . url('node/' . $node->nid, array('absolute' => TRUE)),
+            drupal_get_destination(),
           ),
         ),
       ),
@@ -2887,6 +2888,7 @@ function drupalorg_comment_view_alter(&$build) {
           'categories' => 'task',
           'title' => 'Spam Report',
           'body' => 'Reporting the following comment as spam: ' . url('node/' . $comment->nid, array('absolute' => TRUE, 'fragment' => 'comment-' . $comment->cid)),
+          drupal_get_destination(),
         ),
         'html' => TRUE,
       );
