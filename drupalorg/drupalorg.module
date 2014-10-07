@@ -3050,6 +3050,7 @@ function drupalorg_user_update(&$edit, $account, $category) {
 
   // Fields to sync.
   $fields = array(
+    'field_country',
     'field_gender',
   );
 
