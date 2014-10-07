@@ -683,16 +683,17 @@ function drupalorg_get_activity($_force = FALSE) {
 /**
  * Implements hook_block_view_MODULE_DELTA_alter().
  */
-function drupalorg_block_view_forum_new_alter(&$data, $block){
+function drupalorg_block_view_forum_new_alter(&$data, $block) {
   $data['content']['#pre_render'][] = 'drupalorg_forum_block_view_pre_render';
 }
 
 /**
- * Render API callback: Remove more link from forum block.
+ * Render API callback: Remove more link from forum block; it is redundant with
+ * section navigation, and sometimes links to the page you are already at.
  *
  * @see drupalorg_block_view_forum_new_alter()
  */
-function drupalorg_forum_block_view_pre_render($elements){
+function drupalorg_forum_block_view_pre_render($elements) {
   unset($elements['forum_more']);
   return $elements;
 }
