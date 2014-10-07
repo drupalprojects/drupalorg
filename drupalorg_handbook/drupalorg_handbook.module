@@ -157,12 +157,12 @@ function drupalorg_handbook_before_body($node) {
   $contributors = '';
   $edit_link = '';
   if (drupalorg_crosssite_section() === 'documentation') {
-    $created = t('Created by !author on @created.', array('!author' => theme('username', array('account' => $node)), '@created' => format_date($node->created, 'custom', $format)));
+    $created = t('Created on @created.', array('@created' => format_date($node->created, 'custom', $format)));
     // Make a list of the 4 most recent different revision authors, not including
     // the original author.
     $contributor_list = array();
     foreach (node_revision_list($node) as $revision) {
-      if (!isset($contributor_list[$revision->uid]) && $revision->uid !== $node->uid) {
+      if (!isset($contributor_list[$revision->uid])) {
         $contributor_list[$revision->uid] = theme('username', array('account' => $revision));
       }
       if (count($contributor_list) >= 4) {
