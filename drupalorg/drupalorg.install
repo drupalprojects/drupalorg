@@ -2110,11 +2110,3 @@ function drupalorg_update_7063() {
   // Clear the field cache.
   field_cache_clear();
 }
-
-/**
- * Enable text formatting on field_bio.
- */
-function drupalorg_update_7064() {
-  // Revert the field instance for field_bio.
-  features_revert(array('drupalorg_user' => array('field_instance')));
-}
