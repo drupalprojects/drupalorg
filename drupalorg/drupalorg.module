@@ -681,6 +681,23 @@ function drupalorg_get_activity($_force = FALSE) {
 }
 
 /**
+ * Implements hook_block_view_MODULE_DELTA_alter().
+ */
+function drupalorg_block_view_forum_new_alter(&$data, $block){
+  $data['content']['#pre_render'][] = 'drupalorg_forum_block_view_pre_render';
+}
+
+/**
+ * Render API callback: Remove more link from forum block.
+ *
+ * @see drupalorg_block_view_forum_new_alter()
+ */
+function drupalorg_forum_block_view_pre_render($elements){
+  unset($elements['forum_more']);
+  return $elements;
+}
+
+/**
  * Set home link for Your Dashboard page.
  */
 function drupalorg_set_home() {
