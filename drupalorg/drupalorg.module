@@ -633,8 +633,8 @@ function drupalorg_get_activity($_force = FALSE) {
     // Users: Count them.
     $stats['number_of_users'] = number_format(db_query('SELECT COUNT(*) FROM {users} WHERE uid > :uid AND status = :status AND login > :login', array(':uid' => 0, ':status' => 1, ':login' => 0))->fetchField());
 
-    // Country: A single text field, so we can filter it in SQL.
-    $stats['number_of_countries'] = number_format(db_query("SELECT COUNT(DISTINCT value) FROM {profile_value} WHERE fid = :fid AND value NOT IN ('', '<not specified>')", array(':fid' => DRUPALORG_COUNTRY_PID))->fetchField());
+    // Country.
+    $stats['number_of_countries'] = number_format(db_query("SELECT COUNT(DISTINCT field_country_value) FROM {field_data_field_country} WHERE field_country_value != '<not specified>'")->fetchField());
 
     // Languages: Get all the distinct combinations and then filter that down.
     $languages = array();
