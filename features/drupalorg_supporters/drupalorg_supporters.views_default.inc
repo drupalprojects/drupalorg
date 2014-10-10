@@ -184,7 +184,7 @@ function drupalorg_supporters_views_default_views() {
   /* Display: Premium Technology */
   $handler = $view->new_display('page', 'Premium Technology', 'page_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Technology Partners';
+  $handler->display->display_options['title'] = 'Technology Supporters';
   $handler->display->display_options['display_description'] = 'Premium technology partner organizations.';
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
@@ -249,7 +249,7 @@ function drupalorg_supporters_views_default_views() {
   /* Display: Technology */
   $handler = $view->new_display('attachment', 'Technology', 'attachment_2');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Technology Partners';
+  $handler->display->display_options['title'] = 'Technology Supporters';
   $handler->display->display_options['display_description'] = 'Technology partner organizations.';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
