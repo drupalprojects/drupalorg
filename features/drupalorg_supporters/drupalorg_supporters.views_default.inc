@@ -191,12 +191,12 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'Through their generous support, these great <a href="https://assoc.drupal.org/technology-supporters">Technology Supporter</a> companies help pay for the team that maintains and improves Drupal.org.
+  $handler->display->display_options['header']['area']['content'] = '<a href="https://assoc.drupal.org/technology-supporters">Drupal Technology Supporters</a> are companies who provide a product or service that helps the Drupal community build amazing sites. These Supporters educate the community about their offerings and their program fees help fund Drupal.org improvements.
 
-Check out <a href="https://www.drupal.org/technology-supporter-resources">Technology Supporters Resource Center</a> for useful resources from these companies.
+<a class="link-button" href="https://www.drupal.org/technology-supporter-resources"><span>Technology Supporters Resource Center</span></a>
 
 <h2>Premium Technology Supporters</h2>';
-  $handler->display->display_options['header']['area']['format'] = '1';
+  $handler->display->display_options['header']['area']['format'] = '3';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Logo */
   $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
