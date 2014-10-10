@@ -144,7 +144,38 @@ function drupalorg_user_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 9,
+      'weight' => 38,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_country'
+  $field_instances['user-user-field_country'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 9,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_country',
+    'label' => 'Country',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 1,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 37,
     ),
   );
 
@@ -160,7 +191,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 6,
+        'weight' => 12,
       ),
     ),
     'entity_type' => 'user',
@@ -194,7 +225,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 7,
+        'weight' => 13,
       ),
     ),
     'entity_type' => 'user',
@@ -212,7 +243,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 10,
+      'weight' => 39,
     ),
   );
 
@@ -230,7 +261,7 @@ function drupalorg_user_field_default_field_instances() {
           'view_mode' => 'full',
         ),
         'type' => 'field_collection_fields',
-        'weight' => 4,
+        'weight' => 10,
       ),
     ),
     'entity_type' => 'user',
@@ -291,7 +322,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_url',
-        'weight' => 8,
+        'weight' => 14,
       ),
     ),
     'entity_type' => 'user',
@@ -323,13 +354,14 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 11,
+      'weight' => 40,
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
   t('Bio');
+  t('Country');
   t('Current');
   t('IRC');
   t('Industries Worked In');
