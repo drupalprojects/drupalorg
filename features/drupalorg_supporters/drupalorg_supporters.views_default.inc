@@ -81,7 +81,7 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p>Through their generous support, these great <a href="https://assoc.drupal.org/supporting-partners">Supporting Partner</a> companies help pay for the team that maintains and improves Drupal.org.</p>
+  $handler->display->display_options['header']['area']['content'] = '<a href="https://assoc.drupal.org/supporting-partners">Supporting Partners</a> are businesses who offer Drupal services. Their program fees help fund Drupal.org improvements, so together we can collaborate more easily and accelerate Drupal\'s innovation.
 
 <h2>Premium Supporting Partners</h2>';
   $handler->display->display_options['header']['area']['format'] = '1';
