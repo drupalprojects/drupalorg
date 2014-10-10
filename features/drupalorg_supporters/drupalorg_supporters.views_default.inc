@@ -325,7 +325,7 @@ Check out <a href="https://www.drupal.org/technology-supporter-resources">Techno
   /* Display: Premium Hosting */
   $handler = $view->new_display('page', 'Premium Hosting', 'page_2');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Hosting Partners';
+  $handler->display->display_options['title'] = 'Hosting Supporters';
   $handler->display->display_options['display_description'] = 'Premium hosting partner organizations.';
   $handler->display->display_options['defaults']['query'] = FALSE;
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -338,7 +338,7 @@ Check out <a href="https://www.drupal.org/technology-supporter-resources">Techno
 
 Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.
 
-<h2>Premium Hosting Partners</h2>';
+<h2>Premium Hosting Supporter</h2>';
   $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
@@ -434,7 +434,7 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<h2>Hosting Partners</h2>';
+  $handler->display->display_options['header']['area']['content'] = '<h2>Hosting Supporters</h2>';
   $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
