@@ -2115,6 +2115,9 @@ function drupalorg_update_7063() {
  * Migrate country to field_country.
  */
 function drupalorg_update_7064() {
+  // Clear the field cache.
+  field_cache_clear();
+
   // Get the profile data.
   $query = db_select('users', 'u');
   $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
@@ -2124,6 +2127,7 @@ function drupalorg_update_7064() {
     ->condition('u.status', 1)
     ->condition('pv.fid', 17)
     ->condition('pv.value', '', '!=')
+    ->condition('pv.value', '<not specified>', '!=')
     ->isNull('c.field_country_value');
 
   $result = $query->execute();
