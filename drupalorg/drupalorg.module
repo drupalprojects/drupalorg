@@ -74,6 +74,17 @@ function drupalorg_init() {
 }
 
 /**
+ * Implements hook_user_login().
+ */
+function drupalorg_user_login(&$edit, $account) {
+  // Redirect to the dashboard if the user selected it.
+  $account = user_load($account->uid);
+  if (!empty($account->data['drupalorg_set_home'])) {
+    $edit['redirect'] = 'user/' . $account->uid . '/dashboard';
+  }
+}
+
+/**
  * Implements hook_page_build().
  */
 function drupalorg_page_build(&$page) {
