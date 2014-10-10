@@ -74,6 +74,17 @@ function drupalorg_init() {
 }
 
 /**
+ * Implements hook_user_login().
+ */
+function drupalorg_user_login(&$edit, $account) {
+  // Redirect to the dashboard if the user selected it.
+  $account = user_load($account->uid);
+  if (!empty($account->data['drupalorg_set_home'])) {
+    $edit['redirect'] = 'user/' . $account->uid . '/dashboard';
+  }
+}
+
+/**
  * Implements hook_page_build().
  */
 function drupalorg_page_build(&$page) {
@@ -633,8 +644,8 @@ function drupalorg_get_activity($_force = FALSE) {
     // Users: Count them.
     $stats['number_of_users'] = number_format(db_query('SELECT COUNT(*) FROM {users} WHERE uid > :uid AND status = :status AND login > :login', array(':uid' => 0, ':status' => 1, ':login' => 0))->fetchField());
 
-    // Country: A single text field, so we can filter it in SQL.
-    $stats['number_of_countries'] = number_format(db_query("SELECT COUNT(DISTINCT value) FROM {profile_value} WHERE fid = :fid AND value NOT IN ('', '<not specified>')", array(':fid' => DRUPALORG_COUNTRY_PID))->fetchField());
+    // Country.
+    $stats['number_of_countries'] = number_format(db_query("SELECT COUNT(DISTINCT field_country_value) FROM {field_data_field_country}")->fetchField());
 
     // Languages: Get all the distinct combinations and then filter that down.
     $languages = array();
@@ -678,6 +689,24 @@ function drupalorg_get_activity($_force = FALSE) {
     $stats = array();
   }
   return $stats;
+}
+
+/**
+ * Implements hook_block_view_MODULE_DELTA_alter().
+ */
+function drupalorg_block_view_forum_new_alter(&$data, $block) {
+  $data['content']['#pre_render'][] = 'drupalorg_forum_block_view_pre_render';
+}
+
+/**
+ * Render API callback: Remove more link from forum block; it is redundant with
+ * section navigation, and sometimes links to the page you are already at.
+ *
+ * @see drupalorg_block_view_forum_new_alter()
+ */
+function drupalorg_forum_block_view_pre_render($elements) {
+  unset($elements['forum_more']);
+  return $elements;
 }
 
 /**
