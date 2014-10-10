@@ -334,7 +334,7 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'Through their generous support, these great <a href="https://assoc.drupal.org/drupal-hosting-supporter-program">Hosting Supporter</a> companies help pay for the team that maintains and improves Drupal.org.<br>
+  $handler->display->display_options['header']['area']['content'] = '<a href="https://assoc.drupal.org/drupal-hosting-supporter-program">Drupal Hosting Supporters</a> help the community publish great sites. These Supporters educate the community about their offerings, promote Drupal to their user base, and their program fees help fund Drupal.org improvements.
 
 Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.
 
