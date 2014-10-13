@@ -748,7 +748,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'node_reference_autocomplete',
-      'weight' => 27,
+      'weight' => 33,
     ),
     'widget_type' => 'project_issue_nodereference_auto',
   );
@@ -1054,7 +1054,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'node_reference_autocomplete',
-      'weight' => 25,
+      'weight' => 31,
     ),
     'widget_type' => 'project_issue_nodereference_auto',
   );
@@ -1144,7 +1144,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 24,
+      'weight' => 30,
     ),
     'widget_type' => 'optionwidgets_buttons',
   );
@@ -1295,7 +1295,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 28,
+      'weight' => 34,
     ),
   );
 
@@ -1481,7 +1481,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 26,
+      'weight' => 32,
     ),
     'widget_type' => 'optionwidgets_buttons',
   );
