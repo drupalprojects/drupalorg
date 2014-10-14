@@ -338,7 +338,7 @@ function drupalorg_supporters_views_default_views() {
 
 Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.
 
-<h2>Premium Hosting Supporter</h2>';
+<h2>Premium Hosting Supporters</h2>';
   $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
