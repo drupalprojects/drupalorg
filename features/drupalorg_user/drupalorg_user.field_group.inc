@@ -90,9 +90,10 @@ function drupalorg_user_field_group_info() {
       0 => 'field_industries_worked_in',
       1 => 'field_organizations',
       2 => 'field_irc_nick',
-      3 => 'field_websites',
-      4 => 'field_country',
-      5 => 'drupalorg_companies_worked_for',
+      3 => 'field_country',
+      4 => 'field_gender',
+      5 => 'field_websites',
+      6 => 'drupalorg_companies_worked_for',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -157,8 +158,9 @@ function drupalorg_user_field_group_info() {
     'children' => array(
       0 => 'field_bio',
       1 => 'field_irc_nick',
-      2 => 'field_websites',
-      3 => 'field_country',
+      2 => 'field_country',
+      3 => 'field_websites',
+      4 => 'field_gender',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

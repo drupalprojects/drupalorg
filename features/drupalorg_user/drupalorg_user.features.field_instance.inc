@@ -144,7 +144,7 @@ function drupalorg_user_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 38,
+      'weight' => 39,
     ),
   );
 
@@ -176,6 +176,37 @@ function drupalorg_user_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_select',
       'weight' => 37,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_gender'
+  $field_instances['user-user-field_gender'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 15,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_gender',
+    'label' => 'Gender',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 38,
     ),
   );
 
@@ -243,7 +274,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 39,
+      'weight' => 40,
     ),
   );
 
@@ -261,7 +292,7 @@ function drupalorg_user_field_default_field_instances() {
           'view_mode' => 'full',
         ),
         'type' => 'field_collection_fields',
-        'weight' => 11,
+        'weight' => 10,
       ),
     ),
     'entity_type' => 'user',
@@ -354,7 +385,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 40,
+      'weight' => 41,
     ),
   );
 
@@ -363,6 +394,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Bio');
   t('Country');
   t('Current');
+  t('Gender');
   t('IRC');
   t('Industries Worked In');
   t('Job Title');
