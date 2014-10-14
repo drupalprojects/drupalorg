@@ -55,7 +55,7 @@ function drupalorg_supporters_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 29,
+      'weight' => 35,
     ),
   );
 
@@ -107,7 +107,7 @@ function drupalorg_supporters_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 30,
+      'weight' => 36,
     ),
   );
 

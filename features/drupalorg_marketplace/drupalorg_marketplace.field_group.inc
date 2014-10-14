@@ -126,7 +126,8 @@ function drupalorg_marketplace_field_group_info() {
       3 => 'field_organization_training_list',
       4 => 'field_organization_technologies',
       5 => 'field_organization_support',
-      6 => '_add_existing_field',
+      6 => 'field_short_description',
+      7 => '_add_existing_field',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
