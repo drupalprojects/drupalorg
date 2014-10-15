@@ -339,6 +339,15 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
 }
 
 /**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function drupalorg_field_widget_options_buttons_form_alter(&$element, &$form_state, $context) {
+  if ($context['field']['field_name'] === 'field_gender') {
+    $element['#options']['_none'] = t('Prefer not to share');
+  }
+}
+
+/**
  * Implements hook_block_info().
  */
 function drupalorg_block_info() {
