@@ -1,6 +1,10 @@
 (function ($) {
   Drupal.behaviors.drupalorgHome = {
     attach: function (context, settings) {
+      $('#community-updates', context).tabs();
+      if ($(window).width() < 471) { // First breakpoint in _issue-page.scss
+        return;
+      }
       var current = 0,
         $map = $('.homepage-map', context),
         $pins = $('.homepage-map>.homepage-pin', context);
@@ -21,7 +25,6 @@
           $pins.eq(current).show();
         }, 4000);
       }
-      $('#community-updates', context).tabs();
     }
   };
 })(jQuery);
