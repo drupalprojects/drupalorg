@@ -3085,6 +3085,20 @@ function drupalorg_user_update(&$edit, $account, $category) {
       $_SESSION['bakery']['data']['drupalorg_picture'][$style] = file_create_url($destination);
     }
   }
+
+  // Fields to sync.
+  $fields = array(
+    'field_country',
+    'field_gender',
+  );
+
+  foreach ($fields as $field_name) {
+    if (isset($account->$field_name)) {
+      // Add the value into the Bakery data.
+      $field = $account->$field_name;
+      $_SESSION['bakery']['data']['drupalorg_' . $field_name] = $field[LANGUAGE_NONE][0]['value'];
+    }
+  }
 }
 
 /**
