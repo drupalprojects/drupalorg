@@ -3092,12 +3092,10 @@ function drupalorg_user_update(&$edit, $account, $category) {
     'field_gender',
   );
 
+  $account_wrapper = entity_metadata_wrapper('user', $account);
   foreach ($fields as $field_name) {
-    if (isset($account->$field_name)) {
-      // Add the value into the Bakery data.
-      $field = $account->$field_name;
-      $_SESSION['bakery']['data']['drupalorg_' . $field_name] = $field[LANGUAGE_NONE][0]['value'];
-    }
+    // Add the value into the Bakery data.
+    $_SESSION['bakery']['data']['drupalorg_' . $field_name] = $account_wrapper->$field_name->value();
   }
 }
 
