@@ -23,6 +23,7 @@ function drupalorg_supporters_views_default_views() {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -30,7 +31,7 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'list';
-  $handler->display->display_options['style_options']['class'] = 'grid cols-2';
+  $handler->display->display_options['style_options']['class'] = 'grid cols-2 drupalorg-random';
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['hide_empty'] = TRUE;
   /* Field: Content: Logo */
@@ -45,10 +46,10 @@ function drupalorg_supporters_views_default_views() {
     'image_link' => 'content',
   );
   $handler->display->display_options['fields']['field_logo']['group_column'] = 'entity_id';
-  /* Sort criterion: Global: Random */
-  $handler->display->display_options['sorts']['random']['id'] = 'random';
-  $handler->display->display_options['sorts']['random']['table'] = 'views';
-  $handler->display->display_options['sorts']['random']['field'] = 'random';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -121,7 +122,7 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'list';
-  $handler->display->display_options['style_options']['class'] = 'grid cols-4';
+  $handler->display->display_options['style_options']['class'] = 'grid cols-4 drupalorg-random';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
@@ -254,7 +255,7 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'list';
-  $handler->display->display_options['style_options']['class'] = 'grid cols-4';
+  $handler->display->display_options['style_options']['class'] = 'grid cols-4 drupalorg-random';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
@@ -417,11 +418,13 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
   /* Display: Hosting */
   $handler = $view->new_display('attachment', 'Hosting', 'attachment_3');
   $handler->display->display_options['display_description'] = 'Hosting partner organizations.';
+  $handler->display->display_options['defaults']['group_by'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'list';
-  $handler->display->display_options['style_options']['class'] = 'grid cols-4';
+  $handler->display->display_options['style_options']['class'] = 'grid cols-4 drupalorg-random';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
