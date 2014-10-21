@@ -47,6 +47,7 @@ function drupalorg_marketplace_field_group_info() {
     'weight' => '12',
     'children' => array(
       0 => 'field_organization_security',
+      1 => 'field_hosting_type',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

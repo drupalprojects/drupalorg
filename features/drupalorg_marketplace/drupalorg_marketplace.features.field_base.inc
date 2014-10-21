@@ -118,6 +118,36 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
+  // Exported field_base: 'field_hosting_type'
+  $field_bases['field_hosting_type'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_hosting_type',
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'shared' => 'Shared',
+        'managed' => 'Managed/Enterprise',
+        'cloud' => 'Cloud',
+        'vps' => 'VPS',
+        'dedicated' => 'Dedicated',
+        'reseller' => 'Reseller',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_link'
   $field_bases['field_link'] = array(
     'active' => 1,
