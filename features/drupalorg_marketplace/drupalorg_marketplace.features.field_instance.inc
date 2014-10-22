@@ -308,6 +308,55 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'text_textarea',
   );
 
+  // Exported field_instance: 'node-organization-field_hosting_type'
+  $field_instances['node-organization-field_hosting_type'] = array(
+    'bundle' => 'organization',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Use this field if you are listed on the <a href="/supporters/hosting">Hosting Supporters page</a>.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 19,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_hosting_type',
+    'label' => 'Hosting type',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 15,
+    ),
+  );
+
   // Exported field_instance: 'node-organization-field_link'
   $field_instances['node-organization-field_link'] = array(
     'bundle' => 'organization',
@@ -1241,7 +1290,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 14,
+      'weight' => 16,
     ),
     'widget_type' => 'text_textfield',
   );
@@ -1767,6 +1816,7 @@ function drupalorg_marketplace_field_default_field_instances() {
   t('Drupal contributions');
   t('Headquarters');
   t('Helps potential clients know what they are getting into.');
+  t('Hosting type');
   t('If you request a listing, please review <a href="/marketplace/guidelines">Marketplace guidelines</a>. Volunteer moderators will review your request. If you are not listed, you will still have the page and some features, like your logo replacing company name on profile pages.');
   t('List in Training section');
   t('List in marketplace');
@@ -1790,6 +1840,7 @@ function drupalorg_marketplace_field_default_field_instances() {
   t('Training issue');
   t('Training listing');
   t('Training url');
+  t('Use this field if you are listed on the <a href="/supporters/hosting">Hosting Supporters page</a>.');
   t('Usual project budget (optional)');
   t('Website');
   t('Where is your organization located?');
