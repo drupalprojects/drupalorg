@@ -239,7 +239,7 @@ function drupalorg_versioncontrol_versioncontrol_project_issue_git_issue_notific
     // Nothing to do.
     return;
   }
-  $project_node = versioncontrol_project_project_load($repository->project_nid);
+  $project_node = node_load($repository->project_nid);
   if ($project_node->type == 'project_core') {
     // Core.
     $valid_branch_name_regex = '/^(\d+)(\.(\d+))?\.x$/';
