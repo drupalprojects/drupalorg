@@ -255,7 +255,7 @@ function drupalorg_versioncontrol_versioncontrol_project_issue_git_issue_notific
   // Only allow non-release branches notifications if the project issue nid is
   // in the refname.
   foreach ($valid_issue_nids as $key => $valid_issue_nid) {
-    if (!preg_match("/\b$valid_issue_nid\b/", $ref->refname)) {
+    if (!preg_match('/\b' . preg_quote($valid_issue_nid, '/') . '\b/', $ref->refname)) {
       unset($valid_issue_nids[$key]);
     }
   }
