@@ -3166,6 +3166,8 @@ function drupalorg_render_cache_entity_hash_alter(&$hash, $entity, $cache_info, 
     $node = node_load($entity->nid);
     $hash['is_author'] = $entity->uid == $node->uid;
 
+    $hash['timezone'] = date_default_timezone_get();
+
     $hash['is_new'] = !empty($entity->new);
     $hash['first_new'] = !empty($entity->first_new);
 
