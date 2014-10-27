@@ -570,7 +570,11 @@ function drupalorg_preprocess_block(&$vars) {
  * tracker_user, with a count field.
  */
 function drupalorg_homebox_block_keys($block) {
-  return array('count');
+  switch ($block->delta) {
+    case 'tracker_user':
+      return array('count');
+  }
+  return array();
 }
 
 /**
