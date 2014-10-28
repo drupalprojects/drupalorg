@@ -179,6 +179,44 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_github_profile'
+  $field_instances['user-user-field_github_profile'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Enter the URL of your GitHub profile, if you have one.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'url',
+        'settings' => array(
+          'nofollow' => FALSE,
+          'trim_length' => 80,
+        ),
+        'type' => 'url_default',
+        'weight' => 16,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_github_profile',
+    'label' => 'GitHub Profile',
+    'required' => 0,
+    'settings' => array(
+      'title_fetch' => 0,
+      'title_field' => 0,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'url',
+      'settings' => array(
+        'size' => 58,
+      ),
+      'type' => 'url_external',
+      'weight' => 41,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_industries_worked_in'
   $field_instances['user-user-field_industries_worked_in'] = array(
     'bundle' => 'user',
@@ -363,6 +401,8 @@ function drupalorg_user_field_default_field_instances() {
   t('Bio');
   t('Country');
   t('Current');
+  t('Enter the URL of your GitHub profile, if you have one.');
+  t('GitHub Profile');
   t('IRC');
   t('Industries Worked In');
   t('Job Title');
