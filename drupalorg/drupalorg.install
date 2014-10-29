@@ -2261,11 +2261,11 @@ function drupalorg_update_7065() {
 /**
  * Change bueditor image button default path from absolute to relative.
  */
-function drupalorg_update_7065() {
+function drupalorg_update_7066() {
   $button = "js:
     var form = [
     {name: 'src', title: 'Image URL', required: true, value: '/files/issue/', attributes: {onfocus: \"_=this.value;this.value='';this.value=_;\"}},
-     {name: 'width', title: 'Width x Height', suffix: ' x ', getnext: true, attributes: {size: 3}},
+     {name: 'width', title: 'Width × Height', suffix: ' × ', getnext: true, attributes: {size: 3}},
      {name: 'height', attributes: {size: 3}},
      {name: 'alt', title: 'Alternative text', required: true}
     ];
