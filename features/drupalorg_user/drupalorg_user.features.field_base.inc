@@ -345,6 +345,22 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'list_text',
   );
 
+  // Exported field_base: 'field_github_profile'
+  $field_bases['field_github_profile'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_github_profile',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'url',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'url',
+  );
+
   // Exported field_base: 'field_industries_worked_in'
   $field_bases['field_industries_worked_in'] = array(
     'active' => 1,

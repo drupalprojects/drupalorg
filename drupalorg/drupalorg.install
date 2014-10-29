@@ -1921,7 +1921,7 @@ function drupalorg_update_7060() {
 
       // Start again.
       $data = db_insert('field_data_field_bio')->fields($fields);
-      $revision = db_insert('field_revision_field_bio')->fields($fields); 
+      $revision = db_insert('field_revision_field_bio')->fields($fields);
       $count = 0;
     }
   }
@@ -2259,15 +2259,32 @@ function drupalorg_update_7065() {
 }
 
 /**
- * Set up new Credit & committing form.
+ * Change bueditor image button default path from absolute to relative.
  */
 function drupalorg_update_7066() {
+  $button = "js:
+    var form = [
+    {name: 'src', title: 'Image URL', required: true, value: '/files/issue/', attributes: {onfocus: \"_=this.value;this.value='';this.value=_;\"}},
+     {name: 'width', title: 'Width × Height', suffix: ' × ', getnext: true, attributes: {size: 3}},
+     {name: 'height', attributes: {size: 3}},
+     {name: 'alt', title: 'Alternative text', required: true}
+    ];
+    E.tagDialog('img', form, {title: 'Insert/edit image'});
+    ";
+  db_update('bueditor_buttons')
+    ->fields(array('content' => $button))
+    ->condition('bid', 136)
+    ->execute();
+}
+
+/**
+ * Set up new Credit & committing form.
+ */
+function drupalorg_update_7067() {
   // Do not show BUEditor for new Git command text area.
   $excludes = db_query('SELECT excludes FROM {bueditor_editors} WHERE eid = 10')->fetchField();
   db_update('bueditor_editors')
     ->fields(array('excludes' => $excludes . "\nedit-command\nedit-command-message"))
     ->condition('eid', 10)
     ->execute();
-
-  // TODO - set up displays if needed
 }
