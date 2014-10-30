@@ -379,9 +379,8 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     $form['field_project_machine_name'][$language][0]['value']['#element_validate'][] = 'drupalorg_project_machine_name_validate';
   }
   elseif (project_issue_node_is_issue($form_state['node'])) {
-    // Only existing issues for projects where the user is a 'Write to VCS'
-    // maintainer.
-    if (!empty($form_state['node']->nid) && isset($form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]) && $form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]['permissions']['write to vcs']) {
+    // Only existing issues for projects.
+    if (!empty($form_state['node']->nid)) {
       // Build table of commenters.
       $table = array(
         '#theme' => 'table',
@@ -538,6 +537,8 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         '#type' => 'fieldset',
         '#title' => t('Credit & committing'),
         '#collapsible' => TRUE,
+        // Open by default when the user is a 'Write to VCS' maintainer.
+        '#collapsed' => !isset($form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]) || !$form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]['permissions']['write to vcs'],
         '#weight' => 50,
         '#id' => 'drupalorg-issue-credit-form',
         'message' => array(
