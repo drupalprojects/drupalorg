@@ -504,6 +504,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         '#type' => 'fieldset',
         '#title' => t('Credit & committing'),
         '#collapsible' => TRUE,
+        '#weight' => 50,
         '#id' => 'drupalorg-issue-credit-form',
         'message' => array(
           '#type' => 'textfield',
