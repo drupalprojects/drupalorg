@@ -388,14 +388,23 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         '#header' => array(
           t('Author'),
           t('By'),
-          t('<span class="files">Files</span> & <span class="comments">Comments</span>'),
+          array(
+            'data' => t('Files ▾<span class="element-invisible">sorted descending</span>'),
+            'colspan' => 2,
+          ),
+          array(
+            'data' => t('Comments'),
+            'colspan' => 2,
+          ),
         ),
         '#rows' => array(
           $form_state['node']->uid => array(
             'author' => NULL,
             'by' => $form_state['node']->name,
-            'comments' => '■',
-            'files' => '',
+            'files' => NULL,
+            'files-bar' => NULL,
+            'comments' => 1,
+            'comments-bar' => NULL,
             '#weight' => 0,
           ),
         ),
@@ -413,13 +422,15 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             $table['#rows'][$comment->uid] = array(
               'author' => NULL,
               'by' => $comment->name,
-              'comments' => '■',
               'files' => NULL,
+              'files-bar' => NULL,
+              'comments' => 1,
+              'comments-bar' => NULL,
               '#weight' => 0,
             );
           }
           else {
-            $table['#rows'][$comment->uid]['comments'] .= '■';
+            $table['#rows'][$comment->uid]['comments'] += 1;
             $table['#rows'][$comment->uid]['#weight'] += 0.01;
           }
         }
@@ -427,7 +438,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
 
       $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
       foreach ($node_wrapper->field_issue_files->value() as $file) {
-        $table['#rows'][$file['uid']]['files'] .= '+';
+        $table['#rows'][$file['uid']]['files'] += 1;
         $table['#rows'][$file['uid']]['#weight'] += 1;
       }
       // Set author to final file.
@@ -468,9 +479,32 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             ),
           ),
         );
-        $row['comments'] = '<span class="files">' . $row['files'] . '</span><span class="comments">' . $row['comments'] . '</span>';
-        // Remove temporary columns.
-        unset($row['files']);
+        // Format files and comments bars.
+        if (!is_null($row['files'])) {
+          if ($row['files'] > 50) {
+            $row['files-bar'] = '<div class="bar overflow" style="width: 20em"></div>';
+          }
+          else {
+            $row['files-bar'] = '<div class="bar" style="width: ' . ($row['files'] / 50 * 20) . 'em"></div>';
+          }
+          $row['files'] = array(
+            'data' => $row['files'] . '<span class="element-invisible"> ' . t('files attached') . '</span>',
+            'class' => 'number',
+          );
+        }
+        if (!is_null($row['comments'])) {
+          if ($row['comments'] > 50) {
+            $row['comments-bar'] = '<div class="bar overflow" style="width: 20em"></div>';
+          }
+          else {
+            $row['comments-bar'] = '<div class="bar" style="width: ' . ($row['comments'] / 50 * 20) . 'em"></div>';
+          }
+          $row['comments'] = array(
+            'data' => $row['comments'] . '<span class="element-invisible"> ' . t('comments made') . '</span>',
+            'class' => 'number',
+          );
+        }
+        // Remove temporary column.
         unset($row['#weight']);
       }
 
@@ -495,7 +529,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             '#value' => t('<em>Omit author</em>'),
             '#attributes' => array('for' => 'by-0'),
           ),
-          'colspan' => 3,
+          'colspan' => 5,
         ),
       );
 
