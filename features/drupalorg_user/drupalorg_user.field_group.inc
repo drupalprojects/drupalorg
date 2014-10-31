@@ -159,6 +159,7 @@ function drupalorg_user_field_group_info() {
       1 => 'field_irc_nick',
       2 => 'field_websites',
       3 => 'field_country',
+      4 => 'field_interests',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

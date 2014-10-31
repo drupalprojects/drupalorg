@@ -99,6 +99,7 @@ function drupalorg_user_field_default_field_bases() {
         'China' => 'China',
         'Colombia' => 'Colombia',
         'Comoros' => 'Comoros',
+        'Congo' => 'Congo',
         'Cook Islands' => 'Cook Islands',
         'Costa Rica' => 'Costa Rica',
         'Cote D Ivoire' => 'Cote D Ivoire',
@@ -110,7 +111,6 @@ function drupalorg_user_field_default_field_bases() {
         'Djibouti' => 'Djibouti',
         'Dominica' => 'Dominica',
         'Dominican Republic' => 'Dominican Republic',
-        'DR of the Congo' => 'DR of the Congo',
         'Ecuador' => 'Ecuador',
         'Egypt' => 'Egypt',
         'El Salvador' => 'El Salvador',
@@ -222,7 +222,6 @@ function drupalorg_user_field_default_field_bases() {
         'Portugal' => 'Portugal',
         'Puerto Rico' => 'Puerto Rico',
         'Qatar' => 'Qatar',
-        'Republic of the Congo' => 'Republic of the Congo',
         'Reunion' => 'Reunion',
         'Romania' => 'Romania',
         'Russian Federation' => 'Russian Federation',
@@ -282,6 +281,7 @@ function drupalorg_user_field_default_field_bases() {
         'Western Samoa' => 'Western Samoa',
         'Yemen' => 'Yemen',
         'Yugoslavia' => 'Yugoslavia',
+        'Zaire' => 'Zaire',
         'Zambia' => 'Zambia',
         'Zimbabwe' => 'Zimbabwe',
       ),
@@ -344,6 +344,40 @@ function drupalorg_user_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'text',
+  );
+
+  // Exported field_base: 'field_interests'
+  $field_bases['field_interests'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_interests',
+    'foreign keys' => array(
+      'tid' => array(
+        'columns' => array(
+          'tid' => 'tid',
+        ),
+        'table' => 'taxonomy_term_data',
+      ),
+    ),
+    'indexes' => array(
+      'tid' => array(
+        0 => 'tid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'taxonomy',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => array(
+          'vocabulary' => 'interests',
+          'parent' => 0,
+        ),
+      ),
+    ),
+    'translatable' => 0,
+    'type' => 'taxonomy_term_reference',
   );
 
   // Exported field_base: 'field_irc_nick'
