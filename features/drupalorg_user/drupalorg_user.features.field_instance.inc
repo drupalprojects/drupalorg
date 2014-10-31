@@ -572,6 +572,7 @@ function drupalorg_user_field_default_field_instances() {
   t('GitHub Profile');
   t('IRC');
   t('Industries Worked In');
+  t('Interests');
   t('Job Title');
   t('Languages spoken');
   t('List companies or institutions you have worked for or are working for now.');
