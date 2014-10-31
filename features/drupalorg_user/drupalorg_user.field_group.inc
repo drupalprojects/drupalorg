@@ -164,6 +164,7 @@ function drupalorg_user_field_group_info() {
       4 => 'field_github_profile',
       5 => 'field_websites',
       6 => 'field_interests',
+      7 => 'field_interests',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
