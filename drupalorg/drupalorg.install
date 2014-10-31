@@ -2276,3 +2276,157 @@ function drupalorg_update_7066() {
     ->condition('bid', 136)
     ->execute();
 }
+
+/**
+ * Migrate interests field.
+ */
+function drupalorg_update_7067() {
+  // These uids break the migration.
+  $uids_to_exclude = array(
+    1403, 8520, 32906, 78092, 116266, 207301, 228455, 242364, 252009, 292659,
+    336195, 347324, 355293, 391093, 506154, 533964, 545004, 585302, 585502,
+    630976, 637370, 640904, 675594, 675826, 679524, 692162, 726922, 728774,
+    733006, 740342, 753076, 771036, 779824, 785656, 786308, 796802, 805886,
+    806304, 806986, 808228, 826014, 826160, 828142, 829062, 829894, 830890,
+    834074, 855360, 863422, 880528, 885280, 888750, 890238, 894548, 894698,
+    899362, 905002, 914896, 926556, 927998, 943102, 945560, 947300, 950930,
+    950930, 958588, 965224, 965458, 969730, 984748, 999038, 1003154, 1004884,
+    1006878, 1008772, 1009700, 1013194, 1018314, 1027376, 1031212, 1035354,
+    1047146, 1048434, 1082482, 1152132, 1152650, 1176580, 1223658, 1286652,
+    1339470, 1359128, 1359236, 1359248, 1399498, 1399744, 1408118, 1408780,
+    1423100, 1436412, 1439892, 1458912, 1459074, 1494434, 1496500, 1522098,
+    1531120, 1547124, 1557282, 1578668, 1586830, 1626016, 1629734, 1657164,
+    1761140, 1763352, 1778500, 1804220, 1824542, 1831224, 1832890, 1846426,
+    1926070, 1931538, 1947396, 1952442, 1952798, 1954632, 1955852, 1974798,
+    1981454, 2005016, 2010550, 2053344, 2103104, 2200234, 2225802, 2255280,
+    2262630, 2277214, 2316360, 2345360, 2355218, 2367132, 2370394, 2391990,
+    2407972, 2414352, 2417992, 2418994, 2428444, 2445138, 2448902, 2450496,
+    2525734, 2547522, 2559360, 2568354, 2571952, 2573102, 2581186, 2584576,
+    2588554, 2595112, 2596274, 2598106, 2599518, 2599888, 2601540, 2602612,
+    2602794, 2603900, 2606352, 2611266, 2617207, 2626747, 2626845, 2627601,
+    2627715, 2633077, 2641315, 2655481, 2655811, 2659727, 2661029, 2662237,
+    2664001, 2665313, 2666901, 2676793, 2677901, 2679461, 2688043, 2688093,
+    2696147, 2702349, 2707875, 2729735, 2733281, 2751599, 2763183, 2778279,
+    2781275, 2797639, 2808137, 2833985, 2834935, 2854039, 2857811, 2861117,
+    2866397, 2869767, 2877263, 2890257, 2890267, 2898101, 2898323, 2904655,
+    2907869, 2908035, 2910853, 2910965, 2942327, 2942697, 2947147, 2955431,
+    2955433, 2966911, 2979193, 2985181, 2995635, 2999365, 3003625, 3005405,
+    3007735, 3009757, 3016173, 3018883, 3022561, 3022997, 3025283, 3026389,
+    3028445, 3033443, 3034983,
+  );
+  
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_interests', 'i', 'i.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 27)
+    ->condition('pv.value', '', '!=')
+    ->condition('u.uid', $uids_to_exclude, 'NOT IN')
+    ->isNull('i.field_interests_tid')
+    ->distinct();
+  
+  $result = $query->execute();
+  
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_interests_tid',
+  );
+  
+  $data = db_insert('field_data_field_interests')->fields($fields);
+  $revision = db_insert('field_revision_field_interests')->fields($fields);
+  
+  static $tids = array();
+  
+  $count = 0;
+  
+  foreach ($result as $row) {
+    $interests = array();
+  
+    // Split the row value by line to accomodate multi-line entries.
+    $lines = explode("\n", $row->value);
+    foreach ($lines as $line) {
+      if (strpos($line, ',')) {
+        // If the line contains a comma, we need to explode it into different interests.
+        $interests += explode(',', $line);
+      }
+      else {
+        // Add it straight into the array.
+        $interests[] = $line;
+      }
+    }
+  
+    // Remove any whitespace and empty rows.
+    $interests = array_filter(array_map('trim', $interests));
+  
+    foreach ($interests as $delta => $interest) {
+      // Check if the interest is within the $terms array.
+      if (!isset($tids[$interest])) {
+        // Search for a term by name.
+        $term = taxonomy_get_term_by_name($interest, 'interests');
+  
+        if (!$term) {
+          // Create the term if it doesn't exist.
+          $term = (object) array(
+            'vid' => 63,
+            'name' => $interest,
+          );
+          taxonomy_term_save($term);
+        }
+  
+        // Store the tid within $terms.
+        if (is_array($term)) {
+          // Sometimes this is returned as an array.
+          $term = reset($term);
+        }
+        $tids[$interest] = $term->tid;
+      }
+  
+      $tid = $tids[$interest];
+  
+      $new = array(
+        'entity_type' => 'user',
+        'bundle' => 'user',
+        'entity_id' => $row->uid,
+        'revision_id' => $row->uid,
+        'language' => LANGUAGE_NONE,
+        'delta' => $delta,
+        'deleted' => 0,
+        'field_interests_tid' => $tid,
+      );
+  
+      $data->values($new);
+      $revision->values($new);
+  
+      // Increment the count value.
+      $count++;
+  
+      if ($count > 100) {
+        // Save the data.
+        $data->execute();
+        $revision->execute();
+  
+        // Start again.
+        $data = db_insert('field_data_field_interests')->fields($fields);
+        $revision = db_insert('field_revision_field_interests')->fields($fields);
+        $count = 0;
+      }
+    }
+  
+    // Save any remaining data.
+    $data->execute();
+    $revision->execute();
+  
+    // Clear the field cache.
+    field_cache_clear();
+  }
+  
+  }
