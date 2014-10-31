@@ -193,6 +193,7 @@ function drupalorg_user_field_group_info() {
       5 => 'field_interests',
       6 => 'field_languages',
       7 => 'field_github_profile',
+      8 => 'field_interests',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
