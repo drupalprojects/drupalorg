@@ -545,6 +545,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           '#type' => 'textfield',
           '#title' => t('Commit message'),
           '#default_value' => rtrim($form_state['node']->title, '.'),
+          '#maxlength' => NULL,
         ),
         'commenters' => $table,
         'commands' => array(
