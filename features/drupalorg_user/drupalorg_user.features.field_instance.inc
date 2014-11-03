@@ -350,6 +350,37 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_languages'
+  $field_instances['user-user-field_languages'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Select one or more languages you speak.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 17,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_languages',
+    'label' => 'Languages spoken',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 42,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_organizations'
   $field_instances['user-user-field_organizations'] = array(
     'bundle' => 'user',
@@ -473,11 +504,13 @@ function drupalorg_user_field_default_field_instances() {
   t('Industries Worked In');
   t('Interests');
   t('Job Title');
+  t('Languages spoken');
   t('List companies or institutions you have worked for or are working for now.');
   t('Location');
   t('Organization');
   t('Organizations');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
+  t('Select one or more languages you speak.');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Website(s)');
   t('Your general location may appear on the Drupal.org home page map, and potentially more future uses.');
