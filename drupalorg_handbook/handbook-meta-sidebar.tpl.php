@@ -14,6 +14,6 @@
 <dl class="about-section">
   <?php foreach ($about as $title => $terms) { ?>
     <dt><?php print $title; ?></dt>
-    <dd class="terms"><?php print implode(', ', $terms); ?></dd>
+    <dd><?php print implode(', ', $terms); ?></dd>
   <?php } ?>
 </dl>

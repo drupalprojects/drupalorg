@@ -74,6 +74,17 @@ function drupalorg_init() {
 }
 
 /**
+ * Implements hook_user_login().
+ */
+function drupalorg_user_login(&$edit, $account) {
+  // Redirect to the dashboard if the user selected it.
+  $account = user_load($account->uid);
+  if (!empty($account->data['drupalorg_set_home'])) {
+    $edit['redirect'] = 'user/' . $account->uid . '/dashboard';
+  }
+}
+
+/**
  * Implements hook_page_build().
  */
 function drupalorg_page_build(&$page) {
@@ -104,6 +115,19 @@ function drupalorg_page_build(&$page) {
     // Nag about agreeing to ToS.
     if (empty($account->field_terms_of_service) || empty($account->field_terms_of_service[LANGUAGE_NONE][0]['value'])) {
       drupal_set_message(t('We’ve <a href="/news/drupalorg-tos-and-privacy-policy">introduced</a> Drupal.org <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>. Please, read both documents and <a href="!edit">accept them on your user profile</a> to continue using Drupal.org.', array('!edit' => url('user/' . $account->uid . '/edit'))), 'warning');
+    }
+  }
+
+  // Add Optimizely JS to pages using it. Set drupalorg_optimizely_pattern to
+  // the full, specific regexp. Such as '#^site-building$#'.
+  if ($pattern = variable_get('drupalorg_optimizely_pattern', FALSE)) {
+    if (preg_match($pattern, drupal_get_path_alias($_GET['q']))) {
+      drupal_add_html_head(array(
+        '#weight' => -1001,
+        '#tag' => 'script',
+        '#attributes' => array('src' => '//cdn.optimizely.com/js/190102229.js'),
+        '#value' => '',
+      ), 'drupalorg_optimizely');
     }
   }
 }
@@ -236,6 +260,25 @@ function drupalorg_menu_alter(&$menu) {
 }
 
 /**
+ * Implements hook_field_extra_fields().
+ */
+function drupalorg_field_extra_fields() {
+  return array(
+    'user' => array(
+      'user' => array(
+        'display' => array(
+          'drupalorg_companies_worked_for' => array(
+            'label' => t('Companies Worked For'),
+            'description' => t('Companies Worked For derived from companies or organizations'),
+            'weight' => 0,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/**
  * Implements hook_field_access().
  *
  * This takes care of several file access tweaks:
@@ -317,6 +360,15 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
 
   // All other cases: we don't care about this field/operation.
   return TRUE;
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function drupalorg_field_widget_options_buttons_form_alter(&$element, &$form_state, $context) {
+  if ($context['field']['field_name'] === 'field_gender') {
+    $element['#options']['_none'] = t('Prefer not to share');
+  }
 }
 
 /**
@@ -542,7 +594,11 @@ function drupalorg_preprocess_block(&$vars) {
  * tracker_user, with a count field.
  */
 function drupalorg_homebox_block_keys($block) {
-  return array('count');
+  switch ($block->delta) {
+    case 'tracker_user':
+      return array('count');
+  }
+  return array();
 }
 
 /**
@@ -625,8 +681,8 @@ function drupalorg_get_activity($_force = FALSE) {
     // Users: Count them.
     $stats['number_of_users'] = number_format(db_query('SELECT COUNT(*) FROM {users} WHERE uid > :uid AND status = :status AND login > :login', array(':uid' => 0, ':status' => 1, ':login' => 0))->fetchField());
 
-    // Country: A single text field, so we can filter it in SQL.
-    $stats['number_of_countries'] = number_format(db_query("SELECT COUNT(DISTINCT value) FROM {profile_value} WHERE fid = :fid AND value NOT IN ('', '<not specified>')", array(':fid' => DRUPALORG_COUNTRY_PID))->fetchField());
+    // Country.
+    $stats['number_of_countries'] = number_format(db_query("SELECT COUNT(DISTINCT field_country_value) FROM {field_data_field_country}")->fetchField());
 
     // Languages: Get all the distinct combinations and then filter that down.
     $languages = array();
@@ -673,10 +729,28 @@ function drupalorg_get_activity($_force = FALSE) {
 }
 
 /**
+ * Implements hook_block_view_MODULE_DELTA_alter().
+ */
+function drupalorg_block_view_forum_new_alter(&$data, $block) {
+  $data['content']['#pre_render'][] = 'drupalorg_forum_block_view_pre_render';
+}
+
+/**
+ * Render API callback: Remove more link from forum block; it is redundant with
+ * section navigation, and sometimes links to the page you are already at.
+ *
+ * @see drupalorg_block_view_forum_new_alter()
+ */
+function drupalorg_forum_block_view_pre_render($elements) {
+  unset($elements['forum_more']);
+  return $elements;
+}
+
+/**
  * Set home link for Your Dashboard page.
  */
 function drupalorg_set_home() {
-  global $user;
+  $account = user_load($GLOBALS['user']->uid);
   return array(
     '#prefix' => '<div id="drupalorg-set-home-wrapper">',
     '#suffix' => '</div>',
@@ -686,7 +760,7 @@ function drupalorg_set_home() {
         TRUE => t('Make this your Homepage'),
         FALSE => t('Use Default Homepage'),
       ),
-      '#default_value' => isset($user->data['drupalorg_set_home']) ? $user->data['drupalorg_set_home'] : TRUE,
+      '#default_value' => isset($account->data['drupalorg_set_home']) ? $account->data['drupalorg_set_home'] : TRUE,
       '#ajax' => array(
         'callback' => 'drupalorg_set_home_callback',
         'wrapper' => 'drupalorg-set-home-wrapper',
@@ -699,8 +773,8 @@ function drupalorg_set_home() {
  * AJAX callback for drupalorg_set_home().
  */
 function drupalorg_set_home_callback($form, $form_state) {
-  global $user;
-  user_save($user, array('data' => array('drupalorg_set_home' => $form_state['values']['set_home'])));
+  $account = user_load($GLOBALS['user']->uid);
+  user_save($account, array('data' => array('drupalorg_set_home' => $form_state['values']['set_home'])));
   return $form;
 }
 
@@ -1177,22 +1251,6 @@ function drupalorg_form_alter(&$form, &$form_state, $form_id) {
 /**
  * Implements hook_form_FORM_BASE_alter().
  */
-function drupalorg_form_user_cancel_confirm_form_alter(&$form, $form_state) {
-  // Make label distinct from cancel link.
-  $form['actions']['submit']['#value'] = t('Delete account');
-
-  // Set title to match.
-  if ($form['_account']['#value']->uid == $GLOBALS['user']->uid) {
-    drupal_set_title(t('Are you sure you want to delete your account?'), PASS_THROUGH);
-  }
-  else {
-    drupal_set_title(t('Are you sure you want to delete the account %name?', array('%name' => $form['_account']['#value']->name)), PASS_THROUGH);
-  }
-}
-
-/**
- * Implements hook_form_FORM_BASE_alter().
- */
 function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
   // If the terms of service is hidden by drupalorg_field_access(), do not
   // require it.
@@ -1203,8 +1261,25 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
   // Change cancel button to a link.
   if (isset($form['actions']['cancel'])) {
     $form['actions']['cancel'] = array(
-      '#markup' => l($form['actions']['cancel']['#value'], 'user/' . $GLOBALS['user']->uid . '/cancel')
+      '#markup' => l(t('Delete account'), 'user/' . $form['#user']->uid . '/cancel'),
+      '#access' => $form['actions']['cancel']['#access'],
     );
+  }
+}
+
+/**
+ * Implements hook_form_FORM_BASE_alter().
+ */
+function drupalorg_form_user_cancel_confirm_form_alter(&$form, $form_state) {
+  // Make label distinct from cancel link.
+  $form['actions']['submit']['#value'] = t('Delete account');
+
+  // Set title to match.
+  if ($form['_account']['#value']->uid == $GLOBALS['user']->uid) {
+    drupal_set_title(t('Are you sure you want to delete your account?'), PASS_THROUGH);
+  }
+  else {
+    drupal_set_title(t('Are you sure you want to delete the account %name?', array('%name' => $form['_account']['#value']->name)), PASS_THROUGH);
   }
 }
 
@@ -1456,23 +1531,29 @@ function drupalorg_search_access() {
 function drupalorg_search_execute($keys = NULL, $conditions = NULL) {
   // Replace wildcards with MySQL/PostgreSQL wildcards.
   $keys = '%' . preg_replace('!\*+!', '%', $keys) . '%';
-  $query = db_select('profile_value', 'pv');
-  $query->innerJoin('users', 'u', 'pv.uid = u.uid');
-  $query = $query->extend('PagerDefault');
+
+  $query = new EntityFieldQuery();
+
   $query
-    ->limit(15)
-    ->fields('u', array('name', 'uid'))
-    ->condition('pv.fid', 35)
-    ->where('LOWER(pv.value) LIKE LOWER(:keys)', array(':keys' => $keys));
+    ->entityCondition('entity_type', 'user')
+    ->propertyCondition('status', 1)
+    ->fieldCondition('field_irc_nick', 'value', $keys, 'LIKE')
+    ->pager(15)
+    ->propertyOrderBy('name');
+
   $result = $query->execute();
 
   $find = array();
-  foreach ($result as $account) {
-    $find[] = array(
-      'title' => $account->name,
-      'link' => url('user/' . $account->uid),
-    );
+
+  if (isset($result['user'])) {
+    foreach (user_load_multiple(array_keys($result['user'])) as $account) {
+      $find[] = array(
+        'title' => $account->name,
+        'link' => url('user/' . $account->uid),
+      );
+    }
   }
+
   return $find;
 }
 
@@ -2537,7 +2618,6 @@ function drupalorg_user_view($account, $view_mode) {
   $account->content['#group_children']['Drupal'] = 'group_profile_main';
   $account->content['#group_children']['versioncontrol_project'] = 'group_profile_main';
   $account->content['#group_children']['user_picture'] = 'group_profile_contact';
-  $account->content['#group_children']['companies_worked_for'] = 'group_profile_contact';
   $account->content['#group_children']['membership'] = 'group_profile_aside';
 
   // Link organization to organization node, if it exists.
@@ -2582,58 +2662,58 @@ function drupalorg_user_view($account, $view_mode) {
             $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#path']['path'] = 'node/' . $company_nodes[$title]->nid;
           }
         }
+
+        // Organization Memberships and Supporting Partner/Technology and Hosting Supporters
+        if (drupalorg_has_civimembership($title, 'Organization')) {
+          $account->content['membership'][] = array(
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_org_member_badge.svg') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div></div>',
+          );
+        }
+        if (drupalorg_has_civimembership($title, 'Supporting Partner')) {
+          $account->content['membership'][] = array(
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_sup_partner_badge.svg') . '" alt="' . t('Drupal Association Supporting Partner') . '" /></a></div></div>',
+          );
+        }
+        if (drupalorg_has_civimembership($title, 'Supporting Partner Premium')) {
+          $account->content['membership'][] = array(
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Supporting Partner') . '" /></a></div></div>',
+          );
+        }
+        if (drupalorg_has_civimembership($title, 'Technology Supporter')) {
+          $account->content['membership'][] = array(
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_badge.svg') . '" alt="' . t('Drupal Association Technology Supporter') . '" /></a></div></div>',
+          );
+        }
+        if (drupalorg_has_civimembership($title, 'Premium Technology Supporter')) {
+          $account->content['membership'][] = array(
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_tech_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Technology Supporter') . '" /></a></div></div>',
+          );
+        }
+        if (drupalorg_has_civimembership($title, 'Inaugural Technology Supporter')) {
+          $account->content['membership'][] = array(
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_inaug_badge.svg') . '" alt="' . t('Drupal Association Inaugural Technology Supporter') . '" /></a></div></div>',
+          );
+        }
+        if (drupalorg_has_civimembership($title, 'Inaugural Premium Technology Supporter')) {
+          $account->content['membership'][] = array(
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_techsupp_inaug_badge.svg') . '" alt="' . t('Drupal Association Inaugural Premium Technology Supporter') . '" /></a></div></div>',
+          );
+        }
+        if (drupalorg_has_civimembership($title, 'Hosting Supporter')) {
+          $account->content['membership'][] = array(
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_host_supp.svg') . '" alt="' . t('Drupal Association Hosting Supporter') . '" /></a></div></div>',
+          );
+        }
+        if (drupalorg_has_civimembership($title, 'Premium Hosting Supporter')) {
+          $account->content['membership'][] = array(
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_host_supp.svg') . '" alt="' . t('Drupal Association Premium Hosting Supporter') . '" /></a></div></div>',
+          );
+        }
       }
       else {
         // Move non-current organizations.
         $companies_worked_for[] = $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#markup'];
         hide($account->content['field_organizations'][$n]);
-      }
-
-      // Organization Memberships and Supporting Partner/Technology and Hosting Supporters
-      if (drupalorg_has_civimembership($title, 'Organization')) {
-        $account->content['membership'][] = array(
-          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_org_member_badge.svg') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div></div>',
-        );
-      }
-      if (drupalorg_has_civimembership($title, 'Supporting Partner')) {
-        $account->content['membership'][] = array(
-          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_sup_partner_badge.svg') . '" alt="' . t('Drupal Association Supporting Partner') . '" /></a></div></div>',
-        );
-      }
-      if (drupalorg_has_civimembership($title, 'Supporting Partner Premium')) {
-        $account->content['membership'][] = array(
-          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Supporting Partner') . '" /></a></div></div>',
-        );
-      }
-      if (drupalorg_has_civimembership($title, 'Technology Supporter')) {
-        $account->content['membership'][] = array(
-          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_badge.svg') . '" alt="' . t('Drupal Association Technology Supporter') . '" /></a></div></div>',
-        );
-      }
-      if (drupalorg_has_civimembership($title, 'Premium Technology Supporter')) {
-        $account->content['membership'][] = array(
-          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_tech_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Technology Supporter') . '" /></a></div></div>',
-        );
-      }
-      if (drupalorg_has_civimembership($title, 'Inaugural Technology Supporter')) {
-        $account->content['membership'][] = array(
-          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_inaug_badge.svg') . '" alt="' . t('Drupal Association Inaugural Technology Supporter') . '" /></a></div></div>',
-        );
-      }
-      if (drupalorg_has_civimembership($title, 'Inaugural Premium Technology Supporter')) {
-        $account->content['membership'][] = array(
-          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_techsupp_inaug_badge.svg') . '" alt="' . t('Drupal Association Inaugural Premium Technology Supporter') . '" /></a></div></div>',
-        );
-      }
-      if (drupalorg_has_civimembership($title, 'Hosting Supporter')) {
-        $account->content['membership'][] = array(
-          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_host_supp.svg') . '" alt="' . t('Drupal Association Hosting Supporter') . '" /></a></div></div>',
-        );
-      }
-      if (drupalorg_has_civimembership($title, 'Premium Hosting Supporter')) {
-        $account->content['membership'][] = array(
-          '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_host_supp.svg') . '" alt="' . t('Drupal Association Premium Hosting Supporter') . '" /></a></div></div>',
-        );
       }
     }
 
@@ -2649,7 +2729,7 @@ function drupalorg_user_view($account, $view_mode) {
 
     // Add companies worked for.
     if (!empty($companies_worked_for)) {
-      $account->content['companies_worked_for'] = array(
+      $account->content['drupalorg_companies_worked_for'] = array(
         '#prefix' => '<div class="field field-name-companies-worked-for"><div class="field-label">' . t('Companies Worked For') . '</div><div class="field-items">',
         '#markup' => implode(', ', $companies_worked_for),
         '#suffix' => '</div></div>',
@@ -2851,6 +2931,7 @@ function drupalorg_node_view_alter(&$build) {
             'categories' => 'task',
             'title' => 'Spam Report',
             'body' => 'Reporting the following node as spam: ' . url('node/' . $node->nid, array('absolute' => TRUE)),
+            drupal_get_destination(),
           ),
         ),
       ),
@@ -2879,6 +2960,7 @@ function drupalorg_comment_view_alter(&$build) {
           'categories' => 'task',
           'title' => 'Spam Report',
           'body' => 'Reporting the following comment as spam: ' . url('node/' . $comment->nid, array('absolute' => TRUE, 'fragment' => 'comment-' . $comment->cid)),
+          drupal_get_destination(),
         ),
         'html' => TRUE,
       );
@@ -3037,6 +3119,18 @@ function drupalorg_user_update(&$edit, $account, $category) {
       $_SESSION['bakery']['data']['drupalorg_picture'][$style] = file_create_url($destination);
     }
   }
+
+  // Fields to sync.
+  $fields = array(
+    'field_country',
+    'field_gender',
+  );
+
+  $account_wrapper = entity_metadata_wrapper('user', $account);
+  foreach ($fields as $field_name) {
+    // Add the value into the Bakery data.
+    $_SESSION['bakery']['data']['drupalorg_' . $field_name] = $account_wrapper->$field_name->value();
+  }
 }
 
 /**
@@ -3105,6 +3199,8 @@ function drupalorg_render_cache_entity_hash_alter(&$hash, $entity, $cache_info, 
 
     $node = node_load($entity->nid);
     $hash['is_author'] = $entity->uid == $node->uid;
+
+    $hash['timezone'] = date_default_timezone_get();
 
     $hash['is_new'] = !empty($entity->new);
     $hash['first_new'] = !empty($entity->first_new);

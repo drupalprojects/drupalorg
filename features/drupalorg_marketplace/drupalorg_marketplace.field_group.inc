@@ -47,6 +47,7 @@ function drupalorg_marketplace_field_group_info() {
     'weight' => '12',
     'children' => array(
       0 => 'field_organization_security',
+      1 => 'field_hosting_type',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -125,7 +126,9 @@ function drupalorg_marketplace_field_group_info() {
       2 => 'field_organization_list_rule',
       3 => 'field_organization_training_list',
       4 => 'field_organization_technologies',
-      5 => '_add_existing_field',
+      5 => 'field_organization_support',
+      6 => 'field_short_description',
+      7 => '_add_existing_field',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

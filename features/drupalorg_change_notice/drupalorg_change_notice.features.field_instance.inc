@@ -813,7 +813,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'bundle' => 'changenotice',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Enter all issues related to this change.',
+    'description' => 'Type the title of the issue to enter issues related to this change.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1659,7 +1659,6 @@ function drupalorg_change_notice_field_default_field_instances() {
   t('Describe the change, and its impact on site users, site builders, themers, and module developers. If appropriate, give before/after code samples. Good examples: <a href="http://drupal.org/update/modules/6/7#drupal_set_title">6/7 module update guide section</a>, <a href="http://drupal.org/update/themes/6/7#search-result-headings">6/7 theme update guide section</a> (though it is not necessary to link to the issue).');
   t('Description');
   t('Details');
-  t('Enter all issues related to this change.');
   t('Enter details of any needed updates (URLs of specific pages to be updated, what the coder routines or examples should contain, etc.).');
   t('Enter the branch this change was first applied in. Examples: 8.x, 7.x-3.x');
   t('Enter the version this change was first applied in. Examples: 8.0-ALPHA3, 7.5, 7.x-3.2');
@@ -1680,6 +1679,7 @@ function drupalorg_change_notice_field_default_field_instances() {
   t('Project');
   t('Review expressions in the <a href="http://drupal.org/project/coder">Coder Review module</a>.');
   t('Theming guide');
+  t('Type the title of the issue to enter issues related to this change.');
   t('Upgrade routines in the <a href="http://drupal.org/project/coder">Coder Upgrade module</a>');
   t('Use this field to record progress on making the needed updates.');
 

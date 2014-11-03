@@ -68,3 +68,25 @@ function drush_drupalorg_cyclic_solr_reindex() {
   }
   variable_set('drupalorg_search_backfill_pos', $pos);
 }
+
+/**
+ * Implements drush_hook_post_COMMAND().
+ */
+function drush_drupalorg_post_association_members() {
+  // Get the trusted role ID.
+  $rid = variable_get('drupalorg_crosssite_trusted_role', 36);
+
+  // Find users who are individual Association members, and do not have the
+  // trusted role.
+  $query = db_select('users', 'u');
+  $query->join('drupalorg_crosssite_ind_civimembership', 'ic', 'ic.user_name = u.name');
+  $query->leftJoin('users_roles', 'ur', 'ur.uid = u.uid AND ur.rid = :rid', array(':rid' => $rid));
+  $query
+    ->fields('u', array('uid'))
+    ->condition('u.status', 1)
+    ->isNull('ur.rid');
+  $result = $query->execute();
+
+  // Give those accounts the trusted role.
+  user_multiple_role_edit($result->fetchCol(), 'add_role', $rid);
+}

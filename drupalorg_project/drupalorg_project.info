@@ -1,6 +1,7 @@
 name = Drupal.org project customizations
 description = Drupal.org project functionality related customizations
 package = Drupal.org
+dependencies[] = drupalorg
 dependencies[] = project
 dependencies[] = project_release
 dependencies[] = project_issue

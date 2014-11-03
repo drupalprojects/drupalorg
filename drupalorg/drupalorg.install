@@ -1860,3 +1860,419 @@ function drupalorg_update_7059() {
   $revision->execute();
   field_cache_clear();
 }
+
+/**
+ * Migrate profile_personal_bio to field_bio.
+ */
+function drupalorg_update_7060() {
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_bio', 'b', 'b.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 74)
+    ->condition('pv.value', '', '!=')
+    ->isNull('b.field_bio_value');
+
+  $result = $query->execute();
+
+  // Define the fields.
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_bio_value',
+    'field_bio_format',
+  );
+
+  $data = db_insert('field_data_field_bio')->fields($fields);
+  $revision = db_insert('field_revision_field_bio')->fields($fields);
+
+  foreach ($result as $row) {
+    // Start creating the record to insert.
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => 0,
+      'deleted' => 0,
+      'field_bio_value' => mb_strcut($row->value, 0, 255),
+      'field_bio_format' => NULL,
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count += 1;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_bio')->fields($fields);
+      $revision = db_insert('field_revision_field_bio')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
+
+/**
+ * Migrate profile_irc_nick to field_irc_nick.
+ */
+function drupalorg_update_7061() {
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_irc_nick', 'i', 'i.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 35)
+    ->condition('pv.value', '', '!=')
+    ->isNull('i.field_irc_nick_value');
+
+  $result = $query->execute();
+
+  // Define the fields.
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_irc_nick_value',
+    'field_irc_nick_format',
+  );
+
+  $data = db_insert('field_data_field_irc_nick')->fields($fields);
+  $revision = db_insert('field_revision_field_irc_nick')->fields($fields);
+
+  foreach ($result as $row) {
+    // Start creating the record to insert.
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => 0,
+      'deleted' => 0,
+      'field_irc_nick_value' => mb_strcut($row->value, 0, 255),
+      'field_irc_nick_format' => NULL,
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count += 1;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_irc_nick')->fields($fields);
+      $revision = db_insert('field_revision_field_irc_nick')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
+
+/**
+ * Migrate profile_homepage to field_websites.
+ */
+function drupalorg_update_7062() {
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_websites', 'w', 'w.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 13)
+    ->condition('pv.value', '', '!=')
+    ->isNull('w.field_websites_url');
+
+  $result = $query->execute();
+
+  // Define the fields.
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_websites_url',
+    'field_websites_title',
+    'field_websites_attributes',
+  );
+
+  $data = db_insert('field_data_field_websites')->fields($fields);
+  $revision = db_insert('field_revision_field_websites')->fields($fields);
+
+  foreach ($result as $row) {
+    // Start creating the record to insert.
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => 0,
+      'deleted' => 0,
+      'field_websites_url' => mb_strcut($row->value, 0, 255),
+      'field_websites_title' => NULL,
+      'field_websites_attributes' => '',
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count += 1;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_websites')->fields($fields);
+      $revision = db_insert('field_revision_field_websites')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
+
+/**
+ * Fix missing information within field_bio.
+ */
+function drupalorg_update_7063() {
+  // Find users with a profile_value bio of more that 255 characters.
+  $query = db_select('profile_value', 'pv');
+  $query->join('users', 'u', 'u.uid = pv.uid');
+  $query->join('field_data_field_bio', 'b', 'b.entity_id = pv.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 74);
+  $query->where('length(pv.value) > 255');
+  // Check that the truncated version within field_bio_value matches profile_value.
+  $query->where('substring(pv.value, 1, 254) = substring(b.field_bio_value, 1, 254)');
+  $result = $query->execute();
+
+  foreach ($result as $row) {
+    // Update the row.
+    db_update('field_data_field_bio')
+      ->fields(array('field_bio_value' => $row->value))
+      ->condition('entity_id', $row->uid)
+      ->execute();
+  }
+
+  // Clear the field cache.
+  field_cache_clear();
+}
+
+/**
+ * Migrate country to field_country.
+ */
+function drupalorg_update_7064() {
+  // Clear the field cache.
+  field_cache_clear();
+
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_country', 'c', 'c.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 17)
+    ->condition('pv.value', '', '!=')
+    ->condition('pv.value', '<not specified>', '!=')
+    ->isNull('c.field_country_value');
+
+  $result = $query->execute();
+
+  // Define the fields.
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_country_value',
+  );
+
+  $data = db_insert('field_data_field_country')->fields($fields);
+  $revision = db_insert('field_revision_field_country')->fields($fields);
+
+  foreach ($result as $row) {
+    // Start creating the record to insert.
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => 0,
+      'deleted' => 0,
+      'field_country_value' => mb_strcut($row->value, 0, 255),
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count += 1;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_country')->fields($fields);
+      $revision = db_insert('field_revision_field_country')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
+
+/**
+ * Migrate profile_gender to field_gender.
+ */
+function drupalorg_update_7065() {
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_gender', 'g', 'g.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 7)
+    ->condition('pv.value', '', '!=')
+    ->condition('pv.value', 0, '!=')
+    ->isNull('g.field_gender_value');
+
+  $result = $query->execute();
+
+  // Define the fields.
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_gender_value',
+  );
+
+  $data = db_insert('field_data_field_gender')->fields($fields);
+  $revision = db_insert('field_revision_field_gender')->fields($fields);
+
+  foreach ($result as $row) {
+    // Start creating the record to insert.
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => 0,
+      'deleted' => 0,
+      'field_gender_value' => mb_strcut($row->value, 0, 255),
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count += 1;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_gender')->fields($fields);
+      $revision = db_insert('field_revision_field_gender')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
+
+/**
+ * Change bueditor image button default path from absolute to relative.
+ */
+function drupalorg_update_7066() {
+  $button = "js:
+    var form = [
+    {name: 'src', title: 'Image URL', required: true, value: '/files/issue/', attributes: {onfocus: \"_=this.value;this.value='';this.value=_;\"}},
+     {name: 'width', title: 'Width × Height', suffix: ' × ', getnext: true, attributes: {size: 3}},
+     {name: 'height', attributes: {size: 3}},
+     {name: 'alt', title: 'Alternative text', required: true}
+    ];
+    E.tagDialog('img', form, {title: 'Insert/edit image'});
+    ";
+  db_update('bueditor_buttons')
+    ->fields(array('content' => $button))
+    ->condition('bid', 136)
+    ->execute();
+}
