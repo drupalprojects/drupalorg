@@ -244,7 +244,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 58,
       ),
       'type' => 'url_external',
-      'weight' => 42,
+      'weight' => 43,
     ),
   );
 
@@ -377,7 +377,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 42,
+      'weight' => 44,
     ),
   );
 
@@ -488,7 +488,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 41,
+      'weight' => 42,
     ),
   );
 

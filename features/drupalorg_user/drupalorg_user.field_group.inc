@@ -159,12 +159,12 @@ function drupalorg_user_field_group_info() {
     'children' => array(
       0 => 'field_bio',
       1 => 'field_irc_nick',
-      2 => 'field_country',
-      3 => 'field_gender',
-      4 => 'field_github_profile',
-      5 => 'field_websites',
-      6 => 'field_interests',
-      7 => 'field_interests',
+      2 => 'field_websites',
+      3 => 'field_country',
+      4 => 'field_gender',
+      5 => 'field_interests',
+      6 => 'field_languages',
+      7 => 'field_github_profile',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
