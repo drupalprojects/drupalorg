@@ -440,8 +440,8 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         $table['#rows'][$file['uid']]['files'] += 1;
         $table['#rows'][$file['uid']]['#weight'] += 1;
       }
-      // Set author to final file.
-      $author = isset($file) ? $file['uid'] : '';
+      // Set author to final file, except for core.
+      $author = (isset($file) && $node_wrapper->field_project->value()->nid != DRUPALORG_CORE_NID) ? $file['uid'] : '';
 
       // Sort.
       uasort($table['#rows'], 'element_sort');
