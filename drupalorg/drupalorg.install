@@ -2416,7 +2416,6 @@ function drupalorg_update_7067() {
     // Clear the field cache.
     field_cache_clear();
   }
-<<<<<<< HEAD
 }
 
 /**
@@ -2567,7 +2566,3 @@ function drupalorg_update_7069() {
   // Clear the field cache.
   field_cache_clear();
 }
-=======
-  
-  }
->>>>>>> Migrate interests field.
