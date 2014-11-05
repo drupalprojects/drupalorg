@@ -121,7 +121,6 @@ function drupalorg_user_field_default_field_bases() {
         'Bulgaria' => 'Bulgaria',
         'Burkina Faso' => 'Burkina Faso',
         'Burundi' => 'Burundi',
-        'Camaroon' => 'Camaroon',
         'Cambodia' => 'Cambodia',
         'Cameroon' => 'Cameroon',
         'Canada' => 'Canada',
