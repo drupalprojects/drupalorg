@@ -736,6 +736,32 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'field_collection',
   );
 
+  // Exported field_base: 'field_terms_of_service'
+  $field_bases['field_terms_of_service'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_terms_of_service',
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => '',
+        1 => 'I have read and accept Drupal.org <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  );
+
   // Exported field_base: 'field_user_geolocation'
   $field_bases['field_user_geolocation'] = array(
     'active' => 1,
