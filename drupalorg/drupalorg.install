@@ -2349,25 +2349,13 @@ function drupalorg_update_7067() {
   $count = 0;
   
   foreach ($result as $row) {
-    $interests = array();
-  
-    // Split the row value by line to accomodate multi-line entries.
-    $lines = explode("\n", $row->value);
-    foreach ($lines as $line) {
-      if (strpos($line, ',')) {
-        // If the line contains a comma, we need to explode it into different interests.
-        $interests += explode(',', $line);
+    // Split the row value by line and comma, and trim whitespace.
+    foreach (array_filter(array_map('trim', preg_split("/[,\n\r]\s+/", $row->value))) as $delta => $interest) {
+      // Discard long interests.
+      if (strlen($interest) > 255) {
+        continue;
       }
-      else {
-        // Add it straight into the array.
-        $interests[] = $line;
-      }
-    }
-  
-    // Remove any whitespace and empty rows.
-    $interests = array_filter(array_map('trim', $interests));
-  
-    foreach ($interests as $delta => $interest) {
+
       // Check if the interest is within the $terms array.
       if (!isset($tids[$interest])) {
         // Search for a term by name.
