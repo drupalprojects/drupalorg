@@ -116,9 +116,9 @@ function drupalorg_user_field_group_info() {
     'children' => array(
       0 => 'field_organizations',
       1 => 'field_irc_nick',
-      2 => 'field_country',
-      3 => 'field_github_profile',
-      4 => 'field_websites',
+      2 => 'field_websites',
+      3 => 'field_country',
+      4 => 'field_github_profile',
       5 => 'group_profile_personal',
       6 => 'group_profile_professional',
     ),
