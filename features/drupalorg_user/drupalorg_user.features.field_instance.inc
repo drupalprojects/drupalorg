@@ -114,6 +114,40 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_areas_of_expertise'
+  $field_instances['user-user-field_areas_of_expertise'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 19,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_areas_of_expertise',
+    'label' => 'Areas of Expertise',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'taxonomy',
+      'settings' => array(
+        'autocomplete_path' => 'taxonomy/autocomplete',
+        'size' => 60,
+      ),
+      'type' => 'taxonomy_autocomplete',
+      'weight' => 12,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_bio'
   $field_instances['user-user-field_bio'] = array(
     'bundle' => 'user',
@@ -178,7 +212,7 @@ function drupalorg_user_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 11,
+      'weight' => 13,
     ),
   );
 
@@ -528,6 +562,7 @@ function drupalorg_user_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Areas of Expertise');
   t('Bio');
   t('Country');
   t('Current');
@@ -545,6 +580,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Organization');
   t('Organizations');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
+  t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
   t('Please provide an overview of your Drupal contributions. These could be modules that you have created or maintain, user groups that you organize, volunteering at events, or other contributions.');
   t('Select one or more languages you speak.');
   t('The nickname you use on various channels of irc.freenode.net');

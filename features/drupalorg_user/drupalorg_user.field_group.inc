@@ -24,6 +24,7 @@ function drupalorg_user_field_group_info() {
     'weight' => '4',
     'children' => array(
       0 => 'field_contributions',
+      1 => 'field_areas_of_expertise',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
