@@ -168,7 +168,7 @@ function drupalorg_user_field_default_field_instances() {
     'label' => 'Drupal contributions',
     'required' => 0,
     'settings' => array(
-      'text_processing' => 0,
+      'text_processing' => 1,
       'user_register_form' => 0,
     ),
     'widget' => array(
