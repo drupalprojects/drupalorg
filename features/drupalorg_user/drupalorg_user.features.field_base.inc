@@ -132,7 +132,6 @@ function drupalorg_user_field_default_field_bases() {
         'China' => 'China',
         'Colombia' => 'Colombia',
         'Comoros' => 'Comoros',
-        'Congo' => 'Congo',
         'Cook Islands' => 'Cook Islands',
         'Costa Rica' => 'Costa Rica',
         'Cote D Ivoire' => 'Cote D Ivoire',
@@ -144,6 +143,7 @@ function drupalorg_user_field_default_field_bases() {
         'Djibouti' => 'Djibouti',
         'Dominica' => 'Dominica',
         'Dominican Republic' => 'Dominican Republic',
+        'DR of the Congo' => 'DR of the Congo',
         'Ecuador' => 'Ecuador',
         'Egypt' => 'Egypt',
         'El Salvador' => 'El Salvador',
@@ -255,6 +255,7 @@ function drupalorg_user_field_default_field_bases() {
         'Portugal' => 'Portugal',
         'Puerto Rico' => 'Puerto Rico',
         'Qatar' => 'Qatar',
+        'Republic of the Congo' => 'Republic of the Congo',
         'Reunion' => 'Reunion',
         'Romania' => 'Romania',
         'Russian Federation' => 'Russian Federation',
@@ -314,7 +315,6 @@ function drupalorg_user_field_default_field_bases() {
         'Western Samoa' => 'Western Samoa',
         'Yemen' => 'Yemen',
         'Yugoslavia' => 'Yugoslavia',
-        'Zaire' => 'Zaire',
         'Zambia' => 'Zambia',
         'Zimbabwe' => 'Zimbabwe',
       ),
@@ -768,6 +768,32 @@ function drupalorg_user_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'field_collection',
+  );
+
+  // Exported field_base: 'field_terms_of_service'
+  $field_bases['field_terms_of_service'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_terms_of_service',
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => '',
+        1 => 'I have read and accept Drupal.org <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
   );
 
   // Exported field_base: 'field_user_geolocation'
