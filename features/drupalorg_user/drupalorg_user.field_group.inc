@@ -87,14 +87,13 @@ function drupalorg_user_field_group_info() {
     'label' => 'Contact',
     'weight' => '2',
     'children' => array(
-      0 => 'field_industries_worked_in',
-      1 => 'field_organizations',
-      2 => 'field_irc_nick',
-      3 => 'field_websites',
-      4 => 'field_country',
-      5 => 'field_gender',
-      6 => 'field_github_profile',
-      7 => 'drupalorg_companies_worked_for',
+      0 => 'field_organizations',
+      1 => 'field_irc_nick',
+      2 => 'field_country',
+      3 => 'field_github_profile',
+      4 => 'field_websites',
+      5 => 'group_profile_personal',
+      6 => 'group_profile_professional',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -147,6 +146,71 @@ function drupalorg_user_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_profile_personal|user|user|default';
+  $field_group->group_name = 'group_profile_personal';
+  $field_group->entity_type = 'user';
+  $field_group->bundle = 'user';
+  $field_group->mode = 'default';
+  $field_group->parent_name = 'group_profile_contact';
+  $field_group->data = array(
+    'label' => 'Personal Info',
+    'weight' => '15',
+    'children' => array(
+      0 => 'field_gender',
+      1 => 'field_interests',
+      2 => 'field_languages',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Personal Info',
+      'instance_settings' => array(
+        'classes' => 'group-profile-personal field-group-div',
+        'description' => '',
+        'show_label' => '1',
+        'label_element' => 'h3',
+        'effect' => 'none',
+        'speed' => 'fast',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_profile_personal|user|user|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_profile_professional|user|user|default';
+  $field_group->group_name = 'group_profile_professional';
+  $field_group->entity_type = 'user';
+  $field_group->bundle = 'user';
+  $field_group->mode = 'default';
+  $field_group->parent_name = 'group_profile_contact';
+  $field_group->data = array(
+    'label' => 'Professional Info',
+    'weight' => '14',
+    'children' => array(
+      0 => 'field_industries_worked_in',
+      1 => 'drupalorg_companies_worked_for',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Professional Info',
+      'instance_settings' => array(
+        'classes' => 'group-profile-professional field-group-div',
+        'description' => '',
+        'show_label' => '1',
+        'label_element' => 'h3',
+        'effect' => 'none',
+        'speed' => 'fast',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_profile_professional|user|user|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_user_personal|user|user|form';
   $field_group->group_name = 'group_user_personal';
   $field_group->entity_type = 'user';
@@ -159,12 +223,12 @@ function drupalorg_user_field_group_info() {
     'children' => array(
       0 => 'field_bio',
       1 => 'field_irc_nick',
-      2 => 'field_websites',
-      3 => 'field_country',
-      4 => 'field_gender',
+      2 => 'field_country',
+      3 => 'field_gender',
+      4 => 'field_github_profile',
       5 => 'field_interests',
       6 => 'field_languages',
-      7 => 'field_github_profile',
+      7 => 'field_websites',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
