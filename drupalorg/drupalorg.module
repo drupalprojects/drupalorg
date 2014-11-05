@@ -114,7 +114,7 @@ function drupalorg_page_build(&$page) {
 
     // Nag about agreeing to ToS.
     if (empty($account->field_terms_of_service) || empty($account->field_terms_of_service[LANGUAGE_NONE][0]['value'])) {
-      drupal_set_message(t('We’ve <a href="/news/drupalorg-tos-and-privacy-policy">introduced</a> Drupal.org <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>. Please, read both documents and <a href="!edit">accept them on your user profile</a> to continue using Drupal.org.', array('!edit' => url('user/' . $account->uid . '/edit'))), 'warning');
+      drupal_set_message(t('We’ve <a href="/news/next-steps-for-drupalorg-tos-and-privacy-policy">introduced</a> Drupal.org <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>. Please, read both documents and <a href="!edit">accept them on your user profile</a> to continue using Drupal.org.', array('!edit' => url('user/' . $account->uid . '/edit'))), 'warning');
     }
   }
 
