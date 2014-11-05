@@ -153,7 +153,7 @@ function drupalorg_user_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Please provide an overview of your Drupal contributions. These could be modules that you have created or maintain, user groups that you organize, volunteering at events, or other contributions.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -545,6 +545,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Organization');
   t('Organizations');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
+  t('Please provide an overview of your Drupal contributions. These could be modules that you have created or maintain, user groups that you organize, volunteering at events, or other contributions.');
   t('Select one or more languages you speak.');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Website(s)');
