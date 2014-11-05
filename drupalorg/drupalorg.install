@@ -2428,5 +2428,80 @@ function drupalorg_update_7067() {
     // Clear the field cache.
     field_cache_clear();
   }
-  
+}
+
+/**
+ * Migrate field_languages.
+ */
+function drupalorg_update_7068() {
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_languages', 'l', 'l.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 48)
+    ->condition('pv.value', '', '!=')
+    ->isNull('l.field_languages_value');
+
+  $result = $query->execute();
+
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_languages_value',
+  );
+
+  $data = db_insert('field_data_field_languages')->fields($fields);
+  $revision = db_insert('field_revision_field_languages')->fields($fields);
+
+  $count = 0;
+
+  foreach ($result as $row) {
+    // Explode the languages value.
+    $languages = explode('; ', $row->value);
+
+    foreach ($languages as $delta => $language) {
+      $new = array(
+        'entity_type' => 'user',
+        'bundle' => 'user',
+        'entity_id' => $row->uid,
+        'revision_id' => $row->uid,
+        'language' => LANGUAGE_NONE,
+        'delta' => $delta,
+        'deleted' => 0,
+        'field_languages_value' => mb_strcut($language, 0, 255),
+      );
+
+      $data->values($new);
+      $revision->values($new);
+
+      // Increment the count value.
+      $count += 1;
+
+      if ($count > 100) {
+        // Save the data.
+        $data->execute();
+        $revision->execute();
+
+        // Start again.
+        $data = db_insert('field_data_field_languages')->fields($fields);
+        $revision = db_insert('field_revision_field_languages')->fields($fields);
+        $count = 0;
+      }
+    }
   }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();  
+}
