@@ -178,7 +178,7 @@ function drupalorg_user_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 39,
+      'weight' => 40,
     ),
   );
 
@@ -259,7 +259,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 16,
+        'weight' => 17,
       ),
     ),
     'entity_type' => 'user',
@@ -274,7 +274,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 38,
+      'weight' => 39,
     ),
   );
 
@@ -293,7 +293,7 @@ function drupalorg_user_field_default_field_instances() {
           'trim_length' => 80,
         ),
         'type' => 'url_default',
-        'weight' => 12,
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'user',
@@ -312,7 +312,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 58,
       ),
       'type' => 'url_external',
-      'weight' => 43,
+      'weight' => 44,
     ),
   );
 
@@ -367,7 +367,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
     'entity_type' => 'user',
     'field_name' => 'field_interests',
-    'label' => 'Interests',
+    'label' => 'Personal Interests',
     'required' => 0,
     'settings' => array(
       'user_register_form' => 0,
@@ -396,7 +396,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 13,
+        'weight' => 12,
       ),
     ),
     'entity_type' => 'user',
@@ -414,7 +414,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 40,
+      'weight' => 42,
     ),
   );
 
@@ -426,11 +426,11 @@ function drupalorg_user_field_default_field_instances() {
     'description' => 'Select one or more languages you speak.',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 17,
+        'weight' => 18,
       ),
     ),
     'entity_type' => 'user',
@@ -445,7 +445,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 44,
+      'weight' => 38,
     ),
   );
 
@@ -524,7 +524,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_url',
-        'weight' => 14,
+        'weight' => 13,
       ),
     ),
     'entity_type' => 'user',
@@ -556,7 +556,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 42,
+      'weight' => 43,
     ),
   );
 
@@ -572,13 +572,13 @@ function drupalorg_user_field_default_field_instances() {
   t('GitHub Profile');
   t('IRC');
   t('Industries Worked In');
-  t('Interests');
   t('Job Title');
   t('Languages spoken');
   t('List companies or institutions you have worked for or are working for now.');
   t('Location');
   t('Organization');
   t('Organizations');
+  t('Personal Interests');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
   t('Please provide an overview of your Drupal contributions. These could be modules that you have created or maintain, user groups that you organize, volunteering at events, or other contributions.');
