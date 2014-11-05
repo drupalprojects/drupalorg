@@ -2584,7 +2584,7 @@ function drupalorg_update_7070() {
     ->distinct();
 
   $result = $query->execute();
-  
+
   $fields = array(
     'entity_type',
     'bundle',
@@ -2598,7 +2598,7 @@ function drupalorg_update_7070() {
 
   $data = db_insert('field_data_field_areas_of_expertise')->fields($fields);
   $revision = db_insert('field_revision_field_areas_of_expertise')->fields($fields);
-  
+
   static $tids = array();
 
   $count = 0;
@@ -2615,7 +2615,7 @@ function drupalorg_update_7070() {
       if (!isset($tids[$area])) {
         // Search for a term by name.
         $term = taxonomy_get_term_by_name($area, 'areas_of_expertise');
-  
+
         if (!$term) {
           // Create the term if it doesn't exist.
           $term = (object) array(
@@ -2624,7 +2624,7 @@ function drupalorg_update_7070() {
           );
           taxonomy_term_save($term);
         }
-  
+
         // Store the tid within $terms.
         if (is_array($term)) {
           // Sometimes this is returned as an array.
@@ -2645,18 +2645,18 @@ function drupalorg_update_7070() {
         'deleted' => 0,
         'field_areas_of_expertise_tid' => $tid,
       );
-  
+
       $data->values($new);
       $revision->values($new);
-  
+
       // Increment the count value.
       $count++;
-  
+
       if ($count > 100) {
         // Save the data.
         $data->execute();
         $revision->execute();
-  
+
         // Start again.
         $data = db_insert('field_data_field_areas_of_expertise')->fields($fields);
         $revision = db_insert('field_revision_field_areas_of_expertise')->fields($fields);
@@ -2667,7 +2667,7 @@ function drupalorg_update_7070() {
     // Save any remaining data.
     $data->execute();
     $revision->execute();
-  
+
     // Clear the field cache.
     field_cache_clear();
   }
