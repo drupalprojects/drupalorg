@@ -23,8 +23,8 @@ function drupalorg_user_field_group_info() {
     'label' => 'Drupal',
     'weight' => '3',
     'children' => array(
-      0 => 'field_areas_of_expertise',
-      1 => 'field_contributions',
+      0 => 'field_contributions',
+      1 => 'field_areas_of_expertise',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -254,12 +254,12 @@ function drupalorg_user_field_group_info() {
     'children' => array(
       0 => 'field_bio',
       1 => 'field_irc_nick',
-      2 => 'field_country',
+      2 => 'field_websites',
       3 => 'field_gender',
-      4 => 'field_github_profile',
-      5 => 'field_interests',
-      6 => 'field_languages',
-      7 => 'field_websites',
+      4 => 'field_interests',
+      5 => 'field_languages',
+      6 => 'field_github_profile',
+      7 => 'field_country',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

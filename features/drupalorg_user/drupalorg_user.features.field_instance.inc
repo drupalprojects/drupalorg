@@ -449,6 +449,43 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_mentors'
+  $field_instances['user-user-field_mentors'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Give credit to community members (drupal.org usernames) who have significantly influenced your contributions to Drupal. For example, people who mentored you in the issue queue, IRC, user groups, sprints, Core contribution mentoring hours, etc.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 19,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_mentors',
+    'label' => 'My mentors',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete',
+      'weight' => 45,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_organizations'
   $field_instances['user-user-field_organizations'] = array(
     'bundle' => 'user',
@@ -606,12 +643,14 @@ function drupalorg_user_field_default_field_instances() {
   t('Enter the URL of your GitHub profile, if you have one.');
   t('Gender');
   t('GitHub Profile');
+  t('Give credit to community members (drupal.org usernames) who have significantly influenced your contributions to Drupal. For example, people who mentored you in the issue queue, IRC, user groups, sprints, Core contribution mentoring hours, etc.');
   t('IRC');
   t('Industries Worked In');
   t('Job Title');
   t('Languages spoken');
   t('List companies or institutions you have worked for or are working for now.');
   t('Location');
+  t('My mentors');
   t('Organization');
   t('Organizations');
   t('Personal Interests');
