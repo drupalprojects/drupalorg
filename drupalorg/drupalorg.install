@@ -2619,7 +2619,7 @@ function drupalorg_update_7070() {
         if (!$term) {
           // Create the term if it doesn't exist.
           $term = (object) array(
-            'vid' => 64,
+            'vid' => 65,
             'name' => $area,
           );
           taxonomy_term_save($term);
