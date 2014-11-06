@@ -126,7 +126,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_plain',
-        'weight' => 19,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'user',
@@ -194,7 +194,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 18,
+        'weight' => 8,
       ),
     ),
     'entity_type' => 'user',
@@ -514,7 +514,7 @@ function drupalorg_user_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 37,
+      'weight' => 10,
     ),
   );
 
@@ -615,11 +615,11 @@ function drupalorg_user_field_default_field_instances() {
   t('Organization');
   t('Organizations');
   t('Personal Interests');
-  t('Terms of Service');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
   t('Please provide an overview of your Drupal contributions. These could be modules that you have created or maintain, user groups that you organize, volunteering at events, or other contributions.');
   t('Select one or more languages you speak.');
+  t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Website(s)');
   t('Your general location may appear on the Drupal.org home page map, and potentially more future uses.');

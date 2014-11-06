@@ -21,19 +21,20 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Drupal',
-    'weight' => '4',
+    'weight' => '3',
     'children' => array(
-      0 => 'field_contributions',
-      1 => 'field_areas_of_expertise',
+      0 => 'field_areas_of_expertise',
+      1 => 'field_contributions',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Drupal',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => 'group-drupal field-group-fieldset',
         'required_fields' => 1,
+        'classes' => 'group-drupal field-group-fieldset',
+        'description' => '',
       ),
+      'formatter' => 'open',
     ),
   );
   $export['group_drupal|user|user|form'] = $field_group;
@@ -153,7 +154,9 @@ function drupalorg_user_field_group_info() {
     'weight' => '0',
     'children' => array(
       0 => 'field_bio',
-      1 => 'summary',
+      1 => 'field_areas_of_expertise',
+      2 => 'field_contributions',
+      3 => 'summary',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -247,7 +250,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Personal information',
-    'weight' => '3',
+    'weight' => '2',
     'children' => array(
       0 => 'field_bio',
       1 => 'field_irc_nick',
@@ -282,7 +285,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Work',
-    'weight' => '5',
+    'weight' => '4',
     'children' => array(
       0 => 'field_current_company_org',
       1 => 'field_industries_worked_in',
