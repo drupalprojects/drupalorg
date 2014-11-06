@@ -7,8 +7,7 @@
 /**
  * Implements hook_ctools_plugin_api().
  */
-function drupalorg_case_studies_ctools_plugin_api() {
-  list($module, $api) = func_get_args();
+function drupalorg_case_studies_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "field_group" && $api == "field_group") {
     return array("version" => "1");
   }
@@ -17,8 +16,8 @@ function drupalorg_case_studies_ctools_plugin_api() {
 /**
  * Implements hook_views_api().
  */
-function drupalorg_case_studies_views_api() {
-  return array("version" => "3.0");
+function drupalorg_case_studies_views_api($module = NULL, $api = NULL) {
+  return array("api" => "3.0");
 }
 
 /**
@@ -41,11 +40,11 @@ function drupalorg_case_studies_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale',
         'data' => array(
-          'width' => '300',
+          'width' => 300,
           'height' => '',
           'upscale' => 0,
         ),
-        'weight' => '1',
+        'weight' => 1,
       ),
       2 => array(
         'label' => 'Crop',
@@ -57,11 +56,11 @@ function drupalorg_case_studies_image_default_styles() {
         'module' => 'image',
         'name' => 'image_crop',
         'data' => array(
-          'width' => '300',
-          'height' => '198',
+          'width' => 300,
+          'height' => 198,
           'anchor' => 'left-top',
         ),
-        'weight' => '2',
+        'weight' => 2,
       ),
     ),
     'label' => 'case198',
@@ -81,11 +80,11 @@ function drupalorg_case_studies_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale',
         'data' => array(
-          'width' => '588',
+          'width' => 588,
           'height' => '',
           'upscale' => 0,
         ),
-        'weight' => '1',
+        'weight' => 1,
       ),
       4 => array(
         'label' => 'Crop',
@@ -97,11 +96,11 @@ function drupalorg_case_studies_image_default_styles() {
         'module' => 'image',
         'name' => 'image_crop',
         'data' => array(
-          'width' => '588',
-          'height' => '306',
+          'width' => 588,
+          'height' => 306,
           'anchor' => 'left-top',
         ),
-        'weight' => '2',
+        'weight' => 2,
       ),
     ),
     'label' => 'case588x306',

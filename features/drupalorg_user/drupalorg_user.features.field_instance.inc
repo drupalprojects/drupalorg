@@ -114,6 +114,40 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_areas_of_expertise'
+  $field_instances['user-user-field_areas_of_expertise'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 7,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_areas_of_expertise',
+    'label' => 'Areas of Expertise',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'taxonomy',
+      'settings' => array(
+        'autocomplete_path' => 'taxonomy/autocomplete',
+        'size' => 60,
+      ),
+      'type' => 'taxonomy_autocomplete',
+      'weight' => 12,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_bio'
   $field_instances['user-user-field_bio'] = array(
     'bundle' => 'user',
@@ -144,7 +178,41 @@ function drupalorg_user_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 39,
+      'weight' => 40,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_contributions'
+  $field_instances['user-user-field_contributions'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Please provide an overview of your Drupal contributions. These could be modules that you have created or maintain, user groups that you organize, volunteering at events, or other contributions.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 8,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_contributions',
+    'label' => 'Drupal contributions',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 13,
     ),
   );
 
@@ -191,7 +259,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 15,
+        'weight' => 17,
       ),
     ),
     'entity_type' => 'user',
@@ -206,7 +274,45 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 38,
+      'weight' => 39,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_github_profile'
+  $field_instances['user-user-field_github_profile'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Enter the URL of your GitHub profile, if you have one.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'url',
+        'settings' => array(
+          'nofollow' => FALSE,
+          'trim_length' => 80,
+        ),
+        'type' => 'url_default',
+        'weight' => 11,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_github_profile',
+    'label' => 'GitHub Profile',
+    'required' => 0,
+    'settings' => array(
+      'title_fetch' => 0,
+      'title_field' => 0,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'url',
+      'settings' => array(
+        'size' => 58,
+      ),
+      'type' => 'url_external',
+      'weight' => 44,
     ),
   );
 
@@ -222,7 +328,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 12,
+        'weight' => 15,
       ),
     ),
     'entity_type' => 'user',
@@ -244,6 +350,40 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_interests'
+  $field_instances['user-user-field_interests'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 16,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_interests',
+    'label' => 'Personal Interests',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'taxonomy',
+      'settings' => array(
+        'autocomplete_path' => 'taxonomy/autocomplete',
+        'size' => 60,
+      ),
+      'type' => 'taxonomy_autocomplete',
+      'weight' => 41,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_irc_nick'
   $field_instances['user-user-field_irc_nick'] = array(
     'bundle' => 'user',
@@ -256,7 +396,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 13,
+        'weight' => 12,
       ),
     ),
     'entity_type' => 'user',
@@ -274,7 +414,38 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 40,
+      'weight' => 42,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_languages'
+  $field_instances['user-user-field_languages'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Select one or more languages you speak.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 18,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_languages',
+    'label' => 'Languages spoken',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 38,
     ),
   );
 
@@ -308,6 +479,42 @@ function drupalorg_user_field_default_field_instances() {
       'settings' => array(),
       'type' => 'field_collection_embed',
       'weight' => 34,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_terms_of_service'
+  $field_instances['user-user-field_terms_of_service'] = array(
+    'bundle' => 'user',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 6,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_terms_of_service',
+    'label' => 'Terms of Service',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => 1,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 0,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 10,
     ),
   );
 
@@ -353,7 +560,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_url',
-        'weight' => 14,
+        'weight' => 13,
       ),
     ),
     'entity_type' => 'user',
@@ -385,24 +592,34 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 41,
+      'weight' => 43,
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Areas of Expertise');
   t('Bio');
   t('Country');
   t('Current');
+  t('Drupal contributions');
+  t('Enter the URL of your GitHub profile, if you have one.');
   t('Gender');
+  t('GitHub Profile');
   t('IRC');
   t('Industries Worked In');
   t('Job Title');
+  t('Languages spoken');
   t('List companies or institutions you have worked for or are working for now.');
   t('Location');
   t('Organization');
   t('Organizations');
+  t('Personal Interests');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
+  t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
+  t('Please provide an overview of your Drupal contributions. These could be modules that you have created or maintain, user groups that you organize, volunteering at events, or other contributions.');
+  t('Select one or more languages you speak.');
+  t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Website(s)');
   t('Your general location may appear on the Drupal.org home page map, and potentially more future uses.');

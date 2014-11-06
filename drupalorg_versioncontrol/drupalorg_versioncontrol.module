@@ -228,3 +228,35 @@ function drupalorg_versioncontrol_form_alter(&$form, &$form_state, $form_id) {
     unset($form['retry']);
   }
 }
+
+/**
+ * Implements hook_versioncontrol_project_issue_git_issue_notification_project_issue_nids_alter().
+ */
+function drupalorg_versioncontrol_versioncontrol_project_issue_git_issue_notification_project_issue_nids_alter(&$valid_issue_nids, $context) {
+  $ref = $context['ref'];
+  $repository = $ref->getRepository();
+  if (!versioncontrol_project_repository_has_project($repository)) {
+    // Nothing to do.
+    return;
+  }
+  $project_node = node_load($repository->project_nid);
+  if ($project_node->type == 'project_core') {
+    // Core.
+    $valid_branch_name_regex = '/^(\d+)(\.(\d+))?\.x$/';
+  }
+  else {
+    // Contrib.
+    $valid_branch_name_regex = '/^((\d+)(\.(\d+))?\.x)-(\d+)\.x$/';
+  }
+  if (preg_match($valid_branch_name_regex, $ref->refname)) {
+    // Allow notifications on any issue if the branch looks like a release branch.
+    return;
+  }
+  // Only allow non-release branches notifications if the project issue nid is
+  // in the refname.
+  foreach ($valid_issue_nids as $key => $valid_issue_nid) {
+    if (!preg_match('/\b' . preg_quote($valid_issue_nid, '/') . '\b/', $ref->refname)) {
+      unset($valid_issue_nids[$key]);
+    }
+  }
+}

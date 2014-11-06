@@ -19,6 +19,14 @@ function drupalorg_marketplace_field_default_field_bases() {
       0 => 'node',
     ),
     'field_name' => 'body',
+    'foreign keys' => array(
+      'format' => array(
+        'columns' => array(
+          'format' => 'format',
+        ),
+        'table' => 'filter_format',
+      ),
+    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -40,6 +48,14 @@ function drupalorg_marketplace_field_default_field_bases() {
       0 => 'comment',
     ),
     'field_name' => 'comment_body',
+    'foreign keys' => array(
+      'format' => array(
+        'columns' => array(
+          'format' => 'format',
+        ),
+        'table' => 'filter_format',
+      ),
+    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -116,6 +132,36 @@ function drupalorg_marketplace_field_default_field_bases() {
     'translatable' => 0,
     'type' => 'text_long',
     'type_name' => 'organization',
+  );
+
+  // Exported field_base: 'field_hosting_type'
+  $field_bases['field_hosting_type'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_hosting_type',
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'shared' => 'Shared',
+        'managed' => 'Managed/Enterprise',
+        'cloud' => 'Cloud',
+        'vps' => 'VPS',
+        'dedicated' => 'Dedicated',
+        'reseller' => 'Reseller',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
   );
 
   // Exported field_base: 'field_link'
@@ -576,6 +622,14 @@ function drupalorg_marketplace_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'taxonomy_vocabulary_48',
+    'foreign keys' => array(
+      'tid' => array(
+        'columns' => array(
+          'tid' => 'tid',
+        ),
+        'table' => 'taxonomy_term_data',
+      ),
+    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
@@ -603,6 +657,14 @@ function drupalorg_marketplace_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'taxonomy_vocabulary_50',
+    'foreign keys' => array(
+      'tid' => array(
+        'columns' => array(
+          'tid' => 'tid',
+        ),
+        'table' => 'taxonomy_term_data',
+      ),
+    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
@@ -630,6 +692,14 @@ function drupalorg_marketplace_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'taxonomy_vocabulary_52',
+    'foreign keys' => array(
+      'tid' => array(
+        'columns' => array(
+          'tid' => 'tid',
+        ),
+        'table' => 'taxonomy_term_data',
+      ),
+    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',

@@ -13,9 +13,9 @@ function drupalorg_issues_taxonomy_default_vocabularies() {
       'name' => 'Issue tags',
       'machine_name' => 'vocabulary_9',
       'description' => 'Special tags to indicate the type of issue this is.',
-      'hierarchy' => '0',
+      'hierarchy' => 0,
       'module' => 'taxonomy',
-      'weight' => '7',
+      'weight' => 7,
     ),
   );
 }
