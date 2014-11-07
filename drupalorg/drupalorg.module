@@ -3295,3 +3295,16 @@ function _drupalorg_issue_component_changer($source_queue, $criteria, $component
     node_save($node);
   }
 }
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function drupalorg_field_formatter_info() {
+  return array(
+    'user_pictures' => array(
+      'label' => t('User pictures'),
+      'field types' => array('entityreference'),
+      'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+    ),
+  );
+}

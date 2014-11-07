@@ -2676,7 +2676,7 @@ function drupalorg_update_7070() {
 /**
  * Migrate profile_my_mentors to field_mentors.
  */
-function drupalorg_user_7071() {
+function drupalorg_update_7071() {
   // Get the profile data.
   $query = db_select('users', 'u');
   $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
