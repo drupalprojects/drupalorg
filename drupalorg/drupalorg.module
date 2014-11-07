@@ -3308,3 +3308,52 @@ function drupalorg_field_formatter_info() {
     ),
   );
 }
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  if ($entity_type != 'user') {
+    return;
+  }
+
+  $element = array();
+  $settings = $display['settings'];
+
+  switch ($display['type']) {
+    case 'user_pictures':
+      foreach (array_map('user_load', $items) as $delta => $account) {
+        if (!empty($account->picture)) {
+          if (is_numeric($account->picture)) {
+            $filepath = file_load($account->picture)->uri;
+          }
+          else {
+            $filepath = $account->picture->uri;
+          }
+        }
+        elseif (variable_get('user_picture_default', '')) {
+          $filepath = variable_get('user_picture_default', '');
+        }
+
+        if (isset($filepath)) {
+          $username = format_username($account);
+          $picture =  l(theme('image_style', array(
+            'style_name' => 'drupalorg_user_picture',
+            'path' => $filepath,
+            'alt' => t('@user’s picture', array('@user' => $username)),
+          )), 'user/' . $account->uid, array(
+            'attributes' => array(
+              'title' => t('View @user’s profile.', array('@user' => $username)),
+              'class' => 'picture',
+            ),
+            'html' => TRUE,
+          ));
+
+          $element[$delta] = array('#markup' => $picture);
+        }
+      }
+      break;
+  }
+
+  return $element;
+}
