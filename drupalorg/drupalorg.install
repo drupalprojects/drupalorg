@@ -2672,3 +2672,95 @@ function drupalorg_update_7070() {
     field_cache_clear();
   }
 }
+
+/**
+ * Migrate profile_my_mentors to field_mentors.
+ */
+function drupalorg_user_7071() {
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_mentors', 'm', 'm.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 108)
+    ->condition('pv.value', '', '!=')
+    ->isNull('m.field_mentors_target_id')
+    ->distinct();
+
+  $result = $query->execute();
+
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_mentors_target_id',
+  );
+
+  $data = db_insert('field_data_field_mentors')->fields($fields);
+  $revision = db_insert('field_revision_field_mentors')->fields($fields);
+
+  static $mentors = array();
+
+  $count = 0;
+
+  foreach ($result as $row) {
+    // Split the row value by line and comma, and trim whitespace.
+    foreach (array_filter(array_map('trim', preg_split("/[,\n\r]\s+/", $row->value))) as $delta => $name) {
+      if (!isset($uids[$name])) {
+        // Load the mentor by their username.
+        $mentor = user_load_by_name($name);
+
+        // Add the uid into the $mentors array.
+        if ($mentor) {
+          $mentors[$mentor->name] = $mentor->uid;
+        }
+      }
+
+      if (!isset($mentors[$name])) {
+        continue;
+      }
+
+      $new = array(
+        'entity_type' => 'user',
+        'bundle' => 'user',
+        'entity_id' => $row->uid,
+        'revision_id' => $row->uid,
+        'language' => LANGUAGE_NONE,
+        'delta' => $delta,
+        'deleted' => 0,
+        'field_mentors_target_id' => $mentors[$mentor->name],
+      );
+
+      $data->values($new);
+      $revision->values($new);
+
+      // Increment the count value.
+      $count++;
+
+      if ($count > 100) {
+        // Save the data.
+        $data->execute();
+        $revision->execute();
+
+        // Start again.
+        $data = db_insert('field_data_field_mentors')->fields($fields);
+        $revision = db_insert('field_revision_field_mentors')->fields($fields);
+        $count = 0;
+      }
+    }
+
+    // Save any remaining data.
+    $data->execute();
+    $revision->execute();
+
+    // Clear the field cache.
+    field_cache_clear();
+  }
+}
+
