@@ -182,6 +182,37 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_contributed'
+  $field_instances['user-user-field_contributed'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 20,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_contributed',
+    'label' => 'How I contribute to Drupal',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 15,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_contributions'
   $field_instances['user-user-field_contributions'] = array(
     'bundle' => 'user',
@@ -606,6 +637,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Enter the URL of your GitHub profile, if you have one.');
   t('Gender');
   t('GitHub Profile');
+  t('How I contribute to Drupal');
   t('IRC');
   t('Industries Worked In');
   t('Job Title');

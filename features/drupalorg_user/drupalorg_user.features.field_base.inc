@@ -71,6 +71,40 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'text_long',
   );
 
+  // Exported field_base: 'field_contributed'
+  $field_bases['field_contributed'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_contributed',
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'patches' => 'I contributed Drupal patches',
+        'modules' => 'I contributed Drupal modules',
+        'themes' => 'I contributed Drupal themes',
+        'profiles' => 'I contributed Drupal installation profiles',
+        'issues' => 'I contributed to Drupal issue queues',
+        'drupalorg' => 'I contributed to Drupal.org',
+        'documentation' => 'I contributed Drupal documentation',
+        'translations' => 'I contributed Drupal translations',
+        'drupalcon' => 'I helped organize DrupalCon',
+        'tests' => 'I contributed Automated tests',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_country'
   $field_bases['field_country'] = array(
     'active' => 1,
