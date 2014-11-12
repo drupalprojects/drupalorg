@@ -24,7 +24,8 @@ function drupalorg_user_field_group_info() {
     'weight' => '3',
     'children' => array(
       0 => 'field_areas_of_expertise',
-      1 => 'field_contributions',
+      1 => 'field_contributed',
+      2 => 'field_contributions',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -257,8 +258,8 @@ function drupalorg_user_field_group_info() {
       2 => 'field_country',
       3 => 'field_gender',
       4 => 'field_github_profile',
-      5 => 'field_interests',
-      6 => 'field_languages',
+      5 => 'field_languages',
+      6 => 'field_interests',
       7 => 'field_websites',
     ),
     'format_type' => 'fieldset',
