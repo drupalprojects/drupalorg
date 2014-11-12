@@ -2672,3 +2672,106 @@ function drupalorg_update_7070() {
     field_cache_clear();
   }
 }
+
+/**
+ * Migrate the "I contributed..." fields.
+ */
+function drupalorg_update_7071() {
+  // Get the profile data.
+  $fields = db_query("SELECT fid FROM {profile_field} WHERE title LIKE '%contribute%' OR title LIKE '%organize%'")->fetchCol();
+
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_contributed', 'c', 'c.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'fid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', $fields, 'IN')
+    ->condition('pv.value', 1)
+    ->isNull('c.field_contributed_value')
+    ->orderBy('u.uid');
+
+  $result = $query->execute();
+
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_contributed_value',
+  );
+
+  $data = db_insert('field_data_field_contributed')->fields($fields);
+  $revision = db_insert('field_revision_field_contributed')->fields($fields);
+
+  // A map of the old profile field IDs to the new field values.
+  $map = array(
+    19 => 'modules',
+    20 => 'themes',
+    21 => 'documentation',
+    30 => 'translations',
+    52 => 'tests',
+    62 => 'patches',
+    84 => 'profiles',
+    90 => 'issues',
+    112 => 'drupalorg',
+    115 => 'drupalcon',
+  );
+
+  $count = 0;
+  $delta = 0;
+  $previous_uid = FALSE;
+
+  foreach ($result as $row) {
+    if ($row->uid == $previous_uid) {
+      // Because the results are ordered by uid, we can keep increasing the value
+      // for $delta until the uid changes.
+      $delta++;
+    }
+    else {
+      // If the uid has changed, we have moved on to the next user. Store the uid
+      // as $previous_uid for the next comparison and reset $delta back to 0.
+      $previous_uid = $row->uid;
+      $delta = 0;
+    }
+
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => $delta,
+      'deleted' => 0,
+      'field_contributed_value' => $map[$row->fid],
+    );
+  
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count++;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_contributed')->fields($fields);
+      $revision = db_insert('field_revision_field_contributed')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
+
