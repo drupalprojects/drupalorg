@@ -199,7 +199,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
     'entity_type' => 'user',
     'field_name' => 'field_contributed',
-    'label' => 'How I contribute to Drupal',
+    'label' => 'My contributions',
     'required' => 0,
     'settings' => array(
       'user_register_form' => 0,
@@ -637,13 +637,13 @@ function drupalorg_user_field_default_field_instances() {
   t('Enter the URL of your GitHub profile, if you have one.');
   t('Gender');
   t('GitHub Profile');
-  t('How I contribute to Drupal');
   t('IRC');
   t('Industries Worked In');
   t('Job Title');
   t('Languages spoken');
   t('List companies or institutions you have worked for or are working for now.');
   t('Location');
+  t('My contributions');
   t('Organization');
   t('Organizations');
   t('Personal Interests');
