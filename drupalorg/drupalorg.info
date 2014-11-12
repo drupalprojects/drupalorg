@@ -13,3 +13,5 @@ dependencies[] = drupalorg_versioncontrol
 dependencies[] = render_cache_comment
 scripts[] = js/general.js
 core = 7.x
+
+files[] = metrics/DrupalorgUserMetric.inc

@@ -23,6 +23,15 @@ define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 7); // 7.x
 define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 103); // 7.x
 
 /**
+ * Implementation of hook_ctools_plugin_directory().
+ */
+function drupalorg_ctools_plugin_directory($module, $plugin) {
+  if ($module === 'sampler' && $plugin === 'metric') {
+    return 'metrics';
+  }
+}
+
+/**
  * Implements hook_init().
  */
 function drupalorg_init() {
