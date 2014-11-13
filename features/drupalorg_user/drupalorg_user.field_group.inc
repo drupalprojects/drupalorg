@@ -85,7 +85,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Aside',
-    'weight' => '3',
+    'weight' => '2',
     'children' => array(),
     'format_type' => 'div',
     'format_settings' => array(
@@ -114,7 +114,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Contact',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
       0 => 'field_organizations',
       1 => 'field_irc_nick',
@@ -154,9 +154,7 @@ function drupalorg_user_field_group_info() {
     'weight' => '0',
     'children' => array(
       0 => 'field_bio',
-      1 => 'field_areas_of_expertise',
-      2 => 'field_contributions',
-      3 => 'summary',
+      1 => 'summary',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -188,8 +186,7 @@ function drupalorg_user_field_group_info() {
     'weight' => '15',
     'children' => array(
       0 => 'field_gender',
-      1 => 'field_interests',
-      2 => 'field_languages',
+      1 => 'field_languages',
     ),
     'format_type' => 'div',
     'format_settings' => array(
