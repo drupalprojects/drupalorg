@@ -44,7 +44,7 @@
     <?php print $psa; ?>
 </div>
 
-<div id=“stats-map”>
+<div id="stats-map">
   <div id="front-drupal-stats">
     <div class="inner"><em><?php print $number_of_users; ?></em> people in <em><?php print $number_of_countries; ?></em> countries<span class="country-note"><a href="/node/955312">*</a></span> speaking <em><?php print $number_of_languages; ?></em> languages power Drupal.</div>
   </div>
