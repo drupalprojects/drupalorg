@@ -119,12 +119,12 @@
     // Fill out template. It has already been translated server-side.
     $('#edit-command').val(Drupal.formatString(Drupal.settings.drupalorgIssueCreditTemplate, {
       '!message': $('#edit-message').val().replace(/'/g, "'\\''"),
-      '!by': by.join(', ').replace(/'/g, "'\\''"),
+      '!by': (by.length > 0 ? ' by ' + by.join(', ') : '').replace(/'/g, "'\\''"),
       '!author': $author.data('author').replace(/'/g, "'\\''")
     }));
     $('#edit-command-message').val(Drupal.formatString(Drupal.settings.drupalorgIssueCreditMessageTemplate, {
       '!message': $('#edit-message').val(),
-      '!by': by.join(', ')
+      '!by': (by.length > 0 ? ' by ' + by.join(', ') : '')
     }));
   }
 })(jQuery);

@@ -555,7 +555,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             '#title' => t('Git command'),
             'command' => array(
               '#type' => 'textarea',
-              '#value' => t('git commit -m \'Issue #@nid by !by: !message\'!author', array('@nid' => $form_state['node']->nid)),
+              '#value' => t('git commit -m \'Issue #@nid!by: !message\'!author', array('@nid' => $form_state['node']->nid)),
               '#resizable' => FALSE,
             ),
           ),
@@ -564,7 +564,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             '#title' => t('Message only'),
             'command-message' => array(
               '#type' => 'textarea',
-              '#value' => t('Issue #@nid by !by: !message', array('@nid' => $form_state['node']->nid)),
+              '#value' => t('Issue #@nid!by: !message', array('@nid' => $form_state['node']->nid)),
               '#resizable' => FALSE,
             ),
           ),
