@@ -86,7 +86,9 @@ function drupalorg_user_field_group_info() {
   $field_group->data = array(
     'label' => 'Aside',
     'weight' => '3',
-    'children' => array(),
+    'children' => array(
+      0 => 'field_mentors',
+    ),
     'format_type' => 'div',
     'format_settings' => array(
       'label' => 'Aside',
@@ -118,9 +120,9 @@ function drupalorg_user_field_group_info() {
     'children' => array(
       0 => 'field_organizations',
       1 => 'field_irc_nick',
-      2 => 'field_websites',
-      3 => 'field_country',
-      4 => 'field_github_profile',
+      2 => 'field_country',
+      3 => 'field_github_profile',
+      4 => 'field_websites',
       5 => 'group_profile_personal',
       6 => 'group_profile_professional',
     ),
@@ -188,8 +190,8 @@ function drupalorg_user_field_group_info() {
     'weight' => '15',
     'children' => array(
       0 => 'field_gender',
-      1 => 'field_interests',
-      2 => 'field_languages',
+      1 => 'field_languages',
+      2 => 'field_interests',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -257,8 +259,8 @@ function drupalorg_user_field_group_info() {
       2 => 'field_country',
       3 => 'field_gender',
       4 => 'field_github_profile',
-      5 => 'field_interests',
-      6 => 'field_languages',
+      5 => 'field_languages',
+      6 => 'field_interests',
       7 => 'field_websites',
     ),
     'format_type' => 'fieldset',
