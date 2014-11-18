@@ -2678,7 +2678,7 @@ function drupalorg_update_7070() {
  */
 function drupalorg_update_7071() {
   // Get the profile data.
-  $fields = db_query("SELECT fid FROM {profile_field} WHERE title LIKE '%contribute%' OR title LIKE '%organize%'")->fetchCol();
+  $fids = array(19, 20, 21, 23, 24, 30, 42, 52, 62, 64, 84, 90, 96, 112, 115);
 
   $query = db_select('users', 'u');
   $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
@@ -2686,7 +2686,7 @@ function drupalorg_update_7071() {
   $query
     ->fields('pv', array('uid', 'fid', 'value'))
     ->condition('u.status', 1)
-    ->condition('pv.fid', $fields, 'IN')
+    ->condition('pv.fid', $fids, 'IN')
     ->condition('pv.value', 1)
     ->isNull('c.field_contributed_value')
     ->orderBy('u.uid');
@@ -2712,11 +2712,16 @@ function drupalorg_update_7071() {
     19 => 'modules',
     20 => 'themes',
     21 => 'documentation',
+    23 => 'forums',
+    24 => 'services',
     30 => 'translations',
+    42 => 'irc',
     52 => 'tests',
     62 => 'patches',
+    64 => 'applications',
     84 => 'profiles',
     90 => 'issues',
+    96 => 'mentor',
     112 => 'drupalorg',
     115 => 'drupalcon',
   );
