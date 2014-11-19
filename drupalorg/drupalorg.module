@@ -3107,14 +3107,13 @@ function drupalorg_module_implements_alter(&$implementations, $hook) {
  * Implements hook_user_update().
  */
 function drupalorg_user_update(&$edit, $account, $category) {
-  // If the account hasa user picture, generate all styles that subsites use,
+  // If the account has a user picture, generate all styles that subsites use,
   // and include URLs in bakery-transmitted data.
-  if ($account->picture > 0) {
-    $picture = file_load($account->picture);
+  if (!empty($account->picture)) {
     foreach (array('thumbnail', 'grid-2', 'drupalorg_user_picture') as $style) {
-      $destination = image_style_path($style, $picture->uri);
+      $destination = image_style_path($style, $account->picture->uri);
       if (!file_exists($destination)) {
-        image_style_create_derivative(image_style_load($style), $picture->uri, $destination);
+        image_style_create_derivative(image_style_load($style), $account->picture->uri, $destination);
       }
       $_SESSION['bakery']['data']['drupalorg_picture'][$style] = file_create_url($destination);
     }
