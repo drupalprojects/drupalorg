@@ -154,7 +154,8 @@ function drupalorg_user_field_group_info() {
     'weight' => '0',
     'children' => array(
       0 => 'field_bio',
-      1 => 'summary',
+      1 => 'field_areas_of_expertise',
+      2 => 'summary',
     ),
     'format_type' => 'div',
     'format_settings' => array(

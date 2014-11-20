@@ -2684,3 +2684,109 @@ function drupalorg_update_7071() {
     ->condition('eid', 10)
     ->execute();
 }
+
+/**
+ * Migrate profile_role_with_drupal to field_areas_of_expertise.
+ */
+function drupalorg_update_7072() {
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_areas_of_expertise', 'ae', 'ae.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 76)
+    ->condition('pv.value', '', '!=')
+    ->isNull('ae.field_areas_of_expertise_tid')
+    ->distinct();
+
+  $result = $query->execute();
+
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_areas_of_expertise_tid',
+  );
+
+  $data = db_insert('field_data_field_areas_of_expertise')->fields($fields);
+  $revision = db_insert('field_revision_field_areas_of_expertise')->fields($fields);
+
+  static $tids = array();
+
+  $count = 0;
+
+  foreach ($result as $row) {
+    // Split the row value by line and comma, and trim whitespace.
+    foreach (array_filter(array_map('trim', preg_split("/[,\n\r]\s+/", $row->value))) as $delta => $area) {
+      // Discard long areas.
+      if (strlen($area) > 255) {
+        continue;
+      }
+
+      // Check if the area is within the $terms array.
+      if (!isset($tids[$area])) {
+        // Search for a term by name.
+        $term = taxonomy_get_term_by_name($area, 'areas_of_expertise');
+
+        if (!$term) {
+          // Create the term if it doesn't exist.
+          $term = (object) array(
+            'vid' => 65,
+            'name' => $area,
+          );
+          taxonomy_term_save($term);
+        }
+
+        // Store the tid within $terms.
+        if (is_array($term)) {
+          // Sometimes this is returned as an array.
+          $term = reset($term);
+        }
+        $tids[$area] = $term->tid;
+      }
+
+      $tid = $tids[$area];
+
+      $new = array(
+        'entity_type' => 'user',
+        'bundle' => 'user',
+        'entity_id' => $row->uid,
+        'revision_id' => $row->uid,
+        'language' => LANGUAGE_NONE,
+        'delta' => $delta,
+        'deleted' => 0,
+        'field_areas_of_expertise_tid' => $tid,
+      );
+
+      $data->values($new);
+      $revision->values($new);
+
+      // Increment the count value.
+      $count++;
+
+      if ($count > 100) {
+        // Save the data.
+        $data->execute();
+        $revision->execute();
+
+        // Start again.
+        $data = db_insert('field_data_field_areas_of_expertise')->fields($fields);
+        $revision = db_insert('field_revision_field_areas_of_expertise')->fields($fields);
+        $count = 0;
+      }
+    }
+
+    // Save any remaining data.
+    $data->execute();
+    $revision->execute();
+
+    // Clear the field cache.
+    field_cache_clear();
+  }
+}
