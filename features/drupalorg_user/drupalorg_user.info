@@ -63,6 +63,5 @@ features[field_instance][] = user-user-field_user_geolocation
 features[field_instance][] = user-user-field_websites
 features[image][] = drupalorg_user_picture
 features[taxonomy][] = areas_of_expertise
-features[taxonomy][] = interests
 features_exclude[field_base][field_current_company_org] = field_current_company_org
 features_exclude[field_instance][user-user-field_current_company_org] = user-user-field_current_company_org
