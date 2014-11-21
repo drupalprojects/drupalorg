@@ -213,6 +213,40 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_contributions'
+  $field_instances['user-user-field_contributions'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Please provide an overview of your Drupal contributions. These could be modules that you have created or maintain, user groups that you organize, volunteering at events, or other contributions.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 8,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_contributions',
+    'label' => 'Drupal contributions',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 13,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_country'
   $field_instances['user-user-field_country'] = array(
     'bundle' => 'user',
@@ -492,7 +526,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'user',
@@ -565,6 +599,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Bio');
   t('Country');
   t('Current');
+  t('Drupal contributions');
   t('Enter the URL of your GitHub profile, if you have one.');
   t('Gender');
   t('GitHub Profile');
@@ -579,6 +614,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Organizations');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
+  t('Please provide an overview of your Drupal contributions. These could be modules that you have created or maintain, user groups that you organize, volunteering at events, or other contributions.');
   t('Select one or more languages you speak.');
   t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');

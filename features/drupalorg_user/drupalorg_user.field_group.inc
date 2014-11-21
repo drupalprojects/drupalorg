@@ -115,7 +115,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Contact',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'field_organizations',
       1 => 'field_irc_nick',
@@ -156,7 +156,8 @@ function drupalorg_user_field_group_info() {
     'children' => array(
       0 => 'field_bio',
       1 => 'field_areas_of_expertise',
-      2 => 'summary',
+      2 => 'field_contributions',
+      3 => 'summary',
     ),
     'format_type' => 'div',
     'format_settings' => array(
