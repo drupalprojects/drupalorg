@@ -1214,15 +1214,6 @@ function drupalorg_form_alter(&$form, &$form_state, $form_id) {
     unset($form['status']['wipe']);
   }
 
-  // Add home page option to user access rule adding and editing.
-  // Make sure if we edit a homepage option, we keep using that as a default.
-  if ($form_id == 'user_admin_access_add_form' || $form_id == 'user_admin_access_edit_form') {
-    if ($form['#parameters'][2]['type'] == 'homepage') {
-      $form['type']['#default_value'] = 'homepage';
-    }
-    $form['type']['#options']['homepage'] = t('Homepage');
-  }
-
   // Ensure nice Drupal home page addresses
   if ($form_id == 'user_profile_form') {
     $form['#validate'][] = 'drupalorg_profile_user_edit_validate';
@@ -1437,27 +1428,9 @@ function drupalorg_register_mail_validate($form, &$form_state) {
 }
 
 /**
- * Validate all fields in the user_edit form against the list of bad words.
- *
- * @todo Core almost supports it with above form_alter but listings are bad
- *   (when the value is homepage, core does not know about it, so does not print it).
+ * Implements hook_form_FORM_BASE_alter().
  */
 function drupalorg_profile_user_edit_validate($form, &$form_state) {
-  if (!empty($form_state['values']['homepage']) && is_string($form_state['values']['homepage']) && (strlen($form_state['values']['homepage']) > 7)) {
-    $result = db_query("SELECT mask FROM {access} WHERE type = :type AND status = :status", array(':type' => 'homepage', ':status' => 0));
-    $masks = array();
-    foreach ($result as $mask) {
-      // Build masks array for preg_matching.
-      $masks[] = '@' . strtr($mask->mask, array('.' => '\.', '%' => '.*', '_' => '.')) . '@';
-    }
-    // Check denied homepages.
-    foreach ($masks as $mask) {
-      if (preg_match($mask, $form_state['values']['homepage'])) {
-        form_set_error('homepage', t('Unsuitable Drupal site detected. This address cannot be set as your Drupal site link.'));
-      }
-    }
-  }
-
   // Remove empty organizations.
   foreach ($form_state['values']['field_organizations'][LANGUAGE_NONE] as $delta => $organization) {
     // Do not attempt looking at the add more element, look for empty name and
