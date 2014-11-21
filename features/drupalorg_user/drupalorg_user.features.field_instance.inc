@@ -182,6 +182,37 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_contributed'
+  $field_instances['user-user-field_contributed'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 20,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_contributed',
+    'label' => 'My contributions',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 14,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_country'
   $field_instances['user-user-field_country'] = array(
     'bundle' => 'user',
@@ -543,6 +574,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Languages spoken');
   t('List companies or institutions you have worked for or are working for now.');
   t('Location');
+  t('My contributions');
   t('Organization');
   t('Organizations');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
