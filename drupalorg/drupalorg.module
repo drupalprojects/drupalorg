@@ -1217,15 +1217,6 @@ function drupalorg_form_alter(&$form, &$form_state, $form_id) {
   // Ensure nice Drupal home page addresses
   if ($form_id == 'user_profile_form') {
     $form['#validate'][] = 'drupalorg_profile_user_edit_validate';
-    // Hack to make the language list a multiselect field (there is no UI
-    // for this in profile module). We need to hack around that profile only
-    // ever stores select field values as strings, so we need to explode what
-    // was in there for our multiselect form.
-    if (isset($form['Personal information']['profile_languages'])) {
-      $form['Personal information']['profile_languages']['#multiple'] = TRUE;
-      $form['Personal information']['profile_languages']['#default_value'] = explode('; ', $form['Personal information']['profile_languages']['#default_value']);
-      $form['#submit'] = array_merge(array('drupalorg_profile_fix_languages'), $form['#submit']);
-    }
   }
 
   // Add extra choices to the dblog settings selector
@@ -1463,15 +1454,6 @@ function drupalorg_username_validate($form, &$form_state) {
     if ((bool) db_select('users')->fields('users', array('uid'))->condition('uid', $account->uid, '<>')->where('LOWER(name) LIKE :name', array(':name' => db_like(strtolower($name))))->range(0, 1)->execute()->fetchField()) {
       form_set_error('name', t('The name %name is already taken.', array('%name' => $name)));
     }
-  }
-}
-
-/**
- * Submit handler for the user profile form, to serialize languages to a string.
- */
-function drupalorg_profile_fix_languages(&$form, &$form_state) {
-  if (is_array($form_state['values']['profile_languages'])) {
-    $form_state['values']['profile_languages'] = join('; ', array_keys($form_state['values']['profile_languages']));
   }
 }
 
