@@ -685,13 +685,7 @@ function drupalorg_get_activity($_force = FALSE) {
     $stats['number_of_countries'] = number_format(db_query("SELECT COUNT(DISTINCT field_country_value) FROM {field_data_field_country}")->fetchField());
 
     // Languages: Get all the distinct combinations and then filter that down.
-    $languages = array();
-    $result_languages = db_query('SELECT DISTINCT value FROM {profile_value} WHERE fid = :fid', array(':fid' => DRUPALORG_LANGUAGES_PID));
-    foreach ($result_languages as $language_profile) {
-      $languages = array_merge($languages, explode('; ', $language_profile->value));
-    }
-    $languages = array_unique($languages);
-    $stats['number_of_languages'] = count($languages);
+    $stats['number_of_languages'] = number_format(db_query("SELECT COUNT(DISTINCT field_languages_value) FROM {field_data_field_languages}")->fetchField());
 
     // Sites: use project API.
     $stats['sites'] = number_format(project_usage_get_project_total_usage(DRUPALORG_CORE_NID));
