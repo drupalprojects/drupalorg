@@ -2792,7 +2792,7 @@ function drupalorg_update_7072() {
 }
 
 /**
- * Migrate the "I contributed..." fields.
+ * Migrate the "I ontributed..." fields.
  */
 function drupalorg_update_7073() {
   // Get the profile data.
@@ -2987,6 +2987,79 @@ function drupalorg_update_7075() {
       'deleted' => 0,
       'field_social_links_value' => $row->value,
       'field_social_links_title' => $title,
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count++;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_social_links')->fields($fields);
+      $revision = db_insert('field_revision_field_social_links')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  field_cache_clear();
+}
+
+/**
+ * Move field_github_profile into field_social_links.
+ */
+function drupalorg_update_7076() {
+  // Get the field data.
+  $query = db_select('users', 'u');
+  $query->join('field_data_field_github_profile', 'gp', 'gp.entity_id = u.uid');
+  $query
+    ->fields('gp', array('field_github_profile_value'))
+    ->fields('u', array('uid'))
+    ->condition('u.status', 1);
+
+  $result = $query->execute();
+
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_social_links_value',
+    'field_social_links_title',
+    'field_social_links_attributes',
+  );
+
+  $data = db_insert('field_data_field_social_links')->fields($fields);
+  $revision = db_insert('field_revision_field_social_links')->fields($fields);
+
+  $count = 0;
+
+  foreach ($result as $row) {
+    // Find the number of existing social links for this user.
+    $number_of_links = db_query('SELECT field_social_links_value FROM {field_data_field_social_links} WHERE entity_id = :id', array(':id' => $row->uid))->rowCount();
+
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => $number_of_links++,
+      'deleted' => 0,
+      'field_social_links_value' => $row->field_github_profile_value,
+      'field_social_links_title' => 'GitHub',
     );
 
     $data->values($new);
