@@ -3322,7 +3322,11 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
 
   switch ($display['type']) {
     case 'user_pictures':
-      foreach (array_map('user_load', $items) as $delta => $account) {
+      // Get and load the uids.
+      $uids = array_map('current', $items);
+      $accounts = user_load_multiple($uids);
+      foreach ($accounts as $delta => $account) {
+        // Add the picture.
         if (!empty($account->picture)) {
           if (is_numeric($account->picture)) {
             $filepath = file_load($account->picture)->uri;
