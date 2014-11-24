@@ -256,43 +256,12 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 21,
+        'weight' => 8,
       ),
     ),
     'entity_type' => 'user',
     'field_name' => 'field_events_attended',
-    'label' => 'Events I attended',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 46,
-    ),
-  );
-
-  // Exported field_instance: 'user-user-field_events_attended'
-  $field_instances['user-user-field_events_attended'] = array(
-    'bundle' => 'user',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 21,
-      ),
-    ),
-    'entity_type' => 'user',
-    'field_name' => 'field_events_attended',
-    'label' => 'Events I attended',
+    'label' => 'Drupal Events',
     'required' => 0,
     'settings' => array(
       'user_register_form' => 0,
@@ -627,8 +596,8 @@ function drupalorg_user_field_default_field_instances() {
   t('Bio');
   t('Country');
   t('Current');
+  t('Drupal Events');
   t('Enter the URL of your GitHub profile, if you have one.');
-  t('Events I attended');
   t('Gender');
   t('GitHub Profile');
   t('IRC');
