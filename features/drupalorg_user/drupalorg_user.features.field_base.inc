@@ -825,6 +825,22 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'field_collection',
   );
 
+  // Exported field_base: 'field_social_links'
+  $field_bases['field_social_links'] = array(
+    'active' => 1,
+    'cardinality' => 10,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_social_links',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'url',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'url',
+  );
+
   // Exported field_base: 'field_terms_of_service'
   $field_bases['field_terms_of_service'] = array(
     'active' => 1,
