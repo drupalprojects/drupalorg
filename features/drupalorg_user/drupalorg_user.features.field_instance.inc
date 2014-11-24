@@ -445,6 +445,44 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_social_links'
+  $field_instances['user-user-field_social_links'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'url',
+        'settings' => array(
+          'nofollow' => FALSE,
+          'trim_length' => 80,
+        ),
+        'type' => 'url_default',
+        'weight' => 21,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_social_links',
+    'label' => 'Social links',
+    'required' => 0,
+    'settings' => array(
+      'title_fetch' => 0,
+      'title_field' => 0,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'url',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'url_external',
+      'weight' => 45,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_terms_of_service'
   $field_instances['user-user-field_terms_of_service'] = array(
     'bundle' => 'user',
@@ -580,6 +618,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
   t('Select one or more languages you speak.');
+  t('Social links');
   t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Website(s)');
