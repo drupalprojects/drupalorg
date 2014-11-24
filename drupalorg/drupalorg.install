@@ -288,7 +288,7 @@ function drupalorg_update_dependencies() {
     ),
   );
 
-  // Force all contributed modules to run after core updates.
+  // Force all ibuted modules to run after core updates.
   foreach ($contrib_modules as $module) {
     $dependencies[$module][7000] = array(
       'system' => 7074,
@@ -2895,5 +2895,121 @@ function drupalorg_update_7073() {
   $revision->execute();
 
   // Clear the field cache.
+  field_cache_clear();
+}
+
+/**
+ * Migrate social links.
+ */
+function drupalorg_update_7075() {
+  // Get the profile data.
+  $fids = array(66, 68, 121, 70, 92, 117);
+
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_social_links', 'sl', 'sl.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'fid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', $fids, 'IN')
+    ->condition('pv.value', '', '!=')
+    ->isNull('sl.field_social_links_value')
+    ->orderBy('u.uid');
+
+  $result = $query->execute();
+
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_social_links_value',
+    'field_social_links_title',
+    'field_social_links_attributes',
+  );
+
+  $data = db_insert('field_data_field_social_links')->fields($fields);
+  $revision = db_insert('field_revision_field_social_links')->fields($fields);
+
+  $count = 0;
+  $delta = 0;
+  $previous_uid = FALSE;
+
+  foreach ($result as $row) {
+    if ($row->uid == $previous_uid) {
+      // Because the results are ordered by uid, we can keep increasing the value
+      // for $delta until the uid changes.
+      $delta++;
+    }
+    else {
+      // If the uid has changed, we have moved on to the next user. Store the uid
+      // as $previous_uid for the next comparison and reset $delta back to 0.
+      $previous_uid = $row->uid;
+      $delta = 0;
+    }
+
+    switch ($row->fid) {
+      case 66:
+        $title = 'LinkedIn';
+        break;
+
+      case 68:
+        $title = 'Facebook';
+        break;
+
+      case 121:
+        $title = 'Gratipay';
+        break;
+
+      case 70:
+        $title = 'Twitter';
+        break;
+
+      case 92:
+        $title = 'Google';
+        break;
+
+      case 117:
+        $title = 'Drupal Answers';
+        break;
+    }
+
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => $delta,
+      'deleted' => 0,
+      'field_social_links_value' => $row->value,
+      'field_social_links_title' => $title,
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count++;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_social_links')->fields($fields);
+      $revision = db_insert('field_revision_field_social_links')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
   field_cache_clear();
 }
