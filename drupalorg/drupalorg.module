@@ -2599,6 +2599,7 @@ function drupalorg_user_view($account, $view_mode) {
             $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0] = field_view_value('node', $company_nodes[$title], 'field_logo', $organization_wrapper->field_logo->value());
             $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#image_style'] = 'grid-2';
             $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#path']['path'] = 'node/' . $company_nodes[$title]->nid;
+            $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#item']['alt'] = $title;
           }
         }
 
