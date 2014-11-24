@@ -244,6 +244,68 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_events_attended'
+  $field_instances['user-user-field_events_attended'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 21,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_events_attended',
+    'label' => 'Events I attended',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 46,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_events_attended'
+  $field_instances['user-user-field_events_attended'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 21,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_events_attended',
+    'label' => 'Events I attended',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 46,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_gender'
   $field_instances['user-user-field_gender'] = array(
     'bundle' => 'user',
@@ -492,7 +554,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'user',
@@ -566,6 +628,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Country');
   t('Current');
   t('Enter the URL of your GitHub profile, if you have one.');
+  t('Events I attended');
   t('Gender');
   t('GitHub Profile');
   t('IRC');

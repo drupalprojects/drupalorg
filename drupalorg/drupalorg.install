@@ -2897,3 +2897,121 @@ function drupalorg_update_7073() {
   // Clear the field cache.
   field_cache_clear();
 }
+
+/**
+ * Migrate events attended.
+ */
+function drupalorg_update_7074() {
+  // Get the profile data.
+  $fids = array(29, 31, 32, 33, 34, 36, 37, 38, 40, 44, 46, 50, 56, 58, 60, 86, 88, 94, 102, 106, 110, 113, 119, 123, 125, 127);
+
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_events_attended', 'dp', 'dp.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'fid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', $fids, 'IN')
+    ->condition('pv.value', 1)
+    ->isNull('dp.field_events_attended_value')
+    ->orderBy('u.uid');
+
+  $result = $query->execute();
+
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_events_attended_value',
+  );
+
+  $data = db_insert('field_data_field_events_attended')->fields($fields);
+  $revision = db_insert('field_revision_field_events_attended')->fields($fields);
+
+  // A map of the old profile field IDs to the new field values.
+  $map = array(
+    29 => 'antwerp_2005',
+    31 => 'portland_2005',
+    32 => 'amsterdam_2005',
+    33 => 'london_2005',
+    34 => 'vancouver_2006',
+    36 => 'brussels_2006',
+    37 => 'oscms_2007',
+    38 => 'barcelona_2007',
+    40 => 'boston_2008',
+    44 => 'szeged_hungary_2008',
+    46 => 'dc_2009',
+    50 => 'paris_2009',
+    56 => 'sf_2010',
+    58 => 'copenhagen_2010',
+    60 => 'chicago_2011',
+    86 => 'london_2011',
+    88 => 'denver_2012',
+    94 => 'munich_2012',
+    102 => 'portland_2013',
+    106 => 'sydney_2012',
+    110 => 'prague_2013',
+    113 => 'austin_2014',
+    119 => 'amsterdam_2014',
+    123 => 'latinamerica_2015',
+    125 => 'losangeles_2015',
+    127 => 'barcelona_2015',
+  );
+
+  $count = 0;
+  $delta = 0;
+  $previous_uid = FALSE;
+
+  foreach ($result as $row) {
+    if ($row->uid == $previous_uid) {
+      // Because the results are ordered by uid, we can keep increasing the value
+      // for $delta until the uid changes.
+      $delta++;
+    }
+    else {
+      // If the uid has changed, we have moved on to the next user. Store the uid
+      // as $previous_uid for the next comparison and reset $delta back to 0.
+     $previous_uid = $row->uid;
+     $delta = 0;
+    }
+
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => $delta,
+      'deleted' => 0,
+      'field_events_attended_value' => $map[$row->fid],
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count++;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_events_attended')->fields($fields);
+      $revision = db_insert('field_revision_field_events_attended')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
