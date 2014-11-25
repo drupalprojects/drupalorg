@@ -122,7 +122,7 @@ function drupalorg_user_field_group_info() {
       1 => 'field_irc_nick',
       2 => 'field_websites',
       3 => 'field_country',
-      4 => 'field_github_profile',
+      4 => 'field_social_links',
       5 => 'group_profile_personal',
       6 => 'group_profile_professional',
     ),
@@ -187,7 +187,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = 'group_profile_contact';
   $field_group->data = array(
     'label' => 'Personal Info',
-    'weight' => '15',
+    'weight' => '16',
     'children' => array(
       0 => 'field_gender',
       1 => 'field_languages',
@@ -219,7 +219,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = 'group_profile_contact';
   $field_group->data = array(
     'label' => 'Professional Info',
-    'weight' => '14',
+    'weight' => '15',
     'children' => array(
       0 => 'field_industries_worked_in',
       1 => 'drupalorg_companies_worked_for',
@@ -258,8 +258,8 @@ function drupalorg_user_field_group_info() {
       2 => 'field_country',
       3 => 'field_gender',
       4 => 'field_github_profile',
-      5 => 'field_interests',
-      6 => 'field_languages',
+      5 => 'field_languages',
+      6 => 'field_social_links',
       7 => 'field_websites',
     ),
     'format_type' => 'fieldset',

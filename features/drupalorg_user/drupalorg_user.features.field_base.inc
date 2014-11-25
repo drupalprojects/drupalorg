@@ -828,7 +828,7 @@ function drupalorg_user_field_default_field_bases() {
   // Exported field_base: 'field_social_links'
   $field_bases['field_social_links'] = array(
     'active' => 1,
-    'cardinality' => 10,
+    'cardinality' => 7,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_social_links',

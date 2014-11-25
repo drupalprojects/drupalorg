@@ -315,13 +315,9 @@ function drupalorg_user_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'inline',
-        'module' => 'url',
-        'settings' => array(
-          'nofollow' => FALSE,
-          'trim_length' => 80,
-        ),
-        'type' => 'url_default',
-        'weight' => 12,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'user',
@@ -335,12 +331,12 @@ function drupalorg_user_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'url',
+      'module' => 'field_extrawidgets',
       'settings' => array(
         'size' => 58,
       ),
-      'type' => 'url_external',
-      'weight' => 44,
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 43,
     ),
   );
 
@@ -408,7 +404,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 42,
+      'weight' => 41,
     ),
   );
 
@@ -481,17 +477,17 @@ function drupalorg_user_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Link to your profile pages on Twitter, LinkedIn, Facebook, Google, Drupal Answers, GitHub, Gratipay, and any others you would like to include.',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'url',
         'settings' => array(
           'nofollow' => FALSE,
           'trim_length' => 80,
         ),
         'type' => 'url_default',
-        'weight' => 21,
+        'weight' => 12,
       ),
     ),
     'entity_type' => 'user',
@@ -510,7 +506,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'url_external',
-      'weight' => 45,
+      'weight' => 44,
     ),
   );
 
@@ -624,7 +620,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 43,
+      'weight' => 42,
     ),
   );
 
@@ -642,6 +638,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Industries Worked In');
   t('Job Title');
   t('Languages spoken');
+  t('Link to your profile pages on Twitter, LinkedIn, Facebook, Google, Drupal Answers, GitHub, Gratipay, and any others you would like to include.');
   t('List companies or institutions you have worked for or are working for now.');
   t('Location');
   t('My contributions');
