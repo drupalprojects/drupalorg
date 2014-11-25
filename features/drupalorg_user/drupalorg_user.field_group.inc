@@ -187,7 +187,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = 'group_profile_contact';
   $field_group->data = array(
     'label' => 'Personal Info',
-    'weight' => '16',
+    'weight' => '15',
     'children' => array(
       0 => 'field_gender',
       1 => 'field_languages',
@@ -219,7 +219,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = 'group_profile_contact';
   $field_group->data = array(
     'label' => 'Professional Info',
-    'weight' => '15',
+    'weight' => '13',
     'children' => array(
       0 => 'field_industries_worked_in',
       1 => 'drupalorg_companies_worked_for',
