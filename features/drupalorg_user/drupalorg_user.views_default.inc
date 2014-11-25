@@ -49,16 +49,7 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['fields']['picture']['label'] = '';
   $handler->display->display_options['fields']['picture']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['picture']['link_photo_to_profile'] = FALSE;
-  $handler->display->display_options['fields']['picture']['image_style'] = 'drupalorg_user_picture';
-  /* Field: User: Name */
-  $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = 'users';
-  $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['relationship'] = 'reverse_field_mentors_user';
-  $handler->display->display_options['fields']['name']['label'] = '';
-  $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
-  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['picture']['image_style'] = 'drupalorg_user_picture_large';
   /* Sort criterion: User: Last login */
   $handler->display->display_options['sorts']['login']['id'] = 'login';
   $handler->display->display_options['sorts']['login']['table'] = 'users';
@@ -90,7 +81,7 @@ function drupalorg_user_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
-  $handler->display->display_options['path'] = 'user/%/mentees';
+  $handler->display->display_options['path'] = 'user/%/people-mentored';
   $export['user_mentees'] = $view;
 
   return $export;

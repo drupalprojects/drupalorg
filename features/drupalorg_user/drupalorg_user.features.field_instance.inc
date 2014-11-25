@@ -458,11 +458,9 @@ function drupalorg_user_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
+        'module' => 'drupalorg',
+        'settings' => array(),
+        'type' => 'user_pictures',
         'weight' => 19,
       ),
     ),

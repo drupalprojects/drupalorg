@@ -4,6 +4,7 @@ core = 7.x
 package = Features
 version = 7.x-3.x-dev
 project = drupalorg
+dependencies[] = drupalorg
 dependencies[] = drupalorg_marketplace
 dependencies[] = entityreference
 dependencies[] = field_collection
