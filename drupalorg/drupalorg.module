@@ -3342,7 +3342,7 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
         if (isset($filepath)) {
           $username = format_username($account);
           $picture =  l(theme('image_style', array(
-            'style_name' => 'drupalorg_user_picture',
+            'style_name' => 'drupalorg_user_picture_large',
             'path' => $filepath,
             'alt' => t('@user’s picture', array('@user' => $username)),
           )), 'user/' . $account->uid, array(

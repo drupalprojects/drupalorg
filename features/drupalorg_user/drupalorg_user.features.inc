@@ -26,9 +26,9 @@ function drupalorg_user_views_api($module = NULL, $api = NULL) {
 function drupalorg_user_image_default_styles() {
   $styles = array();
 
-  // Exported image style: drupalorg_picture_large.
-  $styles['drupalorg_picture_large'] = array(
-    'name' => 'drupalorg_picture_large',
+  // Exported image style: drupalorg_user_picture_large.
+  $styles['drupalorg_user_picture_large'] = array(
+    'name' => 'drupalorg_user_picture_large',
     'label' => 'Drupal.org large user picture (120x120)',
     'effects' => array(
       1 => array(
