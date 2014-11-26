@@ -129,10 +129,10 @@ function drupalorg_handbook_moderate_link_info($node) {
   }
   return array(
     'title' => t('Report to moderator'),
-    'href' => 'node/add/project-issue/webmasters',
+    'href' => 'node/add/project-issue/documentation',
     'query' => array(
       'categories' => 'task',
-      'component' => 'Spam',
+      'component' => 'Correction/Clarification',
       'title' => t('Moderation report for !title', array('!title' => $node->title)),
       'body' => t('I am reporting !url to moderators because:', array('!url' => url('node/' . $node->nid, array('absolute' => TRUE)))),
     ),
