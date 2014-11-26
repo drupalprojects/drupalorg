@@ -2301,10 +2301,15 @@ function drupalorg_org_request_issue($node) {
     $issue->uid = $node->uid;
     $issue->language = $node->language;
     $issue->status = 1;
-    $issue->title = t('Review @title', array('@title' => $node->title));
+    $issue->title = t('Review @title for Drupal Services listing', array('@title' => $node->title));
     $issue->body[$node->language][] = array(
-      'value' => t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid))),
-      'format' => filter_default_format(),
+      'value' => t('!link has requested to be included in !services section of the Marketplace.
+
+This issue was generated automatically. To be included, the page must meet these !guidelines. A review by 2 or more community members is needed to add this page to the listing.
+
+Want to help review? Here is how to do it: https://drupal.org/node/1710338',
+       array('!link' => l($node->title, 'node/' . $node->nid), '!services' => l(t('Drupal Services'), 'drupal-services'), '!guidelines' => l(t('guidelines'), 'marketplace/guidelines/services'))),
+       'format' => filter_default_format(),
     );
     $issue->field_project[$node->language][]['target_id'] = 1848824;  // Content project, http://drupal.org/project/content
     $issue->field_project[$node->language][]['target_type'] = 'node';
@@ -2329,7 +2334,12 @@ function drupalorg_org_request_issue($node) {
     $issue->status = 1;
     $issue->title = t('Add @title to the Training section', array('@title' => $node->title));
     $issue->body[$node->language][] = array(
-      'value' => t('!link has been posted', array('!link' => l($node->title, 'node/' . $node->nid))),
+      'value' => t('!link has requested to be included in the !training of the Marketplace.
+
+This issue was generated automatically. To be included, the page must meet these !guidelines. A review by 2 or more community members is needed to add this page to the listing.
+
+Want to help review? Here is how to do it: https://drupal.org/node/1735864',
+       array('!link' => l($node->title, 'node/' . $node->nid), '!training' => l(t('Training section'), 'training'), '!guidelines' => l(t('guidelines'), 'marketplace/guidelines/training'))),
       'format' => filter_default_format(),
     );
     $issue->field_project[$node->language][]['target_id'] = 1848824;  // Content project, http://drupal.org/project/content
