@@ -10,6 +10,22 @@
 function drupalorg_projects_field_default_field_bases() {
   $field_bases = array();
 
+  // Exported field_base: 'field_download_count'
+  $field_bases['field_download_count'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_download_count',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
+
   // Exported field_base: 'field_how_they_helped'
   $field_bases['field_how_they_helped'] = array(
     'active' => 1,
