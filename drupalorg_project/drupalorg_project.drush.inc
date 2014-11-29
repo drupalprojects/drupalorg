@@ -147,5 +147,47 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
       }
     }
   }
-  drush_log('Completed.', 'ok');
+
+  drush_log('Summing release totals', 'ok');
+  $release_totals = array();
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'field_collection_item');
+  $query->fieldCondition('field_release_file_downloads', 'value', 0, '>');
+  $result = $query->execute();
+  foreach (array_chunk(array_keys($result['field_collection_item']), 100) as $ids) {
+    foreach (field_collection_item_load_multiple($ids, array(), TRUE) as $item) {
+      $release_nid = $item->hostEntityId();
+      if (isset($release_totals[$release_nid])) {
+        $release_totals[$release_nid] += $item->field_release_file_downloads[LANGUAGE_NONE][0]['value'];
+      }
+      else {
+        $release_totals[$release_nid] = $item->field_release_file_downloads[LANGUAGE_NONE][0]['value'];
+      }
+    }
+  }
+
+  drush_log('Summing project totals', 'ok');
+  $project_totals = array();
+  foreach (array_chunk($release_totals, 100, TRUE) as $chunk) {
+    foreach (node_load_multiple(array_keys($chunk), array(), TRUE) as $node) {
+      $project_nid = $node->field_release_project[LANGUAGE_NONE][0]['target_id'];
+      if (isset($project_totals[$project_nid])) {
+        $project_totals[$project_nid] += $chunk[$node->nid];
+      }
+      else {
+        $project_totals[$project_nid] = $chunk[$node->nid];
+      }
+    }
+  }
+
+  drush_log('Saving project totals', 'ok');
+  foreach (array_chunk($project_totals, 100, TRUE) as $chunk) {
+    foreach (node_load_multiple(array_keys($chunk), array(), TRUE) as $node) {
+      if (empty($node->field_download_count) || $node->field_download_count[LANGUAGE_NONE][0]['value'] != $chunk[$node->nid]) {
+        $node->field_download_count[LANGUAGE_NONE][0]['value'] = $chunk[$node->nid];
+        $node->revision = FALSE;
+        node_save($node);
+      }
+    }
+  }
 }
