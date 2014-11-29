@@ -1244,6 +1244,9 @@ function drupalorg_project_meta_data($node) {
   if ($node->nid == DRUPALORG_CORE_NID) {
     return;
   }
+
+  $wrapper = entity_metadata_wrapper('node', $node);
+
   $info = array(
     t('Maintenance status') => '<span class="warning">' . t('Unknown') . '</span>',
   );
@@ -1336,18 +1339,8 @@ function drupalorg_project_meta_data($node) {
   }
 
   // Download stats.
-  $downloads = 0;
-  foreach (project_release_query_releases($node->nid) as $release) {
-    if (!empty($release->field_release_files[$release->language])) {
-      foreach (array_map('field_collection_field_get_entity', $release->field_release_files[$release->language]) as $collection) {
-        if (!empty($collection->field_release_file_downloads[$release->language])) {
-          $downloads += $collection->field_release_file_downloads[$release->language][0]['value'];
-        }
-      }
-    }
-  }
-  if ($downloads > 0) {
-    $info[t('Downloads')] = number_format($downloads);
+  if ($wrapper->field_download_count->value() > 0) {
+    $info[t('Downloads')] = number_format($wrapper->field_download_count->value());
   }
 
   // Automated tests.
