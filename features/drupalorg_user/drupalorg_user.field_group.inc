@@ -26,15 +26,14 @@ function drupalorg_user_field_group_info() {
       0 => 'field_areas_of_expertise',
       1 => 'field_events_attended',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'Drupal',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => 'group-drupal field-group-fieldset',
         'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'open',
     ),
   );
   $export['group_drupal|user|user|form'] = $field_group;
@@ -262,15 +261,14 @@ function drupalorg_user_field_group_info() {
       6 => 'field_social_links',
       7 => 'field_websites',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'Personal information',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => 'group-user-personal field-group-fieldset',
         'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'open',
     ),
   );
   $export['group_user_personal|user|user|form'] = $field_group;
@@ -292,15 +290,14 @@ function drupalorg_user_field_group_info() {
       1 => 'field_industries_worked_in',
       2 => 'field_organizations',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'Work',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => 'group-user-work field-group-fieldset',
         'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'open',
     ),
   );
   $export['group_user_work|user|user|form'] = $field_group;
