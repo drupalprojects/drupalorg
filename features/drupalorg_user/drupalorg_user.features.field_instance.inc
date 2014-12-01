@@ -249,7 +249,7 @@ function drupalorg_user_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Select Drupal events you attended or are planning to attend.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -610,6 +610,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Organizations');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
+  t('Select Drupal events you attended or are planning to attend.');
   t('Select one or more languages you speak.');
   t('Social links');
   t('Terms of Service');
