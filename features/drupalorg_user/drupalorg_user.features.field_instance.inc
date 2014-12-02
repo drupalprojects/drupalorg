@@ -178,7 +178,7 @@ function drupalorg_user_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 40,
+      'weight' => 42,
     ),
   );
 
@@ -209,7 +209,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 14,
+      'weight' => 13,
     ),
   );
 
@@ -271,7 +271,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 46,
+      'weight' => 14,
     ),
   );
 
@@ -302,7 +302,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 39,
+      'weight' => 41,
     ),
   );
 
@@ -370,7 +370,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 41,
+      'weight' => 44,
     ),
   );
 
@@ -401,7 +401,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 38,
+      'weight' => 40,
     ),
   );
 
@@ -472,7 +472,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'url_external',
-      'weight' => 44,
+      'weight' => 46,
     ),
   );
 
@@ -508,7 +508,7 @@ function drupalorg_user_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 10,
+      'weight' => 7,
     ),
   );
 
@@ -538,7 +538,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'geolocation_html5',
       'settings' => array(),
       'type' => 'geolocation_html5_widget',
-      'weight' => 1,
+      'weight' => 38,
     ),
   );
 
@@ -586,7 +586,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 42,
+      'weight' => 45,
     ),
   );
 
