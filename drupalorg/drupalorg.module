@@ -1960,7 +1960,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_prem_sp_badge.svg',
               'alt' => t('Drupal Association Premium Supporting Partner badge'),
-            )), 'https://association.drupal.org/membership', array(
+            )), 'https://assoc.drupal.org/supporting-partners', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Premium Supporting Partner'),
@@ -1974,7 +1974,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_sup_partner_badge.svg',
               'alt' => t('Drupal Association Supporting Partner badge'),
-            )), 'https://association.drupal.org/membership', array(
+            )), 'https://assoc.drupal.org/supporting-partners', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Supporting Partner'),
@@ -1989,7 +1989,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_badge.svg',
               'alt' => t('Drupal Association Technology Supporter badge'),
-            )), 'https://association.drupal.org/membership', array(
+            )), 'https://association.drupal.org/technology-supporters', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Technology Supporter'),
@@ -2003,7 +2003,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_prem_tech_sp_badge.svg',
               'alt' => t('Drupal Association Premium Technology Supporter badge'),
-            )), 'https://association.drupal.org/membership', array(
+            )), 'https://association.drupal.org/technology-supporters', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Premium Technology Supporter'),
@@ -2017,7 +2017,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_inaug_badge.svg',
               'alt' => t('Drupal Association Inaugural Technology Supporter badge'),
-            )), 'https://association.drupal.org/membership', array(
+            )), 'https://association.drupal.org/technology-supporters', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Inaugural Technology Supporter'),
@@ -2031,7 +2031,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_prem_techsupp_inaug_badge.svg',
               'alt' => t('Drupal Association Inaugural Premium Technology Supporter badge'),
-            )), 'https://association.drupal.org/membership', array(
+            )), 'https://association.drupal.org/technology-supporters', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Inaugural Premium Technology Supporter'),
@@ -2045,7 +2045,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_host_supp.svg',
               'alt' => t('Drupal Association Hosting Supporter badge'),
-            )), 'https://association.drupal.org/membership', array(
+            )), 'https://assoc.drupal.org/drupal-hosting-supporter-program', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Hosting Supporter'),
@@ -2059,7 +2059,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_prem_host_supp.svg',
               'alt' => t('Drupal Association Premium Hosting Supporter badge'),
-            )), 'https://association.drupal.org/membership', array(
+            )), 'https://assoc.drupal.org/drupal-hosting-supporter-program', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Premium Hosting Supporter'),
@@ -2621,42 +2621,42 @@ function drupalorg_user_view($account, $view_mode) {
         }
         if (drupalorg_has_civimembership($title, 'Supporting Partner')) {
           $account->content['membership'][] = array(
-            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_sup_partner_badge.svg') . '" alt="' . t('Drupal Association Supporting Partner') . '" /></a></div></div>',
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/supporting-partners"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_sup_partner_badge.svg') . '" alt="' . t('Drupal Association Supporting Partner') . '" /></a></div></div>',
           );
         }
         if (drupalorg_has_civimembership($title, 'Supporting Partner Premium')) {
           $account->content['membership'][] = array(
-            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Supporting Partner') . '" /></a></div></div>',
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/supporting-partners"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Supporting Partner') . '" /></a></div></div>',
           );
         }
         if (drupalorg_has_civimembership($title, 'Technology Supporter')) {
           $account->content['membership'][] = array(
-            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_badge.svg') . '" alt="' . t('Drupal Association Technology Supporter') . '" /></a></div></div>',
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/technology-supporters"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_badge.svg') . '" alt="' . t('Drupal Association Technology Supporter') . '" /></a></div></div>',
           );
         }
         if (drupalorg_has_civimembership($title, 'Premium Technology Supporter')) {
           $account->content['membership'][] = array(
-            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_tech_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Technology Supporter') . '" /></a></div></div>',
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/technology-supporters"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_tech_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Technology Supporter') . '" /></a></div></div>',
           );
         }
         if (drupalorg_has_civimembership($title, 'Inaugural Technology Supporter')) {
           $account->content['membership'][] = array(
-            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_inaug_badge.svg') . '" alt="' . t('Drupal Association Inaugural Technology Supporter') . '" /></a></div></div>',
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/technology-supporters"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_inaug_badge.svg') . '" alt="' . t('Drupal Association Inaugural Technology Supporter') . '" /></a></div></div>',
           );
         }
         if (drupalorg_has_civimembership($title, 'Inaugural Premium Technology Supporter')) {
           $account->content['membership'][] = array(
-            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_techsupp_inaug_badge.svg') . '" alt="' . t('Drupal Association Inaugural Premium Technology Supporter') . '" /></a></div></div>',
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/technology-supporters"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_techsupp_inaug_badge.svg') . '" alt="' . t('Drupal Association Inaugural Premium Technology Supporter') . '" /></a></div></div>',
           );
         }
         if (drupalorg_has_civimembership($title, 'Hosting Supporter')) {
           $account->content['membership'][] = array(
-            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_host_supp.svg') . '" alt="' . t('Drupal Association Hosting Supporter') . '" /></a></div></div>',
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/drupal-hosting-supporter-program"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_host_supp.svg') . '" alt="' . t('Drupal Association Hosting Supporter') . '" /></a></div></div>',
           );
         }
         if (drupalorg_has_civimembership($title, 'Premium Hosting Supporter')) {
           $account->content['membership'][] = array(
-            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_host_supp.svg') . '" alt="' . t('Drupal Association Premium Hosting Supporter') . '" /></a></div></div>',
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/drupal-hosting-supporter-program"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_host_supp.svg') . '" alt="' . t('Drupal Association Premium Hosting Supporter') . '" /></a></div></div>',
           );
         }
       }
@@ -2714,12 +2714,12 @@ function drupalorg_user_view($account, $view_mode) {
   /*
   if (drupalorg_civimembership_data($account->name, 'Board')) {
     $account->content['membership'][] = array(
-      '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_board_badge.svg') . '" alt="' . t('Drupal Association Board Member') . '" /></a></div></div>',
+      '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/about/board"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_board_badge.svg') . '" alt="' . t('Drupal Association Board Member') . '" /></a></div></div>',
     );
   }
   if (drupalorg_civimembership_data($account->name, 'Advisory Board')) {
     $account->content['membership'][] = array(
-      '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_advisory_board_badge.svg') . '" alt="' . t('Drupal Association Advisory Board Member') . '" /></a></div></div>',
+      '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/about/board"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_advisory_board_badge.svg') . '" alt="' . t('Drupal Association Advisory Board Member') . '" /></a></div></div>',
     );
   }
   */
