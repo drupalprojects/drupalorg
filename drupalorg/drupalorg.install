@@ -2674,9 +2674,542 @@ function drupalorg_update_7070() {
 }
 
 /**
- * Migrate profile_my_mentors to field_mentors.
+ * Set up new Credit & committing form.
  */
 function drupalorg_update_7071() {
+  // Do not show BUEditor for new Git command text area.
+  $excludes = db_query('SELECT excludes FROM {bueditor_editors} WHERE eid = 10')->fetchField();
+  db_update('bueditor_editors')
+    ->fields(array('excludes' => $excludes . "\nedit-command\nedit-command-message"))
+    ->condition('eid', 10)
+    ->execute();
+}
+
+/**
+ * Migrate profile_role_with_drupal to field_areas_of_expertise.
+ */
+function drupalorg_update_7072() {
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_areas_of_expertise', 'ae', 'ae.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 76)
+    ->condition('pv.value', '', '!=')
+    ->isNull('ae.field_areas_of_expertise_tid')
+    ->distinct();
+
+  $result = $query->execute();
+
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_areas_of_expertise_tid',
+  );
+
+  $data = db_insert('field_data_field_areas_of_expertise')->fields($fields);
+  $revision = db_insert('field_revision_field_areas_of_expertise')->fields($fields);
+
+  static $tids = array();
+
+  $count = 0;
+
+  foreach ($result as $row) {
+    // Split the row value by line and comma, and trim whitespace.
+    foreach (array_filter(array_map('trim', preg_split("/[,\n\r]\s+/", $row->value))) as $delta => $area) {
+      // Discard long areas.
+      if (strlen($area) > 255) {
+        continue;
+      }
+
+      // Check if the area is within the $terms array.
+      if (!isset($tids[$area])) {
+        // Search for a term by name.
+        $term = taxonomy_get_term_by_name($area, 'areas_of_expertise');
+
+        if (!$term) {
+          // Create the term if it doesn't exist.
+          $term = (object) array(
+            'vid' => 65,
+            'name' => $area,
+          );
+          taxonomy_term_save($term);
+        }
+
+        // Store the tid within $terms.
+        if (is_array($term)) {
+          // Sometimes this is returned as an array.
+          $term = reset($term);
+        }
+        $tids[$area] = $term->tid;
+      }
+
+      $tid = $tids[$area];
+
+      $new = array(
+        'entity_type' => 'user',
+        'bundle' => 'user',
+        'entity_id' => $row->uid,
+        'revision_id' => $row->uid,
+        'language' => LANGUAGE_NONE,
+        'delta' => $delta,
+        'deleted' => 0,
+        'field_areas_of_expertise_tid' => $tid,
+      );
+
+      $data->values($new);
+      $revision->values($new);
+
+      // Increment the count value.
+      $count++;
+
+      if ($count > 100) {
+        // Save the data.
+        $data->execute();
+        $revision->execute();
+
+        // Start again.
+        $data = db_insert('field_data_field_areas_of_expertise')->fields($fields);
+        $revision = db_insert('field_revision_field_areas_of_expertise')->fields($fields);
+        $count = 0;
+      }
+    }
+
+    // Save any remaining data.
+    $data->execute();
+    $revision->execute();
+
+    // Clear the field cache.
+    field_cache_clear();
+  }
+}
+
+/**
+ * Migrate the "I contributed..." fields.
+ */
+function drupalorg_update_7073() {
+  // Get the profile data.
+  $fids = array(19, 20, 21, 23, 24, 30, 42, 52, 62, 64, 84, 90, 96, 112, 115);
+
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_contributed', 'c', 'c.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'fid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', $fids, 'IN')
+    ->condition('pv.value', 1)
+    ->isNull('c.field_contributed_value')
+    ->orderBy('u.uid');
+
+  $result = $query->execute();
+
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_contributed_value',
+  );
+
+  $data = db_insert('field_data_field_contributed')->fields($fields);
+  $revision = db_insert('field_revision_field_contributed')->fields($fields);
+
+  // A map of the old profile field IDs to the new field values.
+  $map = array(
+    19 => 'modules',
+    20 => 'themes',
+    21 => 'documentation',
+    23 => 'forums',
+    24 => 'services',
+    30 => 'translations',
+    42 => 'irc',
+    52 => 'tests',
+    62 => 'patches',
+    64 => 'applications',
+    84 => 'profiles',
+    90 => 'issues',
+    96 => 'mentor',
+    112 => 'drupalorg',
+    115 => 'drupalcon',
+  );
+
+  $count = 0;
+  $delta = 0;
+  $previous_uid = FALSE;
+
+  foreach ($result as $row) {
+    if ($row->uid == $previous_uid) {
+      // Because the results are ordered by uid, we can keep increasing the value
+      // for $delta until the uid changes.
+      $delta++;
+    }
+    else {
+      // If the uid has changed, we have moved on to the next user. Store the uid
+      // as $previous_uid for the next comparison and reset $delta back to 0.
+      $previous_uid = $row->uid;
+      $delta = 0;
+    }
+
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => $delta,
+      'deleted' => 0,
+      'field_contributed_value' => $map[$row->fid],
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count++;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_contributed')->fields($fields);
+      $revision = db_insert('field_revision_field_contributed')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
+
+/**
+ * Migrate events attended.
+ */
+function drupalorg_update_7074() {
+  // Get the profile data.
+  $fids = array(29, 31, 32, 33, 34, 36, 37, 38, 40, 44, 46, 50, 56, 58, 60, 86, 88, 94, 102, 106, 110, 113, 119, 123, 125, 127);
+
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_events_attended', 'dp', 'dp.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'fid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', $fids, 'IN')
+    ->condition('pv.value', 1)
+    ->isNull('dp.field_events_attended_value')
+    ->orderBy('u.uid');
+
+  $result = $query->execute();
+
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_events_attended_value',
+  );
+
+  $data = db_insert('field_data_field_events_attended')->fields($fields);
+  $revision = db_insert('field_revision_field_events_attended')->fields($fields);
+
+  // A map of the old profile field IDs to the new field values.
+  $map = array(
+    29 => 'antwerp_2005',
+    31 => 'portland_2005',
+    32 => 'amsterdam_2005',
+    33 => 'london_2005',
+    34 => 'vancouver_2006',
+    36 => 'brussels_2006',
+    37 => 'oscms_2007',
+    38 => 'barcelona_2007',
+    40 => 'boston_2008',
+    44 => 'szeged_hungary_2008',
+    46 => 'dc_2009',
+    50 => 'paris_2009',
+    56 => 'sf_2010',
+    58 => 'copenhagen_2010',
+    60 => 'chicago_2011',
+    86 => 'london_2011',
+    88 => 'denver_2012',
+    94 => 'munich_2012',
+    102 => 'portland_2013',
+    106 => 'sydney_2012',
+    110 => 'prague_2013',
+    113 => 'austin_2014',
+    119 => 'amsterdam_2014',
+    123 => 'latinamerica_2015',
+    125 => 'losangeles_2015',
+    127 => 'barcelona_2015',
+  );
+
+  $count = 0;
+  $delta = 0;
+  $previous_uid = FALSE;
+
+  foreach ($result as $row) {
+    if ($row->uid == $previous_uid) {
+      // Because the results are ordered by uid, we can keep increasing the value
+      // for $delta until the uid changes.
+      $delta++;
+    }
+    else {
+      // If the uid has changed, we have moved on to the next user. Store the uid
+      // as $previous_uid for the next comparison and reset $delta back to 0.
+     $previous_uid = $row->uid;
+     $delta = 0;
+    }
+
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => $delta,
+      'deleted' => 0,
+      'field_events_attended_value' => $map[$row->fid],
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count++;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_events_attended')->fields($fields);
+      $revision = db_insert('field_revision_field_events_attended')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
+
+/**
+ * Migrate social links.
+ */
+function drupalorg_update_7075() {
+  // Get the profile data.
+  $fids = array(66, 68, 121, 70, 92, 117);
+
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_social_links', 'sl', 'sl.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'fid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', $fids, 'IN')
+    ->condition('pv.value', '', '!=')
+    ->isNull('sl.field_social_links_value')
+    ->orderBy('u.uid');
+
+  $result = $query->execute();
+
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_social_links_value',
+    'field_social_links_title',
+    'field_social_links_attributes',
+  );
+
+  $data = db_insert('field_data_field_social_links')->fields($fields);
+  $revision = db_insert('field_revision_field_social_links')->fields($fields);
+
+  $count = 0;
+  $delta = 0;
+  $previous_uid = FALSE;
+
+  foreach ($result as $row) {
+    if ($row->uid == $previous_uid) {
+      // Because the results are ordered by uid, we can keep increasing the value
+      // for $delta until the uid changes.
+      $delta++;
+    }
+    else {
+      // If the uid has changed, we have moved on to the next user. Store the uid
+      // as $previous_uid for the next comparison and reset $delta back to 0.
+      $previous_uid = $row->uid;
+      $delta = 0;
+    }
+
+    switch ($row->fid) {
+      case 66:
+        $title = 'LinkedIn';
+        break;
+
+      case 68:
+        $title = 'Facebook';
+        break;
+
+      case 121:
+        $title = 'Gratipay';
+        break;
+
+      case 70:
+        $title = 'Twitter';
+        break;
+
+      case 92:
+        $title = 'Google';
+        break;
+
+      case 117:
+        $title = 'Drupal Answers';
+        break;
+    }
+
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => $delta,
+      'deleted' => 0,
+      'field_social_links_value' => $row->value,
+      'field_social_links_title' => $title,
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count++;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_social_links')->fields($fields);
+      $revision = db_insert('field_revision_field_social_links')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  field_cache_clear();
+}
+
+/**
+ * Move field_github_profile into field_social_links.
+ */
+function drupalorg_update_7076() {
+  // Get the field data.
+  $query = db_select('users', 'u');
+  $query->join('field_data_field_github_profile', 'gp', 'gp.entity_id = u.uid');
+  $query
+    ->fields('gp', array('field_github_profile_value'))
+    ->fields('u', array('uid'))
+    ->condition('u.status', 1);
+
+  $result = $query->execute();
+
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_social_links_value',
+    'field_social_links_title',
+    'field_social_links_attributes',
+  );
+
+  $data = db_insert('field_data_field_social_links')->fields($fields);
+  $revision = db_insert('field_revision_field_social_links')->fields($fields);
+
+  $count = 0;
+
+  foreach ($result as $row) {
+    // Find the number of existing social links for this user.
+    $number_of_links = db_query('SELECT field_social_links_value FROM {field_data_field_social_links} WHERE entity_id = :id', array(':id' => $row->uid))->rowCount();
+
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => $number_of_links++,
+      'deleted' => 0,
+      'field_social_links_value' => $row->field_github_profile_value,
+      'field_social_links_title' => 'GitHub',
+    );
+
+    $data->values($new);
+    $revision->values($new);
+
+    // Increment the count value.
+    $count++;
+
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_social_links')->fields($fields);
+      $revision = db_insert('field_revision_field_social_links')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Clear the field cache.
+  field_cache_clear();
+}
+
+/**
+ * Migrate profile_my_mentors to field_mentors.
+ */
+function drupalorg_update_7077() {
   // Get the profile data.
   $query = db_select('users', 'u');
   $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
@@ -2763,4 +3296,3 @@ function drupalorg_update_7071() {
     field_cache_clear();
   }
 }
-

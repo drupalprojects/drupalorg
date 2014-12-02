@@ -28,7 +28,7 @@
             <tr><td><?php print $number_of_distributions; ?></td><td><a href="project/distributions">Distributions</a></td></tr>
             <tr><td><?php print $number_of_git_accounts; ?></td><td><a href="commitlog">Developers</a></td></tr>
           </table>
-          <table class="front-current-activity">
+          <table class="front-thisweek-activity">
             <tr><td></td><th>This week</th></tr>
             <tr><td><?php print $number_of_git_commits; ?></td><td><a href="commitlog">Code commits</a></td></tr>
             <tr><td><?php print $number_of_issue_comments; ?></td><td><a href="project/issues">Issue comments</a></td></tr>
@@ -44,12 +44,14 @@
     <?php print $psa; ?>
 </div>
 
+<div id="stats-map">
+  <div id="front-drupal-stats">
+    <div class="inner"><em><?php print $number_of_users; ?></em> people in <em><?php print $number_of_countries; ?></em> countries<span class="country-note"><a href="/node/955312">*</a></span> speaking <em><?php print $number_of_languages; ?></em> languages power Drupal.</div>
+  </div>
 
-<div id="front-drupal-stats"><div class="inner"><em><?php print $number_of_users; ?></em> people in <em><?php print $number_of_countries; ?></em> countries<span class="country-note"><a href="/node/955312">*</a></span> speaking <em><?php print $number_of_languages; ?></em> languages power Drupal.</div>
-    </div>
-
-<div id="community-map">
-      <div class="homepage-map"><?php print $map_content; ?></div>
+  <div id="community-map">
+    <div class="homepage-map"><?php print $map_content; ?></div>
+  </div>
 </div>
 
 <div id="community-updates">

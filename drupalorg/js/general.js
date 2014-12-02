@@ -80,4 +80,52 @@
       }
     }
   };
+
+  /**
+   * Issue credit helping. See drupalorg_issue_credit_form().
+   */
+  Drupal.behaviors.drupalorgIssueCredit = {
+    attach: function (context) {
+      $('#drupalorg-issue-credit-form', context).once('drupalorg-issue-credit', function () {
+        // Store command template.
+        Drupal.settings.drupalorgIssueCreditTemplate = $('textarea[name=command]', this).val();
+        Drupal.settings.drupalorgIssueCreditMessageTemplate = $('textarea[name=command-message]', this).val();
+
+        // Attach event handlers.
+        $('input[name=message]', this).keyup(Drupal.drupalorgUpdateIssueCredit);
+        $('input[type=checkbox][id^=by-]', this).change(Drupal.drupalorgUpdateIssueCredit);
+        $('input[name=author]', this).change(Drupal.drupalorgUpdateIssueCredit);
+        $('textarea[command], textarea[name=command-message]', this).click(function () {
+          $(this).select();
+        });
+
+        // Initially fill out field.
+        Drupal.drupalorgUpdateIssueCredit();
+      });
+    }
+  };
+
+  Drupal.drupalorgUpdateIssueCredit = function () {
+    var $author = $('#drupalorg-issue-credit-form input[name=author]:checked'),
+      message = $('#drupalorg-issue-credit-form input[name=message]').val();
+
+    $('#drupalorg-issue-credit-form #by-' + $author.val()).attr('checked', 'checked');
+
+    // Collect names for 'by …'
+    var by = [];
+    $('#drupalorg-issue-credit-form input[type=checkbox][id^=by-]:checked').each(function () {
+      by.push($(this).data('by'));
+    });
+
+    // Fill out template. It has already been translated server-side.
+    $('#drupalorg-issue-credit-form textarea[name=command]').val(Drupal.formatString(Drupal.settings.drupalorgIssueCreditTemplate, {
+      '!message': message.replace(/'/g, "'\\''"),
+      '!by': (by.length > 0 ? ' by ' + by.join(', ') : '').replace(/'/g, "'\\''"),
+      '!author': $author.data('author').replace(/'/g, "'\\''")
+    }));
+    $('#drupalorg-issue-credit-form textarea[name=command-message]').val(Drupal.formatString(Drupal.settings.drupalorgIssueCreditMessageTemplate, {
+      '!message': message,
+      '!by': (by.length > 0 ? ' by ' + by.join(', ') : '')
+    }));
+  }
 })(jQuery);

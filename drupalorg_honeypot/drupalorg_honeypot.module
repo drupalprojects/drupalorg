@@ -7,16 +7,6 @@ function drupalorg_honeypot_honeypot_time_limit($timelimit, $form_values, $failu
   global $user;
 
   $extra_time = 0;
-  if ($user->uid > 0 && isset($form_values['country']) && in_array($form_values['country'], variable_get('drupalorg_honeypot_likely_spam_countries', array()))) {
-    $extra_time = $timelimit * variable_get('drupalorg_honeypot_factor', 1);
-  }
-  elseif ($user->uid > 0) {
-    $country = db_query('SELECT value FROM {profile_value} WHERE fid = :fid AND uid = :uid', array(':fid' => 17, ':uid' => $user->uid))->fetchField();
-    if ($country && in_array($country, variable_get('drupalorg_honeypot_likely_spam_countries', array()))) {
-      $extra_time = $timelimit * variable_get('drupalorg_honeypot_factor', 1);
-    }
-  }
-
   $count = 0;
   // scan nodes
   if (isset($form_values['title']) && $form_values['title']) {

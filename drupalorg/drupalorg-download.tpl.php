@@ -15,7 +15,7 @@
       <li><a href="/documentation/build/distributions">About Distributions</a></li>
       <li><a href="/project/project_distribution?solrsort=iss_project_release_usage%20desc">Most Installed Distributions</a></li>
       <li><a href="/project/project_distribution?solrsort=ds_created%20desc">New Distributions</a></li>
-      <li><a href="/project/project_distribution?solrsort=ds_project_latest_activity%20desc">Most Active Distribitions</a></li>
+      <li><a href="/project/project_distribution?solrsort=ds_project_latest_activity%20desc">Most Active Distributions</a></li>
       <li class="last all"><a class="all" href="/project/project_distribution">Search for More Distributions</a></li>
     </ul>
   </div>

@@ -178,40 +178,37 @@ function drupalorg_user_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 40,
+      'weight' => 42,
     ),
   );
 
-  // Exported field_instance: 'user-user-field_contributions'
-  $field_instances['user-user-field_contributions'] = array(
+  // Exported field_instance: 'user-user-field_contributed'
+  $field_instances['user-user-field_contributed'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Please provide an overview of your Drupal contributions. These could be modules that you have created or maintain, user groups that you organize, volunteering at events, or other contributions.',
+    'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
-        'module' => 'text',
+        'label' => 'hidden',
+        'module' => 'list',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 8,
+        'type' => 'list_default',
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'user',
-    'field_name' => 'field_contributions',
-    'label' => 'Drupal contributions',
+    'field_name' => 'field_contributed',
+    'label' => 'My contributions',
     'required' => 0,
     'settings' => array(
-      'text_processing' => 1,
       'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
       'weight' => 13,
     ),
   );
@@ -247,6 +244,37 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_events_attended'
+  $field_instances['user-user-field_events_attended'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Select Drupal events you attended or are planning to attend.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 8,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_events_attended',
+    'label' => 'Drupal Events',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 14,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_gender'
   $field_instances['user-user-field_gender'] = array(
     'bundle' => 'user',
@@ -274,45 +302,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 39,
-    ),
-  );
-
-  // Exported field_instance: 'user-user-field_github_profile'
-  $field_instances['user-user-field_github_profile'] = array(
-    'bundle' => 'user',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Enter the URL of your GitHub profile, if you have one.',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'module' => 'url',
-        'settings' => array(
-          'nofollow' => FALSE,
-          'trim_length' => 80,
-        ),
-        'type' => 'url_default',
-        'weight' => 11,
-      ),
-    ),
-    'entity_type' => 'user',
-    'field_name' => 'field_github_profile',
-    'label' => 'GitHub Profile',
-    'required' => 0,
-    'settings' => array(
-      'title_fetch' => 0,
-      'title_field' => 0,
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'url',
-      'settings' => array(
-        'size' => 58,
-      ),
-      'type' => 'url_external',
-      'weight' => 44,
+      'weight' => 41,
     ),
   );
 
@@ -350,40 +340,6 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_interests'
-  $field_instances['user-user-field_interests'] = array(
-    'bundle' => 'user',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'taxonomy',
-        'settings' => array(),
-        'type' => 'taxonomy_term_reference_plain',
-        'weight' => 16,
-      ),
-    ),
-    'entity_type' => 'user',
-    'field_name' => 'field_interests',
-    'label' => 'Personal Interests',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'taxonomy',
-      'settings' => array(
-        'autocomplete_path' => 'taxonomy/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'taxonomy_autocomplete',
-      'weight' => 41,
-    ),
-  );
-
   // Exported field_instance: 'user-user-field_irc_nick'
   $field_instances['user-user-field_irc_nick'] = array(
     'bundle' => 'user',
@@ -414,7 +370,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 42,
+      'weight' => 44,
     ),
   );
 
@@ -445,7 +401,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 38,
+      'weight' => 40,
     ),
   );
 
@@ -498,7 +454,7 @@ function drupalorg_user_field_default_field_instances() {
           'view_mode' => 'full',
         ),
         'type' => 'field_collection_fields',
-        'weight' => 10,
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'user',
@@ -517,6 +473,44 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_social_links'
+  $field_instances['user-user-field_social_links'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Link to your profile pages on Twitter, LinkedIn, Facebook, Google, Drupal Answers, GitHub, Gratipay, and any others you would like to include.',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'url',
+        'settings' => array(
+          'nofollow' => FALSE,
+          'trim_length' => 80,
+        ),
+        'type' => 'url_default',
+        'weight' => 10,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_social_links',
+    'label' => 'Social links',
+    'required' => 0,
+    'settings' => array(
+      'title_fetch' => 0,
+      'title_field' => 0,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'url',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'url_external',
+      'weight' => 46,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_terms_of_service'
   $field_instances['user-user-field_terms_of_service'] = array(
     'bundle' => 'user',
@@ -532,7 +526,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 8,
       ),
     ),
     'entity_type' => 'user',
@@ -549,7 +543,7 @@ function drupalorg_user_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 10,
+      'weight' => 7,
     ),
   );
 
@@ -564,7 +558,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'user',
@@ -579,7 +573,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'geolocation_html5',
       'settings' => array(),
       'type' => 'geolocation_html5_widget',
-      'weight' => 1,
+      'weight' => 38,
     ),
   );
 
@@ -595,7 +589,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_url',
-        'weight' => 13,
+        'weight' => 14,
       ),
     ),
     'entity_type' => 'user',
@@ -627,7 +621,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 43,
+      'weight' => 45,
     ),
   );
 
@@ -637,25 +631,25 @@ function drupalorg_user_field_default_field_instances() {
   t('Bio');
   t('Country');
   t('Current');
-  t('Drupal contributions');
-  t('Enter the URL of your GitHub profile, if you have one.');
+  t('Drupal Events');
   t('Gender');
-  t('GitHub Profile');
   t('Give credit to community members (drupal.org usernames) who have significantly influenced your contributions to Drupal. For example, people who mentored you in the issue queue, IRC, user groups, sprints, Core contribution mentoring hours, etc.');
   t('IRC');
   t('Industries Worked In');
   t('Job Title');
   t('Languages spoken');
+  t('Link to your profile pages on Twitter, LinkedIn, Facebook, Google, Drupal Answers, GitHub, Gratipay, and any others you would like to include.');
   t('List companies or institutions you have worked for or are working for now.');
   t('Location');
   t('My mentors');
+  t('My contributions');
   t('Organization');
   t('Organizations');
-  t('Personal Interests');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
-  t('Please provide an overview of your Drupal contributions. These could be modules that you have created or maintain, user groups that you organize, volunteering at events, or other contributions.');
+  t('Select Drupal events you attended or are planning to attend.');
   t('Select one or more languages you speak.');
+  t('Social links');
   t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Website(s)');

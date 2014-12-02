@@ -193,7 +193,6 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['relationships']['taxonomy_vocabulary_50_tid']['table'] = 'field_data_taxonomy_vocabulary_50';
   $handler->display->display_options['relationships']['taxonomy_vocabulary_50_tid']['field'] = 'taxonomy_vocabulary_50_tid';
   $handler->display->display_options['relationships']['taxonomy_vocabulary_50_tid']['label'] = 'Sectors';
-  $handler->display->display_options['relationships']['taxonomy_vocabulary_50_tid']['required'] = TRUE;
   /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['id'] = 'taxonomy_vocabulary_52_tid';
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['table'] = 'field_data_taxonomy_vocabulary_52';

@@ -13,7 +13,7 @@ function drupalorg_user_field_default_field_bases() {
   // Exported field_base: 'field_areas_of_expertise'
   $field_bases['field_areas_of_expertise'] = array(
     'active' => 1,
-    'cardinality' => -1,
+    'cardinality' => 10,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_areas_of_expertise',
@@ -69,6 +69,45 @@ function drupalorg_user_field_default_field_bases() {
     'settings' => array(),
     'translatable' => 0,
     'type' => 'text_long',
+  );
+
+  // Exported field_base: 'field_contributed'
+  $field_bases['field_contributed'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_contributed',
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'patches' => 'I contributed Drupal patches',
+        'modules' => 'I contributed Drupal modules',
+        'themes' => 'I contributed Drupal themes',
+        'profiles' => 'I contributed Drupal installation profiles',
+        'issues' => 'I contributed to Drupal issue queues',
+        'drupalorg' => 'I contributed to Drupal.org',
+        'documentation' => 'I contributed Drupal documentation',
+        'translations' => 'I contributed Drupal translations',
+        'drupalcon' => 'I helped organize DrupalCon',
+        'tests' => 'I contributed Automated tests',
+        'applications' => 'I reviewed Project applications',
+        'forums' => 'I help in the Drupal support forums',
+        'services' => 'I provide Drupal-related services',
+        'irc' => 'I give support on IRC',
+        'mentor' => 'I help mentor new contributors',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
   );
 
   // Exported field_base: 'field_country'
@@ -350,6 +389,56 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
+  // Exported field_base: 'field_events_attended'
+  $field_bases['field_events_attended'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_events_attended',
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'antwerp_2005' => 'Drupal conference at FOSDEM 2005 (Antwerp, Belgium)',
+        'portland_2005' => 'OSCON 2005 or the off-site Drupal conference at OSCON 2005 (Portland, Oregon)',
+        'amsterdam_2005' => 'DrupalCon Amsterdam 2005',
+        'london_2005' => 'LinuxWorldExpo London',
+        'vancouver_2006' => 'Drupal conference colocated with the Open Source CMS and Blogging Tools Summit (Vancouver, Canada)',
+        'brussels_2006' => 'Drupal conference 2006 (Brussels, Belgium)',
+        'oscms_2007' => 'OSCMS 2007, Sunnyvale',
+        'barcelona_2007' => 'DrupalCon Barcelona 2007',
+        'boston_2008' => 'DrupalCon Boston 2008',
+        'szeged_hungary_2008' => 'DrupalCon Szeged, Hungary 2008',
+        'dc_2009' => 'DrupalCon DC 2009',
+        'paris_2009' => 'DrupalCon Paris 2009',
+        'sf_2010' => 'DrupalCon San Francisco 2010',
+        'copenhagen_2010' => 'DrupalCon Copenhagen 2010',
+        'chicago_2011' => 'DrupalCon Chicago 2011',
+        'london_2011' => 'DrupalCon London 2011',
+        'denver_2012' => 'DrupalCon Denver 2012',
+        'munich_2012' => 'DrupalCon Munich 2012',
+        'sydney_2012' => 'DrupalCon Sydney 2013',
+        'portland_2013' => 'DrupalCon Portland 2013',
+        'prague_2013' => 'DrupalCon Prague 2013',
+        'austin_2014' => 'DrupalCon Austin 2014',
+        'amsterdam_2014' => 'DrupalCon Amsterdam 2014',
+        'latinamerica_2015' => 'DrupalCon Latin America 2015',
+        'losangeles_2015' => 'DrupalCon Los Angeles 2015',
+        'barcelona_2015' => 'DrupalCon Barcelona 2015',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_gender'
   $field_bases['field_gender'] = array(
     'active' => 1,
@@ -376,22 +465,6 @@ function drupalorg_user_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'list_text',
-  );
-
-  // Exported field_base: 'field_github_profile'
-  $field_bases['field_github_profile'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_github_profile',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'url',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'url',
   );
 
   // Exported field_base: 'field_industries_worked_in'
@@ -421,40 +494,6 @@ function drupalorg_user_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'text',
-  );
-
-  // Exported field_base: 'field_interests'
-  $field_bases['field_interests'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_interests',
-    'foreign keys' => array(
-      'tid' => array(
-        'columns' => array(
-          'tid' => 'tid',
-        ),
-        'table' => 'taxonomy_term_data',
-      ),
-    ),
-    'indexes' => array(
-      'tid' => array(
-        0 => 'tid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'taxonomy',
-    'settings' => array(
-      'allowed_values' => array(
-        0 => array(
-          'vocabulary' => 'interests',
-          'parent' => 0,
-        ),
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'taxonomy_term_reference',
   );
 
   // Exported field_base: 'field_irc_nick'
@@ -811,6 +850,22 @@ function drupalorg_user_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'field_collection',
+  );
+
+  // Exported field_base: 'field_social_links'
+  $field_bases['field_social_links'] = array(
+    'active' => 1,
+    'cardinality' => 7,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_social_links',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'url',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'url',
   );
 
   // Exported field_base: 'field_terms_of_service'

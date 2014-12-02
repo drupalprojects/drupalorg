@@ -164,27 +164,6 @@ function drupalorg_git_gateway_user_update(&$edit, $account, $category) {
 }
 
 /**
- * Implements hook_user_view().
- */
-function drupalorg_git_gateway_user_view($account, $view_mode) {
-  if (drupalorg_git_gateway_user_git_access()) {
-    $attribution = t('Pass the following option to <code>git commit</code> to attribute authorship to this user:');
-    $attribution .= '<pre>';
-    $attribution .= check_plain('--author="' . drupalorg_git_gateway_user_git_format_author($account) . '"');
-    $attribution .= '</pre>';
-    $attribution .= '<em>' . t('Learn more about <a href="@attribution-url">proper Git attribution</a>.', array(
-      '@attribution-url' => url('node/1146430'),
-    )) . '</em>';
-    $account->content['Personal information']['git_attribution'] = array(
-      '#type' => 'user_profile_item',
-      '#title' => t('Git attribution'),
-      '#markup' => $attribution,
-      '#weight' => 15,
-    );
-  }
-}
-
-/**
  * Return whether currently logged in user is allowed to see git author attribution.
  */
 function drupalorg_git_gateway_user_git_access() {

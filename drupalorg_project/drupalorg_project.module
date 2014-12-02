@@ -378,6 +378,203 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     $language = $form['field_project_machine_name']['#language'];
     $form['field_project_machine_name'][$language][0]['value']['#element_validate'][] = 'drupalorg_project_machine_name_validate';
   }
+  elseif (project_issue_node_is_issue($form_state['node'])) {
+    // Only existing issues for projects.
+    if (!empty($form_state['node']->nid)) {
+      // Build table of commenters.
+      $table = array(
+        '#theme' => 'table',
+        '#header' => array(
+          t('Author'),
+          t('By'),
+          array(
+            'data' => t('Files ▾<span class="element-invisible">sorted descending</span>'),
+            'colspan' => 2,
+          ),
+          array(
+            'data' => t('Comments'),
+            'colspan' => 2,
+          ),
+        ),
+        '#rows' => array(
+          $form_state['node']->uid => array(
+            'author' => NULL,
+            'by' => $form_state['node']->name,
+            'files' => NULL,
+            'files-bar' => NULL,
+            'comments' => 1,
+            'comments-bar' => NULL,
+            '#weight' => 0,
+          ),
+        ),
+      );
+
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'comment');
+      $query->propertyCondition('nid', $form_state['node']->nid);
+      $query->propertyCondition('status', COMMENT_PUBLISHED);
+      $query->propertyCondition('uid', variable_get('project_issue_followup_user', 0), '!=');
+      $result = $query->execute();
+      if (isset($result['comment'])) {
+        foreach (comment_load_multiple(array_keys($result['comment'])) as $comment) {
+          if (!isset($table['#rows'][$comment->uid])) {
+            $table['#rows'][$comment->uid] = array(
+              'author' => NULL,
+              'by' => $comment->name,
+              'files' => NULL,
+              'files-bar' => NULL,
+              'comments' => 1,
+              'comments-bar' => NULL,
+              '#weight' => 0,
+            );
+          }
+          else {
+            $table['#rows'][$comment->uid]['comments'] += 1;
+            $table['#rows'][$comment->uid]['#weight'] += 0.01;
+          }
+        }
+      }
+
+      $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
+      foreach ($node_wrapper->field_issue_files->value() as $file) {
+        $table['#rows'][$file['uid']]['files'] += 1;
+        $table['#rows'][$file['uid']]['#weight'] += 1;
+      }
+      // Set author to final file, except for core.
+      $author = (isset($file) && $node_wrapper->field_project->value()->nid != DRUPALORG_CORE_NID) ? $file['uid'] : '';
+
+      // Sort.
+      uasort($table['#rows'], 'element_sort');
+      $table['#rows'] = array_reverse($table['#rows'], TRUE);
+
+      foreach ($table['#rows'] as $uid => &$row) {
+        $row['author'] = array(
+          'data' => array(
+            '#type' => 'radio',
+            '#name' => 'author',
+            '#return_value' => $uid,
+            '#value' => $author,
+            '#title' => t('Author is @name', array('@name' => $row['by'])),
+            '#title_display' => 'invisible',
+            '#attributes' => array(
+              'data-author' => ' --author="' . drupalorg_git_gateway_user_git_format_author(user_load($uid)) . '"',
+            ),
+          ),
+          'class' => 'author',
+        );
+        $row['by'] = array(
+          'data' => array(
+            '#type' => 'checkbox',
+            '#title' => check_plain($row['by']),
+            '#checked' => !is_null($row['files']),
+            '#id' => 'by-' . $uid,
+            '#attributes' => array(
+              'data-by' => $row['by'],
+            ),
+            '#states' => array(
+              'disabled' => array(
+                ':input[name=author]' => array('value' => $uid),
+              ),
+            ),
+          ),
+        );
+        // Format files and comments bars.
+        if (!is_null($row['files'])) {
+          if ($row['files'] > 50) {
+            $row['files-bar'] = '<div class="bar overflow" style="width: 20em"></div>';
+          }
+          else {
+            $row['files-bar'] = '<div class="bar" style="width: ' . ($row['files'] / 50 * 20) . 'em"></div>';
+          }
+          $row['files'] = array(
+            'data' => $row['files'] . '<span class="element-invisible"> ' . t('files attached') . '</span>',
+            'class' => 'number',
+          );
+        }
+        if (!is_null($row['comments'])) {
+          if ($row['comments'] > 50) {
+            $row['comments-bar'] = '<div class="bar overflow" style="width: 20em"></div>';
+          }
+          else {
+            $row['comments-bar'] = '<div class="bar" style="width: ' . ($row['comments'] / 50 * 20) . 'em"></div>';
+          }
+          $row['comments'] = array(
+            'data' => $row['comments'] . '<span class="element-invisible"> ' . t('comments made') . '</span>',
+            'class' => 'number',
+          );
+        }
+        // Remove temporary column.
+        unset($row['#weight']);
+      }
+
+      $table['#rows'][0] = array(
+        'author' => array(
+          'data' => array(
+            '#type' => 'radio',
+            '#name' => 'author',
+            '#return_value' => '',
+            '#value' => check_plain($author),
+            '#id' => 'by-0',
+            '#attributes' => array(
+              'data-author' => '',
+            ),
+          ),
+          'class' => 'author',
+        ),
+        'name' => array(
+          'data' => array(
+            '#theme' => 'html_tag',
+            '#tag' => 'label',
+            '#value' => t('<em>Omit author</em>'),
+            '#attributes' => array('for' => 'by-0'),
+          ),
+          'colspan' => 5,
+        ),
+      );
+
+      // Set up base form.
+      $form['drupalorg_credit_wrapper'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Credit & committing'),
+        '#collapsible' => TRUE,
+        // Open by default when the user is a 'Write to VCS' maintainer.
+        '#collapsed' => !isset($form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]) || !$form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]['permissions']['write to vcs'],
+        '#weight' => 50,
+        '#id' => 'drupalorg-issue-credit-form',
+        'message' => array(
+          '#type' => 'textfield',
+          '#title' => t('Commit message'),
+          '#default_value' => rtrim($form_state['node']->title, '.'),
+          '#maxlength' => NULL,
+        ),
+        'commenters' => $table,
+        'commands' => array(
+          '#type' => 'vertical_tabs',
+          'full' => array(
+            '#type' => 'fieldset',
+            '#title' => t('Git command'),
+            'command' => array(
+              '#type' => 'textarea',
+              '#value' => t('git commit -m \'Issue #@nid!by: !message\'!author', array('@nid' => $form_state['node']->nid)),
+              '#resizable' => FALSE,
+            ),
+          ),
+          'message' => array(
+            '#type' => 'fieldset',
+            '#title' => t('Message only'),
+            'command-message' => array(
+              '#type' => 'textarea',
+              '#value' => t('Issue #@nid!by: !message', array('@nid' => $form_state['node']->nid)),
+              '#resizable' => FALSE,
+            ),
+          ),
+        ),
+        'help' => array(
+          '#markup' => '<div class="description">' . t('Learn more about <a href="@attribution-url">giving credit</a>.', array('@attribution-url' => url('node/52287'))) . '</div>',
+        ),
+      );
+    }
+  }
   elseif (project_release_node_is_release($form_state['node'])) {
     // See if this is a release for a translation project, and if so, deny.
     $project = node_load(project_release_get_release_project_nid($form_state['node']));
@@ -442,6 +639,13 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_project_form_project_promote_project_form_alter(&$form) {
+  $form['shortname']['#element_validate'][] = 'drupalorg_project_machine_name_validate';
 }
 
 /**
@@ -1047,6 +1251,9 @@ function drupalorg_project_meta_data($node) {
   if ($node->nid == DRUPALORG_CORE_NID) {
     return;
   }
+
+  $wrapper = entity_metadata_wrapper('node', $node);
+
   $info = array(
     t('Maintenance status') => '<span class="warning">' . t('Unknown') . '</span>',
   );
@@ -1139,18 +1346,8 @@ function drupalorg_project_meta_data($node) {
   }
 
   // Download stats.
-  $downloads = 0;
-  foreach (project_release_query_releases($node->nid) as $release) {
-    if (!empty($release->field_release_files[$release->language])) {
-      foreach (array_map('field_collection_field_get_entity', $release->field_release_files[$release->language]) as $collection) {
-        if (!empty($collection->field_release_file_downloads[$release->language])) {
-          $downloads += $collection->field_release_file_downloads[$release->language][0]['value'];
-        }
-      }
-    }
-  }
-  if ($downloads > 0) {
-    $info[t('Downloads')] = number_format($downloads);
+  if ($wrapper->field_download_count->value() > 0) {
+    $info[t('Downloads')] = number_format($wrapper->field_download_count->value());
   }
 
   // Automated tests.
@@ -1424,7 +1621,7 @@ function drupalorg_maintainers_json($project) {
  * @see https://drupal.org/node/2172891
  */
 function drupalorg_project_machine_name_validate($element, &$form_state, $form) {
-  if ($form_state['values']['field_project_type'][$element['#language']][0]['value'] == 'full'
+  if (($form_state['values']['field_project_type'][$element['#language']][0]['value'] == 'full' || $form['#id'] === 'project-promote-project-form')
     && !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $element['#value'])) {
     form_error($element, t('@title must follow <a href="@url">PHP naming convention</a>.', array(
       '@title' => $element['#title'],
