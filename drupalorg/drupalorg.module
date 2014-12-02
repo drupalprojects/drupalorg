@@ -1989,7 +1989,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_badge.svg',
               'alt' => t('Drupal Association Technology Supporter badge'),
-            )), 'https://association.drupal.org/technology-supporters', array(
+            )), 'https://assoc.drupal.org/technology-supporters', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Technology Supporter'),
@@ -2003,7 +2003,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_prem_tech_sp_badge.svg',
               'alt' => t('Drupal Association Premium Technology Supporter badge'),
-            )), 'https://association.drupal.org/technology-supporters', array(
+            )), 'https://assoc.drupal.org/technology-supporters', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Premium Technology Supporter'),
@@ -2017,7 +2017,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_tech_supp_inaug_badge.svg',
               'alt' => t('Drupal Association Inaugural Technology Supporter badge'),
-            )), 'https://association.drupal.org/technology-supporters', array(
+            )), 'https://assoc.drupal.org/technology-supporters', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Inaugural Technology Supporter'),
@@ -2031,7 +2031,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_prem_techsupp_inaug_badge.svg',
               'alt' => t('Drupal Association Inaugural Premium Technology Supporter badge'),
-            )), 'https://association.drupal.org/technology-supporters', array(
+            )), 'https://assoc.drupal.org/technology-supporters', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Inaugural Premium Technology Supporter'),
@@ -2074,7 +2074,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_org_member_badge.svg',
               'alt' => t('Drupal Association Organization Member badge'),
-            )), 'https://association.drupal.org/membership', array(
+            )), 'https://assoc.drupal.org/membership', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Organization Member'),
@@ -2616,7 +2616,7 @@ function drupalorg_user_view($account, $view_mode) {
         // Organization Memberships and Supporting Partner/Technology and Hosting Supporters
         if (drupalorg_has_civimembership($title, 'Organization')) {
           $account->content['membership'][] = array(
-            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_org_member_badge.svg') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div></div>',
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_org_member_badge.svg') . '" alt="' . t('Drupal Association Organization Member') . '" /></a></div></div>',
           );
         }
         if (drupalorg_has_civimembership($title, 'Supporting Partner')) {
@@ -2690,22 +2690,22 @@ function drupalorg_user_view($account, $view_mode) {
 
   // Get the membership display content
   if ($account->uid === $user->uid) {
-    $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="https://association.drupal.org">Drupal Association</a> badges on your profile page? <a href="https://association.drupal.org/membership">Become an Individual Member today.</a>');
+    $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="https://assoc.drupal.org">Drupal Association</a> badges on your profile page? <a href="https://assoc.drupal.org/membership">Become an Individual Member today.</a>');
   }
   if ($membership = drupalorg_civimembership_data($account->name, 'Individual')) {
     $account->content['membership'][] = array(
-      '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://association.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_ind_member_badge.svg') . '" alt="' . t('Drupal Association Individual Member') . '" /></a></div></div>',
+      '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_ind_member_badge.svg') . '" alt="' . t('Drupal Association Individual Member') . '" /></a></div></div>',
     );
 
     if ($account->uid === $user->uid) {
       switch ($membership->membership_status) {
         case 'New':
         case 'Current':
-          $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="https://association.drupal.org">Drupal Association</a> membership. Your support has helped us to support the Drupal community.<br />Your membership will expire on @expiration_date.', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'M d, Y')));
+          $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="https://assoc.drupal.org">Drupal Association</a> membership. Your support has helped us to support the Drupal community.<br />Your membership will expire on @expiration_date.', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'M d, Y')));
           break;
 
         case 'Grace':
-          $membership_personal = t('<strong>Oh No!</strong> Your membership expired on @expiration_date. The <a href="https://association.drupal.org">Drupal Association</a> depends on your continued support to keep Drupal.org up and running. <a href="https://association.drupal.org/membership">Renew your membership today</a> so your badge stays visible and your access to benefits continues. Thank you!', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'M d, Y')));
+          $membership_personal = t('<strong>Oh No!</strong> Your membership expired on @expiration_date. The <a href="https://assoc.drupal.org">Drupal Association</a> depends on your continued support to keep Drupal.org up and running. <a href="https://assoc.drupal.org/membership">Renew your membership today</a> so your badge stays visible and your access to benefits continues. Thank you!', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'M d, Y')));
           break;
       }
     }
@@ -2727,7 +2727,7 @@ function drupalorg_user_view($account, $view_mode) {
   // Check if user has any membership and display relevant text
   if (!empty($account->content['membership'])) {
     $account->content['membership'][] = array(
-      '#markup' => '<p>' . t('@username helps support and grow the Drupal community with the <a href="https://association.drupal.org/">Drupal Association</a>.', array('@username' => $account->name)) . '</p>',
+      '#markup' => '<p>' . t('@username helps support and grow the Drupal community with the <a href="https://assoc.drupal.org/">Drupal Association</a>.', array('@username' => $account->name)) . '</p>',
       '#weight' => 1,
     );
   }
