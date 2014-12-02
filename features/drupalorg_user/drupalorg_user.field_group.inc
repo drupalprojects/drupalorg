@@ -21,19 +21,21 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Drupal',
-    'weight' => '3',
+    'weight' => '2',
     'children' => array(
       0 => 'field_areas_of_expertise',
+      1 => 'field_contributed',
+      2 => 'field_events_attended',
+      3 => 'field_mentors',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'Drupal',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => 'group-drupal field-group-fieldset',
         'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'open',
     ),
   );
   $export['group_drupal|user|user|form'] = $field_group;
@@ -87,6 +89,7 @@ function drupalorg_user_field_group_info() {
     'weight' => '2',
     'children' => array(
       0 => 'field_contributed',
+      1 => 'field_mentors',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -115,13 +118,13 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Contact',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
       0 => 'field_organizations',
       1 => 'field_irc_nick',
       2 => 'field_websites',
       3 => 'field_country',
-      4 => 'field_github_profile',
+      4 => 'field_social_links',
       5 => 'group_profile_personal',
       6 => 'group_profile_professional',
     ),
@@ -157,7 +160,8 @@ function drupalorg_user_field_group_info() {
       0 => 'field_bio',
       1 => 'field_areas_of_expertise',
       2 => 'field_contributions',
-      3 => 'summary',
+      3 => 'field_events_attended',
+      4 => 'summary',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -218,7 +222,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = 'group_profile_contact';
   $field_group->data = array(
     'label' => 'Professional Info',
-    'weight' => '14',
+    'weight' => '13',
     'children' => array(
       0 => 'field_industries_worked_in',
       1 => 'drupalorg_companies_worked_for',
@@ -250,26 +254,27 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Personal information',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
-      0 => 'field_bio',
-      1 => 'field_irc_nick',
-      2 => 'field_country',
-      3 => 'field_gender',
-      4 => 'field_github_profile',
-      5 => 'field_interests',
+      0 => 'field_user_geolocation',
+      1 => 'field_bio',
+      2 => 'field_irc_nick',
+      3 => 'field_websites',
+      4 => 'field_country',
+      5 => 'field_gender',
       6 => 'field_languages',
-      7 => 'field_websites',
+      7 => 'field_social_links',
+      8 => 'timezone',
+      9 => 'picture',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'Personal information',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => 'group-user-personal field-group-fieldset',
         'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'open',
     ),
   );
   $export['group_user_personal|user|user|form'] = $field_group;
@@ -285,21 +290,19 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Work',
-    'weight' => '4',
+    'weight' => '3',
     'children' => array(
-      0 => 'field_current_company_org',
-      1 => 'field_industries_worked_in',
-      2 => 'field_organizations',
+      0 => 'field_industries_worked_in',
+      1 => 'field_organizations',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'Work',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => 'group-user-work field-group-fieldset',
         'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'open',
     ),
   );
   $export['group_user_work|user|user|form'] = $field_group;

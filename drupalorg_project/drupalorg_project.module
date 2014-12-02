@@ -642,6 +642,13 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_project_form_project_promote_project_form_alter(&$form) {
+  $form['shortname']['#element_validate'][] = 'drupalorg_project_machine_name_validate';
+}
+
+/**
  * Form validation function for security release tag check.
  */
 function drupalorg_project_security_release_form_validate($form, &$form_state) {
@@ -1244,6 +1251,9 @@ function drupalorg_project_meta_data($node) {
   if ($node->nid == DRUPALORG_CORE_NID) {
     return;
   }
+
+  $wrapper = entity_metadata_wrapper('node', $node);
+
   $info = array(
     t('Maintenance status') => '<span class="warning">' . t('Unknown') . '</span>',
   );
@@ -1336,18 +1346,8 @@ function drupalorg_project_meta_data($node) {
   }
 
   // Download stats.
-  $downloads = 0;
-  foreach (project_release_query_releases($node->nid) as $release) {
-    if (!empty($release->field_release_files[$release->language])) {
-      foreach (array_map('field_collection_field_get_entity', $release->field_release_files[$release->language]) as $collection) {
-        if (!empty($collection->field_release_file_downloads[$release->language])) {
-          $downloads += $collection->field_release_file_downloads[$release->language][0]['value'];
-        }
-      }
-    }
-  }
-  if ($downloads > 0) {
-    $info[t('Downloads')] = number_format($downloads);
+  if ($wrapper->field_download_count->value() > 0) {
+    $info[t('Downloads')] = number_format($wrapper->field_download_count->value());
   }
 
   // Automated tests.
@@ -1621,7 +1621,7 @@ function drupalorg_maintainers_json($project) {
  * @see https://drupal.org/node/2172891
  */
 function drupalorg_project_machine_name_validate($element, &$form_state, $form) {
-  if ($form_state['values']['field_project_type'][$element['#language']][0]['value'] == 'full'
+  if (($form_state['values']['field_project_type'][$element['#language']][0]['value'] == 'full' || $form['#id'] === 'project-promote-project-form')
     && !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $element['#value'])) {
     form_error($element, t('@title must follow <a href="@url">PHP naming convention</a>.', array(
       '@title' => $element['#title'],
