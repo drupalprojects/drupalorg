@@ -194,7 +194,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 11,
+        'weight' => 20,
       ),
     ),
     'entity_type' => 'user',
@@ -271,7 +271,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 14,
+      'weight' => 15,
     ),
   );
 
@@ -410,7 +410,7 @@ function drupalorg_user_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Give credit to community members (drupal.org usernames) who have significantly influenced your contributions to Drupal. For example, people who mentored you in the issue queue, IRC, user groups, sprints, Core contribution mentoring hours, etc.',
+    'description' => 'Give credit to community members (Drupal.org usernames) who have significantly influenced your contributions to Drupal. For example, people who mentored you in the issue queue, IRC, user groups, sprints, Core contribution mentoring hours, etc.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -436,7 +436,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 45,
+      'weight' => 14,
     ),
   );
 
@@ -633,7 +633,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Current');
   t('Drupal Events');
   t('Gender');
-  t('Give credit to community members (drupal.org usernames) who have significantly influenced your contributions to Drupal. For example, people who mentored you in the issue queue, IRC, user groups, sprints, Core contribution mentoring hours, etc.');
+  t('Give credit to community members (Drupal.org usernames) who have significantly influenced your contributions to Drupal. For example, people who mentored you in the issue queue, IRC, user groups, sprints, Core contribution mentoring hours, etc.');
   t('IRC');
   t('Industries Worked In');
   t('Job Title');
@@ -641,8 +641,8 @@ function drupalorg_user_field_default_field_instances() {
   t('Link to your profile pages on Twitter, LinkedIn, Facebook, Google, Drupal Answers, GitHub, Gratipay, and any others you would like to include.');
   t('List companies or institutions you have worked for or are working for now.');
   t('Location');
-  t('My mentors');
   t('My contributions');
+  t('My mentors');
   t('Organization');
   t('Organizations');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
