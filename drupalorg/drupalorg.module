@@ -3290,7 +3290,7 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
 
         if (isset($filepath)) {
           $username = format_username($account);
-          $picture =  l(theme('image_style', array(
+          $picture = l(theme('image_style', array(
             'style_name' => 'drupalorg_user_picture_large',
             'path' => $filepath,
             'alt' => t('@user’s picture', array('@user' => $username)),
@@ -3304,6 +3304,16 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
 
           $element[$delta] = array('#markup' => $picture);
         }
+      }
+
+      // Show if people list the user as a mentor.
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'user')
+        ->propertyCondition('status', 1)
+        ->fieldCondition('field_mentors', 'target_id', $entity->uid);
+      $count = $query->count()->execute();
+      if ($count) {
+        $element['#suffix'] = '<p>' . l(format_plural($count, 'One person lists @name as a mentor', '@count people list @name as a mentor', array('@name' => $entity->name)), 'user/' . $entity->uid . '/people-mentored') . '</p>';
       }
       break;
   }
