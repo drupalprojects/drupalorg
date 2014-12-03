@@ -263,8 +263,7 @@ function drupalorg_user_field_group_info() {
       5 => 'field_gender',
       6 => 'field_languages',
       7 => 'field_social_links',
-      8 => 'timezone',
-      9 => 'picture',
+      8 => 'picture',
     ),
     'format_type' => 'tab',
     'format_settings' => array(

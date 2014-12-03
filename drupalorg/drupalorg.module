@@ -1212,6 +1212,13 @@ function drupalorg_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'user_profile_form' || $form_id == 'user_register_form') {
     $form['#validate'][] = 'drupalorg_username_validate';
   }
+
+  if ($form_id == 'user_register_form') {
+    // Hide the timezone field.
+    if (isset($form['timezone'])) {
+      $form['timezone']['#attributes']['class'][] = 'element-invisible';
+    }
+  }
 }
 
 /**
