@@ -4,3 +4,13 @@
  */
 
 include_once 'drupalorg_user.features.inc';
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_user_form_user_profile_form_alter(&$form, &$form_state) {
+  if (isset($form['field_mentors'][LANGUAGE_NONE]['add_more'])) {
+    // Change the 'add more' button text.
+    $form['field_mentors'][LANGUAGE_NONE]['add_more']['#value'] = t('Add another mentor');
+  }
+}

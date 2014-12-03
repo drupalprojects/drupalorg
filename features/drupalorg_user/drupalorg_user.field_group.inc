@@ -26,6 +26,7 @@ function drupalorg_user_field_group_info() {
       0 => 'field_areas_of_expertise',
       1 => 'field_contributed',
       2 => 'field_events_attended',
+      3 => 'field_mentors',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -88,6 +89,7 @@ function drupalorg_user_field_group_info() {
     'weight' => '2',
     'children' => array(
       0 => 'field_contributed',
+      1 => 'field_mentors',
     ),
     'format_type' => 'div',
     'format_settings' => array(
