@@ -15,7 +15,7 @@ function drupalorg_user_views_default_views() {
   $view->description = '';
   $view->tag = 'default';
   $view->base_table = 'users';
-  $view->human_name = 'Mentees';
+  $view->human_name = 'People mentored';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -41,12 +41,29 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['relationships']['reverse_field_mentors_user']['field'] = 'reverse_field_mentors_user';
   $handler->display->display_options['relationships']['reverse_field_mentors_user']['label'] = 'Mentor';
   $handler->display->display_options['relationships']['reverse_field_mentors_user']['required'] = TRUE;
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'reverse_field_mentors_user';
+  $handler->display->display_options['fields']['name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
+  /* Field: User: Uid */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'users';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid']['relationship'] = 'reverse_field_mentors_user';
+  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['uid']['link_to_user'] = FALSE;
   /* Field: User: Picture */
   $handler->display->display_options['fields']['picture']['id'] = 'picture';
   $handler->display->display_options['fields']['picture']['table'] = 'users';
   $handler->display->display_options['fields']['picture']['field'] = 'picture';
   $handler->display->display_options['fields']['picture']['relationship'] = 'reverse_field_mentors_user';
   $handler->display->display_options['fields']['picture']['label'] = '';
+  $handler->display->display_options['fields']['picture']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['picture']['alter']['path'] = 'user/[uid]';
+  $handler->display->display_options['fields']['picture']['alter']['alt'] = '[name]';
   $handler->display->display_options['fields']['picture']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['picture']['link_photo_to_profile'] = FALSE;
   $handler->display->display_options['fields']['picture']['image_style'] = 'drupalorg_user_picture_large';
