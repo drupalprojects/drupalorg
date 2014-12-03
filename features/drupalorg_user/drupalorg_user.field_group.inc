@@ -26,8 +26,8 @@ function drupalorg_user_field_group_info() {
       0 => 'field_areas_of_expertise',
       1 => 'field_contributed',
       2 => 'field_events_attended',
-      3 => 'field_drupal_contributions',
-      4 => 'field_mentors',
+      3 => 'field_mentors',
+      4 => 'field_drupal_contributions',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
