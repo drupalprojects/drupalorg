@@ -3290,19 +3290,17 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
 
         if (isset($filepath)) {
           $username = format_username($account);
-          $picture = l(theme('image_style', array(
+          $element[$delta] = array('#markup' => l(theme('image_style', array(
             'style_name' => 'drupalorg_user_picture_large',
             'path' => $filepath,
             'alt' => t('@user’s picture', array('@user' => $username)),
           )), 'user/' . $account->uid, array(
             'attributes' => array(
               'title' => t('View @user’s profile.', array('@user' => $username)),
-              'class' => 'picture',
+              'class' => array('picture'),
             ),
             'html' => TRUE,
-          ));
-
-          $element[$delta] = array('#markup' => $picture);
+          )));
         }
       }
 
