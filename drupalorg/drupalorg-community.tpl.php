@@ -19,7 +19,7 @@
     <h5>Mailing Lists</h5>
     <p>There are many <a href="/mailing-lists">mailing lists</a> you can subscribe to, in addition to <a href="/security">security announcements</a>, project issue updates and posts on groups.drupal.org.</p>
     <h5>Drupal Association</h5>
-    <p>The <a href="https://association.drupal.org">Drupal Association’s</a> mission is to help the Drupal CMS project flourish by fostering and supporting the Drupal community. Join us and your membership fees fund community programs such as maintaining Drupal.org infrastructure, providing DrupalCon scholarships and Community Cultivation Grants, hosting DrupalCons and many other community initiatives.</p>
+    <p>The <a href="https://assoc.drupal.org">Drupal Association’s</a> mission is to help the Drupal CMS project flourish by fostering and supporting the Drupal community. Join us and your membership fees fund community programs such as maintaining Drupal.org infrastructure, providing DrupalCon scholarships and Community Cultivation Grants, hosting DrupalCons and many other community initiatives.</p>
   </div>
   <div class="sidebar">
     <?php print $help_form; ?>

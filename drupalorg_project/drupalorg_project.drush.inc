@@ -185,8 +185,9 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
     foreach (node_load_multiple(array_keys($chunk), array(), TRUE) as $node) {
       if (empty($node->field_download_count) || $node->field_download_count[LANGUAGE_NONE][0]['value'] != $chunk[$node->nid]) {
         $node->field_download_count[LANGUAGE_NONE][0]['value'] = $chunk[$node->nid];
-        $node->revision = FALSE;
-        node_save($node);
+        // Do not use node_save() so node timestamps are not jostled.
+        field_attach_presave('node', $node);
+        field_attach_update('node', $node);
       }
     }
   }

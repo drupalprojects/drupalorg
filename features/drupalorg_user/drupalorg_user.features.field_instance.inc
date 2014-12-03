@@ -209,7 +209,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 13,
+      'weight' => 14,
     ),
   );
 
@@ -267,7 +267,7 @@ function drupalorg_user_field_default_field_instances() {
     'label' => 'Country',
     'required' => 0,
     'settings' => array(
-      'user_register_form' => 1,
+      'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 1,
@@ -470,7 +470,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 14,
+      'weight' => 13,
     ),
   );
 
