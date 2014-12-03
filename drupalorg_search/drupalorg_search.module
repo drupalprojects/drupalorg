@@ -6,31 +6,6 @@
  */
 
 /**
- * Implements hook_menu().
- */
-function drupalorg_search_menu() {
-  $items['drupalorg-search/help/js'] = array(
-    'title' => 'How can we help',
-    'page callback' => 'drupalorg_search_help_js',
-    'access callback' => 'user_access',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-  return $items;
-}
-
-/**
- * Implements hook_theme().
- */
-function drupalorg_search_theme() {
-  return array(
-    'drupalorg_search_help_results' => array(
-      'variables' => array('results' => array()),
-    ),
-  );
-}
-
-/**
  * Implementation of hook_facetapi_facet_info().
  */
 function drupalorg_search_facetapi_facet_info($searcher_info) {
@@ -122,10 +97,6 @@ function drupalorg_search_block_info() {
       'info' => t('Drupalorg Search: User Search'),
       'cache' => DRUPAL_NO_CACHE,
     ),
-    'drupalorg_search_documentation' => array(
-      'info' => t('Drupalorg Search: Documentation Search'),
-      'cache' => DRUPAL_NO_CACHE,
-    ),
   );
   return $blocks;
 }
@@ -193,12 +164,6 @@ function drupalorg_search_block_view($delta) {
       return array(
         'title' => t('Search Users'),
         'content' => drupal_get_form('search_form', '', '', 'user', t('Username')),
-      );
-
-    case 'drupalorg_search_documentation':
-      return array(
-        'title' => t('Search Documentation'),
-        'content' => drupal_get_form('drupalorg_search_help_form'),
       );
   }
 }
@@ -336,90 +301,6 @@ function drupalorg_search_get_project_type($query, $response) {
       }
     }
   }
-}
-
-/**
- * Generates the "Search Documentation" block for use on the documentation page.
- */
-function drupalorg_search_help_form() {
-  $form = array(
-    // We're going to leverage some existing autocomplete functionality, so add
-    // the autocomplete js + our js.
-    '#attached' => array(
-      'js' => array(
-        array(
-          'type' => 'file',
-          'data' => 'misc/autocomplete.js',
-        ),
-        array(
-          'type' => 'file',
-          'data' => drupal_get_path('module', 'drupalorg_search') . '/js/documentation.js',
-        ),
-      ),
-    ),
-  );
-
-  // Text field for searching documentation items.
-  $form['search_term'] = array(
-    '#type'       => 'textfield',
-  );
-
-  // Hidden auto-lookup field for using auto-complete-like functionality.
-  $form['search_term_autolookup'] = array(
-    '#type'       => 'hidden',
-    '#value'      => check_url(url('drupalorg-search/help/js', array('absolute' => TRUE))),
-    '#attributes' => array(
-      'id'    => 'edit-search-term-autolookup',
-      'class' => array('autolookup'),
-    ),
-  );
-  return $form;
-}
-
-/**
- * Theme the results of our documentation search against Solr.
- *
- * @param array $results
- *   An array of results containing, at minimum, a score, a title, and a link.
- *
- * @return string $output
- *   An html ul representation of li items containing relevancy (score) +
- *   a link to the content.
- */
-function theme_drupalorg_search_help_results($variables) {
-  $results = $variables['results'];
-  $output = '';
-  if (!empty($results)) {
-    $output = '<p class="help-result-text">Here\'s what we found:</p>';
-    $output .= '<ul>';
-    foreach ($results as $result) {
-      $output .= '<li><div class="help-result-score-' . round($result['score']) . '"></div><div class="help-result-value">' . l($result['title'], $result['link']) . '</div></li>';
-    }
-    $output .= '</ul>';
-  }
-  else {
-    $output = '<p class="help-result-text">We\'re sorry, but there were no results for your search.</p>';
-  }
-  return $output;
-}
-
-/**
- * Menu callback. Retrieves and returns a themed list of documentation results
- * from Solr based on an initial search term or terms.
- *
- * @param string $search_term
- *   A term or terms to search for in Solr.
- *
- * @return
- *   A json object representing a themed list of results from Solr.
- */
-function drupalorg_search_help_js($search_term = NULL) {
-  $results = array();
-  if (!empty($search_term)) {
-    $results = apachesolr_search_search_execute($search_term, array('fq' => array('ss_meta_type:documentation')));
-  }
-  $output = theme('drupalorg_search_help_results', array('results' => $results));
-  drupal_json_output($output);
 }
 
 /**
