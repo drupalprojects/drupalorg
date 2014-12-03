@@ -343,11 +343,7 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
               if (!empty($entity->field_terms_of_service) && $entity->field_terms_of_service[LANGUAGE_NONE][0]['value']) {
                 return FALSE;
               }
-
-            case 'field_country':
-              // Hide the country field for anonymous users.
-              return user_is_logged_in();
-              break;
+              return TRUE;
           }
       }
   }
