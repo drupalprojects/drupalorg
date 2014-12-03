@@ -122,6 +122,10 @@ function drupalorg_search_block_info() {
       'info' => t('Drupalorg Search: User Search'),
       'cache' => DRUPAL_NO_CACHE,
     ),
+    'drupalorg_search_documentation' => array(
+      'info' => t('Drupalorg Search: Documentation Search'),
+      'cache' => DRUPAL_NO_CACHE,
+    ),
   );
   return $blocks;
 }
@@ -189,6 +193,12 @@ function drupalorg_search_block_view($delta) {
       return array(
         'title' => t('Search Users'),
         'content' => drupal_get_form('search_form', '', '', 'user', t('Username')),
+      );
+
+    case 'drupalorg_search_documentation':
+      return array(
+        'title' => t('Search Documentation'),
+        'content' => drupal_get_form('drupalorg_search_help_form'),
       );
   }
 }
@@ -329,7 +339,7 @@ function drupalorg_search_get_project_type($query, $response) {
 }
 
 /**
- * Generates the "How can we help you" block for use on the community page.
+ * Generates the "Search Documentation" block for use on the documentation page.
  */
 function drupalorg_search_help_form() {
   $form = array(
@@ -343,7 +353,7 @@ function drupalorg_search_help_form() {
         ),
         array(
           'type' => 'file',
-          'data' => drupal_get_path('module', 'drupalorg_search') . '/js/community.js',
+          'data' => drupal_get_path('module', 'drupalorg_search') . '/js/documentation.js',
         ),
       ),
     ),
@@ -351,16 +361,15 @@ function drupalorg_search_help_form() {
 
   // Text field for searching documentation items.
   $form['search_term'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Search Documentation'),
+    '#type'       => 'textfield',
   );
 
   // Hidden auto-lookup field for using auto-complete-like functionality.
   $form['search_term_autolookup'] = array(
-    '#type' => 'hidden',
-    '#value' => check_url(url('drupalorg-search/help/js', array('absolute' => TRUE))),
+    '#type'       => 'hidden',
+    '#value'      => check_url(url('drupalorg-search/help/js', array('absolute' => TRUE))),
     '#attributes' => array(
-      'id' => 'edit-search-term-autolookup',
+      'id'    => 'edit-search-term-autolookup',
       'class' => array('autolookup'),
     ),
   );

@@ -22,7 +22,6 @@
     <p>The <a href="https://assoc.drupal.org">Drupal Association’s</a> mission is to help the Drupal CMS project flourish by fostering and supporting the Drupal community. Join us and your membership fees fund community programs such as maintaining Drupal.org infrastructure, providing DrupalCon scholarships and Community Cultivation Grants, hosting DrupalCons and many other community initiatives.</p>
   </div>
   <div class="sidebar">
-    <?php print $help_form; ?>
     <h3>Recent activity</h3>
     <?php print $recent_activity; ?>
   </div>

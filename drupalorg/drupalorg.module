@@ -995,12 +995,6 @@ function drupalorg_community() {
  * Implementation of template_preprocess_drupalorg_community().
  */
 function drupalorg_preprocess_drupalorg_community(&$variables) {
-  // "How can we help you?" form at the top of /community.
-  $variables['help_form'] = '';
-  if (module_exists('drupalorg_search')) {
-    $form = drupal_get_form('drupalorg_search_help_form');
-    $variables['help_form'] = drupal_render($form);
-  }
   // "Recent activity" list at the side of /community.
   $query = db_select('tracker_node', 't');
   $query->innerJoin('node', 'n', 'n.nid = t.nid');

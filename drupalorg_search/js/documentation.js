@@ -3,7 +3,7 @@
   /**
    * Attaches the autoclookup behavior to all required fields
    */
-  Drupal.behaviors.communityHelp = {
+  Drupal.behaviors.documentationHelp = {
     attach: function (context) {
       var CHDB = [];
       $('input.autolookup:not(.autolookup-processed)', context).each(function () {
@@ -28,7 +28,7 @@
   };
 
   /**
-   * A Community Help object.
+   * A Documentation Help object.
    */
   Drupal.jsCH = function (input, db) {
     var ac = this;
