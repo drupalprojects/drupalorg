@@ -244,40 +244,6 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_drupal_contributions'
-  $field_instances['user-user-field_drupal_contributions'] = array(
-    'bundle' => 'user',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Provide an overview of your Drupal contributions.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 8,
-      ),
-    ),
-    'entity_type' => 'user',
-    'field_name' => 'field_drupal_contributions',
-    'label' => 'Drupal Contributions',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 16,
-    ),
-  );
-
   // Exported field_instance: 'user-user-field_events_attended'
   $field_instances['user-user-field_events_attended'] = array(
     'bundle' => 'user',
@@ -665,7 +631,6 @@ function drupalorg_user_field_default_field_instances() {
   t('Bio');
   t('Country');
   t('Current');
-  t('Drupal Contributions');
   t('Drupal Events');
   t('Gender');
   t('Give credit to community members (Drupal.org usernames) who have significantly influenced your contributions to Drupal. For example, people who mentored you in the issue queue, IRC, user groups, sprints, Core contribution mentoring hours, etc.');
@@ -682,7 +647,6 @@ function drupalorg_user_field_default_field_instances() {
   t('Organizations');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
-  t('Provide an overview of your Drupal contributions.');
   t('Select Drupal events you attended or are planning to attend.');
   t('Select one or more languages you speak.');
   t('Social links');
