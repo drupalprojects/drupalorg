@@ -44,6 +44,40 @@ function drupalorg_user_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_name|user|user|form';
+  $field_group->group_name = 'group_name';
+  $field_group->entity_type = 'user';
+  $field_group->bundle = 'user';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_user_personal';
+  $field_group->data = array(
+    'label' => 'Name',
+    'weight' => '11',
+    'children' => array(
+      0 => 'field_first_name',
+      1 => 'field_last_name',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Name',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'id' => '',
+        'classes' => 'group-name',
+        'description' => '',
+        'show_label' => '0',
+        'label_element' => 'h3',
+        'effect' => 'none',
+        'speed' => 'none',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_name|user|user|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_org_inline|field_collection_item|field_organizations|form';
   $field_group->group_name = 'group_org_inline';
   $field_group->entity_type = 'field_collection_item';
@@ -266,6 +300,7 @@ function drupalorg_user_field_group_info() {
       6 => 'field_languages',
       7 => 'field_social_links',
       8 => 'picture',
+      9 => 'group_name',
     ),
     'format_type' => 'tab',
     'format_settings' => array(

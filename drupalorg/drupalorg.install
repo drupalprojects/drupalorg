@@ -3442,3 +3442,130 @@ function drupalorg_update_7079() {
   // Clear the field cache.
   field_cache_clear();
 }
+
+/**
+ * Migrate profile_first_name to field_first_name & profile_last_name to field_last_name.
+ */
+function drupalorg_update_7080() {
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_first_name', 'i', 'i.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 98)
+    ->condition('pv.value', '', '!=')
+    ->isNull('i.field_first_name_value');
+  $result = $query->execute();
+
+  // Define the fields.
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_first_name_value',
+    'field_first_name_format',
+  );
+  $data = db_insert('field_data_field_first_name')->fields($fields);
+  $revision = db_insert('field_revision_field_first_name')->fields($fields);
+
+  foreach ($result as $row) {
+    // Start creating the record to insert.
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => 0,
+      'deleted' => 0,
+      'field_first_name_value' => mb_strcut($row->value, 0, 119),
+      'field_first_name_format' => NULL,
+    );
+    $data->values($new);
+    $revision->values($new);
+
+    $count += 1;
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_first_name')->fields($fields);
+      $revision = db_insert('field_revision_field_first_name')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  // Get the profile data.
+  $query = db_select('users', 'u');
+  $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
+  $query->leftJoin('field_data_field_last_name', 'i', 'i.entity_id = u.uid');
+  $query
+    ->fields('pv', array('uid', 'value'))
+    ->condition('u.status', 1)
+    ->condition('pv.fid', 100)
+    ->condition('pv.value', '', '!=')
+    ->isNull('i.field_last_name_value');
+  $result = $query->execute();
+
+  // Define the fields.
+  $fields = array(
+    'entity_type',
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'language',
+    'delta',
+    'field_last_name_value',
+    'field_last_name_format',
+  );
+  $data = db_insert('field_data_field_last_name')->fields($fields);
+  $revision = db_insert('field_revision_field_last_name')->fields($fields);
+
+  foreach ($result as $row) {
+    // Start creating the record to insert.
+    $new = array(
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'entity_id' => $row->uid,
+      'revision_id' => $row->uid,
+      'language' => LANGUAGE_NONE,
+      'delta' => 0,
+      'deleted' => 0,
+      'field_last_name_value' => mb_strcut($row->value, 0, 119),
+      'field_last_name_format' => NULL,
+    );
+    $data->values($new);
+    $revision->values($new);
+
+    $count += 1;
+    if ($count > 100) {
+      // Save the data.
+      $data->execute();
+      $revision->execute();
+
+      // Start again.
+      $data = db_insert('field_data_field_last_name')->fields($fields);
+      $revision = db_insert('field_revision_field_last_name')->fields($fields);
+      $count = 0;
+    }
+  }
+
+  // Save any remaining data.
+  $data->execute();
+  $revision->execute();
+
+  field_cache_clear();
+}
