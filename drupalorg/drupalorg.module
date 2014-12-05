@@ -3072,8 +3072,9 @@ function drupalorg_user_update(&$edit, $account, $category) {
   $fields = array(
     'field_country',
     'field_gender',
+    'field_first_name',
+    'field_last_name',
   );
-
   $account_wrapper = entity_metadata_wrapper('user', $account);
   foreach ($fields as $field_name) {
     // Add the value into the Bakery data.
