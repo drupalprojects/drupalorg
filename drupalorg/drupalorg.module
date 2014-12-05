@@ -2564,8 +2564,6 @@ function drupalorg_user_view($account, $view_mode) {
   global $user;
 
   // Put non-field items into groups.
-  $account->content['#group_children']['Personal information'] = 'group_profile_main';
-  $account->content['#group_children']['Drupal'] = 'group_profile_main';
   $account->content['#group_children']['versioncontrol_project'] = 'group_profile_main';
   $account->content['#group_children']['user_picture'] = 'group_profile_contact';
   $account->content['#group_children']['membership'] = 'group_profile_aside';
