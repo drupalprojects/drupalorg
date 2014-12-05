@@ -178,7 +178,7 @@ function drupalorg_user_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 17,
+      'weight' => 16,
     ),
   );
 
@@ -240,7 +240,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 13,
+      'weight' => 12,
     ),
   );
 
@@ -369,7 +369,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 16,
+      'weight' => 15,
     ),
   );
 
@@ -437,7 +437,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 18,
+      'weight' => 17,
     ),
   );
 
@@ -468,7 +468,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 15,
+      'weight' => 14,
     ),
   );
 
@@ -607,7 +607,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'url_external',
-      'weight' => 20,
+      'weight' => 19,
     ),
   );
 
@@ -673,7 +673,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'geolocation_html5',
       'settings' => array(),
       'type' => 'geolocation_html5_widget',
-      'weight' => 14,
+      'weight' => 13,
     ),
   );
 
@@ -721,7 +721,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 19,
+      'weight' => 18,
     ),
   );
 
