@@ -1206,13 +1206,6 @@ function drupalorg_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'user_profile_form' || $form_id == 'user_register_form') {
     $form['#validate'][] = 'drupalorg_username_validate';
   }
-
-  if ($form_id == 'user_register_form') {
-    // Hide the timezone field.
-    if (isset($form['timezone'])) {
-      $form['timezone']['#attributes']['class'][] = 'element-invisible';
-    }
-  }
 }
 
 /**
@@ -1344,6 +1337,14 @@ function drupalorg_form_user_register_form_alter(&$form) {
 
   // Add a note about the next step.
   $form['actions']['#prefix'] = '<p>' . t('<strong>Next step:</strong> When you request an account with Drupal.org, we send you an email with a one-time login link to verify your email address. When you visit that link, you will be asked to create a password and update your profile.') . '</p>';
+
+  // Hide the timezone field.
+  if (isset($form['timezone'])) {
+    $form['timezone']['#attributes']['class'][] = 'element-invisible';
+  }
+
+  // Hide empty fieldset.
+  unset($form['#group_children']['group_name']);
 }
 
 /**
