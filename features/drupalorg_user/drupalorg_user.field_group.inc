@@ -153,7 +153,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Contact',
-    'weight' => '1',
+    'weight' => '0',
     'children' => array(
       0 => 'field_organizations',
       1 => 'field_irc_nick',
@@ -190,7 +190,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Main',
-    'weight' => '0',
+    'weight' => '1',
     'children' => array(
       0 => 'field_bio',
       1 => 'field_areas_of_expertise',
