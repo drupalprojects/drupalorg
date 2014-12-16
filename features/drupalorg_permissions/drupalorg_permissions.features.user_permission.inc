@@ -10,12 +10,12 @@
 function drupalorg_permissions_user_default_permissions() {
   $permissions = array();
 
-  // Exported permission: 'Toggle role Not a spammer'.
-  $permissions['Toggle role Not a spammer'] = array(
-    'name' => 'Toggle role Not a spammer',
+  // Exported permission: 'Toggle role trusted'.
+  $permissions['Toggle role trusted'] = array(
+    'name' => 'Toggle role trusted',
     'roles' => array(
       'administrator' => 'administrator',
-      'spam fighter' => 'spam fighter',
+      'community' => 'community',
     ),
     'module' => 'fasttoggle_user',
   );
@@ -26,9 +26,9 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Git administrator' => 'Git administrator',
       'administrator' => 'administrator',
+      'community' => 'community',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
-      'spam fighter' => 'spam fighter',
       'testing administrator' => 'testing administrator',
       'user administrator' => 'user administrator',
       'webmaster' => 'webmaster',
@@ -755,15 +755,15 @@ function drupalorg_permissions_user_default_permissions() {
       'Full HTML user' => 'Full HTML user',
       'Git administrator' => 'Git administrator',
       'Git vetted user' => 'Git vetted user',
-      'Not a spammer' => 'Not a spammer',
       'Packaging whitelist maintainer' => 'Packaging whitelist maintainer',
       'administrator' => 'administrator',
+      'community' => 'community',
       'content moderator' => 'content moderator',
       'drupal.org issue queue squad' => 'drupal.org issue queue squad',
       'list maintainer' => 'list maintainer',
       'security team' => 'security team',
-      'spam fighter' => 'spam fighter',
       'testing administrator' => 'testing administrator',
+      'trusted' => 'trusted',
       'user administrator' => 'user administrator',
       'webmaster' => 'webmaster',
     ),
@@ -1287,6 +1287,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'delete terms in areas_of_expertise'.
+  $permissions['delete terms in areas_of_expertise'] = array(
+    'name' => 'delete terms in areas_of_expertise',
+    'roles' => array(),
+    'module' => 'taxonomy',
+  );
+
   // Exported permission: 'delete terms in vocabulary_1'.
   $permissions['delete terms in vocabulary_1'] = array(
     'name' => 'delete terms in vocabulary_1',
@@ -1670,6 +1677,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit terms in areas_of_expertise'.
+  $permissions['edit terms in areas_of_expertise'] = array(
+    'name' => 'edit terms in areas_of_expertise',
+    'roles' => array(),
+    'module' => 'taxonomy',
+  );
+
   // Exported permission: 'edit terms in vocabulary_1'.
   $permissions['edit terms in vocabulary_1'] = array(
     'name' => 'edit terms in vocabulary_1',
@@ -1912,7 +1926,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'moderate users',
     'roles' => array(
       'administrator' => 'administrator',
-      'spam fighter' => 'spam fighter',
+      'community' => 'community',
       'user administrator' => 'user administrator',
     ),
     'module' => 'fasttoggle_user',
@@ -1935,11 +1949,11 @@ function drupalorg_permissions_user_default_permissions() {
       'Git user' => 'Git user',
       'Git vetted user' => 'Git vetted user',
       'administrator' => 'administrator',
+      'community' => 'community',
       'content moderator' => 'content moderator',
       'drupal.org issue queue squad' => 'drupal.org issue queue squad',
       'list maintainer' => 'list maintainer',
       'security team' => 'security team',
-      'spam fighter' => 'spam fighter',
       'testing administrator' => 'testing administrator',
       'user administrator' => 'user administrator',
       'webmaster' => 'webmaster',
@@ -2154,9 +2168,9 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Git administrator' => 'Git administrator',
       'administrator' => 'administrator',
+      'community' => 'community',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
-      'spam fighter' => 'spam fighter',
       'testing administrator' => 'testing administrator',
       'user administrator' => 'user administrator',
       'webmaster' => 'webmaster',
