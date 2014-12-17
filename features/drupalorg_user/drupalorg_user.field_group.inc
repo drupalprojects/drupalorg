@@ -125,6 +125,7 @@ function drupalorg_user_field_group_info() {
     'children' => array(
       0 => 'field_contributed',
       1 => 'field_mentors',
+      2 => 'drupalorg_membership',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -197,6 +198,7 @@ function drupalorg_user_field_group_info() {
       2 => 'field_events_attended',
       3 => 'field_drupal_contributions',
       4 => 'summary',
+      5 => 'versioncontrol_project_user_commits',
     ),
     'format_type' => 'div',
     'format_settings' => array(
