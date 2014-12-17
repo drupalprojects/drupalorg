@@ -107,19 +107,6 @@ function drupalorg_page_build(&$page) {
       drupal_set_message(t('We’ve <a href="/news/next-steps-for-drupalorg-tos-and-privacy-policy">introduced</a> Drupal.org <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>. Please, read both documents and <a href="!edit">accept them on your user profile</a> to continue using Drupal.org.', array('!edit' => url('user/' . $account->uid . '/edit'))), 'warning');
     }
   }
-
-  // Add Optimizely JS to pages using it. Set drupalorg_optimizely_pattern to
-  // the full, specific regexp. Such as '#^site-building$#'.
-  if ($pattern = variable_get('drupalorg_optimizely_pattern', FALSE)) {
-    if (preg_match($pattern, drupal_get_path_alias($_GET['q']))) {
-      drupal_add_html_head(array(
-        '#weight' => -1001,
-        '#tag' => 'script',
-        '#attributes' => array('src' => '//cdn.optimizely.com/js/190102229.js'),
-        '#value' => '',
-      ), 'drupalorg_optimizely');
-    }
-  }
 }
 
 /**
