@@ -958,9 +958,35 @@ function drupalorg_project_block_view($delta = '') {
       );
 
     case 'critical-count':
+      // Build list of possible issue target versions for dev version of core: 8.0.x, 8.0.0-beta1, etc.
+      $releases = project_release_query_releases(DRUPALORG_CORE_NID, array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID));
+      foreach ($releases as $tid => $release) {
+        $versions[$tid] = $release->field_release_version[$release->language][0]['value'];
+      }
+
+      // Get count of remaining open, non-fixed critical tasks and bugs for those versions.
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+        ->propertyCondition('status', NODE_PUBLISHED)
+        ->entityCondition('bundle', project_issue_issue_node_types())
+        ->fieldCondition('field_project', 'target_id', DRUPALORG_CORE_NID)
+        ->fieldCondition('field_issue_version', 'value', $versions)
+        ->fieldCondition('field_issue_status', 'value', drupalorg_project_threshold_statuses())
+        ->fieldCondition('field_issue_priority', 'value', 400) // Critical.
+        ->fieldCondition('field_issue_category', 'value', array(1, 2)) // Bug, Task.
+        ->count();
+      $count = $query->execute();
+
+      // Output the block.
       return array(
         'subject' => t('Drupal 8 Critical Countdown'),
-        'content' => drupalorg_project_critical_count_block_output(),
+        'content' => array(
+          'countdown' => array(
+            '#prefix' => '<p>' . t('Drupal 8 enters release candidate phase once there are zero critical issues.') . '</p>',
+            '#markup' => '<h3>' . l(t('@count critical issues remaining', array('@count' => $count)), 'project/issues/search/drupal', array('query' => array('status' => array(1, 13, 8, 14, 4), 'priorities' => array(400), 'categories' => array(1, 2), 'version' => array('8.x')))) . '</h3>',
+            '#suffix' => '<p>' . t('Read more about <a href="/drupal-8.0/get-involved">how to help Drupal 8</a>!') . '</p>',
+          ),
+        ),
       );
 
     case 'resources':
@@ -1231,33 +1257,6 @@ function drupalorg_project_bingo_block_output() {
 }
 
 /**
- * Output count of remaining critical issues in current core dev release.
- */
-function drupalorg_project_critical_count_block_output() {
-  // Build list of possible issue target versions for dev version of core: 8.0.x, 8.0.0-beta1, etc.
-  $releases = project_release_query_releases(DRUPALORG_CORE_NID, array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID));
-  foreach ($releases as $tid => $release) {
-    $versions[$tid] = $release->field_release_version[$release->language][0]['value'];
-  }
-
-  // Get count of remaining open, non-fixed critical tasks and bugs for those versions.
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node')
-    ->propertyCondition('status', NODE_PUBLISHED)
-    ->entityCondition('bundle', project_issue_issue_node_types())
-    ->fieldCondition('field_project', 'target_id', DRUPALORG_CORE_NID)
-    ->fieldCondition('field_issue_version', 'value', $versions)
-    ->fieldCondition('field_issue_status', 'value', drupalorg_project_threshold_statuses())
-    ->fieldCondition('field_issue_priority', 'value', 400) // Critical.
-    ->fieldCondition('field_issue_category', 'value', array(1, 2)) // Bug, Task.
-    ->count();
-  $count = $query->execute();
-
-  // Output the block.
-  return theme('drupalorg_project_critical_count', array('count' => $count));
-}
-
-/**
  * Implementation of template_preprocess_drupalorg_home().
  */
 function drupalorg_project_preprocess_drupalorg_home(&$vars) {
@@ -1408,12 +1407,6 @@ function drupalorg_project_theme($existing, $type, $theme, $path) {
         'modified' => NULL,
       ),
       'template' => 'project-meta-data',
-    ),
-    'drupalorg_project_critical_count' => array(
-      'arguments' => array(
-        'count' => NULL,
-      ),
-      'template' => 'critical-count-block',
     ),
   );
 }
