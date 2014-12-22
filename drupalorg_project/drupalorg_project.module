@@ -959,7 +959,7 @@ function drupalorg_project_block_view($delta = '') {
 
     case 'critical-count':
       return array(
-        'subject' => NULL,
+        'subject' => t('Drupal 8 Critical Countdown'),
         'content' => drupalorg_project_critical_count_block_output(),
       );
 
