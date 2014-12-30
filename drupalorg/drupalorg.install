@@ -3569,3 +3569,197 @@ function drupalorg_update_7080() {
 
   field_cache_clear();
 }
+
+/**
+ * Configure Mollom.
+ */
+function drupalorg_update_7081() {
+  // Node forms.
+
+  $node_form_common = array(
+    'entity' => 'node',
+    'mode' => 2,
+    'checks' => serialize(array('spam')),
+    'unsure' => 'moderate',
+    'discard' => 0,
+    'moderation' => 0,
+    'strictness' => 'normal',
+    'module' => 'node',
+  );
+
+  $node_forms = array(
+    // Book.
+    array(
+      'form_id' => 'book_node_form',
+      'enabled_fields' => serialize(array(
+        'body',
+        'title', 
+      )),
+    ),
+
+    // Case study.
+    array(
+      'form_id' => 'casestudy_node_form',
+      'enabled_fields' => serialize(array(
+        'body',
+        'field_community',
+        'field_developed',
+        'field_goals',
+        'field_module_selection',
+        'field_overview',
+        'title',
+      )),
+    ),
+
+    // Distribution project.
+    array(
+      'form_id' => 'project_distribution_node_form',
+      'enabled_fields' => serialize(array(
+        'body',
+        'field_project_components',
+        'field_project_issue_guidelines',
+        'field_release_version_format',
+        'title',
+      )),
+    ),
+
+    // Forum topic.
+    array(
+      'form_id' => 'forum_node_form',
+      'enabled_fields' => serialize(array(
+        'body',
+        'title',
+      )),
+    ),
+
+    // Issue.
+    array(
+      'form_id' => 'project_issue_node_form',
+      'enabled_fields' => serialize(array(
+        'body',
+        'title',
+      )),
+    ),
+
+    // Module project.
+    array(
+      'form_id' => 'project_module_node_form',
+      'enabled_fields' => serialize(array(
+        'body',
+        'field_project_issue_guidelines',
+        'field_project_components',
+        'field_release_version_format',
+        'title',
+      )),
+    ),
+
+    // Organization.
+    array(
+      'form_id' => 'organization_node_form',
+      'enabled_fields' => serialize(array(
+        'body',
+        'field_contributions',
+        'field_organization_headquarters',
+        'field_organization_training_desc',
+        'title',
+      )),
+    ),
+
+    // Release.
+    array(
+      'form_id' => 'project_release_node_form',
+      'enabled_fields' => serialize(array(
+        'body',
+        'field_release_vcs_label',
+        'field_release_version',
+        'field_release_version_extra',
+        'title',
+      )),
+    ),
+
+    // Theme Engine project.
+    array(
+      'form_id' => 'project_theme_engine_node_form',
+      'enabled_fields' => serialize(array(
+        'body',
+        'field_project_components',
+        'field_project_issue_guidelines',
+        'field_release_version_format',
+        'title',
+      )),
+    ),
+
+    // Theme project.
+    array(
+      'form_id' => 'project_theme_node_form',
+      'enabled_fields' => serialize(array(
+        'body',
+        'field_project_components',
+        'field_project_issue_guidelines',
+        'field_release_version_format',
+        'title',
+      )),
+    ),
+  );
+
+  foreach ($node_forms as $node_form) {
+    db_insert('mollom_form')
+      ->fields($node_form_common + $node_form)
+      ->execute();
+  }
+
+  // Comment forms.
+
+  $comment_form_common = array(
+    'entity' => 'comment',
+    'mode' => 2,
+    'checks' => serialize(array('spam')),
+    'unsure' => 'moderate',
+    'discard' => 0,
+    'moderation' => 0,
+    'strictness' => 'normal',
+    'module' => 'comment',
+    'enabled_fields' => serialize(array(
+      'comment_body',
+      'subject',
+    )),
+  );
+
+  $comment_forms = array(
+    // Book page.
+    array(
+      'form_id' => 'comment_node_book_form',
+      'bundle' => 'comment_node_book',
+    ),
+
+    // Case study.
+    array(
+      'form_id' => 'comment_node_casestudy_form',
+      'bundle' => 'comment_node_casestudy',
+    ),
+
+    // Forum topic.
+    array(
+      'form_id' => 'comment_node_forum_form',
+      'bundle' => 'comment_node_forum',
+    ),
+
+    // Issue.
+    array(
+      'form_id' => 'comment_node_project_issue_form',
+      'bundle' => 'comment_node_project_issue',
+    ),
+
+    // Page.
+    array(
+      'form_id' => 'comment_node_page_form',
+      'bundle' => 'comment_node_page',
+    ),
+  );
+
+  foreach ($comment_forms as $comment_form) {
+    db_insert('mollom_form')
+      ->fields($comment_form_common + $comment_form)
+      ->execute();
+  }
+}

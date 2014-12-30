@@ -33,14 +33,13 @@
             <tr><td><?php print $number_of_git_commits; ?></td><td><a href="commitlog">Code commits</a></td></tr>
             <tr><td><?php print $number_of_issue_comments; ?></td><td><a href="project/issues">Issue comments</a></td></tr>
           </table>
+          <ul class="links">
+            <li><a href="project/drupal">Drupal Core</a></li>
+            <li><a href="security">Security Info</a></li>
+            <li><a href="contributors-guide">Developer Docs</a></li>
+            <li><a href="http://api.drupal.org">API Docs</a></li>
+          </ul>
         </div>
-
-        <ul class="links">
-          <li><a href="project/drupal">Drupal Core</a></li>
-          <li><a href="security">Security Info</a></li>
-          <li><a href="contributors-guide">Developer Docs</a></li>
-          <li><a href="http://api.drupal.org">API Docs</a></li>
-        </ul>
     <?php print $psa; ?>
 </div>
 
@@ -52,17 +51,17 @@
   <div id="community-map">
     <div class="homepage-map"><?php print $map_content; ?></div>
   </div>
-</div>
 
-<div id="community-updates">
-  <ul>
-    <li><a href="#tab-news" id="tab-news-link">News</a></li>
-    <li><a href="#tab-docs" id="tab-docs-link"><span class="icon"></span>Docs Updates</a></li>
-    <li><a href="#tab-forum" id="tab-forum-link"><span class="icon"></span>Forum Posts</a></li>
-    <li><a href="#tab-commits" id="tab-commits-link"><span class="icon"></span>Commits</a></li>
-  </ul>
-  <div id="tab-news"><?php print $tab_content_news; ?></div>
-  <div id="tab-docs"><?php print $tab_content_docs; ?></div>
-  <div id="tab-forum"><?php print $tab_content_forums; ?></div>
-  <div id="tab-commits"><?php print $tab_content_git; ?></div>
+  <div id="community-updates">
+    <ul>
+      <li><a href="#tab-news" id="tab-news-link">News</a></li>
+      <li><a href="#tab-docs" id="tab-docs-link"><span class="icon"></span>Docs Updates</a></li>
+      <li><a href="#tab-forum" id="tab-forum-link"><span class="icon"></span>Forum Posts</a></li>
+      <li><a href="#tab-commits" id="tab-commits-link"><span class="icon"></span>Commits</a></li>
+    </ul>
+    <div id="tab-news"><?php print $tab_content_news; ?></div>
+    <div id="tab-docs"><?php print $tab_content_docs; ?></div>
+    <div id="tab-forum"><?php print $tab_content_forums; ?></div>
+    <div id="tab-commits"><?php print $tab_content_git; ?></div>
+  </div>
 </div>

@@ -96,6 +96,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'access mollom statistics'.
+  $permissions['access mollom statistics'] = array(
+    'name' => 'access mollom statistics',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'mollom',
+  );
+
   // Exported permission: 'access news feeds'.
   $permissions['access news feeds'] = array(
     'name' => 'access news feeds',
@@ -567,6 +576,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'system',
   );
 
+  // Exported permission: 'administer mollom'.
+  $permissions['administer mollom'] = array(
+    'name' => 'administer mollom',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'mollom',
+  );
+
   // Exported permission: 'administer news feeds'.
   $permissions['administer news feeds'] = array(
     'name' => 'administer news feeds',
@@ -780,6 +798,16 @@ function drupalorg_permissions_user_default_permissions() {
       'webmaster' => 'webmaster',
     ),
     'module' => 'honeypot',
+  );
+
+  // Exported permission: 'bypass mollom protection'.
+  $permissions['bypass mollom protection'] = array(
+    'name' => 'bypass mollom protection',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'trusted' => 'trusted',
+    ),
+    'module' => 'mollom',
   );
 
   // Exported permission: 'bypass node access'.
@@ -2019,6 +2047,16 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'httpbl',
+  );
+
+  // Exported permission: 'report to mollom'.
+  $permissions['report to mollom'] = array(
+    'name' => 'report to mollom',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'community' => 'community',
+    ),
+    'module' => 'mollom',
   );
 
   // Exported permission: 'revert revisions'.
