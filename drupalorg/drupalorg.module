@@ -3044,9 +3044,18 @@ function drupalorg_module_implements_alter(&$implementations, $hook) {
 }
 
 /**
- * Implements hook_user_update().
+ * Implements hook_bakery_transmit().
  */
-function drupalorg_user_update(&$edit, $account, $category) {
+function drupalorg_bakery_transmit($edit, $account) {
+  if (!is_null($edit)) {
+    // While in edit, wait until later in the user save process to fill out
+    // Bakery-transmitted data. $account is currently incomplete. See
+    // drupalorg_user_update().
+    return array('drupalorg_in_edit' => TRUE);
+  }
+
+  $data = array();
+
   // If the account has a user picture, generate all styles that subsites use,
   // and include URLs in bakery-transmitted data.
   if (!empty($account->picture)) {
@@ -3055,7 +3064,7 @@ function drupalorg_user_update(&$edit, $account, $category) {
       if (!file_exists($destination)) {
         image_style_create_derivative(image_style_load($style), $account->picture->uri, $destination);
       }
-      $_SESSION['bakery']['data']['drupalorg_picture'][$style] = file_create_url($destination);
+      $data['drupalorg_picture'][$style] = file_create_url($destination);
     }
   }
 
@@ -3069,20 +3078,33 @@ function drupalorg_user_update(&$edit, $account, $category) {
   $account_wrapper = entity_metadata_wrapper('user', $account);
   foreach ($fields as $field_name) {
     // Add the value into the Bakery data.
-    $_SESSION['bakery']['data']['drupalorg_' . $field_name] = $account_wrapper->$field_name->value();
+    $data['drupalorg_' . $field_name] = $account_wrapper->$field_name->value();
   }
 
   // Time zone to sync.
   if (!empty($account->timezone)) {
-    $_SESSION['bakery']['data']['drupalorg_timezone'] = $account->timezone;
+    $data['drupalorg_timezone'] = $account->timezone;
   }
 
   // Roles to sync.
-  $_SESSION['bakery']['data']['drupalorg_roles'] = array();
   foreach (array('logintoboggan_pre_auth_role', 'drupalorg_crosssite_trusted_role', 'drupalorg_crosssite_community_role') as $role) {
     if ($rid = variable_get($role, FALSE)) {
-      $_SESSION['bakery']['data']['drupalorg_roles'][$role] = isset($account->roles[$rid]);
+      $data['drupalorg_roles'][$role] = isset($account->roles[$rid]);
     }
+  }
+
+  return $data;
+}
+
+/**
+ * Implements hook_user_update().
+ */
+function drupalorg_user_update(&$edit, $account) {
+  // If drupalorg_bakery_transmit() previously bailed early, return to fill out
+  // Bakery-transmitted data.
+  if (isset($_SESSION['bakery']['data']['drupalorg_in_edit'])) {
+    unset($_SESSION['bakery']['data']['drupalorg_in_edit']);
+    $_SESSION['bakery']['data'] += drupalorg_bakery_transmit(NULL, $account);
   }
 }
 
