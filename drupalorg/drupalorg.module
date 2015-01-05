@@ -61,6 +61,15 @@ function drupalorg_init() {
       drupal_set_message(t('We are rebuilding the search index for the update to drupal.org. The search results may produce broken or out-of-date results until the index is fully rebuilt. We will remove this message when the indexing is complete. Do not report any search errors at this time.'));
     }
   }
+
+  // Enable CORS support for the API.
+  if (arg(0) == 'api-d7') {
+    drupal_add_http_header('Access-Control-Allow-Origin', '*');
+    // Do not allow cookies regardless of withCredentials property.
+    drupal_add_http_header('Access-Control-Allow-Credentials', 'false');
+    drupal_add_http_header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    drupal_add_http_header('Access-Control-Allow-Headers', 'Content-Type');
+  }
 }
 
 /**
