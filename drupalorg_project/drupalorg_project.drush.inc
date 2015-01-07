@@ -208,15 +208,12 @@ function drush_drupalorg_project_projects_send_for_codereview() {
   $project_types = array('project_module');
   $jenkins_hash = variable_get('drupalorg_jenkinshash_for_codereview', 'X');
   $jenkins_url = variable_get('jenkins_url', 'http://localhost:8080/');
-  $result = db_query("select vc_op_id,repo_id from versioncontrol_operations
-                            where vc_op_id > :last limit 100",
-                            array(':last' => $last));
+  $result = db_query_range('SELECT vc_op_id,repo_id FROM {versioncontrol_operations} WHERE vc_op_id > :last', 0, 100, array(':last' => $last));
 
   foreach ($result as $row) {
     $repo = versioncontrol_repository_load($row->repo_id);
     $node = node_load($repo->project_nid);
     $last = $row->vc_op_id;
-    $nid = $node->nid;
     if (in_array($node->type, $project_types)) {
       $directions = project_git_instructions_get_defaults($node);
       if (!empty($node->nid) && project_promote_project_is_sandbox($node)) {
@@ -226,7 +223,7 @@ function drush_drupalorg_project_projects_send_for_codereview() {
         $giturl = $directions['@anon_project_url'];
       }
       // Now we build the URL to call
-      $call = $jenkins_url . 'buildByToken/buildWithParameters?job=ProjectCodeChecker&token=' . $jenkins_hash . '&nid=' . $nid . '&REPO=' . $giturl;
+      $call = $jenkins_url . 'buildByToken/buildWithParameters?job=ProjectCodeChecker&token=' . $jenkins_hash . '&nid=' . $node->nid . '&REPO=' . $giturl;
       file_get_contents($call); // Here we call it
     }
   }
