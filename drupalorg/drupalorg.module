@@ -1348,17 +1348,17 @@ function drupalorg_form_user_register_form_alter(&$form) {
   unset($form['#group_children']['group_name']);
 
   // Add field help text.
-  $query = drupal_get_query_parameters();
-  if ($query['site']) {
+  $parameters = drupal_get_query_parameters();
+  if ($parameters['site']) {
     // Sub-site.
     $sites = drupalorg_crosssite_sites();
-    $form['actions']['#prefix'] = '<p>' . t('When you create a Drupal.org account, you gain access to a whole ecosystem of Drupal.org sites and services. Your account works on Drupal.org and any of its subsites including !site.', array(
-      '!site' => $sites[$query['site']],
+    $form['#prefix'] = '<p>' . t('When you create a Drupal.org account, you gain access to a whole ecosystem of Drupal.org sites and services. Your account works on Drupal.org and any of its subsites including !site.', array(
+      '!site' => $sites[$parameters['site']],
     )) . '</p>';
   }
   else {
     // Drupal.org.
-    $form['actions']['#prefix'] = '<p>' . t('When you create a !site account, you gain access to a whole ecosystem of !site sites and services. Your account works on Drupal.org and any of its subsites including <a href="@groups">Drupal Groups</a>, <a href="@jobs">Drupal Jobs</a>, <a href="@association">Drupal Association</a> and more.', array(
+    $form['#prefix'] = '<p>' . t('When you create a !site account, you gain access to a whole ecosystem of !site sites and services. Your account works on Drupal.org and any of its subsites including <a href="@groups">Drupal Groups</a>, <a href="@jobs">Drupal Jobs</a>, <a href="@association">Drupal Association</a> and more.', array(
       '!site' => variable_get('site_name'),
       '@groups' => 'http://groups.drupal.org',
       '@jobs' => 'http://jobs.drupal.org',
