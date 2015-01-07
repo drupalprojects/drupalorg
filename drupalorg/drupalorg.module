@@ -1336,9 +1336,6 @@ function drupalorg_form_user_register_form_alter(&$form) {
   $form['account']['name']['#attributes']['autocapitalize'] = 'none';
   $form['account']['mail']['#attributes']['autocapitalize'] = 'none';
 
-  // Add a note about the next step.
-  $form['actions']['#prefix'] = '<p>' . t('<strong>Next step:</strong> When you request an account with Drupal.org, we send you an email with a one-time login link to verify your email address. When you visit that link, you will be asked to create a password and update your profile.') . '</p>';
-
   // Hide the timezone field.
   if (isset($form['timezone'])) {
     $form['timezone']['#attributes']['class'][] = 'element-invisible';
@@ -1346,6 +1343,25 @@ function drupalorg_form_user_register_form_alter(&$form) {
 
   // Hide empty fieldset.
   unset($form['#group_children']['group_name']);
+
+  // Add field help text.
+  $query = drupal_get_query_parameters();
+  if ($query['site']) {
+    // Sub-site.
+    $sites = drupalorg_crosssite_sites();
+    $form['actions']['#prefix'] = '<p>' . t('When you create a Drupal.org account, you gain access to a whole ecosystem of Drupal.org sites and services. Your account works on Drupal.org and any of its subsites including !site.', array(
+      '!site' => $sites[$query['site']],
+    )) . '</p>';
+  }
+  else {
+    // Drupal.org.
+    $form['actions']['#prefix'] = '<p>' . t('When you create a !site account, you gain access to a whole ecosystem of !site sites and services. Your account works on Drupal.org and any of its subsites including <a href="@groups">Drupal Groups</a>, <a href="@jobs">Drupal Jobs</a>, <a href="@association">Drupal Association</a> and more.', array(
+      '!site' => variable_get('site_name'),
+      '@groups' => 'http://groups.drupal.org',
+      '@jobs' => 'http://jobs.drupal.org',
+      '@association' => 'http://assoc.drupal.org',
+    )) . '</p>';
+  }
 }
 
 /**
