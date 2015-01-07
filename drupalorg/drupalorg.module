@@ -106,14 +106,6 @@ function drupalorg_page_build(&$page) {
     if (empty($account->field_terms_of_service) || empty($account->field_terms_of_service[LANGUAGE_NONE][0]['value'])) {
       drupal_set_message(t('We’ve <a href="/news/next-steps-for-drupalorg-tos-and-privacy-policy">introduced</a> Drupal.org <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>. Please, read both documents and <a href="!edit">accept them on your user profile</a> to continue using Drupal.org.', array('!edit' => url('user/' . $account->uid . '/edit'))), 'warning');
     }
-   
-    // Nag user to validate their email
-    if (module_exists('logintoboggan')) {
-      $email_unverified_roleid = logintoboggan_validating_id();
-      if (isset($account->roles[$email_unverified_roleid])) {
-        drupal_set_message(t('We sent you an email with a link to verify your email address. Your account will have limited functionality until you’ve done so. If you have trouble verifying your email address, contact <a href="mailto:help@drupal.org">help@drupal.org</a>. <a href="!edit">Resend verification message.</a>', array('!edit' => url('toboggan/revalidate/' . $account->uid))), 'warning');
-      }
-    }
   }
 }
 
