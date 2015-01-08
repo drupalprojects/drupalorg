@@ -1360,9 +1360,9 @@ function drupalorg_form_user_register_form_alter(&$form) {
     // Drupal.org.
     $form['#prefix'] = '<p>' . t('When you create a !site account, you gain access to a whole ecosystem of !site sites and services. Your account works on Drupal.org and any of its subsites including <a href="@groups">Drupal Groups</a>, <a href="@jobs">Drupal Jobs</a>, <a href="@association">Drupal Association</a> and more.', array(
       '!site' => variable_get('site_name'),
-      '@groups' => 'http://groups.drupal.org',
-      '@jobs' => 'http://jobs.drupal.org',
-      '@association' => 'http://assoc.drupal.org',
+      '@groups' => 'https://groups.drupal.org',
+      '@jobs' => 'https://jobs.drupal.org',
+      '@association' => 'https://assoc.drupal.org',
     )) . '</p>';
   }
 }
