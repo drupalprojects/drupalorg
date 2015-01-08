@@ -29,6 +29,13 @@ function drupalorg_project_drush_command() {
       'glob' => 'A shell glob used to determine the set of files to process.',
     ),
   );
+  $items['projects-send-for-codereview'] = array(
+    'description' => "Calls a job on Jenkins to send projects for code review",
+    'aliases' => array('pscr'),
+    'examples' => array(
+      'drush projects-send-for-codereview' => 'Send commits to jenkins',
+    ),
+  );
 
   return $items;
 }
@@ -191,4 +198,34 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
       }
     }
   }
+}
+
+/**
+ * Command callback. Parse find changes and send to jenkins.
+ */
+function drush_drupalorg_project_projects_send_for_codereview() {
+  $last = variable_get('drupalorg_last_commit_codereview_vc_op_id', '7827211');
+  $project_types = array('project_module');
+  $jenkins_hash = variable_get('drupalorg_jenkinshash_for_codereview', 'X');
+  $jenkins_url = variable_get('jenkins_url', 'http://localhost:8080/');
+  $result = db_query_range('SELECT vc_op_id,repo_id FROM {versioncontrol_operations} WHERE vc_op_id > :last', 0, 100, array(':last' => $last));
+
+  foreach ($result as $row) {
+    $repo = versioncontrol_repository_load($row->repo_id);
+    $node = node_load($repo->project_nid);
+    $last = $row->vc_op_id;
+    if (in_array($node->type, $project_types)) {
+      $directions = project_git_instructions_get_defaults($node);
+      if (!empty($node->nid) && project_promote_project_is_sandbox($node)) {
+        $giturl = $directions['@anon_sandbox_url'];
+      }
+      else {
+        $giturl = $directions['@anon_project_url'];
+      }
+      // Now we build the URL to call
+      $call = $jenkins_url . 'buildByToken/buildWithParameters?job=ProjectCodeChecker&token=' . $jenkins_hash . '&nid=' . $node->nid . '&REPO=' . $giturl;
+      file_get_contents($call); // Here we call it
+    }
+  }
+  variable_set('drupalorg_last_commit_codereview_vc_op_id', $last);
 }
