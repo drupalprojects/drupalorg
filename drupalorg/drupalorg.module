@@ -1349,9 +1349,9 @@ function drupalorg_form_user_register_form_alter(&$form) {
 
   // Add field help text.
   $parameters = drupal_get_query_parameters();
-  if ($parameters['site']) {
+  $sites = drupalorg_crosssite_sites();
+  if (isset($parameters['site']) && isset($sites[$parameters['site']])) {
     // Sub-site.
-    $sites = drupalorg_crosssite_sites();
     $form['#prefix'] = '<p>' . t('When you create a Drupal.org account, you gain access to a whole ecosystem of Drupal.org sites and services. Your account works on Drupal.org and any of its subsites including !site.', array(
       '!site' => $sites[$parameters['site']],
     )) . '</p>';
