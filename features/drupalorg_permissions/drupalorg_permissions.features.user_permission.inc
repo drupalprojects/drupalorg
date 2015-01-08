@@ -56,6 +56,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'comment',
   );
@@ -66,6 +67,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'commitlog',
   );
@@ -76,6 +78,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'node',
   );
@@ -108,6 +111,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'aggregator',
   );
@@ -158,6 +162,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'restws',
   );
@@ -169,6 +174,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'restws',
   );
@@ -180,6 +186,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'restws',
   );
@@ -191,6 +198,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'restws',
   );
@@ -238,6 +246,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'restws',
   );
@@ -249,6 +258,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'restws',
   );
@@ -260,6 +270,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'restws',
   );
@@ -316,6 +327,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'user',
   );
@@ -2069,6 +2081,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'search',
   );
@@ -2102,6 +2115,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'search',
   );
@@ -2177,6 +2191,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'project_usage',
   );
