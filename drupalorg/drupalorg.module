@@ -1346,7 +1346,7 @@ function drupalorg_form_user_login_alter(&$form) {
   if (isset($parameters['site']) && isset($sites[$parameters['site']])) {
     // Sub-site.
     $form['#suffix'] .= '<p>' . t('!site is a part of the Drupal.org ecosystem of sites. You need to have a Drupal.org account to log in to !site.', array(
-      '!site' => variable_get('site_name'),
+      '!site' => $sites[$parameters['site']],
     )) . '</p>';
   }
   else {
