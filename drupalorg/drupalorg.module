@@ -793,20 +793,6 @@ function drupalorg_preprocess_page(&$variables) {
     // Hide the page title on the D7 release announcement
     unset($variables['title']);
   }
-
-  // Add login text.
-  $variables['drupalorg_login_text'] = '<p>'. t('!site is a part of a larger ecosystem of sites. Using your !site account you can log in to <a href="@groups">Drupal Groups</a>, register for <a href="@drupalcon">DrupalCon</a>, become a <a href="@association">Drupal Association</a> member, get connected on <a href="@jobs">Drupal Jobs</a>, upload <a href="@localize">Drupal translations</a> and more.', array(
-    '!site' => variable_get('site_name'),
-    '@groups' => 'http://groups.drupal.org',
-    '@drupalcon' => 'http://www.drupalcon.org',
-    '@association' => 'http://assoc.drupal.org',
-    '@jobs' => 'http://jobs.drupal.org',
-    '@localize' => 'http://localize.drupal.org',
-  )) . '</p>'.
-
-  $variables['drupalorg_login_text'] .= '<p>' . t('Don\'t have an account? <a href="@register">Create one now</a>.', array(
-    '@register' => url('user/register'),
-  )). '</p>';
 }
 
 /**
