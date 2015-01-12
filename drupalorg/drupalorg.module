@@ -1323,6 +1323,36 @@ function drupalorg_taxonomy_forums_ajax_callback($form, &$form_state) {
 function drupalorg_form_user_login_alter(&$form) {
   // Do not autocapitalize on mobile browsers.
   $form['name']['#attributes']['autocapitalize'] = 'none';
+
+  // Add additional text.
+  $form['#suffix'] = '<div class="login-text">';
+
+  $parameters = drupal_get_query_parameters();
+  $sites = drupalorg_crosssite_sites();
+  if (isset($parameters['site']) && isset($sites[$parameters['site']])) {
+    // Sub-site.
+    $form['#suffix'] .= '<p>' . t('!site is a part of the Drupal.org ecosystem of sites. You need to have a Drupal.org account to log in to !site.', array(
+      '!site' => variable_get('site_name'),
+    )) . '</p>';
+  }
+  else {
+    // Drupal.org.
+    $form['#suffix'] .= '<p>'. t('!site is a part of a larger ecosystem of sites. Using your !site account you can log in to <a href="@groups">Drupal Groups</a>, register for <a href="@drupalcon">DrupalCon</a>, become a <a href="@association">Drupal Association</a> member, get connected on <a href="@jobs">Drupal Jobs</a>, upload <a href="@localize">Drupal translations</a> and more.', array(
+      '!site' => variable_get('site_name'),
+      '@groups' => 'http://groups.drupal.org',
+      '@drupalcon' => 'http://www.drupalcon.org',
+      '@association' => 'http://assoc.drupal.org',
+      '@jobs' => 'http://jobs.drupal.org',
+      '@localize' => 'http://localize.drupal.org',
+    )) . '</p>';
+  }
+
+  // Add the create account link.
+  $form['#suffix'] .= '<p>' . t('Don\'t have an account? <a href="@register">Create one now</a>.', array(
+    '@register' => url('user/register'),
+  )). '</p>';
+
+  $form['#suffix'] .= '</div> <!-- /.login-text -->';
 }
 
 /**
