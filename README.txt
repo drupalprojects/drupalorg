@@ -20,3 +20,12 @@ intention of supporting this module such that other sites can make use
 of it.
 
 p.s. Did we mention you don’t want to run this module on your own site?
+
+
+## Contributing
+
+Work from the `dev` branch, using feature branches named
+`{issue number}-{short-description}`, for example
+`2182993-api-breadcrumb-space`.
+
+See https://www.drupal.org/node/2406727 for more information.
