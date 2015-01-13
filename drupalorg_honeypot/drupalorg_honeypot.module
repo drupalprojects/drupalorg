@@ -34,10 +34,6 @@ function drupalorg_honeypot_honeypot_time_limit($timelimit, $form_values, $failu
     if ($message) {
       drupal_set_message(t('<p>As a part of our continued efforts to make Drupal.org a productive place to visit and work, we’ve made it harder for spammers to post on the site. To avoid seeing this message again, and to be able to post faster, you can request the “trusted” user role. Please note that users who frequently post valuable content will automatically gain the role after some time.</p>
 <p><a href="!help_url">Learn about the “trusted” user role</a> and <a href ="!issue_url">make your request</a>.</p>', array('!issue_url' => '/node/add/project-issue/webmasters?component=User%20account&categories=support&title=Request%20for%20%27trusted%27%20role', '!help_url' => '/node/1887616')));
-      // display a taunt to likely spammers
-      if (($failures * $count) > variable_get('drupalorg_honeypot_taunt_threshold', 20)) {
-        drupal_set_message(strtr(variable_get('drupalorg_honeypot_taunt', "Yo %name! Druplicon doesn't like you. Better start running."), array('%name' => $user->name)), 'error');
-      }
       $message = FALSE;
     }
   }
