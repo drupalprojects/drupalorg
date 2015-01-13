@@ -798,9 +798,8 @@ function drupalorg_preprocess_page(&$variables) {
 
   $headless = FALSE;
   $path = current_path();
-  $headless_paths = variable_get('drupalorg_headless_form_paths');
-
-  if (drupal_match_path($path, implode("\n", $headless_paths))) {
+  $headless_paths = variable_get('drupalorg_headless_form_paths', FALSE);
+  if ($headless_paths && drupal_match_path($path, implode("\n", $headless_paths))) {
     $headless = TRUE;
   }
   elseif ($path == 'user' && user_is_anonymous()) {
@@ -815,7 +814,9 @@ function drupalorg_preprocess_page(&$variables) {
     unset($page['navigation']);
 
     // Remove the footer.
-    unset($page['footer']);
+    foreach (element_children($page['footer']) as $child) {
+      hide($page['footer'][$child]);
+    }
   }
 }
 
