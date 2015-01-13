@@ -788,10 +788,34 @@ function drupalorg_home() {
  * Implementation of template_preprocess_page().
  */
 function drupalorg_preprocess_page(&$variables) {
+  $page = &$variables['page'];
+
   $router = menu_get_item();
   if ($router['path'] == 'drupal-7.0') {
     // Hide the page title on the D7 release announcement
     unset($variables['title']);
+  }
+
+  $headless = FALSE;
+  $path = current_path();
+  $headless_paths = variable_get('drupalorg_headless_form_paths');
+
+  if (drupal_match_path($path, implode("\n", $headless_paths))) {
+    $headless = TRUE;
+  }
+  elseif ($path == 'user' && user_is_anonymous()) {
+    $headless = TRUE;
+  }
+
+  if ($headless) {
+    // Remove the search form.
+    unset($page['header']['search_form']);
+
+    // Remove the main menu.
+    unset($page['navigation']);
+
+    // Remove the footer.
+    unset($page['footer']);
   }
 }
 
