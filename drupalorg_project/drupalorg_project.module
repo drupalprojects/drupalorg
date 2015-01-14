@@ -1087,7 +1087,7 @@ function drupalorg_project_block_view($delta = '') {
           // Force the link for now, see http://drupal.org/node/1026594
           $repo = $project->versioncontrol_project['repo'];
           $links[] = array(
-            'title' => t('Repository viewer'),
+            'title' => t('Browse code repository'),
             'href' => $repo->getUrlHandler()->getRepositoryViewUrl(),
           );
           $links[] = array(
