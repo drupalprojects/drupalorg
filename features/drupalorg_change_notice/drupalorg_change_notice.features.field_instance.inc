@@ -63,7 +63,7 @@ function drupalorg_change_notice_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => 'Enter the version this change was first applied in. Examples: 8.0-ALPHA3, 7.5, 7.x-3.2',
+    'description' => 'Enter the version this change was first applied in. Examples: 8.0.0-ALPHA3, 7.5, 7.x-3.2',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -154,7 +154,7 @@ function drupalorg_change_notice_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => 'Enter the branch this change was first applied in. Examples: 8.x, 7.x-3.x',
+    'description' => 'Enter the branch this change was first applied in. Examples: 8.0.x, 7.x-3.x',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -1660,8 +1660,8 @@ function drupalorg_change_notice_field_default_field_instances() {
   t('Description');
   t('Details');
   t('Enter details of any needed updates (URLs of specific pages to be updated, what the coder routines or examples should contain, etc.).');
-  t('Enter the branch this change was first applied in. Examples: 8.x, 7.x-3.x');
-  t('Enter the version this change was first applied in. Examples: 8.0-ALPHA3, 7.5, 7.x-3.2');
+  t('Enter the branch this change was first applied in. Examples: 8.0.x, 7.x-3.x');
+  t('Enter the version this change was first applied in. Examples: 8.0.0-ALPHA3, 7.5, 7.x-3.2');
   t('Example modules in the <a href="http://drupal.org/project/examples">Examples for Developers project</a>');
   t('Examples project');
   t('File attachments');
