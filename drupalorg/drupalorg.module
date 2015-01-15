@@ -1417,9 +1417,6 @@ function drupalorg_form_user_register_form_alter(&$form) {
   $form['account']['name']['#attributes']['autocapitalize'] = 'none';
   $form['account']['mail']['#attributes']['autocapitalize'] = 'none';
 
-  // Add a note about the next step.
-  $form['actions']['#prefix'] = '<p>' . t('<strong>Next step:</strong> When you request an account with Drupal.org, we send you an email with a one-time login link to verify your email address. When you visit that link, you will be asked to create a password and update your profile.') . '</p>';
-
   // Hide the timezone field.
   if (isset($form['timezone'])) {
     $form['timezone']['#attributes']['class'][] = 'element-invisible';
