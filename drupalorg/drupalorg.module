@@ -809,10 +809,10 @@ function drupalorg_preprocess_page(&$variables) {
   if ($headless) {
     // Remove the search form.
     unset($page['header']['search_form']);
-
     // Remove the main menu.
     unset($page['navigation']);
-
+    // Remove the masthead navigation.
+    $variables['nav_masthead'] = '';
     // Remove the footer.
     foreach (element_children($page['footer']) as $child) {
       hide($page['footer'][$child]);
