@@ -243,6 +243,15 @@ function drupalorg_menu_alter(&$menu) {
     $menu['profile/autocomplete']['access callback'] = 'user_is_logged_in';
     $menu['profile/autocomplete']['access arguments'] = array();
   }
+
+  $menu['user']['title callback'] = 'drupalorg_user_menu_title';
+}
+
+/**
+ * Menu title callback. Be more welcoming than core.
+ */
+function drupalorg_user_menu_title() {
+  return user_is_logged_in() ? t('My account') : t('Welcome to Drupal.org');
 }
 
 /**
