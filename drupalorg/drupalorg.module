@@ -1386,7 +1386,6 @@ function drupalorg_form_user_login_alter(&$form) {
 
   // Add additional text.
   $form['#suffix'] = '<div class="login-text">';
-
   $parameters = drupal_get_query_parameters();
   $sites = drupalorg_crosssite_sites();
   if (isset($parameters['site']) && isset($sites[$parameters['site']])) {
@@ -1406,13 +1405,16 @@ function drupalorg_form_user_login_alter(&$form) {
       '@localize' => 'http://localize.drupal.org',
     )) . '</p>';
   }
-
   // Add the create account link.
   $form['#suffix'] .= '<p>' . t('Don\'t have an account? <a href="@register">Create one now</a>.', array(
     '@register' => url('user/register'),
   )). '</p>';
+  $form['#suffix'] .= '</div>';
 
-  $form['#suffix'] .= '</div> <!-- /.login-text -->';
+  // Make help more straightforward.
+  $form['name']['#title'] = t('Username or email');
+  unset($form['name']['#description']);
+  unset($form['pass']['#description']);
 }
 
 /**
@@ -1452,6 +1454,14 @@ function drupalorg_form_user_register_form_alter(&$form) {
       '@association' => 'https://assoc.drupal.org',
     )) . '</p>';
   }
+
+  // Make help more straightforward.
+  $form['account']['name']['#description'] = t('Punctuation is not allowed except for periods, hyphens, apostrophes, and underscores.');
+  $form['account']['mail']['#title'] = t('Email');
+  $form['account']['mail']['#description'] = t('Emails from Drupal.org will be sent to this address. This email address is not made public.');
+  $form['account']['conf_mail']['#title'] = t('Confirm email');
+  unset($form['account']['conf_mail']['#description']);
+  unset($form['account']['pass']['#description']);
 }
 
 /**
