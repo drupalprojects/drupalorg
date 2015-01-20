@@ -3199,7 +3199,6 @@ function drupalorg_bakery_transmit($edit, $account) {
     'field_gender',
     'field_first_name',
     'field_last_name',
-    'field_social_links',
   );
   $account_wrapper = entity_metadata_wrapper('user', $account);
   foreach ($fields as $field_name) {
