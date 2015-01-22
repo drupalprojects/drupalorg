@@ -39,12 +39,15 @@
     <div class="narrow-box-list">
       <h5 class="lined">Most popular guides</h5>
       <ul>
-        <li><a href="/documentation/install">Installation guide</a></li>
-        <li><a href="/documentation/build">Site building guide</a></li>
-        <li><a href="/documentation/theme">Theming guide</a></li>
+        <li><a href="/documentation/install">Installation Guide</a></li>
+        <li><a href="/documentation/build">Site Building Guide</a></li>
+        <li><a href="/documentation/theme">Theming Guide</a></li>
         <li><a href="/documentation/understand">Understanding Drupal</a></li>
-        <li><a href="/documentation/structure">Structure guide</a></li>
+        <li><a href="/documentation/structure">Structure Guide</a></li>
       </ul>
+
+      <p><a href="/resource-guides">Resource Guides</a></p>
+
       <a href="/documentation" class="all">All documentation</a>
     </div><!--/narrow-box-list-->
     <div class="narrow-box-list">
