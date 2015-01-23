@@ -3207,7 +3207,9 @@ function drupalorg_bakery_transmit($edit, $account) {
   }
   // URL fields are not in entity metadata wrappers,
   // https://www.drupal.org/node/2322919.
-  $data['drupalorg_field_social_links'] = $account->field_social_links[LANGUAGE_NONE];
+  if (isset($account->field_social_links[LANGUAGE_NONE])) {
+    $data['drupalorg_field_social_links'] = $account->field_social_links[LANGUAGE_NONE];
+  }
 
   // Time zone to sync.
   if (!empty($account->timezone)) {
