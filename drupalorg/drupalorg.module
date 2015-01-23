@@ -3231,14 +3231,16 @@ function drupalorg_bakery_transmit($edit, $account) {
  */
 function drupalorg_entity_presave($entity, $type) {
   if ($type === 'user') {
-    // Set titles for social link URLs.
-    $social_link_patterns = variable_get('drupalorg_social_link_patterns', array());
-    foreach ($entity->field_social_links[LANGUAGE_NONE] as &$value) {
-      $value['title'] = '';
-      foreach ($social_link_patterns as $pattern => $title) {
-        if (preg_match($pattern, $value['value'])) {
-          $value['title'] = $title;
-          break;
+    if (isset($entity->field_social_links[LANGUAGE_NONE])) {
+      // Set titles for social link URLs.
+      $social_link_patterns = variable_get('drupalorg_social_link_patterns', array());
+      foreach ($entity->field_social_links[LANGUAGE_NONE] as &$value) {
+        $value['title'] = '';
+        foreach ($social_link_patterns as $pattern => $title) {
+          if (preg_match($pattern, $value['value'])) {
+            $value['title'] = $title;
+            break;
+          }
         }
       }
     }
