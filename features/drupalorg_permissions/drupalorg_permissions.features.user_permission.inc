@@ -10,9 +10,9 @@
 function drupalorg_permissions_user_default_permissions() {
   $permissions = array();
 
-  // Exported permission: 'Toggle role trusted'.
-  $permissions['Toggle role trusted'] = array(
-    'name' => 'Toggle role trusted',
+  // Exported permission: 'Toggle role confirmed'.
+  $permissions['Toggle role confirmed'] = array(
+    'name' => 'Toggle role confirmed',
     'roles' => array(
       'administrator' => 'administrator',
       'community' => 'community',
@@ -788,12 +788,12 @@ function drupalorg_permissions_user_default_permissions() {
       'Packaging whitelist maintainer' => 'Packaging whitelist maintainer',
       'administrator' => 'administrator',
       'community' => 'community',
+      'confirmed' => 'confirmed',
       'content moderator' => 'content moderator',
       'drupal.org issue queue squad' => 'drupal.org issue queue squad',
       'list maintainer' => 'list maintainer',
       'security team' => 'security team',
       'testing administrator' => 'testing administrator',
-      'trusted' => 'trusted',
       'user administrator' => 'user administrator',
       'webmaster' => 'webmaster',
     ),
@@ -805,7 +805,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'bypass mollom protection',
     'roles' => array(
       'administrator' => 'administrator',
-      'trusted' => 'trusted',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'mollom',
   );
@@ -968,6 +968,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'book',
   );
 
+  // Exported permission: 'create packaging_whitelist content'.
+  $permissions['create packaging_whitelist content'] = array(
+    'name' => 'create packaging_whitelist content',
+    'roles' => array(
+      'Packaging whitelist maintainer' => 'Packaging whitelist maintainer',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'create page content'.
   $permissions['create page content'] = array(
     'name' => 'create page content',
@@ -1112,6 +1121,15 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete any full project',
     'roles' => array(),
     'module' => 'project',
+  );
+
+  // Exported permission: 'delete any packaging_whitelist content'.
+  $permissions['delete any packaging_whitelist content'] = array(
+    'name' => 'delete any packaging_whitelist content',
+    'roles' => array(
+      'Packaging whitelist maintainer' => 'Packaging whitelist maintainer',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: 'delete any page content'.
@@ -1502,6 +1520,15 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit any forum content'] = array(
     'name' => 'edit any forum content',
     'roles' => array(),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'edit any packaging_whitelist content'.
+  $permissions['edit any packaging_whitelist content'] = array(
+    'name' => 'edit any packaging_whitelist content',
+    'roles' => array(
+      'Packaging whitelist maintainer' => 'Packaging whitelist maintainer',
+    ),
     'module' => 'node',
   );
 
