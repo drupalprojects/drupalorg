@@ -40,6 +40,12 @@ function drupalorg_permissions_user_default_roles() {
     'weight' => 12,
   );
 
+  // Exported role: Packaging whitelist maintainer.
+  $roles['Packaging whitelist maintainer'] = array(
+    'name' => 'Packaging whitelist maintainer',
+    'weight' => 14,
+  );
+
   // Exported role: administrator.
   $roles['administrator'] = array(
     'name' => 'administrator',
@@ -50,6 +56,12 @@ function drupalorg_permissions_user_default_roles() {
   $roles['community'] = array(
     'name' => 'community',
     'weight' => 5,
+  );
+
+  // Exported role: confirmed.
+  $roles['confirmed'] = array(
+    'name' => 'confirmed',
+    'weight' => 4,
   );
 
   // Exported role: content moderator.
@@ -86,12 +98,6 @@ function drupalorg_permissions_user_default_roles() {
   $roles['testing administrator'] = array(
     'name' => 'testing administrator',
     'weight' => 16,
-  );
-
-  // Exported role: trusted.
-  $roles['trusted'] = array(
-    'name' => 'trusted',
-    'weight' => 4,
   );
 
   // Exported role: user administrator.
