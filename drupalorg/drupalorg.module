@@ -3153,6 +3153,24 @@ function drupalorg_menu_local_tasks_alter(&$data, $router_item, $root_path) {
         unset($data['actions']['output']['forum']);
       }
       break;
+
+    // Persist site & path arguments.
+    case 'user':
+      if (user_is_logged_in()) {
+        break;
+      }
+      // Explicit fall-through.
+    case 'user/register':
+    case 'user/password':
+      if ($redirect = drupalorg_crosssite_get_redirect()) {
+        foreach ($data['tabs'][0]['output'] as &$tab) {
+          if ($tab['#link']['path'] === 'user/register' || $tab['#link']['path'] === 'user/login') {
+            $tab['#link']['localized_options']['query']['site'] = $redirect['site'];
+            $tab['#link']['localized_options']['query']['path'] = ltrim('/', $redirect['path']);
+          }
+        }
+      }
+      break;
   }
 }
 
