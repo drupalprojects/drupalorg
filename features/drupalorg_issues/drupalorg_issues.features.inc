@@ -18,5 +18,6 @@ function drupalorg_issues_node_info() {
       'help' => t('Learn <a href="/node/73179">how to report an issue</a>. Use the <a href="/node/1155816">issue summary template</a> to summarize the issue in the Description field below. Others can also change the summary. Editing the summary does not subscribe you to the issue or notify subscribers, so add a comment describing your changes after any significant edit.'),
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }

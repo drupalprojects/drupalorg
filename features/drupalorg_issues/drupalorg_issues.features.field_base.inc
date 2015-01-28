@@ -83,6 +83,41 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'list_integer',
   );
 
+  // Exported field_base: 'field_issue_changes'
+  $field_bases['field_issue_changes'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_issue_changes',
+    'foreign keys' => array(
+      'nid' => array(
+        'columns' => array(
+          'nid' => 'nid',
+        ),
+        'table' => 'node',
+      ),
+      'vid' => array(
+        'columns' => array(
+          'vid' => 'vid',
+        ),
+        'table' => 'node',
+      ),
+    ),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'nodechanges',
+    'settings' => array(
+      'hide_core_revision_log' => TRUE,
+      'properties' => array(
+        'title' => 'title',
+      ),
+      'revision_comment_field' => 'comment_body',
+    ),
+    'translatable' => 0,
+    'type' => 'nodechanges_revision_diff',
+  );
+
   // Exported field_base: 'field_issue_component'
   $field_bases['field_issue_component'] = array(
     'active' => 1,

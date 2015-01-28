@@ -10,6 +10,87 @@
 function drupalorg_issues_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'comment-comment_node_project_issue-comment_body'
+  $field_instances['comment-comment_node_project_issue-comment_body'] = array(
+    'bundle' => 'comment_node_project_issue',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'comment_body',
+    'label' => 'Comment',
+    'required' => TRUE,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance: 'comment-comment_node_project_issue-field_issue_changes'
+  $field_instances['comment-comment_node_project_issue-field_issue_changes'] = array(
+    'bundle' => 'comment_node_project_issue',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'nodechanges',
+        'settings' => array(
+          'files_display_mode' => 'fieldset_all_but_new',
+        ),
+        'type' => 'nodechanges_diff_default',
+        'weight' => -1,
+      ),
+      'issuemetadata' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => -1,
+      ),
+      'teaser' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => -1,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'field_issue_changes',
+    'label' => 'Issue changes',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'nodechanges_diff_default',
+      ),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 1,
+    ),
+  );
+
   // Exported field_instance: 'node-project_issue-body'
   $field_instances['node-project_issue-body'] = array(
     'bundle' => 'project_issue',
@@ -840,8 +921,10 @@ function drupalorg_issues_field_default_field_instances() {
   t('Assigned');
   t('Before adding tags <a href="/node/1023102">read the issue tag guidelines</a>. Do <strong>NOT</strong> use tags for adding random keywords or duplicating any other fields.  Separate terms with a comma, not a space.');
   t('Category');
+  t('Comment');
   t('Component');
   t('Files');
+  t('Issue changes');
   t('Issue summary');
   t('Issue tags');
   t('Parent issue');
