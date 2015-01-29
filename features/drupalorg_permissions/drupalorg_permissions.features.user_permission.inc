@@ -1961,15 +1961,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'sshkey',
   );
 
-  // Exported permission: 'migration information'.
-  $permissions['migration information'] = array(
-    'name' => 'migration information',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'migrate_ui',
-  );
-
   // Exported permission: 'moderate comments'.
   $permissions['moderate comments'] = array(
     'name' => 'moderate comments',
