@@ -454,7 +454,7 @@ function drupalorg_issues_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 50,
+      'weight' => 3,
     ),
   );
 
