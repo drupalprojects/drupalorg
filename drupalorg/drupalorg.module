@@ -1504,8 +1504,8 @@ function drupalorg_form_node_form_alter(&$form) {
       $form['revision_information']['#access'] = FALSE;
     }
   }
-  if (isset($form['nodechanges_comment_body'])) {
-    $form['nodechanges_comment_body']['#rows'] = 15;
+  if (isset($form['nodechanges_comment'])) {
+    $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
   }
 }
 
