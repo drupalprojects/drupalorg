@@ -95,7 +95,7 @@
         $('input[name=message]', this).keyup(Drupal.drupalorgUpdateIssueCredit);
         $('input[type=checkbox][id^=by-]', this).change(Drupal.drupalorgUpdateIssueCredit);
         $('input[name=author]', this).change(Drupal.drupalorgUpdateIssueCredit);
-        $('textarea[command], textarea[name=command-message]', this).click(function () {
+        $('textarea[name=command], textarea[name=command-message]', this).click(function () {
           $(this).select();
         });
 
