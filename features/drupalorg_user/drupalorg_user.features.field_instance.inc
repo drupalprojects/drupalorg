@@ -114,6 +114,36 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'field_collection_item-field_organizations-field_organization_reference'
+  $field_instances['field_collection_item-field_organizations-field_organization_reference'] = array(
+    'bundle' => 'field_organizations',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_organization_reference',
+    'label' => 'Organization reference',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 38,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_areas_of_expertise'
   $field_instances['user-user-field_areas_of_expertise'] = array(
     'bundle' => 'user',
@@ -747,6 +777,7 @@ function drupalorg_user_field_default_field_instances() {
   t('My contributions');
   t('My mentors');
   t('Organization');
+  t('Organization reference');
   t('Organizations');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');

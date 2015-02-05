@@ -3288,6 +3288,26 @@ function drupalorg_entity_presave($entity, $type) {
         }
       }
     }
+    // Populate field_organization_reference.
+    $organization_titles = array();
+    foreach ($entity->field_organizations[LANGUAGE_NONE] as $delta => &$organization) {
+      // Load field collection item entity if not already loaded.
+      if (isset($organization['value'])) {
+        $organization['entity'] = field_collection_item_load($organization['value']);
+      }
+      // Clear any previous reference.
+      $organization['entity']->field_organization_reference = array();
+      // Add to list of titles to try loading.
+      if (!empty($organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value'])) {
+        $organization_titles[$organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value']] = $delta;
+      }
+    }
+    if (!empty($organization_titles)) {
+      // Load organizations by title and populate reference field.
+      foreach (db_query("SELECT nid, title FROM {node} n WHERE n.status = :published AND n.type = 'organization' AND title IN (:titles)", array(':published' => NODE_PUBLISHED, ':titles' => array_keys($organization_titles)))->fetchAllKeyed() as $nid => $title) {
+        $entity->field_organizations[LANGUAGE_NONE][$organization_titles[$title]]['entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id'] = $nid;
+      }
+    }
   }
 }
 
