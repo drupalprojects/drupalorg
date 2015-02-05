@@ -70,6 +70,17 @@ function drupalorg_init() {
     drupal_add_http_header('Access-Control-Allow-Methods', 'GET, OPTIONS');
     drupal_add_http_header('Access-Control-Allow-Headers', 'Content-Type');
   }
+
+  // Audience extension, see
+  // https://www.drupal.org/news/drupalorg-2015-advertising-initiatives
+  // Include for anonymous users, except on excluded pages.
+  if (user_is_anonymous() && !drupal_match_path(drupal_strtolower(drupal_get_path_alias($_GET['q'])), variable_get('drupalorg_perfect_audience_excluded_pages', ''))) {
+    $node = menu_get_object();
+    // Do not include on issue & project nodes.
+    if (empty($node) || !(project_issue_node_is_issue($node) || project_node_is_project($node))) {
+      drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/drupalorg-perfect-audience.js', array('scope' => 'footer'));
+    }
+  }
 }
 
 /**
