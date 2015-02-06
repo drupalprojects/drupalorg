@@ -3305,7 +3305,10 @@ function drupalorg_entity_presave($entity, $type) {
     if (!empty($organization_titles)) {
       // Load organizations by title and populate reference field.
       foreach (db_query("SELECT nid, title FROM {node} n WHERE n.status = :published AND n.type = 'organization' AND title IN (:titles)", array(':published' => NODE_PUBLISHED, ':titles' => array_keys($organization_titles)))->fetchAllKeyed() as $nid => $title) {
-        $entity->field_organizations[LANGUAGE_NONE][$organization_titles[trim(drupal_strtolower($title))]]['entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id'] = $nid;
+        // MySQL collation is more loose than PHP.
+        if (isset($organization_titles[trim(drupal_strtolower($title))])) {
+          $entity->field_organizations[LANGUAGE_NONE][$organization_titles[trim(drupal_strtolower($title))]]['entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id'] = $nid;
+        }
       }
     }
   }
