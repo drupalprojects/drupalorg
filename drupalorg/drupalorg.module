@@ -219,6 +219,11 @@ function drupalorg_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('drupalorg_ad_settings_form'),
   );
+  $items['welcome'] = array(
+    'title' => 'Welcome to Drupal.org',
+    'access arguments' => array('access content'),
+    'page callback' => 'drupalorg_welcome_page',
+  );
 
   return $items;
 }
@@ -1286,6 +1291,32 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
       '#access' => $form['actions']['cancel']['#access'],
     );
   }
+
+  $parameters = drupal_get_query_parameters();
+  if (isset($parameters['welcome'])) {
+    drupal_set_title('blah');
+    $to_show = array(
+      'actions',
+      'field_country',
+      'field_gender',
+      'field_first_name',
+      'field_organizations',
+      'field_last_name',
+      'picture',
+      'timezone',
+    );
+    // Hide anything that we haven't said to show.
+    foreach (array_diff(element_children($form), $to_show) as $item) {
+      if (isset($form[$item])) {
+        $form[$item]['#access'] = FALSE;
+      }
+    }
+
+    // Don't show vertical tabs.
+    $form['#fieldgroups'] = array();
+
+    dpm($form);
+  }
 }
 
 /**
@@ -1516,7 +1547,7 @@ function drupalorg_register_mail_validate($form, &$form_state) {
   $hit = preg_match('/(.*)\+(.*)\@(.*)/', $form_state['values']['mail'], $match);
   if ($hit) {
     if (db_query("SELECT uid FROM {users} WHERE LOWER(mail) LIKE LOWER(:tomatch)", array(':tomatch' => $match[1] . '+%%@' . $match[3]))->fetchField() > 0) {
-      form_set_error('mail', t('An e-mail address similar to %email is already registered. <a href="@password">Have you forgotten your password?</a>', array('%email' => $form_state['values']['mail'], '@password' => url('user/password'))));
+      // form_set_error('mail', t('An e-mail address similar to %email is already registered. <a href="@password">Have you forgotten your password?</a>', array('%email' => $form_state['values']['mail'], '@password' => url('user/password'))));
     }
   }
 }
@@ -3518,4 +3549,85 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
   }
 
   return $element;
+}
+
+function drupalorg_welcome_page() {
+  global $user;
+
+  // If the user is anonymous or already has accessed the site, send them elsewhere.
+  if ($user->uid === 0 || $user->access > 0) {
+//    drupal_goto('user');
+  }
+
+  $output = '';
+
+  // Add the introductory text.
+  $output .= '<p>' . t('You\'ve joined Drupal.org - a home to a global community of passionate people. Whether you are new to open source or ready to change the world, welcome!') . '</p>';
+  $output .= '<p>' . t('This information will be public on your profile.') . '</p>';
+
+  // Load the user profile form.
+  form_load_include($form_state, 'inc', 'user', 'user.pages');
+  $form = drupal_get_form('user_profile_form', $user);
+
+  // Edit the form.
+
+  $to_show = array(
+    'field_first_name',
+    'field_last_name',
+    'actions',
+    'field_country',
+    'field_gender',
+    'field_organizations',
+    'picture',
+    'timezone',
+  );
+  // Hide anything that we haven't said to show.
+  foreach (array_diff(element_children($form), $to_show) as $item) {
+    if (isset($form[$item])) {
+      $form[$item]['#access'] = FALSE;
+    }
+  }
+
+  // Don't show vertical tabs.
+  foreach ($form['#groups'] as &$group) {
+    $group->format_type = 'div';
+    $group->format_settings['formatter'] = 'open';
+  }
+
+  $left = 'group_left';
+  $right = 'group_right';
+  $form['#group_children'] = array(
+    'field_country' => $left,
+    'field_first_name' => $left,
+    'field_last_name' => $left,
+    'field_organizations' => $left,
+    'field_gender' => $left,
+    'picture' => $right,
+    'timezone' => $right,
+  );
+
+  // This doesn't work. :(
+  $form['timezone']['#collapsible'] = FALSE;
+
+  // Remove the add and remove buttons.
+  unset($form['field_organizations'][LANGUAGE_NONE]['add_more']);
+  unset($form['field_organizations'][LANGUAGE_NONE][0]['remove_button']);
+
+  // Hide the current organization field.
+  $form['field_organizations'][LANGUAGE_NONE][0]['field_current']['#access'] = FALSE;
+
+  // Hide the organization field description.
+  $form['field_organizations'][LANGUAGE_NONE]['#description'] = '';
+
+  // Only allow one organization.
+  $form['field_organizations'][LANGUAGE_NONE]['#theme'] = 'field_single_value_form';
+  $form['field_organizations'][LANGUAGE_NONE]['#cardinality'] = 1;
+
+  // Remove the container-inline class, if it exists.
+  if (isset($form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']) && $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] == 'container-inline') {
+    $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] = '';
+  }
+
+  $output .= drupal_render($form);
+  return $output;
 }
