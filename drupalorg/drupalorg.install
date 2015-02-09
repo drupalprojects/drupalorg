@@ -3763,3 +3763,13 @@ function drupalorg_update_7081() {
       ->execute();
   }
 }
+
+/**
+ * Adjust the weight of logintoboggan.
+ */
+function drupalorg_update_7083() {
+  db_update('system')
+    ->fields(array('weight' => 300))
+    ->condition('name', 'logintoboggan')
+    ->execute();
+}
