@@ -1291,32 +1291,6 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
       '#access' => $form['actions']['cancel']['#access'],
     );
   }
-
-  $parameters = drupal_get_query_parameters();
-  if (isset($parameters['welcome'])) {
-    drupal_set_title('blah');
-    $to_show = array(
-      'actions',
-      'field_country',
-      'field_gender',
-      'field_first_name',
-      'field_organizations',
-      'field_last_name',
-      'picture',
-      'timezone',
-    );
-    // Hide anything that we haven't said to show.
-    foreach (array_diff(element_children($form), $to_show) as $item) {
-      if (isset($form[$item])) {
-        $form[$item]['#access'] = FALSE;
-      }
-    }
-
-    // Don't show vertical tabs.
-    $form['#fieldgroups'] = array();
-
-    dpm($form);
-  }
 }
 
 /**
@@ -3732,6 +3706,8 @@ function drupalorg_welcome_page() {
   if (isset($form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']) && $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] == 'container-inline') {
     $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] = '';
   }
+
+  // Add another submit handler.
 
   $output .= drupal_render($form);
   return $output;
