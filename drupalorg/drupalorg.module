@@ -2524,12 +2524,15 @@ function drupalorg_node_update($node) {
       $wrapper = entity_metadata_wrapper('node', $node);
       foreach ($wrapper->field_release_files as $file_wrapper) {
         $file = $file_wrapper->field_release_file->value();
-        drupal_http_request(project_release_add_download_base($file['uri'], $download_base), array(
+        $request = drupal_http_request(project_release_add_download_base($file['uri'], $download_base), array(
           'method' => 'PURGE',
           'headers' => array(
             'Fastly-Key' => $fastly_key,
           ),
         ));
+        if (function_exists('dlm')) {
+          dlm($request);
+        }
       }
     }
   }
