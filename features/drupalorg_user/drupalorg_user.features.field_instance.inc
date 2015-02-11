@@ -641,6 +641,92 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_subscribe_to'
+  $field_instances['user-user-field_subscribe_to'] = array(
+    'bundle' => 'user',
+    'default_value' => array(
+      0 => array(
+        'subscribe' => 1,
+        'interest_groups' => array(
+          5609 => array(
+            'Business (C-level)' => 0,
+            'Business (Marketing / Sales/ Bus. Dev)' => 0,
+            'Developer' => 0,
+            'End User' => 0,
+            'Evangelist' => 0,
+            'Frontend (Developer, Themer, Designer)' => 0,
+            'Interested in sponsoring' => 0,
+            'Interested in volunteering' => 0,
+            'Local Event Organizer' => 0,
+            'Site Administrator (inc. Content Editor)' => 0,
+            'Site Builder' => 0,
+            'Speaker' => 0,
+          ),
+          5845 => array(
+            'Drupal Association News' => 0,
+            'DrupalCon Updates' => 0,
+            'Educational content (i.e., Webcasts, Global Training Days)' => 0,
+            'Information for Drupal Businesses' => 0,
+          ),
+        ),
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'mailchimp_lists',
+        'settings' => array(
+          'interest_groups' => array(),
+          'show_interest_groups' => FALSE,
+        ),
+        'type' => 'mailchimp_lists_subscribe_default',
+        'weight' => 19,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_subscribe_to',
+    'label' => 'Subscribe to',
+    'required' => 0,
+    'settings' => array(
+      'interest_groups_title' => 'Interest Groups',
+      'mergefields' => array(
+        'BUSINESS' => '',
+        'CIVI_ID' => '',
+        'COMPANY' => '',
+        'COUNTRY' => '',
+        'DCEVENT' => '',
+        'DRUPNAME' => 'name',
+        'EMAIL' => 'mail',
+        'FNAME' => 'name',
+        'FULLNAME' => '',
+        'JOBTITLE' => '',
+        'LNAME' => 'field_last_name',
+        'MEMBINDEXP' => '',
+        'MEMBORGEXP' => '',
+        'ORG' => '',
+        'SFID' => '',
+        'SIGNUP' => '',
+        'SKILLLEVEL' => '',
+      ),
+      'options' => array(
+        'interest_groups' => array(),
+        'subscribe' => FALSE,
+      ),
+      'show_interest_groups' => 1,
+      'unsubscribe_on_delete' => 1,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'mailchimp_lists',
+      'settings' => array(),
+      'type' => 'mailchimp_lists_select',
+      'weight' => 5,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_terms_of_service'
   $field_instances['user-user-field_terms_of_service'] = array(
     'bundle' => 'user',
@@ -673,7 +759,7 @@ function drupalorg_user_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 7,
+      'weight' => 8,
     ),
   );
 
@@ -785,6 +871,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Select Drupal events you attended or are planning to attend.');
   t('Select one or more languages you speak.');
   t('Social links');
+  t('Subscribe to');
   t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Website(s)');

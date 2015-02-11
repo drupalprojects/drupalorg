@@ -1297,6 +1297,47 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
       '#access' => $form['actions']['cancel']['#access'],
     );
   }
+
+  // MailChimp lists.
+  if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0])) {
+    // Remove fieldset over-nesting.
+    unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['#type']);
+    unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['#title']);
+    // Show interest groups, and have them control the now-hidden subscribe
+    // checkbox.
+    $form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']['#prefix'] = '<div class="element-invisible">';
+    $form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']['#suffix'] = '</div>';
+    $form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']['#states'] = array(
+      'checked' => array(
+        ':input[name^="field_subscribe_to[und][0][interest_groups]"]' => array('checked' => TRUE),
+      ),
+    );
+    unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['#states']);
+    // Hide "Roles in Drupal"
+    if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5609])) {
+      hide($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5609]);
+    }
+    // Alter list of lists.
+    if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845])) {
+      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845]['#title'] = t('Subscribe to');
+      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845]['#after_build'][] = 'drupalorg_form_user_profile_add_mailchimp_descriptions';
+      // todo limit options when welcoming.
+      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5485]['#suffix'] = '<div class="description">' . t('Your primary email address %address will be used for subscriptions. <a href="!url">Edit email addresses</a>', array('%address' => $form['#user']->mail, '!url' => url('user/' . $form['#user']->uid . '/edit/email-addresses'))) . '</div>';
+    }
+  }
+}
+
+/**
+ * #after_build callback. Add individual descriptions to processed MailChimp
+ * checkboxes.
+ */
+function drupalorg_form_user_profile_add_mailchimp_descriptions(&$element) {
+  foreach (variable_get('drupalorg_mailchimp_list_descriptions', array()) as $name => $description) {
+    if (isset($element[$name])) {
+      $element[$name]['#description'] = t($description);
+    }
+  }
+  return $element;
 }
 
 /**
