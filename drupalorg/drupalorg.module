@@ -1586,8 +1586,7 @@ function drupalorg_form_user_register_form_alter(&$form) {
 
   if (module_exists('logintoboggan')) {
     // Override logintoboggan_user_register_submit().
-    unset($form['#submit'][array_search('logintoboggan_user_register_submit', $form['#submit'])]);
-    array_unshift($form['#submit'],'drupalorg_user_register_form_submit');
+    array_splice($form['#submit'], array_search('logintoboggan_user_register_submit', $form['#submit']), 1, 'drupalorg_user_register_form_submit');
   }
 }
 
@@ -1678,11 +1677,10 @@ function drupalorg_user_register_form_submit($form, &$form_state) {
   // Mail the user.
   _user_mail_notify($mailkey, $account);
 
-  // drupal_set_message($message);
-
   // Log the user in if they created the account and immediate login is enabled.
   if ($reg_pass_set && variable_get('logintoboggan_immediate_login_on_register', TRUE)) {
-    $form_state['redirect'] = array('welcome', array('query' => drupal_get_query_parameters()));
+    $redirect = array('welcome', array('query' => drupal_get_query_parameters()));
+    $form_state['redirect'] = logintoboggan_process_login($account, $form_state['values'], $redirect);
   }
   else {
     // Redirect to the appropriate page.
