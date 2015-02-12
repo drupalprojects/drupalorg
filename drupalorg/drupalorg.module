@@ -1291,6 +1291,70 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
       '#access' => $form['actions']['cancel']['#access'],
     );
   }
+
+  if (isset($form_state['build_info']['args'][2]) && $form_state['build_info']['args'][2] == 'welcome') {
+    // Edit the form.
+
+    $to_show = array(
+      'field_first_name',
+      'field_last_name',
+      'actions',
+      'field_country',
+      'field_gender',
+      'field_organizations',
+      'picture',
+      'timezone',
+    );
+
+    // Hide anything that we haven't said to show.
+    foreach (array_diff(element_children($form), $to_show) as $item) {
+      if (isset($form[$item])) {
+        $form[$item]['#access'] = FALSE;
+      }
+    }
+
+    // Don't show vertical tabs.
+    foreach ($form['#groups'] as &$group) {
+      $group->format_type = 'div';
+      $group->format_settings['formatter'] = 'open';
+    }
+
+    $left = 'group_left';
+    $right = 'group_right';
+    $form['#group_children'] = array(
+      'field_country' => $left,
+      'field_first_name' => $left,
+      'field_last_name' => $left,
+      'field_organizations' => $left,
+      'field_gender' => $left,
+      'picture' => $right,
+      'timezone' => $right,
+    );
+
+    // This doesn't work. :(
+    $form['timezone']['#collapsible'] = FALSE;
+
+    // Remove the add and remove buttons.
+    unset($form['field_organizations'][LANGUAGE_NONE]['add_more']);
+    unset($form['field_organizations'][LANGUAGE_NONE][0]['remove_button']);
+
+    // Hide the current organization field.
+    $form['field_organizations'][LANGUAGE_NONE][0]['field_current']['#access'] = FALSE;
+
+    // Hide the organization field description.
+    $form['field_organizations'][LANGUAGE_NONE]['#description'] = '';
+
+    // Only allow one organization.
+    $form['field_organizations'][LANGUAGE_NONE]['#theme'] = 'field_single_value_form';
+    $form['field_organizations'][LANGUAGE_NONE]['#cardinality'] = 1;
+
+    // Remove the container-inline class, if it exists.
+    if (isset($form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']) && $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] == 'container-inline') {
+      $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] = '';
+    }
+
+    form_load_include($form_state, 'inc', 'user', 'user.pages');
+  }
 }
 
 /**
@@ -3646,69 +3710,7 @@ function drupalorg_welcome_page() {
 
   // Load the user profile form.
   form_load_include($form_state, 'inc', 'user', 'user.pages');
-  $form = drupal_get_form('user_profile_form', $user);
-
-  // Edit the form.
-
-  $to_show = array(
-    'field_first_name',
-    'field_last_name',
-    'actions',
-    'field_country',
-    'field_gender',
-    'field_organizations',
-    'picture',
-    'timezone',
-  );
-  // Hide anything that we haven't said to show.
-  foreach (array_diff(element_children($form), $to_show) as $item) {
-    if (isset($form[$item])) {
-      $form[$item]['#access'] = FALSE;
-    }
-  }
-
-  // Don't show vertical tabs.
-  foreach ($form['#groups'] as &$group) {
-    $group->format_type = 'div';
-    $group->format_settings['formatter'] = 'open';
-  }
-
-  $left = 'group_left';
-  $right = 'group_right';
-  $form['#group_children'] = array(
-    'field_country' => $left,
-    'field_first_name' => $left,
-    'field_last_name' => $left,
-    'field_organizations' => $left,
-    'field_gender' => $left,
-    'picture' => $right,
-    'timezone' => $right,
-  );
-
-  // This doesn't work. :(
-  $form['timezone']['#collapsible'] = FALSE;
-
-  // Remove the add and remove buttons.
-  unset($form['field_organizations'][LANGUAGE_NONE]['add_more']);
-  unset($form['field_organizations'][LANGUAGE_NONE][0]['remove_button']);
-
-  // Hide the current organization field.
-  $form['field_organizations'][LANGUAGE_NONE][0]['field_current']['#access'] = FALSE;
-
-  // Hide the organization field description.
-  $form['field_organizations'][LANGUAGE_NONE]['#description'] = '';
-
-  // Only allow one organization.
-  $form['field_organizations'][LANGUAGE_NONE]['#theme'] = 'field_single_value_form';
-  $form['field_organizations'][LANGUAGE_NONE]['#cardinality'] = 1;
-
-  // Remove the container-inline class, if it exists.
-  if (isset($form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']) && $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] == 'container-inline') {
-    $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] = '';
-  }
-
-  // Add another submit handler.
-
+  $form = drupal_get_form('user_profile_form', user_load($user->uid), 'account', 'welcome');
   $output .= drupal_render($form);
   return $output;
 }
