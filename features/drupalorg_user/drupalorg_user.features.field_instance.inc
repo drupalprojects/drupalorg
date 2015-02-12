@@ -677,12 +677,8 @@ function drupalorg_user_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'mailchimp_lists',
-        'settings' => array(
-          'interest_groups' => array(),
-          'show_interest_groups' => FALSE,
-        ),
-        'type' => 'mailchimp_lists_subscribe_default',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 19,
       ),
     ),
