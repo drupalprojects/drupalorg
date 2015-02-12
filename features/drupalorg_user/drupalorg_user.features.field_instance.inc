@@ -664,9 +664,10 @@ function drupalorg_user_field_default_field_instances() {
           ),
           5845 => array(
             'Drupal Association News' => 0,
-            'DrupalCon Updates' => 0,
-            'Educational content (i.e., Webcasts, Global Training Days)' => 0,
-            'Information for Drupal Businesses' => 0,
+            'DrupalCon News' => 0,
+            'Educational Opportunities from the Drupal Association' => 0,
+            'Information for Drupal Service Providers' => 0,
+            'Special Offers from our Partners (coming soon)' => 0,
           ),
         ),
       ),

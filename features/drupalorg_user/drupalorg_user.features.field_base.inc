@@ -1010,7 +1010,7 @@ function drupalorg_user_field_default_field_bases() {
     'settings' => array(
       'double_opt_in' => 0,
       'mc_list_id' => '6934bc4d06',
-      'send_welcome' => 0,
+      'send_welcome' => 1,
     ),
     'translatable' => 0,
     'type' => 'mailchimp_lists_subscription',
