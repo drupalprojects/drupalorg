@@ -914,6 +914,49 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'text',
   );
 
+  // Exported field_base: 'field_organization_reference'
+  $field_bases['field_organization_reference'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_organization_reference',
+    'foreign keys' => array(
+      'node' => array(
+        'columns' => array(
+          'target_id' => 'nid',
+        ),
+        'table' => 'node',
+      ),
+    ),
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'handler' => 'base',
+      'handler_settings' => array(
+        'behaviors' => array(
+          'views-select-list' => array(
+            'status' => 0,
+          ),
+        ),
+        'sort' => array(
+          'type' => 'none',
+        ),
+        'target_bundles' => array(
+          'organization' => 'organization',
+        ),
+      ),
+      'target_type' => 'node',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
+  );
+
   // Exported field_base: 'field_organizations'
   $field_bases['field_organizations'] = array(
     'active' => 1,
@@ -951,6 +994,26 @@ function drupalorg_user_field_default_field_bases() {
     'settings' => array(),
     'translatable' => 0,
     'type' => 'url',
+  );
+
+  // Exported field_base: 'field_subscribe_to'
+  $field_bases['field_subscribe_to'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_subscribe_to',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'mailchimp_lists',
+    'settings' => array(
+      'double_opt_in' => 0,
+      'mc_list_id' => '6934bc4d06',
+      'send_welcome' => 1,
+    ),
+    'translatable' => 0,
+    'type' => 'mailchimp_lists_subscription',
   );
 
   // Exported field_base: 'field_terms_of_service'

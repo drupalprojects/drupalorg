@@ -70,6 +70,17 @@ function drupalorg_init() {
     drupal_add_http_header('Access-Control-Allow-Methods', 'GET, OPTIONS');
     drupal_add_http_header('Access-Control-Allow-Headers', 'Content-Type');
   }
+
+  // Audience extension, see
+  // https://www.drupal.org/news/drupalorg-2015-advertising-initiatives
+  // Include for anonymous users, except on excluded pages.
+  if (user_is_anonymous() && !drupal_match_path(drupal_strtolower(drupal_get_path_alias($_GET['q'])), variable_get('drupalorg_perfect_audience_excluded_pages', ''))) {
+    $node = menu_get_object();
+    // Do not include on issue & project nodes.
+    if (empty($node) || !(project_issue_node_is_issue($node) || project_node_is_project($node))) {
+      drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/drupalorg-perfect-audience.js', array('scope' => 'footer'));
+    }
+  }
 }
 
 /**
@@ -1355,6 +1366,47 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
 
     form_load_include($form_state, 'inc', 'user', 'user.pages');
   }
+
+  // MailChimp lists.
+  if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0])) {
+    // Remove fieldset over-nesting.
+    unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['#type']);
+    unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['#title']);
+    // Show interest groups, and have them control the now-hidden subscribe
+    // checkbox.
+    $form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']['#prefix'] = '<div class="element-invisible">';
+    $form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']['#suffix'] = '</div>';
+    $form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']['#states'] = array(
+      'checked' => array(
+        ':input[name^="field_subscribe_to[und][0][interest_groups]"]' => array('checked' => TRUE),
+      ),
+    );
+    unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['#states']);
+    // Hide "Roles in Drupal"
+    if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5609])) {
+      hide($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5609]);
+    }
+    // Alter list of lists.
+    if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845])) {
+      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845]['#title'] = t('Subscribe to');
+      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845]['#after_build'][] = 'drupalorg_form_user_profile_add_mailchimp_descriptions';
+      // todo limit options when welcoming.
+      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5485]['#suffix'] = '<div class="description">' . t('Your primary email address %address will be used for subscriptions. <a href="!url">Edit email addresses</a>', array('%address' => $form['#user']->mail, '!url' => url('user/' . $form['#user']->uid . '/edit/email-addresses'))) . '</div>';
+    }
+  }
+}
+
+/**
+ * #after_build callback. Add individual descriptions to processed MailChimp
+ * checkboxes.
+ */
+function drupalorg_form_user_profile_add_mailchimp_descriptions(&$element) {
+  foreach (variable_get('drupalorg_mailchimp_list_descriptions', array()) as $name => $description) {
+    if (isset($element[$name])) {
+      $element[$name]['#description'] = t($description);
+    }
+  }
+  return $element;
 }
 
 /**
@@ -2681,6 +2733,24 @@ function drupalorg_node_update($node) {
   if ($node->type === 'organization') {
     drupalorg_org_request_issue($node);
   }
+  elseif (project_release_node_is_release($node)) {
+    if ($fastly_key = variable_get('drupalorg_fastly_key', FALSE)) {
+      $download_base = variable_get('project_release_download_base_' . $node->type, '');
+      $wrapper = entity_metadata_wrapper('node', $node);
+      foreach ($wrapper->field_release_files as $file_wrapper) {
+        $file = $file_wrapper->field_release_file->value();
+        $request = drupal_http_request(project_release_add_download_base($file['uri'], $download_base), array(
+          'method' => 'PURGE',
+          'headers' => array(
+            'Fastly-Key' => $fastly_key,
+          ),
+        ));
+        if (function_exists('dlm')) {
+          dlm($request);
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -3433,6 +3503,29 @@ function drupalorg_entity_presave($entity, $type) {
             $value['title'] = $title;
             break;
           }
+        }
+      }
+    }
+    // Populate field_organization_reference.
+    $organization_titles = array();
+    foreach ($entity->field_organizations[LANGUAGE_NONE] as $delta => &$organization) {
+      // Load field collection item entity if not already loaded.
+      if (isset($organization['value'])) {
+        $organization['entity'] = field_collection_item_load($organization['value']);
+      }
+      // Clear any previous reference.
+      $organization['entity']->field_organization_reference = array();
+      // Add to list of titles to try loading.
+      if (!empty($organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value'])) {
+        $organization_titles[trim(drupal_strtolower($organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value']))] = $delta;
+      }
+    }
+    if (!empty($organization_titles)) {
+      // Load organizations by title and populate reference field.
+      foreach (db_query("SELECT nid, title FROM {node} n WHERE n.status = :published AND n.type = 'organization' AND title IN (:titles)", array(':published' => NODE_PUBLISHED, ':titles' => array_keys($organization_titles)))->fetchAllKeyed() as $nid => $title) {
+        // MySQL collation is more loose than PHP.
+        if (isset($organization_titles[trim(drupal_strtolower($title))])) {
+          $entity->field_organizations[LANGUAGE_NONE][$organization_titles[trim(drupal_strtolower($title))]]['entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id'] = $nid;
         }
       }
     }
