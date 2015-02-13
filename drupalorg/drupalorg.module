@@ -1305,13 +1305,8 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
     unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['#title']);
     // Show interest groups, and have them control the now-hidden subscribe
     // checkbox.
-    $form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']['#prefix'] = '<div class="element-invisible">';
-    $form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']['#suffix'] = '</div>';
-    $form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']['#states'] = array(
-      'checked' => array(
-        ':input[name^="field_subscribe_to[und][0][interest_groups]"]' => array('checked' => TRUE),
-      ),
-    );
+    hide($form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']);
+    $form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']['#element_validate'][] = 'drupalorg_form_user_profile_set_mailchimp_subscribed';
     unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['#states']);
     // Hide "Roles in Drupal"
     if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5609])) {
@@ -1338,6 +1333,19 @@ function drupalorg_form_user_profile_add_mailchimp_descriptions(&$element) {
     }
   }
   return $element;
+}
+
+/**
+ * #element_validate callback. Set subscribe checkbox if interest groups are
+ * checked.
+ */
+function drupalorg_form_user_profile_set_mailchimp_subscribed($element, &$form_state) {
+  foreach ($form_state['values']['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'] as $interest_group) {
+    if (array_filter($interest_group)) {
+      form_set_value($element, TRUE, $form_state);
+      return;
+    }
+  }
 }
 
 /**
