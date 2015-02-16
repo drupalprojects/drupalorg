@@ -646,7 +646,7 @@ function drupalorg_user_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => array(
       0 => array(
-        'subscribe' => 1,
+        'subscribe' => 0,
         'interest_groups' => array(
           5609 => array(
             'Business (C-level)' => 0,
@@ -665,9 +665,10 @@ function drupalorg_user_field_default_field_instances() {
           5845 => array(
             'Drupal Association News' => 0,
             'DrupalCon News' => 0,
+            'Drupal Weekly Newsletter (coming soon)' => 0,
             'Educational Opportunities from the Drupal Association' => 0,
             'Information for Drupal Service Providers' => 0,
-            'Special Offers from our Partners (coming soon)' => 0,
+            'Special Offers from Drupal Supporters (coming soon)' => 0,
           ),
         ),
       ),
