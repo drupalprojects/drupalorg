@@ -3889,6 +3889,9 @@ function _drupalorg_welcome_form_alterations(&$form) {
     }
   }
 
+  // Force the subscriptions to be below the picture field.
+  $form['field_subscribe_to']['#weight'] = 1000;
+
   $form['actions']['cancel']['#access'] = FALSE;
   $form['actions']['#weight'] = 100;
 
