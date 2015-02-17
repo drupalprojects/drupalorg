@@ -3881,16 +3881,13 @@ function _drupalorg_welcome_form_alterations(&$form) {
     $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] = '';
   }
 
+  $weight = 0; 
   foreach ($to_show as $item) {
-    $form[$item]['#weight'] = $weight;
-dpm($item);
-dpm($weight);
+    if (isset($form[$item]['#weight'])) {
+      ++$weight;
+      $form[$item]['#weight'] = $weight;
+    }
   }
-
-$form['picture']['picture']['#weight'] = -10;
-$form['field_subscribe_to']['#weight'] = 1000000;
-dpm($form['picture']);
-
 
   $form['actions']['cancel']['#access'] = FALSE;
   $form['actions']['#weight'] = 100;
