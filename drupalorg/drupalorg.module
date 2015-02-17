@@ -1318,6 +1318,19 @@ function drupalorg_form_user_profile_add_mailchimp_descriptions(&$element) {
 }
 
 /**
+ * #element_validate callback. Set subscribe checkbox if interest groups are
+ * checked.
+ */
+function drupalorg_form_user_profile_set_mailchimp_subscribed($element, &$form_state) {
+  foreach ($form_state['values']['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'] as $interest_group) {
+    if (array_filter($interest_group)) {
+      form_set_value($element, TRUE, $form_state);
+      return;
+    }
+  }
+}
+
+/**
  * Implements hook_form_FORM_BASE_alter().
  */
 function drupalorg_form_user_cancel_confirm_form_alter(&$form, $form_state) {
@@ -3414,26 +3427,28 @@ function drupalorg_entity_presave($entity, $type) {
         }
       }
     }
-    // Populate field_organization_reference.
-    $organization_titles = array();
-    foreach ($entity->field_organizations[LANGUAGE_NONE] as $delta => &$organization) {
-      // Load field collection item entity if not already loaded.
-      if (isset($organization['value'])) {
-        $organization['entity'] = field_collection_item_load($organization['value']);
+    if (isset($entity->field_organizations[LANGUAGE_NONE])) {
+      // Populate field_organization_reference.
+      $organization_titles = array();
+      foreach ($entity->field_organizations[LANGUAGE_NONE] as $delta => &$organization) {
+        // Load field collection item entity if not already loaded.
+        if (isset($organization['value'])) {
+          $organization['entity'] = field_collection_item_load($organization['value']);
+        }
+        // Clear any previous reference.
+        $organization['entity']->field_organization_reference = array();
+        // Add to list of titles to try loading.
+        if (!empty($organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value'])) {
+          $organization_titles[trim(drupal_strtolower($organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value']))] = $delta;
+        }
       }
-      // Clear any previous reference.
-      $organization['entity']->field_organization_reference = array();
-      // Add to list of titles to try loading.
-      if (!empty($organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value'])) {
-        $organization_titles[trim(drupal_strtolower($organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value']))] = $delta;
-      }
-    }
-    if (!empty($organization_titles)) {
-      // Load organizations by title and populate reference field.
-      foreach (db_query("SELECT nid, title FROM {node} n WHERE n.status = :published AND n.type = 'organization' AND title IN (:titles)", array(':published' => NODE_PUBLISHED, ':titles' => array_keys($organization_titles)))->fetchAllKeyed() as $nid => $title) {
-        // MySQL collation is more loose than PHP.
-        if (isset($organization_titles[trim(drupal_strtolower($title))])) {
-          $entity->field_organizations[LANGUAGE_NONE][$organization_titles[trim(drupal_strtolower($title))]]['entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id'] = $nid;
+      if (!empty($organization_titles)) {
+        // Load organizations by title and populate reference field.
+        foreach (db_query("SELECT nid, title FROM {node} n WHERE n.status = :published AND n.type = 'organization' AND title IN (:titles)", array(':published' => NODE_PUBLISHED, ':titles' => array_keys($organization_titles)))->fetchAllKeyed() as $nid => $title) {
+          // MySQL collation is more loose than PHP.
+          if (isset($organization_titles[trim(drupal_strtolower($title))])) {
+            $entity->field_organizations[LANGUAGE_NONE][$organization_titles[trim(drupal_strtolower($title))]]['entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id'] = $nid;
+          }
         }
       }
     }

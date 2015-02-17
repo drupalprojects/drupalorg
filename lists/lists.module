@@ -219,14 +219,6 @@ function _lists_get_mailman_lists() {
   // passwords need to be set in variable table in order to be able to
   // administer these lists.
   $lists = array(
-    'drupal' => array(
-      'name' => 'Drupal newsletter',
-      'description' => 'A sometimes-monthly mailing about all things Drupal.',
-      'allow_sub' => TRUE,
-      'mail' => variable_get('lists_drupal_mail', ''),
-      'pass' => variable_get('lists_drupal_pass', ''),
-      'url' => variable_get('lists_drupal_url', ''),
-    ),
     'security' => array(
       'name' => 'Security announcements',
       'description' => 'A low volume mailing list where all security issues affecting Drupal and Drupal contributed modules are publically announced.',
