@@ -3699,8 +3699,8 @@ function drupalorg_welcome_page() {
   global $user;
 
   // If the user is anonymous or already has accessed the site, send them elsewhere.
-  if ($user->uid === 0 || $user->access > 0) {
-//    drupal_goto('user');
+  if ($user->uid === 0 || $user->login > $user->created) {
+    drupal_goto('user');
   }
 
   $output = '';
