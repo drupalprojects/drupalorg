@@ -1680,6 +1680,8 @@ function drupalorg_user_register_form_submit($form, &$form_state) {
   // Mail the user.
   _user_mail_notify($mailkey, $account);
 
+  drupal_set_message($message);
+
   // Log the user in if they created the account and immediate login is enabled.
   if ($reg_pass_set && variable_get('logintoboggan_immediate_login_on_register', TRUE)) {
     $redirect = array('welcome', array('query' => drupal_get_query_parameters()));
