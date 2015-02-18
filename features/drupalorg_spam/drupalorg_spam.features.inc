@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * drupalorg_flag.features.inc
+ * drupalorg_spam.features.inc
  */
 
 /**
  * Implements hook_flag_default_flags().
  */
-function drupalorg_flag_flag_default_flags() {
+function drupalorg_spam_flag_default_flags() {
   $flags = array();
   // Exported flag: "Report spam".
   $flags['report_spam_nodes'] = array(
@@ -48,7 +48,7 @@ function drupalorg_flag_flag_default_flags() {
     'show_contextual_link' => FALSE,
     'i18n' => 0,
     'api_version' => 2,
-    'module' => 'drupalorg_flag',
+    'module' => 'drupalorg_spam',
     'locked' => array(
       0 => 'name',
     ),
