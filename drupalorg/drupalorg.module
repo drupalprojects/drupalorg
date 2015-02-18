@@ -3831,7 +3831,7 @@ function _drupalorg_welcome_form_alterations(&$form) {
     $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] = '';
   }
 
-  $weight = 0; 
+  $weight = 0;
   foreach ($to_show as $item) {
     if (isset($form[$item]['#weight'])) {
       ++$weight;
