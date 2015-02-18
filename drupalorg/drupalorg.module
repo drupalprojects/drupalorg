@@ -1321,8 +1321,9 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
     if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845])) {
       $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845]['#title'] = t('Subscribe to');
       $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845]['#after_build'][] = 'drupalorg_form_user_profile_add_mailchimp_descriptions';
-      // todo limit options when welcoming.
-      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5485]['#suffix'] = '<div class="description">' . t('Your primary email address %address will be used for subscriptions. <a href="!url">Edit email addresses</a>', array('%address' => $form['#user']->mail, '!url' => url('user/' . $form['#user']->uid . '/edit/email-addresses'))) . '</div>';
+      if (!isset($form_state['drupalorg_welcome'])) {
+        $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5485]['#suffix'] = '<div class="description">' . t('Your primary email address %address will be used for subscriptions. <a href="!url">Edit email addresses</a>', array('%address' => $form['#user']->mail, '!url' => url('user/' . $form['#user']->uid . '/edit/email-addresses'))) . '</div>';
+      }
     }
   }
 }
@@ -3749,8 +3750,12 @@ function drupalorg_welcome_page() {
 
   // Load the user profile form.
   module_load_include('inc', 'user', 'user.pages');
-  $form_state = array();
-  $form_state['build_info']['args'] = array(user_load($user->uid));
+  $form_state = array(
+    'drupalorg_welcome' => TRUE,
+    'build_info' => array(
+      'args' => array(user_load($user->uid)),
+    ),
+  );
   form_load_include($form_state, 'inc', 'user', 'user.pages');
   $form = drupal_build_form('user_profile_form', $form_state);
   _drupalorg_welcome_form_alterations($form);
