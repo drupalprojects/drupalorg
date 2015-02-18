@@ -1,4 +1,4 @@
-name = drupalorg_spam
+name = Drupal.org spam
 core = 7.x
 package = Features
 dependencies[] = flag
