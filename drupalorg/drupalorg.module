@@ -3745,7 +3745,7 @@ function drupalorg_welcome_page() {
   $output = '';
 
   // Add the introductory text.
-  $output .= '<p>' . t('You\'ve joined Drupal.org - a home to a global community of passionate people. Whether you are new to open source or ready to change the world, welcome!') . '</p>';
+  $output .= '<p>' . t('You’ve joined Drupal.org - a home to a global community of passionate people. Whether you are new to open source or ready to change the world, welcome!') . '</p>';
   $output .= '<p>' . t('This information will be public on your profile.') . '</p>';
 
   // Load the user profile form.
