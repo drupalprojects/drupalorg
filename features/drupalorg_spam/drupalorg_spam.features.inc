@@ -34,14 +34,14 @@ function drupalorg_spam_flag_default_flags() {
       16 => 'comment_node_project_theme',
       17 => 'comment_node_project_translation',
     ),
-    'flag_short' => 'Report as spam',
+    'flag_short' => 'report spam',
     'flag_long' => '',
     'flag_message' => '',
-    'unflag_short' => 'Mark as not spam',
+    'unflag_short' => 'mark as not spam',
     'unflag_long' => '',
     'unflag_message' => '',
     'unflag_denied_text' => '',
-    'link_type' => 'normal',
+    'link_type' => 'toggle',
     'roles' => array(
       'flag' => array(
         0 => 2,
@@ -52,13 +52,13 @@ function drupalorg_spam_flag_default_flags() {
     ),
     'weight' => 0,
     'show_on_form' => 0,
-    'access_author' => '',
+    'access_author' => 'comment_others',
     'show_on_comment' => 1,
-    'api_version' => 2,
     'module' => 'drupalorg_spam',
     'locked' => array(
       0 => 'name',
     ),
+    'api_version' => 2,
   );
   // Exported flag: "Report spam".
   $flags['report_spam_nodes'] = array(
@@ -132,11 +132,11 @@ function drupalorg_spam_flag_default_flags() {
     'access_author' => '',
     'show_on_profile' => 1,
     'access_uid' => 'others',
-    'api_version' => 2,
     'module' => 'drupalorg_spam',
     'locked' => array(
       0 => 'name',
     ),
+    'api_version' => 2,
   );
   return $flags;
 
