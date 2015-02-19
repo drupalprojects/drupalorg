@@ -1297,10 +1297,15 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
 
   // Change cancel button to a link.
   if (isset($form['actions']['cancel'])) {
-    $form['actions']['cancel'] = array(
-      '#markup' => l(t('Delete account'), 'user/' . $form['#user']->uid . '/cancel'),
-      '#access' => $form['actions']['cancel']['#access'],
-    );
+    if (isset($form_state['drupalorg_welcome'])) {
+      hide($form['actions']['cancel']);
+    }
+    else {
+      $form['actions']['cancel'] = array(
+        '#markup' => l(t('Delete account'), 'user/' . $form['#user']->uid . '/cancel'),
+        '#access' => $form['actions']['cancel']['#access'],
+      );
+    }
   }
 
   // MailChimp lists.
@@ -1323,6 +1328,83 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
       $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845]['#after_build'][] = 'drupalorg_form_user_profile_add_mailchimp_descriptions';
       if (!isset($form_state['drupalorg_welcome'])) {
         $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5485]['#suffix'] = '<div class="description">' . t('Your primary email address %address will be used for subscriptions. <a href="!url">Edit email addresses</a>', array('%address' => $form['#user']->mail, '!url' => url('user/' . $form['#user']->uid . '/edit/email-addresses'))) . '</div>';
+      }
+    }
+  }
+
+  // Remove fieldset bloat.
+  unset($form['timezone']['#title']);
+  unset($form['picture']['#title']);
+
+  // Be welcoming.
+  if (isset($form_state['drupalorg_welcome'])) {
+    $to_show = array(
+      'field_first_name',
+      'field_last_name',
+      'field_country',
+      'field_gender',
+      'field_organizations',
+      'picture',
+      'timezone',
+      'field_subscribe_to',
+      'actions',
+      // Without these, the user won't be updated.
+      'form_build_id',
+      'form_token',
+      'form_id',
+    );
+
+    // Hide anything that we haven't said to show.
+    foreach (array_diff(element_children($form), $to_show) as $item) {
+      if (isset($form[$item])) {
+        hide($form[$item]);
+      }
+    }
+
+    // Don't show vertical tabs.
+    foreach ($form['#groups'] as &$group) {
+      $group->format_type = 'div';
+      $group->format_settings['formatter'] = 'open';
+    }
+
+    $form['#group_children'] = array(
+      'field_country' => 'group_left',
+      'field_first_name' => 'group_left',
+      'field_last_name' => 'group_left',
+      'field_organizations' => 'group_left',
+      'field_gender' => 'group_left',
+      'picture' => 'group_right',
+      'timezone' => 'group_right',
+      'field_subscribe_to' => 'group_right',
+    );
+
+    // Put picture at the top.
+    $form['#pre_render'][] = 'drupalorg_form_user_profile_move_picture';
+
+    // Remove the add and remove buttons.
+    unset($form['field_organizations'][LANGUAGE_NONE]['add_more']);
+    unset($form['field_organizations'][LANGUAGE_NONE][0]['remove_button']);
+
+    // Hide the current organization field.
+    $form['field_organizations'][LANGUAGE_NONE][0]['field_current']['#access'] = FALSE;
+
+    // Hide the organization field description.
+    $form['field_organizations'][LANGUAGE_NONE]['#description'] = '';
+
+    // Only allow one organization.
+    $form['field_organizations'][LANGUAGE_NONE]['#theme'] = 'field_single_value_form';
+    $form['field_organizations'][LANGUAGE_NONE]['#cardinality'] = 1;
+
+    // Remove the container-inline class, if it exists.
+    if (isset($form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']) && $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] == 'container-inline') {
+      $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] = '';
+    }
+
+    $weight = 0;
+    foreach ($to_show as $item) {
+      if (isset($form[$item]['#weight'])) {
+        $weight += 1;
+        $form[$item]['#weight'] = $weight;
       }
     }
   }
@@ -1352,6 +1434,15 @@ function drupalorg_form_user_profile_set_mailchimp_subscribed($element, &$form_s
       return;
     }
   }
+}
+
+/**
+ * #pre_render callback. Set user picture weight after
+ * _field_extra_fields_pre_render()'s meddling.
+ */
+function drupalorg_form_user_profile_move_picture($elements) {
+  $elements['group_right']['picture']['#weight'] = 0;
+  return $elements;
 }
 
 /**
@@ -3749,7 +3840,6 @@ function drupalorg_welcome_page() {
   $output .= '<p>' . t('This information will be public on your profile.') . '</p>';
 
   // Load the user profile form.
-  module_load_include('inc', 'user', 'user.pages');
   $form_state = array(
     'drupalorg_welcome' => TRUE,
     'build_info' => array(
@@ -3758,90 +3848,7 @@ function drupalorg_welcome_page() {
   );
   form_load_include($form_state, 'inc', 'user', 'user.pages');
   $form = drupal_build_form('user_profile_form', $form_state);
-  _drupalorg_welcome_form_alterations($form);
-
   $output .= drupal_render($form);
 
   return $output;
-}
-
-function _drupalorg_welcome_form_alterations(&$form) {
-  $to_show = array(
-    'field_first_name',
-    'field_last_name',
-    'field_country',
-    'field_gender',
-    'field_organizations',
-    'field_subscribe_to',
-    'picture',
-    'timezone',
-    'actions',
-    // Without these, the user won't be updated.
-    'form_build_id',
-    'form_token',
-    'form_id',
-  );
-
-  // Hide anything that we haven't said to show.
-  foreach (array_diff(element_children($form), $to_show) as $item) {
-    if (isset($form[$item])) {
-      $form[$item]['#access'] = FALSE;
-    }
-  }
-
-  // Don't show vertical tabs.
-  foreach ($form['#groups'] as &$group) {
-    $group->format_type = 'div';
-    $group->format_settings['formatter'] = 'open';
-  }
-
-  $left = 'group_left';
-  $right = 'group_right';
-  $form['#group_children'] = array(
-    'field_country' => $left,
-    'field_first_name' => $left,
-    'field_last_name' => $left,
-    'field_organizations' => $left,
-    'field_gender' => $left,
-    'picture' => $right,
-    'timezone' => $right,
-    'field_subscribe_to' => $right,
-  );
-
-  // Remove the timezone fieldset.
-  $form['timezone']['#collapsible'] = FALSE;
-  unset($form['timezone']['#title']);
-
-  // Remove the add and remove buttons.
-  unset($form['field_organizations'][LANGUAGE_NONE]['add_more']);
-  unset($form['field_organizations'][LANGUAGE_NONE][0]['remove_button']);
-
-  // Hide the current organization field.
-  $form['field_organizations'][LANGUAGE_NONE][0]['field_current']['#access'] = FALSE;
-
-  // Hide the organization field description.
-  $form['field_organizations'][LANGUAGE_NONE]['#description'] = '';
-
-  // Only allow one organization.
-  $form['field_organizations'][LANGUAGE_NONE]['#theme'] = 'field_single_value_form';
-  $form['field_organizations'][LANGUAGE_NONE]['#cardinality'] = 1;
-
-  // Remove the container-inline class, if it exists.
-  if (isset($form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']) && $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] == 'container-inline') {
-    $form['field_organizations'][LANGUAGE_NONE][0]['#groups']['group_org_inline']->format_settings['instance_settings']['classes'] = '';
-  }
-
-  $weight = 0;
-  foreach ($to_show as $item) {
-    if (isset($form[$item]['#weight'])) {
-      ++$weight;
-      $form[$item]['#weight'] = $weight;
-    }
-  }
-
-  // Force the subscriptions to be below the picture field.
-  $form['field_subscribe_to']['#weight'] = 1000;
-
-  $form['actions']['cancel']['#access'] = FALSE;
-  $form['actions']['#weight'] = 100;
 }
