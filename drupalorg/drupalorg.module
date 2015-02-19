@@ -1288,7 +1288,7 @@ function drupalorg_form_user_admin_settings_alter(&$form) {
 /**
  * Implements hook_form_FORM_BASE_alter().
  */
-function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
+function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
   // If the terms of service is hidden by drupalorg_field_access(), do not
   // require it.
   if (isset($form['field_terms_of_service']['#access']) && !$form['field_terms_of_service']['#access']) {
@@ -1407,6 +1407,8 @@ function drupalorg_form_user_profile_form_alter(&$form, $form_state) {
         $form[$item]['#weight'] = $weight;
       }
     }
+
+    $form['#submit'][] = 'drupalorg_form_user_profile_submit';
   }
 }
 
@@ -1443,6 +1445,12 @@ function drupalorg_form_user_profile_set_mailchimp_subscribed($element, &$form_s
 function drupalorg_form_user_profile_move_picture($elements) {
   $elements['group_right']['picture']['#weight'] = 0;
   return $elements;
+}
+
+function drupalorg_form_user_profile_submit($form, &$form_state) {
+  if (!isset($form_state['redirect'])) {
+    $form_state['redirect'] = 'user';
+  }
 }
 
 /**
