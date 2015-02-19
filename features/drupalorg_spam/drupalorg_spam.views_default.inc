@@ -176,6 +176,11 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['timestamp']['date_format'] = 'short';
   $handler->display->display_options['fields']['timestamp']['second_date_format'] = 'long';
   $handler->display->display_options['path'] = 'admin/content/comment/flagged';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Flagged comments';
+  $handler->display->display_options['menu']['weight'] = '50';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['flagged_comments'] = $view;
 
   return $export;
