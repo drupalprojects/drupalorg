@@ -82,6 +82,73 @@
   };
 
   /**
+   * Issue comment attribution. See drupalorg_form_node_form_alter();
+   */
+  Drupal.behaviors.drupalorgIssueCommentAttribution = {
+    attach: function (context) {
+      $('.group-issue-attribution', context).once('drupalorg-issue-comment-attribution', function () {
+        var $fieldset = $(this),
+          $summary = $('<div class="drupalorg-attribution-summary">' + Drupal.t('<strong>Attribute this contribution to</strong> <a href="#" class="organization">myself</a> for customer <a href="#" class="customer">not applicable</a>') + '</div>'),
+          $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).hide(),
+          $summaryOrganization = $('.organization', $summary).click(function (e) {
+            $attributeContributionTo.css('left', Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px').show();
+            e.preventDefault();
+          }),
+          $forCustomer = $('.field-name-field-for-customer', $fieldset).hide(),
+          $forCustomerField = $('.form-text', $forCustomer).focusout(function () {
+            $forCustomer.hide();
+          }),
+          $summaryCustomer = $('.customer', $summary).click(function (e) {
+            $forCustomer.css('left', Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px').show();
+            e.preventDefault();
+          });
+
+        // Hide bubbles on most clicks.
+        $('body').click(function (e) {
+          if ($summaryOrganization.get(0) !== e.target) {
+            $attributeContributionTo.hide();
+          }
+          if ($summaryCustomer.get(0) !== e.target && $forCustomerField.get(0) !== e.target) {
+            $forCustomer.hide();
+          }
+        });
+
+        // This is all me links.
+        $attributeContributionTo.prepend($('<a href="#" class="all-me">' + Drupal.t('This is all me') + '</a>').click(function (e) {
+          $('input:checked', $attributeContributionTo).click();
+          e.preventDefault();
+          $fieldset.trigger('summaryUpdated');
+        }));
+        $forCustomer.prepend($('<a href="#" class="all-me">' + Drupal.t('This is all me') + '</a>').click(function (e) {
+          $forCustomerField.val('');
+          e.preventDefault();
+          $fieldset.trigger('summaryUpdated');
+        }));
+
+        // Summary text.
+        $fieldset.prepend($summary).drupalSetSummary(function () {}).bind('summaryUpdated', function () {
+          var $organizations = $('input:checked + label', $attributeContributionTo),
+            customers = $forCustomerField.val();
+          if ($organizations.length) {
+            $summaryOrganization.text($organizations.map(function () {
+              return $.trim($(this).text());
+            }).get().join(', '));
+          }
+          else {
+            $summaryOrganization.text(Drupal.t('myself'));
+          }
+          if (customers.length) {
+            $summaryCustomer.text(customers.replace(/ \(\d+\)/g, ''));
+          }
+          else {
+            $summaryCustomer.text(Drupal.t('not applicable'));
+          }
+        });
+      });
+    }
+  };
+
+  /**
    * Issue credit helping. See drupalorg_issue_credit_form().
    */
   Drupal.behaviors.drupalorgIssueCredit = {
