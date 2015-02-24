@@ -154,7 +154,9 @@
             $summaryCustomer.text(customers.replace(/ \(\d+\)/g, ''));
             // Hide taken suggestions.
             $.each(customers.split(','), function (index, value) {
-              $customerSuggestions.filter('[data-string*="' + value.replace(/.*\((\d+)\)\s*/, '$1') + '"]').hide();
+              if (value.match(/.*\(\d+\)\s*/)) {
+                $customerSuggestions.filter('[data-string*="' + value.replace(/.*\((\d+)\)\s*/, '$1') + '"]').hide();
+              }
             });
           }
           else {
