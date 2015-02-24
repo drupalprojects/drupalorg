@@ -91,14 +91,26 @@
           $summary = $('<div class="drupalorg-attribution-summary">' + Drupal.t('<strong>Attribute this contribution to</strong> <a href="#" class="organization">myself</a> for customer <a href="#" class="customer">not applicable</a>') + '</div>'),
           $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).hide(),
           $summaryOrganization = $('.organization', $summary).click(function (e) {
+            // Position & show bubble.
             $attributeContributionTo.css('left', Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px').show();
             e.preventDefault();
           }),
           $forCustomer = $('.field-name-field-for-customer', $fieldset).hide(),
           $forCustomerField = $('.form-text', $forCustomer).focusout(function () {
+            // Hide when tabbing away.
             $forCustomer.hide();
           }),
+          $customerSuggestions = $('.customer-suggestion', $forCustomer).click(function (e) {
+            // Add clicked suggestion.
+            var newValue = $forCustomerField.val();
+            if (newValue.length) {
+              newValue += ', ';
+            }
+            $forCustomerField.val(newValue + $(e.target).data('string')).trigger('change');
+            e.preventDefault();
+          }),
           $summaryCustomer = $('.customer', $summary).click(function (e) {
+            // Position & show bubble.
             $forCustomer.css('left', Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px').show();
             e.preventDefault();
           });
@@ -137,8 +149,13 @@
           else {
             $summaryOrganization.text(Drupal.t('myself'));
           }
+          $customerSuggestions.show();
           if (customers.length) {
             $summaryCustomer.text(customers.replace(/ \(\d+\)/g, ''));
+            // Hide taken suggestions.
+            $.each(customers.split(','), function (index, value) {
+              $customerSuggestions.filter('[data-string*="' + value.replace(/.*\((\d+)\)\s*/, '$1') + '"]').hide();
+            });
           }
           else {
             $summaryCustomer.text(Drupal.t('not applicable'));

@@ -1689,22 +1689,43 @@ function drupalorg_form_node_form_alter(&$form) {
         $form['nodechanges_comment']['field_attribute_contribution_to'][LANGUAGE_NONE]['#default_value'] = $wrapper->field_attribute_contribution_to->raw();
         $customer_default = array();
         foreach ($wrapper->field_for_customer as $customer) {
-          // See entityreference_autocomplete_callback_get_matches().
-          $key = $customer->title->value() . " (" . $customer->getIdentifier() . ')';
-          // Strip things like starting/trailing white spaces, line breaks and tags.
-          $key = preg_replace('/\s\s+/', ' ', str_replace("\n", '', trim(decode_entities(strip_tags($key)))));
-          // Names containing commas or quotes must be wrapped in quotes.
-          if (strpos($key, ',') !== FALSE || strpos($key, '"') !== FALSE) {
-            $key = '"' . str_replace('"', '""', $key) . '"';
-          }
-          $customer_default[] = $key;
+          $customer_default[] = drupalorg_entityreference_string($customer->getIdentifier(), $customer->title->value());
         }
         $form['nodechanges_comment']['field_for_customer'][LANGUAGE_NONE]['#default_value'] = implode(', ', $customer_default);
       }
+      // Hide titles.
       $form['nodechanges_comment']['field_attribute_contribution_to'][LANGUAGE_NONE]['#title_display'] = 'invisible';
       $form['nodechanges_comment']['field_for_customer'][LANGUAGE_NONE]['#title_display'] = 'invisible';
+      // Add customer suggestions.
+      $view = views_get_view('drupal_org_user_customers');
+      $view->set_display('entityreference_1');
+      $view->display_handler->set_option('entityreference_options', array(
+          'match' => NULL,
+          'match_operator' => 'CONTAINS',
+          'limit' => 0,
+          'ids' => array(),
+      ));
+      foreach ($view->execute_display('entityreference_1') as $nid => $title) {
+        $form['nodechanges_comment']['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div><a href="#" class="customer-suggestion" data-string="' . check_plain(drupalorg_entityreference_string($nid, $title)) . '">' . check_plain(trim($title)) . '</a></div>';
+      }
     }
   }
+}
+
+/**
+ * Helper function to format strings like "Drupal Association (1646370)"
+ *
+ * @see entityreference_autocomplete_callback_get_matches().
+ */
+function drupalorg_entityreference_string($id, $title) {
+  $key = $title . " (" . $id . ')';
+  // Strip things like starting/trailing white spaces, line breaks and tags.
+  $key = preg_replace('/\s\s+/', ' ', str_replace("\n", '', trim(decode_entities(strip_tags($key)))));
+  // Names containing commas or quotes must be wrapped in quotes.
+  if (strpos($key, ',') !== FALSE || strpos($key, '"') !== FALSE) {
+    $key = '"' . str_replace('"', '""', $key) . '"';
+  }
+  return $key;
 }
 
 /**
