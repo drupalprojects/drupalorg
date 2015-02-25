@@ -882,7 +882,6 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create forum content',
     'roles' => array(
       'authenticated user' => 'authenticated user',
-      'email unverified' => 'email unverified',
     ),
     'module' => 'node',
   );
@@ -1652,7 +1651,6 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own forum content',
     'roles' => array(
       'authenticated user' => 'authenticated user',
-      'email unverified' => 'email unverified',
     ),
     'module' => 'node',
   );
