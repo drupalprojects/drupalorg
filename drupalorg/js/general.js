@@ -88,7 +88,7 @@
     attach: function (context) {
       $('.group-issue-attribution', context).once('drupalorg-issue-comment-attribution', function () {
         var $fieldset = $(this),
-          $summary = $('<div class="drupalorg-attribution-summary">' + Drupal.t('<strong>Attribute this contribution to</strong> <a href="#" class="organization">myself</a> for customer <a href="#" class="customer">not applicable</a>') + '</div>'),
+          $summary = $('<div class="drupalorg-attribution-summary">' + Drupal.t('<strong>Attribute this contribution:</strong> at organization <a href="#" class="organization">not applicable</a> for customer <a href="#" class="customer">not applicable</a>') + '</div>'),
           $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).hide(),
           $summaryOrganization = $('.organization', $summary).click(function (e) {
             // Position & show bubble.
@@ -147,7 +147,7 @@
             }).get().join(', '));
           }
           else {
-            $summaryOrganization.text(Drupal.t('myself'));
+            $summaryOrganization.text(Drupal.t('not applicable'));
           }
           $customerSuggestions.show();
           if (customers.length) {
