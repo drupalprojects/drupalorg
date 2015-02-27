@@ -3362,6 +3362,7 @@ function drupalorg_preprocess_comment(&$v) {
   // Link to organizations.
   foreach ($wrapper->field_attribute_contribution_to as $organization) {
     $uri = entity_uri('node', $organization->value());
+    $uri['options']['attributes']['class'][] = 'organization';
     $args['!organization'][] = l($organization->title->value(), $uri['path'], $uri['options']);
   }
   if (isset($args['!organization'])) {
@@ -3370,6 +3371,7 @@ function drupalorg_preprocess_comment(&$v) {
   // Link to customers.
   foreach ($wrapper->field_for_customer as $organization) {
     $uri = entity_uri('node', $organization->value());
+    $uri['options']['attributes']['class'][] = 'customer';
     $args['!customer'][] = l($organization->title->value(), $uri['path'], $uri['options']);
   }
   if (isset($args['!customer'])) {
