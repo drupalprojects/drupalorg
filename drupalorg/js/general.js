@@ -89,7 +89,7 @@
       $('.group-issue-attribution', context).once('drupalorg-issue-comment-attribution', function () {
         var $fieldset = $(this),
           $summary = $(Drupal.settings.drupalOrg.defaultCommentAttribution),
-          $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).hide(),
+          $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).attr('role', 'dialog').hide(),
           $attributeContributionToFields = $('input', $attributeContributionTo),
           $summaryOrganization = $('.organization', $summary).click(function (e) {
             // Position & show bubble.
@@ -97,7 +97,7 @@
             $attributeContributionToFields.focus();
             e.preventDefault();
           }),
-          $forCustomer = $('.field-name-field-for-customer', $fieldset).hide(),
+          $forCustomer = $('.field-name-field-for-customer', $fieldset).attr('role', 'dialog').hide(),
           $forCustomerField = $('.form-text', $forCustomer),
           $customerSuggestions = $('.customer-suggestion', $forCustomer).click(function (e) {
             // Add clicked suggestion.
