@@ -1712,7 +1712,7 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
     $element['field_for_customer'][LANGUAGE_NONE]['#default_value'] = implode(', ', $customer_default);
   }
   // Hide titles.
-  $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title_display'] = 'invisible';
+  $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title_display'] = 'attribute';
   $element['field_for_customer'][LANGUAGE_NONE]['#title_display'] = 'invisible';
   // Add customer suggestions.
   $view = views_get_view('drupal_org_user_customers');

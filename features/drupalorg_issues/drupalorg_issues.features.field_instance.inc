@@ -59,7 +59,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
     'entity_type' => 'comment',
     'field_name' => 'field_attribute_contribution_to',
-    'label' => 'Attribute contribution to',
+    'label' => 'Attribute at organization',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -89,7 +89,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
     'entity_type' => 'comment',
     'field_name' => 'field_for_customer',
-    'label' => 'for customer',
+    'label' => 'Attribute for customer',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -984,7 +984,8 @@ function drupalorg_issues_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Add organizations on your <a href="/user">user profile</a>.');
   t('Assigned');
-  t('Attribute contribution to');
+  t('Attribute at organization');
+  t('Attribute for customer');
   t('Before adding tags <a href="/node/1023102">read the issue tag guidelines</a>. Do <strong>NOT</strong> use tags for adding random keywords or duplicating any other fields.  Separate terms with a comma, not a space.');
   t('Category');
   t('Comment');
@@ -1000,7 +1001,6 @@ function drupalorg_issues_field_default_field_instances() {
   t('Related issues');
   t('Status');
   t('Version');
-  t('for customer');
 
   return $field_instances;
 }

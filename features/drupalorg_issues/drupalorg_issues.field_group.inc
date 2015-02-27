@@ -20,7 +20,7 @@ function drupalorg_issues_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Attribution',
+    'label' => 'Attribute this contribution',
     'weight' => '1',
     'children' => array(
       0 => 'field_attribute_contribution_to',
@@ -28,7 +28,7 @@ function drupalorg_issues_field_group_info() {
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'label' => 'Attribution',
+      'label' => 'Attribute this contribution',
       'instance_settings' => array(
         'required_fields' => 1,
         'classes' => 'group-issue-attribution field-group-fieldset',
