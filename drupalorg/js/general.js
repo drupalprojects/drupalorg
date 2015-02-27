@@ -90,16 +90,15 @@
         var $fieldset = $(this),
           $summary = $(Drupal.settings.drupalOrg.defaultCommentAttribution),
           $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).hide(),
+          $attributeContributionToFields = $('input', $attributeContributionTo),
           $summaryOrganization = $('.organization', $summary).click(function (e) {
             // Position & show bubble.
             $attributeContributionTo.css('left', Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px').show();
+            $attributeContributionToFields.focus();
             e.preventDefault();
           }),
           $forCustomer = $('.field-name-field-for-customer', $fieldset).hide(),
-          $forCustomerField = $('.form-text', $forCustomer).focusout(function () {
-            // Hide when tabbing away.
-            $forCustomer.hide();
-          }),
+          $forCustomerField = $('.form-text', $forCustomer),
           $customerSuggestions = $('.customer-suggestion', $forCustomer).click(function (e) {
             // Add clicked suggestion.
             var newValue = $forCustomerField.val();
@@ -112,10 +111,11 @@
           $summaryCustomer = $('.customer', $summary).click(function (e) {
             // Position & show bubble.
             $forCustomer.css('left', Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px').show();
+            $forCustomerField.focus();
             e.preventDefault();
           });
 
-        // Hide bubbles on most clicks.
+        // Hide bubbles on clicks outside.
         $('body').click(function (e) {
           if ($summaryOrganization.get(0) !== e.target) {
             $attributeContributionTo.hide();
@@ -124,10 +124,17 @@
             $forCustomer.hide();
           }
         });
+        // … and focuses.
+        $('input, textarea').focus(function (e) {
+          if ($attributeContributionToFields.get().indexOf(e.target) === -1 && $forCustomerField.get(0) !== e.target) {
+            $attributeContributionTo.hide();
+            $forCustomer.hide();
+          }
+        });
 
         // This is all me links.
         $attributeContributionTo.prepend($('<a href="#" class="all-me">' + Drupal.t('This is all me') + '</a>').click(function (e) {
-          $('input:checked', $attributeContributionTo).click();
+          $attributeContributionToFields.filter(':checked').click();
           e.preventDefault();
           $fieldset.trigger('summaryUpdated');
         }));
