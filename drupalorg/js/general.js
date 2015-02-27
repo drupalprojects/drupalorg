@@ -88,7 +88,7 @@
     attach: function (context) {
       $('.group-issue-attribution', context).once('drupalorg-issue-comment-attribution', function () {
         var $fieldset = $(this),
-          $summary = $('<div class="drupalorg-attribution-summary">' + Drupal.t('<strong>Attribute this contribution:</strong> at organization <a href="#" class="organization">not applicable</a> for customer <a href="#" class="customer">not applicable</a>') + '</div>'),
+          $summary = $(Drupal.settings.drupalOrg.defaultCommentAttribution),
           $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).hide(),
           $summaryOrganization = $('.organization', $summary).click(function (e) {
             // Position & show bubble.
