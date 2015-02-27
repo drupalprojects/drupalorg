@@ -1656,6 +1656,9 @@ function drupalorg_form_comment_form_alter(&$form, &$form_state) {
   if (!empty($form['comment_body'][LANGUAGE_NONE][0])) {
     $form['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
   }
+  if (isset($form['field_attribute_contribution_to'])) {
+    _drupalorg_alter_comment_attribution($form);
+  }
 }
 
 /**
@@ -1683,37 +1686,45 @@ function drupalorg_form_node_form_alter(&$form) {
   if (isset($form['nodechanges_comment'])) {
     $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
     if (isset($form['nodechanges_comment']['field_attribute_contribution_to'])) {
-      $form['#attached']['js'][] = array('type' => 'setting', 'data' => array(
-        'drupalOrg' => array(
-          'defaultCommentAttribution' => '<div class="drupalorg-attribution-summary">' . t('<strong>Attribute this contribution:</strong> <strong>@name</strong> at organization <a href="#" class="organization">not applicable</a> for customer <a href="#" class="customer">not applicable</a>', array('@name' => $GLOBALS['user']->name)) . '</div>'
-        ),
-      ));
-      // Load last comment for default values.
-      if ($cid = db_query_range('SELECT cid FROM {comment} c INNER JOIN {node} n ON n.nid = c.nid AND n.type IN (:issue_types) AND n.status = :node_published WHERE c.status = :comment_published AND c.uid = :uid ORDER BY c.nid = :nid DESC, c.cid DESC', 0, 1, array(':issue_types' => project_issue_issue_node_types(), ':node_published' => NODE_PUBLISHED, ':comment_published' => COMMENT_PUBLISHED, ':uid' => $GLOBALS['user']->uid, ':nid' => $form['#node']->nid))->fetchField()) {
-        $wrapper = entity_metadata_wrapper('comment', comment_load($cid));
-        $form['nodechanges_comment']['field_attribute_contribution_to'][LANGUAGE_NONE]['#default_value'] = $wrapper->field_attribute_contribution_to->raw();
-        $customer_default = array();
-        foreach ($wrapper->field_for_customer as $customer) {
-          $customer_default[] = drupalorg_entityreference_string($customer->getIdentifier(), $customer->title->value());
-        }
-        $form['nodechanges_comment']['field_for_customer'][LANGUAGE_NONE]['#default_value'] = implode(', ', $customer_default);
-      }
-      // Hide titles.
-      $form['nodechanges_comment']['field_attribute_contribution_to'][LANGUAGE_NONE]['#title_display'] = 'invisible';
-      $form['nodechanges_comment']['field_for_customer'][LANGUAGE_NONE]['#title_display'] = 'invisible';
-      // Add customer suggestions.
-      $view = views_get_view('drupal_org_user_customers');
-      $view->set_display('entityreference_1');
-      $view->display_handler->set_option('entityreference_options', array(
-          'match' => NULL,
-          'match_operator' => 'CONTAINS',
-          'limit' => 0,
-          'ids' => array(),
-      ));
-      foreach ($view->execute_display('entityreference_1') as $nid => $title) {
-        $form['nodechanges_comment']['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div><a href="#" class="customer-suggestion" data-string="' . check_plain(drupalorg_entityreference_string($nid, $title)) . '">' . check_plain(trim($title)) . '</a></div>';
-      }
+      _drupalorg_alter_comment_attribution($form['nodechanges_comment'], $form['#node']);
     }
+  }
+}
+
+/**
+ * Helper for drupalorg_form_node_form_alter() &
+ * drupalorg_form_comment_form_alter() with issue comment attribution fields.
+ */
+function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
+  $element['#attached']['js'][] = array('type' => 'setting', 'data' => array(
+    'drupalOrg' => array(
+      'defaultCommentAttribution' => '<div class="drupalorg-attribution-summary">' . t('<strong>Attribute this contribution:</strong> <strong>@name</strong> at organization <a href="#" class="organization">not applicable</a> for customer <a href="#" class="customer">not applicable</a>', array('@name' => $GLOBALS['user']->name)) . '</div>'
+    ),
+  ));
+  // Load last comment for default values.
+  if (!is_null($node) && ($cid = db_query_range('SELECT cid FROM {comment} c INNER JOIN {node} n ON n.nid = c.nid AND n.type IN (:issue_types) AND n.status = :node_published WHERE c.status = :comment_published AND c.uid = :uid ORDER BY c.nid = :nid DESC, c.cid DESC', 0, 1, array(':issue_types' => project_issue_issue_node_types(), ':node_published' => NODE_PUBLISHED, ':comment_published' => COMMENT_PUBLISHED, ':uid' => $GLOBALS['user']->uid, ':nid' => $node->nid))->fetchField())) {
+    $wrapper = entity_metadata_wrapper('comment', comment_load($cid));
+    $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#default_value'] = $wrapper->field_attribute_contribution_to->raw();
+    $customer_default = array();
+    foreach ($wrapper->field_for_customer as $customer) {
+      $customer_default[] = drupalorg_entityreference_string($customer->getIdentifier(), $customer->title->value());
+    }
+    $element['field_for_customer'][LANGUAGE_NONE]['#default_value'] = implode(', ', $customer_default);
+  }
+  // Hide titles.
+  $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title_display'] = 'invisible';
+  $element['field_for_customer'][LANGUAGE_NONE]['#title_display'] = 'invisible';
+  // Add customer suggestions.
+  $view = views_get_view('drupal_org_user_customers');
+  $view->set_display('entityreference_1');
+  $view->display_handler->set_option('entityreference_options', array(
+    'match' => NULL,
+    'match_operator' => 'CONTAINS',
+    'limit' => 0,
+    'ids' => array(),
+  ));
+  foreach ($view->execute_display('entityreference_1') as $nid => $title) {
+    $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div><a href="#" class="customer-suggestion" data-string="' . check_plain(drupalorg_entityreference_string($nid, $title)) . '">' . check_plain(trim($title)) . '</a></div>';
   }
 }
 
