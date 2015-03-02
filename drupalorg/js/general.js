@@ -132,18 +132,6 @@
           }
         });
 
-        // This is all me links.
-        $attributeContributionTo.prepend($('<a href="#" class="all-me">' + Drupal.t('This is all me') + '</a>').click(function (e) {
-          $attributeContributionToFields.filter(':checked').click();
-          e.preventDefault();
-          $fieldset.trigger('summaryUpdated');
-        }));
-        $forCustomer.prepend($('<a href="#" class="all-me">' + Drupal.t('This is all me') + '</a>').click(function (e) {
-          $forCustomerField.val('');
-          e.preventDefault();
-          $fieldset.trigger('summaryUpdated');
-        }));
-
         // Summary text.
         $fieldset.prepend($summary).drupalSetSummary(function () {}).bind('summaryUpdated', function () {
           var $organizations = $('input:checked + label', $attributeContributionTo),
