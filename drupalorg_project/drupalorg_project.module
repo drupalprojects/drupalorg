@@ -388,7 +388,11 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           t('Author'),
           t('By'),
           array(
-            'data' => t('Files ▾<span class="element-invisible">sorted descending</span>'),
+            'data' => t('Patches ▾<span class="element-invisible">sorted descending</span>'),
+            'colspan' => 2,
+          ),
+          array(
+            'data' => t('Files'),
             'colspan' => 2,
           ),
           array(
@@ -400,6 +404,8 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           $form_state['node']->uid => array(
             'author' => NULL,
             'by' => $form_state['node']->name,
+            'patches' => NULL,
+            'patches-bar' => NULL,
             'files' => NULL,
             'files-bar' => NULL,
             'comments' => 1,
@@ -421,6 +427,8 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             $table['#rows'][$comment->uid] = array(
               'author' => NULL,
               'by' => $comment->name,
+              'patches' => NULL,
+              'patches-bar' => NULL,
               'files' => NULL,
               'files-bar' => NULL,
               'comments' => 1,
@@ -430,7 +438,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           }
           else {
             $table['#rows'][$comment->uid]['comments'] += 1;
-            $table['#rows'][$comment->uid]['#weight'] += 0.01;
+            $table['#rows'][$comment->uid]['#weight'] += 1;
           }
         }
       }
@@ -440,8 +448,14 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         if (!empty($form_state['node']->in_preview)) {
           $file = (array) file_load($file['fid']);
         }
-        $table['#rows'][$file['uid']]['files'] += 1;
-        $table['#rows'][$file['uid']]['#weight'] += 1;
+        if (preg_match('%\.(diff|patch)$%', $file['filename'])) {
+          $table['#rows'][$file['uid']]['patches'] += 1;
+          $table['#rows'][$file['uid']]['#weight'] += 10000;
+        }
+        else {
+          $table['#rows'][$file['uid']]['files'] += 1;
+          $table['#rows'][$file['uid']]['#weight'] += 100;
+        }
       }
       // Set author to final file, except for core.
       $author = (isset($file) && $node_wrapper->field_project->value()->nid != DRUPALORG_CORE_NID) ? $file['uid'] : '';
@@ -469,7 +483,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           'data' => array(
             '#type' => 'checkbox',
             '#title' => check_plain($row['by']),
-            '#checked' => !is_null($row['files']),
+            '#checked' => !is_null($row['patches']),
             '#id' => 'by-' . $uid,
             '#attributes' => array(
               'data-by' => $row['by'],
@@ -481,30 +495,20 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             ),
           ),
         );
-        // Format files and comments bars.
-        if (!is_null($row['files'])) {
-          if ($row['files'] > 50) {
-            $row['files-bar'] = '<div class="bar overflow" style="width: 20em"></div>';
+        // Format patches, files, and comments bars.
+        foreach (array('patches' => t('patches attached'), 'files' => t('other files attached'), 'comments' => t('comments made')) as $key => $description) {
+          if (!is_null($row[$key])) {
+            if ($row[$key] > 50) {
+              $row[$key . '-bar'] = '<div class="bar overflow" style="width: 10em"></div>';
+            }
+            else {
+              $row[$key . '-bar'] = '<div class="bar" style="width: ' . ($row[$key] / 50 * 10) . 'em"></div>';
+            }
+            $row[$key] = array(
+              'data' => $row[$key] . '<span class="element-invisible"> ' . $description . '</span>',
+              'class' => 'number',
+            );
           }
-          else {
-            $row['files-bar'] = '<div class="bar" style="width: ' . ($row['files'] / 50 * 20) . 'em"></div>';
-          }
-          $row['files'] = array(
-            'data' => $row['files'] . '<span class="element-invisible"> ' . t('files attached') . '</span>',
-            'class' => 'number',
-          );
-        }
-        if (!is_null($row['comments'])) {
-          if ($row['comments'] > 50) {
-            $row['comments-bar'] = '<div class="bar overflow" style="width: 20em"></div>';
-          }
-          else {
-            $row['comments-bar'] = '<div class="bar" style="width: ' . ($row['comments'] / 50 * 20) . 'em"></div>';
-          }
-          $row['comments'] = array(
-            'data' => $row['comments'] . '<span class="element-invisible"> ' . t('comments made') . '</span>',
-            'class' => 'number',
-          );
         }
         // Remove temporary column.
         unset($row['#weight']);
@@ -531,7 +535,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             '#value' => t('<em>Omit author</em>'),
             '#attributes' => array('for' => 'by-0'),
           ),
-          'colspan' => 5,
+          'colspan' => 7,
         ),
       );
 
