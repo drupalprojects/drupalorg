@@ -3625,7 +3625,7 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
 
 function drupalorg_add_badge_new_user($account) {
   $output = '';
-  if ($account->uid > 0 && (REQUEST_TIME - $account->created) < 7776000) {
+  if (user_is_logged_in() && $account->uid > 0 && (REQUEST_TIME - $account->created) < 7776000) {
     $output .= '<div class="new-user">' . t('<span>@username is a </span>new<span> user</span>', array('@username' => format_username($account))) . '</div>';
   }
   return $output;
