@@ -1723,6 +1723,7 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
     'limit' => 0,
     'ids' => array(),
   ));
+  $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] = '';
   foreach ($view->execute_display('entityreference_1') as $nid => $title) {
     $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div><a href="#" class="customer-suggestion" data-string="' . check_plain(drupalorg_entityreference_string($nid, $title)) . '">' . t('<span class="element-invisible">Add customer </span>@title', array('@title' => trim($title))) . '</a></div>';
   }
