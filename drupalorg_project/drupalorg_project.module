@@ -403,7 +403,13 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         '#rows' => array(
           $form_state['node']->uid => array(
             'author' => NULL,
-            'by' => $form_state['node']->name,
+            'by' => array(
+              'text' => '@username',
+              'args' => array(
+                '@username' => $form_state['node']->name,
+                '!uid' => $form_state['node']->uid,
+              ),
+            ),
             'patches' => NULL,
             'patches-bar' => NULL,
             'files' => NULL,
@@ -423,10 +429,40 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       $result = $query->execute();
       if (isset($result['comment'])) {
         foreach (comment_load_multiple(array_keys($result['comment'])) as $comment) {
-          if (!isset($table['#rows'][$comment->uid])) {
-            $table['#rows'][$comment->uid] = array(
+          $comment_wrapper = entity_metadata_wrapper('comment', $comment);
+          $key = $comment->uid;
+          $args = array(
+            '@username' => $comment->name,
+            '!uid' => $comment->uid,
+          );
+          // Add organizations.
+          foreach ($comment_wrapper->field_attribute_contribution_to as $organization) {
+            $args['@organization'][$organization->nid->value()] = $organization->title->value();
+          }
+          if (isset($args['@organization'])) {
+            $keys = array_keys($args['@organization']);
+            sort($keys);
+            $key .= '-o' . implode('-', $keys);
+            $args['@organization'] = implode(', ', $args['@organization']);
+          }
+          // Add customers.
+          foreach ($comment_wrapper->field_for_customer as $organization) {
+            $args['@customer'][$organization->nid->value()] = $organization->title->value();
+          }
+          if (isset($args['@customer'])) {
+            $keys = array_keys($args['@customer']);
+            sort($keys);
+            $key .= '-c' . implode('-', $keys);
+            $args['@customer'] = implode(', ', $args['@customer']);
+          }
+          if (isset($table['#rows'][$key])) {
+            $table['#rows'][$key]['comments'] += 1;
+            $table['#rows'][$key]['#weight'] += 1;
+          }
+          else {
+            $table['#rows'][$key] = array(
               'author' => NULL,
-              'by' => $comment->name,
+              'by' => array('args' => $args),
               'patches' => NULL,
               'patches-bar' => NULL,
               'files' => NULL,
@@ -435,10 +471,19 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
               'comments-bar' => NULL,
               '#weight' => 0,
             );
-          }
-          else {
-            $table['#rows'][$comment->uid]['comments'] += 1;
-            $table['#rows'][$comment->uid]['#weight'] += 1;
+            // Format By column.
+            if (isset($args['@organization']) && isset($args['@customer'])) {
+              $table['#rows'][$key]['by']['text'] = '@username <span class="description">at @organization for @customer</span>';
+            }
+            elseif (isset($args['@organization'])) {
+              $table['#rows'][$key]['by']['text'] = '@username <span class="description">at @organization</span>';
+            }
+            elseif (isset($args['@customer'])) {
+              $table['#rows'][$key]['by']['text'] = '@username <span class="description">for @customer</span>';
+            }
+            else {
+              $table['#rows'][$key]['by']['text'] = '@username';
+            }
           }
         }
       }
@@ -464,17 +509,17 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       uasort($table['#rows'], 'element_sort');
       $table['#rows'] = array_reverse($table['#rows'], TRUE);
 
-      foreach ($table['#rows'] as $uid => &$row) {
+      foreach ($table['#rows'] as $key => &$row) {
         $row['author'] = array(
           'data' => array(
             '#type' => 'radio',
             '#name' => 'author',
-            '#return_value' => $uid,
+            '#return_value' => $key,
             '#value' => $author,
-            '#title' => t('Author is @name', array('@name' => $row['by'])),
+            '#title' => t('Author is !name', array('!name' => $row['by']['args']['@username'])),
             '#title_display' => 'invisible',
             '#attributes' => array(
-              'data-author' => ' --author="' . drupalorg_git_gateway_user_git_format_author(user_load($uid)) . '"',
+              'data-author' => ' --author="' . drupalorg_git_gateway_user_git_format_author(user_load($row['by']['args']['!uid'])) . '"',
             ),
           ),
           'class' => 'author',
@@ -482,15 +527,15 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         $row['by'] = array(
           'data' => array(
             '#type' => 'checkbox',
-            '#title' => check_plain($row['by']),
+            '#title' => t($row['by']['text'], $row['by']['args']),
             '#checked' => !is_null($row['patches']),
-            '#id' => 'by-' . $uid,
+            '#id' => 'by-' . $key,
             '#attributes' => array(
-              'data-by' => $row['by'],
+              'data-by' => check_plain($row['by']['args']['@username']),
             ),
             '#states' => array(
               'disabled' => array(
-                ':input[name=author]' => array('value' => $uid),
+                ':input[name=author]' => array('value' => $key),
               ),
             ),
           ),
