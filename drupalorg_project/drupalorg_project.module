@@ -427,6 +427,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       $query->propertyCondition('status', COMMENT_PUBLISHED);
       $query->propertyCondition('uid', variable_get('project_issue_followup_user', 0), '!=');
       $result = $query->execute();
+      $cid_key_map = array();
       if (isset($result['comment'])) {
         foreach (comment_load_multiple(array_keys($result['comment'])) as $comment) {
           $comment_wrapper = entity_metadata_wrapper('comment', $comment);
@@ -455,6 +456,8 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             $key .= '-c' . implode('-', $keys);
             $args['@customer'] = implode(', ', $args['@customer']);
           }
+
+          $cid_key_map[$comment->cid] = $key;
           if (isset($table['#rows'][$key])) {
             $table['#rows'][$key]['comments'] += 1;
             $table['#rows'][$key]['#weight'] += 1;
@@ -488,18 +491,26 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         }
       }
 
+      // Populate patches and files.
       $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
+      $fid_cid_map = nodechanges_get_changed_cids_keyed($form_state['node'], 'field_issue_files', 'fid');
       foreach ($node_wrapper->field_issue_files->value() as $file) {
         if (!empty($form_state['node']->in_preview)) {
           $file = (array) file_load($file['fid']);
         }
-        if (preg_match('%\.(diff|patch)$%', $file['filename'])) {
-          $table['#rows'][$file['uid']]['patches'] += 1;
-          $table['#rows'][$file['uid']]['#weight'] += 10000;
+        if (isset($fid_cid_map[$file['fid']])) {
+          $key = $cid_key_map[$fid_cid_map[$file['fid']]];
         }
         else {
-          $table['#rows'][$file['uid']]['files'] += 1;
-          $table['#rows'][$file['uid']]['#weight'] += 100;
+          $key = $file['uid'];
+        }
+        if (preg_match('%\.(diff|patch)$%', $file['filename'])) {
+          $table['#rows'][$key]['patches'] += 1;
+          $table['#rows'][$key]['#weight'] += 10000;
+        }
+        else {
+          $table['#rows'][$key]['files'] += 1;
+          $table['#rows'][$key]['#weight'] += 100;
         }
       }
       // Set author to final file, except for core.
