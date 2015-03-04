@@ -168,6 +168,9 @@
   Drupal.behaviors.drupalorgIssueCredit = {
     attach: function (context) {
       $('#drupalorg-issue-credit-form', context).once('drupalorg-issue-credit', function () {
+        // todo maintainer-only
+        $('>legend', this).after('<div class="credit-summary"></div>');
+
         // Store command template.
         Drupal.settings.drupalorgIssueCreditTemplate = $('textarea[name=command]', this).val();
         Drupal.settings.drupalorgIssueCreditMessageTemplate = $('textarea[name=command-message]', this).val();
@@ -188,14 +191,17 @@
 
   Drupal.drupalorgUpdateIssueCredit = function () {
     var $author = $('#drupalorg-issue-credit-form input[name=author]:checked'),
-      message = $('#drupalorg-issue-credit-form input[name=message]').val();
+      message = $('#drupalorg-issue-credit-form input[name=message]').val(),
+      byHtml = [];
 
     $('#drupalorg-issue-credit-form #by-' + $author.val()).attr('checked', 'checked');
 
     // Collect names for 'by …'
     var by = [];
     $('#drupalorg-issue-credit-form input[type=checkbox][id^=by-]:checked').each(function () {
-      by.push($(this).data('by'));
+      var $this = $(this);
+      by.push($this.data('by'));
+      byHtml.push($.trim($this.next('label').html()));
     });
 
     // Fill out template. It has already been translated server-side.
@@ -208,5 +214,13 @@
       '!message': message,
       '!by': (by.length > 0 ? ' by ' + by.join(', ') : '')
     }));
+
+    // Fill out credit summary.
+    if (byHtml.length) {
+      $('#drupalorg-issue-credit-form .credit-summary').html(Drupal.t('Giving credit to !credits', {'!credits': byHtml.join(', ')}));
+    }
+    else {
+      $('#drupalorg-issue-credit-form .credit-summary').html(Drupal.t('Expand to give credit'));
+    }
   }
 })(jQuery);
