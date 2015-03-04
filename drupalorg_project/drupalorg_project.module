@@ -542,7 +542,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             '#checked' => !is_null($row['patches']),
             '#id' => 'by-' . $key,
             '#attributes' => array(
-              'data-by' => check_plain($row['by']['args']['@username']),
+              'data-by' => $row['by']['args']['@username'],
             ),
             '#states' => array(
               'disabled' => array(
