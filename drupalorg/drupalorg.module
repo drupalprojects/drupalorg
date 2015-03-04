@@ -1698,7 +1698,7 @@ function drupalorg_form_node_form_alter(&$form) {
 function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
   $element['#attached']['js'][] = array('type' => 'setting', 'data' => array(
     'drupalOrg' => array(
-      'defaultCommentAttribution' => '<div class="drupalorg-attribution-summary">' . t('<strong>Attribute this contribution:</strong> <strong>@name</strong> at organization <a href="#" class="organization">not applicable</a> for customer <a href="#" class="customer">not applicable</a>', array('@name' => $GLOBALS['user']->name)) . '</div>'
+      'defaultCommentAttribution' => '<div class="drupalorg-attribution-summary">' . t('<strong>Attribute this contribution:</strong> <strong>@name</strong> at organization <a href="#" class="organization">not applicable</a> for customer <a href="#" class="customer">not applicable</a>', array('@name' => empty($element['#entity']->name) ? $GLOBALS['user']->name : $element['#entity']->name)) . '</div>'
     ),
   ));
   // Load last comment for default values.
