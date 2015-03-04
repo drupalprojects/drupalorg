@@ -386,7 +386,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 7,
       ),
       'welcome' => array(
         'label' => 'above',
@@ -579,7 +579,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 8,
       ),
       'welcome' => array(
         'label' => 'above',
@@ -657,10 +657,9 @@ function drupalorg_user_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 20,
+        'type' => 'hidden',
+        'weight' => 4,
       ),
       'welcome' => array(
         'label' => 'above',
@@ -813,7 +812,7 @@ function drupalorg_user_field_default_field_instances() {
           'show_interest_groups' => FALSE,
         ),
         'type' => 'mailchimp_lists_subscribe_default',
-        'weight' => 19,
+        'weight' => 3,
       ),
       'welcome' => array(
         'label' => 'above',
@@ -879,7 +878,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 6,
       ),
       'welcome' => array(
         'label' => 'above',
@@ -917,7 +916,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 5,
       ),
       'welcome' => array(
         'label' => 'above',
