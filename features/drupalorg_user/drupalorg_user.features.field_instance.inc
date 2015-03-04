@@ -158,6 +158,12 @@ function drupalorg_user_field_default_field_instances() {
         'type' => 'taxonomy_term_reference_plain',
         'weight' => 9,
       ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'user',
     'field_name' => 'field_areas_of_expertise',
@@ -191,6 +197,12 @@ function drupalorg_user_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 6,
+      ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'user',
@@ -226,6 +238,12 @@ function drupalorg_user_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 2,
       ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'user',
     'field_name' => 'field_contributed',
@@ -257,6 +275,12 @@ function drupalorg_user_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 9,
       ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'user',
     'field_name' => 'field_country',
@@ -287,6 +311,12 @@ function drupalorg_user_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 8,
+      ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'user',
@@ -322,6 +352,12 @@ function drupalorg_user_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 10,
       ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'user',
     'field_name' => 'field_events_attended',
@@ -351,6 +387,12 @@ function drupalorg_user_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 5,
+      ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'user',
@@ -386,6 +428,12 @@ function drupalorg_user_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 17,
       ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'user',
     'field_name' => 'field_gender',
@@ -416,6 +464,12 @@ function drupalorg_user_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 15,
+      ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'user',
@@ -451,6 +505,12 @@ function drupalorg_user_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 12,
       ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'user',
     'field_name' => 'field_irc_nick',
@@ -485,6 +545,12 @@ function drupalorg_user_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 18,
       ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'user',
     'field_name' => 'field_languages',
@@ -514,6 +580,12 @@ function drupalorg_user_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 6,
+      ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'user',
@@ -549,6 +621,12 @@ function drupalorg_user_field_default_field_instances() {
         'type' => 'user_pictures',
         'weight' => 1,
       ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'user',
     'field_name' => 'field_mentors',
@@ -570,6 +648,46 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_notes'
+  $field_instances['user-user-field_notes'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Admin-only notes for this user.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 20,
+      ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_notes',
+    'label' => 'Notes',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => -100,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_organizations'
   $field_instances['user-user-field_organizations'] = array(
     'bundle' => 'user',
@@ -585,6 +703,12 @@ function drupalorg_user_field_default_field_instances() {
         ),
         'type' => 'field_collection_fields',
         'weight' => 11,
+      ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'user',
@@ -620,6 +744,12 @@ function drupalorg_user_field_default_field_instances() {
         'type' => 'url_default',
         'weight' => 10,
       ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'user',
     'field_name' => 'field_social_links',
@@ -646,7 +776,7 @@ function drupalorg_user_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => array(
       0 => array(
-        'subscribe' => 0,
+        'subscribe' => 1,
         'interest_groups' => array(
           5609 => array(
             'Business (C-level)' => 0,
@@ -665,10 +795,9 @@ function drupalorg_user_field_default_field_instances() {
           5845 => array(
             'Drupal Association News' => 0,
             'DrupalCon News' => 0,
-            'Drupal Weekly Newsletter (coming soon)' => 0,
             'Educational Opportunities from the Drupal Association' => 0,
             'Information for Drupal Service Providers' => 0,
-            'Special Offers from Drupal Supporters (coming soon)' => 0,
+            'Special Offers from our Partners (coming soon)' => 0,
           ),
         ),
       ),
@@ -678,9 +807,19 @@ function drupalorg_user_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'module' => 'mailchimp_lists',
+        'settings' => array(
+          'interest_groups' => array(),
+          'show_interest_groups' => FALSE,
+        ),
+        'type' => 'mailchimp_lists_subscribe_default',
+        'weight' => 19,
+      ),
+      'welcome' => array(
+        'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'user',
@@ -721,7 +860,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'mailchimp_lists',
       'settings' => array(),
       'type' => 'mailchimp_lists_select',
-      'weight' => 5,
+      'weight' => 6,
     ),
   );
 
@@ -742,6 +881,12 @@ function drupalorg_user_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 4,
       ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'user',
     'field_name' => 'field_terms_of_service',
@@ -757,7 +902,7 @@ function drupalorg_user_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 8,
+      'weight' => 9,
     ),
   );
 
@@ -773,6 +918,12 @@ function drupalorg_user_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 3,
+      ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'user',
@@ -804,6 +955,12 @@ function drupalorg_user_field_default_field_instances() {
         'settings' => array(),
         'type' => 'link_url',
         'weight' => 14,
+      ),
+      'welcome' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'user',
@@ -841,6 +998,7 @@ function drupalorg_user_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Admin-only notes for this user.');
   t('Areas of Expertise');
   t('Bio');
   t('Country');
@@ -860,6 +1018,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Location');
   t('My contributions');
   t('My mentors');
+  t('Notes');
   t('Organization');
   t('Organization reference');
   t('Organizations');
