@@ -21,13 +21,13 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Drupal',
-    'weight' => '2',
+    'weight' => '3',
     'children' => array(
       0 => 'field_areas_of_expertise',
       1 => 'field_contributed',
       2 => 'field_events_attended',
-      3 => 'field_mentors',
-      4 => 'field_drupal_contributions',
+      3 => 'field_drupal_contributions',
+      4 => 'field_mentors',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -52,7 +52,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Welcome left',
-    'weight' => '11',
+    'weight' => '12',
     'children' => array(),
     'format_type' => 'div',
     'format_settings' => array(
@@ -322,7 +322,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Welcome right',
-    'weight' => '12',
+    'weight' => '13',
     'children' => array(),
     'format_type' => 'div',
     'format_settings' => array(
@@ -353,16 +353,16 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Personal information',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'field_user_geolocation',
       1 => 'field_bio',
       2 => 'field_irc_nick',
-      3 => 'field_websites',
-      4 => 'field_country',
-      5 => 'field_gender',
-      6 => 'field_languages',
-      7 => 'field_social_links',
+      3 => 'field_country',
+      4 => 'field_gender',
+      5 => 'field_languages',
+      6 => 'field_social_links',
+      7 => 'field_websites',
       8 => 'picture',
       9 => 'group_name',
     ),
@@ -389,7 +389,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Work',
-    'weight' => '3',
+    'weight' => '4',
     'children' => array(
       0 => 'field_industries_worked_in',
       1 => 'field_organizations',

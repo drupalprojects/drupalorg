@@ -570,6 +570,40 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_notes'
+  $field_instances['user-user-field_notes'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Admin-only notes.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 20,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_notes',
+    'label' => 'Notes',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 0,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_organizations'
   $field_instances['user-user-field_organizations'] = array(
     'bundle' => 'user',
@@ -757,7 +791,7 @@ function drupalorg_user_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 8,
+      'weight' => 9,
     ),
   );
 
@@ -841,6 +875,7 @@ function drupalorg_user_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Admin-only notes.');
   t('Areas of Expertise');
   t('Bio');
   t('Country');
@@ -860,6 +895,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Location');
   t('My contributions');
   t('My mentors');
+  t('Notes');
   t('Organization');
   t('Organization reference');
   t('Organizations');
