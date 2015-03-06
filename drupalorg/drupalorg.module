@@ -3526,3 +3526,8 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
 
   return $element;
 }
+
+function drupalorg_notice_settings_form($form, &$form_state) {
+
+  return confirm_form($form, t('Are you sure that you want to send this message to all users?'), current_path(), t('Yes'), t('No'));
+}
