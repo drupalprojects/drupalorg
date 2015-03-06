@@ -115,6 +115,11 @@ function drupalorg_page_build(&$page) {
     if (empty($account->field_terms_of_service) || empty($account->field_terms_of_service[LANGUAGE_NONE][0]['value'])) {
       drupal_set_message(t('We’ve <a href="/news/next-steps-for-drupalorg-tos-and-privacy-policy">introduced</a> Drupal.org <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>. Please read both documents and <a href="!edit">accept them on your user profile</a> to continue using Drupal.org.', array('!edit' => url('user/' . $account->uid . '/edit'))), 'warning');
     }
+
+    if ($notice = variable_get('drupalorg_notice')) {
+      // Display the global notice to the user.
+      drupal_set_message(filter_xss(check_markup($notice['message']['value'], $notice['message']['format'])));
+    }
   }
 }
 
@@ -3534,7 +3539,7 @@ function drupalorg_notice_settings_form($form, &$form_state) {
 
     $form['drupalorg_notice']['message'] = array(
       '#title' => t('Message'),
-      '#description' => t('The text to be displayed to users.'),
+      '#description' => t('System message text to be displayed to all authenticated Drupal.org users on their next page load. One time display.'),
       '#type' => 'text_format',
       '#format' => NULL,
       '#required' => TRUE,
@@ -3553,7 +3558,7 @@ function drupalorg_notice_settings_form($form, &$form_state) {
   }
   else {
     // Display the confirmation form.
-    return confirm_form($form, t('Are you sure that you want to send this message?'), current_path(), t('Are you absolutely sure you want to tell this to every D.o user?'), t('Yes'), t('No'));
+    return confirm_form($form, t('Enable global notice'), current_path(), t('Are you absolutely sure you want to tell this to every D.o user?'), t('Enable global notice'), t('Cancel'));
   }
 }
 
