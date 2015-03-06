@@ -3541,7 +3541,8 @@ function drupalorg_notice_settings_form($form, &$form_state) {
       '#title' => t('Message'),
       '#description' => t('System message text to be displayed to all authenticated Drupal.org users on their next page load. One time display.'),
       '#type' => 'text_format',
-      '#format' => NULL,
+      '#format' => $form_state['storage']['original_form'] ? $form_state['storage']['original_form']['drupalorg_message']['format'] : NULL,
+      '#default_value' => $form_state['storage']['original_form'] ? $form_state['storage']['original_form']['drupalorg_message']['value'] : NULL,
       '#required' => TRUE,
     );
     $form['drupalorg_notice']['time'] = array(
