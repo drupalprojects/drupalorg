@@ -3574,7 +3574,7 @@ function drupalorg_notice_settings_form($form, &$form_state) {
   }
   else {
     // Display a preview of the message.
-    _drupalorg_view_global_notice($form_state['storage']['original_form']['drupalorg_notice']);
+    drupal_set_message(_drupalorg_view_global_notice($form_state['storage']['original_form']['drupalorg_notice']));
     // Display the confirmation form.
     return confirm_form($form, t('Enable global notice'), current_path(), t('Are you absolutely sure you want to display your message to every Drupal.org user?'), t('Enable global notice'), t('Cancel'));
   }
