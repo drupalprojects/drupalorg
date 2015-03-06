@@ -2880,7 +2880,8 @@ function drupalorg_user_view($account, $view_mode) {
 
   // Put non-field items into groups.
   $account->content['#group_children']['user_picture'] = 'group_profile_contact';
-  $account->content['user_picture']['#suffix'] = drupalorg_add_badge_new_user($account);
+  $account->content['user_picture']['#prefix'] = '<div class="user-picture-container">';
+  $account->content['user_picture']['#suffix'] = drupalorg_add_badge_new_user($account) . '</div>';
 
   // Link organization to organization node, if it exists.
   $wrapper = entity_metadata_wrapper('user', $account);
