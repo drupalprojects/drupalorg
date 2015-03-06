@@ -3599,5 +3599,5 @@ function _drupalorg_view_global_notice($notice = NULL) {
   if (!$notice) {
     $notice = variable_get('drupalorg_notice');
   }
-  filter_xss(check_markup($notice['message']['value'], $notice['message']['format']));
+  return $notice ? filter_xss(check_markup($notice['message']['value'], $notice['message']['format'])) : NULL;
 }
