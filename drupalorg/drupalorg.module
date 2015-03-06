@@ -3548,6 +3548,8 @@ function drupalorg_notice_settings_form($form, &$form_state) {
       '#type' => 'submit',
       '#value' => t('Save configuration'),
     );
+
+    return $form;
   }
   else {
     // Display the confirmation form.
