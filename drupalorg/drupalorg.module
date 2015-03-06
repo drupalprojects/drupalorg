@@ -3568,6 +3568,6 @@ function drupalorg_notice_settings_form_submit($form, &$form_state) {
   else {
     // Save the form data.
     variable_set('drupalorg_notice', $form_state['storage']['original_form']['drupalorg_notice']);
-    drupal_set_message(t('The message will be displayed to all users on the next page load.'));
+    drupal_set_message(t('The message will be displayed to all authenticated users on their next page load.'));
   }
 }
