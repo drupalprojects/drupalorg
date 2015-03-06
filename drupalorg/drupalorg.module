@@ -220,6 +220,13 @@ function drupalorg_menu() {
     'page arguments' => array('drupalorg_ad_settings_form'),
   );
 
+  $items['admin/config/system/drupalorg-notice'] = array(
+    'title' => 'Drupal.org global notice',
+    'access arguments' => array('administer site configuration'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('drupalorg_notice_settings_form'),
+  );
+
   return $items;
 }
 
