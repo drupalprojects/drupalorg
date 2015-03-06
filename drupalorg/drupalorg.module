@@ -3553,7 +3553,7 @@ function drupalorg_notice_settings_form($form, &$form_state) {
   }
   else {
     // Display the confirmation form.
-    return confirm_form($form, t('Are you sure that you want to send this message to all users?'), current_path(), NULL, t('Yes'), t('No'));
+    return confirm_form($form, t('Are you sure that you want to send this message?'), current_path(), t('Are you absolutely sure you want to tell this to every D.o user?'), t('Yes'), t('No'));
   }
 }
 
