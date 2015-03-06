@@ -370,6 +370,9 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
                 return FALSE;
               }
               return TRUE;
+
+            case 'field_notes':
+              return user_access('administer users');
           }
       }
   }
@@ -2937,6 +2940,8 @@ function drupalorg_user_view($account, $view_mode) {
 
   // Put non-field items into groups.
   $account->content['#group_children']['user_picture'] = 'group_profile_contact';
+  $account->content['user_picture']['#prefix'] = '<div class="user-picture-container">';
+  $account->content['user_picture']['#suffix'] = drupalorg_add_badge_new_user($account) . '</div>';
 
   // Link organization to organization node, if it exists.
   $wrapper = entity_metadata_wrapper('user', $account);
@@ -3320,7 +3325,7 @@ function drupalorg_preprocess_comment(&$v) {
       'style_name' => 'drupalorg_user_picture',
       'path' => $filepath,
       'alt' => t('@user’s picture', array('@user' => format_username($v['comment']))),
-    )), 'user/' . $v['comment']->uid, array(
+    )) . drupalorg_add_badge_new_user(user_load($v['elements']['#comment']->uid)), 'user/' . $v['comment']->uid, array(
       'attributes' => array(
         'title' => t('View user profile.'),
         'class' => 'picture',
@@ -3869,5 +3874,13 @@ function drupalorg_welcome_page() {
   $form = drupal_build_form('user_profile_form', $form_state);
   $output .= drupal_render($form);
 
+  return $output;
+}
+
+function drupalorg_add_badge_new_user($account) {
+  $output = '';
+  if (user_is_logged_in() && $account->uid > 0 && (REQUEST_TIME - $account->created) < 7776000) {
+    $output .= '<div class="new-user">' . t('<span class="element-invisible">@username is a </span>new<span class="element-invisible"> user</span>', array('@username' => format_username($account))) . '</div>';
+  }
   return $output;
 }
