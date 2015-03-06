@@ -3543,9 +3543,10 @@ function drupalorg_notice_settings_form($form, &$form_state) {
       '#title' => t('Message'),
       '#description' => t('System message text to be displayed to all authenticated Drupal.org users on their next page load. One time display.'),
       '#type' => 'text_format',
-      '#format' => isset($notice['message']) ? $notice['message']['format'] : NULL,
-      '#default_value' => isset($notice['message']) ? $notice['message']['value'] : NULL,
+      '#format' => $notice ? $notice['message']['format'] : NULL,
+      '#default_value' => $notice ? $notice['message']['value'] : NULL,
       '#required' => TRUE,
+      '#prefix' => $notice ? t('The current message was set at %time.', array('%time' => format_date($notice['time']))) : NULL,
     );
     $form['drupalorg_notice']['time'] = array(
       '#type' => 'hidden',
