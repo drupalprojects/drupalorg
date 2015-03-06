@@ -122,7 +122,7 @@ function drupalorg_page_build(&$page) {
       // last viewed.
       if (!path_is_admin(current_path()) && (!isset($_SESSION['drupalorg_notice_view']) || $notice['time'] > $_SESSION['drupalorg_notice_view'])) {
         // Display the global notice to the user.
-        drupal_set_message(filter_xss(check_markup($notice['message']['value'], $notice['message']['format'])));
+        drupal_set_message(_drupalorg_show_global_notice($notice));
         // Store the time that the notice was viewed.
         $_SESSION['drupalorg_notice_view'] = REQUEST_TIME;
       }
@@ -3574,6 +3574,7 @@ function drupalorg_notice_settings_form($form, &$form_state) {
   }
   else {
     // Display the confirmation form.
+    drupal_set_message(_drupalorg_show_global_notice());
     return confirm_form($form, t('Enable global notice'), current_path(), t('Are you absolutely sure you want to display your message to every Drupal.org user?'), t('Enable global notice'), t('Cancel'));
   }
 }
@@ -3591,4 +3592,11 @@ function drupalorg_notice_settings_form_submit($form, &$form_state) {
     variable_set('drupalorg_notice', $form_state['storage']['original_form']['drupalorg_notice']);
     drupal_set_message(t('The message will be displayed to all authenticated users on their next page load.'));
   }
+}
+
+function _drupalorg_show_global_notice($notice = NULL) {
+  if (!$notice) {
+    $notice = variable_get('drupalorg_notice');
+  }
+  return $notice ? filter_xss(check_markup($notice['message']['value'], $notice['message']['format'])) : NULL;
 }
