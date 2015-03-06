@@ -3528,6 +3528,12 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
 }
 
 function drupalorg_notice_settings_form($form, &$form_state) {
+  $form['message'] = array(
+    '#title' => t('Message'),
+    '#description' => t('The text to be displayed to users.'),
+    '#type' => 'text_format',
+    '#format' => NULL,
+  );
 
   return confirm_form($form, t('Are you sure that you want to send this message to all users?'), current_path(), NULL, t('Yes'), t('No'));
 }
