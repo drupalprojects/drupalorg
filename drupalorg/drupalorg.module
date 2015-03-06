@@ -3534,6 +3534,8 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
 
 function drupalorg_notice_settings_form($form, &$form_state) {
   if (!isset($form_state['storage']['confirm'])) {
+    $notice = variable_get('drupalorg_notice');
+
     // Display the initial form.
     $form['drupalorg_notice']['#tree'] = TRUE;
 
@@ -3541,8 +3543,8 @@ function drupalorg_notice_settings_form($form, &$form_state) {
       '#title' => t('Message'),
       '#description' => t('System message text to be displayed to all authenticated Drupal.org users on their next page load. One time display.'),
       '#type' => 'text_format',
-      '#format' => $form_state['storage']['original_form'] ? $form_state['storage']['original_form']['drupalorg_message']['format'] : NULL,
-      '#default_value' => $form_state['storage']['original_form'] ? $form_state['storage']['original_form']['drupalorg_message']['value'] : NULL,
+      '#format' => isset($notice['message']) ? $notice['message']['format'] : NULL,
+      '#default_value' => isset($notice['message']) ? $notice['message']['value'] : NULL,
       '#required' => TRUE,
     );
     $form['drupalorg_notice']['time'] = array(
