@@ -3528,19 +3528,35 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
 }
 
 function drupalorg_notice_settings_form($form, &$form_state) {
-  $form['drupalorg_notice']['#tree'] = TRUE;
+  if (!isset($form_state['storage']['confirm'])) {
+    // Display the initial form.
+    $form['drupalorg_notice']['#tree'] = TRUE;
 
-  $form['drupalorg_notice']['message'] = array(
-    '#title' => t('Message'),
-    '#description' => t('The text to be displayed to users.'),
-    '#type' => 'text_format',
-    '#format' => NULL,
-  );
-  $form['drupalorg_notice']['time'] = array(
-    '#type' => 'hidden',
-    '#value' => REQUEST_TIME,
-  );
+    $form['drupalorg_notice']['message'] = array(
+      '#title' => t('Message'),
+      '#description' => t('The text to be displayed to users.'),
+      '#type' => 'text_format',
+      '#format' => NULL,
+    );
+    $form['drupalorg_notice']['time'] = array(
+      '#type' => 'hidden',
+      '#value' => REQUEST_TIME,
+    );
 
-  return system_settings_form($form);
-//  return confirm_form($form, t('Are you sure that you want to send this message to all users?'), current_path(), NULL, t('Yes'), t('No'));
+    return system_settings_form($form);
+  }
+  else {
+    // Display the confirmation form.
+    return confirm_form($form, t('Are you sure that you want to send this message to all users?'), current_path(), NULL, t('Yes'), t('No'));
+  }
+}
+
+function drupalorg_notice_settings_form_submit($form, &$form_state) {
+  if (!isset($form_state['storage']['confirm'])) {
+    // This will cause the form to be rebuilt, entering the confirm part of the
+    // form.
+    $form_state['storage']['confirm'] = TRUE;
+    $form_state['storage']['original_form'] = $form_state['values'];
+    $form_state['rebuild'] = TRUE;
+  }
 }
