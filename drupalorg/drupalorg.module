@@ -3574,7 +3574,7 @@ function drupalorg_notice_settings_form($form, &$form_state) {
   }
   else {
     // Display the confirmation form.
-    return confirm_form($form, t('Enable global notice'), current_path(), t('Are you absolutely sure you want to tell this to every D.o user?'), t('Enable global notice'), t('Cancel'));
+    return confirm_form($form, t('Enable global notice'), current_path(), t('Are you absolutely sure you want to display your message to every Drupal.org user?'), t('Enable global notice'), t('Cancel'));
   }
 }
 
