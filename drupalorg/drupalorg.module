@@ -3534,6 +3534,7 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
 
 function drupalorg_notice_settings_form($form, &$form_state) {
   if (!isset($form_state['storage']['confirm'])) {
+    global $user;
     $notice = variable_get('drupalorg_notice');
 
     // Display the initial form.
@@ -3546,7 +3547,11 @@ function drupalorg_notice_settings_form($form, &$form_state) {
       '#format' => $notice ? $notice['message']['format'] : NULL,
       '#default_value' => $notice ? $notice['message']['value'] : NULL,
       '#required' => TRUE,
-      '#prefix' => $notice ? t('The current message was set at %time.', array('%time' => format_date($notice['time']))) : NULL,
+      '#prefix' => $notice ? t('The current message was set by %name at %time.', array('%name' => format_username(user_load($notice['uid'])), '%time' => format_date($notice['time']))) : NULL,
+    );
+    $form['drupalorg_notice']['time'] = array(
+      '#type' => 'hidden',
+      '#value' => $user->uid,
     );
     $form['drupalorg_notice']['time'] = array(
       '#type' => 'hidden',
