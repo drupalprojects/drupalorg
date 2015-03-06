@@ -3537,6 +3537,7 @@ function drupalorg_notice_settings_form($form, &$form_state) {
       '#description' => t('The text to be displayed to users.'),
       '#type' => 'text_format',
       '#format' => NULL,
+      '#required' => TRUE,
     );
     $form['drupalorg_notice']['time'] = array(
       '#type' => 'hidden',
