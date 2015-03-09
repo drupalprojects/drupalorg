@@ -120,11 +120,12 @@ function drupalorg_page_build(&$page) {
       // Only show the global notice if the path is not an admin path and either
       // the user hasn't viewed the notice or it has been updated since it was
       // last viewed.
-      if (!path_is_admin(current_path()) && (!isset($_SESSION['drupalorg_notice_view']) || $notice['time'] > $_SESSION['drupalorg_notice_view'])) {
+      if (!path_is_admin(current_path()) && (!isset($account->data['drupalorg_notice']) || $notice['time'] > $account->data['drupalorg_notice'])) {
         // Display the global notice to the user.
         drupal_set_message(_drupalorg_view_global_notice($notice));
         // Store the time that the notice was viewed.
-        $_SESSION['drupalorg_notice_view'] = REQUEST_TIME;
+        $account->data['drupalorg_notice'] = REQUEST_TIME;
+        user_save($account);
       }
     }
   }
