@@ -127,9 +127,17 @@
         $('body').click(function (e) {
           if ($summaryOrganization.get(0) !== e.target) {
             $attributeContributionTo.hide();
+            // If an element in the bubble was the target, return focus to summary.
+            if ($(e.target).parents().get().indexOf($attributeContributionTo.get(0)) !== -1) {
+              $summaryOrganization.focus();
+            }
           }
           if ($summaryCustomer.get(0) !== e.target && $forCustomerField.get(0) !== e.target) {
             $forCustomer.hide();
+            // If an element in the bubble was the target, return focus to summary.
+            if ($(e.target).parents().get().indexOf($forCustomer.get(0)) !== -1) {
+              $summaryCustomer.focus();
+            }
           }
         });
         // … and focuses.
