@@ -99,15 +99,14 @@
       $('.group-issue-attribution', context).once('drupalorg-issue-comment-attribution', function () {
         var $fieldset = $(this),
           $summary = $(Drupal.settings.drupalOrg.defaultCommentAttribution),
-          $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).attr('role', 'dialog').hide(),
+          $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
           $attributeContributionToFields = $('input', $attributeContributionTo),
           $summaryOrganization = $('.organization', $summary).click(function (e) {
             // Position & show bubble.
-            $attributeContributionTo.css('left', Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px').show();
-            $attributeContributionToFields.focus();
+            $attributeContributionTo.css('left', Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px').show().focus();
             e.preventDefault();
           }),
-          $forCustomer = $('.field-name-field-for-customer', $fieldset).attr('role', 'dialog').hide(),
+          $forCustomer = $('.field-name-field-for-customer', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
           $forCustomerField = $('.form-text', $forCustomer),
           $customerSuggestions = $('.customer-suggestion', $forCustomer).click(function (e) {
             // Add clicked suggestion.
@@ -120,8 +119,7 @@
           }),
           $summaryCustomer = $('.customer', $summary).click(function (e) {
             // Position & show bubble.
-            $forCustomer.css('left', Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px').show();
-            $forCustomerField.focus();
+            $forCustomer.css('left', Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px').show().focus();
             e.preventDefault();
           });
 
