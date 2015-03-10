@@ -86,6 +86,16 @@
    */
   Drupal.behaviors.drupalorgIssueCommentAttribution = {
     attach: function (context) {
+      // Comment attribution display.
+      $('body', context).click(function (e) {
+        var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggle();
+        $('.attribution').not($clicked).hide();
+      }).bind('touchstart', function (e) {
+        var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggle();
+        $('.attribution').not($clicked).hide();
+      });
+
+      // Comment attribution form.
       $('.group-issue-attribution', context).once('drupalorg-issue-comment-attribution', function () {
         var $fieldset = $(this),
           $summary = $(Drupal.settings.drupalOrg.defaultCommentAttribution),
