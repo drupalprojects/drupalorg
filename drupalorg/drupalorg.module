@@ -1717,6 +1717,9 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
   // Hide titles.
   $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title_display'] = 'attribute';
   $element['field_for_customer'][LANGUAGE_NONE]['#title_display'] = 'invisible';
+  // Close buttons for accessibility.
+  $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#description'] .= '<button class="element-invisible">' . t('Close @title', array('@title' => $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title'])) .'</button>';
+  $element['field_for_customer'][LANGUAGE_NONE]['#description'] .= '<button class="element-invisible">' . t('Close @title', array('@title' => $element['field_for_customer'][LANGUAGE_NONE]['#title'])) .'</button>';
   // Add customer suggestions.
   $view = views_get_view('drupal_org_user_customers');
   $view->set_display('entityreference_1');

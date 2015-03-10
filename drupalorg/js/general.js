@@ -139,6 +139,12 @@
             $forCustomer.hide();
           }
         });
+        // … and close buttons.
+        $('button', $fieldset).click(function (e) {
+          $attributeContributionTo.hide();
+          $forCustomer.hide();
+          e.preventDefault();
+        });
 
         // Summary text.
         $fieldset.prepend($summary).drupalSetSummary(function () {}).bind('summaryUpdated', function () {
