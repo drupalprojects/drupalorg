@@ -78,7 +78,7 @@ function drupalorg_issues_field_default_field_instances() {
     'bundle' => 'comment_node_project_issue',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'New customers need an <a href="/node/add/organization">organization page</a>.',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -994,7 +994,6 @@ function drupalorg_issues_field_default_field_instances() {
   t('Issue changes');
   t('Issue summary');
   t('Issue tags');
-  t('New customers need an <a href="/node/add/organization">organization page</a>.');
   t('Parent issue');
   t('Priority');
   t('Project');
