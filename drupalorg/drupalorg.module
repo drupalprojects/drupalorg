@@ -3522,6 +3522,12 @@ function drupalorg_user_update(&$edit, $account) {
     unset($_SESSION['bakery']['data']['drupalorg_in_edit']);
     $_SESSION['bakery']['data'] += drupalorg_bakery_transmit(NULL, $account);
   }
+  // _logintoboggan_process_validation() only invokes hook_user_update(), not
+  // enough for bakery to trigger sync.
+  if (!empty($account->logintoboggan_email_validated)) {
+    bakery_user_presave($edit, $account, NULL);
+    $_SESSION['bakery']['data'] += drupalorg_bakery_transmit(NULL, $account);
+  }
 
   // Send an email on LoginToboggan email verification. See
   // drupalorg_form_user_admin_settings_alter().
