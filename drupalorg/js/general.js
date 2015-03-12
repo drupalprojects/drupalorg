@@ -190,8 +190,9 @@
   Drupal.behaviors.drupalorgIssueCredit = {
     attach: function (context) {
       $('#drupalorg-issue-credit-form', context).once('drupalorg-issue-credit', function () {
-        // todo maintainer-only
-        $('>legend', this).after('<div class="credit-summary"></div>');
+        if (Drupal.settings.drupalOrg.isMaintainer) {
+          $('>legend', this).after('<div class="credit-summary"></div>');
+        }
 
         // Store command template.
         Drupal.settings.drupalorgIssueCreditTemplate = $('textarea[name=command]', this).val();
@@ -238,11 +239,13 @@
     }));
 
     // Fill out credit summary.
-    if (byHtml.length) {
-      $('#drupalorg-issue-credit-form .credit-summary').html(Drupal.t('Giving credit to !credits', {'!credits': byHtml.join(', ')}));
-    }
-    else {
-      $('#drupalorg-issue-credit-form .credit-summary').html(Drupal.t('Expand to give credit'));
+    if (Drupal.settings.drupalOrg.isMaintainer) {
+      if (byHtml.length) {
+        $('#drupalorg-issue-credit-form .credit-summary').html(Drupal.t('<strong>Giving credit to</strong> !credits', {'!credits': byHtml.join(', ')}));
+      }
+      else {
+        $('#drupalorg-issue-credit-form .credit-summary').html(Drupal.t('Expand and select contributors to give credit.'));
+      }
     }
   }
 })(jQuery);

@@ -597,12 +597,17 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       );
 
       // Set up base form.
+      $is_maintainer = isset($form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]) && $form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]['permissions']['write to vcs'];
       $form['drupalorg_credit_wrapper'] = array(
+        '#attached' => array('js' => array(array(
+          'type' => 'setting',
+          'data' => array('drupalOrg' => array('isMaintainer' => $is_maintainer)),
+        ))),
         '#type' => 'fieldset',
         '#title' => t('Credit & committing'),
         '#collapsible' => TRUE,
         // Open by default when the user is a 'Write to VCS' maintainer.
-        '#collapsed' => !isset($form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]) || !$form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]['permissions']['write to vcs'],
+        '#collapsed' => !$is_maintainer,
         '#weight' => 50,
         '#id' => 'drupalorg-issue-credit-form',
         'message' => array(
