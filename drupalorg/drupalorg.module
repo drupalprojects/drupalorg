@@ -3371,26 +3371,9 @@ function drupalorg_preprocess_comment(&$v) {
   }
 
   // Add organizations and customers to comments.
-  $wrapper = entity_metadata_wrapper('comment', $v['comment']);
-  $args = array();
-  // Link to organizations.
-  foreach ($wrapper->field_attribute_contribution_to as $organization) {
-    $uri = entity_uri('node', $organization->value());
-    $args['!organization'][] = l($organization->title->value(), $uri['path'], $uri['options']);
-  }
-  if (isset($args['!organization'])) {
-    $args['!organization'] = implode(', ', $args['!organization']);
-  }
-  // Link to customers.
-  foreach ($wrapper->field_for_customer as $organization) {
-    $uri = entity_uri('node', $organization->value());
-    $args['!customer'][] = l($organization->title->value(), $uri['path'], $uri['options']);
-  }
-  if (isset($args['!customer'])) {
-    $args['!customer'] = implode(', ', $args['!customer']);
-  }
-  if (!empty($args)) {
-    $args += array(
+  if (project_issue_node_is_issue($v['node'])) {
+    $wrapper = entity_metadata_wrapper('comment', $v['comment']);
+    $args = array(
       '!username' => $v['author'],
       '!username-plain' => check_plain($v['comment']->name),
       // The ISO 8601 formatted date, needed for relative times to work properly.
@@ -3399,6 +3382,23 @@ function drupalorg_preprocess_comment(&$v) {
       // manually opted out of relative times.
       '!created_date' => format_date($v['comment']->created, 'custom', 'F j, Y \a\t g:ia'),
     );
+    // Link to organizations.
+    foreach ($wrapper->field_attribute_contribution_to as $organization) {
+      $uri = entity_uri('node', $organization->value());
+      $args['!organization'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+    }
+    if (isset($args['!organization'])) {
+      $args['!organization'] = implode(', ', $args['!organization']);
+    }
+    // Link to customers.
+    foreach ($wrapper->field_for_customer as $organization) {
+      $uri = entity_uri('node', $organization->value());
+      $args['!customer'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+    }
+    if (isset($args['!customer'])) {
+      $args['!customer'] = implode(', ', $args['!customer']);
+    }
+    // Add submitted by with attribution.
     if (isset($args['!organization']) && isset($args['!customer'])) {
       $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain at !organization for !customer</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
     }
