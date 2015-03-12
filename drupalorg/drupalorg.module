@@ -126,6 +126,19 @@ function drupalorg_page_build(&$page) {
     if (empty($account->field_terms_of_service) || empty($account->field_terms_of_service[LANGUAGE_NONE][0]['value'])) {
       drupal_set_message(t('We’ve <a href="/news/next-steps-for-drupalorg-tos-and-privacy-policy">introduced</a> Drupal.org <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>. Please read both documents and <a href="!edit">accept them on your user profile</a> to continue using Drupal.org.', array('!edit' => url('user/' . $account->uid . '/edit'))), 'warning');
     }
+
+    if ($notice = variable_get('drupalorg_notice')) {
+      // Only show the global notice if the path is not an admin path and either
+      // the user hasn't viewed the notice or it has been updated since it was
+      // last viewed.
+      if (!path_is_admin(current_path()) && (!isset($account->data['drupalorg_notice']) || $notice['time'] > $account->data['drupalorg_notice'])) {
+        // Display the global notice to the user.
+        drupal_set_message(_drupalorg_view_global_notice($notice));
+        // Store the time that the notice was viewed.
+        $account->data['drupalorg_notice'] = REQUEST_TIME;
+        user_save($account);
+      }
+    }
   }
 }
 
@@ -234,6 +247,13 @@ function drupalorg_menu() {
     'title' => 'Welcome to Drupal.org',
     'access arguments' => array('access content'),
     'page callback' => 'drupalorg_welcome_page',
+  );
+
+  $items['admin/config/system/drupalorg-notice'] = array(
+    'title' => 'Drupal.org global notice',
+    'access arguments' => array('administer site configuration'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('drupalorg_notice_settings_form'),
   );
 
   return $items;
@@ -3610,6 +3630,12 @@ function drupalorg_user_update(&$edit, $account) {
     unset($_SESSION['bakery']['data']['drupalorg_in_edit']);
     $_SESSION['bakery']['data'] += drupalorg_bakery_transmit(NULL, $account);
   }
+  // _logintoboggan_process_validation() only invokes hook_user_update(), not
+  // enough for bakery to trigger sync.
+  if (!empty($account->logintoboggan_email_validated)) {
+    bakery_user_presave($edit, $account, NULL);
+    $_SESSION['bakery']['data'] += drupalorg_bakery_transmit(NULL, $account);
+  }
 
   // Send an email on LoginToboggan email verification. See
   // drupalorg_form_user_admin_settings_alter().
@@ -3889,4 +3915,67 @@ function drupalorg_add_badge_new_user($account) {
     $output .= '<div class="new-user">' . t('<span class="element-invisible">@username is a </span>new<span class="element-invisible"> user</span>', array('@username' => format_username($account))) . '</div>';
   }
   return $output;
+}
+
+function drupalorg_notice_settings_form($form, &$form_state) {
+  if (!isset($form_state['storage']['confirm'])) {
+    global $user;
+    $notice = variable_get('drupalorg_notice');
+
+    // Display the initial form.
+    $form['drupalorg_notice']['#tree'] = TRUE;
+
+    $form['drupalorg_notice']['message'] = array(
+      '#title' => t('Message'),
+      '#description' => t('System message text to be displayed to all authenticated Drupal.org users on their next page load. One time display.'),
+      '#type' => 'text_format',
+      '#format' => $notice ? $notice['message']['format'] : NULL,
+      '#default_value' => $notice ? $notice['message']['value'] : NULL,
+      '#required' => TRUE,
+      '#prefix' => $notice ? t('The current message was set by %name at %time.', array('%name' => format_username(user_load($notice['uid'])), '%time' => format_date($notice['time']))) : NULL,
+    );
+    $form['drupalorg_notice']['uid'] = array(
+      '#type' => 'hidden',
+      '#value' => $user->uid,
+    );
+    $form['drupalorg_notice']['time'] = array(
+      '#type' => 'hidden',
+      '#value' => REQUEST_TIME,
+    );
+
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save configuration'),
+    );
+
+    return $form;
+  }
+  else {
+    // Display a preview of the message.
+    drupal_set_message(_drupalorg_view_global_notice($form_state['storage']['original_form']['drupalorg_notice']));
+    // Display the confirmation form.
+    return confirm_form($form, t('Enable global notice'), current_path(), t('Are you absolutely sure you want to display your message to every Drupal.org user?'), t('Enable global notice'), t('Cancel'));
+  }
+}
+
+function drupalorg_notice_settings_form_submit($form, &$form_state) {
+  if (!isset($form_state['storage']['confirm'])) {
+    // This will cause the form to be rebuilt, entering the confirm part of the
+    // form.
+    $form_state['storage']['confirm'] = TRUE;
+    $form_state['storage']['original_form'] = $form_state['values'];
+    $form_state['rebuild'] = TRUE;
+  }
+  else {
+    // Save the form data.
+    variable_set('drupalorg_notice', $form_state['storage']['original_form']['drupalorg_notice']);
+    drupal_set_message(t('The message will be displayed to all authenticated users on their next page load.'));
+  }
+}
+
+function _drupalorg_view_global_notice($notice = NULL) {
+  if (!$notice) {
+    $notice = variable_get('drupalorg_notice');
+  }
+  return $notice ? filter_xss(check_markup($notice['message']['value'], $notice['message']['format'])) : NULL;
 }
