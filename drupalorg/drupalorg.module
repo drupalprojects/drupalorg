@@ -3904,7 +3904,7 @@ function drupalorg_confirm_user_callback($account) {
   }
 
   // Edit the roles as needed.
-  user_multiple_role_edit(array($account->uid), $op, variable_get('drupalorg_crosssite_trusted_role', 36));
+  user_multiple_role_edit(array($account->uid), $op, variable_get('drupalorg_crosssite_trusted_role'));
 
   // Display a message to the user and redirect them back to their account.
   drupal_set_message($message);
@@ -3916,5 +3916,5 @@ function drupalorg_confirm_user_access($account) {
 }
 
 function drupalorg_user_is_confirmed($account) {
-  return isset($account->roles[variable_get('drupalorg_crosssite_trusted_role', 36)]);
+  return isset($account->roles[variable_get('drupalorg_crosssite_trusted_role')]);
 }
