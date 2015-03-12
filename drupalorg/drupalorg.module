@@ -3899,14 +3899,22 @@ function drupalorg_add_confirm_button(stdClass $account) {
 }
 
 function drupalorg_confirm_user_callback($account) {
+  global $user;
+
   if (drupalorg_user_is_confirmed($account)) {
     $op = 'remove_role';
     $message = t('%user is no longer confirmed.', array('%user' => format_username($account)));
+    // Remove the account from $user->data.
+    unset($user->data['drupalorg_confirmed_users'][$account->uid]);
   }
   else {
     $op = 'add_role';
     $message = t('%user is now confirmed.', array('%user' => format_username($account)));
+    $user->data['drupalorg_confirmed_users'][$account->uid] = 0;
   }
+
+  // Update the confirmer.
+  user_save($user);
 
   // Edit the roles as needed.
   user_multiple_role_edit(array($account->uid), $op, variable_get('drupalorg_crosssite_trusted_role'));
