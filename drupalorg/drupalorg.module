@@ -3881,16 +3881,22 @@ function _drupalorg_view_global_notice($notice = NULL) {
 }
 
 function drupalorg_add_confirm_button(stdClass $account) {
+  $is_confirmed = drupalorg_user_is_confirmed($account);
+
   global $user;
-  if ($user->uid === $account->uid) {
+  if ($user->uid === $account->uid || ($is_confirmed && !isset($user->data['drupalorg_confirmed_users'][$account->uid]))) {
     return FALSE;
+  }
+  elseif (isset($user->data['drupalorg_confirmed_users'][$account->uid])) {
+    unset($user->data['drupalorg_confirmed_users'][$account->uid]);
+    user_save($user);
   }
 
   $output = '';
 
   // @todo: Check for the appropriate user roles etc.
 
-  $button_text = drupalorg_user_is_confirmed($account) ? t('Undo') : t('Confirm');
+  $button_text = $is_confirmed ? t('Undo') : t('Confirm');
   $output .= l(t('@text', array('@text' => $button_text)), 'user/' . $account->uid . '/confirm', array(
     'query' => array('destination' => current_path()),
   ));
@@ -3910,7 +3916,7 @@ function drupalorg_confirm_user_callback($account) {
   else {
     $op = 'add_role';
     $message = t('%user is now confirmed.', array('%user' => format_username($account)));
-    $user->data['drupalorg_confirmed_users'][$account->uid] = 0;
+    $user->data['drupalorg_confirmed_users'][$account->uid] = TRUE;
   }
 
   // Update the confirmer.
