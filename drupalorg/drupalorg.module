@@ -256,6 +256,13 @@ function drupalorg_menu() {
     'page arguments' => array('drupalorg_notice_settings_form'),
   );
 
+  $items['user/%user/confirm'] = array(
+    'page callback' => 'drupalorg_confirm_user_callback',
+    'page arguments' => array(1),
+    'access callback' => 'drupalorg_confirm_user_access',
+    'access arguments' => array(1),
+  );
+
   return $items;
 }
 
@@ -3878,11 +3885,36 @@ function drupalorg_add_confirm_button(stdClass $account) {
 
   // @todo: Check for the appropriate user roles etc.
 
-  // @todo: Get the correct value.
-  $is_confirmed = FALSE;
-
-  $button_text = $is_confirmed ? t('Undo') : t('Confirm');
-  $output .= l(t('@text', array('@text' => $button_text)), '<front>');
+  $button_text = drupalorg_user_is_confirmed($account) ? t('Undo') : t('Confirm');
+  $output .= l(t('@text', array('@text' => $button_text)), 'user/' . $account->uid . '/confirm', array(
+    'query' => array('destination' => current_path()),
+  ));
 
   return $output;
+}
+
+function drupalorg_confirm_user_callback($account) {
+  if (drupalorg_user_is_confirmed($account)) {
+    $op = 'remove_role';
+    $message = t('%user is no longer confirmed.', array('%user' => format_username($account)));
+  }
+  else {
+    $op = 'add_role';
+    $message = t('%user is now confirmed.', array('%user' => format_username($account)));
+  }
+
+  // Edit the roles as needed.
+  user_multiple_role_edit(array($account->uid), $op, variable_get('drupalorg_crosssite_trusted_role', 36));
+
+  // Display a message to the user and redirect them back to their account.
+  drupal_set_message($message);
+  drupal_goto('user/' . $account->uid);
+}
+
+function drupalorg_confirm_user_access($account) {
+  return TRUE;
+}
+
+function drupalorg_user_is_confirmed($account) {
+  return isset($account->roles[variable_get('drupalorg_crosssite_trusted_role', 36)]);
 }
