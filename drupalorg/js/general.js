@@ -82,19 +82,26 @@
   };
 
   /**
+   * Comment attribution display.
+   *
+   * This is a global bind and must only be ran once.
+   */
+  $(document).ready(function () {
+    $('body').bind('click', function (e) {
+      var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggleClass('element-invisible');
+      $('.attribution').not($clicked).addClass('element-invisible');
+    });
+    $('body').bind('touchstart', function (e) {
+      var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggleClass('element-invisible');
+      $('.attribution').not($clicked).addClass('element-invisible');
+    });
+  });
+
+  /**
    * Issue comment attribution. See drupalorg_form_node_form_alter();
    */
   Drupal.behaviors.drupalorgIssueCommentAttribution = {
     attach: function (context) {
-      // Comment attribution display.
-      $('body', context).click(function (e) {
-        var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggleClass('element-invisible');
-        $('.attribution').not($clicked).addClass('element-invisible');
-      }).bind('touchstart', function (e) {
-        var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggleClass('element-invisible');
-        $('.attribution').not($clicked).addClass('element-invisible');
-      });
-
       // Comment attribution form.
       $('.group-issue-attribution', context).once('drupalorg-issue-comment-attribution', function () {
         var $fieldset = $(this),
