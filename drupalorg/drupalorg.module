@@ -2902,6 +2902,7 @@ function drupalorg_user_view($account, $view_mode) {
   $account->content['#group_children']['user_picture'] = 'group_profile_contact';
   $account->content['user_picture']['#prefix'] = '<div class="user-picture-container">';
   $account->content['user_picture']['#suffix'] = drupalorg_add_badge_new_user($account) . '</div>';
+  $account->content['user_picture']['#suffix'] .= drupalorg_add_confirm_button($account);
 
   // Link organization to organization node, if it exists.
   $wrapper = entity_metadata_wrapper('user', $account);
@@ -3870,4 +3871,18 @@ function _drupalorg_view_global_notice($notice = NULL) {
     $notice = variable_get('drupalorg_notice');
   }
   return $notice ? filter_xss(check_markup($notice['message']['value'], $notice['message']['format'])) : NULL;
+}
+
+function drupalorg_add_confirm_button(stdClass $account) {
+  $output = '';
+
+  // @todo: Check for the appropriate user roles etc.
+
+  // @todo: Get the correct value.
+  $is_confirmed = FALSE;
+
+  $button_text = $is_confirmed ? t('Undo') : t('Confirm');
+  $output .= l(t('@text', array('@text' => $button_text)), '<front>');
+
+  return $output;
 }
