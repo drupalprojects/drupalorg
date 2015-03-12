@@ -3881,6 +3881,13 @@ function _drupalorg_view_global_notice($notice = NULL) {
 }
 
 function drupalorg_add_confirm_button(stdClass $account) {
+  global $user;
+
+  // Users cannot confirm themselves.
+  if ($user->uid === $account->uid) {
+    return FALSE;
+  }
+
   $output = '';
 
   // @todo: Check for the appropriate user roles etc.
@@ -3894,19 +3901,28 @@ function drupalorg_add_confirm_button(stdClass $account) {
 }
 
 function drupalorg_confirm_user_callback($account) {
+  global $user;
+
   if (drupalorg_user_is_confirmed($account)) {
     $op = 'remove_role';
     $message = t('%user is no longer confirmed.', array('%user' => format_username($account)));
+    // Remove this account from $user->data.
+    unset($user->data['drupalorg_confirmed_users'][$account->uid]);
   }
   else {
     $op = 'add_role';
     $message = t('%user is now confirmed.', array('%user' => format_username($account)));
+    // Store this account in $user->data.
+    $user->data['drupalorg_confirmed_users'][$account->uid] = 0;
   }
 
   // Edit the roles as needed.
   user_multiple_role_edit(array($account->uid), $op, variable_get('drupalorg_crosssite_trusted_role'));
 
-  // Display a message to the user and redirect them back to their account.
+  // Update the confirmer account.
+  user_save($user);
+
+  // Display a message to the confirmer and redirect them back to the user page.
   drupal_set_message($message);
   drupal_goto('user/' . $account->uid);
 }
