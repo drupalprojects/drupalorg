@@ -3881,6 +3881,11 @@ function _drupalorg_view_global_notice($notice = NULL) {
 }
 
 function drupalorg_add_confirm_button(stdClass $account) {
+  global $user;
+  if ($user->uid === $account->uid) {
+    return FALSE;
+  }
+
   $output = '';
 
   // @todo: Check for the appropriate user roles etc.
