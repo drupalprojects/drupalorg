@@ -370,6 +370,9 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
                 return FALSE;
               }
               return TRUE;
+
+            case 'field_notes':
+              return user_access('administer users');
           }
       }
   }
@@ -1698,7 +1701,7 @@ function drupalorg_form_node_form_alter(&$form) {
 function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
   $element['#attached']['js'][] = array('type' => 'setting', 'data' => array(
     'drupalOrg' => array(
-      'defaultCommentAttribution' => '<div class="drupalorg-attribution-summary">' . t('<strong>Attribute this contribution:</strong> <strong>@name</strong> at organization <a href="#" class="organization">not applicable</a> for customer <a href="#" class="customer">not applicable</a>', array('@name' => $GLOBALS['user']->name)) . '</div>'
+      'defaultCommentAttribution' => '<div class="drupalorg-attribution-summary">' . t('<strong>Attribute this contribution:</strong> <strong>@name</strong> at organization <a href="#" class="organization">not applicable</a> for customer <a href="#" class="customer">not applicable</a>', array('@name' => empty($element['#entity']->name) ? $GLOBALS['user']->name : $element['#entity']->name)) . '</div>'
     ),
   ));
   // Load last comment for default values.
@@ -1714,6 +1717,9 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
   // Hide titles.
   $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title_display'] = 'attribute';
   $element['field_for_customer'][LANGUAGE_NONE]['#title_display'] = 'invisible';
+  // Close buttons for accessibility.
+  $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#description'] .= '<button class="element-invisible">' . t('Close @title', array('@title' => $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title'])) .'</button>';
+  $element['field_for_customer'][LANGUAGE_NONE]['#description'] .= '<button class="element-invisible">' . t('Close @title', array('@title' => $element['field_for_customer'][LANGUAGE_NONE]['#title'])) .'</button>';
   // Add customer suggestions.
   $view = views_get_view('drupal_org_user_customers');
   $view->set_display('entityreference_1');
@@ -1723,10 +1729,11 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
     'limit' => 0,
     'ids' => array(),
   ));
-  $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] = '';
+  $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] = '<strong class="element-invisible">' . t('Attribute comment for customer') . '</strong>';
   foreach ($view->execute_display('entityreference_1') as $nid => $title) {
     $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div><a href="#" class="customer-suggestion" data-string="' . check_plain(drupalorg_entityreference_string($nid, $title)) . '">' . t('<span class="element-invisible">Add customer </span>@title', array('@title' => trim($title))) . '</a></div>';
   }
+  $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div class="description">' . t('New customers need an <a href="/node/add/organization">organization page</a>.') . '</div>';
 }
 
 /**
@@ -2937,6 +2944,8 @@ function drupalorg_user_view($account, $view_mode) {
 
   // Put non-field items into groups.
   $account->content['#group_children']['user_picture'] = 'group_profile_contact';
+  $account->content['user_picture']['#prefix'] = '<div class="user-picture-container">';
+  $account->content['user_picture']['#suffix'] = drupalorg_add_badge_new_user($account) . '</div>';
 
   // Link organization to organization node, if it exists.
   $wrapper = entity_metadata_wrapper('user', $account);
@@ -3320,7 +3329,7 @@ function drupalorg_preprocess_comment(&$v) {
       'style_name' => 'drupalorg_user_picture',
       'path' => $filepath,
       'alt' => t('@user’s picture', array('@user' => format_username($v['comment']))),
-    )), 'user/' . $v['comment']->uid, array(
+    )) . drupalorg_add_badge_new_user(user_load($v['elements']['#comment']->uid)), 'user/' . $v['comment']->uid, array(
       'attributes' => array(
         'title' => t('View user profile.'),
         'class' => 'picture',
@@ -3361,47 +3370,49 @@ function drupalorg_preprocess_comment(&$v) {
     }
   }
 
-  // Add organization and customer to comments.
-  $wrapper = entity_metadata_wrapper('comment', $v['comment']);
-  $args = array(
-    '!username' => $v['author'],
-    // The ISO 8601 formatted date, needed for relative times to work properly.
-    '!created_date_iso' => format_date($v['comment']->created, 'custom', 'c'),
-    // The formatted date to display when users have JS disabled or they have
-    // manually opted out of relative times.
-    '!created_date' => format_date($v['comment']->created, 'custom', 'F j, Y \a\t g:ia'),
-  );
-  // Link to organizations.
-  foreach ($wrapper->field_attribute_contribution_to as $organization) {
-    $uri = entity_uri('node', $organization->value());
-    $uri['options']['attributes']['class'][] = 'organization';
-    $args['!organization'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+  // Add organizations and customers to comments.
+  if (project_issue_node_is_issue($v['node'])) {
+    $wrapper = entity_metadata_wrapper('comment', $v['comment']);
+    $args = array(
+      '!username' => $v['author'],
+      '!username-plain' => check_plain($v['comment']->name),
+      // The ISO 8601 formatted date, needed for relative times to work properly.
+      '!created_date_iso' => format_date($v['comment']->created, 'custom', 'c'),
+      // The formatted date to display when users have JS disabled or they have
+      // manually opted out of relative times.
+      '!created_date' => format_date($v['comment']->created, 'custom', 'F j, Y \a\t g:ia'),
+    );
+    // Link to organizations.
+    foreach ($wrapper->field_attribute_contribution_to as $organization) {
+      $uri = entity_uri('node', $organization->value());
+      $args['!organization'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+    }
+    if (isset($args['!organization'])) {
+      $args['!organization'] = implode(', ', $args['!organization']);
+    }
+    // Link to customers.
+    foreach ($wrapper->field_for_customer as $organization) {
+      $uri = entity_uri('node', $organization->value());
+      $args['!customer'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+    }
+    if (isset($args['!customer'])) {
+      $args['!customer'] = implode(', ', $args['!customer']);
+    }
+    // Add submitted by with attribution.
+    if (isset($args['!organization']) && isset($args['!customer'])) {
+      $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain at !organization for !customer</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
+    }
+    elseif (isset($args['!organization'])) {
+      $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain at !organization</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
+    }
+    elseif (isset($args['!customer'])) {
+      $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain for !customer</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
+    }
+    else {
+      $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
+    }
+    $v['submitted'] = t($text, $args);
   }
-  if (isset($args['!organization'])) {
-    $args['!organization'] = implode(', ', $args['!organization']);
-  }
-  // Link to customers.
-  foreach ($wrapper->field_for_customer as $organization) {
-    $uri = entity_uri('node', $organization->value());
-    $uri['options']['attributes']['class'][] = 'customer';
-    $args['!customer'][] = l($organization->title->value(), $uri['path'], $uri['options']);
-  }
-  if (isset($args['!customer'])) {
-    $args['!customer'] = implode(', ', $args['!customer']);
-  }
-  if (isset($args['!organization']) && isset($args['!customer'])) {
-    $text = '!username at !organization for !customer commented <time pubdate datetime="!created_date_iso">!created_date</time>';
-  }
-  elseif (isset($args['!organization'])) {
-    $text = '!username at !organization commented <time pubdate datetime="!created_date_iso">!created_date</time>';
-  }
-  elseif (isset($args['!customer'])) {
-    $text = '!username for !customer commented <time pubdate datetime="!created_date_iso">!created_date</time>';
-  }
-  else {
-    $text = '!username commented <time pubdate datetime="!created_date_iso">!created_date</time>';
-  }
-  $v['submitted'] = t($text, $args);
 }
 
 /**
@@ -3869,5 +3880,13 @@ function drupalorg_welcome_page() {
   $form = drupal_build_form('user_profile_form', $form_state);
   $output .= drupal_render($form);
 
+  return $output;
+}
+
+function drupalorg_add_badge_new_user($account) {
+  $output = '';
+  if (user_is_logged_in() && $account->uid > 0 && (REQUEST_TIME - $account->created) < 7776000) {
+    $output .= '<div class="new-user">' . t('<span class="element-invisible">@username is a </span>new<span class="element-invisible"> user</span>', array('@username' => format_username($account))) . '</div>';
+  }
   return $output;
 }

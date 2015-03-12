@@ -507,6 +507,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         if (preg_match('%\.(diff|patch)$%', $file['filename'])) {
           $table['#rows'][$key]['patches'] += 1;
           $table['#rows'][$key]['#weight'] += 10000;
+          $last_patch_key = $key;
         }
         else {
           $table['#rows'][$key]['files'] += 1;
@@ -514,7 +515,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         }
       }
       // Set author to final file, except for core.
-      $author = (isset($file) && $node_wrapper->field_project->value()->nid != DRUPALORG_CORE_NID) ? $file['uid'] : '';
+      $author = (isset($last_patch_key) && $node_wrapper->field_project->value()->nid != DRUPALORG_CORE_NID) ? $last_patch_key : '';
 
       // Sort.
       uasort($table['#rows'], 'element_sort');

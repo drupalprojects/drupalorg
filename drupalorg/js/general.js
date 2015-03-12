@@ -86,18 +86,27 @@
    */
   Drupal.behaviors.drupalorgIssueCommentAttribution = {
     attach: function (context) {
+      // Comment attribution display.
+      $('body', context).click(function (e) {
+        var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggleClass('element-invisible');
+        $('.attribution').not($clicked).addClass('element-invisible');
+      }).bind('touchstart', function (e) {
+        var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggleClass('element-invisible');
+        $('.attribution').not($clicked).addClass('element-invisible');
+      });
+
+      // Comment attribution form.
       $('.group-issue-attribution', context).once('drupalorg-issue-comment-attribution', function () {
         var $fieldset = $(this),
           $summary = $(Drupal.settings.drupalOrg.defaultCommentAttribution),
-          $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).attr('role', 'dialog').hide(),
+          $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
           $attributeContributionToFields = $('input', $attributeContributionTo),
           $summaryOrganization = $('.organization', $summary).click(function (e) {
             // Position & show bubble.
-            $attributeContributionTo.css('left', Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px').show();
-            $attributeContributionToFields.focus();
+            $attributeContributionTo.css('left', Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px').show().focus();
             e.preventDefault();
           }),
-          $forCustomer = $('.field-name-field-for-customer', $fieldset).attr('role', 'dialog').hide(),
+          $forCustomer = $('.field-name-field-for-customer', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
           $forCustomerField = $('.form-text', $forCustomer),
           $customerSuggestions = $('.customer-suggestion', $forCustomer).click(function (e) {
             // Add clicked suggestion.
@@ -110,8 +119,7 @@
           }),
           $summaryCustomer = $('.customer', $summary).click(function (e) {
             // Position & show bubble.
-            $forCustomer.css('left', Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px').show();
-            $forCustomerField.focus();
+            $forCustomer.css('left', Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px').show().focus();
             e.preventDefault();
           });
 
@@ -119,9 +127,17 @@
         $('body').click(function (e) {
           if ($summaryOrganization.get(0) !== e.target) {
             $attributeContributionTo.hide();
+            // If an element in the bubble was the target, return focus to summary.
+            if ($(e.target).parents().get().indexOf($attributeContributionTo.get(0)) !== -1) {
+              $summaryOrganization.focus();
+            }
           }
           if ($summaryCustomer.get(0) !== e.target && $forCustomerField.get(0) !== e.target) {
             $forCustomer.hide();
+            // If an element in the bubble was the target, return focus to summary.
+            if ($(e.target).parents().get().indexOf($forCustomer.get(0)) !== -1) {
+              $summaryCustomer.focus();
+            }
           }
         });
         // … and focuses.
@@ -130,6 +146,12 @@
             $attributeContributionTo.hide();
             $forCustomer.hide();
           }
+        });
+        // … and close buttons.
+        $('button', $fieldset).click(function (e) {
+          $attributeContributionTo.hide();
+          $forCustomer.hide();
+          e.preventDefault();
         });
 
         // Summary text.

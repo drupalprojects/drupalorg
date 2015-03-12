@@ -350,7 +350,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
     ),
     'entity_type' => 'user',
@@ -513,7 +513,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'user',
@@ -567,6 +567,39 @@ function drupalorg_user_field_default_field_instances() {
       ),
       'type' => 'entityreference_autocomplete',
       'weight' => 17,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_notes'
+  $field_instances['user-user-field_notes'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Admin-only notes.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_notes',
+    'label' => 'Notes',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 0,
     ),
   );
 
@@ -680,7 +713,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 8,
       ),
     ),
     'entity_type' => 'user',
@@ -740,7 +773,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 5,
       ),
     ),
     'entity_type' => 'user',
@@ -757,7 +790,7 @@ function drupalorg_user_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 8,
+      'weight' => 9,
     ),
   );
 
@@ -772,7 +805,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'user',
@@ -841,6 +874,7 @@ function drupalorg_user_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Admin-only notes.');
   t('Areas of Expertise');
   t('Bio');
   t('Country');
@@ -860,6 +894,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Location');
   t('My contributions');
   t('My mentors');
+  t('Notes');
   t('Organization');
   t('Organization reference');
   t('Organizations');
