@@ -3389,9 +3389,8 @@ function drupalorg_preprocess_comment(&$v) {
       }
     }
   }
-
-  // Add organizations and customers to comments.
-  if (project_issue_node_is_issue($v['node'])) {
+  elseif (project_issue_node_is_issue($v['node'])) {
+    // Add organizations and customers to comments.
     $wrapper = entity_metadata_wrapper('comment', $v['comment']);
     $args = array(
       '!username' => $v['author'],
