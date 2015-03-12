@@ -32,7 +32,7 @@ function drupalorg_issues_field_group_info() {
       'instance_settings' => array(
         'required_fields' => 1,
         'classes' => 'group-issue-attribution field-group-fieldset',
-        'description' => 'When this issue is fixed, the project maintainer may assign credit with your attribution. <a href="#todo">Learn more</a>',
+        'description' => 'When this issue is fixed, the project maintainer may assign credit with your attribution. <a href="/node/2451283">Learn more</a>',
       ),
       'formatter' => 'collapsible',
     ),
