@@ -92,8 +92,7 @@
       $('.attribution').not($clicked).addClass('element-invisible');
     });
     $('body').bind('touchstart', function (e) {
-      var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggleClass('element-invisible');
-      $('.attribution').not($clicked).addClass('element-invisible');
+      $('.attribution').not($('.attribution', $(e.target).filter('.attribution-label'))).addClass('element-invisible');
     });
   });
 
