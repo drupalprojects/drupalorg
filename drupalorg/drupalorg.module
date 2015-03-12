@@ -3392,6 +3392,7 @@ function drupalorg_preprocess_comment(&$v) {
   if (!empty($args)) {
     $args += array(
       '!username' => $v['author'],
+      '!username-plain' => check_plain($v['comment']->name),
       // The ISO 8601 formatted date, needed for relative times to work properly.
       '!created_date_iso' => format_date($v['comment']->created, 'custom', 'c'),
       // The formatted date to display when users have JS disabled or they have
@@ -3399,13 +3400,16 @@ function drupalorg_preprocess_comment(&$v) {
       '!created_date' => format_date($v['comment']->created, 'custom', 'F j, Y \a\t g:ia'),
     );
     if (isset($args['!organization']) && isset($args['!customer'])) {
-      $text = '!username <span class="attribution-label">AT FOR<span class="attribution">Attribution: at !organization for !customer</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
+      $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain at !organization for !customer</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
     }
     elseif (isset($args['!organization'])) {
-      $text = '!username <span class="attribution-label">AT<span class="attribution">Attribution: at !organization</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
+      $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain at !organization</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
     }
     elseif (isset($args['!customer'])) {
-      $text = '!username <span class="attribution-label">FOR<span class="attribution">Attribution: for !customer</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
+      $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain for !customer</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
+    }
+    else {
+      $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
     }
     $v['submitted'] = t($text, $args);
   }

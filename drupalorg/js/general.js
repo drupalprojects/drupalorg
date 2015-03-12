@@ -88,11 +88,11 @@
     attach: function (context) {
       // Comment attribution display.
       $('body', context).click(function (e) {
-        var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggle();
-        $('.attribution').not($clicked).hide();
+        var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggleClass('element-invisible');
+        $('.attribution').not($clicked).addClass('element-invisible');
       }).bind('touchstart', function (e) {
-        var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggle();
-        $('.attribution').not($clicked).hide();
+        var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggleClass('element-invisible');
+        $('.attribution').not($clicked).addClass('element-invisible');
       });
 
       // Comment attribution form.
