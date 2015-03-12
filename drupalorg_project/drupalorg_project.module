@@ -490,6 +490,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           }
         }
       }
+      $form_state['drupalorg_credit_cids'] = array_flip($cid_key_map);
 
       // Populate patches and files.
       $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
@@ -542,6 +543,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             '#title' => t($row['by']['text'], $row['by']['args']),
             '#checked' => !is_null($row['patches']),
             '#id' => 'by-' . $key,
+            '#name' => 'by-' . $key,
             '#attributes' => array(
               'data-by' => $row['by']['args']['@username'],
             ),
@@ -642,6 +644,9 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           '#markup' => '<div class="description">' . t('Learn more about <a href="@attribution-url">giving credit</a>.', array('@attribution-url' => url('node/52287'))) . '</div>',
         ),
       );
+      if ($is_maintainer) {
+        $form['#submit'][] = 'drupalorg_project_issue_credit_submit';
+      }
     }
   }
   elseif (project_release_node_is_release($form_state['node'])) {
@@ -706,6 +711,14 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           unset($release_type_field['#options'][$security_term->tid]);
         }
       }
+    }
+  }
+}
+
+function drupalorg_project_issue_credit_submit($form, &$form_state) {
+  foreach ($form_state['drupalorg_credit_cids'] as $key => $cid) {
+    if (!empty($form_state['input']['by-' . $key]) || $form_state['input']['author'] === $key) {
+      // todo save data
     }
   }
 }

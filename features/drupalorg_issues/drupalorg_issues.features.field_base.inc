@@ -230,6 +230,49 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'list_text',
   );
 
+  // Exported field_base: 'field_issue_credit'
+  $field_bases['field_issue_credit'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_issue_credit',
+    'foreign keys' => array(
+      'comment' => array(
+        'columns' => array(
+          'target_id' => 'cid',
+        ),
+        'table' => 'comment',
+      ),
+    ),
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'handler' => 'base',
+      'handler_settings' => array(
+        'behaviors' => array(
+          'views-select-list' => array(
+            'status' => 0,
+          ),
+        ),
+        'sort' => array(
+          'type' => 'none',
+        ),
+        'target_bundles' => array(
+          'comment_node_project_issue' => 'comment_node_project_issue',
+        ),
+      ),
+      'target_type' => 'comment',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
+  );
+
   // Exported field_base: 'field_issue_files'
   $field_bases['field_issue_files'] = array(
     'active' => 1,
