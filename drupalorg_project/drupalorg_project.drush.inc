@@ -19,14 +19,14 @@ function drupalorg_project_drush_command() {
   $items = array();
 
   $items['generate-download-stats'] = array(
-    'description' => "Generate per-file download statistics based on a set of awstats files.",
+    'description' => "Generate per-file download statistics based on a set of processed awstats and fastly files.",
     'drupal dependencies' => array('project_release'),
     'aliases' => array('dop'),
     'examples' => array(
-      'drush drupalorg-project-generate-download-stats --glob "/var/log/DROP/drupal-awstats-data/awstats*.ftp.drupal.org.txt"' => 'Process drupal.org download statistics.',
+      'drush drupalorg-project-generate-download-stats --file "/data/logs/fastly/downloadcounts/comprehensive_download_stats.csv"' => 'Process drupal.org download statistics.',
     ),
     'options' => array(
-      'glob' => 'A shell glob used to determine the set of files to process.',
+      'file' => 'A file of aggregated all time download counts',
     ),
   );
   $items['projects-send-for-codereview'] = array(
@@ -77,7 +77,7 @@ function drush_drupalorg_project_generate_download_stats($file = FALSE) {
   $handle = fopen($file, 'r');
 
   while ($line = fgets($handle)) {
-    list($download_count, $filename) = explode(' ', $line);
+    list($download_count, $filename) = explode(',', $line);
     $all_time_counts[$filename] = (int)$download_count;
   }
   fclose($handle);
@@ -112,7 +112,6 @@ function drush_drupalorg_project_generate_download_stats($file = FALSE) {
       }
     }
   }
-
   drush_log('Summing project totals', 'ok');
   $project_totals = array();
   foreach (array_chunk($release_totals, 100, TRUE) as $chunk) {
