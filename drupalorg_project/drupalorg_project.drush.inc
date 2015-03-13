@@ -51,9 +51,10 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
   }
 
   $now = time();
-  $map = array();
-  $pcmap = array();
+  $filename_to_entity_map = array();
+  $filename_to_project_version_map = array();
 
+  // Get all the releases from the database
   $result = db_query("SELECT frf.field_release_file_fid AS fid,
       frf.entity_id AS entity_id,
       CONCAT('files', SUBSTRING(fm.uri FROM 9)) AS filepath,
@@ -67,19 +68,13 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
     WHERE frf.field_release_file_display = 1 AND api.bundle = 'project_release'");
 
   foreach ($result as $record) {
-    $map[$record->filepath] = $record->entity_id;
-    $pcmap[$record->filepath] = array($record->pid, !empty($record->version_api_tid) ? $record->version_api_tid : -1);
+    $filename_to_entity_map[$record->filepath] = $record->entity_id;
+    $filename_to_project_version_map[$record->filepath] = array($record->pid, !empty($record->version_api_tid) ? $record->version_api_tid : -1);
   }
-
-  $coremap = array();
-  foreach (taxonomy_get_tree(variable_get('project_release_api_vocabulary', '-1')) as $term) {
-    $coremap[$term->tid] = $term->name;
-  }
-  $coremap[-1] = 'Unknown';
 
   $files = glob($glob);
-  $globalcounts = array();
-  $mcounts = array();
+  $all_time_counts = array();
+  $monthly_counts = array();
   foreach ($files as $file) {
     drush_log(dt('Parsing @file.', array('@file' => $file)), 'ok');
     $month = array();
@@ -100,19 +95,20 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
     while ($count < $tcount) {
       $line = fgets($handle);
       $arr = explode(' ', substr($line, 1));
-      if (isset($globalcounts[$arr[0]])) {
-        $globalcounts[$arr[0]] += (int) $arr[1];
+
+      if (isset($all_time_counts[$arr[0]])) {
+        $all_time_counts[$arr[0]] += (int) $arr[1];
       }
       else {
-        $globalcounts[$arr[0]] = (int) $arr[1];
+        $all_time_counts[$arr[0]] = (int) $arr[1];
       }
-      if (isset($pcmap[$arr[0]])) {
-        $curr = $pcmap[$arr[0]];
-        if (isset($mcounts[$curr[0]][$month][$curr[1]])) {
-          $mcounts[$curr[0]][$month][$curr[1]] += (int) $arr[1];
+      if (isset($filename_to_project_version_map[$arr[0]])) {
+        $curr = $filename_to_project_version_map[$arr[0]];
+        if (isset($monthly_counts[$curr[0]][$month][$curr[1]])) {
+          $monthly_counts[$curr[0]][$month][$curr[1]] += (int) $arr[1];
         }
         else {
-          $mcounts[$curr[0]][$month][$curr[1]] = (int) $arr[1];
+          $monthly_counts[$curr[0]][$month][$curr[1]] = (int) $arr[1];
         }
       }
       $count++;
@@ -125,31 +121,12 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
     db_query('SELECT 1'); // Ping the database to keep our connection alive.
   }
 
-  /* Disabling storing monthly stats for now.
-  drush_log('Writing statistics to Mongo', 'ok');
-  $conn = new Mongo();
-  $m = $conn->selectDB("download-statistics");
-  $coll = $m->selectCollection('data');
-  $coll->remove();
-  foreach ($mcounts as $project => $months) {
-    ksort($months);
-    $data = array();
-    foreach ($months as $month => $cores) {
-      foreach ($cores as $core => $downloads) {
-        $data[$month][$coremap[$core]] = $downloads;
-      }
-      ksort($data[$month]);
-    }
-    $coll->insert(array('pid' => (int)$project, 'downloads' => $data));
-  }
-  */
-
   drush_log('Writing statistics to database', 'ok');
-  foreach ($map as $k => $v) {
-    if (!empty($globalcounts[$k])) {
+  foreach ($filename_to_entity_map as $k => $v) {
+    if (!empty($all_time_counts[$k])) {
       $collection = field_collection_item_load($v);
-      if (empty($collection->field_release_file_downloads) || $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] != $globalcounts[$k]) {
-        $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] = $globalcounts[$k];
+      if (empty($collection->field_release_file_downloads) || $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] != $all_time_counts[$k]) {
+        $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] = $all_time_counts[$k];
         $collection->save(TRUE);
       }
     }
