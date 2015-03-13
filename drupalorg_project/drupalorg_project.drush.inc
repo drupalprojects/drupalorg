@@ -43,16 +43,15 @@ function drupalorg_project_drush_command() {
 /**
  * Command callback. Parse awstats log files and generate download statistics.
  */
-function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
+function drush_drupalorg_project_generate_download_stats($file = FALSE) {
   // Safety harness off.
   ini_set('memory_limit', '-1');
-  if (!$glob) {
-    return drush_set_error('You must supply a glob!');
+  if (!$file) {
+    return drush_set_error('You must supply a filename!');
   }
 
   $now = time();
   $filename_to_entity_map = array();
-  $filename_to_project_version_map = array();
 
   // Get all the releases from the database
   $result = db_query("SELECT frf.field_release_file_fid AS fid,
@@ -69,64 +68,28 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
 
   foreach ($result as $record) {
     $filename_to_entity_map[$record->filepath] = $record->entity_id;
-    $filename_to_project_version_map[$record->filepath] = array($record->pid, !empty($record->version_api_tid) ? $record->version_api_tid : -1);
+    //$filename_to_project_version_map[$record->filepath] = array($record->pid, !empty($record->version_api_tid) ? $record->version_api_tid : -1);
   }
 
-  $files = glob($glob);
   $all_time_counts = array();
-  $monthly_counts = array();
-  foreach ($files as $file) {
-    drush_log(dt('Parsing @file.', array('@file' => $file)), 'ok');
-    $month = array();
-    preg_match('/awstats(\d{2})(\d{4})/', $file, $month);
-    if (!isset($month[1]) || !isset($month[2])) {
-      return drush_set_error('BAD_NAMING_CONVENTION', dt('Could not determine month from file name!'));
-    }
-    $month = "$month[2]$month[1]";
+  drush_log(dt('Parsing @file.', array('@file' => $file)), 'ok');
 
-    $handle = fopen($file, 'r');
-    while ($line = fgets($handle)) {
-      if ('BEGIN_SIDER ' == substr($line, 0, 12)) {
-        break;
-      }
-    }
-    $tcount = (int) substr($line, 12);
-    $count = 0;
-    while ($count < $tcount) {
-      $line = fgets($handle);
-      $arr = explode(' ', substr($line, 1));
+  $handle = fopen($file, 'r');
 
-      if (isset($all_time_counts[$arr[0]])) {
-        $all_time_counts[$arr[0]] += (int) $arr[1];
-      }
-      else {
-        $all_time_counts[$arr[0]] = (int) $arr[1];
-      }
-      if (isset($filename_to_project_version_map[$arr[0]])) {
-        $curr = $filename_to_project_version_map[$arr[0]];
-        if (isset($monthly_counts[$curr[0]][$month][$curr[1]])) {
-          $monthly_counts[$curr[0]][$month][$curr[1]] += (int) $arr[1];
-        }
-        else {
-          $monthly_counts[$curr[0]][$month][$curr[1]] = (int) $arr[1];
-        }
-      }
-      $count++;
-    }
-    $line = fgets($handle);
-    fclose($handle);
-    if ($line != "END_SIDER\n") {
-      return drush_set_error('AWSTATS_FILE_CORRUPTED', dt('END_SIDER was not where we expected it!'));
-    }
-    db_query('SELECT 1'); // Ping the database to keep our connection alive.
+  while ($line = fgets($handle)) {
+    list($download_count, $filename) = explode(' ', $line);
+    $all_time_counts[$filename] = (int)$download_count;
   }
+  fclose($handle);
+
+
 
   drush_log('Writing statistics to database', 'ok');
-  foreach ($filename_to_entity_map as $k => $v) {
-    if (!empty($all_time_counts[$k])) {
-      $collection = field_collection_item_load($v);
-      if (empty($collection->field_release_file_downloads) || $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] != $all_time_counts[$k]) {
-        $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] = $all_time_counts[$k];
+  foreach ($filename_to_entity_map as $filepath => $entity_id) {
+    if (!empty($all_time_counts[$filepath])) {
+      $collection = field_collection_item_load($entity_id);
+      if (empty($collection->field_release_file_downloads) || $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] != $all_time_counts[$filepath]) {
+        $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] = $all_time_counts[$filepath];
         $collection->save(TRUE);
       }
     }
