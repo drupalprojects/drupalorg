@@ -421,6 +421,9 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         ),
       );
 
+      $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
+      $existing_credit = array_flip($node_wrapper->field_issue_credit->raw());
+
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'comment');
       $query->propertyCondition('nid', $form_state['node']->nid);
@@ -488,12 +491,15 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
               $table['#rows'][$key]['by']['text'] = '@username';
             }
           }
+
+          if (isset($existing_credit[$comment->cid])) {
+            $table['#rows'][$key]['#checked'] = TRUE;
+          }
         }
       }
       $form_state['drupalorg_credit_cids'] = array_flip($cid_key_map);
 
       // Populate patches and files.
-      $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
       $fid_cid_map = nodechanges_get_changed_cids_keyed($form_state['node'], 'field_issue_files', 'fid');
       foreach ($node_wrapper->field_issue_files->value() as $file) {
         if (!empty($form_state['node']->in_preview)) {
@@ -541,7 +547,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           'data' => array(
             '#type' => 'checkbox',
             '#title' => t($row['by']['text'], $row['by']['args']),
-            '#checked' => !is_null($row['patches']),
+            '#checked' => !is_null($row['patches']) || isset($row['#checked']),
             '#id' => 'by-' . $key,
             '#name' => 'by-' . $key,
             '#attributes' => array(
@@ -554,6 +560,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             ),
           ),
         );
+        unset($row['#checked']);
         // Format patches, files, and comments bars.
         foreach (array('patches' => t('patches attached'), 'files' => t('other files attached'), 'comments' => t('comments made')) as $key => $description) {
           if (!is_null($row[$key])) {
