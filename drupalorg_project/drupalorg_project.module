@@ -715,10 +715,15 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
   }
 }
 
+/**
+ * Form submit callback.
+ */
 function drupalorg_project_issue_credit_submit($form, &$form_state) {
+  // Record issue credit.
+  $form_state['node']->field_issue_credit[LANGUAGE_NONE] = array();
   foreach ($form_state['drupalorg_credit_cids'] as $key => $cid) {
     if (!empty($form_state['input']['by-' . $key]) || $form_state['input']['author'] === $key) {
-      // todo save data
+      $form_state['node']->field_issue_credit[LANGUAGE_NONE][] = array('target_id' => $cid);
     }
   }
 }
