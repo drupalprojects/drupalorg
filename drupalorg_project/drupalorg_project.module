@@ -528,6 +528,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       uasort($table['#rows'], 'element_sort');
       $table['#rows'] = array_reverse($table['#rows'], TRUE);
 
+      $first = TRUE;
       foreach ($table['#rows'] as $key => &$row) {
         $row['author'] = array(
           'data' => array(
@@ -575,7 +576,11 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
               'class' => 'number',
             );
           }
+          elseif ($first) {
+            $row[$key] = '<span class="description">' . t('none yet') . '</span>';
+          }
         }
+        $first = FALSE;
         // Remove temporary column.
         unset($row['#weight']);
       }
