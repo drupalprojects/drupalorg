@@ -229,7 +229,9 @@
     var by = [];
     $('#drupalorg-issue-credit-form input[type=checkbox][id^=by-]:checked').each(function () {
       var $this = $(this);
-      by.push($this.data('by'));
+      if (by.indexOf($this.data('by')) === -1) {
+        by.push($this.data('by'));
+      }
       byHtml.push($.trim($this.next('label').html()));
     });
 
