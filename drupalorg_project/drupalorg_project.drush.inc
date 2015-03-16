@@ -78,6 +78,7 @@ function drush_drupalorg_project_generate_download_stats($file = FALSE) {
 
   while ($line = fgets($handle)) {
     list($download_count, $filename) = explode(',', $line);
+    $filename = str_replace("\n", '', $filename);
     $all_time_counts[$filename] = (int)$download_count;
   }
   fclose($handle);
