@@ -1986,7 +1986,6 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'moderate users',
     'roles' => array(
       'administrator' => 'administrator',
-      'community' => 'community',
       'user administrator' => 'user administrator',
     ),
     'module' => 'fasttoggle_user',
