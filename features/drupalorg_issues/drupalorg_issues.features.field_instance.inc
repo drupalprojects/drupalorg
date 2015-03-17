@@ -39,7 +39,71 @@ function drupalorg_issues_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 0,
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance: 'comment-comment_node_project_issue-field_attribute_contribution_to'
+  $field_instances['comment-comment_node_project_issue-field_attribute_contribution_to'] = array(
+    'bundle' => 'comment_node_project_issue',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Add organizations on your <a href="/user">user profile</a>.',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'field_attribute_contribution_to',
+    'label' => 'Attribute comment at organization',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'comment-comment_node_project_issue-field_for_customer'
+  $field_instances['comment-comment_node_project_issue-field_for_customer'] = array(
+    'bundle' => 'comment_node_project_issue',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'field_for_customer',
+    'label' => 'Attribute comment for customer',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'STARTS_WITH',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete_tags',
+      'weight' => 4,
     ),
   );
 
@@ -87,7 +151,7 @@ function drupalorg_issues_field_default_field_instances() {
         'formatter' => 'nodechanges_diff_default',
       ),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 1,
+      'weight' => 0,
     ),
   );
 
@@ -454,7 +518,7 @@ function drupalorg_issues_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 3,
+      'weight' => 5,
     ),
   );
 
@@ -918,7 +982,10 @@ function drupalorg_issues_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Add organizations on your <a href="/user">user profile</a>.');
   t('Assigned');
+  t('Attribute comment at organization');
+  t('Attribute comment for customer');
   t('Before adding tags <a href="/node/1023102">read the issue tag guidelines</a>. Do <strong>NOT</strong> use tags for adding random keywords or duplicating any other fields.  Separate terms with a comma, not a space.');
   t('Category');
   t('Comment');
