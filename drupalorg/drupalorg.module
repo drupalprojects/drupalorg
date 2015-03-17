@@ -1313,6 +1313,27 @@ function drupalorg_form_user_admin_settings_alter(&$form) {
     '#default_value' => _user_mail_text('drupalorg_email_verified_body', NULL, array(), FALSE),
     '#rows' => 15,
   );
+
+  // Add an email sent after gaining the community role. See
+  // drupalorg_user_update().
+  $form['drupalorg_user_community_email'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('User gets community role'),
+    '#description' => t('Edit the welcome email messages sent to fresh member accounts once email has been validated.'),
+    '#group' => 'email',
+  );
+  $form['drupalorg_user_community_email']['user_mail_drupalorg_user_community_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#default_value' => _user_mail_text('drupalorg_user_community_subject', NULL, array(), FALSE),
+    '#maxlength' => 180,
+  );
+  $form['drupalorg_user_community_email']['user_mail_drupalorg_user_community_body'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Body'),
+    '#default_value' => _user_mail_text('drupalorg_user_community_body', NULL, array(), FALSE),
+    '#rows' => 15,
+  );
 }
 
 /**
@@ -3648,6 +3669,14 @@ function drupalorg_user_update(&$edit, $account) {
   // drupalorg_form_user_admin_settings_alter().
   if (!empty($account->logintoboggan_email_validated)) {
     _user_mail_notify('drupalorg_email_verified', $account);
+  }
+
+  // Send an email when gaining the community role. See
+  // drupalorg_form_user_admin_settings_alter().
+  if ($community_rid = variable_get('drupalorg_crosssite_community_role')) {
+    if (!isset($account->original->roles[$community_rid]) && isset($account->roles[$community_rid])) {
+      _user_mail_notify('drupalorg_user_community', $account);
+    }
   }
 }
 
