@@ -19,14 +19,14 @@ function drupalorg_project_drush_command() {
   $items = array();
 
   $items['generate-download-stats'] = array(
-    'description' => "Generate per-file download statistics based on a set of awstats files.",
+    'description' => "Generate per-file download statistics based on a set of processed awstats and fastly files.",
     'drupal dependencies' => array('project_release'),
     'aliases' => array('dop'),
     'examples' => array(
-      'drush drupalorg-project-generate-download-stats --glob "/var/log/DROP/drupal-awstats-data/awstats*.ftp.drupal.org.txt"' => 'Process drupal.org download statistics.',
+      'drush drupalorg-project-generate-download-stats --file "/data/logs/fastly/downloadcounts/comprehensive_download_stats.csv"' => 'Process drupal.org download statistics.',
     ),
     'options' => array(
-      'glob' => 'A shell glob used to determine the set of files to process.',
+      'file' => 'A file of aggregated all time download counts',
     ),
   );
   $items['projects-send-for-codereview'] = array(
@@ -43,17 +43,17 @@ function drupalorg_project_drush_command() {
 /**
  * Command callback. Parse awstats log files and generate download statistics.
  */
-function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
+function drush_drupalorg_project_generate_download_stats($file = FALSE) {
   // Safety harness off.
   ini_set('memory_limit', '-1');
-  if (!$glob) {
-    return drush_set_error('You must supply a glob!');
+  if (!$file) {
+    return drush_set_error('You must supply a filename!');
   }
 
   $now = time();
-  $map = array();
-  $pcmap = array();
+  $filename_to_entity_map = array();
 
+  // Get all the releases from the database
   $result = db_query("SELECT frf.field_release_file_fid AS fid,
       frf.entity_id AS entity_id,
       CONCAT('files', SUBSTRING(fm.uri FROM 9)) AS filepath,
@@ -67,89 +67,30 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
     WHERE frf.field_release_file_display = 1 AND api.bundle = 'project_release'");
 
   foreach ($result as $record) {
-    $map[$record->filepath] = $record->entity_id;
-    $pcmap[$record->filepath] = array($record->pid, !empty($record->version_api_tid) ? $record->version_api_tid : -1);
+    $filename_to_entity_map[$record->filepath] = $record->entity_id;
+    //$filename_to_project_version_map[$record->filepath] = array($record->pid, !empty($record->version_api_tid) ? $record->version_api_tid : -1);
   }
 
-  $coremap = array();
-  foreach (taxonomy_get_tree(variable_get('project_release_api_vocabulary', '-1')) as $term) {
-    $coremap[$term->tid] = $term->name;
-  }
-  $coremap[-1] = 'Unknown';
+  $all_time_counts = array();
+  drush_log(dt('Parsing @file.', array('@file' => $file)), 'ok');
 
-  $files = glob($glob);
-  $globalcounts = array();
-  $mcounts = array();
-  foreach ($files as $file) {
-    drush_log(dt('Parsing @file.', array('@file' => $file)), 'ok');
-    $month = array();
-    preg_match('/awstats(\d{2})(\d{4})/', $file, $month);
-    if (!isset($month[1]) || !isset($month[2])) {
-      return drush_set_error('BAD_NAMING_CONVENTION', dt('Could not determine month from file name!'));
-    }
-    $month = "$month[2]$month[1]";
+  $handle = fopen($file, 'r');
 
-    $handle = fopen($file, 'r');
-    while ($line = fgets($handle)) {
-      if ('BEGIN_SIDER ' == substr($line, 0, 12)) {
-        break;
-      }
-    }
-    $tcount = (int) substr($line, 12);
-    $count = 0;
-    while ($count < $tcount) {
-      $line = fgets($handle);
-      $arr = explode(' ', substr($line, 1));
-      if (isset($globalcounts[$arr[0]])) {
-        $globalcounts[$arr[0]] += (int) $arr[1];
-      }
-      else {
-        $globalcounts[$arr[0]] = (int) $arr[1];
-      }
-      if (isset($pcmap[$arr[0]])) {
-        $curr = $pcmap[$arr[0]];
-        if (isset($mcounts[$curr[0]][$month][$curr[1]])) {
-          $mcounts[$curr[0]][$month][$curr[1]] += (int) $arr[1];
-        }
-        else {
-          $mcounts[$curr[0]][$month][$curr[1]] = (int) $arr[1];
-        }
-      }
-      $count++;
-    }
-    $line = fgets($handle);
-    fclose($handle);
-    if ($line != "END_SIDER\n") {
-      return drush_set_error('AWSTATS_FILE_CORRUPTED', dt('END_SIDER was not where we expected it!'));
-    }
-    db_query('SELECT 1'); // Ping the database to keep our connection alive.
+  while ($line = fgets($handle)) {
+    list($download_count, $filename) = explode(',', $line);
+    $filename = str_replace("\n", '', $filename);
+    $all_time_counts[$filename] = (int)$download_count;
   }
+  fclose($handle);
 
-  /* Disabling storing monthly stats for now.
-  drush_log('Writing statistics to Mongo', 'ok');
-  $conn = new Mongo();
-  $m = $conn->selectDB("download-statistics");
-  $coll = $m->selectCollection('data');
-  $coll->remove();
-  foreach ($mcounts as $project => $months) {
-    ksort($months);
-    $data = array();
-    foreach ($months as $month => $cores) {
-      foreach ($cores as $core => $downloads) {
-        $data[$month][$coremap[$core]] = $downloads;
-      }
-      ksort($data[$month]);
-    }
-    $coll->insert(array('pid' => (int)$project, 'downloads' => $data));
-  }
-  */
+
 
   drush_log('Writing statistics to database', 'ok');
-  foreach ($map as $k => $v) {
-    if (!empty($globalcounts[$k])) {
-      $collection = field_collection_item_load($v);
-      if (empty($collection->field_release_file_downloads) || $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] != $globalcounts[$k]) {
-        $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] = $globalcounts[$k];
+  foreach ($filename_to_entity_map as $filepath => $entity_id) {
+    if (!empty($all_time_counts[$filepath])) {
+      $collection = field_collection_item_load($entity_id);
+      if (empty($collection->field_release_file_downloads) || $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] != $all_time_counts[$filepath]) {
+        $collection->field_release_file_downloads[LANGUAGE_NONE][0]['value'] = $all_time_counts[$filepath];
         $collection->save(TRUE);
       }
     }
@@ -172,7 +113,6 @@ function drush_drupalorg_project_generate_download_stats($glob = FALSE) {
       }
     }
   }
-
   drush_log('Summing project totals', 'ok');
   $project_totals = array();
   foreach (array_chunk($release_totals, 100, TRUE) as $chunk) {
