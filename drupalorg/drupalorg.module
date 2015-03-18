@@ -2973,7 +2973,9 @@ function drupalorg_user_view($account, $view_mode) {
   $account->content['#group_children']['user_picture'] = 'group_profile_contact';
   $account->content['user_picture']['#prefix'] = '<div class="user-picture-container">';
   $account->content['user_picture']['#suffix'] = drupalorg_add_badge_new_user($account) . '</div>';
-  $account->content['user_picture']['#suffix'] .= drupalorg_add_confirm_button($account);
+  if (drupalorg_confirm_user_access($account)) {
+    $account->content['user_picture']['#suffix'] .= drupalorg_add_confirm_button($account);
+  }
 
   // Link organization to organization node, if it exists.
   $wrapper = entity_metadata_wrapper('user', $account);
@@ -3989,19 +3991,6 @@ function _drupalorg_view_global_notice($notice = NULL) {
 
 function drupalorg_add_confirm_button(stdClass $account) {
   global $user;
-  $is_confirmed = drupalorg_user_is_confirmed($account);
-
-  // Don't show if:
-  // - The user is viewing their own profile.
-  // - They don't have the Community role themselves.
-  if ($user->uid === $account->uid || !isset($user->roles[variable_get('drupalorg_crosssite_community_role')])) {
-    return FALSE;
-  }
-  // Also don't show if:
-  // - The the user is already confirmed or isn't authenticated or already.
-  if (($is_confirmed && !isset($user->data['drupalorg_confirmed_users'][$account->uid])) || !isset($account->roles[2])) {
-    return FALSE;
-  }
 
   // We're in the undo state.
   if (isset($user->data['drupalorg_confirmed_users'][$account->uid])) {
@@ -4021,7 +4010,7 @@ function drupalorg_add_confirm_button(stdClass $account) {
 
   // @todo: Check for the appropriate user roles etc.
 
-  $button_text = $is_confirmed ? t('Undo') : t('Confirm');
+  $button_text = drupalorg_user_is_confirmed($account) ? t('Undo') : t('Confirm');
   $output .= l(t('@text', array('@text' => $button_text)), 'user/' . $account->uid . '/confirm', array(
     'query' => array('destination' => current_path()),
   ));
@@ -4056,6 +4045,21 @@ function drupalorg_confirm_user_callback($account) {
 }
 
 function drupalorg_confirm_user_access($account) {
+  global $user;
+
+  // Don't show if:
+  // - The user is viewing their own profile.
+  // - They don't have the Community role themselves.
+  if ($user->uid === $account->uid || !isset($user->roles[variable_get('drupalorg_crosssite_community_role')])) {
+    return FALSE;
+  }
+  // Also don't show if:
+  // - The the user is already confirmed
+  // - Isn't authenticated.
+  if ((drupalorg_user_is_confirmed($account) && !isset($user->data['drupalorg_confirmed_users'][$account->uid])) || !isset($account->roles[2])) {
+    return FALSE;
+  }
+
   return TRUE;
 }
 
