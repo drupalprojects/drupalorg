@@ -1686,6 +1686,9 @@ function drupalorg_form_comment_form_alter(&$form, &$form_state) {
   if (!empty($form['comment_body'][LANGUAGE_NONE][0])) {
     $form['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
   }
+  if (isset($form['field_attribute_contribution_to'])) {
+    _drupalorg_alter_comment_attribution($form);
+  }
 }
 
 /**
@@ -1712,7 +1715,68 @@ function drupalorg_form_node_form_alter(&$form) {
   }
   if (isset($form['nodechanges_comment'])) {
     $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
+    if (isset($form['nodechanges_comment']['field_attribute_contribution_to'])) {
+      _drupalorg_alter_comment_attribution($form['nodechanges_comment'], $form['#node']);
+    }
   }
+}
+
+/**
+ * Helper for drupalorg_form_node_form_alter() &
+ * drupalorg_form_comment_form_alter() with issue comment attribution fields.
+ */
+function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
+  $element['#attached']['js'][] = array('type' => 'setting', 'data' => array(
+    'drupalOrg' => array(
+      'defaultCommentAttribution' => '<div class="drupalorg-attribution-summary">' . t('<strong>Attribute this contribution:</strong> <strong>@name</strong> at organization <a href="#" class="organization">not applicable</a> for customer <a href="#" class="customer">not applicable</a>', array('@name' => empty($element['#entity']->name) ? $GLOBALS['user']->name : $element['#entity']->name)) . '</div>'
+    ),
+  ));
+  // Load last comment for default values. This feature was enabled at 1426194356.
+  if (!is_null($node) && ($cid = db_query_range('SELECT cid FROM {comment} c INNER JOIN {node} n ON n.nid = c.nid AND n.type IN (:issue_types) AND n.status = :node_published WHERE c.status = :comment_published AND c.uid = :uid AND c.created > 1426194356 ORDER BY c.nid = :nid DESC, c.cid DESC', 0, 1, array(':issue_types' => project_issue_issue_node_types(), ':node_published' => NODE_PUBLISHED, ':comment_published' => COMMENT_PUBLISHED, ':uid' => $GLOBALS['user']->uid, ':nid' => $node->nid))->fetchField())) {
+    $wrapper = entity_metadata_wrapper('comment', comment_load($cid));
+    $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#default_value'] = $wrapper->field_attribute_contribution_to->raw();
+    $customer_default = array();
+    foreach ($wrapper->field_for_customer as $customer) {
+      $customer_default[] = drupalorg_entityreference_string($customer->getIdentifier(), $customer->title->value());
+    }
+    $element['field_for_customer'][LANGUAGE_NONE]['#default_value'] = implode(', ', $customer_default);
+  }
+  // Hide titles.
+  $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title_display'] = 'attribute';
+  $element['field_for_customer'][LANGUAGE_NONE]['#title_display'] = 'invisible';
+  // Close buttons for accessibility.
+  $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#description'] .= '<button class="element-invisible">' . t('Close @title', array('@title' => $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title'])) .'</button>';
+  $element['field_for_customer'][LANGUAGE_NONE]['#description'] .= '<button class="element-invisible">' . t('Close @title', array('@title' => $element['field_for_customer'][LANGUAGE_NONE]['#title'])) .'</button>';
+  // Add customer suggestions.
+  $view = views_get_view('drupal_org_user_customers');
+  $view->set_display('entityreference_1');
+  $view->display_handler->set_option('entityreference_options', array(
+    'match' => NULL,
+    'match_operator' => 'CONTAINS',
+    'limit' => 0,
+    'ids' => array(),
+  ));
+  $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] = '<strong class="element-invisible">' . t('Attribute comment for customer') . '</strong>';
+  foreach ($view->execute_display('entityreference_1') as $nid => $title) {
+    $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div><a href="#" class="customer-suggestion" data-string="' . check_plain(drupalorg_entityreference_string($nid, $title)) . '">' . t('<span class="element-invisible">Add customer </span>@title', array('@title' => trim($title))) . '</a></div>';
+  }
+  $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div class="description">' . t('New customers need an <a href="/node/add/organization">organization page</a>.') . '</div>';
+}
+
+/**
+ * Helper function to format strings like "Drupal Association (1646370)"
+ *
+ * @see entityreference_autocomplete_callback_get_matches().
+ */
+function drupalorg_entityreference_string($id, $title) {
+  $key = $title . " (" . $id . ')';
+  // Strip things like starting/trailing white spaces, line breaks and tags.
+  $key = preg_replace('/\s\s+/', ' ', str_replace("\n", '', trim(decode_entities(strip_tags($key)))));
+  // Names containing commas or quotes must be wrapped in quotes.
+  if (strpos($key, ',') !== FALSE || strpos($key, '"') !== FALSE) {
+    $key = '"' . str_replace('"', '""', $key) . '"';
+  }
+  return $key;
 }
 
 /**
@@ -3332,6 +3396,49 @@ function drupalorg_preprocess_comment(&$v) {
         }
       }
     }
+  }
+  elseif (project_issue_node_is_issue($v['node'])) {
+    // Add organizations and customers to comments.
+    $wrapper = entity_metadata_wrapper('comment', $v['comment']);
+    $args = array(
+      '!username' => $v['author'],
+      '!username-plain' => check_plain($v['comment']->name),
+      // The ISO 8601 formatted date, needed for relative times to work properly.
+      '!created_date_iso' => format_date($v['comment']->created, 'custom', 'c'),
+      // The formatted date to display when users have JS disabled or they have
+      // manually opted out of relative times.
+      '!created_date' => format_date($v['comment']->created, 'custom', 'F j, Y \a\t g:ia'),
+    );
+    // Link to organizations.
+    foreach ($wrapper->field_attribute_contribution_to as $organization) {
+      $uri = entity_uri('node', $organization->value());
+      $args['!organization'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+    }
+    if (isset($args['!organization'])) {
+      $args['!organization'] = implode(', ', $args['!organization']);
+    }
+    // Link to customers.
+    foreach ($wrapper->field_for_customer as $organization) {
+      $uri = entity_uri('node', $organization->value());
+      $args['!customer'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+    }
+    if (isset($args['!customer'])) {
+      $args['!customer'] = implode(', ', $args['!customer']);
+    }
+    // Add submitted by with attribution.
+    if (isset($args['!organization']) && isset($args['!customer'])) {
+      $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain at !organization for !customer</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
+    }
+    elseif (isset($args['!organization'])) {
+      $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain at !organization</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
+    }
+    elseif (isset($args['!customer'])) {
+      $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain for !customer</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
+    }
+    else {
+      $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
+    }
+    $v['submitted'] = t($text, $args);
   }
 }
 
