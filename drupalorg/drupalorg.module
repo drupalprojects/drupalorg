@@ -3988,17 +3988,32 @@ function _drupalorg_view_global_notice($notice = NULL) {
 }
 
 function drupalorg_add_confirm_button(stdClass $account) {
+  global $user;
   $is_confirmed = drupalorg_user_is_confirmed($account);
 
-  global $user;
-  if ($user->uid === $account->uid || !isset($user->roles[variable_get('drupalorg_crosssite_community_role')]) || ($is_confirmed && !isset($user->data['drupalorg_confirmed_users'][$account->uid])) || !isset($account->roles[2]) || isset($account->roles[variable_get('drupalorg_crosssite_trusted_role')])) {
-    // Don't show if the user is viewing their own profile, if they don't
-    // have the Community role themselves, if the the user is already
-    // confirmed, isn't authenticated or already has the community role.
+  // Don't show if:
+  // - The user is viewing their own profile.
+  // - They don't have the Community role themselves.
+  if ($user->uid === $account->uid || !isset($user->roles[variable_get('drupalorg_crosssite_community_role')])) {
     return FALSE;
   }
-  elseif (isset($user->data['drupalorg_confirmed_users'][$account->uid])) {
-    unset($user->data['drupalorg_confirmed_users'][$account->uid]);
+  // Also don't show if:
+  // - The the user is already confirmed or isn't authenticated or already.
+  if (($is_confirmed && !isset($user->data['drupalorg_confirmed_users'][$account->uid])) || !isset($account->roles[2])) {
+    return FALSE;
+  }
+
+  // We're in the undo state.
+  if (isset($user->data['drupalorg_confirmed_users'][$account->uid])) {
+    if ($user->data['drupalorg_confirmed_users'][$account->uid] === 0) {
+      // Increase the count view for this user.
+      $user->data['drupalorg_confirmed_users'][$account->uid]++;
+    }
+    elseif ($user->data['drupalorg_confirmed_users'][$account->uid] > 0) {
+      // Remove the confirmed user reference as we don't need to show the
+      // button any more.
+      unset($user->data['drupalorg_confirmed_users'][$account->uid]);
+    }
     user_save($user);
   }
 
