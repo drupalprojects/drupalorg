@@ -1987,6 +1987,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'user administrator' => 'user administrator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'fasttoggle_user',
   );
