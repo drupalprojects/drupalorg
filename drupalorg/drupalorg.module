@@ -2974,7 +2974,8 @@ function drupalorg_user_view($account, $view_mode) {
   $account->content['user_picture']['#prefix'] = '<div class="user-picture-container">';
   $account->content['user_picture']['#suffix'] = drupalorg_add_badge_new_user($account) . '</div>';
   if (drupalorg_confirm_user_access($account)) {
-    $account->content['user_picture']['#suffix'] .= drupalorg_add_confirm_button($account);
+    $form = drupal_get_form('drupalorg_add_confirm_button', $account);
+    $account->content['user_picture']['#suffix'] .= drupal_render($form);
   }
 
   // Link organization to organization node, if it exists.
@@ -3989,7 +3990,11 @@ function _drupalorg_view_global_notice($notice = NULL) {
   return $notice ? filter_xss(check_markup($notice['message']['value'], $notice['message']['format'])) : NULL;
 }
 
-function drupalorg_add_confirm_button(stdClass $account) {
+/**
+ * Form callback, a confirm button for Community users to give Confirmed user
+ * role out.
+ */
+function drupalorg_add_confirm_button($form, &$form_state, stdClass $account) {
   global $user;
 
   // We're in the undo state.
@@ -4006,21 +4011,21 @@ function drupalorg_add_confirm_button(stdClass $account) {
     user_save($user);
   }
 
-  $output = '';
-
   // @todo: Check for the appropriate user roles etc.
 
-  $button_text = drupalorg_user_is_confirmed($account) ? t('Undo') : t('Confirm');
-  $output .= l(t('@text', array('@text' => $button_text)), 'user/' . $account->uid . '/confirm', array(
-    'query' => array('destination' => current_path()),
-  ));
+  $form_state['account'] = $account;
+  $form['confirm'] = array(
+    '#type' => 'submit',
+    '#value' => drupalorg_user_is_confirmed($account) ? t('Undo') : t('Confirm'),
+  );
 
-  return $output;
+  return $form;
 }
 
-function drupalorg_confirm_user_callback($account) {
+function drupalorg_add_confirm_button_submit($form, &$form_state) {
   global $user;
 
+  $account = $form_state['account'];
   if (drupalorg_user_is_confirmed($account)) {
     $op = 'remove_role';
     $message = t('%user is no longer confirmed.', array('%user' => format_username($account)));
