@@ -21,7 +21,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Drupal',
-    'weight' => '3',
+    'weight' => '4',
     'children' => array(
       0 => 'field_areas_of_expertise',
       1 => 'field_contributed',
@@ -52,7 +52,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Welcome left',
-    'weight' => '12',
+    'weight' => '11',
     'children' => array(),
     'format_type' => 'div',
     'format_settings' => array(
@@ -322,7 +322,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Welcome right',
-    'weight' => '13',
+    'weight' => '12',
     'children' => array(),
     'format_type' => 'div',
     'format_settings' => array(
@@ -353,7 +353,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Personal information',
-    'weight' => '2',
+    'weight' => '3',
     'children' => array(
       0 => 'field_user_geolocation',
       1 => 'field_bio',
@@ -389,7 +389,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Work',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
       0 => 'field_industries_worked_in',
       1 => 'field_organizations',
