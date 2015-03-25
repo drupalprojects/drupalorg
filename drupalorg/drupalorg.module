@@ -3995,58 +3995,39 @@ function _drupalorg_view_global_notice($notice = NULL) {
  * role out.
  */
 function drupalorg_add_confirm_button($form, &$form_state, stdClass $account) {
-  global $user;
-
-  // We're in the undo state.
-  if (isset($user->data['drupalorg_confirmed_users'][$account->uid])) {
-    if ($user->data['drupalorg_confirmed_users'][$account->uid] === 0) {
-      // Increase the count view for this user.
-      $user->data['drupalorg_confirmed_users'][$account->uid]++;
-    }
-    elseif ($user->data['drupalorg_confirmed_users'][$account->uid] > 0) {
-      // Remove the confirmed user reference as we don't need to show the
-      // button any more.
-      unset($user->data['drupalorg_confirmed_users'][$account->uid]);
-    }
-    user_save($user);
-  }
-
-  // @todo: Check for the appropriate user roles etc.
-
   $form_state['account'] = $account;
   $form['confirm'] = array(
     '#type' => 'submit',
     '#value' => drupalorg_user_is_confirmed($account) ? t('Undo') : t('Confirm'),
+    '#ajax' => array(
+      'callback' => 'drupalorg_add_confirm_button_ajax',
+      'wrapper' => 'drupalorg-add-confirm-button',
+      'progress' => array('type' => 'throbber', 'message' => NULL),
+    ),
   );
 
   return $form;
 }
 
-function drupalorg_add_confirm_button_submit($form, &$form_state) {
+function drupalorg_add_confirm_button_ajax($form, &$form_state) {
   global $user;
 
-  $account = $form_state['account'];
+  $account = user_load($form_state['account']->uid);
   if (drupalorg_user_is_confirmed($account)) {
     $op = 'remove_role';
     $message = t('%user is no longer confirmed.', array('%user' => format_username($account)));
-    // Remove the account from $user->data.
-    unset($user->data['drupalorg_confirmed_users'][$account->uid]);
+    $form['confirm']['#value'] = t('Confirm');
   }
   else {
     $op = 'add_role';
     $message = t('%user is now confirmed.', array('%user' => format_username($account)));
-    $user->data['drupalorg_confirmed_users'][$account->uid] = TRUE;
+    $form['confirm']['#value'] = t('Undo');
   }
-
-  // Update the confirmer.
-  user_save($user);
 
   // Edit the roles as needed.
   user_multiple_role_edit(array($account->uid), $op, variable_get('drupalorg_crosssite_trusted_role'));
 
-  // Display a message to the user and redirect them back to their account.
-  drupal_set_message($message);
-  drupal_goto('user/' . $account->uid);
+  return $form;
 }
 
 function drupalorg_confirm_user_access($account) {
