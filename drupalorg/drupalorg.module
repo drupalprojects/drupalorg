@@ -256,13 +256,6 @@ function drupalorg_menu() {
     'page arguments' => array('drupalorg_notice_settings_form'),
   );
 
-  $items['user/%user/confirm'] = array(
-    'page callback' => 'drupalorg_confirm_user_callback',
-    'page arguments' => array(1),
-    'access callback' => 'drupalorg_confirm_user_access',
-    'access arguments' => array(1),
-  );
-
   return $items;
 }
 
@@ -4040,7 +4033,7 @@ function drupalorg_confirm_user_access($account) {
   // Also don't show if:
   // - The the user is already confirmed
   // - Isn't authenticated.
-  if ((drupalorg_user_is_confirmed($account) && !isset($user->data['drupalorg_confirmed_users'][$account->uid])) || !isset($account->roles[2])) {
+  if (drupalorg_user_is_confirmed($account) || !isset($account->roles[2])) {
     return FALSE;
   }
 
