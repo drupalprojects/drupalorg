@@ -4011,17 +4011,13 @@ function drupalorg_add_confirm_button($form, &$form_state, stdClass $account) {
 }
 
 function drupalorg_add_confirm_button_ajax($form, &$form_state) {
-  global $user;
-
   $account = user_load($form_state['account']->uid);
   if (drupalorg_user_is_confirmed($account)) {
     $op = 'remove_role';
-    $message = t('%user is no longer confirmed.', array('%user' => format_username($account)));
     $form['confirm']['#value'] = t('Confirm');
   }
   else {
     $op = 'add_role';
-    $message = t('%user is now confirmed.', array('%user' => format_username($account)));
     $form['confirm']['#prefix'] = '<div class="undo">' . t('You’ve confirmed this user. Undo?') . '</div>';
     $form['confirm']['#value'] = t('Undo');
   }
