@@ -3999,7 +3999,7 @@ function drupalorg_add_confirm_button($form, &$form_state, stdClass $account) {
   $form_state['account'] = $account;
   $form['confirm'] = array(
     '#type' => 'submit',
-    '#value' => drupalorg_user_is_confirmed($account) ? t('Undo') : t('Confirm'),
+    '#value' => t('Confirm'),
     '#ajax' => array(
       'callback' => 'drupalorg_add_confirm_button_ajax',
       'wrapper' => 'drupalorg-add-confirm-button',
