@@ -656,7 +656,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       if ($is_maintainer) {
         $form['#submit'][] = 'drupalorg_project_issue_credit_submit';
         $form['drupalorg_credit_wrapper']['help'] = array(
-          '#markup' => '<div class="description">' . t('As a project maintainer, use this to give credit for the issue. Learn more about <a href="@attribution-url">giving credit</a>.', array('@attribution-url' => url('node/52287'))) . '</div>',
+          '#markup' => '<div class="description">' . t('As a project maintainer, use checkboxes to give credit for the issue. Learn more about <a href="@attribution-url">giving credit</a>.', array('@attribution-url' => url('node/52287'))) . '</div>',
         );
       }
       else {
