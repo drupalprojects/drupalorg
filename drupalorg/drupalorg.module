@@ -4021,7 +4021,7 @@ function drupalorg_add_confirm_button_ajax($form, &$form_state) {
   else {
     $op = 'add_role';
     $message = t('%user is now confirmed.', array('%user' => format_username($account)));
-    $form['confirm']['#prefix'] = t('You’ve confirmed this user. Undo?');
+    $form['confirm']['#prefix'] = '<div class="undo">' . t('You’ve confirmed this user. Undo?') . '</div>';
     $form['confirm']['#value'] = t('Undo');
   }
 
