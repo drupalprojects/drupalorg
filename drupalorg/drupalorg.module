@@ -2965,7 +2965,12 @@ function drupalorg_user_view($account, $view_mode) {
   // Put non-field items into groups.
   $account->content['#group_children']['user_picture'] = 'group_profile_contact';
   $account->content['user_picture']['#prefix'] = '<div class="user-picture-container">';
-  $account->content['user_picture']['#suffix'] = drupalorg_add_badge_new_user($account) . '</div>';
+  $account->content['user_picture']['#suffix'] = drupalorg_add_badge_new_user($account);
+  if (drupalorg_confirm_user_access($account)) {
+    $form = drupal_get_form('drupalorg_add_confirm_button', $account);
+    $account->content['user_picture']['#suffix'] .= drupal_render($form);
+  }
+  $account->content['user_picture']['#suffix'] .= '</div>';
 
   // Link organization to organization node, if it exists.
   $wrapper = entity_metadata_wrapper('user', $account);
@@ -3977,4 +3982,64 @@ function _drupalorg_view_global_notice($notice = NULL) {
     $notice = variable_get('drupalorg_notice');
   }
   return $notice ? filter_xss(check_markup($notice['message']['value'], $notice['message']['format'])) : NULL;
+}
+
+/**
+ * Form callback, a confirm button for Community users to give Confirmed user
+ * role out.
+ */
+function drupalorg_add_confirm_button($form, &$form_state, stdClass $account) {
+  $form_state['account'] = $account;
+  $form['confirm'] = array(
+    '#type' => 'submit',
+    '#value' => t('Confirm'),
+    '#ajax' => array(
+      'callback' => 'drupalorg_add_confirm_button_ajax',
+      'wrapper' => 'drupalorg-add-confirm-button',
+      'progress' => array('type' => 'throbber', 'message' => NULL),
+    ),
+  );
+
+  return $form;
+}
+
+function drupalorg_add_confirm_button_ajax($form, &$form_state) {
+  $account = user_load($form_state['account']->uid);
+  if (drupalorg_user_is_confirmed($account)) {
+    $op = 'remove_role';
+    $form['confirm']['#value'] = t('Confirm');
+  }
+  else {
+    $op = 'add_role';
+    $form['confirm']['#prefix'] = '<div class="undo">' . t('You’ve confirmed this user. Undo?') . '</div>';
+    $form['confirm']['#value'] = t('Undo');
+  }
+
+  // Edit the roles as needed.
+  user_multiple_role_edit(array($account->uid), $op, variable_get('drupalorg_crosssite_trusted_role'));
+
+  return $form;
+}
+
+function drupalorg_confirm_user_access($account) {
+  global $user;
+
+  // Don't show if:
+  // - The user is viewing their own profile.
+  // - They don't have the Community role themselves.
+  if ($user->uid === $account->uid || !isset($user->roles[variable_get('drupalorg_crosssite_community_role')])) {
+    return FALSE;
+  }
+  // Also don't show if:
+  // - The the user is already confirmed
+  // - Isn't authenticated.
+  if (drupalorg_user_is_confirmed($account) || !isset($account->roles[2])) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+function drupalorg_user_is_confirmed($account) {
+  return isset($account->roles[variable_get('drupalorg_crosssite_trusted_role')]);
 }
