@@ -72,5 +72,6 @@ If a module doesn\'t quite do what you want it to do, if you find a bug or have 
       'help' => '',
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }
