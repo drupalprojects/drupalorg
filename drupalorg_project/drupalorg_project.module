@@ -1718,7 +1718,7 @@ function drupalorg_project_codereview_post($node) {
 /**
  * Confirm access before saving data.
  */
-function drupalorg_project_codereview_access[B_post() {
+function drupalorg_project_codereview_access_post() {
   $hash = variable_get('drupalorg_project_codereview_hash', 'X');
   if ($_POST['HASH'] == $hash) {
     return TRUE;
