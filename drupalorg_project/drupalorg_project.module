@@ -115,6 +115,7 @@ function drupalorg_project_menu() {
     'page arguments' => array(1),
     'access arguments'   => array('administer permissions'),
     'type' => MENU_LOCAL_TASK,
+    'weight' => 6,
   );
 
   // Callbacks to process legacy urls.
