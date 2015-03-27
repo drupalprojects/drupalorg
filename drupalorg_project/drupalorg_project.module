@@ -1727,6 +1727,11 @@ function drupalorg_project_codereview_access_post() {
  * Menu callback: Show a tab on Project pages with full code review.
  */
 function drupalorg_project_codereview($node) {
-  // The data in here should be safe, but lets remove javascript just in case.
-  return check_markup($node->field_project_phpcs_full[LANGUAGE_NONE][0]['value']);
+  if (isset($node->field_project_phpcs_full[LANGUAGE_NONE])) {
+    // The data in here should be safe, but lets remove javascript just in case.
+    return check_markup($node->field_project_phpcs_full[LANGUAGE_NONE][0]['value']);
+  }
+  else {
+    return '<p><em>' . t('Code review for the default branch will be available shortly after commit.') . '</em></p>';
+  }
 }
