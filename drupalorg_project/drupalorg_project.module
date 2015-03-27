@@ -1719,7 +1719,7 @@ function drupalorg_project_codereview_post($node) {
  * Confirm access before saving data.
  */
 function drupalorg_project_codereview_access_post() {
-  return $_POST['HASH'] === variable_get('drupalorg_project_codereview_hash', 'X')) {
+  return $_POST['HASH'] === variable_get('drupalorg_project_codereview_hash', 'X');
 }
 
 /**
