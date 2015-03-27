@@ -113,8 +113,7 @@ function drupalorg_project_menu() {
     'title' => 'Code Review',
     'page callback' => 'drupalorg_project_codereview',
     'page arguments' => array(1),
-    'access callback' => 'drupalorg_project_codereview_access',
-    'access arguments' => array(1),
+    'access arguments'   => array('administer permissions'),
     'type' => MENU_LOCAL_TASK,
   );
 
@@ -1710,6 +1709,7 @@ function drupalorg_project_codereview_post($node) {
   $node->field_project_phpcs_warnings[LANGUAGE_NONE][0]['value'] = $_POST['WARNINGS'];
   $node->field_project_phpcs_full[LANGUAGE_NONE][0]['value'] = $_POST['raw'];
   $node->field_project_phpcs_ts[LANGUAGE_NONE][0]['value'] = time();
+  // Avoid a full node_save() to not make revisions or update edited times.
   field_attach_presave('node', $node);
   field_attach_update('node', $node);
   drupal_exit();
@@ -1719,28 +1719,13 @@ function drupalorg_project_codereview_post($node) {
  * Confirm access before saving data.
  */
 function drupalorg_project_codereview_access_post() {
-  $hash = variable_get('drupalorg_project_codereview_hash', 'X');
-  if ($_POST['HASH'] == $hash) {
-    return TRUE;
-  }
-  return FALSE;
+  return $_POST['HASH'] === variable_get('drupalorg_project_codereview_hash', 'X')) {
 }
 
 /**
- * Show a tab on Project pages with full code review.
- * Menu callback
+ * Menu callback: Show a tab on Project pages with full code review.
  */
 function drupalorg_project_codereview($node) {
-  //The data in here should be safe, but lets remove javascript just in case.
+  // The data in here should be safe, but lets remove javascript just in case.
   return check_markup($node->field_project_phpcs_full[LANGUAGE_NONE][0]['value']);
-}
-
-/**
- * Access callback for code review
- */
-function drupalorg_project_codereview_access($node) {
-  if (user_access('administer permissions')) {
-    return TRUE;
-  }
-  return FALSE;
 }
