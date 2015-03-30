@@ -3437,6 +3437,16 @@ function drupalorg_preprocess_comment(&$v) {
     }
     $v['submitted'] = t($text, $args);
   }
+
+  // Confirm button.
+  $account = user_load($v['comment']->uid, TRUE);
+  if (drupalorg_confirm_user_access($account)) {
+    $form = drupal_get_form('drupalorg_add_confirm_button', $account);
+    $v['confirm_button'] = drupal_render($form);
+  }
+  else {
+    $v['confirm_button'] = NULL;
+  }
 }
 
 /**
