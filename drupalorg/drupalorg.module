@@ -4000,6 +4000,7 @@ function _drupalorg_view_global_notice($notice = NULL) {
  */
 function drupalorg_add_confirm_button($form, &$form_state, stdClass $account) {
   $form_state['account'] = $account;
+  $form['#attributes']['class'][] = 'confirm-button-form';
   $form['confirm'] = array(
     '#type' => 'submit',
     '#value' => t('Confirm'),
