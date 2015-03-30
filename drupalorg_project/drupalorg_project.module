@@ -113,7 +113,8 @@ function drupalorg_project_menu() {
     'title' => 'Code Review',
     'page callback' => 'drupalorg_project_codereview',
     'page arguments' => array(1),
-    'access arguments'   => array('administer permissions'),
+    'access callback' => 'drupalorg_project_codereview_access',
+    'access arguments'   => array(1),
     'type' => MENU_LOCAL_TASK,
     'weight' => 6,
   );
@@ -1734,4 +1735,14 @@ function drupalorg_project_codereview($node) {
   else {
     return '<p><em>' . t('Code review for the default branch will be available shortly after commit.') . '</em></p>';
   }
+}
+
+/**
+ * Access callback for viewing projects
+ */
+function drupalorg_project_codereview_access($node) {
+  if (project_node_is_project($node) && user_access('administer permissions')) {
+    return TRUE;
+  }
+  return FALSE;
 }
