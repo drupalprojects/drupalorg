@@ -256,13 +256,6 @@ function drupalorg_menu() {
     'page arguments' => array('drupalorg_notice_settings_form'),
   );
 
-  $items['user/%user/confirm'] = array(
-    'page callback' => 'drupalorg_confirm_user_callback',
-    'page arguments' => array(1),
-    'access callback' => 'drupalorg_confirm_user_access',
-    'access arguments' => array(1),
-  );
-
   return $items;
 }
 
@@ -1752,8 +1745,8 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
       'defaultCommentAttribution' => '<div class="drupalorg-attribution-summary">' . t('<strong>Attribute this contribution:</strong> <strong>@name</strong> at organization <a href="#" class="organization">not applicable</a> for customer <a href="#" class="customer">not applicable</a>', array('@name' => empty($element['#entity']->name) ? $GLOBALS['user']->name : $element['#entity']->name)) . '</div>'
     ),
   ));
-  // Load last comment for default values.
-  if (!is_null($node) && ($cid = db_query_range('SELECT cid FROM {comment} c INNER JOIN {node} n ON n.nid = c.nid AND n.type IN (:issue_types) AND n.status = :node_published WHERE c.status = :comment_published AND c.uid = :uid ORDER BY c.nid = :nid DESC, c.cid DESC', 0, 1, array(':issue_types' => project_issue_issue_node_types(), ':node_published' => NODE_PUBLISHED, ':comment_published' => COMMENT_PUBLISHED, ':uid' => $GLOBALS['user']->uid, ':nid' => $node->nid))->fetchField())) {
+  // Load last comment for default values. This feature was enabled at 1426194356.
+  if (!is_null($node) && ($cid = db_query_range('SELECT cid FROM {comment} c INNER JOIN {node} n ON n.nid = c.nid AND n.type IN (:issue_types) AND n.status = :node_published WHERE c.status = :comment_published AND c.uid = :uid AND c.created > 1426194356 ORDER BY c.nid = :nid DESC, c.cid DESC', 0, 1, array(':issue_types' => project_issue_issue_node_types(), ':node_published' => NODE_PUBLISHED, ':comment_published' => COMMENT_PUBLISHED, ':uid' => $GLOBALS['user']->uid, ':nid' => $node->nid))->fetchField())) {
     $wrapper = entity_metadata_wrapper('comment', comment_load($cid));
     $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#default_value'] = $wrapper->field_attribute_contribution_to->raw();
     $customer_default = array();
@@ -2993,8 +2986,12 @@ function drupalorg_user_view($account, $view_mode) {
   // Put non-field items into groups.
   $account->content['#group_children']['user_picture'] = 'group_profile_contact';
   $account->content['user_picture']['#prefix'] = '<div class="user-picture-container">';
-  $account->content['user_picture']['#suffix'] = drupalorg_add_badge_new_user($account) . '</div>';
-  $account->content['user_picture']['#suffix'] .= drupalorg_add_confirm_button($account);
+  $account->content['user_picture']['#suffix'] = drupalorg_add_badge_new_user($account);
+  if (drupalorg_confirm_user_access($account)) {
+    $form = drupal_get_form('drupalorg_add_confirm_button', $account);
+    $account->content['user_picture']['#suffix'] .= drupal_render($form);
+  }
+  $account->content['user_picture']['#suffix'] .= '</div>';
 
   // Link organization to organization node, if it exists.
   $wrapper = entity_metadata_wrapper('user', $account);
@@ -4016,60 +4013,60 @@ function _drupalorg_view_global_notice($notice = NULL) {
   return $notice ? filter_xss(check_markup($notice['message']['value'], $notice['message']['format'])) : NULL;
 }
 
-function drupalorg_add_confirm_button(stdClass $account) {
-  $is_confirmed = drupalorg_user_is_confirmed($account);
+/**
+ * Form callback, a confirm button for Community users to give Confirmed user
+ * role out.
+ */
+function drupalorg_add_confirm_button($form, &$form_state, stdClass $account) {
+  $form_state['account'] = $account;
+  $form['confirm'] = array(
+    '#type' => 'submit',
+    '#value' => t('Confirm'),
+    '#attributes' => array('title' => t('Confirm this user is not a spammer')),
+    '#ajax' => array(
+      'callback' => 'drupalorg_add_confirm_button_ajax',
+      'wrapper' => 'drupalorg-add-confirm-button',
+      'progress' => array('type' => 'throbber', 'message' => NULL),
+    ),
+  );
 
-  global $user;
-  if ($user->uid === $account->uid || !isset($user->roles[variable_get('drupalorg_crosssite_community_role')]) || ($is_confirmed && !isset($user->data['drupalorg_confirmed_users'][$account->uid])) || !isset($account->roles[2]) || isset($account->roles[variable_get('drupalorg_crosssite_trusted_role')])) {
-    // Don't show if the user is viewing their own profile, if they don't
-    // have the Community role themselves, if the the user is already
-    // confirmed, isn't authenticated or already has the community role.
-    return FALSE;
-  }
-  elseif (isset($user->data['drupalorg_confirmed_users'][$account->uid])) {
-    unset($user->data['drupalorg_confirmed_users'][$account->uid]);
-    user_save($user);
-  }
-
-  $output = '';
-
-  // @todo: Check for the appropriate user roles etc.
-
-  $button_text = $is_confirmed ? t('Undo') : t('Confirm');
-  $output .= l(t('@text', array('@text' => $button_text)), 'user/' . $account->uid . '/confirm', array(
-    'query' => array('destination' => current_path()),
-  ));
-
-  return $output;
+  return $form;
 }
 
-function drupalorg_confirm_user_callback($account) {
-  global $user;
-
+function drupalorg_add_confirm_button_ajax($form, &$form_state) {
+  $account = user_load($form_state['account']->uid);
   if (drupalorg_user_is_confirmed($account)) {
     $op = 'remove_role';
-    $message = t('%user is no longer confirmed.', array('%user' => format_username($account)));
-    // Remove the account from $user->data.
-    unset($user->data['drupalorg_confirmed_users'][$account->uid]);
+    $form['confirm']['#value'] = t('Confirm');
   }
   else {
     $op = 'add_role';
-    $message = t('%user is now confirmed.', array('%user' => format_username($account)));
-    $user->data['drupalorg_confirmed_users'][$account->uid] = TRUE;
+    $form['confirm']['#prefix'] = '<div class="undo">' . t('You’ve confirmed this user. Undo?') . '</div>';
+    $form['confirm']['#value'] = t('Undo');
   }
-
-  // Update the confirmer.
-  user_save($user);
 
   // Edit the roles as needed.
   user_multiple_role_edit(array($account->uid), $op, variable_get('drupalorg_crosssite_trusted_role'));
 
-  // Display a message to the user and redirect them back to their account.
-  drupal_set_message($message);
-  drupal_goto('user/' . $account->uid);
+  return $form;
 }
 
 function drupalorg_confirm_user_access($account) {
+  global $user;
+
+  // Don't show if:
+  // - The user is viewing their own profile.
+  // - They don't have the Community role themselves.
+  if ($user->uid === $account->uid || !isset($user->roles[variable_get('drupalorg_crosssite_community_role')])) {
+    return FALSE;
+  }
+  // Also don't show if:
+  // - The the user is already confirmed
+  // - Isn't authenticated.
+  if (drupalorg_user_is_confirmed($account) || !isset($account->roles[2])) {
+    return FALSE;
+  }
+
   return TRUE;
 }
 

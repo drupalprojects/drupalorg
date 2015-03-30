@@ -300,6 +300,7 @@ function lists_menu_alter(&$callbacks) {
  * @see lists_mailman_user_form_submit()
  */
 function lists_mailman_user_form($form, &$form_state, $account = FALSE) {
+  drupal_set_message(t('<strong>Looking for other newletters?</strong> New newsletters are <a href="!url">configured on your user profile</a>. (This page is being phased out.)', array('!url' => url('user/' . $GLOBALS['user']->uid . '/edit', array('fragment' => 'edit-field-subscribe-to')))), 'warning');
   $form = array();
 
   $form['newsletter'] = array(

@@ -15,7 +15,8 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'Toggle role confirmed',
     'roles' => array(
       'administrator' => 'administrator',
-      'community' => 'community',
+      'user administrator' => 'user administrator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'fasttoggle_user',
   );
@@ -1987,6 +1988,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'user administrator' => 'user administrator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'fasttoggle_user',
   );
