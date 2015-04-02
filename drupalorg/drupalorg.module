@@ -3441,7 +3441,7 @@ function drupalorg_preprocess_comment(&$v) {
   // Confirm button.
   $account = user_load($v['comment']->uid, TRUE);
   if (drupalorg_confirm_user_access($account)) {
-    $form = drupal_get_form('drupalorg_add_confirm_button', $account);
+    $form = drupal_get_form('drupalorg_add_confirm_button', $account, $v['comment']->cid);
     $v['confirm_button'] = drupal_render($form);
   }
   else {
@@ -3998,7 +3998,7 @@ function _drupalorg_view_global_notice($notice = NULL) {
  * Form callback, a confirm button for Community users to give Confirmed user
  * role out.
  */
-function drupalorg_add_confirm_button($form, &$form_state, stdClass $account) {
+function drupalorg_add_confirm_button($form, &$form_state, stdClass $account, $comment_id = FALSE) {
   $form_state['account'] = $account;
   $form['#attributes']['class'][] = 'confirm-button-form';
   $form['confirm'] = array(
@@ -4006,10 +4006,20 @@ function drupalorg_add_confirm_button($form, &$form_state, stdClass $account) {
     '#value' => t('Confirm'),
     '#ajax' => array(
       'callback' => 'drupalorg_add_confirm_button_ajax',
-      'wrapper' => 'drupalorg-add-confirm-button',
       'progress' => array('type' => 'throbber', 'message' => NULL),
     ),
   );
+
+  if ($comment_id !== FALSE) {
+    // This is a confirm button on a comment.
+    $form['confirm']['#prefix'] = '<div id="confirm-button-' . $comment_id . '">';
+    $form['confirm']['#suffix'] = '</div>';
+    $form['confirm']['#ajax']['wrapper'] = 'confirm-button-' . $comment_id;
+  }
+  else {
+    // This is a normal confirm button.
+    $form['confirm']['#ajax']['wrapper'] = 'drupalorg-add-confirm-button';
+  }
 
   return $form;
 }
