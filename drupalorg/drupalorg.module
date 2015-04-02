@@ -4006,6 +4006,7 @@ function drupalorg_add_confirm_button($form, &$form_state, stdClass $account, $c
   $form['confirm'] = array(
     '#type' => 'submit',
     '#value' => t('Confirm'),
+    '#attributes' => array('title' => t('Confirm this user is not a spammer')),
     '#ajax' => array(
       'callback' => 'drupalorg_add_confirm_button_ajax',
       'progress' => array('type' => 'throbber', 'message' => NULL),
