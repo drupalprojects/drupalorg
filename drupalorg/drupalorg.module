@@ -4000,6 +4000,8 @@ function _drupalorg_view_global_notice($notice = NULL) {
  */
 function drupalorg_add_confirm_button($form, &$form_state, stdClass $account, $comment_id = FALSE) {
   $form_state['account'] = $account;
+  $form_state['show_undo_text'] = TRUE;
+
   $form['#attributes']['class'][] = 'confirm-button-form';
   $form['confirm'] = array(
     '#type' => 'submit',
@@ -4015,6 +4017,7 @@ function drupalorg_add_confirm_button($form, &$form_state, stdClass $account, $c
     $form['confirm']['#prefix'] = '<div id="confirm-button-' . $comment_id . '">';
     $form['confirm']['#suffix'] = '</div>';
     $form['confirm']['#ajax']['wrapper'] = 'confirm-button-' . $comment_id;
+    $form_state['show_undo_text'] = FALSE;
   }
   else {
     // This is a normal confirm button.
@@ -4032,7 +4035,9 @@ function drupalorg_add_confirm_button_ajax($form, &$form_state) {
   }
   else {
     $op = 'add_role';
-    $form['confirm']['#prefix'] = '<div class="undo">' . t('You’ve confirmed this user. Undo?') . '</div>';
+    if ($form_state['show_undo_text']) {
+      $form['confirm']['#prefix'] = '<div class="undo">' . t('You’ve confirmed this user. Undo?') . '</div>';
+    }
     $form['confirm']['#value'] = t('Undo');
   }
 
