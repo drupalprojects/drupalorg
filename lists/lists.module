@@ -227,15 +227,6 @@ function _lists_get_mailman_lists() {
       'pass' => variable_get('lists_security_pass', ''),
       'url' => variable_get('lists_security_url', ''),
     ),
-    'maintainer' => array(
-      'name' => 'Maintainer news',
-      'description' => 'This list is automatically enabled for users who have agreed to the terms of the Git access agreement and can not be manually subscribed or unsubscribed.',
-      'allow_sub' => FALSE,
-      'maintainer_auto' => TRUE,
-      'mail' => variable_get('lists_maintainer_mail', ''),
-      'pass' => variable_get('lists_maintainer_pass', ''),
-      'url' => variable_get('lists_maintainer_url', ''),
-    ),
   );
   return $lists;
 }
@@ -264,23 +255,6 @@ function lists_permission() {
  */
 function lists_user_categories() {
   return array(array('name' => 'newsletter', 'title' => t('My newsletters'), 'weight' => 10));
-}
-
-/**
- * Implements hook_user_update().
- */
-function lists_user_update(&$edit, $account, $category) {
-  // Update maintainers subscription after roles are set in
-  // drupalorg_git_gateway_user().
-  $lists = _lists_get_mailman_lists();
-  $list = $lists['maintainer'];
-
-  if (array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles)) {
-    _lists_mailman_subscribe($list, $account);
-  }
-  else {
-    _lists_mailman_unsubscribe($list, $account);
-  }
 }
 
 /**
@@ -342,24 +316,7 @@ function lists_mailman_user_form_submit($form, &$form_state) {
     $old = (int) $form['newsletter'][$list]['#default_value'];
     $new = (int) $form_state['values'][$list];
 
-    // Special handling for the maintainer newsletter.
-    if (!empty($data['maintainer_auto'])) {
-      $status = array_key_exists(DRUPALORG_GIT_GATEWAY_RID, $account->roles) || array_key_exists(DRUPALORG_GIT_GATEWAY_VETTED_RID, $account->roles);
-      // If Git account is enabled
-      if ($status) {
-        if (!$old) {
-          _lists_mailman_subscribe($data, $account, TRUE);
-        }
-      }
-      // If not agreed to Git terms, be sure user is not subscribed to the
-      // maintainer newsletter.
-      else {
-        if ($old) {
-          _lists_mailman_unsubscribe($data, $account, TRUE);
-        }
-      }
-    }
-    elseif (!empty($data['allow_sub']) && ($old != $new)) {
+    if (!empty($data['allow_sub']) && ($old != $new)) {
       if ($new) {
         _lists_mailman_subscribe($data, $account, TRUE);
       }
