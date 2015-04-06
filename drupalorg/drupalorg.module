@@ -1357,8 +1357,10 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
 
   // Remove fieldset bloat.
   unset($form['timezone']['#title']);
+  $form['timezone']['#collapsible'] = FALSE;
   unset($form['timezone']['timezone']['#description']);
   unset($form['picture']['#title']);
+  $form['picture']['#collapsible'] = FALSE;
 
   // Be welcoming.
   if (isset($form_state['drupalorg_welcome'])) {
