@@ -117,16 +117,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'aggregator',
   );
 
-  // Exported permission: 'access pift project testing tab'.
-  $permissions['access pift project testing tab'] = array(
-    'name' => 'access pift project testing tab',
-    'roles' => array(
-      'Git vetted user' => 'Git vetted user',
-      'administrator' => 'administrator',
-    ),
-    'module' => 'pift',
-  );
-
   // Exported permission: 'access pift settings for all projects'.
   $permissions['access pift settings for all projects'] = array(
     'name' => 'access pift settings for all projects',
