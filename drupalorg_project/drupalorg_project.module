@@ -418,7 +418,10 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         '#rows' => array(
           $form_state['node']->uid => array(
             'author' => NULL,
-            'by' => $form_state['node']->name,
+            'by' => array(
+              '@username' => $form_state['node']->name,
+              '!uid' => $form_state['node']->uid,
+            ),
             'patches' => NULL,
             'patches-bar' => NULL,
             'files' => NULL,
@@ -430,18 +433,31 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         ),
       );
 
+      $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
+      $existing_credit = array_flip($node_wrapper->field_issue_credit->raw());
+
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'comment');
       $query->propertyCondition('nid', $form_state['node']->nid);
       $query->propertyCondition('status', COMMENT_PUBLISHED);
       $query->propertyCondition('uid', variable_get('project_issue_followup_user', 0), '!=');
       $result = $query->execute();
+      $cid_key_map = array();
       if (isset($result['comment'])) {
         foreach (comment_load_multiple(array_keys($result['comment'])) as $comment) {
-          if (!isset($table['#rows'][$comment->uid])) {
+          $comment_wrapper = entity_metadata_wrapper('comment', $comment);
+          $cid_key_map[$comment->cid] = $comment->uid;
+          if (isset($table['#rows'][$comment->uid])) {
+            $table['#rows'][$comment->uid]['comments'] += 1;
+            $table['#rows'][$comment->uid]['#weight'] += 1;
+          }
+          else {
             $table['#rows'][$comment->uid] = array(
               'author' => NULL,
-              'by' => $comment->name,
+              'by' => array(
+                '@username' => $comment->name,
+                '!uid' => $comment->uid,
+              ),
               'patches' => NULL,
               'patches-bar' => NULL,
               'files' => NULL,
@@ -451,14 +467,24 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
               '#weight' => 0,
             );
           }
-          else {
-            $table['#rows'][$comment->uid]['comments'] += 1;
-            $table['#rows'][$comment->uid]['#weight'] += 1;
+
+          // Add organizations.
+          foreach ($comment_wrapper->field_attribute_contribution_to as $organization) {
+            $table['#rows'][$comment->uid]['by']['@organization'][$organization->nid->value()] = $organization->title->value();
+          }
+          // Add customers.
+          foreach ($comment_wrapper->field_for_customer as $organization) {
+            $table['#rows'][$comment->uid]['by']['@customer'][$organization->nid->value()] = $organization->title->value();
+          }
+
+          if (isset($existing_credit[$comment->cid])) {
+            $table['#rows'][$comment->uid]['#checked'] = TRUE;
           }
         }
       }
+      $form_state['drupalorg_credit_cids'] = $cid_key_map;
 
-      $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
+      // Populate patches and files.
       foreach ($node_wrapper->field_issue_files->value() as $file) {
         if (!empty($form_state['node']->in_preview)) {
           $file = (array) file_load($file['fid']);
@@ -480,37 +506,59 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       uasort($table['#rows'], 'element_sort');
       $table['#rows'] = array_reverse($table['#rows'], TRUE);
 
-      foreach ($table['#rows'] as $uid => &$row) {
+      $first = TRUE;
+      foreach ($table['#rows'] as $key => &$row) {
         $row['author'] = array(
           'data' => array(
             '#type' => 'radio',
             '#name' => 'author',
-            '#return_value' => $uid,
+            '#return_value' => $key,
             '#value' => $author,
-            '#title' => t('Author is @name', array('@name' => $row['by'])),
+            '#title' => t('Author is @username', $row['by']),
             '#title_display' => 'invisible',
             '#attributes' => array(
-              'data-author' => ' --author="' . drupalorg_git_gateway_user_git_format_author(user_load($uid)) . '"',
+              'data-author' => ' --author="' . drupalorg_git_gateway_user_git_format_author(user_load($row['by']['!uid'])) . '"',
             ),
           ),
           'class' => 'author',
         );
+        // Format By column.
+        if (isset($row['by']['@organization'])) {
+          $row['by']['@organization'] = implode(', ', $row['by']['@organization']);
+        }
+        if (isset($row['by']['@customer'])) {
+          $row['by']['@customer'] = implode(', ', $row['by']['@customer']);
+        }
+        if (isset($row['by']['@organization']) && isset($row['by']['@customer'])) {
+          $by_text = '@username <span class="description">at @organization for @customer</span>';
+        }
+        elseif (isset($row['by']['@organization'])) {
+          $by_text = '@username <span class="description">at @organization</span>';
+        }
+        elseif (isset($row['by']['@customer'])) {
+          $by_text = '@username <span class="description">for @customer</span>';
+        }
+        else {
+          $by_text = '@username';
+        }
         $row['by'] = array(
           'data' => array(
             '#type' => 'checkbox',
-            '#title' => check_plain($row['by']),
-            '#checked' => !is_null($row['patches']),
-            '#id' => 'by-' . $uid,
+            '#title' => t($by_text, $row['by']),
+            '#checked' => !is_null($row['patches']) || isset($row['#checked']),
+            '#id' => 'by-' . $key,
+            '#name' => 'by-' . $key,
             '#attributes' => array(
-              'data-by' => $row['by'],
+              'data-by' => $row['by']['@username'],
             ),
             '#states' => array(
               'disabled' => array(
-                ':input[name=author]' => array('value' => $uid),
+                ':input[name=author]' => array('value' => $key),
               ),
             ),
           ),
         );
+        unset($row['#checked']);
         // Format patches, files, and comments bars.
         foreach (array('patches' => t('patches attached'), 'files' => t('other files attached'), 'comments' => t('comments made')) as $key => $description) {
           if (!is_null($row[$key])) {
@@ -525,7 +573,11 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
               'class' => 'number',
             );
           }
+          elseif ($first) {
+            $row[$key] = '<span class="description">' . t('none yet') . '</span>';
+          }
         }
+        $first = FALSE;
         // Remove temporary column.
         unset($row['#weight']);
       }
@@ -556,12 +608,17 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       );
 
       // Set up base form.
+      $is_maintainer = isset($form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]) && $form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]['permissions']['write to vcs'];
       $form['drupalorg_credit_wrapper'] = array(
+        '#attached' => array('js' => array(array(
+          'type' => 'setting',
+          'data' => array('drupalOrg' => array('isMaintainer' => $is_maintainer)),
+        ))),
         '#type' => 'fieldset',
         '#title' => t('Credit & committing'),
         '#collapsible' => TRUE,
         // Open by default when the user is a 'Write to VCS' maintainer.
-        '#collapsed' => !isset($form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]) || !$form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$GLOBALS['user']->uid]['permissions']['write to vcs'],
+        '#collapsed' => !$is_maintainer,
         '#weight' => 50,
         '#id' => 'drupalorg-issue-credit-form',
         'message' => array(
@@ -592,10 +649,18 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             ),
           ),
         ),
-        'help' => array(
-          '#markup' => '<div class="description">' . t('Learn more about <a href="@attribution-url">giving credit</a>.', array('@attribution-url' => url('node/52287'))) . '</div>',
-        ),
       );
+      if ($is_maintainer) {
+        $form['#submit'][] = 'drupalorg_project_issue_credit_submit';
+        $form['drupalorg_credit_wrapper']['help'] = array(
+          '#markup' => '<div class="description">' . t('As a project maintainer, use checkboxes to give credit for the issue. Learn more about <a href="@attribution-url">giving credit</a>.', array('@attribution-url' => url('node/52287'))) . '</div>',
+        );
+      }
+      else {
+        $form['drupalorg_credit_wrapper']['help'] = array(
+          '#markup' => '<div class="description">' . t('Learn more about <a href="@attribution-url">giving credit</a>.', array('@attribution-url' => url('node/52287'))) . '</div>',
+        );
+      }
     }
   }
   elseif (project_release_node_is_release($form_state['node'])) {
@@ -660,6 +725,19 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           unset($release_type_field['#options'][$security_term->tid]);
         }
       }
+    }
+  }
+}
+
+/**
+ * Form submit callback.
+ */
+function drupalorg_project_issue_credit_submit($form, &$form_state) {
+  // Record issue credit.
+  $form_state['node']->field_issue_credit[LANGUAGE_NONE] = array();
+  foreach ($form_state['drupalorg_credit_cids'] as $cid => $key) {
+    if (!empty($form_state['input']['by-' . $key]) || $form_state['input']['author'] === $key) {
+      $form_state['node']->field_issue_credit[LANGUAGE_NONE][] = array('target_id' => $cid);
     }
   }
 }
