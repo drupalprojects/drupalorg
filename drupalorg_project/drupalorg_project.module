@@ -508,20 +508,6 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
 
       $first = TRUE;
       foreach ($table['#rows'] as $key => &$row) {
-        $row['author'] = array(
-          'data' => array(
-            '#type' => 'radio',
-            '#name' => 'author',
-            '#return_value' => $key,
-            '#value' => $author,
-            '#title' => t('Author is @username', $row['by']),
-            '#title_display' => 'invisible',
-            '#attributes' => array(
-              'data-author' => ' --author="' . drupalorg_git_gateway_user_git_format_author(user_load($row['by']['!uid'])) . '"',
-            ),
-          ),
-          'class' => 'author',
-        );
         // Format By column.
         if (isset($row['by']['@organization'])) {
           $row['by']['@organization'] = implode(', ', $row['by']['@organization']);
@@ -541,6 +527,21 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         else {
           $by_text = '@username';
         }
+        // Add form elements.
+        $row['author'] = array(
+          'data' => array(
+            '#type' => 'radio',
+            '#name' => 'author',
+            '#return_value' => $key,
+            '#value' => $author,
+            '#title' => t('Author is @username', $row['by']),
+            '#title_display' => 'invisible',
+            '#attributes' => array(
+              'data-author' => ' --author="' . drupalorg_git_gateway_user_git_format_author(user_load($row['by']['!uid'])) . '"',
+            ),
+          ),
+          'class' => 'author',
+        );
         $row['by'] = array(
           'data' => array(
             '#type' => 'checkbox',
