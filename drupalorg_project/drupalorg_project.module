@@ -489,14 +489,16 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         if (!empty($form_state['node']->in_preview)) {
           $file = (array) file_load($file['fid']);
         }
-        if (preg_match('%\.(diff|patch)$%', $file['filename'])) {
-          $table['#rows'][$file['uid']]['patches'] += 1;
-          $table['#rows'][$file['uid']]['#weight'] += 10000;
-          $last_patch_uid = $file['uid'];
-        }
-        else {
-          $table['#rows'][$file['uid']]['files'] += 1;
-          $table['#rows'][$file['uid']]['#weight'] += 100;
+        if (isset($table['#rows'][$file['uid']])) {
+          if (preg_match('%\.(diff|patch)$%', $file['filename'])) {
+            $table['#rows'][$file['uid']]['patches'] += 1;
+            $table['#rows'][$file['uid']]['#weight'] += 10000;
+            $last_patch_uid = $file['uid'];
+          }
+          else {
+            $table['#rows'][$file['uid']]['files'] += 1;
+            $table['#rows'][$file['uid']]['#weight'] += 100;
+          }
         }
       }
       // Set author to final file, except for core.
