@@ -4015,8 +4015,8 @@ function drupalorg_add_confirm_button($form, &$form_state, stdClass $account, $c
 
   if ($comment_id !== FALSE) {
     // This is a confirm button on a comment.
-    $form['confirm']['#prefix'] = '<div id="confirm-button-' . $comment_id . '">';
-    $form['confirm']['#suffix'] = '</div>';
+    $form['#prefix'] = "<div id=\"confirm-button-{$comment_id}\">";
+    $form['#suffix'] = '</div>';
     $form['confirm']['#ajax']['wrapper'] = 'confirm-button-' . $comment_id;
     $form_state['show_undo_text'] = FALSE;
   }
