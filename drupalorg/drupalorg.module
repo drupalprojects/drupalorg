@@ -879,8 +879,6 @@ function drupalorg_preprocess_page(&$variables) {
  * Implementation of template_preprocess_drupalorg_home().
  */
 function drupalorg_preprocess_drupalorg_home(&$variables) {
-  $variables['things_we_made'] = '';
-
   // Get content for the Recent Forum Posts tab.
   $result = db_query_range('SELECT f.nid, f.title, f.created, u.uid, u.name FROM {forum_index} f INNER JOIN {node} n ON n.nid = f.nid INNER JOIN {users} u ON u.uid = n.uid ORDER BY f.nid DESC', 0, 5);
   $recent_forums = '';
@@ -894,9 +892,9 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   // Retrieve or rebuild stats cache.
   $variables += drupalorg_get_activity();
 
-  // Pick a random site made with Drupal from the cache.
+  $variables['things_we_made'] = '';
   if (!empty($variables['sites_made'])){
-    $variables['things_we_made'] = $variables['sites_made'][array_rand($variables['sites_made'])];
+    $variables['things_we_made'] = implode('', array_slice($variables['sites_made'], 0, 3));
   }
 
   $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'Redesign_home'));
