@@ -880,7 +880,6 @@ function drupalorg_preprocess_page(&$variables) {
  */
 function drupalorg_preprocess_drupalorg_home(&$variables) {
   $variables['things_we_made'] = '';
-  $variables['map_content'] = drupalorg_map_content();
 
   // Get content for the Recent Forum Posts tab.
   $result = db_query_range('SELECT f.nid, f.title, f.created, u.uid, u.name FROM {forum_index} f INNER JOIN {node} n ON n.nid = f.nid INNER JOIN {users} u ON u.uid = n.uid ORDER BY f.nid DESC', 0, 5);
@@ -901,64 +900,6 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   }
 
   $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'Redesign_home'));
-}
-
-/**
- * Get HTML for home page map.
- */
-function drupalorg_map_content($_force = FALSE) {
-  if (!$_force && $cache = cache_get('drupalorg_map_content', 'drupalorg')) {
-    $output = $cache->data;
-  }
-  else {
-    $map = array(
-      0 => array(
-        'type' => 'commit', // For the pin color.
-        'message' => variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011'),
-        'latitude' => variable_get('drupalcon_latitude', 41.836944),
-        'longitude' => variable_get('drupalcon_longitude', -87.684444),
-      ),
-    );
-    $views = array('drupalorg_handbook_map', 'drupalorg_forum_map', 'drupalorg_commit_map');
-    foreach ($views as $q => $view) {
-      $view = views_get_view($view);
-      $view->preview();
-      $fields = array(
-        'message' => NULL,
-        'latitude' => NULL,
-        'longitude' => NULL,
-      );
-      foreach ($view->field as $id => $handler) {
-        if (array_key_exists($handler->ui_name(), $fields)) {
-          $fields[$handler->ui_name()] = $id;
-        }
-      }
-      foreach ($view->style_plugin->rendered_fields as $n => $row) {
-        $map[$n * count($views) + $q + 1]['type'] = $view->get_title();
-        foreach ($fields as $field => $id) {
-          $map[$n * count($views) + $q + 1][$field] = $row[$id];
-        }
-      }
-    }
-    ksort($map);
-    $output = '';
-    foreach ($map as $row) {
-      $output .= theme('drupalorg_map_pin', $row);
-    }
-
-    cache_set('drupalorg_map_content', $output, 'drupalorg');
-  }
-
-  return $output;
-}
-
-/**
- * Generates HTML to plot a map pin.
- */
-function drupalorg_preprocess_drupalorg_map_pin(&$variables) {
-  $variables['classes_array'][] = 'homepage-pin';
-  $variables['classes_array'][] = 'homepage-pin-' . $variables['type'];
-  $variables['classes_array'][] = 'homepage-pin-' . ($variables['longitude'] > 0 ? 'east' : 'west');
 }
 
 /**
@@ -1249,8 +1190,6 @@ function drupalorg_theme() {
       'variables' => array(
         'latitude' => NULL,
         'longitude' => NULL,
-        'message' => '',
-        'type' => 'default',
       ),
       'template' => 'drupalorg-map-pin',
     ),

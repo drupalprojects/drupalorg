@@ -40,11 +40,6 @@
     <?php print $psa; ?>
 </div>
 
-<div id="stats-map">
-  <div id="community-map">
-    <div class="homepage-map"><?php print $map_content; ?></div>
-  </div>
-
   <div id="community-updates">
     <ul>
       <li><a href="#tab-news" id="tab-news-link">News</a></li>
@@ -57,4 +52,3 @@
     <div id="tab-forum"><?php print $tab_content_forums; ?></div>
     <div id="tab-commits"><?php print $tab_content_git; ?></div>
   </div>
-</div>
