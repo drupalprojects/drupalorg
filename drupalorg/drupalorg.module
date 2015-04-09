@@ -28,9 +28,14 @@ define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 103); // 7.x
 function drupalorg_init() {
   global $user, $conf;
 
-  // Use the dashboard as the home page if the user selected it.
-  if ($user->uid !== 0 && !empty($user->data['drupalorg_set_home']) && $_SERVER['REQUEST_URI'] === url('')) {
-    drupal_goto('user/' . $user->uid . '/dashboard');
+  if (user_is_logged_in()) {
+    // Use the dashboard as the home page if the user selected it.
+    if (!empty($user->data['drupalorg_set_home']) && $_SERVER['REQUEST_URI'] === url('')) {
+      drupal_goto('user/' . $user->uid . '/dashboard');
+    }
+
+    // Show the global notice.
+    drupalorg_show_global_notice($user);
   }
 
   // Add tracking
@@ -92,6 +97,9 @@ function drupalorg_user_login(&$edit, $account) {
   if (!empty($account->data['drupalorg_set_home'])) {
     $edit['redirect'] = 'user/' . $account->uid . '/dashboard';
   }
+
+  // Try showing global notice before $account->access is updated.
+  drupalorg_show_global_notice($account);
 }
 
 /**
@@ -126,17 +134,22 @@ function drupalorg_page_build(&$page) {
     if (empty($account->field_terms_of_service) || empty($account->field_terms_of_service[LANGUAGE_NONE][0]['value'])) {
       drupal_set_message(t('We’ve <a href="/news/next-steps-for-drupalorg-tos-and-privacy-policy">introduced</a> Drupal.org <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>. Please read both documents and <a href="!edit">accept them on your user profile</a> to continue using Drupal.org.', array('!edit' => url('user/' . $account->uid . '/edit'))), 'warning');
     }
+  }
+}
 
-    if ($notice = variable_get('drupalorg_notice')) {
-      // Only show the global notice if the path is not an admin path and either
-      // the user hasn't viewed the notice or it has been updated since it was
-      // last viewed.
-      if (!path_is_admin(current_path()) && (!isset($account->data['drupalorg_notice']) || $notice['time'] > $account->data['drupalorg_notice'])) {
-        // Display the global notice to the user.
+/**
+ * Show a one-time-per-user global notice. See drupalorg_page_build() and
+ * drupalorg_user_login().
+ */
+function drupalorg_show_global_notice(stdClass $account) {
+  if ($notice = variable_get('drupalorg_notice')) {
+    // Show if the user has accessed the site before the notice was set.
+    if ($account->access != 0 && $account->access < $notice['time']) {
+      // And has not seen it this session.
+      if (!isset($_SESSION['drupalorg_notice']) || !$_SESSION['drupalorg_notice'] === $notice['time']) {
         drupal_set_message(_drupalorg_view_global_notice($notice));
-        // Store the time that the notice was viewed.
-        $account->data['drupalorg_notice'] = REQUEST_TIME;
-        user_save($account);
+        // Store the time of the notice was viewed.
+        $_SESSION['drupalorg_notice'] = $notice['time'];
       }
     }
   }
@@ -1357,8 +1370,10 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
 
   // Remove fieldset bloat.
   unset($form['timezone']['#title']);
+  $form['timezone']['#collapsible'] = FALSE;
   unset($form['timezone']['timezone']['#description']);
   unset($form['picture']['#title']);
+  $form['picture']['#collapsible'] = FALSE;
 
   // Be welcoming.
   if (isset($form_state['drupalorg_welcome'])) {

@@ -414,6 +414,60 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-project_issue-field_issue_credit'
+  $field_instances['node-project_issue-field_issue_credit'] = array(
+    'bundle' => 'project_issue',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 51,
+      ),
+      'diff_standard' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_issue_credit',
+    'label' => 'issue_credit',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 33,
+    ),
+  );
+
   // Exported field_instance: 'node-project_issue-field_issue_files'
   $field_instances['node-project_issue-field_issue_files'] = array(
     'bundle' => 'project_issue',
@@ -1000,6 +1054,7 @@ function drupalorg_issues_field_default_field_instances() {
   t('Related issues');
   t('Status');
   t('Version');
+  t('issue_credit');
 
   return $field_instances;
 }
