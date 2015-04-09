@@ -75,5 +75,5 @@
 
 <div id="sites-with-drupal">
   <h2><a href="case-studies">Who Uses Drupal</a></h2>
-  <?php print $things_we_made; ?>
+  <?php print $case_studies; ?>
 </div>

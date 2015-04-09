@@ -26,6 +26,29 @@ function drupalorg_case_studies_views_api($module = NULL, $api = NULL) {
 function drupalorg_case_studies_image_default_styles() {
   $styles = array();
 
+  // Exported image style: case-4-2x.
+  $styles['case-4-2x'] = array(
+    'name' => 'case-4-2x',
+    'label' => 'case-4-2x',
+    'effects' => array(
+      13 => array(
+        'label' => 'Scale and crop',
+        'help' => 'Scale and crop will maintain the aspect-ratio of the original image, then crop the larger dimension. This is most useful for creating perfectly square thumbnails without stretching the image.',
+        'effect callback' => 'image_scale_and_crop_effect',
+        'dimensions callback' => 'image_resize_dimensions',
+        'form callback' => 'image_resize_form',
+        'summary theme' => 'image_resize_summary',
+        'module' => 'image',
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 600,
+          'height' => 426,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
   // Exported image style: case198.
   $styles['case198'] = array(
     'name' => 'case198',
@@ -125,5 +148,6 @@ function drupalorg_case_studies_node_info() {
 <strong>Project name field</strong>: Use only the title of the site/project you are writing about. Do not use your company name or words "case study," "success story," and the like. Maximum length - 40 characters.'),
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }

@@ -189,11 +189,9 @@ function drupalorg_case_studies_views_default_views() {
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['defaults']['pager'] = FALSE;
-  $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '8';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '3';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '0';
-  $handler->display->display_options['pager']['options']['quantity'] = '7';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
@@ -212,7 +210,7 @@ function drupalorg_case_studies_views_default_views() {
   $handler->display->display_options['fields']['field_mainimage']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_mainimage']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_mainimage']['settings'] = array(
-    'image_style' => 'grid-4',
+    'image_style' => 'case-4-2x',
     'image_link' => 'content',
   );
   /* Field: Content: Title */
