@@ -888,7 +888,7 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   // Retrieve or rebuild stats cache.
   $variables += drupalorg_get_activity();
 
-  $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'Redesign_home'));
+  $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'homepage-300x250'));
 }
 
 /**
