@@ -55,23 +55,22 @@
   <?php print $psa; ?>
 </div>
 
+<div class="front-secondary">
   <div class="call-to-action">
     <h2><a href="/drupal-services">Services</a></h2>
     <p>The Drupal community is huge. Find a company to help you build or host your site in the Drupal Marketplace.</p>
-    <p class="front-get-started"><a href="/drupal-services" class="link-button"><span>Drupal Services</span></a></p>
   </div>
 
   <div class="call-to-action">
     <h2><a href="https://jobs.drupal.org/">Jobs</a></h2>
     <p>The community is only as good as its best and brightest. Purchase a job post on Drupal Jobs to help support Drupal.org.</p>
-    <p class="front-get-started"><a href="https://jobs.drupal.org/" class="link-button"><span>Drupal Jobs</span></a></p>
   </div>
 
   <div class="call-to-action last">
     <h2><a href="/supporters">Supporters</a></h2>
     <p>Drupal Association Supporter Programs provide companies a way to give back to the Drupal project and enjoy great benefits in return.</p>
-    <p class="front-get-started"><a href="/supporters" class="link-button"><span>Drupal Supporters</span></a></p>
   </div>
+</div>
 
 <div id="sites-with-drupal">
   <h2><a href="case-studies">Who Uses Drupal</a></h2>
