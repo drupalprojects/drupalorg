@@ -421,10 +421,6 @@ function drupalorg_field_widget_options_buttons_form_alter(&$element, &$form_sta
   if ($context['field']['field_name'] === 'field_gender') {
     $element['#options']['_none'] = t('Prefer not to share');
   }
-  if ($context['field']['field_name'] === 'field_attribute_contribution_to') {
-    $element['#options']['_none'] = t('not applicable');
-    $element['#options'] = array('_volunteer' => t('as a volunteer')) + $element['#options'];
-  }
 }
 
 /**
@@ -1752,9 +1748,6 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
       $customer_default[] = drupalorg_entityreference_string($customer->getIdentifier(), $customer->title->value());
     }
     $element['field_for_customer'][LANGUAGE_NONE]['#default_value'] = implode(', ', $customer_default);
-  }
-  if (empty($element['field_attribute_contribution_to'][LANGUAGE_NONE]['#default_value'])) {
-    $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#default_value'] = '_none';
   }
   // Hide titles.
   $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title_display'] = 'attribute';
@@ -3428,10 +3421,13 @@ function drupalorg_preprocess_comment(&$v) {
       // manually opted out of relative times.
       '!created_date' => format_date($v['comment']->created, 'custom', 'F j, Y \a\t g:ia'),
     );
-    // Link to organization.
-    if ($organization = $wrapper->field_attribute_contribution_to->value()) {
-      $uri = entity_uri('node', $organization);
-      $args['!organization'] = l($organization->title, $uri['path'], $uri['options']);
+    // Link to organizations.
+    foreach ($wrapper->field_attribute_contribution_to as $organization) {
+      $uri = entity_uri('node', $organization->value());
+      $args['!organization'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+    }
+    if (isset($args['!organization'])) {
+      $args['!organization'] = implode(', ', $args['!organization']);
     }
     // Link to customers.
     foreach ($wrapper->field_for_customer as $organization) {

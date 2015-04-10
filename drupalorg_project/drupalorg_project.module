@@ -469,9 +469,9 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             );
           }
 
-          // Add organization.
-          if ($organization = $comment_wrapper->field_attribute_contribution_to->value()) {
-            $table['#rows'][$comment->uid]['by']['@organization'][$organization->nid] = $organization->title;
+          // Add organizations.
+          foreach ($comment_wrapper->field_attribute_contribution_to as $organization) {
+            $table['#rows'][$comment->uid]['by']['@organization'][$organization->nid->value()] = $organization->title->value();
           }
           // Add customers.
           foreach ($comment_wrapper->field_for_customer as $organization) {
