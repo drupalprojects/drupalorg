@@ -110,6 +110,7 @@
           $summaryOrganization = $('.organization', $summary).click(function (e) {
             // Position & show bubble.
             $attributeContributionTo.css('left', Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px').show().focus();
+            $attributeContributionTo.css('top', $summaryOrganization.position().top + $summaryOrganization.outerHeight() + 'px').show().focus();
             e.preventDefault();
           }),
           $forCustomer = $('.field-name-field-for-customer', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
@@ -126,6 +127,7 @@
           $summaryCustomer = $('.customer', $summary).click(function (e) {
             // Position & show bubble.
             $forCustomer.css('left', Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px').show().focus();
+            $forCustomer.css('top', $summaryCustomer.position().top + $summaryCustomer.outerHeight() + 'px').show().focus();
             e.preventDefault();
           });
 
@@ -161,7 +163,8 @@
         });
 
         // Summary text.
-        $fieldset.prepend($summary).drupalSetSummary(function () {}).bind('summaryUpdated', function () {
+        $('label[for=edit-nodechanges-comment-field-attribute-as-volunteer-und-0]', $fieldset).empty().prepend($summary);
+        $fieldset.drupalSetSummary(function () {}).bind('summaryUpdated', function () {
           var $organizations = $('input:checked + label', $attributeContributionTo),
             customers = $forCustomerField.val();
           if ($organizations.length) {

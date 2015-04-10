@@ -1736,9 +1736,11 @@ function drupalorg_form_node_form_alter(&$form) {
 function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
   $element['#attached']['js'][] = array('type' => 'setting', 'data' => array(
     'drupalOrg' => array(
-      'defaultCommentAttribution' => '<div class="drupalorg-attribution-summary">' . t('<strong>Attribute this contribution:</strong> <strong>@name</strong> at organization <a href="#" class="organization">not applicable</a> for customer <a href="#" class="customer">not applicable</a>', array('@name' => empty($element['#entity']->name) ? $GLOBALS['user']->name : $element['#entity']->name)) . '</div>'
+      'defaultCommentAttribution' => '<span>' . t('<strong>@name</strong> at organization <a href="#" class="organization">not applicable</a> for customer <a href="#" class="customer">not applicable</a>', array('@name' => empty($element['#entity']->name) ? $GLOBALS['user']->name : $element['#entity']->name)) . '</span>',
     ),
   ));
+  // Flip order of radios.
+  krsort($element['field_attribute_as_volunteer'][LANGUAGE_NONE]['#options']);
   // Load last comment for default values. This feature was enabled at 1426194356.
   if (!is_null($node) && ($cid = db_query_range('SELECT cid FROM {comment} c INNER JOIN {node} n ON n.nid = c.nid AND n.type IN (:issue_types) AND n.status = :node_published WHERE c.status = :comment_published AND c.uid = :uid AND c.created > 1426194356 ORDER BY c.nid = :nid DESC, c.cid DESC', 0, 1, array(':issue_types' => project_issue_issue_node_types(), ':node_published' => NODE_PUBLISHED, ':comment_published' => COMMENT_PUBLISHED, ':uid' => $GLOBALS['user']->uid, ':nid' => $node->nid))->fetchField())) {
     $wrapper = entity_metadata_wrapper('comment', comment_load($cid));
