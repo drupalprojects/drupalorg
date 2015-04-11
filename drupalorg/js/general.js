@@ -147,7 +147,7 @@
           if ($summaryCustomer.get(0) !== e.target && $forCustomerField.get(0) !== e.target) {
             $forCustomer.hide();
             // If an element in the bubble was the target, return focus to summary.
-            if ($(e.target).parents().get().indexOf($forCustomer.get(0)) !== -1) {
+            if ($customerSuggestions.get().indexOf(e.target) !== -1) {
               $summaryCustomer.focus();
             }
           }
