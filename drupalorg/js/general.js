@@ -105,8 +105,13 @@
       $('.group-issue-attribution', context).once('drupalorg-issue-comment-attribution', function () {
         var $fieldset = $(this),
           $summary = $(Drupal.settings.drupalOrg.defaultCommentAttribution),
+          $notVolunteer = $('.form-radio[name="nodechanges_comment[field_attribute_as_volunteer][und]"][value=0]', $fieldset),
           $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
-          $attributeContributionToFields = $('input', $attributeContributionTo),
+          $attributeContributionToFields = $('input', $attributeContributionTo).change(function (e) {
+            if (e.target.checked) {
+              $notVolunteer.attr('checked', 'checked');
+            }
+          }),
           $summaryOrganization = $('.organization', $summary).click(function (e) {
             // Position & show bubble.
             $attributeContributionTo.css({
@@ -116,7 +121,11 @@
             e.preventDefault();
           }),
           $forCustomer = $('.field-name-field-for-customer', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
-          $forCustomerField = $('.form-text', $forCustomer),
+          $forCustomerField = $('.form-text', $forCustomer).change(function (e) {
+            if (e.target.value !== '') {
+              $notVolunteer.attr('checked', 'checked');
+            }
+          }),
           $customerSuggestions = $('.customer-suggestion', $forCustomer).click(function (e) {
             // Add clicked suggestion.
             var newValue = $forCustomerField.val();
