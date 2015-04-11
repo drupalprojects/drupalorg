@@ -1,13 +1,13 @@
 <div class="front-primary">
   <div class="call-to-action">
     <h2><a href="/try-drupal">Try Drupal</a></h2>
-    <p>Want to quickly see how Drupal works? Try one of these solutions to get started with Drupal in minutes.</p>
+    <p>Want to see Drupal in action? Try one of these solutions to get started with Drupal in minutes.</p>
     <p class="front-get-started"><a href="/try-drupal" class="link-button"><span>Try Drupal</span></a></p>
   </div>
 
   <div class="call-to-action last">
     <h2><a href="about">Get Started</a></h2>
-    <p>Use Drupal to build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine. Join us!</p>
+    <p>Use Drupal to build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine.</p>
     <p class="front-get-started"><a href="start" class="link-button"><span>Get Started with Drupal</span></a></p>
   </div>
 
@@ -58,17 +58,20 @@
 <div class="front-secondary">
   <div class="call-to-action">
     <h2><a href="/drupal-services">Services</a></h2>
-    <p>The Drupal community is huge. Find a company to help you build or host your site in the Drupal Marketplace.</p>
+    <p>The Drupal ecosystem of service providers is vast. Visit the Drupal Services Marketplace to quickly find a company to help you create a great website or host one.</p>
+    <p><a href="/drupal-services">Browse Drupal Services Marketplace →</a></p>
   </div>
 
   <div class="call-to-action">
     <h2><a href="https://jobs.drupal.org/">Jobs</a></h2>
-    <p>The community is only as good as its best and brightest. Purchase a job post on Drupal Jobs to help support Drupal.org.</p>
+    <p>Drupal skills offer rewarding careers all over the world in a variety of industries. Visit Drupal Jobs, the official career site of the Drupal community, to look for a job or post an open position.</p>
+    <p><a href="https://jobs.drupal.org/">Search or post Drupal Jobs →</a></p>
   </div>
 
   <div class="call-to-action last">
     <h2><a href="/supporters">Supporters</a></h2>
-    <p>Drupal Association Supporter Programs provide companies a way to give back to the Drupal project and enjoy great benefits in return.</p>
+    <p>Many companies who benefit from a vibrant and growing Drupal ecosystem join the Drupal Supporter Programs. These companies help the project grow and as a result they gain visibility in the community.</p>
+    <p><a href="/supporters">Find out who supports Drupal →</a></p>
   </div>
 </div>
 
