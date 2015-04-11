@@ -109,8 +109,10 @@
           $attributeContributionToFields = $('input', $attributeContributionTo),
           $summaryOrganization = $('.organization', $summary).click(function (e) {
             // Position & show bubble.
-            $attributeContributionTo.css('left', Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px').show().focus();
-            $attributeContributionTo.css('top', $summaryOrganization.position().top + $summaryOrganization.outerHeight() + 'px').show().focus();
+            $attributeContributionTo.css({
+              'left': Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px',
+              'top': $summaryOrganization.position().top + $summaryOrganization.outerHeight() + 'px'
+            }).show().focus();
             e.preventDefault();
           }),
           $forCustomer = $('.field-name-field-for-customer', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
@@ -126,8 +128,10 @@
           }),
           $summaryCustomer = $('.customer', $summary).click(function (e) {
             // Position & show bubble.
-            $forCustomer.css('left', Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px').show().focus();
-            $forCustomer.css('top', $summaryCustomer.position().top + $summaryCustomer.outerHeight() + 'px').show().focus();
+            $forCustomer.css({
+              'left': Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px',
+              'top': $summaryCustomer.position().top + $summaryCustomer.outerHeight() + 'px'
+            }).show().focus();
             e.preventDefault();
           });
 
