@@ -399,6 +399,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       // Build table of commenters.
       $table = array(
         '#theme' => 'table',
+        '#sticky' => FALSE,
         '#header' => array(
           t('Author'),
           t('By'),
