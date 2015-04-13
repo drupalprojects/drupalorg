@@ -2648,9 +2648,6 @@ function drupalorg_node_view($node, $view_mode = 'full') {
     }
     drupal_set_breadcrumb($breadcrumb);
   }
-//  elseif ($node->type == 'project_issue') {
-//    dpm($node);
-//  }
 }
 
 /**
@@ -3752,12 +3749,6 @@ function drupalorg_render_cache_entity_hash_alter(&$hash, $entity, $cache_info, 
 
     $hash['divs'] = isset($entity->divs) ? $entity->divs : '';
     $hash['divs_final'] = isset($entity->divs_final) ? $entity->divs_final : '';
-
-    $author = user_load($entity->uid);
-    $hash['is_confirmed'] = drupalorg_user_is_confirmed($author);
-    $hash['confirm_button'] = !$hash['is_confirmed']
-      ? drupal_get_form('drupalorg_add_confirm_button', $author)
-      : NULL;
   }
 }
 
