@@ -1,7 +1,7 @@
 <div class="front-primary">
   <div class="call-to-action">
     <h2><a href="/try-drupal">Try Drupal</a></h2>
-    <p>Want to see Drupal in action? Try one of these solutions to get started with Drupal in minutes.</p>
+    <p>Want to see Drupal in action? Try one of these solutions to deploy a real, live, working Drupal site in just a few minutes. It’s quick, simple and free.</p>
     <p class="front-get-started"><a href="/try-drupal" class="link-button"><span>Try Drupal</span></a></p>
   </div>
 
