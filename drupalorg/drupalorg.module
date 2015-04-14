@@ -3457,10 +3457,7 @@ function drupalorg_preprocess_comment(&$v) {
   $account = user_load($v['comment']->uid, TRUE);
   if (drupalorg_confirm_user_access($account)) {
     $form = drupal_get_form('drupalorg_add_confirm_button', $account, $v['comment']->cid);
-    $v['confirm_button'] = drupal_render($form);
-  }
-  else {
-    $v['confirm_button'] = NULL;
+    $v['picture'] .= drupal_render($form);
   }
 }
 
