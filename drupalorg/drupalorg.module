@@ -3939,7 +3939,8 @@ function drupalorg_add_badge_new_user($account) {
 function drupalorg_notice_settings_form($form, &$form_state) {
   if (!isset($form_state['storage']['confirm'])) {
     global $user;
-    $notice = variable_get('drupalorg_notice');
+    $notices = variable_get('drupalorg_notice');
+    $last_notice = array_pop($notices);
 
     // Display the initial form.
     $form['drupalorg_notice']['#tree'] = TRUE;
@@ -3948,10 +3949,10 @@ function drupalorg_notice_settings_form($form, &$form_state) {
       '#title' => t('Message'),
       '#description' => t('System message text to be displayed to all authenticated Drupal.org users on their next page load. One time display.'),
       '#type' => 'text_format',
-      '#format' => $notice ? $notice['message']['format'] : NULL,
-      '#default_value' => $notice ? $notice['message']['value'] : NULL,
+      '#format' => $last_notice ? $last_notice['message']['format'] : NULL,
+      '#default_value' => $last_notice ? $last_notice['message']['value'] : NULL,
       '#required' => TRUE,
-      '#prefix' => $notice ? t('The current message was set by %name at %time.', array('%name' => format_username(user_load($notice['uid'])), '%time' => format_date($notice['time']))) : NULL,
+      '#prefix' => $last_notice ? t('The last message was set by %name at %time.', array('%name' => format_username(user_load($last_notice['uid'])), '%time' => format_date($last_notice['time']))) : NULL,
     );
     $form['drupalorg_notice']['uid'] = array(
       '#type' => 'hidden',
@@ -3984,7 +3985,7 @@ function drupalorg_notice_settings_form($form, &$form_state) {
   }
   else {
     // Display a preview of the message.
-    drupal_set_message(_drupalorg_view_global_notice($form_state['storage']['original_form']['drupalorg_notice']));
+    drupal_set_message(_drupalorg_view_global_notice($form_state['storage']['original_form']['drupalorg_notice'], 1));
     // Display the confirmation form.
     return confirm_form($form, t('Enable global notice'), current_path(), t('Are you absolutely sure you want to display your message to every Drupal.org user?'), t('Enable global notice'), t('Cancel'));
   }
@@ -3999,15 +4000,24 @@ function drupalorg_notice_settings_form_submit($form, &$form_state) {
     $form_state['rebuild'] = TRUE;
   }
   else {
+    // Limit the roles to only show ones that have been selected.
+    $roles = array_filter($form_state['storage']['original_form']['drupalorg_notice']['advanced']['roles'], function($value) { return $value > 0; });
+    $form_state['storage']['original_form']['drupalorg_notice']['advanced']['roles'] = $roles;
+
     // Save the form data.
-    variable_set('drupalorg_notice', $form_state['storage']['original_form']['drupalorg_notice']);
-    drupal_set_message(t('The message will be displayed to all authenticated users on their next page load.'));
+    $notices = variable_get('drupalorg_notice');
+    $notices[] = $form_state['storage']['original_form']['drupalorg_notice'];
+    variable_set('drupalorg_notice', $notices);
+    drupal_set_message(t('The message will be displayed to users on their next page load.'));
   }
 }
 
-function _drupalorg_view_global_notice($notice = NULL) {
+function _drupalorg_view_global_notice($notice = NULL, $messages_to_show = 0) {
   if (!$notice) {
     $notice = variable_get('drupalorg_notice');
+  }
+  if (is_array($notice) && is_int($messages_to_show) && $messages_to_show > 0) {
+    $notice = array_slice($notice, 0, $messages_to_show, TRUE);
   }
   return $notice ? filter_xss(check_markup($notice['message']['value'], $notice['message']['format'])) : NULL;
 }
