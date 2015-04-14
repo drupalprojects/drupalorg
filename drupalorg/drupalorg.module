@@ -3286,12 +3286,13 @@ function drupalorg_preprocess_comment(&$v) {
   elseif (variable_get('user_picture_default', '')) {
     $filepath = variable_get('user_picture_default', '');
   }
+  $comment_account = user_load($v['comment']->uid);
   if (isset($filepath)) {
     $v['picture'] = l(theme('image_style', array(
       'style_name' => 'drupalorg_user_picture',
       'path' => $filepath,
       'alt' => t('@user’s picture', array('@user' => format_username($v['comment']))),
-    )) . drupalorg_add_badge_new_user(user_load($v['elements']['#comment']->uid)), 'user/' . $v['comment']->uid, array(
+    )) . drupalorg_add_badge_new_user($comment_account), 'user/' . $v['comment']->uid, array(
       'attributes' => array(
         'title' => t('View user profile.'),
         'class' => 'picture',
@@ -3373,6 +3374,12 @@ function drupalorg_preprocess_comment(&$v) {
       $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
     }
     $v['submitted'] = t($text, $args);
+  }
+
+  // Confirm button.
+  if (drupalorg_confirm_user_access($comment_account)) {
+    $form = drupal_get_form('drupalorg_add_confirm_button', $comment_account, $v['comment']->cid);
+    $v['picture'] .= drupal_render($form);
   }
 }
 
@@ -3610,7 +3617,9 @@ function drupalorg_render_cache_entity_cache_info_alter(&$cache_info, $entity, $
   if (variable_get('drupalorg_render_cache_comment_enabled', TRUE)
       && $context['entity_type'] == 'comment'
       && $context['view_mode'] == 'full') {
-    $cache_info['granularity'] = DRUPAL_CACHE_PER_ROLE;
+
+    // Do not cache if a confirm user button will show.
+    $cache_info['granularity'] = drupalorg_confirm_user_access(user_load($entity->uid)) ? DRUPAL_NO_CACHE : DRUPAL_CACHE_PER_ROLE;
     // Store that this needs special comment processing.
     $cache_info['drupalorg_comment_processing'] = TRUE;
   }
@@ -3925,18 +3934,32 @@ function _drupalorg_view_global_notice($notice = NULL) {
  * Form callback, a confirm button for Community users to give Confirmed user
  * role out.
  */
-function drupalorg_add_confirm_button($form, &$form_state, stdClass $account) {
+function drupalorg_add_confirm_button($form, &$form_state, stdClass $account, $comment_id = FALSE) {
   $form_state['account'] = $account;
+  $form_state['show_undo_text'] = TRUE;
+
+  $form['#attributes']['class'][] = 'confirm-button-form';
   $form['confirm'] = array(
     '#type' => 'submit',
     '#value' => t('Confirm'),
     '#attributes' => array('title' => t('Confirm this user is not a spammer')),
     '#ajax' => array(
       'callback' => 'drupalorg_add_confirm_button_ajax',
-      'wrapper' => 'drupalorg-add-confirm-button',
       'progress' => array('type' => 'throbber', 'message' => NULL),
     ),
   );
+
+  if ($comment_id !== FALSE) {
+    // This is a confirm button on a comment.
+    $form['#prefix'] = "<div id=\"confirm-button-{$comment_id}\">";
+    $form['#suffix'] = '</div>';
+    $form['confirm']['#ajax']['wrapper'] = 'confirm-button-' . $comment_id;
+    $form_state['show_undo_text'] = FALSE;
+  }
+  else {
+    // This is a normal confirm button.
+    $form['confirm']['#ajax']['wrapper'] = 'drupalorg-add-confirm-button';
+  }
 
   return $form;
 }
@@ -3949,7 +3972,9 @@ function drupalorg_add_confirm_button_ajax($form, &$form_state) {
   }
   else {
     $op = 'add_role';
-    $form['confirm']['#prefix'] = '<div class="undo">' . t('You’ve confirmed this user. Undo?') . '</div>';
+    if ($form_state['show_undo_text']) {
+      $form['confirm']['#prefix'] = '<div class="undo">' . t('You’ve confirmed this user. Undo?') . '</div>';
+    }
     $form['confirm']['#value'] = t('Undo');
   }
 
