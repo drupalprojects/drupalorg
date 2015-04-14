@@ -4087,7 +4087,3 @@ function drupalorg_confirm_user_access($account) {
 function drupalorg_user_is_confirmed($account) {
   return isset($account->roles[variable_get('drupalorg_crosssite_trusted_role')]);
 }
-
-function drupalorg_comment_view($comment, $view_mode, $langcode) {
-//  dpm($comment);
-}
