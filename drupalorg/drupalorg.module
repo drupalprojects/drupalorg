@@ -3962,6 +3962,18 @@ function drupalorg_notice_settings_form($form, &$form_state) {
       '#value' => REQUEST_TIME,
     );
 
+    $form['advanced'] = array(
+      '#title' => t('Advanced'),
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $form['advanced']['roles'] = array(
+      '#title' => t('Roles'),
+      '#type' => 'checkboxes',
+      '#options' => user_roles(TRUE),
+    );
+
     $form['submit'] = array(
       '#type' => 'submit',
       '#value' => t('Save configuration'),
