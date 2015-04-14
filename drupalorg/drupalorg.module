@@ -3696,8 +3696,8 @@ function drupalorg_render_cache_entity_cache_info_alter(&$cache_info, $entity, $
       && $context['entity_type'] == 'comment'
       && $context['view_mode'] == 'full') {
 
-    $is_confirmed = drupalorg_user_is_confirmed(user_load($entity->uid));
-    $cache_info['granularity'] = $is_confirmed ? DRUPAL_CACHE_PER_ROLE : DRUPAL_NO_CACHE;
+    // Do not cache if a confirm user button will show.
+    $cache_info['granularity'] = drupalorg_confirm_user_access(user_load($entity->uid)) ? DRUPAL_NO_CACHE : DRUPAL_CACHE_PER_ROLE;
     // Store that this needs special comment processing.
     $cache_info['drupalorg_comment_processing'] = TRUE;
   }
