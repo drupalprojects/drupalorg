@@ -3763,3 +3763,12 @@ function drupalorg_update_7081() {
       ->execute();
   }
 }
+
+/**
+ * Convert drupalorg_notice variable to an array.
+ */
+function drupalorg_update_7082() {
+  if ($original = variable_get('drupalorg_notice')) {
+    variable_set('drupalorg_notice', array($original));
+  }
+}
