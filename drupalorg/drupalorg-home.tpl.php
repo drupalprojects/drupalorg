@@ -63,7 +63,7 @@
   </div>
 
   <div class="call-to-action">
-    <h2><a href="https://jobs.drupal.org/">Drupal job board</a></h2>
+    <h2><a href="https://jobs.drupal.org/">Drupal Jobs</a></h2>
     <p>Find your next job or post an open position on the official Drupal community job board.</p>
     <p><a href="https://jobs.drupal.org/">Search or post Drupal Jobs →</a></p>
   </div>
