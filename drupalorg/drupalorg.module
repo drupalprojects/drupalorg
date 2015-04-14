@@ -3962,14 +3962,15 @@ function drupalorg_notice_settings_form($form, &$form_state) {
       '#value' => REQUEST_TIME,
     );
 
-    $form['advanced'] = array(
+    $form['drupalorg_notice']['advanced'] = array(
       '#title' => t('Advanced'),
       '#type' => 'fieldset',
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
     );
-    $form['advanced']['roles'] = array(
+    $form['drupalorg_notice']['advanced']['roles'] = array(
       '#title' => t('Roles'),
+      '#description' => t('Select one or more roles to send the message to. If no roles are selected, the message will be down to all authenticated users.'),
       '#type' => 'checkboxes',
       '#options' => user_roles(TRUE),
     );
