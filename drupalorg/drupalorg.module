@@ -733,12 +733,6 @@ function drupalorg_get_activity($_force = FALSE) {
     // Users: Count them.
     $stats['number_of_users'] = number_format(db_query('SELECT COUNT(*) FROM {users} WHERE uid > :uid AND status = :status AND login > :login', array(':uid' => 0, ':status' => 1, ':login' => 0))->fetchField());
 
-    // Country.
-    $stats['number_of_countries'] = number_format(db_query("SELECT COUNT(DISTINCT field_country_value) FROM {field_data_field_country}")->fetchField());
-
-    // Languages: Get all the distinct combinations and then filter that down.
-    $stats['number_of_languages'] = number_format(db_query("SELECT COUNT(DISTINCT field_languages_value) FROM {field_data_field_languages}")->fetchField());
-
     // Sites: use project API.
     $stats['sites'] = number_format(project_usage_get_project_total_usage(DRUPALORG_CORE_NID));
 
@@ -747,21 +741,17 @@ function drupalorg_get_activity($_force = FALSE) {
 
     // Sites made with Drupal.
     if (module_exists('drupalorg_case_studies')) {
-      $stats['sites_made'] = array();
       $view = views_get_view('drupalorg_casestudies');
       if (!empty($view)) {
-        $view->preview('block_1');
+        $stats['case_studies'] = $view->preview('block_1');
         // Ensure the derivative gets generated
-        $style = 'grid-4';
+        $style = 'case-4-2x';
         foreach ($view->result as $result) {
           $uri = $result->field_field_mainimage[0]['rendered']['#item']['uri'];
           $destination = image_style_path($style, $uri);
           if (!file_exists($destination)) {
             image_style_create_derivative(image_style_load($style), $uri, $destination);
           }
-        }
-        foreach ($view->style_plugin->rendered_fields as $row) {
-          $stats['sites_made'][] = implode('', $row);
         }
       }
     }
@@ -885,9 +875,6 @@ function drupalorg_preprocess_page(&$variables) {
  * Implementation of template_preprocess_drupalorg_home().
  */
 function drupalorg_preprocess_drupalorg_home(&$variables) {
-  $variables['things_we_made'] = '';
-  $variables['map_content'] = drupalorg_map_content();
-
   // Get content for the Recent Forum Posts tab.
   $result = db_query_range('SELECT f.nid, f.title, f.created, u.uid, u.name FROM {forum_index} f INNER JOIN {node} n ON n.nid = f.nid INNER JOIN {users} u ON u.uid = n.uid ORDER BY f.nid DESC', 0, 5);
   $recent_forums = '';
@@ -901,70 +888,7 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   // Retrieve or rebuild stats cache.
   $variables += drupalorg_get_activity();
 
-  // Pick a random site made with Drupal from the cache.
-  if (!empty($variables['sites_made'])){
-    $variables['things_we_made'] = $variables['sites_made'][array_rand($variables['sites_made'])];
-  }
-
-  $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'Redesign_home'));
-}
-
-/**
- * Get HTML for home page map.
- */
-function drupalorg_map_content($_force = FALSE) {
-  if (!$_force && $cache = cache_get('drupalorg_map_content', 'drupalorg')) {
-    $output = $cache->data;
-  }
-  else {
-    $map = array(
-      0 => array(
-        'type' => 'commit', // For the pin color.
-        'message' => variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011'),
-        'latitude' => variable_get('drupalcon_latitude', 41.836944),
-        'longitude' => variable_get('drupalcon_longitude', -87.684444),
-      ),
-    );
-    $views = array('drupalorg_handbook_map', 'drupalorg_forum_map', 'drupalorg_commit_map');
-    foreach ($views as $q => $view) {
-      $view = views_get_view($view);
-      $view->preview();
-      $fields = array(
-        'message' => NULL,
-        'latitude' => NULL,
-        'longitude' => NULL,
-      );
-      foreach ($view->field as $id => $handler) {
-        if (array_key_exists($handler->ui_name(), $fields)) {
-          $fields[$handler->ui_name()] = $id;
-        }
-      }
-      foreach ($view->style_plugin->rendered_fields as $n => $row) {
-        $map[$n * count($views) + $q + 1]['type'] = $view->get_title();
-        foreach ($fields as $field => $id) {
-          $map[$n * count($views) + $q + 1][$field] = $row[$id];
-        }
-      }
-    }
-    ksort($map);
-    $output = '';
-    foreach ($map as $row) {
-      $output .= theme('drupalorg_map_pin', $row);
-    }
-
-    cache_set('drupalorg_map_content', $output, 'drupalorg');
-  }
-
-  return $output;
-}
-
-/**
- * Generates HTML to plot a map pin.
- */
-function drupalorg_preprocess_drupalorg_map_pin(&$variables) {
-  $variables['classes_array'][] = 'homepage-pin';
-  $variables['classes_array'][] = 'homepage-pin-' . $variables['type'];
-  $variables['classes_array'][] = 'homepage-pin-' . ($variables['longitude'] > 0 ? 'east' : 'west');
+  $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'homepage-300x250'));
 }
 
 /**
@@ -1255,8 +1179,6 @@ function drupalorg_theme() {
       'variables' => array(
         'latitude' => NULL,
         'longitude' => NULL,
-        'message' => '',
-        'type' => 'default',
       ),
       'template' => 'drupalorg-map-pin',
     ),
