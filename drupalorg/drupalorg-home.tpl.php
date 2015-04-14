@@ -57,20 +57,20 @@
 
 <div class="front-secondary">
   <div class="call-to-action">
-    <h2><a href="/drupal-services">Services</a></h2>
-    <p>The Drupal ecosystem of service providers is vast. Visit the Drupal Services Marketplace to quickly find a company to help you create a great website or host one.</p>
+    <h2><a href="/drupal-services">Find Drupal service providers</a></h2>
+    <p>Find a company to help you create a great website or host one.</p>
     <p><a href="/drupal-services">Browse Drupal Services Marketplace →</a></p>
   </div>
 
   <div class="call-to-action">
-    <h2><a href="https://jobs.drupal.org/">Jobs</a></h2>
-    <p>Drupal skills offer rewarding careers all over the world in a variety of industries. Visit Drupal Jobs, the official career site of the Drupal community, to look for a job or post an open position.</p>
+    <h2><a href="https://jobs.drupal.org/">Drupal job board</a></h2>
+    <p>Find your next job or post an open position on the official Drupal community job board.</p>
     <p><a href="https://jobs.drupal.org/">Search or post Drupal Jobs →</a></p>
   </div>
 
   <div class="call-to-action last">
-    <h2><a href="/supporters">Supporters</a></h2>
-    <p>Many companies who benefit from a vibrant and growing Drupal ecosystem join the Drupal Supporter Programs. These companies help the project grow and as a result they gain visibility in the community.</p>
+    <h2><a href="/supporters">Thank you Drupal supporters</a></h2>
+    <p>These companies joined our Drupal Supporter Programs to help grow the Drupal ecosystem.</p>
     <p><a href="/supporters">Find out who supports Drupal →</a></p>
   </div>
 </div>
