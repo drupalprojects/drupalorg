@@ -143,14 +143,18 @@ function drupalorg_page_build(&$page) {
  */
 function drupalorg_show_global_notice(stdClass $account) {
   if ($notices = variable_get('drupalorg_notice')) {
-    foreach ($notices as $notice) {
+    foreach ($notices as $key => $notice) {
       // Show if the user has accessed the site before the notice was set.
       if ($account->access != 0 && $account->access < $notice['time']) {
         // And has not seen it this session.
-        if (!isset($_SESSION['drupalorg_notice']) || !$_SESSION['drupalorg_notice'] === $notice['time']) {
-          drupal_set_message(_drupalorg_view_global_notice($notice));
-          // Store the time of the notice was viewed.
-          $_SESSION['drupalorg_notice'] = $notice['time'];
+        if (!isset($_SESSION['drupalorg_notice'][$key]) || !$_SESSION['drupalorg_notice'][$key] === $notice['time']) {
+          if (!empty($notice['advanced']['roles']) || in_array($notice['advanced']['roles'], $account->roles)) {
+            // Show the message.
+            drupal_set_message(_drupalorg_view_global_notice($notice));
+
+            // Store the time of the notice was viewed.
+            $_SESSION['drupalorg_notice'][$key] = $notice['time'];
+          }
         }
       }
     }
