@@ -4035,3 +4035,12 @@ function drupalorg_confirm_user_access($account) {
 function drupalorg_user_is_confirmed($account) {
   return isset($account->roles[variable_get('drupalorg_crosssite_trusted_role')]);
 }
+
+/**
+ * Implements hook_admin_paths_alter().
+ */
+function drupalorg_admin_paths_alter(&$paths) {
+  $paths['user/*/edit'] = FALSE;
+  $paths['user/*/project-issue'] = FALSE;
+  $paths['user/*/ssh-keys'] = FALSE;
+}
