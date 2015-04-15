@@ -6,9 +6,9 @@
   </div>
 
   <div class="call-to-action last">
-    <h2><a href="about">Get Started</a></h2>
+    <h2><a href="/start">Get Started</a></h2>
     <p>Use Drupal to build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine.</p>
-    <p class="front-get-started"><a href="start" class="link-button"><span>Get Started with Drupal</span></a></p>
+    <p class="front-get-started"><a href="/start" class="link-button"><span>Get Started with Drupal</span></a></p>
   </div>
 
   <div id="community-updates">
