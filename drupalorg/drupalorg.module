@@ -828,8 +828,6 @@ function drupalorg_library_alter(&$libraries, $module) {
  */
 function drupalorg_home() {
   drupal_add_library('system', 'ui.tabs');
-  drupal_add_js(drupal_get_path('module', 'geolocation_html5') . '/geolocation_html5.js');
-  drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/home.js');
   drupal_set_title(t('Drupal - Open Source CMS'));
 
   return theme('drupalorg_home');
