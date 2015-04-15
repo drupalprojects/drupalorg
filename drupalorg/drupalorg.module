@@ -2070,11 +2070,7 @@ function drupalorg_block_render($module, $delta) {
 function drupalorg_settings_form($form, &$form_state) {
   $form = array();
 
-  $form['featured'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Featured projects'),
-  );
-  $form['featured']['drupalorg_featured_translations'] = array(
+  $form['drupalorg_featured_translations'] = array(
     '#type' => 'textarea',
     '#title' => t('Featured translations'),
     '#default_value' => variable_get('drupalorg_featured_translations', ''),
