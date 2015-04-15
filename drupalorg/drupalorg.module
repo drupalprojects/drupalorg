@@ -4013,6 +4013,10 @@ function drupalorg_notice_settings_form_submit($form, &$form_state) {
     // Save the form data.
     $notices = variable_get('drupalorg_notice');
     $notices[] = $form_state['storage']['original_form']['drupalorg_notice'];
+    // Only store 3 messages.
+    if (count($notices) > 3) {
+      array_shift($notices);
+    }
     variable_set('drupalorg_notice', $notices);
     drupal_set_message(t('The message will be displayed to users on their next page load.'));
   }
