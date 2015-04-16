@@ -2064,7 +2064,6 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'report to mollom',
     'roles' => array(
       'administrator' => 'administrator',
-      'community' => 'community',
     ),
     'module' => 'mollom',
   );
