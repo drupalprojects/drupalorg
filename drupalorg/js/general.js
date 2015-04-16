@@ -1,7 +1,9 @@
 (function ($) {
   Drupal.behaviors.drupalorgHome = {
     attach: function (context, settings) {
-      $('.front #community-updates', context).tabs();
+      $('.front #community-updates', context).each(function () {
+        $(this).tabs();
+      });
     }
   };
 
