@@ -1,3 +1,0 @@
-<?php
-
-include_once('drupalorg_profile_spam.features.inc');
