@@ -78,7 +78,8 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_project_issue-field_attribute_contribution_to'
+  // Exported field_instance:
+  // 'comment-comment_node_project_issue-field_attribute_contribution_to'
   $field_instances['comment-comment_node_project_issue-field_attribute_contribution_to'] = array(
     'bundle' => 'comment_node_project_issue',
     'default_value' => NULL,
@@ -108,7 +109,8 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_project_issue-field_for_customer'
+  // Exported field_instance:
+  // 'comment-comment_node_project_issue-field_for_customer'
   $field_instances['comment-comment_node_project_issue-field_for_customer'] = array(
     'bundle' => 'comment_node_project_issue',
     'default_value' => NULL,
@@ -142,7 +144,8 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_project_issue-field_issue_changes'
+  // Exported field_instance:
+  // 'comment-comment_node_project_issue-field_issue_changes'
   $field_instances['comment-comment_node_project_issue-field_issue_changes'] = array(
     'bundle' => 'comment_node_project_issue',
     'default_value' => NULL,

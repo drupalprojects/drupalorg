@@ -10,7 +10,8 @@
 function drupalorg_projects_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'field_collection_item-field_supporting_organizations-field_how_they_helped'
+  // Exported field_instance:
+  // 'field_collection_item-field_supporting_organizations-field_how_they_helped'
   $field_instances['field_collection_item-field_supporting_organizations-field_how_they_helped'] = array(
     'bundle' => 'field_supporting_organizations',
     'default_value' => NULL,
@@ -44,7 +45,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'field_collection_item-field_supporting_organizations-field_organization'
+  // Exported field_instance:
+  // 'field_collection_item-field_supporting_organizations-field_organization'
   $field_instances['field_collection_item-field_supporting_organizations-field_organization'] = array(
     'bundle' => 'field_supporting_organizations',
     'default_value' => NULL,
@@ -342,7 +344,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_default_component'
+  // Exported field_instance:
+  // 'node-project_core-field_project_default_component'
   $field_instances['node-project_core-field_project_default_component'] = array(
     'bundle' => 'project_core',
     'default_value' => array(
@@ -1751,7 +1754,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_changelog'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_changelog'
   $field_instances['node-project_distribution-field_project_changelog'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -1822,7 +1826,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_components'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_components'
   $field_instances['node-project_distribution-field_project_components'] = array(
     'bundle' => 'project_distribution',
     'default_value' => array(
@@ -1891,7 +1896,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_default_component'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_default_component'
   $field_instances['node-project_distribution-field_project_default_component'] = array(
     'bundle' => 'project_distribution',
     'default_value' => array(
@@ -2019,7 +2025,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_documentation'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_documentation'
   $field_instances['node-project_distribution-field_project_documentation'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2090,7 +2097,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_has_issue_queue'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_has_issue_queue'
   $field_instances['node-project_distribution-field_project_has_issue_queue'] = array(
     'bundle' => 'project_distribution',
     'default_value' => array(
@@ -2150,7 +2158,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_has_releases'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_has_releases'
   $field_instances['node-project_distribution-field_project_has_releases'] = array(
     'bundle' => 'project_distribution',
     'default_value' => array(
@@ -2396,7 +2405,8 @@ function drupalorg_projects_field_default_field_instances() {
     'widget_type' => 'imagefield_widget',
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_issue_guidelines'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_issue_guidelines'
   $field_instances['node-project_distribution-field_project_issue_guidelines'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2524,7 +2534,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_machine_name'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_machine_name'
   $field_instances['node-project_distribution-field_project_machine_name'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2579,7 +2590,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_phpcs_errors'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_phpcs_errors'
   $field_instances['node-project_distribution-field_project_phpcs_errors'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2637,7 +2649,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_phpcs_full'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_phpcs_full'
   $field_instances['node-project_distribution-field_project_phpcs_full'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2752,7 +2765,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_phpcs_warnings'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_phpcs_warnings'
   $field_instances['node-project_distribution-field_project_phpcs_warnings'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2810,7 +2824,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_screenshots'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_screenshots'
   $field_instances['node-project_distribution-field_project_screenshots'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2934,7 +2949,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_release_version_format'
+  // Exported field_instance:
+  // 'node-project_distribution-field_release_version_format'
   $field_instances['node-project_distribution-field_release_version_format'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2996,7 +3012,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_supporting_organizations'
+  // Exported field_instance:
+  // 'node-project_distribution-field_supporting_organizations'
   $field_instances['node-project_distribution-field_supporting_organizations'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -3491,7 +3508,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_default_component'
+  // Exported field_instance:
+  // 'node-project_drupalorg-field_project_default_component'
   $field_instances['node-project_drupalorg-field_project_default_component'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => array(
@@ -3619,7 +3637,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_documentation'
+  // Exported field_instance:
+  // 'node-project_drupalorg-field_project_documentation'
   $field_instances['node-project_drupalorg-field_project_documentation'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -3690,7 +3709,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_has_issue_queue'
+  // Exported field_instance:
+  // 'node-project_drupalorg-field_project_has_issue_queue'
   $field_instances['node-project_drupalorg-field_project_has_issue_queue'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => array(
@@ -3750,7 +3770,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_has_releases'
+  // Exported field_instance:
+  // 'node-project_drupalorg-field_project_has_releases'
   $field_instances['node-project_drupalorg-field_project_has_releases'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => array(
@@ -3996,7 +4017,8 @@ function drupalorg_projects_field_default_field_instances() {
     'widget_type' => 'imagefield_widget',
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_issue_guidelines'
+  // Exported field_instance:
+  // 'node-project_drupalorg-field_project_issue_guidelines'
   $field_instances['node-project_drupalorg-field_project_issue_guidelines'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4124,7 +4146,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_machine_name'
+  // Exported field_instance:
+  // 'node-project_drupalorg-field_project_machine_name'
   $field_instances['node-project_drupalorg-field_project_machine_name'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4179,7 +4202,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_phpcs_errors'
+  // Exported field_instance:
+  // 'node-project_drupalorg-field_project_phpcs_errors'
   $field_instances['node-project_drupalorg-field_project_phpcs_errors'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4352,7 +4376,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_phpcs_warnings'
+  // Exported field_instance:
+  // 'node-project_drupalorg-field_project_phpcs_warnings'
   $field_instances['node-project_drupalorg-field_project_phpcs_warnings'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4534,7 +4559,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_release_version_format'
+  // Exported field_instance:
+  // 'node-project_drupalorg-field_release_version_format'
   $field_instances['node-project_drupalorg-field_release_version_format'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -5034,7 +5060,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_default_component'
+  // Exported field_instance:
+  // 'node-project_module-field_project_default_component'
   $field_instances['node-project_module-field_project_default_component'] = array(
     'bundle' => 'project_module',
     'default_value' => array(
@@ -5233,7 +5260,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_has_issue_queue'
+  // Exported field_instance:
+  // 'node-project_module-field_project_has_issue_queue'
   $field_instances['node-project_module-field_project_has_issue_queue'] = array(
     'bundle' => 'project_module',
     'default_value' => array(
@@ -5539,7 +5567,8 @@ function drupalorg_projects_field_default_field_instances() {
     'widget_type' => 'imagefield_widget',
   );
 
-  // Exported field_instance: 'node-project_module-field_project_issue_guidelines'
+  // Exported field_instance:
+  // 'node-project_module-field_project_issue_guidelines'
   $field_instances['node-project_module-field_project_issue_guidelines'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -6139,7 +6168,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_supporting_organizations'
+  // Exported field_instance:
+  // 'node-project_module-field_supporting_organizations'
   $field_instances['node-project_module-field_supporting_organizations'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -6686,7 +6716,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_default_component'
+  // Exported field_instance:
+  // 'node-project_theme-field_project_default_component'
   $field_instances['node-project_theme-field_project_default_component'] = array(
     'bundle' => 'project_theme',
     'default_value' => array(
@@ -7191,7 +7222,8 @@ function drupalorg_projects_field_default_field_instances() {
     'widget_type' => 'imagefield_widget',
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_issue_guidelines'
+  // Exported field_instance:
+  // 'node-project_theme-field_project_issue_guidelines'
   $field_instances['node-project_theme-field_project_issue_guidelines'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7791,7 +7823,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_supporting_organizations'
+  // Exported field_instance:
+  // 'node-project_theme-field_supporting_organizations'
   $field_instances['node-project_theme-field_supporting_organizations'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -8144,7 +8177,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_changelog'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_changelog'
   $field_instances['node-project_theme_engine-field_project_changelog'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -8215,7 +8249,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_components'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_components'
   $field_instances['node-project_theme_engine-field_project_components'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => array(
@@ -8284,7 +8319,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_default_component'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_default_component'
   $field_instances['node-project_theme_engine-field_project_default_component'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => array(
@@ -8412,7 +8448,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_documentation'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_documentation'
   $field_instances['node-project_theme_engine-field_project_documentation'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -8483,7 +8520,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_has_issue_queue'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_has_issue_queue'
   $field_instances['node-project_theme_engine-field_project_has_issue_queue'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => array(
@@ -8543,7 +8581,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_has_releases'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_has_releases'
   $field_instances['node-project_theme_engine-field_project_has_releases'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => array(
@@ -8789,7 +8828,8 @@ function drupalorg_projects_field_default_field_instances() {
     'widget_type' => 'imagefield_widget',
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_issue_guidelines'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_issue_guidelines'
   $field_instances['node-project_theme_engine-field_project_issue_guidelines'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -8917,7 +8957,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_machine_name'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_machine_name'
   $field_instances['node-project_theme_engine-field_project_machine_name'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -8972,7 +9013,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_phpcs_errors'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_phpcs_errors'
   $field_instances['node-project_theme_engine-field_project_phpcs_errors'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9030,7 +9072,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_phpcs_full'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_phpcs_full'
   $field_instances['node-project_theme_engine-field_project_phpcs_full'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9145,7 +9188,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_phpcs_warnings'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_phpcs_warnings'
   $field_instances['node-project_theme_engine-field_project_phpcs_warnings'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9203,7 +9247,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_screenshots'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_screenshots'
   $field_instances['node-project_theme_engine-field_project_screenshots'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9327,7 +9372,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_release_version_format'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_release_version_format'
   $field_instances['node-project_theme_engine-field_release_version_format'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9389,7 +9435,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_supporting_organizations'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_supporting_organizations'
   $field_instances['node-project_theme_engine-field_supporting_organizations'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9813,7 +9860,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_components'
+  // Exported field_instance:
+  // 'node-project_translation-field_project_components'
   $field_instances['node-project_translation-field_project_components'] = array(
     'bundle' => 'project_translation',
     'default_value' => array(
@@ -9882,7 +9930,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_default_component'
+  // Exported field_instance:
+  // 'node-project_translation-field_project_default_component'
   $field_instances['node-project_translation-field_project_default_component'] = array(
     'bundle' => 'project_translation',
     'default_value' => array(
@@ -10010,7 +10059,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_documentation'
+  // Exported field_instance:
+  // 'node-project_translation-field_project_documentation'
   $field_instances['node-project_translation-field_project_documentation'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10081,7 +10131,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_has_issue_queue'
+  // Exported field_instance:
+  // 'node-project_translation-field_project_has_issue_queue'
   $field_instances['node-project_translation-field_project_has_issue_queue'] = array(
     'bundle' => 'project_translation',
     'default_value' => array(
@@ -10141,7 +10192,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_has_releases'
+  // Exported field_instance:
+  // 'node-project_translation-field_project_has_releases'
   $field_instances['node-project_translation-field_project_has_releases'] = array(
     'bundle' => 'project_translation',
     'default_value' => array(
@@ -10387,7 +10439,8 @@ function drupalorg_projects_field_default_field_instances() {
     'widget_type' => 'imagefield_widget',
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_issue_guidelines'
+  // Exported field_instance:
+  // 'node-project_translation-field_project_issue_guidelines'
   $field_instances['node-project_translation-field_project_issue_guidelines'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10515,7 +10568,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_machine_name'
+  // Exported field_instance:
+  // 'node-project_translation-field_project_machine_name'
   $field_instances['node-project_translation-field_project_machine_name'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10570,7 +10624,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_screenshots'
+  // Exported field_instance:
+  // 'node-project_translation-field_project_screenshots'
   $field_instances['node-project_translation-field_project_screenshots'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10694,7 +10749,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_release_version_format'
+  // Exported field_instance:
+  // 'node-project_translation-field_release_version_format'
   $field_instances['node-project_translation-field_release_version_format'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,

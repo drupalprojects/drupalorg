@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Drupal.org home page support feature.
- */
-
-include_once 'drupalorg_home_support.features.inc';

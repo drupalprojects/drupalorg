@@ -10,7 +10,8 @@
 function drupalorg_user_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'field_collection_item-field_organizations-field_current'
+  // Exported field_instance:
+  // 'field_collection_item-field_organizations-field_current'
   $field_instances['field_collection_item-field_organizations-field_current'] = array(
     'bundle' => 'field_organizations',
     'default_value' => array(
@@ -46,7 +47,8 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'field_collection_item-field_organizations-field_job_title'
+  // Exported field_instance:
+  // 'field_collection_item-field_organizations-field_job_title'
   $field_instances['field_collection_item-field_organizations-field_job_title'] = array(
     'bundle' => 'field_organizations',
     'default_value' => NULL,
@@ -80,7 +82,8 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'field_collection_item-field_organizations-field_organization_name'
+  // Exported field_instance:
+  // 'field_collection_item-field_organizations-field_organization_name'
   $field_instances['field_collection_item-field_organizations-field_organization_name'] = array(
     'bundle' => 'field_organizations',
     'default_value' => NULL,
@@ -114,7 +117,8 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'field_collection_item-field_organizations-field_organization_reference'
+  // Exported field_instance:
+  // 'field_collection_item-field_organizations-field_organization_reference'
   $field_instances['field_collection_item-field_organizations-field_organization_reference'] = array(
     'bundle' => 'field_organizations',
     'default_value' => NULL,

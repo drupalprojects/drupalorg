@@ -5,8 +5,6 @@
  */
 function drupalorg_drush_help($section) {
   switch ($section) {
-    case 'drupalorg:map-content':
-      return dt('Update home page map pins.');
     case 'drupalorg:rebuild-stats':
       return dt('Update home page stats.');
   }
@@ -27,10 +25,6 @@ function drupalorg_drush_command() {
       'description' => 'Continuously reindex the site. (Part of the Drupal.org D7 upgrade machinery.)',
     ),
   );
-}
-
-function drush_drupalorg_map_content() {
-  drupalorg_map_content(TRUE);
 }
 
 function drush_drupalorg_rebuild_stats() {

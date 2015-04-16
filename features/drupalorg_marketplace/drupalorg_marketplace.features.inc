@@ -35,5 +35,6 @@ function drupalorg_marketplace_node_info() {
 <br />People with your organization name in the user profile field "current company or organization" will be shown on your organization page.'),
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }

@@ -923,7 +923,8 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'optionwidgets_onoff',
   );
 
-  // Exported field_instance: 'node-organization-field_organization_headquarters'
+  // Exported field_instance:
+  // 'node-organization-field_organization_headquarters'
   $field_instances['node-organization-field_organization_headquarters'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -1295,7 +1296,8 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'text_textfield',
   );
 
-  // Exported field_instance: 'node-organization-field_organization_technologies'
+  // Exported field_instance:
+  // 'node-organization-field_organization_technologies'
   $field_instances['node-organization-field_organization_technologies'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -1348,7 +1350,8 @@ function drupalorg_marketplace_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-organization-field_organization_training_desc'
+  // Exported field_instance:
+  // 'node-organization-field_organization_training_desc'
   $field_instances['node-organization-field_organization_training_desc'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -1445,7 +1448,8 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'text_textarea',
   );
 
-  // Exported field_instance: 'node-organization-field_organization_training_list'
+  // Exported field_instance:
+  // 'node-organization-field_organization_training_list'
   $field_instances['node-organization-field_organization_training_list'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -1535,7 +1539,8 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'optionwidgets_buttons',
   );
 
-  // Exported field_instance: 'node-organization-field_organization_training_url'
+  // Exported field_instance:
+  // 'node-organization-field_organization_training_url'
   $field_instances['node-organization-field_organization_training_url'] = array(
     'bundle' => 'organization',
     'default_value' => array(

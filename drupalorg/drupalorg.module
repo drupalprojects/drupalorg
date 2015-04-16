@@ -733,12 +733,6 @@ function drupalorg_get_activity($_force = FALSE) {
     // Users: Count them.
     $stats['number_of_users'] = number_format(db_query('SELECT COUNT(*) FROM {users} WHERE uid > :uid AND status = :status AND login > :login', array(':uid' => 0, ':status' => 1, ':login' => 0))->fetchField());
 
-    // Country.
-    $stats['number_of_countries'] = number_format(db_query("SELECT COUNT(DISTINCT field_country_value) FROM {field_data_field_country}")->fetchField());
-
-    // Languages: Get all the distinct combinations and then filter that down.
-    $stats['number_of_languages'] = number_format(db_query("SELECT COUNT(DISTINCT field_languages_value) FROM {field_data_field_languages}")->fetchField());
-
     // Sites: use project API.
     $stats['sites'] = number_format(project_usage_get_project_total_usage(DRUPALORG_CORE_NID));
 
@@ -747,21 +741,17 @@ function drupalorg_get_activity($_force = FALSE) {
 
     // Sites made with Drupal.
     if (module_exists('drupalorg_case_studies')) {
-      $stats['sites_made'] = array();
       $view = views_get_view('drupalorg_casestudies');
       if (!empty($view)) {
-        $view->preview('block_1');
+        $stats['case_studies'] = $view->preview('block_1');
         // Ensure the derivative gets generated
-        $style = 'grid-4';
+        $style = 'case-4-2x';
         foreach ($view->result as $result) {
           $uri = $result->field_field_mainimage[0]['rendered']['#item']['uri'];
           $destination = image_style_path($style, $uri);
           if (!file_exists($destination)) {
             image_style_create_derivative(image_style_load($style), $uri, $destination);
           }
-        }
-        foreach ($view->style_plugin->rendered_fields as $row) {
-          $stats['sites_made'][] = implode('', $row);
         }
       }
     }
@@ -838,8 +828,6 @@ function drupalorg_library_alter(&$libraries, $module) {
  */
 function drupalorg_home() {
   drupal_add_library('system', 'ui.tabs');
-  drupal_add_js(drupal_get_path('module', 'geolocation_html5') . '/geolocation_html5.js');
-  drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/home.js');
   drupal_set_title(t('Drupal - Open Source CMS'));
 
   return theme('drupalorg_home');
@@ -885,9 +873,6 @@ function drupalorg_preprocess_page(&$variables) {
  * Implementation of template_preprocess_drupalorg_home().
  */
 function drupalorg_preprocess_drupalorg_home(&$variables) {
-  $variables['things_we_made'] = '';
-  $variables['map_content'] = drupalorg_map_content();
-
   // Get content for the Recent Forum Posts tab.
   $result = db_query_range('SELECT f.nid, f.title, f.created, u.uid, u.name FROM {forum_index} f INNER JOIN {node} n ON n.nid = f.nid INNER JOIN {users} u ON u.uid = n.uid ORDER BY f.nid DESC', 0, 5);
   $recent_forums = '';
@@ -901,70 +886,7 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
   // Retrieve or rebuild stats cache.
   $variables += drupalorg_get_activity();
 
-  // Pick a random site made with Drupal from the cache.
-  if (!empty($variables['sites_made'])){
-    $variables['things_we_made'] = $variables['sites_made'][array_rand($variables['sites_made'])];
-  }
-
-  $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'Redesign_home'));
-}
-
-/**
- * Get HTML for home page map.
- */
-function drupalorg_map_content($_force = FALSE) {
-  if (!$_force && $cache = cache_get('drupalorg_map_content', 'drupalorg')) {
-    $output = $cache->data;
-  }
-  else {
-    $map = array(
-      0 => array(
-        'type' => 'commit', // For the pin color.
-        'message' => variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011'),
-        'latitude' => variable_get('drupalcon_latitude', 41.836944),
-        'longitude' => variable_get('drupalcon_longitude', -87.684444),
-      ),
-    );
-    $views = array('drupalorg_handbook_map', 'drupalorg_forum_map', 'drupalorg_commit_map');
-    foreach ($views as $q => $view) {
-      $view = views_get_view($view);
-      $view->preview();
-      $fields = array(
-        'message' => NULL,
-        'latitude' => NULL,
-        'longitude' => NULL,
-      );
-      foreach ($view->field as $id => $handler) {
-        if (array_key_exists($handler->ui_name(), $fields)) {
-          $fields[$handler->ui_name()] = $id;
-        }
-      }
-      foreach ($view->style_plugin->rendered_fields as $n => $row) {
-        $map[$n * count($views) + $q + 1]['type'] = $view->get_title();
-        foreach ($fields as $field => $id) {
-          $map[$n * count($views) + $q + 1][$field] = $row[$id];
-        }
-      }
-    }
-    ksort($map);
-    $output = '';
-    foreach ($map as $row) {
-      $output .= theme('drupalorg_map_pin', $row);
-    }
-
-    cache_set('drupalorg_map_content', $output, 'drupalorg');
-  }
-
-  return $output;
-}
-
-/**
- * Generates HTML to plot a map pin.
- */
-function drupalorg_preprocess_drupalorg_map_pin(&$variables) {
-  $variables['classes_array'][] = 'homepage-pin';
-  $variables['classes_array'][] = 'homepage-pin-' . $variables['type'];
-  $variables['classes_array'][] = 'homepage-pin-' . ($variables['longitude'] > 0 ? 'east' : 'west');
+  $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'homepage-300x250'));
 }
 
 /**
@@ -1255,8 +1177,6 @@ function drupalorg_theme() {
       'variables' => array(
         'latitude' => NULL,
         'longitude' => NULL,
-        'message' => '',
-        'type' => 'default',
       ),
       'template' => 'drupalorg-map-pin',
     ),
@@ -1317,6 +1237,27 @@ function drupalorg_form_user_admin_settings_alter(&$form) {
     '#type' => 'textarea',
     '#title' => t('Body'),
     '#default_value' => _user_mail_text('drupalorg_email_verified_body', NULL, array(), FALSE),
+    '#rows' => 15,
+  );
+
+  // Add an email sent after gaining the community role. See
+  // drupalorg_user_update().
+  $form['drupalorg_user_community_email'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('User gets community role'),
+    '#description' => t('Edit the welcome email messages sent to fresh member accounts once email has been validated.'),
+    '#group' => 'email',
+  );
+  $form['drupalorg_user_community_email']['user_mail_drupalorg_user_community_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#default_value' => _user_mail_text('drupalorg_user_community_subject', NULL, array(), FALSE),
+    '#maxlength' => 180,
+  );
+  $form['drupalorg_user_community_email']['user_mail_drupalorg_user_community_body'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Body'),
+    '#default_value' => _user_mail_text('drupalorg_user_community_body', NULL, array(), FALSE),
     '#rows' => 15,
   );
 }
@@ -2132,34 +2073,11 @@ function drupalorg_block_render($module, $delta) {
 function drupalorg_settings_form($form, &$form_state) {
   $form = array();
 
-  $form['featured'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Featured projects'),
-  );
-  $form['featured']['drupalorg_featured_translations'] = array(
+  $form['drupalorg_featured_translations'] = array(
     '#type' => 'textarea',
     '#title' => t('Featured translations'),
     '#default_value' => variable_get('drupalorg_featured_translations', ''),
     '#rows' => 5,
-  );
-  $form['drupalcon'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('DrupalCon'),
-  );
-  $form['drupalcon']['drupalcon_latitude'] = array(
-    '#type' => 'textfield',
-    '#title' => t('DrupalCon latitude'),
-    '#default_value' => variable_get('drupalcon_latitude', 41.836944),
-  );
-  $form['drupalcon']['drupalcon_longitude'] = array(
-    '#type' => 'textfield',
-    '#title' => t('DrupalCon longitude'),
-    '#default_value' => variable_get('drupalcon_longitude', -87.684444),
-  );
-  $form['drupalcon']['drupalcon_message'] = array(
-    '#type' => 'textarea',
-    '#title' => t('DrupalCon map bubble'),
-    '#default_value' => variable_get('drupalcon_message', '<a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a><br />March 7‐10 2011'),
   );
 
   return system_settings_form($form);
@@ -3369,12 +3287,13 @@ function drupalorg_preprocess_comment(&$v) {
   elseif (variable_get('user_picture_default', '')) {
     $filepath = variable_get('user_picture_default', '');
   }
+  $comment_account = user_load($v['comment']->uid);
   if (isset($filepath)) {
     $v['picture'] = l(theme('image_style', array(
       'style_name' => 'drupalorg_user_picture',
       'path' => $filepath,
       'alt' => t('@user’s picture', array('@user' => format_username($v['comment']))),
-    )) . drupalorg_add_badge_new_user(user_load($v['elements']['#comment']->uid)), 'user/' . $v['comment']->uid, array(
+    )) . drupalorg_add_badge_new_user($comment_account), 'user/' . $v['comment']->uid, array(
       'attributes' => array(
         'title' => t('View user profile.'),
         'class' => 'picture',
@@ -3456,6 +3375,12 @@ function drupalorg_preprocess_comment(&$v) {
       $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
     }
     $v['submitted'] = t($text, $args);
+  }
+
+  // Confirm button.
+  if (drupalorg_confirm_user_access($comment_account)) {
+    $form = drupal_get_form('drupalorg_add_confirm_button', $comment_account, $v['comment']->cid);
+    $v['picture'] = '<div class="user-picture-with-button">' . $v['picture'] . drupal_render($form) . '</div>';
   }
 }
 
@@ -3666,6 +3591,14 @@ function drupalorg_user_update(&$edit, $account) {
   if (!empty($account->logintoboggan_email_validated)) {
     _user_mail_notify('drupalorg_email_verified', $account);
   }
+
+  // Send an email when gaining the community role. See
+  // drupalorg_form_user_admin_settings_alter().
+  if ($community_rid = variable_get('drupalorg_crosssite_community_role')) {
+    if (!isset($account->original->roles[$community_rid]) && isset($account->roles[$community_rid])) {
+      _user_mail_notify('drupalorg_user_community', $account);
+    }
+  }
 }
 
 /**
@@ -3693,7 +3626,9 @@ function drupalorg_render_cache_entity_cache_info_alter(&$cache_info, $entity, $
   if (variable_get('drupalorg_render_cache_comment_enabled', TRUE)
       && $context['entity_type'] == 'comment'
       && $context['view_mode'] == 'full') {
-    $cache_info['granularity'] = DRUPAL_CACHE_PER_ROLE;
+
+    // Do not cache if a confirm user button will show.
+    $cache_info['granularity'] = drupalorg_confirm_user_access(user_load($entity->uid)) ? DRUPAL_NO_CACHE : DRUPAL_CACHE_PER_ROLE;
     // Store that this needs special comment processing.
     $cache_info['drupalorg_comment_processing'] = TRUE;
   }
@@ -4008,18 +3943,32 @@ function _drupalorg_view_global_notice($notice = NULL) {
  * Form callback, a confirm button for Community users to give Confirmed user
  * role out.
  */
-function drupalorg_add_confirm_button($form, &$form_state, stdClass $account) {
+function drupalorg_add_confirm_button($form, &$form_state, stdClass $account, $comment_id = FALSE) {
   $form_state['account'] = $account;
+  $form_state['show_undo_text'] = TRUE;
+
+  $form['#attributes']['class'][] = 'confirm-button-form';
   $form['confirm'] = array(
     '#type' => 'submit',
     '#value' => t('Confirm'),
     '#attributes' => array('title' => t('Confirm this user is not a spammer')),
     '#ajax' => array(
       'callback' => 'drupalorg_add_confirm_button_ajax',
-      'wrapper' => 'drupalorg-add-confirm-button',
       'progress' => array('type' => 'throbber', 'message' => NULL),
     ),
   );
+
+  if ($comment_id !== FALSE) {
+    // This is a confirm button on a comment.
+    $form['#prefix'] = "<div id=\"confirm-button-{$comment_id}\">";
+    $form['#suffix'] = '</div>';
+    $form['confirm']['#ajax']['wrapper'] = 'confirm-button-' . $comment_id;
+    $form_state['show_undo_text'] = FALSE;
+  }
+  else {
+    // This is a normal confirm button.
+    $form['confirm']['#ajax']['wrapper'] = 'drupalorg-add-confirm-button';
+  }
 
   return $form;
 }
@@ -4032,7 +3981,9 @@ function drupalorg_add_confirm_button_ajax($form, &$form_state) {
   }
   else {
     $op = 'add_role';
-    $form['confirm']['#prefix'] = '<div class="undo">' . t('You’ve confirmed this user. Undo?') . '</div>';
+    if ($form_state['show_undo_text']) {
+      $form['confirm']['#prefix'] = '<div class="undo">' . t('You’ve confirmed this user. Undo?') . '</div>';
+    }
     $form['confirm']['#value'] = t('Undo');
   }
 
@@ -4063,4 +4014,13 @@ function drupalorg_confirm_user_access($account) {
 
 function drupalorg_user_is_confirmed($account) {
   return isset($account->roles[variable_get('drupalorg_crosssite_trusted_role')]);
+}
+
+/**
+ * Implements hook_admin_paths_alter().
+ */
+function drupalorg_admin_paths_alter(&$paths) {
+  $paths['user/*/edit'] = FALSE;
+  $paths['user/*/project-issue'] = FALSE;
+  $paths['user/*/ssh-keys'] = FALSE;
 }
