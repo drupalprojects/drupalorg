@@ -27,7 +27,6 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Git administrator' => 'Git administrator',
       'administrator' => 'administrator',
-      'community' => 'community',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
       'testing administrator' => 'testing administrator',
@@ -2232,7 +2231,6 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Git administrator' => 'Git administrator',
       'administrator' => 'administrator',
-      'community' => 'community',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
       'testing administrator' => 'testing administrator',
