@@ -140,7 +140,7 @@ function drupalorg_page_build(&$page) {
 }
 
 /**
- * Show a one-time-per-user global notice. See drupalorg_page_build() and
+ * Show a one-time-per-user global notice. See drupalorg_init() and
  * drupalorg_user_login().
  */
 function drupalorg_show_global_notice(stdClass $account) {
@@ -149,7 +149,7 @@ function drupalorg_show_global_notice(stdClass $account) {
   if (!path_is_admin(current_path()) && $notices = variable_get('drupalorg_notice')) {
     foreach ($notices as $notice) {
       // Show if the user has accessed the site before the notice was set.
-//      if ($account->access != 0 && $account->access < $notice['time']) {
+      if ($account->access != 0 && $account->access < $notice['time']) {
           // And has not seen it this session.
           $not_seen = (!isset($_SESSION['drupalorg_notice'][$notice['id']]) || !$_SESSION['drupalorg_notice'][$notice['id']] === $notice['time']);
           $has_roles = drupalorg_show_global_notice_roles(array_keys($account->roles), $notice['advanced']['roles']);
@@ -160,7 +160,7 @@ function drupalorg_show_global_notice(stdClass $account) {
             // Store the time of the notice was viewed.
             $_SESSION['drupalorg_notice'][$notice['id']] = $notice['time'];
           }
-//      }
+      }
     }
   }
 }
