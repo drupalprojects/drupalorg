@@ -43,7 +43,8 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_project_issue-field_attribute_as_volunteer'
+  // Exported field_instance:
+  // 'comment-comment_node_project_issue-field_attribute_as_volunteer'
   $field_instances['comment-comment_node_project_issue-field_attribute_as_volunteer'] = array(
     'bundle' => 'comment_node_project_issue',
     'default_value' => array(
@@ -56,9 +57,8 @@ function drupalorg_issues_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
+        'type' => 'hidden',
         'weight' => 3,
       ),
     ),

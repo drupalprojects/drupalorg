@@ -17,7 +17,6 @@ function drupalorg_issues_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_attribute_as_volunteer',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',
@@ -28,7 +27,7 @@ function drupalorg_issues_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => 'To organizations',
-        1 => 'I’m a volunteer',
+        1 => 'I’m volunteering my own time',
       ),
       'allowed_values_function' => '',
     ),
