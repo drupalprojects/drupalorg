@@ -3951,6 +3951,11 @@ function drupalorg_notice_settings_form($form, &$form_state) {
     // Display the initial form.
     $form['drupalorg_notice']['#tree'] = TRUE;
 
+    $form['drupalorg_notice']['id'] = array(
+      '#type' => 'hidden',
+      '#value' => isset($last_notice['id']) ? $last_notice['id'] + 1 : 1,
+    );
+
     $form['drupalorg_notice']['message'] = array(
       '#title' => t('Message'),
       '#description' => t('System message text to be displayed to all authenticated Drupal.org users on their next page load. One time display.'),
