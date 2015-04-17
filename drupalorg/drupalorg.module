@@ -134,6 +134,8 @@ function drupalorg_page_build(&$page) {
     if (empty($account->field_terms_of_service) || empty($account->field_terms_of_service[LANGUAGE_NONE][0]['value'])) {
       drupal_set_message(t('We’ve <a href="/news/next-steps-for-drupalorg-tos-and-privacy-policy">introduced</a> Drupal.org <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>. Please read both documents and <a href="!edit">accept them on your user profile</a> to continue using Drupal.org.', array('!edit' => url('user/' . $account->uid . '/edit'))), 'warning');
     }
+
+    drupalorg_show_global_notice($account);
   }
 }
 
@@ -142,21 +144,23 @@ function drupalorg_page_build(&$page) {
  * drupalorg_user_login().
  */
 function drupalorg_show_global_notice(stdClass $account) {
-  if ($notices = variable_get('drupalorg_notice')) {
-    foreach ($notices as $key => $notice) {
+  // @todo: Convert $_SESSION['drupalorg_notice'] to an array if it's a string.
+
+  if (!path_is_admin(current_path()) && $notices = variable_get('drupalorg_notice')) {
+    foreach ($notices as $notice) {
       // Show if the user has accessed the site before the notice was set.
-      if ($account->access != 0 && $account->access < $notice['time']) {
-        // And has not seen it this session.
-        if (!isset($_SESSION['drupalorg_notice'][$key]) || !$_SESSION['drupalorg_notice'][$key] === $notice['time']) {
-          if (!empty($notice['advanced']['roles']) || in_array($notice['advanced']['roles'], $account->roles)) {
+//      if ($account->access != 0 && $account->access < $notice['time']) {
+          // And has not seen it this session.
+          $not_seen = (!isset($_SESSION['drupalorg_notice'][$notice['id']]) || !$_SESSION['drupalorg_notice'][$notice['id']] === $notice['time']);
+          $has_roles = drupalorg_show_global_notice_roles(array_keys($account->roles), $notice['advanced']['roles']);
+          if ($not_seen && $has_roles) {
             // Show the message.
-            drupal_set_message(_drupalorg_view_global_notice($notice));
+            drupal_set_message(_drupalorg_view_global_notice($notice), 'status', FALSE);
 
             // Store the time of the notice was viewed.
-            $_SESSION['drupalorg_notice'][$key] = $notice['time'];
+            $_SESSION['drupalorg_notice'][$notice['id']] = $notice['time'];
           }
-        }
-      }
+//      }
     }
   }
 }
@@ -3996,7 +4000,7 @@ function drupalorg_notice_settings_form($form, &$form_state) {
   }
   else {
     // Display a preview of the message.
-    drupal_set_message(_drupalorg_view_global_notice($form_state['storage']['original_form']['drupalorg_notice'], 1));
+    drupal_set_message(_drupalorg_view_global_notice($form_state['storage']['original_form']['drupalorg_notice']), 'status', FALSE);
     // Display the confirmation form.
     return confirm_form($form, t('Enable global notice'), current_path(), t('Are you absolutely sure you want to display your message to every Drupal.org user?'), t('Enable global notice'), t('Cancel'));
   }
@@ -4021,6 +4025,7 @@ function drupalorg_notice_settings_form_submit($form, &$form_state) {
     // Only store 3 messages.
     if (count($notices) > 3) {
       array_shift($notices);
+      array_shift($_SESSION['drupalorg_notice']);
     }
     variable_set('drupalorg_notice', $notices);
     drupal_set_message(t('The message will be displayed to users on their next page load.'));
@@ -4096,4 +4101,18 @@ function drupalorg_confirm_user_access($account) {
 
 function drupalorg_user_is_confirmed($account) {
   return isset($account->roles[variable_get('drupalorg_crosssite_trusted_role')]);
+}
+
+function drupalorg_show_global_notice_roles($account_roles, $notice_roles) {
+  if (empty($notice_roles)) {
+    return TRUE;
+  }
+  elseif (count($notice_roles) === 1) {
+    return in_array(reset($notice_roles), $account_roles);
+  }
+  else {
+    return count($notice_roles) < count(array_diff($notice_roles, $account_roles));
+  }
+
+  return FALSE;
 }
