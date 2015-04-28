@@ -539,6 +539,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'image',
   );
 
+  // Exported permission: 'administer mailchimp'.
+  $permissions['administer mailchimp'] = array(
+    'name' => 'administer mailchimp',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'mailchimp',
+  );
+
   // Exported permission: 'administer menu'.
   $permissions['administer menu'] = array(
     'name' => 'administer menu',
@@ -758,6 +767,15 @@ function drupalorg_permissions_user_default_permissions() {
       'user administrator' => 'user administrator',
     ),
     'module' => 'system',
+  );
+
+  // Exported permission: 'bypass advanced aggregation'.
+  $permissions['bypass advanced aggregation'] = array(
+    'name' => 'bypass advanced aggregation',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'advagg',
   );
 
   // Exported permission: 'bypass bakery'.
@@ -2050,6 +2068,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'fasttoggle_node',
   );
 
+  // Exported permission: 'rename features'.
+  $permissions['rename features'] = array(
+    'name' => 'rename features',
+    'roles' => array(),
+    'module' => 'features',
+  );
+
   // Exported permission: 'report httpbl'.
   $permissions['report httpbl'] = array(
     'name' => 'report httpbl',
@@ -2127,6 +2152,13 @@ function drupalorg_permissions_user_default_permissions() {
       'email unverified' => 'email unverified',
     ),
     'module' => 'search',
+  );
+
+  // Exported permission: 'use ctools import'.
+  $permissions['use ctools import'] = array(
+    'name' => 'use ctools import',
+    'roles' => array(),
+    'module' => 'ctools',
   );
 
   // Exported permission: 'use flag import'.
