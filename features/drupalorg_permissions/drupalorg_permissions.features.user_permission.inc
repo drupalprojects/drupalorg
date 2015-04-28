@@ -340,6 +340,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'httpbl',
   );
 
+  // Exported permission: 'admin tfa settings'.
+  $permissions['admin tfa settings'] = array(
+    'name' => 'admin tfa settings',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'tfa',
+  );
+
   // Exported permission: 'administer SSH public keys'.
   $permissions['administer SSH public keys'] = array(
     'name' => 'administer SSH public keys',
@@ -2093,6 +2102,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'mollom',
   );
 
+  // Exported permission: 'require tfa'.
+  $permissions['require tfa'] = array(
+    'name' => 'require tfa',
+    'roles' => array(),
+    'module' => 'tfa',
+  );
+
   // Exported permission: 'revert revisions'.
   $permissions['revert revisions'] = array(
     'name' => 'revert revisions',
@@ -2125,6 +2141,20 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'select account cancellation method',
     'roles' => array(),
     'module' => 'user',
+  );
+
+  // Exported permission: 'setup own tfa'.
+  $permissions['setup own tfa'] = array(
+    'name' => 'setup own tfa',
+    'roles' => array(
+      'Full HTML user' => 'Full HTML user',
+      'Git administrator' => 'Git administrator',
+      'administrator' => 'administrator',
+      'security team' => 'security team',
+      'testing administrator' => 'testing administrator',
+      'user administrator' => 'user administrator',
+    ),
+    'module' => 'tfa_basic',
   );
 
   // Exported permission: 'skip comment approval'.
