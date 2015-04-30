@@ -1265,6 +1265,15 @@ function drupalorg_form_user_admin_settings_alter(&$form) {
 /**
  * Implements hook_form_FORM_BASE_alter().
  */
+function drupalorg_form_tfa_basic_overview_alter(&$form, &$form_state) {
+  $form['app']['link']['#options']['attributes']['class'][] = 'action-button';
+  $form['trust']['link']['#options']['attributes']['class'][] = 'action-button';
+  $form['recovery']['link']['#options']['attributes']['class'][] = 'action-button';
+}
+
+/**
+ * Implements hook_form_FORM_BASE_alter().
+ */
 function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
   // If the terms of service is hidden by drupalorg_field_access(), do not
   // require it.
