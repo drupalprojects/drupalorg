@@ -47,11 +47,7 @@ function drupalorg_issues_field_default_field_instances() {
   // 'comment-comment_node_project_issue-field_attribute_as_volunteer'
   $field_instances['comment-comment_node_project_issue-field_attribute_as_volunteer'] = array(
     'bundle' => 'comment_node_project_issue',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
+    'default_value' => NULL,
     'deleted' => 0,
     'description' => 'When this issue is fixed, the project maintainer may assign credit with your attribution. <a href="/node/2451283">Learn more</a>',
     'display' => array(
@@ -65,7 +61,7 @@ function drupalorg_issues_field_default_field_instances() {
     'entity_type' => 'comment',
     'field_name' => 'field_attribute_as_volunteer',
     'label' => 'Attribute this contribution',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -74,7 +70,7 @@ function drupalorg_issues_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 5,
+      'weight' => 8,
     ),
   );
 
@@ -105,7 +101,7 @@ function drupalorg_issues_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 6,
+      'weight' => 9,
     ),
   );
 
@@ -140,7 +136,7 @@ function drupalorg_issues_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete_tags',
-      'weight' => 7,
+      'weight' => 10,
     ),
   );
 
