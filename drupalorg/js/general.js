@@ -113,7 +113,7 @@
       $('.group-issue-attribution', context).once('drupalorg-issue-comment-attribution', function () {
         var $fieldset = $(this),
           $summary = $(Drupal.settings.drupalOrg.defaultCommentAttribution),
-          $notVolunteer = $('.form-checkbox[name="nodechanges_comment[field_attribute_as_volunteer][und][0]"]', $fieldset),
+          $notVolunteer = $('.field-name-field-attribute-as-volunteer .form-checkbox[value=0]', $fieldset),
           $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
           $attributeContributionToFields = $('input', $attributeContributionTo).change(function (e) {
             if (e.target.checked) {
@@ -184,7 +184,7 @@
         });
 
         // Summary text.
-        $('label[for=edit-nodechanges-comment-field-attribute-as-volunteer-und-0]', $fieldset).empty().prepend($summary);
+        $notVolunteer.siblings('label').empty().prepend($summary);
         $fieldset.drupalSetSummary(function () {}).bind('summaryUpdated', function () {
           var $organizations = $('input:checked + label', $attributeContributionTo),
             customers = $forCustomerField.val();
