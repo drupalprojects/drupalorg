@@ -4028,3 +4028,21 @@ function drupalorg_admin_paths_alter(&$paths) {
   $paths['user/*/project-issue'] = FALSE;
   $paths['user/*/ssh-keys'] = FALSE;
 }
+
+/**
+ * Implements hook_project_release_history_xml_written().
+ */
+function drupalorg_project_release_history_xml_written($project, $api_version) {
+  if ($fastly_key = variable_get('drupalorg_fastly_key', FALSE)) {
+    $request = drupal_http_request('http://updates.drupal.org/release-history/' . $project->field_project_machine_name[$project->language][0]['value'] . '/' . $api_version, array(
+      'method' => 'PURGE',
+      'headers' => array(
+        'Fastly-Key' => $fastly_key,
+        'Fastly-Soft-Purge' => 1,
+      ),
+    ));
+    if (function_exists('dlm')) {
+      dlm($request);
+    }
+  }
+}
