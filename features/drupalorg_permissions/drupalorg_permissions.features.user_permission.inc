@@ -2102,13 +2102,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'mollom',
   );
 
-  // Exported permission: 'require tfa'.
-  $permissions['require tfa'] = array(
-    'name' => 'require tfa',
-    'roles' => array(),
-    'module' => 'tfa',
-  );
-
   // Exported permission: 'revert revisions'.
   $permissions['revert revisions'] = array(
     'name' => 'revert revisions',
