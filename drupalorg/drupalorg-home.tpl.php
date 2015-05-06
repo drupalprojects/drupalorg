@@ -1,13 +1,13 @@
 <div class="front-primary">
   <div class="call-to-action">
     <h2><a href="/try-drupal">Try Drupal</a></h2>
-    <p>Want to see Drupal in action? Try one of these solutions to deploy a real, live, working Drupal site in just a few minutes. It’s quick, simple and free.</p>
-    <p class="front-get-started"><a href="/try-drupal" class="link-button"><span>Try Drupal</span></a></p>
+    <p>Want to try Drupal without setting up a web server? Try one of these solutions from our hosting partners to deploy a real, live, working Drupal site in just a few minutes. It’s quick, simple and free.</p>
+    <p class="front-get-started"><a href="/try-drupal" class="link-button"><span>Start a hosted Drupal demo</span></a></p>
   </div>
 
   <div class="call-to-action last">
     <h2><a href="/start">Get Started</a></h2>
-    <p>Use Drupal to build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine.</p>
+    <p>Drupal is open source. The software is free to help you build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine. Learn how to get started.</p>
     <p class="front-get-started"><a href="/start" class="link-button"><span>Get Started with Drupal</span></a></p>
   </div>
 
