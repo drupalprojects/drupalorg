@@ -10,6 +10,31 @@
 function drupalorg_issues_field_default_field_bases() {
   $field_bases = array();
 
+  // Exported field_base: 'field_attribute_as_volunteer'
+  $field_bases['field_attribute_as_volunteer'] = array(
+    'active' => 1,
+    'cardinality' => 2,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_attribute_as_volunteer',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        1 => 'I’m volunteering my own time',
+        0 => 'To organizations',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_integer',
+  );
+
   // Exported field_base: 'field_attribute_contribution_to'
   $field_bases['field_attribute_contribution_to'] = array(
     'active' => 1,

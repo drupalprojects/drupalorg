@@ -3763,3 +3763,33 @@ function drupalorg_update_7081() {
       ->execute();
   }
 }
+
+/**
+ * Add organization bit to comments.
+ */
+function drupalorg_update_7082() {
+  // Query for comments with organization attribution.
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'comment')
+    ->fieldCondition('field_attribute_contribution_to', 'target_id', NULL, 'IS NOT NULL');
+  $result = $query->execute();
+  $cids = array_keys($result['comment']);
+
+  // Add comments with customer attribution.
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'comment')
+    ->fieldCondition('field_for_customer', 'target_id', NULL, 'IS NOT NULL');
+  $result = $query->execute();
+  $cids = array_unique(array_merge($cids, array_keys($result['comment'])));
+
+  // If not already attributed to volunteer or organization, add attribution to
+  // organization(s).
+  foreach (array_chunk($cids, 50) as $cids_chunk) {
+    foreach (comment_load_multiple($cids) as $comment) {
+      if (empty($comment->field_attribute_as_volunteer)) {
+        $comment->field_attribute_as_volunteer[LANGUAGE_NONE][0]['value'] = 0;
+        comment_save($comment);
+      }
+    }
+  }
+}
