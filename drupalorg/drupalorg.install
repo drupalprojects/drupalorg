@@ -3780,12 +3780,13 @@ function drupalorg_update_7082() {
   $query->entityCondition('entity_type', 'comment')
     ->fieldCondition('field_for_customer', 'target_id', NULL, 'IS NOT NULL');
   $result = $query->execute();
-  $cids = array_unique(array_merge($cids, array_keys($result['comment'])));
+  $cids = array_unique(array_merge($cids, array_keys($result['comment'])), SORT_NUMERIC);
+  rsort($cids, SORT_NUMERIC);
 
   // If not already attributed to volunteer or organization, add attribution to
   // organization(s).
   foreach (array_chunk($cids, 50) as $cids_chunk) {
-    foreach (comment_load_multiple($cids) as $comment) {
+    foreach (comment_load_multiple($cids, array(), TRUE) as $comment) {
       if (empty($comment->field_attribute_as_volunteer)) {
         $comment->field_attribute_as_volunteer[LANGUAGE_NONE][0]['value'] = 0;
         comment_save($comment);
