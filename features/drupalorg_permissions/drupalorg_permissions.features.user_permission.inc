@@ -697,7 +697,6 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer taxonomy',
     'roles' => array(
       'administrator' => 'administrator',
-      'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
   );
@@ -1366,147 +1365,198 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete terms in areas_of_expertise'.
   $permissions['delete terms in areas_of_expertise'] = array(
     'name' => 'delete terms in areas_of_expertise',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_1'.
   $permissions['delete terms in vocabulary_1'] = array(
     'name' => 'delete terms in vocabulary_1',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_2'.
   $permissions['delete terms in vocabulary_2'] = array(
     'name' => 'delete terms in vocabulary_2',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_3'.
   $permissions['delete terms in vocabulary_3'] = array(
     'name' => 'delete terms in vocabulary_3',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_31'.
   $permissions['delete terms in vocabulary_31'] = array(
     'name' => 'delete terms in vocabulary_31',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_34'.
   $permissions['delete terms in vocabulary_34'] = array(
     'name' => 'delete terms in vocabulary_34',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_38'.
   $permissions['delete terms in vocabulary_38'] = array(
     'name' => 'delete terms in vocabulary_38',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_44'.
   $permissions['delete terms in vocabulary_44'] = array(
     'name' => 'delete terms in vocabulary_44',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_46'.
   $permissions['delete terms in vocabulary_46'] = array(
     'name' => 'delete terms in vocabulary_46',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_48'.
   $permissions['delete terms in vocabulary_48'] = array(
     'name' => 'delete terms in vocabulary_48',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_5'.
   $permissions['delete terms in vocabulary_5'] = array(
     'name' => 'delete terms in vocabulary_5',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_50'.
   $permissions['delete terms in vocabulary_50'] = array(
     'name' => 'delete terms in vocabulary_50',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_52'.
   $permissions['delete terms in vocabulary_52'] = array(
     'name' => 'delete terms in vocabulary_52',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_54'.
   $permissions['delete terms in vocabulary_54'] = array(
     'name' => 'delete terms in vocabulary_54',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_56'.
   $permissions['delete terms in vocabulary_56'] = array(
     'name' => 'delete terms in vocabulary_56',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_58'.
   $permissions['delete terms in vocabulary_58'] = array(
     'name' => 'delete terms in vocabulary_58',
-    'roles' => array(),
+    'roles' => array(
+      'Packaging whitelist maintainer' => 'Packaging whitelist maintainer',
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_6'.
   $permissions['delete terms in vocabulary_6'] = array(
     'name' => 'delete terms in vocabulary_6',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_60'.
   $permissions['delete terms in vocabulary_60'] = array(
     'name' => 'delete terms in vocabulary_60',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_62'.
   $permissions['delete terms in vocabulary_62'] = array(
     'name' => 'delete terms in vocabulary_62',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_7'.
   $permissions['delete terms in vocabulary_7'] = array(
     'name' => 'delete terms in vocabulary_7',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'delete terms in vocabulary_9'.
   $permissions['delete terms in vocabulary_9'] = array(
     'name' => 'delete terms in vocabulary_9',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
@@ -1766,147 +1816,198 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit terms in areas_of_expertise'.
   $permissions['edit terms in areas_of_expertise'] = array(
     'name' => 'edit terms in areas_of_expertise',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_1'.
   $permissions['edit terms in vocabulary_1'] = array(
     'name' => 'edit terms in vocabulary_1',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_2'.
   $permissions['edit terms in vocabulary_2'] = array(
     'name' => 'edit terms in vocabulary_2',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_3'.
   $permissions['edit terms in vocabulary_3'] = array(
     'name' => 'edit terms in vocabulary_3',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_31'.
   $permissions['edit terms in vocabulary_31'] = array(
     'name' => 'edit terms in vocabulary_31',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_34'.
   $permissions['edit terms in vocabulary_34'] = array(
     'name' => 'edit terms in vocabulary_34',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_38'.
   $permissions['edit terms in vocabulary_38'] = array(
     'name' => 'edit terms in vocabulary_38',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_44'.
   $permissions['edit terms in vocabulary_44'] = array(
     'name' => 'edit terms in vocabulary_44',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_46'.
   $permissions['edit terms in vocabulary_46'] = array(
     'name' => 'edit terms in vocabulary_46',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_48'.
   $permissions['edit terms in vocabulary_48'] = array(
     'name' => 'edit terms in vocabulary_48',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_5'.
   $permissions['edit terms in vocabulary_5'] = array(
     'name' => 'edit terms in vocabulary_5',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_50'.
   $permissions['edit terms in vocabulary_50'] = array(
     'name' => 'edit terms in vocabulary_50',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_52'.
   $permissions['edit terms in vocabulary_52'] = array(
     'name' => 'edit terms in vocabulary_52',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_54'.
   $permissions['edit terms in vocabulary_54'] = array(
     'name' => 'edit terms in vocabulary_54',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_56'.
   $permissions['edit terms in vocabulary_56'] = array(
     'name' => 'edit terms in vocabulary_56',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_58'.
   $permissions['edit terms in vocabulary_58'] = array(
     'name' => 'edit terms in vocabulary_58',
-    'roles' => array(),
+    'roles' => array(
+      'Packaging whitelist maintainer' => 'Packaging whitelist maintainer',
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_6'.
   $permissions['edit terms in vocabulary_6'] = array(
     'name' => 'edit terms in vocabulary_6',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_60'.
   $permissions['edit terms in vocabulary_60'] = array(
     'name' => 'edit terms in vocabulary_60',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_62'.
   $permissions['edit terms in vocabulary_62'] = array(
     'name' => 'edit terms in vocabulary_62',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_7'.
   $permissions['edit terms in vocabulary_7'] = array(
     'name' => 'edit terms in vocabulary_7',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in vocabulary_9'.
   $permissions['edit terms in vocabulary_9'] = array(
     'name' => 'edit terms in vocabulary_9',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'taxonomy',
   );
 
