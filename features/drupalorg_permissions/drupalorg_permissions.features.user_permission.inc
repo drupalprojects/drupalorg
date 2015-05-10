@@ -2140,12 +2140,17 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['setup own tfa'] = array(
     'name' => 'setup own tfa',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'Full HTML user' => 'Full HTML user',
       'Git administrator' => 'Git administrator',
+      'Packaging whitelist maintainer' => 'Packaging whitelist maintainer',
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
+      'list maintainer' => 'list maintainer',
       'security team' => 'security team',
       'testing administrator' => 'testing administrator',
       'user administrator' => 'user administrator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'tfa_basic',
   );
