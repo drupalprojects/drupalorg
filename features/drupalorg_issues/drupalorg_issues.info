@@ -63,3 +63,4 @@ features[node][] = project_issue
 features[taxonomy][] = vocabulary_9
 features[views_view][] = drupal_org_user_customers
 features[views_view][] = drupalorg_user_organizations
+features[views_view][] = unused_issue_tags
