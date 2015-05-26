@@ -17,7 +17,9 @@
     <h5>Forum</h5>
     <p><a href="/forum">Our forums</a> offer a huge knowledge bank to support you. It is also a good way for you to <a href="/contribute">contribute</a> and <a href="/contribute/support">help others.</a></p>
     <h5>Mailing Lists</h5>
-    <p>There are many <a href="/mailing-lists">mailing lists</a> you can subscribe to, in addition to <a href="/security">security announcements</a>, project issue updates and posts on groups.drupal.org.</p>
+    <p>There are many <a href="/mailing-lists">mailing lists</a> you can subscribe to, in addition to <a href="/security">security announcements</a>, Drupal news, DrupalCon updates, project issue updates, posts on groups.drupal.org, and more.</p>
+    <h5>Social</h5>
+    <p>The Drupal community can be found across social media, and there are numerous official and unofficial accounts that share our community’s news. For information on specific topics, check out the following accounts: Drupal <a href="https://twitter.com/drupal">Twitter</a> and <a href="https://www.facebook.com/pages/Drupal/8427738891?ref=aymt_homepage_panel">Facebook</a>, Drupal Association <a href="https://twitter.com/drupalassoc">Twitter</a>, DrupalCon <a href="https://twitter.com/drupalcon">Twitter</a> and <a href="https://www.facebook.com/DrupalCon?ref=hl">Facebook</a>, Drupal Security <a href="https://twitter.com/drupalsecurity">Twitter</a>, and Drupal.org <a href="https://twitter.com/drupal_org">Twitter</a>.</p>
     <h5>Drupal Association</h5>
     <p>The <a href="https://assoc.drupal.org">Drupal Association’s</a> mission is to help the Drupal CMS project flourish by fostering and supporting the Drupal community. Join us and your membership fees fund community programs such as maintaining Drupal.org infrastructure, providing DrupalCon scholarships and Community Cultivation Grants, hosting DrupalCons and many other community initiatives.</p>
   </div>
