@@ -195,13 +195,6 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['community'] = array(
-    'title' => 'Community & Support',
-    'page callback' => 'drupalorg_community',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-
   $items['getting-involved'] = array(
     'title' => 'Getting Involved',
     'page callback' => 'theme',
@@ -994,31 +987,6 @@ function drupalorg_module_categories_page() {
 }
 
 /**
- * Page callback for the community page.
- */
-function drupalorg_community() {
-  return theme('drupalorg_community');
-}
-
-/**
- * Implementation of template_preprocess_drupalorg_community().
- */
-function drupalorg_preprocess_drupalorg_community(&$variables) {
-  // "Recent activity" list at the side of /community.
-  $query = db_select('tracker_node', 't');
-  $query->innerJoin('node', 'n', 'n.nid = t.nid');
-  $recent = $query
-    ->addTag('node_access')
-    ->fields('t', array('nid', 'changed'))
-    ->fields('n', array('title'))
-    ->condition('t.published', 1)
-    ->orderBy('t.changed', 'DESC')
-    ->range(0,10)
-    ->execute();
-  $variables['recent_activity'] = theme('drupalorg_recent_activity', array('nodes' => $recent));
-}
-
-/**
  * Implementation of template_preprocess_drupalorg_getting_involved().
  */
 function drupalorg_preprocess_drupalorg_getting_involved(&$variables) {
@@ -1157,9 +1125,6 @@ function drupalorg_theme() {
     ),
     'drupalorg_home' => array(
       'template' => 'drupalorg-home',
-    ),
-    'drupalorg_community' => array(
-      'template' => 'drupalorg-community',
     ),
     'drupalorg_getting_involved' => array(
       'template' => 'drupalorg-getting-involved',
