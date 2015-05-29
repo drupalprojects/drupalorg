@@ -2893,6 +2893,11 @@ function drupalorg_user_view($account, $view_mode) {
   }
   $account->content['user_picture']['#suffix'] .= '</div>';
 
+  // Do not show "Add 'confirmed' role fasttoggle link.
+  if (isset($account->content['role_' . variable_get('drupalorg_crosssite_trusted_role')]) && !drupalorg_user_is_confirmed($account)) {
+    unset($account->content['role_' . variable_get('drupalorg_crosssite_trusted_role')]);
+  }
+
   // Link organization to organization node, if it exists.
   $wrapper = entity_metadata_wrapper('user', $account);
   $company_titles = array();
@@ -3448,6 +3453,13 @@ function drupalorg_module_implements_alter(&$implementations, $hook) {
   if ($hook === 'user_update') {
     unset($implementations['drupalorg']);
     $implementations = array('drupalorg' => NULL) + $implementations;
+  }
+
+  // Execute drupalorg_user_view() after fasttoggle_user_view() so the
+  // fasttoggle links can be altered.
+  if ($hook === 'user_view') {
+    unset($implementations['drupalorg']);
+    $implementations['drupalorg'] = NULL;
   }
 }
 
