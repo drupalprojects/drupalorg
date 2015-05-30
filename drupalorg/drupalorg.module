@@ -1145,6 +1145,8 @@ function drupalorg_theme() {
       ),
       'template' => 'drupalorg-map-pin',
     ),
+    // See drupalorg_theme_no_file_icon().
+    'no_file_icon' => array(),
   );
 }
 
@@ -3373,6 +3375,20 @@ function drupalorg_preprocess_comment(&$v) {
     $form = drupal_get_form('drupalorg_add_confirm_button', $comment_account, $v['comment']->cid);
     $v['picture'] = '<div class="user-picture-with-button">' . $v['picture'] . drupal_render($form) . '</div>';
   }
+}
+
+/**
+ * Override theme hook.
+ */
+function drupalorg_preprocess_file_icon(&$v) {
+  $v['theme_hook_suggestion'] = 'no_file_icon';
+}
+
+/**
+ * Do not show file icons in issue pages, which takes up valuable space.
+ */
+function drupalorg_theme_no_file_icon() {
+  return '';
 }
 
 /**
