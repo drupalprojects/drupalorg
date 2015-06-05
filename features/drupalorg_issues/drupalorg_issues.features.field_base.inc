@@ -163,6 +163,7 @@ function drupalorg_issues_field_default_field_bases() {
         2 => 'Task',
         3 => 'Feature request',
         4 => 'Support request',
+        5 => 'Plan',
       ),
       'allowed_values_function' => '',
     ),
