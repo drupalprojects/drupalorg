@@ -126,16 +126,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'pift',
   );
 
-  // Exported permission: 'access pift settings for own projects'.
-  $permissions['access pift settings for own projects'] = array(
-    'name' => 'access pift settings for own projects',
-    'roles' => array(
-      'Git vetted user' => 'Git vetted user',
-      'administrator' => 'administrator',
-    ),
-    'module' => 'pift',
-  );
-
   // Exported permission: 'access printer-friendly version'.
   $permissions['access printer-friendly version'] = array(
     'name' => 'access printer-friendly version',
@@ -190,6 +180,13 @@ function drupalorg_permissions_user_default_permissions() {
       'authenticated user' => 'authenticated user',
       'email unverified' => 'email unverified',
     ),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource pift_ci_job'.
+  $permissions['access resource pift_ci_job'] = array(
+    'name' => 'access resource pift_ci_job',
+    'roles' => array(),
     'module' => 'restws',
   );
 
