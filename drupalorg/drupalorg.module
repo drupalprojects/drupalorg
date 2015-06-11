@@ -567,7 +567,7 @@ function drupalorg_block_view($delta, $block = NULL) {
         );
         foreach ($nodes as $node) {
           $comments = '';
-          if ($node->comment_count) {
+          if (!empty($node->comment_count)) {
             $comments = '<br />' . format_plural($node->comment_count, '1 comment', '@count comments');
             if ($new = comment_num_new($node->nid)) {
               $query = db_select('comment', 'c')
