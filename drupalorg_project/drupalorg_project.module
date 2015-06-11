@@ -251,22 +251,16 @@ function drupalorg_project_issue_counts() {
       ->count();
 
     $q = clone $query;
-    $issue_counts[$version]['Critical bugs'] = $q
+    $issue_counts[$version]['Release blockers'] = $q
       ->fieldCondition('field_issue_status', 'value', $threshold_statuses)
       ->fieldCondition('field_issue_priority', 'value', 400) // Critical
-      ->fieldCondition('field_issue_category', 'value', 1) // Bug
+      ->fieldCondition('field_issue_category', 'value', array(1, 2, 5)) // Bug, Task, Plan.
       ->execute();
     $q = clone $query;
     $issue_counts[$version]['Major bugs'] = $q
       ->fieldCondition('field_issue_status', 'value', $threshold_statuses)
       ->fieldCondition('field_issue_priority', 'value', 300) // Major
       ->fieldCondition('field_issue_category', 'value', 1) // Bug
-      ->execute();
-    $q = clone $query;
-    $issue_counts[$version]['Critical tasks'] = $q
-      ->fieldCondition('field_issue_status', 'value', $threshold_statuses)
-      ->fieldCondition('field_issue_priority', 'value', 400) // Critical
-      ->fieldCondition('field_issue_category', 'value', 2) // Task
       ->execute();
     $q = clone $query;
     $issue_counts[$version]['Major tasks'] = $q
@@ -1278,12 +1272,12 @@ function drupalorg_project_bingo_block_output() {
           )
         ),
         drupalorg_project_core_issue_link(
-          $counts[$threshold_version_key]['Critical bugs'] . " Critical bugs ($threshold_names)",
+          $counts[$threshold_version_key]['Release blockers'] . " Release blockers ($threshold_names)",
           array(
             'version' => $threshold_versions,
             'status' => $threshold_statuses,
             'priorities' => array(400),
-            'categories' => array(1),
+            'categories' => array(1, 2, 5), // Bug, Task, Plan.
           )
         ),
         drupalorg_project_core_issue_link(
@@ -1293,15 +1287,6 @@ function drupalorg_project_bingo_block_output() {
             'status' => $threshold_statuses,
             'priorities' => array(300),
             'categories' => array(1),
-          )
-        ),
-        drupalorg_project_core_issue_link(
-         $counts[$threshold_version_key]['Critical tasks'] . " Critical tasks ($threshold_names)",
-          array(
-            'version' => $threshold_versions,
-            'status' => $threshold_statuses,
-            'priorities' => array(400),
-            'categories' => array(2),
           )
         ),
         drupalorg_project_core_issue_link(
