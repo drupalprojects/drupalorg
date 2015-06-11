@@ -32,7 +32,7 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'list';
-  $handler->display->display_options['style_options']['class'] = 'grid cols-2 drupalorg-random';
+  $handler->display->display_options['style_options']['class'] = 'grid cols-2 drupalorg-random sponsors--signature';
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['hide_empty'] = TRUE;
   /* Field: Content: Logo */
@@ -43,7 +43,7 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['fields']['field_logo']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_logo']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_logo']['settings'] = array(
-    'image_style' => 'supporters-large',
+    'image_style' => 'large',
     'image_link' => 'content',
   );
   $handler->display->display_options['fields']['field_logo']['group_column'] = 'entity_id';
@@ -72,11 +72,11 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['filters']['field_logo_fid']['field'] = 'field_logo_fid';
   $handler->display->display_options['filters']['field_logo_fid']['operator'] = 'not empty';
 
-  /* Display: Premium supporting partners */
-  $handler = $view->new_display('page', 'Premium supporting partners', 'page');
+  /* Display: Signature supporting partners */
+  $handler = $view->new_display('page', 'Signature supporting partners', 'page');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Supporting Partners';
-  $handler->display->display_options['display_description'] = 'Premium supporting partner organizations.';
+  $handler->display->display_options['display_description'] = 'Signature supporting partner organizations.';
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
@@ -85,7 +85,7 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<a href="https://assoc.drupal.org/supporting-partners">Supporting Partners</a> are businesses who offer Drupal services. Their program fees help fund Drupal.org improvements, so together we can collaborate more easily and accelerate Drupal\'s innovation.
 
-<h2>Premium Supporting Partners</h2>';
+<h2>Signature Supporting Partners</h2>';
   $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Sectors (taxonomy_vocabulary_50) */
@@ -159,7 +159,7 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['filters']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
   $handler->display->display_options['filters']['field_organization_support_value']['field'] = 'field_organization_support_value';
   $handler->display->display_options['filters']['field_organization_support_value']['value'] = array(
-    'supporting_premium' => 'supporting_premium',
+    'supporting_signature' => 'supporting_signature',
   );
   /* Filter criterion: Content: Logo (field_logo:fid) */
   $handler->display->display_options['filters']['field_logo_fid']['id'] = 'field_logo_fid';
@@ -167,6 +167,123 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['filters']['field_logo_fid']['field'] = 'field_logo_fid';
   $handler->display->display_options['filters']['field_logo_fid']['operator'] = 'not empty';
   $handler->display->display_options['path'] = 'supporters/partners';
+
+  /* Display: Premium supporting partners */
+  $handler = $view->new_display('attachment', 'Premium supporting partners', 'attachment_3');
+  $handler->display->display_options['display_description'] = 'Supporting partner organizations.';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['style_options']['class'] = 'grid cols-2 drupalorg-random';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = '<h2>Premium Supporting Partners</h2>';
+  $handler->display->display_options['header']['area']['format'] = '1';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Sectors (taxonomy_vocabulary_50) */
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_50_tid']['id'] = 'taxonomy_vocabulary_50_tid';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_50_tid']['table'] = 'field_data_taxonomy_vocabulary_50';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_50_tid']['field'] = 'taxonomy_vocabulary_50_tid';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_50_tid']['label'] = 'Sectors';
+  /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['id'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['table'] = 'field_data_taxonomy_vocabulary_52';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['field'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['label'] = 'Locations';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Logo */
+  $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
+  $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['label'] = '';
+  $handler->display->display_options['fields']['field_logo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_logo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_logo']['settings'] = array(
+    'image_style' => 'supporters-large',
+    'image_link' => 'content',
+  );
+  $handler->display->display_options['fields']['field_logo']['group_column'] = 'entity_id';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Taxonomy term: Name */
+  $handler->display->display_options['arguments']['name_1']['id'] = 'name_1';
+  $handler->display->display_options['arguments']['name_1']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['arguments']['name_1']['field'] = 'name';
+  $handler->display->display_options['arguments']['name_1']['relationship'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['arguments']['name_1']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['name_1']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['name_1']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['name_1']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['name_1']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['name_1']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['name_1']['validate_options']['vocabularies'] = array(
+    'vocabulary_52' => 'vocabulary_52',
+  );
+  $handler->display->display_options['arguments']['name_1']['validate_options']['type'] = 'name';
+  $handler->display->display_options['arguments']['name_1']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['name_1']['limit'] = '0';
+  $handler->display->display_options['arguments']['name_1']['path_case'] = 'lower';
+  $handler->display->display_options['arguments']['name_1']['transform_dash'] = TRUE;
+  /* Contextual filter: Taxonomy term: Name */
+  $handler->display->display_options['arguments']['name']['id'] = 'name';
+  $handler->display->display_options['arguments']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['arguments']['name']['field'] = 'name';
+  $handler->display->display_options['arguments']['name']['relationship'] = 'taxonomy_vocabulary_50_tid';
+  $handler->display->display_options['arguments']['name']['exception']['value'] = '';
+  $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['name']['validate_options']['vocabularies'] = array(
+    'vocabulary_50' => 'vocabulary_50',
+  );
+  $handler->display->display_options['arguments']['name']['validate_options']['type'] = 'name';
+  $handler->display->display_options['arguments']['name']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['name']['limit'] = '0';
+  $handler->display->display_options['arguments']['name']['path_case'] = 'lower';
+  $handler->display->display_options['arguments']['name']['transform_dash'] = TRUE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  /* Filter criterion: Content: Drupal Association supporting program (field_organization_support) */
+  $handler->display->display_options['filters']['field_organization_support_value']['id'] = 'field_organization_support_value';
+  $handler->display->display_options['filters']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['filters']['field_organization_support_value']['field'] = 'field_organization_support_value';
+  $handler->display->display_options['filters']['field_organization_support_value']['value'] = array(
+    'supporting_premium' => 'supporting_premium',
+  );
+  /* Filter criterion: Content: Logo (field_logo:fid) */
+  $handler->display->display_options['filters']['field_logo_fid']['id'] = 'field_logo_fid';
+  $handler->display->display_options['filters']['field_logo_fid']['table'] = 'field_data_field_logo';
+  $handler->display->display_options['filters']['field_logo_fid']['field'] = 'field_logo_fid';
+  $handler->display->display_options['filters']['field_logo_fid']['operator'] = 'not empty';
+  $handler->display->display_options['displays'] = array(
+    'page' => 'page',
+    'default' => 0,
+  );
+  $handler->display->display_options['attachment_position'] = 'after';
 
   /* Display: Supporting partners */
   $handler = $view->new_display('attachment', 'Supporting partners', 'attachment_1');
