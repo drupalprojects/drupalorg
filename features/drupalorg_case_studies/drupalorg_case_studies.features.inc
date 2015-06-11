@@ -26,18 +26,25 @@ function drupalorg_case_studies_views_api($module = NULL, $api = NULL) {
 function drupalorg_case_studies_image_default_styles() {
   $styles = array();
 
+  // Exported image style: case-4-2x.
+  $styles['case-4-2x'] = array(
+    'label' => 'case-4-2x',
+    'effects' => array(
+      13 => array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 600,
+          'height' => 426,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
   // Exported image style: case198.
   $styles['case198'] = array(
-    'name' => 'case198',
     'effects' => array(
       1 => array(
-        'label' => 'Scale',
-        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
-        'effect callback' => 'image_scale_effect',
-        'dimensions callback' => 'image_scale_dimensions',
-        'form callback' => 'image_scale_form',
-        'summary theme' => 'image_scale_summary',
-        'module' => 'image',
         'name' => 'image_scale',
         'data' => array(
           'width' => 300,
@@ -47,13 +54,6 @@ function drupalorg_case_studies_image_default_styles() {
         'weight' => 1,
       ),
       2 => array(
-        'label' => 'Crop',
-        'help' => 'Cropping will remove portions of an image to make it the specified dimensions.',
-        'effect callback' => 'image_crop_effect',
-        'dimensions callback' => 'image_resize_dimensions',
-        'form callback' => 'image_crop_form',
-        'summary theme' => 'image_crop_summary',
-        'module' => 'image',
         'name' => 'image_crop',
         'data' => array(
           'width' => 300,
@@ -68,16 +68,8 @@ function drupalorg_case_studies_image_default_styles() {
 
   // Exported image style: case588x306.
   $styles['case588x306'] = array(
-    'name' => 'case588x306',
     'effects' => array(
       3 => array(
-        'label' => 'Scale',
-        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
-        'effect callback' => 'image_scale_effect',
-        'dimensions callback' => 'image_scale_dimensions',
-        'form callback' => 'image_scale_form',
-        'summary theme' => 'image_scale_summary',
-        'module' => 'image',
         'name' => 'image_scale',
         'data' => array(
           'width' => 588,
@@ -87,13 +79,6 @@ function drupalorg_case_studies_image_default_styles() {
         'weight' => 1,
       ),
       4 => array(
-        'label' => 'Crop',
-        'help' => 'Cropping will remove portions of an image to make it the specified dimensions.',
-        'effect callback' => 'image_crop_effect',
-        'dimensions callback' => 'image_resize_dimensions',
-        'form callback' => 'image_crop_form',
-        'summary theme' => 'image_crop_summary',
-        'module' => 'image',
         'name' => 'image_crop',
         'data' => array(
           'width' => 588,
@@ -125,5 +110,6 @@ function drupalorg_case_studies_node_info() {
 <strong>Project name field</strong>: Use only the title of the site/project you are writing about. Do not use your company name or words "case study," "success story," and the like. Maximum length - 40 characters.'),
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }

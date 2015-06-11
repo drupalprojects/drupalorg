@@ -469,13 +469,16 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             );
           }
 
-          // Add organizations.
-          foreach ($comment_wrapper->field_attribute_contribution_to as $organization) {
-            $table['#rows'][$comment->uid]['by']['@organization'][$organization->nid->value()] = $organization->title->value();
-          }
-          // Add customers.
-          foreach ($comment_wrapper->field_for_customer as $organization) {
-            $table['#rows'][$comment->uid]['by']['@customer'][$organization->nid->value()] = $organization->title->value();
+          $as_volunteer = array_flip($comment_wrapper->field_attribute_as_volunteer->value());
+          if (isset($as_volunteer[0])) {
+            // Add organizations.
+            foreach ($comment_wrapper->field_attribute_contribution_to as $organization) {
+              $table['#rows'][$comment->uid]['by']['@organization'][$organization->nid->value()] = $organization->title->value();
+            }
+            // Add customers.
+            foreach ($comment_wrapper->field_for_customer as $organization) {
+              $table['#rows'][$comment->uid]['by']['@customer'][$organization->nid->value()] = $organization->title->value();
+            }
           }
 
           if (isset($existing_credit[$comment->cid])) {
@@ -1078,7 +1081,7 @@ function drupalorg_project_block_view($delta = '') {
         ->fieldCondition('field_issue_version', 'value', $versions)
         ->fieldCondition('field_issue_status', 'value', drupalorg_project_threshold_statuses())
         ->fieldCondition('field_issue_priority', 'value', 400) // Critical.
-        ->fieldCondition('field_issue_category', 'value', array(1, 2)) // Bug, Task.
+        ->fieldCondition('field_issue_category', 'value', array(1, 2, 5)) // Bug, Task, Plan.
         ->count();
       $count = $query->execute();
 
@@ -1088,7 +1091,7 @@ function drupalorg_project_block_view($delta = '') {
         'content' => array(
           'countdown' => array(
             '#prefix' => '<p>' . t('Drupal 8 enters release candidate phase once there are zero critical issues.') . '</p>',
-            '#markup' => '<h3>' . l(t('@count critical issues remaining', array('@count' => $count)), 'project/issues/search/drupal', array('query' => array('status' => array(1, 13, 8, 14, 4), 'priorities' => array(400), 'categories' => array(1, 2), 'version' => array('8.x')))) . '</h3>',
+            '#markup' => '<h3>' . l(t('@count critical issues remaining', array('@count' => $count)), 'project/issues/search/drupal', array('query' => array('status' => array(1, 13, 8, 14, 4), 'priorities' => array(400), 'categories' => array(1, 2, 5), 'version' => array('8.x')))) . '</h3>',
             '#suffix' => '<p>' . t('Read more about <a href="/drupal-8.0/get-involved">how to help Drupal 8</a>!') . '</p>',
           ),
         ),

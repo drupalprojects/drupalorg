@@ -25,6 +25,7 @@ function drupalorg_issues_field_group_info() {
     'children' => array(
       0 => 'field_attribute_contribution_to',
       1 => 'field_for_customer',
+      2 => 'field_attribute_as_volunteer',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -32,7 +33,7 @@ function drupalorg_issues_field_group_info() {
       'instance_settings' => array(
         'required_fields' => 1,
         'classes' => 'group-issue-attribution field-group-fieldset',
-        'description' => 'When this issue is fixed, the project maintainer may assign credit with your attribution. <a href="/node/2451283">Learn more</a>',
+        'description' => '',
       ),
       'formatter' => 'collapsible',
     ),

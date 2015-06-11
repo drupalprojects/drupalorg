@@ -1,4 +1,12 @@
 (function ($) {
+  Drupal.behaviors.drupalorgHome = {
+    attach: function (context, settings) {
+      $('.front #community-updates', context).each(function () {
+        $(this).tabs();
+      });
+    }
+  };
+
   Drupal.behaviors.drupalorgSearch = {
     attach: function (context, settings) {
       $('body.page-search #content-top-region form:not(.drupalorgSearch-processed)', context).addClass('drupalorgSearch-processed').each(function () {
@@ -105,15 +113,27 @@
       $('.group-issue-attribution', context).once('drupalorg-issue-comment-attribution', function () {
         var $fieldset = $(this),
           $summary = $(Drupal.settings.drupalOrg.defaultCommentAttribution),
+          $notVolunteer = $('.field-name-field-attribute-as-volunteer .form-checkbox[value=0]', $fieldset),
           $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
-          $attributeContributionToFields = $('input', $attributeContributionTo),
+          $attributeContributionToFields = $('input', $attributeContributionTo).change(function (e) {
+            if (e.target.checked) {
+              $notVolunteer.attr('checked', 'checked');
+            }
+          }),
           $summaryOrganization = $('.organization', $summary).click(function (e) {
             // Position & show bubble.
-            $attributeContributionTo.css('left', Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px').show().focus();
+            $attributeContributionTo.css({
+              'left': Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px',
+              'top': $summaryOrganization.position().top + $summaryOrganization.outerHeight() + 'px'
+            }).show().focus();
             e.preventDefault();
           }),
           $forCustomer = $('.field-name-field-for-customer', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
-          $forCustomerField = $('.form-text', $forCustomer),
+          $forCustomerField = $('.form-text', $forCustomer).change(function (e) {
+            if (e.target.value !== '') {
+              $notVolunteer.attr('checked', 'checked');
+            }
+          }),
           $customerSuggestions = $('.customer-suggestion', $forCustomer).click(function (e) {
             // Add clicked suggestion.
             var newValue = $forCustomerField.val();
@@ -125,7 +145,10 @@
           }),
           $summaryCustomer = $('.customer', $summary).click(function (e) {
             // Position & show bubble.
-            $forCustomer.css('left', Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px').show().focus();
+            $forCustomer.css({
+              'left': Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px',
+              'top': $summaryCustomer.position().top + $summaryCustomer.outerHeight() + 'px'
+            }).show().focus();
             e.preventDefault();
           });
 
@@ -141,7 +164,7 @@
           if ($summaryCustomer.get(0) !== e.target && $forCustomerField.get(0) !== e.target) {
             $forCustomer.hide();
             // If an element in the bubble was the target, return focus to summary.
-            if ($(e.target).parents().get().indexOf($forCustomer.get(0)) !== -1) {
+            if ($customerSuggestions.get().indexOf(e.target) !== -1) {
               $summaryCustomer.focus();
             }
           }
@@ -161,7 +184,8 @@
         });
 
         // Summary text.
-        $fieldset.prepend($summary).drupalSetSummary(function () {}).bind('summaryUpdated', function () {
+        $notVolunteer.siblings('label').empty().prepend($summary);
+        $fieldset.drupalSetSummary(function () {}).bind('summaryUpdated', function () {
           var $organizations = $('input:checked + label', $attributeContributionTo),
             customers = $forCustomerField.val();
           if ($organizations.length) {

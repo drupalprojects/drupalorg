@@ -43,7 +43,39 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_project_issue-field_attribute_contribution_to'
+  // Exported field_instance:
+  // 'comment-comment_node_project_issue-field_attribute_as_volunteer'
+  $field_instances['comment-comment_node_project_issue-field_attribute_as_volunteer'] = array(
+    'bundle' => 'comment_node_project_issue',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'When this issue is fixed, the project maintainer may assign credit with your attribution. <a href="/node/2451283">Learn more</a>',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'field_attribute_as_volunteer',
+    'label' => 'Attribute this contribution',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 8,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'comment-comment_node_project_issue-field_attribute_contribution_to'
   $field_instances['comment-comment_node_project_issue-field_attribute_contribution_to'] = array(
     'bundle' => 'comment_node_project_issue',
     'default_value' => NULL,
@@ -69,11 +101,12 @@ function drupalorg_issues_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 3,
+      'weight' => 9,
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_project_issue-field_for_customer'
+  // Exported field_instance:
+  // 'comment-comment_node_project_issue-field_for_customer'
   $field_instances['comment-comment_node_project_issue-field_for_customer'] = array(
     'bundle' => 'comment_node_project_issue',
     'default_value' => NULL,
@@ -103,11 +136,12 @@ function drupalorg_issues_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete_tags',
-      'weight' => 4,
+      'weight' => 10,
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_project_issue-field_issue_changes'
+  // Exported field_instance:
+  // 'comment-comment_node_project_issue-field_issue_changes'
   $field_instances['comment-comment_node_project_issue-field_issue_changes'] = array(
     'bundle' => 'comment_node_project_issue',
     'default_value' => NULL,
@@ -1040,6 +1074,7 @@ function drupalorg_issues_field_default_field_instances() {
   t('Assigned');
   t('Attribute comment at organization');
   t('Attribute comment for customer');
+  t('Attribute this contribution');
   t('Before adding tags <a href="/node/1023102">read the issue tag guidelines</a>. Do <strong>NOT</strong> use tags for adding random keywords or duplicating any other fields.  Separate terms with a comma, not a space.');
   t('Category');
   t('Comment');
@@ -1054,6 +1089,7 @@ function drupalorg_issues_field_default_field_instances() {
   t('Related issues');
   t('Status');
   t('Version');
+  t('When this issue is fixed, the project maintainer may assign credit with your attribution. <a href="/node/2451283">Learn more</a>');
   t('issue_credit');
 
   return $field_instances;

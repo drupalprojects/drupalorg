@@ -25,5 +25,6 @@ function drupalorg_packaging_whitelist_node_info() {
       'help' => t('<em>Title</em> is a human readable identifier for the whitelist entry. <em>Allowed URL filters</em> is a newline separated list of Perl-compatible regular expressions; all URLs which match these regular expressions are permitted by the packaging script, eg. <em>^http://www\.example\.com/downloads/.+$</em>'),
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }
