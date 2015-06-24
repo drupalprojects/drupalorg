@@ -2417,6 +2417,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         }
       }
 
+      // Projects supported.
       $view = views_get_view('drupalorg_organization_supported_projects');
       $view->preview(NULL, array($node->nid));
       if (isset($view->style_plugin->rendered_fields)) {
