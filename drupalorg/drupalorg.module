@@ -3116,7 +3116,7 @@ function drupalorg_user_view($account, $view_mode) {
   }
   if ($issues > 0) {
     $filter = $view->get_item('user_recent', 'filter', 'changed_1');
-    $account->content['drupalorg_user_issue_credit']['#prefix'] = '<h4>' . format_plural($issues, 'Contributed to closing 1 issue in the past @time', 'Contributed to closing @count issues in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
+    $account->content['drupalorg_user_issue_credit']['#prefix'] = '<h4>' . format_plural($issues, 'Contributed to fixing 1 issue in the past @time', 'Contributed to fixing @count issues in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
   }
 }
 
