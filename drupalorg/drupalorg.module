@@ -314,6 +314,11 @@ function drupalorg_field_extra_fields() {
             'description' => t('User’s individual memberships, and their organizations’'),
             'weight' => 0,
           ),
+          'drupalorg_user_issue_credit' => array(
+            'label' => t('Issue credits'),
+            'description' => t('User’s issue credits'),
+            'weight' => 0,
+          ),
         ),
       ),
     ),
@@ -3097,6 +3102,20 @@ function drupalorg_user_view($account, $view_mode) {
       '#title' => t('Documentation'),
       '#markup' => $drupalorg_documentation,
     );
+  }
+
+  // Issue credits.
+  $view = views_get_view('issue_credit');
+  $account->content['drupalorg_user_issue_credit'] = array(
+    '#markup' => $view->preview('user_recent', array($account->uid)),
+  );
+  $issues = 0;
+  foreach ($view->result as $row) {
+    $issues += $row->nid;
+  }
+  if ($issues > 0) {
+    $filter = $view->get_item('user_recent', 'filter', 'changed_1');
+    $account->content['drupalorg_user_issue_credit']['#prefix'] = '<h4>' . format_plural($issues, 'Contributed to closing 1 issue in the past @time', 'Contributed to closing @count issues in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
   }
 }
 
