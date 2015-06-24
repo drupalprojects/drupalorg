@@ -328,15 +328,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'book',
   );
 
-  // Exported permission: 'admin httpbl'.
-  $permissions['admin httpbl'] = array(
-    'name' => 'admin httpbl',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'httpbl',
-  );
-
   // Exported permission: 'admin tfa settings'.
   $permissions['admin tfa settings'] = array(
     'name' => 'admin tfa settings',
@@ -2180,15 +2171,6 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'rename features',
     'roles' => array(),
     'module' => 'features',
-  );
-
-  // Exported permission: 'report httpbl'.
-  $permissions['report httpbl'] = array(
-    'name' => 'report httpbl',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'httpbl',
   );
 
   // Exported permission: 'report to mollom'.
