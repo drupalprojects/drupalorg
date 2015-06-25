@@ -124,6 +124,96 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['uid']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['uid']['validate']['type'] = 'user';
+
+  /* Display: Organization recent */
+  $handler = $view->new_display('block', 'Organization recent', 'organization_recent');
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
+  $handler->display->display_options['style_options']['wrapper_class'] = '';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'title_1' => 'title_1',
+    'nid' => 'nid',
+  );
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'OR',
+  );
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'project_issue' => 'project_issue',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Comment: Approved */
+  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
+  $handler->display->display_options['filters']['status_1']['table'] = 'comment';
+  $handler->display->display_options['filters']['status_1']['field'] = 'status';
+  $handler->display->display_options['filters']['status_1']['relationship'] = 'field_issue_credit_target_id';
+  $handler->display->display_options['filters']['status_1']['value'] = '1';
+  $handler->display->display_options['filters']['status_1']['group'] = 1;
+  /* Filter criterion: Content: Status (field_issue_status) */
+  $handler->display->display_options['filters']['field_issue_status_value']['id'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value']['table'] = 'field_data_field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status_value']['field'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value']['value'] = array(
+    2 => '2',
+    7 => '7',
+  );
+  $handler->display->display_options['filters']['field_issue_status_value']['group'] = 1;
+  /* Filter criterion: Content: Updated date */
+  $handler->display->display_options['filters']['changed_1']['id'] = 'changed_1';
+  $handler->display->display_options['filters']['changed_1']['table'] = 'node';
+  $handler->display->display_options['filters']['changed_1']['field'] = 'changed';
+  $handler->display->display_options['filters']['changed_1']['operator'] = '>=';
+  $handler->display->display_options['filters']['changed_1']['value']['value'] = '-3 months';
+  $handler->display->display_options['filters']['changed_1']['value']['type'] = 'offset';
+  $handler->display->display_options['filters']['changed_1']['group'] = 1;
+  /* Filter criterion: Comment: Attribute this contribution (field_attribute_as_volunteer) */
+  $handler->display->display_options['filters']['field_attribute_as_volunteer_value']['id'] = 'field_attribute_as_volunteer_value';
+  $handler->display->display_options['filters']['field_attribute_as_volunteer_value']['table'] = 'field_data_field_attribute_as_volunteer';
+  $handler->display->display_options['filters']['field_attribute_as_volunteer_value']['field'] = 'field_attribute_as_volunteer_value';
+  $handler->display->display_options['filters']['field_attribute_as_volunteer_value']['relationship'] = 'field_issue_credit_target_id';
+  $handler->display->display_options['filters']['field_attribute_as_volunteer_value']['value'] = array(
+    0 => '0',
+  );
+  $handler->display->display_options['filters']['field_attribute_as_volunteer_value']['group'] = 1;
+  /* Filter criterion: Comment: Attribute comment at organization (field_attribute_contribution_to) */
+  $handler->display->display_options['filters']['field_attribute_contribution_to_target_id']['id'] = 'field_attribute_contribution_to_target_id';
+  $handler->display->display_options['filters']['field_attribute_contribution_to_target_id']['table'] = 'field_data_field_attribute_contribution_to';
+  $handler->display->display_options['filters']['field_attribute_contribution_to_target_id']['field'] = 'field_attribute_contribution_to_target_id';
+  $handler->display->display_options['filters']['field_attribute_contribution_to_target_id']['relationship'] = 'field_issue_credit_target_id';
+  $handler->display->display_options['filters']['field_attribute_contribution_to_target_id']['group'] = 2;
+  /* Filter criterion: Comment: Attribute comment for customer (field_for_customer) */
+  $handler->display->display_options['filters']['field_for_customer_target_id']['id'] = 'field_for_customer_target_id';
+  $handler->display->display_options['filters']['field_for_customer_target_id']['table'] = 'field_data_field_for_customer';
+  $handler->display->display_options['filters']['field_for_customer_target_id']['field'] = 'field_for_customer_target_id';
+  $handler->display->display_options['filters']['field_for_customer_target_id']['relationship'] = 'field_issue_credit_target_id';
+  $handler->display->display_options['filters']['field_for_customer_target_id']['group'] = 2;
+  $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['operator_id'] = 'field_for_customer_target_id_op';
+  $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['label'] = 'Attribute comment for customer (field_for_customer)';
+  $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['operator'] = 'field_for_customer_target_id_op';
+  $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['identifier'] = 'field_for_customer_target_id';
   $export['issue_credit'] = $view;
 
   $view = new view();
