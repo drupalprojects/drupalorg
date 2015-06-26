@@ -2779,6 +2779,16 @@ function drupalorg_forum_blocks_flush() {
 }
 
 /**
+ * Implements hook_views_query_substitutions().
+ */
+function drupalorg_views_query_substitutions($view) {
+  if (get_class($view) === 'views_plugin_query_default' && $view->view->name === 'issue_credit' && $view->view->current_display === 'organization_recent_page') {
+    // Provide organization argument.
+    return array('***CURRENT_ORGANIZATION***' => $view->view->args[0]);
+  }
+}
+
+/**
  * Implements hook_views_pre_render().
  */
 function drupalorg_views_pre_render(&$view) {
@@ -2912,6 +2922,21 @@ function drupalorg_views_pre_render(&$view) {
     }
     $view->set_item_option('default', 'header', 'area', 'format', 3);
     $view->set_item_option('default', 'header', 'area', 'content', drupal_render($content));
+  }
+  elseif ($view->name === 'issue_credit') {
+    if ($view->current_display === 'organization_recent_page') {
+      // Substitute in organization argument title.
+      $organization = node_load($view->args[0]);
+      if (!empty($organization) && $organization->type === 'organization' && $organization->status == NODE_PUBLISHED) {
+        $view->build_info['substitutions']['%1'] = check_plain($organization->title);
+        $view->build_info['substitutions']['!url-1'] = url('node/' . $organization->nid);
+      }
+    }
+    elseif ($view->current_display === 'organization_recent') {
+      // Substitute in organization node ID.
+      $filter = $view->get_item('organization_recent', 'filter', 'field_attribute_contribution_to_target_id');
+      $view->build_info['substitutions'] = array('%organization-nid' => $filter['value']['value']);
+    }
   }
 }
 
