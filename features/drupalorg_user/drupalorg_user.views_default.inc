@@ -120,6 +120,18 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'title_1' => 'title_1',
+    'nid' => 'nid',
+  );
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
@@ -136,7 +148,8 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['fields']['title_1']['relationship'] = 'field_project_target_id';
   $handler->display->display_options['fields']['title_1']['label'] = '';
   $handler->display->display_options['fields']['title_1']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['title_1']['alter']['path'] = 'u/%1/issue-credits/[nid_1]';
+  $handler->display->display_options['fields']['title_1']['alter']['path'] = 'node/[nid_1]';
+  $handler->display->display_options['fields']['title_1']['alter']['suffix'] = ',';
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
   /* Field: COUNT(DISTINCT Content: Nid) */
@@ -145,6 +158,8 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
   $handler->display->display_options['fields']['nid']['group_type'] = 'count_distinct';
   $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['nid']['alter']['path'] = 'u/%1/issue-credits/[nid_1]';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['nid']['format_plural'] = TRUE;
   $handler->display->display_options['fields']['nid']['format_plural_singular'] = '1 issue';
@@ -325,7 +340,8 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['fields']['title_1']['relationship'] = 'field_project_target_id';
   $handler->display->display_options['fields']['title_1']['label'] = '';
   $handler->display->display_options['fields']['title_1']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['title_1']['alter']['path'] = 'node/%organization-nid/issue-credits/[nid_1]';
+  $handler->display->display_options['fields']['title_1']['alter']['path'] = 'node/[nid_1]';
+  $handler->display->display_options['fields']['title_1']['alter']['suffix'] = ',';
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
   /* Field: COUNT(DISTINCT Content: Nid) */
@@ -334,6 +350,8 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
   $handler->display->display_options['fields']['nid']['group_type'] = 'count_distinct';
   $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['nid']['alter']['path'] = 'node/%organization-nid/issue-credits/[nid_1]';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['nid']['format_plural'] = TRUE;
   $handler->display->display_options['fields']['nid']['format_plural_singular'] = '1 issue';
