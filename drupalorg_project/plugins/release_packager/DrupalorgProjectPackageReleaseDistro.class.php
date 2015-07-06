@@ -116,7 +116,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
 
       // Package the no-core distribution.
       // 'h' is for dereference, we want to include the files, not the links
-      if (!drush_shell_cd_and_exec($this->temp_directory, '%s -ch --owner=0 --file=- %s | %s -9 --no-name > %s', $this->conf['tar'], $this->project_short_name, $this->conf['gzip'], $no_core_full_dest_tgz)) {
+      if (!drush_shell_cd_and_exec($this->temp_directory, '%s -ch --owner=0 --group=0 --file=- %s | %s -9 --no-name > %s', $this->conf['tar'], $this->project_short_name, $this->conf['gzip'], $no_core_full_dest_tgz)) {
         watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
         return 'error';
       }
@@ -176,7 +176,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
 
       // Package the core distribution.
       // 'h' is for dereference, we want to include the files, not the links
-      if (!drush_shell_cd_and_exec($this->temp_directory, '%s -ch --owner=0 --file=- %s | %s -9 --no-name > %s', $this->conf['tar'], $core_build_dir, $this->conf['gzip'], $core_full_dest_tgz)) {
+      if (!drush_shell_cd_and_exec($this->temp_directory, '%s -ch --owner=0 --group=0 --file=- %s | %s -9 --no-name > %s', $this->conf['tar'], $core_build_dir, $this->conf['gzip'], $core_full_dest_tgz)) {
         watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
         return 'error';
       }

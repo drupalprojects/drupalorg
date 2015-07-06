@@ -147,7 +147,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     }
 
     // 'h' is for dereference, we want to include the files, not the links
-    if (!drush_shell_cd_and_exec($this->temp_directory, "%s -ch --owner=0 --file=- %s | %s -9 --no-name > %s", $this->conf['tar'], $export_to, $this->conf['gzip'], $this->filenames['full_dest_tgz'])) {
+    if (!drush_shell_cd_and_exec($this->temp_directory, "%s -ch --owner=0 --group=0 --file=- %s | %s -9 --no-name > %s", $this->conf['tar'], $export_to, $this->conf['gzip'], $this->filenames['full_dest_tgz'])) {
       watchdog('package_error', 'Archiving failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
       drush_shell_exec('rm -rf %s', $this->repository);
       return 'error';
