@@ -1,14 +1,11 @@
 <div class="front-primary">
-  <div class="call-to-action">
-    <h2><a href="/try-drupal">Try Drupal</a></h2>
-    <p>Want to try Drupal without setting up a web server? Try one of these solutions from our hosting partners to deploy a real, live, working Drupal site in just a few minutes. It’s quick, simple and free.</p>
-    <p class="front-get-started"><a href="/try-drupal" class="link-button"><span>Start a hosted Drupal demo</span></a></p>
-  </div>
-
-  <div class="call-to-action last">
-    <h2><a href="/start">Get Started</a></h2>
-    <p>Drupal is open source. The software is free to help you build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine. Learn how to get started.</p>
-    <p class="front-get-started"><a href="/start" class="link-button"><span>Get Started with Drupal</span></a></p>
+  <div id="get-started">
+    <h2>Get started with Drupal</h2>
+    <p>Drupal helps you build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine.</p>
+    <p>
+      <a href="/try-drupal" class="link-button"><span>Try a hosted Drupal demo</span></a>
+      <a href="/documentation/get-started" class="link-button"><span>Download and Get Started</span></a>
+    </p>
   </div>
 
   <div id="community-updates">
@@ -26,7 +23,6 @@
 </div>
 
 <div id="develop-with-drupal">
-  <h2><a href="download">Develop with Drupal</a></h2>
   <div class="intro">
     <div class="logo"><img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/d8.svg" alt="Drupal 8"></div>
     <div class="text">
@@ -38,21 +34,27 @@
       <tr><td><?php print $number_of_modules; ?></td><td><a href="project/modules">Modules</a></td></tr>
       <tr><td><?php print $number_of_themes; ?></td><td><a href="project/themes">Themes</a></td></tr>
       <tr><td><?php print $number_of_distributions; ?></td><td><a href="project/distributions">Distributions</a></td></tr>
-      <tr><td><?php print $number_of_git_accounts; ?></td><td><a href="commitlog">Developers</a></td></tr>
     </table>
-    <table class="front-thisweek-activity">
-      <tr><td></td><th>This week</th></tr>
-      <tr><td><?php print $number_of_git_commits; ?></td><td><a href="commitlog">Code commits</a></td></tr>
-      <tr><td><?php print $number_of_issue_comments; ?></td><td><a href="project/issues">Issue comments</a></td></tr>
-    </table>
-    <ul class="links">
-      <li><a href="project/drupal">Drupal Core</a></li>
+    <ul class="front-thisweek-activity">
       <li><a href="security">Security Info</a></li>
       <li><a href="contributors-guide">Developer Docs</a></li>
       <li><a href="http://api.drupal.org">API Docs</a></li>
     </ul>
   </div>
   <?php print $psa; ?>
+</div>
+
+<div id="community-stats" class="front-secondary">
+  <div class="call-to-action">
+    <a class="users" href="community-spotlight"><span class="highlight"><?php print $number_of_confirmed_accounts; ?> users</span> <span class="caption">actively contributing</span></a>
+  </div>
+  <div class="call-to-action">
+    <a class="commits" href="commitlog"><span class="highlight"><?php print $number_of_git_commits; ?> commits</span> <span class="caption">in the last week</span></a>
+  </div>
+  <div class="call-to-action last">
+    <a class="comments" href="project/issues"><span class="highlight"><?php print $number_of_issue_comments; ?> comments</span> <span class="caption">in the last week</span></a>
+  </div>
+  <div class="get-involved"><a href="getting-involved-guide">Get Involved →</a></div>
 </div>
 
 <div class="front-secondary">
