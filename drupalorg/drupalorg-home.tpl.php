@@ -46,13 +46,13 @@
 
 <div id="community-stats" class="front-secondary">
   <div class="call-to-action">
-    <a class="users" href="community-spotlight"><span class="highlight"><?php print $number_of_confirmed_accounts; ?> users</span> <span class="caption">actively contributing</span></a>
+    <span class="users"><span class="highlight"><?php print $number_of_confirmed_accounts; ?> users</span> <span class="caption">actively contributing</span></span>
   </div>
   <div class="call-to-action">
-    <a class="commits" href="commitlog"><span class="highlight"><?php print $number_of_git_commits; ?> commits</span> <span class="caption">in the last week</span></a>
+    <span class="commits"><span class="highlight"><?php print $number_of_git_commits; ?> commits</span> <span class="caption">in the last week</span></span>
   </div>
   <div class="call-to-action last">
-    <a class="comments" href="project/issues"><span class="highlight"><?php print $number_of_issue_comments; ?> comments</span> <span class="caption">in the last week</span></a>
+    <span class="comments"><span class="highlight"><?php print $number_of_issue_comments; ?> comments</span> <span class="caption">in the last week</span></span>
   </div>
   <div class="get-involved"><a href="getting-involved-guide">Get Involved →</a></div>
 </div>
