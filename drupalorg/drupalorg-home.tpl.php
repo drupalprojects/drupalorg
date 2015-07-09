@@ -4,7 +4,7 @@
     <p>Drupal helps you build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine.</p>
     <p>
       <a href="/try-drupal" class="link-button"><span>Try a hosted Drupal demo</span></a>
-      <a href="/documentation/get-started" class="link-button"><span>Download and Get Started</span></a>
+      <a href="/start" class="link-button"><span>Download and Get Started</span></a>
     </p>
   </div>
 
