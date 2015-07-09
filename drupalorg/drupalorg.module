@@ -730,6 +730,7 @@ function drupalorg_get_activity($_force = FALSE) {
 
     // Users: Count them.
     $stats['number_of_users'] = number_format(db_query('SELECT COUNT(*) FROM {users} WHERE uid > :uid AND status = :status AND login > :login', array(':uid' => 0, ':status' => 1, ':login' => 0))->fetchField());
+    $stats['number_of_confirmed_accounts'] = number_format(db_query('SELECT count(1) FROM {users} u INNER JOIN {users_roles} ur ON ur.uid = u.uid AND ur.rid = :confirmed WHERE u.uid > 0 AND u.status = :status AND u.login > 0', array(':confirmed' => variable_get('drupalorg_crosssite_trusted_role'), ':status' => 1))->fetchField());
 
     // Sites: use project API.
     $stats['sites'] = number_format(project_usage_get_project_total_usage(DRUPALORG_CORE_NID));
