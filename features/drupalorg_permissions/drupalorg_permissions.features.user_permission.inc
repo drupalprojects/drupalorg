@@ -295,7 +295,12 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['access site-wide contact form'] = array(
     'name' => 'access site-wide contact form',
     'roles' => array(
-      'authenticated user' => 'authenticated user',
+      'Documentation moderator' => 'Documentation moderator',
+      'administrator' => 'administrator',
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'contact',
   );
@@ -304,7 +309,12 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['access user contact forms'] = array(
     'name' => 'access user contact forms',
     'roles' => array(
-      'authenticated user' => 'authenticated user',
+      'Documentation moderator' => 'Documentation moderator',
+      'administrator' => 'administrator',
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'contact',
   );
@@ -324,7 +334,12 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['add content to books'] = array(
     'name' => 'add content to books',
     'roles' => array(
-      'authenticated user' => 'authenticated user',
+      'Documentation moderator' => 'Documentation moderator',
+      'administrator' => 'administrator',
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'book',
   );
@@ -866,7 +881,12 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create book content'] = array(
     'name' => 'create book content',
     'roles' => array(
-      'authenticated user' => 'authenticated user',
+      'Documentation moderator' => 'Documentation moderator',
+      'administrator' => 'administrator',
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'node',
   );
@@ -875,7 +895,12 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create book_listing content'] = array(
     'name' => 'create book_listing content',
     'roles' => array(
-      'authenticated user' => 'authenticated user',
+      'Documentation moderator' => 'Documentation moderator',
+      'administrator' => 'administrator',
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'node',
   );
@@ -884,7 +909,12 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create casestudy content'] = array(
     'name' => 'create casestudy content',
     'roles' => array(
-      'authenticated user' => 'authenticated user',
+      'Documentation moderator' => 'Documentation moderator',
+      'administrator' => 'administrator',
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'node',
   );
@@ -1687,7 +1717,12 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit own book_listing content'] = array(
     'name' => 'edit own book_listing content',
     'roles' => array(
-      'authenticated user' => 'authenticated user',
+      'Documentation moderator' => 'Documentation moderator',
+      'administrator' => 'administrator',
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'node',
   );
@@ -1696,7 +1731,12 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit own casestudy content'] = array(
     'name' => 'edit own casestudy content',
     'roles' => array(
-      'authenticated user' => 'authenticated user',
+      'Documentation moderator' => 'Documentation moderator',
+      'administrator' => 'administrator',
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'node',
   );
@@ -2140,8 +2180,19 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['pift re-test files'] = array(
     'name' => 'pift re-test files',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
+      'Git administrator' => 'Git administrator',
+      'Git vetted user' => 'Git vetted user',
+      'Packaging whitelist maintainer' => 'Packaging whitelist maintainer',
       'administrator' => 'administrator',
-      'authenticated user' => 'authenticated user',
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'list maintainer' => 'list maintainer',
+      'security team' => 'security team',
+      'testing administrator' => 'testing administrator',
+      'user administrator' => 'user administrator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'pift',
   );
