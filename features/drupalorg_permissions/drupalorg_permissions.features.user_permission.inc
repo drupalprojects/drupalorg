@@ -131,6 +131,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'access printer-friendly version',
     'roles' => array(
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'book',
   );
@@ -808,8 +809,13 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['bypass mollom protection'] = array(
     'name' => 'bypass mollom protection',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'community' => 'community',
       'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'user administrator' => 'user administrator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'mollom',
   );
@@ -841,6 +847,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'cancel account',
     'roles' => array(
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'user',
   );
@@ -850,6 +857,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'change own username',
     'roles' => array(
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'user',
   );
@@ -2063,6 +2071,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'manage own SSH public keys',
     'roles' => array(
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'sshkey',
   );
@@ -2321,6 +2330,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'view own SSH public keys',
     'roles' => array(
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'sshkey',
   );
@@ -2330,6 +2340,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'view own unpublished content',
     'roles' => array(
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'node',
   );
@@ -2350,6 +2361,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'view revisions',
     'roles' => array(
       'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
     ),
     'module' => 'node',
   );
