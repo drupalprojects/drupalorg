@@ -505,7 +505,7 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['header']['text']['table'] = 'views';
   $handler->display->display_options['header']['text']['field'] = 'area';
   $handler->display->display_options['header']['text']['empty'] = TRUE;
-  $handler->display->display_options['header']['text']['content'] = '<a href="/node/add/changenotice?edit%5Bfield_project%5D[und][0][target_id]=%1 ([field_project])">Add new change record</a>';
+  $handler->display->display_options['header']['text']['content'] = '<a href="/node/add/changenotice?field_project=[field_project]">Add new change record</a>';
   $handler->display->display_options['header']['text']['format'] = '1';
   $handler->display->display_options['header']['text']['tokenize'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
@@ -715,8 +715,9 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['header']['text']['table'] = 'views';
   $handler->display->display_options['header']['text']['field'] = 'area';
   $handler->display->display_options['header']['text']['empty'] = TRUE;
-  $handler->display->display_options['header']['text']['content'] = '<a href="/node/add/changenotice?edit%5Bfield_project%5D[und][0][target_id]=%1 ([field_project])">Add new change record</a>';
+  $handler->display->display_options['header']['text']['content'] = '<a href="/node/add/changenotice?field_project=[field_project]">Add new change record</a>';
   $handler->display->display_options['header']['text']['format'] = '1';
+  $handler->display->display_options['header']['text']['tokenize'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */

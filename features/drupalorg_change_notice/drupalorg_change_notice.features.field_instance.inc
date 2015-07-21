@@ -1317,6 +1317,7 @@ function drupalorg_change_notice_field_default_field_instances() {
   $field_instances['node-changenotice-field_project'] = array(
     'bundle' => 'changenotice',
     'default_value' => NULL,
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -1347,15 +1348,17 @@ function drupalorg_change_notice_field_default_field_instances() {
     'label' => 'Project',
     'required' => 1,
     'settings' => array(
-      'handler_settings' => array(
-        'target_bundles' => array(
-          'project_core' => 'project_core',
-          'project_distribution' => 'project_distribution',
-          'project_drupalorg' => 'project_drupalorg',
-          'project_module' => 'project_module',
-          'project_theme' => 'project_theme',
-          'project_theme_engine' => 'project_theme_engine',
-          'project_translation' => 'project_translation',
+      'behaviors' => array(
+        'prepopulate' => array(
+          'action' => 'none',
+          'action_on_edit' => 0,
+          'fallback' => 'none',
+          'providers' => array(
+            'og_context' => FALSE,
+            'url' => 1,
+          ),
+          'skip_perm' => 0,
+          'status' => 1,
         ),
       ),
       'user_register_form' => FALSE,

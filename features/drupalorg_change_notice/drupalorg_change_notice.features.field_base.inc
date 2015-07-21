@@ -419,7 +419,6 @@ function drupalorg_change_notice_field_default_field_bases() {
           'type' => 'property',
         ),
         'target_bundles' => array(
-          'project' => 'project',
           'project_core' => 'project_core',
           'project_distribution' => 'project_distribution',
           'project_drupalorg' => 'project_drupalorg',
