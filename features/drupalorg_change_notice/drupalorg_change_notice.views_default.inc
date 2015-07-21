@@ -117,6 +117,17 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['path'] = '[path]';
   $handler->display->display_options['fields']['title']['alter']['absolute'] = TRUE;
   $handler->display->display_options['fields']['title']['alter']['alt'] = '[field_description]';
+  /* Field: Content: Project */
+  $handler->display->display_options['fields']['field_project']['id'] = 'field_project';
+  $handler->display->display_options['fields']['field_project']['table'] = 'field_data_field_project';
+  $handler->display->display_options['fields']['field_project']['field'] = 'field_project';
+  $handler->display->display_options['fields']['field_project']['label'] = '';
+  $handler->display->display_options['fields']['field_project']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_project']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_project']['type'] = 'entityreference_entity_id';
+  $handler->display->display_options['fields']['field_project']['settings'] = array(
+    'link' => 0,
+  );
   /* Contextual filter: Content: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
@@ -494,8 +505,9 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['header']['text']['table'] = 'views';
   $handler->display->display_options['header']['text']['field'] = 'area';
   $handler->display->display_options['header']['text']['empty'] = TRUE;
-  $handler->display->display_options['header']['text']['content'] = '<a href="/node/add/changenotice">Add new change record</a>';
+  $handler->display->display_options['header']['text']['content'] = '<a href="/node/add/changenotice?edit%5Bfield_project%5D[und][0][target_id]=%1 ([field_project])">Add new change record</a>';
   $handler->display->display_options['header']['text']['format'] = '1';
+  $handler->display->display_options['header']['text']['tokenize'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -703,7 +715,7 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['header']['text']['table'] = 'views';
   $handler->display->display_options['header']['text']['field'] = 'area';
   $handler->display->display_options['header']['text']['empty'] = TRUE;
-  $handler->display->display_options['header']['text']['content'] = '<a href="/node/add/changenotice">Add new change record</a>';
+  $handler->display->display_options['header']['text']['content'] = '<a href="/node/add/changenotice?edit%5Bfield_project%5D[und][0][target_id]=%1 ([field_project])">Add new change record</a>';
   $handler->display->display_options['header']['text']['format'] = '1';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
