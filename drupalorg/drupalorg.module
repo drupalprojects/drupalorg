@@ -56,7 +56,10 @@ function drupalorg_init() {
   if (isset($forum_id) && $forum_id) {
     // Tracking
     $term = taxonomy_term_load($forum_id);
-    $conf['googleanalytics_codesnippet_before'] .= "_gaq.push(['_setCustomVar', 1, 'Forum', '" . check_plain($term->name) . "', 3]);"; // 3 is page-level
+    $conf['googleanalytics_custom_dimension'][1] = array(
+      'index' => 1,
+      'value' => check_plain($term->name),
+    );
   }
 
   // Temporary message about the Solr index being rebuilt.
