@@ -2724,6 +2724,20 @@ function drupalorg_node_insert($node) {
   if ($node->type === 'organization') {
     drupalorg_org_request_issue($node);
   }
+  elseif (project_issue_node_is_issue($node)) {
+    // Save initial issue comment.
+    $node = node_load($node->nid, NULL, TRUE);
+    $node->nodechanges_comment['comment_body'][LANGUAGE_NONE][0] = array(
+      'value' => t('!name created an issue.', array(
+        '!name' => theme('username', array('account' => $node)),
+      )),
+      'format' => filter_default_format(),
+    );
+    $node->nodechanges_comment_attributes = array(
+      'project_issue_no_email' => TRUE,
+    );
+    node_save($node);
+  }
 }
 
 /**
@@ -2760,6 +2774,25 @@ function drupalorg_node_delete($node) {
   if (_forum_node_check_node_type($node)) {
     // Flush the forum block cache.
     drupalorg_forum_blocks_flush();
+  }
+}
+
+/**
+ * Implements hook_comment_insert().
+ */
+function drupalorg_comment_insert($comment) {
+  // Update initial issue comment for first revision.
+  if ($comment->node_type === 'comment_node_project_issue' && ($field_name = nodechanges_get_field_name($comment->node_type))) {
+    if (!empty($comment->{$field_name}[LANGUAGE_NONE])) {
+      // Issue comment with a revision to the node.
+      $first_comment = comment_load(db_query('SELECT min(c.cid) FROM {comment} c WHERE c.nid = :nid', array(':nid' => $comment->nid))->fetchField());
+      $node = node_load($comment->nid);
+      // Is an auto-generated comment with no link to the first revision.
+      if ($first_comment->uid == $node->uid && preg_match('|^<a.*class="username">.*</a> created an issue.$|', $first_comment->comment_body[LANGUAGE_NONE][0]['value'])) {
+        $first_comment->comment_body[LANGUAGE_NONE][0]['value'] .= ' ' . t('See <a href="!url">original issue</a>.', array('!url' => url('node/' . $node->nid . '/revisions/' . min(array_keys(node_revision_list($node))) . '/view')));
+        comment_save($first_comment);
+      }
+    }
   }
 }
 
@@ -3376,8 +3409,8 @@ function drupalorg_preprocess_comment(&$v) {
     ));
   }
 
-  // System messages in the issue queue.
-  if ($v['comment']->uid != 0 && $v['comment']->uid == variable_get('project_issue_followup_user', 0)) {
+  // System messages, and first comment, in the issue queue.
+  if ($v['comment']->uid != 0 && ($v['comment']->uid == variable_get('project_issue_followup_user', 0) || ($v['comment']->uid == $v['node']->uid && $v['comment']->thread == int2vancode(1) . '/' && preg_match('|^<a.*class="username">.*</a> created an issue.( See <a.*>original issue</a>.)?$|', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])))) {
     // Remove picture & username.
     $v['picture'] = '';
     $v['submitted'] = t('<time pubdate datetime="!created_date_iso">!created_date</time>', array(
