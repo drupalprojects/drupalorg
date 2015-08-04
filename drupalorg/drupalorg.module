@@ -2789,7 +2789,7 @@ function drupalorg_comment_insert($comment) {
       $node = node_load($comment->nid);
       // Is an auto-generated comment with no link to the first revision.
       if ($first_comment->uid == $node->uid && preg_match('|^<a.*class="username">.*</a> created an issue.$|', $first_comment->comment_body[LANGUAGE_NONE][0]['value'])) {
-        $first_comment->comment_body[LANGUAGE_NONE][0]['value'] .= ' ' . t('See <a href="!url">original issue</a>.', array('!url' => url('node/' . $node->nid . '/revisions/' . min(array_keys(node_revision_list($node))) . '/view')));
+        $first_comment->comment_body[LANGUAGE_NONE][0]['value'] .= ' ' . t('See <a href="!url">original summary</a>.', array('!url' => url('node/' . $node->nid . '/revisions/' . min(array_keys(node_revision_list($node))) . '/view')));
         comment_save($first_comment);
       }
     }
@@ -3410,7 +3410,7 @@ function drupalorg_preprocess_comment(&$v) {
   }
 
   // System messages, and first comment, in the issue queue.
-  if ($v['comment']->uid != 0 && ($v['comment']->uid == variable_get('project_issue_followup_user', 0) || ($v['comment']->uid == $v['node']->uid && $v['comment']->thread == int2vancode(1) . '/' && preg_match('|^<a.*class="username">.*</a> created an issue.( See <a.*>original issue</a>.)?$|', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])))) {
+  if ($v['comment']->uid != 0 && ($v['comment']->uid == variable_get('project_issue_followup_user', 0) || ($v['comment']->uid == $v['node']->uid && $v['comment']->thread == int2vancode(1) . '/' && preg_match('|^<a.*class="username">.*</a> created an issue.( See <a.*>original summary</a>.)?$|', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])))) {
     // Remove picture & username.
     $v['picture'] = '';
     $v['submitted'] = t('<time pubdate datetime="!created_date_iso">!created_date</time>', array(
