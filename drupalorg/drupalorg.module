@@ -3487,7 +3487,7 @@ function drupalorg_preprocess_comment(&$v) {
   }
 
   // Confirm button.
-  if (drupalorg_confirm_user_access($comment_account)) {
+  if (!in_array('system-message', $v['classes_array']) && drupalorg_confirm_user_access($comment_account)) {
     $form = drupal_get_form('drupalorg_add_confirm_button', $comment_account, $v['comment']->cid);
     $v['picture'] = '<div class="user-picture-with-button">' . $v['picture'] . drupal_render($form) . '</div>';
   }
