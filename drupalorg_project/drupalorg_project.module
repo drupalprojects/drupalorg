@@ -421,7 +421,8 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             'patches-bar' => NULL,
             'files' => NULL,
             'files-bar' => NULL,
-            'comments' => 1,
+            // After 1438716282, there is an automatic initial comment.
+            'comments' => ($form_state['node']->created < 1438716282) ? 1 : 0,
             'comments-bar' => NULL,
             '#weight' => 0,
           ),
