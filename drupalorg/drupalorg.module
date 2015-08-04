@@ -2790,6 +2790,7 @@ function drupalorg_comment_insert($comment) {
       // Is an auto-generated comment with no link to the first revision.
       if ($first_comment->uid == $node->uid && preg_match('|^<a.*class="username">.*</a> created an issue.$|', $first_comment->comment_body[LANGUAGE_NONE][0]['value'])) {
         $first_comment->comment_body[LANGUAGE_NONE][0]['value'] .= ' ' . t('See <a href="!url">original summary</a>.', array('!url' => url('node/' . $node->nid . '/revisions/' . min(array_keys(node_revision_list($node))) . '/view')));
+        $first_comment->changed = REQUEST_TIME;
         comment_save($first_comment);
       }
     }
