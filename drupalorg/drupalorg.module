@@ -2736,6 +2736,13 @@ function drupalorg_node_insert($node) {
     $node->nodechanges_comment_attributes = array(
       'project_issue_no_email' => TRUE,
     );
+    // Copy attribution from the user’s last comment.
+    if ($cid = db_query_range('SELECT cid FROM {comment} c INNER JOIN {node} n ON n.nid = c.nid AND n.type IN (:issue_types) AND n.status = :node_published WHERE c.status = :comment_published AND c.uid = :uid AND c.created > 1426194356 ORDER BY c.cid DESC', 0, 1, array(':issue_types' => project_issue_issue_node_types(), ':node_published' => NODE_PUBLISHED, ':comment_published' => COMMENT_PUBLISHED, ':uid' => $GLOBALS['user']->uid))->fetchField()) {
+      $last_comment = comment_load($cid);
+      $node->nodechanges_comment['field_attribute_as_volunteer'] = $last_comment->field_attribute_as_volunteer;
+      $node->nodechanges_comment['field_attribute_contribution_to'] = $last_comment->field_attribute_contribution_to;
+      $node->nodechanges_comment['field_for_customer'] = $last_comment->field_for_customer;
+    }
     node_save($node);
   }
 }
