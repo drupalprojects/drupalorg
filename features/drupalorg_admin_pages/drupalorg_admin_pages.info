@@ -1,0 +1,13 @@
+name = Drupal.org Admin Pages
+description = Enabling this feature will replace default admin views such as admin/people and admin/content.
+core = 7.x
+package = Features
+version = 7.x-3.x-dev
+project = drupalorg_case_studies
+dependencies[] = ctools
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[views_view][] = admin_content_drupalorg
+features[views_view][] = admin_users_drupalorg
+project status url = http://drupal.org

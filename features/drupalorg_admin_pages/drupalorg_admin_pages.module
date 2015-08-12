@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Drupal.org Admin Pages feature.
+ */
+
+include_once 'drupalorg_admin_pages.features.inc';
