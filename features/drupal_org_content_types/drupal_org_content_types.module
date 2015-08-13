@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Drupal.org Content Types feature.
+ */
+
+include_once 'drupal_org_content_types.features.inc';
