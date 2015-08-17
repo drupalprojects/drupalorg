@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * drupal_org_content_types.views_default.inc
+ * drupalorg_content_types.views_default.inc
  */
 
 /**
  * Implements hook_views_default_views().
  */
-function drupal_org_content_types_views_default_views() {
+function drupalorg_content_types_views_default_views() {
   $export = array();
 
   $view = new view();

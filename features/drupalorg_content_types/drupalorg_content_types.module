@@ -4,4 +4,4 @@
  * Code for the Drupal.org Content Types feature.
  */
 
-include_once 'drupal_org_content_types.features.inc';
+include_once 'drupalorg_content_types.features.inc';

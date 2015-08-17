@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * drupal_org_content_types.panelizer.inc
+ * drupalorg_content_types.panelizer.inc
  */
 
 /**
  * Implements hook_panelizer_defaults().
  */
-function drupal_org_content_types_panelizer_defaults() {
+function drupalorg_content_types_panelizer_defaults() {
   $export = array();
 
   $panelizer = new stdClass();

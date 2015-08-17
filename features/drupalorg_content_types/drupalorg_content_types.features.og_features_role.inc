@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * drupal_org_content_types.features.og_features_role.inc
+ * drupalorg_content_types.features.og_features_role.inc
  */
 
 /**
  * Implements hook_og_features_default_roles().
  */
-function drupal_org_content_types_og_features_default_roles() {
+function drupalorg_content_types_og_features_default_roles() {
   $roles = array();
 
   // Exported OG Role: 'node:section:editor'.

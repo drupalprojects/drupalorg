@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * drupal_org_content_types.pages_default.inc
+ * drupalorg_content_types.pages_default.inc
  */
 
 /**
  * Implements hook_default_page_manager_handlers().
  */
-function drupal_org_content_types_default_page_manager_handlers() {
+function drupalorg_content_types_default_page_manager_handlers() {
   $export = array();
 
   $handler = new stdClass();

@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * drupal_org_content_types.features.field_instance.inc
+ * drupalorg_content_types.features.field_instance.inc
  */
 
 /**
  * Implements hook_field_default_field_instances().
  */
-function drupal_org_content_types_field_default_field_instances() {
+function drupalorg_content_types_field_default_field_instances() {
   $field_instances = array();
 
   // Exported field_instance: 'node-page-body'

@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * drupal_org_content_types.features.inc
+ * drupalorg_content_types.features.inc
  */
 
 /**
  * Implements hook_ctools_plugin_api().
  */
-function drupal_org_content_types_ctools_plugin_api($module = NULL, $api = NULL) {
+function drupalorg_content_types_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "page_manager" && $api == "pages_default") {
     return array("version" => "1");
   }
@@ -19,14 +19,14 @@ function drupal_org_content_types_ctools_plugin_api($module = NULL, $api = NULL)
 /**
  * Implements hook_views_api().
  */
-function drupal_org_content_types_views_api($module = NULL, $api = NULL) {
+function drupalorg_content_types_views_api($module = NULL, $api = NULL) {
   return array("api" => "3.0");
 }
 
 /**
  * Implements hook_node_info().
  */
-function drupal_org_content_types_node_info() {
+function drupalorg_content_types_node_info() {
   $items = array(
     'page' => array(
       'name' => t('Page'),
