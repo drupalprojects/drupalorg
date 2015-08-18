@@ -39,7 +39,7 @@ function drupalorg_content_types_panelizer_defaults() {
   $panelizer->link_to_entity = TRUE;
   $panelizer->extra = array();
   $display = new panels_display();
-  $display->layout = 'threecol_33_34_33';
+  $display->layout = 'hydra';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -47,6 +47,11 @@ function drupalorg_content_types_panelizer_defaults() {
       'left' => NULL,
       'middle' => NULL,
       'right' => NULL,
+      'preface' => NULL,
+      'left_content' => NULL,
+      'top_right_content' => NULL,
+      'bottom_right_content' => NULL,
+      'footer' => NULL,
     ),
   );
   $display->cache = array();
@@ -56,7 +61,7 @@ function drupalorg_content_types_panelizer_defaults() {
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-0058af26-bbf1-472f-8ce3-969e59a88c67';
-    $pane->panel = 'left';
+    $pane->panel = 'left_content';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:body';
     $pane->shown = TRUE;
@@ -80,10 +85,10 @@ function drupalorg_content_types_panelizer_defaults() {
     $pane->locks = array();
     $pane->uuid = '0058af26-bbf1-472f-8ce3-969e59a88c67';
     $display->content['new-0058af26-bbf1-472f-8ce3-969e59a88c67'] = $pane;
-    $display->panels['left'][0] = 'new-0058af26-bbf1-472f-8ce3-969e59a88c67';
+    $display->panels['left_content'][0] = 'new-0058af26-bbf1-472f-8ce3-969e59a88c67';
     $pane = new stdClass();
     $pane->pid = 'new-61c7d8a6-aed8-456f-9171-20750b6f0401';
-    $pane->panel = 'left';
+    $pane->panel = 'left_content';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:upload';
     $pane->shown = TRUE;
@@ -107,10 +112,10 @@ function drupalorg_content_types_panelizer_defaults() {
     $pane->locks = array();
     $pane->uuid = '61c7d8a6-aed8-456f-9171-20750b6f0401';
     $display->content['new-61c7d8a6-aed8-456f-9171-20750b6f0401'] = $pane;
-    $display->panels['left'][1] = 'new-61c7d8a6-aed8-456f-9171-20750b6f0401';
+    $display->panels['left_content'][1] = 'new-61c7d8a6-aed8-456f-9171-20750b6f0401';
     $pane = new stdClass();
     $pane->pid = 'new-2ecdd7cc-146e-4bc8-a193-202d3272cfd4';
-    $pane->panel = 'right';
+    $pane->panel = 'top_right_content';
     $pane->type = 'views';
     $pane->subtype = 'og_menu';
     $pane->shown = TRUE;
@@ -145,10 +150,10 @@ function drupalorg_content_types_panelizer_defaults() {
     $pane->locks = array();
     $pane->uuid = '2ecdd7cc-146e-4bc8-a193-202d3272cfd4';
     $display->content['new-2ecdd7cc-146e-4bc8-a193-202d3272cfd4'] = $pane;
-    $display->panels['right'][0] = 'new-2ecdd7cc-146e-4bc8-a193-202d3272cfd4';
+    $display->panels['top_right_content'][0] = 'new-2ecdd7cc-146e-4bc8-a193-202d3272cfd4';
     $pane = new stdClass();
     $pane->pid = 'new-222a0202-ecf9-4daf-95b3-496499341a50';
-    $pane->panel = 'right';
+    $pane->panel = 'top_right_content';
     $pane->type = 'node_create_links';
     $pane->subtype = 'node_create_links';
     $pane->shown = TRUE;
@@ -171,7 +176,7 @@ function drupalorg_content_types_panelizer_defaults() {
     $pane->locks = array();
     $pane->uuid = '222a0202-ecf9-4daf-95b3-496499341a50';
     $display->content['new-222a0202-ecf9-4daf-95b3-496499341a50'] = $pane;
-    $display->panels['right'][1] = 'new-222a0202-ecf9-4daf-95b3-496499341a50';
+    $display->panels['top_right_content'][1] = 'new-222a0202-ecf9-4daf-95b3-496499341a50';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = 'new-0058af26-bbf1-472f-8ce3-969e59a88c67';
   $panelizer->display = $display;
@@ -202,7 +207,7 @@ function drupalorg_content_types_panelizer_defaults() {
     'panels_breadcrumbs_home' => 1,
   );
   $display = new panels_display();
-  $display->layout = 'threecol_33_34_33';
+  $display->layout = 'hydra';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -210,6 +215,17 @@ function drupalorg_content_types_panelizer_defaults() {
       'left' => NULL,
       'right' => NULL,
       'middle' => NULL,
+      'left_header' => NULL,
+      'right_header' => NULL,
+      'left_triptych' => NULL,
+      'middle_triptych' => NULL,
+      'right_triptych' => NULL,
+      'left_content' => NULL,
+      'right_content' => NULL,
+      'footer' => NULL,
+      'preface' => NULL,
+      'top_right_content' => NULL,
+      'bottom_right_content' => NULL,
     ),
   );
   $display->cache = array();
@@ -219,7 +235,7 @@ function drupalorg_content_types_panelizer_defaults() {
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-83fa093f-798b-44fc-97cc-7003b633e670';
-    $pane->panel = 'left';
+    $pane->panel = 'left_content';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:body';
     $pane->shown = TRUE;
@@ -243,10 +259,10 @@ function drupalorg_content_types_panelizer_defaults() {
     $pane->locks = array();
     $pane->uuid = '83fa093f-798b-44fc-97cc-7003b633e670';
     $display->content['new-83fa093f-798b-44fc-97cc-7003b633e670'] = $pane;
-    $display->panels['left'][0] = 'new-83fa093f-798b-44fc-97cc-7003b633e670';
+    $display->panels['left_content'][0] = 'new-83fa093f-798b-44fc-97cc-7003b633e670';
     $pane = new stdClass();
     $pane->pid = 'new-87e381ec-ff73-4765-b030-fa59a8716f3e';
-    $pane->panel = 'right';
+    $pane->panel = 'top_right_content';
     $pane->type = 'views_panes';
     $pane->subtype = 'og_menu-panel_pane_1';
     $pane->shown = TRUE;
@@ -266,10 +282,10 @@ function drupalorg_content_types_panelizer_defaults() {
     $pane->locks = array();
     $pane->uuid = '87e381ec-ff73-4765-b030-fa59a8716f3e';
     $display->content['new-87e381ec-ff73-4765-b030-fa59a8716f3e'] = $pane;
-    $display->panels['right'][0] = 'new-87e381ec-ff73-4765-b030-fa59a8716f3e';
+    $display->panels['top_right_content'][0] = 'new-87e381ec-ff73-4765-b030-fa59a8716f3e';
     $pane = new stdClass();
     $pane->pid = 'new-896bbff7-b48a-42c5-8665-16c2caf39354';
-    $pane->panel = 'right';
+    $pane->panel = 'top_right_content';
     $pane->type = 'node_create_links';
     $pane->subtype = 'node_create_links';
     $pane->shown = TRUE;
@@ -292,7 +308,7 @@ function drupalorg_content_types_panelizer_defaults() {
     $pane->locks = array();
     $pane->uuid = '896bbff7-b48a-42c5-8665-16c2caf39354';
     $display->content['new-896bbff7-b48a-42c5-8665-16c2caf39354'] = $pane;
-    $display->panels['right'][1] = 'new-896bbff7-b48a-42c5-8665-16c2caf39354';
+    $display->panels['top_right_content'][1] = 'new-896bbff7-b48a-42c5-8665-16c2caf39354';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $panelizer->display = $display;
