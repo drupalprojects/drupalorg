@@ -919,6 +919,16 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'create changenotice content'.
+  $permissions['create changenotice content'] = array(
+    'name' => 'create changenotice content',
+    'roles' => array(
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'create forum content'.
   $permissions['create forum content'] = array(
     'name' => 'create forum content',
@@ -1008,6 +1018,16 @@ function drupalorg_permissions_user_default_permissions() {
       'webmaster' => 'webmaster',
     ),
     'module' => 'book',
+  );
+
+  // Exported permission: 'create organization content'.
+  $permissions['create organization content'] = array(
+    'name' => 'create organization content',
+    'roles' => array(
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: 'create packaging_whitelist content'.
@@ -1165,6 +1185,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'project',
   );
 
+  // Exported permission: 'delete any organization content'.
+  $permissions['delete any organization content'] = array(
+    'name' => 'delete any organization content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'delete any packaging_whitelist content'.
   $permissions['delete any packaging_whitelist content'] = array(
     'name' => 'delete any packaging_whitelist content',
@@ -1291,6 +1318,16 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete own full project',
     'roles' => array(),
     'module' => 'project',
+  );
+
+  // Exported permission: 'delete own organization content'.
+  $permissions['delete own organization content'] = array(
+    'name' => 'delete own organization content',
+    'roles' => array(
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: 'delete own packaging_whitelist content'.
@@ -1609,9 +1646,26 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit any changenotice content'.
+  $permissions['edit any changenotice content'] = array(
+    'name' => 'edit any changenotice content',
+    'roles' => array(
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit any forum content'.
   $permissions['edit any forum content'] = array(
     'name' => 'edit any forum content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'edit any organization content'.
+  $permissions['edit any organization content'] = array(
+    'name' => 'edit any organization content',
     'roles' => array(),
     'module' => 'node',
   );
@@ -1741,6 +1795,16 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit own changenotice content'.
+  $permissions['edit own changenotice content'] = array(
+    'name' => 'edit own changenotice content',
+    'roles' => array(
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit own comments'.
   $permissions['edit own comments'] = array(
     'name' => 'edit own comments',
@@ -1756,6 +1820,16 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'authenticated user' => 'authenticated user',
       'email unverified' => 'email unverified',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'edit own organization content'.
+  $permissions['edit own organization content'] = array(
+    'name' => 'edit own organization content',
+    'roles' => array(
+      'community' => 'community',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
