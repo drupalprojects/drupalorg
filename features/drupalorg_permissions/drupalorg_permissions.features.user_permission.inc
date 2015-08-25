@@ -1068,7 +1068,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create project_drupalorg content'] = array(
     'name' => 'create project_drupalorg content',
     'roles' => array(
-      'Git user' => 'Git user',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'node',
   );
@@ -1870,7 +1870,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit own project_drupalorg content'] = array(
     'name' => 'edit own project_drupalorg content',
     'roles' => array(
-      'Git user' => 'Git user',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'node',
   );
