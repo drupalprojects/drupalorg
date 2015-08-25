@@ -179,7 +179,7 @@ $handler->display->display_options['fields']['status']['id'] = 'status';
 $handler->display->display_options['fields']['status']['table'] = 'comment';
 $handler->display->display_options['fields']['status']['field'] = 'status';
 $handler->display->display_options['fields']['status']['label'] = 'Published';
-$handler->display->display_options['fields']['status']['not'] = 1;
+$handler->display->display_options['fields']['status']['not'] = 0;
 /* Sort criterion: Comment: Updated date */
 $handler->display->display_options['sorts']['changed']['id'] = 'changed';
 $handler->display->display_options['sorts']['changed']['table'] = 'comment';
