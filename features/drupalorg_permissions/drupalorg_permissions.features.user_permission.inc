@@ -184,13 +184,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'restws',
   );
 
-  // Exported permission: 'access resource pift_ci_job'.
-  $permissions['access resource pift_ci_job'] = array(
-    'name' => 'access resource pift_ci_job',
-    'roles' => array(),
-    'module' => 'restws',
-  );
-
   // Exported permission: 'access resource redirect'.
   $permissions['access resource redirect'] = array(
     'name' => 'access resource redirect',
@@ -1105,6 +1098,16 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'project',
   );
 
+  // Exported permission: 'create section content'.
+  $permissions['create section content'] = array(
+    'name' => 'create section content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'create story content'.
   $permissions['create story content'] = array(
     'name' => 'create story content',
@@ -1244,6 +1247,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'project',
   );
 
+  // Exported permission: 'delete any section content'.
+  $permissions['delete any section content'] = array(
+    'name' => 'delete any section content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'delete any story content'.
   $permissions['delete any story content'] = array(
     'name' => 'delete any story content',
@@ -1370,6 +1382,16 @@ function drupalorg_permissions_user_default_permissions() {
       'Git user' => 'Git user',
     ),
     'module' => 'project',
+  );
+
+  // Exported permission: 'delete own section content'.
+  $permissions['delete own section content'] = array(
+    'name' => 'delete own section content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: 'delete own story content'.
@@ -1690,6 +1712,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit any section content'.
+  $permissions['edit any section content'] = array(
+    'name' => 'edit any section content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit any story content'.
   $permissions['edit any story content'] = array(
     'name' => 'edit any story content',
@@ -1839,6 +1870,16 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit own project_translation content'] = array(
     'name' => 'edit own project_translation content',
     'roles' => array(),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'edit own section content'.
+  $permissions['edit own section content'] = array(
+    'name' => 'edit own section content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
+    ),
     'module' => 'node',
   );
 
