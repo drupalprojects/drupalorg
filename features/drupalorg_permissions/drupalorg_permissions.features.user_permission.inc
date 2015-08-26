@@ -21,6 +21,16 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'fasttoggle_user',
   );
 
+  // Exported permission: 'accept git access agreement'.
+  $permissions['accept git access agreement'] = array(
+    'name' => 'accept git access agreement',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'drupalorg_git_gateway',
+  );
+
   // Exported permission: 'access administration pages'.
   $permissions['access administration pages'] = array(
     'name' => 'access administration pages',
