@@ -913,6 +913,11 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
       }
     }
   }
+  elseif ($view_mode === 'issuemetadata') {
+    if (project_issue_node_is_issue($node)) {
+      $node->content['project_issue_created_by'][0]['#markup'] .= drupalorg_add_badge_new_user(user_load($node->uid));
+    }
+  }
 }
 
 /**
