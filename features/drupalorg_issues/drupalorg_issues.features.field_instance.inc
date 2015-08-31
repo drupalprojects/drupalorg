@@ -229,7 +229,6 @@ function drupalorg_issues_field_default_field_instances() {
         'settings' => array(
           'trim_length' => 600,
         ),
-        'trim_length' => 1400,
         'type' => 'text_summary_or_trimmed',
         'weight' => 5,
       ),
@@ -1044,7 +1043,6 @@ function drupalorg_issues_field_default_field_instances() {
       ),
       'teaser' => array(
         'label' => 'hidden',
-        'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 10,

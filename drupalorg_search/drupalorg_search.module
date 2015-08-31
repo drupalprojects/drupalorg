@@ -169,16 +169,6 @@ function drupalorg_search_block_view($delta) {
 }
 
 /**
- * Implementation of hook_form_FORM_ID_alter().
- */
-function drupalorg_search_form_apachesolr_search_custom_page_search_form_alter(&$form, $form_state) {
-  $env_id = apachesolr_default_environment();
-  if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
-    $form['#access'] = FALSE;
-  }
-}
-
-/**
  * Implements hook_form_FORM_ID_alter().
  *
  * This drastically alters the project solr form, which we essentially still use
