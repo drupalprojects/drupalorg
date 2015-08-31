@@ -55,7 +55,7 @@ function drupalorg_content_types_default_page_manager_handlers() {
     'panels_breadcrumbs_home' => 1,
   );
   $display = new panels_display();
-  $display->layout = 'flexible';
+  $display->layout = 'hydra';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -109,6 +109,11 @@ function drupalorg_content_types_default_page_manager_handlers() {
       'default' => NULL,
       'center' => NULL,
       'og_menu' => NULL,
+      'preface' => NULL,
+      'left_content' => NULL,
+      'top_right_content' => NULL,
+      'bottom_right_content' => NULL,
+      'footer' => NULL,
     ),
   );
   $display->cache = array();
@@ -117,27 +122,8 @@ function drupalorg_content_types_default_page_manager_handlers() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-b999a13e-9df2-416a-8d4b-fd7268aedb88';
-    $pane->panel = 'center';
-    $pane->type = 'page_breadcrumb';
-    $pane->subtype = 'page_breadcrumb';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array();
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $pane->uuid = 'b999a13e-9df2-416a-8d4b-fd7268aedb88';
-    $display->content['new-b999a13e-9df2-416a-8d4b-fd7268aedb88'] = $pane;
-    $display->panels['center'][0] = 'new-b999a13e-9df2-416a-8d4b-fd7268aedb88';
-    $pane = new stdClass();
     $pane->pid = 'new-e14a10bb-d462-419b-94aa-e75e0210330d';
-    $pane->panel = 'center';
+    $pane->panel = 'left_content';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:body';
     $pane->shown = TRUE;
@@ -160,16 +146,16 @@ function drupalorg_content_types_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 0;
     $pane->locks = array();
     $pane->uuid = 'e14a10bb-d462-419b-94aa-e75e0210330d';
     $display->content['new-e14a10bb-d462-419b-94aa-e75e0210330d'] = $pane;
-    $display->panels['center'][1] = 'new-e14a10bb-d462-419b-94aa-e75e0210330d';
+    $display->panels['left_content'][0] = 'new-e14a10bb-d462-419b-94aa-e75e0210330d';
     $pane = new stdClass();
-    $pane->pid = 'new-c49f9f9a-e0af-4116-a41a-dc435a200893';
-    $pane->panel = 'og_menu';
+    $pane->pid = 'new-62b7dd79-0444-4cc6-9e30-5c6d7a4b4610';
+    $pane->panel = 'top_right_content';
     $pane->type = 'views_panes';
-    $pane->subtype = 'og_menu-panel_pane_1';
+    $pane->subtype = 'og_menu-group_menu';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
@@ -185,35 +171,9 @@ function drupalorg_content_types_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'c49f9f9a-e0af-4116-a41a-dc435a200893';
-    $display->content['new-c49f9f9a-e0af-4116-a41a-dc435a200893'] = $pane;
-    $display->panels['og_menu'][0] = 'new-c49f9f9a-e0af-4116-a41a-dc435a200893';
-    $pane = new stdClass();
-    $pane->pid = 'new-ee16dabd-157d-45f0-94b0-fa2a2451d76b';
-    $pane->panel = 'og_menu';
-    $pane->type = 'node_create_links';
-    $pane->subtype = 'node_create_links';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'types' => array(),
-      'field_name' => 'og_group_ref',
-      'context' => 'relationship_entity_from_field:og_group_ref-node-node_1',
-      'override_title' => 1,
-      'override_title_text' => 'Add content',
-      'override_title_heading' => 'h2',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 1;
-    $pane->locks = array();
-    $pane->uuid = 'ee16dabd-157d-45f0-94b0-fa2a2451d76b';
-    $display->content['new-ee16dabd-157d-45f0-94b0-fa2a2451d76b'] = $pane;
-    $display->panels['og_menu'][1] = 'new-ee16dabd-157d-45f0-94b0-fa2a2451d76b';
+    $pane->uuid = '62b7dd79-0444-4cc6-9e30-5c6d7a4b4610';
+    $display->content['new-62b7dd79-0444-4cc6-9e30-5c6d7a4b4610'] = $pane;
+    $display->panels['top_right_content'][0] = 'new-62b7dd79-0444-4cc6-9e30-5c6d7a4b4610';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-e14a10bb-d462-419b-94aa-e75e0210330d';
   $handler->conf['display'] = $display;
@@ -259,9 +219,13 @@ function drupalorg_content_types_default_page_manager_handlers() {
         ),
       ),
     ),
+    'panels_breadcrumbs_state' => 1,
+    'panels_breadcrumbs_titles' => '%group:title',
+    'panels_breadcrumbs_paths' => '%group:url',
+    'panels_breadcrumbs_home' => 1,
   );
   $display = new panels_display();
-  $display->layout = 'flexible';
+  $display->layout = 'hydra';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -336,16 +300,21 @@ function drupalorg_content_types_default_page_manager_handlers() {
       'default' => NULL,
       'center' => NULL,
       'meta' => NULL,
+      'preface' => NULL,
+      'left_content' => NULL,
+      'top_right_content' => NULL,
+      'bottom_right_content' => NULL,
+      'footer' => NULL,
     ),
   );
   $display->cache = array();
-  $display->title = '';
+  $display->title = '%node:title';
   $display->uuid = 'e78f0385-640e-421b-a81e-afc1e6f9ea18';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-00798993-08fa-4954-850d-4d86dc2a40fa';
-    $pane->panel = 'center';
+    $pane->panel = 'left_content';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:body';
     $pane->shown = TRUE;
@@ -372,12 +341,12 @@ function drupalorg_content_types_default_page_manager_handlers() {
     $pane->locks = array();
     $pane->uuid = '00798993-08fa-4954-850d-4d86dc2a40fa';
     $display->content['new-00798993-08fa-4954-850d-4d86dc2a40fa'] = $pane;
-    $display->panels['center'][0] = 'new-00798993-08fa-4954-850d-4d86dc2a40fa';
+    $display->panels['left_content'][0] = 'new-00798993-08fa-4954-850d-4d86dc2a40fa';
     $pane = new stdClass();
-    $pane->pid = 'new-0d690c55-8fcb-45ae-a0d3-1e57ddc6cd86';
-    $pane->panel = 'meta';
+    $pane->pid = 'new-10574aaf-9345-4561-a92a-bb6b737da287';
+    $pane->panel = 'top_right_content';
     $pane->type = 'views_panes';
-    $pane->subtype = 'og_menu-panel_pane_1';
+    $pane->subtype = 'og_menu-group_menu';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
@@ -393,12 +362,12 @@ function drupalorg_content_types_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '0d690c55-8fcb-45ae-a0d3-1e57ddc6cd86';
-    $display->content['new-0d690c55-8fcb-45ae-a0d3-1e57ddc6cd86'] = $pane;
-    $display->panels['meta'][0] = 'new-0d690c55-8fcb-45ae-a0d3-1e57ddc6cd86';
+    $pane->uuid = '10574aaf-9345-4561-a92a-bb6b737da287';
+    $display->content['new-10574aaf-9345-4561-a92a-bb6b737da287'] = $pane;
+    $display->panels['top_right_content'][0] = 'new-10574aaf-9345-4561-a92a-bb6b737da287';
     $pane = new stdClass();
     $pane->pid = 'new-c740bd00-7b48-43ae-9be4-aa211203d9cf';
-    $pane->panel = 'meta';
+    $pane->panel = 'top_right_content';
     $pane->type = 'node_create_links';
     $pane->subtype = 'node_create_links';
     $pane->shown = TRUE;
@@ -421,7 +390,7 @@ function drupalorg_content_types_default_page_manager_handlers() {
     $pane->locks = array();
     $pane->uuid = 'c740bd00-7b48-43ae-9be4-aa211203d9cf';
     $display->content['new-c740bd00-7b48-43ae-9be4-aa211203d9cf'] = $pane;
-    $display->panels['meta'][1] = 'new-c740bd00-7b48-43ae-9be4-aa211203d9cf';
+    $display->panels['top_right_content'][1] = 'new-c740bd00-7b48-43ae-9be4-aa211203d9cf';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
