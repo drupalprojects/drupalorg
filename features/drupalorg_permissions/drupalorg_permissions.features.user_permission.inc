@@ -106,6 +106,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'access draggableviews'.
+  $permissions['access draggableviews'] = array(
+    'name' => 'access draggableviews',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'draggableviews',
+  );
+
   // Exported permission: 'access mollom statistics'.
   $permissions['access mollom statistics'] = array(
     'name' => 'access mollom statistics',
@@ -191,6 +200,20 @@ function drupalorg_permissions_user_default_permissions() {
       'authenticated user' => 'authenticated user',
       'email unverified' => 'email unverified',
     ),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource og_membership'.
+  $permissions['access resource og_membership'] = array(
+    'name' => 'access resource og_membership',
+    'roles' => array(),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource og_membership_type'.
+  $permissions['access resource og_membership_type'] = array(
+    'name' => 'access resource og_membership_type',
+    'roles' => array(),
     'module' => 'restws',
   );
 
@@ -381,6 +404,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'system',
   );
 
+  // Exported permission: 'administer advanced pane settings'.
+  $permissions['administer advanced pane settings'] = array(
+    'name' => 'administer advanced pane settings',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
   // Exported permission: 'administer bakery'.
   $permissions['administer bakery'] = array(
     'name' => 'administer bakery',
@@ -535,6 +567,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'googleanalytics',
   );
 
+  // Exported permission: 'administer group'.
+  $permissions['administer group'] = array(
+    'name' => 'administer group',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'og',
+  );
+
   // Exported permission: 'administer homebox'.
   $permissions['administer homebox'] = array(
     'name' => 'administer homebox',
@@ -629,6 +670,42 @@ function drupalorg_permissions_user_default_permissions() {
       'webmaster' => 'webmaster',
     ),
     'module' => 'node',
+  );
+
+  // Exported permission: 'administer page manager'.
+  $permissions['administer page manager'] = array(
+    'name' => 'administer page manager',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'page_manager',
+  );
+
+  // Exported permission: 'administer pane access'.
+  $permissions['administer pane access'] = array(
+    'name' => 'administer pane access',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'administer panels layouts'.
+  $permissions['administer panels layouts'] = array(
+    'name' => 'administer panels layouts',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'administer panels styles'.
+  $permissions['administer panels styles'] = array(
+    'name' => 'administer panels styles',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
   );
 
   // Exported permission: 'administer pathauto'.
@@ -875,6 +952,15 @@ function drupalorg_permissions_user_default_permissions() {
       'email unverified' => 'email unverified',
     ),
     'module' => 'user',
+  );
+
+  // Exported permission: 'change layouts in place editing'.
+  $permissions['change layouts in place editing'] = array(
+    'name' => 'change layouts in place editing',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
   );
 
   // Exported permission: 'change own username'.
@@ -2468,6 +2554,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'flag',
   );
 
+  // Exported permission: 'use ipe with page manager'.
+  $permissions['use ipe with page manager'] = array(
+    'name' => 'use ipe with page manager',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
   // Exported permission: 'use multiple emails'.
   $permissions['use multiple emails'] = array(
     'name' => 'use multiple emails',
@@ -2475,6 +2570,51 @@ function drupalorg_permissions_user_default_permissions() {
       'authenticated user' => 'authenticated user',
     ),
     'module' => 'multiple_email',
+  );
+
+  // Exported permission: 'use page manager'.
+  $permissions['use page manager'] = array(
+    'name' => 'use page manager',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'page_manager',
+  );
+
+  // Exported permission: 'use panels caching features'.
+  $permissions['use panels caching features'] = array(
+    'name' => 'use panels caching features',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'use panels dashboard'.
+  $permissions['use panels dashboard'] = array(
+    'name' => 'use panels dashboard',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'use panels in place editing'.
+  $permissions['use panels in place editing'] = array(
+    'name' => 'use panels in place editing',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'use panels locks'.
+  $permissions['use panels locks'] = array(
+    'name' => 'use panels locks',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
   );
 
   // Exported permission: 'use text format 3'.
@@ -2526,6 +2666,15 @@ function drupalorg_permissions_user_default_permissions() {
       'email unverified' => 'email unverified',
     ),
     'module' => 'node',
+  );
+
+  // Exported permission: 'view pane admin links'.
+  $permissions['view pane admin links'] = array(
+    'name' => 'view pane admin links',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
   );
 
   // Exported permission: 'view project usage'.
