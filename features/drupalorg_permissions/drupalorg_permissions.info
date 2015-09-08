@@ -80,6 +80,7 @@ features[user_permission][] = access resource comment
 features[user_permission][] = access resource field_collection_item
 features[user_permission][] = access resource file
 features[user_permission][] = access resource node
+features[user_permission][] = access resource pift_ci_job
 features[user_permission][] = access resource redirect
 features[user_permission][] = access resource search_api_index
 features[user_permission][] = access resource search_api_server
