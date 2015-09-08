@@ -19,9 +19,7 @@ function drupalorg_content_types_og_features_default_permissions() {
 
   // Exported og permission: 'node:section:administer group'
   $permissions['node:section:administer group'] = array(
-    'roles' => array(
-      'maintainer' => 'maintainer',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:section:approve and deny subscription'
