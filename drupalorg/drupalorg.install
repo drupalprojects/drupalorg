@@ -3796,6 +3796,6 @@ function drupalorg_update_7082() {
 }
 
 function drupalorg_update_7083() {
-  module_enable(array('og', 'og_context', 'og_ui', 'panelizer', 'page_manager', 'panels', 'strongarm', 'draggableviews'));
-  module_enable(array('drupalorg_admin_pages', 'drupalorg_content_types'));
+  module_enable(array('og', 'og_context', 'og_ui', 'page_manager', 'panels', 'draggableviews'));
+  module_enable(array('drupalorg_content_types'));
 }
