@@ -39,6 +39,11 @@ function drupalorg_content_types_og_features_default_permissions() {
     ),
   );
 
+  // Exported og permission: 'node:section:create section content'
+  $permissions['node:section:create section content'] = array(
+    'roles' => array(),
+  );
+
   // Exported og permission: 'node:section:delete any page content'
   $permissions['node:section:delete any page content'] = array(
     'roles' => array(
@@ -47,12 +52,22 @@ function drupalorg_content_types_og_features_default_permissions() {
     ),
   );
 
+  // Exported og permission: 'node:section:delete any section content'
+  $permissions['node:section:delete any section content'] = array(
+    'roles' => array(),
+  );
+
   // Exported og permission: 'node:section:delete own page content'
   $permissions['node:section:delete own page content'] = array(
     'roles' => array(
       'editor' => 'editor',
       'maintainer' => 'maintainer',
     ),
+  );
+
+  // Exported og permission: 'node:section:delete own section content'
+  $permissions['node:section:delete own section content'] = array(
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:section:manage members'
@@ -100,6 +115,11 @@ function drupalorg_content_types_og_features_default_permissions() {
     ),
   );
 
+  // Exported og permission: 'node:section:update any section content'
+  $permissions['node:section:update any section content'] = array(
+    'roles' => array(),
+  );
+
   // Exported og permission: 'node:section:update group'
   $permissions['node:section:update group'] = array(
     'roles' => array(
@@ -114,6 +134,11 @@ function drupalorg_content_types_og_features_default_permissions() {
       'editor' => 'editor',
       'maintainer' => 'maintainer',
     ),
+  );
+
+  // Exported og permission: 'node:section:update own section content'
+  $permissions['node:section:update own section content'] = array(
+    'roles' => array(),
   );
 
   return $permissions;
