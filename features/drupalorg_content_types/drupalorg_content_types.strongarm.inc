@@ -251,7 +251,6 @@ function drupalorg_content_types_strongarm() {
   $strongarm->value = array(
     'url' => array(),
     'node' => array(),
-    'og_extras' => array(),
   );
   $export['og_context_negotiation_group_context'] = $strongarm;
 
@@ -262,7 +261,6 @@ function drupalorg_content_types_strongarm() {
   $strongarm->value = array(
     'url' => '-5',
     'node' => '-4',
-    'og_extras' => '0',
     'comment' => '0',
     'user-view' => '0',
     'user-edit' => '0',
