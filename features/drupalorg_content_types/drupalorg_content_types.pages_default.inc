@@ -46,6 +46,14 @@ function drupalorg_content_types_default_page_manager_handlers() {
           'context' => 'argument_entity_id:node_1',
           'not' => FALSE,
         ),
+        1 => array(
+          'name' => 'context_exists',
+          'settings' => array(
+            'exists' => '1',
+          ),
+          'context' => 'relationship_entity_from_field:og_group_ref-node-node_1',
+          'not' => FALSE,
+        ),
       ),
       'logic' => 'and',
     ),
