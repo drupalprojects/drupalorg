@@ -2314,7 +2314,7 @@ function drupalorg_update_7067() {
     3007735, 3009757, 3016173, 3018883, 3022561, 3022997, 3025283, 3026389,
     3028445, 3033443, 3034983,
   );
-  
+
   // Get the profile data.
   $query = db_select('users', 'u');
   $query->innerJoin('profile_value', 'pv', 'u.uid = pv.uid');
@@ -2327,9 +2327,9 @@ function drupalorg_update_7067() {
     ->condition('u.uid', $uids_to_exclude, 'NOT IN')
     ->isNull('i.field_interests_tid')
     ->distinct();
-  
+
   $result = $query->execute();
-  
+
   $fields = array(
     'entity_type',
     'bundle',
@@ -2340,14 +2340,14 @@ function drupalorg_update_7067() {
     'delta',
     'field_interests_tid',
   );
-  
+
   $data = db_insert('field_data_field_interests')->fields($fields);
   $revision = db_insert('field_revision_field_interests')->fields($fields);
-  
+
   static $tids = array();
-  
+
   $count = 0;
-  
+
   foreach ($result as $row) {
     // Split the row value by line and comma, and trim whitespace.
     foreach (array_filter(array_map('trim', preg_split("/[,\n\r]\s+/", $row->value))) as $delta => $interest) {
@@ -2360,7 +2360,7 @@ function drupalorg_update_7067() {
       if (!isset($tids[$interest])) {
         // Search for a term by name.
         $term = taxonomy_get_term_by_name($interest, 'interests');
-  
+
         if (!$term) {
           // Create the term if it doesn't exist.
           $term = (object) array(
@@ -2369,7 +2369,7 @@ function drupalorg_update_7067() {
           );
           taxonomy_term_save($term);
         }
-  
+
         // Store the tid within $terms.
         if (is_array($term)) {
           // Sometimes this is returned as an array.
@@ -2377,9 +2377,9 @@ function drupalorg_update_7067() {
         }
         $tids[$interest] = $term->tid;
       }
-  
+
       $tid = $tids[$interest];
-  
+
       $new = array(
         'entity_type' => 'user',
         'bundle' => 'user',
@@ -2390,29 +2390,29 @@ function drupalorg_update_7067() {
         'deleted' => 0,
         'field_interests_tid' => $tid,
       );
-  
+
       $data->values($new);
       $revision->values($new);
-  
+
       // Increment the count value.
       $count++;
-  
+
       if ($count > 100) {
         // Save the data.
         $data->execute();
         $revision->execute();
-  
+
         // Start again.
         $data = db_insert('field_data_field_interests')->fields($fields);
         $revision = db_insert('field_revision_field_interests')->fields($fields);
         $count = 0;
       }
     }
-  
+
     // Save any remaining data.
     $data->execute();
     $revision->execute();
-  
+
     // Clear the field cache.
     field_cache_clear();
   }
@@ -2491,7 +2491,7 @@ function drupalorg_update_7068() {
   $revision->execute();
 
   // Clear the field cache.
-  field_cache_clear();  
+  field_cache_clear();
 }
 
 /**
@@ -3593,7 +3593,7 @@ function drupalorg_update_7081() {
       'form_id' => 'book_node_form',
       'enabled_fields' => serialize(array(
         'body',
-        'title', 
+        'title',
       )),
     ),
 
@@ -3793,4 +3793,9 @@ function drupalorg_update_7082() {
       }
     }
   }
+}
+
+function drupalorg_update_7083() {
+  module_enable(array('og', 'og_context', 'og_ui', 'page_manager', 'panels', 'draggableviews'));
+  module_enable(array('drupalorg_content_types'));
 }
