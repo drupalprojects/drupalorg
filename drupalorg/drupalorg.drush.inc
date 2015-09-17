@@ -15,9 +15,6 @@ function drupalorg_drush_help($section) {
  */
 function drupalorg_drush_command() {
   return array(
-    'map-content' => array(
-      'description' => 'Update home page map pins.',
-    ),
     'rebuild-stats' => array(
       'description' => 'Update home page stats.',
     ),
