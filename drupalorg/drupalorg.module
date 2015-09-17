@@ -2107,7 +2107,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
   // Handle Marketplace nodes taxonomy.
   if ($node->type === 'organization') {
     // Group terms by vocabulary and link to marketplace browsing pages.
-    $info=array();
+    $info = array();
     $default_args = array();
 
     foreach (field_info_instances('node', $node->type) as $instance) {
@@ -2147,49 +2147,48 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       }
     }
 
-      if ($view_mode == 'teaser') { // Teaser
-        $content = array(
-          'intro' => array(
-            '#prefix' => '<div class="intro">',
-            '#suffix' => '</div>',
-            '#sorted' => TRUE,
-          ),
-          'main' => array(
-            '#prefix' => '<div class="main">',
-            '#suffix' => '</div>',
-            '#sorted' => TRUE,
-            '#weight' => 1,
-          ),
-        );
-
-        // Logo
-        $field_items = field_get_items('node', $node, 'field_logo');
-        if (!empty($field_items)) {
-          $content['intro']['logo'] = field_view_value('node', $node, 'field_logo', $field_items[0]);
-          $content['intro']['logo']['#image_style'] = 'grid-3';
-        }
-
-        // Body
-        $content['main']['body'] = array('#markup' => check_markup(text_summary($node->body[$node->language][0]['value'], $node->body[$node->language][0]['format'], 200), $node->body[$node->language][0]['format']));
-        $content['main']['meta'] = array(
-          '#prefix' => '<small>',
-          '#suffix' => '</small>',
+    if ($view_mode == 'teaser') { // Teaser
+      $content = array(
+        'intro' => array(
+          '#prefix' => '<div class="intro">',
+          '#suffix' => '</div>',
           '#sorted' => TRUE,
-        );
-        $field_items = field_get_items('node', $node, 'field_link');
-        $content['main']['meta']['website'] = field_view_value('node', $node, 'field_link', $field_items[0]);
-        $content['main']['meta']['website']['#prefix'] = '<div>' . t('Website: ');
-        $content['main']['meta']['website']['#suffix'] = '</div>';
+        ),
+        'main' => array(
+          '#prefix' => '<div class="main">',
+          '#suffix' => '</div>',
+          '#sorted' => TRUE,
+          '#weight' => 1,
+        ),
+      );
 
-        // Taxonomy
-        foreach ($info as $label => $value) {
-          $content['main']['meta'][$label] = array('#markup' => '<div class="terms">' . $label . ': ' . $value . '</div> ');
-        }
-
-        $node->content = $content;
+      // Logo
+      $field_items = field_get_items('node', $node, 'field_logo');
+      if (!empty($field_items)) {
+        $content['intro']['logo'] = field_view_value('node', $node, 'field_logo', $field_items[0]);
+        $content['intro']['logo']['#image_style'] = 'grid-3';
       }
 
-    if ($view_mode == 'full') { //Full page
+      // Body
+      $content['main']['body'] = array('#markup' => check_markup(text_summary($node->body[$node->language][0]['value'], $node->body[$node->language][0]['format'], 200), $node->body[$node->language][0]['format']));
+      $content['main']['meta'] = array(
+        '#prefix' => '<small>',
+        '#suffix' => '</small>',
+        '#sorted' => TRUE,
+      );
+      $field_items = field_get_items('node', $node, 'field_link');
+      $content['main']['meta']['website'] = field_view_value('node', $node, 'field_link', $field_items[0]);
+      $content['main']['meta']['website']['#prefix'] = '<div>' . t('Website: ');
+      $content['main']['meta']['website']['#suffix'] = '</div>';
+
+      // Taxonomy
+      foreach ($info as $label => $value) {
+        $content['main']['meta'][$label] = array('#markup' => '<div class="terms">' . $label . ': ' . $value . '</div> ');
+      }
+
+      $node->content = $content;
+    }
+    elseif ($view_mode == 'full') { // Full page
       global $user;
 
       $wrapper = entity_metadata_wrapper('node', $node);
@@ -2572,14 +2571,14 @@ function drupalorg_node_view($node, $view_mode = 'full') {
 
       // For organizations that request a services listing or training
       // listing, show a link to their issue for the node owner and admins.
-       if (($node->uid === $user->uid || user_access('administer nodes'))) {
-         if (($node->field_org_marketplace_request[$node->language][0]['value'] == '1') && !empty($node->field_organization_issue[$node->language][0]['nid'])) {
-           drupal_set_message(t('Regarding <em>Services listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_organization_issue[$node->language][0]['nid']))), 'status');
-         }
-         if (!empty($node->field_org_training_request) && ($node->field_org_training_request[$node->language][0]['value'] == '1') && !empty($node->field_org_training_issue[$node->language][0]['nid'])) {
-           drupal_set_message(t('Regarding <em>Training listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_org_training_issue[$node->language][0]['nid']))), 'status');
-         }
-       }
+      if (($node->uid === $user->uid || user_access('administer nodes'))) {
+        if (($node->field_org_marketplace_request[$node->language][0]['value'] == '1') && !empty($node->field_organization_issue[$node->language][0]['nid'])) {
+          drupal_set_message(t('Regarding <em>Services listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_organization_issue[$node->language][0]['nid']))), 'status');
+        }
+        if (!empty($node->field_org_training_request) && ($node->field_org_training_request[$node->language][0]['value'] == '1') && !empty($node->field_org_training_issue[$node->language][0]['nid'])) {
+          drupal_set_message(t('Regarding <em>Training listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_org_training_issue[$node->language][0]['nid']))), 'status');
+        }
+      }
     }
   }
   elseif ($node->type === 'casestudy') {
