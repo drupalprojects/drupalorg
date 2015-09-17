@@ -320,7 +320,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 19,
+        'weight' => 14,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -586,6 +586,57 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'imagefield_widget',
   );
 
+  // Exported field_instance: 'node-organization-field_org_issue_credit_count'
+  $field_instances['node-organization-field_org_issue_credit_count'] = array(
+    'bundle' => 'organization',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 15,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_org_issue_credit_count',
+    'label' => 'Org issue credit count',
+    'required' => FALSE,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'field_extrawidgets',
+      'settings' => array(),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 16,
+    ),
+  );
+
   // Exported field_instance: 'node-organization-field_org_marketplace_request'
   $field_instances['node-organization-field_org_marketplace_request'] = array(
     'bundle' => 'organization',
@@ -601,7 +652,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 19,
       ),
       'full' => array(
         'label' => 'above',
@@ -722,7 +773,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 18,
       ),
       'full' => array(
         'label' => 'above',
@@ -818,7 +869,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 16,
       ),
       'full' => array(
         'label' => 'above',
@@ -1015,7 +1066,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 6,
+      'weight' => 3,
     ),
     'widget_type' => 'text_textfield',
   );
@@ -1031,7 +1082,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 17,
       ),
       'full' => array(
         'label' => 'above',
@@ -1313,7 +1364,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 16,
+        'weight' => 11,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -1692,7 +1743,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 3,
+      'weight' => 5,
     ),
   );
 
@@ -1741,7 +1792,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 4,
+      'weight' => 6,
     ),
   );
 
@@ -1791,7 +1842,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 5,
+      'weight' => 4,
     ),
   );
 
@@ -1831,6 +1882,7 @@ function drupalorg_marketplace_field_default_field_instances() {
   t('Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1710338">Review marketplace listings</a>" guide.');
   t('Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1735864">Review training listings</a>" guide.');
   t('Only select countries in which your company has a physical office.');
+  t('Org issue credit count');
   t('Organization description');
   t('Sectors');
   t('Security review');
