@@ -53,7 +53,7 @@ function drush_drupalorg_org_credit() {
 
   // Clear any past credit.
   $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type',  'node')
+  $query->entityCondition('entity_type', 'node')
     ->propertyCondition('type', 'organization')
     ->propertyCondition('nid', array_keys($credits), 'NOT IN')
     ->fieldCondition('field_org_issue_credit_count', 'value', 0, '>');
