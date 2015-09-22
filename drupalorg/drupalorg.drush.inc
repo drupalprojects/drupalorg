@@ -32,13 +32,36 @@ function drush_drupalorg_rebuild_stats() {
  * Command callback. Count issue credits and store count on organization profile.
  */
 function drush_drupalorg_org_credit() {
-  $credits = db_query('SELECT fdfact.field_attribute_contribution_to_target_id, COUNT(DISTINCT n.nid) AS credits FROM {node} n INNER JOIN {field_data_field_issue_credit} fdfic ON fdfic.entity_id = n.nid INNER JOIN {comment} c ON c.cid = fdfic.field_issue_credit_target_id AND c.status = 1 INNER JOIN {field_data_field_issue_status} fdfis ON fdfis.entity_id = n.nid AND fdfis.field_issue_status_value IN (2,7) INNER JOIN {field_data_field_attribute_contribution_to} fdfact ON fdfact.entity_id = c.cid INNER JOIN {field_data_field_attribute_as_volunteer} fdf_av ON fdf_av.entity_id = c.cid AND fdf_av.field_attribute_as_volunteer_value = 0 WHERE n.type IN (:project_issue_types) AND n.status = 1 AND n.changed > UNIX_TIMESTAMP(NOW() - INTERVAL 3 MONTH) GROUP BY fdfact.field_attribute_contribution_to_target_id ORDER BY NULL', array(':project_issue_types' => project_issue_issue_node_types()))->fetchAllKeyed();
-
+  $credits = array();
+  $result = db_query('SELECT fdfact.field_attribute_contribution_to_target_id AS organization, n.nid FROM {node} n INNER JOIN {field_data_field_issue_credit} fdfic ON fdfic.entity_id = n.nid INNER JOIN {comment} c ON c.cid = fdfic.field_issue_credit_target_id AND c.status = 1 INNER JOIN {field_data_field_issue_status} fdfis ON fdfis.entity_id = n.nid AND fdfis.field_issue_status_value IN (2,7) INNER JOIN {field_data_field_attribute_as_volunteer} fdf_av ON fdf_av.entity_id = c.cid AND fdf_av.field_attribute_as_volunteer_value = 0 INNER JOIN {field_data_field_attribute_contribution_to} fdfact ON fdfact.entity_id = c.cid WHERE n.type IN (:project_issue_types) AND n.status = 1 AND n.changed > UNIX_TIMESTAMP(NOW() - INTERVAL 3 MONTH)', array(':project_issue_types' => project_issue_issue_node_types()));
+  foreach ($result as $row) {
+    $credits[$row->organization][$row->nid] = TRUE;
+  }
+  $result = db_query('SELECT fdf_fc.field_for_customer_target_id AS organization, n.nid FROM {node} n INNER JOIN {field_data_field_issue_credit} fdfic ON fdfic.entity_id = n.nid INNER JOIN {comment} c ON c.cid = fdfic.field_issue_credit_target_id AND c.status = 1 INNER JOIN {field_data_field_issue_status} fdfis ON fdfis.entity_id = n.nid AND fdfis.field_issue_status_value IN (2,7) INNER JOIN {field_data_field_attribute_as_volunteer} fdf_av ON fdf_av.entity_id = c.cid AND fdf_av.field_attribute_as_volunteer_value = 0 INNER JOIN {field_data_field_for_customer} fdf_fc ON fdf_fc.entity_id = c.cid WHERE n.type IN (:project_issue_types) AND n.status = 1 AND n.changed > UNIX_TIMESTAMP(NOW() - INTERVAL 3 MONTH)', array(':project_issue_types' => project_issue_issue_node_types()));
+  foreach ($result as $row) {
+    $credits[$row->organization][$row->nid] = TRUE;
+  }
   foreach (node_load_multiple(array_keys($credits)) as $node) {
     $wrapper = entity_metadata_wrapper('node', $node);
-    if ($wrapper->field_org_issue_credit_count->value() != $credits[$node->nid]) {
+    if ($wrapper->field_org_issue_credit_count->value() != count($credits[$node->nid])) {
       drush_log(dt('Updating @title', array('@title' => $node->title)));
-      $wrapper->field_org_issue_credit_count = $credits[$node->nid];
+      $wrapper->field_org_issue_credit_count = count($credits[$node->nid]);
+      $node->revision = FALSE;
+      node_save($node);
+    }
+  }
+
+  // Clear any past credit.
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type',  'node')
+    ->propertyCondition('type', 'organization')
+    ->propertyCondition('nid', array_keys($credits), 'NOT IN')
+    ->fieldCondition('field_org_issue_credit_count', 'value', 0, '>');
+  $result = $query->execute();
+  if (!empty($result)) {
+    foreach (node_load_multiple(array_keys($result['node'])) as $node) {
+      drush_log(dt('Updating @title', array('@title' => $node->title)));
+      $wrapper->field_org_issue_credit_count = 0;
       $node->revision = FALSE;
       node_save($node);
     }
