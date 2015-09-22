@@ -70,7 +70,7 @@ function drupalorg_marketplace_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Hosting',
-    'weight' => '14',
+    'weight' => '20',
     'children' => array(),
     'format_type' => 'hidden',
     'format_settings' => array(
@@ -151,7 +151,7 @@ function drupalorg_marketplace_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Moderation',
-    'weight' => '15',
+    'weight' => '21',
     'children' => array(
       0 => 'field_organization_list_rule',
       1 => 'field_organization_training_list',
@@ -230,7 +230,7 @@ function drupalorg_marketplace_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Training',
-    'weight' => '13',
+    'weight' => '19',
     'children' => array(
       0 => 'field_org_training_request',
       1 => 'field_organization_training_desc',
