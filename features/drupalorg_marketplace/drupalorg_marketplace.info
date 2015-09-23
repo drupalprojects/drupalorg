@@ -81,7 +81,6 @@ features[field_instance][] = node-organization-taxonomy_vocabulary_48
 features[field_instance][] = node-organization-taxonomy_vocabulary_50
 features[field_instance][] = node-organization-taxonomy_vocabulary_52
 features[menu_custom][] = menu-hosting-types-menu
-features[menu_custom][] = menu-service-providers
 features[node][] = organization
 features[taxonomy][] = vocabulary_48
 features[taxonomy][] = vocabulary_50
