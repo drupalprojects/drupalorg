@@ -135,18 +135,6 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['sorts']['title']['expose']['label'] = 'A-Z';
-  /* Contextual filter: Content: Services listing (field_organization_list_rule) */
-  $handler->display->display_options['arguments']['field_organization_list_rule_value']['id'] = 'field_organization_list_rule_value';
-  $handler->display->display_options['arguments']['field_organization_list_rule_value']['table'] = 'field_data_field_organization_list_rule';
-  $handler->display->display_options['arguments']['field_organization_list_rule_value']['field'] = 'field_organization_list_rule_value';
-  $handler->display->display_options['arguments']['field_organization_list_rule_value']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['field_organization_list_rule_value']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_organization_list_rule_value']['default_argument_options']['argument'] = 'featured';
-  $handler->display->display_options['arguments']['field_organization_list_rule_value']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_organization_list_rule_value']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_organization_list_rule_value']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_organization_list_rule_value']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['field_organization_list_rule_value']['limit'] = '0';
   /* Contextual filter: Content: Has taxonomy term ID */
   $handler->display->display_options['arguments']['tid']['id'] = 'tid';
   $handler->display->display_options['arguments']['tid']['table'] = 'taxonomy_index';
@@ -154,7 +142,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['arguments']['tid']['exception']['title_enable'] = TRUE;
   $handler->display->display_options['arguments']['tid']['exception']['title'] = 'All services';
   $handler->display->display_options['arguments']['tid']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid']['title'] = 'Marketplace: %2';
+  $handler->display->display_options['arguments']['tid']['title'] = 'Marketplace: %1';
   $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['tid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['tid']['summary']['format'] = 'default_summary';
@@ -174,7 +162,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['arguments']['tid_1']['exception']['title_enable'] = TRUE;
   $handler->display->display_options['arguments']['tid_1']['exception']['title'] = 'All sectors';
   $handler->display->display_options['arguments']['tid_1']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid_1']['title'] = 'Marketplace: %3';
+  $handler->display->display_options['arguments']['tid_1']['title'] = 'Marketplace: %2';
   $handler->display->display_options['arguments']['tid_1']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['tid_1']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['tid_1']['summary']['format'] = 'default_summary';
@@ -194,7 +182,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['arguments']['tid_2']['exception']['title_enable'] = TRUE;
   $handler->display->display_options['arguments']['tid_2']['exception']['title'] = 'All locations';
   $handler->display->display_options['arguments']['tid_2']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid_2']['title'] = 'Marketplace: %4';
+  $handler->display->display_options['arguments']['tid_2']['title'] = 'Marketplace: %3';
   $handler->display->display_options['arguments']['tid_2']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['tid_2']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['tid_2']['summary']['format'] = 'default_summary';
