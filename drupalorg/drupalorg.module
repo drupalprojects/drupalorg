@@ -457,10 +457,6 @@ function drupalorg_block_info() {
       'info' => t('Your Security Issues'),
       'cache' => DRUPAL_NO_CACHE,
     ),
-    'marketplace_services' => array(
-      'info' => t('Marketplace services menu'),
-      'cache' => DRUPAL_NO_CACHE,
-    ),
   );
 }
 
@@ -607,30 +603,6 @@ function drupalorg_block_view($delta, $block = NULL) {
         'subject' => t('Your Posts'),
         'content' => $content,
       );
-      break;
-
-    case 'marketplace_services':
-      // Custom block to set the active link. The links are not first class
-      // menu items, so menu module does not figure it out. There isn't a
-      // great place to alter and other trickery would be too tricky.
-      $item = menu_get_item();
-      if ($item['href'] === 'drupal-services') {
-        $tree = menu_tree_page_data('menu-service-providers');
-        $args = $item['page_arguments'];
-        $name = array_shift($args);
-        $display_id = array_shift($args);
-        if ($view = views_get_view($name)) {
-          $view->set_arguments($args);
-          $view->build($display_id);
-          foreach (array_keys($tree) as $key) {
-            if ($tree[$key]['link']['href'] === arg(0) . '/' . $view->args[0]) {
-              $tree[$key]['link']['in_active_trail'] = TRUE;
-            }
-          }
-        }
-        return array('content' => menu_tree_output($tree));
-      }
-      break;
   }
 }
 
