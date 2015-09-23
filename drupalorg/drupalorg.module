@@ -2103,6 +2103,15 @@ function drupalorg_node_view($node, $view_mode = 'full') {
     }
 
     if ($view_mode === 'teaser') {
+      // Use organization's name if there is no logo.
+      if (!$wrapper->field_logo->value()) {
+        $node->content['field_logo'] = array(
+          '#prefix' => '<h2 class="field-name-field-logo">',
+          '#markup' => l($node->title, 'node/' . $node->nid),
+          '#suffix' => '</h2>',
+        );
+      }
+
       // Projects supported.
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'field_collection_item')
