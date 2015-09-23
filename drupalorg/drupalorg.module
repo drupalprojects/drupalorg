@@ -635,25 +635,6 @@ function drupalorg_block_view($delta, $block = NULL) {
 }
 
 /**
- * Implements hook_preprocess_HOOK.
- * Used to set default classes.
- */
-function drupalorg_preprocess_block(&$vars) {
-  /* Set shortcut variables. Hooray for less typing! */
-  $block_id = $vars['block']->module . '-' . $vars['block']->delta;
-  $classes = &$vars['classes_array'];
-  $title_classes = &$vars['title_attributes_array']['class'];
-  switch ($block_id) {
-
-    // Featured/all navigation block on Marketplace Services page.
-    case 'drupalorg-marketplace_services':
-      $vars['block_html_id'] = 'marketplace-services-quicknav';
-      $classes[] = 'marketplace-quicknav';
-      break;
-  }
-}
-
-/**
  * Implementation of hook_homebox_block_keys(). The only configurable block is
  * tracker_user, with a count field.
  */
