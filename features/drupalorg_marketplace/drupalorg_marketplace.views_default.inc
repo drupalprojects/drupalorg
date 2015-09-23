@@ -991,7 +991,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['fields']['field_mainimage']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_mainimage']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_mainimage']['settings'] = array(
-    'image_style' => 'grid-4-2x',
+    'image_style' => 'case-4-2x',
     'image_link' => 'content',
   );
   /* Field: Content: Title */
