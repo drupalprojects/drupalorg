@@ -3239,7 +3239,7 @@ function drupalorg_403_page() {
  * Implements hook_preprocess_field().
  */
 function drupalorg_preprocess_field(&$v) {
-  if ($v['element']['#view_mode'] === 'teaser') {
+  if (isset($v['element']['#view_mode']) && $v['element']['#view_mode'] === 'teaser') {
     if ($v['element']['#field_name'] === 'field_project_images') {
       // Only show one attached image on project teaser.
       $v['items'] = array(reset($v['items']));
