@@ -90,17 +90,44 @@
   };
 
   /**
-   * Comment attribution display.
-   *
-   * This is a global bind and must only be ran once.
+   * Code to run after the documnent is ready.
    */
   $(document).ready(function () {
+    // Comment attribution display. This is a global bind and must only be ran
+    // once.
     $('body').bind('click', function (e) {
       var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggleClass('element-invisible');
       $('.attribution').not($clicked).addClass('element-invisible');
-    });
-    $('body').bind('touchstart', function (e) {
+    })
+    .bind('touchstart', function (e) {
       $('.attribution').not($('.attribution', $(e.target).filter('.attribution-label'))).addClass('element-invisible');
+    })
+    // For potential link GA event tracking. Attach mousedown, keyup,
+    // touchstart events to document only and catch clicks on all elements.
+    // Based on googleanalytics.js.
+    .bind('mousedown keyup touchstart', function(event) {
+      // Catch the closest surrounding link of a clicked element.
+      $(event.target).closest('a,area').each(function() {
+        // Is the clicked URL internal?
+        if (Drupal.googleanalytics.isInternal(this.href)) {
+          var $this = $(this);
+
+          // Look for interesting classes.
+          for (var c in {'page-up':0, 'page-previous':0, 'page-next':0}) {
+            if (this.classList.contains(c)) {
+              ga('send', 'event', 'Navigation', 'Click', c);
+              return;
+            }
+          }
+          // Look for parents with interesting classes.
+          for (var c in {'.book-navigation':0, '#block-book-navigation':0}) {
+            if ($this.parents(c).length) {
+              ga('send', 'event', 'Navigation', 'Click', c);
+              return;
+            }
+          }
+        }
+      });
     });
   });
 
