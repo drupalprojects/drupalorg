@@ -2752,6 +2752,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['use signature'] = array(
     'name' => 'use signature',
     'roles' => array(
+      'administrator' => 'administrator',
       'community' => 'community',
     ),
     'module' => 'signature_permissions',
