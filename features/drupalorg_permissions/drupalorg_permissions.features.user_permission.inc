@@ -2748,5 +2748,14 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'system',
   );
 
+  // Exported permission: 'use signature'.
+  $permissions['use signature'] = array(
+    'name' => 'use signature',
+    'roles' => array(
+      'community' => 'community',
+    ),
+    'module' => 'signature_permissions',
+  );
+
   return $permissions;
 }
