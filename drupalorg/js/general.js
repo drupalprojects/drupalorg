@@ -113,14 +113,14 @@
           var $this = $(this);
 
           // Look for interesting classes.
-          for (var c in {'page-up':0, 'page-previous':0, 'page-next':0}) {
+          for (var c in {'page-up':0, 'page-previous':0, 'page-next':0, 'upload-button':0, 'issue-button':0}) {
             if (this.classList.contains(c)) {
               ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
               return;
             }
           }
           // Look for parents with interesting classes.
-          for (var c in {'.book-navigation':0, '#block-book-navigation':0}) {
+          for (var c in {'.book-navigation':0, '#block-book-navigation':0, '#nav-content':0, '.breadcrumb':0, '.tabs.primary':0, '#project-issue-jumplinks':0}) {
             if ($this.parents(c).length) {
               ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
               return;
