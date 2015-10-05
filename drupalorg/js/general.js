@@ -115,14 +115,14 @@
           // Look for interesting classes.
           for (var c in {'page-up':0, 'page-previous':0, 'page-next':0}) {
             if (this.classList.contains(c)) {
-              ga('send', 'event', 'Navigation', 'Click', c);
+              ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
               return;
             }
           }
           // Look for parents with interesting classes.
           for (var c in {'.book-navigation':0, '#block-book-navigation':0}) {
             if ($this.parents(c).length) {
-              ga('send', 'event', 'Navigation', 'Click', c);
+              ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
               return;
             }
           }
