@@ -120,7 +120,14 @@
             }
           }
           // Look for parents with interesting classes.
-          for (var c in {'.book-navigation':0, '#block-book-navigation':0, '#nav-content':0, '.breadcrumb':0, '.tabs.primary':0, '#project-issue-jumplinks':0}) {
+          for (var c in {
+            '.book-navigation':0, '#block-book-navigation':0, // Book navigation
+            '#nav-content':0, '.breadcrumb':0, '.tabs.primary':0, // General navigation
+            '#project-issue-jumplinks':0, // Issue pages
+            '#block-versioncontrol-project-project-maintainers':0, '#block-project-issue-issue-cockpit':0, // Project pages
+            '#block-drupalorg-project-resources':0, '#block-drupalorg-project-development':0,
+            '.project-info':0, '.view_all_releases':0, '.add_new_release':0, '.administer_releases':0
+          }) {
             if ($this.parents(c).length) {
               ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
               return;
