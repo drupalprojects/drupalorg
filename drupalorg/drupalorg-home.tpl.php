@@ -26,7 +26,7 @@
   <div class="intro">
     <div class="logo"><img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/d8.svg" alt="Drupal 8"></div>
     <div class="text">
-      <strong><a href="/drupal-8.0">Drupal 8 is in beta</a></strong>. Get <a href="https://groups.drupal.org/core/updates">regular updates</a> about the process or <a href="/core-mentoring">volunteer</a> as a developer, designer, or tester.
+      <strong><a href="/drupal-8.0">Drupal 8 RC 1 is out now</a></strong>! Get <a href="https://groups.drupal.org/core/updates">regular updates</a> about the process or <a href="/core-mentoring">volunteer</a> as a developer, designer, or tester.
     </div>
   </div>
   <div class="activities">

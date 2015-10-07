@@ -1087,10 +1087,10 @@ function drupalorg_project_block_view($delta = '') {
 
       // Output the block.
       return array(
-        'subject' => t('Drupal 8 Critical Countdown'),
+        'subject' => t('Drupal 8 critical countdown'),
         'content' => array(
           'countdown' => array(
-            '#prefix' => '<p>' . t('Drupal 8 enters release candidate phase once there are zero critical issues.') . '</p>',
+            '#prefix' => '<p>' . t('We will schedule an official release date for 8.0.0 when we are confident that the rate and nature of incoming critical bugs has slowed enough to ensure a stable release.') . '</p>',
             '#markup' => '<h3>' . l(t('@count critical issues remaining', array('@count' => $count)), 'project/issues/search/drupal', array('query' => array('status' => array(1, 13, 8, 14, 4), 'priorities' => array(400), 'categories' => array(1, 2, 5), 'version' => array('8.x')))) . '</h3>',
             '#suffix' => '<p>' . t('Read more about <a href="/drupal-8.0/get-involved">how to help Drupal 8</a>!') . '</p>',
           ),
