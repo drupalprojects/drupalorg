@@ -4156,3 +4156,16 @@ function drupalorg_project_release_history_xml_written($project, $api_version) {
     }
   }
 }
+
+/**
+ * Implements hook_mollom_data_alter().
+ */
+function drupalorg_mollom_data_alter(&$data) {
+  // Remove safe domains.
+  if (isset($data['postBody'])) {
+    $data['postBody'] = preg_replace(array(
+      '#https?://((www|api|assoc|events|groups|jobs|localize|qa|security)\.)?drupal\.org#',
+      '#https?://([a-z]\.)?stack(exchange|overflow)\.com#',
+    ), '', $data['postBody']);
+  }
+}
