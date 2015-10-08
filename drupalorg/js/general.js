@@ -313,5 +313,24 @@
         $('#drupalorg-issue-credit-form .credit-summary').html(Drupal.t('Expand and select contributors to give credit.'));
       }
     }
-  }
+  };
+
+  Drupal.behaviors.drupalorgConfirm = {
+    attach: function() {
+      if (typeof(ga) !== 'function') {
+        // Wait for GA load.
+        setTimeout(Drupal.behaviors.drupalorgConfirm.attach, 1000);
+        return;
+      }
+
+      $('.confirm-button-form').each(function () {
+        // Send GA event if confirm form shown.
+        ga('send', 'event', 'User confirm', 'Form shown');
+      })
+      .find('.form-submit').bind('mousedown keyup touchstart', function(event) {
+        // Send GA event on click.
+        ga('send', 'event', 'User confirm', 'Click', event.target.getAttribute('value'));
+      });
+    }
+  };
 })(jQuery);
