@@ -4169,3 +4169,21 @@ function drupalorg_mollom_data_alter(&$data) {
     ), '', $data['postBody']);
   }
 }
+
+/**
+ * Implements hook_mollom_form_info_alter().
+ */
+function drupalorg_mollom_form_info_alter(&$data) {
+  foreach (project_issue_issue_node_types() as $type) {
+    if ($data['form_id'] === $type . '_node_form') {
+      // Edit any issue is handed out liberally, do not consider it a Mollom
+      // bypass.
+      if ($key = array_search('edit any ' . $type . ' content', $data['bypass access'])) {
+        unset($data['bypass access'][$key]);
+      }
+
+      // Also allow the issue comment to be analyzed.
+      $data['elements']['nodechanges_comment][comment_body'] = t('Issue comment');
+    }
+  }
+}
