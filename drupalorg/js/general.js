@@ -108,10 +108,10 @@
     .bind('mousedown keyup touchstart', function(event) {
       // Catch the closest surrounding link of a clicked element.
       $(event.target).closest('a,area').each(function() {
+        var $this = $(this);
+
         // Is the clicked URL internal?
         if (Drupal.googleanalytics.isInternal(this.href)) {
-          var $this = $(this);
-
           // Look for interesting classes.
           for (var c in {'page-up':0, 'page-previous':0, 'page-next':0, 'upload-button':0, 'issue-button':0}) {
             if (this.classList.contains(c)) {
@@ -127,6 +127,18 @@
             '#block-versioncontrol-project-project-maintainers':0, '#block-project-issue-issue-cockpit':0, // Project pages
             '#block-drupalorg-project-resources':0, '#block-drupalorg-project-development':0,
             '.project-info':0, '.view_all_releases':0, '.add_new_release':0, '.administer_releases':0
+          }) {
+            if ($this.parents(c).length) {
+              ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
+              return;
+            }
+          }
+        }
+        else { // External link.
+          // Look for parents with interesting classes.
+          for (var c in {
+            // Membership campaign.
+            '#block-drupalorg-membership-campaign':0
           }) {
             if ($this.parents(c).length) {
               ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());

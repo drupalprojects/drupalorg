@@ -457,6 +457,10 @@ function drupalorg_block_info() {
       'info' => t('Your Security Issues'),
       'cache' => DRUPAL_NO_CACHE,
     ),
+    'membership_campaign' => array(
+      'info' => t('Drupal Association membership campaign'),
+      'cache' => DRUPAL_CACHE_PER_USER,
+    ),
   );
 }
 
@@ -602,6 +606,16 @@ function drupalorg_block_view($delta, $block = NULL) {
       return array(
         'subject' => t('Your Posts'),
         'content' => $content,
+      );
+
+    case 'membership_campaign':
+      if (user_is_logged_in() && drupalorg_has_civimembership($GLOBALS['user']->name, 'Individual')) {
+        return array(
+          'content' => l(t('Thank you for supporting Drupal. <strong>Help us grow our membership</strong>'), 'https://assoc.drupal.org/help-grow-our-membership', array('html' => TRUE)),
+        );
+      }
+      return array(
+        'content' => l(t('Support the project you love. <strong>Become a Member Today</strong>'), 'https://assoc.drupal.org/support-project-you-love', array('html' => TRUE)),
       );
   }
 }
