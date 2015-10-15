@@ -220,7 +220,12 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'access resource pift_ci_job'.
   $permissions['access resource pift_ci_job'] = array(
     'name' => 'access resource pift_ci_job',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
+      'email unverified' => 'email unverified',
+    ),
     'module' => 'restws',
   );
 
