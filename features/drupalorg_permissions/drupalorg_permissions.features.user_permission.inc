@@ -1030,7 +1030,6 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create forum content',
     'roles' => array(
       'authenticated user' => 'authenticated user',
-      'email unverified' => 'email unverified',
     ),
     'module' => 'node',
   );
@@ -2642,6 +2641,16 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panels',
   );
 
+  // Exported permission: 'use signature'.
+  $permissions['use signature'] = array(
+    'name' => 'use signature',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'community' => 'community',
+    ),
+    'module' => 'signature_permissions',
+  );
+
   // Exported permission: 'use text format 3'.
   $permissions['use text format 3'] = array(
     'name' => 'use text format 3',
@@ -2746,16 +2755,6 @@ function drupalorg_permissions_user_default_permissions() {
       'webmaster' => 'webmaster',
     ),
     'module' => 'system',
-  );
-
-  // Exported permission: 'use signature'.
-  $permissions['use signature'] = array(
-    'name' => 'use signature',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'community' => 'community',
-    ),
-    'module' => 'signature_permissions',
   );
 
   return $permissions;
