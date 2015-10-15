@@ -191,6 +191,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'restws',
   );
 
+  // Exported permission: 'access resource flagging'.
+  $permissions['access resource flagging'] = array(
+    'name' => 'access resource flagging',
+    'roles' => array(),
+    'module' => 'restws',
+  );
+
   // Exported permission: 'access resource node'.
   $permissions['access resource node'] = array(
     'name' => 'access resource node',
@@ -2316,6 +2323,24 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'extended_file_field',
   );
 
+  // Exported permission: 'flag flag_tracker_follow'.
+  $permissions['flag flag_tracker_follow'] = array(
+    'name' => 'flag flag_tracker_follow',
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'flag',
+  );
+
+  // Exported permission: 'flag project_issue_follow'.
+  $permissions['flag project_issue_follow'] = array(
+    'name' => 'flag project_issue_follow',
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'flag',
+  );
+
   // Exported permission: 'generate features'.
   $permissions['generate features'] = array(
     'name' => 'generate features',
@@ -2549,6 +2574,24 @@ function drupalorg_permissions_user_default_permissions() {
       'authenticated user' => 'authenticated user',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: 'unflag flag_tracker_follow'.
+  $permissions['unflag flag_tracker_follow'] = array(
+    'name' => 'unflag flag_tracker_follow',
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'flag',
+  );
+
+  // Exported permission: 'unflag project_issue_follow'.
+  $permissions['unflag project_issue_follow'] = array(
+    'name' => 'unflag project_issue_follow',
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'flag',
   );
 
   // Exported permission: 'use PHP for tracking visibility'.
