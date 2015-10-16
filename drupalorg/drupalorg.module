@@ -4140,6 +4140,21 @@ function drupalorg_mollom_form_info_alter(&$data) {
 
       // Also allow the issue comment to be analyzed.
       $data['elements']['nodechanges_comment][comment_body'] = t('Issue comment');
+
+      // Moderation may be unpublishing the comment or the issue summary.
+      $data['moderation callback'] = 'drupalorg_mollom_issue_moderation';
     }
+  }
+}
+
+/**
+ * Mollom moderation callback from drupalorg_mollom_form_info_alter().
+ */
+function drupalorg_mollom_issue_moderation(&$form, &$form_state) {
+  if (isset($form_state['values']['nodechanges_comment'])) {
+    $form_state['values']['nodechanges_comment']['status'] = COMMENT_NOT_PUBLISHED;
+  }
+  else {
+    $form_state['values']['status'] = NODE_NOT_PUBLISHED;
   }
 }
