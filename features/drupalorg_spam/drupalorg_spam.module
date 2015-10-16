@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the drupalorg_spam feature.
+ */
+
+include_once 'drupalorg_spam.features.inc';
