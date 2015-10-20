@@ -3293,64 +3293,6 @@ function drupalorg_cron_queue_info_alter(&$queues) {
 }
 
 /**
- * Implements hook_node_view_alter().
- *
- * Adds a 'report spam' link to the action links in forum nodes. This link
- * directs to the webmaster queue, passing some values in the URL in order to
- * pre-populate the issue form in the queue, allowing users to report spam.
- */
-function drupalorg_node_view_alter(&$build) {
-  if ($build['#node']->type === 'forum' && node_access('create', 'project_issue')) {
-    $node = $build['#node'];
-    $build['links']['drupalorg'] = array(
-      '#theme' => 'links__node__drupalorg',
-      '#links' => array(
-        'comment-report' => array(
-          'title' => t('Report spam'),
-          'href' => 'node/add/project-issue/webmasters',
-          'query' => array(
-            'component' => 'Spam',
-            'categories' => 'task',
-            'title' => 'Spam Report',
-            'body' => 'Reporting the following node as spam: ' . url('node/' . $node->nid, array('absolute' => TRUE)),
-            drupal_get_destination(),
-          ),
-        ),
-      ),
-      '#attributes' => array('class' => array('links', 'inline')),
-    );
-  }
-}
-
-/**
- * Implements hook_comment_view_alter().
- *
- * Adds a 'report spam' link to the action links in comments. This link
- * directs to the webmaster queue, passing some values in the URL in order to
- * pre-populate the issue form in the queue, allowing users to report spam.
- */
-function drupalorg_comment_view_alter(&$build) {
-  if (node_access('create', 'project_issue')) {
-    global $user;
-    if ($build['#comment']->uid != $user->uid) {
-      $comment = $build['#comment'];
-      $build['links']['comment']['#links']['comment-report'] = array(
-        'title' => t('report spam<span class="element-invisible"> on user @name</span>', array('@name' => $build['#comment']->name)),
-        'href' => 'node/add/project-issue/webmasters',
-        'query' => array(
-          'component' => 'Spam',
-          'categories' => 'task',
-          'title' => 'Spam Report',
-          'body' => 'Reporting the following comment as spam: ' . url('node/' . $comment->nid, array('absolute' => TRUE, 'fragment' => 'comment-' . $comment->cid)),
-          drupal_get_destination(),
-        ),
-        'html' => TRUE,
-      );
-    }
-  }
-}
-
-/**
  * Implements hook_preprocess_comment().
  */
 function drupalorg_preprocess_comment(&$v) {
