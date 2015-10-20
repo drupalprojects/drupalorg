@@ -611,11 +611,11 @@ function drupalorg_block_view($delta, $block = NULL) {
     case 'membership_campaign':
       if (user_is_logged_in() && drupalorg_has_civimembership($GLOBALS['user']->name, 'Individual')) {
         return array(
-          'content' => l(t('Thank you for supporting Drupal. <strong>Help us grow our membership</strong>'), 'https://assoc.drupal.org/help-grow-our-membership?utm_campaign=member-drive-20151013', array('html' => TRUE)),
+          'content' => l(t('Thank you for supporting Drupal. <strong>Help us grow our membership</strong>'), 'https://assoc.drupal.org/help-grow-our-membership?utm_campaign=member-drive-20151013', array('html' => TRUE, 'attributes' => array('class' => array('member')))),
         );
       }
       return array(
-        'content' => l(t('Support the project you love. <strong>Become a Member Today</strong>'), 'https://assoc.drupal.org/support-project-you-love?utm_campaign=member-drive-20151013', array('html' => TRUE)),
+        'content' => l(t('Support the project you love. <strong>Become a Member Today</strong>'), 'https://assoc.drupal.org/support-project-you-love?utm_campaign=member-drive-20151013', array('html' => TRUE, 'attributes' => array('class' => array('non-member')))),
       );
   }
 }
