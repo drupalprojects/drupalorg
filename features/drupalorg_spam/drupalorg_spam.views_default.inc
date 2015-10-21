@@ -33,16 +33,25 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'uid' => 'uid',
+    'type' => 'type',
     'count' => 'count',
     'subject' => 'subject',
     'comment_body' => 'comment_body',
     'changed' => 'changed',
     'name' => 'name',
     'nothing' => 'nothing',
+    'fasttoggle_block_user' => 'nothing',
   );
   $handler->display->display_options['style_options']['default'] = 'count';
   $handler->display->display_options['style_options']['info'] = array(
     'uid' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'type' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -84,6 +93,11 @@ function drupalorg_spam_views_default_views() {
     ),
     'nothing' => array(
       'align' => '',
+      'separator' => ' | ',
+      'empty_column' => 0,
+    ),
+    'fasttoggle_block_user' => array(
+      'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
@@ -104,6 +118,11 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['relationships']['flag_count_rel']['table'] = 'comment';
   $handler->display->display_options['relationships']['flag_count_rel']['field'] = 'flag_count_rel';
   $handler->display->display_options['relationships']['flag_count_rel']['flag'] = 'drupalorg_comment_spam';
+  /* Relationship: Comment: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'comment';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['required'] = TRUE;
   /* Field: Comment: Author uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
   $handler->display->display_options['fields']['uid']['table'] = 'comment';
@@ -112,6 +131,11 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['uid']['link_to_user'] = FALSE;
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'node';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['relationship'] = 'nid';
   /* Field: Flags: Flag counter */
   $handler->display->display_options['fields']['count']['id'] = 'count';
   $handler->display->display_options['fields']['count']['table'] = 'flag_counts';
@@ -148,9 +172,16 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['label'] = 'Operations';
   $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="/user/[uid]/admin-content">Administer content</a>';
   $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  /* Field: User: Block Link (Fasttoggle) */
+  $handler->display->display_options['fields']['fasttoggle_block_user']['id'] = 'fasttoggle_block_user';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['table'] = 'users';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['field'] = 'fasttoggle_block_user';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['label'] = '';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['element_label_colon'] = FALSE;
   /* Sort criterion: Comment: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'comment';
@@ -209,6 +240,8 @@ function drupalorg_spam_views_default_views() {
     'changed' => 'changed',
     'name' => 'name',
     'nothing' => 'nothing',
+    'clear_link' => 'nothing',
+    'fasttoggle_block_user' => 'nothing',
   );
   $handler->display->display_options['style_options']['default'] = 'count';
   $handler->display->display_options['style_options']['info'] = array(
@@ -260,6 +293,16 @@ function drupalorg_spam_views_default_views() {
       'empty_column' => 0,
     ),
     'nothing' => array(
+      'align' => '',
+      'separator' => ' | ',
+      'empty_column' => 0,
+    ),
+    'clear_link' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'fasttoggle_block_user' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -331,9 +374,16 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['label'] = 'Operations';
   $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href=/user/[uid]/admin-content>Administer content</a>';
   $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  /* Field: User: Block Link (Fasttoggle) */
+  $handler->display->display_options['fields']['fasttoggle_block_user']['id'] = 'fasttoggle_block_user';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['table'] = 'users';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['field'] = 'fasttoggle_block_user';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['label'] = '';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -496,17 +546,18 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['mail']['id'] = 'mail';
   $handler->display->display_options['fields']['mail']['table'] = 'users';
   $handler->display->display_options['fields']['mail']['field'] = 'mail';
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = 'Operations';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="/user/[uid]/admin-content">Administer content</a>';
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
   /* Field: User: Block Link (Fasttoggle) */
   $handler->display->display_options['fields']['fasttoggle_block_user']['id'] = 'fasttoggle_block_user';
   $handler->display->display_options['fields']['fasttoggle_block_user']['table'] = 'users';
   $handler->display->display_options['fields']['fasttoggle_block_user']['field'] = 'fasttoggle_block_user';
   $handler->display->display_options['fields']['fasttoggle_block_user']['label'] = 'Operations';
-  /* Field: Global: Custom text */
-  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['table'] = 'views';
-  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['label'] = '';
-  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="/user/[uid]/admin-content">Users\' Content</a>';
   /* Sort criterion: User: Created date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'users';
