@@ -19,14 +19,9 @@ function drupalorg_spam_default_page_manager_pages() {
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'role',
+        'name' => 'perm',
         'settings' => array(
-          'rids' => array(
-            0 => 3,
-            1 => 34,
-            2 => 26,
-            3 => 4,
-          ),
+          'perm' => 'administer comments',
         ),
         'context' => 'logged-in-user',
         'not' => FALSE,
@@ -123,14 +118,9 @@ function drupalorg_spam_default_page_manager_pages() {
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'role',
+        'name' => 'perm',
         'settings' => array(
-          'rids' => array(
-            0 => 3,
-            1 => 34,
-            2 => 26,
-            3 => 4,
-          ),
+          'perm' => 'administer nodes',
         ),
         'context' => 'logged-in-user',
         'not' => FALSE,
@@ -227,14 +217,9 @@ function drupalorg_spam_default_page_manager_pages() {
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'role',
+        'name' => 'perm',
         'settings' => array(
-          'rids' => array(
-            0 => 3,
-            1 => 34,
-            2 => 26,
-            3 => 4,
-          ),
+          'perm' => 'administer users',
         ),
         'context' => 'logged-in-user',
         'not' => FALSE,
