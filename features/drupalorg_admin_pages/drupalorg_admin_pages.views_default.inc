@@ -792,6 +792,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['filters']['field_job_title_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_job_title_value']['expose']['operator_id'] = 'field_job_title_value_op';
   $handler->display->display_options['filters']['field_job_title_value']['expose']['label'] = 'Job Title';
+  $handler->display->display_options['filters']['field_job_title_value']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_job_title_value']['expose']['operator'] = 'field_job_title_value_op';
   $handler->display->display_options['filters']['field_job_title_value']['expose']['identifier'] = 'field_job_title_value';
   $handler->display->display_options['filters']['field_job_title_value']['expose']['remember_roles'] = array(
@@ -815,6 +816,14 @@ function drupalorg_admin_pages_views_default_views() {
     38 => 0,
     4 => 0,
   );
+  $handler->display->display_options['filters']['field_job_title_value']['group_info']['label'] = 'Job Title';
+  $handler->display->display_options['filters']['field_job_title_value']['group_info']['identifier'] = 'field_job_title_value';
+  $handler->display->display_options['filters']['field_job_title_value']['group_info']['remember'] = FALSE;
+  $handler->display->display_options['filters']['field_job_title_value']['group_info']['group_items'] = array(
+    1 => array(),
+    2 => array(),
+    3 => array(),
+  );
   /* Filter criterion: Field collection item: Organization (field_organization_name) */
   $handler->display->display_options['filters']['field_organization_name_value']['id'] = 'field_organization_name_value';
   $handler->display->display_options['filters']['field_organization_name_value']['table'] = 'field_data_field_organization_name';
@@ -824,6 +833,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['filters']['field_organization_name_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_organization_name_value']['expose']['operator_id'] = 'field_organization_name_value_op';
   $handler->display->display_options['filters']['field_organization_name_value']['expose']['label'] = 'Organization';
+  $handler->display->display_options['filters']['field_organization_name_value']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_organization_name_value']['expose']['operator'] = 'field_organization_name_value_op';
   $handler->display->display_options['filters']['field_organization_name_value']['expose']['identifier'] = 'field_organization_name_value';
   $handler->display->display_options['filters']['field_organization_name_value']['expose']['remember_roles'] = array(
