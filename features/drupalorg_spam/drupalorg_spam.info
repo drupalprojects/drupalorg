@@ -19,6 +19,6 @@ features[flag][] = drupalorg_user_spam
 features[page_manager_pages][] = drupalorg_admin_comment_spam
 features[page_manager_pages][] = drupalorg_admin_node_spam
 features[page_manager_pages][] = drupalorg_admin_spammers
+features[views_view][] = drupalorg_comment_spam
 features[views_view][] = drupalorg_node_spam
-features[views_view][] = drupalorg_spam_comments
 features[views_view][] = drupalorg_spammers

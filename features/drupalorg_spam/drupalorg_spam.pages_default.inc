@@ -91,7 +91,7 @@ function drupalorg_spam_default_page_manager_pages() {
     $pane->pid = 'new-38639653-550b-4846-9199-6fc7f3d3a2a9';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
-    $pane->subtype = 'drupalorg_spam_comments-drupalorg_comment_spam_pane';
+    $pane->subtype = 'drupalorg_comment_spam-drupalorg_comment_spam_pane';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array();
