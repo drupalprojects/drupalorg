@@ -297,7 +297,7 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['count']['table'] = 'flag_counts';
   $handler->display->display_options['fields']['count']['field'] = 'count';
   $handler->display->display_options['fields']['count']['relationship'] = 'flag_count_rel';
-  $handler->display->display_options['fields']['count']['label'] = 'Count';
+  $handler->display->display_options['fields']['count']['label'] = 'Reports';
   $handler->display->display_options['fields']['count']['separator'] = '';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
