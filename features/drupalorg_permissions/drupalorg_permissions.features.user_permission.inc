@@ -2331,7 +2331,6 @@ function drupalorg_permissions_user_default_permissions() {
       'community' => 'community',
       'confirmed' => 'confirmed',
       'content moderator' => 'content moderator',
-      'security team' => 'security team',
       'webmaster' => 'webmaster',
     ),
     'module' => 'flag',
@@ -2345,7 +2344,6 @@ function drupalorg_permissions_user_default_permissions() {
       'community' => 'community',
       'confirmed' => 'confirmed',
       'content moderator' => 'content moderator',
-      'security team' => 'security team',
       'webmaster' => 'webmaster',
     ),
     'module' => 'flag',
@@ -2623,7 +2621,6 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'content moderator' => 'content moderator',
-      'security team' => 'security team',
       'webmaster' => 'webmaster',
     ),
     'module' => 'flag',
@@ -2635,7 +2632,6 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'content moderator' => 'content moderator',
-      'security team' => 'security team',
       'webmaster' => 'webmaster',
     ),
     'module' => 'flag',
