@@ -4,7 +4,6 @@
  * @file
  * Administrative view for cleaning up spam comments per user.
  */
-
 $view = new view();
 $view->name = 'drupalorg_admin_comments_by_user';
 $view->description = 'Administrative view of all comments by a user';
@@ -19,11 +18,8 @@ $view->disabled = FALSE; /* Edit this to true to make a default view disabled in
 $handler = $view->new_display('default', 'Defaults', 'default');
 $handler->display->display_options['use_ajax'] = TRUE;
 $handler->display->display_options['use_more_always'] = FALSE;
-$handler->display->display_options['access']['type'] = 'role';
-$handler->display->display_options['access']['role'] = array(
-  3 => 3,
-  4 => 4,
-);
+$handler->display->display_options['access']['type'] = 'perm';
+$handler->display->display_options['access']['perm'] = 'administer comments';
 $handler->display->display_options['cache']['type'] = 'none';
 $handler->display->display_options['query']['type'] = 'views_query';
 $handler->display->display_options['exposed_form']['type'] = 'basic';
