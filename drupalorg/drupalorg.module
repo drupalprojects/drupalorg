@@ -2958,8 +2958,8 @@ function drupalorg_user_view($account, $view_mode) {
   $account->content['user_picture']['#suffix'] .= '</div>';
 
   // Do not show "Add 'confirmed' role fasttoggle link.
-  if (isset($account->content['role_' . variable_get('drupalorg_crosssite_trusted_role')]) && !drupalorg_user_is_confirmed($account)) {
-    unset($account->content['role_' . variable_get('drupalorg_crosssite_trusted_role')]);
+  if (isset($account->content['links']['fasttoggle']['#links']['role_' . variable_get('drupalorg_crosssite_trusted_role')]) && !drupalorg_user_is_confirmed($account)) {
+    unset($account->content['links']['fasttoggle']['#links']['role_' . variable_get('drupalorg_crosssite_trusted_role')]);
   }
 
   // Link organization to organization node, if it exists.
