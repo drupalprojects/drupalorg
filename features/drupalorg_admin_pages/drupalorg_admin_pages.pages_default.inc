@@ -23,7 +23,7 @@ function drupalorg_admin_pages_default_page_manager_pages() {
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'argument_entity_id:user_1',
+        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
       1 => array(
@@ -31,7 +31,7 @@ function drupalorg_admin_pages_default_page_manager_pages() {
         'settings' => array(
           'perm' => 'administer comments',
         ),
-        'context' => 'argument_entity_id:user_1',
+        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
