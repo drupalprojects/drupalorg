@@ -2323,6 +2323,45 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'extended_file_field',
   );
 
+  // Exported permission: 'flag drupalorg_comment_spam'.
+  $permissions['flag drupalorg_comment_spam'] = array(
+    'name' => 'flag drupalorg_comment_spam',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
+    ),
+    'module' => 'flag',
+  );
+
+  // Exported permission: 'flag drupalorg_node_spam'.
+  $permissions['flag drupalorg_node_spam'] = array(
+    'name' => 'flag drupalorg_node_spam',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
+    ),
+    'module' => 'flag',
+  );
+
+  // Exported permission: 'flag drupalorg_user_spam'.
+  $permissions['flag drupalorg_user_spam'] = array(
+    'name' => 'flag drupalorg_user_spam',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'community' => 'community',
+      'confirmed' => 'confirmed',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
+    ),
+    'module' => 'flag',
+  );
+
   // Exported permission: 'flag flag_tracker_follow'.
   $permissions['flag flag_tracker_follow'] = array(
     'name' => 'flag flag_tracker_follow',
@@ -2574,6 +2613,40 @@ function drupalorg_permissions_user_default_permissions() {
       'authenticated user' => 'authenticated user',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: 'unflag drupalorg_comment_spam'.
+  $permissions['unflag drupalorg_comment_spam'] = array(
+    'name' => 'unflag drupalorg_comment_spam',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
+    ),
+    'module' => 'flag',
+  );
+
+  // Exported permission: 'unflag drupalorg_node_spam'.
+  $permissions['unflag drupalorg_node_spam'] = array(
+    'name' => 'unflag drupalorg_node_spam',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
+    ),
+    'module' => 'flag',
+  );
+
+  // Exported permission: 'unflag drupalorg_user_spam'.
+  $permissions['unflag drupalorg_user_spam'] = array(
+    'name' => 'unflag drupalorg_user_spam',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'community' => 'community',
+      'content moderator' => 'content moderator',
+      'webmaster' => 'webmaster',
+    ),
+    'module' => 'flag',
   );
 
   // Exported permission: 'unflag flag_tracker_follow'.

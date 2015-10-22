@@ -19,18 +19,23 @@ function drupalorg_admin_pages_default_page_manager_pages() {
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'role',
+        'name' => 'perm',
         'settings' => array(
-          'rids' => array(
-            0 => 3,
-            1 => 4,
-          ),
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer comments',
         ),
         'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
   );
   $page->menu = array(
     'type' => 'tab',

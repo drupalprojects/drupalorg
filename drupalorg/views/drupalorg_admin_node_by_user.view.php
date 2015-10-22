@@ -18,11 +18,8 @@ $view->disabled = FALSE; /* Edit this to true to make a default view disabled in
 $handler = $view->new_display('default', 'Defaults', 'default');
 $handler->display->display_options['use_ajax'] = TRUE;
 $handler->display->display_options['use_more_always'] = FALSE;
-$handler->display->display_options['access']['type'] = 'role';
-$handler->display->display_options['access']['role'] = array(
-  3 => 3,
-  4 => 4,
-);
+$handler->display->display_options['access']['type'] = 'perm';
+$handler->display->display_options['access']['perm'] = 'administer nodes';
 $handler->display->display_options['cache']['type'] = 'none';
 $handler->display->display_options['query']['type'] = 'views_query';
 $handler->display->display_options['exposed_form']['type'] = 'basic';
@@ -127,10 +124,11 @@ $handler->display->display_options['fields']['title']['id'] = 'title';
 $handler->display->display_options['fields']['title']['table'] = 'node';
 $handler->display->display_options['fields']['title']['field'] = 'title';
 $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
-/* Field: Content: Body */
+/* Field: Content: Description */
 $handler->display->display_options['fields']['body_1']['id'] = 'body_1';
 $handler->display->display_options['fields']['body_1']['table'] = 'field_data_body';
 $handler->display->display_options['fields']['body_1']['field'] = 'body';
+$handler->display->display_options['fields']['body_1']['label'] = 'Body';
 $handler->display->display_options['fields']['body_1']['alter']['max_length'] = '200';
 $handler->display->display_options['fields']['body_1']['alter']['trim'] = TRUE;
 $handler->display->display_options['fields']['body_1']['element_label_colon'] = FALSE;
