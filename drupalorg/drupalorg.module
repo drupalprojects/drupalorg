@@ -2565,6 +2565,14 @@ function drupalorg_node_view($node, $view_mode = 'full') {
 }
 
 /**
+ * Implements hook_comment_view().
+ */
+function drupalorg_comment_view($comment, $view_mode, $langcode) {
+  // Use fasttoggle 'publish' link instead of the core approve link.
+  unset($comment->content['links']['comment']['#links']['comment-approve']);
+}
+
+/**
  * Generate an URL for the marketplace term.
  *
  * @param $term
