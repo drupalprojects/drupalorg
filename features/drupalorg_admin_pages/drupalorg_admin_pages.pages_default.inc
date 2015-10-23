@@ -36,6 +36,8 @@ function drupalorg_admin_pages_default_page_manager_pages() {
       ),
     ),
     'logic' => 'or',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array(
     'type' => 'tab',
