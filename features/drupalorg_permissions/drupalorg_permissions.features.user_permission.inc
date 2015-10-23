@@ -2327,11 +2327,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['flag drupalorg_comment_spam'] = array(
     'name' => 'flag drupalorg_comment_spam',
     'roles' => array(
-      'administrator' => 'administrator',
-      'community' => 'community',
       'confirmed' => 'confirmed',
-      'content moderator' => 'content moderator',
-      'webmaster' => 'webmaster',
     ),
     'module' => 'flag',
   );
@@ -2340,11 +2336,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['flag drupalorg_node_spam'] = array(
     'name' => 'flag drupalorg_node_spam',
     'roles' => array(
-      'administrator' => 'administrator',
-      'community' => 'community',
       'confirmed' => 'confirmed',
-      'content moderator' => 'content moderator',
-      'webmaster' => 'webmaster',
     ),
     'module' => 'flag',
   );
@@ -2353,11 +2345,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['flag drupalorg_user_spam'] = array(
     'name' => 'flag drupalorg_user_spam',
     'roles' => array(
-      'administrator' => 'administrator',
-      'community' => 'community',
       'confirmed' => 'confirmed',
-      'content moderator' => 'content moderator',
-      'webmaster' => 'webmaster',
     ),
     'module' => 'flag',
   );
@@ -2619,9 +2607,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['unflag drupalorg_comment_spam'] = array(
     'name' => 'unflag drupalorg_comment_spam',
     'roles' => array(
-      'administrator' => 'administrator',
-      'content moderator' => 'content moderator',
-      'webmaster' => 'webmaster',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'flag',
   );
@@ -2630,9 +2616,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['unflag drupalorg_node_spam'] = array(
     'name' => 'unflag drupalorg_node_spam',
     'roles' => array(
-      'administrator' => 'administrator',
-      'content moderator' => 'content moderator',
-      'webmaster' => 'webmaster',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'flag',
   );
@@ -2641,10 +2625,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['unflag drupalorg_user_spam'] = array(
     'name' => 'unflag drupalorg_user_spam',
     'roles' => array(
-      'administrator' => 'administrator',
-      'community' => 'community',
-      'content moderator' => 'content moderator',
-      'webmaster' => 'webmaster',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'flag',
   );
