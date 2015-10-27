@@ -651,7 +651,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'url',
         'settings' => array(
-          'nofollow' => FALSE,
+          'nofollow' => 1,
           'trim_length' => 80,
         ),
         'type' => 'url_default',
@@ -851,7 +851,7 @@ function drupalorg_user_field_default_field_instances() {
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
-        'rel' => '',
+        'rel' => 'nofollow',
         'target' => 'default',
         'title' => '',
       ),
