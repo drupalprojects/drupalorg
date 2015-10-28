@@ -1,0 +1,13 @@
+name = Drupal.org Forums
+description = Provides forums functionality
+core = 7.x
+package = Features
+version = 7.x-3.x-dev
+project = drupalorg
+dependencies[] = views
+dependencies[] = views_content
+dependencies[] = drupalorg_spam
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[views_view][] = forum_topics
+features_exclude[dependencies][ctools] = ctools
