@@ -36,6 +36,14 @@ function drupalorg_content_types_node_info() {
       'title_label' => t('Title'),
       'help' => '',
     ),
+    'post' => array(
+      'name' => t('Post'),
+      'base' => 'node_content',
+      'description' => t('Blog, discussion, announcement posts.'),
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'help' => '',
+    ),
     'section' => array(
       'name' => t('Section'),
       'base' => 'node_content',

@@ -32,6 +32,13 @@ function drupalorg_content_types_og_features_default_permissions() {
   // Exported og permission: 'node:section:create page content'
   $permissions['node:section:create page content'] = array(
     'roles' => array(
+      'maintainer' => 'maintainer',
+    ),
+  );
+
+  // Exported og permission: 'node:section:create post content'
+  $permissions['node:section:create post content'] = array(
+    'roles' => array(
       'editor' => 'editor',
       'maintainer' => 'maintainer',
     ),
@@ -45,7 +52,13 @@ function drupalorg_content_types_og_features_default_permissions() {
   // Exported og permission: 'node:section:delete any page content'
   $permissions['node:section:delete any page content'] = array(
     'roles' => array(
-      'editor' => 'editor',
+      'maintainer' => 'maintainer',
+    ),
+  );
+
+  // Exported og permission: 'node:section:delete any post content'
+  $permissions['node:section:delete any post content'] = array(
+    'roles' => array(
       'maintainer' => 'maintainer',
     ),
   );
@@ -57,6 +70,13 @@ function drupalorg_content_types_og_features_default_permissions() {
 
   // Exported og permission: 'node:section:delete own page content'
   $permissions['node:section:delete own page content'] = array(
+    'roles' => array(
+      'maintainer' => 'maintainer',
+    ),
+  );
+
+  // Exported og permission: 'node:section:delete own post content'
+  $permissions['node:section:delete own post content'] = array(
     'roles' => array(
       'editor' => 'editor',
       'maintainer' => 'maintainer',
@@ -113,6 +133,13 @@ function drupalorg_content_types_og_features_default_permissions() {
     ),
   );
 
+  // Exported og permission: 'node:section:update any post content'
+  $permissions['node:section:update any post content'] = array(
+    'roles' => array(
+      'maintainer' => 'maintainer',
+    ),
+  );
+
   // Exported og permission: 'node:section:update any section content'
   $permissions['node:section:update any section content'] = array(
     'roles' => array(),
@@ -128,6 +155,13 @@ function drupalorg_content_types_og_features_default_permissions() {
 
   // Exported og permission: 'node:section:update own page content'
   $permissions['node:section:update own page content'] = array(
+    'roles' => array(
+      'maintainer' => 'maintainer',
+    ),
+  );
+
+  // Exported og permission: 'node:section:update own post content'
+  $permissions['node:section:update own post content'] = array(
     'roles' => array(
       'editor' => 'editor',
       'maintainer' => 'maintainer',
