@@ -37,6 +37,7 @@ features[field_instance][] = node-section-body
 features[field_instance][] = node-section-field_include_in_group_menu
 features[field_instance][] = node-section-group_group
 features[field_instance][] = node-section-og_group_ref
+features[field_instance][] = node-section-upload
 features[node][] = page
 features[node][] = section
 features[og_features_permission][] = node:section:add user
