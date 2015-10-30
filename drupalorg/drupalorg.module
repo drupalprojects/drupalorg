@@ -849,6 +849,32 @@ function drupalorg_preprocess_page(&$variables) {
       hide($page['footer'][$child]);
     }
   }
+
+  // Group breadcrumbs.
+  if ($context = og_context()) {
+    $group = entity_load_single($context['group_type'], $context['gid']);
+    $breadcrumb = array();
+
+    // Check if we are in a group, but not on the group page itself.
+    if ($context['group_type'] === 'node' && ($node = menu_get_object()) && $node->nid != $context['gid']) {
+      $uri = entity_uri($context['group_type'], $group);
+      $breadcrumb[] = l(entity_label($context['group_type'], $group), $uri['path']);
+    }
+
+    // Look for parent groups.
+    while ($parents = og_get_entity_groups($context['group_type'], $group)) {
+      $group = entity_load_single($context['group_type'], reset($parents[$context['group_type']]));
+      $uri = entity_uri($context['group_type'], $group);
+      $breadcrumb[] = l(entity_label($context['group_type'], $group), $uri['path']);
+    }
+
+    $breadcrumb[] = l(t('Home'), '<front>');
+    drupal_set_breadcrumb(array_reverse($breadcrumb));
+
+    // drupalorg_crosssite_preprocess_page() overrides.
+    $variables['section_name'] = '';
+    unset($variables['breadcrumb']);
+  }
 }
 
 /**
