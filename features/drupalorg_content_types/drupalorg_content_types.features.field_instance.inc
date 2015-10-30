@@ -10,7 +10,7 @@
 function drupalorg_content_types_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-page-body'
+  // Exported field_instance: 'node-page-body'.
   $field_instances['node-page-body'] = array(
     'bundle' => 'page',
     'default_value' => NULL,
@@ -67,7 +67,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-field_include_in_group_menu'
+  // Exported field_instance: 'node-page-field_include_in_group_menu'.
   $field_instances['node-page-field_include_in_group_menu'] = array(
     'bundle' => 'page',
     'default_value' => array(
@@ -121,7 +121,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-og_group_ref'
+  // Exported field_instance: 'node-page-og_group_ref'.
   $field_instances['node-page-og_group_ref'] = array(
     'bundle' => 'page',
     'default_value' => NULL,
@@ -206,7 +206,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-upload'
+  // Exported field_instance: 'node-page-upload'.
   $field_instances['node-page-upload'] = array(
     'bundle' => 'page',
     'deleted' => 0,
@@ -274,7 +274,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-section-body'
+  // Exported field_instance: 'node-section-body'.
   $field_instances['node-section-body'] = array(
     'bundle' => 'section',
     'default_value' => NULL,
@@ -330,7 +330,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-section-field_include_in_group_menu'
+  // Exported field_instance: 'node-section-field_include_in_group_menu'.
   $field_instances['node-section-field_include_in_group_menu'] = array(
     'bundle' => 'section',
     'default_value' => array(
@@ -385,7 +385,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-section-group_group'
+  // Exported field_instance: 'node-section-group_group'.
   $field_instances['node-section-group_group'] = array(
     'bundle' => 'section',
     'default_value' => array(
@@ -455,7 +455,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-section-og_group_ref'
+  // Exported field_instance: 'node-section-og_group_ref'.
   $field_instances['node-section-og_group_ref'] = array(
     'bundle' => 'section',
     'default_value' => NULL,
