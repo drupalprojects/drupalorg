@@ -26,7 +26,7 @@
   <div class="intro">
     <div class="logo"><img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/d8.svg" alt="Drupal 8"></div>
     <div class="text">
-      <a href="/drupal-8.0">Drupal 8</a> is in its release candidate phase. Get <a href="https://groups.drupal.org/core/updates">regular updates</a> about the process or <a href="/core-mentoring">volunteer</a> to help finalize it.
+      <a href="/drupal-8.0">Drupal 8</a> is about to be released on November 19th. Get <a href="https://groups.drupal.org/core/updates">regular updates</a> about the process or <a href="/core-mentoring">volunteer</a> to help finalize it.
     </div>
   </div>
   <div class="activities">
