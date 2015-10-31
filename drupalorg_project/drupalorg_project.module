@@ -357,6 +357,41 @@ function drupalorg_project_form_project_issue_notification_user_form_alter($form
 }
 
 /**
+ * The following three functions are used to invalidate and reload the download
+ * table cache for showing contrib tracker statuses.
+ */
+
+/**
+ * Implements hook_node_insert().
+ */
+function drupalorg_project_node_insert($node) {
+  _drupalorg_project_update_project_cache($node);
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function drupalorg_project_node_update($node) {
+  _drupalorg_project_update_project_cache($node);
+}
+
+/**
+ * @param $node
+ *
+ * Private function to reset the project release table when an issue related to
+ * its D8 status is updated.
+ */
+function _drupalorg_project_update_project_cache($node) {
+  if (project_issue_node_is_issue($node) && isset($node->field_project[LANGUAGE_NONE][0]['target_id']) && $node->field_project[LANGUAGE_NONE][0]['target_id'] == 2573607 && preg_match('/^\[([a-zA-Z0-9_]+)\]/', $node->title, $project)) {
+    $project_path = explode('/', drupal_get_normal_path('project/' . $project[1]));
+    $nid = array_pop($project_path);
+    if (is_numeric($nid)) {
+      project_release_download_table($nid, TRUE);
+    }
+  }
+}
+
+/**
  * Alter release node forms properly for security updates.
  *
  * Ensure that only privileged users can modify a security release tag and when
@@ -1514,6 +1549,13 @@ function drupalorg_project_ctools_plugin_api($module, $api) {
 }
 
 /**
+ * Implements hook_views_api().
+ */
+function drupalorg_project_views_api() {
+  return array("version" => 3.0);
+}
+
+/**
  * Implements hook_views_pre_render().
  *
  * Sets the breadcrumb up for project navigation for the change records views.
@@ -1600,6 +1642,116 @@ function drupalorg_project_form_views_exposed_form_alter(&$form, &$form_state) {
         $form['text']['#title'] = t('Search for');
       }
       break;
+  }
+}
+
+/**
+ * Implements hook_views_post_execute().
+ * @param $view
+ *
+ * Checks to see the status of Drupal 8 for the contributed module.
+ */
+function drupalorg_project_views_post_execute(&$view) {
+  if ($view->name == 'project_release_download_table' && ($view->current_display == 'recommended' && !empty($view->result)) || ($view->current_display == 'security' && !empty($view->result)) && count($view->args)) {
+    $node = node_load($view->args[0]);
+
+    // Parse out the project type
+    $project_type = preg_replace('/project_/', '', $node->type);
+    // We don't need to tell core it needs a D8 release, right? ;)
+    if ($project_type == 'core') {
+      return;
+    }
+
+    if (!empty($node->field_project_type) && !project_promote_project_is_sandbox($node)) {
+      // Build list of possible issue target versions for dev version of core: 8.0.x, 8.0.0-beta1, etc.
+      $releases = project_release_query_releases($node->nid, array(103, 87));
+      $versions = array();
+      // TODO: Remove the hardcodedness of this code.
+      // Look through all releases to see if there is a 6.x or 7.x release.
+      foreach ($releases as $tid => $release) {
+        $core = explode('-', $release->field_release_version[$release->language][0]['value']);
+        $core = array_shift($core);
+        $versions[$core] = TRUE;
+      }
+      // We have potentially upgradable release!
+      if (array_key_exists('6.x', $versions) || array_key_exists('7.x', $versions)) {
+        // Check to see the status of the 8.x release from contrib_tracker.
+        $query = new EntityFieldQuery();
+        $query->entityCondition('entity_type', 'node')
+          ->entityCondition('bundle', 'project_issue')
+          ->propertyCondition('title', '[' . $node->field_project_machine_name[$node->language][0]['value']. ']', 'STARTS_WITH')
+          ->fieldCondition('field_project', 'target_id', 2573607, '=')
+          ->range(0, 1);
+
+        $entities = $query->execute();
+        // No 8.x issue, post message
+        if (empty($entities['node'])) {
+          $message = array(
+            'message' => t('No Drupal 8 port information has been found for this !project. Help us by creating an !issue.', array('!project' => $project_type, '!issue' => l('issue', '/node/2573659'))),
+            'status' => 'messages error',
+          );
+        }
+        else if ($issue = array_keys($entities['node'])) {
+          // Load the issue up and get relevant status
+          $issue = node_load(array_shift($issue));
+          // See https://www.drupal.org/project/contrib_tracker for mapping.
+          switch($issue->field_issue_status[$issue->language][0]['value']) {
+            case 1: // Active
+              $message = array(
+                'message' => t('This !project has not been ported to Drupal 8. Refer to this !issue to find out its progress.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'status' => 'messages error',
+              );
+              break;
+            case 4: // Postponed
+              $message = array(
+                'message' => t('This !project is currently blocked from being ported to Drupal 8, due to unmet dependencies. Refer to this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'status' => 'messages warning',
+              );
+              break;
+            case 13: // Needs work
+              $message = array(
+                'message' => t('This !project is currently being ported to Drupal 8, but is not usable yet. Help us by following this !issue.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'status' => 'messages warning',
+              );
+              break;
+            case 8: // Needs review
+            case 14: // RTBC
+              $message = array(
+                'message' => t('This !project has a pre-release version for Drupal 8. To find out more, follow this !issue or download below.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'status' => 'messages status',
+              );
+              break;
+            case 2: // Fixed
+            case 7: // Closed (Fixed)
+              $message = array();
+              break;
+            case 16: // Needs more info
+              $message = array(
+                'message' => t('The status of this !project port to Drupal 8 is unknown or under investigation. Know its status? Help us by updating the !issue.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'status' => 'messages warning',
+              );
+              break;
+            case 5: // Closed (won't fix)
+              $message = array(
+                'message' => t('This !project has been included with Drupal 8 core. Refer to this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'status' => 'messages help',
+              );
+              break;
+            case 3: // Closed (duplicate)
+              $message = array(
+                'message' => t('This !project has been renamed or deprecated by another !project. Please visit this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'status' => 'messages help',
+              );
+              break;
+          }
+        }
+      }
+      // Fetch the project, message variable, and only print upon full projects.
+      if (!empty($message)) {
+        $view->attachment_before = '<div class="' . $message['status'] . '">' . $message['message'] . '</div>';;
+      }
+    }
+
   }
 }
 
