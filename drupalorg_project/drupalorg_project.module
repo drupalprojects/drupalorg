@@ -1687,59 +1687,66 @@ function drupalorg_project_views_post_execute(&$view) {
         // No 8.x issue, post message
         if (empty($entities['node'])) {
           $message = array(
-            'message' => t('No Drupal 8 port information has been found for this !project. Help us by creating an !issue.', array('!project' => $project_type, '!issue' => l('issue', '/node/2573659'))),
+            'message' => t('No Drupal 8 port information has been found for this !project. Help us by creating an !issue.', array('!project' => $project_type, '!issue' => l('issue', 'node/2573659'))),
             'status' => 'messages error',
           );
         }
-        else if ($issue = array_keys($entities['node'])) {
+        elseif ($issue = array_keys($entities['node'])) {
           // Load the issue up and get relevant status
           $issue = node_load(array_shift($issue));
           // See https://www.drupal.org/project/contrib_tracker for mapping.
           switch($issue->field_issue_status[$issue->language][0]['value']) {
             case 1: // Active
               $message = array(
-                'message' => t('This !project has not been ported to Drupal 8. Refer to this !issue to find out its progress.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'message' => t('This !project has not been ported to Drupal 8. Refer to this !issue to find out its progress.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
                 'status' => 'messages error',
               );
               break;
+
             case 4: // Postponed
               $message = array(
-                'message' => t('This !project is currently blocked from being ported to Drupal 8, due to unmet dependencies. Refer to this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'message' => t('This !project is currently blocked from being ported to Drupal 8, due to unmet dependencies. Refer to this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
                 'status' => 'messages warning',
               );
               break;
+
             case 13: // Needs work
               $message = array(
-                'message' => t('This !project is currently being ported to Drupal 8, but is not usable yet. Help us by following this !issue.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'message' => t('This !project is currently being ported to Drupal 8, but is not usable yet. Help us by following this !issue.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
                 'status' => 'messages warning',
               );
               break;
+
             case 8: // Needs review
             case 14: // RTBC
               $message = array(
-                'message' => t('This !project has a pre-release version for Drupal 8. To find out more, follow this !issue or download below.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'message' => t('This !project has a pre-release version for Drupal 8. To find out more, follow this !issue or download below.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
                 'status' => 'messages status',
               );
               break;
+
             case 2: // Fixed
             case 7: // Closed (Fixed)
               $message = array();
               break;
+
             case 16: // Needs more info
               $message = array(
-                'message' => t('The status of this !project port to Drupal 8 is unknown or under investigation. Know its status? Help us by updating the !issue.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'message' => t('The status of this !project port to Drupal 8 is unknown or under investigation. Know its status? Help us by updating the !issue.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
                 'status' => 'messages warning',
               );
               break;
+
             case 5: // Closed (won't fix)
               $message = array(
-                'message' => t('This !project has been included with Drupal 8 core. Refer to this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'message' => t('This !project has been included with Drupal 8 core. Refer to this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
                 'status' => 'messages help',
               );
               break;
+
             case 3: // Closed (duplicate)
               $message = array(
-                'message' => t('This !project has been renamed or deprecated by another !project. Please visit this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', '/node/'. $issue->nid))),
+                'message' => t('This !project has been renamed or deprecated by another !project. Please visit this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
                 'status' => 'messages help',
               );
               break;
@@ -1751,7 +1758,6 @@ function drupalorg_project_views_post_execute(&$view) {
         $view->attachment_before = '<div class="' . $message['status'] . '">' . $message['message'] . '</div>';;
       }
     }
-
   }
 }
 
