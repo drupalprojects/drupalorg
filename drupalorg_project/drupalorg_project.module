@@ -1648,26 +1648,22 @@ function drupalorg_project_views_post_execute(&$view) {
   if ($view->name == 'project_release_download_table' && ($view->current_display == 'recommended' && !empty($view->result)) || ($view->current_display == 'security' && !empty($view->result)) && count($view->args)) {
     $node = node_load($view->args[0]);
 
-    // Parse out the project type
-    $project_type = preg_replace('/project_/', '', $node->type);
-    // We don't need to tell core it needs a D8 release, right? ;)
-    if ($project_type == 'core') {
-      return;
-    }
-
-    if (!empty($node->field_project_type) && !project_promote_project_is_sandbox($node)) {
-      // Build list of possible issue target versions for dev version of core: 8.0.x, 8.0.0-beta1, etc.
-      $releases = project_release_query_releases($node->nid, array(103, 87));
-      $versions = array();
-      // TODO: Remove the hardcodedness of this code.
-      // Look through all releases to see if there is a 6.x or 7.x release.
-      foreach ($releases as $tid => $release) {
-        $core = explode('-', $release->field_release_version[$release->language][0]['value']);
-        $core = array_shift($core);
-        $versions[$core] = TRUE;
-      }
+    // We don't need to tell core or sandboxes they need a D8 release.
+    if ($node->type !== 'project_core' && !project_promote_project_is_sandbox($node)) {
+      // Check if there is a 6.x or 7.x release.
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+        ->entityCondition('bundle', project_release_release_node_types())
+        ->propertyCondition('status', 1)
+        ->fieldCondition('field_release_project', 'target_id', $node->nid)
+        ->fieldCondition('taxonomy_' . taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary', 0))->machine_name, 'tid', array(103, 87)) // 7.x & 6.x
+        ->range(0, 1);
+      $result = $query->execute();
       // We have potentially upgradable release!
-      if (array_key_exists('6.x', $versions) || array_key_exists('7.x', $versions)) {
+      if (isset($result['node'])) {
+        // Parse out the project type
+        $project_type = drupal_strtolower(drupalorg_project_node_type_label($node->type, 'singular'));
+
         // Check to see the status of the 8.x release from contrib_tracker.
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')
