@@ -376,12 +376,10 @@ function drupalorg_project_node_update(stdClass $node) {
  * Private function to reset the project release table when an issue related to
  * its D8 contrib_tracker status is updated.
  */
-function _drupalorg_project_update_project_cache($node) {
-  if (project_issue_node_is_issue($node) && isset($node->field_project[LANGUAGE_NONE][0]['target_id']) && $node->field_project[LANGUAGE_NONE][0]['target_id'] == 2573607 && preg_match('/^\[([a-zA-Z0-9_]+)\]/', $node->title, $project)) {
-    $project_path = explode('/', drupal_get_normal_path('project/' . $project[1]));
-    $nid = array_pop($project_path);
-    if (is_numeric($nid)) {
-      project_release_download_table($nid, TRUE);
+function _drupalorg_project_update_project_cache(stdClass $node) {
+  if (project_issue_node_is_issue($node) && isset($node->field_project[LANGUAGE_NONE][0]['target_id']) && $node->field_project[LANGUAGE_NONE][0]['target_id'] == 2573607 && preg_match('/^\[([a-zA-Z0-9_]+)\]/', $node->title, $match)) {
+    if ($project = project_load($match[1])) {
+      project_release_download_table($project->nid, TRUE);
     }
   }
 }
