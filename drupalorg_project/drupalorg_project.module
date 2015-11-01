@@ -359,14 +359,14 @@ function drupalorg_project_form_project_issue_notification_user_form_alter($form
 /**
  * Implements hook_node_insert().
  */
-function drupalorg_project_node_insert($node) {
+function drupalorg_project_node_insert(stdClass $node) {
   _drupalorg_project_update_project_cache($node);
 }
 
 /**
  * Implements hook_node_update().
  */
-function drupalorg_project_node_update($node) {
+function drupalorg_project_node_update(stdClass $node) {
   _drupalorg_project_update_project_cache($node);
 }
 
