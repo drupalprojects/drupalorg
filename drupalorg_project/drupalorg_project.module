@@ -357,11 +357,6 @@ function drupalorg_project_form_project_issue_notification_user_form_alter($form
 }
 
 /**
- * The following three functions are used to invalidate and reload the download
- * table cache for showing contrib tracker statuses.
- */
-
-/**
  * Implements hook_node_insert().
  */
 function drupalorg_project_node_insert($node) {
@@ -379,7 +374,7 @@ function drupalorg_project_node_update($node) {
  * @param $node
  *
  * Private function to reset the project release table when an issue related to
- * its D8 status is updated.
+ * its D8 contrib_tracker status is updated.
  */
 function _drupalorg_project_update_project_cache($node) {
   if (project_issue_node_is_issue($node) && isset($node->field_project[LANGUAGE_NONE][0]['target_id']) && $node->field_project[LANGUAGE_NONE][0]['target_id'] == 2573607 && preg_match('/^\[([a-zA-Z0-9_]+)\]/', $node->title, $project)) {
