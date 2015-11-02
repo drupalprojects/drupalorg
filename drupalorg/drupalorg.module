@@ -913,18 +913,18 @@ function drupalorg_preprocess_drupalorg_start(&$variables) {
 
   // Create and cache a solr query for use by block elements.
   $env_id = apachesolr_default_environment();
-  project_solr_run_project_query('project/modules', array(array(
-    'key' => 'bundle',
-    'value' => 'project_module',
-  )));
+  project_solr_run_project_query('project/modules', array(
+    array('key' => 'bundle', 'value' => 'project_module'),
+    array('key' => 'im_project_release_api_tids', 'value' => DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID),
+  ));
   $query = apachesolr_current_query($env_id);
   $list = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
   $variables['most_popular_modules'] = drupal_render($list);
 
-  project_solr_run_project_query('project/themes', array(array(
-    'key' => 'bundle',
-    'value' => 'project_theme',
-  )));
+  project_solr_run_project_query('project/themes', array(
+    array('key' => 'bundle', 'value' => 'project_theme'),
+    array('key' => 'im_project_release_api_tids', 'value' => DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID),
+  ));
   $query = apachesolr_current_query($env_id);
   $list = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
   $variables['most_popular_themes'] = drupal_render($list);
