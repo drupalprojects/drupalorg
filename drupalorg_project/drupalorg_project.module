@@ -1735,7 +1735,7 @@ function drupalorg_project_views_post_execute(&$view) {
 
             case 3: // Closed (duplicate)
               $message = array(
-                'message' => t('This !project has been renamed or deprecated by another !project. Please visit this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
+                'message' => t('This !project has been renamed or deprecated by another !project in Drupal 8. Please visit this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
                 'status' => 'messages help',
               );
               break;
