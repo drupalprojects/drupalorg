@@ -10,7 +10,7 @@
 function drupalorg_case_studies_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-casestudy-body'
+  // Exported field_instance: 'node-casestudy-body'.
   $field_instances['node-casestudy-body'] = array(
     'bundle' => 'casestudy',
     'default_value' => NULL,
@@ -74,7 +74,7 @@ function drupalorg_case_studies_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-casestudy-field_community'
+  // Exported field_instance: 'node-casestudy-field_community'.
   $field_instances['node-casestudy-field_community'] = array(
     'bundle' => 'casestudy',
     'default_value' => NULL,
@@ -162,7 +162,7 @@ function drupalorg_case_studies_field_default_field_instances() {
     'widget_type' => 'text_textarea',
   );
 
-  // Exported field_instance: 'node-casestudy-field_developed'
+  // Exported field_instance: 'node-casestudy-field_developed'.
   $field_instances['node-casestudy-field_developed'] = array(
     'bundle' => 'casestudy',
     'default_value' => NULL,
@@ -250,7 +250,7 @@ function drupalorg_case_studies_field_default_field_instances() {
     'widget_type' => 'text_textarea',
   );
 
-  // Exported field_instance: 'node-casestudy-field_developed_org'
+  // Exported field_instance: 'node-casestudy-field_developed_org'.
   $field_instances['node-casestudy-field_developed_org'] = array(
     'bundle' => 'casestudy',
     'default_value' => array(
@@ -349,7 +349,7 @@ function drupalorg_case_studies_field_default_field_instances() {
     'widget_type' => 'nodereference_autocomplete',
   );
 
-  // Exported field_instance: 'node-casestudy-field_goals'
+  // Exported field_instance: 'node-casestudy-field_goals'.
   $field_instances['node-casestudy-field_goals'] = array(
     'bundle' => 'casestudy',
     'default_value' => NULL,
@@ -437,7 +437,7 @@ function drupalorg_case_studies_field_default_field_instances() {
     'widget_type' => 'text_textarea',
   );
 
-  // Exported field_instance: 'node-casestudy-field_images'
+  // Exported field_instance: 'node-casestudy-field_images'.
   $field_instances['node-casestudy-field_images'] = array(
     'bundle' => 'casestudy',
     'default_value' => '',
@@ -548,7 +548,7 @@ function drupalorg_case_studies_field_default_field_instances() {
     'widget_type' => 'imagefield_widget',
   );
 
-  // Exported field_instance: 'node-casestudy-field_link'
+  // Exported field_instance: 'node-casestudy-field_link'.
   $field_instances['node-casestudy-field_link'] = array(
     'bundle' => 'casestudy',
     'default_value' => NULL,
@@ -651,7 +651,7 @@ function drupalorg_case_studies_field_default_field_instances() {
     'widget_type' => 'link',
   );
 
-  // Exported field_instance: 'node-casestudy-field_mainimage'
+  // Exported field_instance: 'node-casestudy-field_mainimage'.
   $field_instances['node-casestudy-field_mainimage'] = array(
     'bundle' => 'casestudy',
     'default_value' => '',
@@ -770,7 +770,7 @@ function drupalorg_case_studies_field_default_field_instances() {
     'widget_type' => 'imagefield_widget',
   );
 
-  // Exported field_instance: 'node-casestudy-field_module'
+  // Exported field_instance: 'node-casestudy-field_module'.
   $field_instances['node-casestudy-field_module'] = array(
     'bundle' => 'casestudy',
     'default_value' => array(
@@ -787,7 +787,7 @@ function drupalorg_case_studies_field_default_field_instances() {
         'module' => 'node_reference',
         'settings' => array(),
         'type' => 'node_reference_default',
-        'weight' => 4,
+        'weight' => 15,
       ),
       'full' => array(
         'label' => 'above',
@@ -862,12 +862,12 @@ function drupalorg_case_studies_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'node_reference_autocomplete',
-      'weight' => 4,
+      'weight' => 33,
     ),
     'widget_type' => 'nodereference_autocomplete',
   );
 
-  // Exported field_instance: 'node-casestudy-field_module_selection'
+  // Exported field_instance: 'node-casestudy-field_module_selection'.
   $field_instances['node-casestudy-field_module_selection'] = array(
     'bundle' => 'casestudy',
     'default_value' => NULL,
@@ -879,7 +879,7 @@ function drupalorg_case_studies_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 5,
+        'weight' => 16,
       ),
       'full' => array(
         'label' => 'above',
@@ -950,12 +950,12 @@ function drupalorg_case_studies_field_default_field_instances() {
         'rows' => 10,
       ),
       'type' => 'text_textarea',
-      'weight' => 5,
+      'weight' => 34,
     ),
     'widget_type' => 'text_textarea',
   );
 
-  // Exported field_instance: 'node-casestudy-field_overview'
+  // Exported field_instance: 'node-casestudy-field_overview'.
   $field_instances['node-casestudy-field_overview'] = array(
     'bundle' => 'casestudy',
     'default_value' => NULL,
@@ -1043,7 +1043,7 @@ function drupalorg_case_studies_field_default_field_instances() {
     'widget_type' => 'text_textarea',
   );
 
-  // Exported field_instance: 'node-casestudy-field_profiles'
+  // Exported field_instance: 'node-casestudy-field_profiles'.
   $field_instances['node-casestudy-field_profiles'] = array(
     'bundle' => 'casestudy',
     'default_value' => array(
@@ -1141,7 +1141,7 @@ function drupalorg_case_studies_field_default_field_instances() {
     'widget_type' => 'userreference_autocomplete',
   );
 
-  // Exported field_instance: 'node-casestudy-field_status'
+  // Exported field_instance: 'node-casestudy-field_status'.
   $field_instances['node-casestudy-field_status'] = array(
     'bundle' => 'casestudy',
     'default_value' => array(
@@ -1232,7 +1232,50 @@ function drupalorg_case_studies_field_default_field_instances() {
     'widget_type' => 'optionwidgets_buttons',
   );
 
-  // Exported field_instance: 'node-casestudy-taxonomy_vocabulary_50'
+  // Exported field_instance: 'node-casestudy-taxonomy_vocabulary_5'.
+  $field_instances['node-casestudy-taxonomy_vocabulary_5'] = array(
+    'bundle' => 'casestudy',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 14,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'taxonomy_vocabulary_5',
+    'label' => 'Drupal version',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 32,
+    ),
+  );
+
+  // Exported field_instance: 'node-casestudy-taxonomy_vocabulary_50'.
   $field_instances['node-casestudy-taxonomy_vocabulary_50'] = array(
     'bundle' => 'casestudy',
     'default_value' => NULL,
@@ -1287,7 +1330,7 @@ function drupalorg_case_studies_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-casestudy-upload'
+  // Exported field_instance: 'node-casestudy-upload'.
   $field_instances['node-casestudy-upload'] = array(
     'bundle' => 'casestudy',
     'deleted' => 0,
@@ -1360,6 +1403,7 @@ function drupalorg_case_studies_field_default_field_instances() {
   t('Describe the project (goals, requirements and outcome)');
   t('Describe which CMSs/frameworks you\'ve considered and why you\'ve chosen Drupal. How Drupal met your project\'s specific needs.<br /><br />');
   t('Discuss the project\'s goals and requirements, timeline and major milestones. What makes your project special? What project management approach you used? What was the outcome of the project? What business problems were solved? What results were achieved (e.g., increased traffic, better performance, etc.) as a result of using Drupal for this project?<br /><br />');
+  t('Drupal version');
   t('Enter the names of organizations and team members that can\'t be referenced in the autocomplete fields above. Also, feel free to add more description about the team.<br /><br />');
   t('File attachments');
   t('Include the organizations that contributed to this project. Use the autocomplete widget if they exist on Drupal.org as organization nodes; otherwise, use the Project team text field below.
