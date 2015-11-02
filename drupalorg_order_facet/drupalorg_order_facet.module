@@ -64,6 +64,12 @@ function drupalorg_order_facet_build($sort, $info, $query, $more = TRUE) {
       if ($filter['#name'] === 'im_project_release_api_tids') {
         // Use "drupal_core" facet alias.
         $f[] = variable_get('project_solr_project_release_api_tids_alias', 'drupal_core') . ':' . $filter['#value'];
+
+        // Sort by usage for the specific API version.
+        if ($sort === 'iss_project_release_usage') {
+          $order_query->setAvailableSort('iss_project_release_usage_' . $filter['#value'], array('title' => t('Usage for version'), 'default' => 'desc'));
+          $order_query->setSolrSort('iss_project_release_usage_' . $filter['#value'], $info['direction']);
+        }
       }
       else {
         $f[] = $filter['#name'] . ':' . $filter['#value'];
