@@ -702,6 +702,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panels',
   );
 
+  // Exported permission: 'administer panelizer'.
+  $permissions['administer panelizer'] = array(
+    'name' => 'administer panelizer',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panels layouts'.
   $permissions['administer panels layouts'] = array(
     'name' => 'administer panels layouts',
