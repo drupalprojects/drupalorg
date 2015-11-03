@@ -65,6 +65,22 @@ function drupalorg_case_studies_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Contextual filter: Content: Drupal version (taxonomy_vocabulary_5) */
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['id'] = 'taxonomy_vocabulary_5_tid';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['table'] = 'field_data_taxonomy_vocabulary_5';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['field'] = 'taxonomy_vocabulary_5_tid';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['validate_options']['vocabularies'] = array(
+    'vocabulary_5' => 'vocabulary_5',
+  );
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['break_phrase'] = TRUE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -276,11 +292,11 @@ function drupalorg_case_studies_views_default_views() {
     'vocabulary_54' => 0,
     'vocabulary_56' => 0,
     'vocabulary_6' => 0,
-    'vocabulary_4' => 0,
     'vocabulary_44' => 0,
     'vocabulary_46' => 0,
     'vocabulary_3' => 0,
     'vocabulary_48' => 0,
+    'areas_of_expertise' => 0,
     'vocabulary_60' => 0,
     'vocabulary_62' => 0,
     'vocabulary_58' => 0,
@@ -288,8 +304,6 @@ function drupalorg_case_studies_views_default_views() {
     'vocabulary_7' => 0,
     'vocabulary_2' => 0,
     'vocabulary_31' => 0,
-    'vocabulary_32' => 0,
-    'vocabulary_33' => 0,
     'vocabulary_34' => 0,
     'vocabulary_9' => 0,
   );
@@ -346,6 +360,7 @@ return TRUE;';
   $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['name']['summary_options']['base_path'] = 'case-studies/%/%/all';
   $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
@@ -566,6 +581,23 @@ return TRUE;';
   );
   $handler->display->display_options['arguments']['tid']['validate_options']['type'] = 'convert';
   $handler->display->display_options['arguments']['tid']['validate_options']['transform'] = TRUE;
+  /* Contextual filter: Content: Drupal version (taxonomy_vocabulary_5) */
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['id'] = 'taxonomy_vocabulary_5_tid';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['table'] = 'field_data_taxonomy_vocabulary_5';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['field'] = 'taxonomy_vocabulary_5_tid';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['validate_options']['vocabularies'] = array(
+    'vocabulary_5' => 'vocabulary_5',
+  );
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_5_tid']['break_phrase'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -838,6 +870,134 @@ return FALSE;
     'block_3' => 0,
     'page_3' => 0,
   );
+
+  /* Display: Sidebar Case Study Filter */
+  $handler = $view->new_display('block', 'Sidebar Case Study Filter', 'block_4');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Browse by category';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Taxonomy terms on node */
+  $handler->display->display_options['relationships']['term_node_tid']['id'] = 'term_node_tid';
+  $handler->display->display_options['relationships']['term_node_tid']['table'] = 'node';
+  $handler->display->display_options['relationships']['term_node_tid']['field'] = 'term_node_tid';
+  $handler->display->display_options['relationships']['term_node_tid']['required'] = TRUE;
+  $handler->display->display_options['relationships']['term_node_tid']['vocabularies'] = array(
+    'vocabulary_5' => 'vocabulary_5',
+    'vocabulary_1' => 0,
+    'vocabulary_38' => 0,
+    'vocabulary_54' => 0,
+    'vocabulary_56' => 0,
+    'vocabulary_6' => 0,
+    'vocabulary_44' => 0,
+    'vocabulary_46' => 0,
+    'vocabulary_3' => 0,
+    'vocabulary_48' => 0,
+    'vocabulary_50' => 0,
+    'areas_of_expertise' => 0,
+    'vocabulary_60' => 0,
+    'vocabulary_62' => 0,
+    'vocabulary_58' => 0,
+    'vocabulary_52' => 0,
+    'vocabulary_7' => 0,
+    'vocabulary_2' => 0,
+    'vocabulary_31' => 0,
+    'vocabulary_34' => 0,
+    'vocabulary_9' => 0,
+  );
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Taxonomy term: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'term_node_tid';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Status (field_status) */
+  $handler->display->display_options['arguments']['field_status_value']['id'] = 'field_status_value';
+  $handler->display->display_options['arguments']['field_status_value']['table'] = 'field_data_field_status';
+  $handler->display->display_options['arguments']['field_status_value']['field'] = 'field_status_value';
+  $handler->display->display_options['arguments']['field_status_value']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_status_value']['default_argument_type'] = 'php';
+  $handler->display->display_options['arguments']['field_status_value']['default_argument_options']['code'] = '// @todo Replace this eval code with a default value plugin.
+if (arg(0) == \'case-studies\') {
+  if (arg(1) != \'\') {
+    return arg(1);
+  }
+  else {
+    return \'featured\';
+  }
+}';
+  $handler->display->display_options['arguments']['field_status_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_status_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_status_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_status_value']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_status_value']['validate']['type'] = 'php';
+  $handler->display->display_options['arguments']['field_status_value']['validate_options']['code'] = '// @todo Replace this eval code with a default value plugin.
+// The actual url has for example "featured" or "community" but the data is stared as numbers,
+// so first load the options which are Uppercase versions like "Featured" and then find the number in the database.
+
+// Get the options.
+$field = field_info_field(\'field_status\');
+$instance = field_info_instances(\'node\', \'field_status\', \'casestudy\');
+$allowed = list_allowed_values($field, $instance, \'node\');
+$allowed_key = array_flip(array_map(\'drupal_strtolower\', $allowed));
+
+if (isset($allowed_key[$argument])) {
+  $handler->argument = $allowed_key[$argument];
+  $handler->validated_title = check_plain($allowed[$handler->argument]);
+}
+
+return TRUE;';
+  $handler->display->display_options['arguments']['field_status_value']['limit'] = '0';
+  /* Contextual filter: Taxonomy term: Name */
+  $handler->display->display_options['arguments']['name']['id'] = 'name';
+  $handler->display->display_options['arguments']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['arguments']['name']['field'] = 'name';
+  $handler->display->display_options['arguments']['name']['relationship'] = 'term_node_tid';
+  $handler->display->display_options['arguments']['name']['default_action'] = 'summary';
+  $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['name']['summary']['sort_order'] = 'desc';
+  $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['name']['summary_options']['base_path'] = 'case-studies/%/all/%';
+  $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['name']['validate_options']['vocabularies'] = array(
+    'vocabulary_5' => 'vocabulary_5',
+  );
+  $handler->display->display_options['arguments']['name']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['arguments']['name']['limit'] = '0';
+  $handler->display->display_options['arguments']['name']['path_case'] = 'lower';
+  $handler->display->display_options['arguments']['name']['transform_dash'] = TRUE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'casestudy' => 'casestudy',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
   $export['drupalorg_casestudies'] = $view;
 
   return $export;
