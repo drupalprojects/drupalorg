@@ -88,40 +88,9 @@ function drupalorg_case_studies_strongarm() {
       'rss' => array(
         'custom_settings' => TRUE,
       ),
-      'teaser' => array(
-        'custom_settings' => TRUE,
-      ),
-      'full' => array(
-        'custom_settings' => FALSE,
-      ),
-      'search_index' => array(
-        'custom_settings' => FALSE,
-      ),
-      'search_result' => array(
-        'custom_settings' => FALSE,
-      ),
-      'print' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
     ),
     'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '-5',
-        ),
-        'path' => array(
-          'weight' => '30',
-        ),
-        'redirect' => array(
-          'weight' => '30',
-        ),
-      ),
+      'form' => array(),
       'display' => array(),
     ),
   );
