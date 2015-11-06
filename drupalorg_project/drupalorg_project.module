@@ -398,7 +398,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     $form['field_project_license'][LANGUAGE_NONE][0]['#default_value']['title'] = DRUPALORG_DEFAULT_LICENSE;
 
     // Do not allow users to disable releases once a release has been created.
-    if (!user_access('administer projects') && !empty($form_state['node']->field_project_has_releases['und'][0]['value'])) {
+    if (!user_access('administer projects') && !empty($form_state['node']->field_project_has_releases[LANGUAGE_NONE][0]['value'])) {
       $releases = project_release_query_releases($form_state['node']->nid);
       if (!empty($releases)) {
         $form['field_project_has_releases']['#disabled'] = TRUE;

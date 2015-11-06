@@ -81,7 +81,7 @@ function drupalorg_news_short_block() {
       // Cut it to short and sweet to fit into the design. Strip all tags,
       // so things like big images, distracting links and paragraph tags will
       // not end up here. The text should be good in itself to display.
-      $fresh_news .= '<p>' . text_summary(strip_tags($node->body['und']['0']['summary']), $node->body['und']['0']['format'], 180) . ' ' . l(t('Read more'), 'node/' . $node->nid) . '</p>';
+      $fresh_news .= '<p>' . text_summary(strip_tags($node->body[LANGUAGE_NONE]['0']['summary']), $node->body[LANGUAGE_NONE]['0']['format'], 180) . ' ' . l(t('Read more'), 'node/' . $node->nid) . '</p>';
     }
     else {
       // Rest of the items have just their title displayed.
