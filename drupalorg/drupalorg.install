@@ -3805,7 +3805,7 @@ function drupalorg_update_7083() {
  */
 function drupalorg_update_7084() {
   // These tables are in there but empty, causing issues when modules are enabled. Remove them first.
-  db_drop_table('languages');
+  db_drop_table('locales_meta');
   db_drop_table('locales_source');
   db_drop_table('locales_target');
 
