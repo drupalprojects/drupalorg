@@ -3812,5 +3812,5 @@ function drupalorg_update_7084() {
   module_enable(array('translation', 'locale', 'drupalorg_i18n'));
   // Manually revert the drupalorg_i18n variable feature because it doesn't take
   // effect when enabled.
-  features_revert(array('drupalorg_i18n' => 'variable'));
+  features_revert(array('drupalorg_i18n' => array('variable')));
 }
