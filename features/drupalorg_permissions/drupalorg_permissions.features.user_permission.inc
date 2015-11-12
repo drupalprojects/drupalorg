@@ -615,6 +615,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'image',
   );
 
+  // Exported permission: 'administer languages'.
+  $permissions['administer languages'] = array(
+    'name' => 'administer languages',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'locale',
+  );
+
   // Exported permission: 'administer mailchimp'.
   $permissions['administer mailchimp'] = array(
     'name' => 'administer mailchimp',
@@ -2694,6 +2703,25 @@ function drupalorg_permissions_user_default_permissions() {
       'authenticated user' => 'authenticated user',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: 'translate content'.
+  $permissions['translate content'] = array(
+    'name' => 'translate content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
+    ),
+    'module' => 'translation',
+  );
+
+  // Exported permission: 'translate interface'.
+  $permissions['translate interface'] = array(
+    'name' => 'translate interface',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'locale',
   );
 
   // Exported permission: 'unflag drupalorg_comment_spam'.
