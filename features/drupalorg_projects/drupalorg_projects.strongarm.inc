@@ -439,6 +439,7 @@ function drupalorg_projects_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_project_core'] = $strongarm;
 
@@ -449,6 +450,7 @@ function drupalorg_projects_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_project_distribution'] = $strongarm;
 
@@ -459,6 +461,7 @@ function drupalorg_projects_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_project_drupalorg'] = $strongarm;
 
@@ -469,6 +472,7 @@ function drupalorg_projects_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_project_module'] = $strongarm;
 
@@ -479,6 +483,7 @@ function drupalorg_projects_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_project_theme'] = $strongarm;
 
@@ -489,6 +494,7 @@ function drupalorg_projects_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_project_theme_engine'] = $strongarm;
 
@@ -499,6 +505,7 @@ function drupalorg_projects_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_project_translation'] = $strongarm;
 
@@ -521,46 +528,8 @@ function drupalorg_projects_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_defaults_node_project_core';
   $strongarm->value = array(
-    'status' => 1,
-    'help' => '',
-    'view modes' => array(
-      'page_manager' => array(
-        'status' => 0,
-        'substitute' => 0,
-        'default' => 0,
-        'choice' => 0,
-      ),
-      'default' => array(
-        'status' => 1,
-        'substitute' => '',
-        'default' => 1,
-        'choice' => 1,
-      ),
-      'teaser' => array(
-        'status' => 0,
-        'substitute' => 0,
-        'default' => 0,
-        'choice' => 0,
-      ),
-      'rss' => array(
-        'status' => 0,
-        'substitute' => 0,
-        'default' => 0,
-        'choice' => 0,
-      ),
-      'nodechanges' => array(
-        'status' => 0,
-        'substitute' => 0,
-        'default' => 0,
-        'choice' => 0,
-      ),
-      'issuemetadata' => array(
-        'status' => 0,
-        'substitute' => 0,
-        'default' => 0,
-        'choice' => 0,
-      ),
-    ),
+    'status' => 0,
+    'view modes' => array(),
   );
   $export['panelizer_defaults_node_project_core'] = $strongarm;
 
