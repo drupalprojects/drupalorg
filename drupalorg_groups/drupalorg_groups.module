@@ -1,9 +1,0 @@
-<?php
-
-/**
- * Implements hook_menu().
- */
-function drupalorg_git_varnish_menu() {
-
-  return $items;
-}
