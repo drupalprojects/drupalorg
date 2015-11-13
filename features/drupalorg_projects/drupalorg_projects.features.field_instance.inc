@@ -6511,6 +6511,59 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'node-project_release-field_release_short_description'.
+  $field_instances['node-project_release-field_release_short_description'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 15,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_release_short_description',
+    'label' => 'Short Description',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 70,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 4,
+    ),
+  );
+
   // Exported field_instance: 'node-project_theme-body'.
   $field_instances['node-project_theme-body'] = array(
     'bundle' => 'project_theme',
@@ -11119,6 +11172,7 @@ function drupalorg_projects_field_default_field_instances() {
   t('PHPCS warnings');
   t('Project type');
   t('Screenshots');
+  t('Short Description');
   t('Short name');
   t('Submission guidelines');
   t('Supporting organizations');
