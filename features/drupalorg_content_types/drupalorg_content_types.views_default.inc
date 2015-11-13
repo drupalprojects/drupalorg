@@ -239,6 +239,31 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 1;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $translatables['og_menu'] = array(
+    t('Defaults'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('OG membership from node'),
+    t('All'),
+    t('%1'),
+    t('Group menu'),
+    t('<a href="/node/!1">%1</a>'),
+    t('View panes'),
+    t('Page'),
+    t('Title'),
+    t('Weight'),
+    t('.'),
+    t(','),
+    t('Created'),
+    t('Updated'),
+    t('Menu'),
+    t('Yes'),
+    t('Edit Menu for %1'),
+  );
   $export['og_menu'] = $view;
 
   return $export;
