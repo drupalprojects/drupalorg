@@ -229,7 +229,7 @@ function drupalorg_project_issue_counts() {
   $api_vocabulary = taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary', ''));
   $versions = array();
   foreach (project_release_query_releases(DRUPALORG_CORE_NID, array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID, DRUPALORG_CORE_STABLE_VERSION_TID)) as $release) {
-    $versions[$release->{'taxonomy_' . $api_vocabulary->machine_name}[$release->language][0]['tid']][] = $release->field_release_version[$release->language][0]['value'];
+    $versions[$release->{'taxonomy_' . $api_vocabulary->machine_name}[LANGUAGE_NONE][0]['tid']][] = $release->field_release_version[LANGUAGE_NONE][0]['value'];
   }
   // Fetch issue counts for the current development release, and a combined
   // count for the development release and the latest stable release.
@@ -701,7 +701,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     }
 
     $security_term = taxonomy_term_load(variable_get('project_release_security_update_tid', FALSE));
-    $release_type_field = &$form['taxonomy_' . $security_term->vocabulary_machine_name][$form_state['node']->language];
+    $release_type_field = &$form['taxonomy_' . $security_term->vocabulary_machine_name][LANGUAGE_NONE];
     if (empty($form['nid']['#value'])) {
       // Adding a new release.
       if (!empty($form['project_release']['rebuild']['#value'])) {
@@ -745,7 +745,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       else {
         // Not a Security update, remove that option entirely if this is either
         // a -dev snapshot or a non-admin user.
-        if ($form_state['node']->field_release_build_type[$form_state['node']->language][0]['value'] === 'dynamic' || !user_access('administer projects')) {
+        if ($form_state['node']->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic' || !user_access('administer projects')) {
           unset($release_type_field['#options'][$security_term->tid]);
         }
       }
@@ -778,7 +778,7 @@ function drupalorg_project_form_project_promote_project_form_alter(&$form) {
  */
 function drupalorg_project_security_release_form_validate($form, &$form_state) {
   $security_term = taxonomy_term_load(variable_get('project_release_security_update_tid', FALSE));
-  foreach ($form_state['values']['taxonomy_' . $security_term->vocabulary_machine_name][$form_state['node']->language] as $value) {
+  foreach ($form_state['values']['taxonomy_' . $security_term->vocabulary_machine_name][LANGUAGE_NONE] as $value) {
     if ($value['tid'] == $security_term->tid) {
       // Ensure the user confirms that this release should be marked security.
       if (empty($form_state['values']['security_update_confirm'])) {
@@ -1091,7 +1091,7 @@ function drupalorg_project_block_view($delta = '') {
       // Build list of possible issue target versions for dev version of core: 8.0.x, 8.0.0-beta1, etc.
       $releases = project_release_query_releases(DRUPALORG_CORE_NID, array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID));
       foreach ($releases as $tid => $release) {
-        $versions[$tid] = $release->field_release_version[$release->language][0]['value'];
+        $versions[$tid] = $release->field_release_version[LANGUAGE_NONE][0]['value'];
       }
 
       // Get count of remaining open, non-fixed critical tasks and bugs for those versions.
@@ -1686,7 +1686,7 @@ function drupalorg_project_views_post_execute(&$view) {
           // Load the issue up and get relevant status
           $issue = node_load(array_shift($issue));
           // See https://www.drupal.org/project/contrib_tracker for mapping.
-          switch($issue->field_issue_status[$issue->language][0]['value']) {
+          switch($issue->field_issue_status[LANGUAGE_NONE][0]['value']) {
             case 1: // Active
               $message = array(
                 'message' => t('This !project has not been ported to Drupal 8. Refer to this !issue to find out its progress.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),

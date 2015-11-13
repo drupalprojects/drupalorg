@@ -36,8 +36,8 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
 
     // We use all of these a lot in a number of functions, so initialize them
     // once here so we can just reuse them whenever we need them.
-    $this->project_short_name = $this->project_node->field_project_machine_name[$this->project_node->language][0]['value'];
-    $this->release_version = $release_node->field_release_version[$release_node->language][0]['value'];
+    $this->project_short_name = $this->project_node->field_project_machine_name[LANGUAGE_NONE][0]['value'];
+    $this->release_version = $release_node->field_release_version[LANGUAGE_NONE][0]['value'];
     $this->release_file_id = $this->project_short_name . '-' . $this->release_version;
     $this->release_node_view_link = l(t('view'), 'node/' . $this->release_node->nid);
 
@@ -69,7 +69,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       watchdog('package_error', '%release_title does not have a VCS repository defined', array('%release_title' => $this->release_node->title), WATCHDOG_ERROR);
       return 'error';
     }
-    $git_tag = $this->release_node->field_release_vcs_label[$this->release_node->language][0]['value'];
+    $git_tag = $this->release_node->field_release_vcs_label[LANGUAGE_NONE][0]['value'];
 
     // For core, we want to checkout into a directory named via the version,
     // e.g. "drupal-7.0".
@@ -108,7 +108,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     );
     // Use the request time if the youngest file is from the future.
     $youngest = min($this->fileFindYoungest($this->export, 0, $exclude, $info_files), DRUSH_REQUEST_TIME);
-    if ($this->release_node->field_release_build_type[$this->release_node->language][0]['value'] === 'dynamic' && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $youngest) {
+    if ($this->release_node->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic' && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $youngest) {
       // The existing tarball for this release is newer than the youngest
       // file in the directory, we're done.
       drush_shell_exec('rm -rf %s', $this->repository);
@@ -118,7 +118,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     // If this is a -dev release, do some magic to determine a spiffy
     // "rebuild_version" string which we'll put into any .info files and
     // save in the DB for other uses.
-    if ($this->release_node->field_release_build_type[$this->release_node->language][0]['value'] === 'dynamic') {
+    if ($this->release_node->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic') {
       $this->computeRebuildVersion();
     }
 
@@ -196,7 +196,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
    */
   protected function computeRebuildVersion() {
     // This is called tag but in reality this is the branch for dev releases.
-    $branch = $this->release_node->field_release_vcs_label[$this->release_node->language][0]['value'];
+    $branch = $this->release_node->field_release_vcs_label[LANGUAGE_NONE][0]['value'];
     // Try to find a tag.
     drush_shell_cd_and_exec($this->repository, '%s rev-list --topo-order --max-count=1 %s 2>&1', $this->conf['git'], $branch);
     $last_tag_hash = drush_shell_exec_output();
