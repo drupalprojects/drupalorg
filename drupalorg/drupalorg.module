@@ -2461,7 +2461,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       }
 
       // Training fields
-      if (!empty($node->field_organization_training_desc[$node->language][0]['value'])) {
+      if (!empty($node->field_organization_training_desc[LANGUAGE_NONE][0]['value'])) {
         $content['main']['training_heading'] = array('#markup' => '<h3>' . t('Training') . '</h3>');
         $content['main']['training_url'] = $node->content['field_organization_training_url'];
         $content['main']['training_desc'] = $node->content['field_organization_training_desc'];
@@ -2552,7 +2552,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       $node->content = $content;
 
       // Highlight a Service provider above the organization page.
-      switch ($node->field_organization_list_rule[$node->language][0]['value']) {
+      switch ($node->field_organization_list_rule[LANGUAGE_NONE][0]['value']) {
         case 'all-providers':
         case 'featured':
           drupal_set_message(t('This organization is a <a href="!listing">Drupal services provider</a>.', array('!listing' => url('drupal-services'))), 'status');
@@ -2560,18 +2560,18 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       }
 
       // Highlight a Training provider above the organization page.
-      if (!empty($node->field_organization_training_list[$node->language][0]['value']) && $node->field_organization_training_list[$node->language][0]['value'] == 'on') {
+      if (!empty($node->field_organization_training_list[LANGUAGE_NONE][0]['value']) && $node->field_organization_training_list[LANGUAGE_NONE][0]['value'] == 'on') {
         drupal_set_message(t('This organization is a <a href="!listing">Drupal training provider</a>.', array('!listing' => url('training'))), 'status');
       }
 
       // For organizations that request a services listing or training
       // listing, show a link to their issue for the node owner and admins.
       if (($node->uid === $user->uid || user_access('administer nodes'))) {
-        if (($node->field_org_marketplace_request[$node->language][0]['value'] == '1') && !empty($node->field_organization_issue[$node->language][0]['nid'])) {
-          drupal_set_message(t('Regarding <em>Services listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_organization_issue[$node->language][0]['nid']))), 'status');
+        if (($node->field_org_marketplace_request[LANGUAGE_NONE][0]['value'] == '1') && !empty($node->field_organization_issue[LANGUAGE_NONE][0]['nid'])) {
+          drupal_set_message(t('Regarding <em>Services listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_organization_issue[LANGUAGE_NONE][0]['nid']))), 'status');
         }
-        if (!empty($node->field_org_training_request) && ($node->field_org_training_request[$node->language][0]['value'] == '1') && !empty($node->field_org_training_issue[$node->language][0]['nid'])) {
-          drupal_set_message(t('Regarding <em>Training listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_org_training_issue[$node->language][0]['nid']))), 'status');
+        if (!empty($node->field_org_training_request) && ($node->field_org_training_request[LANGUAGE_NONE][0]['value'] == '1') && !empty($node->field_org_training_issue[LANGUAGE_NONE][0]['nid'])) {
+          drupal_set_message(t('Regarding <em>Training listing</em> communicate with webmasters using <a href="!issue">this issue</a>.', array('!issue' => url('node/' . $node->field_org_training_issue[LANGUAGE_NONE][0]['nid']))), 'status');
         }
       }
     }
@@ -2636,15 +2636,15 @@ function drupalorg_generate_marketplace_link($term) {
 function drupalorg_org_request_issue($node) {
   $changed = FALSE;
   // If an organization wants to be listed in the Services section of the Marketplace.
-  if (($node->field_org_marketplace_request[$node->language][0]['value'] == '1') && empty($node->field_organization_issue[$node->language][0]['nid'])) {
+  if (($node->field_org_marketplace_request[LANGUAGE_NONE][0]['value'] == '1') && empty($node->field_organization_issue[LANGUAGE_NONE][0]['nid'])) {
     // A new organization has been posted, create an issue to coordinate review.
     $issue = new stdClass();
     $issue->type = 'project_issue';
     $issue->uid = $node->uid;
-    $issue->language = $node->language;
+    $issue->language = LANGUAGE_NONE;
     $issue->status = 1;
     $issue->title = t('Review @title for Drupal Services listing', array('@title' => $node->title));
-    $issue->body[$node->language][] = array(
+    $issue->body[LANGUAGE_NONE][] = array(
       'value' => t('!link has requested to be included in !services section of the Marketplace.
 
 This issue was generated automatically. To be included, the page must meet these !guidelines. A review by 2 or more community members is needed to add this page to the listing.
@@ -2653,29 +2653,29 @@ Want to help review? Here is how to do it: https://drupal.org/node/1710338',
        array('!link' => l($node->title, 'node/' . $node->nid), '!services' => l(t('Drupal Services'), 'drupal-services'), '!guidelines' => l(t('guidelines'), 'marketplace/guidelines/services'))),
        'format' => filter_default_format(),
     );
-    $issue->field_project[$node->language][]['target_id'] = 1848824;  // Content project, http://drupal.org/project/content
-    $issue->field_project[$node->language][]['target_type'] = 'node';
-    $issue->field_issue_priority[$node->language][]['value'] = 200;  // normal
-    $issue->field_issue_status[$node->language][]['value'] = 8;  // needs review
-    $issue->field_issue_component[$node->language][]['value'] = 'Services listing';
-    $issue->field_issue_category[$node->language][]['value'] = 2; //task
+    $issue->field_project[LANGUAGE_NONE][]['target_id'] = 1848824;  // Content project, http://drupal.org/project/content
+    $issue->field_project[LANGUAGE_NONE][]['target_type'] = 'node';
+    $issue->field_issue_priority[LANGUAGE_NONE][]['value'] = 200;  // normal
+    $issue->field_issue_status[LANGUAGE_NONE][]['value'] = 8;  // needs review
+    $issue->field_issue_component[LANGUAGE_NONE][]['value'] = 'Services listing';
+    $issue->field_issue_category[LANGUAGE_NONE][]['value'] = 2; //task
     $issue->comment = 2; // read & write
     node_save($issue);
 
     // Save the issue's nid for the organization.
-    $node->field_organization_issue[$node->language][0]['nid'] = $issue->nid;
+    $node->field_organization_issue[LANGUAGE_NONE][0]['nid'] = $issue->nid;
     $changed = TRUE;
   }
   // If an organization wants to be listed in the Training section of the Marketplace.
-  if (($node->field_org_training_request[$node->language][0]['value'] == '1') && empty($node->field_org_training_issue[$node->language][0]['nid'])) {
+  if (($node->field_org_training_request[LANGUAGE_NONE][0]['value'] == '1') && empty($node->field_org_training_issue[LANGUAGE_NONE][0]['nid'])) {
     // A new organization has been posted, create an issue to coordinate review.
     $issue = new stdClass();
     $issue->type = 'project_issue';
     $issue->uid = $node->uid;
-    $issue->language = $node->language;
+    $issue->language = LANGUAGE_NONE;
     $issue->status = 1;
     $issue->title = t('Add @title to the Training section', array('@title' => $node->title));
-    $issue->body[$node->language][] = array(
+    $issue->body[LANGUAGE_NONE][] = array(
       'value' => t('!link has requested to be included in the !training of the Marketplace.
 
 This issue was generated automatically. To be included, the page must meet these !guidelines. A review by 2 or more community members is needed to add this page to the listing.
@@ -2684,17 +2684,17 @@ Want to help review? Here is how to do it: https://drupal.org/node/1735864',
        array('!link' => l($node->title, 'node/' . $node->nid), '!training' => l(t('Training section'), 'training'), '!guidelines' => l(t('guidelines'), 'marketplace/guidelines/training'))),
       'format' => filter_default_format(),
     );
-    $issue->field_project[$node->language][]['target_id'] = 1848824;  // Content project, http://drupal.org/project/content
-    $issue->field_project[$node->language][]['target_type'] = 'node';
-    $issue->field_issue_priority[$node->language][]['value'] = 200;  // normal
-    $issue->field_issue_status[$node->language][]['value'] = 8;  // needs review
-    $issue->field_issue_component[$node->language][]['value'] = 'Training listing';
-    $issue->field_issue_category[$node->language][]['value'] = 2; //task
+    $issue->field_project[LANGUAGE_NONE][]['target_id'] = 1848824;  // Content project, http://drupal.org/project/content
+    $issue->field_project[LANGUAGE_NONE][]['target_type'] = 'node';
+    $issue->field_issue_priority[LANGUAGE_NONE][]['value'] = 200;  // normal
+    $issue->field_issue_status[LANGUAGE_NONE][]['value'] = 8;  // needs review
+    $issue->field_issue_component[LANGUAGE_NONE][]['value'] = 'Training listing';
+    $issue->field_issue_category[LANGUAGE_NONE][]['value'] = 2; //task
     $issue->comment = 2; // read & write
     node_save($issue);
 
     // Save the issue's nid for the organization.
-    $node->field_org_training_issue[$node->language][0]['nid'] = $issue->nid;
+    $node->field_org_training_issue[LANGUAGE_NONE][0]['nid'] = $issue->nid;
     $changed = TRUE;
   }
   if ($changed) {

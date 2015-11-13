@@ -1,0 +1,6 @@
+name = Drupal.org OG related functionality.
+description = "Provides functions and features relating to Organic Groups on Drupal.org."
+package = Drupal.org
+dependencies[] = og
+dependencies[] = features
+core = 7.x

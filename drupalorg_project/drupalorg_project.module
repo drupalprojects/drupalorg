@@ -900,7 +900,7 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
         exit;
     }
     if (project_node_is_project($node)) {
-      if ($node->field_project_type[$node->language][0]['value'] === 'sandbox') {
+      if ($node->field_project_type[LANGUAGE_NONE][0]['value'] === 'sandbox') {
         drupal_set_title(l(t("!name's sandbox", array('!name' => $node->name)), 'project/user/' . $node->uid) . ': ' . check_plain($node->title), PASS_THROUGH);
         $node->content['project_sandbox_warning']['#markup'] = '<div class="meta"><h5>Experimental Project</h5><p>This is a <a href="/node/1011196">sandbox project</a>, which contains experimental code for developer use only.</p></div>';
         $node->content['project_sandbox_warning']['#weight'] = -1;
@@ -1417,7 +1417,7 @@ function drupalorg_project_meta_data($node) {
     if (!empty($node->{'taxonomy_' . $vocabulary->machine_name})) {
       $class = '';
       $links = array();
-      foreach ($node->{'taxonomy_' . $vocabulary->machine_name}[$node->language] as $term) {
+      foreach ($node->{'taxonomy_' . $vocabulary->machine_name}[LANGUAGE_NONE] as $term) {
         if ($term_entity = taxonomy_term_load($term['tid'])) {
           $options = array();
           if ($vocabulary->vid == '44') { // Maintenance status
@@ -1488,7 +1488,7 @@ function drupalorg_project_meta_data($node) {
       array(
         '@formatted-count' => number_format($total_usage),
         '@project-type' => drupal_strtolower(drupalorg_project_node_type_label($node->type, 'singular')),
-        '!project-shortname' => $node->field_project_machine_name[$node->language][0]['value'],
+        '!project-shortname' => $node->field_project_machine_name[LANGUAGE_NONE][0]['value'],
       )
     );
   }
@@ -1668,7 +1668,7 @@ function drupalorg_project_views_post_execute(&$view) {
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')
           ->entityCondition('bundle', 'project_issue')
-          ->propertyCondition('title', '[' . $node->field_project_machine_name[$node->language][0]['value']. ']', 'STARTS_WITH')
+          ->propertyCondition('title', '[' . $node->field_project_machine_name[LANGUAGE_NONE][0]['value']. ']', 'STARTS_WITH')
           ->fieldCondition('field_project', 'target_id', 2573607, '=')
           ->range(0, 1);
 
