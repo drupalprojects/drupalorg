@@ -141,6 +141,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'testing administrator' => 'testing administrator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'pift',
   );
@@ -2414,6 +2415,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'extended file field delete any file contents',
     'roles' => array(
       'administrator' => 'administrator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'extended_file_field',
   );
