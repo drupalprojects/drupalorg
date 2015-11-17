@@ -334,7 +334,7 @@ function drupalorg_content_types_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 31,
+      'weight' => 4,
     ),
   );
 
@@ -351,9 +351,8 @@ function drupalorg_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
+        'type' => 'hidden',
         'weight' => 3,
       ),
       'issuemetadata' => array(
@@ -389,7 +388,7 @@ function drupalorg_content_types_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 42,
+      'weight' => 6,
     ),
   );
 
@@ -459,8 +458,70 @@ function drupalorg_content_types_field_default_field_instances() {
         'og_hide' => TRUE,
       ),
       'type' => 'options_onoff',
-      'weight' => 0,
+      'weight' => 1,
     ),
+  );
+
+  // Exported field_instance: 'node-section-group_theme'.
+  $field_instances['node-section-group_theme'] = array(
+    'bundle' => 'section',
+    'default_value' => array(
+      0 => array(
+        'value' => '__default',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'group_theme',
+    'label' => 'Groups theme',
+    'required' => TRUE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'view modes' => array(
+      'full' => array(
+        'label' => 'above',
+        'type' => 'list_default',
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'type' => 'list_default',
+      ),
+    ),
+    'widget' => array(
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 7,
+    ),
+    'widget_type' => 'options_select',
   );
 
   // Exported field_instance: 'node-section-og_group_ref'.
@@ -544,7 +605,7 @@ function drupalorg_content_types_field_default_field_instances() {
       'module' => 'og',
       'settings' => array(),
       'type' => 'og_complex',
-      'weight' => 41,
+      'weight' => 5,
     ),
   );
 
@@ -604,7 +665,7 @@ function drupalorg_content_types_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 44,
+      'weight' => 8,
     ),
   );
 
@@ -616,6 +677,7 @@ function drupalorg_content_types_field_default_field_instances() {
   t('File attachments');
   t('Group');
   t('Groups audience');
+  t('Groups theme');
   t('Include in group menu');
 
   return $field_instances;
