@@ -36,6 +36,32 @@ function drupalorg_i18n_locale_default_languages() {
     'prefix' => 'ca',
     'weight' => 0,
   );
+  // Exported language: cs.
+  $languages['cs'] = array(
+    'language' => 'cs',
+    'name' => 'Czech',
+    'native' => 'Čeština',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'cs',
+    'weight' => 0,
+  );
+  // Exported language: cy.
+  $languages['cy'] = array(
+    'language' => 'cy',
+    'name' => 'Welsh',
+    'native' => 'Cymraeg',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'cy',
+    'weight' => 0,
+  );
   // Exported language: da.
   $languages['da'] = array(
     'language' => 'da',
@@ -101,6 +127,32 @@ function drupalorg_i18n_locale_default_languages() {
     'prefix' => 'es',
     'weight' => 0,
   );
+  // Exported language: et.
+  $languages['et'] = array(
+    'language' => 'et',
+    'name' => 'Estonian',
+    'native' => 'Eesti',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'et',
+    'weight' => 0,
+  );
+  // Exported language: fa.
+  $languages['fa'] = array(
+    'language' => 'fa',
+    'name' => 'Persian',
+    'native' => 'فارسی',
+    'direction' => 1,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'fa',
+    'weight' => 0,
+  );
   // Exported language: fi.
   $languages['fi'] = array(
     'language' => 'fi',
@@ -125,6 +177,19 @@ function drupalorg_i18n_locale_default_languages() {
     'formula' => '',
     'domain' => '',
     'prefix' => 'fr',
+    'weight' => 0,
+  );
+  // Exported language: gu.
+  $languages['gu'] = array(
+    'language' => 'gu',
+    'name' => 'Gujarati',
+    'native' => 'Gujarati',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'gu',
     'weight' => 0,
   );
   // Exported language: he.
@@ -205,6 +270,32 @@ function drupalorg_i18n_locale_default_languages() {
     'prefix' => 'it',
     'weight' => 0,
   );
+  // Exported language: ja.
+  $languages['ja'] = array(
+    'language' => 'ja',
+    'name' => 'Japanese',
+    'native' => '日本語',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'ja',
+    'weight' => 0,
+  );
+  // Exported language: kn.
+  $languages['kn'] = array(
+    'language' => 'kn',
+    'name' => 'Kannada',
+    'native' => 'ಕನ್ನಡ',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'kn',
+    'weight' => 0,
+  );
   // Exported language: ko.
   $languages['ko'] = array(
     'language' => 'ko',
@@ -231,6 +322,45 @@ function drupalorg_i18n_locale_default_languages() {
     'prefix' => 'lt',
     'weight' => 0,
   );
+  // Exported language: mk.
+  $languages['mk'] = array(
+    'language' => 'mk',
+    'name' => 'Macedonian',
+    'native' => 'Македонски',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'mk',
+    'weight' => 0,
+  );
+  // Exported language: ml.
+  $languages['ml'] = array(
+    'language' => 'ml',
+    'name' => 'Malayalam',
+    'native' => 'മലയാളം',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'ml',
+    'weight' => 0,
+  );
+  // Exported language: mr.
+  $languages['mr'] = array(
+    'language' => 'mr',
+    'name' => 'Marathi',
+    'native' => 'Marathi',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'mr',
+    'weight' => 0,
+  );
   // Exported language: nb.
   $languages['nb'] = array(
     'language' => 'nb',
@@ -242,6 +372,45 @@ function drupalorg_i18n_locale_default_languages() {
     'formula' => '',
     'domain' => '',
     'prefix' => 'nb',
+    'weight' => 0,
+  );
+  // Exported language: nl.
+  $languages['nl'] = array(
+    'language' => 'nl',
+    'name' => 'Dutch',
+    'native' => 'Nederlands',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'nl',
+    'weight' => 0,
+  );
+  // Exported language: nn.
+  $languages['nn'] = array(
+    'language' => 'nn',
+    'name' => 'Norwegian Nynorsk',
+    'native' => 'Nynorsk',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'nn',
+    'weight' => 0,
+  );
+  // Exported language: pl.
+  $languages['pl'] = array(
+    'language' => 'pl',
+    'name' => 'Polish',
+    'native' => 'Polski',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'pl',
     'weight' => 0,
   );
   // Exported language: pt-br.
@@ -296,6 +465,19 @@ function drupalorg_i18n_locale_default_languages() {
     'prefix' => 'ru',
     'weight' => 0,
   );
+  // Exported language: sk.
+  $languages['sk'] = array(
+    'language' => 'sk',
+    'name' => 'Slovak',
+    'native' => 'Slovenčina',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'sk',
+    'weight' => 0,
+  );
   // Exported language: sl.
   $languages['sl'] = array(
     'language' => 'sl',
@@ -335,6 +517,32 @@ function drupalorg_i18n_locale_default_languages() {
     'prefix' => 'sv',
     'weight' => 0,
   );
+  // Exported language: ta.
+  $languages['ta'] = array(
+    'language' => 'ta',
+    'name' => 'Tamil',
+    'native' => 'தமிழ்',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'ta',
+    'weight' => 0,
+  );
+  // Exported language: te.
+  $languages['te'] = array(
+    'language' => 'te',
+    'name' => 'Telugu',
+    'native' => 'తెలుగు',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'te',
+    'weight' => 0,
+  );
   // Exported language: th.
   $languages['th'] = array(
     'language' => 'th',
@@ -346,6 +554,19 @@ function drupalorg_i18n_locale_default_languages() {
     'formula' => '',
     'domain' => '',
     'prefix' => 'th',
+    'weight' => 0,
+  );
+  // Exported language: tr.
+  $languages['tr'] = array(
+    'language' => 'tr',
+    'name' => 'Turkish',
+    'native' => 'Türkçe',
+    'direction' => 0,
+    'enabled' => 1,
+    'plurals' => 0,
+    'formula' => '',
+    'domain' => '',
+    'prefix' => 'tr',
     'weight' => 0,
   );
   // Exported language: uk.
