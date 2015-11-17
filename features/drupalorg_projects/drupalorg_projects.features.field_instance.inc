@@ -11,6 +11,128 @@ function drupalorg_projects_field_default_field_instances() {
   $field_instances = array();
 
   // Exported field_instance:
+  // 'field_collection_item-field_release_files-field_release_file'.
+  $field_instances['field_collection_item-field_release_files-field_release_file'] = array(
+    'bundle' => 'field_release_files',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_release_file',
+    'label' => 'Release file',
+    'required' => 0,
+    'settings' => array(
+      'description_field' => 0,
+      'file_directory' => 'projects',
+      'file_extensions' => 'zip gz tar bz2 rar tgz tar.gz dmg rpm deb',
+      'max_filesize' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'file',
+      'settings' => array(
+        'extended_file_field_show_remove' => FALSE,
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'file_generic',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_release_files-field_release_file_downloads'.
+  $field_instances['field_collection_item-field_release_files-field_release_file_downloads'] = array(
+    'bundle' => 'field_release_files',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => 1,
+          'scale' => 0,
+          'thousand_separator' => ',',
+        ),
+        'type' => 'number_integer',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_release_file_downloads',
+    'label' => 'Release file downloads',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => 0,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'number_integer',
+        'formatter_settings' => array(
+          'prefix_suffix' => 0,
+          'thousand_separator' => ',',
+        ),
+      ),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_release_files-field_release_file_hash'.
+  $field_instances['field_collection_item-field_release_files-field_release_file_hash'] = array(
+    'bundle' => 'field_release_files',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_plain',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_release_file_hash',
+    'label' => 'Release file hash',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'text_default',
+      ),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
   // 'field_collection_item-field_supporting_organizations-field_how_they_helped'.
   $field_instances['field_collection_item-field_supporting_organizations-field_how_they_helped'] = array(
     'bundle' => 'field_supporting_organizations',
@@ -11171,6 +11293,9 @@ function drupalorg_projects_field_default_field_instances() {
   t('PHPCS timestamp');
   t('PHPCS warnings');
   t('Project type');
+  t('Release file');
+  t('Release file downloads');
+  t('Release file hash');
   t('Screenshots');
   t('Short Description');
   t('Short name');
