@@ -533,5 +533,54 @@ function drupalorg_projects_strongarm() {
   );
   $export['panelizer_defaults_node_project_core'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'panelizer_defaults_node_project_release';
+  $strongarm->value = array(
+    'status' => 1,
+    'view modes' => array(
+      'page_manager' => array(
+        'status' => 0,
+        'substitute' => 0,
+        'default' => 0,
+        'choice' => 0,
+      ),
+      'default' => array(
+        'status' => 1,
+        'substitute' => '',
+        'default' => 1,
+        'choice' => 0,
+      ),
+      'teaser' => array(
+        'status' => 0,
+        'substitute' => 0,
+        'default' => 0,
+        'choice' => 0,
+      ),
+      'nodechanges' => array(
+        'status' => 0,
+        'substitute' => 0,
+        'default' => 0,
+        'choice' => 0,
+      ),
+      'issuemetadata' => array(
+        'status' => 0,
+        'substitute' => 0,
+        'default' => 0,
+        'choice' => 0,
+      ),
+    ),
+    'help' => '',
+  );
+  $export['panelizer_defaults_node_project_release'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'panelizer_node:project_release:default_selection';
+  $strongarm->value = 'node:project_release:default:default';
+  $export['panelizer_node:project_release:default_selection'] = $strongarm;
+
   return $export;
 }
