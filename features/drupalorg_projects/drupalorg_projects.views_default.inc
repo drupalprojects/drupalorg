@@ -104,14 +104,27 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['path']['field'] = 'path';
   $handler->display->display_options['fields']['path']['exclude'] = TRUE;
   $handler->display->display_options['fields']['path']['absolute'] = TRUE;
+  /* Field: File: Upload date */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['relationship'] = 'field_release_file_fid';
+  $handler->display->display_options['fields']['timestamp']['label'] = '';
+  $handler->display->display_options['fields']['timestamp']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['timestamp']['custom_date_format'] = 'M d Y';
+  $handler->display->display_options['fields']['timestamp']['second_date_format'] = 'long';
   /* Field: Content: Version */
   $handler->display->display_options['fields']['field_release_version']['id'] = 'field_release_version';
   $handler->display->display_options['fields']['field_release_version']['table'] = 'field_data_field_release_version';
   $handler->display->display_options['fields']['field_release_version']['field'] = 'field_release_version';
   $handler->display->display_options['fields']['field_release_version']['label'] = '';
   $handler->display->display_options['fields']['field_release_version']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_release_version']['alter']['text'] = '[field_release_project] [field_release_version]';
-  $handler->display->display_options['fields']['field_release_version']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_release_version']['alter']['text'] = '<a href="[path]">
+  <h4>[field_release_project] [field_release_version]</h4>
+  <span class="release-date">Released: [timestamp]</span>
+  </a>';
   $handler->display->display_options['fields']['field_release_version']['alter']['path'] = '[path]';
   $handler->display->display_options['fields']['field_release_version']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_release_version']['type'] = 'text_plain';
@@ -122,14 +135,6 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['field_release_short_description']['label'] = '';
   $handler->display->display_options['fields']['field_release_short_description']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_release_short_description']['type'] = 'text_plain';
-  /* Field: File: Upload date */
-  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['table'] = 'file_managed';
-  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['relationship'] = 'field_release_file_fid';
-  $handler->display->display_options['fields']['timestamp']['label'] = 'Date';
-  $handler->display->display_options['fields']['timestamp']['date_format'] = 'custom';
-  $handler->display->display_options['fields']['timestamp']['custom_date_format'] = 'Y-M-d';
   /* Sort criterion: Taxonomy term: Weight */
   $handler->display->display_options['sorts']['weight']['id'] = 'weight';
   $handler->display->display_options['sorts']['weight']['table'] = 'taxonomy_term_data';
@@ -260,7 +265,7 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['label'] = 'Title';
   $handler->display->display_options['header']['area']['content'] = '<div class="warning">There are security updates available for code included in these releases. Review release notes before downloading.</div>
-';
+  ';
   $handler->display->display_options['header']['area']['format'] = '3';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -483,15 +488,17 @@ function drupalorg_projects_views_default_views() {
     t('file from field_release_file 2'),
     t('supported versions'),
     t('Path'),
-    t('[field_release_project] [field_release_version]'),
-    t('Date'),
+    t('<a href="[path]">
+  <h4>[field_release_project] [field_release_version]</h4>
+  <span class="release-date">Released: [timestamp]</span>
+  </a>'),
     t('All'),
     t('Recommended releases'),
     t('View panes'),
     t('Releases missing security updates'),
     t('Title'),
     t('<div class="warning">There are security updates available for code included in these releases. Review release notes before downloading.</div>
-'),
+  '),
     t('Other releases'),
     t('Development releases'),
   );
