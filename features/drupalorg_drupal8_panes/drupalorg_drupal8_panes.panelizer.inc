@@ -34,7 +34,7 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
   );
   $panelizer->access = array();
   $panelizer->view_mode = 'default';
-  $panelizer->css_class = '';
+  $panelizer->css_class = 'd8';
   $panelizer->title_element = 'H2';
   $panelizer->link_to_entity = TRUE;
   $panelizer->extra = array();
