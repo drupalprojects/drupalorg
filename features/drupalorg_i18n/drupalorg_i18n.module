@@ -5,3 +5,41 @@
  */
 
 include_once 'drupalorg_i18n.features.inc';
+
+/**
+ * Provide a way to translate links provided by the og_menu view.
+ * TODO: This is a hack, replace with translated og_menu menus
+ */
+/**
+ * Implements hook_views_post_execute().
+ */
+function drupalorg_i18n_views_post_execute(&$view) {
+  global $language;
+  // Hope that no other module, ie 'og_menu' implements our view called og_menu.
+  if ($view->name == 'og_menu') {
+    $results = $view->result;
+    // Stop now if the current language matches site default.
+    $default_language = variable_get('language_default', FALSE);
+    if ($language == $default_language) {
+      return;
+    }
+
+    // Perform some inteligence about our client. A few use cases here:
+    // 1. Browser is in language other than default.
+    // 2. URL prefix
+    $langcode = $language->language;
+
+    foreach ($results as $key => $result) {
+      // If the language for a link isn't LANGUAGE_NONE, attempt to find a translated node.
+      if ($result->node_language != LANGUAGE_NONE) {
+        $translations = translation_node_get_translations($result->nid);
+        if (isset($translations[$langcode])) {
+          $view->result[$key]->nid = $translations[$langcode]->nid;
+          $view->result[$key]->node_title = $translations[$langcode]->title;
+          $view->result[$key]->node_language = $translations[$langcode]->language;
+        }
+      }
+    }
+    $ture = true;
+  }
+}

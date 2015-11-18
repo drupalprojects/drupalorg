@@ -90,6 +90,14 @@ function drupalorg_content_types_views_default_views() {
     'page' => 'page',
     'section' => 'section',
   );
+  /* Filter criterion: Content: Language */
+  $handler->display->display_options['filters']['language']['id'] = 'language';
+  $handler->display->display_options['filters']['language']['table'] = 'node';
+  $handler->display->display_options['filters']['language']['field'] = 'language';
+  $handler->display->display_options['filters']['language']['value'] = array(
+    '***DEFAULT_LANGUAGE***' => '***DEFAULT_LANGUAGE***',
+    'und' => 'und',
+  );
 
   /* Display: Group menu */
   $handler = $view->new_display('panel_pane', 'Group menu', 'group_menu');
@@ -232,6 +240,14 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'page' => 'page',
     'section' => 'section',
+  );
+  /* Filter criterion: Content: Language */
+  $handler->display->display_options['filters']['language']['id'] = 'language';
+  $handler->display->display_options['filters']['language']['table'] = 'node';
+  $handler->display->display_options['filters']['language']['field'] = 'language';
+  $handler->display->display_options['filters']['language']['value'] = array(
+    '***DEFAULT_LANGUAGE***' => '***DEFAULT_LANGUAGE***',
+    'und' => 'und',
   );
   $handler->display->display_options['path'] = 'node/%/menu';
   $handler->display->display_options['menu']['type'] = 'tab';
