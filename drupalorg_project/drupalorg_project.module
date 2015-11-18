@@ -898,7 +898,24 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
         );
         header('Location: '. $url_tasks);
         exit;
+      case 3060: // Drupal Core override for the downloads page.
+        if (isset($node->content['project_release_downloads'])) {
+          $panel_mini = panels_mini_load('download_table');
+          ctools_include('context');
+          $context = ctools_context_create('entity:node', $node);
+          $contexts = ctools_context_match_required_contexts($panel_mini->requiredcontexts, array($context));
+          $panel_mini->context = $panel_mini->display->context =  ctools_context_load_contexts($panel_mini, FALSE, $contexts);
+          $panel_mini->display->css_id = panels_mini_get_id($panel_mini->name);
+
+          // Here is the renderable markup, to do with whatever you wish.
+          $node->content['project_release_downloads'] = array(
+            '#markup' => '<h2>' . $panel_mini->display->get_title() . '</h2>' . panels_render_display($panel_mini->display),
+            '#weight' => 10,
+          );
+        }
+        break;
     }
+
     if (project_node_is_project($node)) {
       if ($node->field_project_type[LANGUAGE_NONE][0]['value'] === 'sandbox') {
         drupal_set_title(l(t("!name's sandbox", array('!name' => $node->name)), 'project/user/' . $node->uid) . ': ' . check_plain($node->title), PASS_THROUGH);
