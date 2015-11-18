@@ -122,6 +122,45 @@ function drupalorg_projects_default_panels_mini() {
   $display->content['new-0712750e-7ddd-43d5-a928-0020285a2fdb'] = $pane;
   $display->panels['middle'][2] = 'new-0712750e-7ddd-43d5-a928-0020285a2fdb';
   $pane = new stdClass();
+  $pane->pid = 'new-3555485c-ebd6-4ef3-8821-89d0a932bbee';
+  $pane->panel = 'middle';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'entity_bundle:node',
+        'settings' => array(
+          'type' => array(
+            'project_core' => 'project_core',
+          ),
+        ),
+        'context' => 'requiredcontext_entity:node_1',
+        'not' => FALSE,
+      ),
+    ),
+  );
+  $pane->configuration = array(
+    'admin_title' => 'Drupal 6 Releases',
+    'title' => 'Drupal 6 Releases',
+    'body' => 'Drupal 6 will soon reach end of life and no longer be supported. If you are looking to start a new Drupal website, you should not download this version.',
+    'format' => '1',
+    'substitute' => 1,
+    'title_heading' => 'h3',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 3;
+  $pane->locks = array();
+  $pane->uuid = '3555485c-ebd6-4ef3-8821-89d0a932bbee';
+  $display->content['new-3555485c-ebd6-4ef3-8821-89d0a932bbee'] = $pane;
+  $display->panels['middle'][3] = 'new-3555485c-ebd6-4ef3-8821-89d0a932bbee';
+  $pane = new stdClass();
   $pane->pid = 'new-cd086f79-69b4-47cc-8cb3-74b7bbf1a218';
   $pane->panel = 'middle';
   $pane->type = 'views_panes';
@@ -133,7 +172,7 @@ function drupalorg_projects_default_panels_mini() {
       0 => 'requiredcontext_entity:node_1',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Drupal 6 releases',
+    'override_title_text' => '',
     'override_title_heading' => 'h3',
   );
   $pane->cache = array();
@@ -142,11 +181,11 @@ function drupalorg_projects_default_panels_mini() {
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 3;
+  $pane->position = 4;
   $pane->locks = array();
   $pane->uuid = 'cd086f79-69b4-47cc-8cb3-74b7bbf1a218';
   $display->content['new-cd086f79-69b4-47cc-8cb3-74b7bbf1a218'] = $pane;
-  $display->panels['middle'][3] = 'new-cd086f79-69b4-47cc-8cb3-74b7bbf1a218';
+  $display->panels['middle'][4] = 'new-cd086f79-69b4-47cc-8cb3-74b7bbf1a218';
   $pane = new stdClass();
   $pane->pid = 'new-4b053f83-d857-45e1-9ba2-66f62c335cf8';
   $pane->panel = 'middle';
@@ -161,11 +200,11 @@ function drupalorg_projects_default_panels_mini() {
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 4;
+  $pane->position = 5;
   $pane->locks = array();
   $pane->uuid = '4b053f83-d857-45e1-9ba2-66f62c335cf8';
   $display->content['new-4b053f83-d857-45e1-9ba2-66f62c335cf8'] = $pane;
-  $display->panels['middle'][4] = 'new-4b053f83-d857-45e1-9ba2-66f62c335cf8';
+  $display->panels['middle'][5] = 'new-4b053f83-d857-45e1-9ba2-66f62c335cf8';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $mini->display = $display;
