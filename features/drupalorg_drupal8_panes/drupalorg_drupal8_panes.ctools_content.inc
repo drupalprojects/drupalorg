@@ -21,11 +21,15 @@ function drupalorg_drupal8_panes_default_ctools_custom_content() {
     'admin_title' => 'Drupal 8 Ad',
     'title' => '',
     'title_heading' => 'h2',
-    'body' => '<div class="d8ad">Drupal.org is brought to you in part by the generous support of sponsors like:</div>
-<div><img src="/files/styles/grid-3/public/project-images/fastly_logo-01 (1)_0.png?itok=E9tvfNhw" /></div>
-<div>Gives businesses complete control over how they serve content, unprecedented access to real-time performance analytics, and the ability to cache frequently changing content at the edge. <br /><br />
-Learn more about Fastly</div>
-',
+    'body' => '<div class="drupal8-sponsor"><span class="intro">Drupal.org is brought to you in part by the generous support of sponsors like:</span>
+<div class="sponsor">
+<a href="https://www.drupal.org/news/drupalorg-migrates-content-and-file-delivery-to-fastly"><img src="/files/styles/grid-3/public/project-images/fastly_logo-01 (1)_0.png" /></a>
+<div class="text">
+<p>We’re the only CDN that offers complete control over your content and real-time access to performance analytics, and are proud to help Drupal.org provide great experiences across the world. <br /><br />
+<a class="button" href="https://www.drupal.org/news/drupalorg-migrates-content-and-file-delivery-to-fastly">Learn why Drupal.org chose Fastly</a>
+</div>
+</div>
+</div>',
     'format' => '1',
     'substitute' => 1,
   );
@@ -59,7 +63,12 @@ Learn more about Fastly</div>
     'admin_title' => 'What\'s Next Pane (Drupal Core)',
     'title' => 'What\'s Next?',
     'title_heading' => 'h2',
-    'body' => 'Coming soon....',
+    'body' => '<ol>
+ <li>Learn how to install Drupal</li>
+ <li>Extend Drupal to do more</li>
+<li>Get training</li>
+<li>Check out what others built</li>
+</ol>',
     'format' => '1',
     'substitute' => 1,
   );
