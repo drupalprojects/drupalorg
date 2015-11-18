@@ -233,6 +233,13 @@ function drupalorg_projects_views_default_views() {
   $handler = $view->new_display('panel_pane', 'Recommended releases', 'recommended');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Recommended releases';
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = 'These are stable, well-tested versions that are actively supported.';
+  $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['allow']['use_pager'] = 0;
   $handler->display->display_options['allow']['items_per_page'] = 0;
   $handler->display->display_options['allow']['offset'] = 0;
@@ -415,6 +422,12 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['title'] = 'Development releases';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = 'These releases have all the latest features, but might be not stable. Only use them if you are a developer and you are sure you know what you are doing.';
+  $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -494,6 +507,7 @@ function drupalorg_projects_views_default_views() {
   </a>'),
     t('All'),
     t('Recommended releases'),
+    t('These are stable, well-tested versions that are actively supported.'),
     t('View panes'),
     t('Releases missing security updates'),
     t('Title'),
@@ -501,6 +515,7 @@ function drupalorg_projects_views_default_views() {
   '),
     t('Other releases'),
     t('Development releases'),
+    t('These releases have all the latest features, but might be not stable. Only use them if you are a developer and you are sure you know what you are doing.'),
   );
   $export['project_downloads'] = $view;
 

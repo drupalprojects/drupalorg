@@ -39,7 +39,7 @@ function drupalorg_projects_default_panels_mini() {
     ),
   );
   $display->cache = array();
-  $display->title = 'Download';
+  $display->title = 'Downloads';
   $display->uuid = 'df0e54b7-912e-4622-95d2-3bfff9d5199b';
   $display->content = array();
   $display->panels = array();
