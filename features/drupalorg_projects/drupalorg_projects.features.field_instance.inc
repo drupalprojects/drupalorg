@@ -11,7 +11,7 @@ function drupalorg_projects_field_default_field_instances() {
   $field_instances = array();
 
   // Exported field_instance:
-  // 'field_collection_item-field_supporting_organizations-field_how_they_helped'
+  // 'field_collection_item-field_supporting_organizations-field_how_they_helped'.
   $field_instances['field_collection_item-field_supporting_organizations-field_how_they_helped'] = array(
     'bundle' => 'field_supporting_organizations',
     'default_value' => NULL,
@@ -46,7 +46,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_supporting_organizations-field_organization'
+  // 'field_collection_item-field_supporting_organizations-field_organization'.
   $field_instances['field_collection_item-field_supporting_organizations-field_organization'] = array(
     'bundle' => 'field_supporting_organizations',
     'default_value' => NULL,
@@ -81,7 +81,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-body'
+  // Exported field_instance: 'node-project_core-body'.
   $field_instances['node-project_core-body'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -146,7 +146,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_download_count'
+  // Exported field_instance: 'node-project_core-field_download_count'.
   $field_instances['node-project_core-field_download_count'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -204,7 +204,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_changelog'
+  // Exported field_instance: 'node-project_core-field_project_changelog'.
   $field_instances['node-project_core-field_project_changelog'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -247,6 +247,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Changelog',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -260,6 +261,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -275,7 +277,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_components'
+  // Exported field_instance: 'node-project_core-field_project_components'.
   $field_instances['node-project_core-field_project_components'] = array(
     'bundle' => 'project_core',
     'default_value' => array(
@@ -345,7 +347,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_core-field_project_default_component'
+  // 'node-project_core-field_project_default_component'.
   $field_instances['node-project_core-field_project_default_component'] = array(
     'bundle' => 'project_core',
     'default_value' => array(
@@ -402,7 +404,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_demo'
+  // Exported field_instance: 'node-project_core-field_project_demo'.
   $field_instances['node-project_core-field_project_demo'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -445,6 +447,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Demo',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -458,6 +461,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -473,7 +477,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_documentation'
+  // Exported field_instance: 'node-project_core-field_project_documentation'.
   $field_instances['node-project_core-field_project_documentation'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -516,6 +520,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Documentation',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -529,6 +534,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -544,7 +550,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_has_issue_queue'
+  // Exported field_instance: 'node-project_core-field_project_has_issue_queue'.
   $field_instances['node-project_core-field_project_has_issue_queue'] = array(
     'bundle' => 'project_core',
     'default_value' => array(
@@ -604,7 +610,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_has_releases'
+  // Exported field_instance: 'node-project_core-field_project_has_releases'.
   $field_instances['node-project_core-field_project_has_releases'] = array(
     'bundle' => 'project_core',
     'default_value' => array(
@@ -663,7 +669,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_homepage'
+  // Exported field_instance: 'node-project_core-field_project_homepage'.
   $field_instances['node-project_core-field_project_homepage'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -706,6 +712,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Homepage',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -719,6 +726,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -734,7 +742,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_images'
+  // Exported field_instance: 'node-project_core-field_project_images'.
   $field_instances['node-project_core-field_project_images'] = array(
     'bundle' => 'project_core',
     'default_value' => '',
@@ -850,7 +858,8 @@ function drupalorg_projects_field_default_field_instances() {
     'widget_type' => 'imagefield_widget',
   );
 
-  // Exported field_instance: 'node-project_core-field_project_issue_guidelines'
+  // Exported field_instance:
+  // 'node-project_core-field_project_issue_guidelines'.
   $field_instances['node-project_core-field_project_issue_guidelines'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -907,7 +916,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_license'
+  // Exported field_instance: 'node-project_core-field_project_license'.
   $field_instances['node-project_core-field_project_license'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -950,6 +959,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'License',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -963,6 +973,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -978,7 +989,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_machine_name'
+  // Exported field_instance: 'node-project_core-field_project_machine_name'.
   $field_instances['node-project_core-field_project_machine_name'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -1033,7 +1044,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_phpcs_errors'
+  // Exported field_instance: 'node-project_core-field_project_phpcs_errors'.
   $field_instances['node-project_core-field_project_phpcs_errors'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -1095,7 +1106,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_phpcs_full'
+  // Exported field_instance: 'node-project_core-field_project_phpcs_full'.
   $field_instances['node-project_core-field_project_phpcs_full'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -1152,7 +1163,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_phpcs_ts'
+  // Exported field_instance: 'node-project_core-field_project_phpcs_ts'.
   $field_instances['node-project_core-field_project_phpcs_ts'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -1210,7 +1221,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_phpcs_warnings'
+  // Exported field_instance: 'node-project_core-field_project_phpcs_warnings'.
   $field_instances['node-project_core-field_project_phpcs_warnings'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -1272,7 +1283,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_screenshots'
+  // Exported field_instance: 'node-project_core-field_project_screenshots'.
   $field_instances['node-project_core-field_project_screenshots'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -1315,6 +1326,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Screenshots',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -1328,6 +1340,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -1343,7 +1356,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_project_type'
+  // Exported field_instance: 'node-project_core-field_project_type'.
   $field_instances['node-project_core-field_project_type'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -1396,7 +1409,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-field_release_version_format'
+  // Exported field_instance: 'node-project_core-field_release_version_format'.
   $field_instances['node-project_core-field_release_version_format'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -1458,7 +1471,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-taxonomy_vocabulary_44'
+  // Exported field_instance: 'node-project_core-taxonomy_vocabulary_44'.
   $field_instances['node-project_core-taxonomy_vocabulary_44'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -1512,7 +1525,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-taxonomy_vocabulary_46'
+  // Exported field_instance: 'node-project_core-taxonomy_vocabulary_46'.
   $field_instances['node-project_core-taxonomy_vocabulary_46'] = array(
     'bundle' => 'project_core',
     'default_value' => NULL,
@@ -1566,7 +1579,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_core-upload'
+  // Exported field_instance: 'node-project_core-upload'.
   $field_instances['node-project_core-upload'] = array(
     'bundle' => 'project_core',
     'deleted' => 0,
@@ -1633,7 +1646,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-body'
+  // Exported field_instance: 'node-project_distribution-body'.
   $field_instances['node-project_distribution-body'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -1696,7 +1709,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_download_count'
+  // Exported field_instance: 'node-project_distribution-field_download_count'.
   $field_instances['node-project_distribution-field_download_count'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -1755,7 +1768,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_project_changelog'
+  // 'node-project_distribution-field_project_changelog'.
   $field_instances['node-project_distribution-field_project_changelog'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -1798,6 +1811,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Changelog',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -1811,6 +1825,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -1827,7 +1842,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_project_components'
+  // 'node-project_distribution-field_project_components'.
   $field_instances['node-project_distribution-field_project_components'] = array(
     'bundle' => 'project_distribution',
     'default_value' => array(
@@ -1897,7 +1912,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_project_default_component'
+  // 'node-project_distribution-field_project_default_component'.
   $field_instances['node-project_distribution-field_project_default_component'] = array(
     'bundle' => 'project_distribution',
     'default_value' => array(
@@ -1954,7 +1969,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_demo'
+  // Exported field_instance: 'node-project_distribution-field_project_demo'.
   $field_instances['node-project_distribution-field_project_demo'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -1997,6 +2012,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Demo',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -2010,6 +2026,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -2026,7 +2043,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_project_documentation'
+  // 'node-project_distribution-field_project_documentation'.
   $field_instances['node-project_distribution-field_project_documentation'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2069,6 +2086,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Documentation',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -2082,6 +2100,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -2098,7 +2117,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_project_has_issue_queue'
+  // 'node-project_distribution-field_project_has_issue_queue'.
   $field_instances['node-project_distribution-field_project_has_issue_queue'] = array(
     'bundle' => 'project_distribution',
     'default_value' => array(
@@ -2159,7 +2178,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_project_has_releases'
+  // 'node-project_distribution-field_project_has_releases'.
   $field_instances['node-project_distribution-field_project_has_releases'] = array(
     'bundle' => 'project_distribution',
     'default_value' => array(
@@ -2218,7 +2237,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_homepage'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_homepage'.
   $field_instances['node-project_distribution-field_project_homepage'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2261,6 +2281,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Homepage',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -2274,6 +2295,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -2289,7 +2311,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_images'
+  // Exported field_instance: 'node-project_distribution-field_project_images'.
   $field_instances['node-project_distribution-field_project_images'] = array(
     'bundle' => 'project_distribution',
     'default_value' => '',
@@ -2406,7 +2428,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_project_issue_guidelines'
+  // 'node-project_distribution-field_project_issue_guidelines'.
   $field_instances['node-project_distribution-field_project_issue_guidelines'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2463,7 +2485,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_license'
+  // Exported field_instance: 'node-project_distribution-field_project_license'.
   $field_instances['node-project_distribution-field_project_license'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2506,6 +2528,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'License',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -2519,6 +2542,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -2535,7 +2559,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_project_machine_name'
+  // 'node-project_distribution-field_project_machine_name'.
   $field_instances['node-project_distribution-field_project_machine_name'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2591,7 +2615,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_project_phpcs_errors'
+  // 'node-project_distribution-field_project_phpcs_errors'.
   $field_instances['node-project_distribution-field_project_phpcs_errors'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2650,7 +2674,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_project_phpcs_full'
+  // 'node-project_distribution-field_project_phpcs_full'.
   $field_instances['node-project_distribution-field_project_phpcs_full'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2707,7 +2731,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_phpcs_ts'
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_phpcs_ts'.
   $field_instances['node-project_distribution-field_project_phpcs_ts'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2766,7 +2791,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_project_phpcs_warnings'
+  // 'node-project_distribution-field_project_phpcs_warnings'.
   $field_instances['node-project_distribution-field_project_phpcs_warnings'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2825,7 +2850,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_project_screenshots'
+  // 'node-project_distribution-field_project_screenshots'.
   $field_instances['node-project_distribution-field_project_screenshots'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2868,6 +2893,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Screenshots',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -2881,6 +2907,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -2896,7 +2923,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-field_project_type'
+  // Exported field_instance: 'node-project_distribution-field_project_type'.
   $field_instances['node-project_distribution-field_project_type'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -2950,7 +2977,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_release_version_format'
+  // 'node-project_distribution-field_release_version_format'.
   $field_instances['node-project_distribution-field_release_version_format'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -3013,7 +3040,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_distribution-field_supporting_organizations'
+  // 'node-project_distribution-field_supporting_organizations'.
   $field_instances['node-project_distribution-field_supporting_organizations'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -3070,7 +3097,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-taxonomy_vocabulary_44'
+  // Exported field_instance:
+  // 'node-project_distribution-taxonomy_vocabulary_44'.
   $field_instances['node-project_distribution-taxonomy_vocabulary_44'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -3124,7 +3152,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-taxonomy_vocabulary_46'
+  // Exported field_instance:
+  // 'node-project_distribution-taxonomy_vocabulary_46'.
   $field_instances['node-project_distribution-taxonomy_vocabulary_46'] = array(
     'bundle' => 'project_distribution',
     'default_value' => NULL,
@@ -3178,7 +3207,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_distribution-upload'
+  // Exported field_instance: 'node-project_distribution-upload'.
   $field_instances['node-project_distribution-upload'] = array(
     'bundle' => 'project_distribution',
     'deleted' => 0,
@@ -3245,7 +3274,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-body'
+  // Exported field_instance: 'node-project_drupalorg-body'.
   $field_instances['node-project_drupalorg-body'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -3310,7 +3339,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_download_count'
+  // Exported field_instance: 'node-project_drupalorg-field_download_count'.
   $field_instances['node-project_drupalorg-field_download_count'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -3368,7 +3397,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_changelog'
+  // Exported field_instance: 'node-project_drupalorg-field_project_changelog'.
   $field_instances['node-project_drupalorg-field_project_changelog'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -3411,6 +3440,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Changelog',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -3424,6 +3454,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -3439,7 +3470,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_components'
+  // Exported field_instance: 'node-project_drupalorg-field_project_components'.
   $field_instances['node-project_drupalorg-field_project_components'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => array(
@@ -3509,7 +3540,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_drupalorg-field_project_default_component'
+  // 'node-project_drupalorg-field_project_default_component'.
   $field_instances['node-project_drupalorg-field_project_default_component'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => array(
@@ -3566,7 +3597,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_demo'
+  // Exported field_instance: 'node-project_drupalorg-field_project_demo'.
   $field_instances['node-project_drupalorg-field_project_demo'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -3609,6 +3640,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Demo',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -3622,6 +3654,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -3638,7 +3671,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_drupalorg-field_project_documentation'
+  // 'node-project_drupalorg-field_project_documentation'.
   $field_instances['node-project_drupalorg-field_project_documentation'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -3681,6 +3714,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Documentation',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -3694,6 +3728,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -3710,7 +3745,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_drupalorg-field_project_has_issue_queue'
+  // 'node-project_drupalorg-field_project_has_issue_queue'.
   $field_instances['node-project_drupalorg-field_project_has_issue_queue'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => array(
@@ -3771,7 +3806,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_drupalorg-field_project_has_releases'
+  // 'node-project_drupalorg-field_project_has_releases'.
   $field_instances['node-project_drupalorg-field_project_has_releases'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => array(
@@ -3830,7 +3865,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_homepage'
+  // Exported field_instance: 'node-project_drupalorg-field_project_homepage'.
   $field_instances['node-project_drupalorg-field_project_homepage'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -3873,6 +3908,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Homepage',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -3886,6 +3922,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -3901,7 +3938,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_images'
+  // Exported field_instance: 'node-project_drupalorg-field_project_images'.
   $field_instances['node-project_drupalorg-field_project_images'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => '',
@@ -4018,7 +4055,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_drupalorg-field_project_issue_guidelines'
+  // 'node-project_drupalorg-field_project_issue_guidelines'.
   $field_instances['node-project_drupalorg-field_project_issue_guidelines'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4075,7 +4112,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_license'
+  // Exported field_instance: 'node-project_drupalorg-field_project_license'.
   $field_instances['node-project_drupalorg-field_project_license'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4118,6 +4155,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'License',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -4131,6 +4169,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -4147,7 +4186,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_drupalorg-field_project_machine_name'
+  // 'node-project_drupalorg-field_project_machine_name'.
   $field_instances['node-project_drupalorg-field_project_machine_name'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4203,7 +4242,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_drupalorg-field_project_phpcs_errors'
+  // 'node-project_drupalorg-field_project_phpcs_errors'.
   $field_instances['node-project_drupalorg-field_project_phpcs_errors'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4261,7 +4300,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_phpcs_full'
+  // Exported field_instance: 'node-project_drupalorg-field_project_phpcs_full'.
   $field_instances['node-project_drupalorg-field_project_phpcs_full'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4318,7 +4357,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_phpcs_ts'
+  // Exported field_instance: 'node-project_drupalorg-field_project_phpcs_ts'.
   $field_instances['node-project_drupalorg-field_project_phpcs_ts'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4377,7 +4416,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_drupalorg-field_project_phpcs_warnings'
+  // 'node-project_drupalorg-field_project_phpcs_warnings'.
   $field_instances['node-project_drupalorg-field_project_phpcs_warnings'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4435,7 +4474,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_screenshots'
+  // Exported field_instance:
+  // 'node-project_drupalorg-field_project_screenshots'.
   $field_instances['node-project_drupalorg-field_project_screenshots'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4478,6 +4518,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Screenshots',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -4491,6 +4532,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -4506,7 +4548,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-field_project_type'
+  // Exported field_instance: 'node-project_drupalorg-field_project_type'.
   $field_instances['node-project_drupalorg-field_project_type'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4560,7 +4602,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_drupalorg-field_release_version_format'
+  // 'node-project_drupalorg-field_release_version_format'.
   $field_instances['node-project_drupalorg-field_release_version_format'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4622,7 +4664,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-taxonomy_vocabulary_44'
+  // Exported field_instance: 'node-project_drupalorg-taxonomy_vocabulary_44'.
   $field_instances['node-project_drupalorg-taxonomy_vocabulary_44'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4676,7 +4718,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-taxonomy_vocabulary_46'
+  // Exported field_instance: 'node-project_drupalorg-taxonomy_vocabulary_46'.
   $field_instances['node-project_drupalorg-taxonomy_vocabulary_46'] = array(
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
@@ -4730,7 +4772,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_drupalorg-upload'
+  // Exported field_instance: 'node-project_drupalorg-upload'.
   $field_instances['node-project_drupalorg-upload'] = array(
     'bundle' => 'project_drupalorg',
     'deleted' => 0,
@@ -4797,7 +4839,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-body'
+  // Exported field_instance: 'node-project_module-body'.
   $field_instances['node-project_module-body'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -4862,7 +4904,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_download_count'
+  // Exported field_instance: 'node-project_module-field_download_count'.
   $field_instances['node-project_module-field_download_count'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -4920,7 +4962,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_changelog'
+  // Exported field_instance: 'node-project_module-field_project_changelog'.
   $field_instances['node-project_module-field_project_changelog'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -4963,6 +5005,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Changelog',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -4976,6 +5019,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -4991,7 +5035,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_components'
+  // Exported field_instance: 'node-project_module-field_project_components'.
   $field_instances['node-project_module-field_project_components'] = array(
     'bundle' => 'project_module',
     'default_value' => array(
@@ -5061,7 +5105,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_module-field_project_default_component'
+  // 'node-project_module-field_project_default_component'.
   $field_instances['node-project_module-field_project_default_component'] = array(
     'bundle' => 'project_module',
     'default_value' => array(
@@ -5118,7 +5162,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_demo'
+  // Exported field_instance: 'node-project_module-field_project_demo'.
   $field_instances['node-project_module-field_project_demo'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -5161,6 +5205,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Demo',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -5174,6 +5219,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -5189,7 +5235,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_documentation'
+  // Exported field_instance: 'node-project_module-field_project_documentation'.
   $field_instances['node-project_module-field_project_documentation'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -5232,6 +5278,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Documentation',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -5245,6 +5292,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -5261,7 +5309,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_module-field_project_has_issue_queue'
+  // 'node-project_module-field_project_has_issue_queue'.
   $field_instances['node-project_module-field_project_has_issue_queue'] = array(
     'bundle' => 'project_module',
     'default_value' => array(
@@ -5321,7 +5369,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_has_releases'
+  // Exported field_instance: 'node-project_module-field_project_has_releases'.
   $field_instances['node-project_module-field_project_has_releases'] = array(
     'bundle' => 'project_module',
     'default_value' => array(
@@ -5380,7 +5428,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_homepage'
+  // Exported field_instance: 'node-project_module-field_project_homepage'.
   $field_instances['node-project_module-field_project_homepage'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -5423,6 +5471,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Homepage',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -5436,6 +5485,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -5451,7 +5501,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_images'
+  // Exported field_instance: 'node-project_module-field_project_images'.
   $field_instances['node-project_module-field_project_images'] = array(
     'bundle' => 'project_module',
     'default_value' => '',
@@ -5568,7 +5618,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_module-field_project_issue_guidelines'
+  // 'node-project_module-field_project_issue_guidelines'.
   $field_instances['node-project_module-field_project_issue_guidelines'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -5625,7 +5675,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_license'
+  // Exported field_instance: 'node-project_module-field_project_license'.
   $field_instances['node-project_module-field_project_license'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -5668,6 +5718,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'License',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -5681,6 +5732,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -5696,7 +5748,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_machine_name'
+  // Exported field_instance: 'node-project_module-field_project_machine_name'.
   $field_instances['node-project_module-field_project_machine_name'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -5751,7 +5803,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_phpcs_errors'
+  // Exported field_instance: 'node-project_module-field_project_phpcs_errors'.
   $field_instances['node-project_module-field_project_phpcs_errors'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -5809,7 +5861,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_phpcs_full'
+  // Exported field_instance: 'node-project_module-field_project_phpcs_full'.
   $field_instances['node-project_module-field_project_phpcs_full'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -5866,7 +5918,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_phpcs_ts'
+  // Exported field_instance: 'node-project_module-field_project_phpcs_ts'.
   $field_instances['node-project_module-field_project_phpcs_ts'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -5924,7 +5976,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_phpcs_warnings'
+  // Exported field_instance:
+  // 'node-project_module-field_project_phpcs_warnings'.
   $field_instances['node-project_module-field_project_phpcs_warnings'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -5982,7 +6035,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_screenshots'
+  // Exported field_instance: 'node-project_module-field_project_screenshots'.
   $field_instances['node-project_module-field_project_screenshots'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -6025,6 +6078,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Screenshots',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -6038,6 +6092,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -6053,7 +6108,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_project_type'
+  // Exported field_instance: 'node-project_module-field_project_type'.
   $field_instances['node-project_module-field_project_type'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -6106,7 +6161,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-field_release_version_format'
+  // Exported field_instance:
+  // 'node-project_module-field_release_version_format'.
   $field_instances['node-project_module-field_release_version_format'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -6169,7 +6225,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_module-field_supporting_organizations'
+  // 'node-project_module-field_supporting_organizations'.
   $field_instances['node-project_module-field_supporting_organizations'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -6226,7 +6282,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-taxonomy_vocabulary_3'
+  // Exported field_instance: 'node-project_module-taxonomy_vocabulary_3'.
   $field_instances['node-project_module-taxonomy_vocabulary_3'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -6280,7 +6336,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-taxonomy_vocabulary_44'
+  // Exported field_instance: 'node-project_module-taxonomy_vocabulary_44'.
   $field_instances['node-project_module-taxonomy_vocabulary_44'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -6334,7 +6390,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-taxonomy_vocabulary_46'
+  // Exported field_instance: 'node-project_module-taxonomy_vocabulary_46'.
   $field_instances['node-project_module-taxonomy_vocabulary_46'] = array(
     'bundle' => 'project_module',
     'default_value' => NULL,
@@ -6388,7 +6444,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_module-upload'
+  // Exported field_instance: 'node-project_module-upload'.
   $field_instances['node-project_module-upload'] = array(
     'bundle' => 'project_module',
     'deleted' => 0,
@@ -6455,7 +6511,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-body'
+  // Exported field_instance: 'node-project_theme-body'.
   $field_instances['node-project_theme-body'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -6518,7 +6574,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_download_count'
+  // Exported field_instance: 'node-project_theme-field_download_count'.
   $field_instances['node-project_theme-field_download_count'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -6576,7 +6632,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_changelog'
+  // Exported field_instance: 'node-project_theme-field_project_changelog'.
   $field_instances['node-project_theme-field_project_changelog'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -6619,6 +6675,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Changelog',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -6632,6 +6689,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -6647,7 +6705,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_components'
+  // Exported field_instance: 'node-project_theme-field_project_components'.
   $field_instances['node-project_theme-field_project_components'] = array(
     'bundle' => 'project_theme',
     'default_value' => array(
@@ -6717,7 +6775,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme-field_project_default_component'
+  // 'node-project_theme-field_project_default_component'.
   $field_instances['node-project_theme-field_project_default_component'] = array(
     'bundle' => 'project_theme',
     'default_value' => array(
@@ -6774,7 +6832,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_demo'
+  // Exported field_instance: 'node-project_theme-field_project_demo'.
   $field_instances['node-project_theme-field_project_demo'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -6817,6 +6875,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Demo',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -6830,6 +6889,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -6845,7 +6905,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_documentation'
+  // Exported field_instance: 'node-project_theme-field_project_documentation'.
   $field_instances['node-project_theme-field_project_documentation'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -6888,6 +6948,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Documentation',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -6901,6 +6962,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -6916,7 +6978,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_has_issue_queue'
+  // Exported field_instance:
+  // 'node-project_theme-field_project_has_issue_queue'.
   $field_instances['node-project_theme-field_project_has_issue_queue'] = array(
     'bundle' => 'project_theme',
     'default_value' => array(
@@ -6976,7 +7039,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_has_releases'
+  // Exported field_instance: 'node-project_theme-field_project_has_releases'.
   $field_instances['node-project_theme-field_project_has_releases'] = array(
     'bundle' => 'project_theme',
     'default_value' => array(
@@ -7035,7 +7098,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_homepage'
+  // Exported field_instance: 'node-project_theme-field_project_homepage'.
   $field_instances['node-project_theme-field_project_homepage'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7078,6 +7141,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Homepage',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -7091,6 +7155,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -7106,7 +7171,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_images'
+  // Exported field_instance: 'node-project_theme-field_project_images'.
   $field_instances['node-project_theme-field_project_images'] = array(
     'bundle' => 'project_theme',
     'default_value' => '',
@@ -7223,7 +7288,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme-field_project_issue_guidelines'
+  // 'node-project_theme-field_project_issue_guidelines'.
   $field_instances['node-project_theme-field_project_issue_guidelines'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7280,7 +7345,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_license'
+  // Exported field_instance: 'node-project_theme-field_project_license'.
   $field_instances['node-project_theme-field_project_license'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7323,6 +7388,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'License',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -7336,6 +7402,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -7351,7 +7418,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_machine_name'
+  // Exported field_instance: 'node-project_theme-field_project_machine_name'.
   $field_instances['node-project_theme-field_project_machine_name'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7406,7 +7473,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_phpcs_errors'
+  // Exported field_instance: 'node-project_theme-field_project_phpcs_errors'.
   $field_instances['node-project_theme-field_project_phpcs_errors'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7464,7 +7531,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_phpcs_full'
+  // Exported field_instance: 'node-project_theme-field_project_phpcs_full'.
   $field_instances['node-project_theme-field_project_phpcs_full'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7521,7 +7588,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_phpcs_ts'
+  // Exported field_instance: 'node-project_theme-field_project_phpcs_ts'.
   $field_instances['node-project_theme-field_project_phpcs_ts'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7579,7 +7646,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_phpcs_warnings'
+  // Exported field_instance: 'node-project_theme-field_project_phpcs_warnings'.
   $field_instances['node-project_theme-field_project_phpcs_warnings'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7637,7 +7704,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_screenshots'
+  // Exported field_instance: 'node-project_theme-field_project_screenshots'.
   $field_instances['node-project_theme-field_project_screenshots'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7680,6 +7747,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Screenshots',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -7693,6 +7761,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -7708,7 +7777,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_project_type'
+  // Exported field_instance: 'node-project_theme-field_project_type'.
   $field_instances['node-project_theme-field_project_type'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7761,7 +7830,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-field_release_version_format'
+  // Exported field_instance: 'node-project_theme-field_release_version_format'.
   $field_instances['node-project_theme-field_release_version_format'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7824,7 +7893,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme-field_supporting_organizations'
+  // 'node-project_theme-field_supporting_organizations'.
   $field_instances['node-project_theme-field_supporting_organizations'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7881,7 +7950,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-taxonomy_vocabulary_44'
+  // Exported field_instance: 'node-project_theme-taxonomy_vocabulary_44'.
   $field_instances['node-project_theme-taxonomy_vocabulary_44'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7935,7 +8004,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-taxonomy_vocabulary_46'
+  // Exported field_instance: 'node-project_theme-taxonomy_vocabulary_46'.
   $field_instances['node-project_theme-taxonomy_vocabulary_46'] = array(
     'bundle' => 'project_theme',
     'default_value' => NULL,
@@ -7989,7 +8058,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme-upload'
+  // Exported field_instance: 'node-project_theme-upload'.
   $field_instances['node-project_theme-upload'] = array(
     'bundle' => 'project_theme',
     'deleted' => 0,
@@ -8056,7 +8125,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-body'
+  // Exported field_instance: 'node-project_theme_engine-body'.
   $field_instances['node-project_theme_engine-body'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -8119,7 +8188,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_download_count'
+  // Exported field_instance: 'node-project_theme_engine-field_download_count'.
   $field_instances['node-project_theme_engine-field_download_count'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -8178,7 +8247,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_project_changelog'
+  // 'node-project_theme_engine-field_project_changelog'.
   $field_instances['node-project_theme_engine-field_project_changelog'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -8221,6 +8290,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Changelog',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -8234,6 +8304,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -8250,7 +8321,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_project_components'
+  // 'node-project_theme_engine-field_project_components'.
   $field_instances['node-project_theme_engine-field_project_components'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => array(
@@ -8320,7 +8391,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_project_default_component'
+  // 'node-project_theme_engine-field_project_default_component'.
   $field_instances['node-project_theme_engine-field_project_default_component'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => array(
@@ -8377,7 +8448,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_demo'
+  // Exported field_instance: 'node-project_theme_engine-field_project_demo'.
   $field_instances['node-project_theme_engine-field_project_demo'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -8420,6 +8491,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Demo',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -8433,6 +8505,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -8449,7 +8522,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_project_documentation'
+  // 'node-project_theme_engine-field_project_documentation'.
   $field_instances['node-project_theme_engine-field_project_documentation'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -8492,6 +8565,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Documentation',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -8505,6 +8579,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -8521,7 +8596,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_project_has_issue_queue'
+  // 'node-project_theme_engine-field_project_has_issue_queue'.
   $field_instances['node-project_theme_engine-field_project_has_issue_queue'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => array(
@@ -8582,7 +8657,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_project_has_releases'
+  // 'node-project_theme_engine-field_project_has_releases'.
   $field_instances['node-project_theme_engine-field_project_has_releases'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => array(
@@ -8641,7 +8716,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_homepage'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_homepage'.
   $field_instances['node-project_theme_engine-field_project_homepage'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -8684,6 +8760,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Homepage',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -8697,6 +8774,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -8712,7 +8790,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_images'
+  // Exported field_instance: 'node-project_theme_engine-field_project_images'.
   $field_instances['node-project_theme_engine-field_project_images'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => '',
@@ -8829,7 +8907,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_project_issue_guidelines'
+  // 'node-project_theme_engine-field_project_issue_guidelines'.
   $field_instances['node-project_theme_engine-field_project_issue_guidelines'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -8886,7 +8964,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_license'
+  // Exported field_instance: 'node-project_theme_engine-field_project_license'.
   $field_instances['node-project_theme_engine-field_project_license'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -8929,6 +9007,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'License',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -8942,6 +9021,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -8958,7 +9038,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_project_machine_name'
+  // 'node-project_theme_engine-field_project_machine_name'.
   $field_instances['node-project_theme_engine-field_project_machine_name'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9014,7 +9094,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_project_phpcs_errors'
+  // 'node-project_theme_engine-field_project_phpcs_errors'.
   $field_instances['node-project_theme_engine-field_project_phpcs_errors'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9073,7 +9153,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_project_phpcs_full'
+  // 'node-project_theme_engine-field_project_phpcs_full'.
   $field_instances['node-project_theme_engine-field_project_phpcs_full'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9130,7 +9210,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_phpcs_ts'
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_phpcs_ts'.
   $field_instances['node-project_theme_engine-field_project_phpcs_ts'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9189,7 +9270,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_project_phpcs_warnings'
+  // 'node-project_theme_engine-field_project_phpcs_warnings'.
   $field_instances['node-project_theme_engine-field_project_phpcs_warnings'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9248,7 +9329,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_project_screenshots'
+  // 'node-project_theme_engine-field_project_screenshots'.
   $field_instances['node-project_theme_engine-field_project_screenshots'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9291,6 +9372,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Screenshots',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -9304,6 +9386,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -9319,7 +9402,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-field_project_type'
+  // Exported field_instance: 'node-project_theme_engine-field_project_type'.
   $field_instances['node-project_theme_engine-field_project_type'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9373,7 +9456,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_release_version_format'
+  // 'node-project_theme_engine-field_release_version_format'.
   $field_instances['node-project_theme_engine-field_release_version_format'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9436,7 +9519,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_theme_engine-field_supporting_organizations'
+  // 'node-project_theme_engine-field_supporting_organizations'.
   $field_instances['node-project_theme_engine-field_supporting_organizations'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9493,7 +9576,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-taxonomy_vocabulary_44'
+  // Exported field_instance:
+  // 'node-project_theme_engine-taxonomy_vocabulary_44'.
   $field_instances['node-project_theme_engine-taxonomy_vocabulary_44'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9547,7 +9631,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-taxonomy_vocabulary_46'
+  // Exported field_instance:
+  // 'node-project_theme_engine-taxonomy_vocabulary_46'.
   $field_instances['node-project_theme_engine-taxonomy_vocabulary_46'] = array(
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
@@ -9601,7 +9686,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_theme_engine-upload'
+  // Exported field_instance: 'node-project_theme_engine-upload'.
   $field_instances['node-project_theme_engine-upload'] = array(
     'bundle' => 'project_theme_engine',
     'deleted' => 0,
@@ -9668,7 +9753,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-body'
+  // Exported field_instance: 'node-project_translation-body'.
   $field_instances['node-project_translation-body'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -9731,7 +9816,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_download_count'
+  // Exported field_instance: 'node-project_translation-field_download_count'.
   $field_instances['node-project_translation-field_download_count'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -9789,7 +9874,8 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_changelog'
+  // Exported field_instance:
+  // 'node-project_translation-field_project_changelog'.
   $field_instances['node-project_translation-field_project_changelog'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -9832,6 +9918,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Changelog',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -9845,6 +9932,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -9861,7 +9949,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_translation-field_project_components'
+  // 'node-project_translation-field_project_components'.
   $field_instances['node-project_translation-field_project_components'] = array(
     'bundle' => 'project_translation',
     'default_value' => array(
@@ -9931,7 +10019,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_translation-field_project_default_component'
+  // 'node-project_translation-field_project_default_component'.
   $field_instances['node-project_translation-field_project_default_component'] = array(
     'bundle' => 'project_translation',
     'default_value' => array(
@@ -9988,7 +10076,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_demo'
+  // Exported field_instance: 'node-project_translation-field_project_demo'.
   $field_instances['node-project_translation-field_project_demo'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10031,6 +10119,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Demo',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -10044,6 +10133,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -10060,7 +10150,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_translation-field_project_documentation'
+  // 'node-project_translation-field_project_documentation'.
   $field_instances['node-project_translation-field_project_documentation'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10103,6 +10193,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Documentation',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -10116,6 +10207,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -10132,7 +10224,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_translation-field_project_has_issue_queue'
+  // 'node-project_translation-field_project_has_issue_queue'.
   $field_instances['node-project_translation-field_project_has_issue_queue'] = array(
     'bundle' => 'project_translation',
     'default_value' => array(
@@ -10193,7 +10285,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_translation-field_project_has_releases'
+  // 'node-project_translation-field_project_has_releases'.
   $field_instances['node-project_translation-field_project_has_releases'] = array(
     'bundle' => 'project_translation',
     'default_value' => array(
@@ -10252,7 +10344,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_homepage'
+  // Exported field_instance: 'node-project_translation-field_project_homepage'.
   $field_instances['node-project_translation-field_project_homepage'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10295,6 +10387,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Homepage',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -10308,6 +10401,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -10323,7 +10417,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_images'
+  // Exported field_instance: 'node-project_translation-field_project_images'.
   $field_instances['node-project_translation-field_project_images'] = array(
     'bundle' => 'project_translation',
     'default_value' => '',
@@ -10440,7 +10534,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_translation-field_project_issue_guidelines'
+  // 'node-project_translation-field_project_issue_guidelines'.
   $field_instances['node-project_translation-field_project_issue_guidelines'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10497,7 +10591,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_license'
+  // Exported field_instance: 'node-project_translation-field_project_license'.
   $field_instances['node-project_translation-field_project_license'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10540,6 +10634,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'License',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -10553,6 +10648,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -10569,7 +10665,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_translation-field_project_machine_name'
+  // 'node-project_translation-field_project_machine_name'.
   $field_instances['node-project_translation-field_project_machine_name'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10625,7 +10721,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_translation-field_project_screenshots'
+  // 'node-project_translation-field_project_screenshots'.
   $field_instances['node-project_translation-field_project_screenshots'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10668,6 +10764,7 @@ function drupalorg_projects_field_default_field_instances() {
     'label' => 'Screenshots',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -10681,6 +10778,7 @@ function drupalorg_projects_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -10696,7 +10794,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_type'
+  // Exported field_instance: 'node-project_translation-field_project_type'.
   $field_instances['node-project_translation-field_project_type'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10750,7 +10848,7 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-project_translation-field_release_version_format'
+  // 'node-project_translation-field_release_version_format'.
   $field_instances['node-project_translation-field_release_version_format'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10812,7 +10910,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-taxonomy_vocabulary_44'
+  // Exported field_instance: 'node-project_translation-taxonomy_vocabulary_44'.
   $field_instances['node-project_translation-taxonomy_vocabulary_44'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10866,7 +10964,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-taxonomy_vocabulary_46'
+  // Exported field_instance: 'node-project_translation-taxonomy_vocabulary_46'.
   $field_instances['node-project_translation-taxonomy_vocabulary_46'] = array(
     'bundle' => 'project_translation',
     'default_value' => NULL,
@@ -10920,7 +11018,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-upload'
+  // Exported field_instance: 'node-project_translation-upload'.
   $field_instances['node-project_translation-upload'] = array(
     'bundle' => 'project_translation',
     'deleted' => 0,

@@ -1533,6 +1533,12 @@ function drupalorg_project_ctools_plugin_directory($module, $plugin) {
   if ($module == 'ctools' && $plugin == 'content_types') {
     return "plugins/$plugin";
   }
+  if ($module == 'ctools' && $plugin == 'arguments') {
+    return "plugins/$plugin";
+  }
+  if ($module == 'ctools' && $plugin == 'relationships') {
+    return "plugins/$plugin";
+  }
 }
 
 /**
@@ -1541,9 +1547,6 @@ function drupalorg_project_ctools_plugin_directory($module, $plugin) {
 function drupalorg_project_ctools_plugin_api($module, $api) {
   if ($module == 'field_group' && $api == 'field_group') {
     return array('version' => 1);
-  }
-  if ($module == "panels_mini" && $api == "panels_default") {
-    return array("version" => "1");
   }
 }
 

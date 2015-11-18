@@ -10,7 +10,7 @@
 function drupalorg_projects_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_download_count'
+  // Exported field_base: 'field_download_count'.
   $field_bases['field_download_count'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -25,7 +25,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_how_they_helped'
+  // Exported field_base: 'field_how_they_helped'.
   $field_bases['field_how_they_helped'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -46,7 +46,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_organization'
+  // Exported field_base: 'field_organization'.
   $field_bases['field_organization'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -91,7 +91,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'node_reference',
   );
 
-  // Exported field_base: 'field_project_changelog'
+  // Exported field_base: 'field_project_changelog'.
   $field_bases['field_project_changelog'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -120,7 +120,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'link_field',
   );
 
-  // Exported field_base: 'field_project_components'
+  // Exported field_base: 'field_project_components'.
   $field_bases['field_project_components'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -142,7 +142,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_project_default_component'
+  // Exported field_base: 'field_project_default_component'.
   $field_bases['field_project_default_component'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -165,7 +165,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_project_demo'
+  // Exported field_base: 'field_project_demo'.
   $field_bases['field_project_demo'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -194,7 +194,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'link_field',
   );
 
-  // Exported field_base: 'field_project_documentation'
+  // Exported field_base: 'field_project_documentation'.
   $field_bases['field_project_documentation'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -223,7 +223,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'link_field',
   );
 
-  // Exported field_base: 'field_project_has_issue_queue'
+  // Exported field_base: 'field_project_has_issue_queue'.
   $field_bases['field_project_has_issue_queue'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -248,7 +248,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_project_has_releases'
+  // Exported field_base: 'field_project_has_releases'.
   $field_bases['field_project_has_releases'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -273,7 +273,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_project_homepage'
+  // Exported field_base: 'field_project_homepage'.
   $field_bases['field_project_homepage'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -302,7 +302,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'link_field',
   );
 
-  // Exported field_base: 'field_project_images'
+  // Exported field_base: 'field_project_images'.
   $field_bases['field_project_images'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -328,7 +328,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type_name' => 'project_translation',
   );
 
-  // Exported field_base: 'field_project_issue_guidelines'
+  // Exported field_base: 'field_project_issue_guidelines'.
   $field_bases['field_project_issue_guidelines'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -348,7 +348,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_project_license'
+  // Exported field_base: 'field_project_license'.
   $field_bases['field_project_license'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -377,7 +377,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'link_field',
   );
 
-  // Exported field_base: 'field_project_machine_name'
+  // Exported field_base: 'field_project_machine_name'.
   $field_bases['field_project_machine_name'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -401,7 +401,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'machine_name',
   );
 
-  // Exported field_base: 'field_project_phpcs_errors'
+  // Exported field_base: 'field_project_phpcs_errors'.
   $field_bases['field_project_phpcs_errors'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -416,7 +416,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_project_phpcs_full'
+  // Exported field_base: 'field_project_phpcs_full'.
   $field_bases['field_project_phpcs_full'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -435,7 +435,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_project_phpcs_ts'
+  // Exported field_base: 'field_project_phpcs_ts'.
   $field_bases['field_project_phpcs_ts'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -450,7 +450,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_project_phpcs_warnings'
+  // Exported field_base: 'field_project_phpcs_warnings'.
   $field_bases['field_project_phpcs_warnings'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -465,7 +465,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_project_screenshots'
+  // Exported field_base: 'field_project_screenshots'.
   $field_bases['field_project_screenshots'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -494,7 +494,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'link_field',
   );
 
-  // Exported field_base: 'field_project_type'
+  // Exported field_base: 'field_project_type'.
   $field_bases['field_project_type'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -522,7 +522,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_release_version_format'
+  // Exported field_base: 'field_release_version_format'.
   $field_bases['field_release_version_format'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -543,7 +543,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_supporting_organizations'
+  // Exported field_base: 'field_supporting_organizations'.
   $field_bases['field_supporting_organizations'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -565,7 +565,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'field_collection',
   );
 
-  // Exported field_base: 'taxonomy_vocabulary_3'
+  // Exported field_base: 'taxonomy_vocabulary_3'.
   $field_bases['taxonomy_vocabulary_3'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -592,7 +592,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'taxonomy_vocabulary_44'
+  // Exported field_base: 'taxonomy_vocabulary_44'.
   $field_bases['taxonomy_vocabulary_44'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -619,7 +619,7 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'taxonomy_vocabulary_46'
+  // Exported field_base: 'taxonomy_vocabulary_46'.
   $field_bases['taxonomy_vocabulary_46'] = array(
     'active' => 1,
     'cardinality' => 1,

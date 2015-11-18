@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * drupalorg_project.panels_default.inc
+ * drupalorg_projects.panels_default.inc
  */
 
 /**
  * Implements hook_default_panels_mini().
  */
-function drupalorg_project_default_panels_mini() {
+function drupalorg_projects_default_panels_mini() {
   $export = array();
 
   $mini = new stdClass();
@@ -107,7 +107,7 @@ function drupalorg_project_default_panels_mini() {
       0 => 'requiredcontext_entity:node_1',
     ),
     'override_title' => 1,
-    'override_title_text' => '%title',
+    'override_title_text' => 'End of life',
     'override_title_heading' => 'h3',
   );
   $pane->cache = array();
