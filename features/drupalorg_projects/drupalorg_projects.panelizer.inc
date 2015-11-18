@@ -364,29 +364,6 @@ function drupalorg_projects_panelizer_defaults() {
   $display->content['new-c719bc17-0b0a-48ce-8aa1-5b413c9eadf6'] = $pane;
   $display->panels['bottom_right_content'][1] = 'new-c719bc17-0b0a-48ce-8aa1-5b413c9eadf6';
   $pane = new stdClass();
-  $pane->pid = 'new-b265c08b-16ca-420f-8f85-2058b9e72966';
-  $pane->panel = 'left_content';
-  $pane->type = 'views_panes';
-  $pane->subtype = 'project_release_files-release_files_pane';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'context' => array(
-      0 => 'panelizer',
-    ),
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'b265c08b-16ca-420f-8f85-2058b9e72966';
-  $display->content['new-b265c08b-16ca-420f-8f85-2058b9e72966'] = $pane;
-  $display->panels['left_content'][0] = 'new-b265c08b-16ca-420f-8f85-2058b9e72966';
-  $pane = new stdClass();
   $pane->pid = 'new-30eef2e9-7098-4079-ba0e-a60a3ee3a373';
   $pane->panel = 'left_content';
   $pane->type = 'entity_field';
@@ -411,11 +388,11 @@ function drupalorg_projects_panelizer_defaults() {
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 0;
   $pane->locks = array();
   $pane->uuid = '30eef2e9-7098-4079-ba0e-a60a3ee3a373';
   $display->content['new-30eef2e9-7098-4079-ba0e-a60a3ee3a373'] = $pane;
-  $display->panels['left_content'][1] = 'new-30eef2e9-7098-4079-ba0e-a60a3ee3a373';
+  $display->panels['left_content'][0] = 'new-30eef2e9-7098-4079-ba0e-a60a3ee3a373';
   $pane = new stdClass();
   $pane->pid = 'new-010613f9-e7e6-4342-9999-33c75e6b05a1';
   $pane->panel = 'left_content';
@@ -450,11 +427,11 @@ function drupalorg_projects_panelizer_defaults() {
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = '010613f9-e7e6-4342-9999-33c75e6b05a1';
   $display->content['new-010613f9-e7e6-4342-9999-33c75e6b05a1'] = $pane;
-  $display->panels['left_content'][2] = 'new-010613f9-e7e6-4342-9999-33c75e6b05a1';
+  $display->panels['left_content'][1] = 'new-010613f9-e7e6-4342-9999-33c75e6b05a1';
   $pane = new stdClass();
   $pane->pid = 'new-2cb25f83-c930-4ef5-befb-339dda720f2d';
   $pane->panel = 'left_content';
@@ -489,11 +466,11 @@ function drupalorg_projects_panelizer_defaults() {
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 3;
+  $pane->position = 2;
   $pane->locks = array();
   $pane->uuid = '2cb25f83-c930-4ef5-befb-339dda720f2d';
   $display->content['new-2cb25f83-c930-4ef5-befb-339dda720f2d'] = $pane;
-  $display->panels['left_content'][3] = 'new-2cb25f83-c930-4ef5-befb-339dda720f2d';
+  $display->panels['left_content'][2] = 'new-2cb25f83-c930-4ef5-befb-339dda720f2d';
   $pane = new stdClass();
   $pane->pid = 'new-ec4d2a11-425f-4f4d-9b70-4fb6c30453f9';
   $pane->panel = 'left_content';
@@ -528,11 +505,11 @@ function drupalorg_projects_panelizer_defaults() {
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 4;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = 'ec4d2a11-425f-4f4d-9b70-4fb6c30453f9';
   $display->content['new-ec4d2a11-425f-4f4d-9b70-4fb6c30453f9'] = $pane;
-  $display->panels['left_content'][4] = 'new-ec4d2a11-425f-4f4d-9b70-4fb6c30453f9';
+  $display->panels['left_content'][3] = 'new-ec4d2a11-425f-4f4d-9b70-4fb6c30453f9';
   $pane = new stdClass();
   $pane->pid = 'new-88e9ba76-896a-4baa-85fc-eaf29b1a1681';
   $pane->panel = 'left_content';
@@ -567,11 +544,34 @@ function drupalorg_projects_panelizer_defaults() {
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 5;
+  $pane->position = 4;
   $pane->locks = array();
   $pane->uuid = '88e9ba76-896a-4baa-85fc-eaf29b1a1681';
   $display->content['new-88e9ba76-896a-4baa-85fc-eaf29b1a1681'] = $pane;
-  $display->panels['left_content'][5] = 'new-88e9ba76-896a-4baa-85fc-eaf29b1a1681';
+  $display->panels['left_content'][4] = 'new-88e9ba76-896a-4baa-85fc-eaf29b1a1681';
+  $pane = new stdClass();
+  $pane->pid = 'new-b265c08b-16ca-420f-8f85-2058b9e72966';
+  $pane->panel = 'preface';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'project_release_files-release_files_pane';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'context' => array(
+      0 => 'panelizer',
+    ),
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'b265c08b-16ca-420f-8f85-2058b9e72966';
+  $display->content['new-b265c08b-16ca-420f-8f85-2058b9e72966'] = $pane;
+  $display->panels['preface'][0] = 'new-b265c08b-16ca-420f-8f85-2058b9e72966';
   $pane = new stdClass();
   $pane->pid = 'new-d7f384c3-978e-4731-bea5-1deaac1dd47d';
   $pane->panel = 'top_right_content';
