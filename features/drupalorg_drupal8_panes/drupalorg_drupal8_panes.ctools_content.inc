@@ -46,7 +46,7 @@ function drupalorg_drupal8_panes_default_ctools_custom_content() {
     'admin_title' => 'Try drupal button',
     'title' => '',
     'title_heading' => 'h2',
-    'body' => '<span class="button"><a href="/trydrupal">Try a hosted Drupal demo</a></span>',
+    'body' => '<span class="button"><a href="/try-drupal">Try a hosted Drupal demo</a></span>',
     'format' => '1',
     'substitute' => 1,
   );
@@ -64,10 +64,10 @@ function drupalorg_drupal8_panes_default_ctools_custom_content() {
     'title' => 'What\'s Next?',
     'title_heading' => 'h2',
     'body' => '<ol>
- <li>Learn how to install Drupal</li>
- <li>Extend Drupal to do more</li>
-<li>Get training</li>
-<li>Check out what others built</li>
+ <li><a href="/documentation/install">Learn how to install Drupal</a></li>
+ <li><a href="/project/project_module">Extend Drupal to do more</a></li>
+<li><a href="/training">Get training</a></li>
+<li><a href="/case-studies">Check out what others built</a></li>
 </ol>',
     'format' => '1',
     'substitute' => 1,
