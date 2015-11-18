@@ -258,7 +258,16 @@ function drupalorg_projects_panelizer_defaults() {
   $panelizer->css = '';
   $panelizer->pipeline = 'ipe';
   $panelizer->contexts = array();
-  $panelizer->relationships = array();
+  $panelizer->relationships = array(
+    0 => array(
+      'identifier' => 'Project for this Release',
+      'keyword' => 'field_release_project',
+      'name' => 'entity_from_field:field_release_project-node-node',
+      'delta' => 0,
+      'context' => 'panelizer',
+      'id' => 1,
+    ),
+  );
   $panelizer->access = array();
   $panelizer->view_mode = 'default';
   $panelizer->css_class = '';
@@ -422,7 +431,7 @@ function drupalorg_projects_panelizer_defaults() {
             'project_distribution' => 'project_distribution',
           ),
         ),
-        'context' => 'panelizer',
+        'context' => 'relationship_entity_from_field:field_release_project-node-node_1',
         'not' => FALSE,
       ),
     ),
@@ -461,7 +470,7 @@ function drupalorg_projects_panelizer_defaults() {
             'project_distribution' => 'project_distribution',
           ),
         ),
-        'context' => 'panelizer',
+        'context' => 'relationship_entity_from_field:field_release_project-node-node_1',
         'not' => FALSE,
       ),
     ),
@@ -500,7 +509,7 @@ function drupalorg_projects_panelizer_defaults() {
             'project_distribution' => 'project_distribution',
           ),
         ),
-        'context' => 'panelizer',
+        'context' => 'relationship_entity_from_field:field_release_project-node-node_1',
         'not' => FALSE,
       ),
     ),
@@ -539,7 +548,7 @@ function drupalorg_projects_panelizer_defaults() {
             'project_distribution' => 'project_distribution',
           ),
         ),
-        'context' => 'panelizer',
+        'context' => 'relationship_entity_from_field:field_release_project-node-node_1',
         'not' => FALSE,
       ),
     ),
