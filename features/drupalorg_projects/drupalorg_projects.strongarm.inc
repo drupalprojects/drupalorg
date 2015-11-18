@@ -550,7 +550,7 @@ function drupalorg_projects_strongarm() {
         'status' => 1,
         'substitute' => '',
         'default' => 1,
-        'choice' => 0,
+        'choice' => 1,
       ),
       'teaser' => array(
         'status' => 0,
