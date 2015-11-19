@@ -24,7 +24,7 @@ function drupalorg_i18n_views_post_execute(&$view) {
       return;
     }
 
-    // Perform some inteligence about our client. A few use cases here:
+    // Perform some intelligence about our client. A few use cases here:
     // 1. Browser is in language other than default.
     // 2. URL prefix
     $langcode = $language->language;
@@ -40,6 +40,5 @@ function drupalorg_i18n_views_post_execute(&$view) {
         }
       }
     }
-    $ture = true;
   }
 }
