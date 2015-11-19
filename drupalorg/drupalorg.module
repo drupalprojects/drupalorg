@@ -15,12 +15,12 @@ define('DRUPALORG_CORE_NID', 3060);
 /**
  * Major version number for core project listings.
  */
-define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 7); // 7.x
+define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 8);
 
 /**
  * TID for API compatibility for project listings.
  */
-define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 103); // 7.x
+define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 7234); // 8.x
 
 /**
  * Implements hook_init().
