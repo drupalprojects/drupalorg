@@ -1,12 +1,4 @@
 <div class="front-primary">
-  <div id="get-started">
-    <h2>Get started with Drupal</h2>
-    <p>Drupal helps you build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine.</p>
-    <p>
-      <a href="/try-drupal" class="link-button"><span>Try a hosted Drupal demo</span></a>
-      <a href="/start" class="link-button"><span>Download and Get Started</span></a>
-    </p>
-  </div>
 
   <div id="community-updates">
     <ul>
@@ -23,12 +15,6 @@
 </div>
 
 <div id="develop-with-drupal">
-  <div class="intro">
-    <div class="logo"><img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/d8.svg" alt="Drupal 8"></div>
-    <div class="text">
-      <a href="/drupal-8.0">Drupal 8</a> is about to be released on November 19th. Get <a href="https://groups.drupal.org/core/updates">regular updates</a> about the process or <a href="/core-mentoring">volunteer</a> to help finalize it.
-    </div>
-  </div>
   <div class="activities">
     <table class="front-current-activity">
       <tr><td><?php print $number_of_modules; ?></td><td><a href="project/modules">Modules</a></td></tr>
