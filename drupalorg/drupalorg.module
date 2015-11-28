@@ -1318,6 +1318,13 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
   unset($form['picture']['#title']);
   $form['picture']['#collapsible'] = FALSE;
 
+  // Remove hanging organization references to deleted organizations.
+  foreach (element_children($form['field_organizations'][LANGUAGE_NONE]) as $delta) {
+    if (is_numeric($delta) && !empty($form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference) && !db_query('SELECT 1 FROM {node} WHERE nid = :nid', array(':nid' => $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id']))->fetchField()) {
+      $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference = array();
+    }
+  }
+
   // Be welcoming.
   if (isset($form_state['drupalorg_welcome'])) {
     $to_show = array(
