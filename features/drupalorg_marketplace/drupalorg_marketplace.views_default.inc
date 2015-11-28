@@ -76,6 +76,17 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  $translatables['drupalorg_organization_supported_projects'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('field collection item from field_supporting_organizations'),
+    t('All'),
+  );
   $export['drupalorg_organization_supported_projects'] = $view;
 
   $view = new view();
@@ -106,11 +117,6 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['row_options']['links'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['format'] = '1';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -231,6 +237,34 @@ function drupalorg_marketplace_views_default_views() {
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['path'] = 'drupal-services';
+  $translatables['drupalorg_organizations'] = array(
+    t('Defaults'),
+    t('Marketplace'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Title'),
+    t('Updated date'),
+    t('Contribution'),
+    t('A-Z'),
+    t('All services'),
+    t('Marketplace: %1'),
+    t('All sectors'),
+    t('Marketplace: %2'),
+    t('All locations'),
+    t('Marketplace: %3'),
+    t('Page'),
+  );
   $export['drupalorg_organizations'] = $view;
 
   $view = new view();
@@ -337,6 +371,30 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['path'] = 'supporting-technologies';
+  $translatables['drupalorg_supporting_technologies'] = array(
+    t('Defaults'),
+    t('Supporting Technologies'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Coming soon.'),
+    t('<div class="grid-3 alpha">[field_logo]</div>'),
+    t('<div class="grid-5 omega">[title]</div>'),
+    t('<div class="main"><h2>[title]</h2>
+[body]
+</div>'),
+    t('Page'),
+  );
   $export['drupalorg_supporting_technologies'] = $view;
 
   $view = new view();
@@ -946,6 +1004,59 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
     7 => 0,
   );
   $handler->display->display_options['path'] = 'drupal-services/manage';
+  $translatables['drupalorg_training'] = array(
+    t('Defaults'),
+    t('Training'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('The following is a list of organizations that indicate they provide Drupal training services.
+
+For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=training">Events section</a> and <a href="http://drupal.org/learn-drupal">Global Training Days</a>.'),
+    t('Sorry, no training companies found for this country.'),
+    t('term'),
+    t('<div class="grid-3 alpha">[field_logo]</div>'),
+    t('<div class="grid-5 omega">[title]</div>'),
+    t('<div class="grid-5 omega">[field_organization_training_desc-value]</div>'),
+    t('<div class="grid-5 omega">[field_organization_training_url]</div>'),
+    t('All'),
+    t('Page'),
+    t('<div class="main"><h2>[title]</h2>
+[field_organization_training_desc] 
+<p>[field_organization_training_url]</p>
+</div>'),
+    t('Sidebar navigation'),
+    t('Browse by country'),
+    t('Locations'),
+    t('Trainings: %1'),
+    t('Management view'),
+    t('Marketplace management'),
+    t('<a href="http://drupal.org/node/1735708">Marketplace guidelines</a>.  Guides for reviewers: <a href="http://drupal.org/node/1710338">marketplace listings</a>, <a href="http://drupal.org/node/1735864">training listings</a>.'),
+    t('user'),
+    t('author'),
+    t('Organization'),
+    t('<div class="grid-4">[title]</div>'),
+    t('Posted by'),
+    t('Posted on'),
+    t('Updated by'),
+    t('Updated on'),
+    t('Published'),
+    t('Title'),
+    t('Services listing request'),
+    t('Services listing'),
+    t('Training section request'),
+    t('Training listing'),
+  );
   $export['drupalorg_training'] = $view;
 
   $view = new view();
@@ -1055,6 +1166,22 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'node/%/case-studies';
+  $translatables['organization_case_studies'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('◀︎ [title_1]'),
+    t('field_developed_org'),
+    t('Back to [title_1]'),
+    t('All'),
+    t('Case studies from %1'),
+    t('node/%1'),
+    t('Page'),
+  );
   $export['organization_case_studies'] = $view;
 
   $view = new view();
@@ -1200,6 +1327,33 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'node/%/users';
+  $translatables['users_in_organization'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('◀︎ [title]'),
+    t('field collection item from field_organizations'),
+    t('Content entity referenced from field_organization_reference'),
+    t('<h2>[name]</h2>'),
+    t('<h3>[field_job_title]</h3>'),
+    t('On Drupal.org for [created] <br/>'),
+    t('Back to [title]'),
+    t('All'),
+    t('People at %1'),
+    t('node/%1'),
+    t('Page'),
+  );
   $export['users_in_organization'] = $view;
 
   return $export;

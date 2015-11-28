@@ -2816,8 +2816,8 @@ function drupalorg_views_pre_render(&$view) {
   if ($view->name === 'drupalorg_organizations') {
     $content = array(
       'nav' => array(
-        '#prefix' => '<div class="nav">',
-        '#suffix' => '</div>',
+        '#prefix' => '<div class="view-header"><div class="nav">',
+        '#suffix' => '</div></div>',
       ),
     );
 
@@ -2935,8 +2935,7 @@ function drupalorg_views_pre_render(&$view) {
 
       $n += 1;
     }
-    $view->set_item_option('default', 'header', 'area', 'format', 3);
-    $view->set_item_option('default', 'header', 'area', 'content', drupal_render($content));
+    $view->attachment_before = drupal_render($content);
   }
   elseif ($view->name === 'issue_credit') {
     if ($view->current_display === 'organization_recent_page') {
