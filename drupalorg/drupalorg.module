@@ -4127,9 +4127,9 @@ function drupalorg_project_release_history_xml_written($project, $api_version) {
 }
 
 /**
- * Implements hook_mollom_data_alter().
+ * Implements hook_mollom_content_alter().
  */
-function drupalorg_mollom_data_alter(&$data) {
+function drupalorg_mollom_content_alter(&$data) {
   // Remove safe domains.
   if (isset($data['postBody'])) {
     $data['postBody'] = preg_replace(array(
