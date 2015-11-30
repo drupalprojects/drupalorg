@@ -130,6 +130,9 @@ function drupalorg_admin_pages_views_default_views() {
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
+      'settings' => array(
+        'log' => 1,
+      ),
     ),
     'action::node_publish_action' => array(
       'selected' => 1,
@@ -231,7 +234,7 @@ function drupalorg_admin_pages_views_default_views() {
     38 => 0,
     4 => 0,
   );
-  /* Filter criterion: Content: Body (body) */
+  /* Filter criterion: Content: Description (body) */
   $handler->display->display_options['filters']['body_value']['id'] = 'body_value';
   $handler->display->display_options['filters']['body_value']['table'] = 'field_data_body';
   $handler->display->display_options['filters']['body_value']['field'] = 'body_value';
@@ -359,6 +362,39 @@ function drupalorg_admin_pages_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'admin/content';
+  $translatables['admin_content_drupalorg'] = array(
+    t('Default'),
+    t('Content'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Displaying @start - @end of @total'),
+    t('There are no objects satisfying the filter settings. Try changing them to get some results.'),
+    t('author'),
+    t('- Choose an operation -'),
+    t('Title'),
+    t('New?'),
+    t('Type'),
+    t('Author'),
+    t('Published'),
+    t('Post date'),
+    t('Updated date'),
+    t('Edit'),
+    t('Body'),
+    t('Promoted'),
+    t('Sticky'),
+    t('Page'),
+  );
   $export['admin_content_drupalorg'] = $view;
 
   $view = new view();
@@ -444,6 +480,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
@@ -460,6 +497,9 @@ function drupalorg_admin_pages_views_default_views() {
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
+      'settings' => array(
+        'log' => 1,
+      ),
     ),
     'action::views_bulk_operations_user_roles_action' => array(
       'selected' => 1,
@@ -631,6 +671,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
@@ -647,6 +688,9 @@ function drupalorg_admin_pages_views_default_views() {
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
+      'settings' => array(
+        'log' => 1,
+      ),
     ),
     'action::views_bulk_operations_user_roles_action' => array(
       'selected' => 1,
@@ -863,6 +907,40 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['menu']['weight'] = '-1';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $translatables['admin_users_drupalorg'] = array(
+    t('Default'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Displaying @start - @end of @total'),
+    t('User'),
+    t('- Choose an operation -'),
+    t('Username'),
+    t('Active'),
+    t('Roles'),
+    t('Member for'),
+    t('Last access'),
+    t('Operations'),
+    t('Username contains'),
+    t('Name'),
+    t('E-mail contains'),
+    t('Role'),
+    t('Page'),
+    t('Organization People'),
+    t('field collection item from field_organizations'),
+    t('Job Title'),
+    t('Organization'),
+  );
   $export['admin_users_drupalorg'] = $view;
 
   $view = new view();
@@ -980,6 +1058,9 @@ function drupalorg_admin_pages_views_default_views() {
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
+      'settings' => array(
+        'log' => 1,
+      ),
     ),
     'action::comment_publish_action' => array(
       'selected' => 1,
@@ -1075,6 +1156,37 @@ function drupalorg_admin_pages_views_default_views() {
       'fixed' => '',
       'label' => 'User: Uid',
     ),
+  );
+  $translatables['drupalorg_admin_comments_by_user'] = array(
+    t('Defaults'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Node'),
+    t('User'),
+    t('- Choose an operation -'),
+    t('Node title'),
+    t('Comment'),
+    t('Updated date'),
+    t('Type'),
+    t('Published'),
+    t('Operations'),
+    t('Edit'),
+    t('Delete'),
+    t('All'),
+    t('Comments by %1'),
+    t('Content pane'),
+    t('View panes'),
   );
   $export['drupalorg_admin_comments_by_user'] = $view;
 
@@ -1185,6 +1297,9 @@ function drupalorg_admin_pages_views_default_views() {
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
+      'settings' => array(
+        'log' => 1,
+      ),
     ),
     'action::node_publish_action' => array(
       'selected' => 1,
@@ -1212,7 +1327,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
-  /* Field: Content: Body */
+  /* Field: Content: Description */
   $handler->display->display_options['fields']['body_1']['id'] = 'body_1';
   $handler->display->display_options['fields']['body_1']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body_1']['field'] = 'body';
@@ -1277,6 +1392,37 @@ function drupalorg_admin_pages_views_default_views() {
       'fixed' => '',
       'label' => 'User: Uid',
     ),
+  );
+  $translatables['drupalorg_admin_node_by_user'] = array(
+    t('Defaults'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('author'),
+    t('Content'),
+    t('- Choose an operation -'),
+    t('Title'),
+    t('Description'),
+    t('Post date'),
+    t('Type'),
+    t('Published'),
+    t('Operations'),
+    t('Edit'),
+    t('Delete'),
+    t('All'),
+    t('Nodes by %1'),
+    t('Content pane'),
+    t('View panes'),
   );
   $export['drupalorg_admin_node_by_user'] = $view;
 
@@ -1483,6 +1629,36 @@ function drupalorg_admin_pages_views_default_views() {
       'fixed' => '',
       'label' => 'User: Uid',
     ),
+  );
+  $translatables['drupalorg_admin_noderev_by_user'] = array(
+    t('Defaults'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Get the actual content from a content revision'),
+    t('revision user'),
+    t('author'),
+    t('Title'),
+    t('Log message'),
+    t('Updated date'),
+    t('Type'),
+    t('Published'),
+    t('Operations'),
+    t('Edit'),
+    t('All'),
+    t('Nodes Edited by %1'),
+    t('Content pane'),
+    t('View panes'),
   );
   $export['drupalorg_admin_noderev_by_user'] = $view;
 

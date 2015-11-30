@@ -118,6 +118,18 @@ function drupalorg_issues_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'entityreference_fields';
   $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $translatables['drupal_org_user_customers'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Comment referencing Content from field_for_customer'),
+    t('author'),
+    t('Entity Reference'),
+  );
   $export['drupal_org_user_customers'] = $view;
 
   $view = new view();
@@ -203,6 +215,18 @@ function drupalorg_issues_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'entityreference_fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $translatables['drupalorg_user_organizations'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Field collection item referencing Content from field_organization_reference'),
+    t('field_organizations'),
+    t('Entity Reference'),
+  );
   $export['drupalorg_user_organizations'] = $view;
 
   $view = new view();
@@ -269,6 +293,7 @@ function drupalorg_issues_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
@@ -278,6 +303,9 @@ function drupalorg_issues_views_default_views() {
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
+      'settings' => array(
+        'log' => 1,
+      ),
     ),
   );
   /* Field: Taxonomy term: Name */
@@ -342,6 +370,28 @@ function drupalorg_issues_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'admin/structure/taxonomy/unused-issue-tags';
+  $translatables['unused_issue_tags'] = array(
+    t('Master'),
+    t('Unused issue tags'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Delete only spam, misspelled, or otherwise <em>completely useless</em> tags. If a tag has a chance of being used again, it should not be deleted.'),
+    t('taxonomy_vocabulary_9'),
+    t('- Choose an operation -'),
+    t('Issue tag'),
+    t('Page'),
+  );
   $export['unused_issue_tags'] = $view;
 
   return $export;
