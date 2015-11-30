@@ -51,6 +51,29 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
       'bottom_right_content' => NULL,
       'footer' => NULL,
       'content' => NULL,
+      'header' => NULL,
+      'primary' => NULL,
+      'secondary' => NULL,
+      'tertiary_first' => NULL,
+      'tertiary_second' => NULL,
+      'tertiary_third' => NULL,
+      'tertiary_footer' => NULL,
+      'quaternary' => NULL,
+      'quinary' => NULL,
+      'senary' => NULL,
+      'septenary' => NULL,
+      'octonary' => NULL,
+      'nonary_header' => NULL,
+      'nonary_first' => NULL,
+      'nonary_second' => NULL,
+      'nonary_third' => NULL,
+      'nonary_footer' => NULL,
+      'denary' => NULL,
+      'sponsor_header' => NULL,
+      'sponsor_first' => NULL,
+      'sponsor_second' => NULL,
+      'sponsor_third' => NULL,
+      'translations' => NULL,
     ),
   );
   $display->cache = array();
@@ -76,7 +99,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 1,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -99,7 +124,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 1,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -119,12 +146,15 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'title' => 'Build something amazing.',
     'body' => '<h3>With over 200 new features and improvements.<h3>
 <p>The world’s leading open source content management platform just got better. Drupal 8 is the new standard for creating incredible digital experiences—from small non-profits, to global enterprises.</p>
-<a class="button">Download</a><a class="button-secondary">Demo</a>',
+<a class="button" href="/8/download">Download</a><a class="button-secondary">Demo</a>',
     'format' => '1',
     'substitute' => 0,
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -132,6 +162,31 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
   $pane->uuid = 'bb1cf0de-49a7-4c04-ae8f-961fa2de6a4b';
   $display->content['new-bb1cf0de-49a7-4c04-ae8f-961fa2de6a4b'] = $pane;
   $display->panels['header'][0] = 'new-bb1cf0de-49a7-4c04-ae8f-961fa2de6a4b';
+  $pane = new stdClass();
+  $pane->pid = 'new-1814a376-c260-494a-987e-70ff353e044a';
+  $pane->panel = 'header';
+  $pane->type = 'page_tabs';
+  $pane->subtype = 'page_tabs';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'type' => 'both',
+    'id' => 'tabs',
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '1814a376-c260-494a-987e-70ff353e044a';
+  $display->content['new-1814a376-c260-494a-987e-70ff353e044a'] = $pane;
+  $display->panels['header'][1] = 'new-1814a376-c260-494a-987e-70ff353e044a';
   $pane = new stdClass();
   $pane->pid = 'new-db8b73b0-078f-4c96-a173-c79362cce9f9';
   $pane->panel = 'nonary_first';
@@ -147,7 +202,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 0,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -170,7 +227,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 0,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -193,7 +252,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 1,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -216,7 +277,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 0,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -239,7 +302,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 0,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -262,7 +327,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 0,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -285,7 +352,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 0,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -308,7 +377,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 1,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -332,7 +403,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 0,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -355,7 +428,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 0,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -378,7 +453,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 0,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -401,7 +478,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 1,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -424,7 +503,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 1,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -447,7 +528,9 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
     'substitute' => 1,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
