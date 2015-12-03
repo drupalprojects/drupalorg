@@ -28,6 +28,12 @@ define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 7234); // 8.x
 function drupalorg_init() {
   global $user, $conf;
 
+  // If the language was detected from the URL, redirect to the default
+  // language unless this is a translated node page.
+  if ($GLOBALS['language']->provider === 'locale-url' && (strpos(drupal_get_normal_path($_GET['q']), 'node/') !== 0 || menu_get_object()->tnid == 0)) {
+    drupal_goto($_GET['q'], array('language' => language_default()));
+  }
+
   if (user_is_logged_in()) {
     // Use the dashboard as the home page if the user selected it.
     if (!empty($user->data['drupalorg_set_home']) && $_SERVER['REQUEST_URI'] === url('')) {
