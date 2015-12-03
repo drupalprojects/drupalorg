@@ -30,7 +30,7 @@ function drupalorg_init() {
 
   // If the language was detected from the URL, redirect to the default
   // language unless this is a translated node page.
-  if ($GLOBALS['language']->provider === 'locale-url' && (strpos(drupal_get_normal_path($_GET['q']), 'node/') !== 0 || menu_get_object()->tnid == 0)) {
+  if ($GLOBALS['language']->provider === 'locale-url' && (strpos(drupal_get_normal_path($_GET['q']), 'node/') !== 0 || !($node = menu_get_object()) || empty(menu_get_object()->tnid))) {
     drupal_goto($_GET['q'], array('language' => language_default()));
   }
 
