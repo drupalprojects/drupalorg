@@ -3470,10 +3470,30 @@ function drupalorg_entity_property_info_alter(&$info) {
     'description' => t('The Unix timestamp of the last comment, or the timestamp of the node creation if there are no comments yet.'),
     'type' => 'date',
   );
+
+  // Add an access callback to prevent user entities having all flag properties
+  // in RestWS export. See flag_entity_property_info_alter().
+  foreach (flag_get_flags() as $flag) {
+    if (!$flag->global) {
+      $info['user']['properties']['flag_' . $flag->name . '_flagged']['access callback'] = 'drupalorg_user_flag_access';
+    }
+  }
 }
 
 function drupalorg_has_new_content($node, array &$options, $name, $type, &$info) {
   return theme('mark', array('type' => node_mark($node->nid, $node->changed)));
+}
+
+/**
+ * User entity flag property access callback. Deny access to RestWS requests.
+ *
+ * @see entity_access(), drupalorg_entity_property_info_alter().
+ */
+function drupalorg_user_flag_access($op, $property, $entity, $account) {
+  if ($op === 'view') {
+    return FALSE;
+  }
+  return entity_metadata_user_access($op, $entity, $account);
 }
 
 /**
