@@ -3368,13 +3368,13 @@ function drupalorg_preprocess_comment(&$v) {
 
     // Add extra classes.
     $v['classes_array'][] = 'system-message';
-    if (preg_match('/^The last submitted patch, .*, failed testing.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
+    if (isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('/^The last submitted patch, .*, failed testing.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
       $v['classes_array'][] = 'testing-failed';
     }
-    elseif (preg_match('/queued .* for re-testing\.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
+    elseif (isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('/queued .* for re-testing\.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
       $v['classes_array'][] = 'queued-retesting';
     }
-    elseif (preg_match('#(Commit <a href=".*">.*</a> on .*:|class="versioncontrol-project-commits")#', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
+    elseif (isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('#(Commit <a href=".*">.*</a> on .*:|class="versioncontrol-project-commits")#', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
       $v['classes_array'][] = 'committed';
     }
     elseif (!empty($v['comment']->field_issue_changes)) {
