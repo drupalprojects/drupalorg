@@ -3489,11 +3489,15 @@ function drupalorg_has_new_content($node, array &$options, $name, $type, &$info)
  *
  * @see entity_access(), drupalorg_entity_property_info_alter().
  */
-function drupalorg_user_flag_access($op, $property, $entity, $account) {
+function drupalorg_user_flag_access($op, $property, $entity_type, $entity) {
   if ($op === 'view') {
-    return FALSE;
+    foreach (debug_backtrace() as $trace) {
+      if ($trace['function'] === 'restws_handle_request') {
+        return FALSE;
+      }
+    }
   }
-  return entity_metadata_user_access($op, $entity, $account);
+  return entity_metadata_user_access($op, $entity);
 }
 
 /**
