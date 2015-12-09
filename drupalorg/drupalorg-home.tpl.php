@@ -1,17 +1,6 @@
 <div class="front-primary">
-
-  <div id="community-updates">
-    <ul>
-      <li><a href="#tab-news" id="tab-news-link">News</a></li>
-      <li><a href="#tab-docs" id="tab-docs-link"><span class="icon"></span>Docs Updates</a></li>
-      <li><a href="#tab-forum" id="tab-forum-link"><span class="icon"></span>Forum Posts</a></li>
-      <li><a href="#tab-commits" id="tab-commits-link"><span class="icon"></span>Commits</a></li>
-    </ul>
-    <div id="tab-news"><?php print $tab_content_news; ?></div>
-    <div id="tab-docs"><?php print $tab_content_docs; ?></div>
-    <div id="tab-forum"><?php print $tab_content_forums; ?></div>
-    <div id="tab-commits"><?php print $tab_content_git; ?></div>
-  </div>
+  <div id="tab-news"><?php print $tab_content_news; ?></div>
+  <div id="membership" class="last"><?php print render($region['preface_second']); ?></div>
 </div>
 
 <div id="develop-with-drupal">
