@@ -967,9 +967,7 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'assign and be assigned project issues'.
   $permissions['assign and be assigned project issues'] = array(
     'name' => 'assign and be assigned project issues',
-    'roles' => array(
-      'drupal.org issue queue squad' => 'drupal.org issue queue squad',
-    ),
+    'roles' => array(),
     'module' => 'project_issue',
   );
 
@@ -1012,7 +1010,6 @@ function drupalorg_permissions_user_default_permissions() {
       'community' => 'community',
       'confirmed' => 'confirmed',
       'content moderator' => 'content moderator',
-      'drupal.org issue queue squad' => 'drupal.org issue queue squad',
       'security team' => 'security team',
       'testing administrator' => 'testing administrator',
       'user administrator' => 'user administrator',
@@ -2565,7 +2562,6 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'community' => 'community',
       'content moderator' => 'content moderator',
-      'drupal.org issue queue squad' => 'drupal.org issue queue squad',
       'security team' => 'security team',
       'testing administrator' => 'testing administrator',
       'user administrator' => 'user administrator',
