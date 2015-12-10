@@ -82,12 +82,6 @@ function drupalorg_permissions_user_default_roles() {
     'weight' => 2,
   );
 
-  // Exported role: list maintainer.
-  $roles['list maintainer'] = array(
-    'name' => 'list maintainer',
-    'weight' => 13,
-  );
-
   // Exported role: security team.
   $roles['security team'] = array(
     'name' => 'security team',
