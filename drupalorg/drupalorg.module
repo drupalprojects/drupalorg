@@ -3409,8 +3409,10 @@ function drupalorg_preprocess_comment(&$v) {
     if (isset($as_volunteer[0])) {
       // Link to organizations.
       foreach ($wrapper->field_attribute_contribution_to as $organization) {
-        $uri = entity_uri('node', $organization->value());
-        $args['!organization'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+        if ($organization->value()) {
+          $uri = entity_uri('node', $organization->value());
+          $args['!organization'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+        }
       }
       if (isset($args['!organization'])) {
         $args['!organization'] = implode(', ', $args['!organization']);
@@ -3418,8 +3420,10 @@ function drupalorg_preprocess_comment(&$v) {
       }
       // Link to customers.
       foreach ($wrapper->field_for_customer as $organization) {
-        $uri = entity_uri('node', $organization->value());
-        $args['!customer'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+        if ($organization->value()) {
+          $uri = entity_uri('node', $organization->value());
+          $args['!customer'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+        }
       }
       if (isset($args['!customer'])) {
         $args['!customer'] = implode(', ', $args['!customer']);

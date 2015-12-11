@@ -490,11 +490,15 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           if (isset($as_volunteer[0])) {
             // Add organizations.
             foreach ($comment_wrapper->field_attribute_contribution_to as $organization) {
-              $table['#rows'][$comment->uid]['by']['@organization'][$organization->nid->value()] = $organization->title->value();
+              if ($organization->value()) {
+                $table['#rows'][$comment->uid]['by']['@organization'][$organization->nid->value()] = $organization->title->value();
+              }
             }
             // Add customers.
             foreach ($comment_wrapper->field_for_customer as $organization) {
-              $table['#rows'][$comment->uid]['by']['@customer'][$organization->nid->value()] = $organization->title->value();
+              if ($organization->value()) {
+                $table['#rows'][$comment->uid]['by']['@customer'][$organization->nid->value()] = $organization->title->value();
+              }
             }
           }
 
