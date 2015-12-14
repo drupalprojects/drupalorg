@@ -886,6 +886,11 @@ function drupalorg_preprocess_page(&$variables) {
  * Implementation of template_preprocess_drupalorg_home().
  */
 function drupalorg_preprocess_drupalorg_home(&$variables) {
+  // Add preface second region.
+  $variables['region']['preface_second'] = block_get_blocks_by_region('preface_second');
+  $variables['region']['preface_second']['#theme_wrappers'][] = 'region';
+  $variables['region']['preface_second']['#region'] = 'preface_second';
+
   // Retrieve or rebuild stats cache.
   $variables += drupalorg_get_activity();
 
