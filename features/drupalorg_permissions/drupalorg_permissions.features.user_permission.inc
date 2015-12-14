@@ -435,6 +435,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'bakery',
   );
 
+  // Exported permission: 'administer block classes'.
+  $permissions['administer block classes'] = array(
+    'name' => 'administer block classes',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'block_class',
+  );
+
   // Exported permission: 'administer blocks'.
   $permissions['administer blocks'] = array(
     'name' => 'administer blocks',
@@ -490,6 +499,15 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'node',
+  );
+
+  // Exported permission: 'administer custom content'.
+  $permissions['administer custom content'] = array(
+    'name' => 'administer custom content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'ctools_custom_content',
   );
 
   // Exported permission: 'administer facets'.
@@ -652,6 +670,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'metatag',
   );
 
+  // Exported permission: 'administer mini panels'.
+  $permissions['administer mini panels'] = array(
+    'name' => 'administer mini panels',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels_mini',
+  );
+
   // Exported permission: 'administer modules'.
   $permissions['administer modules'] = array(
     'name' => 'administer modules',
@@ -721,6 +748,195 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panelizer comment comment_node_book defaults'.
+  $permissions['administer panelizer comment comment_node_book defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_book defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_book_listing defaults'.
+  $permissions['administer panelizer comment comment_node_book_listing defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_book_listing defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_casestudy defaults'.
+  $permissions['administer panelizer comment comment_node_casestudy defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_casestudy defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_changenotice defaults'.
+  $permissions['administer panelizer comment comment_node_changenotice defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_changenotice defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_forum defaults'.
+  $permissions['administer panelizer comment comment_node_forum defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_forum defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_organization defaults'.
+  $permissions['administer panelizer comment comment_node_organization defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_organization defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_packaging_whitelist defaults'.
+  $permissions['administer panelizer comment comment_node_packaging_whitelist defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_packaging_whitelist defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_page defaults'.
+  $permissions['administer panelizer comment comment_node_page defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_page defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_core defaults'.
+  $permissions['administer panelizer comment comment_node_project_core defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_core defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_distribution defaults'.
+  $permissions['administer panelizer comment comment_node_project_distribution defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_distribution defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_drupalorg defaults'.
+  $permissions['administer panelizer comment comment_node_project_drupalorg defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_drupalorg defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_issue defaults'.
+  $permissions['administer panelizer comment comment_node_project_issue defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_issue defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_module defaults'.
+  $permissions['administer panelizer comment comment_node_project_module defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_module defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_release defaults'.
+  $permissions['administer panelizer comment comment_node_project_release defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_release defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_theme defaults'.
+  $permissions['administer panelizer comment comment_node_project_theme defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_theme defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_theme_engine defaults'.
+  $permissions['administer panelizer comment comment_node_project_theme_engine defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_theme_engine defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_translation defaults'.
+  $permissions['administer panelizer comment comment_node_project_translation defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_translation defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_section defaults'.
+  $permissions['administer panelizer comment comment_node_section defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_section defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_story defaults'.
+  $permissions['administer panelizer comment comment_node_story defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_story defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node book defaults'.
+  $permissions['administer panelizer node book defaults'] = array(
+    'name' => 'administer panelizer node book defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node book_listing defaults'.
+  $permissions['administer panelizer node book_listing defaults'] = array(
+    'name' => 'administer panelizer node book_listing defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node casestudy defaults'.
+  $permissions['administer panelizer node casestudy defaults'] = array(
+    'name' => 'administer panelizer node casestudy defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node changenotice defaults'.
+  $permissions['administer panelizer node changenotice defaults'] = array(
+    'name' => 'administer panelizer node changenotice defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node forum defaults'.
+  $permissions['administer panelizer node forum defaults'] = array(
+    'name' => 'administer panelizer node forum defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node organization defaults'.
+  $permissions['administer panelizer node organization defaults'] = array(
+    'name' => 'administer panelizer node organization defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node packaging_whitelist defaults'.
+  $permissions['administer panelizer node packaging_whitelist defaults'] = array(
+    'name' => 'administer panelizer node packaging_whitelist defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node page choice'.
+  $permissions['administer panelizer node page choice'] = array(
+    'name' => 'administer panelizer node page choice',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panelizer node page content'.
   $permissions['administer panelizer node page content'] = array(
     'name' => 'administer panelizer node page content',
@@ -763,6 +979,111 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panelizer node project_core defaults'.
+  $permissions['administer panelizer node project_core defaults'] = array(
+    'name' => 'administer panelizer node project_core defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_distribution defaults'.
+  $permissions['administer panelizer node project_distribution defaults'] = array(
+    'name' => 'administer panelizer node project_distribution defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_drupalorg defaults'.
+  $permissions['administer panelizer node project_drupalorg defaults'] = array(
+    'name' => 'administer panelizer node project_drupalorg defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_issue defaults'.
+  $permissions['administer panelizer node project_issue defaults'] = array(
+    'name' => 'administer panelizer node project_issue defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_module defaults'.
+  $permissions['administer panelizer node project_module defaults'] = array(
+    'name' => 'administer panelizer node project_module defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_release choice'.
+  $permissions['administer panelizer node project_release choice'] = array(
+    'name' => 'administer panelizer node project_release choice',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_release content'.
+  $permissions['administer panelizer node project_release content'] = array(
+    'name' => 'administer panelizer node project_release content',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_release context'.
+  $permissions['administer panelizer node project_release context'] = array(
+    'name' => 'administer panelizer node project_release context',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_release defaults'.
+  $permissions['administer panelizer node project_release defaults'] = array(
+    'name' => 'administer panelizer node project_release defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_release layout'.
+  $permissions['administer panelizer node project_release layout'] = array(
+    'name' => 'administer panelizer node project_release layout',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_release overview'.
+  $permissions['administer panelizer node project_release overview'] = array(
+    'name' => 'administer panelizer node project_release overview',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_release settings'.
+  $permissions['administer panelizer node project_release settings'] = array(
+    'name' => 'administer panelizer node project_release settings',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_theme defaults'.
+  $permissions['administer panelizer node project_theme defaults'] = array(
+    'name' => 'administer panelizer node project_theme defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_theme_engine defaults'.
+  $permissions['administer panelizer node project_theme_engine defaults'] = array(
+    'name' => 'administer panelizer node project_theme_engine defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node project_translation defaults'.
+  $permissions['administer panelizer node project_translation defaults'] = array(
+    'name' => 'administer panelizer node project_translation defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panelizer node section content'.
   $permissions['administer panelizer node section content'] = array(
     'name' => 'administer panelizer node section content',
@@ -801,6 +1122,167 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'administer panelizer node section settings'.
   $permissions['administer panelizer node section settings'] = array(
     'name' => 'administer panelizer node section settings',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node story defaults'.
+  $permissions['administer panelizer node story defaults'] = array(
+    'name' => 'administer panelizer node story defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term areas_of_expertise defaults'.
+  $permissions['administer panelizer taxonomy_term areas_of_expertise defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term areas_of_expertise defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_1 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_1 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_1 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_2 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_2 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_2 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_3 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_3 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_3 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_31 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_31 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_31 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_34 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_34 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_34 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_38 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_38 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_38 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_44 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_44 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_44 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_46 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_46 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_46 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_48 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_48 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_48 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_5 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_5 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_5 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_50 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_50 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_50 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_52 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_52 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_52 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_54 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_54 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_54 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_56 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_56 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_56 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_58 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_58 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_58 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_6 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_6 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_6 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_60 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_60 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_60 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_62 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_62 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_62 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_7 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_7 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_7 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer taxonomy_term vocabulary_9 defaults'.
+  $permissions['administer panelizer taxonomy_term vocabulary_9 defaults'] = array(
+    'name' => 'administer panelizer taxonomy_term vocabulary_9 defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer user user defaults'.
+  $permissions['administer panelizer user user defaults'] = array(
+    'name' => 'administer panelizer user user defaults',
     'roles' => array(),
     'module' => 'panelizer',
   );
@@ -1213,6 +1695,15 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full projects',
     'roles' => array(),
     'module' => 'project',
+  );
+
+  // Exported permission: 'create mini panels'.
+  $permissions['create mini panels'] = array(
+    'name' => 'create mini panels',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels_mini',
   );
 
   // Exported permission: 'create new books'.
