@@ -815,7 +815,6 @@ function drupalorg_library_alter(&$libraries, $module) {
  * Page callback for the frontpage.
  */
 function drupalorg_home() {
-  drupal_add_library('system', 'ui.tabs');
   drupal_set_title(t('Drupal - Open Source CMS'));
 
   return theme('drupalorg_home');
@@ -887,15 +886,10 @@ function drupalorg_preprocess_page(&$variables) {
  * Implementation of template_preprocess_drupalorg_home().
  */
 function drupalorg_preprocess_drupalorg_home(&$variables) {
-  // Get content for the Recent Forum Posts tab.
-  $result = db_query_range('SELECT f.nid, f.title, f.created, u.uid, u.name FROM {forum_index} f INNER JOIN {node} n ON n.nid = f.nid INNER JOIN {users} u ON u.uid = n.uid ORDER BY f.nid DESC', 0, 5);
-  $recent_forums = '';
-  foreach ($result as $node) {
-    $recent_forums .= '<h6>' . l($node->title, 'node/' . $node->nid) . '</h6><p class="submitted">' . t('Posted by !author on @created.', array('!author' => theme('username', array('account' => $node)), '@created' => format_date($node->created, 'custom', 'F j, Y \a\t g:ia'))) . '</p>';
-  }
-
-  $recent_forums .= '<p>' . l(t('More forums…'), 'forum') . '</p>';
-  $variables['tab_content_forums'] = $recent_forums;
+  // Add preface second region.
+  $variables['region']['preface_second'] = block_get_blocks_by_region('preface_second');
+  $variables['region']['preface_second']['#theme_wrappers'][] = 'region';
+  $variables['region']['preface_second']['#region'] = 'preface_second';
 
   // Retrieve or rebuild stats cache.
   $variables += drupalorg_get_activity();
