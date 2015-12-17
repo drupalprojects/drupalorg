@@ -1,5 +1,5 @@
 <p>Download Drupal core files, and extend your site with modules, themes, translations and installation profiles.</p>
-<div id="download" class="node-section">
+<div id="download">
   <div class="core">
     <h2>Core</h2>
     <ul class="flat">
@@ -39,6 +39,8 @@
     </ul>
   </div>
 </div>
+
+<hr>
 
 <div class="drupal-modules">
   <h2>Drupal Modules</h2>
