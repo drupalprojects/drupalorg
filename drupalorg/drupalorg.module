@@ -246,6 +246,14 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['drupalorg-ham/%/%/%'] = array(
+    'access callback' => 'drupalorg_ham_access',
+    'access arguments' => array(1, 2, 3),
+    'page callback' => 'drupalorg_ham',
+    'page arguments' => array(1, 2),
+    'type' => MENU_CALLBACK,
+  );
+
   $items['admin/config/system/drupalorg'] = array(
     'title' => 'Drupal.org settings',
     'access arguments' => array('administer site configuration'),
@@ -4168,4 +4176,28 @@ function drupalorg_mollom_issue_moderation(&$form, &$form_state) {
   else {
     $form_state['values']['status'] = NODE_NOT_PUBLISHED;
   }
+}
+
+/**
+ * Menu access callback for marking an entity as ham.
+ *
+ * Check that a user has admin access for the entity, a valid token, and a
+ * valid entity.
+ */
+function drupalorg_ham_access($entity_type, $id, $token) {
+  return user_access('administer ' . $entity_type . 's') && $token === drupal_get_token($entity_type . $id) && entity_load_single($entity_type, $id) !== FALSE;
+}
+
+/**
+ * Menu callback for marking an entity as ham.
+ *
+ * Clear all users’ spam flags for the entity, set a message, and return to the
+ * original page.
+ */
+function drupalorg_ham($entity_type, $id) {
+  flag_reset_flag(flag_get_flag('drupalorg_' . $entity_type . '_spam'), $id);
+
+  drupal_set_message(t('%label unmarked as spam.', array('%label' => entity_label($entity_type, entity_load_single($entity_type, $id)))));
+
+  drupal_goto();
 }
