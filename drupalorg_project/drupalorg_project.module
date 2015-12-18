@@ -1501,7 +1501,7 @@ function drupalorg_project_meta_data($node) {
   }
 
   // Automated tests.
-  if (module_exists('pift') && pift_project_enabled($node->nid)) {
+  if (module_exists('pift') && pift_ci_project_info($node->nid)) {
     $info[t('Automated tests')] = t('Enabled');
   }
 
