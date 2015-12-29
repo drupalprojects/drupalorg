@@ -408,6 +408,13 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     // Validate full project short name.
     $language = $form['field_project_machine_name']['#language'];
     $form['field_project_machine_name'][$language][0]['value']['#element_validate'][] = 'drupalorg_project_machine_name_validate';
+
+    // Do not allow sandboxes to be transferred to another maintainer. The
+    // maintainer is part of the Git repository URL.
+    if (project_promote_project_is_sandbox($form_state['node'])) {
+      $form['author']['name']['#disabled'] = TRUE;
+      $form['author']['name']['#description'] = t('Sandbox projects can not be transferred to another maintainer.');
+    }
   }
   elseif (project_issue_node_is_issue($form_state['node'])) {
     // Only existing issues for projects.
