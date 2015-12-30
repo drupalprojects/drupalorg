@@ -17,6 +17,7 @@ dependencies[] = list
 dependencies[] = nodechanges
 dependencies[] = options
 dependencies[] = project_issue
+dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = text
 dependencies[] = token_formatters
