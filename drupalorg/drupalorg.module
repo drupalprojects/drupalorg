@@ -1676,6 +1676,12 @@ function drupalorg_form_node_form_alter(&$form) {
       _drupalorg_alter_comment_attribution($form['nodechanges_comment'], $form['#node']);
     }
   }
+
+  // Add class 'prevent-multiple-submit-form' to node edit form.
+  if (!empty($form['actions']['submit'])) {
+    $form['#attached']['js'][] = drupal_get_path('module', 'drupalorg') . '/js/jquery.form-submit-single.js';
+    $form['#attributes']['class'][] = 'prevent-multiple-submit-form';
+  }
 }
 
 /**

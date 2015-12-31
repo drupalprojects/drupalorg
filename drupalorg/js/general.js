@@ -364,4 +364,13 @@
       });
     }
   };
+
+  /**
+   * Prevent multiple submits.
+   */
+  Drupal.behaviors.drupalorgPreventMultipleSubmit = {
+    attach: function(context, settings) {
+      $('body').once('multisub').delegate('form.prevent-multiple-submit-form', 'submit.formSubmitSingle', $.onFormSubmitSingle);
+    }
+  };
 })(jQuery);
