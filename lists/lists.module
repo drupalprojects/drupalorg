@@ -439,7 +439,7 @@ function _lists_mailman_user_subscribed($list, $account) {
   if ($result) {
     // replace '@' with '--at--' to match the mailman internal representation so
     // we don't match our own search query which would always result in a match.
-    return (bool) strpos(strtolower($result->data), str_replace('@', '--at--', $account->mail));
+    return (bool) strpos(strtolower($result->data), str_replace('@', '--at--', drupal_strtolower($account->mail)));
   }
   else {
     return false;
