@@ -697,6 +697,17 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'mollom',
   );
 
+  // Exported permission: 'administer multiple emails'.
+  $permissions['administer multiple emails'] = array(
+    'name' => 'administer multiple emails',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'security team' => 'security team',
+      'user administrator' => 'user administrator',
+    ),
+    'module' => 'multiple_email',
+  );
+
   // Exported permission: 'administer news feeds'.
   $permissions['administer news feeds'] = array(
     'name' => 'administer news feeds',
