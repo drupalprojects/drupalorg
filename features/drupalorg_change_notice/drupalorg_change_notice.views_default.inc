@@ -133,7 +133,7 @@ function drupalorg_change_notice_views_default_views() {
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
   $handler->display->display_options['arguments']['nid']['field'] = 'nid';
   $handler->display->display_options['arguments']['nid']['relationship'] = 'field_project_target_id';
-  $handler->display->display_options['arguments']['nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'not found';
   $handler->display->display_options['arguments']['nid']['title_enable'] = TRUE;
   $handler->display->display_options['arguments']['nid']['title'] = 'Change records for %1';
   $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
@@ -692,7 +692,7 @@ function drupalorg_change_notice_views_default_views() {
     14 => 0,
     38 => 0,
   );
-  $handler->display->display_options['path'] = 'list-changes/published';
+  $handler->display->display_options['path'] = 'list-changes/%/published';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Published';
   $handler->display->display_options['menu']['description'] = 'Published change records';
@@ -902,7 +902,7 @@ function drupalorg_change_notice_views_default_views() {
     14 => 0,
     38 => 0,
   );
-  $handler->display->display_options['path'] = 'list-changes/drafts';
+  $handler->display->display_options['path'] = 'list-changes/%/drafts';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Draft';
   $handler->display->display_options['menu']['description'] = 'Draft change records';
@@ -1018,7 +1018,7 @@ function drupalorg_change_notice_views_default_views() {
     14 => 0,
     38 => 0,
   );
-  $handler->display->display_options['path'] = 'list-changes/review';
+  $handler->display->display_options['path'] = 'list-changes/%/review';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Review';
   $handler->display->display_options['menu']['description'] = 'Draft change records for review';
@@ -1243,6 +1243,65 @@ function drupalorg_change_notice_views_default_views() {
     1 => '1',
   );
   $handler->display->display_options['block_description'] = 'Change records for issue page';
+  $translatables['change_records'] = array(
+    t('Defaults'),
+    t('Change records'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Invalid project or no changes found.'),
+    t('Content entity referenced from field_project'),
+    t('Introduced in branch/version'),
+    t('Introduced in version'),
+    t('Notice created'),
+    t('Description'),
+    t('Change'),
+    t('<a href="[path]" title="[field_description_value]">[title]</a>'),
+    t('[field_description]'),
+    t('All'),
+    t('Change records for %1'),
+    t('Keywords'),
+    t('Branch changed in'),
+    t('Change node created'),
+    t('Impacts'),
+    t('Online doc update'),
+    t('Theming guide update'),
+    t('Module developer doc update'),
+    t('Examples project update'),
+    t('Coder Review update'),
+    t('Coder Upgrade update'),
+    t('Other update'),
+    t('Change list page (published)'),
+    t('<a href="/node/add/changenotice?field_project=[field_project]">Add new change record</a>'),
+    t('Change record status'),
+    t('Introduced in branch'),
+    t('Change list page (drafts)'),
+    t('Draft change records'),
+    t('Change list page (review)'),
+    t('Draft change records for fixed issues'),
+    t('These draft change records reference <strong>Fixed</strong> or <strong>Closed (fixed)</strong> issues. They should be reviewed and published if appropriate.'),
+    t('Referenced issue'),
+    t('Issue status'),
+    t('Updates page'),
+    t('Change records - Updates done'),
+    t('Issue page draft API changes'),
+    t('Change record drafts'),
+    t('Content entity referenced from field_issues'),
+    t('Feed'),
+    t('Issue page published API changes'),
+    t('Change records for this issue'),
+    t('Change records for issue page'),
+  );
   $export['change_records'] = $view;
 
   return $export;
