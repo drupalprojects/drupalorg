@@ -117,7 +117,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
 
     // Install core dependencies with composer for Drupal 8 and above.
     if ($this->project_node->type === 'project_core' && $this->release_node->field_release_version_major[LANGUAGE_NONE][0]['value'] >= 8 && file_exists($this->export . '/composer.json')) {
-      if (!drush_shell_cd_and_exec($this->temp_directory, 'composer install --working-dir=%s --prefer-dist --no-interaction', $this->export)) {
+      if (!drush_shell_cd_and_exec($this->temp_directory, 'composer install --working-dir=%s --prefer-dist --no-interaction --ignore-platform-reqs', $this->export)) {
         watchdog('package_error', 'Installing core dependencies with composer failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR);
         drush_shell_exec('rm -rf %s', $this->repository);
         return 'error';
