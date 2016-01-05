@@ -12,7 +12,6 @@ features[ctools][] = views:views_default:3.0
 features[features_api][] = api:2
 features[search_api_index][] = project_issues
 features[search_api_server][] = project_issues
-features[views_view][] = drupalorg_project_issues_searchapi
 features[views_view][] = project_issue_all_projects_searchapi
 features[views_view][] = project_issue_project_searchapi
 features[views_view][] = project_issue_search_all_searchapi

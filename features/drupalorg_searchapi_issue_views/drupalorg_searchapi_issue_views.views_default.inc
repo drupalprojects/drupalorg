@@ -694,6 +694,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Project issue search links */
+  $handler->display->display_options['header']['project_issue_search_links']['id'] = 'project_issue_search_links';
+  $handler->display->display_options['header']['project_issue_search_links']['table'] = 'views';
+  $handler->display->display_options['header']['project_issue_search_links']['field'] = 'project_issue_search_links';
+  $handler->display->display_options['header']['project_issue_search_links']['empty'] = TRUE;
   $handler->display->display_options['path'] = 'project/issues';
 
   /* Display: Feed */
@@ -1459,6 +1465,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Project issue search links */
+  $handler->display->display_options['header']['project_issue_search_links']['id'] = 'project_issue_search_links';
+  $handler->display->display_options['header']['project_issue_search_links']['table'] = 'views';
+  $handler->display->display_options['header']['project_issue_search_links']['field'] = 'project_issue_search_links';
+  $handler->display->display_options['header']['project_issue_search_links']['empty'] = TRUE;
   $handler->display->display_options['path'] = 'project/issues/%';
 
   /* Display: Feed */
@@ -2072,6 +2084,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Project issue search links */
+  $handler->display->display_options['header']['project_issue_search_links']['id'] = 'project_issue_search_links';
+  $handler->display->display_options['header']['project_issue_search_links']['table'] = 'views';
+  $handler->display->display_options['header']['project_issue_search_links']['field'] = 'project_issue_search_links';
+  $handler->display->display_options['header']['project_issue_search_links']['empty'] = TRUE;
   $handler->display->display_options['path'] = 'project/issues/search';
 
   /* Display: Feed */
@@ -2971,6 +2989,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Project issue search links */
+  $handler->display->display_options['header']['project_issue_search_links']['id'] = 'project_issue_search_links';
+  $handler->display->display_options['header']['project_issue_search_links']['table'] = 'views';
+  $handler->display->display_options['header']['project_issue_search_links']['field'] = 'project_issue_search_links';
+  $handler->display->display_options['header']['project_issue_search_links']['empty'] = TRUE;
   $handler->display->display_options['path'] = 'project/issues/search/%';
 
   /* Display: Feed */
@@ -3738,6 +3762,12 @@ function drupalorg_searchapi_issue_views_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Project issue search links */
+  $handler->display->display_options['header']['project_issue_search_links']['id'] = 'project_issue_search_links';
+  $handler->display->display_options['header']['project_issue_search_links']['table'] = 'views';
+  $handler->display->display_options['header']['project_issue_search_links']['field'] = 'project_issue_search_links';
+  $handler->display->display_options['header']['project_issue_search_links']['empty'] = TRUE;
   $handler->display->display_options['path'] = 'project/issues/user';
 
   /* Display: Feed */
