@@ -284,6 +284,9 @@ function drupalorg_git_gateway_permission() {
     'accept git access agreement' => array(
       'title' => t('Accept Git access agreement'),
     ),
+    'administer user git access' => array(
+      'title' => t('Administer users’ Git access'),
+    ),
   );
 }
 
@@ -292,7 +295,7 @@ function drupalorg_git_gateway_permission() {
  */
 function drupalorg_git_gateway_user_page_access($account) {
   // Default logic from user_edit_access(), but also allow if they have administer vcs
-  return (($GLOBALS['user']->uid == $account->uid && user_access('accept git access agreement')) || user_access('administer users')) || user_access('administer version control systems') && $account->uid > 0;
+  return (($GLOBALS['user']->uid == $account->uid && user_access('accept git access agreement')) || user_access('administer users')) || user_access('administer user git access') && $account->uid > 0;
 }
 
 /**
