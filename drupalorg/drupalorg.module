@@ -2748,6 +2748,9 @@ function drupalorg_node_insert($node) {
     }
     node_save($node);
   }
+  elseif (project_release_node_is_release($node) && project_release_is_security_update($node)) {
+    drupal_mail('drupalorg', 'security_release', 'security@drupal.org', language_default(), array('node' => $node));
+  }
 }
 
 /**
@@ -4205,4 +4208,19 @@ function drupalorg_ham($entity_type, $id) {
   drupal_set_message(t('%label unmarked as spam.', array('%label' => entity_label($entity_type, entity_load_single($entity_type, $id)))));
 
   drupal_goto();
+}
+
+/**
+ * Implements hook_mail().
+ */
+function drupalorg_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'security_release':
+      $message['subject'] = t('New security release: @title', array('@title' => $params['node']->title));
+      $message['body'] = array(
+        t('A new security release has been created: @title', array('@title' => $params['node']->title)),
+        url('node/' . $params['node']->nid, array('absolute' => TRUE)),
+      );
+      break;
+  }
 }
