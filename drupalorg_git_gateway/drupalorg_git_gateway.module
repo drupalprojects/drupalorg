@@ -269,8 +269,7 @@ function drupalorg_git_gateway_no_consent_error($account) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Menu callback for user’s Git access.
  */
 function drupalorg_git_gateway_user_page($account) {
   require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'drupalorg_git_gateway') . "/drupalorg_git_gateway.user-form.inc";
@@ -297,8 +296,7 @@ function drupalorg_git_gateway_user_page_access($account) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Menu callback for admin settings.
  */
 function drupalorg_git_gateway_defaults($form, &$form_state) {
   $form = array();
@@ -315,8 +313,7 @@ function drupalorg_git_gateway_defaults($form, &$form_state) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Menu callback for global Git access killswitches.
  */
 function drupalorg_git_gateway_gatectl($form, &$form_state) {
   $form = array();
@@ -356,8 +353,9 @@ function drupalorg_git_gateway_gatectl($form, &$form_state) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Form submit callback.
+ *
+ * @see drupalorg_git_gateway_gatectl().
  */
 function drupalorg_git_gateway_gatectl_submit($form, &$form_state) {
   $pushctl = 0;
