@@ -613,6 +613,7 @@ function drupalorg_issues_field_default_field_instances() {
   $field_instances['node-project_issue-field_issue_parent'] = array(
     'bundle' => 'project_issue',
     'default_value' => NULL,
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -654,6 +655,19 @@ function drupalorg_issues_field_default_field_instances() {
     'label' => 'Parent issue',
     'required' => 0,
     'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'action' => 'none',
+          'action_on_edit' => 0,
+          'fallback' => 'none',
+          'providers' => array(
+            'og_context' => 0,
+            'url' => 1,
+          ),
+          'skip_perm' => 0,
+          'status' => 1,
+        ),
+      ),
       'user_register_form' => FALSE,
     ),
     'widget' => array(
