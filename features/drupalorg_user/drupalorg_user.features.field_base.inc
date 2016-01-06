@@ -10,7 +10,7 @@
 function drupalorg_user_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_areas_of_expertise'
+  // Exported field_base: 'field_areas_of_expertise'.
   $field_bases['field_areas_of_expertise'] = array(
     'active' => 1,
     'cardinality' => 10,
@@ -36,7 +36,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_bio'
+  // Exported field_base: 'field_bio'.
   $field_bases['field_bio'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -55,7 +55,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_contributed'
+  // Exported field_base: 'field_contributed'.
   $field_bases['field_contributed'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -93,7 +93,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_country'
+  // Exported field_base: 'field_country'.
   $field_bases['field_country'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -345,7 +345,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_current'
+  // Exported field_base: 'field_current'.
   $field_bases['field_current'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -370,7 +370,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_drupal_contributions'
+  // Exported field_base: 'field_drupal_contributions'.
   $field_bases['field_drupal_contributions'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -389,7 +389,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_events_attended'
+  // Exported field_base: 'field_events_attended'.
   $field_bases['field_events_attended'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -441,7 +441,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_first_name'
+  // Exported field_base: 'field_first_name'.
   $field_bases['field_first_name'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -462,7 +462,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_gender'
+  // Exported field_base: 'field_gender'.
   $field_bases['field_gender'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -489,7 +489,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_industries_worked_in'
+  // Exported field_base: 'field_industries_worked_in'.
   $field_bases['field_industries_worked_in'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -510,7 +510,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_irc_nick'
+  // Exported field_base: 'field_irc_nick'.
   $field_bases['field_irc_nick'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -531,7 +531,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_job_title'
+  // Exported field_base: 'field_job_title'.
   $field_bases['field_job_title'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -552,7 +552,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_languages'
+  // Exported field_base: 'field_languages'.
   $field_bases['field_languages'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -754,7 +754,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_last_name'
+  // Exported field_base: 'field_last_name'.
   $field_bases['field_last_name'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -775,7 +775,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_mentors'
+  // Exported field_base: 'field_mentors'.
   $field_bases['field_mentors'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -810,7 +810,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_notes'
+  // Exported field_base: 'field_notes'.
   $field_bases['field_notes'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -829,7 +829,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_organization_name'
+  // Exported field_base: 'field_organization_name'.
   $field_bases['field_organization_name'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -850,7 +850,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_organization_reference'
+  // Exported field_base: 'field_organization_reference'.
   $field_bases['field_organization_reference'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -885,7 +885,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_organizations'
+  // Exported field_base: 'field_organizations'.
   $field_bases['field_organizations'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -907,7 +907,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'field_collection',
   );
 
-  // Exported field_base: 'field_social_links'
+  // Exported field_base: 'field_social_links'.
   $field_bases['field_social_links'] = array(
     'active' => 1,
     'cardinality' => 7,
@@ -922,7 +922,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'url',
   );
 
-  // Exported field_base: 'field_subscribe_to'
+  // Exported field_base: 'field_subscribe_to'.
   $field_bases['field_subscribe_to'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -941,7 +941,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'mailchimp_lists_subscription',
   );
 
-  // Exported field_base: 'field_terms_of_service'
+  // Exported field_base: 'field_terms_of_service'.
   $field_bases['field_terms_of_service'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -966,7 +966,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_user_geolocation'
+  // Exported field_base: 'field_user_geolocation'.
   $field_bases['field_user_geolocation'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -988,7 +988,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'geolocation_latlng',
   );
 
-  // Exported field_base: 'field_websites'
+  // Exported field_base: 'field_websites'.
   $field_bases['field_websites'] = array(
     'active' => 1,
     'cardinality' => 5,
@@ -1017,7 +1017,7 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'link_field',
   );
 
-  // Exported field_base: 'og_user_node'
+  // Exported field_base: 'og_user_node'.
   $field_bases['og_user_node'] = array(
     'active' => 1,
     'cardinality' => -1,

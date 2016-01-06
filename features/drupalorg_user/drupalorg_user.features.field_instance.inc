@@ -11,7 +11,7 @@ function drupalorg_user_field_default_field_instances() {
   $field_instances = array();
 
   // Exported field_instance:
-  // 'field_collection_item-field_organizations-field_current'
+  // 'field_collection_item-field_organizations-field_current'.
   $field_instances['field_collection_item-field_organizations-field_current'] = array(
     'bundle' => 'field_organizations',
     'default_value' => array(
@@ -48,7 +48,7 @@ function drupalorg_user_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_organizations-field_job_title'
+  // 'field_collection_item-field_organizations-field_job_title'.
   $field_instances['field_collection_item-field_organizations-field_job_title'] = array(
     'bundle' => 'field_organizations',
     'default_value' => NULL,
@@ -83,7 +83,7 @@ function drupalorg_user_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_organizations-field_organization_name'
+  // 'field_collection_item-field_organizations-field_organization_name'.
   $field_instances['field_collection_item-field_organizations-field_organization_name'] = array(
     'bundle' => 'field_organizations',
     'default_value' => NULL,
@@ -118,7 +118,7 @@ function drupalorg_user_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_organizations-field_organization_reference'
+  // 'field_collection_item-field_organizations-field_organization_reference'.
   $field_instances['field_collection_item-field_organizations-field_organization_reference'] = array(
     'bundle' => 'field_organizations',
     'default_value' => NULL,
@@ -148,7 +148,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_areas_of_expertise'
+  // Exported field_instance: 'user-user-field_areas_of_expertise'.
   $field_instances['user-user-field_areas_of_expertise'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -182,7 +182,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_bio'
+  // Exported field_instance: 'user-user-field_bio'.
   $field_instances['user-user-field_bio'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -216,7 +216,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_contributed'
+  // Exported field_instance: 'user-user-field_contributed'.
   $field_instances['user-user-field_contributed'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -247,7 +247,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_country'
+  // Exported field_instance: 'user-user-field_country'.
   $field_instances['user-user-field_country'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -278,7 +278,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_drupal_contributions'
+  // Exported field_instance: 'user-user-field_drupal_contributions'.
   $field_instances['user-user-field_drupal_contributions'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -312,7 +312,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_events_attended'
+  // Exported field_instance: 'user-user-field_events_attended'.
   $field_instances['user-user-field_events_attended'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -343,7 +343,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_first_name'
+  // Exported field_instance: 'user-user-field_first_name'.
   $field_instances['user-user-field_first_name'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -376,7 +376,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_gender'
+  // Exported field_instance: 'user-user-field_gender'.
   $field_instances['user-user-field_gender'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -407,7 +407,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_industries_worked_in'
+  // Exported field_instance: 'user-user-field_industries_worked_in'.
   $field_instances['user-user-field_industries_worked_in'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -441,7 +441,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_irc_nick'
+  // Exported field_instance: 'user-user-field_irc_nick'.
   $field_instances['user-user-field_irc_nick'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -475,7 +475,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_languages'
+  // Exported field_instance: 'user-user-field_languages'.
   $field_instances['user-user-field_languages'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -506,7 +506,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_last_name'
+  // Exported field_instance: 'user-user-field_last_name'.
   $field_instances['user-user-field_last_name'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -539,7 +539,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_mentors'
+  // Exported field_instance: 'user-user-field_mentors'.
   $field_instances['user-user-field_mentors'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -574,7 +574,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_notes'
+  // Exported field_instance: 'user-user-field_notes'.
   $field_instances['user-user-field_notes'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -607,7 +607,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_organizations'
+  // Exported field_instance: 'user-user-field_organizations'.
   $field_instances['user-user-field_organizations'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -640,7 +640,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_social_links'
+  // Exported field_instance: 'user-user-field_social_links'.
   $field_instances['user-user-field_social_links'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -678,7 +678,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_subscribe_to'
+  // Exported field_instance: 'user-user-field_subscribe_to'.
   $field_instances['user-user-field_subscribe_to'] = array(
     'bundle' => 'user',
     'default_value' => array(
@@ -762,7 +762,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_terms_of_service'
+  // Exported field_instance: 'user-user-field_terms_of_service'.
   $field_instances['user-user-field_terms_of_service'] = array(
     'bundle' => 'user',
     'default_value' => array(
@@ -798,7 +798,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_user_geolocation'
+  // Exported field_instance: 'user-user-field_user_geolocation'.
   $field_instances['user-user-field_user_geolocation'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -828,7 +828,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_websites'
+  // Exported field_instance: 'user-user-field_websites'.
   $field_instances['user-user-field_websites'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -876,7 +876,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-og_user_node'
+  // Exported field_instance: 'user-user-og_user_node'.
   $field_instances['user-user-og_user_node'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
