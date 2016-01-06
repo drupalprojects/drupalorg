@@ -1420,6 +1420,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'path',
   );
 
+  // Exported permission: 'administer user git access'.
+  $permissions['administer user git access'] = array(
+    'name' => 'administer user git access',
+    'roles' => array(
+      'Git administrator' => 'Git administrator',
+    ),
+    'module' => 'drupalorg_git_gateway',
+  );
+
   // Exported permission: 'administer users'.
   $permissions['administer users'] = array(
     'name' => 'administer users',
@@ -1442,7 +1451,6 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['administer version control systems'] = array(
     'name' => 'administer version control systems',
     'roles' => array(
-      'Git administrator' => 'Git administrator',
       'administrator' => 'administrator',
     ),
     'module' => 'versioncontrol',
