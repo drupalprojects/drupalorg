@@ -2410,6 +2410,20 @@ function drupalorg_node_view($node, $view_mode = 'full') {
           ))
         );
       }
+      elseif (drupalorg_has_civimembership($node->title, 'Signature Hosting Supporter')) {
+        $content['intro']['association_hosting_partner'] = array(
+          '#markup' => l(
+            theme('image', array(
+              'path' => drupal_get_path('module', 'drupalorg') . '/images/association_hosting_signature_badge.svg',
+              'alt' => t('Drupal Association Signature Hosting Supporter badge'),
+            )), 'https://assoc.drupal.org/drupal-hosting-supporter-program', array(
+            'html' => TRUE,
+            'attributes' => array(
+              'title' => t('Drupal Association Signature Hosting Supporter'),
+            ),
+          ))
+        );
+      }
 
       if (drupalorg_has_civimembership($node->title, 'Organization')) {
         $content['intro']['association_membership'] = array(
@@ -3070,6 +3084,11 @@ function drupalorg_user_view($account, $view_mode) {
         if (drupalorg_has_civimembership($title, 'Premium Hosting Supporter')) {
           $account->content['drupalorg_membership'][] = array(
             '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/drupal-hosting-supporter-program"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_host_supp.svg') . '" alt="' . t('Drupal Association Premium Hosting Supporter') . '" /></a></div></div>',
+          );
+        }
+        if (drupalorg_has_civimembership($title, 'Signature Hosting Supporter')) {
+          $account->content['drupalorg_membership'][] = array(
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/drupal-hosting-supporter-program"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_hosting_signature_badge.svg') . '" alt="' . t('Drupal Association Signature Hosting Supporter') . '" /></a></div></div>',
           );
         }
       }

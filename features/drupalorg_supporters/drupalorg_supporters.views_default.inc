@@ -712,7 +712,7 @@ function drupalorg_supporters_views_default_views() {
 
 Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.
 
-<h2>Premium Hosting Supporters</h2>';
+<h2>Signature Hosting Supporters</h2>';
   $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
@@ -817,7 +817,7 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<h2>Hosting Supporters</h2>';
+  $handler->display->display_options['header']['area']['content'] = '<h2>Premium Hosting Supporters</h2>';
   $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
@@ -1232,11 +1232,12 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
 
 Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.
 
-<h2>Premium Hosting Supporters</h2>'),
+<h2>Signature Hosting Supporters</h2>'),
     t('Premium Hosting'),
     t('Hosting partner organizations.'),
-    t('<h2>Hosting Supporters</h2>'),
+    t('<h2>Premium Hosting Supporters</h2>'),
     t('Hosting'),
+    t('<h2>Hosting Supporters</h2>'),
     t('Hosting by country'),
     t('Hosting by type'),
     t('Browse by type'),
