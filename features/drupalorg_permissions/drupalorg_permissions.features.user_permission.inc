@@ -477,6 +477,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'security team' => 'security team',
       'webmaster' => 'webmaster',
     ),
