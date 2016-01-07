@@ -127,6 +127,9 @@ function drupalorg_issues_strongarm() {
         'nodechanges_comment' => array(
           'weight' => '1',
         ),
+        'mollom' => array(
+          'weight' => '99',
+        ),
       ),
       'display' => array(
         'update_link' => array(
