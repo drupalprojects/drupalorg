@@ -3074,18 +3074,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['opt-in or out of tracking'] = array(
     'name' => 'opt-in or out of tracking',
     'roles' => array(
-      'Documentation moderator' => 'Documentation moderator',
-      'Full HTML user' => 'Full HTML user',
-      'Git administrator' => 'Git administrator',
-      'Git user' => 'Git user',
-      'Git vetted user' => 'Git vetted user',
       'administrator' => 'administrator',
-      'community' => 'community',
-      'content moderator' => 'content moderator',
-      'security team' => 'security team',
-      'testing administrator' => 'testing administrator',
-      'user administrator' => 'user administrator',
-      'webmaster' => 'webmaster',
     ),
     'module' => 'googleanalytics',
   );
