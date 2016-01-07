@@ -3401,8 +3401,9 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['view any SSH public keys'] = array(
     'name' => 'view any SSH public keys',
     'roles' => array(
+      'Git administrator' => 'Git administrator',
       'administrator' => 'administrator',
-      'user administrator' => 'user administrator',
+      'webmaster' => 'webmaster',
     ),
     'module' => 'sshkey',
   );
