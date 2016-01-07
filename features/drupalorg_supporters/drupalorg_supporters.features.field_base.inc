@@ -10,7 +10,7 @@
 function drupalorg_supporters_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_organization_support'
+  // Exported field_base: 'field_organization_support'.
   $field_bases['field_organization_support'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -31,6 +31,7 @@ function drupalorg_supporters_field_default_field_bases() {
         'supporting' => 'Supporting Partner',
         'technology_premium' => 'Premium Technology Supporter',
         'technology' => 'Technology Supporter',
+        'hosting_signature' => 'Signature Hosting Supporter',
         'hosting_premium' => 'Premium Hosting Supporter',
         'hosting' => 'Hosting Supporter',
       ),
@@ -40,7 +41,7 @@ function drupalorg_supporters_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_short_description'
+  // Exported field_base: 'field_short_description'.
   $field_bases['field_short_description'] = array(
     'active' => 1,
     'cardinality' => 1,

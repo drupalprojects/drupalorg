@@ -695,11 +695,11 @@ function drupalorg_supporters_views_default_views() {
   );
   $handler->display->display_options['attachment_position'] = 'after';
 
-  /* Display: Premium Hosting */
-  $handler = $view->new_display('page', 'Premium Hosting', 'page_2');
+  /* Display: Signature Hosting */
+  $handler = $view->new_display('page', 'Signature Hosting', 'page_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Hosting Supporters';
-  $handler->display->display_options['display_description'] = 'Premium hosting partner organizations.';
+  $handler->display->display_options['display_description'] = 'Signature hosting partner organizations.';
   $handler->display->display_options['defaults']['query'] = FALSE;
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['defaults']['header'] = FALSE;
@@ -789,7 +789,7 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
   $handler->display->display_options['filters']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
   $handler->display->display_options['filters']['field_organization_support_value']['field'] = 'field_organization_support_value';
   $handler->display->display_options['filters']['field_organization_support_value']['value'] = array(
-    'hosting_premium' => 'hosting_premium',
+    'hosting_signature' => 'hosting_signature',
   );
   /* Filter criterion: Content: Logo (field_logo:fid) */
   $handler->display->display_options['filters']['field_logo_fid']['id'] = 'field_logo_fid';
@@ -797,6 +797,123 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
   $handler->display->display_options['filters']['field_logo_fid']['field'] = 'field_logo_fid';
   $handler->display->display_options['filters']['field_logo_fid']['operator'] = 'not empty';
   $handler->display->display_options['path'] = 'supporters/hosting';
+
+  /* Display: Premium Hosting */
+  $handler = $view->new_display('attachment', 'Premium Hosting', 'attachment_4');
+  $handler->display->display_options['display_description'] = 'Hosting partner organizations.';
+  $handler->display->display_options['defaults']['group_by'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['style_options']['class'] = 'grid cols-2 drupalorg-random';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = '<h2>Hosting Supporters</h2>';
+  $handler->display->display_options['header']['area']['format'] = '1';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['id'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['table'] = 'field_data_taxonomy_vocabulary_52';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['field'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['label'] = 'Locations';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Logo */
+  $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
+  $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['label'] = '';
+  $handler->display->display_options['fields']['field_logo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_logo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_logo']['settings'] = array(
+    'image_style' => 'supporters-large',
+    'image_link' => 'content',
+  );
+  $handler->display->display_options['fields']['field_logo']['group_column'] = 'entity_id';
+  /* Field: Content: Short description */
+  $handler->display->display_options['fields']['field_short_description']['id'] = 'field_short_description';
+  $handler->display->display_options['fields']['field_short_description']['table'] = 'field_data_field_short_description';
+  $handler->display->display_options['fields']['field_short_description']['field'] = 'field_short_description';
+  $handler->display->display_options['fields']['field_short_description']['label'] = '';
+  $handler->display->display_options['fields']['field_short_description']['element_label_colon'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Taxonomy term: Name */
+  $handler->display->display_options['arguments']['name']['id'] = 'name';
+  $handler->display->display_options['arguments']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['arguments']['name']['field'] = 'name';
+  $handler->display->display_options['arguments']['name']['relationship'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['name']['validate_options']['vocabularies'] = array(
+    'vocabulary_52' => 'vocabulary_52',
+  );
+  $handler->display->display_options['arguments']['name']['validate_options']['type'] = 'name';
+  $handler->display->display_options['arguments']['name']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['name']['limit'] = '0';
+  $handler->display->display_options['arguments']['name']['path_case'] = 'lower';
+  $handler->display->display_options['arguments']['name']['transform_dash'] = TRUE;
+  /* Contextual filter: Content: Hosting type (field_hosting_type) */
+  $handler->display->display_options['arguments']['field_hosting_type_value']['id'] = 'field_hosting_type_value';
+  $handler->display->display_options['arguments']['field_hosting_type_value']['table'] = 'field_data_field_hosting_type';
+  $handler->display->display_options['arguments']['field_hosting_type_value']['field'] = 'field_hosting_type_value';
+  $handler->display->display_options['arguments']['field_hosting_type_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_hosting_type_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_hosting_type_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_hosting_type_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_hosting_type_value']['limit'] = '0';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  /* Filter criterion: Content: Drupal Association supporting program (field_organization_support) */
+  $handler->display->display_options['filters']['field_organization_support_value']['id'] = 'field_organization_support_value';
+  $handler->display->display_options['filters']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['filters']['field_organization_support_value']['field'] = 'field_organization_support_value';
+  $handler->display->display_options['filters']['field_organization_support_value']['value'] = array(
+    'hosting_premium' => 'hosting_premium',
+  );
+  /* Filter criterion: Content: Logo (field_logo:fid) */
+  $handler->display->display_options['filters']['field_logo_fid']['id'] = 'field_logo_fid';
+  $handler->display->display_options['filters']['field_logo_fid']['table'] = 'field_data_field_logo';
+  $handler->display->display_options['filters']['field_logo_fid']['field'] = 'field_logo_fid';
+  $handler->display->display_options['filters']['field_logo_fid']['operator'] = 'not empty';
+  $handler->display->display_options['displays'] = array(
+    'page_3' => 'page_3',
+    'default' => 0,
+    'page' => 0,
+    'block_4' => 0,
+    'block_3' => 0,
+    'page_1' => 0,
+    'page_2' => 0,
+    'block_1' => 0,
+    'block_2' => 0,
+  );
+  $handler->display->display_options['attachment_position'] = 'after';
+  $handler->display->display_options['inherit_exposed_filters'] = TRUE;
 
   /* Display: Hosting */
   $handler = $view->new_display('attachment', 'Hosting', 'hosting');
@@ -902,10 +1019,15 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
   $handler->display->display_options['filters']['field_logo_fid']['field'] = 'field_logo_fid';
   $handler->display->display_options['filters']['field_logo_fid']['operator'] = 'not empty';
   $handler->display->display_options['displays'] = array(
-    'page_2' => 'page_2',
+    'page_3' => 'page_3',
     'default' => 0,
     'page' => 0,
+    'block_4' => 0,
+    'block_3' => 0,
     'page_1' => 0,
+    'page_2' => 0,
+    'block_1' => 0,
+    'block_2' => 0,
   );
   $handler->display->display_options['attachment_position'] = 'after';
   $handler->display->display_options['inherit_exposed_filters'] = TRUE;
@@ -984,6 +1106,7 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
   $handler->display->display_options['filters']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
   $handler->display->display_options['filters']['field_organization_support_value']['field'] = 'field_organization_support_value';
   $handler->display->display_options['filters']['field_organization_support_value']['value'] = array(
+    'hosting_signature' => 'hosting_signature',
     'hosting_premium' => 'hosting_premium',
     'hosting' => 'hosting',
   );
@@ -1056,6 +1179,7 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
   $handler->display->display_options['filters']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
   $handler->display->display_options['filters']['field_organization_support_value']['field'] = 'field_organization_support_value';
   $handler->display->display_options['filters']['field_organization_support_value']['value'] = array(
+    'hosting_signature' => 'hosting_signature',
     'hosting_premium' => 'hosting_premium',
     'hosting' => 'hosting',
   );
@@ -1064,6 +1188,59 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
   $handler->display->display_options['filters']['field_hosting_type_value']['table'] = 'field_data_field_hosting_type';
   $handler->display->display_options['filters']['field_hosting_type_value']['field'] = 'field_hosting_type_value';
   $handler->display->display_options['filters']['field_hosting_type_value']['operator'] = 'not empty';
+  $translatables['drupalorg_supporters'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Signature supporting partners'),
+    t('Supporting Partners'),
+    t('Signature supporting partner organizations.'),
+    t('<a href="https://assoc.drupal.org/supporting-partners">Supporting Partners</a> are businesses who offer Drupal services. Their program fees help fund Drupal.org improvements, so together we can collaborate more easily and accelerate Drupal\'s innovation.
+
+<h2>Signature Supporting Partners</h2>'),
+    t('Sectors'),
+    t('Locations'),
+    t('All'),
+    t('Premium supporting partners'),
+    t('Supporting partner organizations.'),
+    t('<h2>Premium Supporting Partners</h2>'),
+    t('Supporting partners'),
+    t('<h2>Supporting Partners</h2>'),
+    t('Partners by country'),
+    t('Browse by country'),
+    t('Partners by sector'),
+    t('Browse by sector'),
+    t('Premium Technology'),
+    t('Technology Supporters'),
+    t('Premium technology partner organizations.'),
+    t('<p class="left"><a href="https://assoc.drupal.org/technology-supporters">Drupal Technology Supporters</a> are companies who provide a product or service that helps the Drupal community build amazing sites. These Supporters educate the community about their offerings and their program fees help fund Drupal.org improvements.</p>
+
+<p class="right"><a class="link-button" href="https://www.drupal.org/technology-supporter-resources"><span>Educational Materials from Tech Supporters</span></a></p>
+
+<h2>Premium Technology Supporters</h2>'),
+    t('Technology'),
+    t('Technology partner organizations.'),
+    t('<h2>Technology Supporters</h2>'),
+    t('Signature Hosting'),
+    t('Hosting Supporters'),
+    t('Signature hosting partner organizations.'),
+    t('<a href="https://assoc.drupal.org/drupal-hosting-supporter-program">Drupal Hosting Supporters</a> help the community publish great sites. These Supporters educate the community about their offerings, promote Drupal to their user base, and their program fees help fund Drupal.org improvements.
+
+Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.
+
+<h2>Premium Hosting Supporters</h2>'),
+    t('Premium Hosting'),
+    t('Hosting partner organizations.'),
+    t('<h2>Hosting Supporters</h2>'),
+    t('Hosting'),
+    t('Hosting by country'),
+    t('Hosting by type'),
+    t('Browse by type'),
+  );
   $export['drupalorg_supporters'] = $view;
 
   return $export;
