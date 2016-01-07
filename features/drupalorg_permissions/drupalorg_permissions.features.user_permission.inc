@@ -2188,7 +2188,6 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in areas_of_expertise',
     'roles' => array(
       'administrator' => 'administrator',
-      'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
   );
@@ -2216,6 +2215,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in vocabulary_3',
     'roles' => array(
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
@@ -2271,6 +2271,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in vocabulary_48',
     'roles' => array(
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
@@ -2290,6 +2291,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in vocabulary_50',
     'roles' => array(
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
@@ -2300,6 +2302,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in vocabulary_52',
     'roles' => array(
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
@@ -2310,6 +2313,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in vocabulary_54',
     'roles' => array(
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
@@ -2376,6 +2380,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in vocabulary_9',
     'roles' => array(
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
@@ -2714,7 +2719,6 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in areas_of_expertise',
     'roles' => array(
       'administrator' => 'administrator',
-      'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
   );
@@ -2742,6 +2746,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in vocabulary_3',
     'roles' => array(
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
@@ -2797,6 +2802,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in vocabulary_48',
     'roles' => array(
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
@@ -2816,6 +2822,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in vocabulary_50',
     'roles' => array(
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
@@ -2826,6 +2833,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in vocabulary_52',
     'roles' => array(
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
@@ -2836,6 +2844,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in vocabulary_54',
     'roles' => array(
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
@@ -2902,6 +2911,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in vocabulary_9',
     'roles' => array(
       'administrator' => 'administrator',
+      'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'taxonomy',
