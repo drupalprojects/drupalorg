@@ -105,7 +105,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_include_in_group_menu',
-    'label' => 'Include in group menu',
+    'label' => 'Include in deprecated group menu',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -673,6 +673,7 @@ function drupalorg_content_types_field_default_field_instances() {
   t('Group');
   t('Groups audience');
   t('Groups theme');
+  t('Include in deprecated group menu');
   t('Include in group menu');
 
   return $field_instances;
