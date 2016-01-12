@@ -1669,11 +1669,17 @@ function drupalorg_form_node_form_alter(&$form) {
       $form['revision_information']['#access'] = FALSE;
     }
   }
+
   if (isset($form['nodechanges_comment'])) {
     $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
     if (isset($form['nodechanges_comment']['field_attribute_contribution_to'])) {
       _drupalorg_alter_comment_attribution($form['nodechanges_comment'], $form['#node']);
     }
+  }
+
+  // If this is a new node with OG Menu, put in the menu.
+  if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu'])) {
+    $form['menu']['enabled']['#default_value'] = 1;
   }
 }
 
