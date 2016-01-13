@@ -216,13 +216,16 @@ function drupalorg_content_types_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '-5',
+          'weight' => '0',
         ),
         'path' => array(
-          'weight' => '30',
+          'weight' => '10',
         ),
         'redirect' => array(
-          'weight' => '30',
+          'weight' => '9',
+        ),
+        'og_menu' => array(
+          'weight' => '1',
         ),
       ),
       'display' => array(),

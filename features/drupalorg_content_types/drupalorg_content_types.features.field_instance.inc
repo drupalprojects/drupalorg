@@ -333,7 +333,7 @@ function drupalorg_content_types_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 4,
+      'weight' => 3,
     ),
   );
 
@@ -387,6 +387,63 @@ function drupalorg_content_types_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
+      'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance: 'node-section-field_parent_section'.
+  $field_instances['node-section-field_parent_section'] = array(
+    'bundle' => 'section',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => 'For navigation. Does not inherit permissions or other behavior.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 6,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_parent_section',
+    'label' => 'Parent section',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
       'weight' => 6,
     ),
   );
@@ -454,7 +511,7 @@ function drupalorg_content_types_field_default_field_instances() {
         'og_hide' => TRUE,
       ),
       'type' => 'options_onoff',
-      'weight' => 1,
+      'weight' => 2,
     ),
   );
 
@@ -600,7 +657,7 @@ function drupalorg_content_types_field_default_field_instances() {
       'module' => 'og',
       'settings' => array(),
       'type' => 'og_complex',
-      'weight' => 5,
+      'weight' => 4,
     ),
   );
 
@@ -670,11 +727,13 @@ function drupalorg_content_types_field_default_field_instances() {
   t('Content that belongs to a section or group can be added to a menu. To administer that menu, use the menu tab of the section or group.');
   t('Determine if this is an OG group.');
   t('File attachments');
+  t('For navigation. Does not inherit permissions or other behavior.');
   t('Group');
   t('Groups audience');
   t('Groups theme');
   t('Include in deprecated group menu');
   t('Include in group menu');
+  t('Parent section');
 
   return $field_instances;
 }
