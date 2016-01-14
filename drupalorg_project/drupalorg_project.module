@@ -201,7 +201,7 @@ function drupalorg_project_help($path, $arg) {
   switch ($path) {
     case 'project/usage':
     case 'project/usage/%':
-      return '<p>'. t('These statistics are incomplete; only Drupal websites using the <a href="!update_status_url">Update Status</a> module are included in the data. As this module is now included with the download of Drupal since version 6.x, the data is heavily biased toward newer sites. <a href="!usage_description_url">Read more information about how these statistics are calculated.</a>', array('!update_status_url' => url('project/update_status'), '!usage_description_url' => url('node/329620'))) .'</p>';
+      return '<p>'. t('These statistics are incomplete; only Drupal websites using the <a href="!update_status_url">Update Status</a> module are included in the data. This module has been included with the download of Drupal since version 6.x so the data does not include older sites. <a href="!usage_description_url">Read more information about how these statistics are calculated.</a>', array('!update_status_url' => url('project/update_status'), '!usage_description_url' => url('node/329620'))) .'</p>';
   }
 
   if ($arg[0] == 'project' && $arg[1] == 'issues-term' && $arg[2] == '346') {
@@ -229,7 +229,7 @@ function drupalorg_project_issue_counts() {
   $api_vocabulary = taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary', ''));
   $versions = array();
   foreach (project_release_query_releases(DRUPALORG_CORE_NID, array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID, DRUPALORG_CORE_STABLE_VERSION_TID)) as $release) {
-    $versions[$release->{'taxonomy_' . $api_vocabulary->machine_name}[$release->language][0]['tid']][] = $release->field_release_version[$release->language][0]['value'];
+    $versions[$release->{'taxonomy_' . $api_vocabulary->machine_name}[LANGUAGE_NONE][0]['tid']][] = $release->field_release_version[LANGUAGE_NONE][0]['value'];
   }
   // Fetch issue counts for the current development release, and a combined
   // count for the development release and the latest stable release.
@@ -251,22 +251,16 @@ function drupalorg_project_issue_counts() {
       ->count();
 
     $q = clone $query;
-    $issue_counts[$version]['Release blockers'] = $q
+    $issue_counts[$version]['Critical issues'] = $q
       ->fieldCondition('field_issue_status', 'value', $threshold_statuses)
       ->fieldCondition('field_issue_priority', 'value', 400) // Critical
-      ->fieldCondition('field_issue_category', 'value', array(1, 2, 5)) // Bug, Task, Plan.
+      ->fieldCondition('field_issue_category', 'value', array(1, 2, 3, 5)) // Exclude support requests.
       ->execute();
     $q = clone $query;
-    $issue_counts[$version]['Major bugs'] = $q
+    $issue_counts[$version]['Major issues'] = $q
       ->fieldCondition('field_issue_status', 'value', $threshold_statuses)
       ->fieldCondition('field_issue_priority', 'value', 300) // Major
-      ->fieldCondition('field_issue_category', 'value', 1) // Bug
-      ->execute();
-    $q = clone $query;
-    $issue_counts[$version]['Major tasks'] = $q
-      ->fieldCondition('field_issue_status', 'value', $threshold_statuses)
-      ->fieldCondition('field_issue_priority', 'value', 300) // Major
-      ->fieldCondition('field_issue_category', 'value', 2) // Task
+      ->fieldCondition('field_issue_category', 'value', array(1, 2, 3, 5)) // Exclude support requests.
       ->execute();
     $q = clone $query;
     $issue_counts[$version]['Patch queue'] = $q
@@ -363,6 +357,34 @@ function drupalorg_project_form_project_issue_notification_user_form_alter($form
 }
 
 /**
+ * Implements hook_node_insert().
+ */
+function drupalorg_project_node_insert(stdClass $node) {
+  _drupalorg_project_update_project_cache($node);
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function drupalorg_project_node_update(stdClass $node) {
+  _drupalorg_project_update_project_cache($node);
+}
+
+/**
+ * @param $node
+ *
+ * Private function to reset the project release table when an issue related to
+ * its D8 contrib_tracker status is updated.
+ */
+function _drupalorg_project_update_project_cache(stdClass $node) {
+  if (project_issue_node_is_issue($node) && isset($node->field_project[LANGUAGE_NONE][0]['target_id']) && $node->field_project[LANGUAGE_NONE][0]['target_id'] == 2573607 && preg_match('/^\[([a-zA-Z0-9_]+)\]/', $node->title, $match)) {
+    if ($project = project_load($match[1])) {
+      project_release_download_table($project->nid, TRUE);
+    }
+  }
+}
+
+/**
  * Alter release node forms properly for security updates.
  *
  * Ensure that only privileged users can modify a security release tag and when
@@ -376,7 +398,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     $form['field_project_license'][LANGUAGE_NONE][0]['#default_value']['title'] = DRUPALORG_DEFAULT_LICENSE;
 
     // Do not allow users to disable releases once a release has been created.
-    if (!user_access('administer projects') && !empty($form_state['node']->field_project_has_releases['und'][0]['value'])) {
+    if (!user_access('administer projects') && !empty($form_state['node']->field_project_has_releases[LANGUAGE_NONE][0]['value'])) {
       $releases = project_release_query_releases($form_state['node']->nid);
       if (!empty($releases)) {
         $form['field_project_has_releases']['#disabled'] = TRUE;
@@ -386,6 +408,13 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     // Validate full project short name.
     $language = $form['field_project_machine_name']['#language'];
     $form['field_project_machine_name'][$language][0]['value']['#element_validate'][] = 'drupalorg_project_machine_name_validate';
+
+    // Do not allow sandboxes to be transferred to another maintainer. The
+    // maintainer is part of the Git repository URL.
+    if (project_promote_project_is_sandbox($form_state['node'])) {
+      $form['author']['name']['#disabled'] = TRUE;
+      $form['author']['name']['#description'] = t('Sandbox projects can not be transferred to another maintainer.');
+    }
   }
   elseif (project_issue_node_is_issue($form_state['node'])) {
     // Only existing issues for projects.
@@ -468,11 +497,15 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           if (isset($as_volunteer[0])) {
             // Add organizations.
             foreach ($comment_wrapper->field_attribute_contribution_to as $organization) {
-              $table['#rows'][$comment->uid]['by']['@organization'][$organization->nid->value()] = $organization->title->value();
+              if ($organization->value()) {
+                $table['#rows'][$comment->uid]['by']['@organization'][$organization->nid->value()] = $organization->title->value();
+              }
             }
             // Add customers.
             foreach ($comment_wrapper->field_for_customer as $organization) {
-              $table['#rows'][$comment->uid]['by']['@customer'][$organization->nid->value()] = $organization->title->value();
+              if ($organization->value()) {
+                $table['#rows'][$comment->uid]['by']['@customer'][$organization->nid->value()] = $organization->title->value();
+              }
             }
           }
 
@@ -679,7 +712,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     }
 
     $security_term = taxonomy_term_load(variable_get('project_release_security_update_tid', FALSE));
-    $release_type_field = &$form['taxonomy_' . $security_term->vocabulary_machine_name][$form_state['node']->language];
+    $release_type_field = &$form['taxonomy_' . $security_term->vocabulary_machine_name][LANGUAGE_NONE];
     if (empty($form['nid']['#value'])) {
       // Adding a new release.
       if (!empty($form['project_release']['rebuild']['#value'])) {
@@ -723,7 +756,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       else {
         // Not a Security update, remove that option entirely if this is either
         // a -dev snapshot or a non-admin user.
-        if ($form_state['node']->field_release_build_type[$form_state['node']->language][0]['value'] === 'dynamic' || !user_access('administer projects')) {
+        if ($form_state['node']->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic' || !user_access('administer projects')) {
           unset($release_type_field['#options'][$security_term->tid]);
         }
       }
@@ -756,7 +789,7 @@ function drupalorg_project_form_project_promote_project_form_alter(&$form) {
  */
 function drupalorg_project_security_release_form_validate($form, &$form_state) {
   $security_term = taxonomy_term_load(variable_get('project_release_security_update_tid', FALSE));
-  foreach ($form_state['values']['taxonomy_' . $security_term->vocabulary_machine_name][$form_state['node']->language] as $value) {
+  foreach ($form_state['values']['taxonomy_' . $security_term->vocabulary_machine_name][LANGUAGE_NONE] as $value) {
     if ($value['tid'] == $security_term->tid) {
       // Ensure the user confirms that this release should be marked security.
       if (empty($form_state['values']['security_update_confirm'])) {
@@ -876,9 +909,26 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
         );
         header('Location: '. $url_tasks);
         exit;
+      case 3060: // Drupal Core override for the downloads page.
+        if (isset($node->content['project_release_downloads'])) {
+          $panel_mini = panels_mini_load('download_table');
+          ctools_include('context');
+          $context = ctools_context_create('entity:node', $node);
+          $contexts = ctools_context_match_required_contexts($panel_mini->requiredcontexts, array($context));
+          $panel_mini->context = $panel_mini->display->context =  ctools_context_load_contexts($panel_mini, FALSE, $contexts);
+          $panel_mini->display->css_id = panels_mini_get_id($panel_mini->name);
+
+          // Here is the renderable markup, to do with whatever you wish.
+          $node->content['project_release_downloads'] = array(
+            '#markup' => '<h2>' . $panel_mini->display->get_title() . '</h2>' . panels_render_display($panel_mini->display),
+            '#weight' => 10,
+          );
+        }
+        break;
     }
+
     if (project_node_is_project($node)) {
-      if ($node->field_project_type[$node->language][0]['value'] === 'sandbox') {
+      if ($node->field_project_type[LANGUAGE_NONE][0]['value'] === 'sandbox') {
         drupal_set_title(l(t("!name's sandbox", array('!name' => $node->name)), 'project/user/' . $node->uid) . ': ' . check_plain($node->title), PASS_THROUGH);
         $node->content['project_sandbox_warning']['#markup'] = '<div class="meta"><h5>Experimental Project</h5><p>This is a <a href="/node/1011196">sandbox project</a>, which contains experimental code for developer use only.</p></div>';
         $node->content['project_sandbox_warning']['#weight'] = -1;
@@ -1069,7 +1119,7 @@ function drupalorg_project_block_view($delta = '') {
       // Build list of possible issue target versions for dev version of core: 8.0.x, 8.0.0-beta1, etc.
       $releases = project_release_query_releases(DRUPALORG_CORE_NID, array(DRUPALORG_CORE_DEVELOPMENT_VERSION_TID));
       foreach ($releases as $tid => $release) {
-        $versions[$tid] = $release->field_release_version[$release->language][0]['value'];
+        $versions[$tid] = $release->field_release_version[LANGUAGE_NONE][0]['value'];
       }
 
       // Get count of remaining open, non-fixed critical tasks and bugs for those versions.
@@ -1278,30 +1328,21 @@ function drupalorg_project_bingo_block_output() {
           )
         ),
         drupalorg_project_core_issue_link(
-          $counts[$threshold_version_key]['Release blockers'] . " Release blockers ($threshold_names)",
+          $counts[$threshold_version_key]['Critical issues'] . " Critical issues ($threshold_names)",
           array(
             'version' => $threshold_versions,
             'status' => $threshold_statuses,
             'priorities' => array(400),
-            'categories' => array(1, 2, 5), // Bug, Task, Plan.
+            'categories' => array(1, 2, 3, 5),
           )
         ),
         drupalorg_project_core_issue_link(
-          $counts[$threshold_version_key]['Major bugs'] . " Major bugs ($threshold_names)",
+          $counts[$threshold_version_key]['Major issues'] . " Major issues ($threshold_names)",
           array(
             'version' => $threshold_versions,
             'status' => $threshold_statuses,
             'priorities' => array(300),
-            'categories' => array(1),
-          )
-        ),
-        drupalorg_project_core_issue_link(
-          $counts[$threshold_version_key]['Major tasks'] . " Major tasks ($threshold_names)",
-          array(
-            'version' => $threshold_versions,
-            'status' => $threshold_statuses,
-            'priorities' => array(300),
-            'categories' => array(2),
+            'categories' => array(1, 2, 3, 5),
           )
         ),
         drupalorg_project_core_issue_link(
@@ -1356,25 +1397,6 @@ function drupalorg_project_bingo_block_output() {
 }
 
 /**
- * Implementation of template_preprocess_drupalorg_home().
- */
-function drupalorg_project_preprocess_drupalorg_home(&$vars) {
-  $result = db_query_range('SELECT vco.message, vco.author_date, vco.repo_id, vco.revision, u.name, u.uid FROM {versioncontrol_operations} vco INNER JOIN {users} u ON vco.author_uid = u.uid ORDER BY vco.author_date DESC', 0, 5);
-  $recent_updates = '';
-  foreach ($result as $message) {
-    $message->message = trim($message->message);
-    if (drupal_strlen($message->message) > 80) {
-      $message->message = truncate_utf8($message->message, 80) . '…';
-    }
-    $recent_updates .= '<h6>' . l($message->message, 'commitlog/commit/' . $message->repo_id . '/' . $message->revision) . '</h6>'
-      . '<p class="submitted">' . t('Posted by !user on %author_date', array('!user' => l($message->name, 'user/' . $message->uid), '%author_date' => format_date($message->author_date, 'custom', 'F j, Y \a\t g:ia'))) . '</p>';
-  }
-  // We have no place to link this to in a nice way.
-  $recent_updates .= '<p>' . l(t('More commit messages…'), 'commitlog') . '</p>';
-  $vars['tab_content_git'] = $recent_updates;
-}
-
-/**
  * Gather information for the bottom of project pages.
  *
  * @param $node
@@ -1404,7 +1426,7 @@ function drupalorg_project_meta_data($node) {
     if (!empty($node->{'taxonomy_' . $vocabulary->machine_name})) {
       $class = '';
       $links = array();
-      foreach ($node->{'taxonomy_' . $vocabulary->machine_name}[$node->language] as $term) {
+      foreach ($node->{'taxonomy_' . $vocabulary->machine_name}[LANGUAGE_NONE] as $term) {
         if ($term_entity = taxonomy_term_load($term['tid'])) {
           $options = array();
           if ($vocabulary->vid == '44') { // Maintenance status
@@ -1475,7 +1497,7 @@ function drupalorg_project_meta_data($node) {
       array(
         '@formatted-count' => number_format($total_usage),
         '@project-type' => drupal_strtolower(drupalorg_project_node_type_label($node->type, 'singular')),
-        '!project-shortname' => $node->field_project_machine_name[$node->language][0]['value'],
+        '!project-shortname' => $node->field_project_machine_name[LANGUAGE_NONE][0]['value'],
       )
     );
   }
@@ -1486,7 +1508,7 @@ function drupalorg_project_meta_data($node) {
   }
 
   // Automated tests.
-  if (module_exists('pift') && pift_project_enabled($node->nid)) {
+  if (module_exists('pift') && pift_ci_project_info($node->nid)) {
     $info[t('Automated tests')] = t('Enabled');
   }
 
@@ -1517,6 +1539,15 @@ function drupalorg_project_ctools_plugin_directory($module, $plugin) {
   if ($module == 'project_release' && $plugin == 'release_packager') {
     return "plugins/$plugin";
   }
+  if ($module == 'ctools' && $plugin == 'content_types') {
+    return "plugins/$plugin";
+  }
+  if ($module == 'ctools' && $plugin == 'arguments') {
+    return "plugins/$plugin";
+  }
+  if ($module == 'ctools' && $plugin == 'relationships') {
+    return "plugins/$plugin";
+  }
 }
 
 /**
@@ -1526,6 +1557,13 @@ function drupalorg_project_ctools_plugin_api($module, $api) {
   if ($module == 'field_group' && $api == 'field_group') {
     return array('version' => 1);
   }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function drupalorg_project_views_api() {
+  return array("version" => 3.0);
 }
 
 /**
@@ -1615,6 +1653,120 @@ function drupalorg_project_form_views_exposed_form_alter(&$form, &$form_state) {
         $form['text']['#title'] = t('Search for');
       }
       break;
+  }
+}
+
+/**
+ * Implements hook_views_post_execute().
+ * @param $view
+ *
+ * Checks to see the status of Drupal 8 for the contributed module.
+ */
+function drupalorg_project_views_post_execute(&$view) {
+  if ($view->name === 'project_release_download_table' && ($view->current_display === 'recommended' || $view->current_display === 'security') && !empty($view->result) && count($view->args)) {
+    $node = node_load($view->args[0]);
+
+    // We don't need to tell core or sandboxes they need a D8 release.
+    if ($node->type !== 'project_core' && !project_promote_project_is_sandbox($node)) {
+      // Check if there is a 6.x or 7.x release.
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+        ->entityCondition('bundle', project_release_release_node_types())
+        ->propertyCondition('status', 1)
+        ->fieldCondition('field_release_project', 'target_id', $node->nid)
+        ->fieldCondition('taxonomy_' . taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary', 0))->machine_name, 'tid', array(103, 87)) // 7.x & 6.x
+        ->range(0, 1);
+      $result = $query->execute();
+      // We have potentially upgradable release!
+      if (isset($result['node'])) {
+        // Parse out the project type
+        $project_type = drupal_strtolower(drupalorg_project_node_type_label($node->type, 'singular'));
+
+        // Check to see the status of the 8.x release from contrib_tracker.
+        $query = new EntityFieldQuery();
+        $query->entityCondition('entity_type', 'node')
+          ->entityCondition('bundle', 'project_issue')
+          ->propertyCondition('title', '[' . $node->field_project_machine_name[LANGUAGE_NONE][0]['value']. ']', 'STARTS_WITH')
+          ->fieldCondition('field_project', 'target_id', 2573607, '=')
+          ->range(0, 1);
+
+        $entities = $query->execute();
+        // No 8.x issue, post message
+        if (empty($entities['node'])) {
+          /*
+          $message = array(
+            'message' => t('No Drupal 8 port information has been found for this !project. Help us by creating an !issue.', array('!project' => $project_type, '!issue' => l('issue', 'node/2573659'))),
+            'status' => 'help',
+          );
+          */
+        }
+        elseif ($issue = array_keys($entities['node'])) {
+          // Load the issue up and get relevant status
+          $issue = node_load(array_shift($issue));
+          // See https://www.drupal.org/project/contrib_tracker for mapping.
+          switch($issue->field_issue_status[LANGUAGE_NONE][0]['value']) {
+            case 1: // Active
+              $message = array(
+                'message' => t('This !project has not been ported to Drupal 8. Refer to this !issue to find out its progress.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
+                'status' => 'help',
+              );
+              break;
+
+            case 4: // Postponed
+              $message = array(
+                'message' => t('This !project is currently blocked from being ported to Drupal 8, due to unmet dependencies. Refer to this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
+                'status' => 'help',
+              );
+              break;
+
+            case 13: // Needs work
+              $message = array(
+                'message' => t('This !project is currently being ported to Drupal 8, but is not usable yet. Help us by following this !issue.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
+                'status' => 'help',
+              );
+              break;
+
+            case 8: // Needs review
+            case 14: // RTBC
+              $message = array(
+                'message' => t('This !project has a pre-release version for Drupal 8. To find out more, follow this !issue or download below.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
+                'status' => 'help',
+              );
+              break;
+
+            case 2: // Fixed
+            case 7: // Closed (Fixed)
+              $message = array();
+              break;
+
+            case 16: // Needs more info
+              $message = array(
+                'message' => t('The status of this !project port to Drupal 8 is unknown or under investigation. Know its status? Help us by updating the !issue.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
+                'status' => 'help',
+              );
+              break;
+
+            case 5: // Closed (won't fix)
+              $message = array(
+                'message' => t('This !project has been included with Drupal 8 core. Refer to this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
+                'status' => 'help',
+              );
+              break;
+
+            case 3: // Closed (duplicate)
+              $message = array(
+                'message' => t('This !project has been renamed or deprecated by another !project in Drupal 8. Please visit this !issue for more information.', array('!project' => $project_type, '!issue' => l('issue', 'node/' . $issue->nid))),
+                'status' => 'help',
+              );
+              break;
+          }
+        }
+      }
+      // Fetch the project, message variable, and only print upon full projects.
+      if (!empty($message)) {
+        $view->attachment_before = '<div class="' . $message['status'] . '">' . $message['message'] . '</div>';;
+      }
+    }
   }
 }
 
@@ -1770,7 +1922,7 @@ function drupalorg_maintainers_json($project) {
  * @see https://drupal.org/node/2172891
  */
 function drupalorg_project_machine_name_validate($element, &$form_state, $form) {
-  if (($form_state['values']['field_project_type'][$element['#language']][0]['value'] == 'full' || $form['#id'] === 'project-promote-project-form')
+  if (($form['#id'] === 'project-promote-project-form' || $form_state['values']['field_project_type'][LANGUAGE_NONE][0]['value'] == 'full')
     && !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $element['#value'])) {
     form_error($element, t('@title must follow <a href="@url">PHP naming convention</a>.', array(
       '@title' => $element['#title'],

@@ -18,7 +18,7 @@ function _drupalorg_git_gateway_user_page($account) {
     return drupal_build_form('drupalorg_git_gateway_user_form', $form_state);
   }
   // But show an entirely different form if we're another user (an admin).
-  elseif (user_access('administer users') || user_access('administer version control systems')) {
+  elseif (user_access('administer users') || user_access('administer user git access')) {
     return drupal_build_form('drupalorg_git_gateway_admin_user_form', $form_state);
   }
   else {
@@ -57,7 +57,7 @@ function drupalorg_git_gateway_user_form($form, &$form_state) {
   }
 
   // Both 'Git administrator' and 'User administrator' roles get admin powers here.
-  if (user_access('administer users') || user_access('administer version control systems')) {
+  if (user_access('administer users') || user_access('administer user git access')) {
     $form['git_administration'] = _drupalorg_git_gateway_user_admin($account);
     // Tack on the submit handler for the admin portion of the form.
     array_unshift($form['#submit'], 'drupalorg_git_gateway_admin_user_form_submit');

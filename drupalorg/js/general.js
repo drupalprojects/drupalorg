@@ -345,4 +345,23 @@
       });
     }
   };
+
+  Drupal.behaviors.drupalorgSurveyBlock = {
+    attach: function(context) {
+      $('#block-drupalorg-documentation-survey', context).once('drupalorg-documentation-survey', function () {
+        var $container = $(this),
+          $frame = $('iframe', this).hide();
+        $('.action-button', this).show().click(function () {
+          $(this).hide();
+          $frame.show();
+          var interval = setInterval(function () {
+            if (/thanks/.exec($frame.get(0).contentWindow.location.href)) {
+              clearInterval(interval);
+              $container.hide();
+            }
+          }, 5000);
+        });
+      });
+    }
+  };
 })(jQuery);

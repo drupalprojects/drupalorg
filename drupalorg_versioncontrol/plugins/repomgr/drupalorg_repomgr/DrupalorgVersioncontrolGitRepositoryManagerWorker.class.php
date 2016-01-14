@@ -72,6 +72,6 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker extends VersioncontrolGi
 
   protected function getSandboxStatus() {
     $project = node_load($this->repository->project_nid);
-    $this->sandbox = $project->field_project_type[$project->language][0]['value'] === 'sandbox';
+    $this->sandbox = $project->field_project_type[LANGUAGE_NONE][0]['value'] === 'sandbox';
   }
 }

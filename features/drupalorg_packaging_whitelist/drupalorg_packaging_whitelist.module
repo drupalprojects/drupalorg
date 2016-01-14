@@ -32,11 +32,7 @@ function drupalorg_packaging_whitelist_json_output() {
 
   foreach($result as $row) {
     $node = node_load($row->nid);
-    $language = $node->language;
-    if (empty($language)) {
-      $language = LANGUAGE_NONE;
-    }
-    $urls = preg_split('/(\r\n?|\n)/', $node->body[$language][0]['value'], NULL, PREG_SPLIT_NO_EMPTY);
+    $urls = preg_split('/(\r\n?|\n)/', $node->body[LANGUAGE_NONE][0]['value'], NULL, PREG_SPLIT_NO_EMPTY);
     $whitelist = array_merge($whitelist, $urls);
   }
 

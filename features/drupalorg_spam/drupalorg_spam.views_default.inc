@@ -30,6 +30,10 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '25';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'uid' => 'uid',
@@ -39,6 +43,7 @@ function drupalorg_spam_views_default_views() {
     'comment_body' => 'comment_body',
     'changed' => 'changed',
     'name' => 'name',
+    'drupalorg_not_spam' => 'nothing',
     'nothing' => 'nothing',
     'fasttoggle_block_user' => 'nothing',
   );
@@ -87,6 +92,11 @@ function drupalorg_spam_views_default_views() {
     'name' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'drupalorg_not_spam' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -168,6 +178,12 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'comment';
   $handler->display->display_options['fields']['name']['field'] = 'name';
+  /* Field: Comment: Remove spam flags */
+  $handler->display->display_options['fields']['drupalorg_not_spam']['id'] = 'drupalorg_not_spam';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['table'] = 'views_entity_comment';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['field'] = 'drupalorg_not_spam';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['label'] = '';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['element_label_colon'] = FALSE;
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
@@ -205,6 +221,37 @@ function drupalorg_spam_views_default_views() {
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'drupalorg_comment_spam_pane');
+  $translatables['drupalorg_comment_spam'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Content'),
+    t('flag'),
+    t('counter'),
+    t('author'),
+    t('Type'),
+    t('Reports'),
+    t('.'),
+    t('Title'),
+    t('Comment'),
+    t('Updated'),
+    t('Author'),
+    t('Operations'),
+    t('<a href="/user/[uid]/admin-content">Administer content</a>'),
+    t('Content pane'),
+    t('View panes'),
+  );
   $export['drupalorg_comment_spam'] = $view;
 
   $view = new view();
@@ -240,8 +287,8 @@ function drupalorg_spam_views_default_views() {
     'body' => 'body',
     'changed' => 'changed',
     'name' => 'name',
+    'drupalorg_not_spam' => 'nothing',
     'nothing' => 'nothing',
-    'clear_link' => 'nothing',
     'fasttoggle_block_user' => 'nothing',
   );
   $handler->display->display_options['style_options']['default'] = 'count';
@@ -293,14 +340,14 @@ function drupalorg_spam_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'drupalorg_not_spam' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'nothing' => array(
       'align' => '',
       'separator' => ' | ',
-      'empty_column' => 0,
-    ),
-    'clear_link' => array(
-      'align' => '',
-      'separator' => '',
       'empty_column' => 0,
     ),
     'fasttoggle_block_user' => array(
@@ -349,7 +396,7 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Description */
+  /* Field: Content: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -371,6 +418,12 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Author';
+  /* Field: Content: Remove spam flags */
+  $handler->display->display_options['fields']['drupalorg_not_spam']['id'] = 'drupalorg_not_spam';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['field'] = 'drupalorg_not_spam';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['label'] = '';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['element_label_colon'] = FALSE;
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
@@ -406,6 +459,36 @@ function drupalorg_spam_views_default_views() {
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'drupalorg_node_spam_pane');
+  $translatables['drupalorg_node_spam'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('flag'),
+    t('counter'),
+    t('author'),
+    t('Type'),
+    t('Reports'),
+    t('.'),
+    t('Title'),
+    t('Summary'),
+    t('Updated'),
+    t('Author'),
+    t('Operations'),
+    t('<a href=/user/[uid]/admin-content>Administer content</a>'),
+    t('Content pane'),
+    t('View panes'),
+  );
   $export['drupalorg_node_spam'] = $view;
 
   $view = new view();
@@ -438,8 +521,9 @@ function drupalorg_spam_views_default_views() {
     'count' => 'count',
     'created' => 'created',
     'mail' => 'mail',
-    'fasttoggle_block_user' => 'fasttoggle_block_user',
+    'drupalorg_not_spam' => 'fasttoggle_block_user',
     'nothing' => 'fasttoggle_block_user',
+    'fasttoggle_block_user' => 'fasttoggle_block_user',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -478,9 +562,9 @@ function drupalorg_spam_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'fasttoggle_block_user' => array(
+    'drupalorg_not_spam' => array(
       'align' => '',
-      'separator' => ' | ',
+      'separator' => '',
       'empty_column' => 0,
     ),
     'nothing' => array(
@@ -488,7 +572,19 @@ function drupalorg_spam_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'fasttoggle_block_user' => array(
+      'align' => '',
+      'separator' => ' | ',
+      'empty_column' => 0,
+    ),
   );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = 'Includes users with content marked as spam. If a user can not be marked as ham, check <a href="/admin/content/spam">content spam</a>.';
+  $handler->display->display_options['header']['area']['format'] = '1';
   /* Relationship: Flags: drupalorg_user_spam */
   $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
   $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'users';
@@ -547,6 +643,12 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['mail']['id'] = 'mail';
   $handler->display->display_options['fields']['mail']['table'] = 'users';
   $handler->display->display_options['fields']['mail']['field'] = 'mail';
+  /* Field: User: Remove spam flags */
+  $handler->display->display_options['fields']['drupalorg_not_spam']['id'] = 'drupalorg_not_spam';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['table'] = 'views_entity_user';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['field'] = 'drupalorg_not_spam';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['label'] = '';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['element_label_colon'] = FALSE;
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
@@ -564,12 +666,6 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'users';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Sort criterion: Flags: Flag counter */
-  $handler->display->display_options['sorts']['count']['id'] = 'count';
-  $handler->display->display_options['sorts']['count']['table'] = 'flag_counts';
-  $handler->display->display_options['sorts']['count']['field'] = 'count';
-  $handler->display->display_options['sorts']['count']['relationship'] = 'flag_count_rel';
-  $handler->display->display_options['sorts']['count']['order'] = 'DESC';
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
     2 => 'OR',
@@ -598,6 +694,36 @@ function drupalorg_spam_views_default_views() {
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'spammers_pane');
+  $translatables['drupalorg_spammers'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Includes users with content marked as spam. If a user can not be marked as ham, check <a href="/admin/content/spam">content spam</a>.'),
+    t('flag'),
+    t('counter'),
+    t('nodes'),
+    t('node-flag'),
+    t('Username'),
+    t('Reports'),
+    t('.'),
+    t('Created date'),
+    t('E-mail'),
+    t('Operations'),
+    t('<a href="/user/[uid]/admin-content">Administer content</a>'),
+    t('Content pane'),
+    t('View panes'),
+  );
   $export['drupalorg_spammers'] = $view;
 
   return $export;

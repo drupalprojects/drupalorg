@@ -1,34 +1,9 @@
 <div class="front-primary">
-  <div id="get-started">
-    <h2>Get started with Drupal</h2>
-    <p>Drupal helps you build everything from personal blogs to enterprise applications. Thousands of add-on modules and designs let you build any site you can imagine.</p>
-    <p>
-      <a href="/try-drupal" class="link-button"><span>Try a hosted Drupal demo</span></a>
-      <a href="/start" class="link-button"><span>Download and Get Started</span></a>
-    </p>
-  </div>
-
-  <div id="community-updates">
-    <ul>
-      <li><a href="#tab-news" id="tab-news-link">News</a></li>
-      <li><a href="#tab-docs" id="tab-docs-link"><span class="icon"></span>Docs Updates</a></li>
-      <li><a href="#tab-forum" id="tab-forum-link"><span class="icon"></span>Forum Posts</a></li>
-      <li><a href="#tab-commits" id="tab-commits-link"><span class="icon"></span>Commits</a></li>
-    </ul>
-    <div id="tab-news"><?php print $tab_content_news; ?></div>
-    <div id="tab-docs"><?php print $tab_content_docs; ?></div>
-    <div id="tab-forum"><?php print $tab_content_forums; ?></div>
-    <div id="tab-commits"><?php print $tab_content_git; ?></div>
-  </div>
+  <div id="tab-news"><?php print $tab_content_news; ?></div>
+  <div id="membership" class="last"><?php print render($region['preface_second']); ?></div>
 </div>
 
 <div id="develop-with-drupal">
-  <div class="intro">
-    <div class="logo"><img src="<?php print drupal_get_path('module', 'drupalorg'); ?>/images/d8.svg" alt="Drupal 8"></div>
-    <div class="text">
-      <a href="/drupal-8.0">Drupal 8</a> is in its release candidate phase. Get <a href="https://groups.drupal.org/core/updates">regular updates</a> about the process or <a href="/core-mentoring">volunteer</a> to help finalize it.
-    </div>
-  </div>
   <div class="activities">
     <table class="front-current-activity">
       <tr><td><?php print $number_of_modules; ?></td><td><a href="project/modules">Modules</a></td></tr>

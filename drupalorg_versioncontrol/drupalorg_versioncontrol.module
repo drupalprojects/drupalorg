@@ -35,13 +35,13 @@ function drupalorg_versioncontrol_node_insert($node) {
   else {
     $top_path = 'project';
   }
-  $top_path .= '/' . $node->field_project_machine_name[$node->language][0]['value'];
+  $top_path .= '/' . $node->field_project_machine_name[LANGUAGE_NONE][0]['value'];
   $repo_root = variable_get('drupalorg_git_basedir', '/var/git') . '/repositories/' . $top_path . '.git';
 
   $description = 'For more information about this repository, visit the project page at ' . url('node/' . $node->nid, array('absolute' => TRUE));
 
   $data = new stdClass();
-  $data->name = $node->field_project_machine_name[$node->language][0]['value'];
+  $data->name = $node->field_project_machine_name[LANGUAGE_NONE][0]['value'];
   $data->root = $repo_root;
   $data->vcs = 'git';
   $data->plugins = array(

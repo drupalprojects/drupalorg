@@ -10,7 +10,7 @@
 function drupalorg_case_studies_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_community'
+  // Exported field_base: 'field_community'.
   $field_bases['field_community'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -35,7 +35,7 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
-  // Exported field_base: 'field_developed'
+  // Exported field_base: 'field_developed'.
   $field_bases['field_developed'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -60,7 +60,7 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
-  // Exported field_base: 'field_developed_org'
+  // Exported field_base: 'field_developed_org'.
   $field_bases['field_developed_org'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -103,7 +103,7 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
-  // Exported field_base: 'field_goals'
+  // Exported field_base: 'field_goals'.
   $field_bases['field_goals'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -128,7 +128,7 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
-  // Exported field_base: 'field_images'
+  // Exported field_base: 'field_images'.
   $field_bases['field_images'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -154,7 +154,7 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
-  // Exported field_base: 'field_mainimage'
+  // Exported field_base: 'field_mainimage'.
   $field_bases['field_mainimage'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -180,7 +180,7 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
-  // Exported field_base: 'field_module'
+  // Exported field_base: 'field_module'.
   $field_bases['field_module'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -230,7 +230,7 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
-  // Exported field_base: 'field_module_selection'
+  // Exported field_base: 'field_module_selection'.
   $field_bases['field_module_selection'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -255,7 +255,7 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
-  // Exported field_base: 'field_overview'
+  // Exported field_base: 'field_overview'.
   $field_bases['field_overview'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -280,7 +280,7 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
-  // Exported field_base: 'field_profiles'
+  // Exported field_base: 'field_profiles'.
   $field_bases['field_profiles'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -327,7 +327,7 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
-  // Exported field_base: 'field_status'
+  // Exported field_base: 'field_status'.
   $field_bases['field_status'] = array(
     'active' => 1,
     'cardinality' => 1,

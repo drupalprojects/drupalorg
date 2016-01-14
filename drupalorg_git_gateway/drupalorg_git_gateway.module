@@ -269,8 +269,7 @@ function drupalorg_git_gateway_no_consent_error($account) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Menu callback for user’s Git access.
  */
 function drupalorg_git_gateway_user_page($account) {
   require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'drupalorg_git_gateway') . "/drupalorg_git_gateway.user-form.inc";
@@ -285,6 +284,9 @@ function drupalorg_git_gateway_permission() {
     'accept git access agreement' => array(
       'title' => t('Accept Git access agreement'),
     ),
+    'administer user git access' => array(
+      'title' => t('Administer users’ Git access'),
+    ),
   );
 }
 
@@ -293,12 +295,11 @@ function drupalorg_git_gateway_permission() {
  */
 function drupalorg_git_gateway_user_page_access($account) {
   // Default logic from user_edit_access(), but also allow if they have administer vcs
-  return (($GLOBALS['user']->uid == $account->uid && user_access('accept git access agreement')) || user_access('administer users')) || user_access('administer version control systems') && $account->uid > 0;
+  return ((($GLOBALS['user']->uid == $account->uid && user_access('accept git access agreement')) || user_access('administer users')) || user_access('administer user git access')) && $account->uid > 0;
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Menu callback for admin settings.
  */
 function drupalorg_git_gateway_defaults($form, &$form_state) {
   $form = array();
@@ -315,8 +316,7 @@ function drupalorg_git_gateway_defaults($form, &$form_state) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Menu callback for global Git access killswitches.
  */
 function drupalorg_git_gateway_gatectl($form, &$form_state) {
   $form = array();
@@ -356,8 +356,9 @@ function drupalorg_git_gateway_gatectl($form, &$form_state) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Form submit callback.
+ *
+ * @see drupalorg_git_gateway_gatectl().
  */
 function drupalorg_git_gateway_gatectl_submit($form, &$form_state) {
   $pushctl = 0;

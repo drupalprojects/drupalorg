@@ -65,7 +65,7 @@ function drupalorg_news_short_block() {
     ->condition('status', 1)
     ->condition('promote', 1)
     ->orderBy('created', 'DESC')
-    ->range(0, 5)
+    ->range(0, 4)
     ->addTag('node_access')
     ->execute()
     ->fetchCol();
@@ -76,22 +76,22 @@ function drupalorg_news_short_block() {
     $node = node_load($nid);
     if ($news_count == 0) {
       // The first news item has a blurb displayed.
-      $fresh_news .= '<h6>' . l($node->title, 'node/' . $node->nid) . '</h6>';
+      $fresh_news .= '<h3>' . l($node->title, 'node/' . $node->nid) . '</h3>';
       $fresh_news .= '<p class="submitted">' . format_date($node->created, 'custom', 'F j, Y') . '</p>';
       // Cut it to short and sweet to fit into the design. Strip all tags,
       // so things like big images, distracting links and paragraph tags will
       // not end up here. The text should be good in itself to display.
-      $fresh_news .= '<p>' . text_summary(strip_tags($node->body['und']['0']['summary']), $node->body['und']['0']['format'], 180) . ' ' . l(t('Read more'), 'node/' . $node->nid) . '</p>';
+      $fresh_news .= '<p>' . text_summary(strip_tags($node->body[LANGUAGE_NONE]['0']['summary']), $node->body[LANGUAGE_NONE]['0']['format'], 180) . ' ' . l(t('Read more'), 'node/' . $node->nid) . '</p>';
     }
     else {
       // Rest of the items have just their title displayed.
-      $fresh_news .= '<p>' . l($node->title, 'node/' . $node->nid) . '</p>';
+      $fresh_news .= '<h3>' . l($node->title, 'node/' . $node->nid) . '</h3>';
     }
     $news_count += 1;
 
   }
   // Finally, we have a link to the rest of the items
-  $fresh_news .= '<p>' . l(t('More news…'), 'news') . '</p>';
+  $fresh_news .= '<footer>' . l(t('More News'), 'news', array('attributes' => array('class' => 'button-link'))) . '</footer>';
 
   return $fresh_news;
 }

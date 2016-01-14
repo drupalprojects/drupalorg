@@ -10,7 +10,7 @@
 function drupalorg_issues_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'comment-comment_node_project_issue-comment_body'
+  // Exported field_instance: 'comment-comment_node_project_issue-comment_body'.
   $field_instances['comment-comment_node_project_issue-comment_body'] = array(
     'bundle' => 'comment_node_project_issue',
     'default_value' => NULL,
@@ -44,7 +44,7 @@ function drupalorg_issues_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'comment-comment_node_project_issue-field_attribute_as_volunteer'
+  // 'comment-comment_node_project_issue-field_attribute_as_volunteer'.
   $field_instances['comment-comment_node_project_issue-field_attribute_as_volunteer'] = array(
     'bundle' => 'comment_node_project_issue',
     'default_value' => NULL,
@@ -75,7 +75,7 @@ function drupalorg_issues_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'comment-comment_node_project_issue-field_attribute_contribution_to'
+  // 'comment-comment_node_project_issue-field_attribute_contribution_to'.
   $field_instances['comment-comment_node_project_issue-field_attribute_contribution_to'] = array(
     'bundle' => 'comment_node_project_issue',
     'default_value' => NULL,
@@ -106,7 +106,7 @@ function drupalorg_issues_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'comment-comment_node_project_issue-field_for_customer'
+  // 'comment-comment_node_project_issue-field_for_customer'.
   $field_instances['comment-comment_node_project_issue-field_for_customer'] = array(
     'bundle' => 'comment_node_project_issue',
     'default_value' => NULL,
@@ -141,7 +141,7 @@ function drupalorg_issues_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'comment-comment_node_project_issue-field_issue_changes'
+  // 'comment-comment_node_project_issue-field_issue_changes'.
   $field_instances['comment-comment_node_project_issue-field_issue_changes'] = array(
     'bundle' => 'comment_node_project_issue',
     'default_value' => NULL,
@@ -189,7 +189,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-body'
+  // Exported field_instance: 'node-project_issue-body'.
   $field_instances['node-project_issue-body'] = array(
     'bundle' => 'project_issue',
     'default_value' => NULL,
@@ -253,7 +253,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-field_issue_assigned'
+  // Exported field_instance: 'node-project_issue-field_issue_assigned'.
   $field_instances['node-project_issue-field_issue_assigned'] = array(
     'bundle' => 'project_issue',
     'default_value' => array(
@@ -331,7 +331,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-field_issue_category'
+  // Exported field_instance: 'node-project_issue-field_issue_category'.
   $field_instances['node-project_issue-field_issue_category'] = array(
     'bundle' => 'project_issue',
     'default_value' => NULL,
@@ -389,7 +389,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-field_issue_component'
+  // Exported field_instance: 'node-project_issue-field_issue_component'.
   $field_instances['node-project_issue-field_issue_component'] = array(
     'bundle' => 'project_issue',
     'default_value' => NULL,
@@ -447,7 +447,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-field_issue_credit'
+  // Exported field_instance: 'node-project_issue-field_issue_credit'.
   $field_instances['node-project_issue-field_issue_credit'] = array(
     'bundle' => 'project_issue',
     'default_value' => NULL,
@@ -501,7 +501,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-field_issue_files'
+  // Exported field_instance: 'node-project_issue-field_issue_files'.
   $field_instances['node-project_issue-field_issue_files'] = array(
     'bundle' => 'project_issue',
     'deleted' => 0,
@@ -609,10 +609,11 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-field_issue_parent'
+  // Exported field_instance: 'node-project_issue-field_issue_parent'.
   $field_instances['node-project_issue-field_issue_parent'] = array(
     'bundle' => 'project_issue',
     'default_value' => NULL,
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -654,6 +655,19 @@ function drupalorg_issues_field_default_field_instances() {
     'label' => 'Parent issue',
     'required' => 0,
     'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'action' => 'none',
+          'action_on_edit' => 0,
+          'fallback' => 'none',
+          'providers' => array(
+            'og_context' => 0,
+            'url' => 1,
+          ),
+          'skip_perm' => 0,
+          'status' => 1,
+        ),
+      ),
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -669,7 +683,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-field_issue_priority'
+  // Exported field_instance: 'node-project_issue-field_issue_priority'.
   $field_instances['node-project_issue-field_issue_priority'] = array(
     'bundle' => 'project_issue',
     'default_value' => array(
@@ -731,7 +745,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-field_issue_related'
+  // Exported field_instance: 'node-project_issue-field_issue_related'.
   $field_instances['node-project_issue-field_issue_related'] = array(
     'bundle' => 'project_issue',
     'default_value' => NULL,
@@ -791,7 +805,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-field_issue_status'
+  // Exported field_instance: 'node-project_issue-field_issue_status'.
   $field_instances['node-project_issue-field_issue_status'] = array(
     'bundle' => 'project_issue',
     'default_value' => array(
@@ -853,7 +867,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-field_issue_version'
+  // Exported field_instance: 'node-project_issue-field_issue_version'.
   $field_instances['node-project_issue-field_issue_version'] = array(
     'bundle' => 'project_issue',
     'default_value' => NULL,
@@ -911,7 +925,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-field_project'
+  // Exported field_instance: 'node-project_issue-field_project'.
   $field_instances['node-project_issue-field_project'] = array(
     'bundle' => 'project_issue',
     'default_value' => NULL,
@@ -1007,7 +1021,7 @@ function drupalorg_issues_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_issue-taxonomy_vocabulary_9'
+  // Exported field_instance: 'node-project_issue-taxonomy_vocabulary_9'.
   $field_instances['node-project_issue-taxonomy_vocabulary_9'] = array(
     'bundle' => 'project_issue',
     'default_value' => NULL,

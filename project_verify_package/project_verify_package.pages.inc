@@ -118,14 +118,14 @@ function project_verify_package_clean_output($output) {
  */
 function _project_verify_package_verify_release_node($form, &$form_state) {
   // It's the final release form, not the VCS tag picker.
-  if (!empty($form_state['values']['field_release_version'][$form_state['node']->language][0]['value'])) {
+  if (!empty($form_state['values']['field_release_version'][LANGUAGE_NONE][0]['value'])) {
     // Check that it's a project category we want to verify.
     $project = node_load(project_release_get_release_project_nid($form_state['node']));
     if ($project->type === 'project_distribution') {
-      $vcs_label = $form_state['values']['field_release_vcs_label'][$form_state['node']->language][0]['value'];
+      $vcs_label = $form_state['values']['field_release_vcs_label'][LANGUAGE_NONE][0]['value'];
       $token_args = array(
         '%project_title' => $project->title,
-        '%project_shortname' => $project->field_project_machine_name[$project->language][0]['value'],
+        '%project_shortname' => $project->field_project_machine_name[LANGUAGE_NONE][0]['value'],
         '%makefile' => PROJECT_VERIFY_PACKAGE_MAKE_FILE,
         '%vcs_label' => $vcs_label,
         '!doc_link' => DOCUMENTATION_LINK,

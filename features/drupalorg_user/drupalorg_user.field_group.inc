@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function drupalorg_user_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -39,7 +39,7 @@ function drupalorg_user_field_group_info() {
       ),
     ),
   );
-  $export['group_drupal|user|user|form'] = $field_group;
+  $field_groups['group_drupal|user|user|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -59,7 +59,7 @@ function drupalorg_user_field_group_info() {
       'label' => 'Welcome left',
       'instance_settings' => array(
         'required_fields' => 1,
-        'id' => '',
+        'id' => 'user_user_form_group_left',
         'classes' => 'group-left field-group-div',
         'description' => '',
         'show_label' => '0',
@@ -70,7 +70,7 @@ function drupalorg_user_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_left|user|user|form'] = $field_group;
+  $field_groups['group_left|user|user|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -93,7 +93,7 @@ function drupalorg_user_field_group_info() {
       'label' => 'Name',
       'instance_settings' => array(
         'required_fields' => 1,
-        'id' => '',
+        'id' => 'user_user_form_group_name',
         'classes' => 'group-name',
         'description' => '',
         'show_label' => '0',
@@ -104,7 +104,7 @@ function drupalorg_user_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_name|user|user|form'] = $field_group;
+  $field_groups['group_name|user|user|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -128,7 +128,7 @@ function drupalorg_user_field_group_info() {
       'label' => '',
       'instance_settings' => array(
         'required_fields' => 1,
-        'id' => '',
+        'id' => 'field_collection_item_field_organizations_form_group_org_inline',
         'classes' => 'container-inline',
         'description' => '',
         'show_label' => '0',
@@ -139,7 +139,7 @@ function drupalorg_user_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_org_inline|field_collection_item|field_organizations|form'] = $field_group;
+  $field_groups['group_org_inline|field_collection_item|field_organizations|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -168,11 +168,12 @@ function drupalorg_user_field_group_info() {
         'label_element' => 'h3',
         'effect' => 'none',
         'speed' => 'fast',
+        'id' => 'user_user_full_group_profile_aside',
       ),
       'formatter' => 'open',
     ),
   );
-  $export['group_profile_aside|user|user|default'] = $field_group;
+  $field_groups['group_profile_aside|user|user|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -205,11 +206,12 @@ function drupalorg_user_field_group_info() {
         'label_element' => 'h3',
         'effect' => 'none',
         'speed' => 'fast',
+        'id' => 'user_user_full_group_profile_contact',
       ),
       'formatter' => 'open',
     ),
   );
-  $export['group_profile_contact|user|user|default'] = $field_group;
+  $field_groups['group_profile_contact|user|user|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -242,11 +244,12 @@ function drupalorg_user_field_group_info() {
         'label_element' => 'h3',
         'effect' => 'none',
         'speed' => 'fast',
+        'id' => 'user_user_full_group_profile_main',
       ),
       'formatter' => 'open',
     ),
   );
-  $export['group_profile_main|user|user|default'] = $field_group;
+  $field_groups['group_profile_main|user|user|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -274,11 +277,12 @@ function drupalorg_user_field_group_info() {
         'label_element' => 'h3',
         'effect' => 'none',
         'speed' => 'fast',
+        'id' => 'user_user_full_group_profile_personal',
       ),
       'formatter' => 'open',
     ),
   );
-  $export['group_profile_personal|user|user|default'] = $field_group;
+  $field_groups['group_profile_personal|user|user|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -306,11 +310,12 @@ function drupalorg_user_field_group_info() {
         'label_element' => 'h3',
         'effect' => 'none',
         'speed' => 'fast',
+        'id' => 'user_user_full_group_profile_professional',
       ),
       'formatter' => 'open',
     ),
   );
-  $export['group_profile_professional|user|user|default'] = $field_group;
+  $field_groups['group_profile_professional|user|user|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -330,7 +335,7 @@ function drupalorg_user_field_group_info() {
       'label' => 'Welcome right',
       'instance_settings' => array(
         'required_fields' => 1,
-        'id' => '',
+        'id' => 'user_user_form_group_right',
         'classes' => 'group-right field-group-div',
         'description' => '',
         'show_label' => '0',
@@ -341,7 +346,7 @@ function drupalorg_user_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_right|user|user|form'] = $field_group;
+  $field_groups['group_right|user|user|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -377,7 +382,7 @@ function drupalorg_user_field_group_info() {
       ),
     ),
   );
-  $export['group_user_personal|user|user|form'] = $field_group;
+  $field_groups['group_user_personal|user|user|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -405,7 +410,21 @@ function drupalorg_user_field_group_info() {
       ),
     ),
   );
-  $export['group_user_work|user|user|form'] = $field_group;
+  $field_groups['group_user_work|user|user|form'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Aside');
+  t('Contact');
+  t('Drupal');
+  t('Main');
+  t('Name');
+  t('Personal Info');
+  t('Personal information');
+  t('Professional Info');
+  t('Welcome left');
+  t('Welcome right');
+  t('Work');
+
+  return $field_groups;
 }

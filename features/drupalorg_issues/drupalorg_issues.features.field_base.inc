@@ -10,7 +10,7 @@
 function drupalorg_issues_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_attribute_as_volunteer'
+  // Exported field_base: 'field_attribute_as_volunteer'.
   $field_bases['field_attribute_as_volunteer'] = array(
     'active' => 1,
     'cardinality' => 2,
@@ -35,7 +35,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'list_integer',
   );
 
-  // Exported field_base: 'field_attribute_contribution_to'
+  // Exported field_base: 'field_attribute_contribution_to'.
   $field_bases['field_attribute_contribution_to'] = array(
     'active' => 1,
     'cardinality' => 10,
@@ -69,7 +69,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_for_customer'
+  // Exported field_base: 'field_for_customer'.
   $field_bases['field_for_customer'] = array(
     'active' => 1,
     'cardinality' => 10,
@@ -106,7 +106,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_issue_assigned'
+  // Exported field_base: 'field_issue_assigned'.
   $field_bases['field_issue_assigned'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -143,7 +143,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_issue_category'
+  // Exported field_base: 'field_issue_category'.
   $field_bases['field_issue_category'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -171,7 +171,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'list_integer',
   );
 
-  // Exported field_base: 'field_issue_changes'
+  // Exported field_base: 'field_issue_changes'.
   $field_bases['field_issue_changes'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -192,7 +192,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'nodechanges_revision_diff',
   );
 
-  // Exported field_base: 'field_issue_component'
+  // Exported field_base: 'field_issue_component'.
   $field_bases['field_issue_component'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -216,7 +216,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_issue_credit'
+  // Exported field_base: 'field_issue_credit'.
   $field_bases['field_issue_credit'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -251,7 +251,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_issue_files'
+  // Exported field_base: 'field_issue_files'.
   $field_bases['field_issue_files'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -274,7 +274,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'file',
   );
 
-  // Exported field_base: 'field_issue_parent'
+  // Exported field_base: 'field_issue_parent'.
   $field_bases['field_issue_parent'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -307,7 +307,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_issue_priority'
+  // Exported field_base: 'field_issue_priority'.
   $field_bases['field_issue_priority'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -334,7 +334,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'list_integer',
   );
 
-  // Exported field_base: 'field_issue_related'
+  // Exported field_base: 'field_issue_related'.
   $field_bases['field_issue_related'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -367,7 +367,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_issue_status'
+  // Exported field_base: 'field_issue_status'.
   $field_bases['field_issue_status'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -403,7 +403,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'list_integer',
   );
 
-  // Exported field_base: 'field_issue_version'
+  // Exported field_base: 'field_issue_version'.
   $field_bases['field_issue_version'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -426,7 +426,7 @@ function drupalorg_issues_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'taxonomy_vocabulary_9'
+  // Exported field_base: 'taxonomy_vocabulary_9'.
   $field_bases['taxonomy_vocabulary_9'] = array(
     'active' => 1,
     'cardinality' => -1,

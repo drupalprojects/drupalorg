@@ -105,7 +105,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_include_in_group_menu',
-    'label' => 'Include in group menu',
+    'label' => 'Include in deprecated group menu',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -261,12 +261,20 @@ function drupalorg_content_types_field_default_field_instances() {
       'description_field' => 1,
       'file_directory' => '',
       'file_extensions' => 'jpg jpeg gif png txt xls pdf ppt pps odt ods odp gz tgz patch diff zip test info po pot psd',
-      'max_filesize' => '1 MB',
+      'max_filesize' => '50 MB',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'file',
       'settings' => array(
+        'extended_file_field_collapsible' => 0,
+        'extended_file_field_hidden_toggle' => 0,
+        'extended_file_field_restrict_display' => 0,
+        'extended_file_field_reverse_display' => 0,
+        'extended_file_field_show_clear_contents' => 0,
+        'extended_file_field_show_remove' => 1,
+        'extended_file_field_widget_metadata' => array(),
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
@@ -481,9 +489,8 @@ function drupalorg_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'hidden',
         'weight' => 1,
       ),
       'issuemetadata' => array(
@@ -524,7 +531,7 @@ function drupalorg_content_types_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 31,
+      'weight' => 3,
     ),
   );
 
@@ -541,9 +548,8 @@ function drupalorg_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
+        'type' => 'hidden',
         'weight' => 3,
       ),
       'issuemetadata' => array(
@@ -579,7 +585,64 @@ function drupalorg_content_types_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 42,
+      'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance: 'node-section-field_parent_section'.
+  $field_instances['node-section-field_parent_section'] = array(
+    'bundle' => 'section',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => 'For navigation. Does not inherit permissions or other behavior.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 6,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_parent_section',
+    'label' => 'Parent section',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 6,
     ),
   );
 
@@ -595,12 +658,9 @@ function drupalorg_content_types_field_default_field_instances() {
     'description' => 'Determine if this is an OG group.',
     'display' => array(
       'default' => array(
-        'label' => 'above',
-        'module' => 'og_ui',
-        'settings' => array(
-          'field_name' => FALSE,
-        ),
-        'type' => 'og_group_subscribe',
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'issuemetadata' => array(
@@ -649,7 +709,7 @@ function drupalorg_content_types_field_default_field_instances() {
         'og_hide' => TRUE,
       ),
       'type' => 'options_onoff',
-      'weight' => 0,
+      'weight' => 2,
     ),
   );
 
@@ -724,10 +784,9 @@ function drupalorg_content_types_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
-        'module' => 'og_ui',
+        'label' => 'hidden',
         'settings' => array(),
-        'type' => 'og_list_default',
+        'type' => 'hidden',
         'weight' => 2,
       ),
       'issuemetadata' => array(
@@ -796,7 +855,67 @@ function drupalorg_content_types_field_default_field_instances() {
       'module' => 'og',
       'settings' => array(),
       'type' => 'og_complex',
-      'weight' => 41,
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'node-section-upload'.
+  $field_instances['node-section-upload'] = array(
+    'bundle' => 'section',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'upload',
+    'label' => 'File attachments',
+    'required' => 0,
+    'settings' => array(
+      'description_field' => 0,
+      'file_directory' => '',
+      'file_extensions' => 'jpg jpeg gif png txt xls pdf ppt pps odt ods odp gz tgz patch diff zip test info po pot psd',
+      'max_filesize' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'file',
+      'settings' => array(
+        'extended_file_field_collapsible' => 0,
+        'extended_file_field_hidden_toggle' => 0,
+        'extended_file_field_restrict_display' => 0,
+        'extended_file_field_reverse_display' => 0,
+        'extended_file_field_show_clear_contents' => 0,
+        'extended_file_field_show_remove' => 1,
+        'extended_file_field_widget_metadata' => array(),
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'file_generic',
+      'weight' => 8,
     ),
   );
 
@@ -867,10 +986,13 @@ function drupalorg_content_types_field_default_field_instances() {
   t('Cover image');
   t('Determine if this is an OG group.');
   t('File attachments');
+  t('For navigation. Does not inherit permissions or other behavior.');
   t('Group');
   t('Groups audience');
   t('Groups theme');
+  t('Include in deprecated group menu');
   t('Include in group menu');
+  t('Parent section');
 
   return $field_instances;
 }

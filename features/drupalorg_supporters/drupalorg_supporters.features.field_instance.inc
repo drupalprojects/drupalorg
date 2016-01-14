@@ -10,7 +10,7 @@
 function drupalorg_supporters_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-organization-field_organization_support'
+  // Exported field_instance: 'node-organization-field_organization_support'.
   $field_instances['node-organization-field_organization_support'] = array(
     'bundle' => 'organization',
     'default_value' => NULL,
@@ -60,7 +60,7 @@ function drupalorg_supporters_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-organization-field_short_description'
+  // Exported field_instance: 'node-organization-field_short_description'.
   $field_instances['node-organization-field_short_description'] = array(
     'bundle' => 'organization',
     'default_value' => NULL,

@@ -197,7 +197,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
       if (module_exists('project_package')) {
         // Development releases may have changed package contents -- clear
         // out their package items so a fresh item summary will be built.
-        if ($this->release_node->field_release_build_type[$this->release_node->language][0]['value'] === 'dynamic') {
+        if ($this->release_node->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic') {
           db_query("DELETE FROM {project_package_local_release_item} WHERE package_nid = :nid", array(':nid' => $this->release_node->nid));
         }
 

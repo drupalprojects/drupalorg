@@ -142,7 +142,7 @@ function drupalorg_content_types_views_default_views() {
   $view->description = 'Show all content (nodes) of a group.';
   $view->tag = 'og';
   $view->base_table = 'node';
-  $view->human_name = 'OG menu';
+  $view->human_name = 'Deprecated OG menu';
   $view->core = 0;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -216,6 +216,14 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'page' => 'page',
     'section' => 'section',
+  );
+  /* Filter criterion: Content: Language */
+  $handler->display->display_options['filters']['language']['id'] = 'language';
+  $handler->display->display_options['filters']['language']['table'] = 'node';
+  $handler->display->display_options['filters']['language']['field'] = 'language';
+  $handler->display->display_options['filters']['language']['value'] = array(
+    '***DEFAULT_LANGUAGE***' => '***DEFAULT_LANGUAGE***',
+    'und' => 'und',
   );
 
   /* Display: Group menu */
@@ -360,9 +368,17 @@ function drupalorg_content_types_views_default_views() {
     'page' => 'page',
     'section' => 'section',
   );
+  /* Filter criterion: Content: Language */
+  $handler->display->display_options['filters']['language']['id'] = 'language';
+  $handler->display->display_options['filters']['language']['table'] = 'node';
+  $handler->display->display_options['filters']['language']['field'] = 'language';
+  $handler->display->display_options['filters']['language']['value'] = array(
+    '***DEFAULT_LANGUAGE***' => '***DEFAULT_LANGUAGE***',
+    'und' => 'und',
+  );
   $handler->display->display_options['path'] = 'node/%/menu';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Menu';
+  $handler->display->display_options['menu']['title'] = 'Deprecated menu';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 1;
   $handler->display->display_options['menu']['context_only_inline'] = 0;

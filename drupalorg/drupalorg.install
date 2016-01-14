@@ -3799,3 +3799,18 @@ function drupalorg_update_7083() {
   module_enable(array('og', 'og_context', 'og_ui', 'page_manager', 'panels', 'draggableviews'));
   module_enable(array('drupalorg_content_types'));
 }
+
+/**
+ * i18n Support
+ */
+function drupalorg_update_7084() {
+  // These tables are in there but empty, causing issues when modules are enabled. Remove them first.
+  db_drop_table('locales_meta');
+  db_drop_table('locales_source');
+  db_drop_table('locales_target');
+
+  module_enable(array('translation', 'locale', 'drupalorg_i18n'));
+  // Manually revert the drupalorg_i18n variable feature because it doesn't take
+  // effect when enabled.
+  features_revert(array('drupalorg_i18n' => array('variable')));
+}
