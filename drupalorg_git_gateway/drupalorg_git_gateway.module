@@ -451,12 +451,11 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
     ->condition('u.name', array_keys($data['users']), 'IN')
     ->execute()->fetchAllKeyed();
 
+  $users_original = $data['users'];
   foreach ($result as $name => $git_username) {
+    // Use Git usernames for users.
     $account = user_load($data['users'][$name]['uid']);
-    if ($name != $git_username) {
-      $data['users'][$git_username] = $data['users'][$name];
-      unset($data['users'][$name]);
-    }
+    $data['users'][$git_username] = $users_original[$name];
 
     $ap = &$data['users'][$git_username];
 
