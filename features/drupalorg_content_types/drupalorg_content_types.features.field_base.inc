@@ -10,7 +10,7 @@
 function drupalorg_content_types_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_cover_image'
+  // Exported field_base: 'field_cover_image'.
   $field_bases['field_cover_image'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -36,7 +36,7 @@ function drupalorg_content_types_field_default_field_bases() {
     'type_name' => 'book_listing',
   );
 
-  // Exported field_base: 'field_include_in_group_menu'
+  // Exported field_base: 'field_include_in_group_menu'.
   $field_bases['field_include_in_group_menu'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -61,7 +61,7 @@ function drupalorg_content_types_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'group_group'
+  // Exported field_base: 'group_group'.
   $field_bases['group_group'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -86,7 +86,30 @@ function drupalorg_content_types_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'og_group_ref'
+  // Exported field_base: 'group_theme'.
+  $field_bases['group_theme'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'group_theme',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'no_ui' => TRUE,
+    'settings' => array(
+      'allowed_values' => array(),
+      'allowed_values_function' => 'og_theme_field_allowed_values',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
+  // Exported field_base: 'og_group_ref'.
   $field_bases['og_group_ref'] = array(
     'active' => 1,
     'cardinality' => 1,

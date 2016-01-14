@@ -10,7 +10,7 @@
 function drupalorg_content_types_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-page-body'
+  // Exported field_instance: 'node-page-body'.
   $field_instances['node-page-body'] = array(
     'bundle' => 'page',
     'default_value' => NULL,
@@ -67,7 +67,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-field_include_in_group_menu'
+  // Exported field_instance: 'node-page-field_include_in_group_menu'.
   $field_instances['node-page-field_include_in_group_menu'] = array(
     'bundle' => 'page',
     'default_value' => array(
@@ -121,7 +121,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-og_group_ref'
+  // Exported field_instance: 'node-page-og_group_ref'.
   $field_instances['node-page-og_group_ref'] = array(
     'bundle' => 'page',
     'default_value' => NULL,
@@ -206,7 +206,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-upload'
+  // Exported field_instance: 'node-page-upload'.
   $field_instances['node-page-upload'] = array(
     'bundle' => 'page',
     'deleted' => 0,
@@ -274,7 +274,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-post-body'
+  // Exported field_instance: 'node-post-body'.
   $field_instances['node-post-body'] = array(
     'bundle' => 'post',
     'default_value' => NULL,
@@ -330,7 +330,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-post-field_cover_image'
+  // Exported field_instance: 'node-post-field_cover_image'.
   $field_instances['node-post-field_cover_image'] = array(
     'bundle' => 'post',
     'deleted' => 0,
@@ -388,7 +388,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-post-og_group_ref'
+  // Exported field_instance: 'node-post-og_group_ref'.
   $field_instances['node-post-og_group_ref'] = array(
     'bundle' => 'post',
     'default_value' => NULL,
@@ -397,10 +397,9 @@ function drupalorg_content_types_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
-        'module' => 'og_ui',
+        'label' => 'hidden',
         'settings' => array(),
-        'type' => 'og_list_default',
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'issuemetadata' => array(
@@ -473,7 +472,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-section-body'
+  // Exported field_instance: 'node-section-body'.
   $field_instances['node-section-body'] = array(
     'bundle' => 'section',
     'default_value' => NULL,
@@ -529,7 +528,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-section-field_include_in_group_menu'
+  // Exported field_instance: 'node-section-field_include_in_group_menu'.
   $field_instances['node-section-field_include_in_group_menu'] = array(
     'bundle' => 'section',
     'default_value' => array(
@@ -584,7 +583,7 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-section-group_group'
+  // Exported field_instance: 'node-section-group_group'.
   $field_instances['node-section-group_group'] = array(
     'bundle' => 'section',
     'default_value' => array(
@@ -654,7 +653,69 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-section-og_group_ref'
+  // Exported field_instance: 'node-section-group_theme'.
+  $field_instances['node-section-group_theme'] = array(
+    'bundle' => 'section',
+    'default_value' => array(
+      0 => array(
+        'value' => '__default',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'group_theme',
+    'label' => 'Groups theme',
+    'required' => TRUE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'view modes' => array(
+      'full' => array(
+        'label' => 'above',
+        'type' => 'list_default',
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'type' => 'list_default',
+      ),
+    ),
+    'widget' => array(
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 7,
+    ),
+    'widget_type' => 'options_select',
+  );
+
+  // Exported field_instance: 'node-section-og_group_ref'.
   $field_instances['node-section-og_group_ref'] = array(
     'bundle' => 'section',
     'default_value' => NULL,
@@ -739,6 +800,66 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-section-upload'.
+  $field_instances['node-section-upload'] = array(
+    'bundle' => 'section',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'upload',
+    'label' => 'File attachments',
+    'required' => 0,
+    'settings' => array(
+      'description_field' => 0,
+      'file_directory' => '',
+      'file_extensions' => 'jpg jpeg gif png txt xls pdf ppt pps odt ods odp gz tgz patch diff zip test info po pot psd',
+      'max_filesize' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'file',
+      'settings' => array(
+        'extended_file_field_collapsible' => 0,
+        'extended_file_field_hidden_toggle' => 0,
+        'extended_file_field_restrict_display' => 0,
+        'extended_file_field_reverse_display' => 0,
+        'extended_file_field_show_clear_contents' => 0,
+        'extended_file_field_show_remove' => 1,
+        'extended_file_field_widget_metadata' => array(),
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'file_generic',
+      'weight' => 8,
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Body');
@@ -748,6 +869,7 @@ function drupalorg_content_types_field_default_field_instances() {
   t('File attachments');
   t('Group');
   t('Groups audience');
+  t('Groups theme');
   t('Include in group menu');
 
   return $field_instances;
