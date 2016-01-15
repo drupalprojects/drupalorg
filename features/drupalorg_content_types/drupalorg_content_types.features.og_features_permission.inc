@@ -36,7 +36,9 @@ function drupalorg_content_types_og_features_default_permissions() {
 
   // Exported og permission: 'node:section:administer panelizer node page content'
   $permissions['node:section:administer panelizer node page content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'maintainer' => 'maintainer',
+    ),
   );
 
   // Exported og permission: 'node:section:administer panelizer node page context'
@@ -66,7 +68,9 @@ function drupalorg_content_types_og_features_default_permissions() {
 
   // Exported og permission: 'node:section:administer panelizer og_group content'
   $permissions['node:section:administer panelizer og_group content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'maintainer' => 'maintainer',
+    ),
   );
 
   // Exported og permission: 'node:section:administer panelizer og_group context'

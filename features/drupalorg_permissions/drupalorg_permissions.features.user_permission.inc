@@ -733,6 +733,24 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'administer og menu'.
+  $permissions['administer og menu'] = array(
+    'name' => 'administer og menu',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'og_menu',
+  );
+
+  // Exported permission: 'administer og menu configuration'.
+  $permissions['administer og menu configuration'] = array(
+    'name' => 'administer og menu configuration',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'og_menu',
+  );
+
   // Exported permission: 'administer page manager'.
   $permissions['administer page manager'] = array(
     'name' => 'administer page manager',
@@ -802,13 +820,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
-  // Exported permission: 'administer panelizer comment comment_node_packaging_whitelist defaults'.
-  $permissions['administer panelizer comment comment_node_packaging_whitelist defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_packaging_whitelist defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
   // Exported permission: 'administer panelizer comment comment_node_page defaults'.
   $permissions['administer panelizer comment comment_node_page defaults'] = array(
     'name' => 'administer panelizer comment comment_node_page defaults',
@@ -823,20 +834,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
-  // Exported permission: 'administer panelizer comment comment_node_project_distribution defaults'.
-  $permissions['administer panelizer comment comment_node_project_distribution defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_distribution defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer comment comment_node_project_drupalorg defaults'.
-  $permissions['administer panelizer comment comment_node_project_drupalorg defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_drupalorg defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
   // Exported permission: 'administer panelizer comment comment_node_project_issue defaults'.
   $permissions['administer panelizer comment comment_node_project_issue defaults'] = array(
     'name' => 'administer panelizer comment comment_node_project_issue defaults',
@@ -844,37 +841,9 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
-  // Exported permission: 'administer panelizer comment comment_node_project_module defaults'.
-  $permissions['administer panelizer comment comment_node_project_module defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_module defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer comment comment_node_project_release defaults'.
-  $permissions['administer panelizer comment comment_node_project_release defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_release defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
   // Exported permission: 'administer panelizer comment comment_node_project_theme defaults'.
   $permissions['administer panelizer comment comment_node_project_theme defaults'] = array(
     'name' => 'administer panelizer comment comment_node_project_theme defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer comment comment_node_project_theme_engine defaults'.
-  $permissions['administer panelizer comment comment_node_project_theme_engine defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_theme_engine defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer comment comment_node_project_translation defaults'.
-  $permissions['administer panelizer comment comment_node_project_translation defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_translation defaults',
     'roles' => array(),
     'module' => 'panelizer',
   );
@@ -1768,6 +1737,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'create post content'.
+  $permissions['create post content'] = array(
+    'name' => 'create post content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'create project_core content'.
   $permissions['create project_core content'] = array(
     'name' => 'create project_core content',
@@ -1944,6 +1920,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'delete any post content'.
+  $permissions['delete any post content'] = array(
+    'name' => 'delete any post content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'delete any project_core content'.
   $permissions['delete any project_core content'] = array(
     'name' => 'delete any project_core content',
@@ -2091,6 +2074,13 @@ function drupalorg_permissions_user_default_permissions() {
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'delete own post content'.
+  $permissions['delete own post content'] = array(
+    'name' => 'delete own post content',
+    'roles' => array(),
     'module' => 'node',
   );
 
@@ -2455,6 +2445,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit any post content'.
+  $permissions['edit any post content'] = array(
+    'name' => 'edit any post content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit any project_core content'.
   $permissions['edit any project_core content'] = array(
     'name' => 'edit any project_core content',
@@ -2628,6 +2625,13 @@ function drupalorg_permissions_user_default_permissions() {
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'edit own post content'.
+  $permissions['edit own post content'] = array(
+    'name' => 'edit own post content',
+    'roles' => array(),
     'module' => 'node',
   );
 
@@ -3355,6 +3359,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'use panels in place editing',
     'roles' => array(
       'administrator' => 'administrator',
+      'community' => 'community',
     ),
     'module' => 'panels',
   );
