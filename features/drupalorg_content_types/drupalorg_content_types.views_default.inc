@@ -202,7 +202,7 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['filters']['group_type']['value'] = array(
     'node' => 'node',
   );
-  /* Filter criterion: Content: Include in deprecated group menu (field_include_in_group_menu) */
+  /* Filter criterion: Content: Include in group menu (field_include_in_group_menu) */
   $handler->display->display_options['filters']['field_include_in_group_menu_value']['id'] = 'field_include_in_group_menu_value';
   $handler->display->display_options['filters']['field_include_in_group_menu_value']['table'] = 'field_data_field_include_in_group_menu';
   $handler->display->display_options['filters']['field_include_in_group_menu_value']['field'] = 'field_include_in_group_menu_value';
@@ -319,7 +319,7 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['fields']['changed']['label'] = 'Updated';
   $handler->display->display_options['fields']['changed']['date_format'] = 'medium';
   $handler->display->display_options['fields']['changed']['second_date_format'] = 'long';
-  /* Field: Content: Include in deprecated group menu */
+  /* Field: Content: Include in group menu */
   $handler->display->display_options['fields']['field_include_in_group_menu']['id'] = 'field_include_in_group_menu';
   $handler->display->display_options['fields']['field_include_in_group_menu']['table'] = 'field_data_field_include_in_group_menu';
   $handler->display->display_options['fields']['field_include_in_group_menu']['field'] = 'field_include_in_group_menu';
