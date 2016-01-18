@@ -3359,7 +3359,6 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'use panels in place editing',
     'roles' => array(
       'administrator' => 'administrator',
-      'community' => 'community',
     ),
     'module' => 'panels',
   );
