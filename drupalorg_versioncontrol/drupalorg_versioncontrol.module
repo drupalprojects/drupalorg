@@ -81,19 +81,8 @@ function drupalorg_versioncontrol_node_insert($node) {
     'repository' => $repo,
   );
 
-  $queue = DrupalQueue::get('versioncontrol_repomgr');
-  if (!$queue->createItem($job)) {
-    $error_info = array(
-      '%nid' => $node->nid,
-      '%op' => 'insert',
-    );
-    drupal_set_message(t('An error occurred while attempting to enqueue your repository for creation. Please file an issue in the infrastructure queue.'), 'error');
-    watchdog('drupalorg', t("Failed to enqueue Git repository creation job for node '%nid'.", $error_info));
-  }
-  else {
-    drupal_set_message(t('The Git repository for this project has been enqueued for creation. It should be available in a few seconds.'));
-  }
-
+  drupal_register_shutdown_function(array(DrupalQueue::get('versioncontrol_repomgr'), 'createItem'), $job);
+  drupal_set_message(t('The Git repository for this project has been enqueued for creation. It should be available in a few seconds.'));
 }
 
 function drupalorg_versioncontrol_node_delete($node) {
