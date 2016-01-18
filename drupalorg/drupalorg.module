@@ -2497,7 +2497,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       }
       if ($issues > 0) {
         $filter = $view->get_item('organization_recent', 'filter', 'changed_1');
-        $content['main']['drupalorg_organization_issue_credit']['#prefix'] = '<h4 id="issue-credit">' . format_plural($issues, 'Contributed to fixing 1 issue in the past @time', 'Contributed to fixing @count issues in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
+        $content['main']['drupalorg_organization_issue_credit']['#prefix'] = '<h4 id="issue-credit">' . format_plural($issues, 'Credited on 1 issue fixed in the past @time', 'Credited on @count issues fixed in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
       }
 
       // Training fields
@@ -3212,7 +3212,7 @@ function drupalorg_user_view($account, $view_mode) {
   }
   if ($issues > 0) {
     $filter = $view->get_item('user_recent', 'filter', 'changed_1');
-    $account->content['drupalorg_user_issue_credit']['#prefix'] = '<h4>' . format_plural($issues, 'Contributed to fixing 1 issue in the past @time', 'Contributed to fixing @count issues in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
+    $account->content['drupalorg_user_issue_credit']['#prefix'] = '<h4>' . format_plural($issues, 'Credited on 1 issue fixed in the past @time', 'Credited on @count issues fixed in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
   }
 }
 
