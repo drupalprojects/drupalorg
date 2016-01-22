@@ -78,7 +78,7 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['argument_input'] = array(
     'gid' => array(
       'type' => 'context',
-      'context' => 'entity:comment.node',
+      'context' => 'entity:node.nid',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',
@@ -104,7 +104,7 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['argument_input'] = array(
     'gid' => array(
       'type' => 'context',
-      'context' => 'entity:comment.node',
+      'context' => 'entity:node.nid',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',
