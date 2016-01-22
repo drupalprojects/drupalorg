@@ -3333,9 +3333,12 @@ function drupalorg_preprocess_field(&$v) {
 }
 
 /**
- * Do not process aggregator feeds during regular cron run.
+ * Do not process some queues during regular cron run.
  */
 function drupalorg_cron_queue_info_alter(&$queues) {
+  if (isset($queues['message_subscribe'])) {
+    $queues['message_subscribe']['skip on cron'] = TRUE;
+  }
   // If we are in drush, leave the queue intact for queue commands.
   if (function_exists('drush_get_command')) {
     $command = drush_get_command();
