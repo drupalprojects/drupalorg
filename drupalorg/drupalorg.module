@@ -368,13 +368,21 @@ function drupalorg_field_extra_fields() {
  * - Forbids node owners from changing a case study's status.
  */
 function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
-  if ($op != 'edit') {
-    // We are not interested in anything but edit permissions. Returning TRUE
-    // means "we are not interested" (only FALSE return values are significant).
-    return TRUE;
-  }
-
   switch ($op) {
+    case 'view':
+      switch ($entity_type) {
+        case 'user':
+          switch ($field['field_name']) {
+            // We should not see Mailchimp subscription information.
+            case 'field_subscribe_to':
+            // Only show notes on edit.
+            case 'field_notes':
+              return FALSE;
+          }
+          break;
+      }
+      break;
+
     case 'edit':
       switch ($entity_type) {
         case 'node':
