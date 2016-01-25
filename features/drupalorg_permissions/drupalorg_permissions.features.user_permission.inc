@@ -199,6 +199,27 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'restws',
   );
 
+  // Exported permission: 'access resource message'.
+  $permissions['access resource message'] = array(
+    'name' => 'access resource message',
+    'roles' => array(),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource message_type'.
+  $permissions['access resource message_type'] = array(
+    'name' => 'access resource message_type',
+    'roles' => array(),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource message_type_category'.
+  $permissions['access resource message_type_category'] = array(
+    'name' => 'access resource message_type_category',
+    'roles' => array(),
+    'module' => 'restws',
+  );
+
   // Exported permission: 'access resource node'.
   $permissions['access resource node'] = array(
     'name' => 'access resource node',
@@ -664,6 +685,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'menu',
   );
 
+  // Exported permission: 'administer message types'.
+  $permissions['administer message types'] = array(
+    'name' => 'administer message types',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'message',
+  );
+
   // Exported permission: 'administer meta tags'.
   $permissions['administer meta tags'] = array(
     'name' => 'administer meta tags',
@@ -822,6 +852,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panelizer comment comment_node_packaging_whitelist defaults'.
+  $permissions['administer panelizer comment comment_node_packaging_whitelist defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_packaging_whitelist defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panelizer comment comment_node_page defaults'.
   $permissions['administer panelizer comment comment_node_page defaults'] = array(
     'name' => 'administer panelizer comment comment_node_page defaults',
@@ -836,6 +873,20 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panelizer comment comment_node_project_distribution defaults'.
+  $permissions['administer panelizer comment comment_node_project_distribution defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_distribution defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_drupalorg defaults'.
+  $permissions['administer panelizer comment comment_node_project_drupalorg defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_drupalorg defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panelizer comment comment_node_project_issue defaults'.
   $permissions['administer panelizer comment comment_node_project_issue defaults'] = array(
     'name' => 'administer panelizer comment comment_node_project_issue defaults',
@@ -843,9 +894,37 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panelizer comment comment_node_project_module defaults'.
+  $permissions['administer panelizer comment comment_node_project_module defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_module defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_release defaults'.
+  $permissions['administer panelizer comment comment_node_project_release defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_release defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panelizer comment comment_node_project_theme defaults'.
   $permissions['administer panelizer comment comment_node_project_theme defaults'] = array(
     'name' => 'administer panelizer comment comment_node_project_theme defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_theme_engine defaults'.
+  $permissions['administer panelizer comment comment_node_project_theme_engine defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_theme_engine defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_translation defaults'.
+  $permissions['administer panelizer comment comment_node_project_translation defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_translation defaults',
     'roles' => array(),
     'module' => 'panelizer',
   );
@@ -1686,6 +1765,15 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full projects',
     'roles' => array(),
     'module' => 'project',
+  );
+
+  // Exported permission: 'create messages'.
+  $permissions['create messages'] = array(
+    'name' => 'create messages',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'message',
   );
 
   // Exported permission: 'create mini panels'.
