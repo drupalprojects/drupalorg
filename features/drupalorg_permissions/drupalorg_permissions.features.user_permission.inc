@@ -568,7 +568,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'administer flags'.
   $permissions['administer flags'] = array(
     'name' => 'administer flags',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'flag',
   );
 
