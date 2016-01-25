@@ -10,6 +10,64 @@
 function drupalorg_content_types_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance:
+  // 'message-comment_notification-field_target_comment'.
+  $field_instances['message-comment_notification-field_target_comment'] = array(
+    'bundle' => 'comment_notification',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 0,
+      ),
+      'message_notify_email_body' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'message',
+    'field_name' => 'field_target_comment',
+    'label' => 'Target comment',
+    'required' => 1,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'entityreference_label',
+        'formatter_settings' => array(
+          'link' => 0,
+        ),
+      ),
+      'type' => 'field_extrawidgets_read_only',
+      'weight' => 1,
+    ),
+  );
+
   // Exported field_instance: 'node-page-body'.
   $field_instances['node-page-body'] = array(
     'bundle' => 'page',
@@ -849,6 +907,7 @@ function drupalorg_content_types_field_default_field_instances() {
   t('Include in deprecated group menu');
   t('Include in group menu');
   t('Parent section');
+  t('Target comment');
 
   return $field_instances;
 }
