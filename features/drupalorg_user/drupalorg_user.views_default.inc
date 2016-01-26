@@ -552,6 +552,36 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['field_for_customer_target_id']['value']['value'] = '***CURRENT_ORGANIZATION***';
   $handler->display->display_options['filters']['field_for_customer_target_id']['group'] = 2;
   $handler->display->display_options['path'] = 'node/%/issue-credits/%';
+  $translatables['issue_credit'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Comment entity referenced from field_issue_credit'),
+    t('Content entity referenced from field_project'),
+    t('User recent'),
+    t(','),
+    t('All'),
+    t('User recent page'),
+    t('[name]'),
+    t('Back to [name]’s profile'),
+    t('◀︎ '),
+    t('%2 issues credited to %1'),
+    t('Organization recent'),
+    t('Attribute comment for customer (field_for_customer)'),
+    t('Organization recent page'),
+    t('◀︎ <a href="!url-1">Back to %1</a>'),
+  );
   $export['issue_credit'] = $view;
 
   $view = new view();
@@ -643,6 +673,29 @@ function drupalorg_user_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->display->display_options['path'] = 'user/%/people-mentored';
+  $translatables['user_mentees'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Mentor'),
+    t('Name'),
+    t('Uid'),
+    t('[name]'),
+    t('All'),
+    t('People listing %1 as a mentor'),
+    t('Page'),
+  );
   $export['user_mentees'] = $view;
 
   return $export;

@@ -10,7 +10,7 @@
 function drupalorg_marketplace_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'comment-comment_node_organization-comment_body'
+  // Exported field_instance: 'comment-comment_node_organization-comment_body'.
   $field_instances['comment-comment_node_organization-comment_body'] = array(
     'bundle' => 'comment_node_organization',
     'default_value' => NULL,
@@ -43,7 +43,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-organization-body'
+  // Exported field_instance: 'node-organization-body'.
   $field_instances['node-organization-body'] = array(
     'bundle' => 'organization',
     'default_value' => NULL,
@@ -97,7 +97,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-organization-field_budget'
+  // Exported field_instance: 'node-organization-field_budget'.
   $field_instances['node-organization-field_budget'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -193,7 +193,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'text_textfield',
   );
 
-  // Exported field_instance: 'node-organization-field_contributions'
+  // Exported field_instance: 'node-organization-field_contributions'.
   $field_instances['node-organization-field_contributions'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -305,7 +305,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'text_textarea',
   );
 
-  // Exported field_instance: 'node-organization-field_hosting_type'
+  // Exported field_instance: 'node-organization-field_hosting_type'.
   $field_instances['node-organization-field_hosting_type'] = array(
     'bundle' => 'organization',
     'default_value' => NULL,
@@ -354,7 +354,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-organization-field_link'
+  // Exported field_instance: 'node-organization-field_link'.
   $field_instances['node-organization-field_link'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -462,7 +462,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'link',
   );
 
-  // Exported field_instance: 'node-organization-field_logo'
+  // Exported field_instance: 'node-organization-field_logo'.
   $field_instances['node-organization-field_logo'] = array(
     'bundle' => 'organization',
     'default_value' => '',
@@ -582,7 +582,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'imagefield_widget',
   );
 
-  // Exported field_instance: 'node-organization-field_org_issue_credit_count'
+  // Exported field_instance: 'node-organization-field_org_issue_credit_count'.
   $field_instances['node-organization-field_org_issue_credit_count'] = array(
     'bundle' => 'organization',
     'default_value' => NULL,
@@ -633,7 +633,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-organization-field_org_marketplace_request'
+  // Exported field_instance: 'node-organization-field_org_marketplace_request'.
   $field_instances['node-organization-field_org_marketplace_request'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -753,7 +753,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'optionwidgets_onoff',
   );
 
-  // Exported field_instance: 'node-organization-field_org_training_issue'
+  // Exported field_instance: 'node-organization-field_org_training_issue'.
   $field_instances['node-organization-field_org_training_issue'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -848,7 +848,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'project_issue_nodereference_auto',
   );
 
-  // Exported field_instance: 'node-organization-field_org_training_request'
+  // Exported field_instance: 'node-organization-field_org_training_request'.
   $field_instances['node-organization-field_org_training_request'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -970,7 +970,7 @@ function drupalorg_marketplace_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-organization-field_organization_headquarters'
+  // 'node-organization-field_organization_headquarters'.
   $field_instances['node-organization-field_organization_headquarters'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -1066,7 +1066,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'text_textfield',
   );
 
-  // Exported field_instance: 'node-organization-field_organization_issue'
+  // Exported field_instance: 'node-organization-field_organization_issue'.
   $field_instances['node-organization-field_organization_issue'] = array(
     'bundle' => 'organization',
     'default_value' => NULL,
@@ -1155,7 +1155,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'project_issue_nodereference_auto',
   );
 
-  // Exported field_instance: 'node-organization-field_organization_list_rule'
+  // Exported field_instance: 'node-organization-field_organization_list_rule'.
   $field_instances['node-organization-field_organization_list_rule'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -1245,7 +1245,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'optionwidgets_buttons',
   );
 
-  // Exported field_instance: 'node-organization-field_organization_security'
+  // Exported field_instance: 'node-organization-field_organization_security'.
   $field_instances['node-organization-field_organization_security'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -1342,7 +1342,7 @@ function drupalorg_marketplace_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-organization-field_organization_technologies'
+  // 'node-organization-field_organization_technologies'.
   $field_instances['node-organization-field_organization_technologies'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -1396,7 +1396,7 @@ function drupalorg_marketplace_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-organization-field_organization_training_desc'
+  // 'node-organization-field_organization_training_desc'.
   $field_instances['node-organization-field_organization_training_desc'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -1494,7 +1494,7 @@ function drupalorg_marketplace_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-organization-field_organization_training_list'
+  // 'node-organization-field_organization_training_list'.
   $field_instances['node-organization-field_organization_training_list'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -1585,7 +1585,7 @@ function drupalorg_marketplace_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-organization-field_organization_training_url'
+  // 'node-organization-field_organization_training_url'.
   $field_instances['node-organization-field_organization_training_url'] = array(
     'bundle' => 'organization',
     'default_value' => array(
@@ -1692,7 +1692,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'link',
   );
 
-  // Exported field_instance: 'node-organization-taxonomy_vocabulary_48'
+  // Exported field_instance: 'node-organization-taxonomy_vocabulary_48'.
   $field_instances['node-organization-taxonomy_vocabulary_48'] = array(
     'bundle' => 'organization',
     'default_value' => NULL,
@@ -1740,7 +1740,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-organization-taxonomy_vocabulary_50'
+  // Exported field_instance: 'node-organization-taxonomy_vocabulary_50'.
   $field_instances['node-organization-taxonomy_vocabulary_50'] = array(
     'bundle' => 'organization',
     'default_value' => NULL,
@@ -1788,7 +1788,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-organization-taxonomy_vocabulary_52'
+  // Exported field_instance: 'node-organization-taxonomy_vocabulary_52'.
   $field_instances['node-organization-taxonomy_vocabulary_52'] = array(
     'bundle' => 'organization',
     'default_value' => NULL,

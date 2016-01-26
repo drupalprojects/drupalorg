@@ -11,7 +11,7 @@ function drupalorg_user_field_default_field_instances() {
   $field_instances = array();
 
   // Exported field_instance:
-  // 'field_collection_item-field_organizations-field_current'
+  // 'field_collection_item-field_organizations-field_current'.
   $field_instances['field_collection_item-field_organizations-field_current'] = array(
     'bundle' => 'field_organizations',
     'default_value' => array(
@@ -48,7 +48,7 @@ function drupalorg_user_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_organizations-field_job_title'
+  // 'field_collection_item-field_organizations-field_job_title'.
   $field_instances['field_collection_item-field_organizations-field_job_title'] = array(
     'bundle' => 'field_organizations',
     'default_value' => NULL,
@@ -83,7 +83,7 @@ function drupalorg_user_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_organizations-field_organization_name'
+  // 'field_collection_item-field_organizations-field_organization_name'.
   $field_instances['field_collection_item-field_organizations-field_organization_name'] = array(
     'bundle' => 'field_organizations',
     'default_value' => NULL,
@@ -118,7 +118,7 @@ function drupalorg_user_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_organizations-field_organization_reference'
+  // 'field_collection_item-field_organizations-field_organization_reference'.
   $field_instances['field_collection_item-field_organizations-field_organization_reference'] = array(
     'bundle' => 'field_organizations',
     'default_value' => NULL,
@@ -148,7 +148,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_areas_of_expertise'
+  // Exported field_instance: 'user-user-field_areas_of_expertise'.
   $field_instances['user-user-field_areas_of_expertise'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -182,7 +182,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_bio'
+  // Exported field_instance: 'user-user-field_bio'.
   $field_instances['user-user-field_bio'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -216,7 +216,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_contributed'
+  // Exported field_instance: 'user-user-field_contributed'.
   $field_instances['user-user-field_contributed'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -247,7 +247,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_country'
+  // Exported field_instance: 'user-user-field_country'.
   $field_instances['user-user-field_country'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -278,7 +278,233 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_drupal_contributions'
+  // Exported field_instance: 'user-user-field_distil_reg_botscore'.
+  $field_instances['user-user-field_distil_reg_botscore'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_distil_reg_botscore',
+    'label' => 'Distil Botscore',
+    'required' => FALSE,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 102,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_distil_reg_flagged'.
+  $field_instances['user-user-field_distil_reg_flagged'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_distil_reg_flagged',
+    'label' => 'Distil Suspicious User',
+    'required' => FALSE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 106,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_distil_reg_iid'.
+  $field_instances['user-user-field_distil_reg_iid'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_distil_reg_iid',
+    'label' => 'Distil iid',
+    'required' => FALSE,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 101,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_distil_reg_reported_ip'.
+  $field_instances['user-user-field_distil_reg_reported_ip'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_distil_reg_reported_ip',
+    'label' => 'Reported Account Creation IP',
+    'required' => FALSE,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 104,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_distil_reg_sid_ip'.
+  $field_instances['user-user-field_distil_reg_sid_ip'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_distil_reg_sid_ip',
+    'label' => 'Distil Initial IP',
+    'required' => FALSE,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 103,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_distil_reg_uid'.
+  $field_instances['user-user-field_distil_reg_uid'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_distil_reg_uid',
+    'label' => 'Distil D_UID Cookie value',
+    'required' => FALSE,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 105,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_drupal_contributions'.
   $field_instances['user-user-field_drupal_contributions'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -312,7 +538,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_events_attended'
+  // Exported field_instance: 'user-user-field_events_attended'.
   $field_instances['user-user-field_events_attended'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -343,7 +569,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_first_name'
+  // Exported field_instance: 'user-user-field_first_name'.
   $field_instances['user-user-field_first_name'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -376,7 +602,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_gender'
+  // Exported field_instance: 'user-user-field_gender'.
   $field_instances['user-user-field_gender'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -407,7 +633,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_industries_worked_in'
+  // Exported field_instance: 'user-user-field_industries_worked_in'.
   $field_instances['user-user-field_industries_worked_in'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -441,7 +667,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_irc_nick'
+  // Exported field_instance: 'user-user-field_irc_nick'.
   $field_instances['user-user-field_irc_nick'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -475,7 +701,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_languages'
+  // Exported field_instance: 'user-user-field_languages'.
   $field_instances['user-user-field_languages'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -506,7 +732,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_last_name'
+  // Exported field_instance: 'user-user-field_last_name'.
   $field_instances['user-user-field_last_name'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -539,7 +765,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_mentors'
+  // Exported field_instance: 'user-user-field_mentors'.
   $field_instances['user-user-field_mentors'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -574,7 +800,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_notes'
+  // Exported field_instance: 'user-user-field_notes'.
   $field_instances['user-user-field_notes'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -607,7 +833,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_organizations'
+  // Exported field_instance: 'user-user-field_organizations'.
   $field_instances['user-user-field_organizations'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -640,7 +866,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_social_links'
+  // Exported field_instance: 'user-user-field_social_links'.
   $field_instances['user-user-field_social_links'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -678,7 +904,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_subscribe_to'
+  // Exported field_instance: 'user-user-field_subscribe_to'.
   $field_instances['user-user-field_subscribe_to'] = array(
     'bundle' => 'user',
     'default_value' => array(
@@ -762,7 +988,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_terms_of_service'
+  // Exported field_instance: 'user-user-field_terms_of_service'.
   $field_instances['user-user-field_terms_of_service'] = array(
     'bundle' => 'user',
     'default_value' => array(
@@ -798,7 +1024,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_user_geolocation'
+  // Exported field_instance: 'user-user-field_user_geolocation'.
   $field_instances['user-user-field_user_geolocation'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -828,7 +1054,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_websites'
+  // Exported field_instance: 'user-user-field_websites'.
   $field_instances['user-user-field_websites'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -876,7 +1102,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-og_user_node'
+  // Exported field_instance: 'user-user-og_user_node'.
   $field_instances['user-user-og_user_node'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
@@ -935,6 +1161,11 @@ function drupalorg_user_field_default_field_instances() {
   t('Bio');
   t('Country');
   t('Current');
+  t('Distil Botscore');
+  t('Distil D_UID Cookie value');
+  t('Distil Initial IP');
+  t('Distil Suspicious User');
+  t('Distil iid');
   t('Drupal Contributions');
   t('Drupal Events');
   t('First or given name');
@@ -958,6 +1189,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
   t('Provide an overview of your Drupal contributions.');
+  t('Reported Account Creation IP');
   t('Select Drupal events you attended or are planning to attend.');
   t('Select one or more languages you speak.');
   t('Social links');

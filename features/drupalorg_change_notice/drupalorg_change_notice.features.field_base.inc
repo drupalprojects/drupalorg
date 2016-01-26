@@ -10,7 +10,7 @@
 function drupalorg_change_notice_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_change_record_status'
+  // Exported field_base: 'field_change_record_status'.
   $field_bases['field_change_record_status'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -35,7 +35,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_change_to'
+  // Exported field_base: 'field_change_to'.
   $field_bases['field_change_to'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -60,7 +60,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'field_change_to_branch'
+  // Exported field_base: 'field_change_to_branch'.
   $field_bases['field_change_to_branch'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -85,7 +85,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'field_coder_recorded'
+  // Exported field_base: 'field_coder_recorded'.
   $field_bases['field_coder_recorded'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -116,7 +116,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'field_coder_update_recorded'
+  // Exported field_base: 'field_coder_update_recorded'.
   $field_bases['field_coder_update_recorded'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -147,7 +147,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'field_description'
+  // Exported field_base: 'field_description'.
   $field_bases['field_description'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -172,7 +172,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'field_examples_recorded'
+  // Exported field_base: 'field_examples_recorded'.
   $field_bases['field_examples_recorded'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -203,7 +203,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'field_impacts'
+  // Exported field_base: 'field_impacts'.
   $field_bases['field_impacts'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -235,7 +235,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'field_issues'
+  // Exported field_base: 'field_issues'.
   $field_bases['field_issues'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -273,7 +273,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_module_recorded'
+  // Exported field_base: 'field_module_recorded'.
   $field_bases['field_module_recorded'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -304,7 +304,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'field_online_recorded'
+  // Exported field_base: 'field_online_recorded'.
   $field_bases['field_online_recorded'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -335,7 +335,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'field_other_details'
+  // Exported field_base: 'field_other_details'.
   $field_bases['field_other_details'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -360,7 +360,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'field_other_recorded'
+  // Exported field_base: 'field_other_recorded'.
   $field_bases['field_other_recorded'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -391,7 +391,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'field_project'
+  // Exported field_base: 'field_project'.
   $field_bases['field_project'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -435,7 +435,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_theme_recorded'
+  // Exported field_base: 'field_theme_recorded'.
   $field_bases['field_theme_recorded'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -466,7 +466,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'field_update_progress'
+  // Exported field_base: 'field_update_progress'.
   $field_bases['field_update_progress'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -491,7 +491,7 @@ function drupalorg_change_notice_field_default_field_bases() {
     'type_name' => 'changenotice',
   );
 
-  // Exported field_base: 'upload'
+  // Exported field_base: 'upload'.
   $field_bases['upload'] = array(
     'active' => 1,
     'cardinality' => -1,

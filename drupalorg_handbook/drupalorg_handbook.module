@@ -333,24 +333,6 @@ function drupalorg_handbook_revision_maintainers() {
 }
 
 /**
- * API function to get recent update information for the documentation pages.
- */
-function drupalorg_handbook_get_recent_updates($limit = 50) {
-  $query = db_select('node', 'n');
-  $query->innerJoin('book', 'b', 'n.nid = b.nid');
-  $query->innerJoin('node_revision', 'r', 'n.vid = r.vid');
-  $query->innerJoin('users', 'u', 'u.uid = r.uid');
-  return $query
-    ->fields('n', array('nid', 'title', 'changed'))
-    ->fields('r', array('log'))
-    ->fields('u', array('uid', 'name'))
-    ->condition('n.status', 1)
-    ->orderBy('n.changed', 'DESC')
-    ->range(0, $limit)
-    ->execute();
-}
-
-/**
  * Implements hook_block_info().
  */
 function drupalorg_handbook_block_info() {
@@ -482,31 +464,6 @@ function drupalorg_handbook_theme($existing, $type, $theme, $path) {
       'template' => 'handbook-meta-sidebar',
     ),
   );
-}
-
-/**
- * Implementation of template_preprocess_drupalorg_home().
- */
-function drupalorg_handbook_preprocess_drupalorg_home(&$vars) {
-  // Represents the number of results to retrieve. Also utilized for cache field name.
-  $count = 5;
-  if ($cache = cache_get('drupalorg_handbook_recent_updates_' . $count)) {
-    $recent_updates = $cache->data;
-  }
-  else {
-    $result = drupalorg_handbook_get_recent_updates($count);
-    $recent_updates = '';
-    foreach ($result as $node) {
-      $recent_updates .= '<h6>' . l($node->title, 'node/' . $node->nid) . '</h6><p class="submitted">';
-      $date = format_date($node->changed);
-      $name = theme('username', array('account' => $node));
-      $recent_updates .= t('Submitted by !username on !datetime', array('!username' => $name, '!datetime' => $date));
-      $recent_updates .= '</p>';
-    }
-    $recent_updates .= '<p>' . l(t('More documentation…'), 'documentation') . '</p>';
-    cache_set('drupalorg_handbook_recent_updates_' . $count, $recent_updates);
-  }
-  $vars['tab_content_docs'] = $recent_updates;
 }
 
 /**

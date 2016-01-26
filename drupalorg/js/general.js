@@ -23,8 +23,8 @@
       var $map = $('#organization-map');
       $map.find('>.drupalorg-map-pin').each(function () {
         $(this).css({
-          left: '' + Drupal.longitudeToPx($('>.longitude', this).text(), -168, $map.width()) + 'px',
-          bottom: '' + Drupal.latitudeToPx($('>.latitude', this).text(), 75, -57, $map.height()) + 'px'
+          left: '' + Drupal.longitudeToPx($('>.longitude', this).text(), -162, $map.width()) + 'px',
+          bottom: '' + Drupal.latitudeToPx($('>.latitude', this).text(), 75, -45, $map.height()) + 'px'
         });
       });
     }

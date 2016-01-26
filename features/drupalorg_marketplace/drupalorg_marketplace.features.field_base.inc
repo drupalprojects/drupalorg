@@ -10,7 +10,7 @@
 function drupalorg_marketplace_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'body'
+  // Exported field_base: 'body'.
   $field_bases['body'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -31,7 +31,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type' => 'text_with_summary',
   );
 
-  // Exported field_base: 'comment_body'
+  // Exported field_base: 'comment_body'.
   $field_bases['comment_body'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -52,7 +52,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_budget'
+  // Exported field_base: 'field_budget'.
   $field_bases['field_budget'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -77,7 +77,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_contributions'
+  // Exported field_base: 'field_contributions'.
   $field_bases['field_contributions'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -102,7 +102,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_hosting_type'
+  // Exported field_base: 'field_hosting_type'.
   $field_bases['field_hosting_type'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -131,7 +131,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_link'
+  // Exported field_base: 'field_link'.
   $field_bases['field_link'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -161,7 +161,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_logo'
+  // Exported field_base: 'field_logo'.
   $field_bases['field_logo'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -187,7 +187,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_org_issue_credit_count'
+  // Exported field_base: 'field_org_issue_credit_count'.
   $field_bases['field_org_issue_credit_count'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -202,7 +202,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_org_marketplace_request'
+  // Exported field_base: 'field_org_marketplace_request'.
   $field_bases['field_org_marketplace_request'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -233,7 +233,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_org_training_issue'
+  // Exported field_base: 'field_org_training_issue'.
   $field_bases['field_org_training_issue'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -275,7 +275,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_org_training_request'
+  // Exported field_base: 'field_org_training_request'.
   $field_bases['field_org_training_request'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -306,7 +306,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_organization_headquarters'
+  // Exported field_base: 'field_organization_headquarters'.
   $field_bases['field_organization_headquarters'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -331,7 +331,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_organization_issue'
+  // Exported field_base: 'field_organization_issue'.
   $field_bases['field_organization_issue'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -380,7 +380,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_organization_list_rule'
+  // Exported field_base: 'field_organization_list_rule'.
   $field_bases['field_organization_list_rule'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -409,7 +409,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_organization_security'
+  // Exported field_base: 'field_organization_security'.
   $field_bases['field_organization_security'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -434,7 +434,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_organization_technologies'
+  // Exported field_base: 'field_organization_technologies'.
   $field_bases['field_organization_technologies'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -459,7 +459,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_organization_training_desc'
+  // Exported field_base: 'field_organization_training_desc'.
   $field_bases['field_organization_training_desc'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -484,7 +484,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_organization_training_list'
+  // Exported field_base: 'field_organization_training_list'.
   $field_bases['field_organization_training_list'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -512,7 +512,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_organization_training_url'
+  // Exported field_base: 'field_organization_training_url'.
   $field_bases['field_organization_training_url'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -542,7 +542,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'taxonomy_vocabulary_48'
+  // Exported field_base: 'taxonomy_vocabulary_48'.
   $field_bases['taxonomy_vocabulary_48'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -569,7 +569,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'taxonomy_vocabulary_50'
+  // Exported field_base: 'taxonomy_vocabulary_50'.
   $field_bases['taxonomy_vocabulary_50'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -596,7 +596,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'taxonomy_vocabulary_52'
+  // Exported field_base: 'taxonomy_vocabulary_52'.
   $field_bases['taxonomy_vocabulary_52'] = array(
     'active' => 1,
     'cardinality' => -1,

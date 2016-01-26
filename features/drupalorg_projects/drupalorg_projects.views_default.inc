@@ -460,13 +460,19 @@ function drupalorg_projects_views_default_views() {
     'dynamic' => 'dynamic',
   );
   $handler->display->display_options['filters']['field_release_build_type_value']['group'] = 1;
-  /* Filter criterion: Project release: Show snapshot */
-  $handler->display->display_options['filters']['snapshot']['id'] = 'snapshot';
-  $handler->display->display_options['filters']['snapshot']['table'] = 'project_release_supported_versions';
-  $handler->display->display_options['filters']['snapshot']['field'] = 'snapshot';
-  $handler->display->display_options['filters']['snapshot']['relationship'] = 'supported_releases_rel';
-  $handler->display->display_options['filters']['snapshot']['value'] = '1';
-  $handler->display->display_options['filters']['snapshot']['group'] = 1;
+  /* Filter criterion: Content: Show in project’s download table when branch is supported (field_show_download) */
+  $handler->display->display_options['filters']['field_show_download_value']['id'] = 'field_show_download_value';
+  $handler->display->display_options['filters']['field_show_download_value']['table'] = 'field_data_field_show_download';
+  $handler->display->display_options['filters']['field_show_download_value']['field'] = 'field_show_download_value';
+  $handler->display->display_options['filters']['field_show_download_value']['value'] = array(
+    1 => '1',
+  );
+  /* Filter criterion: Project release: Supported */
+  $handler->display->display_options['filters']['supported']['id'] = 'supported';
+  $handler->display->display_options['filters']['supported']['table'] = 'project_release_supported_versions';
+  $handler->display->display_options['filters']['supported']['field'] = 'supported';
+  $handler->display->display_options['filters']['supported']['relationship'] = 'supported_releases_rel';
+  $handler->display->display_options['filters']['supported']['value'] = '1';
   $handler->display->display_options['allow']['use_pager'] = 0;
   $handler->display->display_options['allow']['items_per_page'] = 0;
   $handler->display->display_options['allow']['offset'] = 0;

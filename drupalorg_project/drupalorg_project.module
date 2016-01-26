@@ -201,7 +201,7 @@ function drupalorg_project_help($path, $arg) {
   switch ($path) {
     case 'project/usage':
     case 'project/usage/%':
-      return '<p>'. t('These statistics are incomplete; only Drupal websites using the <a href="!update_status_url">Update Status</a> module are included in the data. As this module is now included with the download of Drupal since version 6.x, the data is heavily biased toward newer sites. <a href="!usage_description_url">Read more information about how these statistics are calculated.</a>', array('!update_status_url' => url('project/update_status'), '!usage_description_url' => url('node/329620'))) .'</p>';
+      return '<p>'. t('These statistics are incomplete; only Drupal websites using the <a href="!update_status_url">Update Status</a> module are included in the data. This module has been included with the download of Drupal since version 6.x so the data does not include older sites. <a href="!usage_description_url">Read more information about how these statistics are calculated.</a>', array('!update_status_url' => url('project/update_status'), '!usage_description_url' => url('node/329620'))) .'</p>';
   }
 
   if ($arg[0] == 'project' && $arg[1] == 'issues-term' && $arg[2] == '346') {
@@ -408,6 +408,13 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     // Validate full project short name.
     $language = $form['field_project_machine_name']['#language'];
     $form['field_project_machine_name'][$language][0]['value']['#element_validate'][] = 'drupalorg_project_machine_name_validate';
+
+    // Do not allow sandboxes to be transferred to another maintainer. The
+    // maintainer is part of the Git repository URL.
+    if (project_promote_project_is_sandbox($form_state['node'])) {
+      $form['author']['name']['#disabled'] = TRUE;
+      $form['author']['name']['#description'] = t('Sandbox projects can not be transferred to another maintainer.');
+    }
   }
   elseif (project_issue_node_is_issue($form_state['node'])) {
     // Only existing issues for projects.
@@ -490,11 +497,15 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           if (isset($as_volunteer[0])) {
             // Add organizations.
             foreach ($comment_wrapper->field_attribute_contribution_to as $organization) {
-              $table['#rows'][$comment->uid]['by']['@organization'][$organization->nid->value()] = $organization->title->value();
+              if ($organization->value()) {
+                $table['#rows'][$comment->uid]['by']['@organization'][$organization->nid->value()] = $organization->title->value();
+              }
             }
             // Add customers.
             foreach ($comment_wrapper->field_for_customer as $organization) {
-              $table['#rows'][$comment->uid]['by']['@customer'][$organization->nid->value()] = $organization->title->value();
+              if ($organization->value()) {
+                $table['#rows'][$comment->uid]['by']['@customer'][$organization->nid->value()] = $organization->title->value();
+              }
             }
           }
 
@@ -1386,25 +1397,6 @@ function drupalorg_project_bingo_block_output() {
 }
 
 /**
- * Implementation of template_preprocess_drupalorg_home().
- */
-function drupalorg_project_preprocess_drupalorg_home(&$vars) {
-  $result = db_query_range('SELECT vco.message, vco.author_date, vco.repo_id, vco.revision, u.name, u.uid FROM {versioncontrol_operations} vco INNER JOIN {users} u ON vco.author_uid = u.uid ORDER BY vco.author_date DESC', 0, 5);
-  $recent_updates = '';
-  foreach ($result as $message) {
-    $message->message = trim($message->message);
-    if (drupal_strlen($message->message) > 80) {
-      $message->message = truncate_utf8($message->message, 80) . '…';
-    }
-    $recent_updates .= '<h6>' . l($message->message, 'commitlog/commit/' . $message->repo_id . '/' . $message->revision) . '</h6>'
-      . '<p class="submitted">' . t('Posted by !user on %author_date', array('!user' => l($message->name, 'user/' . $message->uid), '%author_date' => format_date($message->author_date, 'custom', 'F j, Y \a\t g:ia'))) . '</p>';
-  }
-  // We have no place to link this to in a nice way.
-  $recent_updates .= '<p>' . l(t('More commit messages…'), 'commitlog') . '</p>';
-  $vars['tab_content_git'] = $recent_updates;
-}
-
-/**
  * Gather information for the bottom of project pages.
  *
  * @param $node
@@ -1516,7 +1508,7 @@ function drupalorg_project_meta_data($node) {
   }
 
   // Automated tests.
-  if (module_exists('pift') && pift_project_enabled($node->nid)) {
+  if (module_exists('pift') && pift_ci_project_info($node->nid)) {
     $info[t('Automated tests')] = t('Enabled');
   }
 
@@ -1930,7 +1922,7 @@ function drupalorg_maintainers_json($project) {
  * @see https://drupal.org/node/2172891
  */
 function drupalorg_project_machine_name_validate($element, &$form_state, $form) {
-  if (($form_state['values']['field_project_type'][$element['#language']][0]['value'] == 'full' || $form['#id'] === 'project-promote-project-form')
+  if (($form['#id'] === 'project-promote-project-form' || $form_state['values']['field_project_type'][LANGUAGE_NONE][0]['value'] == 'full')
     && !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $element['#value'])) {
     form_error($element, t('@title must follow <a href="@url">PHP naming convention</a>.', array(
       '@title' => $element['#title'],

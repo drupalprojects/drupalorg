@@ -8,9 +8,6 @@
  * Implements hook_ctools_plugin_api().
  */
 function drupalorg_projects_ctools_plugin_api($module = NULL, $api = NULL) {
-  if ($module == "page_manager" && $api == "pages_default") {
-    return array("version" => "1");
-  }
   if ($module == "panelizer" && $api == "panelizer") {
     return array("version" => "1");
   }

@@ -15,18 +15,24 @@ define('DRUPALORG_CORE_NID', 3060);
 /**
  * Major version number for core project listings.
  */
-define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 7); // 7.x
+define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 8);
 
 /**
  * TID for API compatibility for project listings.
  */
-define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 103); // 7.x
+define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 7234); // 8.x
 
 /**
  * Implements hook_init().
  */
 function drupalorg_init() {
   global $user, $conf;
+
+  // If the language was detected from the URL, redirect to the default
+  // language unless this is a translated node page.
+  if ($GLOBALS['language']->provider === 'locale-url' && (strpos(drupal_get_normal_path($_GET['q']), 'node/') !== 0 || !($node = menu_get_object()) || empty(menu_get_object()->tnid))) {
+    drupal_goto($_GET['q'], array('language' => language_default()));
+  }
 
   if (user_is_logged_in()) {
     // Use the dashboard as the home page if the user selected it.
@@ -240,6 +246,14 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['drupalorg-ham/%/%/%'] = array(
+    'access callback' => 'drupalorg_ham_access',
+    'access arguments' => array(1, 2, 3),
+    'page callback' => 'drupalorg_ham',
+    'page arguments' => array(1, 2),
+    'type' => MENU_CALLBACK,
+  );
+
   $items['admin/config/system/drupalorg'] = array(
     'title' => 'Drupal.org settings',
     'access arguments' => array('administer site configuration'),
@@ -287,6 +301,11 @@ function drupalorg_menu_alter(&$menu) {
     $menu['profile']['access arguments'] = array();
     $menu['profile/autocomplete']['access callback'] = 'user_is_logged_in';
     $menu['profile/autocomplete']['access arguments'] = array();
+  }
+  // Allow access to admin term list if you can edit the vocabulary.
+  if (isset($menu['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name'])) {
+    $menu['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name']['access callback'] = 'taxonomy_term_edit_access';
+    $menu['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name']['access arguments'] = array(3);
   }
 
   $menu['user']['title callback'] = 'drupalorg_user_menu_title';
@@ -349,13 +368,21 @@ function drupalorg_field_extra_fields() {
  * - Forbids node owners from changing a case study's status.
  */
 function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
-  if ($op != 'edit') {
-    // We are not interested in anything but edit permissions. Returning TRUE
-    // means "we are not interested" (only FALSE return values are significant).
-    return TRUE;
-  }
-
   switch ($op) {
+    case 'view':
+      switch ($entity_type) {
+        case 'user':
+          switch ($field['field_name']) {
+            // We should not see Mailchimp subscription information.
+            case 'field_subscribe_to':
+            // Only show notes on edit.
+            case 'field_notes':
+              return FALSE;
+          }
+          break;
+      }
+      break;
+
     case 'edit':
       switch ($entity_type) {
         case 'node':
@@ -456,10 +483,6 @@ function drupalorg_block_info() {
     'security_issues' => array(
       'info' => t('Your Security Issues'),
       'cache' => DRUPAL_NO_CACHE,
-    ),
-    'membership_campaign' => array(
-      'info' => t('Drupal Association membership campaign'),
-      'cache' => DRUPAL_CACHE_PER_USER,
     ),
     'documentation_survey' => array(
       'info' => t('Survey on documentation pages'),
@@ -610,16 +633,6 @@ function drupalorg_block_view($delta, $block = NULL) {
       return array(
         'subject' => t('Your Posts'),
         'content' => $content,
-      );
-
-    case 'membership_campaign':
-      if (user_is_logged_in() && drupalorg_has_civimembership($GLOBALS['user']->name, 'Individual')) {
-        return array(
-          'content' => l(t('Thank you for supporting Drupal. <strong>Help us grow our membership</strong>'), 'https://assoc.drupal.org/help-grow-our-membership?utm_campaign=member-drive-20151013', array('html' => TRUE, 'attributes' => array('class' => array('member')))),
-        );
-      }
-      return array(
-        'content' => l(t('Support the project you love. <strong>Become a Member Today</strong>'), 'https://assoc.drupal.org/support-project-you-love?utm_campaign=member-drive-20151013', array('html' => TRUE, 'attributes' => array('class' => array('non-member')))),
       );
 
     case 'documentation_survey':
@@ -809,7 +822,6 @@ function drupalorg_library_alter(&$libraries, $module) {
  * Page callback for the frontpage.
  */
 function drupalorg_home() {
-  drupal_add_library('system', 'ui.tabs');
   drupal_set_title(t('Drupal - Open Source CMS'));
 
   return theme('drupalorg_home');
@@ -851,29 +863,43 @@ function drupalorg_preprocess_page(&$variables) {
   }
 
   // Group breadcrumbs.
-  if ($context = og_context()) {
-    $group = entity_load_single($context['group_type'], $context['gid']);
-    $breadcrumb = array();
-
-    // Check if we are in a group, but not on the group page itself.
-    if ($context['group_type'] === 'node' && ($node = menu_get_object()) && $node->nid != $context['gid']) {
-      $uri = entity_uri($context['group_type'], $group);
-      $breadcrumb[] = l(entity_label($context['group_type'], $group), $uri['path']);
-    }
-
-    // Look for parent groups.
-    while ($parents = og_get_entity_groups($context['group_type'], $group)) {
-      $group = entity_load_single($context['group_type'], reset($parents[$context['group_type']]));
-      $uri = entity_uri($context['group_type'], $group);
-      $breadcrumb[] = l(entity_label($context['group_type'], $group), $uri['path']);
-    }
-
-    $breadcrumb[] = l(t('Home'), '<front>');
-    drupal_set_breadcrumb(array_reverse($breadcrumb));
-
-    // drupalorg_crosssite_preprocess_page() overrides.
+  if (og_context()) {
+    // Reset drupalorg_crosssite_preprocess_page() overrides.
     $variables['section_name'] = '';
     unset($variables['breadcrumb']);
+  }
+}
+
+/**
+ * Implements hook_menu_breadcrumb_alter().
+ */
+function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
+  if ($context = og_context()) {
+    // If we are in a group.
+    if ($context['group_type'] === 'node' && ($node = menu_get_object())) {
+      $group = entity_load_single($context['group_type'], $context['gid']);
+
+      // If we are not on the group page itself, add it to the breadcrumb.
+      if ($node->nid != $context['gid']) {
+        $uri = entity_uri($context['group_type'], $group);
+        array_splice($active_trail, 1, 0, array(array(
+          'title' => entity_label($context['group_type'], $group),
+          'href' => $uri['path'],
+          'localized_options' => array(),
+        )));
+      }
+
+      // If the group has a parent section, add it to the breadcrumb.
+      if (!empty($group->field_parent_section)) {
+        $parent = node_load($group->field_parent_section[LANGUAGE_NONE][0]['target_id']);
+        $uri = entity_uri('node', $parent);
+        array_splice($active_trail, 1, 0, array(array(
+          'title' => entity_label($context['group_type'], $parent),
+          'href' => $uri['path'],
+          'localized_options' => array(),
+        )));
+      }
+    }
   }
 }
 
@@ -881,15 +907,10 @@ function drupalorg_preprocess_page(&$variables) {
  * Implementation of template_preprocess_drupalorg_home().
  */
 function drupalorg_preprocess_drupalorg_home(&$variables) {
-  // Get content for the Recent Forum Posts tab.
-  $result = db_query_range('SELECT f.nid, f.title, f.created, u.uid, u.name FROM {forum_index} f INNER JOIN {node} n ON n.nid = f.nid INNER JOIN {users} u ON u.uid = n.uid ORDER BY f.nid DESC', 0, 5);
-  $recent_forums = '';
-  foreach ($result as $node) {
-    $recent_forums .= '<h6>' . l($node->title, 'node/' . $node->nid) . '</h6><p class="submitted">' . t('Posted by !author on @created.', array('!author' => theme('username', array('account' => $node)), '@created' => format_date($node->created, 'custom', 'F j, Y \a\t g:ia'))) . '</p>';
-  }
-
-  $recent_forums .= '<p>' . l(t('More forums…'), 'forum') . '</p>';
-  $variables['tab_content_forums'] = $recent_forums;
+  // Add preface second region.
+  $variables['region']['preface_second'] = block_get_blocks_by_region('preface_second');
+  $variables['region']['preface_second']['#theme_wrappers'][] = 'region';
+  $variables['region']['preface_second']['#region'] = 'preface_second';
 
   // Retrieve or rebuild stats cache.
   $variables += drupalorg_get_activity();
@@ -1318,6 +1339,13 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
   unset($form['picture']['#title']);
   $form['picture']['#collapsible'] = FALSE;
 
+  // Remove hanging organization references to deleted organizations.
+  foreach (element_children($form['field_organizations'][LANGUAGE_NONE]) as $delta) {
+    if (is_numeric($delta) && !empty($form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference) && !db_query('SELECT 1 FROM {node} WHERE nid = :nid', array(':nid' => $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id']))->fetchField()) {
+      $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference = array();
+    }
+  }
+
   // Be welcoming.
   if (isset($form_state['drupalorg_welcome'])) {
     $to_show = array(
@@ -1664,11 +1692,17 @@ function drupalorg_form_node_form_alter(&$form) {
       $form['revision_information']['#access'] = FALSE;
     }
   }
+
   if (isset($form['nodechanges_comment'])) {
     $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
     if (isset($form['nodechanges_comment']['field_attribute_contribution_to'])) {
       _drupalorg_alter_comment_attribution($form['nodechanges_comment'], $form['#node']);
     }
+  }
+
+  // If this is a new node with OG Menu, put in the menu.
+  if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu'])) {
+    $form['menu']['enabled']['#default_value'] = 1;
   }
 }
 
@@ -2404,6 +2438,20 @@ function drupalorg_node_view($node, $view_mode = 'full') {
           ))
         );
       }
+      elseif (drupalorg_has_civimembership($node->title, 'Signature Hosting Supporter')) {
+        $content['intro']['association_hosting_partner'] = array(
+          '#markup' => l(
+            theme('image', array(
+              'path' => drupal_get_path('module', 'drupalorg') . '/images/association_hosting_signature_badge.svg',
+              'alt' => t('Drupal Association Signature Hosting Supporter badge'),
+            )), 'https://assoc.drupal.org/drupal-hosting-supporter-program', array(
+            'html' => TRUE,
+            'attributes' => array(
+              'title' => t('Drupal Association Signature Hosting Supporter'),
+            ),
+          ))
+        );
+      }
 
       if (drupalorg_has_civimembership($node->title, 'Organization')) {
         $content['intro']['association_membership'] = array(
@@ -2457,7 +2505,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       }
       if ($issues > 0) {
         $filter = $view->get_item('organization_recent', 'filter', 'changed_1');
-        $content['main']['drupalorg_organization_issue_credit']['#prefix'] = '<h4 id="issue-credit">' . format_plural($issues, 'Contributed to fixing 1 issue in the past @time', 'Contributed to fixing @count issues in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
+        $content['main']['drupalorg_organization_issue_credit']['#prefix'] = '<h4 id="issue-credit">' . format_plural($issues, 'Credited on 1 issue fixed in the past @time', 'Credited on @count issues fixed in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
       }
 
       // Training fields
@@ -2742,6 +2790,9 @@ function drupalorg_node_insert($node) {
     }
     node_save($node);
   }
+  elseif (project_release_node_is_release($node) && project_release_is_security_update($node)) {
+    drupal_mail('drupalorg', 'security_release', 'security@drupal.org', language_default(), array('node' => $node));
+  }
 }
 
 /**
@@ -2809,8 +2860,8 @@ function drupalorg_views_pre_render(&$view) {
   if ($view->name === 'drupalorg_organizations') {
     $content = array(
       'nav' => array(
-        '#prefix' => '<div class="nav">',
-        '#suffix' => '</div>',
+        '#prefix' => '<div class="view-header"><div class="nav">',
+        '#suffix' => '</div></div>',
       ),
     );
 
@@ -2928,8 +2979,7 @@ function drupalorg_views_pre_render(&$view) {
 
       $n += 1;
     }
-    $view->set_item_option('default', 'header', 'area', 'format', 3);
-    $view->set_item_option('default', 'header', 'area', 'content', drupal_render($content));
+    $view->attachment_before = drupal_render($content);
   }
   elseif ($view->name === 'issue_credit') {
     if ($view->current_display === 'organization_recent_page') {
@@ -3064,6 +3114,11 @@ function drupalorg_user_view($account, $view_mode) {
             '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/drupal-hosting-supporter-program"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_host_supp.svg') . '" alt="' . t('Drupal Association Premium Hosting Supporter') . '" /></a></div></div>',
           );
         }
+        if (drupalorg_has_civimembership($title, 'Signature Hosting Supporter')) {
+          $account->content['drupalorg_membership'][] = array(
+            '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://assoc.drupal.org/drupal-hosting-supporter-program"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_hosting_signature_badge.svg') . '" alt="' . t('Drupal Association Signature Hosting Supporter') . '" /></a></div></div>',
+          );
+        }
       }
       else {
         // Move non-current organizations.
@@ -3165,7 +3220,7 @@ function drupalorg_user_view($account, $view_mode) {
   }
   if ($issues > 0) {
     $filter = $view->get_item('user_recent', 'filter', 'changed_1');
-    $account->content['drupalorg_user_issue_credit']['#prefix'] = '<h4>' . format_plural($issues, 'Contributed to fixing 1 issue in the past @time', 'Contributed to fixing @count issues in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
+    $account->content['drupalorg_user_issue_credit']['#prefix'] = '<h4>' . format_plural($issues, 'Credited on 1 issue fixed in the past @time', 'Credited on @count issues fixed in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
   }
 }
 
@@ -3286,9 +3341,12 @@ function drupalorg_preprocess_field(&$v) {
 }
 
 /**
- * Do not process aggregator feeds during regular cron run.
+ * Do not process some queues during regular cron run.
  */
 function drupalorg_cron_queue_info_alter(&$queues) {
+  if (isset($queues['message_subscribe'])) {
+    $queues['message_subscribe']['skip on cron'] = TRUE;
+  }
   // If we are in drush, leave the queue intact for queue commands.
   if (function_exists('drush_get_command')) {
     $command = drush_get_command();
@@ -3356,13 +3414,13 @@ function drupalorg_preprocess_comment(&$v) {
 
     // Add extra classes.
     $v['classes_array'][] = 'system-message';
-    if (preg_match('/^The last submitted patch, .*, failed testing.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
+    if (isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('/^The last submitted patch, .*, failed testing.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
       $v['classes_array'][] = 'testing-failed';
     }
-    elseif (preg_match('/queued .* for re-testing\.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
+    elseif (isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('/queued .* for re-testing\.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
       $v['classes_array'][] = 'queued-retesting';
     }
-    elseif (preg_match('#(Commit <a href=".*">.*</a> on .*:|class="versioncontrol-project-commits")#', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
+    elseif (isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('#(Commit <a href=".*">.*</a> on .*:|class="versioncontrol-project-commits")#', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
       $v['classes_array'][] = 'committed';
     }
     elseif (!empty($v['comment']->field_issue_changes)) {
@@ -3397,8 +3455,10 @@ function drupalorg_preprocess_comment(&$v) {
     if (isset($as_volunteer[0])) {
       // Link to organizations.
       foreach ($wrapper->field_attribute_contribution_to as $organization) {
-        $uri = entity_uri('node', $organization->value());
-        $args['!organization'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+        if ($organization->value()) {
+          $uri = entity_uri('node', $organization->value());
+          $args['!organization'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+        }
       }
       if (isset($args['!organization'])) {
         $args['!organization'] = implode(', ', $args['!organization']);
@@ -3406,8 +3466,10 @@ function drupalorg_preprocess_comment(&$v) {
       }
       // Link to customers.
       foreach ($wrapper->field_for_customer as $organization) {
-        $uri = entity_uri('node', $organization->value());
-        $args['!customer'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+        if ($organization->value()) {
+          $uri = entity_uri('node', $organization->value());
+          $args['!customer'][] = l($organization->title->value(), $uri['path'], $uri['options']);
+        }
       }
       if (isset($args['!customer'])) {
         $args['!customer'] = implode(', ', $args['!customer']);
@@ -3458,10 +3520,34 @@ function drupalorg_entity_property_info_alter(&$info) {
     'description' => t('The Unix timestamp of the last comment, or the timestamp of the node creation if there are no comments yet.'),
     'type' => 'date',
   );
+
+  // Add an access callback to prevent user entities having all flag properties
+  // in RestWS export. See flag_entity_property_info_alter().
+  foreach (flag_get_flags() as $flag) {
+    if (!$flag->global) {
+      $info['user']['properties']['flag_' . $flag->name . '_flagged']['access callback'] = 'drupalorg_user_flag_access';
+    }
+  }
 }
 
 function drupalorg_has_new_content($node, array &$options, $name, $type, &$info) {
   return theme('mark', array('type' => node_mark($node->nid, $node->changed)));
+}
+
+/**
+ * User entity flag property access callback. Deny access to RestWS requests.
+ *
+ * @see entity_access(), drupalorg_entity_property_info_alter().
+ */
+function drupalorg_user_flag_access($op, $property, $entity_type, $entity) {
+  if ($op === 'view') {
+    foreach (debug_backtrace() as $trace) {
+      if ($trace['function'] === 'restws_handle_request') {
+        return FALSE;
+      }
+    }
+  }
+  return entity_metadata_user_access($op, $entity);
 }
 
 /**
@@ -3701,23 +3787,7 @@ function drupalorg_render_cache_entity_cache_info_alter(&$cache_info, $entity, $
  */
 function drupalorg_render_cache_entity_hash_alter(&$hash, $entity, $cache_info, $context) {
   if (!empty($cache_info['drupalorg_comment_processing'])) {
-    static $test_results = array();
     static $ci_results = array();
-
-    // last_tested timestamp and status for tests associated with the issue.
-    if (!isset($test_results[$entity->nid])) {
-      $node = node_load($entity->nid);
-      $test_results[$entity->nid] = array();
-      if (isset($node->test_results)) {
-        foreach ($node->test_results as $test_result) {
-          $test_results[$entity->nid][] = $test_result['last_tested'] . '-' . $test_result['status'];
-        }
-      }
-      $test_results[$entity->nid] = implode('-', $test_results[$entity->nid]);
-    }
-    // todo This is all of the issue's test results, comment-specific would
-    // have more cache hits.
-    $hash['test_results'] = $test_results[$entity->nid];
 
     // Last updated timestamp for CI tests associated with the issue.
     if (!isset($ci_results[$entity->nid])) {
@@ -4121,9 +4191,9 @@ function drupalorg_project_release_history_xml_written($project, $api_version) {
 }
 
 /**
- * Implements hook_mollom_data_alter().
+ * Implements hook_mollom_content_alter().
  */
-function drupalorg_mollom_data_alter(&$data) {
+function drupalorg_mollom_content_alter(&$data) {
   // Remove safe domains.
   if (isset($data['postBody'])) {
     $data['postBody'] = preg_replace(array(
@@ -4163,5 +4233,58 @@ function drupalorg_mollom_issue_moderation(&$form, &$form_state) {
   }
   else {
     $form_state['values']['status'] = NODE_NOT_PUBLISHED;
+  }
+}
+
+/**
+ * Menu access callback for marking an entity as ham.
+ *
+ * Check that a user has admin access for the entity, a valid token, and a
+ * valid entity.
+ */
+function drupalorg_ham_access($entity_type, $id, $token) {
+  return user_access('administer ' . $entity_type . 's') && $token === drupal_get_token($entity_type . $id) && entity_load_single($entity_type, $id) !== FALSE;
+}
+
+/**
+ * Menu callback for marking an entity as ham.
+ *
+ * Clear all users’ spam flags for the entity, set a message, and return to the
+ * original page.
+ */
+function drupalorg_ham($entity_type, $id) {
+  flag_reset_flag(flag_get_flag('drupalorg_' . $entity_type . '_spam'), $id);
+
+  drupal_set_message(t('%label unmarked as spam.', array('%label' => entity_label($entity_type, entity_load_single($entity_type, $id)))));
+
+  drupal_goto();
+}
+
+/**
+ * Implements hook_mail().
+ */
+function drupalorg_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'security_release':
+      $message['subject'] = t('New security release: @title', array('@title' => $params['node']->title));
+      $message['body'] = array(
+        t('A new security release has been created: @title', array('@title' => $params['node']->title)),
+        url('node/' . $params['node']->nid, array('absolute' => TRUE)),
+      );
+      break;
+  }
+}
+
+/**
+ * Implements hook_mail_alter().
+ */
+function drupalorg_mail_alter(&$message) {
+  if ($message['id'] === 'message_notify_comment_notification') {
+    // Add commenter name to from address. The sender name is enclosed by
+    // double quotes below to satisfy RFC2822
+    // <http://www.faqs.org/rfcs/rfc2822.html>, which requires double quotes
+    // when special characters (including some punctuation) are used. See
+    // example in Appendix A.1.2.
+    $message['headers']['From'] = '"' . mime_header_encode($message['params']['message_entity']->wrapper()->field_target_comment->name->value() . ' (' . variable_get('site_name', 'Drupal') . ')') . '" <' . $message['from'] . '>';
   }
 }

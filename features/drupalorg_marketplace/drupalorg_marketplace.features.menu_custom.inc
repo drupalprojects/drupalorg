@@ -20,6 +20,5 @@ function drupalorg_marketplace_menu_default_menu_custom() {
   // Included for use with string extractors like potx.
   t('Hosting Types');
 
-
   return $menus;
 }

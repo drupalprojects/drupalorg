@@ -10,7 +10,7 @@
 function drupalorg_change_notice_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-changenotice-field_change_record_status'
+  // Exported field_instance: 'node-changenotice-field_change_record_status'.
   $field_instances['node-changenotice-field_change_record_status'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -53,7 +53,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-changenotice-field_change_to'
+  // Exported field_instance: 'node-changenotice-field_change_to'.
   $field_instances['node-changenotice-field_change_to'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -144,7 +144,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'text_textfield',
   );
 
-  // Exported field_instance: 'node-changenotice-field_change_to_branch'
+  // Exported field_instance: 'node-changenotice-field_change_to_branch'.
   $field_instances['node-changenotice-field_change_to_branch'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -235,7 +235,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'text_textfield',
   );
 
-  // Exported field_instance: 'node-changenotice-field_coder_recorded'
+  // Exported field_instance: 'node-changenotice-field_coder_recorded'.
   $field_instances['node-changenotice-field_coder_recorded'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -357,7 +357,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'optionwidgets_onoff',
   );
 
-  // Exported field_instance: 'node-changenotice-field_coder_update_recorded'
+  // Exported field_instance: 'node-changenotice-field_coder_update_recorded'.
   $field_instances['node-changenotice-field_coder_update_recorded'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -479,7 +479,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'optionwidgets_onoff',
   );
 
-  // Exported field_instance: 'node-changenotice-field_description'
+  // Exported field_instance: 'node-changenotice-field_description'.
   $field_instances['node-changenotice-field_description'] = array(
     'bundle' => 'changenotice',
     'default_value' => NULL,
@@ -565,7 +565,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'text_textarea',
   );
 
-  // Exported field_instance: 'node-changenotice-field_examples_recorded'
+  // Exported field_instance: 'node-changenotice-field_examples_recorded'.
   $field_instances['node-changenotice-field_examples_recorded'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -687,7 +687,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'optionwidgets_onoff',
   );
 
-  // Exported field_instance: 'node-changenotice-field_impacts'
+  // Exported field_instance: 'node-changenotice-field_impacts'.
   $field_instances['node-changenotice-field_impacts'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -808,7 +808,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'optionwidgets_buttons',
   );
 
-  // Exported field_instance: 'node-changenotice-field_issues'
+  // Exported field_instance: 'node-changenotice-field_issues'.
   $field_instances['node-changenotice-field_issues'] = array(
     'bundle' => 'changenotice',
     'default_value' => NULL,
@@ -855,7 +855,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-changenotice-field_module_recorded'
+  // Exported field_instance: 'node-changenotice-field_module_recorded'.
   $field_instances['node-changenotice-field_module_recorded'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -977,7 +977,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'optionwidgets_onoff',
   );
 
-  // Exported field_instance: 'node-changenotice-field_online_recorded'
+  // Exported field_instance: 'node-changenotice-field_online_recorded'.
   $field_instances['node-changenotice-field_online_recorded'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -1099,7 +1099,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'optionwidgets_onoff',
   );
 
-  // Exported field_instance: 'node-changenotice-field_other_details'
+  // Exported field_instance: 'node-changenotice-field_other_details'.
   $field_instances['node-changenotice-field_other_details'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -1191,7 +1191,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'text_textarea',
   );
 
-  // Exported field_instance: 'node-changenotice-field_other_recorded'
+  // Exported field_instance: 'node-changenotice-field_other_recorded'.
   $field_instances['node-changenotice-field_other_recorded'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -1313,7 +1313,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'optionwidgets_onoff',
   );
 
-  // Exported field_instance: 'node-changenotice-field_project'
+  // Exported field_instance: 'node-changenotice-field_project'.
   $field_instances['node-changenotice-field_project'] = array(
     'bundle' => 'changenotice',
     'default_value' => NULL,
@@ -1376,7 +1376,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-changenotice-field_theme_recorded'
+  // Exported field_instance: 'node-changenotice-field_theme_recorded'.
   $field_instances['node-changenotice-field_theme_recorded'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -1498,7 +1498,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'optionwidgets_onoff',
   );
 
-  // Exported field_instance: 'node-changenotice-field_update_progress'
+  // Exported field_instance: 'node-changenotice-field_update_progress'.
   $field_instances['node-changenotice-field_update_progress'] = array(
     'bundle' => 'changenotice',
     'default_value' => array(
@@ -1589,7 +1589,7 @@ function drupalorg_change_notice_field_default_field_instances() {
     'widget_type' => 'text_textarea',
   );
 
-  // Exported field_instance: 'node-changenotice-upload'
+  // Exported field_instance: 'node-changenotice-upload'.
   $field_instances['node-changenotice-upload'] = array(
     'bundle' => 'changenotice',
     'deleted' => 0,

@@ -70,22 +70,10 @@ function drupalorg_permissions_user_default_roles() {
     'weight' => 6,
   );
 
-  // Exported role: drupal.org issue queue squad.
-  $roles['drupal.org issue queue squad'] = array(
-    'name' => 'drupal.org issue queue squad',
-    'weight' => 8,
-  );
-
   // Exported role: email unverified.
   $roles['email unverified'] = array(
     'name' => 'email unverified',
     'weight' => 2,
-  );
-
-  // Exported role: list maintainer.
-  $roles['list maintainer'] = array(
-    'name' => 'list maintainer',
-    'weight' => 13,
   );
 
   // Exported role: security team.
