@@ -1,0 +1,14 @@
+name = Lightning WYSIWYG
+description = WYSIWIG editor configurations.
+package = Lightning
+core = 7.x
+
+dependencies[] = ctools
+dependencies[] = dialog
+dependencies[] = editor
+dependencies[] = editor_ckeditor
+dependencies[] = editor_ckeditor_widgets
+dependencies[] = features
+dependencies[] = strongarm
+
+features[features_api][] = api:2
