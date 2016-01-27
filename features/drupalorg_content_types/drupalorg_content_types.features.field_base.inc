@@ -36,31 +36,6 @@ function drupalorg_content_types_field_default_field_bases() {
     'type_name' => 'book_listing',
   );
 
-  // Exported field_base: 'field_include_in_group_menu'.
-  $field_bases['field_include_in_group_menu'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_include_in_group_menu',
-    'indexes' => array(
-      'value' => array(
-        0 => 'value',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'list',
-    'settings' => array(
-      'allowed_values' => array(
-        0 => '',
-        1 => '',
-      ),
-      'allowed_values_function' => '',
-    ),
-    'translatable' => 0,
-    'type' => 'list_boolean',
-  );
-
   // Exported field_base: 'field_parent_section'.
   $field_bases['field_parent_section'] = array(
     'active' => 1,
