@@ -6,7 +6,6 @@ version = 7.x-3.x-dev
 project = drupalorg_wysiwyg
 dependencies[] = ckeditor
 dependencies[] = features
-dependencies[] = filter
 dependencies[] = strongarm
 features[ckeditor_profile][] = Drupalorg
 features[features_api][] = api:2

@@ -9,22 +9,27 @@
  */
 function drupalorg_wysiwyg_ckeditor_profile_defaults() {
   $data = array(
-    'Advanced' => array(
-      'name' => 'Advanced',
+    'Drupalorg' => array(
+      'name' => 'Drupalorg',
       'settings' => array(
         'ss' => 2,
+        'toolbar' => '[
+    [\'Source\'],
+    [\'Bold\',\'Italic\',\'Strike\',\'Format\'],
+    [\'Image\',\'Link\',\'Unlink\',\'Blockquote\'],
+    [\'NumberedList\',\'BulletedList\',\'Templates\', \'CodeSnippet\' ]
+]',
+        'expand' => 't',
         'default' => 't',
         'show_toggle' => 't',
         'uicolor' => 'default',
-        'uicolor_user' => 'default',
-        'toolbar' => '[
-    [\'Format\'],[\'Bold\',\'Italic\',\'Strike\'],[\'NumberedList\',\'BulletedList\',\'Indent\',\'Outdent\',\'Blockquote\'],[\'Link\',\'Unlink\',\'Image\']
-]',
-        'expand' => 't',
+        'uicolor_user' => '#9498C6',
         'width' => '100%',
         'lang' => 'en',
         'auto_lang' => 't',
         'language_direction' => 'default',
+        'allowed_content' => 't',
+        'extraAllowedContent' => '',
         'enter_mode' => 'p',
         'shift_enter_mode' => 'br',
         'font_format' => 'p;div;pre;address;h1;h2;h3;h4;h5;h6',
@@ -50,10 +55,24 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'UserFilesAbsolutePath' => '%d%b%f/',
         'forcePasteAsPlainText' => 'f',
         'html_entities' => 'f',
-        'scayt_autoStartup' => 'f',
+        'scayt_autoStartup' => 't',
         'theme_config_js' => 'f',
         'js_conf' => '',
         'loadPlugins' => array(
+          'codesnippet' => array(
+            'name' => 'codesnippet',
+            'desc' => 'Plugin file: codesnippet',
+            'path' => '%plugin_dir_extra%codesnippet/',
+            'buttons' => FALSE,
+            'default' => 'f',
+          ),
+          'counter' => array(
+            'name' => 'counter',
+            'desc' => 'Plugin to count symbols, symbols without blanks and words',
+            'path' => '%plugin_dir%counter/',
+            'buttons' => FALSE,
+            'default' => 'f',
+          ),
           'drupalbreaks' => array(
             'name' => 'drupalbreaks',
             'desc' => 'Plugin for inserting Drupal teaser and page breaks.',
@@ -66,10 +85,44 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
             ),
             'default' => 't',
           ),
+          'image' => array(
+            'name' => 'image',
+            'desc' => 'Plugin file: image',
+            'path' => '%plugin_dir_extra%image/',
+            'buttons' => FALSE,
+            'default' => 'f',
+          ),
+          'lineutils' => array(
+            'name' => 'lineutils',
+            'desc' => 'Plugin file: lineutils',
+            'path' => '%plugin_dir_extra%lineutils/',
+            'buttons' => FALSE,
+            'default' => 'f',
+          ),
+          'mediaembed' => array(
+            'name' => 'mediaembed',
+            'desc' => 'Plugin for embedding HTML snippets',
+            'path' => '%plugin_dir%mediaembed/',
+            'buttons' => array(
+              'MediaEmbed' => array(
+                'label' => 'MediaEmbed',
+                'icon' => 'images/icon.png',
+              ),
+            ),
+            'default' => 'f',
+          ),
+          'widget' => array(
+            'name' => 'widget',
+            'desc' => 'Plugin file: widget',
+            'path' => '%plugin_dir_extra%widget/',
+            'buttons' => FALSE,
+            'default' => 'f',
+          ),
         ),
       ),
       'input_formats' => array(
-        'filtered_html' => 'Filtered HTML',
+        1 => 'Filtered HTML',
+        3 => 'Full HTML',
       ),
     ),
   );
