@@ -65,7 +65,7 @@ function drupalorg_news_short_block() {
     ->condition('status', 1)
     ->condition('promote', 1)
     ->orderBy('created', 'DESC')
-    ->range(0, 4)
+    ->range(0, 6)
     ->addTag('node_access')
     ->execute()
     ->fetchCol();
