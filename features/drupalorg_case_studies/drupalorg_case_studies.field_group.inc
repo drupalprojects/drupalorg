@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function drupalorg_case_studies_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -37,7 +37,7 @@ function drupalorg_case_studies_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_modules|node|casestudy|default'] = $field_group;
+  $field_groups['group_modules|node|casestudy|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -70,7 +70,7 @@ Specify at least 4 key contributed projects.
       'formatter' => 'open',
     ),
   );
-  $export['group_modules|node|casestudy|form'] = $field_group;
+  $field_groups['group_modules|node|casestudy|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -96,7 +96,11 @@ Specify at least 4 key contributed projects.
       ),
     ),
   );
-  $export['group_modules|node|casestudy|teaser'] = $field_group;
+  $field_groups['group_modules|node|casestudy|teaser'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Modules/Themes/Distributions');
+
+  return $field_groups;
 }

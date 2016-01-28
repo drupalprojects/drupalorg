@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function drupalorg_marketplace_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -31,7 +31,7 @@ function drupalorg_marketplace_field_group_info() {
       ),
     ),
   );
-  $export['group_hosting|node|organization|default'] = $field_group;
+  $field_groups['group_hosting|node|organization|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -57,7 +57,7 @@ function drupalorg_marketplace_field_group_info() {
       ),
     ),
   );
-  $export['group_hosting|node|organization|form'] = $field_group;
+  $field_groups['group_hosting|node|organization|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -80,7 +80,7 @@ function drupalorg_marketplace_field_group_info() {
       ),
     ),
   );
-  $export['group_hosting|node|organization|teaser'] = $field_group;
+  $field_groups['group_hosting|node|organization|teaser'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -106,7 +106,7 @@ function drupalorg_marketplace_field_group_info() {
       ),
     ),
   );
-  $export['group_moderation|node|organization|default'] = $field_group;
+  $field_groups['group_moderation|node|organization|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -138,7 +138,7 @@ function drupalorg_marketplace_field_group_info() {
       ),
     ),
   );
-  $export['group_moderation|node|organization|form'] = $field_group;
+  $field_groups['group_moderation|node|organization|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -164,7 +164,7 @@ function drupalorg_marketplace_field_group_info() {
       ),
     ),
   );
-  $export['group_moderation|node|organization|teaser'] = $field_group;
+  $field_groups['group_moderation|node|organization|teaser'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -190,7 +190,7 @@ function drupalorg_marketplace_field_group_info() {
       ),
     ),
   );
-  $export['group_training|node|organization|default'] = $field_group;
+  $field_groups['group_training|node|organization|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -217,7 +217,7 @@ function drupalorg_marketplace_field_group_info() {
       ),
     ),
   );
-  $export['group_training|node|organization|form'] = $field_group;
+  $field_groups['group_training|node|organization|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -244,7 +244,13 @@ function drupalorg_marketplace_field_group_info() {
       ),
     ),
   );
-  $export['group_training|node|organization|teaser'] = $field_group;
+  $field_groups['group_training|node|organization|teaser'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Hosting');
+  t('Moderation');
+  t('Training');
+
+  return $field_groups;
 }
