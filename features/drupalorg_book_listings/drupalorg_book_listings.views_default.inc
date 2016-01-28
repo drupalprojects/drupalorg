@@ -348,6 +348,40 @@ function drupalorg_book_listings_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'books';
+  $translatables['book_listings'] = array(
+    t('Master'),
+    t('Books about Drupal'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No books currently listed match your filters. Try a less restrictive set of filters.'),
+    t('Drupal version'),
+    t('Audience'),
+    t('Level'),
+    t('Keywords'),
+    t('Format'),
+    t('[field_publisher-value] in [field_book_listing_date] ([field_book_page_count] pages)'),
+    t('Published by'),
+    t('[field_publisher] in [field_book_listing_date] ([field_book_page_count] pages)'),
+    t('ISBN'),
+    t('Availability'),
+    t('Direct purchase link'),
+    t('<a href="[field_book_purchase_link-url]" rel="nofollow">Order from [field_publisher]</a>'),
+    t('<a rel="nofollow" class="amazon-link" href="http://www.amazon.com/dp/[field_book_isbn_10-value]/?tag=drupal0a-20" title="Ordering via this link benefits the Drupal Association">Order from Amazon.com</a>'),
+    t('More information'),
+    t('Status'),
+    t('Page'),
+  );
   $export['book_listings'] = $view;
 
   return $export;
