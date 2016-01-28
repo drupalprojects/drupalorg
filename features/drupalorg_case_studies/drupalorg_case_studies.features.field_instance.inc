@@ -621,6 +621,7 @@ function drupalorg_case_studies_field_default_field_instances() {
     'label' => 'Completed Drupal site or project URL',
     'required' => 1,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -634,6 +635,7 @@ function drupalorg_case_studies_field_default_field_instances() {
       'enable_tokens' => 0,
       'rel_remove' => 'default',
       'title' => 'none',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
