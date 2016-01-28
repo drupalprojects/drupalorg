@@ -198,6 +198,7 @@ features[variable][] = pathauto_punctuation_tilde
 features[variable][] = pathauto_punctuation_underscore
 features[variable][] = pathauto_reduce_ascii
 features[variable][] = pathauto_separator
+features[views_view][] = administer_section_content
 features[views_view][] = blog
 features[views_view][] = og_menu
 features_exclude[variable][panelizer_defaults_node_page] = panelizer_defaults_node_page
