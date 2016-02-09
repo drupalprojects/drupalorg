@@ -319,6 +319,16 @@ function drupalorg_user_menu_title() {
 }
 
 /**
+ * Implements hook_help().
+ */
+function drupalorg_help($path, $args) {
+  switch ($path) {
+    case 'user/%/message-follow':
+      return t('<p>' . t('Content you follow is added to <a href="!tracker-url">Your posts</a>, where you can see new comments and updates. Below you can select additional notifications you want to receive.', array('!tracker-url' => url('user/' . $args[1] . '/track'))) . '</p>');
+  }
+}
+
+/**
  * Implements hook_field_extra_fields().
  */
 function drupalorg_field_extra_fields() {
