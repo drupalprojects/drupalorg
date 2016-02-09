@@ -599,7 +599,6 @@ function drupalorg_issues_field_default_field_instances() {
         'extended_file_field_show_remove' => 0,
         'extended_file_field_widget_metadata' => array(
           'cid' => 'cid',
-          'pift_message' => 'pift_message',
           'uid' => 'uid',
         ),
         'progress_indicator' => 'throbber',
