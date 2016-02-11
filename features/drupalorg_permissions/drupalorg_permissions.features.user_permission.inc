@@ -106,15 +106,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: 'access draggableviews'.
-  $permissions['access draggableviews'] = array(
-    'name' => 'access draggableviews',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'draggableviews',
-  );
-
   // Exported permission: 'access mollom statistics'.
   $permissions['access mollom statistics'] = array(
     'name' => 'access mollom statistics',
