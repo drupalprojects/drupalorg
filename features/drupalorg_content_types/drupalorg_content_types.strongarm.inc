@@ -1789,7 +1789,7 @@ function drupalorg_content_types_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_post_pattern';
-  $strongarm->value = '[node:og_group_ref]/blog/[node:title]';
+  $strongarm->value = '[node:og-group-ref:url:path]/blog/[node:title]';
   $export['pathauto_node_post_pattern'] = $strongarm;
 
   $strongarm = new stdClass();
