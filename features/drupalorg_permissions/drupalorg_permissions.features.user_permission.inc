@@ -1032,6 +1032,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panelizer node post defaults'.
+  $permissions['administer panelizer node post defaults'] = array(
+    'name' => 'administer panelizer node post defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panelizer node project_core defaults'.
   $permissions['administer panelizer node project_core defaults'] = array(
     'name' => 'administer panelizer node project_core defaults',
