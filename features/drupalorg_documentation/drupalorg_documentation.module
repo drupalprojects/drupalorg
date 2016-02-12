@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Documentation feature.
+ */
+
+include_once 'drupalorg_documentation.features.inc';
