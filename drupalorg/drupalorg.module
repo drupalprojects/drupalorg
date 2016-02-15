@@ -1288,6 +1288,23 @@ function drupalorg_form_tfa_basic_overview_alter(&$form, &$form_state) {
  * Implements hook_form_FORM_BASE_alter().
  */
 function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
+  // If there is a referring site.
+  if ($GLOBALS['user']->uid == $form_state['user']->uid) {
+    if (isset($form_state['user']->data['drupalorg_bd'])) {
+      $site = drupalorg_get_site_parameter($form_state['user']->data['drupalorg_bd']);
+    }
+    elseif (isset($form_state['user']->data['drupalorg_destination'])) {
+      $site = 'Drupal.org';
+    }
+    if (isset($site)) {
+      // Include a note about the redirect that will happen.
+      $form['actions']['submit']['#value'] = t('Save and go back to @site', array('@site' => $site));
+      unset($form['actions']['cancel']);
+      // Execute early to modify user object.
+      array_unshift($form['#submit'], 'drupalorg_user_profile_redirect_submit');
+    }
+  }
+
   // If the terms of service is hidden by drupalorg_field_access(), do not
   // require it.
   if (isset($form['field_terms_of_service']['#access']) && !$form['field_terms_of_service']['#access']) {
@@ -1433,6 +1450,30 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
 }
 
 /**
+ * #submit callback. See drupalorg_form_user_profile_form_alter().
+ */
+function drupalorg_user_profile_redirect_submit($form, &$form_state) {
+  if (isset($form_state['user']->data['drupalorg_bd'])) {
+    // Redirect back to the starting site.
+    $form_state['redirect'] = $form_state['user']->data['drupalorg_bd'];
+    // Do not redirect again.
+    $form_state['user']->data['drupalorg_bd'] = NULL;
+  }
+  elseif (isset($form_state['user']->data['drupalorg_destination'])) {
+    // Redirect back to the starting site.
+    $form_state['redirect'] = array(
+      $form_state['user']->data['drupalorg_destination']['path'],
+      array(
+        'query' => $form_state['user']->data['drupalorg_destination']['query'],
+        'fragment' => $form_state['user']->data['drupalorg_destination']['fragment'],
+      ),
+    );
+    // Do not redirect again.
+    $form_state['user']->data['drupalorg_destination'] = NULL;
+  }
+}
+
+/**
  * #after_build callback. Add individual descriptions to processed MailChimp
  * checkboxes.
  */
@@ -1563,6 +1604,24 @@ function drupalorg_taxonomy_forums_ajax_callback($form, &$form_state) {
 }
 
 /**
+ * For login and registration pages, look for bakery's bd parameter and extract
+ * site name, or drupalorg_crosssite’s deprecated site parameter.
+ *
+ * @param string $bd
+ *   Use a specific bakery destination value instead of the URL parameter.
+ */
+function drupalorg_get_site_parameter($bd = NULL) {
+  if (isset($bd) || ($bd = bakery_get_destination())) {
+    $sites = drupalorg_crosssite_sites();
+    $site = str_replace(variable_get('bakery_domain'), '', parse_url($bd, PHP_URL_HOST));
+    if (isset($sites[$site])) {
+      return $site;
+    }
+  }
+  return FALSE;
+}
+
+/**
  * Impelements hook_form_FORM_BASE_alter().
  */
 function drupalorg_form_user_login_alter(&$form) {
@@ -1571,12 +1630,11 @@ function drupalorg_form_user_login_alter(&$form) {
 
   // Add additional text.
   $form['#suffix'] = '<div class="login-text">';
-  $parameters = drupal_get_query_parameters();
-  $sites = drupalorg_crosssite_sites();
-  if (isset($parameters['site']) && isset($sites[$parameters['site']])) {
+  if ($site = drupalorg_get_site_parameter()) {
+    $sites = drupalorg_crosssite_sites();
     // Sub-site.
     $form['#suffix'] .= '<p>' . t('!site is a part of the Drupal.org ecosystem of sites. You need to have a Drupal.org account to log in to !site.', array(
-      '!site' => $sites[$parameters['site']],
+      '!site' => $sites[$site],
     )) . '</p>';
   }
   else {
@@ -1622,12 +1680,11 @@ function drupalorg_form_user_register_form_alter(&$form) {
   unset($form['#group_children']['group_name']);
 
   // Add field help text.
-  $parameters = drupal_get_query_parameters();
-  $sites = drupalorg_crosssite_sites();
-  if (isset($parameters['site']) && isset($sites[$parameters['site']])) {
+  if ($site = drupalorg_get_site_parameter()) {
+    $sites = drupalorg_crosssite_sites();
     // Sub-site.
     $form['#prefix'] = '<p>' . t('When you create a Drupal.org account, you gain access to a whole ecosystem of Drupal.org sites and services. Your account works on Drupal.org and any of its subsites including !site.', array(
-      '!site' => $sites[$parameters['site']],
+      '!site' => $sites[$site],
     )) . '</p>';
   }
   else {
@@ -3589,14 +3646,18 @@ function drupalorg_menu_local_tasks_alter(&$data, $router_item, $root_path) {
       // Explicit fall-through.
     case 'user/register':
     case 'user/password':
-      if (!isset($_REQUEST['path']) && isset($_REQUEST['destination'])) {
-        $_REQUEST['path'] = $_REQUEST['destination'];
-      }
-      if ($redirect = drupalorg_crosssite_get_redirect()) {
+      $parameters = drupal_get_query_parameters();
+      if (isset($parameters['destination'])) {
         foreach ($data['tabs'][0]['output'] as &$tab) {
           if ($tab['#link']['path'] === 'user/register' || $tab['#link']['path'] === 'user/login') {
-            $tab['#link']['localized_options']['query']['site'] = $redirect['site'];
-            $tab['#link']['localized_options']['query']['path'] = ltrim($redirect['path'], '/');
+            $tab['#link']['localized_options']['query']['destination'] = $parameters['destination'];
+          }
+        }
+      }
+      elseif ($bd = bakery_get_destination()) {
+        foreach ($data['tabs'][0]['output'] as &$tab) {
+          if ($tab['#link']['path'] === 'user/register' || $tab['#link']['path'] === 'user/login') {
+            $tab['#link']['localized_options']['query']['bd'] = $bd;
           }
         }
       }
@@ -3723,6 +3784,23 @@ function drupalorg_entity_presave($entity, $type) {
           }
         }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_user_presave().
+ */
+function drupalorg_user_presave(&$edit, $account) {
+  // When saving a new account, stash the bakery destination for the welcome
+  // page. See drupalorg_user_register_form_submit().
+  if ($account->is_new) {
+    if ($bd = bakery_get_destination()) {
+      $edit['data']['drupalorg_bd'] = $bd;
+    }
+    elseif (isset($_GET['destination']) && !url_is_external($_GET['destination'])) {
+      $edit['data']['drupalorg_destination'] = drupal_parse_url($_GET['destination']);
+      unset($_GET['destination']);
     }
   }
 }
