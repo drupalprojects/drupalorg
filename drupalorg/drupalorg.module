@@ -1714,6 +1714,12 @@ function drupalorg_form_node_form_alter(&$form) {
   if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu'])) {
     $form['menu']['enabled']['#default_value'] = 1;
   }
+
+  // Add class 'prevent-multiple-submit-form' to node edit form.
+  if (!empty($form['actions']['submit'])) {
+    $form['#attached']['js'][] = drupal_get_path('module', 'drupalorg') . '/js/jquery.form-submit-single.js';
+    $form['#attributes']['class'][] = 'prevent-multiple-submit-form';
+  }
 }
 
 /**
