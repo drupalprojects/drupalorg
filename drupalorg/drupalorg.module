@@ -307,6 +307,9 @@ function drupalorg_menu_alter(&$menu) {
     $menu['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name']['access callback'] = 'taxonomy_term_edit_access';
     $menu['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name']['access arguments'] = array(3);
   }
+  if (isset($menu['node/%/group'])) {
+    $menu['node/%/group']['title'] = 'Admin group';
+  }
 
   $menu['user']['title callback'] = 'drupalorg_user_menu_title';
 }
@@ -873,7 +876,7 @@ function drupalorg_preprocess_page(&$variables) {
   }
 
   // Group breadcrumbs.
-  if (og_context()) {
+  if (og_context() || $router['path'] === 'group/node/%/admin/content') {
     // Reset drupalorg_crosssite_preprocess_page() overrides.
     $variables['section_name'] = '';
     unset($variables['breadcrumb']);
@@ -3069,6 +3072,9 @@ function drupalorg_views_pre_render(&$view) {
       $view->build_info['substitutions'] = array('%organization-nid' => $filter['value']['value']);
     }
   }
+  elseif ($view->name === 'administer_section_content') {
+    og_set_breadcrumb('node', $view->args[0], array(l(t('Group'), 'node/' . $view->args[0] . '/group')));
+  }
 }
 
 /**
@@ -4381,4 +4387,21 @@ function drupalorg_mail_alter(&$message) {
     // example in Appendix A.1.2.
     $message['headers']['From'] = '"' . mime_header_encode($message['params']['message_entity']->wrapper()->field_target_comment->name->value() . ' (' . variable_get('site_name', 'Drupal') . ')') . '" <' . $message['from'] . '>';
   }
+}
+
+/**
+ * Implements hook_og_ui_get_group_admin().
+ */
+function drupalorg_og_ui_get_group_admin($group_type, $gid) {
+  $items = array();
+
+  if (og_user_access($group_type, $gid, 'update group')) {
+    $items['drupalorg_content'] = array(
+      'title' => t('Content'),
+      'description' => t('Manage the group content.'),
+      'href' => 'admin/content',
+    );
+  }
+
+  return $items;
 }
