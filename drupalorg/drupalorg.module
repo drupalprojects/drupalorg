@@ -892,6 +892,16 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
     if ($context['group_type'] === 'node' && ($node = menu_get_object())) {
       $group = entity_load_single($context['group_type'], $context['gid']);
 
+      // If we are on a post page, add Blog to the breadcrumb.
+      if ($node->type === 'post') {
+        $uri = entity_uri($context['group_type'], $group);
+        array_splice($active_trail, 1, 0, array(array(
+          'title' => t('Blog'),
+          'href' => url($uri['path']) . '/blog',
+          'localized_options' => array(),
+        )));
+      }
+
       // If we are not on the group page itself, add it to the breadcrumb.
       if ($node->nid != $context['gid']) {
         $uri = entity_uri($context['group_type'], $group);
