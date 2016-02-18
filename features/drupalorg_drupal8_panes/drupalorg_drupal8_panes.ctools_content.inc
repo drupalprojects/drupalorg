@@ -14,8 +14,8 @@ function drupalorg_drupal8_panes_default_ctools_custom_content() {
   $content->disabled = FALSE; /* Edit this to true to make a default content disabled initially */
   $content->api_version = 1;
   $content->name = 'drupalorg_d8_ad';
-  $content->admin_title = 'Drupal 8 Ad';
-  $content->admin_description = 'D8 Project Ad';
+  $content->admin_title = 'D8 Download Page Ad (Fastly)';
+  $content->admin_description = 'Download experience Drupal Core Ad';
   $content->category = 'Drupalorg Project';
   $content->settings = array(
     'admin_title' => 'Drupal 8 Ad',

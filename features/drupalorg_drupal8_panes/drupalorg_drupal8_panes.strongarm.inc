@@ -16,6 +16,7 @@ function drupalorg_drupal8_panes_strongarm() {
   $strongarm->name = 'panelizer_defaults_node_page';
   $strongarm->value = array(
     'status' => 1,
+    'help' => '',
     'view modes' => array(
       'page_manager' => array(
         'status' => 0,
@@ -48,7 +49,6 @@ function drupalorg_drupal8_panes_strongarm() {
         'choice' => 0,
       ),
     ),
-    'help' => '',
   );
   $export['panelizer_defaults_node_page'] = $strongarm;
 
