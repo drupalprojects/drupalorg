@@ -3814,11 +3814,3 @@ function drupalorg_update_7084() {
   // effect when enabled.
   features_revert(array('drupalorg_i18n' => array('variable')));
 }
-
-/**
- * Assign drupal's minimal profile to Drupal.org.
- */
-function drupalorg_update_7085() {
-  variable_set('install_profile', 'minimal');
-  module_enable(array('minimal'));
-}
