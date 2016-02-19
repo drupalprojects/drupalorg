@@ -15,7 +15,7 @@ function drupalorg_marketplace_views_default_views() {
   $view->description = 'List of organizations with profiles on Drupal.org';
   $view->tag = 'marketplace';
   $view->base_table = 'node';
-  $view->human_name = 'Drupal.org Marketplace: Drupal Organizations';
+  $view->human_name = 'All Drupal Organizations';
   $view->core = 0;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -147,7 +147,7 @@ function drupalorg_marketplace_views_default_views() {
   );
 
   /* Display: Drupal Orgs */
-  $handler = $view->new_display('page', 'Drupal Orgs', 'page_1');
+  $handler = $view->new_display('page', 'Drupal Orgs', 'organizations');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
