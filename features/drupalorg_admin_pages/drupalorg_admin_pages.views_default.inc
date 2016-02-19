@@ -234,7 +234,7 @@ function drupalorg_admin_pages_views_default_views() {
     38 => 0,
     4 => 0,
   );
-  /* Filter criterion: Content: Description (body) */
+  /* Filter criterion: Content: Body (body) */
   $handler->display->display_options['filters']['body_value']['id'] = 'body_value';
   $handler->display->display_options['filters']['body_value']['table'] = 'field_data_body';
   $handler->display->display_options['filters']['body_value']['field'] = 'body_value';
@@ -706,6 +706,13 @@ function drupalorg_admin_pages_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
+    'action::pathauto_user_update_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
   );
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
@@ -901,6 +908,35 @@ function drupalorg_admin_pages_views_default_views() {
     38 => 0,
     4 => 0,
   );
+  /* Filter criterion: Field collection item: Current (field_current) */
+  $handler->display->display_options['filters']['field_current_value']['id'] = 'field_current_value';
+  $handler->display->display_options['filters']['field_current_value']['table'] = 'field_data_field_current';
+  $handler->display->display_options['filters']['field_current_value']['field'] = 'field_current_value';
+  $handler->display->display_options['filters']['field_current_value']['relationship'] = 'field_organizations_value';
+  $handler->display->display_options['filters']['field_current_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_current_value']['expose']['operator_id'] = 'field_current_value_op';
+  $handler->display->display_options['filters']['field_current_value']['expose']['label'] = 'Current';
+  $handler->display->display_options['filters']['field_current_value']['expose']['operator'] = 'field_current_value_op';
+  $handler->display->display_options['filters']['field_current_value']['expose']['identifier'] = 'field_current_value';
+  $handler->display->display_options['filters']['field_current_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
   $handler->display->display_options['path'] = 'admin/people/organization';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Organization & Job Title';
@@ -940,6 +976,7 @@ function drupalorg_admin_pages_views_default_views() {
     t('field collection item from field_organizations'),
     t('Job Title'),
     t('Organization'),
+    t('Current'),
   );
   $export['admin_users_drupalorg'] = $view;
 
@@ -1327,7 +1364,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
-  /* Field: Content: Description */
+  /* Field: Content: Body */
   $handler->display->display_options['fields']['body_1']['id'] = 'body_1';
   $handler->display->display_options['fields']['body_1']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body_1']['field'] = 'body';
@@ -1412,7 +1449,7 @@ function drupalorg_admin_pages_views_default_views() {
     t('Content'),
     t('- Choose an operation -'),
     t('Title'),
-    t('Description'),
+    t('Body'),
     t('Post date'),
     t('Type'),
     t('Published'),
