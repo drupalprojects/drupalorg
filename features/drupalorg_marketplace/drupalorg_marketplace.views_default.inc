@@ -45,7 +45,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['header']['result']['id'] = 'result';
   $handler->display->display_options['header']['result']['table'] = 'views';
   $handler->display->display_options['header']['result']['field'] = 'result';
-  $handler->display->display_options['header']['result']['content'] = '<p>Displaying @start to @end of @total organizations. <a href="/node/1887616">Confirmed users</a> can <a href="/node/add/organizations">add an organization</a>.</p>
+  $handler->display->display_options['header']['result']['content'] = '<p>Displaying @start to @end of @total organizations. <a href="/node/1887616">Confirmed users</a> can <a href="/node/add/organization">add an organization</a>.</p>
 <p>Organizations using Drupal are shops providing Drupal services, customers that have Drupal installations, and companies that support Drupal financially or through sponsoring amazing events that promote Drupal.</p>
 <p>The organizations listed below are in order of issue credits awarded in the past 90 days and by membership in the Drupal Supporter Programs.</p>';
   /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
@@ -219,7 +219,7 @@ function drupalorg_marketplace_views_default_views() {
     t('‹ previous'),
     t('next ›'),
     t('last »'),
-    t('<p>Displaying @start to @end of @total organizations. <a href="/node/1887616">Confirmed users</a> can <a href="/node/add/organizations">add an organization</a>.</p>
+    t('<p>Displaying @start to @end of @total organizations. <a href="/node/1887616">Confirmed users</a> can <a href="/node/add/organization">add an organization</a>.</p>
 <p>Organizations using Drupal are shops providing Drupal services, customers that have Drupal installations, and companies that support Drupal financially or through sponsoring amazing events that promote Drupal.</p>
 <p>The organizations listed below are in order of issue credits awarded in the past 90 days and by membership in the Drupal Supporter Programs.</p>'),
     t('locations'),
