@@ -16,6 +16,7 @@ features[features_api][] = api:2
 features[page_manager_pages][] = administer_user_content
 features[views_view][] = admin_content_drupalorg
 features[views_view][] = admin_users_drupalorg
+features[views_view][] = administer_organizations
 features[views_view][] = drupalorg_admin_comments_by_user
 features[views_view][] = drupalorg_admin_node_by_user
 features[views_view][] = drupalorg_admin_noderev_by_user

@@ -981,6 +981,679 @@ function drupalorg_admin_pages_views_default_views() {
   $export['admin_users_drupalorg'] = $view;
 
   $view = new view();
+  $view->name = 'administer_organizations';
+  $view->description = 'List of organizations with profiles on Drupal.org';
+  $view->tag = 'marketplace';
+  $view->base_table = 'node';
+  $view->human_name = 'Administer Organizations';
+  $view->core = 0;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Defaults */
+  $handler = $view->new_display('default', 'Defaults', 'default');
+  $handler->display->display_options['title'] = 'Administer Organizations';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'administer nodes';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Filter results';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '100';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'views_bulk_operations' => 'views_bulk_operations',
+    'title' => 'title',
+    'field_link' => 'field_link',
+    'created' => 'created',
+    'name' => 'name',
+    'changed' => 'changed',
+    'field_organization_support' => 'field_organization_support',
+    'delta' => 'delta',
+    'field_org_training_request' => 'field_org_training_request',
+    'field_organization_training_list' => 'field_organization_training_list',
+    'field_org_marketplace_request' => 'field_org_marketplace_request',
+    'field_organization_list_rule' => 'field_organization_list_rule',
+    'field_org_issue_credit_count' => 'field_org_issue_credit_count',
+    'status' => 'status',
+    'edit_node' => 'edit_node',
+  );
+  $handler->display->display_options['style_options']['default'] = 'created';
+  $handler->display->display_options['style_options']['info'] = array(
+    'views_bulk_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => 'views-align-left',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_link' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'created' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'changed' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_organization_support' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 1,
+    ),
+    'delta' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 1,
+    ),
+    'field_org_training_request' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 1,
+    ),
+    'field_organization_training_list' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 1,
+    ),
+    'field_org_marketplace_request' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 1,
+    ),
+    'field_organization_list_rule' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 1,
+    ),
+    'field_org_issue_credit_count' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 1,
+    ),
+    'status' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'edit_node' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['style_options']['sticky'] = TRUE;
+  /* Header: Global: Result summary */
+  $handler->display->display_options['header']['result']['id'] = 'result';
+  $handler->display->display_options['header']['result']['table'] = 'views';
+  $handler->display->display_options['header']['result']['field'] = 'result';
+  $handler->display->display_options['header']['result']['content'] = '<p>Displaying @start to @end of @total organizations.</p>';
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['required'] = TRUE;
+  /* Relationship: Content: Taxonomy terms on node */
+  $handler->display->display_options['relationships']['term_node_tid']['id'] = 'term_node_tid';
+  $handler->display->display_options['relationships']['term_node_tid']['table'] = 'node';
+  $handler->display->display_options['relationships']['term_node_tid']['field'] = 'term_node_tid';
+  /* Field: Bulk operations: Content */
+  $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
+  $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
+  $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
+    'action::node_publish_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::mollom_action_unpublish_node' => array(
+      'selected' => 1,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::node_unpublish_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::pathauto_node_update_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  /* Field: Content: Website */
+  $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
+  $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
+  $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
+  $handler->display->display_options['fields']['field_link']['click_sort_column'] = 'url';
+  $handler->display->display_options['fields']['field_link']['group_column'] = 'entity_id';
+  /* Field: Content: Post date */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'node';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'Created';
+  $handler->display->display_options['fields']['created']['date_format'] = 'medium';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Owner';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'time ago';
+  $handler->display->display_options['fields']['changed']['second_date_format'] = 'long';
+  /* Field: Content: Drupal Association supporting program */
+  $handler->display->display_options['fields']['field_organization_support']['id'] = 'field_organization_support';
+  $handler->display->display_options['fields']['field_organization_support']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['fields']['field_organization_support']['field'] = 'field_organization_support';
+  $handler->display->display_options['fields']['field_organization_support']['label'] = 'Supporter';
+  $handler->display->display_options['fields']['field_organization_support']['delta_offset'] = '0';
+  /* Field: COUNT(Content: Locations (taxonomy_vocabulary_52:delta)) */
+  $handler->display->display_options['fields']['delta']['id'] = 'delta';
+  $handler->display->display_options['fields']['delta']['table'] = 'field_data_taxonomy_vocabulary_52';
+  $handler->display->display_options['fields']['delta']['field'] = 'delta';
+  $handler->display->display_options['fields']['delta']['group_type'] = 'count';
+  $handler->display->display_options['fields']['delta']['label'] = '# of locations';
+  /* Field: Content: List in Training section */
+  $handler->display->display_options['fields']['field_org_training_request']['id'] = 'field_org_training_request';
+  $handler->display->display_options['fields']['field_org_training_request']['table'] = 'field_data_field_org_training_request';
+  $handler->display->display_options['fields']['field_org_training_request']['field'] = 'field_org_training_request';
+  $handler->display->display_options['fields']['field_org_training_request']['label'] = 'Requested Training Listing';
+  $handler->display->display_options['fields']['field_org_training_request']['type'] = 'list_key';
+  /* Field: Content: Training listing */
+  $handler->display->display_options['fields']['field_organization_training_list']['id'] = 'field_organization_training_list';
+  $handler->display->display_options['fields']['field_organization_training_list']['table'] = 'field_data_field_organization_training_list';
+  $handler->display->display_options['fields']['field_organization_training_list']['field'] = 'field_organization_training_list';
+  $handler->display->display_options['fields']['field_organization_training_list']['label'] = 'Training';
+  /* Field: Content: List in marketplace */
+  $handler->display->display_options['fields']['field_org_marketplace_request']['id'] = 'field_org_marketplace_request';
+  $handler->display->display_options['fields']['field_org_marketplace_request']['table'] = 'field_data_field_org_marketplace_request';
+  $handler->display->display_options['fields']['field_org_marketplace_request']['field'] = 'field_org_marketplace_request';
+  $handler->display->display_options['fields']['field_org_marketplace_request']['label'] = 'Requested Services Listing';
+  $handler->display->display_options['fields']['field_org_marketplace_request']['type'] = 'list_key';
+  /* Field: Content: Services listing */
+  $handler->display->display_options['fields']['field_organization_list_rule']['id'] = 'field_organization_list_rule';
+  $handler->display->display_options['fields']['field_organization_list_rule']['table'] = 'field_data_field_organization_list_rule';
+  $handler->display->display_options['fields']['field_organization_list_rule']['field'] = 'field_organization_list_rule';
+  $handler->display->display_options['fields']['field_organization_list_rule']['label'] = 'Services';
+  /* Field: Content: Org issue credit count */
+  $handler->display->display_options['fields']['field_org_issue_credit_count']['id'] = 'field_org_issue_credit_count';
+  $handler->display->display_options['fields']['field_org_issue_credit_count']['table'] = 'field_data_field_org_issue_credit_count';
+  $handler->display->display_options['fields']['field_org_issue_credit_count']['field'] = 'field_org_issue_credit_count';
+  $handler->display->display_options['fields']['field_org_issue_credit_count']['label'] = 'Issue credits (90 days)';
+  $handler->display->display_options['fields']['field_org_issue_credit_count']['settings'] = array(
+    'thousand_separator' => ',',
+    'prefix_suffix' => 1,
+  );
+  /* Field: Content: Published */
+  $handler->display->display_options['fields']['status']['id'] = 'status';
+  $handler->display->display_options['fields']['status']['table'] = 'node';
+  $handler->display->display_options['fields']['status']['field'] = 'status';
+  $handler->display->display_options['fields']['status']['not'] = 0;
+  /* Field: Content: Edit link */
+  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['label'] = 'Edit';
+  /* Contextual filter: Taxonomy term: Name */
+  $handler->display->display_options['arguments']['name']['id'] = 'name';
+  $handler->display->display_options['arguments']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['arguments']['name']['field'] = 'name';
+  $handler->display->display_options['arguments']['name']['relationship'] = 'term_node_tid';
+  $handler->display->display_options['arguments']['name']['default_action'] = 'summary';
+  $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['name']['summary']['sort_order'] = 'desc';
+  $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '1';
+  $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['name']['summary_options']['base_path'] = 'organizations';
+  $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['name']['validate_options']['vocabularies'] = array(
+    'vocabulary_52' => 'vocabulary_52',
+  );
+  $handler->display->display_options['arguments']['name']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['name']['limit'] = '0';
+  $handler->display->display_options['arguments']['name']['path_case'] = 'lower';
+  $handler->display->display_options['arguments']['name']['transform_dash'] = TRUE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = 1;
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Organization name contains';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: Content: Drupal Association supporting program (field_organization_support) */
+  $handler->display->display_options['filters']['field_organization_support_value']['id'] = 'field_organization_support_value';
+  $handler->display->display_options['filters']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['filters']['field_organization_support_value']['field'] = 'field_organization_support_value';
+  $handler->display->display_options['filters']['field_organization_support_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_organization_support_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_support_value']['expose']['operator_id'] = 'field_organization_support_value_op';
+  $handler->display->display_options['filters']['field_organization_support_value']['expose']['label'] = 'Supporter';
+  $handler->display->display_options['filters']['field_organization_support_value']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_support_value']['expose']['operator'] = 'field_organization_support_value_op';
+  $handler->display->display_options['filters']['field_organization_support_value']['expose']['identifier'] = 'field_organization_support_value';
+  $handler->display->display_options['filters']['field_organization_support_value']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_support_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: Content: Hosting type (field_hosting_type) */
+  $handler->display->display_options['filters']['field_hosting_type_value']['id'] = 'field_hosting_type_value';
+  $handler->display->display_options['filters']['field_hosting_type_value']['table'] = 'field_data_field_hosting_type';
+  $handler->display->display_options['filters']['field_hosting_type_value']['field'] = 'field_hosting_type_value';
+  $handler->display->display_options['filters']['field_hosting_type_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_hosting_type_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_hosting_type_value']['expose']['operator_id'] = 'field_hosting_type_value_op';
+  $handler->display->display_options['filters']['field_hosting_type_value']['expose']['label'] = 'Hosting';
+  $handler->display->display_options['filters']['field_hosting_type_value']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['field_hosting_type_value']['expose']['operator'] = 'field_hosting_type_value_op';
+  $handler->display->display_options['filters']['field_hosting_type_value']['expose']['identifier'] = 'field_hosting_type_value';
+  $handler->display->display_options['filters']['field_hosting_type_value']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_hosting_type_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: Content: Sectors (taxonomy_vocabulary_50) */
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['id'] = 'taxonomy_vocabulary_50_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['table'] = 'field_data_taxonomy_vocabulary_50';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['field'] = 'taxonomy_vocabulary_50_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['group'] = 1;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['operator_id'] = 'taxonomy_vocabulary_50_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['label'] = 'Sectors';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['operator'] = 'taxonomy_vocabulary_50_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['identifier'] = 'taxonomy_vocabulary_50_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['reduce_duplicates'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['vocabulary'] = 'vocabulary_50';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['hierarchy'] = 1;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 'All';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
+  $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: User: Name (raw) */
+  $handler->display->display_options['filters']['name']['id'] = 'name';
+  $handler->display->display_options['filters']['name']['table'] = 'users';
+  $handler->display->display_options['filters']['name']['field'] = 'name';
+  $handler->display->display_options['filters']['name']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['name']['operator'] = 'contains';
+  $handler->display->display_options['filters']['name']['group'] = 1;
+  $handler->display->display_options['filters']['name']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['name']['expose']['operator_id'] = 'name_op';
+  $handler->display->display_options['filters']['name']['expose']['label'] = 'Owner\'s username contains';
+  $handler->display->display_options['filters']['name']['expose']['operator'] = 'name_op';
+  $handler->display->display_options['filters']['name']['expose']['identifier'] = 'name';
+  $handler->display->display_options['filters']['name']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: Content: List in marketplace (field_org_marketplace_request) */
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['id'] = 'field_org_marketplace_request_value';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['table'] = 'field_data_field_org_marketplace_request';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['field'] = 'field_org_marketplace_request_value';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['expose']['operator_id'] = 'field_org_marketplace_request_value_op';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['expose']['label'] = 'Request services?';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['expose']['operator'] = 'field_org_marketplace_request_value_op';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['expose']['identifier'] = 'field_org_marketplace_request_value';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: Content: Services listing (field_organization_list_rule) */
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['id'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['table'] = 'field_data_field_organization_list_rule';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['field'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['operator_id'] = 'field_organization_list_rule_value_op';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['label'] = 'Services';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['operator'] = 'field_organization_list_rule_value_op';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['identifier'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: Content: List in Training section (field_org_training_request) */
+  $handler->display->display_options['filters']['field_org_training_request_value']['id'] = 'field_org_training_request_value';
+  $handler->display->display_options['filters']['field_org_training_request_value']['table'] = 'field_data_field_org_training_request';
+  $handler->display->display_options['filters']['field_org_training_request_value']['field'] = 'field_org_training_request_value';
+  $handler->display->display_options['filters']['field_org_training_request_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_org_training_request_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_org_training_request_value']['expose']['operator_id'] = 'field_org_training_request_value_op';
+  $handler->display->display_options['filters']['field_org_training_request_value']['expose']['label'] = 'Request training';
+  $handler->display->display_options['filters']['field_org_training_request_value']['expose']['operator'] = 'field_org_training_request_value_op';
+  $handler->display->display_options['filters']['field_org_training_request_value']['expose']['identifier'] = 'field_org_training_request_value';
+  $handler->display->display_options['filters']['field_org_training_request_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: Content: Training listing (field_organization_training_list) */
+  $handler->display->display_options['filters']['field_organization_training_list_value']['id'] = 'field_organization_training_list_value';
+  $handler->display->display_options['filters']['field_organization_training_list_value']['table'] = 'field_data_field_organization_training_list';
+  $handler->display->display_options['filters']['field_organization_training_list_value']['field'] = 'field_organization_training_list_value';
+  $handler->display->display_options['filters']['field_organization_training_list_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_organization_training_list_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_training_list_value']['expose']['operator_id'] = 'field_organization_training_list_value_op';
+  $handler->display->display_options['filters']['field_organization_training_list_value']['expose']['label'] = 'Training';
+  $handler->display->display_options['filters']['field_organization_training_list_value']['expose']['operator'] = 'field_organization_training_list_value_op';
+  $handler->display->display_options['filters']['field_organization_training_list_value']['expose']['identifier'] = 'field_organization_training_list_value';
+  $handler->display->display_options['filters']['field_organization_training_list_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+
+  /* Display: Administer Organizations */
+  $handler = $view->new_display('page', 'Administer Organizations', 'page_1');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['path'] = 'admin/content/organizations';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Organizations';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $translatables['administer_organizations'] = array(
+    t('Defaults'),
+    t('Administer Organizations'),
+    t('more'),
+    t('Filter results'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('<p>Displaying @start to @end of @total organizations.</p>'),
+    t('author'),
+    t('term'),
+    t('- Choose an operation -'),
+    t('Title'),
+    t('Website'),
+    t('Created'),
+    t('Owner'),
+    t('Updated date'),
+    t('Supporter'),
+    t('# of locations'),
+    t('.'),
+    t(','),
+    t('Requested Training Listing'),
+    t('Training'),
+    t('Requested Services Listing'),
+    t('Services'),
+    t('Issue credits (90 days)'),
+    t('Published'),
+    t('Edit'),
+    t('All'),
+    t('Organization name contains'),
+    t('Hosting'),
+    t('Sectors'),
+    t('Owner\'s username contains'),
+    t('Request services?'),
+    t('Request training'),
+  );
+  $export['administer_organizations'] = $view;
+
+  $view = new view();
   $view->name = 'drupalorg_admin_comments_by_user';
   $view->description = 'Administrative view of all comments by a user';
   $view->tag = '';
