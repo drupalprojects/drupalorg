@@ -144,9 +144,9 @@ function drupalorg_projects_default_panels_mini() {
   $pane->configuration = array(
     'admin_title' => 'Drupal 6 Releases',
     'title' => 'Drupal 6 Releases',
-    'body' => 'Drupal 6 will reach end of life on February 24th 2016 and will no longer be supported. If you are looking to start a new Drupal website, you should not download this version.',
+    'body' => 'As of February 24, 2016, Drupal 6 has reached end-of-life and will no longer be supported. If you are starting a new Drupal website, you should download a newer version.',
     'format' => '1',
-    'substitute' => 1,
+    'substitute' => 0,
     'title_heading' => 'h3',
   );
   $pane->cache = array();
