@@ -37,13 +37,6 @@ function drupalorg_i18n_strongarm() {
       ),
       'file' => 'includes/locale.inc',
     ),
-    'locale-browser' => array(
-      'callbacks' => array(
-        'language' => 'locale_language_from_browser',
-      ),
-      'file' => 'includes/locale.inc',
-      'cache' => 0,
-    ),
     'language-default' => array(
       'callbacks' => array(
         'language' => 'language_from_default',
