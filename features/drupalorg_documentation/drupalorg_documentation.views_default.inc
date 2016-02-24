@@ -132,28 +132,8 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['columns'] = array(
-    'title' => 'title',
-    'taxonomy_vocabulary_31' => 'taxonomy_vocabulary_31',
-  );
-  $handler->display->display_options['style_options']['default'] = '-1';
-  $handler->display->display_options['style_options']['info'] = array(
-    'title' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'taxonomy_vocabulary_31' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-  );
+  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['row_plugin'] = 'fields';
   /* Relationship: OG membership: OG membership from Node */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
@@ -166,17 +146,12 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Page status */
-  $handler->display->display_options['fields']['taxonomy_vocabulary_31']['id'] = 'taxonomy_vocabulary_31';
-  $handler->display->display_options['fields']['taxonomy_vocabulary_31']['table'] = 'field_data_taxonomy_vocabulary_31';
-  $handler->display->display_options['fields']['taxonomy_vocabulary_31']['field'] = 'taxonomy_vocabulary_31';
-  /* Field: Content: Updated date */
-  $handler->display->display_options['fields']['changed']['id'] = 'changed';
-  $handler->display->display_options['fields']['changed']['table'] = 'node';
-  $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['label'] = 'Updated';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
-  $handler->display->display_options['fields']['changed']['second_date_format'] = 'long';
+  /* Field: Content: Summary */
+  $handler->display->display_options['fields']['field_summary']['id'] = 'field_summary';
+  $handler->display->display_options['fields']['field_summary']['table'] = 'field_data_field_summary';
+  $handler->display->display_options['fields']['field_summary']['field'] = 'field_summary';
+  $handler->display->display_options['fields']['field_summary']['label'] = '';
+  $handler->display->display_options['fields']['field_summary']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -208,10 +183,9 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
 
-  /* Display: Table of contents */
-  $handler = $view->new_display('panel_pane', 'Table of contents', 'panel_pane_1');
+  /* Display: Contents */
+  $handler = $view->new_display('panel_pane', 'Contents', 'panel_pane_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'In this guide:';
   $handler->display->display_options['pane_title'] = 'Guide: table of contents';
   $handler->display->display_options['argument_input'] = array(
     'gid' => array(
@@ -239,11 +213,8 @@ function drupalorg_documentation_views_default_views() {
     t('next ›'),
     t('last »'),
     t('OG membership from node'),
-    t('Page status'),
-    t('Updated'),
     t('All'),
-    t('Table of contents'),
-    t('In this guide:'),
+    t('Contents'),
     t('Guide: table of contents'),
     t('View panes'),
   );

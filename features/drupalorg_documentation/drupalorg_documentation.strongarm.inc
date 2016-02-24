@@ -77,7 +77,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_guide';
-  $strongarm->value = '1';
+  $strongarm->value = '2';
   $export['comment_guide'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -151,10 +151,10 @@ function drupalorg_documentation_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '3',
+          'weight' => '7',
         ),
         'redirect' => array(
-          'weight' => '2',
+          'weight' => '6',
         ),
       ),
       'display' => array(),
@@ -208,10 +208,10 @@ function drupalorg_documentation_strongarm() {
           'weight' => '1',
         ),
         'path' => array(
-          'weight' => '4',
+          'weight' => '6',
         ),
         'redirect' => array(
-          'weight' => '3',
+          'weight' => '5',
         ),
       ),
       'display' => array(),
