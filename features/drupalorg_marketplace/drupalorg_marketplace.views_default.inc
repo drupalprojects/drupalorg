@@ -53,7 +53,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['table'] = 'field_data_taxonomy_vocabulary_52';
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['field'] = 'taxonomy_vocabulary_52_tid';
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['label'] = 'locations';
-  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['required'] = TRUE;
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['required'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
