@@ -144,7 +144,9 @@ function drupalorg_projects_default_panels_mini() {
   $pane->configuration = array(
     'admin_title' => 'Drupal 6 Releases',
     'title' => 'Drupal 6 Releases',
-    'body' => 'As of February 24, 2016, Drupal 6 has reached end-of-life and will no longer be supported. If you are starting a new Drupal website, you should download a newer version.',
+    'body' => 'As of February 24, 2016, Drupal 6 has reached end-of-life and will no longer be supported. If you are starting a new Drupal website, you should download a newer version.
+
+The final Drupal 6 <em>security release</em> is <a href="/drupal-6.38-release-notes">Drupal 6.38</a>. Upgrading sites running 6.37 and lower is recommended.',
     'format' => '1',
     'substitute' => 0,
     'title_heading' => 'h3',
