@@ -4436,10 +4436,6 @@ function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
  */
 function drupalorg_project_release_xml_alter(&$xml, $project, $api_tid) {
   if ($project->type !== 'project_core' && $api_tid == 87) { // 6.x
-    // Temporary killswitch until this is ready for general release.
-    if (!in_array($project->field_project_machine_name[LANGUAGE_NONE][0]['value'], array('drupalorg_crosssite', 'groupsdrupalorg'))) {
-      return;
-    }
     // See https://www.drupal.org/node/2681323.
     $xml->link = 'https://www.drupal.org/about/drupal6-lts?project=' . $project->field_project_machine_name[LANGUAGE_NONE][0]['value'];
     $xml->project_status = 'insecure';
