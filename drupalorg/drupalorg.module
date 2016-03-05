@@ -503,7 +503,7 @@ function drupalorg_block_info() {
     ),
     'announcements' => array(
       'info' => t('Announcement banner'),
-      'cache' => DRUPAL_CACHE_PER_PAGE,
+      'cache' => DRUPAL_CACHE_PER_USER | DRUPAL_CACHE_PER_PAGE,
     ),
   );
 }
@@ -653,6 +653,11 @@ function drupalorg_block_view($delta, $block = NULL) {
       );
 
     case 'announcements':
+      if ($created_before = variable_get('drupalorg_announcements_users_created_before')) {
+        if (user_is_anonymous() || $GLOBALS['user']->created > $created_before) {
+          break;
+        }
+      }
       $block['content'] = announcements_block_view();
       return $block;
 
@@ -670,11 +675,11 @@ function drupalorg_block_view($delta, $block = NULL) {
 /**
  * Implements hook_block_configure().
  */
-function drupalorg_block_configure($delta='') {
+function drupalorg_block_configure($delta = '') {
   $form = array();
 
-  switch($delta) {
-    case 'announcements' :
+  switch ($delta) {
+    case 'announcements':
       // Text field form element
       $form['text_body'] = array(
         '#type' => 'text_format',
@@ -716,6 +721,14 @@ function drupalorg_block_configure($delta='') {
         '#default_value' => variable_get('drupalorg_announcements_machine_name', ''),
       );
 
+      // Show to users who registered before
+      $form['users_created_before'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Show to users who registered before unix timestamp'),
+        '#default_value' => variable_get('drupalorg_announcements_users_created_before'),
+        '#description' => t('Useful for election announcements. Leave blank to show regardless.'),
+      );
+
       break;
   }
   return $form;
@@ -746,6 +759,8 @@ function drupalorg_block_save($delta = '', $edit = array()) {
 
       // Saving the machine name
       variable_set('drupalorg_announcements_machine_name', $edit['machine_name']);
+
+      variable_set('drupalorg_announcements_users_created_before', $edit['users_created_before']);
 
       break;
   }
