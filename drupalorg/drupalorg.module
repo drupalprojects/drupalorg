@@ -788,6 +788,11 @@ function announcements_block_view() {
     ),
   ));
 
+  // Capture Call to action text and link from the variable
+  $cta_text = variable_get('drupalorg_announcements_text_cta', '');
+  $cta_link = variable_get('drupalorg_announcements_text_link', '');
+  $machine_name = variable_get('drupalorg_announcements_machine_name', '');
+
   // Block output in HTML with div wrapper
   $block = array(
     'image' => array(
@@ -799,6 +804,14 @@ function announcements_block_view() {
       '#type' => 'markup',
       '#markup' => $text,
       '#suffix' => '',
+    ),
+    'cta' => array(
+      '#theme' => 'link',
+      '#text' => $cta_text,
+      '#path' => check_plain($cta_link),
+      '#options' => array('attributes' => array('class' => $machine_name)),
+      '#prefix' => '<div class="cta">',
+      '#suffix' => '</div>'
     ),
   );
 
