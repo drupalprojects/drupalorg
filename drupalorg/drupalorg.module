@@ -679,21 +679,21 @@ function drupalorg_block_configure($delta='') {
       $form['text_body'] = array(
         '#type' => 'text_format',
         '#title' => t('Main text'),
-        '#default_value' => variable_get('text_variable', ''),
+        '#default_value' => variable_get('drupalorg_announcements_text_variable', ''),
       );
 
       // Call to action text
       $form['text_cta'] = array(
         '#type' => 'textfield',
         '#title' => t('Call to action text'),
-        '#default_value' => variable_get('text_cta', ''),
+        '#default_value' => variable_get('drupalorg_announcements_text_cta', ''),
       );
 
       // Call to action link
       $form['text_link'] = array(
         '#type' => 'textfield',
         '#title' => t('Call to action link'),
-        '#default_value' => variable_get('text_link', ''),
+        '#default_value' => variable_get('drupalorg_announcements_text_link', ''),
       );
 
       // File selection form element
@@ -702,7 +702,7 @@ function drupalorg_block_configure($delta='') {
         '#type' => 'managed_file',
         '#title' => t('Icon'),
         '#description' => t('Upload an icon for the custom block.  Only *.svg images allowed.'),
-        '#default_value' => variable_get('block_image_fid', ''),
+        '#default_value' => variable_get('drupalorg_announcements_block_image_fid', ''),
         '#upload_location' => 'public://announcements/',
         '#upload_validators' => array(
           'file_validate_extensions' => array('svg'),
@@ -713,7 +713,7 @@ function drupalorg_block_configure($delta='') {
       $form['machine_name'] = array(
         '#type' => 'textfield',
         '#title' => t('Machine name. Only enter lower case letters and underscores.'),
-        '#default_value' => variable_get('machine_name', ''),
+        '#default_value' => variable_get('drupalorg_announcements_machine_name', ''),
       );
 
       break;
@@ -728,13 +728,13 @@ function drupalorg_block_save($delta = '', $edit = array()) {
   switch($delta) {
     case 'announcements' :
       // Saving the WYSIWYG text
-      variable_set('text_variable', $edit['text_body']['value']);
+      variable_set('drupalorg_announcements_text_variable', $edit['text_body']['value']);
 
       // Saving the cta text
-      variable_set('text_cta', $edit['text_cta']);
+      variable_set('drupalorg_announcements_text_cta', $edit['text_cta']);
 
       // Saving the cta link
-      variable_set('text_link', $edit['text_link']);
+      variable_set('drupalorg_announcements_text_link', $edit['text_link']);
 
       // Saving the file, setting it to a permanent state, setting a FID variable
       $file = file_load($edit['file']);
@@ -742,10 +742,10 @@ function drupalorg_block_save($delta = '', $edit = array()) {
       file_save($file);
       $block = block_load('custom_block', $delta);
       file_usage_add($file, 'custom_block', 'block', '1');
-      variable_set('block_image_fid', $file->fid);
+      variable_set('drupalorg_announcements_block_image_fid', $file->fid);
 
       // Saving the machine name
-      variable_set('machine_name', $edit['machine_name']);
+      variable_set('drupalorg_announcements_machine_name', $edit['machine_name']);
 
       break;
   }
@@ -761,7 +761,7 @@ function announcements_block_view() {
   $block = array();
 
   // Capture the image file path and form into HTML with attributes
-  $image_file = file_load(variable_get('block_image_fid', ''));
+  $image_file = file_load(variable_get('drupalorg_announcements_block_image_fid', ''));
   $image_path = '';
 
   if (isset($image_file->uri)) {
@@ -770,13 +770,23 @@ function announcements_block_view() {
 
   $image = theme_image(array(
     'path' => ($image_path),
-    'alt' => t('Image description here.'),
-    'title' => t('This is our block image.'),
-    'attributes' => array('class' => 'class_name'),
+    'alt' => t('Announcement icon'),
+    'title' => t('Announcement icon'),
+    'attributes' => array('class' => 'icon'),
   ));
 
   // Capture WYSIWYG text from the variable
-  $text = variable_get('text_variable', '');
+  $body_text = variable_get('drupalorg_announcements_text_variable', '');
+
+  $text = theme('html_tag', array(
+    'element' => array(
+      '#tag' => 'p',
+      '#attributes' => array(
+        'class' => 'announcement',
+      ),
+      '#value' => $body_text,
+    ),
+  ));
 
   // Block output in HTML with div wrapper
   $block = array(
