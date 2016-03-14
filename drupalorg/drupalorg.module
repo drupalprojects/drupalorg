@@ -821,10 +821,7 @@ function announcements_block_view() {
       '#suffix' => '',
     ),
     'cta' => array(
-      '#theme' => 'link',
-      '#text' => $cta_text,
-      '#path' => check_plain($cta_link),
-      '#options' => array('attributes' => array('class' => $machine_name)),
+      '#markup' => l($cta_text, $cta_link, array('attributes' => array('class' => $machine_name))),
       '#prefix' => '<div class="cta">',
       '#suffix' => '</div>'
     ),
