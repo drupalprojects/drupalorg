@@ -259,7 +259,7 @@ function drupalorg_handbook_block_info() {
     ),
     'book-listing-info' => array(
       'info' => t('Book listings information'),
-      'cache' => DRUPAL_NO_CACHE,
+      'cache' => DRUPAL_CACHE_PER_PAGE,
     ),
     'book-listing-link' => array(
       'info' => t('Book listing add link'),
@@ -278,7 +278,6 @@ function drupalorg_handbook_block_view($delta) {
     case 'license':
       if ($section === 'documentation') {
         return array(
-          'subject' => '',
           'content' => t('Drupal’s online documentation is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>. Comments on documentation pages are used to improve content and then deleted.', array('!year' => date('Y'), '@ccl_url' => url('node/14307'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html'))),
         );
       }
@@ -320,28 +319,22 @@ function drupalorg_handbook_block_view($delta) {
       break;
 
     case 'book-listing-info':
-      if ((isset($node) && $node->type == 'book_listing') ||
-        drupalorg_crosssite_child_of('node/add/book-listing') ||
-        drupalorg_crosssite_child_of('books')) {
+      if ((isset($node) && $node->type == 'book_listing') || drupalorg_crosssite_child_of('books')) {
         return array(
-          'subject' => '',
-          'content' => drupalorg_handbook_book_listing_block(),
+          'content' => '<p>' . t('Drupal.org’s online content is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. Book descriptions are generally copyrighted by the book author or publisher, and are added to this web site with permission.', array('!year' => date('Y'), '@ccl_url' => url('node/14307'))) . '</p>',
         );
       }
       break;
 
     case 'book-listing-link':
-      if ((isset($node) && $node->type == 'book_listing') ||
-        drupalorg_crosssite_child_of('node/add/book-listing')) {
+      if ((isset($node) && $node->type == 'book_listing') || drupalorg_crosssite_child_of('books')) {
+        $content = '';
+        if (user_access('create book_listing content') && current_path() === 'books') {
+          $content .= '<p>' . l(t('Add book listing'), 'node/add/book-listing', array('attributes' => array('class' => 'action-button'))) . '</p>';
+        }
+        $content .= '<p>' . l(t('Book listing guidelines'), 'node/1691562') . '</p>';
         return array(
-          'subject' => '',
-          'content' => drupalorg_handbook_book_link_block(FALSE),
-        );
-      }
-      elseif (drupalorg_crosssite_child_of('books')) {
-        return array(
-          'subject' => '',
-          'content' => drupalorg_handbook_book_link_block(TRUE),
+          'content' => $content,
         );
       }
       break;
@@ -406,33 +399,6 @@ function drupalorg_handbook_form_comment_form_alter(&$form, $form_state) {
     );
   }
 }
-
-/**
- * Returns block content for the book listing sidebar block.
- */
-function drupalorg_handbook_book_listing_block() {
-  $content = '';
-
-  $content .= '<p>' . t('Drupal.org’s online content is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. Book descriptions are generally copyrighted by the book author or publisher, and are added to this web site with permission.', array('!year' => date('Y'), '@ccl_url' => url('node/14307'))) . '</p>';
-
-  return $content;
-}
-
-/**
- * Returns block content for the book add link sidebar block.
- */
-function drupalorg_handbook_book_link_block($include_add_link) {
-  $content = '';
-
-  if ($include_add_link && user_access('create book_listing content')) {
-    $content .= '<p>' . l(t('Add book listing'), 'node/add/book-listing', array('attributes' => array('class' => 'action-button'))) . '</p>';
-  }
-
-  $content .= '<p>' . l(t('Book listing guidelines'), 'node/1691562') . '</p>';
-
-  return $content;
-}
-
 
 /**
  * Implementation of template_preprocess_content_field().
