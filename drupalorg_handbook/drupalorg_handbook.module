@@ -94,17 +94,13 @@ function drupalorg_handbook_moderate_link_info($node) {
  *
  * @return
  *   HTML for the list of contributors with call to edit.
- *
- * @see handbook-contributors.tpl.php
  */
 function drupalorg_handbook_before_body($node) {
-  $format = 'F j, Y';
-  $modified = t('Last updated @changed.', array('@changed' => format_date($node->changed, 'custom', $format)));
-  $created = '';
+  $output = '<p class="updated"><em>' . t('Last updated @changed.', array('@changed' => format_date($node->changed, 'custom', 'F j, Y')));
   $contributors = '';
   $edit_link = '';
   if (drupalorg_crosssite_section() === 'documentation') {
-    $created = t('Created on @created.', array('@created' => format_date($node->created, 'custom', $format)));
+    $output .= ' ' . t('Created on @created.', array('@created' => format_date($node->created, 'custom', 'F j, Y')));
     // Make a list of the 4 most recent different revision authors.
     $contributor_list = array();
     foreach (node_revision_list($node) as $revision) {
@@ -126,7 +122,12 @@ function drupalorg_handbook_before_body($node) {
       $edit_link = l(t('Log in to edit this page'), 'user', array('query' => drupal_get_destination())) . '.';
     }
   }
-  return theme('drupalorg_handbook_contributors', array('created' => $created, 'updated' => $modified, 'contributors' => $contributors, 'edit_link' => $edit_link));
+
+  if (!empty($contributors) || !empty($edit_link)) {
+    $output .= '<br />';
+  }
+  $output .= $contributors . ' ' . $edit_link . '</em></p>';
+  return $output;
 }
 
 /**
@@ -279,37 +280,19 @@ function drupalorg_handbook_block_view($delta) {
         $about = drupalorg_handbook_meta_data();
         unset($about['status']);
         if (!empty($about)) {
+          $content = '<dl class="about-section">';
+          foreach ($about as $title => $terms) {
+            $content .= '<dt>' . $title . '</dt><dd>' . implode(', ', $terms) . '</dd>';
+          }
+          $content .= '</dl>';
           return array(
             'subject' => ($node->type == 'book_listing') ? t('About this book') : t('About this page'),
-            'content' => theme('drupalorg_handbook_meta_sidebar', array('about' => $about)),
+            'content' => $content,
           );
         }
       }
       break;
   }
-}
-
-/**
- * Implements hook_theme().
- */
-function drupalorg_handbook_theme($existing, $type, $theme, $path) {
-  return array(
-    'drupalorg_handbook_contributors' => array(
-      'variables' => array(
-        'created' => '',
-        'updated' => '',
-        'contributors' => '',
-        'edit_link' => '',
-      ),
-      'template' => 'handbook-contributors',
-    ),
-    'drupalorg_handbook_meta_sidebar' => array(
-      'variables' => array(
-        'about' => array(),
-      ),
-      'template' => 'handbook-meta-sidebar',
-    ),
-  );
 }
 
 /**
