@@ -258,7 +258,7 @@ function drupalorg_handbook_block_view($delta) {
       break;
 
     case 'meta-sidebar':
-      if ((($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) || (isset($node) && $node->type == 'book_listing')) {
+      if (isset($node) && ((($section === 'documentation' || $section === 'community') && isset($node->book['bid'])) || $node->type == 'book_listing')) {
         $about = drupalorg_handbook_meta_data();
         $links = array();
         if (node_access('update', $node) && $node->type !== 'book_listing') {
@@ -267,25 +267,24 @@ function drupalorg_handbook_block_view($delta) {
         elseif (!user_is_logged_in() && $node->type != 'book_listing') {
           $links['edit'] = l(t('Log in to edit this page'), 'user', array('query' => drupal_get_destination()));
         }
-        $report_link = drupalorg_handbook_moderate_link_info($node);
-        if (isset($report_link)) {
+        if ($report_link = drupalorg_handbook_moderate_link_info($node)) {
           $links['report'] = l($report_link['title'], $report_link['href'], array('query' => $report_link['query']));
         }
 
         return array(
-          'subject' => (isset($node) && $node->type == 'book_listing') ? t('Book status') : t('Page status'),
+          'subject' => ($node->type == 'book_listing') ? t('Book status') : t('Page status'),
           'content' => $about['status'] . '<p>' . implode('<br />', $links) . '</p>',
         );
       }
       break;
 
     case 'about-page':
-      if ((($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) || (isset($node) && $node->type == 'book_listing')) {
+      if (isset($node) && ((($section === 'documentation' || $section === 'community') && isset($node->book['bid'])) || $node->type == 'book_listing')) {
         $about = drupalorg_handbook_meta_data();
         unset($about['status']);
         if (!empty($about)) {
           return array(
-            'subject' => (isset($node) && $node->type == 'book_listing') ? t('About this book') : t('About this page'),
+            'subject' => ($node->type == 'book_listing') ? t('About this book') : t('About this page'),
             'content' => theme('drupalorg_handbook_meta_sidebar', array('about' => $about)),
           );
         }
