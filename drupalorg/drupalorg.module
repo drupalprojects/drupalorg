@@ -505,6 +505,14 @@ function drupalorg_block_info() {
       'info' => t('Announcement banner'),
       'cache' => DRUPAL_CACHE_PER_USER | DRUPAL_CACHE_PER_PAGE,
     ),
+    'book-listing-info' => array(
+      'info' => t('Book listings information'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    ),
+    'book-listing-link' => array(
+      'info' => t('Book listing add link'),
+      'cache' => DRUPAL_NO_CACHE,
+    ),
   );
 }
 
@@ -666,6 +674,27 @@ function drupalorg_block_view($delta, $block = NULL) {
         return array(
           'subject' => '',
           'content' => '<a class="action-button">' . t('Provide feedback about this page</a>') . '<iframe src="https://www.surveymonkey.com/r/BYX8YCY" height="500"></iframe>',
+        );
+      }
+      break;
+
+    case 'book-listing-info':
+      if ((($node = menu_get_object()) && $node->type == 'book_listing') || drupalorg_crosssite_child_of('books')) {
+        return array(
+          'content' => '<p>' . t('Drupal.org’s online content is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. Book descriptions are generally copyrighted by the book author or publisher, and are added to this web site with permission.', array('!year' => date('Y'), '@ccl_url' => url('node/14307'))) . '</p>',
+        );
+      }
+      break;
+
+    case 'book-listing-link':
+      if ((($node = menu_get_object()) && $node->type == 'book_listing') || drupalorg_crosssite_child_of('books')) {
+        $content = '';
+        if (user_access('create book_listing content') && current_path() === 'books') {
+          $content .= '<p>' . l(t('Add book listing'), 'node/add/book-listing', array('attributes' => array('class' => 'action-button'))) . '</p>';
+        }
+        $content .= '<p>' . l(t('Book listing guidelines'), 'node/1691562') . '</p>';
+        return array(
+          'content' => $content,
         );
       }
       break;
@@ -3626,6 +3655,29 @@ function drupalorg_preprocess_field(&$v) {
           ))
         );
       }
+    }
+  }
+
+  // Turn ISBN-10 field into affiliate link to purchase from Amazon.
+  if ($v['element']['#field_name'] == 'field_book_isbn_10' && isset($v['items'][0]['#markup'])) {
+   $amazon_link = '<a class="amazon-link" '
+      . ' title="Ordering via this link benefits the Drupal Association"'
+      . ' href="http://www.amazon.com/dp/' . $v['items'][0]['#markup']
+      . '/?tag=drupal0a-20" rel="nofollow">Order from Amazon.com</a>';
+    $v['items'][0]['#markup'] = $amazon_link;
+  }
+  // Rewrite or unset Packt purchase link (unset if not to packtpub.com)
+  if ($v['element']['#field_name'] == 'field_book_purchase_link' && isset($v['element']['#items'][0]['url'])) {
+    if (!strpos($v['element']['#items'][0]['url'], 'packtpub')) {
+      unset($v['element']);
+      unset($v['items']);
+    }
+    else {
+      $packt_link = '<a class="packt-link" '
+        . ' title="Ordering via this link benefits the Drupal Association"'
+        . ' href="' . $v['element']['#items'][0]['url'] . '" rel="nofollow">'
+        . 'Order from Packt</a>';
+      $v['items'][0]['#markup'] = $packt_link;
     }
   }
 }
