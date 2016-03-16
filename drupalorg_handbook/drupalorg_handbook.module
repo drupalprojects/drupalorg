@@ -10,27 +10,6 @@
  */
 function drupalorg_handbook_node_view($node, $view_mode = 'full') {
   if ($view_mode == 'full') {
-    $extra = '';
-    switch ($node->nid) {
-      case 322: // Mailing list subscription
-        $extra = drupal_get_form('lists_subscribe_form');
-        break;
-      case 13355: // Site maintainers
-        $extra = drupalorg_handbook_site_maintainers();
-        break;
-      case 263594: // Revision maintainers
-        $extra = drupalorg_handbook_revision_maintainers();
-        break;
-    }
-
-    if (!is_string($extra)) {
-      $extra = drupal_render($extra);
-    }
-    $node->content['extra'] = array(
-      '#markup' => $extra,
-      '#weight' => 1,
-    );
-
     $section = drupalorg_crosssite_section();
 
     if (isset($node->book['bid']) && ($section === 'documentation' || $section === 'community')) {
@@ -259,67 +238,6 @@ function drupalorg_handbook_meta_data() {
   }
 
   return $about;
-}
-
-/**
- * List usernames with site maintainer role.
- */
-function drupalorg_handbook_site_maintainers() {
-  $output = '<ol>';
-  $result = db_query("SELECT DISTINCT(u.uid), u.name
-    FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.uid
-    WHERE r.rid = :role1 OR r.rid = :role2 OR r.rid = :role3
-    ORDER BY u.name ", array(':role1' => 3, ':role2' => 4, ':role3' => 9)); // 3 = site maintainer, 4 = administrator
-  foreach ($result as $account) {
-    $output .= "<li>" . theme('username', array('account' => $account)) . "</li>";
-  }
-  $output .= '</ol>';
-  return $output;
-}
-
-/**
- * Collect and cache revision maintainers (those who made revisions to books).
- *
- * If the page visited is node/263594/filter, then filter is used as an input
- * to strtotime(), to limit to revisions after that date/time.
- */
-function drupalorg_handbook_revision_maintainers() {
-  $filter = check_plain(arg(2));
-  $cache_key = 'node_263594-' . $filter;
-  if ($cache = cache_get($cache_key)) {
-    return $cache->data;
-  }
-
-  $since = 0;
-  $output = '';
-  if ($filter) {
-    $trial = strtotime($filter);
-    if ($trial) {
-      $since = $trial;
-      $output .= '<p>' . t('Contributions since !filter', array('!filter' => $filter)) . '</p>';
-    }
-  }
-
-  $result = db_query("SELECT u.uid, u.name, COUNT(nr.vid) AS pages
-    FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid INNER JOIN {users} u ON u.uid = nr.uid
-    WHERE n.type = :ntype AND n.status = :nstatus AND nr.timestamp > :nrtimestamp
-    GROUP BY u.name
-    ORDER BY pages DESC", array(':ntype' => 'book', ':nstatus' => 1, ':nrtimestamp' => $since));
-
-  $list = array();
-  $total = 0;
-  $count = 0;
-  foreach ($result as $contributor) {
-    $list[] = theme('username', array('account' => $contributor)) . " (" . format_plural($contributor->pages, "@count revision", "@count revisions") . ")";
-    $total += $contributor->pages;
-    $count++;
-  }
-
-  $output .= '<p>' . format_plural($count, '@count contributor', '@count contributors') . '</p>';
-  $output .= '<p>' . format_plural($total, '@count total revision', '@count total revisions') . '</p>';
-  $output .= theme('item_list', array('items' => $list));
-  cache_set($cache_key, $output, 'cache', 300);
-  return $output;
 }
 
 /**
