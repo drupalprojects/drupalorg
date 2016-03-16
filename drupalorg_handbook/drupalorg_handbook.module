@@ -274,7 +274,7 @@ function drupalorg_handbook_block_view($delta) {
 function drupalorg_handbook_form_comment_form_alter(&$form, $form_state) {
   // Make sure we are on a form to add a new comment (not edit existing),
   // and that the node is a book node.
-  if(isset($form['#node']->book['bid']) && !isset($form_state['comment']->cid)) {
+  if (isset($form['#node']->book['bid']) && !isset($form_state['comment']->cid)) {
     // This is a node in a book. Display disclaimer.
     $form['drupalorg-disclaimer'] = array(
       '#weight' => -2,
