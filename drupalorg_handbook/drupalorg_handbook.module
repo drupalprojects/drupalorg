@@ -29,7 +29,11 @@ function drupalorg_handbook_node_view($node, $view_mode = 'full') {
       // Add the extra footer line.
       if ($section === 'documentation') {
         $node->content['extra_footer'] = array(
-          '#markup' => theme('drupalorg_handbook_footer_line'),
+          '#markup' => '<p class="support"><strong>' . t('Looking for support? Visit the !forumlink, or join #drupal-support in !irclink.',
+            array(
+              '!forumlink' => l(t('Drupal.org forums'), 'forum'),
+              '!irclink' => l(t('IRC'), 'node/108355'),
+          )) . '</strong></p>',
           '#weight' => 150,
         );
       }
@@ -319,9 +323,6 @@ function drupalorg_handbook_block_view($delta) {
  */
 function drupalorg_handbook_theme($existing, $type, $theme, $path) {
   return array(
-    'drupalorg_handbook_footer_line' => array(
-      'variables' => array(),
-    ),
     'drupalorg_handbook_contributors' => array(
       'variables' => array(
         'created' => '',
@@ -338,19 +339,6 @@ function drupalorg_handbook_theme($existing, $type, $theme, $path) {
       'template' => 'handbook-meta-sidebar',
     ),
   );
-}
-
-/**
- * Returns HTML for a footer line for a documentation page.
- *
- * @ingroup themeable
- */
-function theme_drupalorg_handbook_footer_line() {
-  return '<p class="support"><strong>' . t('Looking for support? Visit the !forumlink, or join #drupal-support in !irclink.',
-    array(
-    '!forumlink' => l(t('Drupal.org forums'), 'forum'),
-    '!irclink' => l(t('IRC'), 'node/108355'),
-  )) . '</strong></p>';
 }
 
 /**
