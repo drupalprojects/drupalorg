@@ -49,7 +49,7 @@ function drupalorg_metrics_page() {
     $output .= '<h2 id="' . $type . '">' . $map[$type] . '</h2>' . $graph;
     $links[] = array(
       'title' => $map[$type],
-      'href' => $_GET['q'],
+      'href' => 'metrics',
       'fragment' => $type,
     );
   }

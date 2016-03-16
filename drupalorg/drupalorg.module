@@ -501,6 +501,10 @@ function drupalorg_block_info() {
       'info' => t('Survey on documentation pages'),
       'cache' => DRUPAL_CACHE_PER_PAGE,
     ),
+    'announcements' => array(
+      'info' => t('Announcement banner'),
+      'cache' => DRUPAL_CACHE_PER_USER | DRUPAL_CACHE_PER_PAGE,
+    ),
   );
 }
 
@@ -648,6 +652,15 @@ function drupalorg_block_view($delta, $block = NULL) {
         'content' => $content,
       );
 
+    case 'announcements':
+      if ($created_before = variable_get('drupalorg_announcements_users_created_before')) {
+        if (user_is_anonymous() || $GLOBALS['user']->created > $created_before) {
+          break;
+        }
+      }
+      $block['content'] = announcements_block_view();
+      return $block;
+
     case 'documentation_survey':
       if (drupalorg_crosssite_section() === 'documentation') {
         return array(
@@ -657,6 +670,164 @@ function drupalorg_block_view($delta, $block = NULL) {
       }
       break;
   }
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function drupalorg_block_configure($delta = '') {
+  $form = array();
+
+  switch ($delta) {
+    case 'announcements':
+      // Text field form element
+      $form['text_body'] = array(
+        '#type' => 'text_format',
+        '#title' => t('Main text'),
+        '#default_value' => variable_get('drupalorg_announcements_text_variable', ''),
+      );
+
+      // Call to action text
+      $form['text_cta'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Call to action text'),
+        '#default_value' => variable_get('drupalorg_announcements_text_cta', ''),
+      );
+
+      // Call to action link
+      $form['text_link'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Call to action link'),
+        '#default_value' => variable_get('drupalorg_announcements_text_link', ''),
+      );
+
+      // File selection form element
+      $form['file'] = array(
+        '#name' => 'block_image',
+        '#type' => 'managed_file',
+        '#title' => t('Icon'),
+        '#description' => t('Upload an icon for the custom block.  Only *.svg images allowed.'),
+        '#default_value' => variable_get('drupalorg_announcements_block_image_fid', ''),
+        '#upload_location' => 'public://announcements/',
+        '#upload_validators' => array(
+          'file_validate_extensions' => array('svg'),
+        ),
+      );
+
+      // Machine name
+      $form['machine_name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Machine name. Only enter lower case letters and underscores.'),
+        '#default_value' => variable_get('drupalorg_announcements_machine_name', ''),
+      );
+
+      // Show to users who registered before
+      $form['users_created_before'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Show to users who registered before unix timestamp'),
+        '#default_value' => variable_get('drupalorg_announcements_users_created_before'),
+        '#description' => t('Useful for election announcements. Leave blank to show regardless.'),
+      );
+
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function drupalorg_block_save($delta = '', $edit = array()) {
+  switch($delta) {
+    case 'announcements' :
+      // Saving the WYSIWYG text
+      variable_set('drupalorg_announcements_text_variable', $edit['text_body']['value']);
+
+      // Saving the cta text
+      variable_set('drupalorg_announcements_text_cta', $edit['text_cta']);
+
+      // Saving the cta link
+      variable_set('drupalorg_announcements_text_link', $edit['text_link']);
+
+      // Saving the file, setting it to a permanent state, setting a FID variable
+      $file = file_load($edit['file']);
+      $file->status = FILE_STATUS_PERMANENT;
+      file_save($file);
+      $block = block_load('custom_block', $delta);
+      file_usage_add($file, 'custom_block', 'block', '1');
+      variable_set('drupalorg_announcements_block_image_fid', $file->fid);
+
+      // Saving the machine name
+      variable_set('drupalorg_announcements_machine_name', $edit['machine_name']);
+
+      variable_set('drupalorg_announcements_users_created_before', $edit['users_created_before']);
+
+      break;
+  }
+}
+
+/**
+ * Custom function to assemble renderable array for block content.
+ * Returns a renderable array with the block content.
+ * @return
+ *   returns a renderable array of block content.
+ */
+function announcements_block_view() {
+  $block = array();
+
+  // Capture the image file path and form into HTML with attributes
+  $image_file = file_load(variable_get('drupalorg_announcements_block_image_fid', ''));
+  $image_path = '';
+
+  if (isset($image_file->uri)) {
+    $image_path = $image_file->uri;
+  }
+
+  $image = theme_image(array(
+    'path' => ($image_path),
+    'alt' => t('Announcement icon'),
+    'title' => t('Announcement icon'),
+    'attributes' => array('class' => 'icon'),
+  ));
+
+  // Capture WYSIWYG text from the variable
+  $body_text = variable_get('drupalorg_announcements_text_variable', '');
+
+  $text = theme('html_tag', array(
+    'element' => array(
+      '#tag' => 'p',
+      '#attributes' => array(
+        'class' => 'announcement',
+      ),
+      '#value' => $body_text,
+    ),
+  ));
+
+  // Capture Call to action text and link from the variable
+  $cta_text = variable_get('drupalorg_announcements_text_cta', '');
+  $cta_link = variable_get('drupalorg_announcements_text_link', '');
+  $machine_name = variable_get('drupalorg_announcements_machine_name', '');
+
+  // Block output in HTML with div wrapper
+  $block = array(
+    'image' => array(
+      '#prefix' => '',
+      '#type' => 'markup',
+      '#markup' => $image,
+    ),
+    'message' => array(
+      '#type' => 'markup',
+      '#markup' => $text,
+      '#suffix' => '',
+    ),
+    'cta' => array(
+      '#markup' => l($cta_text, $cta_link, array('attributes' => array('class' => $machine_name))),
+      '#prefix' => '<div class="cta">',
+      '#suffix' => '</div>'
+    ),
+  );
+
+  return $block;
 }
 
 /**
@@ -4287,6 +4458,24 @@ function drupalorg_admin_paths_alter(&$paths) {
 }
 
 /**
+ * Implements hook_project_release_xml_alter().
+ */
+function drupalorg_project_release_xml_alter(&$xml, $project, $api_tid) {
+  if ($project->type !== 'project_core' && $api_tid == 87) { // 6.x
+    // Temporary killswitch until this is ready for general release.
+    if (!in_array($project->field_project_machine_name[LANGUAGE_NONE][0]['value'], array('drupalorg_crosssite', 'groupsdrupalorg'))) {
+      return;
+    }
+    // See https://www.drupal.org/node/2681323.
+    // This causes update status to show “Not supported!” when a module is
+    // updated to the last Drupal 6 version.
+    $xml->supported_majors = 9999;
+    $xml->recommended_major = 9999;
+    $xml->default_major = 9999;
+  }
+}
+
+/**
  * Implements hook_project_release_history_xml_written().
  */
 function drupalorg_project_release_history_xml_written($project, $api_version) {
@@ -4428,16 +4617,5 @@ function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
   // section.
   if ($context['module'] === 'node' && $context['type'] === 'post' && ($context['op'] === 'insert' || $context['op'] === 'update') && $context['data']['node']->og_group_ref[LANGUAGE_NONE][0]['target_id'] == 2603760) {
     $alias = preg_replace('#^about/#', '', $alias);
-  }
-}
-
-/**
- * Implements hook_project_release_xml_alter().
- */
-function drupalorg_project_release_xml_alter(&$xml, $project, $api_tid) {
-  if ($project->type !== 'project_core' && $api_tid == 87) { // 6.x
-    // See https://www.drupal.org/node/2681323.
-    $xml->link = 'https://www.drupal.org/about/drupal6-lts?project=' . $project->field_project_machine_name[LANGUAGE_NONE][0]['value'];
-    $xml->project_status = 'insecure';
   }
 }
