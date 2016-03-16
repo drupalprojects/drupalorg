@@ -47,16 +47,6 @@ function drupalorg_handbook_node_view($node, $view_mode = 'full') {
         '#attributes' => array('class' => array('links', 'inline')),
       );
     }
-    elseif ($node->type == 'book_listing') {
-      // Mark the taxonomy items as rendered so they don't display on the node.
-      // These are elements of $node->content that are named
-      // 'taxonomy_vocabulary_*'.
-      foreach ($node->content as $key => $value) {
-        if (strpos($key, 'taxonomy_vocabulary_') === 0) {
-          hide($node->content[$key]);
-        }
-      }
-    }
   }
 }
 
