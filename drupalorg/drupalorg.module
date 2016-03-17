@@ -1562,7 +1562,6 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
           'Drupal Association News',
           'DrupalCon News',
           'Special Offers from Drupal Supporters',
-          'Special Offers from Drupal Supporters (coming soon)',
           'Security Announcements',
         ));
       }
