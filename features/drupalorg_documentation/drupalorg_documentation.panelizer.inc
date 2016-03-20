@@ -274,6 +274,27 @@ function drupalorg_documentation_panelizer_defaults() {
   $display->content['new-5541d8a2-9ecf-471d-bef7-5a54d8f4dbea'] = $pane;
   $display->panels['bottom_right_content'][0] = 'new-5541d8a2-9ecf-471d-bef7-5a54d8f4dbea';
   $pane = new stdClass();
+  $pane->pid = 'new-a989ded9-60ec-4f66-a368-e60baa9ae526';
+  $pane->panel = 'bottom_right_content';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'group_maintainers-panel_pane_1';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'context' => array(
+      0 => 'panelizer',
+    ),
+  );
+  $pane->cache = array();
+  $pane->style = array();
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'a989ded9-60ec-4f66-a368-e60baa9ae526';
+  $display->content['new-a989ded9-60ec-4f66-a368-e60baa9ae526'] = $pane;
+  $display->panels['bottom_right_content'][1] = 'new-a989ded9-60ec-4f66-a368-e60baa9ae526';
+  $pane = new stdClass();
   $pane->pid = 'new-1c6ed07f-42d4-4816-9f4e-81bac67f2d3a';
   $pane->panel = 'footer';
   $pane->type = 'custom';
