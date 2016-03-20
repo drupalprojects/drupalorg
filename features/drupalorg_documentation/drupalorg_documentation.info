@@ -41,6 +41,7 @@ features[field_instance][] = node-guide-group_group
 features[field_instance][] = node-guide-upload
 features[node][] = documentation
 features[node][] = guide
+features[og_features_role][] = node:guide:maintainer
 features[panelizer_defaults][] = node:documentation:default:default
 features[panelizer_defaults][] = node:guide:default:default
 features[taxonomy][] = tags
