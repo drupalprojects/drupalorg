@@ -82,4 +82,5 @@ features[variable][] = panelizer_node:guide_allowed_layouts
 features[variable][] = panelizer_node:guide_allowed_layouts_default
 features[variable][] = panelizer_node:guide_allowed_types_default
 features[variable][] = panelizer_node:guide_default
+features[views_view][] = documentation_guide
 features[views_view][] = group_maintainers

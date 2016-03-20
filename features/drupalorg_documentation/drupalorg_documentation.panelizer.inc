@@ -374,6 +374,27 @@ function drupalorg_documentation_panelizer_defaults() {
   $display->content['new-6757a7ba-d2ab-46ca-a306-66a6f4a93c1a'] = $pane;
   $display->panels['left_content'][1] = 'new-6757a7ba-d2ab-46ca-a306-66a6f4a93c1a';
   $pane = new stdClass();
+  $pane->pid = 'new-51a6a7ad-e05b-4e5f-a962-d5e48253c9cd';
+  $pane->panel = 'left_content';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'documentation_guide-panel_pane_1';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'context' => array(
+      0 => 'panelizer',
+    ),
+  );
+  $pane->cache = array();
+  $pane->style = array();
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '51a6a7ad-e05b-4e5f-a962-d5e48253c9cd';
+  $display->content['new-51a6a7ad-e05b-4e5f-a962-d5e48253c9cd'] = $pane;
+  $display->panels['left_content'][2] = 'new-51a6a7ad-e05b-4e5f-a962-d5e48253c9cd';
+  $pane = new stdClass();
   $pane->pid = 'new-574cc949-04c7-436f-b9e9-01c3d6d342c6';
   $pane->panel = 'left_content';
   $pane->type = 'node_links';
@@ -396,11 +417,11 @@ function drupalorg_documentation_panelizer_defaults() {
     'css_class' => 'link-wrapper',
   );
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = '574cc949-04c7-436f-b9e9-01c3d6d342c6';
   $display->content['new-574cc949-04c7-436f-b9e9-01c3d6d342c6'] = $pane;
-  $display->panels['left_content'][2] = 'new-574cc949-04c7-436f-b9e9-01c3d6d342c6';
+  $display->panels['left_content'][3] = 'new-574cc949-04c7-436f-b9e9-01c3d6d342c6';
   $pane = new stdClass();
   $pane->pid = 'new-c51c42f6-5f91-44e6-a324-9f0838a464bc';
   $pane->panel = 'top_right_content';
