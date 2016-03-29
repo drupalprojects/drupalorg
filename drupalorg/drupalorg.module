@@ -4575,6 +4575,7 @@ function drupalorg_mollom_content_alter(&$data) {
     $data['postBody'] = preg_replace(array(
       '#https?://((www|api|assoc|events|groups|jobs|localize|qa|security)\.)?drupal\.org#',
       '#https?://([a-z]\.)?stack(exchange|overflow)\.com#',
+      '#https://github.com#',
     ), '', $data['postBody']);
   }
 }
