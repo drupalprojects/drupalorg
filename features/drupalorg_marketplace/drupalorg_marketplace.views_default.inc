@@ -11,6 +11,232 @@ function drupalorg_marketplace_views_default_views() {
   $export = array();
 
   $view = new view();
+  $view->name = 'drupal_org_all_organizations';
+  $view->description = 'List of organizations with profiles on Drupal.org';
+  $view->tag = 'marketplace';
+  $view->base_table = 'node';
+  $view->human_name = 'All Drupal Organizations';
+  $view->core = 0;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Defaults */
+  $handler = $view->new_display('default', 'Defaults', 'default');
+  $handler->display->display_options['title'] = 'Organizations';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Filter results';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '50';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'node';
+  $handler->display->display_options['row_options']['links'] = FALSE;
+  /* Header: Global: Result summary */
+  $handler->display->display_options['header']['result']['id'] = 'result';
+  $handler->display->display_options['header']['result']['table'] = 'views';
+  $handler->display->display_options['header']['result']['field'] = 'result';
+  $handler->display->display_options['header']['result']['content'] = '<p>Displaying @start to @end of @total organizations. <a href="/node/1887616">Confirmed users</a> can <a href="/node/add/organization">add an organization</a>.</p>
+<p>Organizations using Drupal are shops providing Drupal services, customers that have Drupal installations, and companies that support Drupal financially or through sponsoring amazing events that promote Drupal.</p>
+<p>The organizations listed below are in order of issue credits awarded in the past 90 days and by membership in the Drupal Supporter Programs.</p>';
+  /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['id'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['table'] = 'field_data_taxonomy_vocabulary_52';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['field'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['label'] = 'locations';
+  $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['required'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  /* Sort criterion: Content: Org issue credit count (field_org_issue_credit_count) */
+  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['id'] = 'field_org_issue_credit_count_value';
+  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['table'] = 'field_data_field_org_issue_credit_count';
+  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['field'] = 'field_org_issue_credit_count_value';
+  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['order'] = 'DESC';
+  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['expose']['label'] = 'Contribution';
+  /* Sort criterion: Content: Drupal Association supporting program (field_organization_support) */
+  $handler->display->display_options['sorts']['field_organization_support_value']['id'] = 'field_organization_support_value';
+  $handler->display->display_options['sorts']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['sorts']['field_organization_support_value']['field'] = 'field_organization_support_value';
+  $handler->display->display_options['sorts']['field_organization_support_value']['order'] = 'DESC';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  $handler->display->display_options['sorts']['title']['expose']['label'] = 'A-Z';
+  /* Contextual filter: Taxonomy term: Name */
+  $handler->display->display_options['arguments']['name']['id'] = 'name';
+  $handler->display->display_options['arguments']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['arguments']['name']['field'] = 'name';
+  $handler->display->display_options['arguments']['name']['relationship'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['arguments']['name']['default_action'] = 'summary';
+  $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['name']['summary']['sort_order'] = 'desc';
+  $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '1';
+  $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['name']['summary_options']['base_path'] = 'organizations';
+  $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['name']['validate_options']['vocabularies'] = array(
+    'vocabulary_52' => 'vocabulary_52',
+  );
+  $handler->display->display_options['arguments']['name']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['name']['limit'] = '0';
+  $handler->display->display_options['arguments']['name']['path_case'] = 'lower';
+  $handler->display->display_options['arguments']['name']['transform_dash'] = TRUE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = 1;
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Organization name contains';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+
+  /* Display: Drupal Orgs */
+  $handler = $view->new_display('page', 'Drupal Orgs', 'organizations');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['exposed_block'] = TRUE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Taxonomy term: Name */
+  $handler->display->display_options['arguments']['name']['id'] = 'name';
+  $handler->display->display_options['arguments']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['arguments']['name']['field'] = 'name';
+  $handler->display->display_options['arguments']['name']['relationship'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['arguments']['name']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['name']['title'] = 'Organizations using Drupal: %1';
+  $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['name']['summary']['sort_order'] = 'desc';
+  $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '1';
+  $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['name']['summary_options']['base_path'] = 'organizations';
+  $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['name']['validate_options']['vocabularies'] = array(
+    'vocabulary_52' => 'vocabulary_52',
+  );
+  $handler->display->display_options['arguments']['name']['validate_options']['type'] = 'name';
+  $handler->display->display_options['arguments']['name']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['name']['limit'] = '0';
+  $handler->display->display_options['arguments']['name']['path_case'] = 'lower';
+  $handler->display->display_options['arguments']['name']['transform_dash'] = TRUE;
+  $handler->display->display_options['path'] = 'organizations';
+
+  /* Display: Drupal Orgs by Country */
+  $handler = $view->new_display('block', 'Drupal Orgs by Country', 'block_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Browse by country';
+  $handler->display->display_options['defaults']['group_by'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['style_options']['class'] = 'grid cols-2 drupalorg-random sponsors--signature';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['hide_empty'] = TRUE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Locations */
+  $handler->display->display_options['fields']['taxonomy_vocabulary_52']['id'] = 'taxonomy_vocabulary_52';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_52']['table'] = 'field_data_taxonomy_vocabulary_52';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_52']['field'] = 'taxonomy_vocabulary_52';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_52']['label'] = '';
+  $handler->display->display_options['fields']['taxonomy_vocabulary_52']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['taxonomy_vocabulary_52']['delta_offset'] = '0';
+  $handler->display->display_options['block_description'] = 'Drupal Orgs by Country';
+  $translatables['drupal_org_all_organizations'] = array(
+    t('Defaults'),
+    t('Organizations'),
+    t('more'),
+    t('Filter results'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('<p>Displaying @start to @end of @total organizations. <a href="/node/1887616">Confirmed users</a> can <a href="/node/add/organization">add an organization</a>.</p>
+<p>Organizations using Drupal are shops providing Drupal services, customers that have Drupal installations, and companies that support Drupal financially or through sponsoring amazing events that promote Drupal.</p>
+<p>The organizations listed below are in order of issue credits awarded in the past 90 days and by membership in the Drupal Supporter Programs.</p>'),
+    t('locations'),
+    t('Title'),
+    t('Updated date'),
+    t('Contribution'),
+    t('A-Z'),
+    t('All'),
+    t('Organization name contains'),
+    t('Drupal Orgs'),
+    t('Organizations using Drupal: %1'),
+    t('Drupal Orgs by Country'),
+    t('Browse by country'),
+  );
+  $export['drupal_org_all_organizations'] = $view;
+
+  $view = new view();
   $view->name = 'drupalorg_organization_supported_projects';
   $view->description = 'Embedded on organization node view.';
   $view->tag = 'default';
@@ -117,6 +343,11 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['row_options']['links'] = FALSE;
+  /* Header: Global: Result summary */
+  $handler->display->display_options['header']['result']['id'] = 'result';
+  $handler->display->display_options['header']['result']['table'] = 'views';
+  $handler->display->display_options['header']['result']['field'] = 'result';
+  $handler->display->display_options['header']['result']['content'] = '@total organizations provide Drupal services and have requested to be listed here.';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -253,6 +484,7 @@ function drupalorg_marketplace_views_default_views() {
     t('‹ previous'),
     t('next ›'),
     t('last »'),
+    t('@total organizations provide Drupal services and have requested to be listed here.'),
     t('Title'),
     t('Updated date'),
     t('Contribution'),
@@ -612,7 +844,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['fields']['field_organization_training_url']['label'] = '';
   $handler->display->display_options['fields']['field_organization_training_url']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_organization_training_url']['alter']['text'] = '<div class="main"><h2>[title]</h2>
-[field_organization_training_desc] 
+[field_organization_training_desc]
 <p>[field_organization_training_url]</p>
 </div>';
   $handler->display->display_options['fields']['field_organization_training_url']['element_label_colon'] = FALSE;
@@ -1032,7 +1264,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
     t('All'),
     t('Page'),
     t('<div class="main"><h2>[title]</h2>
-[field_organization_training_desc] 
+[field_organization_training_desc]
 <p>[field_organization_training_url]</p>
 </div>'),
     t('Sidebar navigation'),

@@ -100,6 +100,7 @@ features[variable][] = menu_parent_organization
 features[variable][] = node_options_organization
 features[variable][] = node_preview_organization
 features[variable][] = node_submitted_organization
+features[views_view][] = drupal_org_all_organizations
 features[views_view][] = drupalorg_organization_supported_projects
 features[views_view][] = drupalorg_organizations
 features[views_view][] = drupalorg_supporting_technologies

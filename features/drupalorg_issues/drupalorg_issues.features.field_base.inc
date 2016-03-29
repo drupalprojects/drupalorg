@@ -395,6 +395,7 @@ function drupalorg_issues_field_default_field_bases() {
         5 => 'Closed (won\'t fix)',
         6 => 'Closed (works as designed)',
         18 => 'Closed (cannot reproduce)',
+        17 => 'Closed (outdated)',
         7 => 'Closed (fixed)',
       ),
       'allowed_values_function' => '',

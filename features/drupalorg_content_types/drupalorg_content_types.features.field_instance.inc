@@ -125,60 +125,6 @@ function drupalorg_content_types_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-page-field_include_in_group_menu'.
-  $field_instances['node-page-field_include_in_group_menu'] = array(
-    'bundle' => 'page',
-    'default_value' => array(
-      0 => array(
-        'value' => 1,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => 'Content that belongs to a section or group can be added to a menu. To administer that menu, use the menu tab of the section or group.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
-      ),
-      'issuemetadata' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'nodechanges' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_include_in_group_menu',
-    'label' => 'Include in deprecated group menu',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 1,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 33,
-    ),
-  );
-
   // Exported field_instance: 'node-page-og_group_ref'.
   $field_instances['node-page-og_group_ref'] = array(
     'bundle' => 'page',
@@ -534,6 +480,67 @@ function drupalorg_content_types_field_default_field_instances() {
       'module' => 'og',
       'settings' => array(),
       'type' => 'og_complex',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'node-post-upload'.
+  $field_instances['node-post-upload'] = array(
+    'bundle' => 'post',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_default',
+        'weight' => 3,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'upload',
+    'label' => 'File attachments',
+    'required' => 0,
+    'settings' => array(
+      'description_field' => 0,
+      'file_directory' => '',
+      'file_extensions' => 'jpg jpeg gif png txt xls pdf ppt pps odt ods odp gz tgz patch diff zip test info po pot psd yml mov mp4 avi mkv',
+      'max_filesize' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'file',
+      'settings' => array(
+        'extended_file_field_collapsible' => 0,
+        'extended_file_field_hidden_toggle' => 0,
+        'extended_file_field_restrict_display' => 0,
+        'extended_file_field_reverse_display' => 0,
+        'extended_file_field_show_clear_contents' => 0,
+        'extended_file_field_show_remove' => 1,
+        'extended_file_field_widget_metadata' => array(),
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'file_generic',
       'weight' => 3,
     ),
   );
@@ -590,60 +597,6 @@ function drupalorg_content_types_field_default_field_instances() {
       ),
       'type' => 'text_textarea_with_summary',
       'weight' => 3,
-    ),
-  );
-
-  // Exported field_instance: 'node-section-field_include_in_group_menu'.
-  $field_instances['node-section-field_include_in_group_menu'] = array(
-    'bundle' => 'section',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => 'Content that belongs to a section or group can be added to a menu. To administer that menu, use the menu tab of the section or group.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
-      ),
-      'issuemetadata' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'nodechanges' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_include_in_group_menu',
-    'label' => 'Include in group menu',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 1,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 5,
     ),
   );
 
@@ -896,7 +849,6 @@ function drupalorg_content_types_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Body');
-  t('Content that belongs to a section or group can be added to a menu. To administer that menu, use the menu tab of the section or group.');
   t('Cover image');
   t('Determine if this is an OG group.');
   t('File attachments');
@@ -904,8 +856,6 @@ function drupalorg_content_types_field_default_field_instances() {
   t('Group');
   t('Groups audience');
   t('Groups theme');
-  t('Include in deprecated group menu');
-  t('Include in group menu');
   t('Parent section');
   t('Target comment');
 

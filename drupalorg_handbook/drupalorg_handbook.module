@@ -9,107 +9,70 @@
  * Implements hook_node_view().
  */
 function drupalorg_handbook_node_view($node, $view_mode = 'full') {
-  if ($view_mode == 'full') {
-    $extra = '';
-    switch ($node->nid) {
-      case 322: // Mailing list subscription
-        $extra = drupal_get_form('lists_subscribe_form');
-        break;
-      case 13355: // Site maintainers
-        $extra = drupalorg_handbook_site_maintainers();
-        break;
-      case 263594: // Revision maintainers
-        $extra = drupalorg_handbook_revision_maintainers();
-        break;
-    }
-
-    if (!is_string($extra)) {
-      $extra = drupal_render($extra);
-    }
-    $node->content['extra'] = array(
-      '#markup' => $extra,
-      '#weight' => 1,
-    );
-
-    $section = drupalorg_crosssite_section();
-
-    if (isset($node->book['bid']) && ($section === 'documentation' || $section === 'community')) {
-
-      // Prepend information about the page.
-      $node->content['body']['#prefix'] = drupalorg_handbook_before_body($node);
-
-      // Mark the taxonomy items as rendered so they don't display on the node.
-      // These are elements of $node->content that are named
-      // 'taxonomy_vocabulary_*'.
-      foreach ($node->content as $key => $value) {
-        if (strpos($key, 'taxonomy_vocabulary_') === 0) {
-          hide($node->content[$key]);
+  $section = drupalorg_crosssite_section();
+  if ($view_mode === 'full' && isset($node->book['bid']) && ($section === 'documentation' || $section === 'community')) {
+    // Prepend information about the page.
+    $node->content['body']['#prefix'] = '<p class="updated"><em>' . t('Last updated @changed.', array('@changed' => format_date($node->changed, 'custom', 'F j, Y')));
+    $contributors = '';
+    $edit_link = '';
+    if (drupalorg_crosssite_section() === 'documentation') {
+      $node->content['body']['#prefix'] .= ' ' . t('Created on @created.', array('@created' => format_date($node->created, 'custom', 'F j, Y')));
+      // Make a list of the 4 most recent different revision authors.
+      $contributor_list = array();
+      foreach (node_revision_list($node) as $revision) {
+        if (!isset($contributor_list[$revision->uid])) {
+          $contributor_list[$revision->uid] = theme('username', array('account' => $revision));
+        }
+        if (count($contributor_list) >= 4) {
+          break;
         }
       }
-
-      // Add the extra footer line.
-      if ($section === 'documentation') {
-        $node->content['extra_footer'] = array(
-          '#markup' => theme('drupalorg_handbook_footer_line'),
-          '#weight' => 150,
-        );
+      if (!empty($contributor_list)) {
+        $contributors = t('Edited by !contributors.', array('!contributors' => implode(', ', $contributor_list)));
       }
 
-      // Add a "report to moderator" link.
-      $node->content['links']['drupalorg_report'] = array(
-        '#theme' => 'links__node__drupalorg',
-        '#links' => array(
-          'report' => drupalorg_handbook_moderate_link_info($node),
-        ),
-        '#attributes' => array('class' => array('links', 'inline')),
+      if (node_access('update', $node)) {
+        $edit_link = t('You can <a href="!url">edit this page</a>', array('!url' => url('node/' . $node->nid . '/edit'))) . (empty($contributor_list) ? '.' : t(', too.'));
+      }
+      elseif (!user_is_logged_in()) {
+        $edit_link = l(t('Log in to edit this page'), 'user', array('query' => drupal_get_destination())) . '.';
+      }
+    }
+
+    if (!empty($contributors) || !empty($edit_link)) {
+      $node->content['body']['#prefix'] .= '<br />';
+    }
+    $node->content['body']['#prefix'] .= $contributors . ' ' . $edit_link . '</em></p>';
+
+    // Mark the taxonomy items as rendered so they don't display on the node.
+    // These are elements of $node->content that are named
+    // 'taxonomy_vocabulary_*'.
+    foreach ($node->content as $key => $value) {
+      if (strpos($key, 'taxonomy_vocabulary_') === 0) {
+        hide($node->content[$key]);
+      }
+    }
+
+    // Add the extra footer line.
+    if ($section === 'documentation') {
+      $node->content['extra_footer'] = array(
+        '#markup' => '<p class="support"><strong>' . t('Looking for support? Visit the !forumlink, or join #drupal-support in !irclink.',
+          array(
+            '!forumlink' => l(t('Drupal.org forums'), 'forum'),
+            '!irclink' => l(t('IRC'), 'node/108355'),
+          )) . '</strong></p>',
+        '#weight' => 150,
       );
     }
-    elseif ($node->type == 'book_listing') {
-      // Mark the taxonomy items as rendered so they don't display on the node.
-      // These are elements of $node->content that are named
-      // 'taxonomy_vocabulary_*'.
-      foreach ($node->content as $key => $value) {
-        if (strpos($key, 'taxonomy_vocabulary_') === 0) {
-          hide($node->content[$key]);
-        }
-      }
-    }
-  }
-}
 
-/**
- * Implements hook_node_insert().
- */
-function drupalorg_handbook_node_insert($node) {
-  if (!empty($node->book) && !empty($node->book['bid'])) {
-    // Remove all cached versions of recently updated data (home).
-    cache_clear_all('drupalorg_handbook_recent_updates_', 'cache', TRUE);
-  }
-}
-
-/**
- * Implements hook_node_access().
- */
-function drupalorg_handbook_node_access($node, $op, $account) {
-  if ($op == 'update') {
-    // The documentation team lock pages by setting the body filter format to
-    // a format which only privileged accounts have access to. This behaviour
-    // worked in D6 but not D7, so we need to workaround this by restricting
-    // node editing access based on the body filter format.
-    // @see http://drupal.org/node/1824490
-    if (isset($node->body)) {
-      foreach ($node->body as $langcode => $items) {
-        foreach ($items as $delta => $item) {
-          // filter_access() only checks the ->format member, which $item
-          // provides, so using it directly saves calling filter_format_load().
-          if (!filter_access((object)$item, $account)) {
-            // The user doesn't have permissions to use the body filter format,
-            // so deny access to edit the page.
-            return NODE_ACCESS_DENY;
-          }
-        }
-      }
-    }
+    // Add a "report to moderator" link.
+    $node->content['links']['drupalorg_report'] = array(
+      '#theme' => 'links__node__drupalorg',
+      '#links' => array(
+        'report' => drupalorg_handbook_moderate_link_info($node),
+      ),
+      '#attributes' => array('class' => array('links', 'inline')),
+    );
   }
 }
 
@@ -124,62 +87,18 @@ function drupalorg_handbook_node_access($node, $op, $account) {
  *   does not have permission to create issues.
  */
 function drupalorg_handbook_moderate_link_info($node) {
-  if (!user_access('create project_issue content') || (drupalorg_crosssite_section() !== 'documentation')) {
-    return NULL;
+  if (user_access('create project_issue content') && drupalorg_crosssite_section() === 'documentation') {
+    return array(
+      'title' => t('Report to moderator'),
+      'href' => 'node/add/project-issue/documentation',
+      'query' => array(
+        'categories' => 'task',
+        'component' => 'Correction/Clarification',
+        'title' => t('Moderation report for !title', array('!title' => $node->title)),
+        'body' => t('I am reporting !url to moderators because:', array('!url' => url('node/' . $node->nid, array('absolute' => TRUE)))),
+      ),
+    );
   }
-  return array(
-    'title' => t('Report to moderator'),
-    'href' => 'node/add/project-issue/documentation',
-    'query' => array(
-      'categories' => 'task',
-      'component' => 'Correction/Clarification',
-      'title' => t('Moderation report for !title', array('!title' => $node->title)),
-      'body' => t('I am reporting !url to moderators because:', array('!url' => url('node/' . $node->nid, array('absolute' => TRUE)))),
-    ),
-  );
-}
-
-/**
- * Creates a list of who recently updated a page, and call to edit.
- *
- * @param $node
- *   The node object.
- *
- * @return
- *   HTML for the list of contributors with call to edit.
- *
- * @see handbook-contributors.tpl.php
- */
-function drupalorg_handbook_before_body($node) {
-  $format = 'F j, Y';
-  $modified = t('Last updated @changed.', array('@changed' => format_date($node->changed, 'custom', $format)));
-  $created = '';
-  $contributors = '';
-  $edit_link = '';
-  if (drupalorg_crosssite_section() === 'documentation') {
-    $created = t('Created on @created.', array('@created' => format_date($node->created, 'custom', $format)));
-    // Make a list of the 4 most recent different revision authors.
-    $contributor_list = array();
-    foreach (node_revision_list($node) as $revision) {
-      if (!isset($contributor_list[$revision->uid])) {
-        $contributor_list[$revision->uid] = theme('username', array('account' => $revision));
-      }
-      if (count($contributor_list) >= 4) {
-        break;
-      }
-    }
-    if (!empty($contributor_list)) {
-      $contributors = t('Edited by !contributors.', array('!contributors' => implode(', ', $contributor_list)));
-    }
-
-    if (node_access('update', $node)) {
-      $edit_link = t('You can <a href="!url">edit this page</a>', array('!url' => url('node/' . $node->nid . '/edit'))) . (empty($contributor_list) ? '.' : t(', too.'));
-    }
-    elseif (!user_is_logged_in()) {
-      $edit_link = l(t('Log in to edit this page'), 'user', array('query' => drupal_get_destination())) . '.';
-    }
-  }
-  return theme('drupalorg_handbook_contributors', array('created' => $created, 'updated' => $modified, 'contributors' => $contributors, 'edit_link' => $edit_link));
 }
 
 /**
@@ -272,67 +191,6 @@ function drupalorg_handbook_meta_data() {
 }
 
 /**
- * List usernames with site maintainer role.
- */
-function drupalorg_handbook_site_maintainers() {
-  $output = '<ol>';
-  $result = db_query("SELECT DISTINCT(u.uid), u.name
-    FROM {users} u INNER JOIN {users_roles} r ON u.uid = r.uid
-    WHERE r.rid = :role1 OR r.rid = :role2 OR r.rid = :role3
-    ORDER BY u.name ", array(':role1' => 3, ':role2' => 4, ':role3' => 9)); // 3 = site maintainer, 4 = administrator
-  foreach ($result as $account) {
-    $output .= "<li>" . theme('username', array('account' => $account)) . "</li>";
-  }
-  $output .= '</ol>';
-  return $output;
-}
-
-/**
- * Collect and cache revision maintainers (those who made revisions to books).
- *
- * If the page visited is node/263594/filter, then filter is used as an input
- * to strtotime(), to limit to revisions after that date/time.
- */
-function drupalorg_handbook_revision_maintainers() {
-  $filter = check_plain(arg(2));
-  $cache_key = 'node_263594-' . $filter;
-  if ($cache = cache_get($cache_key)) {
-    return $cache->data;
-  }
-
-  $since = 0;
-  $output = '';
-  if ($filter) {
-    $trial = strtotime($filter);
-    if ($trial) {
-      $since = $trial;
-      $output .= '<p>' . t('Contributions since !filter', array('!filter' => $filter)) . '</p>';
-    }
-  }
-
-  $result = db_query("SELECT u.uid, u.name, COUNT(nr.vid) AS pages
-    FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid INNER JOIN {users} u ON u.uid = nr.uid
-    WHERE n.type = :ntype AND n.status = :nstatus AND nr.timestamp > :nrtimestamp
-    GROUP BY u.name
-    ORDER BY pages DESC", array(':ntype' => 'book', ':nstatus' => 1, ':nrtimestamp' => $since));
-
-  $list = array();
-  $total = 0;
-  $count = 0;
-  foreach ($result as $contributor) {
-    $list[] = theme('username', array('account' => $contributor)) . " (" . format_plural($contributor->pages, "@count revision", "@count revisions") . ")";
-    $total += $contributor->pages;
-    $count++;
-  }
-
-  $output .= '<p>' . format_plural($count, '@count contributor', '@count contributors') . '</p>';
-  $output .= '<p>' . format_plural($total, '@count total revision', '@count total revisions') . '</p>';
-  $output .= theme('item_list', array('items' => $list));
-  cache_set($cache_key, $output, 'cache', 300);
-  return $output;
-}
-
-/**
  * Implements hook_block_info().
  */
 function drupalorg_handbook_block_info() {
@@ -349,14 +207,6 @@ function drupalorg_handbook_block_info() {
       'info' => t('Documentation about'),
       'cache' => DRUPAL_NO_CACHE,
     ),
-    'book-listing-info' => array(
-      'info' => t('Book listings information'),
-      'cache' => DRUPAL_NO_CACHE,
-    ),
-    'book-listing-link' => array(
-      'info' => t('Book listing add link'),
-      'cache' => DRUPAL_NO_CACHE,
-    ),
   );
 }
 
@@ -370,14 +220,13 @@ function drupalorg_handbook_block_view($delta) {
     case 'license':
       if ($section === 'documentation') {
         return array(
-          'subject' => '',
           'content' => t('Drupal’s online documentation is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>. Comments on documentation pages are used to improve content and then deleted.', array('!year' => date('Y'), '@ccl_url' => url('node/14307'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html'))),
         );
       }
       break;
 
     case 'meta-sidebar':
-      if ((($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) || (isset($node) && $node->type == 'book_listing')) {
+      if (isset($node) && ((($section === 'documentation' || $section === 'community') && isset($node->book['bid'])) || $node->type == 'book_listing')) {
         $about = drupalorg_handbook_meta_data();
         $links = array();
         if (node_access('update', $node) && $node->type !== 'book_listing') {
@@ -386,97 +235,35 @@ function drupalorg_handbook_block_view($delta) {
         elseif (!user_is_logged_in() && $node->type != 'book_listing') {
           $links['edit'] = l(t('Log in to edit this page'), 'user', array('query' => drupal_get_destination()));
         }
-        $report_link = drupalorg_handbook_moderate_link_info($node);
-        if (isset($report_link)) {
+        if ($report_link = drupalorg_handbook_moderate_link_info($node)) {
           $links['report'] = l($report_link['title'], $report_link['href'], array('query' => $report_link['query']));
         }
 
         return array(
-          'subject' => (isset($node) && $node->type == 'book_listing') ? t('Book status') : t('Page status'),
+          'subject' => ($node->type == 'book_listing') ? t('Book status') : t('Page status'),
           'content' => $about['status'] . '<p>' . implode('<br />', $links) . '</p>',
         );
       }
       break;
 
     case 'about-page':
-      if ((($section === 'documentation' || $section === 'community') && isset($node) && isset($node->book['bid'])) || (isset($node) && $node->type == 'book_listing')) {
+      if (isset($node) && ((($section === 'documentation' || $section === 'community') && isset($node->book['bid'])) || $node->type == 'book_listing')) {
         $about = drupalorg_handbook_meta_data();
         unset($about['status']);
         if (!empty($about)) {
+          $content = '<dl class="about-section">';
+          foreach ($about as $title => $terms) {
+            $content .= '<dt>' . $title . '</dt><dd>' . implode(', ', $terms) . '</dd>';
+          }
+          $content .= '</dl>';
           return array(
-            'subject' => (isset($node) && $node->type == 'book_listing') ? t('About this book') : t('About this page'),
-            'content' => theme('drupalorg_handbook_meta_sidebar', array('about' => $about)),
+            'subject' => ($node->type == 'book_listing') ? t('About this book') : t('About this page'),
+            'content' => $content,
           );
         }
       }
       break;
-
-    case 'book-listing-info':
-      if ((isset($node) && $node->type == 'book_listing') ||
-        drupalorg_crosssite_child_of('node/add/book-listing') ||
-        drupalorg_crosssite_child_of('books')) {
-        return array(
-          'subject' => '',
-          'content' => drupalorg_handbook_book_listing_block(),
-        );
-      }
-      break;
-
-    case 'book-listing-link':
-      if ((isset($node) && $node->type == 'book_listing') ||
-        drupalorg_crosssite_child_of('node/add/book-listing')) {
-        return array(
-          'subject' => '',
-          'content' => drupalorg_handbook_book_link_block(FALSE),
-        );
-      }
-      elseif (drupalorg_crosssite_child_of('books')) {
-        return array(
-          'subject' => '',
-          'content' => drupalorg_handbook_book_link_block(TRUE),
-        );
-      }
-      break;
   }
-}
-
-/**
- * Implements hook_theme().
- */
-function drupalorg_handbook_theme($existing, $type, $theme, $path) {
-  return array(
-    'drupalorg_handbook_footer_line' => array(
-      'variables' => array(),
-    ),
-    'drupalorg_handbook_contributors' => array(
-      'variables' => array(
-        'created' => '',
-        'updated' => '',
-        'contributors' => '',
-        'edit_link' => '',
-      ),
-      'template' => 'handbook-contributors',
-    ),
-    'drupalorg_handbook_meta_sidebar' => array(
-      'variables' => array(
-        'about' => array(),
-      ),
-      'template' => 'handbook-meta-sidebar',
-    ),
-  );
-}
-
-/**
- * Returns HTML for a footer line for a documentation page.
- *
- * @ingroup themeable
- */
-function theme_drupalorg_handbook_footer_line() {
-  return '<p class="support"><strong>' . t('Looking for support? Visit the !forumlink, or join #drupal-support in !irclink.',
-    array(
-    '!forumlink' => l(t('Drupal.org forums'), 'forum'),
-    '!irclink' => l(t('IRC'), 'node/108355'),
-  )) . '</strong></p>';
 }
 
 /**
@@ -487,7 +274,7 @@ function theme_drupalorg_handbook_footer_line() {
 function drupalorg_handbook_form_comment_form_alter(&$form, $form_state) {
   // Make sure we are on a form to add a new comment (not edit existing),
   // and that the node is a book node.
-  if(isset($form['#node']->book['bid']) && !isset($form_state['comment']->cid)) {
+  if (isset($form['#node']->book['bid']) && !isset($form_state['comment']->cid)) {
     // This is a node in a book. Display disclaimer.
     $form['drupalorg-disclaimer'] = array(
       '#weight' => -2,
@@ -496,62 +283,5 @@ function drupalorg_handbook_form_comment_form_alter(&$form, $form_state) {
       '<p>' . t('<strong>Is your comment a question or request for support?</strong><br />Take it to the <a href="!forums">forums</a>. Questions are not answered here, and comments not providing useful information may be removed at any time.', array('!forums' => url('forum'))) . '</p>' .
       '</div>',
     );
-  }
-}
-
-/**
- * Returns block content for the book listing sidebar block.
- */
-function drupalorg_handbook_book_listing_block() {
-  $content = '';
-
-  $content .= '<p>' . t('Drupal.org’s online content is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. Book descriptions are generally copyrighted by the book author or publisher, and are added to this web site with permission.', array('!year' => date('Y'), '@ccl_url' => url('node/14307'))) . '</p>';
-
-  return $content;
-}
-
-/**
- * Returns block content for the book add link sidebar block.
- */
-function drupalorg_handbook_book_link_block($include_add_link) {
-  $content = '';
-
-  if ($include_add_link && user_access('create book_listing content')) {
-    $content .= '<p>' . l(t('Add book listing'), 'node/add/book-listing', array('attributes' => array('class' => 'action-button'))) . '</p>';
-  }
-
-  $content .= '<p>' . l(t('Book listing guidelines'), 'node/1691562') . '</p>';
-
-  return $content;
-}
-
-
-/**
- * Implementation of template_preprocess_content_field().
- *
- * Turn ISBN-10 field into affiliate link to purchase from Amazon.
- * Rewrite or unset Packt purchase link (unset if not to packtpub.com)
- */
-function drupalorg_handbook_process_field(&$variables) {
-  $element = $variables['element'];
-  if ($element['#field_name'] == 'field_book_isbn_10' && isset($variables['items'][0]['#markup'])) {
-   $amazon_link = '<a class="amazon-link" '
-      . ' title="Ordering via this link benefits the Drupal Association"'
-      . ' href="http://www.amazon.com/dp/' . $variables['items'][0]['#markup']
-      . '/?tag=drupal0a-20" rel="nofollow">Order from Amazon.com</a>';
-    $variables['items'][0]['#markup'] = $amazon_link;
-  }
-  if ($element['#field_name'] == 'field_book_purchase_link' && isset($element['#items'][0]['url'])) {
-    if (!strpos($element['#items'][0]['url'], 'packtpub')) {
-      unset($variables['element']);
-      unset($variables['items']);
-    }
-    else {
-      $packt_link = '<a class="packt-link" '
-        . ' title="Ordering via this link benefits the Drupal Association"'
-        . ' href="' . $element['#items'][0]['url'] . '" rel="nofollow">'
-        . 'Order from Packt</a>';
-      $variables['items'][0]['#markup'] = $packt_link;
-    }
   }
 }

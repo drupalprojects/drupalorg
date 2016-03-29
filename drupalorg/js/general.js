@@ -364,4 +364,76 @@
       });
     }
   };
+
+  /**
+   * Prevent multiple submits.
+   */
+  Drupal.behaviors.drupalorgPreventMultipleSubmit = {
+    attach: function(context, settings) {
+      if ($('form.prevent-multiple-submit-form').length) {
+        $('body').once('multisub').delegate('form.prevent-multiple-submit-form', 'submit.formSubmitSingle', $.onFormSubmitSingle);
+      }
+    }
+  };
+
+  /**
+   * “View file hashes” toggles on release pages.
+   */
+  Drupal.behaviors.drupalorgReleaseHashes = {
+    attach: function (context) {
+      $('.view-display-id-release_files_pane', context).once('drupalorgReleaseHashes', function () {
+        var hashes = {},
+          $filesPane = $(this);
+
+        // Find hash types.
+        $('.hash', this).parent().each(function () {
+          var label = $('.views-label', this).text().replace(/: $/, '');
+          $.each(this.classList, function () {
+            if (this.match(/^views-field-field/)) {
+              hashes[this] = label;
+            }
+          });
+        });
+
+        if (!$.isEmptyObject(hashes)) {
+          var links = [],
+            localStorage = 'localStorage' in window && typeof window.localStorage !== 'undefined' && window['localStorage'] !== null,
+            $links;
+
+          // Add “View file hashes” toggles.
+          $.each(hashes, function (key, value) {
+            links.push('<a href="javascript:void(0)" class="show-' + key + '">' + value + '</a>');
+          });
+          $links = $filesPane.parents('.panel-layout').find('.view-display-id-release_info_pane .views-row-last')
+          .append('<div class="release-hash-links"><span class="views-label">' + Drupal.t('View file hashes: ') + '</span><span>' + links.join(', ') + '</span></div>')
+          .find('a').click(function () {
+            var $this = $(this);
+
+            // Clear any existing classes.
+            $.each(hashes, function (key, value) {
+              $filesPane.removeClass('show-' + key);
+            });
+            $this.parents('.release-hash-links').find('.active').not($this).removeClass('active');
+
+            // Toggle this link and update classes.
+            if ($this.toggleClass('active').hasClass('active')) {
+              $filesPane.removeClass('no-hashes').addClass(this.classList[0]);
+              if (localStorage) {
+                window.localStorage['drupalorgReleaseHashes'] = this.classList[0];
+              }
+            }
+            else {
+              $filesPane.addClass('no-hashes');
+              if (localStorage) {
+                window.localStorage.removeItem('drupalorgReleaseHashes');
+              }
+            }
+          });
+          if (localStorage && (typeof window.localStorage['drupalorgReleaseHashes'] !== 'undefined')) {
+            $links.filter('.' + window.localStorage['drupalorgReleaseHashes']).click();
+          }
+        }
+      });
+    }
+  };
 })(jQuery);

@@ -106,15 +106,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: 'access draggableviews'.
-  $permissions['access draggableviews'] = array(
-    'name' => 'access draggableviews',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'draggableviews',
-  );
-
   // Exported permission: 'access mollom statistics'.
   $permissions['access mollom statistics'] = array(
     'name' => 'access mollom statistics',
@@ -1037,6 +1028,13 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'administer panelizer node page settings'.
   $permissions['administer panelizer node page settings'] = array(
     'name' => 'administer panelizer node page settings',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node post defaults'.
+  $permissions['administer panelizer node post defaults'] = array(
+    'name' => 'administer panelizer node post defaults',
     'roles' => array(),
     'module' => 'panelizer',
   );

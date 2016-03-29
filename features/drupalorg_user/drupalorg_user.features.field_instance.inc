@@ -428,6 +428,44 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_distil_reg_reported_ua'.
+  $field_instances['user-user-field_distil_reg_reported_ua'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_distil_reg_reported_ua',
+    'label' => 'Reported Account Creation User-Agent',
+    'required' => FALSE,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 107,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_distil_reg_sid_ip'.
   $field_instances['user-user-field_distil_reg_sid_ip'] = array(
     'bundle' => 'user',
@@ -1192,6 +1230,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
   t('Provide an overview of your Drupal contributions.');
   t('Reported Account Creation IP');
+  t('Reported Account Creation User-Agent');
   t('Select Drupal events you attended or are planning to attend.');
   t('Select one or more languages you speak.');
   t('Social links');

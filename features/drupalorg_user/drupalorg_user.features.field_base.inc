@@ -460,6 +460,29 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'text',
   );
 
+  // Exported field_base: 'field_distil_reg_reported_ua'.
+  $field_bases['field_distil_reg_reported_ua'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(
+      0 => 'user',
+    ),
+    'field_name' => 'field_distil_reg_reported_ua',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 1,
+    'module' => 'text',
+    'settings' => array(
+      'max_length' => 255,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+  );
+
   // Exported field_base: 'field_distil_reg_sid_ip'.
   $field_bases['field_distil_reg_sid_ip'] = array(
     'active' => 1,
