@@ -222,6 +222,20 @@ function drupalorg_documentation_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'flag_tracker_show_followers_documentation';
+  $strongarm->value = 0;
+  $export['flag_tracker_show_followers_documentation'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'flag_tracker_track_flag_documentation';
+  $strongarm->value = 'project_issue_follow';
+  $export['flag_tracker_track_flag_documentation'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'language_content_type_documentation';
   $strongarm->value = '0';
   $export['language_content_type_documentation'] = $strongarm;
@@ -260,6 +274,20 @@ function drupalorg_documentation_strongarm() {
   $strongarm->name = 'menu_parent_guide';
   $strongarm->value = 'main-menu:0';
   $export['menu_parent_guide'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'message_follow_comment_message_documentation';
+  $strongarm->value = 'comment_notification';
+  $export['message_follow_comment_message_documentation'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'message_follow_flag_documentation';
+  $strongarm->value = 'project_issue_follow';
+  $export['message_follow_flag_documentation'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -392,6 +420,13 @@ function drupalorg_documentation_strongarm() {
     ),
   );
   $export['panelizer_defaults_node_guide'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'panelizer_node:documentation:default_selection';
+  $strongarm->value = 'node:documentation:default:default';
+  $export['panelizer_node:documentation:default_selection'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
