@@ -15,7 +15,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'ss' => 2,
         'toolbar' => '[
     [\'Source\'],
-    [\'Bold\',\'Italic\',\'Strike\',\'Format\'],
+    [\'Bold\',\'Italic\',\'Strike\',\'Format\', \'Table\'],
     [\'Image\',\'Link\',\'Unlink\',\'Blockquote\'],
     [\'NumberedList\',\'BulletedList\',\'Templates\', \'CodeSnippet\' ]
 ]',
@@ -109,6 +109,13 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
                 'icon' => 'images/icon.png',
               ),
             ),
+            'default' => 'f',
+          ),
+          'prism' => array(
+            'name' => 'prism',
+            'desc' => 'Plugin file: prism',
+            'path' => '%plugin_dir_extra%prism/',
+            'buttons' => FALSE,
             'default' => 'f',
           ),
           'widget' => array(

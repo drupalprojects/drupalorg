@@ -20,3 +20,14 @@ function drupalorg_wysiwyg_process_filter_format($element) {
   }
   return $element;
 }
+
+/**
+ * Alter the output if field widgets so they match the HTML that ckeditor is expecting on the editor side.
+ */
+function drupalorg_wysiwyg_field_widget_form_alter(&$element, &$form_state, $context) {
+  if (isset($element['#format'])) {
+    // We need to check to see if there are any code or php tags and re-format them to work properly with ckeditor.
+
+    $element['#default_value'] = check_markup($element['#default_value'], $element['#format']);
+  }
+}
