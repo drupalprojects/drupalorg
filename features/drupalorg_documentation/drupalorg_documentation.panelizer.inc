@@ -67,7 +67,9 @@ function drupalorg_documentation_panelizer_defaults() {
     'override_title_heading' => 'h2',
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -91,7 +93,9 @@ function drupalorg_documentation_panelizer_defaults() {
     'substitute' => TRUE,
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -119,7 +123,9 @@ function drupalorg_documentation_panelizer_defaults() {
     'override_title_heading' => 'h2',
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -195,7 +201,9 @@ function drupalorg_documentation_panelizer_defaults() {
     'override_title_heading' => 'h2',
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -203,6 +211,29 @@ function drupalorg_documentation_panelizer_defaults() {
   $pane->uuid = '30529426-7058-4214-a44a-82fde63c7806';
   $display->content['new-30529426-7058-4214-a44a-82fde63c7806'] = $pane;
   $display->panels['top_right_content'][0] = 'new-30529426-7058-4214-a44a-82fde63c7806';
+  $pane = new stdClass();
+  $pane->pid = 'new-b4ab5bad-f134-4e42-ba9e-72b191866b64';
+  $pane->panel = 'top_right_content';
+  $pane->type = 'block';
+  $pane->subtype = 'message_follow-follow';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'b4ab5bad-f134-4e42-ba9e-72b191866b64';
+  $display->content['new-b4ab5bad-f134-4e42-ba9e-72b191866b64'] = $pane;
+  $display->panels['top_right_content'][1] = 'new-b4ab5bad-f134-4e42-ba9e-72b191866b64';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $panelizer->display = $display;
