@@ -1032,6 +1032,15 @@ function drupalorg_library_alter(&$libraries, $module) {
 }
 
 /**
+ * Implements hook_ctools_plugin_directory().
+ */
+function drupalorg_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner === 'ctools' && $plugin_type === 'content_types') {
+    return 'plugins/' . $plugin_type;
+  }
+}
+
+/**
  * Page callback for the frontpage.
  */
 function drupalorg_home() {
