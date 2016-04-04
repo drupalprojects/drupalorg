@@ -203,10 +203,11 @@ function drush_drupalorg_project_reindex_some_projects($threshold = 10) {
     catch (Exception $e) {
       return drush_set_error('Seach failed: ' . $e->getMessage());
     }
-    if ((abs(project_usage_get_project_total_usage($row->nid) - $result['fields']['iss_project_release_usage']) / $result['fields']['iss_project_release_usage']) > $threshold) {
+    $change = abs(project_usage_get_project_total_usage($row->nid) - $result['fields']['iss_project_release_usage']) / $result['fields']['iss_project_release_usage'];
+    if ($change > $threshold) {
       apachesolr_mark_entity('node', $row->nid);
       $count += 1;
-      drush_log(dt('Marked @nid for indexing.', ['@nid' => $row->nid]));
+      drush_log(dt('Marked @nid for indexing, changed by @change%.', ['@nid' => $row->nid, '@change' => number_format($change * 100, 1)]));
     }
   }
   drush_log(dt('@count projects marked for indexing.', ['@count' => $count]));
