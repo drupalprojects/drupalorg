@@ -203,7 +203,12 @@ function drush_drupalorg_project_reindex_some_projects($threshold = 10) {
     catch (Exception $e) {
       return drush_set_error('Seach failed: ' . $e->getMessage());
     }
-    $change = abs(project_usage_get_project_total_usage($row->nid) - $result['fields']['iss_project_release_usage']) / $result['fields']['iss_project_release_usage'];
+    if ($result['fields']['iss_project_release_usage'] == 0) {
+      $change = project_usage_get_project_total_usage($row->nid) != $result['fields']['iss_project_release_usage'];
+    }
+    else {
+      $change = abs(project_usage_get_project_total_usage($row->nid) - $result['fields']['iss_project_release_usage']) / $result['fields']['iss_project_release_usage'];
+    }
     if ($change > $threshold) {
       apachesolr_mark_entity('node', $row->nid);
       $count += 1;
