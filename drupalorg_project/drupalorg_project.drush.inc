@@ -214,6 +214,7 @@ function drush_drupalorg_project_reindex_some_projects($threshold = 10) {
       $count += 1;
       drush_log(dt('Marked @nid for indexing, changed by @change%.', ['@nid' => $row->nid, '@change' => number_format($change * 100, 1)]));
     }
+    drupal_static_reset();
   }
   drush_log(dt('@count projects marked for indexing.', ['@count' => $count]));
 }
