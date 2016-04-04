@@ -185,7 +185,7 @@ function drush_drupalorg_project_reindex_some_projects($threshold = 10) {
   $result = db_query('SELECT DISTINCT nid FROM {project_usage_week_project}');
   foreach ($result as $row) {
     try {
-      list($result) = apachesolr_search_run('apachesolr', [
+      list($solr_result) = apachesolr_search_run('apachesolr', [
         'fq' => [
           'id:' . apachesolr_document_id($row->nid),
         ],
@@ -203,11 +203,11 @@ function drush_drupalorg_project_reindex_some_projects($threshold = 10) {
     catch (Exception $e) {
       return drush_set_error('Seach failed: ' . $e->getMessage());
     }
-    if ($result['fields']['iss_project_release_usage'] == 0) {
-      $change = project_usage_get_project_total_usage($row->nid) != $result['fields']['iss_project_release_usage'];
+    if ($solr_result['fields']['iss_project_release_usage'] == 0) {
+      $change = project_usage_get_project_total_usage($row->nid) != $solr_result['fields']['iss_project_release_usage'];
     }
     else {
-      $change = abs(project_usage_get_project_total_usage($row->nid) - $result['fields']['iss_project_release_usage']) / $result['fields']['iss_project_release_usage'];
+      $change = abs(project_usage_get_project_total_usage($row->nid) - $solr_result['fields']['iss_project_release_usage']) / $solr_result['fields']['iss_project_release_usage'];
     }
     if ($change > $threshold) {
       apachesolr_mark_entity('node', $row->nid);
