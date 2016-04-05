@@ -226,10 +226,11 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-documentation-og_group_ref'.
-  $field_instances['node-documentation-og_group_ref'] = array(
+  // Exported field_instance: 'node-documentation-og_group_ref_documentation'.
+  $field_instances['node-documentation-og_group_ref_documentation'] = array(
     'bundle' => 'documentation',
     'default_value' => NULL,
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -237,7 +238,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 6,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -259,12 +260,13 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'og_group_ref',
+    'field_name' => 'og_group_ref_documentation',
     'label' => 'Groups audience',
-    'required' => FALSE,
+    'required' => 1,
     'settings' => array(
       'behaviors' => array(
         'og_widget' => array(
+          'access_override' => 0,
           'admin' => array(
             'widget_type' => 'entityreference_autocomplete',
           ),
@@ -272,6 +274,17 @@ function drupalorg_documentation_field_default_field_instances() {
             'widget_type' => 'options_select',
           ),
           'status' => TRUE,
+        ),
+        'prepopulate' => array(
+          'action' => 'none',
+          'action_on_edit' => 0,
+          'fallback' => 'none',
+          'providers' => array(
+            'og_context' => 1,
+            'url' => 0,
+          ),
+          'skip_perm' => 0,
+          'status' => 1,
         ),
       ),
       'user_register_form' => FALSE,
@@ -289,10 +302,11 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
     ),
     'widget' => array(
+      'active' => 0,
       'module' => 'og',
       'settings' => array(),
       'type' => 'og_complex',
-      'weight' => 6,
+      'weight' => 41,
     ),
   );
 
