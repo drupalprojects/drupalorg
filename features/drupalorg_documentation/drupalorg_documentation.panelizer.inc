@@ -408,26 +408,22 @@ function drupalorg_documentation_panelizer_defaults() {
   $display->content['new-6757a7ba-d2ab-46ca-a306-66a6f4a93c1a'] = $pane;
   $display->panels['left_content'][1] = 'new-6757a7ba-d2ab-46ca-a306-66a6f4a93c1a';
   $pane = new stdClass();
-  $pane->pid = 'new-51a6a7ad-e05b-4e5f-a962-d5e48253c9cd';
+  $pane->pid = 'new-ca2bbefb-6a19-4485-8bf8-096e98001108';
   $pane->panel = 'left_content';
-  $pane->type = 'views_panes';
-  $pane->subtype = 'documentation_guide-panel_pane_1';
+  $pane->type = 'section_contents';
+  $pane->subtype = 'section_contents';
   $pane->shown = TRUE;
   $pane->access = array();
-  $pane->configuration = array(
-    'context' => array(
-      0 => 'panelizer',
-    ),
-  );
+  $pane->configuration = array();
   $pane->cache = array();
   $pane->style = array();
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 2;
   $pane->locks = array();
-  $pane->uuid = '51a6a7ad-e05b-4e5f-a962-d5e48253c9cd';
-  $display->content['new-51a6a7ad-e05b-4e5f-a962-d5e48253c9cd'] = $pane;
-  $display->panels['left_content'][2] = 'new-51a6a7ad-e05b-4e5f-a962-d5e48253c9cd';
+  $pane->uuid = 'ca2bbefb-6a19-4485-8bf8-096e98001108';
+  $display->content['new-ca2bbefb-6a19-4485-8bf8-096e98001108'] = $pane;
+  $display->panels['left_content'][2] = 'new-ca2bbefb-6a19-4485-8bf8-096e98001108';
   $pane = new stdClass();
   $pane->pid = 'new-574cc949-04c7-436f-b9e9-01c3d6d342c6';
   $pane->panel = 'left_content';

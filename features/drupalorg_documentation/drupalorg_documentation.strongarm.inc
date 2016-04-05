@@ -223,7 +223,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'flag_tracker_show_followers_documentation';
-  $strongarm->value = '0';
+  $strongarm->value = 0;
   $export['flag_tracker_show_followers_documentation'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -586,6 +586,7 @@ function drupalorg_documentation_strongarm() {
     'node_form_author-node_form_author' => TRUE,
     'message_render-message_render' => TRUE,
     'node_create_links-node_create_links' => TRUE,
+    'section_contents-section_contents' => TRUE,
     'entity_field-node:body' => TRUE,
     'entity_field-node:upload' => TRUE,
     'entity_field-node:group_group' => TRUE,
@@ -601,7 +602,6 @@ function drupalorg_documentation_strongarm() {
     'views_panes-og_members-panel_pane_1' => TRUE,
     'views_panes-og_nodes-panel_pane_1' => TRUE,
     'views-group_maintainers' => TRUE,
-    'views-documentation_guide' => TRUE,
     'views-og_members' => TRUE,
     'views-og_nodes' => TRUE,
   );
