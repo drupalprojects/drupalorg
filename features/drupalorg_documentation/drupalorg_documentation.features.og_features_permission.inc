@@ -13,20 +13,20 @@ function drupalorg_documentation_og_features_default_permissions() {
   // Exported og permission: 'node:guide:add user'
   $permissions['node:guide:add user'] = array(
     'roles' => array(
-      'administrator member' => 'administrator member',
+      'maintainer' => 'maintainer',
     ),
   );
 
   // Exported og permission: 'node:guide:administer group'
   $permissions['node:guide:administer group'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:administer og menu'
   $permissions['node:guide:administer og menu'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'maintainer' => 'maintainer',
+    ),
   );
 
   // Exported og permission: 'node:guide:administer panelizer node guide choice'
@@ -137,40 +137,36 @@ function drupalorg_documentation_og_features_default_permissions() {
   // Exported og permission: 'node:guide:approve and deny subscription'
   $permissions['node:guide:approve and deny subscription'] = array(
     'roles' => array(
-      'administrator member' => 'administrator member',
+      'maintainer' => 'maintainer',
     ),
   );
 
   // Exported og permission: 'node:guide:create documentation content'
   $permissions['node:guide:create documentation content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:create guide content'
   $permissions['node:guide:create guide content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'maintainer' => 'maintainer',
+    ),
   );
 
   // Exported og permission: 'node:guide:create page content'
   $permissions['node:guide:create page content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:create post content'
   $permissions['node:guide:create post content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:delete any documentation content'
   $permissions['node:guide:delete any documentation content'] = array(
     'roles' => array(
-      'member' => 'member',
+      'maintainer' => 'maintainer',
     ),
   );
 
@@ -181,22 +177,19 @@ function drupalorg_documentation_og_features_default_permissions() {
 
   // Exported og permission: 'node:guide:delete any page content'
   $permissions['node:guide:delete any page content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:delete any post content'
   $permissions['node:guide:delete any post content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:delete own documentation content'
   $permissions['node:guide:delete own documentation content'] = array(
     'roles' => array(
-      'member' => 'member',
+      'maintainer' => 'maintainer',
+      'non-member' => 'non-member',
     ),
   );
 
@@ -207,37 +200,29 @@ function drupalorg_documentation_og_features_default_permissions() {
 
   // Exported og permission: 'node:guide:delete own page content'
   $permissions['node:guide:delete own page content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:delete own post content'
   $permissions['node:guide:delete own post content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:manage members'
   $permissions['node:guide:manage members'] = array(
     'roles' => array(
-      'administrator member' => 'administrator member',
+      'maintainer' => 'maintainer',
     ),
   );
 
   // Exported og permission: 'node:guide:manage permissions'
   $permissions['node:guide:manage permissions'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:manage roles'
   $permissions['node:guide:manage roles'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:subscribe'
@@ -262,7 +247,7 @@ function drupalorg_documentation_og_features_default_permissions() {
   // Exported og permission: 'node:guide:update any documentation content'
   $permissions['node:guide:update any documentation content'] = array(
     'roles' => array(
-      'member' => 'member',
+      'maintainer' => 'maintainer',
     ),
   );
 
@@ -273,29 +258,25 @@ function drupalorg_documentation_og_features_default_permissions() {
 
   // Exported og permission: 'node:guide:update any page content'
   $permissions['node:guide:update any page content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:update any post content'
   $permissions['node:guide:update any post content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:update group'
   $permissions['node:guide:update group'] = array(
     'roles' => array(
-      'administrator member' => 'administrator member',
+      'maintainer' => 'maintainer',
     ),
   );
 
   // Exported og permission: 'node:guide:update own documentation content'
   $permissions['node:guide:update own documentation content'] = array(
     'roles' => array(
-      'member' => 'member',
+      'maintainer' => 'maintainer',
     ),
   );
 
@@ -306,16 +287,12 @@ function drupalorg_documentation_og_features_default_permissions() {
 
   // Exported og permission: 'node:guide:update own page content'
   $permissions['node:guide:update own page content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:update own post content'
   $permissions['node:guide:update own post content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:section:create documentation content'

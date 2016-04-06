@@ -343,6 +343,15 @@ function drupalorg_documentation_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'og_group_manager_default_rids_node_guide';
+  $strongarm->value = array(
+    13 => '13',
+  );
+  $export['og_group_manager_default_rids_node_guide'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_defaults_node_documentation';
   $strongarm->value = array(
     'status' => 1,
