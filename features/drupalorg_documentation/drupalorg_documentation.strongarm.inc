@@ -213,6 +213,9 @@ function drupalorg_documentation_strongarm() {
         'redirect' => array(
           'weight' => '8',
         ),
+        'metatags' => array(
+          'weight' => '40',
+        ),
       ),
       'display' => array(),
     ),
@@ -530,6 +533,13 @@ function drupalorg_documentation_strongarm() {
     'other' => 0,
   );
   $export['panelizer_node:documentation_default'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'panelizer_node:guide:default_selection';
+  $strongarm->value = 'node:guide:default:default';
+  $export['panelizer_node:guide:default_selection'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
