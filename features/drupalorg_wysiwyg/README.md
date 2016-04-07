@@ -1,0 +1,2 @@
+To configure templates, they are located in the theme: bluecheese/js/ckeditor.custom.templates.js
+To configure ckeditor in general, it is located in the base root of the theme bluecheese/ckeditor.config.js
