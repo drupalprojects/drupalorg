@@ -1183,6 +1183,11 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
           'localized_options' => array(),
         )));
       }
+
+      // If we are in a Documentation Guide, remove Home.
+      if ($group->type === 'guide') {
+        array_shift($active_trail);
+      }
     }
   }
 }
