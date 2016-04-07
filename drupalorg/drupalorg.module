@@ -991,6 +991,39 @@ function drupalorg_block_view_forum_new_alter(&$data, $block) {
 }
 
 /**
+ * Implements hook_block_view_MODULE_DELTA_alter().
+ */
+function drupalorg_block_view_og_menu_og_single_menu_block_alter(&$data, $block) {
+  // On Documentation Guide pages, replace og_menu with parent guide’s menu, if
+  // it exists.
+  if (($context = og_context()) && ($node = menu_get_object()) && $context['gid'] == $node->nid) {
+    $wrapper = entity_metadata_wrapper('node', $node);
+    $data = [];
+    if ($parent = $wrapper->og_group_ref_documentation->value()) {
+      // Adapted from og_menu_block_view().
+      $menus = og_menu_get_group_menus([$context['group_type'] => [$parent->nid]]);
+      $menu = array_shift($menus);
+
+      if ($menu) {
+        if (variable_get('og_menu_block_links', FALSE)) {
+          $data['subject'] = l($menu['title'], $menu['group_type'] . '/' . $menu['gid']);
+        }
+        else {
+          $data['subject'] = check_plain($menu['title']);
+        }
+        $data['content'] = menu_tree($menu['menu_name']);
+        // Add contextual links.
+        if ($data['content']) {
+          if (in_array($menu['menu_name'], array_keys(menu_get_menus()))) {
+            $data['content']['#contextual_links']['og_menu'] = ['group/' . $context['group_type'] . '/' . $parent->nid . '/admin/menus', [$menu['menu_name']]];
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
  * Set home link for Your Dashboard page.
  */
 function drupalorg_set_home() {
