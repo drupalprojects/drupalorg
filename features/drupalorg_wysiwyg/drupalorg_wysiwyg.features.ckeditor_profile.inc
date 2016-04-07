@@ -15,7 +15,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'ss' => 2,
         'toolbar' => '[
     [\'Source\'],
-    [\'Bold\',\'Italic\',\'Strike\',\'Format\', \'Table\'],
+    [\'Bold\',\'Italic\',\'Strike\', \'Code\', \'Format\', \'Table\'],
     [\'Image\',\'Link\',\'Unlink\',\'Blockquote\'],
     [\'NumberedList\',\'BulletedList\',\'Templates\', \'CodeSnippet\' ]
 ]',
@@ -32,7 +32,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'extraAllowedContent' => '',
         'enter_mode' => 'p',
         'shift_enter_mode' => 'br',
-        'font_format' => 'p;div;pre;address;h1;h2;h3;h4;h5;h6',
+        'font_format' => 'p;h2;h3;h4;h5;h6;pre;div;address',
         'custom_formatting' => 'f',
         'formatting' => array(
           'custom_formatting_options' => array(
@@ -56,13 +56,27 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'forcePasteAsPlainText' => 'f',
         'html_entities' => 'f',
         'scayt_autoStartup' => 't',
-        'theme_config_js' => 'f',
+        'theme_config_js' => 't',
         'js_conf' => '',
         'loadPlugins' => array(
+          'button' => array(
+            'name' => 'button',
+            'desc' => 'Plugin file: button',
+            'path' => '%plugin_dir_extra%button/',
+            'buttons' => FALSE,
+            'default' => 'f',
+          ),
           'codesnippet' => array(
             'name' => 'codesnippet',
             'desc' => 'Plugin file: codesnippet',
             'path' => '%plugin_dir_extra%codesnippet/',
+            'buttons' => FALSE,
+            'default' => 'f',
+          ),
+          'codestyle' => array(
+            'name' => 'codestyle',
+            'desc' => 'Plugin file: codestyle',
+            'path' => '%plugin_dir_extra%codestyle/',
             'buttons' => FALSE,
             'default' => 'f',
           ),
@@ -85,10 +99,24 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
             ),
             'default' => 't',
           ),
+          'filetools' => array(
+            'name' => 'filetools',
+            'desc' => 'Plugin file: filetools',
+            'path' => '%plugin_dir_extra%filetools/',
+            'buttons' => FALSE,
+            'default' => 'f',
+          ),
           'image' => array(
             'name' => 'image',
             'desc' => 'Plugin file: image',
             'path' => '%plugin_dir_extra%image/',
+            'buttons' => FALSE,
+            'default' => 'f',
+          ),
+          'image2' => array(
+            'name' => 'image2',
+            'desc' => 'Plugin file: image2',
+            'path' => '%plugin_dir_extra%image2/',
             'buttons' => FALSE,
             'default' => 'f',
           ),
@@ -111,10 +139,31 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
             ),
             'default' => 'f',
           ),
+          'notification' => array(
+            'name' => 'notification',
+            'desc' => 'Plugin file: notification',
+            'path' => '%plugin_dir_extra%notification/',
+            'buttons' => FALSE,
+            'default' => 'f',
+          ),
+          'notificationaggregator' => array(
+            'name' => 'notificationaggregator',
+            'desc' => 'Plugin file: notificationaggregator',
+            'path' => '%plugin_dir_extra%notificationaggregator/',
+            'buttons' => FALSE,
+            'default' => 'f',
+          ),
           'prism' => array(
             'name' => 'prism',
             'desc' => 'Plugin file: prism',
             'path' => '%plugin_dir_extra%prism/',
+            'buttons' => FALSE,
+            'default' => 'f',
+          ),
+          'toolbar' => array(
+            'name' => 'toolbar',
+            'desc' => 'Plugin file: toolbar',
+            'path' => '%plugin_dir_extra%toolbar/',
             'buttons' => FALSE,
             'default' => 'f',
           ),
