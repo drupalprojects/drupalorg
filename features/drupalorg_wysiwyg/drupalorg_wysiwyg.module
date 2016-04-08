@@ -28,6 +28,6 @@ function drupalorg_wysiwyg_field_widget_form_alter(&$element, &$form_state, $con
   if (isset($element['#format'])) {
     // We need to check to see if there are any code or php tags and re-format them to work properly with ckeditor.
 
-    $element['#default_value'] = check_markup($element['#default_value'], $element['#format']);
+   // $element['#default_value'] = check_markup($element['#default_value'], $element['#format']);
   }
 }
