@@ -143,7 +143,10 @@ function drupalorg_documentation_og_features_default_permissions() {
 
   // Exported og permission: 'node:guide:create documentation content'
   $permissions['node:guide:create documentation content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'maintainer' => 'maintainer',
+      'non-member' => 'non-member',
+    ),
   );
 
   // Exported og permission: 'node:guide:create guide content'
@@ -189,13 +192,14 @@ function drupalorg_documentation_og_features_default_permissions() {
   $permissions['node:guide:delete own documentation content'] = array(
     'roles' => array(
       'maintainer' => 'maintainer',
-      'non-member' => 'non-member',
     ),
   );
 
   // Exported og permission: 'node:guide:delete own guide content'
   $permissions['node:guide:delete own guide content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'maintainer' => 'maintainer',
+    ),
   );
 
   // Exported og permission: 'node:guide:delete own page content'
@@ -227,9 +231,7 @@ function drupalorg_documentation_og_features_default_permissions() {
 
   // Exported og permission: 'node:guide:subscribe'
   $permissions['node:guide:subscribe'] = array(
-    'roles' => array(
-      'non-member' => 'non-member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:subscribe without approval'
@@ -239,15 +241,14 @@ function drupalorg_documentation_og_features_default_permissions() {
 
   // Exported og permission: 'node:guide:unsubscribe'
   $permissions['node:guide:unsubscribe'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:guide:update any documentation content'
   $permissions['node:guide:update any documentation content'] = array(
     'roles' => array(
       'maintainer' => 'maintainer',
+      'non-member' => 'non-member',
     ),
   );
 
@@ -282,7 +283,9 @@ function drupalorg_documentation_og_features_default_permissions() {
 
   // Exported og permission: 'node:guide:update own guide content'
   $permissions['node:guide:update own guide content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'maintainer' => 'maintainer',
+    ),
   );
 
   // Exported og permission: 'node:guide:update own page content'
@@ -292,6 +295,46 @@ function drupalorg_documentation_og_features_default_permissions() {
 
   // Exported og permission: 'node:guide:update own post content'
   $permissions['node:guide:update own post content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:section:administer panelizer node guide choice'
+  $permissions['node:section:administer panelizer node guide choice'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:section:administer panelizer node guide content'
+  $permissions['node:section:administer panelizer node guide content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:section:administer panelizer node guide context'
+  $permissions['node:section:administer panelizer node guide context'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:section:administer panelizer node guide defaults'
+  $permissions['node:section:administer panelizer node guide defaults'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:section:administer panelizer node guide layout'
+  $permissions['node:section:administer panelizer node guide layout'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:section:administer panelizer node guide overview'
+  $permissions['node:section:administer panelizer node guide overview'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:section:administer panelizer node guide settings'
+  $permissions['node:section:administer panelizer node guide settings'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:section:administer panelizer node post defaults'
+  $permissions['node:section:administer panelizer node post defaults'] = array(
     'roles' => array(),
   );
 
