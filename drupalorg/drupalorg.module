@@ -2496,6 +2496,19 @@ function drupalorg_node_access($node, $op, $account) {
       }
     }
   }
+
+  if ($op !== 'view') {
+    $type = is_string($node) ? $node : $node->type;
+
+    // For content in groups, strengthen core node access to deny instead of
+    // ignore for lack of permission. Users must have both the required roles
+    // and group membership, if any. For example, documentatation pages have
+    // restrictions from node_node_access(), but do not require documentation
+    // guide membership to edit.
+    if (og_is_group_content_type('node', $type) && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
+      return NODE_ACCESS_DENY;
+    }
+  }
 }
 
 /**
