@@ -526,7 +526,7 @@ function drupalorg_content_types_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'og_group_manager_default_rids_node_section';
   $strongarm->value = array(
-    3 => '3',
+    7 => '7',
   );
   $export['og_group_manager_default_rids_node_section'] = $strongarm;
 

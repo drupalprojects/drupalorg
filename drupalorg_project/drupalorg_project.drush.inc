@@ -36,6 +36,12 @@ function drupalorg_project_drush_command() {
       'drush projects-send-for-codereview' => 'Send commits to jenkins',
     ),
   );
+  $items['reindex-some-projects'] = [
+    'description' => 'Queues projects for indexing if usage has changed significantly from what is in Solr.',
+    'arguments' => [
+      'percent-change' => 'Threshhold for indexing, defaults to 10.',
+    ],
+  ];
 
   return $items;
 }
@@ -168,4 +174,47 @@ function drush_drupalorg_project_projects_send_for_codereview() {
     }
   }
   variable_set('drupalorg_last_commit_codereview_vc_op_id', $last);
+}
+
+/**
+ * Command callback. Queues projects for indexing if usage has changed significantly from what is in Solr.
+ */
+function drush_drupalorg_project_reindex_some_projects($threshold = 10) {
+  $threshold = $threshold / 100;
+  $count = 0;
+  $result = db_query('SELECT DISTINCT nid FROM {project_usage_week_project}');
+  foreach ($result as $row) {
+    try {
+      list($solr_result) = apachesolr_search_run('apachesolr', [
+        'fq' => [
+          'id:' . apachesolr_document_id($row->nid),
+        ],
+        'fl' => [
+          'id',
+          'entity_id',
+          'entity_type',
+          'bundle',
+          'path',
+          'is_uid',
+          'iss_project_release_usage',
+        ],
+      ]);
+    }
+    catch (Exception $e) {
+      return drush_set_error('Seach failed: ' . $e->getMessage());
+    }
+    if ($solr_result['fields']['iss_project_release_usage'] == 0) {
+      $change = project_usage_get_project_total_usage($row->nid) != $solr_result['fields']['iss_project_release_usage'];
+    }
+    else {
+      $change = abs(project_usage_get_project_total_usage($row->nid) - $solr_result['fields']['iss_project_release_usage']) / $solr_result['fields']['iss_project_release_usage'];
+    }
+    if ($change > $threshold) {
+      apachesolr_mark_entity('node', $row->nid);
+      $count += 1;
+      drush_log(dt('Marked @nid for indexing, changed by @change%.', ['@nid' => $row->nid, '@change' => number_format($change * 100, 1)]));
+    }
+    drupal_static_reset();
+  }
+  drush_log(dt('@count projects marked for indexing.', ['@count' => $count]));
 }

@@ -93,61 +93,65 @@
    * Code to run after the documnent is ready.
    */
   $(document).ready(function () {
+    var $body = $('body');
+
     // Comment attribution display. This is a global bind and must only be ran
     // once.
-    $('body').bind('click', function (e) {
+    $body.bind('click', function (e) {
       var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggleClass('element-invisible');
       $('.attribution').not($clicked).addClass('element-invisible');
     })
     .bind('touchstart', function (e) {
       $('.attribution').not($('.attribution', $(e.target).filter('.attribution-label'))).addClass('element-invisible');
-    })
+    });
     // For potential link GA event tracking. Attach mousedown, keyup,
     // touchstart events to document only and catch clicks on all elements.
     // Based on googleanalytics.js.
-    .bind('mousedown keyup touchstart', function(event) {
-      // Catch the closest surrounding link of a clicked element.
-      $(event.target).closest('a,area').each(function() {
-        var $this = $(this);
+    if (typeof Drupal.googleanalytics !== 'undefined') {
+      $body.bind('mousedown keyup touchstart', function(event) {
+        // Catch the closest surrounding link of a clicked element.
+        $(event.target).closest('a,area').each(function() {
+          var $this = $(this);
 
-        // Is the clicked URL internal?
-        if (Drupal.googleanalytics.isInternal(this.href)) {
-          // Look for interesting classes.
-          for (var c in {'page-up':0, 'page-previous':0, 'page-next':0, 'upload-button':0, 'issue-button':0}) {
-            if (this.classList.contains(c)) {
-              ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
-              return;
+          // Is the clicked URL internal?
+          if (Drupal.googleanalytics.isInternal(this.href)) {
+            // Look for interesting classes.
+            for (var c in {'page-up':0, 'page-previous':0, 'page-next':0, 'upload-button':0, 'issue-button':0}) {
+              if (this.classList.contains(c)) {
+                ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
+                return;
+              }
+            }
+            // Look for parents with interesting classes.
+            for (var c in {
+              '.book-navigation':0, '#block-book-navigation':0, // Book navigation
+              '#nav-content':0, '.breadcrumb':0, '.tabs.primary':0, // General navigation
+              '#project-issue-jumplinks':0, // Issue pages
+              '#block-versioncontrol-project-project-maintainers':0, '#block-project-issue-issue-cockpit':0, // Project pages
+              '#block-drupalorg-project-resources':0, '#block-drupalorg-project-development':0,
+              '.project-info':0, '.view_all_releases':0, '.add_new_release':0, '.administer_releases':0
+            }) {
+              if ($this.parents(c).length) {
+                ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
+                return;
+              }
             }
           }
-          // Look for parents with interesting classes.
-          for (var c in {
-            '.book-navigation':0, '#block-book-navigation':0, // Book navigation
-            '#nav-content':0, '.breadcrumb':0, '.tabs.primary':0, // General navigation
-            '#project-issue-jumplinks':0, // Issue pages
-            '#block-versioncontrol-project-project-maintainers':0, '#block-project-issue-issue-cockpit':0, // Project pages
-            '#block-drupalorg-project-resources':0, '#block-drupalorg-project-development':0,
-            '.project-info':0, '.view_all_releases':0, '.add_new_release':0, '.administer_releases':0
-          }) {
-            if ($this.parents(c).length) {
-              ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
-              return;
+          else { // External link.
+            // Look for parents with interesting classes.
+            for (var c in {
+              // Membership campaign.
+              '#block-drupalorg-membership-campaign':0
+            }) {
+              if ($this.parents(c).length) {
+                ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
+                return;
+              }
             }
           }
-        }
-        else { // External link.
-          // Look for parents with interesting classes.
-          for (var c in {
-            // Membership campaign.
-            '#block-drupalorg-membership-campaign':0
-          }) {
-            if ($this.parents(c).length) {
-              ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
-              return;
-            }
-          }
-        }
+        });
       });
-    });
+    }
   });
 
   /**
