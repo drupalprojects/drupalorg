@@ -9,6 +9,22 @@
  */
 function drupalorg_wysiwyg_ckeditor_profile_defaults() {
   $data = array(
+    'CKEditor Global Profile' => array(
+      'name' => 'CKEditor Global Profile',
+      'settings' => array(
+        'skin' => 'moono',
+        'ckeditor_path' => '%l/ckeditor',
+        'ckeditor_local_path' => '',
+        'ckeditor_plugins_path' => '%l/ckeditor/plugins',
+        'ckeditor_plugins_local_path' => '',
+        'ckfinder_path' => '%m/ckfinder',
+        'ckfinder_local_path' => '',
+        'ckeditor_aggregate' => 'f',
+        'toolbar_wizard' => 'f',
+        'loadPlugins' => array(),
+      ),
+      'input_formats' => array(),
+    ),
     'Filtered' => array(
       'name' => 'Filtered',
       'settings' => array(
@@ -57,7 +73,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'UserFilesAbsolutePath' => '%d%b%f/',
         'forcePasteAsPlainText' => 'f',
         'html_entities' => 'f',
-        'scayt_autoStartup' => 't',
+        'scayt_autoStartup' => 'f',
         'theme_config_js' => 't',
         'js_conf' => '',
         'loadPlugins' => array(
