@@ -996,7 +996,7 @@ function drupalorg_block_view_forum_new_alter(&$data, $block) {
 function drupalorg_block_view_og_menu_og_single_menu_block_alter(&$data, $block) {
   // On Documentation Guide pages, replace og_menu with parent guide’s menu, if
   // it exists.
-  if (($context = og_context()) && ($node = menu_get_object()) && $context['gid'] == $node->nid) {
+  if (($context = og_context()) && ($node = menu_get_object()) && $context['gid'] == $node->nid && $node->type === 'guide') {
     $wrapper = entity_metadata_wrapper('node', $node);
     $data = [];
     if ($parent = $wrapper->og_group_ref_documentation->value()) {
