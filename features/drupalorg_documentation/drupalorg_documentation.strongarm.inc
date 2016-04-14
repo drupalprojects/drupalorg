@@ -352,6 +352,20 @@ function drupalorg_documentation_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'og_menu_enable_documentation';
+  $strongarm->value = 1;
+  $export['og_menu_enable_documentation'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'og_menu_enable_guide';
+  $strongarm->value = 1;
+  $export['og_menu_enable_guide'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_defaults_node_documentation';
   $strongarm->value = array(
     'status' => 1,
