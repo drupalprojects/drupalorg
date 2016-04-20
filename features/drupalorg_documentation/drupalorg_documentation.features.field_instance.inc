@@ -10,6 +10,107 @@
 function drupalorg_documentation_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'comment-comment_node_documentation-comment_body'.
+  $field_instances['comment-comment_node_documentation-comment_body'] = array(
+    'bundle' => 'comment_node_documentation',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'This will be a comment on Discuss tab.',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'comment_body',
+    'label' => 'Explain your changes',
+    'required' => 1,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 3,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'comment-comment_node_documentation-field_documentation_changes'.
+  $field_instances['comment-comment_node_documentation-field_documentation_changes'] = array(
+    'bundle' => 'comment_node_documentation',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'nodechanges',
+        'settings' => array(
+          'files_display_mode' => 'fieldset_all_but_new',
+        ),
+        'type' => 'nodechanges_diff_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'field_documentation_changes',
+    'label' => 'Documentation changes',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance: 'comment-comment_node_guide-comment_body'.
+  $field_instances['comment-comment_node_guide-comment_body'] = array(
+    'bundle' => 'comment_node_guide',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'comment_body',
+    'label' => 'Comment',
+    'required' => TRUE,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 0,
+    ),
+  );
+
   // Exported field_instance: 'node-documentation-body'.
   $field_instances['node-documentation-body'] = array(
     'bundle' => 'documentation',
@@ -564,9 +665,12 @@ function drupalorg_documentation_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Body');
+  t('Comment');
   t('Description');
   t('Description of the guide and its contents.');
   t('Determine if this is an OG group.');
+  t('Documentation changes');
+  t('Explain your changes');
   t('File attachments');
   t('Group');
   t('Groups audience');
@@ -574,6 +678,7 @@ function drupalorg_documentation_field_default_field_instances() {
   t('Short (up to 140 characters) summary of the content. This will be displayed in search results, meta tags, content listings.');
   t('Short (up to 140 characters) summary of the content. This will be displayed on documentation guides,  in search results, meta tags, content listings.');
   t('Summary');
+  t('This will be a comment on Discuss tab.');
 
   return $field_instances;
 }
