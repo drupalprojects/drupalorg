@@ -1131,11 +1131,12 @@ function drupalorg_preprocess_page(&$variables) {
 function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
   if ($context = og_context()) {
     // If we are in a group.
-    if ($context['group_type'] === 'node' && ($node = menu_get_object())) {
+    if ($context['group_type'] === 'node') {
+      $node = menu_get_object();
       $group = entity_load_single($context['group_type'], $context['gid']);
 
       // If we are on a post page, add Blog to the breadcrumb.
-      if ($node->type === 'post') {
+      if (!empty($node) && $node->type === 'post') {
         $uri = entity_uri($context['group_type'], $group);
         array_splice($active_trail, 1, 0, array(array(
           'title' => t('Blog'),
@@ -1145,7 +1146,7 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       }
 
       // If we are not on the group page itself, add it to the breadcrumb.
-      if ($node->nid != $context['gid']) {
+      if (empty($node) || $node->nid != $context['gid']) {
         $uri = entity_uri($context['group_type'], $group);
         array_splice($active_trail, 1, 0, array(array(
           'title' => entity_label($context['group_type'], $group),
