@@ -307,8 +307,12 @@ function drupalorg_menu_alter(&$menu) {
     $menu['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name']['access callback'] = 'taxonomy_term_edit_access';
     $menu['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name']['access arguments'] = array(3);
   }
+  // Nicer titles.
   if (isset($menu['node/%/group'])) {
     $menu['node/%/group']['title'] = 'Admin group';
+  }
+  if (isset($menu['node/%node/revisions'])) {
+    $menu['node/%node/revisions']['title'] = 'View history';
   }
 
   $menu['user']['title callback'] = 'drupalorg_user_menu_title';
