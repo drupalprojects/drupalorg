@@ -115,7 +115,7 @@ function drupalorg_documentation_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'mode' => '1',
+    'mode' => '0',
     'comments_per_page' => '300',
     'context' => 'argument_entity_id:node_1',
     'override_title' => 0,
