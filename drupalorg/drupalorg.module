@@ -2152,6 +2152,31 @@ function drupalorg_username_validate($form, &$form_state) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter() for Documentation node form.
+ */
+function drupalorg_form_documentation_node_form_alter(&$form, &$form_state) {
+  if (!empty($form['#node']->nodechanges_in_block)) {
+    // Hide most fields.
+    foreach (array_diff(element_children($form), ['nodechanges_comment', 'actions']) as $key) {
+      if (in_array($form[$key]['#type'], ['textfield', 'container', 'fieldset'])) {
+        $form[$key]['#access'] = FALSE;
+      }
+    }
+    hide($form['actions']['preview_changes']);
+
+    // Redirect to /discuss page after commenting.
+    $form['actions']['submit']['#submit'][] = 'drupalorg_form_documentation_node_form_submit';
+  }
+}
+
+/**
+ * Form submit callback, see drupalorg_form_documentation_node_form_alter().
+ */
+function drupalorg_form_documentation_node_form_submit($form, &$form_state) {
+  $form_state['redirect'][0] .= '/discuss';
+}
+
+/**
  * Implements hook_search_info().
  *
  * Defines an IRC nickname search.
