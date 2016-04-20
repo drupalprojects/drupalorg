@@ -45,7 +45,18 @@ function drupalorg_documentation_default_page_manager_pages() {
         'context' => 'argument_entity_id:node_1',
         'not' => FALSE,
       ),
+      3 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 2,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
+    'logic' => 'and',
   );
   $page->menu = array(
     'type' => 'tab',
