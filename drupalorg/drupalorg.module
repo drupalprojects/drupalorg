@@ -2164,6 +2164,10 @@ function drupalorg_form_documentation_node_form_alter(&$form, &$form_state) {
     }
     hide($form['actions']['preview_changes']);
 
+    // Simplify comment field.
+    $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['value']['#title'] = t('Suggest improvements');
+    unset($form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['value']['#description']);
+
     // Redirect to /discuss page after commenting.
     $form['actions']['submit']['#submit'][] = 'drupalorg_form_documentation_node_form_submit';
   }
