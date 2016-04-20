@@ -42,7 +42,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_default_per_page_documentation';
-  $strongarm->value = '50';
+  $strongarm->value = '300';
   $export['comment_default_per_page_documentation'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -63,7 +63,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_form_location_documentation';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_form_location_documentation'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -475,21 +475,8 @@ function drupalorg_documentation_strongarm() {
   $strongarm->value = array(
     'block-message_follow-follow' => TRUE,
     'block-og_menu-og_single_menu_block' => TRUE,
-    'block-og_menu-og_multi_menu_block' => TRUE,
     'custom-custom' => TRUE,
     'custom-documentation_copyright' => TRUE,
-    'custom-d8_landing_page_ad_1' => FALSE,
-    'custom-d8_landing_page_ad_2' => FALSE,
-    'custom-d8_landing_page_ad_3' => FALSE,
-    'custom-d8_sponsor_header' => FALSE,
-    'custom-roadmap_view_roadmap' => FALSE,
-    'custom-roadmap_criteria_learn_more' => FALSE,
-    'custom-roadmap_volunteer_learn_more' => FALSE,
-    'custom-roadmap_community_learn_more' => FALSE,
-    'custom-roadmap_sidebar_footer' => FALSE,
-    'custom-drupalorg_d8_ad' => FALSE,
-    'custom-drupalorg_trydrupal_button' => FALSE,
-    'custom-drupalorg_whatsnext_core' => FALSE,
     'node_comments-node_comments' => TRUE,
     'node_comment_wrapper-node_comment_wrapper' => TRUE,
     'node_title-node_title' => TRUE,
@@ -500,7 +487,6 @@ function drupalorg_documentation_strongarm() {
     'node_attachments-node_attachments' => TRUE,
     'node_body-node_body' => TRUE,
     'node_terms-node_terms' => TRUE,
-    'node_links-node_links' => TRUE,
     'node_type_desc-node_type_desc' => TRUE,
     'node_updated-node_updated' => TRUE,
     'page_title-page_title' => TRUE,
@@ -509,19 +495,18 @@ function drupalorg_documentation_strongarm() {
     'node-node' => TRUE,
     'node_form_author-node_form_author' => TRUE,
     'message_render-message_render' => TRUE,
+    'nodechanges_edit-nodechanges_edit' => TRUE,
     'node_create_links-node_create_links' => TRUE,
     'section_contents-section_contents' => TRUE,
     'entity_field-node:body' => TRUE,
     'entity_field-node:upload' => TRUE,
-    'entity_field-node:group_group' => TRUE,
     'entity_field-node:field_summary' => TRUE,
-    'entity_field-node:field_tags' => TRUE,
-    'entity_field-node:field_related_content' => TRUE,
+    'entity_field-node:group_group' => TRUE,
     'entity_field-node:og_group_ref' => TRUE,
     'entity_field-user:field_subscribe_to' => TRUE,
     'entity_field-user:og_user_node' => TRUE,
+    'flag_link-node' => TRUE,
     'views_panes-group_maintainers-panel_pane_1' => TRUE,
-    'views_panes-documentation_guide-panel_pane_1' => TRUE,
     'views_panes-og_members-panel_pane_1' => TRUE,
     'views_panes-og_nodes-panel_pane_1' => TRUE,
     'views-group_maintainers' => TRUE,
@@ -542,8 +527,8 @@ function drupalorg_documentation_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_node:documentation_default';
   $strongarm->value = array(
-    'custom' => 'custom',
     'block' => 0,
+    'custom' => 0,
     'token' => 0,
     'entity_form_field' => 0,
     'entity_field' => 0,

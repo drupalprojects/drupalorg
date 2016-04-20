@@ -32,8 +32,9 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
       'nodechanges' => array(
         'label' => 'above',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
+        'type' => 'text_default',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -49,13 +50,14 @@ function drupalorg_documentation_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'body',
     'label' => 'Body',
-    'required' => FALSE,
+    'required' => 0,
     'settings' => array(
-      'display_summary' => TRUE,
+      'display_summary' => 0,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'text',
       'settings' => array(
         'rows' => 20,
@@ -87,8 +89,9 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
       'nodechanges' => array(
         'label' => 'above',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
+        'type' => 'text_plain',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -139,8 +142,11 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
       'nodechanges' => array(
         'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => 1,
+        ),
+        'type' => 'entityreference_label',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -152,20 +158,10 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'og_group_ref_documentation',
-    'label' => 'Groups audience',
+    'label' => 'Guide',
     'required' => 1,
     'settings' => array(
       'behaviors' => array(
-        'og_widget' => array(
-          'access_override' => 0,
-          'admin' => array(
-            'widget_type' => 'entityreference_autocomplete',
-          ),
-          'default' => array(
-            'widget_type' => 'options_select',
-          ),
-          'status' => TRUE,
-        ),
         'prepopulate' => array(
           'action' => 'none',
           'action_on_edit' => 0,
@@ -193,10 +189,14 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
     ),
     'widget' => array(
-      'active' => 0,
-      'module' => 'og',
-      'settings' => array(),
-      'type' => 'og_complex',
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete',
       'weight' => 41,
     ),
   );
@@ -221,8 +221,9 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
       'nodechanges' => array(
         'label' => 'above',
+        'module' => 'file',
         'settings' => array(),
-        'type' => 'hidden',
+        'type' => 'file_default',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -569,6 +570,7 @@ function drupalorg_documentation_field_default_field_instances() {
   t('File attachments');
   t('Group');
   t('Groups audience');
+  t('Guide');
   t('Short (up to 140 characters) summary of the content. This will be displayed in search results, meta tags, content listings.');
   t('Short (up to 140 characters) summary of the content. This will be displayed on documentation guides,  in search results, meta tags, content listings.');
   t('Summary');
