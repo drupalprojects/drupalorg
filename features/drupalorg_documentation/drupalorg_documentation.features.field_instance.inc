@@ -542,7 +542,7 @@ function drupalorg_documentation_field_default_field_instances() {
   $field_instances['node-guide-og_group_ref_documentation'] = array(
     'bundle' => 'guide',
     'default_value' => NULL,
-    'default_value_function' => '',
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -588,7 +588,15 @@ function drupalorg_documentation_field_default_field_instances() {
           'status' => TRUE,
         ),
         'prepopulate' => array(
-          'status' => 0,
+          'action' => 'none',
+          'action_on_edit' => 0,
+          'fallback' => 'none',
+          'providers' => array(
+            'og_context' => 0,
+            'url' => 1,
+          ),
+          'skip_perm' => 0,
+          'status' => 1,
         ),
       ),
       'user_register_form' => FALSE,
