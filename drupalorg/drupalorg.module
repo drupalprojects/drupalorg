@@ -4043,6 +4043,11 @@ function drupalorg_menu_local_tasks_alter(&$data, $router_item, $root_path) {
       }
       break;
   }
+
+  // Hide the View link on node pages in guides.
+  if (isset($data['tabs'][0]['output'][0]['#link']['path']) && $data['tabs'][0]['output'][0]['#link']['path'] === 'node/%/view' && ($context = og_context()) && ($group = node_load($context['gid'])) && $group->type === 'guide') {
+    unset($data['tabs'][0]['output'][0]);
+  }
 }
 
 /**
