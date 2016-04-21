@@ -2036,6 +2036,13 @@ function drupalorg_form_node_form_alter(&$form) {
     $form['menu']['enabled']['#default_value'] = 1;
   }
 
+  // Disregard destination for creating group content.
+  if (isset($_GET['destination']) && isset($_GET['og_group_ref_documentation']) && $_GET['destination'] === 'node/' . $_GET['og_group_ref_documentation']) {
+    $action = drupal_parse_url($form['#action']);
+    unset($action['query']['destination']);
+    $form['#action'] = url(ltrim($action['path'], '/'), $action);
+  }
+
   // Add class 'prevent-multiple-submit-form' to node edit form.
   if (!empty($form['actions']['submit'])) {
     $form['#attached']['js'][] = drupal_get_path('module', 'drupalorg') . '/js/jquery.form-submit-single.js';
