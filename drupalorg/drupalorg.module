@@ -4319,6 +4319,10 @@ function drupalorg_field_formatter_info() {
       'field types' => array('entityreference'),
       'multiple values' => FIELD_BEHAVIOR_DEFAULT,
     ),
+    'documentation_status' => [
+      'label' => t('Documentation status'),
+      'field types' => ['list_text'],
+    ],
   );
 }
 
@@ -4371,6 +4375,40 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
       $count = $query->count()->execute();
       if ($count) {
         $element['#suffix'] = '<p>' . l(format_plural($count, 'One person lists @name as a mentor', '@count people list @name as a mentor', array('@name' => $entity->name)), 'user/' . $entity->uid . '/people-mentored') . '</p>';
+      }
+      break;
+
+    case 'documentation_status':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = [
+          '#prefix' => '<p class="' . drupal_html_class($item['value']) . '">',
+          '#suffix' => '</p>',
+        ];
+        switch ($item['value']) {
+          case 'Incomplete':
+            if (user_is_logged_in() && !node_access('update', $entity)) {
+              $vars = ['!link' => l(t('Confirmed users can improve documentation'), 'node/1887616')];
+            }
+            else {
+              $vars = ['!link' => l(t('Add more information'), 'node/' . $entity->nid . '/edit')];
+            }
+            $element[$delta]['#markup'] = t('This documentation is <strong>incomplete</strong>. !link.', $vars);
+            break;
+
+          case 'Out of date':
+            if (user_is_logged_in() && !node_access('update', $entity)) {
+              $vars = ['!link' => l(t('Confirmed users can improve documentation'), 'node/1887616')];
+            }
+            else {
+              $vars = ['!link' => l(t('Help make it current'), 'node/' . $entity->nid . '/edit')];
+            }
+            $element[$delta]['#markup'] = t('This documentation is <strong>out of date</strong>. !link.', $vars);
+            break;
+
+          case 'Deprecated':
+            $element[$delta]['#markup'] = t('This documentation is deprecated. !link.', ['!link' => l(t('Recommend a change or new documentation'), 'node/' . $entity->nid . '/discuss')]);
+            break;
+        }
       }
       break;
   }
