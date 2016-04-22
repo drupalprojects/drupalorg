@@ -2168,7 +2168,7 @@ function drupalorg_username_validate($form, &$form_state) {
 function drupalorg_form_documentation_node_form_alter(&$form, &$form_state) {
   if (!empty($form['#node']->nodechanges_in_block)) {
     // Hide most fields.
-    foreach (array_diff(element_children($form), ['nodechanges_comment', 'actions']) as $key) {
+    foreach (array_diff(element_children($form), ['field_documentation_status', 'nodechanges_comment', 'actions']) as $key) {
       if (in_array($form[$key]['#type'], ['textfield', 'container', 'fieldset'])) {
         $form[$key]['#access'] = FALSE;
       }
