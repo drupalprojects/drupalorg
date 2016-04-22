@@ -621,20 +621,10 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'og_group_ref_documentation',
-    'label' => 'Groups audience',
+    'label' => 'Guide',
     'required' => 0,
     'settings' => array(
       'behaviors' => array(
-        'og_widget' => array(
-          'access_override' => 0,
-          'admin' => array(
-            'widget_type' => 'entityreference_autocomplete',
-          ),
-          'default' => array(
-            'widget_type' => 'options_select',
-          ),
-          'status' => TRUE,
-        ),
         'prepopulate' => array(
           'action' => 'none',
           'action_on_edit' => 0,
@@ -650,10 +640,14 @@ function drupalorg_documentation_field_default_field_instances() {
       'user_register_form' => FALSE,
     ),
     'widget' => array(
-      'active' => 0,
-      'module' => 'og',
-      'settings' => array(),
-      'type' => 'og_complex',
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete',
       'weight' => 42,
     ),
   );
@@ -729,7 +723,6 @@ function drupalorg_documentation_field_default_field_instances() {
   t('Explain your changes');
   t('File attachments');
   t('Group');
-  t('Groups audience');
   t('Guide');
   t('Short (up to 140 characters) summary of the content. This will be displayed in search results, meta tags, content listings.');
   t('Short (up to 140 characters) summary of the content. This will be displayed on documentation guides,  in search results, meta tags, content listings.');
