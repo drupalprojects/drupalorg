@@ -2174,6 +2174,7 @@ function drupalorg_form_documentation_node_form_alter(&$form, &$form_state) {
       }
     }
     hide($form['actions']['preview_changes']);
+    hide($form['actions']['delete']);
 
     // Simplify comment field.
     $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['value']['#title'] = t('Suggest improvements');
