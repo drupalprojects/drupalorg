@@ -4214,12 +4214,7 @@ function drupalorg_field_formatter_info() {
  * Implements hook_field_formatter_view().
  */
 function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  if ($entity_type != 'user') {
-    return;
-  }
-
   $element = array();
-  $settings = $display['settings'];
 
   switch ($display['type']) {
     case 'user_pictures':
