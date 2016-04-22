@@ -120,9 +120,8 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'hidden',
         'weight' => 1,
       ),
       'issuemetadata' => array(
@@ -136,7 +135,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -169,6 +168,55 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-documentation-field_documentation_status'.
+  $field_instances['node-documentation-field_documentation_status'] = array(
+    'bundle' => 'documentation',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 7,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_documentation_status',
+    'label' => 'Status',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 7,
+    ),
+  );
+
   // Exported field_instance: 'node-documentation-field_summary'.
   $field_instances['node-documentation-field_summary'] = array(
     'bundle' => 'documentation',
@@ -193,7 +241,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_plain',
-        'weight' => 0,
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -248,7 +296,7 @@ function drupalorg_documentation_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -298,7 +346,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 41,
+      'weight' => 6,
     ),
   );
 
@@ -325,7 +373,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -359,7 +407,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 5,
+      'weight' => 3,
     ),
   );
 
@@ -685,6 +733,7 @@ function drupalorg_documentation_field_default_field_instances() {
   t('Guide');
   t('Short (up to 140 characters) summary of the content. This will be displayed in search results, meta tags, content listings.');
   t('Short (up to 140 characters) summary of the content. This will be displayed on documentation guides,  in search results, meta tags, content listings.');
+  t('Status');
   t('Summary');
   t('This will be a comment on Discuss tab.');
 

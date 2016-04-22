@@ -151,10 +151,16 @@ function drupalorg_documentation_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '8',
+          'weight' => '5',
         ),
         'redirect' => array(
-          'weight' => '7',
+          'weight' => '4',
+        ),
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'nodechanges_comment' => array(
+          'weight' => '8',
         ),
       ),
       'display' => array(),
@@ -502,6 +508,7 @@ function drupalorg_documentation_strongarm() {
     'entity_field-node:upload' => TRUE,
     'entity_field-node:field_summary' => TRUE,
     'entity_field-node:group_group' => TRUE,
+    'entity_field-node:field_documentation_status' => TRUE,
     'entity_field-node:og_group_ref' => TRUE,
     'entity_field-user:field_subscribe_to' => TRUE,
     'entity_field-user:og_user_node' => TRUE,
