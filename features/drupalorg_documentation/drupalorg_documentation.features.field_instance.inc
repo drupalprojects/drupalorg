@@ -317,7 +317,7 @@ function drupalorg_documentation_field_default_field_instances() {
           'fallback' => 'none',
           'providers' => array(
             'og_context' => 1,
-            'url' => 0,
+            'url' => 1,
           ),
           'skip_perm' => 0,
           'status' => 1,
