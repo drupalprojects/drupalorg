@@ -43,5 +43,13 @@ function drupalorg_wysiwyg_ckeditor_security_filter() {
       'installed' => FALSE,
       'filters' => array()
     ),
+    'filter_html_image_secure' => array(
+      'title' => 'Local Images',
+      'project_page' => 'http://drupal.org/project/filter_html_image_secure',
+      'description' => 'Filters out external image urls',
+      'weight' => 1,
+      'installed' => FALSE,
+      'filters' => array()
+    ),
   );
 }
