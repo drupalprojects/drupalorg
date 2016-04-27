@@ -25,6 +25,7 @@ function drupalorg_wysiwyg_process_filter_format($element) {
  * Add code filter a security filter to ckeditor.
  */
 function drupalorg_wysiwyg_ckeditor_security_filter() {
+
   return array(
     'codefilter' => array(
       'title' => 'Code Filter',

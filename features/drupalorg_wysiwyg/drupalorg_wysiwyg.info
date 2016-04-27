@@ -9,7 +9,6 @@ dependencies[] = codefilter
 dependencies[] = features
 dependencies[] = filter
 dependencies[] = filter_html_image_secure
-dependencies[] = htmlpurifier
 dependencies[] = project_issue
 dependencies[] = strongarm
 features[ckeditor_profile][] = CKEditor Global Profile
