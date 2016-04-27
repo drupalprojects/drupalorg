@@ -1,0 +1,38 @@
+<?php
+/**
+ * Implements hook_element_info_alter().
+ * Sets the default format if the user's default format is filtered_html.
+ */
+function drupalorg_wysiwyg_element_info_alter(&$type) {
+  $type['text_format']['#pre_render'][] = 'drupalorg_wysiwyg_process_filter_format';
+}
+
+/**
+ * Callback function to process the filter format and remove the fieldset.
+ * More info:  http://drupal.org/node/1949552
+ */
+function drupalorg_wysiwyg_process_filter_format($element) {
+  global $user;
+  $formats = filter_formats($user);
+  if (count($formats) <= 2 && array_key_exists('filtered_html', $formats)) {
+    unset($element['format']);
+    $element['#format'] = 'filtered_html';
+  }
+  return $element;
+}
+
+/**
+ * Add code filter a security filter to ckeditor.
+ */
+function drupalorg_wysiwyg_ckeditor_security_filter() {
+  return array(
+    'codefilter' => array(
+      'title' => 'Code Filter',
+      'project_page' => 'http://drupal.org/project/codefilter',
+      'description' => 'Converts code and pre tags into formats that are readible by ckeditor',
+      'weight' => 0,
+      'installed' => FALSE,
+      'filters' => array()
+    ),
+  );
+}
