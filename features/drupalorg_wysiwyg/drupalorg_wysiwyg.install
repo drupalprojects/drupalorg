@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * Implements hook_install().
+ *
+ * Revert the wysiwyg editor, and disable bueditor
+ */
+function drupalorg_wysiwyg_install() {
+  features_revert(array('drupalorg_wysiwyg' => array('ckeditor_profile', 'filter')));
+
+  // Remove the default 'Advanced CKeditor setting
+  db_delete('ckeditor_settings')
+    ->condition('name', 'Advanced')
+    ->execute();
+
+  // Update input format configurations that might not exist.
+  // Useful for subsites that have correct input filter names.
+  db_update('ckeditor_input_format')
+    ->fields(array('name' => 'Filtered'))
+    ->condition('format', 'filtered_html')
+    ->execute();
+  db_update('ckeditor_input_format')
+    ->fields(array('name' => 'Full'))
+    ->condition('format', 'full_html')
+    ->execute();
+
+  // Disable bueditor.
+  module_disable(array('bueditor'));
+}

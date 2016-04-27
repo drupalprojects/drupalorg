@@ -31,7 +31,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'ss' => 2,
         'toolbar' => '[
   [\'Bold\',\'Italic\',\'Strike\',\'Code\',\'Format\'],
-  [\'NumberedList\',\'BulletedList\',\'-\',\'Blockquote\',\'CreateDiv\'],
+  [\'NumberedList\',\'BulletedList\',\'-\',\'Blockquote\'],
   [\'Link\',\'Unlink\',\'Anchor\'],
   [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\'],
   [\'Undo\',\'Redo\',\'Find\',\'Replace\'],
@@ -164,13 +164,6 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
             'buttons' => FALSE,
             'default' => 'f',
           ),
-          'notificationaggregator' => array(
-            'name' => 'notificationaggregator',
-            'desc' => 'Plugin file: notificationaggregator',
-            'path' => '%plugin_dir_extra%notificationaggregator/',
-            'buttons' => FALSE,
-            'default' => 'f',
-          ),
           'prism' => array(
             'name' => 'prism',
             'desc' => 'Plugin file: prism',
@@ -204,7 +197,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'ss' => 2,
         'toolbar' => '[
   [\'Bold\',\'Italic\',\'Strike\',\'Code\',\'Format\'],
-  [\'NumberedList\',\'BulletedList\',\'-\',\'Blockquote\',\'CreateDiv\'],
+  [\'NumberedList\',\'BulletedList\',\'-\',\'Blockquote\'],
   [\'Link\',\'Unlink\',\'Anchor\'],
   [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\',\'Iframe\'],
   [\'Undo\',\'Redo\',\'Find\',\'Replace\'],
