@@ -18,28 +18,28 @@ function drupalorg_wysiwyg_filter_default_formats() {
     'status' => 1,
     'weight' => -1,
     'filters' => array(
-      'filter_autop' => array(
-        'weight' => -49,
-        'status' => 1,
-        'settings' => array(),
-      ),
       'codefilter' => array(
-        'weight' => -48,
+        'weight' => -50,
         'status' => 1,
         'settings' => array(
           'nowrap_expand' => 0,
           'codefilter_prism' => 1,
         ),
       ),
+      'filter_autop' => array(
+        'weight' => -49,
+        'status' => 1,
+        'settings' => array(),
+      ),
       'filter_url' => array(
-        'weight' => -47,
+        'weight' => -48,
         'status' => 1,
         'settings' => array(
           'filter_url_length' => 72,
         ),
       ),
       'filter_html' => array(
-        'weight' => -46,
+        'weight' => -47,
         'status' => 1,
         'settings' => array(
           'allowed_html' => '<h2> <h3> <h4> <h5> <h6> <em> <strong> <pre> <code> <del> <img> <blockquote> <q> <cite> <sup> <sub> <s> <p> <br>  <ul> <ol> <li> <dl> <dt> <dd> <a> <address> <b> <u> <i> <table> <tr> <td> <th> <tbody> <thead> <tfoot> <colgroup> <caption> <hr> <div> <!-->',
@@ -48,42 +48,19 @@ function drupalorg_wysiwyg_filter_default_formats() {
         ),
       ),
       'filter_project_issue_link' => array(
-        'weight' => -45,
+        'weight' => -46,
         'status' => 1,
         'settings' => array(),
       ),
       'filter_htmlcorrector' => array(
-        'weight' => -44,
+        'weight' => -45,
         'status' => 1,
         'settings' => array(),
       ),
       'filter_html_image_secure' => array(
-        'weight' => -42,
+        'weight' => -44,
         'status' => 1,
         'settings' => array(),
-      ),
-      'htmlpurifier' => array(
-        'weight' => 0,
-        'status' => 1,
-        'settings' => array(
-          'htmlpurifier_config_name' => 'htmlpurifier_basic',
-          'htmlpurifier_help' => 1,
-          'htmlpurifier_filter_tips' => 'HTML tags will be transformed to conform to HTML standards.',
-          'htmlpurifier_config' => array(
-            'Attr.EnableID' => 0,
-            'AutoFormat.AutoParagraph' => 1,
-            'AutoFormat.Linkify' => 1,
-            'AutoFormat.RemoveEmpty' => 1,
-            'Null_HTML.Allowed' => 1,
-            'HTML.ForbiddenAttributes' => '',
-            'HTML.ForbiddenElements' => '',
-            'HTML.SafeObject' => 0,
-            'Output.FlashCompat' => 0,
-            'URI.DisableExternalResources' => 1,
-            'URI.DisableResources' => 0,
-            'Null_URI.Munge' => 1,
-          ),
-        ),
       ),
     ),
   );
