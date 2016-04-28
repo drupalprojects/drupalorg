@@ -10,6 +10,55 @@
 function drupalorg_documentation_field_default_field_bases() {
   $field_bases = array();
 
+  // Exported field_base: 'field_documentation_changes'.
+  $field_bases['field_documentation_changes'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_documentation_changes',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'nodechanges',
+    'settings' => array(
+      'hide_core_revision_log' => 1,
+      'properties' => array(
+        'author' => 0,
+        'created' => 0,
+        'title' => 'title',
+      ),
+      'revision_comment_field' => 'comment_body',
+    ),
+    'translatable' => 0,
+    'type' => 'nodechanges_revision_diff',
+  );
+
+  // Exported field_base: 'field_documentation_status'.
+  $field_bases['field_documentation_status'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_documentation_status',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'Incomplete' => 'Incomplete',
+        'Out of date' => 'Out of date',
+        'Deprecated' => 'Deprecated',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_summary'.
   $field_bases['field_summary'] = array(
     'active' => 1,

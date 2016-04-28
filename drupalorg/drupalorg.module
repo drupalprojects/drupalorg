@@ -307,8 +307,12 @@ function drupalorg_menu_alter(&$menu) {
     $menu['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name']['access callback'] = 'taxonomy_term_edit_access';
     $menu['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name']['access arguments'] = array(3);
   }
+  // Nicer titles.
   if (isset($menu['node/%/group'])) {
     $menu['node/%/group']['title'] = 'Admin group';
+  }
+  if (isset($menu['node/%node/revisions'])) {
+    $menu['node/%node/revisions']['title'] = 'View history';
   }
 
   $menu['user']['title callback'] = 'drupalorg_user_menu_title';
@@ -991,6 +995,61 @@ function drupalorg_block_view_forum_new_alter(&$data, $block) {
 }
 
 /**
+ * Implements hook_block_view_MODULE_DELTA_alter().
+ */
+function drupalorg_block_view_og_menu_og_single_menu_block_alter(&$data, $block) {
+  // On Documentation Guide pages, replace og_menu with parent guide’s menu, if
+  // it exists.
+  if (($context = og_context()) && ($node = menu_get_object()) && $context['gid'] == $node->nid && $node->type === 'guide') {
+    $wrapper = entity_metadata_wrapper('node', $node);
+    $data = [];
+    if ($parent = $wrapper->og_group_ref_documentation->value()) {
+      // Adapted from og_menu_block_view().
+      $menus = og_menu_get_group_menus([$context['group_type'] => [$parent->nid]]);
+      $menu = array_shift($menus);
+
+      if ($menu) {
+        if (variable_get('og_menu_block_links', FALSE)) {
+          $data['subject'] = l($menu['title'], $menu['group_type'] . '/' . $menu['gid']);
+        }
+        else {
+          $data['subject'] = check_plain($menu['title']);
+        }
+        $data['content'] = menu_tree($menu['menu_name']);
+        // Add contextual links.
+        if ($data['content']) {
+          if (in_array($menu['menu_name'], array_keys(menu_get_menus()))) {
+            $data['content']['#contextual_links']['og_menu'] = ['group/' . $context['group_type'] . '/' . $parent->nid . '/admin/menus', [$menu['menu_name']]];
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_form_og_menu_edit_item_form_alter(&$form) {
+  // Disable menu hierarchy.
+  $form['parent']['#disabled'] = TRUE;
+}
+
+/**
+ * Implements hook_js_alter().
+ */
+function drupalorg_js_alter(&$js) {
+  // For OG menus, disable menu hierarchy.
+  if (arg(0) === 'group' && arg(3) === 'admin' && arg(4) === 'menus' && !empty($js['settings']['data'])) {
+    foreach ($js['settings']['data'] as &$setting) {
+      if (isset($setting['tableDrag']['menu-overview']['menu-plid'])) {
+        $setting = [];
+      }
+    }
+  }
+}
+
+/**
  * Set home link for Your Dashboard page.
  */
 function drupalorg_set_home() {
@@ -1028,6 +1087,15 @@ function drupalorg_set_home_callback($form, $form_state) {
 function drupalorg_library_alter(&$libraries, $module) {
   if ($module === 'system' && isset($libraries['ui']) && arg(0) !== 'admin') {
     unset($libraries['ui']['css']['misc/ui/jquery.ui.theme.css']);
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function drupalorg_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner === 'ctools' && $plugin_type === 'content_types') {
+    return 'plugins/' . $plugin_type;
   }
 }
 
@@ -1089,11 +1157,12 @@ function drupalorg_preprocess_page(&$variables) {
 function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
   if ($context = og_context()) {
     // If we are in a group.
-    if ($context['group_type'] === 'node' && ($node = menu_get_object())) {
+    if ($context['group_type'] === 'node') {
+      $node = menu_get_object();
       $group = entity_load_single($context['group_type'], $context['gid']);
 
       // If we are on a post page, add Blog to the breadcrumb.
-      if ($node->type === 'post') {
+      if (!empty($node) && $node->type === 'post') {
         $uri = entity_uri($context['group_type'], $group);
         array_splice($active_trail, 1, 0, array(array(
           'title' => t('Blog'),
@@ -1103,7 +1172,7 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       }
 
       // If we are not on the group page itself, add it to the breadcrumb.
-      if ($node->nid != $context['gid']) {
+      if (empty($node) || $node->nid != $context['gid']) {
         $uri = entity_uri($context['group_type'], $group);
         array_splice($active_trail, 1, 0, array(array(
           'title' => entity_label($context['group_type'], $group),
@@ -1112,15 +1181,20 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
         )));
       }
 
-      // If the group has a parent section, add it to the breadcrumb.
-      if (!empty($group->field_parent_section)) {
-        $parent = node_load($group->field_parent_section[LANGUAGE_NONE][0]['target_id']);
+      // If the group has a parent section or documentation guide, add it to
+      // the breadcrumb.
+      if ((!empty($group->field_parent_section) && $parent = node_load($group->field_parent_section[LANGUAGE_NONE][0]['target_id'])) || (!empty($group->og_group_ref_documentation) && $parent = node_load($group->og_group_ref_documentation[LANGUAGE_NONE][0]['target_id']))) {
         $uri = entity_uri('node', $parent);
         array_splice($active_trail, 1, 0, array(array(
           'title' => entity_label($context['group_type'], $parent),
           'href' => $uri['path'],
           'localized_options' => array(),
         )));
+      }
+
+      // If we are in a Documentation Guide, remove Home.
+      if ($group->type === 'guide') {
+        array_shift($active_trail);
       }
     }
   }
@@ -1984,6 +2058,20 @@ function drupalorg_form_node_form_alter(&$form) {
     $form['menu']['enabled']['#default_value'] = 1;
   }
 
+  // If this is a documentation page or guide, only allow keeping one level of
+  // menu hierarchy.
+  if ($form['#node']->type === 'guide' || $form['#node']->type === 'documentation') {
+    // Only disable so og_menu JS is not confused.
+    $form['menu']['link']['parent']['#disabled'] = TRUE;
+  }
+
+  // Disregard destination for creating group content.
+  if (isset($_GET['destination']) && isset($_GET['og_group_ref_documentation']) && $_GET['destination'] === 'node/' . $_GET['og_group_ref_documentation']) {
+    $action = drupal_parse_url($form['#action']);
+    unset($action['query']['destination']);
+    $form['#action'] = url(ltrim($action['path'], '/'), $action);
+  }
+
   // Add class 'prevent-multiple-submit-form' to node edit form.
   if (!empty($form['actions']['submit'])) {
     $form['#attached']['js'][] = drupal_get_path('module', 'drupalorg') . '/js/jquery.form-submit-single.js';
@@ -2101,6 +2189,50 @@ function drupalorg_username_validate($form, &$form_state) {
       form_set_error('name', t('The name %name is already taken.', array('%name' => $name)));
     }
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for Guide node form.
+ */
+function drupalorg_form_guide_node_form_alter(&$form) {
+  // Lock down Guide field if user does not have access to create top level Guides.
+  if (node_node_access('guide', 'create', $GLOBALS['user']) === NODE_ACCESS_IGNORE) {
+    $form['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id']['#disabled'] = TRUE;
+    if (empty($form['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id']['#default_value'])) {
+      drupal_set_message(t('Guides must be added within an existing guide you maintain.'), 'error');
+      $form['#access'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for Documentation node form.
+ */
+function drupalorg_form_documentation_node_form_alter(&$form, &$form_state) {
+  if (!empty($form['#node']->nodechanges_in_block)) {
+    // Hide most fields.
+    foreach (array_diff(element_children($form), ['field_documentation_status', 'nodechanges_comment', 'actions']) as $key) {
+      if (in_array($form[$key]['#type'], ['textfield', 'container', 'fieldset'])) {
+        $form[$key]['#access'] = FALSE;
+      }
+    }
+    hide($form['actions']['preview_changes']);
+    hide($form['actions']['delete']);
+
+    // Simplify comment field.
+    $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['value']['#title'] = t('Suggest improvements');
+    unset($form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['value']['#description']);
+
+    // Redirect to /discuss page after commenting.
+    $form['actions']['submit']['#submit'][] = 'drupalorg_form_documentation_node_form_submit';
+  }
+}
+
+/**
+ * Form submit callback, see drupalorg_form_documentation_node_form_alter().
+ */
+function drupalorg_form_documentation_node_form_submit($form, &$form_state) {
+  $form_state['redirect'][0] .= '/discuss';
 }
 
 /**
@@ -2453,16 +2585,22 @@ function drupalorg_node_access($node, $op, $account) {
   if ($op !== 'view') {
     $type = is_string($node) ? $node : $node->type;
 
-    // For content in groups, strengthen core node access to deny instead of
-    // ignore for lack of permission. Users must have both the required roles
-    // and group membership, if any. For example, documentatation pages have
-    // restrictions from node_node_access(), but do not require documentation
-    // guide membership to edit.
-    if (og_is_group_content_type('node', $type) && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
+    // For documentation pages in guides, strengthen core node access to deny
+    // instead of ignore for lack of permission. Users must have both the
+    // required roles and group membership, if any. For example,
+    // documentatation pages have restrictions from node_node_access(), but do
+    // not require documentation guide membership to edit.
+    if ($type === 'documentation' && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
+      return NODE_ACCESS_DENY;
+    }
+    // Do not allow creating guides outside of groups where the user is a guide
+    // maintainer.
+    if ($type === 'guide' && $op === 'create' && ($context = og_context()) && !og_user_access('node', $context['gid'], 'create guide content')) {
       return NODE_ACCESS_DENY;
     }
   }
 }
+
 
 /**
  * Implements hook_node_view().
@@ -2970,6 +3108,11 @@ function drupalorg_node_view($node, $view_mode = 'full') {
 function drupalorg_comment_view($comment, $view_mode, $langcode) {
   // Use fasttoggle 'publish' link instead of the core approve link.
   unset($comment->content['links']['comment']['#links']['comment-approve']);
+
+  // Do not show reply links on every Documentation comment.
+  if ($comment->node_type === 'comment_node_documentation') {
+    unset($comment->content['links']['comment']['#links']['comment-reply']);
+  }
 }
 
 /**
@@ -3950,6 +4093,11 @@ function drupalorg_menu_local_tasks_alter(&$data, $router_item, $root_path) {
       }
       break;
   }
+
+  // Hide the View link on node pages in guides.
+  if (isset($data['tabs'][0]['output'][0]['#link']['path']) && $data['tabs'][0]['output'][0]['#link']['path'] === 'node/%/view' && ($context = og_context()) && ($group = node_load($context['gid'])) && $group->type === 'guide') {
+    unset($data['tabs'][0]['output'][0]);
+  }
 }
 
 /**
@@ -4220,6 +4368,10 @@ function drupalorg_field_formatter_info() {
       'field types' => array('entityreference'),
       'multiple values' => FIELD_BEHAVIOR_DEFAULT,
     ),
+    'documentation_status' => [
+      'label' => t('Documentation status'),
+      'field types' => ['list_text'],
+    ],
   );
 }
 
@@ -4227,12 +4379,7 @@ function drupalorg_field_formatter_info() {
  * Implements hook_field_formatter_view().
  */
 function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  if ($entity_type != 'user') {
-    return;
-  }
-
   $element = array();
-  $settings = $display['settings'];
 
   switch ($display['type']) {
     case 'user_pictures':
@@ -4277,6 +4424,40 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
       $count = $query->count()->execute();
       if ($count) {
         $element['#suffix'] = '<p>' . l(format_plural($count, 'One person lists @name as a mentor', '@count people list @name as a mentor', array('@name' => $entity->name)), 'user/' . $entity->uid . '/people-mentored') . '</p>';
+      }
+      break;
+
+    case 'documentation_status':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = [
+          '#prefix' => '<p class="' . drupal_html_class($item['value']) . '">',
+          '#suffix' => '</p>',
+        ];
+        switch ($item['value']) {
+          case 'Incomplete':
+            if (user_is_logged_in() && !node_access('update', $entity)) {
+              $vars = ['!link' => l(t('Confirmed users can improve documentation'), 'node/1887616')];
+            }
+            else {
+              $vars = ['!link' => l(t('Add more information'), 'node/' . $entity->nid . '/edit')];
+            }
+            $element[$delta]['#markup'] = t('This documentation is <strong>incomplete</strong>. !link.', $vars);
+            break;
+
+          case 'Out of date':
+            if (user_is_logged_in() && !node_access('update', $entity)) {
+              $vars = ['!link' => l(t('Confirmed users can improve documentation'), 'node/1887616')];
+            }
+            else {
+              $vars = ['!link' => l(t('Help make it current'), 'node/' . $entity->nid . '/edit')];
+            }
+            $element[$delta]['#markup'] = t('This documentation is <strong>out of date</strong>. !link.', $vars);
+            break;
+
+          case 'Deprecated':
+            $element[$delta]['#markup'] = t('This documentation is deprecated. !link.', ['!link' => l(t('Recommend a change or new documentation'), 'node/' . $entity->nid . '/discuss')]);
+            break;
+        }
       }
       break;
   }
