@@ -1028,6 +1028,28 @@ function drupalorg_block_view_og_menu_og_single_menu_block_alter(&$data, $block)
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_form_og_menu_edit_item_form_alter(&$form) {
+  // Disable menu hierarchy.
+  $form['parent']['#disabled'] = TRUE;
+}
+
+/**
+ * Implements hook_js_alter().
+ */
+function drupalorg_js_alter(&$js) {
+  // For OG menus, disable menu hierarchy.
+  if (arg(0) === 'group' && arg(3) === 'admin' && arg(4) === 'menus' && !empty($js['settings']['data'])) {
+    foreach ($js['settings']['data'] as &$setting) {
+      if (isset($setting['tableDrag']['menu-overview']['menu-plid'])) {
+        $setting = [];
+      }
+    }
+  }
+}
+
+/**
  * Set home link for Your Dashboard page.
  */
 function drupalorg_set_home() {
@@ -2023,6 +2045,13 @@ function drupalorg_form_node_form_alter(&$form) {
   // If this is a new node with OG Menu, put in the menu.
   if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu'])) {
     $form['menu']['enabled']['#default_value'] = 1;
+  }
+
+  // If this is a documentation page or guide, only allow keeping one level of
+  // menu hierarchy.
+  if ($form['#node']->type === 'guide' || $form['#node']->type === 'documentation') {
+    // Only disable so og_menu JS is not confused.
+    $form['menu']['link']['parent']['#disabled'] = TRUE;
   }
 
   // Disregard destination for creating group content.
