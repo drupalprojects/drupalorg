@@ -134,7 +134,9 @@ function drupalorg_documentation_default_page_manager_pages() {
     'override_title_heading' => 'h2',
   );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -151,7 +153,9 @@ function drupalorg_documentation_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array();
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
@@ -159,6 +163,42 @@ function drupalorg_documentation_default_page_manager_pages() {
   $pane->uuid = '2f1eef76-4fc2-4747-b5fc-58f86981e78a';
   $display->content['new-2f1eef76-4fc2-4747-b5fc-58f86981e78a'] = $pane;
   $display->panels['preface'][0] = 'new-2f1eef76-4fc2-4747-b5fc-58f86981e78a';
+  $pane = new stdClass();
+  $pane->pid = 'new-299b77e6-2c58-4285-b0f2-f630a76defee';
+  $pane->panel = 'preface';
+  $pane->type = 'node_comment_form';
+  $pane->subtype = 'node_comment_form';
+  $pane->shown = TRUE;
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'edit any documentation content',
+        ),
+        'context' => 'logged-in-user',
+        'not' => TRUE,
+      ),
+    ),
+  );
+  $pane->configuration = array(
+    'anon_links' => 0,
+    'context' => 'argument_entity_id:node_1',
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '299b77e6-2c58-4285-b0f2-f630a76defee';
+  $display->content['new-299b77e6-2c58-4285-b0f2-f630a76defee'] = $pane;
+  $display->panels['preface'][1] = 'new-299b77e6-2c58-4285-b0f2-f630a76defee';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
