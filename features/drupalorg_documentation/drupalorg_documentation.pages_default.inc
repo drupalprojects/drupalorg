@@ -114,7 +114,7 @@ function drupalorg_documentation_default_page_manager_pages() {
     ),
   );
   $display->cache = array();
-  $display->title = 'Discuss ‘%node:title’';
+  $display->title = 'Discuss <em>%node:title</em>';
   $display->uuid = 'ef07149a-91a0-4ac7-bd29-ac42cfccdfa2';
   $display->content = array();
   $display->panels = array();
