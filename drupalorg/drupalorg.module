@@ -1163,7 +1163,7 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       }
 
       // If we are not on the group page itself, add it to the breadcrumb.
-      if (empty($node) || $node->nid != $context['gid']) {
+      if ((empty($node) || $node->nid != $context['gid']) && ($item['path'] !== 'node/%/discuss' || $item['page_arguments'][1]->data->nid != $context['gid'])) {
         $uri = entity_uri($context['group_type'], $group);
         array_splice($active_trail, 1, 0, array(array(
           'title' => entity_label($context['group_type'], $group),
