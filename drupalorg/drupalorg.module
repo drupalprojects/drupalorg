@@ -2021,6 +2021,13 @@ function drupalorg_form_comment_form_alter(&$form, &$form_state) {
   if (isset($form['field_attribute_contribution_to'])) {
     _drupalorg_alter_comment_attribution($form);
   }
+
+  // Clean up documentation page comment form.
+  if ($form['#node']->type === 'documentation') {
+    hide($form['author']);
+    $form['comment_body'][LANGUAGE_NONE][0]['value']['#title'] = t('Suggest improvements');
+    unset($form['comment_body'][LANGUAGE_NONE][0]['value']['#description']);
+  }
 }
 
 /**
