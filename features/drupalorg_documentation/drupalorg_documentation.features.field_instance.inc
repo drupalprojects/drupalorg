@@ -90,24 +90,58 @@ function drupalorg_documentation_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
     ),
     'entity_type' => 'comment',
     'field_name' => 'comment_body',
-    'label' => 'Comment',
-    'required' => TRUE,
+    'label' => 'Explain your changes',
+    'required' => 1,
     'settings' => array(
-      'text_processing' => 1,
+      'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 3,
       ),
       'type' => 'text_textarea',
       'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance: 'comment-comment_node_guide-field_guide_changes'.
+  $field_instances['comment-comment_node_guide-field_guide_changes'] = array(
+    'bundle' => 'comment_node_guide',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'nodechanges',
+        'settings' => array(
+          'files_display_mode' => 'fieldset_all_but_new',
+        ),
+        'type' => 'nodechanges_diff_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'field_guide_changes',
+    'label' => 'Guide changes',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 1,
     ),
   );
 
@@ -432,8 +466,9 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
       'nodechanges' => array(
         'label' => 'above',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
+        'type' => 'text_default',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -476,8 +511,9 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
+        'type' => 'text_default',
         'weight' => 0,
       ),
       'issuemetadata' => array(
@@ -488,8 +524,9 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
       'nodechanges' => array(
         'label' => 'above',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
+        'type' => 'text_plain',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -608,8 +645,11 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
       'nodechanges' => array(
         'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -672,8 +712,9 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
       'nodechanges' => array(
         'label' => 'above',
+        'module' => 'file',
         'settings' => array(),
-        'type' => 'hidden',
+        'type' => 'file_default',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -715,7 +756,6 @@ function drupalorg_documentation_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Body');
-  t('Comment');
   t('Description');
   t('Description of the guide and its contents.');
   t('Determine if this is an OG group.');
@@ -724,6 +764,7 @@ function drupalorg_documentation_field_default_field_instances() {
   t('File attachments');
   t('Group');
   t('Guide');
+  t('Guide changes');
   t('Short (up to 140 characters) summary of the content. This will be displayed in search results, meta tags, content listings.');
   t('Short (up to 140 characters) summary of the content. This will be displayed on documentation guides,  in search results, meta tags, content listings.');
   t('Status');

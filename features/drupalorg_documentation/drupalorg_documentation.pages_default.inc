@@ -23,6 +23,7 @@ function drupalorg_documentation_default_page_manager_pages() {
         'settings' => array(
           'type' => array(
             'documentation' => 'documentation',
+            'guide' => 'guide',
           ),
         ),
         'context' => 'argument_entity_id:node_1',
@@ -171,12 +172,15 @@ function drupalorg_documentation_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array(
     'plugins' => array(
-      0 => array(
-        'name' => 'perm',
+      1 => array(
+        'name' => 'node_access',
         'settings' => array(
-          'perm' => 'edit any documentation content',
+          'type' => 'update',
         ),
-        'context' => 'logged-in-user',
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'not' => TRUE,
       ),
     ),

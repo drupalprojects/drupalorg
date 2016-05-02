@@ -35,7 +35,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_default_mode_guide';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_default_mode_guide'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -49,7 +49,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_default_per_page_guide';
-  $strongarm->value = '50';
+  $strongarm->value = '300';
   $export['comment_default_per_page_guide'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -70,14 +70,14 @@ function drupalorg_documentation_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_form_location_guide';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_form_location_guide'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_guide';
-  $strongarm->value = '1';
+  $strongarm->value = '2';
   $export['comment_guide'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -105,7 +105,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_subject_field_guide';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_subject_field_guide'] = $strongarm;
 
   $strongarm = new stdClass();
