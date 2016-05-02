@@ -1172,7 +1172,7 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       }
 
       // If we are not on the group page itself, add it to the breadcrumb.
-      if (empty($node) || $node->nid != $context['gid']) {
+      if ((empty($node) || $node->nid != $context['gid']) && ($item['path'] !== 'node/%/discuss' || $item['page_arguments'][1]->data->nid != $context['gid'])) {
         $uri = entity_uri($context['group_type'], $group);
         array_splice($active_trail, 1, 0, array(array(
           'title' => entity_label($context['group_type'], $group),
@@ -2023,7 +2023,7 @@ function drupalorg_form_comment_form_alter(&$form, &$form_state) {
   }
 
   // Clean up documentation page comment form.
-  if ($form['#node']->type === 'documentation') {
+  if ($form['#node']->type === 'documentation' || $form['#node']->type === 'guide') {
     hide($form['author']);
     $form['comment_body'][LANGUAGE_NONE][0]['value']['#title'] = t('Suggest improvements');
     unset($form['comment_body'][LANGUAGE_NONE][0]['value']['#description']);
@@ -2074,6 +2074,24 @@ function drupalorg_form_node_form_alter(&$form) {
   if ($form['#node']->type === 'guide' || $form['#node']->type === 'documentation') {
     // Only disable so og_menu JS is not confused.
     $form['menu']['link']['parent']['#disabled'] = TRUE;
+
+    if (!empty($form['#node']->nodechanges_in_block)) {
+      // Hide most fields.
+      foreach (array_diff(element_children($form), ['field_documentation_status', 'nodechanges_comment', 'actions']) as $key) {
+        if (in_array($form[$key]['#type'], ['textfield', 'container', 'fieldset'])) {
+          $form[$key]['#access'] = FALSE;
+        }
+      }
+      hide($form['actions']['preview_changes']);
+      hide($form['actions']['delete']);
+
+      // Simplify comment field.
+      $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['value']['#title'] = t('Suggest improvements');
+      unset($form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['value']['#description']);
+
+      // Redirect to /discuss page after commenting.
+      $form['actions']['submit']['#submit'][] = 'drupalorg_form_documentation_node_form_submit';
+    }
   }
 
   // Disregard destination for creating group content.
@@ -2133,6 +2151,13 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
     $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div><a href="#" class="customer-suggestion" data-string="' . check_plain(drupalorg_entityreference_string($nid, $title)) . '">' . t('<span class="element-invisible">Add customer </span>@title', array('@title' => trim($title))) . '</a></div>';
   }
   $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div class="description">' . t('New customers need an <a href="/node/add/organization">organization page</a>.') . '</div>';
+}
+
+/**
+ * Form submit callback, see drupalorg_form_documentation_node_form_alter().
+ */
+function drupalorg_form_documentation_node_form_submit($form, &$form_state) {
+  $form_state['redirect'][0] .= '/discuss';
 }
 
 /**
@@ -2214,36 +2239,6 @@ function drupalorg_form_guide_node_form_alter(&$form) {
       $form['#access'] = FALSE;
     }
   }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter() for Documentation node form.
- */
-function drupalorg_form_documentation_node_form_alter(&$form, &$form_state) {
-  if (!empty($form['#node']->nodechanges_in_block)) {
-    // Hide most fields.
-    foreach (array_diff(element_children($form), ['field_documentation_status', 'nodechanges_comment', 'actions']) as $key) {
-      if (in_array($form[$key]['#type'], ['textfield', 'container', 'fieldset'])) {
-        $form[$key]['#access'] = FALSE;
-      }
-    }
-    hide($form['actions']['preview_changes']);
-    hide($form['actions']['delete']);
-
-    // Simplify comment field.
-    $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['value']['#title'] = t('Suggest improvements');
-    unset($form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['value']['#description']);
-
-    // Redirect to /discuss page after commenting.
-    $form['actions']['submit']['#submit'][] = 'drupalorg_form_documentation_node_form_submit';
-  }
-}
-
-/**
- * Form submit callback, see drupalorg_form_documentation_node_form_alter().
- */
-function drupalorg_form_documentation_node_form_submit($form, &$form_state) {
-  $form_state['redirect'][0] .= '/discuss';
 }
 
 /**
