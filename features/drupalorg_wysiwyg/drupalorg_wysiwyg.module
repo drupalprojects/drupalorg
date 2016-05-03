@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Implements hook_element_info_alter().
  * Sets the default format if the user's default format is filtered_html.
  */
 function drupalorg_wysiwyg_element_info_alter(&$type) {
-  $type['text_format']['#pre_render'][] = 'drupalorg_wysiwyg_process_filter_format';
+  array_unshift($type['text_format']['#pre_render'], 'drupalorg_wysiwyg_process_filter_format');
 }
 
 /**
@@ -12,12 +13,30 @@ function drupalorg_wysiwyg_element_info_alter(&$type) {
  * More info:  http://drupal.org/node/1949552
  */
 function drupalorg_wysiwyg_process_filter_format($element) {
-  global $user;
-  $formats = filter_formats($user);
-  if (count($formats) <= 2 && array_key_exists('filtered_html', $formats)) {
-    unset($element['format']);
-    $element['#format'] = 'filtered_html';
+  // If no format is found, exit.
+  if (!isset($element['format'])) {
+    return $element;
   }
+
+  // By default, disable ckeditor.
+  $element['value']['#wysiwyg'] = FALSE;
+
+  // Disable Depricated input filter, unless its already being used
+  if ($element['format']['format']['#default_value'] != '5') {
+    unset($element['format']['format']['#options'][5]);
+  }
+
+  // Progressively enable ckeditor for specific entities & bundles / CTs.
+  // Node Documentation
+  if ($element['#entity_type'] == 'node' && $element['#bundle'] == 'documentation') {
+    $element['value']['#wysiwyg'] = TRUE;
+  }
+
+  // Node Books
+  if ($element['#entity_type'] == 'node' && $element['#bundle'] == 'book') {
+    $element['value']['#wysiwyg'] = TRUE;
+  }
+
   return $element;
 }
 
