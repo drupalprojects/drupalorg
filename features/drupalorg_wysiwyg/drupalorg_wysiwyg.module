@@ -27,16 +27,13 @@ function drupalorg_wysiwyg_process_filter_format($element) {
   }
 
   // Progressively enable ckeditor for specific entities & bundles / CTs.
-  // Node Documentation
-  if ($element['#entity_type'] == 'node' && $element['#bundle'] == 'documentation') {
-    $element['value']['#wysiwyg'] = TRUE;
+  // Nodes
+  if (isset($element['#entity_type']) && $element['#entity_type'] == 'node') {
+    $bundles_to_enable = array('page', 'post', 'section', 'guide', 'documentation');
+    if (in_array($element['#bundle'], $bundles_to_enable)) {
+      $element['value']['#wysiwyg'] = TRUE;
+    }
   }
-
-  // Node Books
-  if ($element['#entity_type'] == 'node' && $element['#bundle'] == 'book') {
-    $element['value']['#wysiwyg'] = TRUE;
-  }
-
   return $element;
 }
 
