@@ -26,12 +26,6 @@ function drupalorg_wysiwyg_install() {
     ->condition('name', 'Advanced')
     ->execute();
 
-  db_insert('bueditor_plus_profiles')
-    ->fields(array(
-      'pid' => 1,
-      'name' => 'BUEditor Default',
-      'data' => 'a:3:{i:1;a:2:{s:7:\"default\";s:2:\"10\";s:11:\"alternative\";s:1:\"0\";}i:3;a:2:{s:7:\"default\";s:2:\"10\";s:11:\"alternative\";s:1:\"0\";}i:5;a:2:{s:7:\"default\";s:1:\"0\";s:11:\"alternative\";s:1:\"0\";}}',
-      'global' => 1,
-    ))
-    ->execute();
+  // Because we're inserting a serialized array, use db_query instead.
+  db_query('INSERT INTO `bueditor_plus_profiles` VALUES (1,\'BUEditor Default\',\'a:3:{i:1;a:2:{s:7:\"default\";s:2:\"10\";s:11:\"alternative\";s:1:\"0\";}i:3;a:2:{s:7:\"default\";s:2:\"10\";s:11:\"alternative\";s:1:\"0\";}i:5;a:2:{s:7:\"default\";s:1:\"0\";s:11:\"alternative\";s:1:\"0\";}}\',1);');
 }
