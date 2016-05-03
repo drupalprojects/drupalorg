@@ -25,4 +25,13 @@ function drupalorg_wysiwyg_install() {
   db_delete('ckeditor_input_format')
     ->condition('name', 'Advanced')
     ->execute();
+
+  db_insert('bueditor_plus_profiles')
+    ->fields(array(
+      'pid' => 1,
+      'name' => 'BUEditor Default',
+      'data' => 'a:3:{i:1;a:2:{s:7:\"default\";s:2:\"10\";s:11:\"alternative\";s:1:\"0\";}i:3;a:2:{s:7:\"default\";s:2:\"10\";s:11:\"alternative\";s:1:\"0\";}i:5;a:2:{s:7:\"default\";s:1:\"0\";s:11:\"alternative\";s:1:\"0\";}}',
+      'global' => 1,
+    ))
+    ->execute();
 }
