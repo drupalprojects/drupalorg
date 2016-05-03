@@ -2051,7 +2051,7 @@ function drupalorg_form_node_form_alter(&$form) {
   // menu hierarchy.
   if ($form['#node']->type === 'guide' || $form['#node']->type === 'documentation') {
     // Only disable so og_menu JS is not confused.
-    $form['menu']['link']['parent']['#disabled'] = TRUE;
+    $form['menu']['link']['parent']['#element_validate'] = ['drupalorg_form_node_form_no_ancestry'];
   }
 
   // Disregard destination for creating group content.
@@ -2111,6 +2111,15 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
     $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div><a href="#" class="customer-suggestion" data-string="' . check_plain(drupalorg_entityreference_string($nid, $title)) . '">' . t('<span class="element-invisible">Add customer </span>@title', array('@title' => trim($title))) . '</a></div>';
   }
   $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div class="description">' . t('New customers need an <a href="/node/add/organization">organization page</a>.') . '</div>';
+}
+
+/**
+ * Element validate callback, make sure menu hierarchy is not used.
+ */
+function drupalorg_form_node_form_no_ancestry($element) {
+  if (!preg_match('/:0$/', $element['#value'])) {
+    form_error($element, t('Menu hierarchy is not allowed in documentation.'));
+  }
 }
 
 /**
