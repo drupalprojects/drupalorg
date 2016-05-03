@@ -82,6 +82,31 @@ function drupalorg_documentation_field_default_field_bases() {
     'type' => 'nodechanges_revision_diff',
   );
 
+  // Exported field_base: 'field_guide_status'.
+  $field_bases['field_guide_status'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_guide_status',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'Seeking co-maintainer(s)' => 'Seeking co-maintainer(s)',
+        'Needs maintainers' => 'Needs maintainers',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_summary'.
   $field_bases['field_summary'] = array(
     'active' => 1,

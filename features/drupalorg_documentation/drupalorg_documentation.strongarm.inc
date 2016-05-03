@@ -211,16 +211,19 @@ function drupalorg_documentation_strongarm() {
           'weight' => '0',
         ),
         'og_menu' => array(
-          'weight' => '6',
+          'weight' => '4',
         ),
         'path' => array(
-          'weight' => '9',
+          'weight' => '7',
         ),
         'redirect' => array(
-          'weight' => '8',
+          'weight' => '6',
         ),
         'metatags' => array(
           'weight' => '40',
+        ),
+        'nodechanges_comment' => array(
+          'weight' => '10',
         ),
       ),
       'display' => array(),
@@ -589,7 +592,6 @@ function drupalorg_documentation_strongarm() {
     'node_attachments-node_attachments' => TRUE,
     'node_body-node_body' => TRUE,
     'node_terms-node_terms' => TRUE,
-    'node_links-node_links' => TRUE,
     'node_type_desc-node_type_desc' => TRUE,
     'node_updated-node_updated' => TRUE,
     'page_title-page_title' => TRUE,
@@ -598,6 +600,7 @@ function drupalorg_documentation_strongarm() {
     'node_form_author-node_form_author' => TRUE,
     'node_prepopulate-node_prepopulate' => TRUE,
     'message_render-message_render' => TRUE,
+    'guide_maintainer_info-guide_maintainer_info' => TRUE,
     'section_contents-section_contents' => TRUE,
     'entity_field-node:body' => TRUE,
     'entity_field-node:upload' => TRUE,
@@ -607,6 +610,7 @@ function drupalorg_documentation_strongarm() {
     'entity_field-node:field_parent_section' => TRUE,
     'entity_field-user:field_subscribe_to' => TRUE,
     'entity_field-user:og_user_node' => TRUE,
+    'flag_link-node' => TRUE,
     'views_panes-group_maintainers-panel_pane_1' => TRUE,
     'views_panes-og_members-panel_pane_1' => TRUE,
     'views_panes-og_nodes-panel_pane_1' => TRUE,
