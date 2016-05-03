@@ -1183,7 +1183,8 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
 
       // If the group has a parent section or documentation guide, add it to
       // the breadcrumb.
-      if ((!empty($group->field_parent_section) && $parent = node_load($group->field_parent_section[LANGUAGE_NONE][0]['target_id'])) || (!empty($group->og_group_ref_documentation) && $parent = node_load($group->og_group_ref_documentation[LANGUAGE_NONE][0]['target_id']))) {
+      $parent = $group;
+      while ((!empty($parent->field_parent_section) && $parent = node_load($parent->field_parent_section[LANGUAGE_NONE][0]['target_id'])) || (!empty($parent->og_group_ref_documentation) && $parent = node_load($parent->og_group_ref_documentation[LANGUAGE_NONE][0]['target_id']))) {
         $uri = entity_uri('node', $parent);
         array_splice($active_trail, 1, 0, array(array(
           'title' => entity_label($context['group_type'], $parent),
