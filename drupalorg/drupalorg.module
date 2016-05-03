@@ -1897,7 +1897,7 @@ function drupalorg_taxonomy_forums_ajax_callback($form, &$form_state) {
  *   Use a specific bakery destination value instead of the URL parameter.
  */
 function drupalorg_get_site_parameter($bd = NULL) {
-  if (isset($bd) || ($bd = bakery_get_destination())) {
+  if (module_exists('bakery') && (isset($bd) || ($bd = bakery_get_destination()))) {
     $sites = drupalorg_crosssite_sites();
     $site = str_replace(variable_get('bakery_domain'), '', parse_url($bd, PHP_URL_HOST));
     if (isset($sites[$site])) {
@@ -4084,7 +4084,7 @@ function drupalorg_menu_local_tasks_alter(&$data, $router_item, $root_path) {
           }
         }
       }
-      elseif ($bd = bakery_get_destination()) {
+      elseif (module_exists('bakery') && $bd = bakery_get_destination()) {
         foreach ($data['tabs'][0]['output'] as &$tab) {
           if ($tab['#link']['path'] === 'user/register' || $tab['#link']['path'] === 'user/login') {
             $tab['#link']['localized_options']['query']['bd'] = $bd;
@@ -4230,7 +4230,7 @@ function drupalorg_user_presave(&$edit, $account) {
   // When saving a new account, stash the bakery destination for the welcome
   // page. See drupalorg_user_register_form_submit().
   if ($account->is_new) {
-    if ($bd = bakery_get_destination()) {
+    if (module_exists('bakery') && $bd = bakery_get_destination()) {
       $edit['data']['drupalorg_bd'] = $bd;
     }
     elseif (isset($_GET['destination']) && !url_is_external($_GET['destination'])) {
@@ -4244,17 +4244,19 @@ function drupalorg_user_presave(&$edit, $account) {
  * Implements hook_user_update().
  */
 function drupalorg_user_update(&$edit, $account) {
-  // If drupalorg_bakery_transmit() previously bailed early, return to fill out
-  // Bakery-transmitted data.
-  if (isset($_SESSION['bakery']['data']['drupalorg_in_edit'])) {
-    unset($_SESSION['bakery']['data']['drupalorg_in_edit']);
-    $_SESSION['bakery']['data'] += drupalorg_bakery_transmit(NULL, $account);
-  }
-  // _logintoboggan_process_validation() only invokes hook_user_update(), not
-  // enough for bakery to trigger sync.
-  if (!empty($account->logintoboggan_email_validated)) {
-    bakery_user_presave($edit, $account, NULL);
-    $_SESSION['bakery']['data'] += drupalorg_bakery_transmit(NULL, $account);
+  if (module_exists('bakery')) {
+    // If drupalorg_bakery_transmit() previously bailed early, return to fill out
+    // Bakery-transmitted data.
+    if (isset($_SESSION['bakery']['data']['drupalorg_in_edit'])) {
+      unset($_SESSION['bakery']['data']['drupalorg_in_edit']);
+      $_SESSION['bakery']['data'] += drupalorg_bakery_transmit(NULL, $account);
+    }
+    // _logintoboggan_process_validation() only invokes hook_user_update(), not
+    // enough for bakery to trigger sync.
+    if (!empty($account->logintoboggan_email_validated)) {
+      bakery_user_presave($edit, $account, NULL);
+      $_SESSION['bakery']['data'] += drupalorg_bakery_transmit(NULL, $account);
+    }
   }
 
   // Send an email on LoginToboggan email verification. See
