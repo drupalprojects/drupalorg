@@ -35,7 +35,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
   [\'Link\',\'Unlink\',\'Anchor\'],
   [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\'],
   [\'Undo\',\'Redo\',\'Find\',\'Replace\'],
-  [\'ShowBlocks\', \'Maximize\']
+  [\'Maximize\']
 ]',
         'expand' => 't',
         'default' => 't',
@@ -121,13 +121,6 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
             'name' => 'filetools',
             'desc' => 'Plugin file: filetools',
             'path' => '%plugin_dir_extra%filetools/',
-            'buttons' => FALSE,
-            'default' => 'f',
-          ),
-          'image' => array(
-            'name' => 'image',
-            'desc' => 'Plugin file: image',
-            'path' => '%plugin_dir_extra%image/',
             'buttons' => FALSE,
             'default' => 'f',
           ),
@@ -287,13 +280,6 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
             'name' => 'filetools',
             'desc' => 'Plugin file: filetools',
             'path' => '%plugin_dir_extra%filetools/',
-            'buttons' => FALSE,
-            'default' => 'f',
-          ),
-          'image' => array(
-            'name' => 'image',
-            'desc' => 'Plugin file: image',
-            'path' => '%plugin_dir_extra%image/',
             'buttons' => FALSE,
             'default' => 'f',
           ),

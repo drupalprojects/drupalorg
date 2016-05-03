@@ -22,8 +22,7 @@ function drupalorg_wysiwyg_install() {
   db_update('ckeditor_input_format')
     ->fields(array('name' => 'Full'))
     ->condition('format', 'full_html')
+  db_delete('ckeditor_input_format')
+    ->condition('name', 'Advanced')
     ->execute();
-
-  // Disable bueditor.
-  module_disable(array('bueditor'));
 }
