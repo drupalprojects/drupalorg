@@ -138,6 +138,13 @@
             }
           }
           else { // External link.
+            // Look for interesting classes.
+            for (var c in {'cke_button':0}) {
+              if (this.classList.contains(c)) {
+                ga('send', 'event', 'Navigation', 'Click on ' + c, $this.text());
+                return;
+              }
+            }
             // Look for parents with interesting classes.
             for (var c in {
               // Membership campaign.
