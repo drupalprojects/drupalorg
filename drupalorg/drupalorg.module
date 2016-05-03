@@ -2232,7 +2232,7 @@ function drupalorg_username_validate($form, &$form_state) {
  */
 function drupalorg_form_guide_node_form_alter(&$form) {
   // Lock down Guide field if user does not have access to create top level Guides.
-  if (node_node_access('guide', 'create', $GLOBALS['user']) === NODE_ACCESS_IGNORE) {
+  if (!isset($form['#node']->nid) && node_node_access('guide', 'create', $GLOBALS['user']) === NODE_ACCESS_IGNORE) {
     $form['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id']['#disabled'] = TRUE;
     if (empty($form['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id']['#default_value'])) {
       drupal_set_message(t('Guides must be added within an existing guide you maintain.'), 'error');
@@ -2596,7 +2596,7 @@ function drupalorg_node_access($node, $op, $account) {
     // required roles and group membership, if any. For example,
     // documentatation pages have restrictions from node_node_access(), but do
     // not require documentation guide membership to edit.
-    if ($type === 'documentation' && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
+    if (($type === 'documentation' || ($type === 'guide' && $op === 'update')) && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
       return NODE_ACCESS_DENY;
     }
     // Do not allow creating guides outside of groups where the user is a guide
