@@ -99,10 +99,10 @@
     // once.
     $body.bind('click', function (e) {
       var $clicked = $('.attribution', $(e.target).filter('.attribution-label')).toggleClass('element-invisible');
-      $('.attribution').not($clicked).addClass('element-invisible');
+      $('.attribution-label .attribution').not($clicked).addClass('element-invisible');
     })
     .bind('touchstart', function (e) {
-      $('.attribution').not($('.attribution', $(e.target).filter('.attribution-label'))).addClass('element-invisible');
+      $('.attribution-label .attribution').not($('.attribution', $(e.target).filter('.attribution-label'))).addClass('element-invisible');
     });
     // For potential link GA event tracking. Attach mousedown, keyup,
     // touchstart events to document only and catch clicks on all elements.
