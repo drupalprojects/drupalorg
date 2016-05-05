@@ -59,6 +59,54 @@ function drupalorg_documentation_field_default_field_bases() {
     'type' => 'list_text',
   );
 
+  // Exported field_base: 'field_guide_changes'.
+  $field_bases['field_guide_changes'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_guide_changes',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'nodechanges',
+    'settings' => array(
+      'hide_core_revision_log' => 1,
+      'properties' => array(
+        'author' => 0,
+        'created' => 0,
+        'title' => 'title',
+      ),
+      'revision_comment_field' => 'comment_body',
+    ),
+    'translatable' => 0,
+    'type' => 'nodechanges_revision_diff',
+  );
+
+  // Exported field_base: 'field_guide_status'.
+  $field_bases['field_guide_status'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_guide_status',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'Seeking co-maintainer(s)' => 'Seeking co-maintainer(s)',
+        'Needs maintainers' => 'Needs maintainers',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_summary'.
   $field_bases['field_summary'] = array(
     'active' => 1,

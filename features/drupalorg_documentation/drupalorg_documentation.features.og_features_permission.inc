@@ -254,7 +254,10 @@ function drupalorg_documentation_og_features_default_permissions() {
 
   // Exported og permission: 'node:guide:update any guide content'
   $permissions['node:guide:update any guide content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'maintainer' => 'maintainer',
+      'non-member' => 'non-member',
+    ),
   );
 
   // Exported og permission: 'node:guide:update any page content'

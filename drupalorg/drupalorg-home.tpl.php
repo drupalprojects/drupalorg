@@ -1,5 +1,6 @@
 <div class="front-primary">
   <div id="tab-news"><?php print $tab_content_news; ?></div>
+  <div id="membership" class="last"><?php print render($region['preface_second']); ?></div>
 </div>
 
 <div id="develop-with-drupal">
