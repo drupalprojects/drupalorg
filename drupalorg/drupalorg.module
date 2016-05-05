@@ -2043,7 +2043,7 @@ function drupalorg_form_aggregator_form_feed_alter(&$form) {
  * Node form alter.
  */
 function drupalorg_form_node_form_alter(&$form) {
-  if (isset($form['#node']->title)) {
+  if (isset($form['#node']->title) && $form['#node']->type !== 'project_issue') {
     drupal_set_title(t('Edit %title', ['%title' => $form['#node']->title]), PASS_THROUGH);
   }
 
