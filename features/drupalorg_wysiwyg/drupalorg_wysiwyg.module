@@ -21,6 +21,11 @@ function drupalorg_wysiwyg_process_filter_format($element) {
   // By default, disable ckeditor.
   $element['value']['#wysiwyg'] = FALSE;
 
+  // Disable the summary value wysiwyg.
+  if (isset($element['summary'])) {
+    $element['summary']['#wysiwyg'] = FALSE;
+  }
+
   // Disable Depricated input filter, unless its already being used
   if ($element['format']['format']['#default_value'] != '5') {
     unset($element['format']['format']['#options'][5]);
@@ -32,6 +37,10 @@ function drupalorg_wysiwyg_process_filter_format($element) {
     $bundles_to_enable = array('page', 'post', 'section', 'guide', 'documentation');
     if (in_array($element['#bundle'], $bundles_to_enable)) {
       $element['value']['#wysiwyg'] = TRUE;
+      // Disable the summary value wysiwyg.
+      if (isset($element['summary'])) {
+        $element['summary']['#wysiwyg'] = TRUE;
+      }
     }
   }
   return $element;
