@@ -2096,7 +2096,7 @@ function drupalorg_form_node_form_alter(&$form) {
   }
 
   // Disregard destination for creating group content.
-  if (isset($_GET['destination']) && isset($_GET['og_group_ref_documentation']) && $_GET['destination'] === 'node/' . $_GET['og_group_ref_documentation']) {
+  if (isset($_GET['destination']) && ((isset($_GET['og_group_ref_documentation']) && $_GET['destination'] === 'node/' . $_GET['og_group_ref_documentation']) || (isset($_GET['og_group_ref']) && $_GET['destination'] === 'node/' . $_GET['og_group_ref']))) {
     $action = drupal_parse_url($form['#action']);
     unset($action['query']['destination']);
     $form['#action'] = url(ltrim($action['path'], '/'), $action);
