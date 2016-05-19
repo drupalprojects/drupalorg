@@ -4824,9 +4824,16 @@ function drupalorg_og_ui_get_group_admin($group_type, $gid) {
  * Implements hook_pathauto_alias_alter().
  */
 function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
-  // Do not include the "about" group name in the path for posts in the About
-  // section.
-  if ($context['module'] === 'node' && $context['type'] === 'post' && ($context['op'] === 'insert' || $context['op'] === 'update') && $context['data']['node']->og_group_ref[LANGUAGE_NONE][0]['target_id'] == 2603760) {
-    $alias = preg_replace('#^about/#', '', $alias);
+  if ($context['module'] === 'node') {
+    // Do not include the "about" group name in the path for posts in the About
+    // section.
+    if ($context['type'] === 'post' && ($context['op'] === 'insert' || $context['op'] === 'update') && $context['data']['node']->og_group_ref[LANGUAGE_NONE][0]['target_id'] == 2603760) {
+      $alias = preg_replace('#^about/#', '', $alias);
+    }
+
+    // Keep punctuation in release version numbers.
+    if ($context['type'] === 'project_release') {
+      $alias = preg_replace('#/[^/]*$#', '/' . $context['data']['node']->field_release_version[LANGUAGE_NONE][0]['value'], $alias);
+    }
   }
 }
