@@ -3277,8 +3277,13 @@ function drupalorg_node_insert($node) {
     }
     node_save($node);
   }
-  elseif (project_release_node_is_release($node) && project_release_is_security_update($node)) {
-    drupal_mail('drupalorg', 'security_release', 'security@drupal.org', language_default(), array('node' => $node));
+  elseif (project_release_node_is_release($node)) {
+    if (project_release_is_security_update($node)) {
+      drupal_mail('drupalorg', 'security_release', 'security@drupal.org', language_default(), array('node' => $node));
+    }
+  }
+  elseif (project_node_is_project($node)) {
+    _drupalorg_node_update_project($node);
   }
 }
 
@@ -3306,6 +3311,26 @@ function drupalorg_node_update($node) {
         }
       }
     }
+  }
+  elseif (project_node_is_project($node)) {
+    _drupalorg_node_update_project($node);
+  }
+}
+
+/**
+ * Run when inserting or updating a project node.
+ */
+function _drupalorg_node_update_project($node) {
+  // Alias release listing path for projects with releases and a machine name.
+  if (!empty($node->field_project_has_releases[LANGUAGE_NONE][0]['value']) && !empty($node->field_project_machine_name[LANGUAGE_NONE][0]['value'])) {
+    $path = [
+      'source' => 'node/' . $node->nid . '/release',
+      'alias' => 'project/' . drupal_encode_path($node->field_project_machine_name[LANGUAGE_NONE][0]['value']) . '/releases',
+    ];
+    if ($existing = path_load($path['source'])) {
+      $path['pid'] = $existing['pid'];
+    }
+    path_save($path);
   }
 }
 
