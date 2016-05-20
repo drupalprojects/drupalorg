@@ -2073,8 +2073,10 @@ function drupalorg_form_node_form_alter(&$form) {
   // If this is a documentation page or guide, only allow keeping one level of
   // menu hierarchy.
   if ($form['#node']->type === 'guide' || $form['#node']->type === 'documentation') {
-    // Only disable so og_menu JS is not confused.
-    $form['menu']['link']['parent']['#element_validate'] = ['drupalorg_form_node_form_no_ancestry'];
+    if (isset($form['menu'])) {
+      // Only disable so og_menu JS is not confused.
+      $form['menu']['link']['parent']['#element_validate'] = ['drupalorg_form_node_form_no_ancestry'];
+    }
 
     if (!empty($form['#node']->nodechanges_in_block)) {
       // Add a message about becoming a guide maintainer.
