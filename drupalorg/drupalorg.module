@@ -3129,8 +3129,8 @@ function drupalorg_comment_view($comment, $view_mode, $langcode) {
   // Use fasttoggle 'publish' link instead of the core approve link.
   unset($comment->content['links']['comment']['#links']['comment-approve']);
 
-  // Do not show reply links on every Documentation comment.
-  if ($comment->node_type === 'comment_node_documentation') {
+  // Do not show reply links on every Guide & Documentation comment.
+  if ($comment->node_type === 'comment_node_guide' || $comment->node_type === 'comment_node_documentation') {
     unset($comment->content['links']['comment']['#links']['comment-reply']);
   }
 }
