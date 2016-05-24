@@ -1155,9 +1155,13 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       // If we are on a post page, add Blog to the breadcrumb.
       if (!empty($node) && $node->type === 'post') {
         $uri = entity_uri($context['group_type'], $group);
+        $path = drupal_get_path_alias($uri['path']) . '/blog';
+        if ($redirect = redirect_load_by_source($path)) {
+          $path = $redirect->redirect;
+        }
         array_splice($active_trail, 1, 0, array(array(
           'title' => t('Blog'),
-          'href' => url($uri['path']) . '/blog',
+          'href' => url($path),
           'localized_options' => array(),
         )));
       }
