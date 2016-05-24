@@ -2081,7 +2081,7 @@ function drupalorg_form_node_form_alter(&$form) {
     if (!empty($form['#node']->nodechanges_in_block)) {
       // Add a message about becoming a guide maintainer.
       if ($form['#node']->type === 'guide' && !empty($_REQUEST['become-maintainer'])) {
-        drupal_set_message(t('To become a maintainer of the guide, leave a comment requesting maintainership. Webmasters will review your request and may add you as a maintainer.'));
+        drupal_set_message(t('Use the “Suggest improvements” field to explain your interest in maintaining the guide. Webmasters will review your comment and may add you as a maintainer.'));
       }
 
       // Hide most fields.
