@@ -82,7 +82,7 @@ function drupalorg_wysiwyg_filter_default_formats() {
         'weight' => 9,
         'status' => 1,
         'settings' => array(
-          'nowrap_expand' => 1,
+          'nowrap_expand' => 0,
           'codefilter_prism' => 1,
         ),
       ),
