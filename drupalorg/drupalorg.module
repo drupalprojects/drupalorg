@@ -307,8 +307,12 @@ function drupalorg_menu_alter(&$menu) {
     $menu['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name']['access callback'] = 'taxonomy_term_edit_access';
     $menu['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name']['access arguments'] = array(3);
   }
+  // Nicer titles.
   if (isset($menu['node/%/group'])) {
     $menu['node/%/group']['title'] = 'Admin group';
+  }
+  if (isset($menu['node/%node/revisions'])) {
+    $menu['node/%node/revisions']['title'] = 'View history';
   }
 
   $menu['user']['title callback'] = 'drupalorg_user_menu_title';
@@ -991,6 +995,61 @@ function drupalorg_block_view_forum_new_alter(&$data, $block) {
 }
 
 /**
+ * Implements hook_block_view_MODULE_DELTA_alter().
+ */
+function drupalorg_block_view_og_menu_og_single_menu_block_alter(&$data, $block) {
+  // On Documentation Guide pages, replace og_menu with parent guide’s menu, if
+  // it exists.
+  if (($context = og_context()) && ($node = menu_get_object()) && $context['gid'] == $node->nid && $node->type === 'guide') {
+    $wrapper = entity_metadata_wrapper('node', $node);
+    $data = [];
+    if ($parent = $wrapper->og_group_ref_documentation->value()) {
+      // Adapted from og_menu_block_view().
+      $menus = og_menu_get_group_menus([$context['group_type'] => [$parent->nid]]);
+      $menu = array_shift($menus);
+
+      if ($menu) {
+        if (variable_get('og_menu_block_links', FALSE)) {
+          $data['subject'] = l($menu['title'], $menu['group_type'] . '/' . $menu['gid']);
+        }
+        else {
+          $data['subject'] = check_plain($menu['title']);
+        }
+        $data['content'] = menu_tree($menu['menu_name']);
+        // Add contextual links.
+        if ($data['content']) {
+          if (in_array($menu['menu_name'], array_keys(menu_get_menus()))) {
+            $data['content']['#contextual_links']['og_menu'] = ['group/' . $context['group_type'] . '/' . $parent->nid . '/admin/menus', [$menu['menu_name']]];
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_form_og_menu_edit_item_form_alter(&$form) {
+  // Disable menu hierarchy.
+  $form['parent']['#disabled'] = TRUE;
+}
+
+/**
+ * Implements hook_js_alter().
+ */
+function drupalorg_js_alter(&$js) {
+  // For OG menus, disable menu hierarchy.
+  if (arg(0) === 'group' && arg(3) === 'admin' && arg(4) === 'menus' && !empty($js['settings']['data'])) {
+    foreach ($js['settings']['data'] as &$setting) {
+      if (isset($setting['tableDrag']['menu-overview']['menu-plid'])) {
+        $setting = [];
+      }
+    }
+  }
+}
+
+/**
  * Set home link for Your Dashboard page.
  */
 function drupalorg_set_home() {
@@ -1089,21 +1148,26 @@ function drupalorg_preprocess_page(&$variables) {
 function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
   if ($context = og_context()) {
     // If we are in a group.
-    if ($context['group_type'] === 'node' && ($node = menu_get_object())) {
+    if ($context['group_type'] === 'node') {
+      $node = menu_get_object();
       $group = entity_load_single($context['group_type'], $context['gid']);
 
       // If we are on a post page, add Blog to the breadcrumb.
-      if ($node->type === 'post') {
+      if (!empty($node) && $node->type === 'post') {
         $uri = entity_uri($context['group_type'], $group);
+        $path = drupal_get_path_alias($uri['path']) . '/blog';
+        if ($redirect = redirect_load_by_source($path)) {
+          $path = $redirect->redirect;
+        }
         array_splice($active_trail, 1, 0, array(array(
           'title' => t('Blog'),
-          'href' => url($uri['path']) . '/blog',
+          'href' => url($path),
           'localized_options' => array(),
         )));
       }
 
       // If we are not on the group page itself, add it to the breadcrumb.
-      if ($node->nid != $context['gid']) {
+      if ((empty($node) || $node->nid != $context['gid']) && ($item['path'] !== 'node/%/discuss' || $item['page_arguments'][1]->data->nid != $context['gid'])) {
         $uri = entity_uri($context['group_type'], $group);
         array_splice($active_trail, 1, 0, array(array(
           'title' => entity_label($context['group_type'], $group),
@@ -1112,15 +1176,21 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
         )));
       }
 
-      // If the group has a parent section, add it to the breadcrumb.
-      if (!empty($group->field_parent_section)) {
-        $parent = node_load($group->field_parent_section[LANGUAGE_NONE][0]['target_id']);
+      // If the group has a parent section or documentation guide, add it to
+      // the breadcrumb.
+      $parent = $group;
+      while ((!empty($parent->field_parent_section) && $parent = node_load($parent->field_parent_section[LANGUAGE_NONE][0]['target_id'])) || (!empty($parent->og_group_ref_documentation) && $parent = node_load($parent->og_group_ref_documentation[LANGUAGE_NONE][0]['target_id']))) {
         $uri = entity_uri('node', $parent);
         array_splice($active_trail, 1, 0, array(array(
           'title' => entity_label($context['group_type'], $parent),
           'href' => $uri['path'],
           'localized_options' => array(),
         )));
+      }
+
+      // If we are in a Documentation Guide, remove Home.
+      if ($group->type === 'guide') {
+        array_shift($active_trail);
       }
     }
   }
@@ -1961,6 +2031,10 @@ function drupalorg_form_aggregator_form_feed_alter(&$form) {
  * Node form alter.
  */
 function drupalorg_form_node_form_alter(&$form) {
+  if (isset($form['#node']->title) && empty($form['#node']->nodechanges_in_block)) {
+    drupal_set_title(t('Edit %title', ['%title' => $form['#node']->title]), PASS_THROUGH);
+  }
+
   // Put log message at the top to encourage use of log messages.
   if (isset($form['revision_information'])) {
     $form['revision_information']['#weight'] = -100;
@@ -1982,6 +2056,20 @@ function drupalorg_form_node_form_alter(&$form) {
   // If this is a new node with OG Menu, put in the menu.
   if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu'])) {
     $form['menu']['enabled']['#default_value'] = 1;
+  }
+
+  // If this is a documentation page or guide, only allow keeping one level of
+  // menu hierarchy.
+  if ($form['#node']->type === 'guide' || $form['#node']->type === 'documentation') {
+    // Only disable so og_menu JS is not confused.
+    $form['menu']['link']['parent']['#element_validate'] = ['drupalorg_form_node_form_no_ancestry'];
+  }
+
+  // Disregard destination for creating group content.
+  if (isset($_GET['destination']) && ((isset($_GET['og_group_ref_documentation']) && $_GET['destination'] === 'node/' . $_GET['og_group_ref_documentation']) || (isset($_GET['og_group_ref']) && $_GET['destination'] === 'node/' . $_GET['og_group_ref']))) {
+    $action = drupal_parse_url($form['#action']);
+    unset($action['query']['destination']);
+    $form['#action'] = url(ltrim($action['path'], '/'), $action);
   }
 
   // Add class 'prevent-multiple-submit-form' to node edit form.
@@ -2034,6 +2122,15 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
     $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div><a href="#" class="customer-suggestion" data-string="' . check_plain(drupalorg_entityreference_string($nid, $title)) . '">' . t('<span class="element-invisible">Add customer </span>@title', array('@title' => trim($title))) . '</a></div>';
   }
   $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div class="description">' . t('New customers need an <a href="/node/add/organization">organization page</a>.') . '</div>';
+}
+
+/**
+ * Element validate callback, make sure menu hierarchy is not used.
+ */
+function drupalorg_form_node_form_no_ancestry($element) {
+  if (!preg_match('/:0$/', $element['#value'])) {
+    form_error($element, t('Menu hierarchy is not allowed in documentation.'));
+  }
 }
 
 /**
@@ -3101,8 +3198,13 @@ function drupalorg_node_insert($node) {
     }
     node_save($node);
   }
-  elseif (project_release_node_is_release($node) && project_release_is_security_update($node)) {
-    drupal_mail('drupalorg', 'security_release', 'security@drupal.org', language_default(), array('node' => $node));
+  elseif (project_release_node_is_release($node)) {
+    if (project_release_is_security_update($node)) {
+      drupal_mail('drupalorg', 'security_release', 'security@drupal.org', language_default(), array('node' => $node));
+    }
+  }
+  elseif (project_node_is_project($node)) {
+    _drupalorg_node_update_project($node);
   }
 }
 
@@ -3130,6 +3232,26 @@ function drupalorg_node_update($node) {
         }
       }
     }
+  }
+  elseif (project_node_is_project($node)) {
+    _drupalorg_node_update_project($node);
+  }
+}
+
+/**
+ * Run when inserting or updating a project node.
+ */
+function _drupalorg_node_update_project($node) {
+  // Alias release listing path for projects with releases and a machine name.
+  if (!empty($node->field_project_has_releases[LANGUAGE_NONE][0]['value']) && !empty($node->field_project_machine_name[LANGUAGE_NONE][0]['value'])) {
+    $path = [
+      'source' => 'node/' . $node->nid . '/release',
+      'alias' => 'project/' . drupal_encode_path($node->field_project_machine_name[LANGUAGE_NONE][0]['value']) . '/releases',
+    ];
+    if ($existing = path_load($path['source'])) {
+      $path['pid'] = $existing['pid'];
+    }
+    path_save($path);
   }
 }
 
@@ -4214,12 +4336,7 @@ function drupalorg_field_formatter_info() {
  * Implements hook_field_formatter_view().
  */
 function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  if ($entity_type != 'user') {
-    return;
-  }
-
   $element = array();
-  $settings = $display['settings'];
 
   switch ($display['type']) {
     case 'user_pictures':
@@ -4610,9 +4727,16 @@ function drupalorg_og_ui_get_group_admin($group_type, $gid) {
  * Implements hook_pathauto_alias_alter().
  */
 function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
-  // Do not include the "about" group name in the path for posts in the About
-  // section.
-  if ($context['module'] === 'node' && $context['type'] === 'post' && ($context['op'] === 'insert' || $context['op'] === 'update') && $context['data']['node']->og_group_ref[LANGUAGE_NONE][0]['target_id'] == 2603760) {
-    $alias = preg_replace('#^about/#', '', $alias);
+  if ($context['module'] === 'node') {
+    // Do not include the "about" group name in the path for posts in the About
+    // section.
+    if ($context['type'] === 'post' && ($context['op'] === 'insert' || $context['op'] === 'update') && $context['data']['node']->og_group_ref[LANGUAGE_NONE][0]['target_id'] == 2603760) {
+      $alias = preg_replace('#^about/#', '', $alias);
+    }
+
+    // Keep punctuation in release version numbers.
+    if ($context['type'] === 'project_release') {
+      $alias = preg_replace('#/[^/]*$#', '/' . $context['data']['node']->field_release_version[LANGUAGE_NONE][0]['value'], $alias);
+    }
   }
 }

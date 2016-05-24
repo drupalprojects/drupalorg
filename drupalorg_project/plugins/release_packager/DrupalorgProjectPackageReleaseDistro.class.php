@@ -233,7 +233,19 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
   public function recordPackageMetadata($metadata) {
     $local_projects = array();
     if (!empty($metadata['project'])) {
-      foreach ($metadata['project'] as $name => $project) {
+      foreach ($metadata['project'] as $project) {
+        if (!empty($project['project']) && ($project_node = project_load($project['project'])) && !empty($project['version'])) {
+          $query = new EntityFieldQuery();
+          $result = $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', project_release_release_node_types())
+            ->fieldCondition('field_release_project', 'target_id', $project_node->nid)
+            ->fieldCondition('field_release_version', 'value', $project['version'])
+            ->range(0, 1)
+            ->execute();
+          if (isset($result['node'])) {
+            list($project['nid']) = array_keys($result['node']);
+          }
+        }
         if (!empty($project['nid'])) {
           $local_projects[] = $project['nid'];
           $this->recordPatchInfo($project, $project['nid'], 'local');

@@ -643,5 +643,12 @@ function drupalorg_projects_strongarm() {
   );
   $export['panelizer_node:project_release_default'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_project_release_pattern';
+  $strongarm->value = 'project/[node:field-release-project:field-project-machine-name]/releases/[node:field-release-version]';
+  $export['pathauto_node_project_release_pattern'] = $strongarm;
+
   return $export;
 }
