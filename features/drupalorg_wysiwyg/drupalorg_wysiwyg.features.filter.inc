@@ -42,7 +42,11 @@ function drupalorg_wysiwyg_filter_default_formats() {
         'weight' => -47,
         'status' => 1,
         'settings' => array(
+<<<<<<< HEAD
           'allowed_html' => '<h2> <h3> <h4> <h5> <h6> <em> <strong> <pre> <code> <del> <img> <blockquote> <q> <cite> <sup> <sub> <s> <p> <br>  <ul> <ol> <li> <dl> <dt> <dd> <a> <address> <b> <u> <i> <table> <tr> <td> <th> <tbody> <thead> <tfoot> <colgroup> <caption> <hr> <div> <!-->',
+=======
+          'allowed_html' => '<h2> <h3> <h4> <h5> <h6> <em> <strong> <pre> <code> <del> <img> <blockquote> <q> <cite> <sup> <sub> <s> <p> <br> <ul> <ol> <li> <dl> <dt> <dd> <a> <b> <u> <i> <table> <tr> <td> <th> <tbody> <thead> <tfoot> <colgroup> <caption> <hr> <div> <!-->',
+>>>>>>> 2578695-ckeditor
           'filter_html_help' => 1,
           'filter_html_nofollow' => 1,
         ),
@@ -82,7 +86,11 @@ function drupalorg_wysiwyg_filter_default_formats() {
         'weight' => 9,
         'status' => 1,
         'settings' => array(
+<<<<<<< HEAD
           'nowrap_expand' => 1,
+=======
+          'nowrap_expand' => 0,
+>>>>>>> 2578695-ckeditor
           'codefilter_prism' => 1,
         ),
       ),

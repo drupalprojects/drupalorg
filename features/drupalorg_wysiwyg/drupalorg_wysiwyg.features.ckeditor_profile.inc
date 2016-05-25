@@ -50,7 +50,11 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'extraAllowedContent' => '',
         'enter_mode' => 'p',
         'shift_enter_mode' => 'br',
+<<<<<<< HEAD
         'font_format' => 'p;h2;h3;h4;h5;h6;pre;div;address',
+=======
+        'font_format' => 'p;h2;h3;h4;h5;h6;pre;div',
+>>>>>>> 2578695-ckeditor
         'custom_formatting' => 'f',
         'formatting' => array(
           'custom_formatting_options' => array(
@@ -209,7 +213,11 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'extraAllowedContent' => '',
         'enter_mode' => 'p',
         'shift_enter_mode' => 'br',
+<<<<<<< HEAD
         'font_format' => 'p;h2;h3;h4;h5;h6;pre;address',
+=======
+        'font_format' => 'p;h2;h3;h4;h5;h6;pre',
+>>>>>>> 2578695-ckeditor
         'custom_formatting' => 'f',
         'formatting' => array(
           'custom_formatting_options' => array(

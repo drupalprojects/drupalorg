@@ -1164,9 +1164,13 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       // If we are on a post page, add Blog to the breadcrumb.
       if (!empty($node) && $node->type === 'post') {
         $uri = entity_uri($context['group_type'], $group);
+        $path = drupal_get_path_alias($uri['path']) . '/blog';
+        if ($redirect = redirect_load_by_source($path)) {
+          $path = $redirect->redirect;
+        }
         array_splice($active_trail, 1, 0, array(array(
           'title' => t('Blog'),
-          'href' => url($uri['path']) . '/blog',
+          'href' => url($path),
           'localized_options' => array(),
         )));
       }
@@ -2043,7 +2047,7 @@ function drupalorg_form_aggregator_form_feed_alter(&$form) {
  * Node form alter.
  */
 function drupalorg_form_node_form_alter(&$form) {
-  if (isset($form['#node']->title) && $form['#node']->type !== 'project_issue') {
+  if (isset($form['#node']->title) && empty($form['#node']->nodechanges_in_block)) {
     drupal_set_title(t('Edit %title', ['%title' => $form['#node']->title]), PASS_THROUGH);
   }
 
@@ -2153,6 +2157,7 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
   }
   $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div class="description">' . t('New customers need an <a href="/node/add/organization">organization page</a>.') . '</div>';
 }
+
 
 /**
  * Element validate callback, make sure menu hierarchy is not used.
@@ -3273,8 +3278,13 @@ function drupalorg_node_insert($node) {
     }
     node_save($node);
   }
-  elseif (project_release_node_is_release($node) && project_release_is_security_update($node)) {
-    drupal_mail('drupalorg', 'security_release', 'security@drupal.org', language_default(), array('node' => $node));
+  elseif (project_release_node_is_release($node)) {
+    if (project_release_is_security_update($node)) {
+      drupal_mail('drupalorg', 'security_release', 'security@drupal.org', language_default(), array('node' => $node));
+    }
+  }
+  elseif (project_node_is_project($node)) {
+    _drupalorg_node_update_project($node);
   }
 }
 
@@ -3302,6 +3312,26 @@ function drupalorg_node_update($node) {
         }
       }
     }
+  }
+  elseif (project_node_is_project($node)) {
+    _drupalorg_node_update_project($node);
+  }
+}
+
+/**
+ * Run when inserting or updating a project node.
+ */
+function _drupalorg_node_update_project($node) {
+  // Alias release listing path for projects with releases and a machine name.
+  if (!empty($node->field_project_has_releases[LANGUAGE_NONE][0]['value']) && !empty($node->field_project_machine_name[LANGUAGE_NONE][0]['value'])) {
+    $path = [
+      'source' => 'node/' . $node->nid . '/release',
+      'alias' => 'project/' . drupal_encode_path($node->field_project_machine_name[LANGUAGE_NONE][0]['value']) . '/releases',
+    ];
+    if ($existing = path_load($path['source'])) {
+      $path['pid'] = $existing['pid'];
+    }
+    path_save($path);
   }
 }
 
@@ -4822,9 +4852,16 @@ function drupalorg_og_ui_get_group_admin($group_type, $gid) {
  * Implements hook_pathauto_alias_alter().
  */
 function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
-  // Do not include the "about" group name in the path for posts in the About
-  // section.
-  if ($context['module'] === 'node' && $context['type'] === 'post' && ($context['op'] === 'insert' || $context['op'] === 'update') && $context['data']['node']->og_group_ref[LANGUAGE_NONE][0]['target_id'] == 2603760) {
-    $alias = preg_replace('#^about/#', '', $alias);
+  if ($context['module'] === 'node') {
+    // Do not include the "about" group name in the path for posts in the About
+    // section.
+    if ($context['type'] === 'post' && ($context['op'] === 'insert' || $context['op'] === 'update') && $context['data']['node']->og_group_ref[LANGUAGE_NONE][0]['target_id'] == 2603760) {
+      $alias = preg_replace('#^about/#', '', $alias);
+    }
+
+    // Keep punctuation in release version numbers.
+    if ($context['type'] === 'project_release') {
+      $alias = preg_replace('#/[^/]*$#', '/' . $context['data']['node']->field_release_version[LANGUAGE_NONE][0]['value'], $alias);
+    }
   }
 }
