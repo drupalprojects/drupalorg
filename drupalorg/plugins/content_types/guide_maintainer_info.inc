@@ -20,7 +20,7 @@ function drupalorg_guide_maintainer_info($subtype, $conf, $args, $context = NULL
         break;
 
       case 'Needs maintainers':
-        $block->content = t('This guide needs maintainers. <a href="!learn">Learn more</a> or <a href="!discuss">become maintainer</a>.', ['!learn' => url('contribute/documentation'), '!discuss' => url('node/' . $context->data->nid . '/discuss')]);
+        $block->content = t('This guide needs maintainers. <a href="!learn">Learn more</a> or <a href="!discuss">become maintainer</a>.', ['!learn' => url('contribute/documentation'), '!discuss' => url('node/' . $context->data->nid . '/discuss', ['query' => ['become-maintainer' => TRUE]])]);
         break;
     }
   }

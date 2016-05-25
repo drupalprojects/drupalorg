@@ -2077,10 +2077,17 @@ function drupalorg_form_node_form_alter(&$form) {
   // If this is a documentation page or guide, only allow keeping one level of
   // menu hierarchy.
   if ($form['#node']->type === 'guide' || $form['#node']->type === 'documentation') {
-    // Only disable so og_menu JS is not confused.
-    $form['menu']['link']['parent']['#element_validate'] = ['drupalorg_form_node_form_no_ancestry'];
+    if (isset($form['menu'])) {
+      // Only disable so og_menu JS is not confused.
+      $form['menu']['link']['parent']['#element_validate'] = ['drupalorg_form_node_form_no_ancestry'];
+    }
 
     if (!empty($form['#node']->nodechanges_in_block)) {
+      // Add a message about becoming a guide maintainer.
+      if ($form['#node']->type === 'guide' && !empty($_REQUEST['become-maintainer'])) {
+        drupal_set_message(t('Use the “Suggest improvements” field to explain your interest in maintaining the guide. Webmasters will review your comment and may add you as a maintainer.'));
+      }
+
       // Hide most fields.
       foreach (array_diff(element_children($form), ['field_documentation_status', 'nodechanges_comment', 'actions']) as $key) {
         if (in_array($form[$key]['#type'], ['textfield', 'container', 'fieldset'])) {
@@ -2100,7 +2107,8 @@ function drupalorg_form_node_form_alter(&$form) {
   }
 
   // Disregard destination for creating group content.
-  if (isset($_GET['destination']) && isset($_GET['og_group_ref_documentation']) && $_GET['destination'] === 'node/' . $_GET['og_group_ref_documentation']) {
+  if (isset($_GET['destination']) && ((isset($_GET['og_group_ref_documentation']) && $_GET['destination'] === 'node/' . $_GET['og_group_ref_documentation']) || (isset($_GET['og_group_ref']) && $_GET['destination'] === 'node/' . $_GET['og_group_ref']))) {
+
     $action = drupal_parse_url($form['#action']);
     unset($action['query']['destination']);
     $form['#action'] = url(ltrim($action['path'], '/'), $action);
@@ -3130,8 +3138,8 @@ function drupalorg_comment_view($comment, $view_mode, $langcode) {
   // Use fasttoggle 'publish' link instead of the core approve link.
   unset($comment->content['links']['comment']['#links']['comment-approve']);
 
-  // Do not show reply links on every Documentation comment.
-  if ($comment->node_type === 'comment_node_documentation') {
+  // Do not show reply links on every Guide & Documentation comment.
+  if ($comment->node_type === 'comment_node_guide' || $comment->node_type === 'comment_node_documentation') {
     unset($comment->content['links']['comment']['#links']['comment-reply']);
   }
 }
