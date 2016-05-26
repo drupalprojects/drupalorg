@@ -18,18 +18,18 @@ function drupalorg_wysiwyg_filter_default_formats() {
     'status' => 1,
     'weight' => -1,
     'filters' => array(
-      'filter_autop' => array(
-        'weight' => -49,
-        'status' => 1,
-        'settings' => array(),
-      ),
       'codefilter' => array(
-        'weight' => -48,
+        'weight' => -49,
         'status' => 1,
         'settings' => array(
           'nowrap_expand' => 0,
           'codefilter_prism' => 1,
         ),
+      ),
+      'filter_autop' => array(
+        'weight' => -48,
+        'status' => 1,
+        'settings' => array(),
       ),
       'filter_url' => array(
         'weight' => -47,
@@ -73,33 +73,33 @@ function drupalorg_wysiwyg_filter_default_formats() {
     'status' => 1,
     'weight' => 0,
     'filters' => array(
-      'filter_autop' => array(
-        'weight' => 0,
-        'status' => 1,
-        'settings' => array(),
-      ),
       'codefilter' => array(
-        'weight' => 9,
+        'weight' => -48,
         'status' => 1,
         'settings' => array(
           'nowrap_expand' => 0,
           'codefilter_prism' => 1,
         ),
       ),
+      'filter_autop' => array(
+        'weight' => -47,
+        'status' => 1,
+        'settings' => array(),
+      ),
+      'filter_project_issue_link' => array(
+        'weight' => -44,
+        'status' => 1,
+        'settings' => array(),
+      ),
       'filter_url' => array(
-        'weight' => 10,
+        'weight' => -43,
         'status' => 1,
         'settings' => array(
           'filter_url_length' => 72,
         ),
       ),
-      'filter_project_issue_link' => array(
-        'weight' => 10,
-        'status' => 1,
-        'settings' => array(),
-      ),
       'filter_htmlcorrector' => array(
-        'weight' => 11,
+        'weight' => -42,
         'status' => 1,
         'settings' => array(),
       ),
