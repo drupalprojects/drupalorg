@@ -37,7 +37,7 @@ function drupalorg_documentation_node_info() {
     'documentation' => array(
       'name' => t('Documentation page'),
       'base' => 'node_content',
-      'description' => t('Documentation for Drupal core or contributed projects.'),
+      'description' => t('DO NOT USE for now, we are still testing these. Please. kkthx. - tvn'),
       'has_title' => '1',
       'title_label' => t('Title'),
       'help' => '',
@@ -45,7 +45,7 @@ function drupalorg_documentation_node_info() {
     'guide' => array(
       'name' => t('Documentation guide'),
       'base' => 'node_content',
-      'description' => t('Documentation guide, a structural content type used to organize a set of documentation pages around specific topic.'),
+      'description' => t('DO NOT USE for now, we are still testing these. Please. kkthx. - tvn'),
       'has_title' => '1',
       'title_label' => t('Title'),
       'help' => '',
