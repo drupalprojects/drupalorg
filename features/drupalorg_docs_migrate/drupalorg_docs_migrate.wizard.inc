@@ -84,11 +84,10 @@ function drupalorg_docs_migrate_form($node, $step = NULL) {
   $output = drupal_render($form);
 
   if ($output === FALSE || !empty($form_state['complete'])) {
-    batch_process();
-    //return render(drupalorg_docs_migrate_get_result($object)) . "\n\r" . l(t('Back'), $user->uid . '/tickets');
+    return render(drupalorg_docs_migrate_get_result($object));
   }
   elseif (!empty($form_state['cancel'])) {
-    drupal_goto('user/'. $user->uid . '/tickets');
+    drupal_goto('node/'. $node->nid);
   }
   else {
     return $output;
@@ -176,7 +175,7 @@ function drupalorg_docs_migrate_wizard_finish(&$form_state) {
     );
 
     batch_set($batch);
-    batch_process('admin/content');
+    batch_process('node/' . $form_state['object']->nid);
   }
 }
 
@@ -385,6 +384,6 @@ function _drupalorg_docs_migrate_batch_finished($success, $results, $operations)
  *   returns renderable array for multistep form result output.
  */
 function drupalorg_docs_migrate_get_result($object) {
-  //$output = t("You've been successfully registered!");
-  //return $output;
+  $output = t("Book has been successfully migrated!");
+  return $output;
 }
