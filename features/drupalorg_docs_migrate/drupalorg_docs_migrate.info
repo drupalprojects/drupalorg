@@ -1,0 +1,8 @@
+name = drupalorg_docs_migrate
+description = Migration for Drupal.org Documentation
+core = 7.x
+package = Features
+version = 7.x-1.0
+dependencies[] = flag
+features[features_api][] = api:2
+features[flag][] = migrate
