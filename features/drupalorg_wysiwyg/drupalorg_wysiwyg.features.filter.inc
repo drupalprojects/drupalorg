@@ -19,7 +19,7 @@ function drupalorg_wysiwyg_filter_default_formats() {
     'weight' => -1,
     'filters' => array(
       'codefilter' => array(
-        'weight' => -50,
+        'weight' => -49,
         'status' => 1,
         'settings' => array(
           'nowrap_expand' => 0,
@@ -27,42 +27,38 @@ function drupalorg_wysiwyg_filter_default_formats() {
         ),
       ),
       'filter_autop' => array(
-        'weight' => -49,
+        'weight' => -48,
         'status' => 1,
         'settings' => array(),
       ),
       'filter_url' => array(
-        'weight' => -48,
+        'weight' => -47,
         'status' => 1,
         'settings' => array(
           'filter_url_length' => 72,
         ),
       ),
       'filter_html' => array(
-        'weight' => -47,
+        'weight' => -46,
         'status' => 1,
         'settings' => array(
-<<<<<<< HEAD
-          'allowed_html' => '<h2> <h3> <h4> <h5> <h6> <em> <strong> <pre> <code> <del> <img> <blockquote> <q> <cite> <sup> <sub> <s> <p> <br>  <ul> <ol> <li> <dl> <dt> <dd> <a> <address> <b> <u> <i> <table> <tr> <td> <th> <tbody> <thead> <tfoot> <colgroup> <caption> <hr> <div> <!-->',
-=======
           'allowed_html' => '<h2> <h3> <h4> <h5> <h6> <em> <strong> <pre> <code> <del> <img> <blockquote> <q> <cite> <sup> <sub> <s> <p> <br> <ul> <ol> <li> <dl> <dt> <dd> <a> <b> <u> <i> <table> <tr> <td> <th> <tbody> <thead> <tfoot> <colgroup> <caption> <hr> <div> <!-->',
->>>>>>> 2578695-ckeditor
           'filter_html_help' => 1,
           'filter_html_nofollow' => 1,
         ),
       ),
       'filter_project_issue_link' => array(
-        'weight' => -46,
-        'status' => 1,
-        'settings' => array(),
-      ),
-      'filter_htmlcorrector' => array(
         'weight' => -45,
         'status' => 1,
         'settings' => array(),
       ),
-      'filter_html_image_secure' => array(
+      'filter_htmlcorrector' => array(
         'weight' => -44,
+        'status' => 1,
+        'settings' => array(),
+      ),
+      'filter_html_image_secure' => array(
+        'weight' => -42,
         'status' => 1,
         'settings' => array(),
       ),
@@ -77,37 +73,33 @@ function drupalorg_wysiwyg_filter_default_formats() {
     'status' => 1,
     'weight' => 0,
     'filters' => array(
-      'filter_autop' => array(
-        'weight' => 0,
-        'status' => 1,
-        'settings' => array(),
-      ),
       'codefilter' => array(
-        'weight' => 9,
+        'weight' => -48,
         'status' => 1,
         'settings' => array(
-<<<<<<< HEAD
-          'nowrap_expand' => 1,
-=======
           'nowrap_expand' => 0,
->>>>>>> 2578695-ckeditor
           'codefilter_prism' => 1,
         ),
       ),
+      'filter_autop' => array(
+        'weight' => -47,
+        'status' => 1,
+        'settings' => array(),
+      ),
+      'filter_project_issue_link' => array(
+        'weight' => -44,
+        'status' => 1,
+        'settings' => array(),
+      ),
       'filter_url' => array(
-        'weight' => 10,
+        'weight' => -43,
         'status' => 1,
         'settings' => array(
           'filter_url_length' => 72,
         ),
       ),
-      'filter_project_issue_link' => array(
-        'weight' => 10,
-        'status' => 1,
-        'settings' => array(),
-      ),
       'filter_htmlcorrector' => array(
-        'weight' => 11,
+        'weight' => -42,
         'status' => 1,
         'settings' => array(),
       ),

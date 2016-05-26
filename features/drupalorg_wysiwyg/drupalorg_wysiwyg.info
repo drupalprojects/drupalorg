@@ -1,4 +1,4 @@
-name = Drupalorg WYSIWYG
+name = Drupal.org WYSIWYG
 description = Provides a rich text editor for content creation.
 core = 7.x
 package = Features
