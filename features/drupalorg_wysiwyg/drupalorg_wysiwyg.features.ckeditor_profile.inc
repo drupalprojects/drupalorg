@@ -35,7 +35,6 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
   [\'Link\',\'Unlink\',\'Anchor\'],
   [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\'],
   [\'Undo\',\'Redo\',\'Find\',\'Replace\'],
-  [\'Maximize\']
 ]',
         'expand' => 't',
         'default' => 't',
@@ -50,7 +49,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'extraAllowedContent' => '',
         'enter_mode' => 'p',
         'shift_enter_mode' => 'br',
-        'font_format' => 'p;h2;h3;h4;h5;h6;pre;div',
+        'font_format' => 'p;h2;h3;h4;h5;h6;pre',
         'custom_formatting' => 'f',
         'formatting' => array(
           'custom_formatting_options' => array(
@@ -192,9 +191,8 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
   [\'Bold\',\'Italic\',\'Strike\',\'Code\',\'Format\'],
   [\'NumberedList\',\'BulletedList\',\'-\',\'Blockquote\'],
   [\'Link\',\'Unlink\',\'Anchor\'],
-  [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\',\'Iframe\'],
+  [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\'],
   [\'Undo\',\'Redo\',\'Find\',\'Replace\'],
-  [\'ShowBlocks\', \'Maximize\']
 ]',
         'expand' => 't',
         'default' => 't',
