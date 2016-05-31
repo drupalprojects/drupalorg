@@ -34,7 +34,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
   [\'NumberedList\',\'BulletedList\',\'-\',\'Blockquote\'],
   [\'Link\',\'Unlink\',\'Anchor\'],
   [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\'],
-  [\'Undo\',\'Redo\',\'Find\',\'Replace\'],
+  [\'Undo\',\'Redo\',\'Find\',\'Replace\']
 ]',
         'expand' => 't',
         'default' => 't',
@@ -192,7 +192,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
   [\'NumberedList\',\'BulletedList\',\'-\',\'Blockquote\'],
   [\'Link\',\'Unlink\',\'Anchor\'],
   [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\'],
-  [\'Undo\',\'Redo\',\'Find\',\'Replace\'],
+  [\'Undo\',\'Redo\',\'Find\',\'Replace\']
 ]',
         'expand' => 't',
         'default' => 't',
@@ -230,7 +230,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'UserFilesAbsolutePath' => '%d%b%f/',
         'forcePasteAsPlainText' => 'f',
         'html_entities' => 'f',
-        'scayt_autoStartup' => 't',
+        'scayt_autoStartup' => 'f',
         'theme_config_js' => 't',
         'js_conf' => '',
         'loadPlugins' => array(
