@@ -731,7 +731,7 @@ function drupalorg_block_configure($delta = '') {
       $form['text_link'] = array(
         '#type' => 'textfield',
         '#title' => t('Call to action link'),
-        '#size' => 500,
+        '#maxlength' => 500,
         '#default_value' => variable_get('drupalorg_announcements_text_link', ''),
       );
 
