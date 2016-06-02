@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * Implements hook_install().
+ *
+ * Revert the wysiwyg editor, and disable bueditor
+ */
+function drupalorg_wysiwyg_install() {
+  features_revert(array('drupalorg_wysiwyg' => array('ckeditor_profile', 'filter')));
+
+  // Remove the default 'Advanced CKeditor setting
+  db_delete('ckeditor_settings')
+    ->condition('name', 'Advanced')
+    ->execute();
+
+  // Update input format configurations that might not exist.
+  // Useful for subsites that have correct input filter names.
+  db_update('ckeditor_input_format')
+    ->fields(array('name' => 'Filtered'))
+    ->condition('format', 'filtered_html')
+    ->execute();
+  db_update('ckeditor_input_format')
+    ->fields(array('name' => 'Full'))
+    ->condition('format', 'full_html')
+    ->execute();
+  db_delete('ckeditor_input_format')
+    ->condition('name', 'Advanced')
+    ->execute();
+
+  // Because we're inserting a serialized array, use db_query instead.
+  $serialized = 'a:3:{i:1;a:2:{s:7:"default";s:2:"10";s:11:"alternative";s:1:"0";}i:3;a:2:{s:7:"default";s:2:"10";s:11:"alternative";s:1:"0";}i:5;a:2:{s:7:"default";s:1:"0";s:11:"alternative";s:1:"0";}}';
+  db_insert("bueditor_plus_profiles")
+    ->fields(array(
+      'pid' => 1,
+      'name' => 'BUEditor Default',
+      'data' => $serialized,
+      'global' => 1,
+    ))
+    ->execute();
+}
