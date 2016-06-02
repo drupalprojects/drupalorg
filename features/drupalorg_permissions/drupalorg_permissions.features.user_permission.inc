@@ -483,6 +483,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'bueditor',
   );
 
+  // Exported permission: 'administer ckeditor'.
+  $permissions['administer ckeditor'] = array(
+    'name' => 'administer ckeditor',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'ckeditor',
+  );
+
   // Exported permission: 'administer comments'.
   $permissions['administer comments'] = array(
     'name' => 'administer comments',
@@ -2001,6 +2010,15 @@ function drupalorg_permissions_user_default_permissions() {
       'webmaster' => 'webmaster',
     ),
     'module' => 'path',
+  );
+
+  // Exported permission: 'customize ckeditor'.
+  $permissions['customize ckeditor'] = array(
+    'name' => 'customize ckeditor',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'ckeditor',
   );
 
   // Exported permission: 'delete any book content'.
