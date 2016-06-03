@@ -3247,6 +3247,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'sshkey',
   );
 
+  // Exported permission: 'manage distil status'.
+  $permissions['manage distil status'] = array(
+    'name' => 'manage distil status',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'distil_registration',
+  );
+
   // Exported permission: 'manage features'.
   $permissions['manage features'] = array(
     'name' => 'manage features',
