@@ -53,13 +53,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'views',
   );
 
-  // Exported permission: 'access beanstalkd stats'.
-  $permissions['access beanstalkd stats'] = array(
-    'name' => 'access beanstalkd stats',
-    'roles' => array(),
-    'module' => 'beanstalkd',
-  );
-
   // Exported permission: 'access comments'.
   $permissions['access comments'] = array(
     'name' => 'access comments',
@@ -3245,6 +3238,15 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'sshkey',
+  );
+
+  // Exported permission: 'manage distil status'.
+  $permissions['manage distil status'] = array(
+    'name' => 'manage distil status',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'distil_registration',
   );
 
   // Exported permission: 'manage features'.
