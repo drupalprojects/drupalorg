@@ -53,6 +53,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'views',
   );
 
+  // Exported permission: 'access beanstalkd stats'.
+  $permissions['access beanstalkd stats'] = array(
+    'name' => 'access beanstalkd stats',
+    'roles' => array(),
+    'module' => 'beanstalkd',
+  );
+
   // Exported permission: 'access comments'.
   $permissions['access comments'] = array(
     'name' => 'access comments',
