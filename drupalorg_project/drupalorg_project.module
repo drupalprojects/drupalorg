@@ -1554,29 +1554,6 @@ function drupalorg_project_form_views_exposed_form_alter(&$form, &$form_state) {
     case 'project_issue_project_searchapi':
       // Force status default value.
       $form['status']['#default_value'] = 'Open';
-      // Intended fall-through.
-    case 'project_issue_search_all_searchapi':
-    case 'project_issue_search_project_searchapi':
-      unset($form['#info']['filter-search_api_views_fulltext']['label']);
-
-      // Do not allow anonymous users to search.
-      if (!user_is_logged_in()) {
-        $form['text']['#disabled'] = TRUE;
-
-        // Override the form label.
-        $form['text']['#title'] = l(t('Search for'), 'user/login', array(
-          'html' => TRUE,
-          'attributes' => array(
-            'title' => t('Log in to enter search terms'),
-          ),
-          'query' => array(
-            'destination' => current_path(),
-          ),
-        ));
-      }
-      else {
-        $form['text']['#title'] = t('Search for');
-      }
       break;
   }
 }
@@ -1695,16 +1672,6 @@ function drupalorg_project_views_post_execute(&$view) {
   }
 }
 
-/**
- * Implementation of hook_form_FORM_ID_alter().
- */
-function drupalorg_project_form_project_issue_issue_cockpit_searchbox_alter(&$form) {
-  // Do not allow anonymous users to search.
-  if (!user_is_logged_in()) {
-    hide($form['text']);
-    hide($form['submit']);
-  }
-}
 
 /**
  * Menu callback for serving up sandbox projects (or redirecting to full).
