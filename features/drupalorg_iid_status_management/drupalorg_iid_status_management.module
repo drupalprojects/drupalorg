@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Drupalorg IID Status Management feature.
- */
-
-include_once 'drupalorg_iid_status_management.features.inc';
