@@ -53,13 +53,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'views',
   );
 
-  // Exported permission: 'access beanstalkd stats'.
-  $permissions['access beanstalkd stats'] = array(
-    'name' => 'access beanstalkd stats',
-    'roles' => array(),
-    'module' => 'beanstalkd',
-  );
-
   // Exported permission: 'access comments'.
   $permissions['access comments'] = array(
     'name' => 'access comments',
@@ -843,13 +836,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
-  // Exported permission: 'administer panelizer comment comment_node_packaging_whitelist defaults'.
-  $permissions['administer panelizer comment comment_node_packaging_whitelist defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_packaging_whitelist defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
   // Exported permission: 'administer panelizer comment comment_node_page defaults'.
   $permissions['administer panelizer comment comment_node_page defaults'] = array(
     'name' => 'administer panelizer comment comment_node_page defaults',
@@ -864,20 +850,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
-  // Exported permission: 'administer panelizer comment comment_node_project_distribution defaults'.
-  $permissions['administer panelizer comment comment_node_project_distribution defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_distribution defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer comment comment_node_project_drupalorg defaults'.
-  $permissions['administer panelizer comment comment_node_project_drupalorg defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_drupalorg defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
   // Exported permission: 'administer panelizer comment comment_node_project_issue defaults'.
   $permissions['administer panelizer comment comment_node_project_issue defaults'] = array(
     'name' => 'administer panelizer comment comment_node_project_issue defaults',
@@ -885,37 +857,9 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
-  // Exported permission: 'administer panelizer comment comment_node_project_module defaults'.
-  $permissions['administer panelizer comment comment_node_project_module defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_module defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer comment comment_node_project_release defaults'.
-  $permissions['administer panelizer comment comment_node_project_release defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_release defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
   // Exported permission: 'administer panelizer comment comment_node_project_theme defaults'.
   $permissions['administer panelizer comment comment_node_project_theme defaults'] = array(
     'name' => 'administer panelizer comment comment_node_project_theme defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer comment comment_node_project_theme_engine defaults'.
-  $permissions['administer panelizer comment comment_node_project_theme_engine defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_theme_engine defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer comment comment_node_project_translation defaults'.
-  $permissions['administer panelizer comment comment_node_project_translation defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_translation defaults',
     'roles' => array(),
     'module' => 'panelizer',
   );
@@ -3104,6 +3048,15 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'sshkey',
+  );
+
+  // Exported permission: 'manage distil status'.
+  $permissions['manage distil status'] = array(
+    'name' => 'manage distil status',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'distil_registration',
   );
 
   // Exported permission: 'manage features'.
