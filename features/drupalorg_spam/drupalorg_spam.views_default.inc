@@ -30,6 +30,11 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '25';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = TRUE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'manage_button' => 'manage_button',
@@ -40,12 +45,13 @@ function drupalorg_spam_views_default_views() {
     'roles' => 'roles',
     'names' => 'names',
     'forum_post_titles' => 'forum_post_titles',
+    'first_seen' => 'first_seen',
+    'last_seen' => 'last_seen',
+    'fingerprint_age' => 'fingerprint_age',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
     'manage_button' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -99,6 +105,27 @@ function drupalorg_spam_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'first_seen' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'last_seen' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'fingerprint_age' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
   );
   /* Field: Distil Registration Data: Manage IID Status */
   $handler->display->display_options['fields']['manage_button']['id'] = 'manage_button';
@@ -137,6 +164,18 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['forum_post_titles']['id'] = 'forum_post_titles';
   $handler->display->display_options['fields']['forum_post_titles']['table'] = 'distil_registration';
   $handler->display->display_options['fields']['forum_post_titles']['field'] = 'forum_post_titles';
+  /* Field: Distil Registration Data: First Seen */
+  $handler->display->display_options['fields']['first_seen']['id'] = 'first_seen';
+  $handler->display->display_options['fields']['first_seen']['table'] = 'distil_registration';
+  $handler->display->display_options['fields']['first_seen']['field'] = 'first_seen';
+  /* Field: Distil Registration Data: Last Seen */
+  $handler->display->display_options['fields']['last_seen']['id'] = 'last_seen';
+  $handler->display->display_options['fields']['last_seen']['table'] = 'distil_registration';
+  $handler->display->display_options['fields']['last_seen']['field'] = 'last_seen';
+  /* Field: Distil Registration Data: Fingerprint Age */
+  $handler->display->display_options['fields']['fingerprint_age']['id'] = 'fingerprint_age';
+  $handler->display->display_options['fields']['fingerprint_age']['table'] = 'distil_registration';
+  $handler->display->display_options['fields']['fingerprint_age']['field'] = 'fingerprint_age';
   /* Filter criterion: Distil Registration Data: D_IID Fingerprint */
   $handler->display->display_options['filters']['fingerprint']['id'] = 'fingerprint';
   $handler->display->display_options['filters']['fingerprint']['table'] = 'distil_registration';
@@ -169,6 +208,12 @@ function drupalorg_spam_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'iid_status_management');
   $handler->display->display_options['path'] = 'admin/content/iid_status_management';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Distil';
+  $handler->display->display_options['menu']['description'] = 'Manage IID Fingerprints';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $translatables['IID_Status_Management'] = array(
     t('Master'),
     t('IID Status Management'),
@@ -193,6 +238,9 @@ function drupalorg_spam_views_default_views() {
     t('Roles'),
     t('Usernames'),
     t('Forum Titles'),
+    t('First Seen'),
+    t('Last Seen'),
+    t('Fingerprint Age'),
     t('D_IID Fingerprint'),
     t('Page'),
   );
