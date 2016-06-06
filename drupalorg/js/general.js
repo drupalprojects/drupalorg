@@ -289,6 +289,7 @@
         $('input[name=message]', this).keyup(Drupal.drupalorgUpdateIssueCredit);
         $('input[type=checkbox][id^=by-]', this).change(Drupal.drupalorgUpdateIssueCredit);
         $('input[name=author]', this).change(Drupal.drupalorgUpdateIssueCredit);
+        $('input[name=add_credit]', this).change(Drupal.drupalorgUpdateIssueCredit);
         $('textarea[name=command], textarea[name=command-message]', this).click(function () {
           $(this).select();
         });
@@ -301,6 +302,7 @@
 
   Drupal.drupalorgUpdateIssueCredit = function () {
     var $author = $('#drupalorg-issue-credit-form input[name=author]:checked'),
+      addCredit = $('#drupalorg-issue-credit-form input[name=add_credit]').val(),
       message = $('#drupalorg-issue-credit-form input[name=message]').val(),
       byHtml = [];
 
@@ -315,6 +317,9 @@
       }
       byHtml.push($.trim($this.next('label').html()));
     });
+    if (typeof addCredit !== 'undefined' && addCredit !== '') {
+      by = by.concat(addCredit.split(',').map($.trim));
+    }
 
     // Fill out template. It has already been translated server-side.
     $('#drupalorg-issue-credit-form textarea[name=command]').val(Drupal.formatString(Drupal.settings.drupalorgIssueCreditTemplate, {
