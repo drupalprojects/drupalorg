@@ -439,6 +439,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       $query->propertyCondition('uid', variable_get('project_issue_followup_user', 0), '!=');
       $result = $query->execute();
       $cid_key_map = array();
+      $last_maintainer_comment = 0;
       if (isset($result['comment'])) {
         foreach (comment_load_multiple(array_keys($result['comment'])) as $comment) {
           $comment_wrapper = entity_metadata_wrapper('comment', $comment);
@@ -483,6 +484,11 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           if (isset($existing_credit[$comment->cid])) {
             $table['#rows'][$comment->uid]['#checked'] = TRUE;
           }
+
+          // Keep track of the last time a maintainer commented.
+          if (isset($form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$comment->uid])) {
+            $last_maintainer_comment = max($last_maintainer_comment, $comment->created);
+          }
         }
       }
       $form_state['drupalorg_credit_cids'] = $cid_key_map;
@@ -497,10 +503,12 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             $table['#rows'][$file['uid']]['patches'] += 1;
             $table['#rows'][$file['uid']]['#weight'] += 10000;
             $last_patch_uid = $file['uid'];
+            $table['#rows'][$file['uid']]['#last_patch'] = max($table['#rows'][$file['uid']]['#last_patch'], $file['timestamp']);
           }
           else {
             $table['#rows'][$file['uid']]['files'] += 1;
             $table['#rows'][$file['uid']]['#weight'] += 100;
+            $table['#rows'][$file['uid']]['#last_patch'] = $file['timestamp'];
           }
         }
       }
@@ -551,7 +559,9 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           'data' => array(
             '#type' => 'checkbox',
             '#title' => t($by_text, $row['by']),
-            '#checked' => !is_null($row['patches']) || isset($row['#checked']),
+            // Suggest credit if they uploaded a patch after the last
+            // maintainer comment, or previously received credit.
+            '#checked' => (isset($row['#last_patch']) && $row['#last_patch'] > $last_maintainer_comment) || isset($row['#checked']),
             '#id' => 'by-' . $key,
             '#name' => 'by-' . $key,
             '#attributes' => array(
@@ -584,8 +594,9 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           }
         }
         $first = FALSE;
-        // Remove temporary column.
+        // Remove temporary columns.
         unset($row['#weight']);
+        unset($row['#last_patch']);
       }
 
       $table['#rows'][0] = array(
