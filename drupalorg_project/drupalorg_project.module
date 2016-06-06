@@ -634,6 +634,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           '#maxlength' => NULL,
         ),
         'commenters' => $table,
+        'add_credit' => [],
         'commands' => array(
           '#type' => 'vertical_tabs',
           'full' => array(
@@ -661,7 +662,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         // Add non-commenter row.
         $form['drupalorg_credit_wrapper']['add_credit'] = [
           '#type' => 'textfield',
-          '#title' => t('Add someone else'),
+          '#title' => t('Credit others'),
           '#autocomplete_path' => 'admin/views/ajax/autocomplete/user',
           '#description' => t('A comment for each person will be added and they will be notified.'),
         ];
