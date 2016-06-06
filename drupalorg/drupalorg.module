@@ -4818,6 +4818,16 @@ function drupalorg_mail($key, &$message, $params) {
         url('node/' . $params['node']->nid, array('absolute' => TRUE)),
       );
       break;
+
+    case 'credited_by_maintainer':
+      $wrapper = entity_metadata_wrapper('node', $params['node']);
+      $message['subject'] = t('[@project] You’ve been credited in @title!', ['@project' => $wrapper->field_project->field_project_machine_name->value(), '@title' => $params['node']->title]);
+      $message['body'] = [
+        t('Congratulations, @maintainer credited you in a Drupal.org issue.', ['@maintainer' => $GLOBALS['user']->name]),
+        t('View the issue at @url', ['@url' => url('node/' . $params['node']->nid, ['absolute' => TRUE])]),
+        t('Update attribution as a volunteer or for an organization/customer at @url', ['@url' => url('comment/' . $params['node']->nodechanges_cid . '/edit', ['absolute' => TRUE])]),
+      ];
+      break;
   }
 }
 
