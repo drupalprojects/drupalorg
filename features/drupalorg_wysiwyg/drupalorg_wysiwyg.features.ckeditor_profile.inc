@@ -34,8 +34,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
   [\'NumberedList\',\'BulletedList\',\'-\',\'Blockquote\'],
   [\'Link\',\'Unlink\',\'Anchor\'],
   [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\'],
-  [\'Undo\',\'Redo\',\'Find\',\'Replace\'],
-  [\'Maximize\']
+  [\'Undo\',\'Redo\',\'Find\',\'Replace\']
 ]',
         'expand' => 't',
         'default' => 't',
@@ -50,11 +49,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'extraAllowedContent' => '',
         'enter_mode' => 'p',
         'shift_enter_mode' => 'br',
-<<<<<<< HEAD
-        'font_format' => 'p;h2;h3;h4;h5;h6;pre;div;address',
-=======
         'font_format' => 'p;h2;h3;h4;h5;h6;pre;div',
->>>>>>> 2578695-ckeditor
         'custom_formatting' => 'f',
         'formatting' => array(
           'custom_formatting_options' => array(
@@ -213,11 +208,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'extraAllowedContent' => '',
         'enter_mode' => 'p',
         'shift_enter_mode' => 'br',
-<<<<<<< HEAD
-        'font_format' => 'p;h2;h3;h4;h5;h6;pre;address',
-=======
         'font_format' => 'p;h2;h3;h4;h5;h6;pre',
->>>>>>> 2578695-ckeditor
         'custom_formatting' => 'f',
         'formatting' => array(
           'custom_formatting_options' => array(
@@ -240,7 +231,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'UserFilesAbsolutePath' => '%d%b%f/',
         'forcePasteAsPlainText' => 'f',
         'html_entities' => 'f',
-        'scayt_autoStartup' => 't',
+        'scayt_autoStartup' => 'f',
         'theme_config_js' => 't',
         'js_conf' => '',
         'loadPlugins' => array(
