@@ -35,13 +35,17 @@ function drupalorg_spam_views_default_views() {
     'manage_button' => 'manage_button',
     'fingerprint' => 'fingerprint',
     'iid_status' => 'iid_status',
-    'roles' => 'roles',
     'status' => 'status',
     'fingerprints' => 'fingerprints',
+    'roles' => 'roles',
+    'names' => 'names',
+    'forum_post_titles' => 'forum_post_titles',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
     'manage_button' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -60,13 +64,6 @@ function drupalorg_spam_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'roles' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'status' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -75,6 +72,27 @@ function drupalorg_spam_views_default_views() {
       'empty_column' => 0,
     ),
     'fingerprints' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'roles' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'names' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'forum_post_titles' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -98,10 +116,6 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['iid_status']['id'] = 'iid_status';
   $handler->display->display_options['fields']['iid_status']['table'] = 'distil_registration';
   $handler->display->display_options['fields']['iid_status']['field'] = 'iid_status';
-  /* Field: Distil Registration Data: Roles */
-  $handler->display->display_options['fields']['roles']['id'] = 'roles';
-  $handler->display->display_options['fields']['roles']['table'] = 'distil_registration';
-  $handler->display->display_options['fields']['roles']['field'] = 'roles';
   /* Field: Distil Registration Data: UID Statuses */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'distil_registration';
@@ -111,6 +125,18 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['fingerprints']['id'] = 'fingerprints';
   $handler->display->display_options['fields']['fingerprints']['table'] = 'distil_registration';
   $handler->display->display_options['fields']['fingerprints']['field'] = 'fingerprints';
+  /* Field: Distil Registration Data: Roles */
+  $handler->display->display_options['fields']['roles']['id'] = 'roles';
+  $handler->display->display_options['fields']['roles']['table'] = 'distil_registration';
+  $handler->display->display_options['fields']['roles']['field'] = 'roles';
+  /* Field: Distil Registration Data: Usernames */
+  $handler->display->display_options['fields']['names']['id'] = 'names';
+  $handler->display->display_options['fields']['names']['table'] = 'distil_registration';
+  $handler->display->display_options['fields']['names']['field'] = 'names';
+  /* Field: Distil Registration Data: Forum Titles */
+  $handler->display->display_options['fields']['forum_post_titles']['id'] = 'forum_post_titles';
+  $handler->display->display_options['fields']['forum_post_titles']['table'] = 'distil_registration';
+  $handler->display->display_options['fields']['forum_post_titles']['field'] = 'forum_post_titles';
   /* Filter criterion: Distil Registration Data: D_IID Fingerprint */
   $handler->display->display_options['filters']['fingerprint']['id'] = 'fingerprint';
   $handler->display->display_options['filters']['fingerprint']['table'] = 'distil_registration';
@@ -162,9 +188,11 @@ function drupalorg_spam_views_default_views() {
     t('Manage IID Status'),
     t('Fingerprint'),
     t('IID Status'),
-    t('Roles'),
     t('Statuses'),
     t('Fingerprint Count'),
+    t('Roles'),
+    t('Usernames'),
+    t('Forum Titles'),
     t('D_IID Fingerprint'),
     t('Page'),
   );
