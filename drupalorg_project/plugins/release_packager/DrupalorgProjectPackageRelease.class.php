@@ -91,7 +91,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return 'error';
     }
     // Allow other modules to work with the cloned release repo.
-    module_invoke_all('drupalorg_package_release', $this->repository);
+    module_invoke_all('drupalorg_package_release', $this->repository, $this->release_node);
     // Archive and expand to preserve timestamps.
     if (!drush_shell_cd_and_exec($this->temp_directory, '%s --git-dir=%s archive --format=tar --prefix=%s/ %s | %s x', $this->conf['git'], $this->repository . '/.git', $export_to, $git_tag, $this->conf['tar'])) {
       watchdog('package_error', 'Git archive failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR, $this->release_node_view_link);
