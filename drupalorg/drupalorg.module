@@ -3311,6 +3311,9 @@ function drupalorg_node_update($node) {
       drupalorg_fastly_purge_url($url);
     }
   }
+  elseif (project_node_is_project($node)) {
+    _drupalorg_node_update_project($node);
+  }
 }
 
 /**
@@ -3327,9 +3330,6 @@ function drupalorg_fastly_purge_url($url) {
     if (function_exists('dlm')) {
       dlm($request);
     }
-  }
-  elseif (project_node_is_project($node)) {
-    _drupalorg_node_update_project($node);
   }
 }
 
@@ -4729,8 +4729,8 @@ function drupalorg_project_release_xml_alter(&$xml, $project, $api_tid) {
  * Implements hook_project_release_history_xml_written().
  */
 function drupalorg_project_release_history_xml_written($project, $api_version) {
-    $url = 'http://updates.drupal.org/release-history/' . $project->field_project_machine_name[LANGUAGE_NONE][0]['value'] . '/' . $api_version;
-    drupalorg_fastly_purge_url($url);
+  $url = 'http://updates.drupal.org/release-history/' . $project->field_project_machine_name[LANGUAGE_NONE][0]['value'] . '/' . $api_version;
+  drupalorg_fastly_purge_url($url);
 }
 
 /**
