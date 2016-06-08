@@ -3118,21 +3118,30 @@ function drupalorg_node_update($node) {
     drupalorg_org_request_issue($node);
   }
   elseif (project_release_node_is_release($node)) {
-    if ($fastly_key = variable_get('drupalorg_fastly_key', FALSE)) {
-      $download_base = variable_get('project_release_download_base_' . $node->type, '');
-      $wrapper = entity_metadata_wrapper('node', $node);
-      foreach ($wrapper->field_release_files as $file_wrapper) {
-        $file = $file_wrapper->field_release_file->value();
-        $request = drupal_http_request(project_release_add_download_base($file['uri'], $download_base), array(
-          'method' => 'PURGE',
-          'headers' => array(
-            'Fastly-Key' => $fastly_key,
-          ),
-        ));
-        if (function_exists('dlm')) {
-          dlm($request);
-        }
-      }
+
+    $download_base = variable_get('project_release_download_base_' . $node->type, '');
+    $wrapper = entity_metadata_wrapper('node', $node);
+    foreach ($wrapper->field_release_files as $file_wrapper) {
+      $file = $file_wrapper->field_release_file->value();
+      $url = project_release_add_download_base($file['uri'], $download_base);
+      drupalorg_fastly_purge_url($url);
+    }
+  }
+}
+
+/**
+ * @param $url
+ */
+function drupalorg_fastly_purge_url($url) {
+  if ($fastly_key = variable_get('drupalorg_fastly_key', FALSE)) {
+    $request = drupal_http_request($url, [
+      'method' => 'PURGE',
+      'headers' => [
+        'Fastly-Key' => $fastly_key,
+      ],
+    ]);
+    if (function_exists('dlm')) {
+      dlm($request);
     }
   }
 }
@@ -4473,18 +4482,8 @@ function drupalorg_project_release_xml_alter(&$xml, $project, $api_tid) {
  * Implements hook_project_release_history_xml_written().
  */
 function drupalorg_project_release_history_xml_written($project, $api_version) {
-  if ($fastly_key = variable_get('drupalorg_fastly_key', FALSE)) {
-    $request = drupal_http_request('http://updates.drupal.org/release-history/' . $project->field_project_machine_name[LANGUAGE_NONE][0]['value'] . '/' . $api_version, array(
-      'method' => 'PURGE',
-      'headers' => array(
-        'Fastly-Key' => $fastly_key,
-        'Fastly-Soft-Purge' => 1,
-      ),
-    ));
-    if (function_exists('dlm')) {
-      dlm($request);
-    }
-  }
+    $url = 'http://updates.drupal.org/release-history/' . $project->field_project_machine_name[LANGUAGE_NONE][0]['value'] . '/' . $api_version;
+    drupalorg_fastly_purge_url($url);
 }
 
 /**
