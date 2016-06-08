@@ -425,6 +425,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             'comments' => ($form_state['node']->created < 1438716282) ? 1 : 0,
             'comments-bar' => NULL,
             '#weight' => 0,
+            '#last_patch' => 0,
           ),
         ),
       );
@@ -462,6 +463,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
               'comments' => 1,
               'comments-bar' => NULL,
               '#weight' => 0,
+              '#last_patch' => 0,
             );
           }
 
