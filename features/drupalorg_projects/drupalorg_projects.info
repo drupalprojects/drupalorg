@@ -290,4 +290,5 @@ features[variable][] = panelizer_node:project_release_allowed_layouts_default
 features[variable][] = panelizer_node:project_release_allowed_types
 features[variable][] = panelizer_node:project_release_allowed_types_default
 features[variable][] = panelizer_node:project_release_default
+features[variable][] = pathauto_node_project_release_pattern
 features[views_view][] = project_downloads

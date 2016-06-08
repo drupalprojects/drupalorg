@@ -57,35 +57,6 @@ define('DRUPALORG_DEFAULT_LICENSE_LINK', 'http://www.gnu.org/licenses/old-licens
  * Implementation of hook_menu().
  */
 function drupalorg_project_menu() {
-  // Menu items for patch bingo.
-  $items['bug-bingo'] = array(
-    'title'              => 'Bug bingo',
-    'page callback'      => 'drupalorg_project_bingo_jump',
-    'page arguments'     => array('bug-core'),
-    'access arguments'   => array('access content'),
-    'type'               => MENU_SUGGESTED_ITEM,
-  );
-  $items['contrib-bug-bingo'] = array(
-    'title'              => 'Contrib bug bingo',
-    'page callback'      => 'drupalorg_project_bingo_jump',
-    'page arguments'     => array('bug-contrib'),
-    'access arguments'   => array('access content'),
-    'type'               => MENU_SUGGESTED_ITEM,
-  );
-  $items['patch-bingo'] = array(
-    'title'              => 'Patch bingo',
-    'page callback'      => 'drupalorg_project_bingo_jump',
-    'page arguments'     => array('patch-core'),
-    'access arguments'   => array('access content'),
-    'type'               => MENU_SUGGESTED_ITEM,
-  );
-  $items['contrib-patch-bingo'] = array(
-    'title'              => 'Contrib patch bingo',
-    'page callback'      => 'drupalorg_project_bingo_jump',
-    'page arguments'     => array('patch-contrib'),
-    'access arguments'   => array('access content'),
-    'type'               => MENU_SUGGESTED_ITEM,
-  );
   $items['sandbox/%/%node'] = array(
     // Modeled on $items['node/%node'] will pass through
     'title callback'     => 'node_page_title',
@@ -454,6 +425,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             'comments' => ($form_state['node']->created < 1438716282) ? 1 : 0,
             'comments-bar' => NULL,
             '#weight' => 0,
+            '#last_patch' => 0,
           ),
         ),
       );
@@ -468,6 +440,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       $query->propertyCondition('uid', variable_get('project_issue_followup_user', 0), '!=');
       $result = $query->execute();
       $cid_key_map = array();
+      $last_maintainer_comment = 0;
       if (isset($result['comment'])) {
         foreach (comment_load_multiple(array_keys($result['comment'])) as $comment) {
           $comment_wrapper = entity_metadata_wrapper('comment', $comment);
@@ -490,6 +463,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
               'comments' => 1,
               'comments-bar' => NULL,
               '#weight' => 0,
+              '#last_patch' => 0,
             );
           }
 
@@ -512,6 +486,11 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           if (isset($existing_credit[$comment->cid])) {
             $table['#rows'][$comment->uid]['#checked'] = TRUE;
           }
+
+          // Keep track of the last time a maintainer commented.
+          if (isset($form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$comment->uid]) && $form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$comment->uid]['permissions']['write to vcs']) {
+            $last_maintainer_comment = max($last_maintainer_comment, $comment->created);
+          }
         }
       }
       $form_state['drupalorg_credit_cids'] = $cid_key_map;
@@ -526,10 +505,12 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             $table['#rows'][$file['uid']]['patches'] += 1;
             $table['#rows'][$file['uid']]['#weight'] += 10000;
             $last_patch_uid = $file['uid'];
+            $table['#rows'][$file['uid']]['#last_patch'] = max($table['#rows'][$file['uid']]['#last_patch'], $file['timestamp']);
           }
           else {
             $table['#rows'][$file['uid']]['files'] += 1;
             $table['#rows'][$file['uid']]['#weight'] += 100;
+            $table['#rows'][$file['uid']]['#last_patch'] = $file['timestamp'];
           }
         }
       }
@@ -580,7 +561,9 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           'data' => array(
             '#type' => 'checkbox',
             '#title' => t($by_text, $row['by']),
-            '#checked' => !is_null($row['patches']) || isset($row['#checked']),
+            // Suggest credit if they uploaded a patch after the last
+            // maintainer comment, or previously received credit.
+            '#checked' => (isset($row['#last_patch']) && $row['#last_patch'] > $last_maintainer_comment) || isset($row['#checked']),
             '#id' => 'by-' . $key,
             '#name' => 'by-' . $key,
             '#attributes' => array(
@@ -613,8 +596,9 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           }
         }
         $first = FALSE;
-        // Remove temporary column.
+        // Remove temporary columns.
         unset($row['#weight']);
+        unset($row['#last_patch']);
       }
 
       $table['#rows'][0] = array(
@@ -663,6 +647,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           '#maxlength' => NULL,
         ),
         'commenters' => $table,
+        'add_credit' => [],
         'commands' => array(
           '#type' => 'vertical_tabs',
           'full' => array(
@@ -687,6 +672,13 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       );
       if ($is_maintainer) {
         $form['#submit'][] = 'drupalorg_project_issue_credit_submit';
+        // Add non-commenter row.
+        $form['drupalorg_credit_wrapper']['add_credit'] = [
+          '#type' => 'textfield',
+          '#title' => t('Credit others'),
+          '#autocomplete_path' => 'admin/views/ajax/autocomplete/user',
+          '#description' => t('A comment for each person will be added and they will be notified.'),
+        ];
         $form['drupalorg_credit_wrapper']['help'] = array(
           '#markup' => '<div class="description">' . t('As a project maintainer, use checkboxes to give credit for the issue. Learn more about <a href="@attribution-url">giving credit</a>.', array('@attribution-url' => url('node/52287'))) . '</div>',
         );
@@ -768,6 +760,53 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
  * Form submit callback.
  */
 function drupalorg_project_issue_credit_submit($form, &$form_state) {
+  // Add additional credit.
+  if (!empty($form_state['values']['add_credit'])) {
+    $query = new EntityFieldQuery();
+    $result = $query->entityCondition('entity_type', 'user')
+      ->propertyCondition('status', 1)
+      ->propertyCondition('name', array_filter(array_map('trim', explode(',', $form_state['values']['add_credit']))))
+      ->execute();
+    if (isset($result['user'])) {
+      foreach (user_load_multiple(array_keys($result['user'])) as $account) {
+        // If the user has not commented.
+        if (!in_array($account->uid, $form_state['drupalorg_credit_cids'])) {
+          // Save initial issue comment.
+          $node = node_load($form_state['node']->nid, NULL, TRUE);
+          $node->nodechanges_comment['comment_body'][LANGUAGE_NONE][0] = [
+            'value' => t('!maintainer credited !name.', [
+              '!maintainer' => theme('username', ['account' => $GLOBALS['user']]),
+              '!name' => theme('username', ['account' => $account]),
+            ]),
+            'format' => filter_default_format(),
+          ];
+          $node->nodechanges_comment_attributes = [
+            'project_issue_no_email' => TRUE,
+          ];
+          $node->nodechanges_uid = $account->uid;
+          // Copy attribution from the user’s last comment.
+          if ($cid = db_query_range('SELECT cid FROM {comment} c INNER JOIN {node} n ON n.nid = c.nid AND n.type IN (:issue_types) AND n.status = :node_published WHERE c.status = :comment_published AND c.uid = :uid AND c.created > 1426194356 ORDER BY c.cid DESC', 0, 1, array(':issue_types' => project_issue_issue_node_types(), ':node_published' => NODE_PUBLISHED, ':comment_published' => COMMENT_PUBLISHED, ':uid' => $account->uid))->fetchField()) {
+            $last_comment = comment_load($cid);
+            $node->nodechanges_comment['field_attribute_as_volunteer'] = $last_comment->field_attribute_as_volunteer;
+            $node->nodechanges_comment['field_attribute_contribution_to'] = $last_comment->field_attribute_contribution_to;
+            $node->nodechanges_comment['field_for_customer'] = $last_comment->field_for_customer;
+          }
+          node_save($node);
+
+          // Prepare to record issue credit.
+          $form_state['drupalorg_credit_cids'][$node->nodechanges_cid] = $account->uid;
+
+          // Notify the creditee. See _project_issue_email_notify().
+          $from = '"' . mime_header_encode(t('!name (!site)', array('!name' => $GLOBALS['user']->name, '!site' => variable_get('site_name', 'Drupal')))) . '" <' . variable_get('project_issue_reply_to_' . $node->type, variable_get('site_mail', ini_get('sendmail_from'))) . '>';
+          drupal_mail('drupalorg', 'credited_by_maintainer', $account->mail, LANGUAGE_NONE, ['node' => $node], $from);
+        }
+
+        // Give them credit.
+        $form_state['input']['by-' . $account->uid] = TRUE;
+      }
+    }
+  }
+
   // Record issue credit.
   $form_state['node']->field_issue_credit[LANGUAGE_NONE] = array();
   foreach ($form_state['drupalorg_credit_cids'] as $cid => $key) {
@@ -1032,52 +1071,6 @@ function drupalorg_project_list_branches_core() {
   }
   $output .= '</ul>';
   return $output;
-}
-
-/**
- * SQL randomizer for issues.
- */
-function drupalorg_project_bingo_jump($type = 'bug-core') {
-  $query = new EntityFieldQuery();
-  $query
-    ->entityCondition('entity_type', 'node')
-    ->entityCondition('bundle', project_issue_issue_node_types(), 'IN')
-    ->addTag('drupalorg_bug_bingo')
-    ->range(0, 1);
-
-  list($category, $project) = explode('-', $type);
-
-  if ($category == 'bug') {
-    // Filter to "Active" status only.
-    $query->fieldCondition('field_issue_status', 'value', 1, '=');
-  }
-  else {
-    // Filter to the "has patch" statuses.
-    $status = array(
-      8,  // Needs review
-      13, // Needs work
-      14, // RTBC
-    );
-    $query->fieldCondition('field_issue_status', 'value', $status, 'IN');
-  }
-
-  if ($project == 'core') {
-    $query->fieldCondition('field_project', 'target_id', DRUPALORG_CORE_NID, '=');
-  }
-  else {
-    $query->fieldCondition('field_project', 'target_id', DRUPALORG_CORE_NID, '<>');
-  }
-  $entities = $query->execute();
-  $entities = array_keys($entities['node']);
-  $nid = $entities[0];
-  drupal_goto('node/' . $nid);
-}
-
-/**
- * Query alter for bug bingo. The actual randomization happens here.
- */
-function drupalorg_project_query_drupalorg_bug_bingo_alter($query) {
-  $query->orderRandom();
 }
 
 /**
@@ -1629,29 +1622,6 @@ function drupalorg_project_form_views_exposed_form_alter(&$form, &$form_state) {
     case 'project_issue_project_searchapi':
       // Force status default value.
       $form['status']['#default_value'] = 'Open';
-      // Intended fall-through.
-    case 'project_issue_search_all_searchapi':
-    case 'project_issue_search_project_searchapi':
-      unset($form['#info']['filter-search_api_views_fulltext']['label']);
-
-      // Do not allow anonymous users to search.
-      if (!user_is_logged_in()) {
-        $form['text']['#disabled'] = TRUE;
-
-        // Override the form label.
-        $form['text']['#title'] = l(t('Search for'), 'user/login', array(
-          'html' => TRUE,
-          'attributes' => array(
-            'title' => t('Log in to enter search terms'),
-          ),
-          'query' => array(
-            'destination' => current_path(),
-          ),
-        ));
-      }
-      else {
-        $form['text']['#title'] = t('Search for');
-      }
       break;
   }
 }
@@ -1770,16 +1740,6 @@ function drupalorg_project_views_post_execute(&$view) {
   }
 }
 
-/**
- * Implementation of hook_form_FORM_ID_alter().
- */
-function drupalorg_project_form_project_issue_issue_cockpit_searchbox_alter(&$form) {
-  // Do not allow anonymous users to search.
-  if (!user_is_logged_in()) {
-    hide($form['text']);
-    hide($form['submit']);
-  }
-}
 
 /**
  * Menu callback for serving up sandbox projects (or redirecting to full).

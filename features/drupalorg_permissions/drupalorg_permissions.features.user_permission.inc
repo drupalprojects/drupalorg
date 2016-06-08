@@ -483,6 +483,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'bueditor',
   );
 
+  // Exported permission: 'administer ckeditor'.
+  $permissions['administer ckeditor'] = array(
+    'name' => 'administer ckeditor',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'ckeditor',
+  );
+
   // Exported permission: 'administer comments'.
   $permissions['administer comments'] = array(
     'name' => 'administer comments',
@@ -843,13 +852,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
-  // Exported permission: 'administer panelizer comment comment_node_packaging_whitelist defaults'.
-  $permissions['administer panelizer comment comment_node_packaging_whitelist defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_packaging_whitelist defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
   // Exported permission: 'administer panelizer comment comment_node_page defaults'.
   $permissions['administer panelizer comment comment_node_page defaults'] = array(
     'name' => 'administer panelizer comment comment_node_page defaults',
@@ -864,20 +866,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
-  // Exported permission: 'administer panelizer comment comment_node_project_distribution defaults'.
-  $permissions['administer panelizer comment comment_node_project_distribution defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_distribution defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer comment comment_node_project_drupalorg defaults'.
-  $permissions['administer panelizer comment comment_node_project_drupalorg defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_drupalorg defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
   // Exported permission: 'administer panelizer comment comment_node_project_issue defaults'.
   $permissions['administer panelizer comment comment_node_project_issue defaults'] = array(
     'name' => 'administer panelizer comment comment_node_project_issue defaults',
@@ -885,37 +873,9 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
-  // Exported permission: 'administer panelizer comment comment_node_project_module defaults'.
-  $permissions['administer panelizer comment comment_node_project_module defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_module defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer comment comment_node_project_release defaults'.
-  $permissions['administer panelizer comment comment_node_project_release defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_release defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
   // Exported permission: 'administer panelizer comment comment_node_project_theme defaults'.
   $permissions['administer panelizer comment comment_node_project_theme defaults'] = array(
     'name' => 'administer panelizer comment comment_node_project_theme defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer comment comment_node_project_theme_engine defaults'.
-  $permissions['administer panelizer comment comment_node_project_theme_engine defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_theme_engine defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer comment comment_node_project_translation defaults'.
-  $permissions['administer panelizer comment comment_node_project_translation defaults'] = array(
-    'name' => 'administer panelizer comment comment_node_project_translation defaults',
     'roles' => array(),
     'module' => 'panelizer',
   );
@@ -962,9 +922,107 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panelizer node documentation choice'.
+  $permissions['administer panelizer node documentation choice'] = array(
+    'name' => 'administer panelizer node documentation choice',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node documentation content'.
+  $permissions['administer panelizer node documentation content'] = array(
+    'name' => 'administer panelizer node documentation content',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node documentation context'.
+  $permissions['administer panelizer node documentation context'] = array(
+    'name' => 'administer panelizer node documentation context',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node documentation defaults'.
+  $permissions['administer panelizer node documentation defaults'] = array(
+    'name' => 'administer panelizer node documentation defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node documentation layout'.
+  $permissions['administer panelizer node documentation layout'] = array(
+    'name' => 'administer panelizer node documentation layout',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node documentation overview'.
+  $permissions['administer panelizer node documentation overview'] = array(
+    'name' => 'administer panelizer node documentation overview',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node documentation settings'.
+  $permissions['administer panelizer node documentation settings'] = array(
+    'name' => 'administer panelizer node documentation settings',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panelizer node forum defaults'.
   $permissions['administer panelizer node forum defaults'] = array(
     'name' => 'administer panelizer node forum defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node guide choice'.
+  $permissions['administer panelizer node guide choice'] = array(
+    'name' => 'administer panelizer node guide choice',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node guide content'.
+  $permissions['administer panelizer node guide content'] = array(
+    'name' => 'administer panelizer node guide content',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node guide context'.
+  $permissions['administer panelizer node guide context'] = array(
+    'name' => 'administer panelizer node guide context',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node guide defaults'.
+  $permissions['administer panelizer node guide defaults'] = array(
+    'name' => 'administer panelizer node guide defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node guide layout'.
+  $permissions['administer panelizer node guide layout'] = array(
+    'name' => 'administer panelizer node guide layout',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node guide overview'.
+  $permissions['administer panelizer node guide overview'] = array(
+    'name' => 'administer panelizer node guide overview',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer node guide settings'.
+  $permissions['administer panelizer node guide settings'] = array(
+    'name' => 'administer panelizer node guide settings',
     'roles' => array(),
     'module' => 'panelizer',
   );
@@ -1686,6 +1744,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'create documentation content'.
+  $permissions['create documentation content'] = array(
+    'name' => 'create documentation content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'create forum content'.
   $permissions['create forum content'] = array(
     'name' => 'create forum content',
@@ -1763,6 +1828,15 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full projects',
     'roles' => array(),
     'module' => 'project',
+  );
+
+  // Exported permission: 'create guide content'.
+  $permissions['create guide content'] = array(
+    'name' => 'create guide content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: 'create messages'.
@@ -1938,6 +2012,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'path',
   );
 
+  // Exported permission: 'customize ckeditor'.
+  $permissions['customize ckeditor'] = array(
+    'name' => 'customize ckeditor',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'ckeditor',
+  );
+
   // Exported permission: 'delete any book content'.
   $permissions['delete any book content'] = array(
     'name' => 'delete any book content',
@@ -1966,6 +2049,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'delete any documentation content'.
+  $permissions['delete any documentation content'] = array(
+    'name' => 'delete any documentation content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'delete any forum content'.
   $permissions['delete any forum content'] = array(
     'name' => 'delete any forum content',
@@ -1978,6 +2068,15 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete any full project',
     'roles' => array(),
     'module' => 'project',
+  );
+
+  // Exported permission: 'delete any guide content'.
+  $permissions['delete any guide content'] = array(
+    'name' => 'delete any guide content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: 'delete any organization content'.
@@ -2122,6 +2221,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'delete own documentation content'.
+  $permissions['delete own documentation content'] = array(
+    'name' => 'delete own documentation content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'delete own forum content'.
   $permissions['delete own forum content'] = array(
     'name' => 'delete own forum content',
@@ -2134,6 +2240,13 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete own full project',
     'roles' => array(),
     'module' => 'project',
+  );
+
+  // Exported permission: 'delete own guide content'.
+  $permissions['delete own guide content'] = array(
+    'name' => 'delete own guide content',
+    'roles' => array(),
+    'module' => 'node',
   );
 
   // Exported permission: 'delete own organization content'.
@@ -2498,9 +2611,23 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit any documentation content'.
+  $permissions['edit any documentation content'] = array(
+    'name' => 'edit any documentation content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit any forum content'.
   $permissions['edit any forum content'] = array(
     'name' => 'edit any forum content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'edit any guide content'.
+  $permissions['edit any guide content'] = array(
+    'name' => 'edit any guide content',
     'roles' => array(),
     'module' => 'node',
   );
@@ -2677,6 +2804,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'comment',
   );
 
+  // Exported permission: 'edit own documentation content'.
+  $permissions['edit own documentation content'] = array(
+    'name' => 'edit own documentation content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit own forum content'.
   $permissions['edit own forum content'] = array(
     'name' => 'edit own forum content',
@@ -2684,6 +2818,13 @@ function drupalorg_permissions_user_default_permissions() {
       'authenticated user' => 'authenticated user',
       'email unverified' => 'email unverified',
     ),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'edit own guide content'.
+  $permissions['edit own guide content'] = array(
+    'name' => 'edit own guide content',
+    'roles' => array(),
     'module' => 'node',
   );
 
@@ -3104,6 +3245,15 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'sshkey',
+  );
+
+  // Exported permission: 'manage distil status'.
+  $permissions['manage distil status'] = array(
+    'name' => 'manage distil status',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'distil_registration',
   );
 
   // Exported permission: 'manage features'.
