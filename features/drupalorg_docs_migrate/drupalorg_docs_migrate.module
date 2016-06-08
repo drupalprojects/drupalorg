@@ -64,11 +64,30 @@ function drupalorg_docs_migrate_access($node, $check = FALSE) {
 
   $flag = flag_get_flag('migrate');
 
+  // Recurse through and check to see if a parent enabled migration.
+  return drupalorg_docs_migrate_parent_book($node, $flag, $check);
+}
+
+function drupalorg_docs_migrate_parent_book($node, $flag, $check) {
+  global $user;
+
+  // Node is flagged, give return the correct message/access.
   if ($flag->is_flagged($node->nid) || (isset($node->book['bid']) && $flag->is_flagged($node->book['bid']))) {
     return $check ? 1 : TRUE;
   }
-  else if (user_has_role(3, $user)) {
+
+  // Recurse through the parents to see if they will allow access.
+  if ($parent_link = db_query("SELECT link_path FROM {menu_links} WHERE mlid = :mlid", array(':mlid' => $node->book['plid']))->fetchAssoc()) {
+    $parent = menu_get_object('node', 1, $parent_link['link_path']);
+    if (isset($parent) && $parent->nid != $node->nid) {
+      return drupalorg_docs_migrate_parent_book($parent, $flag, $check);
+    }
+  }
+
+  // Last ditch effort, is the user an admin? Grant access and show different message.
+  if (user_has_role(3, $user)) {
     return $check ? 2 : TRUE;
   }
+
   return FALSE;
 }

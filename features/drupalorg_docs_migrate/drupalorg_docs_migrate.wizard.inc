@@ -197,11 +197,13 @@ function drupalorg_docs_migrate_form_edit($form, &$form_state) {
   $form_state['entity_type'] = 'node';
   $form_state['node'] = $form_state['original_node'];
   $form_state['node']->type = 'documentation';
+  $form['#node'] = $form_state['node'];
 
   // Summary is a new field for documentation. Lets auto-fill it
   //$form_state['node']->field_summary[LANGUAGE_NONE][0]['value'] = truncate_utf8(strip_tags($form_state['node']->body[LANGUAGE_NONE][0]['value']), 140, TRUE, FALSE);
   $og_widget = array();
   field_attach_form('node', $form_state['node'], $og_widget, $form_state, LANGUAGE_NONE, array('field_name' => 'og_group_ref_documentation'));
+
   $form['og_group_ref_documentation'] = $og_widget['og_group_ref_documentation'];
 
   if ($result = _get_children_nodes($form_state['node']->nid)) {
@@ -341,6 +343,14 @@ function _drupalorg_docs_migrate_node($nid, $group_ref) {
   // Remove the page from book schema.
   book_node_delete($node);
   $node->book = array();
+  
+  $node->menu = array(
+    'link_title' => $node->title,
+    'menu_name' => 'menu-og-'. $group_ref,
+    'parent' => 'menu-og-'. $group_ref.':0',
+    'plid' => 0,
+    'enabled' => 1,
+  );
 
   $node_wrapper = entity_metadata_wrapper('node', $node);
 
