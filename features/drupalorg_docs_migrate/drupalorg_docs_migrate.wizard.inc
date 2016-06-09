@@ -216,13 +216,11 @@ function drupalorg_docs_migrate_form_edit($form, &$form_state) {
   if (!empty($children)) {
     $form['children'] = array(
       '#type' => 'checkbox',
-      '#title' => t('Migrate all %number child pages', array('%number' => count($children))),
-      '#description' => t('Note: no hierarchy will be saved. All child pages will be on the same level with the parent page in relation to the documentation guide.'),
+      '#title' => t('Migrate @number child pages', ['@number' => count($children)]),
+      '#description' => t('<strong>Hierarchy will not be saved!</strong> All child pages will be on the same level with the parent page in relation to the documentation guide.'),
     );
     if (count($children) > 100) {
-      $form['children_unattended'] = array(
-        '#markup' => t("Warning: you're attempting to migrate over 100 children nodes, and cannot individually deselect this many children. Usually you'll want to migrate smaller sections of documentation at a time."),
-      );
+      drupal_set_message(t('Warning: you’re attempting to migrate over 100 children nodes, and cannot individually deselect this many children. Usually you’ll want to migrate smaller sections of documentation at a time.'), 'warning');
     }
     else {
       $form['children_nodes'] = array(
@@ -244,7 +242,7 @@ function drupalorg_docs_migrate_form_edit($form, &$form_state) {
   }
 
   // Change 'group audience' title to something meaningful.
-  $form['og_group_ref_documentation'][LANGUAGE_NONE]['#title'] = t('Select a documentation guide to migrate page(s) to:');
+  $form['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id']['#title'] = t('Documentation guide to migrate page(s) into');
   return $form;
 }
 
@@ -386,6 +384,6 @@ function _drupalorg_docs_migrate_batch_finished($success, $results, $operations)
  *   returns renderable array for multistep form result output.
  */
 function drupalorg_docs_migrate_get_result($object) {
-  $output = t("Book has been successfully migrated!");
+  $output = t('The page has been successfully migrated!');
   return $output;
 }
