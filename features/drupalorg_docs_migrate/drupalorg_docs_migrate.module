@@ -83,7 +83,7 @@ function drupalorg_docs_migrate_parent_book($node, $flag, $check) {
   }
 
   // Last ditch effort, is the user an admin? Grant access and show different message.
-  if (user_access('administer content')) {
+  if (user_access('administer nodes')) {
     return $check ? 2 : TRUE;
   }
 
