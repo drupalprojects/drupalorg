@@ -69,6 +69,10 @@ function drupalorg_docs_migrate_access($node, $check = FALSE) {
 }
 
 function drupalorg_docs_migrate_parent_book($node, $flag, $check) {
+  if (!user_access('create documentation content')) {
+    return FALSE;
+  }
+
   // Node is flagged, give return the correct message/access.
   if ($flag->is_flagged($node->nid) || (isset($node->book['bid']) && $flag->is_flagged($node->book['bid']))) {
     return $check ? 1 : TRUE;
