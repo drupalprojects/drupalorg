@@ -356,14 +356,10 @@ function _drupalorg_docs_migrate_node($nid, $group_ref) {
 
   // Summary is a new field for documentation. Lets auto-fill it
   $node_wrapper->field_summary->set(truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 140, TRUE, FALSE));
-
-  //$node->field_summary[LANGUAGE_NONE][0]['value'] = truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 140, TRUE, FALSE);
   $node_wrapper->save();
 
   // Set the group reference for the node
   $node_wrapper->og_group_ref_documentation->set(intval($group_ref));
-  //$node->og_group_ref_documentation[LANGUAGE_NONE][0]['target_id'] = $group_ref;
-
   $node_wrapper->save();
 }
 
