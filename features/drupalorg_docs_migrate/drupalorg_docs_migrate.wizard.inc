@@ -225,12 +225,9 @@ function drupalorg_docs_migrate_form_edit($form, &$form_state) {
       );
     }
     else {
-      $small = count($children) < 20;
       $form['children_nodes'] = array(
         '#type' => 'fieldset',
-        '#title' => t('!prefix (de)select specific child pages to migrate', array('!prefix' => $small ? '' : 'Expand to')),
-        '#collapsible' => $small ? FALSE : TRUE,
-        '#collapsed' => $small ? FALSE : TRUE,
+        '#title' => t('Specific child pages to migrate'),
         '#states' => array(
           'visible' => array(
             ':input[name="children"]' => array('checked' => TRUE),
