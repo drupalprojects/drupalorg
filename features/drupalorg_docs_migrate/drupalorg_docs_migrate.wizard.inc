@@ -175,7 +175,7 @@ function drupalorg_docs_migrate_wizard_finish(&$form_state) {
     );
 
     batch_set($batch);
-    batch_process('node/' . $form_state['object']->nid);
+    batch_process('node/' . $form_state['object']->guide);
   }
 }
 
@@ -376,7 +376,6 @@ function _drupalorg_docs_migrate_batch_finished($success, $results, $operations)
     $message .= theme('item_list', $results);
     drupal_set_message($message);
   }
-  drupal_goto('admin/content');
 }
 
 /**
