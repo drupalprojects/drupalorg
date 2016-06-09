@@ -375,7 +375,6 @@ function _drupalorg_docs_migrate_batch_finished($success, $results, $operations)
 
 /**
  * Returns form results.
- * For use later with a confirmation landing page...
  *
  * @param object $object
  *   object with form values.
