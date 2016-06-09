@@ -69,8 +69,6 @@ function drupalorg_docs_migrate_access($node, $check = FALSE) {
 }
 
 function drupalorg_docs_migrate_parent_book($node, $flag, $check) {
-  global $user;
-
   // Node is flagged, give return the correct message/access.
   if ($flag->is_flagged($node->nid) || (isset($node->book['bid']) && $flag->is_flagged($node->book['bid']))) {
     return $check ? 1 : TRUE;
@@ -85,7 +83,7 @@ function drupalorg_docs_migrate_parent_book($node, $flag, $check) {
   }
 
   // Last ditch effort, is the user an admin? Grant access and show different message.
-  if (user_has_role(3, $user)) {
+  if (user_access('administer content')) {
     return $check ? 2 : TRUE;
   }
 
