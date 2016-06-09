@@ -304,7 +304,9 @@ function drupalorg_docs_migrate_form_confirmation($form, &$form_state) {
   drupal_set_title(t('You are about to migrate the book %title !children', array('%title' => $node->title, '!children' => !empty($node->children) ? 'and ' . count($node->children) . ' child pages' : '')), PASS_THROUGH);
 
   $guide = node_load($node->guide);
-  $form['description'] = array('#markup' => t('Into: !guide', array('!guide' => l($guide->title, 'node/'.$guide->nid, array('attributes' => array('target' => '_blank'))))) . '<br /><br />' . t('This action cannot be undone.'));
+  $form['description'] = [
+    '#markup' => '<p>' . t('Into !guide', ['!guide' => l($guide->title, 'node/' . $guide->nid, ['attributes' => ['target' => '_blank']])]) . '</p><p>' . t('This action cannot be undone.') . '</p>',
+  ];
 
   return $form;
 }
