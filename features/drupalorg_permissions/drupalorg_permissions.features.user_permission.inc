@@ -1747,7 +1747,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'create documentation content'.
   $permissions['create documentation content'] = array(
     'name' => 'create documentation content',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'node',
   );
 
