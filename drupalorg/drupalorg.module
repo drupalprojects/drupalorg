@@ -313,9 +313,21 @@ function drupalorg_menu_alter(&$menu) {
   }
   if (isset($menu['node/%node/revisions'])) {
     $menu['node/%node/revisions']['title'] = 'View history';
+    $menu['node/%node/revisions']['access callback'] = 'drupalorg_node_revision_access';
   }
 
   $menu['user']['title callback'] = 'drupalorg_user_menu_title';
+}
+
+/**
+ * Menu access callback. Hide revisions for some content types.
+ */
+function drupalorg_node_revision_access($node) {
+  if (in_array($node->type, ['page', 'post', 'casestudy'])) {
+    return diff_node_revision_access($node) && node_access('update', $node);
+  }
+
+  return diff_node_revision_access($node);
 }
 
 /**
