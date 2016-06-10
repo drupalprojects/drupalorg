@@ -1,0 +1,93 @@
+<?php
+/**
+ * @file
+ * Code for the drupalorg_docs_migrate feature.
+ */
+
+include_once 'drupalorg_docs_migrate.features.inc';
+
+/**
+ * Implements hook_node_view().
+ */
+function drupalorg_docs_migrate_node_view($node, $view_mode, $langcode) {
+  if ($node->type != 'book') {
+    return;
+  }
+
+  if (drupalorg_docs_migrate_access($node, TRUE) === 1) {
+    drupal_set_message(t('This documentation needs to be !migrated.', ['!migrated' => l('migrated to the new Documentation system', 'migrate/documentation/' . $node->nid)]), 'warning');
+  }
+  elseif (drupalorg_docs_migrate_access($node, TRUE) === 2) {
+    drupal_set_message(t('<p>This documentation may need to be !migrated.</p> <p>Please check with !content before migrating.</p>', ['!migrated' => l('migrated to the new Documentation system', 'migrate/documentation/' . $node->nid), '!content' => l('tvn', 'user/999848/contact')]), 'warning');
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function drupalorg_docs_migrate_menu() {
+  // Callback to migration wizard
+  $items['migrate/documentation/%node'] = array(
+    'title callback' => 'drupalorg_docs_migrate_page_title',
+    'title arguments' => array(2),
+    'page callback' => 'drupalorg_docs_migrate_form',
+    'page arguments' => array(2,3),
+    'access callback' => 'drupalorg_docs_migrate_access',
+    'access arguments' => array(2),
+    'file path' => drupal_get_path('module', 'drupalorg_docs_migrate'),
+    'file' => 'drupalorg_docs_migrate.wizard.inc',
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Generate a pretty title for the migrate page.
+ * @param $node
+ */
+function drupalorg_docs_migrate_page_title($node) {
+  return 'Migrate ' . $node->title . ' to documentation';
+}
+
+/**
+ * Access permission for the migration page.
+ *
+ * $node - The node to check the flag on.
+ * $check - Optional flag for message checking to reduce code duplication.
+ *
+ * returns boolean or int.
+ */
+function drupalorg_docs_migrate_access($node, $check = FALSE) {
+  global $user;
+
+  $flag = flag_get_flag('migrate');
+
+  // Recurse through and check to see if a parent enabled migration.
+  return drupalorg_docs_migrate_parent_book($node, $flag, $check);
+}
+
+function drupalorg_docs_migrate_parent_book($node, $flag, $check) {
+  if (!user_access('create documentation content')) {
+    return FALSE;
+  }
+
+  // Node is flagged, give return the correct message/access.
+  if ($flag->is_flagged($node->nid) || (isset($node->book['bid']) && $flag->is_flagged($node->book['bid']))) {
+    return $check ? 1 : TRUE;
+  }
+
+  // Recurse through the parents to see if they will allow access.
+  if ($parent_link = db_query("SELECT link_path FROM {menu_links} WHERE mlid = :mlid", array(':mlid' => $node->book['plid']))->fetchAssoc()) {
+    $parent = menu_get_object('node', 1, $parent_link['link_path']);
+    if (isset($parent) && $parent->nid != $node->nid) {
+      return drupalorg_docs_migrate_parent_book($parent, $flag, $check);
+    }
+  }
+
+  // Last ditch effort, is the user an admin? Grant access and show different message.
+  if (user_access('administer content types')) {
+    return $check ? 2 : TRUE;
+  }
+
+  return FALSE;
+}
