@@ -13,8 +13,8 @@ class DrupalorgUrlHandlerCgit extends VersioncontrolRepositoryUrlHandlerCgit {
     ]);
   }
 
-  public function getRepositoryViewUrl() {
-    return $this->replaceRepoPath(parent::getRepositoryViewUrl());
+  public function getRepositoryViewUrl($label = NULL) {
+    return $this->replaceRepoPath(parent::getRepositoryViewUrl($label));
   }
 
   public function getCommitViewUrl($revision) {
