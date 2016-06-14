@@ -505,12 +505,13 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             $table['#rows'][$file['uid']]['patches'] += 1;
             $table['#rows'][$file['uid']]['#weight'] += 10000;
             $last_patch_uid = $file['uid'];
-            $table['#rows'][$file['uid']]['#last_patch'] = max($table['#rows'][$file['uid']]['#last_patch'], $file['timestamp']);
+            // 1428452101 is when maintainers started updating issue credit.
+            $table['#rows'][$file['uid']]['#last_patch'] = max($table['#rows'][$file['uid']]['#last_patch'], $file['timestamp'], 1428452101);
           }
           else {
             $table['#rows'][$file['uid']]['files'] += 1;
             $table['#rows'][$file['uid']]['#weight'] += 100;
-            $table['#rows'][$file['uid']]['#last_patch'] = $file['timestamp'];
+            $table['#rows'][$file['uid']]['#last_patch'] = max($file['timestamp'], 1428452101);
           }
         }
       }
