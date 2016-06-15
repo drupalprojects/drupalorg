@@ -8,7 +8,7 @@ $plugin = array(
   'vcs' => 'git',
   'title' => t('cgit.drupal.org URL autogenerator'),
   'url_templates' => array(
-    'repository_view' => '%base_url/%repo_name%branch',
+    'repository_view' => '%base_url/%repo_path%branch',
     'commit_view' => '%base_url/%repo_path/commit/?id=%revision',
     'file_log_view' => '%base_url/%repo_path/log/%path%branch',
     'directory_log_view' => '%base_url/%repo_path/log/%path%branch',
