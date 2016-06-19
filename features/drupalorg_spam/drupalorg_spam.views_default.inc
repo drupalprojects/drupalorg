@@ -180,6 +180,7 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['filters']['fingerprint']['id'] = 'fingerprint';
   $handler->display->display_options['filters']['fingerprint']['table'] = 'distil_registration';
   $handler->display->display_options['filters']['fingerprint']['field'] = 'fingerprint';
+  $handler->display->display_options['filters']['fingerprint']['group'] = 1;
   $handler->display->display_options['filters']['fingerprint']['exposed'] = TRUE;
   $handler->display->display_options['filters']['fingerprint']['expose']['operator_id'] = '';
   $handler->display->display_options['filters']['fingerprint']['expose']['label'] = 'D_IID Fingerprint';
@@ -203,6 +204,75 @@ function drupalorg_spam_views_default_views() {
     14 => 0,
     38 => 0,
     4 => 0,
+  );
+  /* Filter criterion: Distil Registration Data: IID Status */
+  $handler->display->display_options['filters']['iid_status']['id'] = 'iid_status';
+  $handler->display->display_options['filters']['iid_status']['table'] = 'distil_registration';
+  $handler->display->display_options['filters']['iid_status']['field'] = 'iid_status';
+  $handler->display->display_options['filters']['iid_status']['value'] = array(
+    'all' => 'all',
+    'unsure' => 'unsure',
+    'blacklist' => 'blacklist',
+    'whitelist' => 'whitelist',
+  );
+  $handler->display->display_options['filters']['iid_status']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['iid_status']['expose']['operator_id'] = 'iid_status_op';
+  $handler->display->display_options['filters']['iid_status']['expose']['label'] = 'IID Status';
+  $handler->display->display_options['filters']['iid_status']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['iid_status']['expose']['operator'] = 'iid_status_op';
+  $handler->display->display_options['filters']['iid_status']['expose']['identifier'] = 'iid_status';
+  $handler->display->display_options['filters']['iid_status']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['iid_status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  $handler->display->display_options['filters']['iid_status']['is_grouped'] = TRUE;
+  $handler->display->display_options['filters']['iid_status']['group_info']['label'] = 'IID Status';
+  $handler->display->display_options['filters']['iid_status']['group_info']['identifier'] = 'iid_status';
+  $handler->display->display_options['filters']['iid_status']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => 'Empty',
+      'operator' => 'empty',
+      'value' => array(
+        'all' => 'all',
+      ),
+    ),
+    2 => array(
+      'title' => 'Unsure',
+      'operator' => 'or',
+      'value' => array(
+        'unsure' => 'unsure',
+      ),
+    ),
+    3 => array(
+      'title' => 'Blacklisted',
+      'operator' => 'or',
+      'value' => array(
+        'blacklist' => 'blacklist',
+      ),
+    ),
+    4 => array(
+      'title' => 'Whitelisted',
+      'operator' => 'or',
+      'value' => array(
+        'whitelist' => 'whitelist',
+      ),
+    ),
   );
 
   /* Display: Page */
