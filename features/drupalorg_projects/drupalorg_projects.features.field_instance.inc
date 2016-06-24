@@ -6686,7 +6686,61 @@ function drupalorg_projects_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 0,
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'node-project_release-field_packaged_git_sha1'.
+  $field_instances['node-project_release-field_packaged_git_sha1'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Last packaged commit hash.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 16,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_packaged_git_sha1',
+    'label' => 'Packaged Git sha1',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'text_default',
+        'formatter_settings' => array(),
+      ),
+      'type' => 'field_extrawidgets_read_only',
+      'weight' => 16,
     ),
   );
 
@@ -6738,7 +6792,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 2,
+      'weight' => 6,
     ),
   );
 
@@ -6789,7 +6843,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'field_collection',
       'settings' => array(),
       'type' => 'field_collection_embed',
-      'weight' => 5,
+      'weight' => 15,
     ),
   );
 
@@ -6870,7 +6924,7 @@ function drupalorg_projects_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => -1,
+      'weight' => 1,
     ),
   );
 
@@ -6923,7 +6977,7 @@ function drupalorg_projects_field_default_field_instances() {
         'size' => 70,
       ),
       'type' => 'text_textfield',
-      'weight' => 4,
+      'weight' => 8,
     ),
   );
 
@@ -6983,7 +7037,7 @@ function drupalorg_projects_field_default_field_instances() {
         ),
       ),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 4,
+      'weight' => 7,
     ),
   );
 
@@ -7036,7 +7090,7 @@ function drupalorg_projects_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 1,
+      'weight' => 5,
     ),
   );
 
@@ -7087,7 +7141,7 @@ function drupalorg_projects_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 0,
+      'weight' => 3,
     ),
   );
 
@@ -7147,7 +7201,7 @@ function drupalorg_projects_field_default_field_instances() {
         ),
       ),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 4,
+      'weight' => 9,
     ),
   );
 
@@ -7207,7 +7261,7 @@ function drupalorg_projects_field_default_field_instances() {
         ),
       ),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 4,
+      'weight' => 10,
     ),
   );
 
@@ -7257,7 +7311,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'field_extrawidgets',
       'settings' => array(),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 4,
+      'weight' => 14,
     ),
   );
 
@@ -7317,7 +7371,7 @@ function drupalorg_projects_field_default_field_instances() {
         ),
       ),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 4,
+      'weight' => 12,
     ),
   );
 
@@ -7377,7 +7431,7 @@ function drupalorg_projects_field_default_field_instances() {
         ),
       ),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 4,
+      'weight' => 11,
     ),
   );
 
@@ -7437,7 +7491,7 @@ function drupalorg_projects_field_default_field_instances() {
         ),
       ),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 4,
+      'weight' => 13,
     ),
   );
 
@@ -7491,7 +7545,7 @@ function drupalorg_projects_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 6,
+      'weight' => 17,
     ),
   );
 
@@ -7540,7 +7594,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 0,
+      'weight' => 2,
     ),
   );
 
@@ -7589,7 +7643,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 31,
+      'weight' => 20,
     ),
   );
 
@@ -12226,6 +12280,7 @@ function drupalorg_projects_field_default_field_instances() {
   t('How they helped');
   t('How is this release built? Can be either \'Static\' if the files associated with it are built once and remain unchanged (e.g. an official release from a tag), or \'Dynamic\' if the files are regularly rebuilt and updated (e.g. a development snapshot rebuilt from the end of a branch).');
   t('Images');
+  t('Last packaged commit hash.');
   t('License');
   t('Link to project changelog.');
   t('Link to project demo.');
@@ -12240,6 +12295,7 @@ function drupalorg_projects_field_default_field_instances() {
   t('PHPCS output');
   t('PHPCS timestamp');
   t('PHPCS warnings');
+  t('Packaged Git sha1');
   t('Project');
   t('Project type');
   t('Recommended');
