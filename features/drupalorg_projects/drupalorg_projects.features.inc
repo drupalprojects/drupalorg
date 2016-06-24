@@ -65,6 +65,14 @@ If a module doesn\'t quite do what you want it to do, if you find a bug or have 
       'title_label' => t('Name'),
       'help' => '',
     ),
+    'project_release' => array(
+      'name' => t('Release'),
+      'base' => 'node_content',
+      'description' => t('A release of a project with a specific version number.'),
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'help' => '',
+    ),
     'project_theme' => array(
       'name' => t('Theme project'),
       'base' => 'node_content',

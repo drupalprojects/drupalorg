@@ -6633,6 +6633,247 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-project_release-body'.
+  $field_instances['node-project_release-body'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Enter a description of this release, such as a list of the major changes or updates.',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 600,
+        ),
+        'trim_length' => 1400,
+        'type' => 'text_summary_or_trimmed',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'body',
+    'label' => 'Release notes',
+    'required' => 0,
+    'settings' => array(
+      'display_summary' => TRUE,
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+        'summary_rows' => 5,
+      ),
+      'type' => 'text_textarea_with_summary',
+      'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance: 'node-project_release-field_release_build_type'.
+  $field_instances['node-project_release-field_release_build_type'] = array(
+    'bundle' => 'project_release',
+    'default_value' => array(
+      0 => array(
+        'value' => 'static',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'How is this release built? Can be either \'Static\' if the files associated with it are built once and remain unchanged (e.g. an official release from a tag), or \'Dynamic\' if the files are regularly rebuilt and updated (e.g. a development snapshot rebuilt from the end of a branch).',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_release_build_type',
+    'label' => 'Release type',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance: 'node-project_release-field_release_files'.
+  $field_instances['node-project_release-field_release_files'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'field_collection',
+        'settings' => array(
+          'view_mode' => 'full',
+        ),
+        'type' => 'field_collection_fields',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_release_files',
+    'label' => 'Release files',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance: 'node-project_release-field_release_project'.
+  $field_instances['node-project_release-field_release_project'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 7,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'entity_types' => array(),
+    'field_name' => 'field_release_project',
+    'label' => 'Project',
+    'module' => 'entityreference',
+    'required' => 1,
+    'settings' => array(
+      'handler' => 'base',
+      'handler_settings' => array(
+        'behaviors' => array(
+          'views-select-list' => array(
+            'status' => 0,
+          ),
+        ),
+        'sort' => array(
+          'direction' => 'ASC',
+          'field' => 'body:value',
+          'property' => 'nid',
+          'type' => 'none',
+        ),
+        'target_bundles' => array(
+          'project' => 'project',
+          'project_core' => 'project_core',
+          'project_distribution' => 'project_distribution',
+          'project_drupalorg' => 'project_drupalorg',
+          'project_module' => 'project_module',
+          'project_theme' => 'project_theme',
+          'project_theme_engine' => 'project_theme_engine',
+          'project_translation' => 'project_translation',
+        ),
+      ),
+      'handler_submit' => 'Change handler',
+      'target_type' => 'node',
+      'user_register_form' => FALSE,
+    ),
+    'type' => 'entityreference',
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => -1,
+    ),
+  );
+
   // Exported field_instance:
   // 'node-project_release-field_release_short_description'.
   $field_instances['node-project_release-field_release_short_description'] = array(
@@ -6683,6 +6924,672 @@ function drupalorg_projects_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-project_release-field_release_update_status'.
+  $field_instances['node-project_release-field_release_update_status'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_release_update_status',
+    'label' => 'Update status',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'number_integer',
+        'formatter_settings' => array(
+          'prefix_suffix' => 0,
+          'thousand_separator' => '',
+        ),
+      ),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'node-project_release-field_release_vcs_label'.
+  $field_instances['node-project_release-field_release_vcs_label'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'The label (branch or tag) in a version control system that represents this release.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_plain',
+        'weight' => 1,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_plain',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_release_vcs_label',
+    'label' => 'VCS Label',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance: 'node-project_release-field_release_version'.
+  $field_instances['node-project_release-field_release_version'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_release_version',
+    'label' => 'Version',
+    'required' => 1,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-project_release-field_release_version_ext_delta'.
+  $field_instances['node-project_release-field_release_version_ext_delta'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_release_version_ext_delta',
+    'label' => 'Version extra delta',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'number_integer',
+        'formatter_settings' => array(
+          'prefix_suffix' => 0,
+          'thousand_separator' => '',
+        ),
+      ),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-project_release-field_release_version_ext_weight'.
+  $field_instances['node-project_release-field_release_version_ext_weight'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 13,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_release_version_ext_weight',
+    'label' => 'Version extra weight',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'number_integer',
+        'formatter_settings' => array(
+          'prefix_suffix' => 0,
+          'thousand_separator' => '',
+        ),
+      ),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-project_release-field_release_version_extra'.
+  $field_instances['node-project_release-field_release_version_extra'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 12,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_release_version_extra',
+    'label' => 'Version extra',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-project_release-field_release_version_major'.
+  $field_instances['node-project_release-field_release_version_major'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 8,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_release_version_major',
+    'label' => 'Version major',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'number_integer',
+        'formatter_settings' => array(
+          'prefix_suffix' => 0,
+          'thousand_separator' => '',
+        ),
+      ),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-project_release-field_release_version_minor'.
+  $field_instances['node-project_release-field_release_version_minor'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 9,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_release_version_minor',
+    'label' => 'Version minor',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'number_integer',
+        'formatter_settings' => array(
+          'prefix_suffix' => 0,
+          'thousand_separator' => '',
+        ),
+      ),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-project_release-field_release_version_patch'.
+  $field_instances['node-project_release-field_release_version_patch'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 14,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_release_version_patch',
+    'label' => 'Version patch',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'number_integer',
+        'formatter_settings' => array(
+          'prefix_suffix' => 0,
+          'thousand_separator' => '',
+        ),
+      ),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'node-project_release-field_show_download'.
+  $field_instances['node-project_release-field_show_download'] = array(
+    'bundle' => 'project_release',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 15,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_show_download',
+    'label' => 'Show in project’s download table when branch is supported',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance: 'node-project_release-taxonomy_vocabulary_6'.
+  $field_instances['node-project_release-taxonomy_vocabulary_6'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 10,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 10,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'taxonomy_vocabulary_6',
+    'label' => 'Core compatibility',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance: 'node-project_release-taxonomy_vocabulary_7'.
+  $field_instances['node-project_release-taxonomy_vocabulary_7'] = array(
+    'bundle' => 'project_release',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '<a href="/documentation/releases/types">What is a release type?</a>',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 10,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 10,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'taxonomy_vocabulary_7',
+    'label' => 'Release type',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 31,
     ),
   );
 
@@ -11260,10 +12167,49 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'taxonomy_term-vocabulary_6-field_release_recommended'.
+  $field_instances['taxonomy_term-vocabulary_6-field_release_recommended'] = array(
+    'bundle' => 'vocabulary_6',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_release_recommended',
+    'label' => 'Recommended',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 0,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 1,
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
+  t('<a href="/documentation/releases/types">What is a release type?</a>');
   t('Changelog');
   t('Components');
+  t('Core compatibility');
   t('Custom version format string');
   t('Default component');
   t('Demo');
@@ -11272,11 +12218,13 @@ function drupalorg_projects_field_default_field_instances() {
   t('Documentation');
   t('Download count');
   t('Enable issue tracker');
+  t('Enter a description of this release, such as a list of the major changes or updates.');
   t('File attachments');
   t('For definitions of maintenance and development statuses, see <a href="http://drupal.org/node/314492">Maintenance of your project</a>.');
   t('Has project releases');
   t('Homepage');
   t('How they helped');
+  t('How is this release built? Can be either \'Static\' if the files associated with it are built once and remain unchanged (e.g. an official release from a tag), or \'Dynamic\' if the files are regularly rebuilt and updated (e.g. a development snapshot rebuilt from the end of a branch).');
   t('Images');
   t('License');
   t('Link to project changelog.');
@@ -11292,17 +12240,33 @@ function drupalorg_projects_field_default_field_instances() {
   t('PHPCS output');
   t('PHPCS timestamp');
   t('PHPCS warnings');
+  t('Project');
   t('Project type');
+  t('Recommended');
   t('Release file');
   t('Release file downloads');
   t('Release file hash');
+  t('Release files');
+  t('Release notes');
+  t('Release type');
   t('Screenshots');
   t('Short Description');
   t('Short name');
+  t('Show in project’s download table when branch is supported');
   t('Submission guidelines');
   t('Supporting organizations');
+  t('The label (branch or tag) in a version control system that represents this release.');
+  t('Update status');
   t('Used to classify different aspects of a project, eg. a software project might have <em>Code</em>, <em>User interface</em>, and <em>Documentation</em> components.');
   t('Used to set the initial default component for new project issues.');
+  t('VCS Label');
+  t('Version');
+  t('Version extra');
+  t('Version extra delta');
+  t('Version extra weight');
+  t('Version major');
+  t('Version minor');
+  t('Version patch');
 
   return $field_instances;
 }
