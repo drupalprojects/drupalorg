@@ -126,13 +126,17 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       }
     }
 
+    // Get the commit hash for the tag or branch being packaged.
+    drush_shell_cd_and_exec($this->repository, '%s rev-list --topo-order --max-count=1 %s 2>&1', $this->conf['git'], $git_label);
+    if ($last_tag_hash = drush_shell_exec_output()) {
+      drush_log(dt('Using commit @last_tag_hash', ['@last_tag_hash' => $last_tag_hash[0]]), 'notice');
+    }
+
     // If this is a -dev release, do some magic to determine a spiffy
     // "rebuild_version" string which we'll put into any .info files and
     // save in the DB for other uses.
     if ($this->release_node->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic') {
-      // Get the commit hash for the tag or branch being packaged.
-      drush_shell_cd_and_exec($this->repository, '%s rev-list --topo-order --max-count=1 %s 2>&1', $this->conf['git'], $git_label);
-      if ($last_tag_hash = drush_shell_exec_output()) {
+      if ($last_tag_hash) {
         drush_shell_cd_and_exec($this->repository, '%s describe --tags %s 2>&1', $this->conf['git'], $last_tag_hash[0]);
         if ($last_tag = drush_shell_exec_output()) {
           // Make sure the tag starts as Drupal formatted (for eg.
