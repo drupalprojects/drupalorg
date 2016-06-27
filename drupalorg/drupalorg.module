@@ -730,6 +730,7 @@ function drupalorg_block_configure($delta = '') {
         '#type' => 'text_format',
         '#title' => t('Main text'),
         '#default_value' => variable_get('drupalorg_announcements_text_variable', ''),
+        '#description' => t('This should be between 60 - 90 characters long.'),
       );
 
       // Call to action text
@@ -737,14 +738,15 @@ function drupalorg_block_configure($delta = '') {
         '#type' => 'textfield',
         '#title' => t('Call to action text'),
         '#default_value' => variable_get('drupalorg_announcements_text_cta', ''),
+        '#description' => t('Button text for the Call to Action link.'),
       );
 
       // Call to action link
       $form['text_link'] = array(
         '#type' => 'textfield',
         '#title' => t('Call to action link'),
-        '#maxlength' => 500,
         '#default_value' => variable_get('drupalorg_announcements_text_link', ''),
+        '#description' => t('Remember to include any campaign tracking tags in the url.'),
       );
 
       // File selection form element
@@ -752,8 +754,8 @@ function drupalorg_block_configure($delta = '') {
         '#name' => 'block_image',
         '#type' => 'managed_file',
         '#title' => t('Icon'),
-        '#description' => t('Upload an icon for the custom block.  Only *.svg images allowed.'),
         '#default_value' => variable_get('drupalorg_announcements_block_image_fid', ''),
+        '#description' => t('Upload an icon for the custom block. Only *.svg images allowed. <br />Icons are available <a href="https://drive.google.com/open?id=0B-poiK4gZY2sVDY4Q1VKQkJrZW8">here</a>.'),
         '#upload_location' => 'public://announcements/',
         '#upload_validators' => array(
           'file_validate_extensions' => array('svg'),
@@ -763,16 +765,17 @@ function drupalorg_block_configure($delta = '') {
       // Machine name
       $form['machine_name'] = array(
         '#type' => 'textfield',
-        '#title' => t('Machine name. Only enter lower case letters and underscores.'),
+        '#title' => t('Unique banner ID'),
         '#default_value' => variable_get('drupalorg_announcements_machine_name', ''),
+        '#description' => t('This is used for the close button code. It should be unique for each banner campaign. <br />Example: membership2016june'),
       );
 
       // Show to users who registered before
       $form['users_created_before'] = array(
         '#type' => 'textfield',
-        '#title' => t('Show to users who registered before unix timestamp'),
+        '#title' => t('Elections timestamp (optional)'),
         '#default_value' => variable_get('drupalorg_announcements_users_created_before'),
-        '#description' => t('Useful for election announcements. Leave blank to show regardless.'),
+        '#description' => t('Limits display of the banner to users who registered before this unix timestamp.'),
       );
 
       break;
