@@ -91,6 +91,27 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'node_reference',
   );
 
+  // Exported field_base: 'field_packaged_git_sha1'.
+  $field_bases['field_packaged_git_sha1'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_packaged_git_sha1',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'max_length' => 40,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+  );
+
   // Exported field_base: 'field_project_changelog'.
   $field_bases['field_project_changelog'] = array(
     'active' => 1,
