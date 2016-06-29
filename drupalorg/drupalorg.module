@@ -745,6 +745,7 @@ function drupalorg_block_configure($delta = '') {
       $form['text_link'] = array(
         '#type' => 'textfield',
         '#title' => t('Call to action link'),
+        '#maxlength' => 500,
         '#default_value' => variable_get('drupalorg_announcements_text_link', ''),
         '#description' => t('Remember to include any campaign tracking tags in the url.'),
       );
