@@ -130,6 +130,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     drush_shell_cd_and_exec($this->repository, '%s rev-list --topo-order --max-count=1 %s 2>&1', $this->conf['git'], $git_label);
     if ($last_tag_hash = drush_shell_exec_output()) {
       drush_log(dt('Using commit @last_tag_hash', ['@last_tag_hash' => $last_tag_hash[0]]), 'notice');
+      $this->release_node->field_packaged_git_sha1[LANGUAGE_NONE][0]['value'] = $last_tag_hash[0];
     }
 
     // If this is a -dev release, do some magic to determine a spiffy
