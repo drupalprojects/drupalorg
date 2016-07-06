@@ -52,9 +52,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   }
 
   public function createPackage(&$files) {
-    // Files to ignore when checking timestamps:
-    $exclude = array('.', '..', 'LICENSE.txt');
-
     // Remember if the tar.gz version of this release file already exists.
     $tgz_exists = is_file($this->filenames['full_dest_tgz']);
 
@@ -104,12 +101,13 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return 'error';
     }
 
+    // Todo remove youngest check, only fill out $info_files.
     $info_files = array(
       'info' => array(),
       'yml' => array(),
     );
     // Use the request time if the youngest file is from the future.
-    $youngest = min($this->fileFindYoungest($this->export, 0, $exclude, $info_files), DRUSH_REQUEST_TIME);
+    $youngest = min($this->fileFindYoungest($this->export, 0, ['.', '..', 'LICENSE.txt'], $info_files), DRUSH_REQUEST_TIME);
     if ($this->release_node->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic' && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $youngest) {
       // The existing tarball for this release is newer than the youngest
       // file in the directory, we're done.
