@@ -309,7 +309,8 @@ function drupalorg_menu_alter(&$menu) {
   }
   // Nicer titles.
   if (isset($menu['node/%/group'])) {
-    $menu['node/%/group']['title'] = 'Admin group';
+    $menu['node/%/group']['title'] = 'Admin';
+    $menu['node/%/group']['weight'] = 100;
   }
   if (isset($menu['node/%node/revisions'])) {
     $menu['node/%node/revisions']['title'] = 'View history';
