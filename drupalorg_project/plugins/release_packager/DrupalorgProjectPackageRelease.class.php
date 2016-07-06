@@ -12,6 +12,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
 
   /// Protected data members of the class
   protected $release_node;
+  protected $release_node_wrapper;
   protected $release_version = '';
   protected $release_file_id = '';
   protected $release_node_view_link = '';
@@ -27,6 +28,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
 
     // Stash the release node this packager is going to be working on.
     $this->release_node = $release_node;
+    $this->release_node_wrapper = entity_metadata_wrapper('node', $release_node);
 
     // Save all the directory information.
     $this->temp_directory = $temp_directory;
@@ -60,6 +62,21 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return 'error';
     }
     $repo = variable_get('git_base_url', 'git://git.drupal.org/project/') . $this->project_node->versioncontrol_project['repo']->name . '.git';
+
+    // Check what is currently packaged.
+    if ($this->release_node_wrapper->field_release_build_type->value() === 'dynamic' && $tgz_exists && ($commit = $this->project_node->versioncontrol_project['repo']->loadCommit($this->release_node_wrapper->field_packaged_git_sha1->value()))) {
+      $conditions = [
+        'branches' => [$this->release_node->versioncontrol_release['label']['label_id']],
+        'vc_op_id' => [
+          'operator' => '>',
+          'values' => $commit->vc_op_id,
+        ],
+      ];
+      if (count($this->project_node->versioncontrol_project['repo']->getBackend()->loadEntities('operation', [], $conditions, ['may cache' => FALSE])) === 0) {
+        drush_log(dt('Commit @field_packaged_git_sha1 already packaged.', ['@field_packaged_git_sha1' => $this->release_node_wrapper->field_packaged_git_sha1->value()]), 'notice');
+        return 'no-op';
+      }
+    }
 
     // Figure out how to check this thing out from Git.
     if (empty($this->release_node->field_release_vcs_label)) {
