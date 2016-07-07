@@ -118,20 +118,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return 'error';
     }
 
-    // Todo remove youngest check, only fill out $info_files.
-    $info_files = array(
-      'info' => array(),
-      'yml' => array(),
-    );
-    // Use the request time if the youngest file is from the future.
-    $youngest = min($this->fileFindYoungest($this->export, 0, ['.', '..', 'LICENSE.txt'], $info_files), DRUSH_REQUEST_TIME);
-    if ($this->release_node->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic' && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $youngest) {
-      // The existing tarball for this release is newer than the youngest
-      // file in the directory, we're done.
-      drush_shell_exec('rm -rf %s', $this->repository);
-      return 'no-op';
-    }
-
     // Install core dependencies with composer for Drupal 8 and above.
     if ($this->project_node->type === 'project_core' && $this->release_node->field_release_version_major[LANGUAGE_NONE][0]['value'] >= 8 && file_exists($this->export . '/composer.json')) {
       if (!drush_shell_cd_and_exec($this->temp_directory, 'composer install --working-dir=%s --prefer-dist --no-interaction --ignore-platform-reqs', $this->export)) {
@@ -177,18 +163,23 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     }
 
     // Update any .info files with packaging metadata.
-    foreach ($info_files['info'] as $file) {
-      if (!$this->fixInfoFileVersion($file)) {
-        watchdog('package_error', 'Failed to update version in %file, aborting packaging.', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
-        drush_shell_exec('rm -rf %s', $this->repository);
-        return 'error';
-      }
-    }
-    foreach ($info_files['yml'] as $file) {
-      if (!$this->fixInfoYmlFileVersion($file)) {
-        watchdog('package_error', 'Failed to update version in %file, aborting packaging.', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
-        drush_shell_exec('rm -rf %s', $this->repository);
-        return 'error';
+    foreach (array_keys(file_scan_directory($this->export, '/^.+\.info(\.yml)?$/')) as $file) {
+      switch (strrchr($file, '.')) {
+        case '.info':
+          if (!$this->fixInfoFileVersion($file)) {
+            watchdog('package_error', 'Failed to update version in %file, aborting packaging.', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
+            drush_shell_exec('rm -rf %s', $this->repository);
+            return 'error';
+          }
+          break;
+
+        case '.yml':
+          if (!$this->fixInfoYmlFileVersion($file)) {
+            watchdog('package_error', 'Failed to update version in %file, aborting packaging.', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
+            drush_shell_exec('rm -rf %s', $this->repository);
+            return 'error';
+          }
+          break;
       }
     }
 
@@ -300,41 +291,5 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return FALSE;
     }
     return TRUE;
-  }
-
-  /**
-   * Find the youngest (newest) file in a directory tree. Stolen wholesale from
-   * the original package-drupal.php script. Modified to also notice any files
-   * that end with ".info" and store all of them in the array passed in as an
-   * argument. Since we have to recurse through the whole directory tree
-   * already, we should just record all the info we need in one pass instead of
-   * doing it twice.
-   */
-  public function fileFindYoungest($dir, $timestamp, $exclude, &$info_files) {
-    if (is_dir($dir)) {
-      $fp = opendir($dir);
-      while (FALSE !== ($file = readdir($fp))) {
-        if (!in_array($file, $exclude)) {
-          if (is_dir("$dir/$file")) {
-            $timestamp = $this->fileFindYoungest("$dir/$file", $timestamp, $exclude, $info_files);
-          }
-          else {
-            // There can be dangling links checked into Git.
-            if (file_exists("$dir/$file")) {
-              $mtime = filemtime("$dir/$file");
-              $timestamp = ($mtime > $timestamp) ? $mtime : $timestamp;
-              if (preg_match('/^.+\.info$/', $file)) {
-                $info_files['info'][] = $dir . '/' . $file;
-              }
-              elseif (preg_match('/^.+\.info\.yml$/', $file)) {
-                $info_files['yml'][] = $dir . '/' . $file;
-              }
-            }
-          }
-        }
-      }
-      closedir($fp);
-    }
-    return $timestamp;
   }
 }
