@@ -64,15 +64,12 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     $repo = variable_get('git_base_url', 'git://git.drupal.org/project/') . $this->project_node->versioncontrol_project['repo']->name . '.git';
 
     // Check what is currently packaged.
-    if ($this->release_node_wrapper->field_release_build_type->value() === 'dynamic' && $tgz_exists && ($commit = $this->project_node->versioncontrol_project['repo']->loadCommit($this->release_node_wrapper->field_packaged_git_sha1->value()))) {
+    if ($this->release_node_wrapper->field_release_build_type->value() === 'dynamic' && $tgz_exists) {
       $conditions = [
         'branches' => [$this->release_node->versioncontrol_release['label']['label_id']],
-        'vc_op_id' => [
-          'operator' => '>',
-          'values' => $commit->vc_op_id,
-        ],
+        'parent_commit' => $this->release_node_wrapper->field_packaged_git_sha1->value(),
       ];
-      if (count($this->project_node->versioncontrol_project['repo']->getBackend()->loadEntities('operation', [], $conditions, ['may cache' => FALSE])) === 0) {
+      if (count($this->project_node->versioncontrol_project['repo']->getBackend()->loadEntities('operation', [], $conditions)) === 0) {
         drush_log(dt('Commit @field_packaged_git_sha1 already packaged.', ['@field_packaged_git_sha1' => $this->release_node_wrapper->field_packaged_git_sha1->value()]), 'notice');
         return 'no-op';
       }
