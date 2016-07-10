@@ -69,7 +69,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
         'branches' => [$this->release_node->versioncontrol_release['label']['label_id']],
         'parent_commit' => $this->release_node_wrapper->field_packaged_git_sha1->value(),
       ];
-      if (count($this->project_node->versioncontrol_project['repo']->getBackend()->loadEntities('operation', [], $conditions)) === 0) {
+      if (count($this->project_node->versioncontrol_project['repo']->getBackend()->loadEntities('operation', [], $conditions, ['may cache' => FALSE])) === 0) {
         drush_log(dt('Commit @field_packaged_git_sha1 already packaged.', ['@field_packaged_git_sha1' => $this->release_node_wrapper->field_packaged_git_sha1->value()]), 'notice');
         return 'no-op';
       }
