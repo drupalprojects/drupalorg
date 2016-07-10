@@ -3388,6 +3388,18 @@ function drupalorg_comment_insert($comment) {
       }
     }
   }
+
+  if ($comment->status === COMMENT_NOT_PUBLISHED && $comment->uid === $GLOBALS['user']->uid) {
+    _drupalorg_spam_message();
+  }
+}
+
+/**
+ * Show a message to people caught by spam protections.
+ */
+function _drupalorg_spam_message() {
+  drupal_set_message(t('<p>As a part of our continued efforts to make Drupal.org a productive place to visit and work, we’ve made it harder for spammers to post on the site. To avoid seeing this message again, and to be able to post faster, you can request the “confirmed” user role. Please note that users who frequently post valuable content will automatically gain the role after some time.</p>
+<p><a href="!help_url">Learn about the “confirmed” user role</a> and <a href ="!issue_url">make your request</a>.</p>', array('!issue_url' => '/node/add/project-issue/webmasters?component=User%20account&categories=support&title=Request%20for%20%27confirmed%27%20role', '!help_url' => '/node/1887616')), 'status', FALSE);
 }
 
 /**
