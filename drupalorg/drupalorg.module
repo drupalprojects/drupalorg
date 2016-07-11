@@ -4865,6 +4865,16 @@ function drupalorg_mail($key, &$message, $params) {
         t('Update attribution as a volunteer or for an organization/customer at @url', ['@url' => url('comment/' . $params['node']->nodechanges_cid . '/edit', ['absolute' => TRUE])]),
       ];
       break;
+
+    case 'added_guide_maintainer':
+      $message['subject'] = t('[Documentation guide] You are now a maintainer for @title', ['@title' => $params['node']->title]);
+      $message['body'] = [
+        t('@name,', ['@name' => $params['account']->name]),
+        t('@name added you as a guide maintainer for @title.', ['@name' => $GLOBALS['user']->name, '@title' => $params['node']->title]),
+        t('You can administer the guide at @url', ['@url' => url('node/' . $params['node']->nid . '/group', ['absolute' => TRUE])]),
+        t('Thank you for making documentation better.'),
+      ];
+      break;
   }
 }
 
@@ -4897,6 +4907,18 @@ function drupalorg_og_ui_get_group_admin($group_type, $gid) {
   }
 
   return $items;
+}
+
+/**
+ * Implements hook_og_role_grant().
+ */
+function drupalorg_og_role_grant($entity_type, $gid, $uid, $rid) {
+  $role = og_role_load($rid);
+  if ($uid != $GLOBALS['user']->uid && $role->name === 'maintainer') {
+    $account = user_load($uid);
+    $from = '"' . mime_header_encode(t('!name (!site)', array('!name' => $GLOBALS['user']->name, '!site' => variable_get('site_name', 'Drupal')))) . '" <' . variable_get('site_mail', ini_get('sendmail_from')) . '>';
+    drupal_mail('drupalorg', 'added_guide_maintainer', $account->mail, LANGUAGE_NONE, ['node' => node_load($gid), 'account' => $account], $from);
+  }
 }
 
 /**
