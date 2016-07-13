@@ -12,6 +12,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
 
   /// Protected data members of the class
   protected $release_node;
+  protected $release_node_wrapper;
   protected $release_version = '';
   protected $release_file_id = '';
   protected $release_node_view_link = '';
@@ -27,6 +28,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
 
     // Stash the release node this packager is going to be working on.
     $this->release_node = $release_node;
+    $this->release_node_wrapper = entity_metadata_wrapper('node', $release_node);
 
     // Save all the directory information.
     $this->temp_directory = $temp_directory;
@@ -52,9 +54,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
   }
 
   public function createPackage(&$files) {
-    // Files to ignore when checking timestamps:
-    $exclude = array('.', '..', 'LICENSE.txt');
-
     // Remember if the tar.gz version of this release file already exists.
     $tgz_exists = is_file($this->filenames['full_dest_tgz']);
 
@@ -64,12 +63,24 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     }
     $repo = variable_get('git_base_url', 'git://git.drupal.org/project/') . $this->project_node->versioncontrol_project['repo']->name . '.git';
 
+    // Check what is currently packaged.
+    if ($this->release_node_wrapper->field_release_build_type->value() === 'dynamic' && $tgz_exists) {
+      $conditions = [
+        'branches' => [$this->release_node->versioncontrol_release['label']['label_id']],
+        'parent_commit' => $this->release_node_wrapper->field_packaged_git_sha1->value(),
+      ];
+      if (count($this->project_node->versioncontrol_project['repo']->getBackend()->loadEntities('operation', [], $conditions, ['may cache' => FALSE])) === 0) {
+        drush_log(dt('Commit @field_packaged_git_sha1 already packaged.', ['@field_packaged_git_sha1' => $this->release_node_wrapper->field_packaged_git_sha1->value()]), 'notice');
+        return 'no-op';
+      }
+    }
+
     // Figure out how to check this thing out from Git.
     if (empty($this->release_node->field_release_vcs_label)) {
       watchdog('package_error', '%release_title does not have a VCS repository defined', array('%release_title' => $this->release_node->title), WATCHDOG_ERROR);
       return 'error';
     }
-    $git_tag = $this->release_node->field_release_vcs_label[LANGUAGE_NONE][0]['value'];
+    $git_label = $this->release_node->field_release_vcs_label[LANGUAGE_NONE][0]['value'];
 
     // For core, we want to checkout into a directory named via the version,
     // e.g. "drupal-7.0".
@@ -86,12 +97,14 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     $this->export = $this->temp_directory . '/' . $export_to;
 
     // Clone this release from Git, and see if we need to rebuild it.
-    if (!drush_shell_exec('%s clone --branch=%s %s %s', $this->conf['git'], $git_tag, $repo, $this->repository)) {
+    if (!drush_shell_exec('%s clone --branch=%s %s %s', $this->conf['git'], $git_label, $repo, $this->repository)) {
       watchdog('package_error', 'Git clone failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR, $this->release_node_view_link);
       return 'error';
     }
+    // Allow other modules to work with the cloned release repo.
+    module_invoke_all('drupalorg_package_release', $this->repository, $this->release_node);
     // Archive and expand to preserve timestamps.
-    if (!drush_shell_cd_and_exec($this->temp_directory, '%s --git-dir=%s archive --format=tar --prefix=%s/ %s | %s x', $this->conf['git'], $this->repository . '/.git', $export_to, $git_tag, $this->conf['tar'])) {
+    if (!drush_shell_cd_and_exec($this->temp_directory, '%s --git-dir=%s archive --format=tar --prefix=%s/ %s | %s x', $this->conf['git'], $this->repository . '/.git', $export_to, $git_label, $this->conf['tar'])) {
       watchdog('package_error', 'Git archive failed: <pre>@output</pre>', array('@output' => implode("\n", drush_shell_exec_output())), WATCHDOG_ERROR, $this->release_node_view_link);
       drush_shell_exec('rm -rf %s', $this->repository);
       return 'error';
@@ -100,19 +113,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       watchdog('package_error', '%export does not exist after clone and archive.', array('%export' => $export), WATCHDOG_ERROR, $this->release_node_view_link);
       drush_shell_exec('rm -rf %s', $this->repository);
       return 'error';
-    }
-
-    $info_files = array(
-      'info' => array(),
-      'yml' => array(),
-    );
-    // Use the request time if the youngest file is from the future.
-    $youngest = min($this->fileFindYoungest($this->export, 0, $exclude, $info_files), DRUSH_REQUEST_TIME);
-    if ($this->release_node->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic' && $tgz_exists && filemtime($this->filenames['full_dest_tgz']) + 300 > $youngest) {
-      // The existing tarball for this release is newer than the youngest
-      // file in the directory, we're done.
-      drush_shell_exec('rm -rf %s', $this->repository);
-      return 'no-op';
     }
 
     // Install core dependencies with composer for Drupal 8 and above.
@@ -124,26 +124,59 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       }
     }
 
+    // Get the commit hash for the tag or branch being packaged.
+    drush_shell_cd_and_exec($this->repository, '%s rev-list --topo-order --max-count=1 %s 2>&1', $this->conf['git'], $git_label);
+    if (($last_tag_hash = drush_shell_exec_output()) && preg_match('/^[0-9a-f]{40}$/', $last_tag_hash[0])) {
+      drush_log(dt('Using commit @last_tag_hash', ['@last_tag_hash' => $last_tag_hash[0]]), 'notice');
+      $this->release_node->field_packaged_git_sha1[LANGUAGE_NONE][0]['value'] = $last_tag_hash[0];
+    }
+
     // If this is a -dev release, do some magic to determine a spiffy
     // "rebuild_version" string which we'll put into any .info files and
     // save in the DB for other uses.
     if ($this->release_node->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic') {
-      $this->computeRebuildVersion();
+      if ($last_tag_hash) {
+        drush_shell_cd_and_exec($this->repository, '%s describe --tags %s 2>&1', $this->conf['git'], $last_tag_hash[0]);
+        if ($last_tag = drush_shell_exec_output()) {
+          // Make sure the tag starts as Drupal formatted (for eg.
+          // 7.x-1.0-alpha1) and if we are on a proper branch (ie. not master)
+          // then it's on that branch.
+          if (preg_match('/^(?<drupalversion>' . preg_quote(substr($git_label, 0, -1)) . '\d+(?:-[^-]+)?)(?<gitextra>-(?<numberofcommits>\d+-)g[0-9a-f]{7})?$/', $last_tag[0], $matches)) {
+            // If we found additional git metadata (in particular, number of
+            // commits) then use that info to build the version string.
+            if (isset($matches['gitextra'])) {
+              $this->release_version = $matches['drupalversion'] . '+' . $matches['numberofcommits'] . 'dev';
+            }
+            // Otherwise, the branch tip is pointing to the same commit as the
+            // last tag on the branch, in which case we use the prior tag and
+            // add '+0-dev' to indicate we're still on a -dev branch.
+            else {
+              $this->release_version = $last_tag[0] . '+0-dev';
+            }
+          }
+        }
+      }
+      project_release_record_rebuild_metadata($this->release_node->nid, $this->release_version);
     }
 
     // Update any .info files with packaging metadata.
-    foreach ($info_files['info'] as $file) {
-      if (!$this->fixInfoFileVersion($file)) {
-        watchdog('package_error', 'Failed to update version in %file, aborting packaging.', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
-        drush_shell_exec('rm -rf %s', $this->repository);
-        return 'error';
-      }
-    }
-    foreach ($info_files['yml'] as $file) {
-      if (!$this->fixInfoYmlFileVersion($file)) {
-        watchdog('package_error', 'Failed to update version in %file, aborting packaging.', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
-        drush_shell_exec('rm -rf %s', $this->repository);
-        return 'error';
+    foreach (array_keys(file_scan_directory($this->export, '/^.+\.info(\.yml)?$/')) as $file) {
+      switch (strrchr($file, '.')) {
+        case '.info':
+          if (!$this->fixInfoFileVersion($file)) {
+            watchdog('package_error', 'Failed to update version in %file, aborting packaging.', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
+            drush_shell_exec('rm -rf %s', $this->repository);
+            return 'error';
+          }
+          break;
+
+        case '.yml':
+          if (!$this->fixInfoYmlFileVersion($file)) {
+            watchdog('package_error', 'Failed to update version in %file, aborting packaging.', array('%file' => $file), WATCHDOG_ERROR, $this->release_node_view_link);
+            drush_shell_exec('rm -rf %s', $this->repository);
+            return 'error';
+          }
+          break;
       }
     }
 
@@ -187,52 +220,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     drush_shell_exec('rm -rf %s', $this->repository);
 
     return $tgz_exists ? 'rebuild' : 'success';
-  }
-
-  /**
-   * Compute and save the 'rebuild version' string for this release.
-   *
-   * This does some magic in Git to find the latest release tag along
-   * the branch we're packaging from, count the number of commits since
-   * then, and use that to construct this fancy alternate version string
-   * which is useful for the version-specific dependency support in Drupal
-   * 7 and higher.
-   *
-   * This function is all about side effects (sorry). It just uses data
-   * already in the packager object and saves the results there and hands
-   * them off to project_release.module via its API, so there's no return
-   * value, either.
-   */
-  protected function computeRebuildVersion() {
-    // This is called tag but in reality this is the branch for dev releases.
-    $branch = $this->release_node->field_release_vcs_label[LANGUAGE_NONE][0]['value'];
-    // Try to find a tag.
-    drush_shell_cd_and_exec($this->repository, '%s rev-list --topo-order --max-count=1 %s 2>&1', $this->conf['git'], $branch);
-    $last_tag_hash = drush_shell_exec_output();
-    if ($last_tag_hash) {
-      drush_shell_cd_and_exec($this->repository, '%s describe --tags %s 2>&1', $this->conf['git'], $last_tag_hash[0]);
-      $last_tag = drush_shell_exec_output();
-      if ($last_tag) {
-        $last_tag = $last_tag[0];
-        // Make sure the tag starts as Drupal formatted (for eg.
-        // 7.x-1.0-alpha1) and if we are on a proper branch (ie. not master)
-        // then it's on that branch.
-        if (preg_match('/^(?<drupalversion>' . preg_quote(substr($branch, 0, -1)) . '\d+(?:-[^-]+)?)(?<gitextra>-(?<numberofcommits>\d+-)g[0-9a-f]{7})?$/', $last_tag, $matches)) {
-          // If we found additional git metadata (in particular, number of
-          // commits) then use that info to build the version string.
-          if (isset($matches['gitextra'])) {
-            $this->release_version =  $matches['drupalversion'] . '+' . $matches['numberofcommits'] . 'dev';
-          }
-          // Otherwise, the branch tip is pointing to the same commit as the
-          // last tag on the branch, in which case we use the prior tag and
-          // add '+0-dev' to indicate we're still on a -dev branch.
-          else {
-            $this->release_version = $last_tag . '+0-dev';
-          }
-        }
-      }
-    }
-    project_release_record_rebuild_metadata($this->release_node->nid, $this->release_version);
   }
 
   /**
@@ -301,41 +288,5 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
       return FALSE;
     }
     return TRUE;
-  }
-
-  /**
-   * Find the youngest (newest) file in a directory tree. Stolen wholesale from
-   * the original package-drupal.php script. Modified to also notice any files
-   * that end with ".info" and store all of them in the array passed in as an
-   * argument. Since we have to recurse through the whole directory tree
-   * already, we should just record all the info we need in one pass instead of
-   * doing it twice.
-   */
-  public function fileFindYoungest($dir, $timestamp, $exclude, &$info_files) {
-    if (is_dir($dir)) {
-      $fp = opendir($dir);
-      while (FALSE !== ($file = readdir($fp))) {
-        if (!in_array($file, $exclude)) {
-          if (is_dir("$dir/$file")) {
-            $timestamp = $this->fileFindYoungest("$dir/$file", $timestamp, $exclude, $info_files);
-          }
-          else {
-            // There can be dangling links checked into Git.
-            if (file_exists("$dir/$file")) {
-              $mtime = filemtime("$dir/$file");
-              $timestamp = ($mtime > $timestamp) ? $mtime : $timestamp;
-              if (preg_match('/^.+\.info$/', $file)) {
-                $info_files['info'][] = $dir . '/' . $file;
-              }
-              elseif (preg_match('/^.+\.info\.yml$/', $file)) {
-                $info_files['yml'][] = $dir . '/' . $file;
-              }
-            }
-          }
-        }
-      }
-      closedir($fp);
-    }
-    return $timestamp;
   }
 }

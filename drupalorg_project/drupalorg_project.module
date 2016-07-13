@@ -425,6 +425,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             'comments' => ($form_state['node']->created < 1438716282) ? 1 : 0,
             'comments-bar' => NULL,
             '#weight' => 0,
+            '#last_patch' => 0,
           ),
         ),
       );
@@ -462,6 +463,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
               'comments' => 1,
               'comments-bar' => NULL,
               '#weight' => 0,
+              '#last_patch' => 0,
             );
           }
 
@@ -486,7 +488,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           }
 
           // Keep track of the last time a maintainer commented.
-          if (isset($form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$comment->uid])) {
+          if (isset($form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$comment->uid]) && $form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$comment->uid]['permissions']['write to vcs']) {
             $last_maintainer_comment = max($last_maintainer_comment, $comment->created);
           }
         }
@@ -503,12 +505,13 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             $table['#rows'][$file['uid']]['patches'] += 1;
             $table['#rows'][$file['uid']]['#weight'] += 10000;
             $last_patch_uid = $file['uid'];
-            $table['#rows'][$file['uid']]['#last_patch'] = max($table['#rows'][$file['uid']]['#last_patch'], $file['timestamp']);
+            // 1428452101 is when maintainers started updating issue credit.
+            $table['#rows'][$file['uid']]['#last_patch'] = max($table['#rows'][$file['uid']]['#last_patch'], $file['timestamp'], 1428452101);
           }
           else {
             $table['#rows'][$file['uid']]['files'] += 1;
             $table['#rows'][$file['uid']]['#weight'] += 100;
-            $table['#rows'][$file['uid']]['#last_patch'] = $file['timestamp'];
+            $table['#rows'][$file['uid']]['#last_patch'] = max($file['timestamp'], 1428452101);
           }
         }
       }
@@ -645,6 +648,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           '#maxlength' => NULL,
         ),
         'commenters' => $table,
+        'add_credit' => [],
         'commands' => array(
           '#type' => 'vertical_tabs',
           'full' => array(
@@ -669,6 +673,13 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       );
       if ($is_maintainer) {
         $form['#submit'][] = 'drupalorg_project_issue_credit_submit';
+        // Add non-commenter row.
+        $form['drupalorg_credit_wrapper']['add_credit'] = [
+          '#type' => 'textfield',
+          '#title' => t('Credit others'),
+          '#autocomplete_path' => 'admin/views/ajax/autocomplete/user',
+          '#description' => t('A comment for each person will be added and they will be notified.'),
+        ];
         $form['drupalorg_credit_wrapper']['help'] = array(
           '#markup' => '<div class="description">' . t('As a project maintainer, use checkboxes to give credit for the issue. Learn more about <a href="@attribution-url">giving credit</a>.', array('@attribution-url' => url('node/52287'))) . '</div>',
         );
@@ -750,6 +761,53 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
  * Form submit callback.
  */
 function drupalorg_project_issue_credit_submit($form, &$form_state) {
+  // Add additional credit.
+  if (!empty($form_state['values']['add_credit'])) {
+    $query = new EntityFieldQuery();
+    $result = $query->entityCondition('entity_type', 'user')
+      ->propertyCondition('status', 1)
+      ->propertyCondition('name', array_filter(array_map('trim', explode(',', $form_state['values']['add_credit']))))
+      ->execute();
+    if (isset($result['user'])) {
+      foreach (user_load_multiple(array_keys($result['user'])) as $account) {
+        // If the user has not commented.
+        if (!in_array($account->uid, $form_state['drupalorg_credit_cids'])) {
+          // Save initial issue comment.
+          $node = node_load($form_state['node']->nid, NULL, TRUE);
+          $node->nodechanges_comment['comment_body'][LANGUAGE_NONE][0] = [
+            'value' => t('!maintainer credited !name.', [
+              '!maintainer' => theme('username', ['account' => $GLOBALS['user']]),
+              '!name' => theme('username', ['account' => $account]),
+            ]),
+            'format' => filter_default_format(),
+          ];
+          $node->nodechanges_comment_attributes = [
+            'project_issue_no_email' => TRUE,
+          ];
+          $node->nodechanges_uid = $account->uid;
+          // Copy attribution from the user’s last comment.
+          if ($cid = db_query_range('SELECT cid FROM {comment} c INNER JOIN {node} n ON n.nid = c.nid AND n.type IN (:issue_types) AND n.status = :node_published WHERE c.status = :comment_published AND c.uid = :uid AND c.created > 1426194356 ORDER BY c.cid DESC', 0, 1, array(':issue_types' => project_issue_issue_node_types(), ':node_published' => NODE_PUBLISHED, ':comment_published' => COMMENT_PUBLISHED, ':uid' => $account->uid))->fetchField()) {
+            $last_comment = comment_load($cid);
+            $node->nodechanges_comment['field_attribute_as_volunteer'] = $last_comment->field_attribute_as_volunteer;
+            $node->nodechanges_comment['field_attribute_contribution_to'] = $last_comment->field_attribute_contribution_to;
+            $node->nodechanges_comment['field_for_customer'] = $last_comment->field_for_customer;
+          }
+          node_save($node);
+
+          // Prepare to record issue credit.
+          $form_state['drupalorg_credit_cids'][$node->nodechanges_cid] = $account->uid;
+
+          // Notify the creditee. See _project_issue_email_notify().
+          $from = '"' . mime_header_encode(t('!name (!site)', array('!name' => $GLOBALS['user']->name, '!site' => variable_get('site_name', 'Drupal')))) . '" <' . variable_get('project_issue_reply_to_' . $node->type, variable_get('site_mail', ini_get('sendmail_from'))) . '>';
+          drupal_mail('drupalorg', 'credited_by_maintainer', $account->mail, LANGUAGE_NONE, ['node' => $node], $from);
+        }
+
+        // Give them credit.
+        $form_state['input']['by-' . $account->uid] = TRUE;
+      }
+    }
+  }
+
   // Record issue credit.
   $form_state['node']->field_issue_credit[LANGUAGE_NONE] = array();
   foreach ($form_state['drupalorg_credit_cids'] as $cid => $key) {

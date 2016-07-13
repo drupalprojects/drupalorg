@@ -861,10 +861,10 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['relationships']['flag_count_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['flag_count_rel']['field'] = 'flag_count_rel';
   $handler->display->display_options['relationships']['flag_count_rel']['flag'] = 'drupalorg_node_spam';
-  /* Relationship: Content: Author */
-  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
-  $handler->display->display_options['relationships']['uid']['table'] = 'node';
-  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Relationship: Content revision: User */
+  $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['relationships']['uid_1']['table'] = 'node_revision';
+  $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
   /* Field: Content: Author uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
   $handler->display->display_options['fields']['uid']['table'] = 'node';
@@ -910,7 +910,7 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid_1';
   $handler->display->display_options['fields']['name']['label'] = 'Author';
   /* Field: Content: Remove spam flags */
   $handler->display->display_options['fields']['drupalorg_not_spam']['id'] = 'drupalorg_not_spam';
@@ -929,7 +929,7 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['fasttoggle_block_user']['id'] = 'fasttoggle_block_user';
   $handler->display->display_options['fields']['fasttoggle_block_user']['table'] = 'users';
   $handler->display->display_options['fields']['fasttoggle_block_user']['field'] = 'fasttoggle_block_user';
-  $handler->display->display_options['fields']['fasttoggle_block_user']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['relationship'] = 'uid_1';
   $handler->display->display_options['fields']['fasttoggle_block_user']['label'] = '';
   $handler->display->display_options['fields']['fasttoggle_block_user']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: Post date */
@@ -970,7 +970,7 @@ function drupalorg_spam_views_default_views() {
     t('last »'),
     t('flag'),
     t('counter'),
-    t('author'),
+    t('revision user'),
     t('Type'),
     t('Reports'),
     t('.'),

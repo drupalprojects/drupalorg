@@ -1747,7 +1747,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'create documentation content'.
   $permissions['create documentation content'] = array(
     'name' => 'create documentation content',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'node',
   );
 
@@ -3213,6 +3215,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'flag',
   );
 
+  // Exported permission: 'flag migrate'.
+  $permissions['flag migrate'] = array(
+    'name' => 'flag migrate',
+    'roles' => array(),
+    'module' => 'flag',
+  );
+
   // Exported permission: 'flag project_issue_follow'.
   $permissions['flag project_issue_follow'] = array(
     'name' => 'flag project_issue_follow',
@@ -3503,6 +3512,13 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'authenticated user' => 'authenticated user',
     ),
+    'module' => 'flag',
+  );
+
+  // Exported permission: 'unflag migrate'.
+  $permissions['unflag migrate'] = array(
+    'name' => 'unflag migrate',
+    'roles' => array(),
     'module' => 'flag',
   );
 

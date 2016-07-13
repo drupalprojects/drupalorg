@@ -190,6 +190,12 @@ function drupalorg_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+  // Prevent passing unexpected arguments to theme().
+  $items['download/%'] = [
+    'page callback' => 'drupal_not_found',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  ];
   $items['project/project_module/categories'] = array(
     'title' => 'Module Categories',
     'page callback' => 'drupalorg_module_categories_page',
@@ -309,13 +315,26 @@ function drupalorg_menu_alter(&$menu) {
   }
   // Nicer titles.
   if (isset($menu['node/%/group'])) {
-    $menu['node/%/group']['title'] = 'Admin group';
+    $menu['node/%/group']['title'] = 'Admin';
+    $menu['node/%/group']['weight'] = 100;
   }
   if (isset($menu['node/%node/revisions'])) {
     $menu['node/%node/revisions']['title'] = 'View history';
+    $menu['node/%node/revisions']['access callback'] = 'drupalorg_node_revision_access';
   }
 
   $menu['user']['title callback'] = 'drupalorg_user_menu_title';
+}
+
+/**
+ * Menu access callback. Hide revisions for some content types.
+ */
+function drupalorg_node_revision_access($node) {
+  if (in_array($node->type, ['page', 'post', 'casestudy'])) {
+    return diff_node_revision_access($node) && node_access('update', $node);
+  }
+
+  return diff_node_revision_access($node);
 }
 
 /**
@@ -718,6 +737,7 @@ function drupalorg_block_configure($delta = '') {
         '#type' => 'text_format',
         '#title' => t('Main text'),
         '#default_value' => variable_get('drupalorg_announcements_text_variable', ''),
+        '#description' => t('This should be between 60 - 90 characters long.'),
       );
 
       // Call to action text
@@ -725,6 +745,7 @@ function drupalorg_block_configure($delta = '') {
         '#type' => 'textfield',
         '#title' => t('Call to action text'),
         '#default_value' => variable_get('drupalorg_announcements_text_cta', ''),
+        '#description' => t('Button text for the Call to Action link.'),
       );
 
       // Call to action link
@@ -733,6 +754,7 @@ function drupalorg_block_configure($delta = '') {
         '#title' => t('Call to action link'),
         '#maxlength' => 500,
         '#default_value' => variable_get('drupalorg_announcements_text_link', ''),
+        '#description' => t('Remember to include any campaign tracking tags in the url.'),
       );
 
       // File selection form element
@@ -740,8 +762,8 @@ function drupalorg_block_configure($delta = '') {
         '#name' => 'block_image',
         '#type' => 'managed_file',
         '#title' => t('Icon'),
-        '#description' => t('Upload an icon for the custom block.  Only *.svg images allowed.'),
         '#default_value' => variable_get('drupalorg_announcements_block_image_fid', ''),
+        '#description' => t('Upload an icon for the custom block. Only *.svg images allowed. <br />Icons are available <a href="https://drive.google.com/open?id=0B-poiK4gZY2sVDY4Q1VKQkJrZW8">here</a>.'),
         '#upload_location' => 'public://announcements/',
         '#upload_validators' => array(
           'file_validate_extensions' => array('svg'),
@@ -751,16 +773,17 @@ function drupalorg_block_configure($delta = '') {
       // Machine name
       $form['machine_name'] = array(
         '#type' => 'textfield',
-        '#title' => t('Machine name. Only enter lower case letters and underscores.'),
+        '#title' => t('Unique banner ID'),
         '#default_value' => variable_get('drupalorg_announcements_machine_name', ''),
+        '#description' => t('This is used for the close button code. It should be unique for each banner campaign. <br />Example: membership2016june'),
       );
 
       // Show to users who registered before
       $form['users_created_before'] = array(
         '#type' => 'textfield',
-        '#title' => t('Show to users who registered before unix timestamp'),
+        '#title' => t('Elections timestamp (optional)'),
         '#default_value' => variable_get('drupalorg_announcements_users_created_before'),
-        '#description' => t('Useful for election announcements. Leave blank to show regardless.'),
+        '#description' => t('Limits display of the banner to users who registered before this unix timestamp.'),
       );
 
       break;
@@ -1096,6 +1119,9 @@ function drupalorg_library_alter(&$libraries, $module) {
  */
 function drupalorg_ctools_plugin_directory($owner, $plugin_type) {
   if ($owner === 'ctools' && $plugin_type === 'content_types') {
+    return 'plugins/' . $plugin_type;
+  }
+  elseif ($owner === 'versioncontrol' && $plugin_type === 'webviewer_url_handlers') {
     return 'plugins/' . $plugin_type;
   }
 }
@@ -3302,25 +3328,34 @@ function drupalorg_node_update($node) {
     drupalorg_org_request_issue($node);
   }
   elseif (project_release_node_is_release($node)) {
-    if ($fastly_key = variable_get('drupalorg_fastly_key', FALSE)) {
-      $download_base = variable_get('project_release_download_base_' . $node->type, '');
-      $wrapper = entity_metadata_wrapper('node', $node);
-      foreach ($wrapper->field_release_files as $file_wrapper) {
-        $file = $file_wrapper->field_release_file->value();
-        $request = drupal_http_request(project_release_add_download_base($file['uri'], $download_base), array(
-          'method' => 'PURGE',
-          'headers' => array(
-            'Fastly-Key' => $fastly_key,
-          ),
-        ));
-        if (function_exists('dlm')) {
-          dlm($request);
-        }
-      }
+
+    $download_base = variable_get('project_release_download_base_' . $node->type, '');
+    $wrapper = entity_metadata_wrapper('node', $node);
+    foreach ($wrapper->field_release_files as $file_wrapper) {
+      $file = $file_wrapper->field_release_file->value();
+      $url = project_release_add_download_base($file['uri'], $download_base);
+      drupalorg_fastly_purge_url($url);
     }
   }
   elseif (project_node_is_project($node)) {
     _drupalorg_node_update_project($node);
+  }
+}
+
+/**
+ * @param $url
+ */
+function drupalorg_fastly_purge_url($url) {
+  if ($fastly_key = variable_get('drupalorg_fastly_key', FALSE)) {
+    $request = drupal_http_request($url, [
+      'method' => 'PURGE',
+      'headers' => [
+        'Fastly-Key' => $fastly_key,
+      ],
+    ]);
+    if (function_exists('dlm')) {
+      dlm($request);
+    }
   }
 }
 
@@ -3359,6 +3394,18 @@ function drupalorg_comment_insert($comment) {
       }
     }
   }
+
+  if ($comment->status === COMMENT_NOT_PUBLISHED && $comment->uid === $GLOBALS['user']->uid) {
+    _drupalorg_spam_message();
+  }
+}
+
+/**
+ * Show a message to people caught by spam protections.
+ */
+function _drupalorg_spam_message() {
+  drupal_set_message(t('<p>As a part of our continued efforts to make Drupal.org a productive place to visit and work, we’ve made it harder for spammers to post on the site. To avoid seeing this message again, and to be able to post faster, you can request the “confirmed” user role. Please note that users who frequently post valuable content will automatically gain the role after some time.</p>
+<p><a href="!help_url">Learn about the “confirmed” user role</a> and <a href ="!issue_url">make your request</a>.</p>', array('!issue_url' => '/node/add/project-issue/webmasters?component=User%20account&categories=support&title=Request%20for%20%27confirmed%27%20role', '!help_url' => '/node/1887616')), 'status', FALSE);
 }
 
 /**
@@ -3950,7 +3997,7 @@ function drupalorg_preprocess_comment(&$v) {
   }
 
   // System messages, and first comment, in the issue queue.
-  if ($v['comment']->uid != 0 && ($v['comment']->uid == variable_get('project_issue_followup_user', 0) || ($v['comment']->uid == $v['node']->uid && isset($v['comment']->thread) && $v['comment']->thread == int2vancode(1) . '/' && isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('|^<a.*class="username">.*</a> created an issue.( See <a.*>original summary</a>.)?$|', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])))) {
+  if ($v['comment']->uid != 0 && ($v['comment']->uid == variable_get('project_issue_followup_user', 0) || ($v['comment']->uid == $v['node']->uid && isset($v['comment']->thread) && $v['comment']->thread == int2vancode(1) . '/' && isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('|^<a.*class="username">.*</a> created an issue.( See <a.*>original summary</a>.)?$|', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) || (isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('|^<a.*class="username">.*</a> credited <a.*class="username">.*</a>\.?$|', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])))) {
     // Remove picture & username.
     $v['picture'] = '';
     $v['submitted'] = t('<time pubdate datetime="!created_date_iso">!created_date</time>', array(
@@ -4720,18 +4767,8 @@ function drupalorg_project_release_xml_alter(&$xml, $project, $api_tid) {
  * Implements hook_project_release_history_xml_written().
  */
 function drupalorg_project_release_history_xml_written($project, $api_version) {
-  if ($fastly_key = variable_get('drupalorg_fastly_key', FALSE)) {
-    $request = drupal_http_request('http://updates.drupal.org/release-history/' . $project->field_project_machine_name[LANGUAGE_NONE][0]['value'] . '/' . $api_version, array(
-      'method' => 'PURGE',
-      'headers' => array(
-        'Fastly-Key' => $fastly_key,
-        'Fastly-Soft-Purge' => 1,
-      ),
-    ));
-    if (function_exists('dlm')) {
-      dlm($request);
-    }
-  }
+  $url = 'http://updates.drupal.org/release-history/' . $project->field_project_machine_name[LANGUAGE_NONE][0]['value'] . '/' . $api_version;
+  drupalorg_fastly_purge_url($url);
 }
 
 /**
@@ -4818,6 +4855,26 @@ function drupalorg_mail($key, &$message, $params) {
         url('node/' . $params['node']->nid, array('absolute' => TRUE)),
       );
       break;
+
+    case 'credited_by_maintainer':
+      $wrapper = entity_metadata_wrapper('node', $params['node']);
+      $message['subject'] = t('[@project] You’ve been credited in @title!', ['@project' => $wrapper->field_project->field_project_machine_name->value(), '@title' => $params['node']->title]);
+      $message['body'] = [
+        t('Congratulations, @maintainer credited you in a Drupal.org issue.', ['@maintainer' => $GLOBALS['user']->name]),
+        t('View the issue at @url', ['@url' => url('node/' . $params['node']->nid, ['absolute' => TRUE])]),
+        t('Update attribution as a volunteer or for an organization/customer at @url', ['@url' => url('comment/' . $params['node']->nodechanges_cid . '/edit', ['absolute' => TRUE])]),
+      ];
+      break;
+
+    case 'added_guide_maintainer':
+      $message['subject'] = t('[Documentation guide] You are now a maintainer for @title', ['@title' => $params['node']->title]);
+      $message['body'] = [
+        t('@name,', ['@name' => $params['account']->name]),
+        t('@name added you as a guide maintainer for @title.', ['@name' => $GLOBALS['user']->name, '@title' => $params['node']->title]),
+        t('You can administer the guide at @url', ['@url' => url('node/' . $params['node']->nid . '/group', ['absolute' => TRUE])]),
+        t('Thank you for making documentation better.'),
+      ];
+      break;
   }
 }
 
@@ -4850,6 +4907,18 @@ function drupalorg_og_ui_get_group_admin($group_type, $gid) {
   }
 
   return $items;
+}
+
+/**
+ * Implements hook_og_role_grant().
+ */
+function drupalorg_og_role_grant($entity_type, $gid, $uid, $rid) {
+  $role = og_role_load($rid);
+  if ($uid != $GLOBALS['user']->uid && $role->name === 'maintainer') {
+    $account = user_load($uid);
+    $from = '"' . mime_header_encode(t('!name (!site)', array('!name' => $GLOBALS['user']->name, '!site' => variable_get('site_name', 'Drupal')))) . '" <' . variable_get('site_mail', ini_get('sendmail_from')) . '>';
+    drupal_mail('drupalorg', 'added_guide_maintainer', $account->mail, LANGUAGE_NONE, ['node' => node_load($gid), 'account' => $account], $from);
+  }
 }
 
 /**

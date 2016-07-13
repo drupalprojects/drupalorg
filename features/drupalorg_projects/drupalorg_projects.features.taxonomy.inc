@@ -33,5 +33,21 @@ function drupalorg_projects_taxonomy_default_vocabularies() {
       'module' => 'taxonomy',
       'weight' => -4,
     ),
+    'vocabulary_6' => array(
+      'name' => 'Core compatibility',
+      'machine_name' => 'vocabulary_6',
+      'description' => '',
+      'hierarchy' => 0,
+      'module' => 'project_release',
+      'weight' => -7,
+    ),
+    'vocabulary_7' => array(
+      'name' => 'Release type',
+      'machine_name' => 'vocabulary_7',
+      'description' => '',
+      'hierarchy' => 0,
+      'module' => 'taxonomy',
+      'weight' => 1,
+    ),
   );
 }
