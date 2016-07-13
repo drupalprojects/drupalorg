@@ -30,22 +30,29 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '25';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = TRUE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'manage_button' => 'manage_button',
     'fingerprint' => 'fingerprint',
     'iid_status' => 'iid_status',
+    'zid_fingerprint' => 'zid_fingerprint',
     'status' => 'status',
     'fingerprints' => 'fingerprints',
     'roles' => 'roles',
     'names' => 'names',
     'forum_post_titles' => 'forum_post_titles',
+    'first_seen' => 'first_seen',
+    'last_seen' => 'last_seen',
+    'fingerprint_age' => 'fingerprint_age',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
     'manage_button' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -58,6 +65,13 @@ function drupalorg_spam_views_default_views() {
       'empty_column' => 0,
     ),
     'iid_status' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'zid_fingerprint' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -99,6 +113,27 @@ function drupalorg_spam_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'first_seen' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'last_seen' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'fingerprint_age' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
   );
   /* Field: Distil Registration Data: Manage IID Status */
   $handler->display->display_options['fields']['manage_button']['id'] = 'manage_button';
@@ -116,6 +151,10 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['iid_status']['id'] = 'iid_status';
   $handler->display->display_options['fields']['iid_status']['table'] = 'distil_registration';
   $handler->display->display_options['fields']['iid_status']['field'] = 'iid_status';
+  /* Field: Distil Registration Data: D_ZID Fingerprint */
+  $handler->display->display_options['fields']['zid_fingerprint']['id'] = 'zid_fingerprint';
+  $handler->display->display_options['fields']['zid_fingerprint']['table'] = 'distil_registration';
+  $handler->display->display_options['fields']['zid_fingerprint']['field'] = 'zid_fingerprint';
   /* Field: Distil Registration Data: UID Statuses */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'distil_registration';
@@ -137,10 +176,23 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['forum_post_titles']['id'] = 'forum_post_titles';
   $handler->display->display_options['fields']['forum_post_titles']['table'] = 'distil_registration';
   $handler->display->display_options['fields']['forum_post_titles']['field'] = 'forum_post_titles';
+  /* Field: Distil Registration Data: First Seen */
+  $handler->display->display_options['fields']['first_seen']['id'] = 'first_seen';
+  $handler->display->display_options['fields']['first_seen']['table'] = 'distil_registration';
+  $handler->display->display_options['fields']['first_seen']['field'] = 'first_seen';
+  /* Field: Distil Registration Data: Last Seen */
+  $handler->display->display_options['fields']['last_seen']['id'] = 'last_seen';
+  $handler->display->display_options['fields']['last_seen']['table'] = 'distil_registration';
+  $handler->display->display_options['fields']['last_seen']['field'] = 'last_seen';
+  /* Field: Distil Registration Data: Fingerprint Age */
+  $handler->display->display_options['fields']['fingerprint_age']['id'] = 'fingerprint_age';
+  $handler->display->display_options['fields']['fingerprint_age']['table'] = 'distil_registration';
+  $handler->display->display_options['fields']['fingerprint_age']['field'] = 'fingerprint_age';
   /* Filter criterion: Distil Registration Data: D_IID Fingerprint */
   $handler->display->display_options['filters']['fingerprint']['id'] = 'fingerprint';
   $handler->display->display_options['filters']['fingerprint']['table'] = 'distil_registration';
   $handler->display->display_options['filters']['fingerprint']['field'] = 'fingerprint';
+  $handler->display->display_options['filters']['fingerprint']['group'] = 1;
   $handler->display->display_options['filters']['fingerprint']['exposed'] = TRUE;
   $handler->display->display_options['filters']['fingerprint']['expose']['operator_id'] = '';
   $handler->display->display_options['filters']['fingerprint']['expose']['label'] = 'D_IID Fingerprint';
@@ -165,10 +217,85 @@ function drupalorg_spam_views_default_views() {
     38 => 0,
     4 => 0,
   );
+  /* Filter criterion: Distil Registration Data: IID Status */
+  $handler->display->display_options['filters']['iid_status']['id'] = 'iid_status';
+  $handler->display->display_options['filters']['iid_status']['table'] = 'distil_registration';
+  $handler->display->display_options['filters']['iid_status']['field'] = 'iid_status';
+  $handler->display->display_options['filters']['iid_status']['value'] = array(
+    'all' => 'all',
+    'unsure' => 'unsure',
+    'blacklist' => 'blacklist',
+    'whitelist' => 'whitelist',
+  );
+  $handler->display->display_options['filters']['iid_status']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['iid_status']['expose']['operator_id'] = 'iid_status_op';
+  $handler->display->display_options['filters']['iid_status']['expose']['label'] = 'IID Status';
+  $handler->display->display_options['filters']['iid_status']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['iid_status']['expose']['operator'] = 'iid_status_op';
+  $handler->display->display_options['filters']['iid_status']['expose']['identifier'] = 'iid_status';
+  $handler->display->display_options['filters']['iid_status']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['iid_status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  $handler->display->display_options['filters']['iid_status']['is_grouped'] = TRUE;
+  $handler->display->display_options['filters']['iid_status']['group_info']['label'] = 'IID Status';
+  $handler->display->display_options['filters']['iid_status']['group_info']['identifier'] = 'iid_status';
+  $handler->display->display_options['filters']['iid_status']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => 'Empty',
+      'operator' => 'empty',
+      'value' => array(
+        'all' => 'all',
+      ),
+    ),
+    2 => array(
+      'title' => 'Unsure',
+      'operator' => 'or',
+      'value' => array(
+        'unsure' => 'unsure',
+      ),
+    ),
+    3 => array(
+      'title' => 'Blacklisted',
+      'operator' => 'or',
+      'value' => array(
+        'blacklist' => 'blacklist',
+      ),
+    ),
+    4 => array(
+      'title' => 'Whitelisted',
+      'operator' => 'or',
+      'value' => array(
+        'whitelist' => 'whitelist',
+      ),
+    ),
+  );
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'iid_status_management');
   $handler->display->display_options['path'] = 'admin/content/iid_status_management';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Distil';
+  $handler->display->display_options['menu']['description'] = 'Manage IID Fingerprints';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $translatables['IID_Status_Management'] = array(
     t('Master'),
     t('IID Status Management'),
@@ -188,11 +315,15 @@ function drupalorg_spam_views_default_views() {
     t('Manage IID Status'),
     t('Fingerprint'),
     t('IID Status'),
+    t('D_ZID Fingerprint'),
     t('Statuses'),
     t('Fingerprint Count'),
     t('Roles'),
     t('Usernames'),
     t('Forum Titles'),
+    t('First Seen'),
+    t('Last Seen'),
+    t('Fingerprint Age'),
     t('D_IID Fingerprint'),
     t('Page'),
   );
@@ -315,6 +446,10 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['field_distil_reg_iid']['table'] = 'field_data_field_distil_reg_iid';
   $handler->display->display_options['fields']['field_distil_reg_iid']['field'] = 'field_distil_reg_iid';
   $handler->display->display_options['fields']['field_distil_reg_iid']['exclude'] = TRUE;
+  /* Field: User: Distil zid */
+  $handler->display->display_options['fields']['field_distil_reg_zid']['id'] = 'field_distil_reg_zid';
+  $handler->display->display_options['fields']['field_distil_reg_zid']['table'] = 'field_data_field_distil_reg_zid';
+  $handler->display->display_options['fields']['field_distil_reg_zid']['field'] = 'field_distil_reg_zid';
   /* Field: User: Website(s) */
   $handler->display->display_options['fields']['field_websites']['id'] = 'field_websites';
   $handler->display->display_options['fields']['field_websites']['table'] = 'field_data_field_websites';
@@ -361,6 +496,7 @@ function drupalorg_spam_views_default_views() {
     t('Organizations'),
     t('Bio'),
     t('Distil iid'),
+    t('Distil zid'),
     t('Website(s)'),
     t('Account Block Link (Fasttoggle)'),
     t('All'),
