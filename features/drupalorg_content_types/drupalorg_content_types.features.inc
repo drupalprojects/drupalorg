@@ -38,7 +38,7 @@ function drupalorg_content_types_default_message_type() {
     "argument" : [],
     "category" : "message_type",
     "data" : {
-      "token options" : { "clear" : 0 },
+      "token options" : { "clear" : 1 },
       "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" }
     },
     "language" : "en",
@@ -50,9 +50,9 @@ function drupalorg_content_types_default_message_type() {
           "safe_value" : "\\u003Cp\\u003E[[message:field-target-comment:node:content-type]] [message:field-target-comment:node:title]\\u003C\\/p\\u003E"
         },
         {
-          "value" : "[message:field-target-comment:author:name] commented:\\r\\n[message:field-target-comment:body]\\r\\n\\r\\nView on [site:name]: [message:field-target-comment:url:absolute]\\r\\n\\r\\n-- \\r\\nTo unsubscribe from notifications about this content, go to [message:field-target-comment:node:url] and click \\u201cUnfollow\\u201d. (And make sure you are logged in.)",
+          "value" : "[message:field-target-comment:field_documentation_changes]\\r\\n\\r\\n[message:field-target-comment:author:name] commented:\\r\\n[message:field-target-comment:body]\\r\\n\\r\\nView on [site:name]: [message:field-target-comment:url:absolute]\\r\\n\\r\\n-- \\r\\nTo unsubscribe from notifications about this content, go to [message:field-target-comment:node:url] and click \\u201cUnfollow\\u201d. (And make sure you are logged in.)",
           "format" : "1",
-          "safe_value" : "\\u003Cp\\u003E[message:field-target-comment:author:name] commented:\\u003Cbr \\/\\u003E\\n[message:field-target-comment:body]\\u003C\\/p\\u003E\\n\\u003Cp\\u003EView on [site:name]: [message:field-target-comment:url:absolute]\\u003C\\/p\\u003E\\n\\u003Cp\\u003E--\\u003Cbr \\/\\u003E\\nTo unsubscribe from notifications about this content, go to [message:field-target-comment:node:url] and click \\u201cUnfollow\\u201d. (And make sure you are logged in.)\\u003C\\/p\\u003E"
+          "safe_value" : "\\u003Cp\\u003E[message:field-target-comment:field_documentation_changes]\\u003C\\/p\\u003E\\n\\u003Cp\\u003E[message:field-target-comment:author:name] commented:\\u003Cbr \\/\\u003E\\n[message:field-target-comment:body]\\u003C\\/p\\u003E\\n\\u003Cp\\u003EView on [site:name]: [message:field-target-comment:url:absolute]\\u003C\\/p\\u003E\\n\\u003Cp\\u003E--\\u003Cbr \\/\\u003E\\nTo unsubscribe from notifications about this content, go to [message:field-target-comment:node:url] and click \\u201cUnfollow\\u201d. (And make sure you are logged in.)\\u003C\\/p\\u003E"
         }
       ]
     }
