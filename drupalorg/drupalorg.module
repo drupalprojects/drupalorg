@@ -4937,4 +4937,7 @@ function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
       $alias = preg_replace('#/[^/]*$#', '/' . $context['data']['node']->field_release_version[LANGUAGE_NONE][0]['value'], $alias);
     }
   }
+
+  // Strip nice quotes.
+  $alias = str_replace(['‘', '’', '“', '”'], '', $alias);
 }
