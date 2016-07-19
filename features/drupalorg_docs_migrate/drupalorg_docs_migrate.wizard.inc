@@ -275,6 +275,15 @@ function _print_children_nodes(&$children, $result, $depth) {
 }
 
 /**
+ * Validate callback for drupalorg_docs_migrate_form_edit().
+ */
+function drupalorg_docs_migrate_form_edit_validate($form, &$form_state) {
+  if (!node_load($form_state['values']['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id'])) {
+    form_set_error('og_group_ref_documentation', t('Please select a valid guide using autocomplete.'));
+  }
+}
+
+/**
  * Handles submit of first form.
  */
 function drupalorg_docs_migrate_form_edit_submit($form, &$form_state) {
