@@ -361,6 +361,9 @@ function _drupalorg_docs_migrate_node($nid, $group_ref) {
   $node_wrapper->field_summary->set(truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 140, TRUE, FALSE));
   $node_wrapper->save();
 
+  // Empty out summary attached to body field.
+  $node->body[LANGUAGE_NONE][0]['summary'] = '';
+
   // Set the group reference for the node
   $node_wrapper->og_group_ref_documentation->set(intval($group_ref));
   $node_wrapper->save();
