@@ -2385,7 +2385,7 @@ function drupalorg_download_drupal_link_button($text) {
 function drupalorg_homebox() {
   return array(
     'dashboard' => array(
-      'title' => '@user',
+      'title' => '@user’s dashboard',
       'path' => 'dashboard',
       'menu' => 0,
       'enabled' => 1,
