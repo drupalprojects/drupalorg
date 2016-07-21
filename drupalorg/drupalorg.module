@@ -251,6 +251,13 @@ function drupalorg_menu() {
     'page arguments' => array('security/psa/rss.xml'),
     'type' => MENU_CALLBACK,
   );
+  // Redirect legacy dashboard page.
+  $items['user/%user/dashboard'] = [
+    'access callback' => 'user_is_logged_in',
+    'page callback' => 'drupal_goto',
+    'page arguments' => ['dashboard', [], '301'],
+    'type' => MENU_CALLBACK,
+  ];
 
   $items['drupalorg-ham/%/%/%'] = array(
     'access callback' => 'drupalorg_ham_access',
