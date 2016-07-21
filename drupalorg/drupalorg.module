@@ -4882,13 +4882,23 @@ function drupalorg_mail($key, &$message, $params) {
  * Implements hook_mail_alter().
  */
 function drupalorg_mail_alter(&$message) {
-  if ($message['id'] === 'message_notify_comment_notification') {
-    // Add commenter name to from address. The sender name is enclosed by
-    // double quotes below to satisfy RFC2822
-    // <http://www.faqs.org/rfcs/rfc2822.html>, which requires double quotes
-    // when special characters (including some punctuation) are used. See
-    // example in Appendix A.1.2.
-    $message['headers']['From'] = '"' . mime_header_encode($message['params']['message_entity']->wrapper()->field_target_comment->name->value() . ' (' . variable_get('site_name', 'Drupal') . ')') . '" <' . $message['from'] . '>';
+  if (strpos($message['id'], 'message_notify_') === 0) {
+    $message_wrapper = $message['params']['message_entity']->wrapper();
+    if (isset($message_wrapper->field_target_node)) {
+      $name = $message_wrapper->field_target_node->author->name->value();
+    }
+    elseif (isset($message_wrapper->field_target_comment)) {
+      $name = $message_wrapper->field_target_comment->name->value();
+    }
+
+    if (isset($name)) {
+      // Add commenter name to from address. The sender name is enclosed by
+      // double quotes below to satisfy RFC2822
+      // <http://www.faqs.org/rfcs/rfc2822.html>, which requires double quotes
+      // when special characters (including some punctuation) are used. See
+      // example in Appendix A.1.2.
+      $message['headers']['From'] = '"' . mime_header_encode($name . ' (' . variable_get('site_name', 'Drupal') . ')') . '" <' . $message['from'] . '>';
+    }
   }
 }
 
