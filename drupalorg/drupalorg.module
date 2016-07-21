@@ -37,7 +37,7 @@ function drupalorg_init() {
   if (user_is_logged_in()) {
     // Use the dashboard as the home page if the user selected it.
     if (!empty($user->data['drupalorg_set_home']) && $_SERVER['REQUEST_URI'] === url('')) {
-      drupal_goto('user/' . $user->uid . '/dashboard');
+      drupal_goto('dashboard');
     }
 
     // Show the global notice.
@@ -104,7 +104,7 @@ function drupalorg_user_login(&$edit, $account) {
   // Redirect to the dashboard if the user selected it.
   $account = user_load($account->uid);
   if (!empty($account->data['drupalorg_set_home'])) {
-    $edit['redirect'] = 'user/' . $account->uid . '/dashboard';
+    $edit['redirect'] = 'dashboard';
   }
 
   // Try showing global notice before $account->access is updated.
