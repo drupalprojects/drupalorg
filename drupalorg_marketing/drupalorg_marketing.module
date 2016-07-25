@@ -5,3 +5,12 @@
  */
 
 include_once 'drupalorg_marketing.features.inc';
+
+/**
+ * Implements hook_ctools_content_subtype_alter().
+ */
+function drupalorg_marketing_ctools_content_subtype_alter(&$subtype, &$plugin) {
+  if ($subtype['category'] == 'Fielded panes') {
+    $subtype['category'] = 'Drupal.org';
+  }
+}
