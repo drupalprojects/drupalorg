@@ -363,6 +363,8 @@ function _drupalorg_docs_migrate_node($nid, $group_ref) {
 
   // Empty out summary attached to body field.
   $node->body[LANGUAGE_NONE][0]['summary'] = '';
+  // Open comments.
+  $node->comment = COMMENT_NODE_OPEN;
 
   // Set the group reference for the node
   $node_wrapper->og_group_ref_documentation->set(intval($group_ref));
