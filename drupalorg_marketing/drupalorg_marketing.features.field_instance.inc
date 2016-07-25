@@ -38,7 +38,7 @@ function drupalorg_marketing_field_default_field_instances() {
       'file_extensions' => 'png gif jpg jpeg',
       'max_filesize' => '',
       'max_resolution' => '',
-      'min_resolution' => '1400x600',
+      'min_resolution' => '480x240',
       'title_field' => 0,
       'user_register_form' => FALSE,
     ),
