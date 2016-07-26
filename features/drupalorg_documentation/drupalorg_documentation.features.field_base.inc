@@ -12,8 +12,6 @@ function drupalorg_documentation_field_default_field_bases() {
 
   // Exported field_base: 'field_documentation_changes'.
   $field_bases['field_documentation_changes'] = array(
-  // Exported field_base: 'field_related_content'.
-  $field_bases['field_related_content']=array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
@@ -33,7 +31,7 @@ function drupalorg_documentation_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'nodechanges_revision_diff',
-  ));
+  );
 
   // Exported field_base: 'field_documentation_status'.
   $field_bases['field_documentation_status'] = array(
@@ -107,6 +105,14 @@ function drupalorg_documentation_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'list_text',
+  );
+
+  // Exported field_base: 'field_related_content'.
+  $field_bases['field_related_content'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
     'field_name' => 'field_related_content',
     'indexes' => array(
       'target_id' => array(
