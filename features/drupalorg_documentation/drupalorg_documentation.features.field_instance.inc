@@ -208,6 +208,49 @@ function drupalorg_documentation_field_default_field_instances() {
     'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 7,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_documentation_status',
+    'label' => 'Status',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 7,
+    ),
+  );
+
   // Exported field_instance: 'node-documentation-field_related_content'.
   $field_instances['node-documentation-field_related_content'] = array(
     'bundle' => 'documentation',
@@ -246,10 +289,6 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_documentation_status',
-    'label' => 'Status',
-    'required' => 0,
-    'settings' => array(
     'field_name' => 'field_related_content',
     'label' => 'Related content',
     'required' => 0,
@@ -276,7 +315,7 @@ function drupalorg_documentation_field_default_field_instances() {
       'type' => 'entityreference_autocomplete',
       'weight' => 4,
     ),
-)));
+  );
 
   // Exported field_instance: 'node-documentation-field_summary'.
   $field_instances['node-documentation-field_summary'] = array(
@@ -592,6 +631,43 @@ function drupalorg_documentation_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 7,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_guide_status',
+    'label' => 'Status',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 9,
+    ),
+  );
+
   // Exported field_instance: 'node-guide-field_related_content'.
   $field_instances['node-guide-field_related_content'] = array(
     'bundle' => 'guide',
@@ -629,14 +705,6 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_guide_status',
-    'label' => 'Status',
-    'required' => 0,
-    'settings' => array(
-        'weight' => 2,
-      ),
-    ),
-    'entity_type' => 'node',
     'field_name' => 'field_related_content',
     'label' => 'Related content',
     'required' => 0,
@@ -650,10 +718,6 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 9,
       'module' => 'entityreference',
       'settings' => array(
         'match_operator' => 'CONTAINS',
@@ -663,7 +727,7 @@ function drupalorg_documentation_field_default_field_instances() {
       'type' => 'entityreference_autocomplete',
       'weight' => 4,
     ),
-  )));
+  );
 
   // Exported field_instance: 'node-guide-field_summary'.
   $field_instances['node-guide-field_summary'] = array(
@@ -989,5 +1053,6 @@ function drupalorg_documentation_field_default_field_instances() {
   t('Summary');
   t('This will be a comment on Discuss tab.');
   t('Tags');
+
   return $field_instances;
 }
