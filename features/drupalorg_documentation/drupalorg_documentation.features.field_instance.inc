@@ -208,6 +208,8 @@ function drupalorg_documentation_field_default_field_instances() {
     'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
+<<<<<<< HEAD
+=======
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -236,6 +238,58 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
+    'field_name' => 'field_documentation_status',
+    'label' => 'Status',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 7,
+    ),
+  );
+
+  // Exported field_instance: 'node-documentation-field_related_content'.
+  $field_instances['node-documentation-field_related_content'] = array(
+    'bundle' => 'documentation',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => 'Related content for this documentation page. These can be other documentation pages and guides, change records, pages or posts.',
+>>>>>>> 7b41bf6252e26ad17bcd61206caa1d72153c4cd5
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 7,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+<<<<<<< HEAD
     'field_name' => 'field_documentation_status',
     'label' => 'Status',
     'required' => 0,
@@ -288,6 +342,8 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
+=======
+>>>>>>> 7b41bf6252e26ad17bcd61206caa1d72153c4cd5
     'field_name' => 'field_related_content',
     'label' => 'Related Content',
     'required' => 0,
@@ -364,6 +420,7 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
   );
 
+<<<<<<< HEAD
   // Exported field_instance: 'node-documentation-field_tags'.
   $field_instances['node-documentation-field_tags'] = array(
     'bundle' => 'documentation',
@@ -416,6 +473,8 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
   );
 
+=======
+>>>>>>> 7b41bf6252e26ad17bcd61206caa1d72153c4cd5
   // Exported field_instance: 'node-documentation-og_group_ref_documentation'.
   $field_instances['node-documentation-og_group_ref_documentation'] = array(
     'bundle' => 'documentation',
@@ -660,7 +719,11 @@ function drupalorg_documentation_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
+<<<<<<< HEAD
       'weight' => 11,
+=======
+      'weight' => 9,
+>>>>>>> 7b41bf6252e26ad17bcd61206caa1d72153c4cd5
     ),
   );
 
@@ -775,6 +838,7 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
   );
 
+<<<<<<< HEAD
   // Exported field_instance: 'node-guide-field_tags'.
   $field_instances['node-guide-field_tags'] = array(
     'bundle' => 'guide',
@@ -826,6 +890,8 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
   );
 
+=======
+>>>>>>> 7b41bf6252e26ad17bcd61206caa1d72153c4cd5
   // Exported field_instance: 'node-guide-group_group'.
   $field_instances['node-guide-group_group'] = array(
     'bundle' => 'guide',
@@ -1035,13 +1101,20 @@ function drupalorg_documentation_field_default_field_instances() {
   t('Group');
   t('Guide');
   t('Guide changes');
+<<<<<<< HEAD
   t('Related Content');
+=======
+  t('Related content');
+>>>>>>> 7b41bf6252e26ad17bcd61206caa1d72153c4cd5
   t('Related content for this documentation guide. These can be other documentation guides, pages, posts or book listings.');
   t('Short (up to 140 characters) summary of the content. This will be displayed in search results, meta tags, content listings.');
   t('Short (up to 140 characters) summary of the content. This will be displayed on documentation guides,  in search results, meta tags, content listings.');
   t('Status');
   t('Summary');
+<<<<<<< HEAD
   t('Tags');
+=======
+>>>>>>> 7b41bf6252e26ad17bcd61206caa1d72153c4cd5
   t('This will be a comment on Discuss tab.');
 
   return $field_instances;
