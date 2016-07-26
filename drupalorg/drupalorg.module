@@ -2392,9 +2392,9 @@ function drupalorg_download_drupal_link_button($text) {
 function drupalorg_homebox() {
   return array(
     'dashboard' => array(
-      'title' => '@user’s dashboard',
+      'title' => 'My dashboard',
       'path' => 'dashboard',
-      'menu' => 0,
+      'menu' => 1,
       'enabled' => 1,
       'auto_save' => 1,
       'regions' => 3,
