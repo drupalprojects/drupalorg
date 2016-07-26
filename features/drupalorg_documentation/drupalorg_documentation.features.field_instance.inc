@@ -369,57 +369,6 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-documentation-field_tags'.
-  $field_instances['node-documentation-field_tags'] = array(
-    'bundle' => 'documentation',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 2,
-      ),
-      'issuemetadata' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'nodechanges' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_tags',
-    'label' => 'Tags',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'taxonomy',
-      'settings' => array(
-        'autocomplete_path' => 'taxonomy/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'taxonomy_autocomplete',
-      'weight' => 3,
-    ),
-  );
-
   // Exported field_instance: 'node-documentation-og_group_ref_documentation'.
   $field_instances['node-documentation-og_group_ref_documentation'] = array(
     'bundle' => 'documentation',
@@ -783,57 +732,6 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-guide-field_tags'.
-  $field_instances['node-guide-field_tags'] = array(
-    'bundle' => 'guide',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
-      ),
-      'issuemetadata' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'nodechanges' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_tags',
-    'label' => 'Tags',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'taxonomy',
-      'settings' => array(
-        'autocomplete_path' => 'taxonomy/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'taxonomy_autocomplete',
-      'weight' => 3,
-    ),
-  );
-
   // Exported field_instance: 'node-guide-group_group'.
   $field_instances['node-guide-group_group'] = array(
     'bundle' => 'guide',
@@ -1043,7 +941,6 @@ function drupalorg_documentation_field_default_field_instances() {
   t('Group');
   t('Guide');
   t('Guide changes');
-  t('Groups audience');
   t('Related content');
   t('Related content for this documentation guide. These can be other documentation guides, pages, posts or book listings.');
   t('Related content for this documentation page. These can be other documentation pages and guides, change records, pages or posts.');
@@ -1052,7 +949,6 @@ function drupalorg_documentation_field_default_field_instances() {
   t('Status');
   t('Summary');
   t('This will be a comment on Discuss tab.');
-  t('Tags');
 
   return $field_instances;
 }
