@@ -211,19 +211,19 @@ function drupalorg_documentation_strongarm() {
           'weight' => '0',
         ),
         'og_menu' => array(
-          'weight' => '4',
-        ),
-        'path' => array(
-          'weight' => '7',
-        ),
-        'redirect' => array(
           'weight' => '6',
         ),
+        'path' => array(
+          'weight' => '9',
+        ),
+        'redirect' => array(
+          'weight' => '8',
+        ),
         'metatags' => array(
-          'weight' => '40',
+          'weight' => '13',
         ),
         'nodechanges_comment' => array(
-          'weight' => '10',
+          'weight' => '12',
         ),
       ),
       'display' => array(),
