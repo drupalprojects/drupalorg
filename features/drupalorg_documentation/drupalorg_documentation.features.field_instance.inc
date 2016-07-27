@@ -213,7 +213,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 5,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -263,8 +263,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
-        'weight' => 4,
+        'weight' => 2,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -275,8 +274,6 @@ function drupalorg_documentation_field_default_field_instances() {
       'nodechanges' => array(
         'label' => 'above',
         'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
@@ -302,10 +299,6 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 7,
       'module' => 'entityreference',
       'settings' => array(
         'match_operator' => 'CONTAINS',
@@ -325,10 +318,11 @@ function drupalorg_documentation_field_default_field_instances() {
     'description' => 'Short (up to 140 characters) summary of the content. This will be displayed on documentation guides,  in search results, meta tags, content listings.',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
+        'type' => 'text_default',
+        'weight' => 0,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -381,7 +375,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 4,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -460,7 +454,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 3,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -640,8 +634,6 @@ function drupalorg_documentation_field_default_field_instances() {
       'nodechanges' => array(
         'label' => 'above',
         'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
