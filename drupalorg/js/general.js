@@ -1,12 +1,4 @@
 (function ($) {
-  Drupal.behaviors.drupalorgHome = {
-    attach: function (context, settings) {
-      $('.front #community-updates', context).each(function () {
-        $(this).tabs();
-      });
-    }
-  };
-
   Drupal.behaviors.drupalorgSearch = {
     attach: function (context, settings) {
       $('body.page-search #content-top-region form:not(.drupalorgSearch-processed)', context).addClass('drupalorgSearch-processed').each(function () {
