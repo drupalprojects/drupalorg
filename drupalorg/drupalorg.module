@@ -3335,7 +3335,6 @@ function drupalorg_node_update($node) {
     drupalorg_org_request_issue($node);
   }
   elseif (project_release_node_is_release($node)) {
-
     $download_base = variable_get('project_release_download_base_' . $node->type, '');
     $wrapper = entity_metadata_wrapper('node', $node);
     foreach ($wrapper->field_release_files as $file_wrapper) {
@@ -3346,6 +3345,14 @@ function drupalorg_node_update($node) {
   }
   elseif (project_node_is_project($node)) {
     _drupalorg_node_update_project($node);
+  }
+
+  // Keep OG Menu titles matching the node title.
+  if (og_is_group('node', $node) && !empty($node->og_menu) && ($menu = og_menu_get_group_menus(array('node' => array($node->nid))))) {
+    $menu = reset($menu);
+    $menu['title'] = $node->title;
+    $menu['description'] = t('OG Menu for') . ' ' . check_plain($node->title);
+    menu_save($menu);
   }
 }
 
