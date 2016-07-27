@@ -444,4 +444,21 @@
       });
     }
   };
+
+  Drupal.behaviors.drupalorgMenu = {
+    attach: function (context) {
+      $('fieldset.menu-link-form', context).each(function () {
+        var $link_title = $('.form-item-menu-link-title input', context);
+        var $title = $(this).closest('form').find('.form-item-title input');
+        // Bail out if we do not have all required fields.
+        if (!($link_title.length && $title.length)) {
+          return;
+        }
+        // More-agressively keep the titles consistent.
+        $title.focus(function () {
+          $link_title.removeData('menuLinkAutomaticTitleOveridden');
+        });
+      });
+    }
+  };
 })(jQuery);
