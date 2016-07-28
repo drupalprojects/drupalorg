@@ -192,15 +192,12 @@ function drupalorg_docs_migrate_wizard_cancel(&$form_state) {
  * @ingroup forms
  */
 function drupalorg_docs_migrate_form_edit($form, &$form_state) {
-
-  // Attach the fields for this ticket registration.
+  // Attach the fields for destination guide.
   $form_state['entity_type'] = 'node';
   $form_state['node'] = $form_state['original_node'];
   $form_state['node']->type = 'documentation';
   $form['#node'] = $form_state['node'];
 
-  // Summary is a new field for documentation. Lets auto-fill it
-  //$form_state['node']->field_summary[LANGUAGE_NONE][0]['value'] = truncate_utf8(strip_tags($form_state['node']->body[LANGUAGE_NONE][0]['value']), 140, TRUE, FALSE);
   $og_widget = array();
   field_attach_form('node', $form_state['node'], $og_widget, $form_state, LANGUAGE_NONE, array('field_name' => 'og_group_ref_documentation'));
 
@@ -275,6 +272,15 @@ function _print_children_nodes(&$children, $result, $depth) {
     }
   }
   return $children;
+}
+
+/**
+ * Validate callback for drupalorg_docs_migrate_form_edit().
+ */
+function drupalorg_docs_migrate_form_edit_validate($form, &$form_state) {
+  if (!node_load($form_state['values']['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id'])) {
+    form_set_error('og_group_ref_documentation', t('Please select a valid guide using autocomplete.'));
+  }
 }
 
 /**
@@ -354,6 +360,11 @@ function _drupalorg_docs_migrate_node($nid, $group_ref) {
   // Summary is a new field for documentation. Lets auto-fill it
   $node_wrapper->field_summary->set(truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 140, TRUE, FALSE));
   $node_wrapper->save();
+
+  // Empty out summary attached to body field.
+  $node->body[LANGUAGE_NONE][0]['summary'] = '';
+  // Open comments.
+  $node->comment = COMMENT_NODE_OPEN;
 
   // Set the group reference for the node
   $node_wrapper->og_group_ref_documentation->set(intval($group_ref));

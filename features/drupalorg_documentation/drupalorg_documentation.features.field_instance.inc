@@ -154,9 +154,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 1,
+        'type' => 'text_default',
+        'weight' => 3,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -211,9 +212,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'module' => 'list',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 7,
+        'type' => 'list_default',
+        'weight' => 1,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -247,7 +249,69 @@ function drupalorg_documentation_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 7,
+      'weight' => 9,
+    ),
+  );
+
+  // Exported field_instance: 'node-documentation-field_related_content'.
+  $field_instances['node-documentation-field_related_content'] = array(
+    'bundle' => 'documentation',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => 'Related content for this documentation page. These can be other documentation pages and guides, change records, pages or posts.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 6,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_related_content',
+    'label' => 'Related content',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete',
+      'weight' => 5,
     ),
   );
 
@@ -259,10 +323,11 @@ function drupalorg_documentation_field_default_field_instances() {
     'description' => 'Short (up to 140 characters) summary of the content. This will be displayed on documentation guides,  in search results, meta tags, content listings.',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
+        'type' => 'text_default',
+        'weight' => 2,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -303,6 +368,58 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-documentation-field_tags'.
+  $field_instances['node-documentation-field_tags'] = array(
+    'bundle' => 'documentation',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 5,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_tags',
+    'label' => 'Tags',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'taxonomy',
+      'settings' => array(
+        'autocomplete_path' => 'taxonomy/autocomplete',
+        'size' => 60,
+      ),
+      'type' => 'taxonomy_autocomplete',
+      'weight' => 4,
+    ),
+  );
+
   // Exported field_instance: 'node-documentation-og_group_ref_documentation'.
   $field_instances['node-documentation-og_group_ref_documentation'] = array(
     'bundle' => 'documentation',
@@ -313,9 +430,12 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 6,
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 0,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -380,7 +500,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 6,
+      'weight' => 8,
     ),
   );
 
@@ -392,9 +512,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'module' => 'file',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 5,
+        'type' => 'file_default',
+        'weight' => 4,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -454,9 +575,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 1,
+        'type' => 'text_default',
+        'weight' => 3,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -511,9 +633,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'module' => 'list',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 7,
+        'type' => 'list_default',
+        'weight' => 1,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -547,7 +670,69 @@ function drupalorg_documentation_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 9,
+      'weight' => 11,
+    ),
+  );
+
+  // Exported field_instance: 'node-guide-field_related_content'.
+  $field_instances['node-guide-field_related_content'] = array(
+    'bundle' => 'guide',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => 'Related content for this documentation guide. These can be other documentation guides, pages, posts or book listings.',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 6,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_related_content',
+    'label' => 'Related content',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete',
+      'weight' => 5,
     ),
   );
 
@@ -563,7 +748,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -605,6 +790,58 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-guide-field_tags'.
+  $field_instances['node-guide-field_tags'] = array(
+    'bundle' => 'guide',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 4,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_tags',
+    'label' => 'Tags',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'taxonomy',
+      'settings' => array(
+        'autocomplete_path' => 'taxonomy/autocomplete',
+        'size' => 60,
+      ),
+      'type' => 'taxonomy_autocomplete',
+      'weight' => 4,
+    ),
+  );
+
   // Exported field_instance: 'node-guide-group_group'.
   $field_instances['node-guide-group_group'] = array(
     'bundle' => 'guide',
@@ -620,7 +857,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 7,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -668,7 +905,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'og_hide' => TRUE,
       ),
       'type' => 'options_onoff',
-      'weight' => 5,
+      'weight' => 6,
     ),
   );
 
@@ -682,9 +919,12 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 6,
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 0,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -749,9 +989,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
+        'module' => 'file',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 4,
+        'type' => 'file_default',
+        'weight' => 5,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -814,10 +1055,14 @@ function drupalorg_documentation_field_default_field_instances() {
   t('Group');
   t('Guide');
   t('Guide changes');
+  t('Related content');
+  t('Related content for this documentation guide. These can be other documentation guides, pages, posts or book listings.');
+  t('Related content for this documentation page. These can be other documentation pages and guides, change records, pages or posts.');
   t('Short (up to 140 characters) summary of the content. This will be displayed in search results, meta tags, content listings.');
   t('Short (up to 140 characters) summary of the content. This will be displayed on documentation guides,  in search results, meta tags, content listings.');
   t('Status');
   t('Summary');
+  t('Tags');
   t('This will be a comment on Discuss tab.');
 
   return $field_instances;

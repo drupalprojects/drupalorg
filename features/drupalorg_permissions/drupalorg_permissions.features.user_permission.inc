@@ -2616,7 +2616,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit any documentation content'.
   $permissions['edit any documentation content'] = array(
     'name' => 'edit any documentation content',
-    'roles' => array(),
+    'roles' => array(
+      'confirmed' => 'confirmed',
+    ),
     'module' => 'node',
   );
 
@@ -2630,7 +2632,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit any guide content'.
   $permissions['edit any guide content'] = array(
     'name' => 'edit any guide content',
-    'roles' => array(),
+    'roles' => array(
+      'confirmed' => 'confirmed',
+    ),
     'module' => 'node',
   );
 

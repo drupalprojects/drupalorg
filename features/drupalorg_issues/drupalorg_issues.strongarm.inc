@@ -130,6 +130,9 @@ function drupalorg_issues_strongarm() {
         'mollom' => array(
           'weight' => '99',
         ),
+        'metatags' => array(
+          'weight' => '40',
+        ),
       ),
       'display' => array(
         'update_link' => array(

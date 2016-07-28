@@ -40,6 +40,7 @@ function drupalorg_spam_views_default_views() {
     'manage_button' => 'manage_button',
     'fingerprint' => 'fingerprint',
     'iid_status' => 'iid_status',
+    'zid_fingerprint' => 'zid_fingerprint',
     'status' => 'status',
     'fingerprints' => 'fingerprints',
     'roles' => 'roles',
@@ -64,6 +65,13 @@ function drupalorg_spam_views_default_views() {
       'empty_column' => 0,
     ),
     'iid_status' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'zid_fingerprint' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -143,6 +151,10 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['iid_status']['id'] = 'iid_status';
   $handler->display->display_options['fields']['iid_status']['table'] = 'distil_registration';
   $handler->display->display_options['fields']['iid_status']['field'] = 'iid_status';
+  /* Field: Distil Registration Data: D_ZID Fingerprint */
+  $handler->display->display_options['fields']['zid_fingerprint']['id'] = 'zid_fingerprint';
+  $handler->display->display_options['fields']['zid_fingerprint']['table'] = 'distil_registration';
+  $handler->display->display_options['fields']['zid_fingerprint']['field'] = 'zid_fingerprint';
   /* Field: Distil Registration Data: UID Statuses */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'distil_registration';
@@ -303,6 +315,7 @@ function drupalorg_spam_views_default_views() {
     t('Manage IID Status'),
     t('Fingerprint'),
     t('IID Status'),
+    t('D_ZID Fingerprint'),
     t('Statuses'),
     t('Fingerprint Count'),
     t('Roles'),
@@ -433,6 +446,10 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['field_distil_reg_iid']['table'] = 'field_data_field_distil_reg_iid';
   $handler->display->display_options['fields']['field_distil_reg_iid']['field'] = 'field_distil_reg_iid';
   $handler->display->display_options['fields']['field_distil_reg_iid']['exclude'] = TRUE;
+  /* Field: User: Distil zid */
+  $handler->display->display_options['fields']['field_distil_reg_zid']['id'] = 'field_distil_reg_zid';
+  $handler->display->display_options['fields']['field_distil_reg_zid']['table'] = 'field_data_field_distil_reg_zid';
+  $handler->display->display_options['fields']['field_distil_reg_zid']['field'] = 'field_distil_reg_zid';
   /* Field: User: Website(s) */
   $handler->display->display_options['fields']['field_websites']['id'] = 'field_websites';
   $handler->display->display_options['fields']['field_websites']['table'] = 'field_data_field_websites';
@@ -479,6 +496,7 @@ function drupalorg_spam_views_default_views() {
     t('Organizations'),
     t('Bio'),
     t('Distil iid'),
+    t('Distil zid'),
     t('Website(s)'),
     t('Account Block Link (Fasttoggle)'),
     t('All'),
@@ -843,10 +861,10 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['relationships']['flag_count_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['flag_count_rel']['field'] = 'flag_count_rel';
   $handler->display->display_options['relationships']['flag_count_rel']['flag'] = 'drupalorg_node_spam';
-  /* Relationship: Content: Author */
-  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
-  $handler->display->display_options['relationships']['uid']['table'] = 'node';
-  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Relationship: Content revision: User */
+  $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['relationships']['uid_1']['table'] = 'node_revision';
+  $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
   /* Field: Content: Author uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
   $handler->display->display_options['fields']['uid']['table'] = 'node';
@@ -892,7 +910,7 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid_1';
   $handler->display->display_options['fields']['name']['label'] = 'Author';
   /* Field: Content: Remove spam flags */
   $handler->display->display_options['fields']['drupalorg_not_spam']['id'] = 'drupalorg_not_spam';
@@ -911,7 +929,7 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['fasttoggle_block_user']['id'] = 'fasttoggle_block_user';
   $handler->display->display_options['fields']['fasttoggle_block_user']['table'] = 'users';
   $handler->display->display_options['fields']['fasttoggle_block_user']['field'] = 'fasttoggle_block_user';
-  $handler->display->display_options['fields']['fasttoggle_block_user']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['relationship'] = 'uid_1';
   $handler->display->display_options['fields']['fasttoggle_block_user']['label'] = '';
   $handler->display->display_options['fields']['fasttoggle_block_user']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: Post date */
@@ -952,7 +970,7 @@ function drupalorg_spam_views_default_views() {
     t('last »'),
     t('flag'),
     t('counter'),
-    t('author'),
+    t('revision user'),
     t('Type'),
     t('Reports'),
     t('.'),

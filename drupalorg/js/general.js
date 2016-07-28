@@ -1,12 +1,4 @@
 (function ($) {
-  Drupal.behaviors.drupalorgHome = {
-    attach: function (context, settings) {
-      $('.front #community-updates', context).each(function () {
-        $(this).tabs();
-      });
-    }
-  };
-
   Drupal.behaviors.drupalorgSearch = {
     attach: function (context, settings) {
       $('body.page-search #content-top-region form:not(.drupalorgSearch-processed)', context).addClass('drupalorgSearch-processed').each(function () {
@@ -449,6 +441,23 @@
             $links.filter('.' + window.localStorage['drupalorgReleaseHashes']).click();
           }
         }
+      });
+    }
+  };
+
+  Drupal.behaviors.drupalorgMenu = {
+    attach: function (context) {
+      $('fieldset.menu-link-form', context).each(function () {
+        var $link_title = $('.form-item-menu-link-title input', context);
+        var $title = $(this).closest('form').find('.form-item-title input');
+        // Bail out if we do not have all required fields.
+        if (!($link_title.length && $title.length)) {
+          return;
+        }
+        // More-agressively keep the titles consistent.
+        $title.focus(function () {
+          $link_title.removeData('menuLinkAutomaticTitleOveridden');
+        });
       });
     }
   };

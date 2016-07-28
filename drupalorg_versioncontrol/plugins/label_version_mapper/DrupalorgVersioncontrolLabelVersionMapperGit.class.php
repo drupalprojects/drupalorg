@@ -24,9 +24,9 @@ class DrupalorgVersioncontrolLabelVersionMapperGit implements VersioncontrolRele
       // 4.7.0-beta3
       // 4.7.0
       // 6.18
-      // 7.0-unstable3
+      // 7.0-alpha3
       // 7.0
-      if (preg_match('/^(\d+)\.(\d+)(\.(\d+))?(-((unstable|alpha|beta|rc)\d+))?$/', $tag_name, $matches)) {
+      if (preg_match('/^(\d+)\.(\d+)(\.(\d+))?(-((alpha|beta|rc)\d+))?$/', $tag_name, $matches)) {
         // Starting with version 5 through version 8.0 alphas, we only had 2 digits, major and patch.
         if (($matches[1] >= 5 && $matches[1] <= 7) || ($matches[1] == 8 && $matches[4] == '')) {
           $version->version_major = $matches[1];
@@ -60,10 +60,10 @@ class DrupalorgVersioncontrolLabelVersionMapperGit implements VersioncontrolRele
       // Contrib official versions can be any of the following:
       // 4.7.x-1.0-beta2
       // 4.7.x-1.0
-      // 6.x-1.0-unstable1
+      // 6.x-1.0-alpha1
       // 6.x-1.3
       // 6.x-10.0-alpha3
-      if (preg_match('/^((\d+)(\.(\d+))?\.x)-(\d+)\.(\d+)(-((unstable|alpha|beta|rc)\d+))?$/', $tag_name, $matches)) {
+      if (preg_match('/^((\d+)(\.(\d+))?\.x)-(\d+)\.(\d+)(-((alpha|beta|rc)\d+))?$/', $tag_name, $matches)) {
         $version->version_major = $matches[5];
         $version->version_patch = $matches[6];
         // Match 8 contains the version extra without the leading '-'.
