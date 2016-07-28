@@ -1513,6 +1513,9 @@ function drupalorg_theme() {
  */
 function drupalorg_form_alter(&$form, &$form_state, $form_id) {
   // Force a revision log entry when editing existing book nodes.
+  if ($form_id == 'sa_node_form') {
+    $form['#submit'][] = 'drupalorg_sa_save';
+  }
   if ($form_id == 'book_node_form' && isset($form['revision_information']['log']) && arg(1) != 'add') {
     $form['revision_information']['log']['#required'] = TRUE;
     $form['revision_information']['#collapsed'] = FALSE;
@@ -4894,6 +4897,36 @@ function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
     // Keep punctuation in release version numbers.
     if ($context['type'] === 'project_release') {
       $alias = preg_replace('#/[^/]*$#', '/' . $context['data']['node']->field_release_version[LANGUAGE_NONE][0]['value'], $alias);
+    }
+  }
+}
+
+/**
+ * Called when an SA node form is saved. Grant issue credits from the credits
+ * in the SA.
+ */
+function drupalorg_sa_save($form, $form_state) {
+  if (isset($form_state['node']->nid)) {
+    // Mark the “issue” closed.
+    $form_state['node']->field_issue_status[LANGUAGE_NONE][0]['value'] = 7;
+
+    $givecredit = [];
+    $search = $form_state['values']['field_sa_reported_by'][LANGUAGE_NONE][0]['value'];
+    $search .= $form_state['values']['field_sa_fixed_by'][LANGUAGE_NONE][0]['value'];
+    $search .= $form_state['values']['field_sa_coordinated_by'][LANGUAGE_NONE][0]['value'];
+    if ($search != '') {
+      preg_match_all('/https:\/\/www.drupal.org\/user\/(\d+)/', $search, $matches);
+      foreach ($matches[1] as $uid) {
+        $account = user_load($uid);
+        $givecredit[] = $account->name;
+      }
+      $form_state['values']['add_credit'] = implode(',', $givecredit);
+      _drupalorg_project_issue_credit_add($form, $form_state);
+      $form_state['node']->field_issue_credit[LANGUAGE_NONE] = array();
+      // Grant everyone credit.
+      foreach ($form_state['drupalorg_credit_cids'] as $cid => $key) {
+        $form_state['node']->field_issue_credit[LANGUAGE_NONE][] = array('target_id' => $cid);
+      }
     }
   }
 }
