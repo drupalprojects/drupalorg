@@ -1930,7 +1930,7 @@ function drupalorg_taxonomy_forums_ajax_callback($form, &$form_state) {
 
 /**
  * For login and registration pages, look for bakery's bd parameter and extract
- * site name, or drupalorg_crosssite’s deprecated site parameter.
+ * site name.
  *
  * @param string $bd
  *   Use a specific bakery destination value instead of the URL parameter.
