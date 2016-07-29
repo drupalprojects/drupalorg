@@ -5,3 +5,12 @@
  */
 
 include_once 'drupalorg_documentation.features.inc';
+/**
+ * Implements hook_entity_info_alter().
+ */
+function drupalorg_documentation_entity_info_alter(&$entity_info) {
+    $entity_info['node']['view modes']['related_content'] = array(
+        'label' => t('Related Content'),
+        'custom settings' => TRUE,
+    );
+}
