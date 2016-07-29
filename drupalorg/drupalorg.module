@@ -4568,7 +4568,7 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
             break;
 
           case 'Deprecated':
-            $element[$delta]['#markup'] = t('This documentation is deprecated. !link.', ['!link' => l(t('Recommend a change or new documentation'), 'node/' . $entity->nid . '/discuss')]);
+            $element[$delta]['#markup'] = t('This documentation is <strong>deprecated</strong>. !link.', ['!link' => l(t('Recommend a change or new documentation'), 'node/' . $entity->nid . '/discuss')]);
             break;
         }
       }
