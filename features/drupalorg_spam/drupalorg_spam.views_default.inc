@@ -861,10 +861,10 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['relationships']['flag_count_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['flag_count_rel']['field'] = 'flag_count_rel';
   $handler->display->display_options['relationships']['flag_count_rel']['flag'] = 'drupalorg_node_spam';
-/* Relationship: Content revision: User */
-$handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
-$handler->display->display_options['relationships']['uid_1']['table'] = 'node_revision';
-$handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
+  /* Relationship: Content revision: User */
+  $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['relationships']['uid_1']['table'] = 'node_revision';
+  $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
   /* Field: Content: Author uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
   $handler->display->display_options['fields']['uid']['table'] = 'node';
