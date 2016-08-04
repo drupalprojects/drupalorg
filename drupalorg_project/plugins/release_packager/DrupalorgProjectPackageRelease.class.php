@@ -63,15 +63,30 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     }
     $repo = variable_get('git_base_url', 'git://git.drupal.org/project/') . $this->project_node->versioncontrol_project['repo']->name . '.git';
 
-    // Check what is currently packaged.
+    // Check if we need packaging.
     if ($this->release_node_wrapper->field_release_build_type->value() === 'dynamic' && $tgz_exists) {
+      $backend = $this->project_node->versioncontrol_project['repo']->getBackend();
+      // Look for a commit on the branch with a parent commit of the currently
+      // packaged release.
       $conditions = [
         'branches' => [$this->release_node->versioncontrol_release['label']['label_id']],
         'parent_commit' => $this->release_node_wrapper->field_packaged_git_sha1->value(),
       ];
-      if (count($this->project_node->versioncontrol_project['repo']->getBackend()->loadEntities('operation', [], $conditions, ['may cache' => FALSE])) === 0) {
-        drush_log(dt('Commit @field_packaged_git_sha1 already packaged.', ['@field_packaged_git_sha1' => $this->release_node_wrapper->field_packaged_git_sha1->value()]), 'notice');
-        return 'no-op';
+      if (count($backend->loadEntities('operation', [], $conditions, ['may cache' => FALSE])) === 0) {
+        // Look for commits on the branch with a commit date after the
+        // currently packaged release.
+        $conditions = [
+          'branches' => [$this->release_node->versioncontrol_release['label']['label_id']],
+          'committer_date' => [
+            'operator' => '>',
+            'values' => $backend->loadEntity('operation', [], ['revision' => $this->release_node_wrapper->field_packaged_git_sha1->value()])->committer_date,
+          ],
+        ];
+        if (count($backend->loadEntities('operation', [], $conditions, ['may cache' => FALSE])) === 0) {
+          // Neither was found.
+          drush_log(dt('Commit @field_packaged_git_sha1 already packaged.', ['@field_packaged_git_sha1' => $this->release_node_wrapper->field_packaged_git_sha1->value()]), 'notice');
+          return 'no-op';
+        }
       }
     }
 
