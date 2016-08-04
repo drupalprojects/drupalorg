@@ -245,6 +245,27 @@ function drupalorg_documentation_panelizer_defaults() {
   $display->content['new-6c4eb81c-4eb6-4067-bc40-2c0e939a389c'] = $pane;
   $display->panels['left_content'][5] = 'new-6c4eb81c-4eb6-4067-bc40-2c0e939a389c';
   $pane = new stdClass();
+  $pane->pid = 'new-30246fdc-f7f0-4ab3-8b1c-c200b5aa5ee0';
+  $pane->panel = 'left_content';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'documentation_related_content-related_content_pane';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'context' => array(
+      0 => 'panelizer',
+    ),
+  );
+  $pane->cache = array();
+  $pane->style = array();
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 6;
+  $pane->locks = array();
+  $pane->uuid = '30246fdc-f7f0-4ab3-8b1c-c200b5aa5ee0';
+  $display->content['new-30246fdc-f7f0-4ab3-8b1c-c200b5aa5ee0'] = $pane;
+  $display->panels['left_content'][6] = 'new-30246fdc-f7f0-4ab3-8b1c-c200b5aa5ee0';
+  $pane = new stdClass();
   $pane->pid = 'new-30529426-7058-4214-a44a-82fde63c7806';
   $pane->panel = 'top_right_content';
   $pane->type = 'block';
