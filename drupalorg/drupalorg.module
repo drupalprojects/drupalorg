@@ -4958,3 +4958,11 @@ function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
   // Strip nice quotes.
   $alias = str_replace(['‘', '’', '“', '”'], '', $alias);
 }
+
+//drupalorg_documentation related content view mode
+function drupalorg_documentation_entity_info_alter(&$entity_info) {
+    $entity_info['node']['view modes']['related_content'] = array(
+        'label' => t('Related Content'),
+        'custom settings' => TRUE,
+    );
+}
