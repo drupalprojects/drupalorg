@@ -1443,6 +1443,7 @@ function drupalorg_project_meta_data(stdClass $node) {
     ];
   }
 
+  // Last modified.
   $output['items']['modified'] = [
     '#prefix' => '<li>',
     '#markup' => t('Last modified: @modified', ['@modified' => format_date($node->changed, 'custom', 'F j, Y')]),
