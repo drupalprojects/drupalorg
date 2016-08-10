@@ -2370,8 +2370,7 @@ function drupalorg_views_api() {
  * Implements hook_views_default_views_alter().
  */
 function drupalorg_views_default_views_alter(&$views) {
-  $path = drupal_get_path('module', 'drupalorg');
-  require_once DRUPAL_ROOT . '/' . "$path/drupalorg.views_default.inc";
+  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'drupalorg') . '/drupalorg.views_default.inc';
   _drupalorg_views_default_views_alter($views);
 }
 
