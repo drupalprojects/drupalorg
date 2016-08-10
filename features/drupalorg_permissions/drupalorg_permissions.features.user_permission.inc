@@ -388,6 +388,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'user',
   );
 
+  // Exported permission: 'add JS snippets for google analytics'.
+  $permissions['add JS snippets for google analytics'] = array(
+    'name' => 'add JS snippets for google analytics',
+    'roles' => array(),
+    'module' => 'googleanalytics',
+  );
+
   // Exported permission: 'add content to books'.
   $permissions['add content to books'] = array(
     'name' => 'add content to books',
@@ -2386,6 +2393,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
+  // Exported permission: 'delete terms in tags'.
+  $permissions['delete terms in tags'] = array(
+    'name' => 'delete terms in tags',
+    'roles' => array(),
+    'module' => 'taxonomy',
+  );
+
   // Exported permission: 'delete terms in vocabulary_1'.
   $permissions['delete terms in vocabulary_1'] = array(
     'name' => 'delete terms in vocabulary_1',
@@ -2960,6 +2974,13 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
     ),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'edit terms in tags'.
+  $permissions['edit terms in tags'] = array(
+    'name' => 'edit terms in tags',
+    'roles' => array(),
     'module' => 'taxonomy',
   );
 
