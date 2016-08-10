@@ -1570,7 +1570,7 @@ function drupalorg_project_form_views_exposed_form_alter(&$form, &$form_state) {
  * Checks to see the status of Drupal 8 for the contributed module.
  */
 function drupalorg_project_views_post_execute(&$view) {
-  if ($view->name === 'project_release_download_table' && ($view->current_display === 'recommended' || $view->current_display === 'security') && !empty($view->result) && count($view->args)) {
+  if ($view->name === variable_get('project_release_downloads_view', 'project_release_download_table') && ($view->current_display === 'recommended' || $view->current_display === 'security') && !empty($view->result) && count($view->args)) {
     $node = node_load($view->args[0]);
 
     // We don't need to tell core or sandboxes they need a D8 release.
