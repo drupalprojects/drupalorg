@@ -15,13 +15,14 @@ function drupalorg_projects_views_default_views() {
   $view->description = 'Provides tables for the latest release from the recommended branches, the latest releases from any supported branches, and devel';
   $view->tag = 'default';
   $view->base_table = 'node';
-  $view->human_name = 'Drupal.org Project downloads';
+  $view->human_name = 'Drupal.org project downloads';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['css_class'] = 'view-project-release-download-table';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['access']['type'] = 'perm';
@@ -35,6 +36,7 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'path' => 'path',
     'field_release_version' => 'field_release_version',
+    'field_release_version_extra' => 'field_release_version',
     'uri' => 'uri',
     'uri_1' => 'uri_1',
     'filesize' => 'filesize',
@@ -51,6 +53,13 @@ function drupalorg_projects_views_default_views() {
       'empty_column' => 0,
     ),
     'field_release_version' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_release_version_extra' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -181,6 +190,17 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['field_release_version']['alter']['path'] = '[path]';
   $handler->display->display_options['fields']['field_release_version']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_release_version']['type'] = 'text_plain';
+  /* Field: Content: Version extra */
+  $handler->display->display_options['fields']['field_release_version_extra']['id'] = 'field_release_version_extra';
+  $handler->display->display_options['fields']['field_release_version_extra']['table'] = 'field_data_field_release_version_extra';
+  $handler->display->display_options['fields']['field_release_version_extra']['field'] = 'field_release_version_extra';
+  $handler->display->display_options['fields']['field_release_version_extra']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_release_version_extra']['alter']['text'] = '&nbsp;';
+  $handler->display->display_options['fields']['field_release_version_extra']['alter']['path'] = '[path]';
+  $handler->display->display_options['fields']['field_release_version_extra']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_release_version_extra']['empty'] = '<img src="/sites/all/modules/drupalorg/drupalorg/images/shield-icon.svg" alt="full release covered by the Drupal Security Team">';
+  $handler->display->display_options['fields']['field_release_version_extra']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['field_release_version_extra']['type'] = 'text_plain';
   /* Field: File: Path */
   $handler->display->display_options['fields']['uri']['id'] = 'uri';
   $handler->display->display_options['fields']['uri']['table'] = 'file_managed';
@@ -560,6 +580,9 @@ function drupalorg_projects_views_default_views() {
     t('supported versions'),
     t('Path'),
     t('Version'),
+    t('Version extra'),
+    t('&nbsp;'),
+    t('<img src="/sites/all/modules/drupalorg/drupalorg/images/shield-icon.svg" alt="full release covered by the Drupal Security Team">'),
     t('Download'),
     t('[extension] <span class="filesize">([filesize])</span>'),
     t('[extension_1] <span class="filesize">([filesize_1])</span>'),

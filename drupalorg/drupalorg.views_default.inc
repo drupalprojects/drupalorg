@@ -98,25 +98,4 @@ function _drupalorg_views_default_views_alter(&$views) {
     $views[$name]->display_handler->override_option('cache', $cache_5min);
     $views[$name]->destroy();
   }
-
-  // Modify the flag_bookmarks view.
-  if (isset($views['flag_bookmarks'])) {
-    $handler = $views['flag_bookmarks']->new_display('block', 'Block', 'block');
-    $handler->override_option('style_plugin', 'list');
-    $handler->override_option('style_options', array(
-      'grouping' => '',
-      'type' => 'ul',
-    ));
-    $handler->override_option('row_plugin', 'fields');
-    $handler->override_option('row_options', array(
-      'inline' => array(
-        'title' => 'title',
-        'ops' => 'ops',
-      ),
-      'separator' => '',
-      'hide_empty' => 0,
-    ));
-    $handler->override_option('title', 'My Bookmarks');
-    $handler->override_option('block_caching', -1);
-  }
 }
