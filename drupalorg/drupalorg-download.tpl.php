@@ -49,6 +49,7 @@
 
 <div class="drupal-modules-facets">
   <div class="most-installed">
+    <h2>Most Installed</h2>
     <?php print $iss_project_release_usage; ?>
   </div>
 
@@ -64,6 +65,7 @@
   </div>
 
   <div class="created">
+    <h2>New Modules</h2>
     <?php print $ds_created; ?>
   </div>
 
