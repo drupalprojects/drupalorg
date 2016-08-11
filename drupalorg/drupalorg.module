@@ -1343,10 +1343,8 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   foreach ($results as $result) {
     $modules[] = l($result->node_title, 'node/' . $result->nid);
   }
-  $modules[] = '<a href="/project/project_module/index" class="all">View full index</a>';
-  $module_index = '<h2>' . t('Module Index') . '</h2>';
-  $module_index .= theme('item_list', array('items' => $modules, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => array('flat'))));
-  $variables['module_index'] = $module_index;
+  $modules[] = '<strong>' . l(t('View full index'), 'project/project_module/index') . '</strong>';
+  $variables['module_index'] = theme('item_list', ['items' => $modules, 'title' => NULL, 'type' => 'ul', 'attributes' => ['class' => ['flat']]]);
 }
 
 /**

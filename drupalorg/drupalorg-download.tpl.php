@@ -70,6 +70,7 @@
   </div>
 
   <div class="index">
+    <h2>Module Index</h2>
     <?php print $module_index; ?>
   </div>
 
