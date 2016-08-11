@@ -198,6 +198,7 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['field_release_version_extra']['alter']['text'] = '&nbsp;';
   $handler->display->display_options['fields']['field_release_version_extra']['alter']['path'] = '[path]';
   $handler->display->display_options['fields']['field_release_version_extra']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_release_version_extra']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_release_version_extra']['empty'] = '<img src="/sites/all/modules/drupalorg/drupalorg/images/shield-icon.svg" alt="full release covered by the Drupal Security Team">';
   $handler->display->display_options['fields']['field_release_version_extra']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_release_version_extra']['type'] = 'text_plain';
@@ -345,6 +346,12 @@ function drupalorg_projects_views_default_views() {
     'static' => 'static',
   );
   $handler->display->display_options['filters']['field_release_build_type_value']['group'] = 1;
+  /* Filter criterion: Content: Version extra (field_release_version_extra) */
+  $handler->display->display_options['filters']['field_release_version_extra_value']['id'] = 'field_release_version_extra_value';
+  $handler->display->display_options['filters']['field_release_version_extra_value']['table'] = 'field_data_field_release_version_extra';
+  $handler->display->display_options['filters']['field_release_version_extra_value']['field'] = 'field_release_version_extra_value';
+  $handler->display->display_options['filters']['field_release_version_extra_value']['operator'] = 'empty';
+  $handler->display->display_options['filters']['field_release_version_extra_value']['group'] = 1;
   /* Filter criterion: Project release: Recommended branch */
   $handler->display->display_options['filters']['recommended']['id'] = 'recommended';
   $handler->display->display_options['filters']['recommended']['table'] = 'project_release_supported_versions';
@@ -443,6 +450,11 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['header']['area']['content'] = '<h4>Other releases</h4>';
   $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['operator'] = 'OR';
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'AND',
+  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -487,12 +499,70 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['filters']['recommended']['field'] = 'recommended';
   $handler->display->display_options['filters']['recommended']['relationship'] = 'supported_releases_rel';
   $handler->display->display_options['filters']['recommended']['value'] = '0';
+  $handler->display->display_options['filters']['recommended']['group'] = 1;
   /* Filter criterion: Project release: Latest or recommended release */
   $handler->display->display_options['filters']['release_type']['id'] = 'release_type';
   $handler->display->display_options['filters']['release_type']['table'] = 'project_release_supported_versions';
   $handler->display->display_options['filters']['release_type']['field'] = 'release_type';
   $handler->display->display_options['filters']['release_type']['relationship'] = 'supported_releases_rel';
   $handler->display->display_options['filters']['release_type']['value'] = 'recommended';
+  $handler->display->display_options['filters']['release_type']['group'] = 1;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
+  $handler->display->display_options['filters']['status_1']['table'] = 'node';
+  $handler->display->display_options['filters']['status_1']['field'] = 'status';
+  $handler->display->display_options['filters']['status_1']['value'] = '1';
+  $handler->display->display_options['filters']['status_1']['group'] = 2;
+  /* Filter criterion: Project: Project system behavior */
+  $handler->display->display_options['filters']['project_type_1']['id'] = 'project_type_1';
+  $handler->display->display_options['filters']['project_type_1']['table'] = 'node';
+  $handler->display->display_options['filters']['project_type_1']['field'] = 'project_type';
+  $handler->display->display_options['filters']['project_type_1']['value'] = 'project_release';
+  $handler->display->display_options['filters']['project_type_1']['group'] = 2;
+  /* Filter criterion: Taxonomy term: Recommended (field_release_recommended) */
+  $handler->display->display_options['filters']['field_release_recommended_value_1']['id'] = 'field_release_recommended_value_1';
+  $handler->display->display_options['filters']['field_release_recommended_value_1']['table'] = 'field_data_field_release_recommended';
+  $handler->display->display_options['filters']['field_release_recommended_value_1']['field'] = 'field_release_recommended_value';
+  $handler->display->display_options['filters']['field_release_recommended_value_1']['relationship'] = 'term_node_tid';
+  $handler->display->display_options['filters']['field_release_recommended_value_1']['value'] = array(
+    1 => '1',
+  );
+  $handler->display->display_options['filters']['field_release_recommended_value_1']['group'] = 2;
+  /* Filter criterion: Content: Update status (field_release_update_status) */
+  $handler->display->display_options['filters']['field_release_update_status_value_1']['id'] = 'field_release_update_status_value_1';
+  $handler->display->display_options['filters']['field_release_update_status_value_1']['table'] = 'field_data_field_release_update_status';
+  $handler->display->display_options['filters']['field_release_update_status_value_1']['field'] = 'field_release_update_status_value';
+  $handler->display->display_options['filters']['field_release_update_status_value_1']['operator'] = '<=';
+  $handler->display->display_options['filters']['field_release_update_status_value_1']['value']['value'] = '1';
+  $handler->display->display_options['filters']['field_release_update_status_value_1']['group'] = 2;
+  /* Filter criterion: Content: Release type (field_release_build_type) */
+  $handler->display->display_options['filters']['field_release_build_type_value_1']['id'] = 'field_release_build_type_value_1';
+  $handler->display->display_options['filters']['field_release_build_type_value_1']['table'] = 'field_data_field_release_build_type';
+  $handler->display->display_options['filters']['field_release_build_type_value_1']['field'] = 'field_release_build_type_value';
+  $handler->display->display_options['filters']['field_release_build_type_value_1']['value'] = array(
+    'static' => 'static',
+  );
+  $handler->display->display_options['filters']['field_release_build_type_value_1']['group'] = 2;
+  /* Filter criterion: Content: Version extra (field_release_version_extra) */
+  $handler->display->display_options['filters']['field_release_version_extra_value']['id'] = 'field_release_version_extra_value';
+  $handler->display->display_options['filters']['field_release_version_extra_value']['table'] = 'field_data_field_release_version_extra';
+  $handler->display->display_options['filters']['field_release_version_extra_value']['field'] = 'field_release_version_extra_value';
+  $handler->display->display_options['filters']['field_release_version_extra_value']['operator'] = 'not empty';
+  $handler->display->display_options['filters']['field_release_version_extra_value']['group'] = 2;
+  /* Filter criterion: Project release: Recommended branch */
+  $handler->display->display_options['filters']['recommended_1']['id'] = 'recommended_1';
+  $handler->display->display_options['filters']['recommended_1']['table'] = 'project_release_supported_versions';
+  $handler->display->display_options['filters']['recommended_1']['field'] = 'recommended';
+  $handler->display->display_options['filters']['recommended_1']['relationship'] = 'supported_releases_rel';
+  $handler->display->display_options['filters']['recommended_1']['value'] = '1';
+  $handler->display->display_options['filters']['recommended_1']['group'] = 2;
+  /* Filter criterion: Project release: Latest or recommended release */
+  $handler->display->display_options['filters']['release_type_1']['id'] = 'release_type_1';
+  $handler->display->display_options['filters']['release_type_1']['table'] = 'project_release_supported_versions';
+  $handler->display->display_options['filters']['release_type_1']['field'] = 'release_type';
+  $handler->display->display_options['filters']['release_type_1']['relationship'] = 'supported_releases_rel';
+  $handler->display->display_options['filters']['release_type_1']['value'] = 'recommended';
+  $handler->display->display_options['filters']['release_type_1']['group'] = 2;
   $handler->display->display_options['displays'] = array(
     'recommended' => 'recommended',
     'default' => 0,
