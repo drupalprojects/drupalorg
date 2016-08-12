@@ -13,6 +13,13 @@ function drupalorg_views_data() {
           'handler' => 'drupalorg_handler_not_spam',
         ),
       ),
+      'drupalorg_security_coverage' => [
+        'field' => [
+          'title' => t('Security Team coverage'),
+          'help' => t('Indicator of Drupal Security Team coverage'),
+          'handler' => 'drupalorg_handler_security_coverage',
+        ],
+      ],
     ),
     'views_entity_comment' => array(
       'drupalorg_not_spam' => array(
