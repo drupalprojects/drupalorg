@@ -1290,55 +1290,82 @@ function drupalorg_preprocess_drupalorg_start(&$variables) {
  * Implementation of template_preprocess_drupalorg_download().
  */
 function drupalorg_preprocess_drupalorg_download(&$variables) {
-  $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
-  $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
+  $release = project_release_get_current_recommended(DRUPALORG_CORE_NID, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID, DRUPALORG_DOWNLOAD_MAJOR_VERSION, 'recommended');
+  $variables['core_download_button'] = l(t('Download Drupal @version', ['@version' => $release->field_release_version[LANGUAGE_NONE][0]['value']]), 'node/' . $release->nid, ['attributes' => ['class' => ['primary-button']]]);
 
-  // Create and cache a solr query for use by block elements.
-  project_solr_run_project_query('project/modules', array(array(
-    'key' => 'bundle',
-    'value' => 'project_module',
-  )));
+  foreach (['project_module', 'project_theme', 'project_distribution'] as $type) {
+    // Create and cache a solr query for use by block elements.
+    project_solr_run_project_query('project/' . $type, [[
+      'key' => 'bundle',
+      'value' => $type,
+    ], [
+      'key' => 'sm_field_project_type',
+      'value' => 'full',
+    ]]);
 
-  // Render and save the facet blocks. Since we control what facets we're
-  // building, use the delta as the unique key for the sake of brevity.
-  foreach (['iss_project_release_usage', 'ds_created'] as $delta) {
-    $block = module_invoke('drupalorg_order_facet', 'block_view', $delta);
-    $variables[$delta] = drupal_render($block['content']);
-  }
-
-  $form = drupal_get_form('project_solr_version_form', 'download', t('Show only modules for Drupal version'));
-  $variables['version_form'] = drupal_render($form);
-
-  // Rendering the block directly from views doesn't work nicely here, since
-  // the resulting markup is harder to use with bluecheese. Plus, we're doing
-  // some magic to ensure that the version filter impacts this block as well.
-  // So, we just load the view object, do some magic, run the view, fetch the
-  // results and render those ourselves. This also lets us add our 'View full
-  // index' link directly as another li in the list (as bluecheese expects)
-  // instead of having it in its own div.
-  $view = views_get_view('project_index');
-  $view->set_display('block_1');
-  $view->set_arguments(array('project_module'));
-  // See if the version filter was used, and if so, have it impact the view.
-  if (!empty($_GET['f'])) {
-    foreach ($_GET['f'] as $f) {
-      if (preg_match('/drupal_core:(\d+)/', $f, $matches)) {
-        $core_version = $matches[1];
-
-        $filters = $view->display_handler->get_option('filters');
-        $filters['project_release_api_vocabulary']['value'] = array($core_version);
-        $view->display_handler->set_option('filters', $filters);
-      }
+    // Render and save the facet blocks. Since we control what facets we're
+    // building, use the delta as the unique key for the sake of brevity.
+    foreach (['iss_project_release_usage', 'ds_created'] as $delta) {
+      $block = module_invoke('drupalorg_order_facet', 'block_view', $delta);
+      $variables[$type . '__' . $delta] = drupal_render($block['content']);
     }
   }
-  $view->pre_execute();
-  $view->execute();
-  $results = $view->result;
-  foreach ($results as $result) {
-    $modules[] = l($result->node_title, 'node/' . $result->nid);
+
+  $form = drupal_get_form('drupalorg_download_version_form');
+  $variables['version_form'] = drupal_render($form);
+}
+
+/**
+ * Generate a form containing version selection and a submit button.
+ */
+function drupalorg_download_version_form($form, &$form_state) {
+  $key = variable_get('project_solr_project_release_api_tids_alias', 'drupal_core');
+  $form = [
+    $key => [
+      '#title' => t('Show projects for Drupal version'),
+      '#type' => 'select',
+      '#options' => ['' => t('- Any -')],
+    ],
+    'submit' => [
+      '#type' => 'submit',
+      '#value' => t('Search'),
+    ],
+  ];
+
+  if ($query = apachesolr_current_query(apachesolr_default_environment())) {
+    $term_query = new EntityFieldQuery();
+    $result = $term_query->entityCondition('entity_type', 'taxonomy_term')
+      ->fieldCondition('field_release_recommended', 'value', 1)
+      ->entityOrderBy('entity_id', 'DESC')
+      ->execute();
+
+    foreach (taxonomy_term_load_multiple(array_keys($result['taxonomy_term'])) as $term) {
+      if ($query->hasFilter('im_project_release_api_tids', $term->tid)) {
+        $form[$key]['#default_value'] = $term->tid;
+      }
+      $form[$key]['#options'][$term->tid] = $term->name;
+    }
   }
-  $modules[] = '<strong>' . l(t('View full index'), 'project/project_module/index') . '</strong>';
-  $variables['module_index'] = theme('item_list', ['items' => $modules, 'title' => NULL, 'type' => 'ul', 'attributes' => ['class' => ['flat']]]);
+
+  return $form;
+}
+
+/**
+ * Create a query with the right version filter and redirect to the right page.
+ */
+function drupalorg_download_version_form_submit($form, &$form_state) {
+  // We create a new query with our base path so that we don't need to remove
+  // any existing drupal_core selection, and so that the implict type and
+  // module tid filters don't end up in the url string.
+  $query = apachesolr_drupal_query('project_solr_version_form_submit', [], '', 'download');
+  $filters = [];
+
+  $version_alias = variable_get('project_solr_project_release_api_tids_alias', 'drupal_core');
+
+  if (!empty($form_state['values'][$version_alias])) {
+    $filters = ['f' => [$version_alias . ':' . $form_state['values'][$version_alias]]];
+  }
+  $form_state['redirect'] = ['path' => $query->getPath(), ['query' => $filters]];
 }
 
 /**
