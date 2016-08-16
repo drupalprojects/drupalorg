@@ -18,7 +18,7 @@ class drupalorg_handler_security_coverage extends views_handler_field_entity {
       }
 
       // The release is covered.
-      return '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon.svg') . '" alt="' . t('Full release covered by the Drupal Security Team') . '" title="' . t('Full releases covered by the Drupal Security Team') . '">';
+      return '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon.svg') . '" alt="' . t('Full release covered by the Drupal Security Team') . '" title="' . t('Full release covered by the Drupal Security Team') . '">';
     }
   }
 }
