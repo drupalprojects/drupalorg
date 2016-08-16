@@ -1756,6 +1756,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create documentation content',
     'roles' => array(
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2061,7 +2062,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete any documentation content'.
   $permissions['delete any documentation content'] = array(
     'name' => 'delete any documentation content',
-    'roles' => array(),
+    'roles' => array(
+      'confirmed' => 'confirmed',
+    ),
     'module' => 'node',
   );
 
