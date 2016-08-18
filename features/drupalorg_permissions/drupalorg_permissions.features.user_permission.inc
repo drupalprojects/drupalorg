@@ -3246,7 +3246,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'flag migrate'.
   $permissions['flag migrate'] = array(
     'name' => 'flag migrate',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'flag',
   );
 
@@ -3546,7 +3548,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'unflag migrate'.
   $permissions['unflag migrate'] = array(
     'name' => 'unflag migrate',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'flag',
   );
 
