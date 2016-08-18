@@ -4076,7 +4076,7 @@ function drupalorg_entity_property_info_alter(&$info) {
   // in RestWS export. See flag_entity_property_info_alter().
   foreach (flag_get_flags() as $flag) {
     if (!$flag->global) {
-      $info['user']['properties']['flag_' . $flag->name . '_flagged']['access callback'] = 'drupalorg_user_flag_access';
+      $info['user']['properties']['flag_' . $flag->name . '_flagged']['access callback'] = '_drupalorg_user_flag_access';
     }
   }
 }
@@ -4090,7 +4090,7 @@ function drupalorg_has_new_content($node, array &$options, $name, $type, &$info)
  *
  * @see entity_access(), drupalorg_entity_property_info_alter().
  */
-function drupalorg_user_flag_access($op, $property, $entity_type, $entity) {
+function _drupalorg_user_flag_access($op, $property, $entity_type, $entity) {
   if ($op === 'view') {
     foreach (debug_backtrace() as $trace) {
       if ($trace['function'] === 'restws_handle_request') {
