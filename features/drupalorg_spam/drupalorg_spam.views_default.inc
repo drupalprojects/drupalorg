@@ -50,7 +50,7 @@ function drupalorg_spam_views_default_views() {
     'last_seen' => 'last_seen',
     'fingerprint_age' => 'fingerprint_age',
   );
-  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['default'] = 'last_seen';
   $handler->display->display_options['style_options']['info'] = array(
     'manage_button' => array(
       'align' => '',
@@ -122,7 +122,7 @@ function drupalorg_spam_views_default_views() {
     ),
     'last_seen' => array(
       'sortable' => 1,
-      'default_sort_order' => 'asc',
+      'default_sort_order' => 'desc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,

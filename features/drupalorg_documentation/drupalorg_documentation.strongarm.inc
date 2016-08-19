@@ -308,6 +308,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_documentation'] = $strongarm;
 
@@ -318,6 +319,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_guide'] = $strongarm;
 

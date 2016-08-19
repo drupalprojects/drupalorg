@@ -14,3 +14,4 @@ scripts[] = js/general.js
 core = 7.x
 
 files[] = views/drupalorg_handler_not_spam.inc
+files[] = views/drupalorg_handler_security_coverage.inc

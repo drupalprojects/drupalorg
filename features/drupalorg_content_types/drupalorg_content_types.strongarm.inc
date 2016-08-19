@@ -467,6 +467,7 @@ function drupalorg_content_types_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_page'] = $strongarm;
 
@@ -477,6 +478,7 @@ function drupalorg_content_types_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_post'] = $strongarm;
 
@@ -487,6 +489,7 @@ function drupalorg_content_types_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_section'] = $strongarm;
 

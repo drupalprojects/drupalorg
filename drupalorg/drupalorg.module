@@ -1235,6 +1235,11 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       if ($group->type === 'guide') {
         array_shift($active_trail);
       }
+
+      // Message about documentation migration.
+      if ($parent->nid == 2734545 || $parent->nid == 2743405) {
+        drupal_set_message(t('Documentation is currently <a href="!url">being migrated</a> into the new system. Some pages might be temporary missing, and some guides might appear empty. Thank you for you patience while we are improving Drupal.org documentation.', ['!url' => url('node/2762837')]), 'warning', FALSE);
+      }
     }
   }
 }
@@ -1300,17 +1305,11 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
     'value' => 'project_module',
   )));
 
-  // Since we control what facets we're building, we can just utilize the
-  // delta as the unique key for the sake of brevity (both here and in the
-  // $variables array).
-  $facets = array(
-    'iss_project_release_usage' => 'drupalorg_order_facet',
-    'ds_created' => 'drupalorg_order_facet',
-  );
-  // Render and save the facet blocks.
-  foreach ($facets as $delta => $module) {
-    $block = drupalorg_block_render($module, $delta);
-    $variables[$delta] = drupal_render($block);
+  // Render and save the facet blocks. Since we control what facets we're
+  // building, use the delta as the unique key for the sake of brevity.
+  foreach (['iss_project_release_usage', 'ds_created'] as $delta) {
+    $block = module_invoke('drupalorg_order_facet', 'block_view', $delta);
+    $variables[$delta] = drupal_render($block['content']);
   }
 
   $form = drupal_get_form('project_solr_version_form', 'download', t('Show only modules for Drupal version'));
@@ -1344,10 +1343,8 @@ function drupalorg_preprocess_drupalorg_download(&$variables) {
   foreach ($results as $result) {
     $modules[] = l($result->node_title, 'node/' . $result->nid);
   }
-  $modules[] = '<a href="/project/project_module/index" class="all">View full index</a>';
-  $module_index = '<h2>' . t('Module Index') . '</h2>';
-  $module_index .= theme('item_list', array('items' => $modules, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => array('flat'))));
-  $variables['module_index'] = $module_index;
+  $modules[] = '<strong>' . l(t('View full index'), 'project/project_module/index') . '</strong>';
+  $variables['module_index'] = theme('item_list', ['items' => $modules, 'title' => NULL, 'type' => 'ul', 'attributes' => ['class' => ['flat']]]);
 }
 
 /**
@@ -1933,7 +1930,7 @@ function drupalorg_taxonomy_forums_ajax_callback($form, &$form_state) {
 
 /**
  * For login and registration pages, look for bakery's bd parameter and extract
- * site name, or drupalorg_crosssite’s deprecated site parameter.
+ * site name.
  *
  * @param string $bd
  *   Use a specific bakery destination value instead of the URL parameter.
@@ -2368,8 +2365,7 @@ function drupalorg_views_api() {
  * Implements hook_views_default_views_alter().
  */
 function drupalorg_views_default_views_alter(&$views) {
-  $path = drupal_get_path('module', 'drupalorg');
-  require_once DRUPAL_ROOT . '/' . "$path/drupalorg.views_default.inc";
+  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'drupalorg') . '/drupalorg.views_default.inc';
   _drupalorg_views_default_views_alter($views);
 }
 
@@ -2386,7 +2382,7 @@ function drupalorg_download_drupal_link_button($text) {
   $release = project_release_get_current_recommended(DRUPALORG_CORE_NID, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID, DRUPALORG_DOWNLOAD_MAJOR_VERSION, 'recommended');
   // Assumes a drupal-$version alias exists for the given Drupal version, which
   // has been the tradition. Just keep that tradition, and this works wonders.
-  return l('<span>' . check_plain($text . ' ' . $release->field_release_version[LANGUAGE_NONE][0]['safe_value']) . '</span>', 'project/drupal', array('html' => TRUE, 'attributes' => array('class' => array('link-button'))));
+  return l(check_plain($text . ' ' . $release->field_release_version[LANGUAGE_NONE][0]['safe_value']), 'project/drupal', ['html' => TRUE, 'attributes' => ['class' => ['link-button']]]);
 }
 
 /**
@@ -2525,61 +2521,6 @@ function drupalorg_homebox() {
       ),
     ),
   );
-}
-
-/**
- * Render the HTML for a given block.
- *
- * This function takes a module and a delta, loads the block info from the DB,
- * invokes the function to compute the block content, and then renders the
- * block to HTML via theme('block'). This is basically a heavily pared back
- * implementation of block_list() for a single block.
- *
- * @param string $module
- *   The module that defines the block we're rendering.
- *
- * @param string $delta
- *   The delta of the block that we're rendering.
- *
- * @return
- *   The rendered HTML for the given block.
- *
- * @see block_list()
- * @see theme_block()
- */
-function drupalorg_block_render($module, $delta) {
-  // Load the title, since that can be modified administratively.
-  global $theme;
-  $title = db_query("SELECT title FROM {block} WHERE module = :module AND delta = :delta AND theme = :theme", array(':module' => $module, ':delta' => $delta, ':theme' => $theme))->fetchField();
-
-  $block = module_invoke($module, 'block_view', $delta);
-  // Make sure our block gave us any output at all.
-  if (empty($block) || !is_array($block)) {
-    return '';
-  }
-  $block = (object) $block;
-
-  // Set the module and delta so that the blocks contain
-  // at least the minimum of expected information.
-  $block->module = $module;
-  $block->delta = $delta;
-  $block->region = 'drupalorg';
-
-  if (isset($block->content) && $block->content) {
-    // Override default block title if a custom display title is present.
-    if ($title) {
-      // Check plain admin-generated titles, but not titles set in code.
-      $block->subject = $title == '<none>' ? '' : check_plain($title);
-    }
-    if (!isset($block->subject)) {
-      $block->subject = '';
-    }
-  }
-  $return = $block->content;
-  unset($block->content);
-  $return['#block'] = $block;
-  $return['#theme_wrappers'][] = 'block';
-  return $return;
 }
 
 /**
@@ -4138,7 +4079,7 @@ function drupalorg_entity_property_info_alter(&$info) {
   // in RestWS export. See flag_entity_property_info_alter().
   foreach (flag_get_flags() as $flag) {
     if (!$flag->global) {
-      $info['user']['properties']['flag_' . $flag->name . '_flagged']['access callback'] = 'drupalorg_user_flag_access';
+      $info['user']['properties']['flag_' . $flag->name . '_flagged']['access callback'] = '_drupalorg_user_flag_access';
     }
   }
 }
@@ -4152,7 +4093,7 @@ function drupalorg_has_new_content($node, array &$options, $name, $type, &$info)
  *
  * @see entity_access(), drupalorg_entity_property_info_alter().
  */
-function drupalorg_user_flag_access($op, $property, $entity_type, $entity) {
+function _drupalorg_user_flag_access($op, $property, $entity_type, $entity) {
   if ($op === 'view') {
     foreach (debug_backtrace() as $trace) {
       if ($trace['function'] === 'restws_handle_request') {
@@ -4571,7 +4512,7 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
             break;
 
           case 'Deprecated':
-            $element[$delta]['#markup'] = t('This documentation is deprecated. !link.', ['!link' => l(t('Recommend a change or new documentation'), 'node/' . $entity->nid . '/discuss')]);
+            $element[$delta]['#markup'] = t('This documentation is <strong>deprecated</strong>. !link.', ['!link' => l(t('Recommend a change or new documentation'), 'node/' . $entity->nid . '/discuss')]);
             break;
         }
       }

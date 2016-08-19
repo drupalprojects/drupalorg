@@ -74,21 +74,6 @@ function drupalorg_project_menu() {
     'access arguments' => array('view', 1),
     'type' => MENU_CALLBACK,
   );
-  $items['node/%node/codereviewpost'] = array(
-    'page callback' => 'drupalorg_project_codereview_post',
-    'page arguments' => array(1),
-    'access callback' => 'drupalorg_project_codereview_access_post',
-    'type' => MENU_CALLBACK,
-  );
-  $items['node/%node/codereview'] = array(
-    'title' => 'Code Review',
-    'page callback' => 'drupalorg_project_codereview',
-    'page arguments' => array(1),
-    'access callback' => 'drupalorg_project_codereview_access',
-    'access arguments'   => array(1),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 6,
-  );
 
   // Callbacks to process legacy urls.
   $map = array(
@@ -938,7 +923,7 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
         $node->content['project_sandbox_warning']['#markup'] = '<div class="meta"><h5>Experimental Project</h5><p>This is a <a href="/node/1011196">sandbox project</a>, which contains experimental code for developer use only.</p></div>';
         $node->content['project_sandbox_warning']['#weight'] = -1;
       }
-      $node->content['project_info']['#markup'] = drupalorg_project_meta_data($node);
+      $node->content['project_info'] = drupalorg_project_meta_data($node);
       $node->content['project_info']['#weight'] = 9; // project_release_downloads is hard-coded to 10.
     }
     elseif (project_issue_node_is_issue($node)) {
@@ -1360,22 +1345,30 @@ function drupalorg_project_bingo_block_output() {
  *
  * @param $node
  *   The node object.
- * @return
- *   The HTML code for the book meta information.
  */
-function drupalorg_project_meta_data($node) {
+function drupalorg_project_meta_data(stdClass $node) {
   if ($node->nid == DRUPALORG_CORE_NID) {
     return;
   }
 
   $wrapper = entity_metadata_wrapper('node', $node);
 
-  $info = array(
-    t('Maintenance status') => '<span class="warning">' . t('Unknown') . '</span>',
-  );
-  if (!empty($node->versioncontrol_project['repo_id'])) {
-    $info[t('Development status')] = '<span class="warning">' . t('Unknown') . '</span>';
-  }
+  $output = [
+    '#prefix' => '<h3>' . t('Project Information') . '</h3><ul class="project-info flat">',
+    'items' => [
+      'Maintenance status' => [
+        '#prefix' => '<li>',
+        '#markup' => t('Maintenance status: <span class="warning">Unknown</span>'),
+        '#suffix' => '</li>',
+      ],
+      'Development status' => [
+        '#prefix' => '<li>',
+        '#markup' => t('Development status: <span class="warning">Unknown</span>'),
+        '#suffix' => '</li>',
+      ],
+    ],
+    '#suffix' => '</ul>',
+  ];
 
   // Project solr is currently finnicky about f query parameter indexing.
   $dummy = array();
@@ -1383,41 +1376,17 @@ function drupalorg_project_meta_data($node) {
 
   foreach (taxonomy_vocabulary_get_names() as $vocabulary) {
     if (!empty($node->{'taxonomy_' . $vocabulary->machine_name})) {
-      $class = '';
       $links = array();
       foreach ($node->{'taxonomy_' . $vocabulary->machine_name}[LANGUAGE_NONE] as $term) {
         if ($term_entity = taxonomy_term_load($term['tid'])) {
           $options = array();
-          if ($vocabulary->vid == '44') { // Maintenance status
-            $maintenance_status = $term['tid'];
-            switch ($term['tid']) {
-              case '13032':  // Abandoned
-                $options['attributes'] = array('class' => array('alert'));
-                break;
-
-              case '9990':   // Seeking co-maintainer(s)
-              case '9992':   // Seeking new maintainer
-                $options['attributes'] = array('class' => array('warning'));
-                break;
-            }
-          }
-          elseif ($vocabulary->vid == '46') { // Development status
-            $development_status = $term['tid'];
-            switch ($term['tid']) {
-              case '9994':   // Obsolete
-                $options['attributes'] = array('class' => array('alert'));
-                break;
-
-              case '13030':  // Maintenance fixes only
-              case '16374':  // No futher development
-                $options['attributes'] = array('class' => array('warning'));
-                break;
-            }
+          // Maintenance status is Abandoned or Development status is Obsolete
+          if (($vocabulary->vid == 44 && $term['tid'] == 13032) || ($vocabulary->vid == 46 && $term['tid'] == 9994)) {
+            $options['attributes'] = ['class' => ['alert']];
           }
           // Special-case module category terms to link to download+extend.
           if ($vocabulary->vid == DRUPALORG_PROJECT_CATEGORIES_VID) {
             // Only use the 'terms' style for module categories.
-            $class = 'terms';
             $term_path = 'project/' . $node->type;
             $solr_arg = 'im_vid_' . $vocabulary->vid . ':' . $term['tid'];
             foreach (element_children($form['f']) as $element) {
@@ -1435,60 +1404,67 @@ function drupalorg_project_meta_data($node) {
         }
       }
       if (!empty($links)) {
-        if ($vocabulary->vid == DRUPALORG_PROJECT_CATEGORIES_VID) {
-          // These are hard-coded, don't incur cost of check_plain().
-          $label = t('!project_type categories', array('!project_type' => drupalorg_project_node_type_label($node->type, 'singular')));
-        }
-        else {
-          $label = check_plain($vocabulary->name);
-        }
-        $info[$label] = '<span class="' . $class . '">' . implode(', ', $links) . '</span>';
+        $output['items'][$vocabulary->name] = [
+          '#prefix' => '<li>',
+          '#markup' => check_plain($vocabulary->name) . ': ' . implode(', ', $links),
+          '#suffix' => '</li>',
+        ];
       }
     }
   }
 
   // Usage stats.
-  $total_usage = project_usage_get_project_total_usage($node->nid);
-  if ($total_usage) {
-    $info[t('Reported installs')] = format_plural($total_usage,
-      '<strong>1</strong> site currently reports using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
-      '<strong>@formatted-count</strong> sites currently report using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
-      array(
-        '@formatted-count' => number_format($total_usage),
-        '@project-type' => drupal_strtolower(drupalorg_project_node_type_label($node->type, 'singular')),
-        '!project-shortname' => $node->field_project_machine_name[LANGUAGE_NONE][0]['value'],
-      )
-    );
+  if ($total_usage = project_usage_get_project_total_usage($node->nid)) {
+    $output['items']['usage'] = [
+      '#prefix' => '<li>',
+      '#markup' => format_plural($total_usage,
+        'Reported installs: <strong>1</strong> site currently reports using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
+        'Reported installs: <strong>@formatted-count</strong> sites currently report using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
+        [
+          '@formatted-count' => number_format($total_usage),
+          '@project-type' => drupal_strtolower(drupalorg_project_node_type_label($node->type, 'singular')),
+          '!project-shortname' => $node->field_project_machine_name[LANGUAGE_NONE][0]['value'],
+        ]
+      ),
+      '#suffix' => '</li>',
+    ];
   }
 
   // Download stats.
   if ($wrapper->field_download_count->value() > 0) {
-    $info[t('Downloads')] = number_format($wrapper->field_download_count->value());
+    $output['items']['downloads'] = [
+      '#prefix' => '<li>',
+      '#markup' => t('Downloads: @downloads', ['@downloads' => number_format($wrapper->field_download_count->value())]),
+      '#suffix' => '</li>',
+    ];
   }
 
   // Automated tests.
   if (module_exists('pift') && pift_ci_project_info($node->nid)) {
-    $info[t('Automated tests')] = t('Enabled');
+    $output['items']['tests'] = [
+      '#prefix' => '<li>',
+      '#markup' => t('Automated tests: Enabled'),
+      '#suffix' => '</li>',
+    ];
   }
 
-  $modified = format_date($node->changed, 'custom', 'F j, Y');
+  // Last modified.
+  $output['items']['modified'] = [
+    '#prefix' => '<li>',
+    '#markup' => t('Last modified: @modified', ['@modified' => format_date($node->changed, 'custom', 'F j, Y')]),
+    '#suffix' => '</li>',
+  ];
 
-  return theme('drupalorg_project_meta_data', array('info' => $info, 'modified' => $modified));
-}
+  // Security information.
+  if ($wrapper->field_project_has_releases->value()) {
+    $output['items']['security'] = [
+      '#prefix' => '<li>',
+      '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon.svg') . '" alt="shield" class="icon-left">' . t('<a href="/security-advisory-policy">Stable releases receive coverage</a> from the <a href="/security-team">Drupal Security Team</a>.<br>Look for the shield icon below.'),
+      '#suffix' => '</li>',
+    ];
+  }
 
-/**
- * Implementation of hook_theme().
- */
-function drupalorg_project_theme($existing, $type, $theme, $path) {
-  return array(
-    'drupalorg_project_meta_data' => array(
-      'arguments' => array(
-        'info' => NULL,
-        'modified' => NULL,
-      ),
-      'template' => 'project-meta-data',
-    ),
-  );
+  return $output;
 }
 
 /**
@@ -1599,7 +1575,7 @@ function drupalorg_project_form_views_exposed_form_alter(&$form, &$form_state) {
  * Checks to see the status of Drupal 8 for the contributed module.
  */
 function drupalorg_project_views_post_execute(&$view) {
-  if ($view->name === 'project_release_download_table' && ($view->current_display === 'recommended' || $view->current_display === 'security') && !empty($view->result) && count($view->args)) {
+  if ($view->name === variable_get('project_release_downloads_view', 'project_release_download_table') && ($view->current_display === 'recommended' || $view->current_display === 'security') && !empty($view->result) && count($view->args)) {
     $node = node_load($view->args[0]);
 
     // We don't need to tell core or sandboxes they need a D8 release.
@@ -1854,51 +1830,6 @@ function drupalorg_project_machine_name_validate($element, &$form_state, $form) 
       '@title' => $element['#title'],
       '@url' => 'http://www.php.net/manual/en/functions.user-defined.php')));
   }
-}
-
-/**
- * Save data from a raw post request into the project node.
- * Menu callback
- */
-function drupalorg_project_codereview_post($node) {
-  $node->field_project_phpcs_errors[LANGUAGE_NONE][0]['value'] = $_POST['ERRORS'];
-  $node->field_project_phpcs_warnings[LANGUAGE_NONE][0]['value'] = $_POST['WARNINGS'];
-  $node->field_project_phpcs_full[LANGUAGE_NONE][0]['value'] = $_POST['raw'];
-  $node->field_project_phpcs_ts[LANGUAGE_NONE][0]['value'] = time();
-  // Avoid a full node_save() to not make revisions or update edited times.
-  field_attach_presave('node', $node);
-  field_attach_update('node', $node);
-  drupal_exit();
-}
-
-/**
- * Confirm access before saving data.
- */
-function drupalorg_project_codereview_access_post() {
-  return $_POST['HASH'] === variable_get('drupalorg_project_codereview_hash', 'X');
-}
-
-/**
- * Menu callback: Show a tab on Project pages with full code review.
- */
-function drupalorg_project_codereview($node) {
-  if (isset($node->field_project_phpcs_full[LANGUAGE_NONE])) {
-    // The data in here should be safe, but lets remove javascript just in case.
-    return check_markup($node->field_project_phpcs_full[LANGUAGE_NONE][0]['value']);
-  }
-  else {
-    return '<p><em>' . t('Code review for the default branch will be available shortly after commit.') . '</em></p>';
-  }
-}
-
-/**
- * Access callback for viewing projects
- */
-function drupalorg_project_codereview_access($node) {
-  if (project_node_is_project($node) && user_access('administer permissions')) {
-    return TRUE;
-  }
-  return FALSE;
 }
 
 /**
