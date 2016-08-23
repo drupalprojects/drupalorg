@@ -4429,6 +4429,10 @@ function drupalorg_field_formatter_info() {
       'label' => t('Documentation status'),
       'field types' => ['list_text'],
     ],
+    'security_risk' => [
+      'label' => t('Security risk'),
+      'field types' => ['text'],
+    ],
   );
 }
 
@@ -4516,6 +4520,47 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
             break;
         }
       }
+      break;
+
+    case 'security_risk':
+      $points = [
+        'AC:None' => 4,
+        'AC:Basic' => 2,
+        'AC:Complex' => 1,
+        'A:None' => 4,
+        'A:User' => 2,
+        'A:Admin' => 1,
+        'CI:All' => 5,
+        'CI:Some' => 3,
+        'CI:None' => 0,
+        'II:All' => 5,
+        'II:Some' => 3,
+        'II:None' => 0,
+        'E:Exploit' => 4,
+        'E:Proof' => 2,
+        'E:Theoretical' => 1,
+        'TD:All' => 3,
+        'TD:Default' => 2,
+        'TD:Uncommon' => 1,
+      ];
+      $score = array_sum(array_intersect_key($points, array_flip(explode('/', $items[0]['value']))));
+      if ($score <= 4) {
+        $text = t('Not critical');
+      }
+      elseif ($score <= 9) {
+        $text = t('Less critical');
+      }
+      elseif ($score <= 14) {
+        $text = t('Moderately critical');
+      }
+      elseif ($score <= 19) {
+        $text = t('Critical');
+      }
+      else {
+        $text = t('Highly critical');
+      }
+
+      $element[0]['#markup'] = l(t('<strong>@text</strong> @score∕25 @description', ['@text' => $text, '@score' => $score, '@description' => $items[0]['value']]), 'security-team/risk-levels', ['html' => TRUE, 'attributes' => ['class' => [drupal_html_class($text)]]]);
       break;
   }
 
