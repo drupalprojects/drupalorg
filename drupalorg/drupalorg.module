@@ -4929,12 +4929,14 @@ function drupalorg_sa_save($form, $form_state) {
         $account = user_load($uid);
         $givecredit[] = $account->name;
       }
-      $form_state['values']['add_credit'] = implode(',', $givecredit);
-      _drupalorg_project_issue_credit_add($form_state);
-      $form_state['node']->field_issue_credit[LANGUAGE_NONE] = array();
-      // Grant everyone credit.
-      foreach ($form_state['drupalorg_credit_cids'] as $cid => $key) {
-        $form_state['node']->field_issue_credit[LANGUAGE_NONE][] = array('target_id' => $cid);
+      if (count($givecredit != 0)) {
+        $form_state['values']['add_credit'] = implode(',', $givecredit);
+        _drupalorg_project_issue_credit_add($form_state);
+        $form_state['node']->field_issue_credit[LANGUAGE_NONE] = array();
+        // Grant everyone credit.
+        foreach ($form_state['drupalorg_credit_cids'] as $cid => $key) {
+          $form_state['node']->field_issue_credit[LANGUAGE_NONE][] = array('target_id' => $cid);
+        }
       }
     }
   }
