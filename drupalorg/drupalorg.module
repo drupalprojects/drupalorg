@@ -70,8 +70,7 @@ function drupalorg_init() {
 
   // Temporary message about the Solr index being rebuilt.
   if (variable_get('drupalorg_warn_search_index_rebuild', FALSE)) {
-    if (arg(0) == 'search' || arg(0) == 'download' || arg(0) == 'start' ||
-        (arg(0) == 'project' && (arg(1) == 'modules' || arg(1) == 'themes' || arg(1) == 'distributions' || arg(1) == 'theme engines'))) {
+    if (arg(0) == 'search' || arg(0) == 'download' || (arg(0) == 'project' && (arg(1) == 'modules' || arg(1) == 'themes' || arg(1) == 'distributions' || arg(1) == 'theme engines'))) {
       drupal_set_message(t('We are rebuilding the search index for the update to drupal.org. The search results may produce broken or out-of-date results until the index is fully rebuilt. We will remove this message when the indexing is complete. Do not report any search errors at this time.'));
     }
   }
@@ -174,13 +173,6 @@ function drupalorg_menu() {
     'page callback' => 'drupalorg_403_page',
     'access callback' => 1,
     'type' => MENU_CALLBACK,
-  );
-
-  $items['start'] = array(
-    'title' => 'Get Started with Drupal',
-    'page callback' => 'drupalorg_start',
-    'access arguments' => array('access content'),
-    'type' => MENU_NORMAL_ITEM,
   );
 
   $items['download'] = array(
@@ -1254,39 +1246,6 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
 }
 
 /**
- * Page callback for the getting started page.
- */
-function drupalorg_start() {
-  return theme('drupalorg_start');
-}
-
-/**
- * Implementation of template_preprocess_drupalorg_start().
- */
-function drupalorg_preprocess_drupalorg_start(&$variables) {
-  $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
-  $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
-
-  // Create and cache a solr query for use by block elements.
-  $env_id = apachesolr_default_environment();
-  project_solr_run_project_query('project/modules', array(
-    array('key' => 'bundle', 'value' => 'project_module'),
-    array('key' => 'im_project_release_api_tids', 'value' => DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID),
-  ));
-  $query = apachesolr_current_query($env_id);
-  $list = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
-  $variables['most_popular_modules'] = drupal_render($list);
-
-  project_solr_run_project_query('project/themes', array(
-    array('key' => 'bundle', 'value' => 'project_theme'),
-    array('key' => 'im_project_release_api_tids', 'value' => DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID),
-  ));
-  $query = apachesolr_current_query($env_id);
-  $list = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
-  $variables['most_popular_themes'] = drupal_render($list);
-}
-
-/**
  * Implementation of template_preprocess_drupalorg_download().
  */
 function drupalorg_preprocess_drupalorg_download(&$variables) {
@@ -1499,9 +1458,6 @@ function theme_drupalorg_recent_activity($variables) {
  */
 function drupalorg_theme() {
   return array(
-    'drupalorg_start' => array(
-      'template' => 'drupalorg-start',
-    ),
     'drupalorg_download' => array(
       'template' => 'drupalorg-download',
     ),
@@ -2387,22 +2343,6 @@ function drupalorg_views_api() {
 function drupalorg_views_default_views_alter(&$views) {
   require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'drupalorg') . '/drupalorg.views_default.inc';
   _drupalorg_views_default_views_alter($views);
-}
-
-/**
- * Returns a link to the latest recommended release for the Drupal project.
- *
- * @param $text
- *   Text to be used for the button in addition to the version string
- *
- * @return
- *   HTML string with link to the release node.
- */
-function drupalorg_download_drupal_link_button($text) {
-  $release = project_release_get_current_recommended(DRUPALORG_CORE_NID, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID, DRUPALORG_DOWNLOAD_MAJOR_VERSION, 'recommended');
-  // Assumes a drupal-$version alias exists for the given Drupal version, which
-  // has been the tradition. Just keep that tradition, and this works wonders.
-  return l(check_plain($text . ' ' . $release->field_release_version[LANGUAGE_NONE][0]['safe_value']), 'project/drupal', ['html' => TRUE, 'attributes' => ['class' => ['link-button']]]);
 }
 
 /**
