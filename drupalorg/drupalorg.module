@@ -1624,6 +1624,11 @@ function drupalorg_form_tfa_basic_overview_alter(&$form, &$form_state) {
  * Implements hook_form_FORM_BASE_alter().
  */
 function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
+  // Immediately return if this isn't the  "account" user profile category.
+  if (isset($form['#user_category']) && $form['#user_category'] !== 'account') {
+    return;
+  }
+
   // If there is a referring site.
   if ($GLOBALS['user']->uid == $form_state['user']->uid) {
     if (isset($form_state['user']->data['drupalorg_bd'])) {
@@ -2257,6 +2262,11 @@ function drupalorg_register_mail_validate($form, &$form_state) {
  * Implements hook_form_FORM_BASE_alter().
  */
 function drupalorg_profile_user_edit_validate($form, &$form_state) {
+  // Immediately return if there are no values.
+  if (!isset($form_state['values']['field_organizations'][LANGUAGE_NONE])) {
+    return;
+  }
+
   // Remove empty organizations.
   foreach ($form_state['values']['field_organizations'][LANGUAGE_NONE] as $delta => $organization) {
     // Do not attempt looking at the add more element, look for empty name and
