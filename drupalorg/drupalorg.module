@@ -529,6 +529,10 @@ function drupalorg_block_info() {
       'info' => t('Book listing add link'),
       'cache' => DRUPAL_NO_CACHE,
     ),
+    'search-documentation' => [
+      'info' => t('Documentation search form'),
+      'cache' => DRUPAL_NO_CACHE,
+    ],
   );
 }
 
@@ -712,6 +716,12 @@ function drupalorg_block_view($delta, $block = NULL) {
         return array(
           'content' => $content,
         );
+      }
+      break;
+
+    case 'search-documentation':
+      if (user_access('search content')) {
+        return ['content' => drupal_get_form('drupalorg_documentation_search_form')];
       }
       break;
   }
@@ -1002,6 +1012,47 @@ function drupalorg_get_activity($_force = FALSE) {
     $stats = array();
   }
   return $stats;
+}
+
+/**
+ * Implements hook_forms().
+ */
+function drupalorg_forms() {
+  return [
+    'drupalorg_documentation_search_form' => [
+      'callback' => 'search_box',
+      'callback arguments' => ['search_block_form'],
+    ]
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_form_drupalorg_documentation_search_form_alter(&$form) {
+  // Search button icon.
+  drupalorg_crosssite_form_search_block_form_alter($form);
+  // Slim up styles.
+  $form['#attributes']['class'][] = 'container-inline';
+  $form['search_block_form']['#attributes'] = ['placeholder' => t('Search documentation…')];
+  // search modules looks for text by form id.
+  $form['drupalorg_documentation_search_form'] = $form['search_block_form'];
+  // … and also here.
+  $form['search_block_form'] = [
+    '#type' => 'value',
+    '#value' => 'dummy',
+  ];
+  $form['#submit'][] = 'drupalorg_documentation_search_form_submit';
+}
+
+/**
+ * Form submit callback.
+ */
+function drupalorg_documentation_search_form_submit($form, &$form_state) {
+  if (!is_array($form_state['redirect'])) {
+    $form_state['redirect'] = [$form_state['redirect']];
+  }
+  $form_state['redirect'][]['query']['f'][] = 'ss_meta_type:documentation';
 }
 
 /**
