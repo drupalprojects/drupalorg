@@ -52,7 +52,7 @@ See <a href="/docs/7/installing-drupal-7/install-drupal-in-another-language">doc
 <div class="download-facets">
   <div class="main">
     <p><strong>Change the look and feel of your Drupal site.</strong><br>
-    View the <a href="/project/project_module/index">index of all modules</a>.</p>
+    View the <a href="/project/project_theme/index">index of all themes</a>.</p>
   </div>
 
   <div class="aside">
