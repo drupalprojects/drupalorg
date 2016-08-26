@@ -656,8 +656,9 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           ),
         ),
       );
+      // hestenet: Moved the $form['submit'].. outside of the $is_mantainer if statement, so that credit will be re-calculated on any form submit, not just on maintainer submits. 
+      $form['#submit'][] = 'drupalorg_project_issue_credit_submit';
       if ($is_maintainer) {
-        $form['#submit'][] = 'drupalorg_project_issue_credit_submit';
         // Add non-commenter row.
         $form['drupalorg_credit_wrapper']['add_credit'] = [
           '#type' => 'textfield',
