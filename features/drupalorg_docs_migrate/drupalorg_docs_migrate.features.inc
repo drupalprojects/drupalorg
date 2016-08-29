@@ -28,7 +28,7 @@ function drupalorg_docs_migrate_flag_default_flags() {
     'weight' => 0,
     'show_in_links' => array(
       'full' => 'full',
-      'teaser' => 'teaser',
+      'teaser' => 0,
       'rss' => 0,
       'search_index' => 0,
       'search_result' => 0,
@@ -43,11 +43,11 @@ function drupalorg_docs_migrate_flag_default_flags() {
     'access_author' => '',
     'show_contextual_link' => 0,
     'i18n' => 0,
-    'api_version' => 3,
     'module' => 'drupalorg_docs_migrate',
     'locked' => array(
       0 => 'name',
     ),
+    'api_version' => 3,
   );
   return $flags;
 

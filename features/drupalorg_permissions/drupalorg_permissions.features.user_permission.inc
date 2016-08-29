@@ -388,6 +388,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'user',
   );
 
+  // Exported permission: 'add JS snippets for google analytics'.
+  $permissions['add JS snippets for google analytics'] = array(
+    'name' => 'add JS snippets for google analytics',
+    'roles' => array(),
+    'module' => 'googleanalytics',
+  );
+
   // Exported permission: 'add content to books'.
   $permissions['add content to books'] = array(
     'name' => 'add content to books',
@@ -1749,6 +1756,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create documentation content',
     'roles' => array(
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2054,7 +2062,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete any documentation content'.
   $permissions['delete any documentation content'] = array(
     'name' => 'delete any documentation content',
-    'roles' => array(),
+    'roles' => array(
+      'confirmed' => 'confirmed',
+    ),
     'module' => 'node',
   );
 
@@ -2383,6 +2393,13 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
     ),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'delete terms in tags'.
+  $permissions['delete terms in tags'] = array(
+    'name' => 'delete terms in tags',
+    'roles' => array(),
     'module' => 'taxonomy',
   );
 
@@ -2963,6 +2980,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
+  // Exported permission: 'edit terms in tags'.
+  $permissions['edit terms in tags'] = array(
+    'name' => 'edit terms in tags',
+    'roles' => array(),
+    'module' => 'taxonomy',
+  );
+
   // Exported permission: 'edit terms in vocabulary_1'.
   $permissions['edit terms in vocabulary_1'] = array(
     'name' => 'edit terms in vocabulary_1',
@@ -3222,7 +3246,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'flag migrate'.
   $permissions['flag migrate'] = array(
     'name' => 'flag migrate',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'flag',
   );
 
@@ -3522,7 +3548,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'unflag migrate'.
   $permissions['unflag migrate'] = array(
     'name' => 'unflag migrate',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'flag',
   );
 

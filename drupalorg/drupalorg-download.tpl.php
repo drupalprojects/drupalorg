@@ -1,78 +1,67 @@
-<p>Download Drupal core files, and extend your site with modules, themes, translations and installation profiles.</p>
-<div id="download">
-  <div class="core">
-    <h2>Core</h2>
-    <ul class="flat">
-      <li class="first download-core"><?php print $core_download_button; ?></li>
-      <li><a href="/node/3060/release">Other Releases</a></li>
-      <li class="last all"><a class="all" href="/project/drupal">More Information</a></li>
-    </ul>
+<h2>Download</h2>
+
+<p><?php print $core_download_button; ?> <a href="/try-drupal" class="secondary-button">Try a hosted Drupal demo</a></p>
+
+<p>See <strong><a href="/project/drupal">Drupal’s project page</a></strong> for more information, older versions, and project development.<br>
+<a href="/hosting">Explore hosting options</a> for your site. Browse <a href="/docs">documentation</a> for more help and information.</p>
+
+<h3><a href="/project/project_distribution">Distributions</a></h3>
+<div class="download-facets">
+  <div class="main">
+    <p>Drupal bundled with additional projects such as themes, modules, libraries, and installation profiles. They give you a head start on building the type of site you need.</p>
   </div>
 
-  <div class="distributions">
-    <h2>Distributions</h2>
-    <ul class="flat">
-      <li><a href="/documentation/build/distributions">About Distributions</a></li>
-      <li><a href="/project/project_distribution?solrsort=iss_project_release_usage%20desc">Most Installed Distributions</a></li>
-      <li><a href="/project/project_distribution?solrsort=ds_created%20desc">New Distributions</a></li>
-      <li><a href="/project/project_distribution?solrsort=ds_project_latest_activity%20desc">Most Active Distributions</a></li>
-      <li class="last all"><a class="all" href="/project/project_distribution">Search for More Distributions</a></li>
-    </ul>
+  <div class="aside">
+    <h4>Most installed</h4>
+    <?php print $project_distribution__iss_project_release_usage; ?>
   </div>
 
-  <div class="themes">
-    <h2>Themes</h2>
-    <ul class="flat">
-      <li class="first"><a href="node/221881">About Themes &amp; Subthemes</a></li>
-      <li><a href="/project/project_theme?solrsort=iss_project_release_usage%20desc">Most Installed Themes</a></li>
-      <li><a href="/project/project_theme?solrsort=ds_created%20desc">New Themes</a></li>
-      <li><a href="/project/project_theme?solrsort=ds_project_latest_activity%20desc">Most Active Themes</a></li>
-      <li class="last all"><a class="all" href="/project/project_theme">Search for More Themes</a></li>
-    </ul>
-  </div>
-
-  <div class="translations">
-    <h2>Translations</h2>
-    <ul class="flat">
-      <?php print $drupalorg_featured_translations; ?>
-      <li class="last all"><a href="http://localize.drupal.org/" class="all">All Translations</a></li>
-    </ul>
+  <div class="aside">
+    <h4>New distributions</h4>
+    <?php print $project_distribution__ds_created; ?>
   </div>
 </div>
 
-<hr>
+<h3>Translations</h3>
+<p><strong>Choose any one of a hundred languages at the first step of installation.</strong><br>
+See <a href="/docs/7/installing-drupal-7/install-drupal-in-another-language">documentation for more information</a> and Drupal 7. Track translation status and help translate at <a href="https://localize.drupal.org/">Drupal Translations</a>.</p>
 
-<div class="drupal-modules">
-  <h2>Drupal Modules</h2>
-  <?php print $version_form; ?>
+<h2>Extend</h2>
+
+<?php print $version_form; ?>
+
+<h3><a href="/project/project_module">Modules</a></h3>
+<div class="download-facets">
+  <div class="main">
+    <p><strong>Extend and customize Drupal functionality, and integrate with 3rd-party services.</strong><br>
+    View the <a href="/project/project_module/index">index of all modules</a>.</p>
+  </div>
+
+  <div class="aside">
+    <h4>Most installed</h4>
+    <?php print $project_module__iss_project_release_usage; ?>
+  </div>
+
+  <div class="aside">
+    <h4>New modules</h4>
+    <?php print $project_module__ds_created; ?>
+  </div>
 </div>
 
-<div class="drupal-modules-facets">
-<?php /*
-  NOTE: It would be super helpful if these dynamic lists were wrapped in a <ul class="flat">
-        This class removes the padding and bullets from the list items
-*/ ?>
-  <div class="most-installed">
-    <?php print $iss_project_release_usage; ?>
+<h3><a href="/project/project_theme">Themes</a></h3>
+<div class="download-facets">
+  <div class="main">
+    <p><strong>Change the look and feel of your Drupal site.</strong><br>
+    View the <a href="/project/project_theme/index">index of all themes</a>.</p>
   </div>
 
-  <div class="categories">
-    <h2>Module Categories</h2>
-    <ul class="flat">
-      <li class="first"><a href="/project/project_module?f[2]=im_vid_3:53">Administration</a></li>
-      <li><a href="/project/project_module?f[2]=im_vid_3:56">Community</a></li>
-      <li><a href="/project/project_module?f[2]=im_vid_3:61">Event</a></li>
-      <li><a href="/project/project_module?f[2]=im_vid_3:67">Media</a></li>
-      <li class="last all"><a href="/project/project_module/categories" class="all">All Categories</a></li>
-    </ul>
+  <div class="aside">
+    <h4>Most installed</h4>
+    <?php print $project_theme__iss_project_release_usage; ?>
   </div>
 
-  <div class="created">
-    <?php print $ds_created; ?>
+  <div class="aside">
+    <h4>New themes</h4>
+    <?php print $project_theme__ds_created; ?>
   </div>
-
-  <div class="index">
-    <?php print $module_index; ?>
-  </div>
-
 </div>
