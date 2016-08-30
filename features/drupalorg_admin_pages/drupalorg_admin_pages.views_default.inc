@@ -719,11 +719,20 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['label'] = 'Username';
-  /* Field: User: Active */
-  $handler->display->display_options['fields']['status']['id'] = 'status';
-  $handler->display->display_options['fields']['status']['table'] = 'users';
-  $handler->display->display_options['fields']['status']['field'] = 'status';
-  $handler->display->display_options['fields']['status']['not'] = 0;
+  /* Field: User: First or given name */
+  $handler->display->display_options['fields']['field_first_name']['id'] = 'field_first_name';
+  $handler->display->display_options['fields']['field_first_name']['table'] = 'field_data_field_first_name';
+  $handler->display->display_options['fields']['field_first_name']['field'] = 'field_first_name';
+  $handler->display->display_options['fields']['field_first_name']['label'] = 'First Name';
+  /* Field: User: Last name or surname */
+  $handler->display->display_options['fields']['field_last_name']['id'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['table'] = 'field_data_field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['field'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['label'] = 'Last Name';
+  /* Field: User: E-mail */
+  $handler->display->display_options['fields']['mail']['id'] = 'mail';
+  $handler->display->display_options['fields']['mail']['table'] = 'users';
+  $handler->display->display_options['fields']['mail']['field'] = 'mail';
   /* Field: Field collection item: Job Title */
   $handler->display->display_options['fields']['field_job_title']['id'] = 'field_job_title';
   $handler->display->display_options['fields']['field_job_title']['table'] = 'field_data_field_job_title';
@@ -829,11 +838,31 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
   $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 'All';
+  $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
   $handler->display->display_options['filters']['status']['expose']['label'] = 'Active';
   $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
   /* Filter criterion: Field collection item: Job Title (field_job_title) */
   $handler->display->display_options['filters']['field_job_title_value']['id'] = 'field_job_title_value';
   $handler->display->display_options['filters']['field_job_title_value']['table'] = 'field_data_field_job_title';
@@ -937,6 +966,54 @@ function drupalorg_admin_pages_views_default_views() {
     38 => 0,
     4 => 0,
   );
+  /* Filter criterion: User: Roles */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['operator'] = 'not';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    39 => '39',
+  );
+  $handler->display->display_options['filters']['rid']['expose']['operator_id'] = 'rid_op';
+  $handler->display->display_options['filters']['rid']['expose']['label'] = 'Roles';
+  $handler->display->display_options['filters']['rid']['expose']['operator'] = 'rid_op';
+  $handler->display->display_options['filters']['rid']['expose']['identifier'] = 'rid';
+  /* Filter criterion: User: Created date */
+  $handler->display->display_options['filters']['created']['id'] = 'created';
+  $handler->display->display_options['filters']['created']['table'] = 'users';
+  $handler->display->display_options['filters']['created']['field'] = 'created';
+  $handler->display->display_options['filters']['created']['operator'] = 'between';
+  $handler->display->display_options['filters']['created']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['operator_id'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['label'] = 'User created date';
+  $handler->display->display_options['filters']['created']['expose']['operator'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['identifier'] = 'created';
+  $handler->display->display_options['filters']['created']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: Field collection item: Organization (field_organization_name) */
+  $handler->display->display_options['filters']['field_organization_name_value_1']['id'] = 'field_organization_name_value_1';
+  $handler->display->display_options['filters']['field_organization_name_value_1']['table'] = 'field_data_field_organization_name';
+  $handler->display->display_options['filters']['field_organization_name_value_1']['field'] = 'field_organization_name_value';
+  $handler->display->display_options['filters']['field_organization_name_value_1']['relationship'] = 'field_organizations_value';
+  $handler->display->display_options['filters']['field_organization_name_value_1']['operator'] = 'longerthan';
+  $handler->display->display_options['filters']['field_organization_name_value_1']['value'] = '0';
   $handler->display->display_options['path'] = 'admin/people/organization';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Organization & Job Title';
@@ -974,9 +1051,13 @@ function drupalorg_admin_pages_views_default_views() {
     t('Page'),
     t('Organization People'),
     t('field collection item from field_organizations'),
+    t('First Name'),
+    t('Last Name'),
+    t('E-mail'),
     t('Job Title'),
     t('Organization'),
     t('Current'),
+    t('User created date'),
   );
   $export['admin_users_drupalorg'] = $view;
 
