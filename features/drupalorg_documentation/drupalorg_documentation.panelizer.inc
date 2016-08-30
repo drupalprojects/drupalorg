@@ -45,8 +45,8 @@ function drupalorg_documentation_panelizer_defaults() {
   $display->cache = array();
   $display->title = '%node:title';
   $display->uuid = 'ad8d5074-536d-44bb-afbc-e81782f60fdd';
-  $display->storage_type = '';
-  $display->storage_id = '';
+  $display->storage_type = 'panelizer_default';
+  $display->storage_id = 'node:documentation:default:default';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
@@ -307,8 +307,8 @@ function drupalorg_documentation_panelizer_defaults() {
   $display->cache = array();
   $display->title = '%node:title';
   $display->uuid = 'f62ff545-cdd2-4ecd-8646-d016cdb5f879';
-  $display->storage_type = '';
-  $display->storage_id = '';
+  $display->storage_type = 'panelizer_default';
+  $display->storage_id = 'node:guide:default:default';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
