@@ -41,6 +41,8 @@ function drupalorg_projects_panelizer_defaults() {
   $display->cache = array();
   $display->title = '%node:title';
   $display->uuid = '3bd2a0e7-3dbb-4444-9f22-9c5bdf9a2210';
+  $display->storage_type = 'panelizer_default';
+  $display->storage_id = 'node:project_core:core_project_page:default';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
@@ -159,6 +161,8 @@ function drupalorg_projects_panelizer_defaults() {
   $display->cache = array();
   $display->title = '%node:title';
   $display->uuid = '3bd2a0e7-3dbb-4444-9f22-9c5bdf9a2210';
+  $display->storage_type = 'panelizer_default';
+  $display->storage_id = 'node:project_core:default:default';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
@@ -291,6 +295,8 @@ function drupalorg_projects_panelizer_defaults() {
   $display->cache = array();
   $display->title = '%node:title';
   $display->uuid = 'f0fd6694-ace0-4a8e-aab5-fbd3ede237dc';
+  $display->storage_type = 'panelizer_default';
+  $display->storage_id = 'node:project_release:default:default';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
