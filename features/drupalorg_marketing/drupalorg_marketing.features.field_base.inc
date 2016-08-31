@@ -118,7 +118,9 @@ function drupalorg_marketing_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'full' => 'Full width',
+        'full original' => 'Full width',
+        'full mirror' => 'Full width, mirrored',
+        'full center' => 'Full width, centered',
         'card' => 'Card',
         'ribbon' => 'Ribbon',
       ),
