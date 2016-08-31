@@ -106,6 +106,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'access fieldable panels panes master list'.
+  $permissions['access fieldable panels panes master list'] = array(
+    'name' => 'access fieldable panels panes master list',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'fieldable_panels_panes',
+  );
+
   // Exported permission: 'access mollom statistics'.
   $permissions['access mollom statistics'] = array(
     'name' => 'access mollom statistics',
@@ -168,6 +177,13 @@ function drupalorg_permissions_user_default_permissions() {
       'authenticated user' => 'authenticated user',
       'email unverified' => 'email unverified',
     ),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource fieldable_panels_pane'.
+  $permissions['access resource fieldable_panels_pane'] = array(
+    'name' => 'access resource fieldable_panels_pane',
+    'roles' => array(),
     'module' => 'restws',
   );
 
@@ -573,6 +589,15 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'field_collection',
+  );
+
+  // Exported permission: 'administer fieldable panels panes'.
+  $permissions['administer fieldable panels panes'] = array(
+    'name' => 'administer fieldable panels panes',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'fieldable_panels_panes',
   );
 
   // Exported permission: 'administer fieldgroups'.
@@ -1594,6 +1619,13 @@ function drupalorg_permissions_user_default_permissions() {
       'user administrator' => 'user administrator',
     ),
     'module' => 'system',
+  );
+
+  // Exported permission: 'bypass access in place editing'.
+  $permissions['bypass access in place editing'] = array(
+    'name' => 'bypass access in place editing',
+    'roles' => array(),
+    'module' => 'panels',
   );
 
   // Exported permission: 'bypass advanced aggregation'.
