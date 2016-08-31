@@ -102,6 +102,31 @@ function drupalorg_marketing_field_default_field_bases() {
     'type' => 'link_field',
   );
 
+  // Exported field_base: 'field_cta_secondary_style'.
+  $field_bases['field_cta_secondary_style'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_cta_secondary_style',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'dark' => 'Dark',
+        'light' => 'Light',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_cta_style'.
   $field_bases['field_cta_style'] = array(
     'active' => 1,

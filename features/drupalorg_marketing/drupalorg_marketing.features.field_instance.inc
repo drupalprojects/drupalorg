@@ -183,6 +183,42 @@ function drupalorg_marketing_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'fieldable_panels_pane-cta-field_cta_secondary_style'.
+  $field_instances['fieldable_panels_pane-cta-field_cta_secondary_style'] = array(
+    'bundle' => 'cta',
+    'default_value' => array(
+      0 => array(
+        'value' => 'dark',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 6,
+      ),
+    ),
+    'entity_type' => 'fieldable_panels_pane',
+    'field_name' => 'field_cta_secondary_style',
+    'label' => 'Secondary style',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 6,
+    ),
+  );
+
   // Exported field_instance: 'fieldable_panels_pane-cta-field_cta_style'.
   $field_instances['fieldable_panels_pane-cta-field_cta_style'] = array(
     'bundle' => 'cta',
@@ -224,6 +260,7 @@ function drupalorg_marketing_field_default_field_instances() {
   t('Body');
   t('Graphic');
   t('Link');
+  t('Secondary style');
   t('Style');
   t('Title is used as text for the Call to Action link. Remember to include any campaign tracking tags in the URL.');
   t('Try to keep this between 50 - 150 characters. Wide CTAs will look better at the upper end; card styles will look better towards the lower end.');
