@@ -1214,8 +1214,17 @@ function drupalorg_preprocess_page(&$variables) {
     }
   }
 
+  if ($context = og_context()) {
+    // Landing pages group.
+    if ($context['gid'] == 2773617) {
+      // Hide header banner, page title; let the content take over.
+      unset($variables['logo']);
+      drupal_set_title('');
+    }
+  }
+
   // Group breadcrumbs.
-  if (og_context() || $router['path'] === 'group/node/%/admin/content') {
+  if ($context || $router['path'] === 'group/node/%/admin/content') {
     // Reset drupalorg_crosssite_preprocess_page() overrides.
     $variables['section_name'] = '';
     unset($variables['breadcrumb']);
@@ -1229,6 +1238,12 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
   if ($context = og_context()) {
     // If we are in a group.
     if ($context['group_type'] === 'node') {
+      // Hide breadcrumbs for landing pages.
+      if ($context['gid'] == 2773617) {
+        $active_trail = [];
+        return;
+      }
+
       $node = menu_get_object();
       $group = entity_load_single($context['group_type'], $context['gid']);
 
