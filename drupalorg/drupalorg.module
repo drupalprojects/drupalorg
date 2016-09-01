@@ -253,12 +253,6 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['admin/config/system/drupalorg'] = array(
-    'title' => 'Drupal.org settings',
-    'access arguments' => array('administer site configuration'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('drupalorg_settings_form'),
-  );
   $items['admin/config/system/drupalorg-ads'] = array(
     'title' => 'Drupal.org ad settings',
     'access arguments' => array('administer site configuration'),
@@ -2547,22 +2541,6 @@ function drupalorg_homebox() {
       ),
     ),
   );
-}
-
-/**
- * Form constructor for the Drupalorg custom settings form.
- */
-function drupalorg_settings_form($form, &$form_state) {
-  $form = array();
-
-  $form['drupalorg_featured_translations'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Featured translations'),
-    '#default_value' => variable_get('drupalorg_featured_translations', ''),
-    '#rows' => 5,
-  );
-
-  return system_settings_form($form);
 }
 
 function drupalorg_ad_settings_form() {
