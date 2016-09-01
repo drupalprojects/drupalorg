@@ -680,8 +680,24 @@ function drupalorg_block_view($delta, $block = NULL) {
           break;
         }
       }
-      $block['content'] = announcements_block_view();
-      return $block;
+      if (variable_get('drupalorg_announcements_users_membership') === 'non-members' && user_is_logged_in()) {
+        // Check for individual membership.
+        if (db_query_range("SELECT 1 FROM {drupalorg_crosssite_ind_civimembership} cm WHERE user_name = :name AND membership_status IN ('New', 'Current', 'Grace', 'Grace Period')", 0, 1, [':name' => $GLOBALS['user']->name])->fetchField()) {
+          break;
+        }
+        // Check for organization membership.
+        $names = [];
+        $wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
+        foreach ($wrapper->field_organizations as $n => $organization) {
+          if ($organization->field_current->value()) {
+            $names[] = $organization->field_organization_name->value();
+          }
+        }
+        if ($names && db_query_range("SELECT 1 FROM {drupalorg_crosssite_org_civimembership} cmo WHERE org_name IN (:names) AND membership_status IN ('New', 'Current', 'Grace', 'Grace Period')", 0, 1, [':names' => $names])->fetchField()) {
+          break;
+        }
+      }
+      return ['content' => announcements_block_view()];
 
     case 'documentation_survey':
       if (drupalorg_crosssite_section() === 'documentation') {
@@ -783,6 +799,17 @@ function drupalorg_block_configure($delta = '') {
         '#description' => t('Limits display of the banner to users who registered before this unix timestamp.'),
       );
 
+      // Show to everyone or Association non-members.
+      $form['users_membership'] = [
+        '#type' => 'radios',
+        '#title' => t('Show to'),
+        '#options' => [
+          'all' => t('Everyone'),
+          'non-members' => t('People without Association membership'),
+        ],
+        '#default_value' => variable_get('drupalorg_announcements_users_membership', 'all'),
+      ];
+
       break;
   }
   return $form;
@@ -793,7 +820,7 @@ function drupalorg_block_configure($delta = '') {
  */
 function drupalorg_block_save($delta = '', $edit = array()) {
   switch($delta) {
-    case 'announcements' :
+    case 'announcements':
       // Saving the WYSIWYG text
       variable_set('drupalorg_announcements_text_variable', $edit['text_body']['value']);
 
@@ -815,6 +842,7 @@ function drupalorg_block_save($delta = '', $edit = array()) {
       variable_set('drupalorg_announcements_machine_name', $edit['machine_name']);
 
       variable_set('drupalorg_announcements_users_created_before', $edit['users_created_before']);
+      variable_set('drupalorg_announcements_users_membership', $edit['users_membership']);
 
       break;
   }
