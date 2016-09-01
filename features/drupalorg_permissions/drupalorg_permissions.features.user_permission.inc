@@ -1793,6 +1793,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'create fieldable cta'.
+  $permissions['create fieldable cta'] = array(
+    'name' => 'create fieldable cta',
+    'roles' => array(),
+    'module' => 'fieldable_panels_panes',
+  );
+
   // Exported permission: 'create forum content'.
   $permissions['create forum content'] = array(
     'name' => 'create forum content',
@@ -2235,6 +2242,13 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete any story content',
     'roles' => array(),
     'module' => 'node',
+  );
+
+  // Exported permission: 'delete fieldable cta'.
+  $permissions['delete fieldable cta'] = array(
+    'name' => 'delete fieldable cta',
+    'roles' => array(),
+    'module' => 'fieldable_panels_panes',
   );
 
   // Exported permission: 'delete own book content'.
@@ -2794,6 +2808,13 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit any story content',
     'roles' => array(),
     'module' => 'node',
+  );
+
+  // Exported permission: 'edit fieldable cta'.
+  $permissions['edit fieldable cta'] = array(
+    'name' => 'edit fieldable cta',
+    'roles' => array(),
+    'module' => 'fieldable_panels_panes',
   );
 
   // Exported permission: 'edit meta tags'.
