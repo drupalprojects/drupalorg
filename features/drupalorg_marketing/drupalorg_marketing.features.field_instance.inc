@@ -224,7 +224,7 @@ function drupalorg_marketing_field_default_field_instances() {
     'bundle' => 'cta',
     'default_value' => array(
       0 => array(
-        'value' => 'full',
+        'value' => 'full original',
       ),
     ),
     'deleted' => 0,
