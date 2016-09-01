@@ -486,6 +486,31 @@ function drupalorg_field_widget_options_buttons_form_alter(&$element, &$form_sta
 }
 
 /**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function drupalorg_field_widget_image_image_form_alter(&$element, &$form_state, $context) {
+  if ($context['field']['field_name'] === 'field_cta_graphic') {
+    foreach (element_children($element) as $key) {
+      $element[$key]['#upload_validators']['file_validate_extensions'][0] .= ' svg';
+      $element[$key]['#process'][] = '_drupalorg_image_field_widget_process';
+    }
+  }
+}
+
+/**
+ * Form process callback, remove empty width/height which cannot be saved.
+ */
+function _drupalorg_image_field_widget_process($element, &$form_state, $form) {
+  if (empty($element['width']['#value'])) {
+    unset($element['width']);
+  }
+  if (empty($element['height']['#value'])) {
+    unset($element['height']);
+  }
+  return $element;
+}
+
+/**
  * Implements hook_block_info().
  */
 function drupalorg_block_info() {
