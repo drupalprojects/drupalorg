@@ -774,24 +774,18 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
-    'uid' => 'uid',
     'type' => 'type',
     'count' => 'count',
     'title' => 'title',
     'body' => 'body',
     'changed' => 'changed',
     'name' => 'name',
-    'drupalorg_not_spam' => 'nothing',
-    'nothing' => 'nothing',
-    'fasttoggle_block_user' => 'nothing',
+    'drupalorg_not_spam' => 'drupalorg_not_spam',
+    'uid_1' => 'drupalorg_not_spam',
+    'fasttoggle_block_user' => 'drupalorg_not_spam',
   );
   $handler->display->display_options['style_options']['default'] = 'count';
   $handler->display->display_options['style_options']['info'] = array(
-    'uid' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'type' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -836,12 +830,14 @@ function drupalorg_spam_views_default_views() {
     ),
     'drupalorg_not_spam' => array(
       'align' => '',
-      'separator' => '',
+      'separator' => ' | ',
       'empty_column' => 0,
     ),
-    'nothing' => array(
+    'uid_1' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
       'align' => '',
-      'separator' => ' | ',
+      'separator' => '',
       'empty_column' => 0,
     ),
     'fasttoggle_block_user' => array(
@@ -865,14 +861,6 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
   $handler->display->display_options['relationships']['uid_1']['table'] = 'node_revision';
   $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
-  /* Field: Content: Author uid */
-  $handler->display->display_options['fields']['uid']['id'] = 'uid';
-  $handler->display->display_options['fields']['uid']['table'] = 'node';
-  $handler->display->display_options['fields']['uid']['field'] = 'uid';
-  $handler->display->display_options['fields']['uid']['label'] = '';
-  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['uid']['link_to_user'] = FALSE;
   /* Field: Content: Type */
   $handler->display->display_options['fields']['type']['id'] = 'type';
   $handler->display->display_options['fields']['type']['table'] = 'node';
@@ -918,13 +906,17 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['fields']['drupalorg_not_spam']['field'] = 'drupalorg_not_spam';
   $handler->display->display_options['fields']['drupalorg_not_spam']['label'] = '';
   $handler->display->display_options['fields']['drupalorg_not_spam']['element_label_colon'] = FALSE;
-  /* Field: Global: Custom text */
-  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['table'] = 'views';
-  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['label'] = 'Operations';
-  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href=/user/[uid]/admin-content>Administer content</a>';
-  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  /* Field: User: Uid */
+  $handler->display->display_options['fields']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['fields']['uid_1']['table'] = 'users';
+  $handler->display->display_options['fields']['uid_1']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid_1']['relationship'] = 'uid_1';
+  $handler->display->display_options['fields']['uid_1']['label'] = 'Administer content';
+  $handler->display->display_options['fields']['uid_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['uid_1']['alter']['text'] = 'Administer content';
+  $handler->display->display_options['fields']['uid_1']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['uid_1']['alter']['path'] = 'user/[uid_1]/admin-content';
+  $handler->display->display_options['fields']['uid_1']['link_to_user'] = FALSE;
   /* Field: User: Block Link (Fasttoggle) */
   $handler->display->display_options['fields']['fasttoggle_block_user']['id'] = 'fasttoggle_block_user';
   $handler->display->display_options['fields']['fasttoggle_block_user']['table'] = 'users';
@@ -978,8 +970,7 @@ function drupalorg_spam_views_default_views() {
     t('Summary'),
     t('Updated'),
     t('Author'),
-    t('Operations'),
-    t('<a href=/user/[uid]/admin-content>Administer content</a>'),
+    t('Administer content'),
     t('Content pane'),
     t('View panes'),
   );

@@ -80,6 +80,8 @@ function drupalorg_spam_default_page_manager_pages() {
   $display->cache = array();
   $display->title = '';
   $display->uuid = 'e1b83f80-46d8-4117-a734-819af13a19b5';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_drupalorg_admin_comment_spam__panel_context_4938d4a2-0260-4f55-a62e-680f9b386b96';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
@@ -179,6 +181,8 @@ function drupalorg_spam_default_page_manager_pages() {
   $display->cache = array();
   $display->title = '';
   $display->uuid = 'e1b83f80-46d8-4117-a734-819af13a19b5';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_drupalorg_admin_node_spam__panel';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
@@ -278,6 +282,8 @@ function drupalorg_spam_default_page_manager_pages() {
   $display->cache = array();
   $display->title = '';
   $display->uuid = 'e1b83f80-46d8-4117-a734-819af13a19b5';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_drupalorg_admin_spammers__panel_context_96f0d0e1-2e18-4eba-bfff-e4f97c604c19';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
