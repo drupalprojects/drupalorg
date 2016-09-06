@@ -64,7 +64,7 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     $repo = variable_get('git_base_url', 'git://git.drupal.org/project/') . $this->project_node->versioncontrol_project['repo']->name . '.git';
 
     // Check if we need packaging.
-    if ($this->release_node_wrapper->field_release_build_type->value() === 'dynamic' && $tgz_exists) {
+    if ($this->release_node_wrapper->field_release_build_type->value() === 'dynamic' && $tgz_exists && $this->release_node_wrapper->field_packaged_git_sha1->value()) {
       $backend = $this->project_node->versioncontrol_project['repo']->getBackend();
       // Look for a commit on the branch with a parent commit of the currently
       // packaged release.
