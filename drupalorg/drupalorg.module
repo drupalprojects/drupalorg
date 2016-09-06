@@ -4962,7 +4962,7 @@ function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
 function drupalorg_sa_save($form, $form_state) {
   if (isset($form_state['node']->nid)) {
     // Mark the “issue” closed.
-    $form_state['node']->field_issue_status[LANGUAGE_NONE][0]['value'] = 7;
+    $form_state['node']->field_issue_status[LANGUAGE_NONE][0]['value'] = variable_get('project_issue_state_closed', PROJECT_ISSUE_STATE_CLOSED);
 
     $givecredit = [];
     $search = $form_state['values']['field_sa_reported_by'][LANGUAGE_NONE][0]['value'];
