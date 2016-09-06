@@ -4969,9 +4969,9 @@ function drupalorg_sa_save($form, $form_state) {
     $search .= $form_state['values']['field_sa_fixed_by'][LANGUAGE_NONE][0]['value'];
     $search .= $form_state['values']['field_sa_coordinated_by'][LANGUAGE_NONE][0]['value'];
     if ($search != '') {
-      preg_match_all('/https:\/\/www.drupal.org\/user\/(\d+)/', $search, $matches);
-      foreach ($matches[1] as $uid) {
-        $account = user_load($uid);
+      preg_match_all('#https://www\.drupal\.org/(?:user/(\d+)|(u/[^/"\']+))#', $search, $matches);
+      $uids = array_merge(array_filter($matches[1]), preg_replace('#^user/(\d+)$#', '\1', array_map('drupal_get_normal_path', array_filter($matches[2]))));
+      foreach (user_load_multiple($uids) as $account) {
         $givecredit[] = $account->name;
       }
       if (count($givecredit != 0)) {
