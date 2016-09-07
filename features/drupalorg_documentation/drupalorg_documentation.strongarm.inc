@@ -308,6 +308,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_documentation'] = $strongarm;
 
@@ -318,6 +319,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_guide'] = $strongarm;
 
@@ -354,7 +356,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'og_group_manager_default_rids_node_guide';
   $strongarm->value = array(
-    13 => '13',
+    17 => '17',
   );
   $export['og_group_manager_default_rids_node_guide'] = $strongarm;
 
