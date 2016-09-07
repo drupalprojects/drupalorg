@@ -356,7 +356,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'og_group_manager_default_rids_node_guide';
   $strongarm->value = array(
-    17 => '17',
+    13 => '13',
   );
   $export['og_group_manager_default_rids_node_guide'] = $strongarm;
 
