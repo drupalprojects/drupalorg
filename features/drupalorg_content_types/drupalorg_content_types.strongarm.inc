@@ -708,6 +708,7 @@ function drupalorg_content_types_strongarm() {
     'views_panes-og_members-panel_pane_1' => TRUE,
     'views_panes-og_nodes-panel_pane_1' => TRUE,
     'views-blog' => TRUE,
+    'views-drupalorg_casestudies' => TRUE,
     'views-og_members' => TRUE,
     'views-og_nodes' => TRUE,
   );
