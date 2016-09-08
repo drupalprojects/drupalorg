@@ -6,11 +6,6 @@
  */
 
 /**
- * Vocabulary used for news forum topic tagging.
- */
-define('DRUPALORG_NEWS_VID', 34);
-
-/**
  * Planet Drupal category in the aggregator.
  */
 define('DRUPALORG_PLANET_CATEGORY', 2);
@@ -35,16 +30,6 @@ function drupalorg_news_page() {
   $output = node_page_default();
   drupal_set_title(t('Drupal News'));
   return $output;
-}
-
-/**
- * Remove the news vocabulary on forum forms, if the user is not an admin. Used
- * to mark news forum topics with tags.
- */
-function drupalorg_news_field_widget_form_alter(&$element, &$form_state, $context) {
-  if ($context['field']['field_name'] === 'taxonomy_vocabulary_' . DRUPALORG_NEWS_VID) {
-    $element['#access'] = user_access('administer nodes');
-  }
 }
 
 /**
