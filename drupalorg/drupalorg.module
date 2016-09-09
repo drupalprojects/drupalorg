@@ -4953,9 +4953,14 @@ function drupalorg_og_ui_get_group_admin($group_type, $gid) {
 function drupalorg_og_role_grant($entity_type, $gid, $uid, $rid) {
   $role = og_role_load($rid);
   if ($uid != $GLOBALS['user']->uid && $role->name === 'maintainer') {
+    // Send the new maintainer a notification.
     $account = user_load($uid);
+    $node = node_load($gid);
     $from = '"' . mime_header_encode(t('!name (!site)', array('!name' => $GLOBALS['user']->name, '!site' => variable_get('site_name', 'Drupal')))) . '" <' . variable_get('site_mail', ini_get('sendmail_from')) . '>';
-    drupal_mail('drupalorg', 'added_guide_maintainer', $account->mail, LANGUAGE_NONE, ['node' => node_load($gid), 'account' => $account], $from);
+    drupal_mail('drupalorg', 'added_guide_maintainer', $account->mail, LANGUAGE_NONE, ['node' => $node, 'account' => $account], $from);
+
+    // Have the new maintainer follow the guide.
+    message_follow_node_follow_node($node->nid, $node->type, $account->uid);
   }
 }
 
