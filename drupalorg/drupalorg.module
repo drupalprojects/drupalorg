@@ -3348,7 +3348,7 @@ function drupalorg_node_update($node) {
   elseif (project_node_is_project($node)) {
     _drupalorg_node_update_project($node);
   }
-  elseif (project_issue_node_is_issue($node) && isset($node->nodechanges_cid)) {
+  elseif (project_issue_node_is_issue($node) && isset($node->nodechanges_cid) && isset($node->nodechanges_comment->uid)) {
     // Check if the commenter has previously received credit.
     foreach ($wrapper->field_issue_credit as $comment) {
       if ($comment->value()->uid == $node->nodechanges_comment->uid) {
