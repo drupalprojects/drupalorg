@@ -3,7 +3,7 @@
 $plugin = [
   'title' => t('Section contents from OG menu'),
   'single' => TRUE,
-  'category' => t('Drupal.org Customizations'),
+  'category' => t('Drupal.org'),
   'render callback' => 'drupalorg_section_contents',
   'required context' => new ctools_context_required(t('Node'), 'node'),
 ];
