@@ -677,6 +677,7 @@ function drupalorg_content_types_strongarm() {
     'node_links-node_links' => TRUE,
     'node-node' => TRUE,
     'node_form_author-node_form_author' => TRUE,
+    'community_stats-community_stats' => TRUE,
     'custom-custom' => TRUE,
     'custom-d8_landing_page_ad_1' => TRUE,
     'custom-d8_landing_page_ad_2' => TRUE,
@@ -707,8 +708,8 @@ function drupalorg_content_types_strongarm() {
     'views_panes-blog-panel_pane_2' => TRUE,
     'views_panes-og_members-panel_pane_1' => TRUE,
     'views_panes-og_nodes-panel_pane_1' => TRUE,
-    'views-blog' => TRUE,
     'views-drupalorg_casestudies' => TRUE,
+    'views-blog' => TRUE,
     'views-og_members' => TRUE,
     'views-og_nodes' => TRUE,
   );
