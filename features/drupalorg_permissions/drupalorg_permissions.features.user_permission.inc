@@ -461,6 +461,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panels',
   );
 
+  // Exported permission: 'administer asciidoc'.
+  $permissions['administer asciidoc'] = array(
+    'name' => 'administer asciidoc',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'asciidoc_display',
+  );
+
   // Exported permission: 'administer bakery'.
   $permissions['administer bakery'] = array(
     'name' => 'administer bakery',
@@ -580,6 +589,15 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'features',
+  );
+
+  // Exported permission: 'administer feeds'.
+  $permissions['administer feeds'] = array(
+    'name' => 'administer feeds',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'feeds',
   );
 
   // Exported permission: 'administer field collections'.
@@ -2442,6 +2460,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
+  // Exported permission: 'delete terms in organization_type'.
+  $permissions['delete terms in organization_type'] = array(
+    'name' => 'delete terms in organization_type',
+    'roles' => array(),
+    'module' => 'taxonomy',
+  );
+
   // Exported permission: 'delete terms in tags'.
   $permissions['delete terms in tags'] = array(
     'name' => 'delete terms in tags',
@@ -2810,6 +2835,16 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit asciidoc source'.
+  $permissions['edit asciidoc source'] = array(
+    'name' => 'edit asciidoc source',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'asciidoc_display',
+  );
+
   // Exported permission: 'edit fieldable cta'.
   $permissions['edit fieldable cta'] = array(
     'name' => 'edit fieldable cta',
@@ -3030,6 +3065,13 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
     ),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'edit terms in organization_type'.
+  $permissions['edit terms in organization_type'] = array(
+    'name' => 'edit terms in organization_type',
+    'roles' => array(),
     'module' => 'taxonomy',
   );
 
