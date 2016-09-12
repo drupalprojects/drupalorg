@@ -4523,48 +4523,61 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
       break;
 
     case 'security_risk':
-      $points = [
-        'AC:None' => 4,
-        'AC:Basic' => 2,
-        'AC:Complex' => 1,
-        'A:None' => 4,
-        'A:User' => 2,
-        'A:Admin' => 1,
-        'CI:All' => 5,
-        'CI:Some' => 3,
-        'CI:None' => 0,
-        'II:All' => 5,
-        'II:Some' => 3,
-        'II:None' => 0,
-        'E:Exploit' => 4,
-        'E:Proof' => 2,
-        'E:Theoretical' => 1,
-        'TD:All' => 3,
-        'TD:Default' => 2,
-        'TD:Uncommon' => 1,
-      ];
-      $score = array_sum(array_intersect_key($points, array_flip(explode('/', $items[0]['value']))));
-      if ($score <= 4) {
-        $text = t('Not critical');
-      }
-      elseif ($score <= 9) {
-        $text = t('Less critical');
-      }
-      elseif ($score <= 14) {
-        $text = t('Moderately critical');
-      }
-      elseif ($score <= 19) {
-        $text = t('Critical');
-      }
-      else {
-        $text = t('Highly critical');
-      }
-
+      list($score, $text) = drupalorg_calculate_security_risk($items[0]['value']);
       $element[0]['#markup'] = l(t('<strong>@text</strong> @score∕25 @description', ['@text' => $text, '@score' => $score, '@description' => $items[0]['value']]), 'security-team/risk-levels', ['html' => TRUE, 'attributes' => ['class' => [drupal_html_class($text)]]]);
       break;
   }
 
   return $element;
+}
+
+/**
+ * Computes score and security risk from shorthand vulnerability description.
+ *
+ * See https://www.drupal.org/security-team/risk-level.
+ *
+ * @param $value
+ *   A string like "AC:Complex/A:Admin/CI:None/II:None/E:Theoretical/TD:Uncommon"
+ * @return
+ *   Array of score, int up to 25, and text like "Not critical"
+ */
+function drupalorg_calculate_security_risk($value) {
+  $points = [
+    'AC:None' => 4,
+    'AC:Basic' => 2,
+    'AC:Complex' => 1,
+    'A:None' => 4,
+    'A:User' => 2,
+    'A:Admin' => 1,
+    'CI:All' => 5,
+    'CI:Some' => 3,
+    'CI:None' => 0,
+    'II:All' => 5,
+    'II:Some' => 3,
+    'II:None' => 0,
+    'E:Exploit' => 4,
+    'E:Proof' => 2,
+    'E:Theoretical' => 1,
+    'TD:All' => 3,
+    'TD:Default' => 2,
+    'TD:Uncommon' => 1,
+  ];
+  $score = array_sum(array_intersect_key($points, array_flip(explode('/', $value))));
+  if ($score <= 4) {
+    return [$score, t('Not critical')];
+  }
+  elseif ($score <= 9) {
+    return [$score, t('Less critical')];
+  }
+  elseif ($score <= 14) {
+    return [$score, t('Moderately critical')];
+  }
+  elseif ($score <= 19) {
+    return [$score, t('Critical')];
+  }
+  else {
+    return [$score, t('Highly critical')];
+  }
 }
 
 function drupalorg_welcome_page() {
