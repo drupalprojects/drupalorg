@@ -481,22 +481,24 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       $form_state['drupalorg_credit_cids'] = $cid_key_map;
 
       // Populate patches and files.
-      foreach ($node_wrapper->field_issue_files->value() as $file) {
-        if (!empty($form_state['node']->in_preview)) {
-          $file = (array) file_load($file['fid']);
-        }
-        if (isset($table['#rows'][$file['uid']])) {
-          if (preg_match('%\.(diff|patch)$%', $file['filename'])) {
-            $table['#rows'][$file['uid']]['patches'] += 1;
-            $table['#rows'][$file['uid']]['#weight'] += 10000;
-            $last_patch_uid = $file['uid'];
-            // 1428452101 is when maintainers started updating issue credit.
-            $table['#rows'][$file['uid']]['#last_patch'] = max($table['#rows'][$file['uid']]['#last_patch'], $file['timestamp'], 1428452101);
+      if (isset($node_wrapper->field_issue_files)) {
+        foreach ($node_wrapper->field_issue_files->value() as $file) {
+          if (!empty($form_state['node']->in_preview)) {
+            $file = (array) file_load($file['fid']);
           }
-          else {
-            $table['#rows'][$file['uid']]['files'] += 1;
-            $table['#rows'][$file['uid']]['#weight'] += 100;
-            $table['#rows'][$file['uid']]['#last_patch'] = max($file['timestamp'], 1428452101);
+          if (isset($table['#rows'][$file['uid']])) {
+            if (preg_match('%\.(diff|patch)$%', $file['filename'])) {
+              $table['#rows'][$file['uid']]['patches'] += 1;
+              $table['#rows'][$file['uid']]['#weight'] += 10000;
+              $last_patch_uid = $file['uid'];
+              // 1428452101 is when maintainers started updating issue credit.
+              $table['#rows'][$file['uid']]['#last_patch'] = max($table['#rows'][$file['uid']]['#last_patch'], $file['timestamp'], 1428452101);
+            }
+            else {
+              $table['#rows'][$file['uid']]['files'] += 1;
+              $table['#rows'][$file['uid']]['#weight'] += 100;
+              $table['#rows'][$file['uid']]['#last_patch'] = max($file['timestamp'], 1428452101);
+            }
           }
         }
       }
