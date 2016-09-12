@@ -1524,9 +1524,6 @@ function drupalorg_theme() {
  */
 function drupalorg_form_alter(&$form, &$form_state, $form_id) {
   // Force a revision log entry when editing existing book nodes.
-  if ($form_id == 'sa_node_form') {
-    $form['#submit'][] = 'drupalorg_sa_save';
-  }
   if ($form_id == 'book_node_form' && isset($form['revision_information']['log']) && arg(1) != 'add') {
     $form['revision_information']['log']['#required'] = TRUE;
     $form['revision_information']['#collapsed'] = FALSE;
@@ -4966,6 +4963,35 @@ function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
 
   // Strip nice quotes.
   $alias = str_replace(['‘', '’', '“', '”'], '', $alias);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_form_sa_node_form_alter(&$form, &$form_state) {
+  $form['title']['#access'] = FALSE;
+
+  // Always hide comments, which will be automated comments for “issue” credit.
+  unset($form['comment_settings']['comment'][COMMENT_NODE_HIDDEN]['#access']);
+  $form['comment_settings']['comment']['#default_value'] = COMMENT_NODE_HIDDEN;
+  $form['comment_settings']['#access'] = FALSE;
+
+  $form['#validate'][] = '_drupalorg_sa_validate';
+  $form['#submit'][] = 'drupalorg_sa_save';
+}
+
+/**
+ * Validate callback for drupalorg_form_sa_node_form_alter().
+ */
+function _drupalorg_sa_validate($form, &$form_state) {
+  if ($project = node_load($form_state['values']['field_project'][LANGUAGE_NONE][0]['target_id'])) {
+    form_set_value($form['title'], format_string('!project - !risk - !type - !id', [
+      '!project' => $project->title,
+      '!risk' => drupalorg_calculate_security_risk($form_state['values']['field_sa_criticality'][LANGUAGE_NONE][0]['value'])[1],
+      '!type' => 'TODO',
+      '!id' => 'SA-' . ($project->type === 'project_core' ? 'CORE' : 'CONTRIB') . '-' . format_date($form_state['values']['created'], 'custom', 'Y') . '-' . $form_state['values']['field_sa_advisory_id'][LANGUAGE_NONE][0]['value'],
+    ]), $form_state);
+  }
 }
 
 /**
