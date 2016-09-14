@@ -106,6 +106,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'access fieldable panels panes master list'.
+  $permissions['access fieldable panels panes master list'] = array(
+    'name' => 'access fieldable panels panes master list',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'fieldable_panels_panes',
+  );
+
   // Exported permission: 'access mollom statistics'.
   $permissions['access mollom statistics'] = array(
     'name' => 'access mollom statistics',
@@ -168,6 +177,13 @@ function drupalorg_permissions_user_default_permissions() {
       'authenticated user' => 'authenticated user',
       'email unverified' => 'email unverified',
     ),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource fieldable_panels_pane'.
+  $permissions['access resource fieldable_panels_pane'] = array(
+    'name' => 'access resource fieldable_panels_pane',
+    'roles' => array(),
     'module' => 'restws',
   );
 
@@ -388,6 +404,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'user',
   );
 
+  // Exported permission: 'add JS snippets for google analytics'.
+  $permissions['add JS snippets for google analytics'] = array(
+    'name' => 'add JS snippets for google analytics',
+    'roles' => array(),
+    'module' => 'googleanalytics',
+  );
+
   // Exported permission: 'add content to books'.
   $permissions['add content to books'] = array(
     'name' => 'add content to books',
@@ -436,6 +459,15 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'panels',
+  );
+
+  // Exported permission: 'administer asciidoc'.
+  $permissions['administer asciidoc'] = array(
+    'name' => 'administer asciidoc',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'asciidoc_display',
   );
 
   // Exported permission: 'administer bakery'.
@@ -559,6 +591,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'features',
   );
 
+  // Exported permission: 'administer feeds'.
+  $permissions['administer feeds'] = array(
+    'name' => 'administer feeds',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'feeds',
+  );
+
   // Exported permission: 'administer field collections'.
   $permissions['administer field collections'] = array(
     'name' => 'administer field collections',
@@ -566,6 +607,15 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'field_collection',
+  );
+
+  // Exported permission: 'administer fieldable panels panes'.
+  $permissions['administer fieldable panels panes'] = array(
+    'name' => 'administer fieldable panels panes',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'fieldable_panels_panes',
   );
 
   // Exported permission: 'administer fieldgroups'.
@@ -1589,6 +1639,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'system',
   );
 
+  // Exported permission: 'bypass access in place editing'.
+  $permissions['bypass access in place editing'] = array(
+    'name' => 'bypass access in place editing',
+    'roles' => array(),
+    'module' => 'panels',
+  );
+
   // Exported permission: 'bypass advanced aggregation'.
   $permissions['bypass advanced aggregation'] = array(
     'name' => 'bypass advanced aggregation',
@@ -1749,8 +1806,16 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create documentation content',
     'roles' => array(
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
+  );
+
+  // Exported permission: 'create fieldable cta'.
+  $permissions['create fieldable cta'] = array(
+    'name' => 'create fieldable cta',
+    'roles' => array(),
+    'module' => 'fieldable_panels_panes',
   );
 
   // Exported permission: 'create forum content'.
@@ -2054,7 +2119,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete any documentation content'.
   $permissions['delete any documentation content'] = array(
     'name' => 'delete any documentation content',
-    'roles' => array(),
+    'roles' => array(
+      'confirmed' => 'confirmed',
+    ),
     'module' => 'node',
   );
 
@@ -2193,6 +2260,13 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete any story content',
     'roles' => array(),
     'module' => 'node',
+  );
+
+  // Exported permission: 'delete fieldable cta'.
+  $permissions['delete fieldable cta'] = array(
+    'name' => 'delete fieldable cta',
+    'roles' => array(),
+    'module' => 'fieldable_panels_panes',
   );
 
   // Exported permission: 'delete own book content'.
@@ -2383,6 +2457,20 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
     ),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'delete terms in organization_type'.
+  $permissions['delete terms in organization_type'] = array(
+    'name' => 'delete terms in organization_type',
+    'roles' => array(),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'delete terms in tags'.
+  $permissions['delete terms in tags'] = array(
+    'name' => 'delete terms in tags',
+    'roles' => array(),
     'module' => 'taxonomy',
   );
 
@@ -2747,6 +2835,23 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit asciidoc source'.
+  $permissions['edit asciidoc source'] = array(
+    'name' => 'edit asciidoc source',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'asciidoc_display',
+  );
+
+  // Exported permission: 'edit fieldable cta'.
+  $permissions['edit fieldable cta'] = array(
+    'name' => 'edit fieldable cta',
+    'roles' => array(),
+    'module' => 'fieldable_panels_panes',
+  );
+
   // Exported permission: 'edit meta tags'.
   $permissions['edit meta tags'] = array(
     'name' => 'edit meta tags',
@@ -2960,6 +3065,20 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
     ),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'edit terms in organization_type'.
+  $permissions['edit terms in organization_type'] = array(
+    'name' => 'edit terms in organization_type',
+    'roles' => array(),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'edit terms in tags'.
+  $permissions['edit terms in tags'] = array(
+    'name' => 'edit terms in tags',
+    'roles' => array(),
     'module' => 'taxonomy',
   );
 
@@ -3222,7 +3341,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'flag migrate'.
   $permissions['flag migrate'] = array(
     'name' => 'flag migrate',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'flag',
   );
 
@@ -3522,7 +3643,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'unflag migrate'.
   $permissions['unflag migrate'] = array(
     'name' => 'unflag migrate',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'flag',
   );
 

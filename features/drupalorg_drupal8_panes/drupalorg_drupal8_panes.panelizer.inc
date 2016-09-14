@@ -13,13 +13,19 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
   $panelizer = new stdClass();
   $panelizer->disabled = FALSE; /* Edit this to true to make a default panelizer disabled initially */
   $panelizer->api_version = 1;
-  $panelizer->name = 'node:page:d8_layout:default';
   $panelizer->title = 'D8 layout';
   $panelizer->panelizer_type = 'node';
   $panelizer->panelizer_key = 'page';
-  $panelizer->no_blocks = FALSE;
+  $panelizer->access = array();
+  $panelizer->view_mode = 'default';
+  $panelizer->name = 'node:page:d8_layout:default';
   $panelizer->css_id = '';
+  $panelizer->css_class = 'd8';
   $panelizer->css = '';
+  $panelizer->no_blocks = FALSE;
+  $panelizer->title_element = 'H2';
+  $panelizer->link_to_entity = TRUE;
+  $panelizer->extra = array();
   $panelizer->pipeline = 'ipe';
   $panelizer->contexts = array();
   $panelizer->relationships = array(
@@ -32,12 +38,6 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
       'id' => 1,
     ),
   );
-  $panelizer->access = array();
-  $panelizer->view_mode = 'default';
-  $panelizer->css_class = 'd8';
-  $panelizer->title_element = 'H2';
-  $panelizer->link_to_entity = TRUE;
-  $panelizer->extra = array();
   $display = new panels_display();
   $display->layout = 'portal';
   $display->layout_settings = array();
@@ -79,6 +79,8 @@ function drupalorg_drupal8_panes_panelizer_defaults() {
   $display->cache = array();
   $display->title = '%node:title';
   $display->uuid = 'c5038462-854c-47ce-af74-3306cd267308';
+  $display->storage_type = 'panelizer_default';
+  $display->storage_id = 'node:page:d8_layout:default';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();

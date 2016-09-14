@@ -542,6 +542,32 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
+  // Exported field_base: 'field_organization_type'.
+  $field_bases['field_organization_type'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_organization_type',
+    'indexes' => array(
+      'tid' => array(
+        0 => 'tid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'taxonomy',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => array(
+          'vocabulary' => 'organization_type',
+          'parent' => 0,
+        ),
+      ),
+    ),
+    'translatable' => 0,
+    'type' => 'taxonomy_term_reference',
+  );
+
   // Exported field_base: 'taxonomy_vocabulary_48'.
   $field_bases['taxonomy_vocabulary_48'] = array(
     'active' => 1,

@@ -104,8 +104,7 @@ function drupalorg_order_facet_build($sort, $info, $query, $more = TRUE) {
   if ($items && $more) {
     // Add the "more" link.
     $items[] = array(
-      'data' => l(t('More @title', array('@title' => $info['info'])), $order_query->getPath(), array('query' => $query_values)),
-      'class' => array('all'),
+      'data' => '<strong>' . l(t('More @title', ['@title' => drupal_strtolower($info['info'])]), $order_query->getPath(), ['query' => $query_values]) . '</strong>',
     );
   }
   return array('#theme' => 'item_list', '#items' => $items, '#attributes' => array('class' => 'flat'));

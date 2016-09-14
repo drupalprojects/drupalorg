@@ -154,9 +154,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 1,
+        'type' => 'text_default',
+        'weight' => 3,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -217,9 +218,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'module' => 'list',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 7,
+        'type' => 'list_default',
+        'weight' => 1,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -259,7 +261,7 @@ function drupalorg_documentation_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 7,
+      'weight' => 9,
     ),
   );
 
@@ -278,7 +280,7 @@ function drupalorg_documentation_field_default_field_instances() {
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
-        'weight' => 9,
+        'weight' => 6,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -329,7 +331,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 44,
+      'weight' => 5,
     ),
   );
 
@@ -343,8 +345,8 @@ function drupalorg_documentation_field_default_field_instances() {
       'default' => array(
         'label' => 'above',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
+        'type' => 'text_default',
+        'weight' => 2,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -404,7 +406,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 8,
+        'weight' => 5,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -447,7 +449,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'taxonomy_autocomplete',
-      'weight' => 42,
+      'weight' => 4,
     ),
   );
 
@@ -461,9 +463,12 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 6,
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 0,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -534,7 +539,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 6,
+      'weight' => 8,
     ),
   );
 
@@ -546,9 +551,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'module' => 'file',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 5,
+        'type' => 'file_default',
+        'weight' => 4,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -614,9 +620,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 1,
+        'type' => 'text_default',
+        'weight' => 3,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -677,9 +684,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'module' => 'list',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 7,
+        'type' => 'list_default',
+        'weight' => 1,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -733,9 +741,12 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 9,
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 6,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -783,7 +794,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 4,
+      'weight' => 5,
     ),
   );
 
@@ -797,8 +808,8 @@ function drupalorg_documentation_field_default_field_instances() {
       'default' => array(
         'label' => 'hidden',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
+        'type' => 'text_default',
+        'weight' => 2,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -856,9 +867,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
+        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 4,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -883,7 +895,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 3,
       ),
     ),
     'entity_type' => 'node',
@@ -901,7 +913,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'taxonomy_autocomplete',
-      'weight' => 3,
+      'weight' => 4,
     ),
   );
 
@@ -920,7 +932,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 7,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -974,7 +986,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'og_hide' => TRUE,
       ),
       'type' => 'options_onoff',
-      'weight' => 7,
+      'weight' => 6,
     ),
   );
 
@@ -988,9 +1000,12 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 6,
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 0,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -1061,9 +1076,10 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
+        'module' => 'file',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 4,
+        'type' => 'file_default',
+        'weight' => 5,
       ),
       'issuemetadata' => array(
         'label' => 'above',

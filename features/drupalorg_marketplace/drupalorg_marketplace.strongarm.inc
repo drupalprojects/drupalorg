@@ -116,16 +116,23 @@ function drupalorg_marketplace_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '14',
+          'weight' => '15',
         ),
         'redirect' => array(
-          'weight' => '15',
+          'weight' => '16',
+        ),
+        'metatags' => array(
+          'weight' => '18',
         ),
       ),
       'display' => array(
         'drupalorg_organization_contributions' => array(
           'teaser' => array(
             'weight' => '1',
+            'visible' => TRUE,
+          ),
+          'default' => array(
+            'weight' => '0',
             'visible' => TRUE,
           ),
         ),

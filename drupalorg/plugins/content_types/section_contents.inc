@@ -3,7 +3,7 @@
 $plugin = [
   'title' => t('Section contents from OG menu'),
   'single' => TRUE,
-  'category' => t('Drupal.org Customizations'),
+  'category' => t('Drupal.org'),
   'render callback' => 'drupalorg_section_contents',
   'required context' => new ctools_context_required(t('Node'), 'node'),
 ];
@@ -14,6 +14,7 @@ $plugin = [
  */
 function drupalorg_section_contents($subtype, $conf, $args, $context = NULL) {
   $block = new stdClass();
+  $block->content = '';
   if (isset($context->keyword) && $context->keyword === 'node' && isset($context->data) && (list($og_menu) = og_menu_get_group_menus(['node' => [$context->data->nid]]))) {
     if ($menu = menu_tree($og_menu['menu_name'])) {
       // Find nodes in the menu.

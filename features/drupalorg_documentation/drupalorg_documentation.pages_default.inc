@@ -117,6 +117,8 @@ function drupalorg_documentation_default_page_manager_pages() {
   $display->cache = array();
   $display->title = 'Discuss <em>%node:title</em>';
   $display->uuid = 'ef07149a-91a0-4ac7-bd29-ac42cfccdfa2';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_discuss__panel_context_1e2768d2-5836-4129-8b55-94123ccdc7ab';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();

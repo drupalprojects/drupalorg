@@ -127,6 +127,8 @@ function drupalorg_content_types_default_page_manager_handlers() {
   $display->cache = array();
   $display->title = '%node:title';
   $display->uuid = 'fee7ba1e-19ac-4f89-aae5-15589f520d14';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'node_view__node_in_an_og';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
@@ -318,6 +320,8 @@ function drupalorg_content_types_default_page_manager_handlers() {
   $display->cache = array();
   $display->title = '%node:title';
   $display->uuid = 'e78f0385-640e-421b-a81e-afc1e6f9ea18';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'node_view__section_panel';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();

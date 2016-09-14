@@ -70,8 +70,7 @@ function drupalorg_init() {
 
   // Temporary message about the Solr index being rebuilt.
   if (variable_get('drupalorg_warn_search_index_rebuild', FALSE)) {
-    if (arg(0) == 'search' || arg(0) == 'download' || arg(0) == 'start' ||
-        (arg(0) == 'project' && (arg(1) == 'modules' || arg(1) == 'themes' || arg(1) == 'distributions' || arg(1) == 'theme engines'))) {
+    if (arg(0) == 'search' || arg(0) == 'download' || (arg(0) == 'project' && (arg(1) == 'modules' || arg(1) == 'themes' || arg(1) == 'distributions' || arg(1) == 'theme engines'))) {
       drupal_set_message(t('We are rebuilding the search index for the update to drupal.org. The search results may produce broken or out-of-date results until the index is fully rebuilt. We will remove this message when the indexing is complete. Do not report any search errors at this time.'));
     }
   }
@@ -176,13 +175,6 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['start'] = array(
-    'title' => 'Get Started with Drupal',
-    'page callback' => 'drupalorg_start',
-    'access arguments' => array('access content'),
-    'type' => MENU_NORMAL_ITEM,
-  );
-
   $items['download'] = array(
     'title' => 'Download & Extend',
     'page callback' => 'theme',
@@ -196,12 +188,6 @@ function drupalorg_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   ];
-  $items['project/project_module/categories'] = array(
-    'title' => 'Module Categories',
-    'page callback' => 'drupalorg_module_categories_page',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
 
   $items['home'] = array(
     'title' => 'Drupal - Open Source CMS',
@@ -267,12 +253,6 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['admin/config/system/drupalorg'] = array(
-    'title' => 'Drupal.org settings',
-    'access arguments' => array('administer site configuration'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('drupalorg_settings_form'),
-  );
   $items['admin/config/system/drupalorg-ads'] = array(
     'title' => 'Drupal.org ad settings',
     'access arguments' => array('administer site configuration'),
@@ -506,6 +486,31 @@ function drupalorg_field_widget_options_buttons_form_alter(&$element, &$form_sta
 }
 
 /**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function drupalorg_field_widget_image_image_form_alter(&$element, &$form_state, $context) {
+  if ($context['field']['field_name'] === 'field_cta_graphic') {
+    foreach (element_children($element) as $key) {
+      $element[$key]['#upload_validators']['file_validate_extensions'][0] .= ' svg';
+      $element[$key]['#process'][] = '_drupalorg_image_field_widget_process';
+    }
+  }
+}
+
+/**
+ * Form process callback, remove empty width/height which cannot be saved.
+ */
+function _drupalorg_image_field_widget_process($element, &$form_state, $form) {
+  if (empty($element['width']['#value'])) {
+    unset($element['width']);
+  }
+  if (empty($element['height']['#value'])) {
+    unset($element['height']);
+  }
+  return $element;
+}
+
+/**
  * Implements hook_block_info().
  */
 function drupalorg_block_info() {
@@ -543,6 +548,10 @@ function drupalorg_block_info() {
       'info' => t('Book listing add link'),
       'cache' => DRUPAL_NO_CACHE,
     ),
+    'search-documentation' => [
+      'info' => t('Documentation search form'),
+      'cache' => DRUPAL_NO_CACHE,
+    ],
   );
 }
 
@@ -696,8 +705,24 @@ function drupalorg_block_view($delta, $block = NULL) {
           break;
         }
       }
-      $block['content'] = announcements_block_view();
-      return $block;
+      if (variable_get('drupalorg_announcements_users_membership') === 'non-members' && user_is_logged_in()) {
+        // Check for individual membership.
+        if (db_query_range("SELECT 1 FROM {drupalorg_crosssite_ind_civimembership} cm WHERE user_name = :name AND membership_status IN ('New', 'Current', 'Grace', 'Grace Period')", 0, 1, [':name' => $GLOBALS['user']->name])->fetchField()) {
+          break;
+        }
+        // Check for organization membership.
+        $names = [];
+        $wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
+        foreach ($wrapper->field_organizations as $n => $organization) {
+          if ($organization->field_current->value()) {
+            $names[] = $organization->field_organization_name->value();
+          }
+        }
+        if ($names && db_query_range("SELECT 1 FROM {drupalorg_crosssite_org_civimembership} cmo WHERE org_name IN (:names) AND membership_status IN ('New', 'Current', 'Grace', 'Grace Period')", 0, 1, [':names' => $names])->fetchField()) {
+          break;
+        }
+      }
+      return ['content' => announcements_block_view()];
 
     case 'documentation_survey':
       if (drupalorg_crosssite_section() === 'documentation') {
@@ -726,6 +751,12 @@ function drupalorg_block_view($delta, $block = NULL) {
         return array(
           'content' => $content,
         );
+      }
+      break;
+
+    case 'search-documentation':
+      if (user_access('search content')) {
+        return ['content' => drupal_get_form('drupalorg_documentation_search_form')];
       }
       break;
   }
@@ -793,6 +824,17 @@ function drupalorg_block_configure($delta = '') {
         '#description' => t('Limits display of the banner to users who registered before this unix timestamp.'),
       );
 
+      // Show to everyone or Association non-members.
+      $form['users_membership'] = [
+        '#type' => 'radios',
+        '#title' => t('Show to'),
+        '#options' => [
+          'all' => t('Everyone'),
+          'non-members' => t('People without Association membership'),
+        ],
+        '#default_value' => variable_get('drupalorg_announcements_users_membership', 'all'),
+      ];
+
       break;
   }
   return $form;
@@ -803,7 +845,7 @@ function drupalorg_block_configure($delta = '') {
  */
 function drupalorg_block_save($delta = '', $edit = array()) {
   switch($delta) {
-    case 'announcements' :
+    case 'announcements':
       // Saving the WYSIWYG text
       variable_set('drupalorg_announcements_text_variable', $edit['text_body']['value']);
 
@@ -825,6 +867,7 @@ function drupalorg_block_save($delta = '', $edit = array()) {
       variable_set('drupalorg_announcements_machine_name', $edit['machine_name']);
 
       variable_set('drupalorg_announcements_users_created_before', $edit['users_created_before']);
+      variable_set('drupalorg_announcements_users_membership', $edit['users_membership']);
 
       break;
   }
@@ -1019,6 +1062,47 @@ function drupalorg_get_activity($_force = FALSE) {
 }
 
 /**
+ * Implements hook_forms().
+ */
+function drupalorg_forms() {
+  return [
+    'drupalorg_documentation_search_form' => [
+      'callback' => 'search_box',
+      'callback arguments' => ['search_block_form'],
+    ]
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_form_drupalorg_documentation_search_form_alter(&$form) {
+  // Search button icon.
+  drupalorg_crosssite_form_search_block_form_alter($form);
+  // Slim up styles.
+  $form['#attributes']['class'][] = 'container-inline';
+  $form['search_block_form']['#attributes'] = ['placeholder' => t('Search documentation…')];
+  // search modules looks for text by form id.
+  $form['drupalorg_documentation_search_form'] = $form['search_block_form'];
+  // … and also here.
+  $form['search_block_form'] = [
+    '#type' => 'value',
+    '#value' => 'dummy',
+  ];
+  $form['#submit'][] = 'drupalorg_documentation_search_form_submit';
+}
+
+/**
+ * Form submit callback.
+ */
+function drupalorg_documentation_search_form_submit($form, &$form_state) {
+  if (!is_array($form_state['redirect'])) {
+    $form_state['redirect'] = [$form_state['redirect']];
+  }
+  $form_state['redirect'][]['query']['f'][] = 'ss_meta_type:documentation';
+}
+
+/**
  * Implements hook_block_view_MODULE_DELTA_alter().
  */
 function drupalorg_block_view_forum_new_alter(&$data, $block) {
@@ -1177,8 +1261,17 @@ function drupalorg_preprocess_page(&$variables) {
     }
   }
 
+  if ($context = og_context()) {
+    // Landing pages group.
+    if ($context['gid'] == 2773617) {
+      // Hide header banner, page title; let the content take over.
+      unset($variables['logo']);
+      drupal_set_title('');
+    }
+  }
+
   // Group breadcrumbs.
-  if (og_context() || $router['path'] === 'group/node/%/admin/content') {
+  if ($context || $router['path'] === 'group/node/%/admin/content') {
     // Reset drupalorg_crosssite_preprocess_page() overrides.
     $variables['section_name'] = '';
     unset($variables['breadcrumb']);
@@ -1192,6 +1285,12 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
   if ($context = og_context()) {
     // If we are in a group.
     if ($context['group_type'] === 'node') {
+      // Hide breadcrumbs for landing pages.
+      if ($context['gid'] == 2773617) {
+        $active_trail = [];
+        return;
+      }
+
       $node = menu_get_object();
       $group = entity_load_single($context['group_type'], $context['gid']);
 
@@ -1235,6 +1334,11 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       if ($group->type === 'guide') {
         array_shift($active_trail);
       }
+
+      // Message about documentation migration.
+      if ($parent->nid == 2734545 || $parent->nid == 2743405) {
+        drupal_set_message(t('Documentation is currently <a href="!url">being migrated</a> into the new system. Some pages might be temporarily missing, and some guides might appear empty. Thank you for your patience while we are improving Drupal.org documentation.', ['!url' => url('node/2762837')]), 'warning', FALSE);
+      }
     }
   }
 }
@@ -1255,107 +1359,85 @@ function drupalorg_preprocess_drupalorg_home(&$variables) {
 }
 
 /**
- * Page callback for the getting started page.
- */
-function drupalorg_start() {
-  return theme('drupalorg_start');
-}
-
-/**
- * Implementation of template_preprocess_drupalorg_start().
- */
-function drupalorg_preprocess_drupalorg_start(&$variables) {
-  $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
-  $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
-
-  // Create and cache a solr query for use by block elements.
-  $env_id = apachesolr_default_environment();
-  project_solr_run_project_query('project/modules', array(
-    array('key' => 'bundle', 'value' => 'project_module'),
-    array('key' => 'im_project_release_api_tids', 'value' => DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID),
-  ));
-  $query = apachesolr_current_query($env_id);
-  $list = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
-  $variables['most_popular_modules'] = drupal_render($list);
-
-  project_solr_run_project_query('project/themes', array(
-    array('key' => 'bundle', 'value' => 'project_theme'),
-    array('key' => 'im_project_release_api_tids', 'value' => DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID),
-  ));
-  $query = apachesolr_current_query($env_id);
-  $list = drupalorg_order_facet_build('iss_project_release_usage', array('direction' => 'desc'), $query, FALSE);
-  $variables['most_popular_themes'] = drupal_render($list);
-}
-
-/**
  * Implementation of template_preprocess_drupalorg_download().
  */
 function drupalorg_preprocess_drupalorg_download(&$variables) {
-  $variables['core_download_button'] = drupalorg_download_drupal_link_button('Download Drupal');
-  $variables['drupalorg_featured_translations'] = variable_get('drupalorg_featured_translations', '');
+  $release = project_release_get_current_recommended(DRUPALORG_CORE_NID, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID, DRUPALORG_DOWNLOAD_MAJOR_VERSION, 'recommended');
+  $variables['core_download_button'] = l(t('Download Drupal @version', ['@version' => $release->field_release_version[LANGUAGE_NONE][0]['value']]), 'node/' . $release->nid, ['attributes' => ['class' => ['primary-button']]]);
 
-  // Create and cache a solr query for use by block elements.
-  project_solr_run_project_query('project/modules', array(array(
-    'key' => 'bundle',
-    'value' => 'project_module',
-  )));
+  foreach (['project_module', 'project_theme', 'project_distribution'] as $type) {
+    // Create and cache a solr query for use by block elements.
+    project_solr_run_project_query('project/' . $type, [[
+      'key' => 'bundle',
+      'value' => $type,
+    ], [
+      'key' => 'sm_field_project_type',
+      'value' => 'full',
+    ]]);
 
-  // Since we control what facets we're building, we can just utilize the
-  // delta as the unique key for the sake of brevity (both here and in the
-  // $variables array).
-  $facets = array(
-    'iss_project_release_usage' => 'drupalorg_order_facet',
-    'ds_created' => 'drupalorg_order_facet',
-  );
-  // Render and save the facet blocks.
-  foreach ($facets as $delta => $module) {
-    $block = drupalorg_block_render($module, $delta);
-    $variables[$delta] = drupal_render($block);
-  }
-
-  $form = drupal_get_form('project_solr_version_form', 'download', t('Show only modules for Drupal version'));
-  $variables['version_form'] = drupal_render($form);
-
-  // Rendering the block directly from views doesn't work nicely here, since
-  // the resulting markup is harder to use with bluecheese. Plus, we're doing
-  // some magic to ensure that the version filter impacts this block as well.
-  // So, we just load the view object, do some magic, run the view, fetch the
-  // results and render those ourselves. This also lets us add our 'View full
-  // index' link directly as another li in the list (as bluecheese expects)
-  // instead of having it in its own div.
-  $view = views_get_view('project_index');
-  $view->set_display('block_1');
-  $view->set_arguments(array('project_module'));
-  // See if the version filter was used, and if so, have it impact the view.
-  if (!empty($_GET['f'])) {
-    foreach ($_GET['f'] as $f) {
-      if (preg_match('/drupal_core:(\d+)/', $f, $matches)) {
-        $core_version = $matches[1];
-
-        $filters = $view->display_handler->get_option('filters');
-        $filters['project_release_api_vocabulary']['value'] = array($core_version);
-        $view->display_handler->set_option('filters', $filters);
-      }
+    // Render and save the facet blocks. Since we control what facets we're
+    // building, use the delta as the unique key for the sake of brevity.
+    foreach (['iss_project_release_usage', 'ds_created'] as $delta) {
+      $block = module_invoke('drupalorg_order_facet', 'block_view', $delta);
+      $variables[$type . '__' . $delta] = drupal_render($block['content']);
     }
   }
-  $view->pre_execute();
-  $view->execute();
-  $results = $view->result;
-  foreach ($results as $result) {
-    $modules[] = l($result->node_title, 'node/' . $result->nid);
-  }
-  $modules[] = '<a href="/project/project_module/index" class="all">View full index</a>';
-  $module_index = '<h2>' . t('Module Index') . '</h2>';
-  $module_index .= theme('item_list', array('items' => $modules, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class' => array('flat'))));
-  $variables['module_index'] = $module_index;
+
+  $form = drupal_get_form('drupalorg_download_version_form');
+  $variables['version_form'] = drupal_render($form);
 }
 
 /**
- * Page callback for browsing modules by category.
+ * Generate a form containing version selection and a submit button.
  */
-function drupalorg_module_categories_page() {
-  module_load_include('inc', 'project_solr', 'project_solr.pages');
-  return project_solr_category_page('project_module', taxonomy_vocabulary_load(3));
+function drupalorg_download_version_form($form, &$form_state) {
+  $key = variable_get('project_solr_project_release_api_tids_alias', 'drupal_core');
+  $form = [
+    $key => [
+      '#title' => t('Show projects for Drupal version'),
+      '#type' => 'select',
+      '#options' => ['' => t('- Any -')],
+    ],
+    'submit' => [
+      '#type' => 'submit',
+      '#value' => t('Search'),
+    ],
+  ];
+
+  if ($query = apachesolr_current_query(apachesolr_default_environment())) {
+    $term_query = new EntityFieldQuery();
+    $result = $term_query->entityCondition('entity_type', 'taxonomy_term')
+      ->fieldCondition('field_release_recommended', 'value', 1)
+      ->entityOrderBy('entity_id', 'DESC')
+      ->execute();
+
+    foreach (taxonomy_term_load_multiple(array_keys($result['taxonomy_term'])) as $term) {
+      if ($query->hasFilter('im_project_release_api_tids', $term->tid)) {
+        $form[$key]['#default_value'] = $term->tid;
+      }
+      $form[$key]['#options'][$term->tid] = $term->name;
+    }
+  }
+
+  return $form;
+}
+
+/**
+ * Create a query with the right version filter and redirect to the right page.
+ */
+function drupalorg_download_version_form_submit($form, &$form_state) {
+  // We create a new query with our base path so that we don't need to remove
+  // any existing drupal_core selection, and so that the implict type and
+  // module tid filters don't end up in the url string.
+  $query = apachesolr_drupal_query('project_solr_version_form_submit', [], '', 'download');
+  $filters = [];
+
+  $version_alias = variable_get('project_solr_project_release_api_tids_alias', 'drupal_core');
+
+  if (!empty($form_state['values'][$version_alias])) {
+    $filters = ['f' => [$version_alias . ':' . $form_state['values'][$version_alias]]];
+  }
+  $form_state['redirect'] = ['path' => $query->getPath(), ['query' => $filters]];
 }
 
 /**
@@ -1489,9 +1571,6 @@ function theme_drupalorg_recent_activity($variables) {
  */
 function drupalorg_theme() {
   return array(
-    'drupalorg_start' => array(
-      'template' => 'drupalorg-start',
-    ),
     'drupalorg_download' => array(
       'template' => 'drupalorg-download',
     ),
@@ -1614,6 +1693,11 @@ function drupalorg_form_tfa_basic_overview_alter(&$form, &$form_state) {
  * Implements hook_form_FORM_BASE_alter().
  */
 function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
+  // Immediately return if this isn't the  "account" user profile category.
+  if (isset($form['#user_category']) && $form['#user_category'] !== 'account') {
+    return;
+  }
+
   // If there is a referring site.
   if ($GLOBALS['user']->uid == $form_state['user']->uid) {
     if (isset($form_state['user']->data['drupalorg_bd'])) {
@@ -1930,7 +2014,7 @@ function drupalorg_taxonomy_forums_ajax_callback($form, &$form_state) {
 
 /**
  * For login and registration pages, look for bakery's bd parameter and extract
- * site name, or drupalorg_crosssite’s deprecated site parameter.
+ * site name.
  *
  * @param string $bd
  *   Use a specific bakery destination value instead of the URL parameter.
@@ -2247,6 +2331,11 @@ function drupalorg_register_mail_validate($form, &$form_state) {
  * Implements hook_form_FORM_BASE_alter().
  */
 function drupalorg_profile_user_edit_validate($form, &$form_state) {
+  // Immediately return if there are no values.
+  if (!isset($form_state['values']['field_organizations'][LANGUAGE_NONE])) {
+    return;
+  }
+
   // Remove empty organizations.
   foreach ($form_state['values']['field_organizations'][LANGUAGE_NONE] as $delta => $organization) {
     // Do not attempt looking at the add more element, look for empty name and
@@ -2365,25 +2454,8 @@ function drupalorg_views_api() {
  * Implements hook_views_default_views_alter().
  */
 function drupalorg_views_default_views_alter(&$views) {
-  $path = drupal_get_path('module', 'drupalorg');
-  require_once DRUPAL_ROOT . '/' . "$path/drupalorg.views_default.inc";
+  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'drupalorg') . '/drupalorg.views_default.inc';
   _drupalorg_views_default_views_alter($views);
-}
-
-/**
- * Returns a link to the latest recommended release for the Drupal project.
- *
- * @param $text
- *   Text to be used for the button in addition to the version string
- *
- * @return
- *   HTML string with link to the release node.
- */
-function drupalorg_download_drupal_link_button($text) {
-  $release = project_release_get_current_recommended(DRUPALORG_CORE_NID, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID, DRUPALORG_DOWNLOAD_MAJOR_VERSION, 'recommended');
-  // Assumes a drupal-$version alias exists for the given Drupal version, which
-  // has been the tradition. Just keep that tradition, and this works wonders.
-  return l('<span>' . check_plain($text . ' ' . $release->field_release_version[LANGUAGE_NONE][0]['safe_value']) . '</span>', 'project/drupal', array('html' => TRUE, 'attributes' => array('class' => array('link-button'))));
 }
 
 /**
@@ -2522,77 +2594,6 @@ function drupalorg_homebox() {
       ),
     ),
   );
-}
-
-/**
- * Render the HTML for a given block.
- *
- * This function takes a module and a delta, loads the block info from the DB,
- * invokes the function to compute the block content, and then renders the
- * block to HTML via theme('block'). This is basically a heavily pared back
- * implementation of block_list() for a single block.
- *
- * @param string $module
- *   The module that defines the block we're rendering.
- *
- * @param string $delta
- *   The delta of the block that we're rendering.
- *
- * @return
- *   The rendered HTML for the given block.
- *
- * @see block_list()
- * @see theme_block()
- */
-function drupalorg_block_render($module, $delta) {
-  // Load the title, since that can be modified administratively.
-  global $theme;
-  $title = db_query("SELECT title FROM {block} WHERE module = :module AND delta = :delta AND theme = :theme", array(':module' => $module, ':delta' => $delta, ':theme' => $theme))->fetchField();
-
-  $block = module_invoke($module, 'block_view', $delta);
-  // Make sure our block gave us any output at all.
-  if (empty($block) || !is_array($block)) {
-    return '';
-  }
-  $block = (object) $block;
-
-  // Set the module and delta so that the blocks contain
-  // at least the minimum of expected information.
-  $block->module = $module;
-  $block->delta = $delta;
-  $block->region = 'drupalorg';
-
-  if (isset($block->content) && $block->content) {
-    // Override default block title if a custom display title is present.
-    if ($title) {
-      // Check plain admin-generated titles, but not titles set in code.
-      $block->subject = $title == '<none>' ? '' : check_plain($title);
-    }
-    if (!isset($block->subject)) {
-      $block->subject = '';
-    }
-  }
-  $return = $block->content;
-  unset($block->content);
-  $return['#block'] = $block;
-  $return['#theme_wrappers'][] = 'block';
-  return $return;
-}
-
-/**
- * Form constructor for the Drupalorg custom settings form.
- */
-function drupalorg_settings_form($form, &$form_state) {
-  $form = array();
-
-  $form['drupalorg_featured_translations'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Featured translations'),
-    '#default_value' => variable_get('drupalorg_featured_translations', ''),
-    '#rows' => 5,
-  );
-
-  return system_settings_form($form);
 }
 
 function drupalorg_ad_settings_form() {
@@ -3331,13 +3332,13 @@ function drupalorg_node_insert($node) {
  * Implements hook_node_update().
  */
 function drupalorg_node_update($node) {
+  $wrapper = entity_metadata_wrapper('node', $node);
+
   if ($node->type === 'organization') {
     drupalorg_org_request_issue($node);
   }
   elseif (project_release_node_is_release($node)) {
-
     $download_base = variable_get('project_release_download_base_' . $node->type, '');
-    $wrapper = entity_metadata_wrapper('node', $node);
     foreach ($wrapper->field_release_files as $file_wrapper) {
       $file = $file_wrapper->field_release_file->value();
       $url = project_release_add_download_base($file['uri'], $download_base);
@@ -3346,6 +3347,26 @@ function drupalorg_node_update($node) {
   }
   elseif (project_node_is_project($node)) {
     _drupalorg_node_update_project($node);
+  }
+  elseif (project_issue_node_is_issue($node) && isset($node->nodechanges_cid) && isset($node->nodechanges_comment->uid)) {
+    // Check if the commenter has previously received credit.
+    foreach ($wrapper->field_issue_credit as $comment) {
+      if ($comment->value()->uid == $node->nodechanges_comment->uid) {
+        // Add credit for their new comment, in case there is new attribution.
+        $wrapper->field_issue_credit[] = $node->nodechanges_cid;
+        field_attach_presave('node', $node);
+        field_attach_update('node', $node);
+        break;
+      }
+    }
+  }
+
+  // Keep OG Menu titles matching the node title.
+  if (og_is_group('node', $node) && !empty($node->og_menu) && ($menu = og_menu_get_group_menus(array('node' => array($node->nid))))) {
+    $menu = reset($menu);
+    $menu['title'] = $node->title;
+    $menu['description'] = t('OG Menu for') . ' ' . check_plain($node->title);
+    menu_save($menu);
   }
 }
 
@@ -4128,7 +4149,7 @@ function drupalorg_entity_property_info_alter(&$info) {
   // in RestWS export. See flag_entity_property_info_alter().
   foreach (flag_get_flags() as $flag) {
     if (!$flag->global) {
-      $info['user']['properties']['flag_' . $flag->name . '_flagged']['access callback'] = 'drupalorg_user_flag_access';
+      $info['user']['properties']['flag_' . $flag->name . '_flagged']['access callback'] = '_drupalorg_user_flag_access';
     }
   }
 }
@@ -4142,7 +4163,7 @@ function drupalorg_has_new_content($node, array &$options, $name, $type, &$info)
  *
  * @see entity_access(), drupalorg_entity_property_info_alter().
  */
-function drupalorg_user_flag_access($op, $property, $entity_type, $entity) {
+function _drupalorg_user_flag_access($op, $property, $entity_type, $entity) {
   if ($op === 'view') {
     foreach (debug_backtrace() as $trace) {
       if ($trace['function'] === 'restws_handle_request') {
@@ -4561,7 +4582,7 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
             break;
 
           case 'Deprecated':
-            $element[$delta]['#markup'] = t('This documentation is deprecated. !link.', ['!link' => l(t('Recommend a change or new documentation'), 'node/' . $entity->nid . '/discuss')]);
+            $element[$delta]['#markup'] = t('This documentation is <strong>deprecated</strong>. !link.', ['!link' => l(t('Recommend a change or new documentation'), 'node/' . $entity->nid . '/discuss')]);
             break;
         }
       }
@@ -4877,8 +4898,9 @@ function drupalorg_mail($key, &$message, $params) {
       $message['subject'] = t('[Documentation guide] You are now a maintainer for @title', ['@title' => $params['node']->title]);
       $message['body'] = [
         t('@name,', ['@name' => $params['account']->name]),
-        t('@name added you as a guide maintainer for @title.', ['@name' => $GLOBALS['user']->name, '@title' => $params['node']->title]),
-        t('You can administer the guide at @url', ['@url' => url('node/' . $params['node']->nid . '/group', ['absolute' => TRUE])]),
+        t('@name added you as a guide maintainer for "@title" guide (@link).', ['@name' => $GLOBALS['user']->name, '@title' => $params['node']->title, '@link' => url('node/' . $params['node']->nid, ['absolute' => TRUE])]),
+        t('You can administer the guide at @url.', ['@url' => url('node/' . $params['node']->nid . '/group', ['absolute' => TRUE])]),
+        t('Guidelines for the guide maintainers can be found at @url.', ['@url' => url('/drupalorg/docs/content/documentation', ['absolute' => TRUE])]),
         t('Thank you for making documentation better.'),
       ];
       break;
@@ -4932,9 +4954,14 @@ function drupalorg_og_ui_get_group_admin($group_type, $gid) {
 function drupalorg_og_role_grant($entity_type, $gid, $uid, $rid) {
   $role = og_role_load($rid);
   if ($uid != $GLOBALS['user']->uid && $role->name === 'maintainer') {
+    // Send the new maintainer a notification.
     $account = user_load($uid);
+    $node = node_load($gid);
     $from = '"' . mime_header_encode(t('!name (!site)', array('!name' => $GLOBALS['user']->name, '!site' => variable_get('site_name', 'Drupal')))) . '" <' . variable_get('site_mail', ini_get('sendmail_from')) . '>';
-    drupal_mail('drupalorg', 'added_guide_maintainer', $account->mail, LANGUAGE_NONE, ['node' => node_load($gid), 'account' => $account], $from);
+    drupal_mail('drupalorg', 'added_guide_maintainer', $account->mail, LANGUAGE_NONE, ['node' => $node, 'account' => $account], $from);
+
+    // Have the new maintainer follow the guide.
+    message_follow_node_follow_node($node->nid, $node->type, $account->uid);
   }
 }
 

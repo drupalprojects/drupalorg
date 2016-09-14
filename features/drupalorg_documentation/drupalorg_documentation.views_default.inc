@@ -119,12 +119,27 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'users';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['required'] = TRUE;
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['exclude'] = TRUE;
+  /* Field: User: Uid */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'users';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
   /* Field: User: Picture */
   $handler->display->display_options['fields']['picture']['id'] = 'picture';
   $handler->display->display_options['fields']['picture']['table'] = 'users';
   $handler->display->display_options['fields']['picture']['field'] = 'picture';
   $handler->display->display_options['fields']['picture']['label'] = '';
+  $handler->display->display_options['fields']['picture']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['picture']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['picture']['alter']['path'] = '/user/[uid]';
+  $handler->display->display_options['fields']['picture']['alter']['alt'] = 'View [name]\'s profile';
   $handler->display->display_options['fields']['picture']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['picture']['link_photo_to_profile'] = FALSE;
   $handler->display->display_options['fields']['picture']['image_style'] = 'drupalorg_user_picture';
   /* Sort criterion: User: Last access */
   $handler->display->display_options['sorts']['access']['id'] = 'access';
@@ -205,6 +220,9 @@ function drupalorg_documentation_views_default_views() {
     t('next ›'),
     t('last »'),
     t('OG membership from user'),
+    t('Name'),
+    t('Uid'),
+    t('View [name]\'s profile'),
     t('All'),
     t('Content pane'),
     t('Group: maintainers user pictures'),

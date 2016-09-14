@@ -9,6 +9,14 @@
  */
 function drupalorg_marketplace_taxonomy_default_vocabularies() {
   return array(
+    'organization_type' => array(
+      'name' => 'Organization Type',
+      'machine_name' => 'organization_type',
+      'description' => '',
+      'hierarchy' => 0,
+      'module' => 'taxonomy',
+      'weight' => 0,
+    ),
     'vocabulary_48' => array(
       'name' => 'Services',
       'machine_name' => 'vocabulary_48',

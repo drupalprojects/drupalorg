@@ -151,16 +151,16 @@ function drupalorg_documentation_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '5',
+          'weight' => '7',
         ),
         'redirect' => array(
-          'weight' => '4',
+          'weight' => '6',
         ),
         'metatags' => array(
-          'weight' => '40',
+          'weight' => '11',
         ),
         'nodechanges_comment' => array(
-          'weight' => '8',
+          'weight' => '10',
         ),
       ),
       'display' => array(),
@@ -211,13 +211,13 @@ function drupalorg_documentation_strongarm() {
           'weight' => '0',
         ),
         'og_menu' => array(
-          'weight' => '6',
+          'weight' => '7',
         ),
         'path' => array(
-          'weight' => '9',
+          'weight' => '10',
         ),
         'redirect' => array(
-          'weight' => '8',
+          'weight' => '9',
         ),
         'metatags' => array(
           'weight' => '13',
@@ -308,6 +308,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_documentation'] = $strongarm;
 
@@ -318,6 +319,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
   $export['node_options_guide'] = $strongarm;
 
@@ -354,7 +356,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'og_group_manager_default_rids_node_guide';
   $strongarm->value = array(
-    13 => '13',
+    17 => '17',
   );
   $export['og_group_manager_default_rids_node_guide'] = $strongarm;
 
