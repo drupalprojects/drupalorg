@@ -4898,8 +4898,9 @@ function drupalorg_mail($key, &$message, $params) {
       $message['subject'] = t('[Documentation guide] You are now a maintainer for @title', ['@title' => $params['node']->title]);
       $message['body'] = [
         t('@name,', ['@name' => $params['account']->name]),
-        t('@name added you as a guide maintainer for @title.', ['@name' => $GLOBALS['user']->name, '@title' => $params['node']->title]),
-        t('You can administer the guide at @url', ['@url' => url('node/' . $params['node']->nid . '/group', ['absolute' => TRUE])]),
+        t('@name added you as a guide maintainer for "@title" guide (@link).', ['@name' => $GLOBALS['user']->name, '@title' => $params['node']->title, '@link' => url('node/' . $params['node']->nid, ['absolute' => TRUE])]),
+        t('You can administer the guide at @url.', ['@url' => url('node/' . $params['node']->nid . '/group', ['absolute' => TRUE])]),
+        t('Guidelines for the guide maintainers can be found at @url.', ['@url' => url('/drupalorg/docs/content/documentation', ['absolute' => TRUE])]),
         t('Thank you for making documentation better.'),
       ];
       break;
