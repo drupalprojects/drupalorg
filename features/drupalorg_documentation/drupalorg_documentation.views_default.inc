@@ -75,20 +75,6 @@ function drupalorg_documentation_views_default_views() {
       'label' => 'Content: Nid',
     ),
   );
-
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
-  $handler->display->display_options['path'] = 'documentation-related-content/tag/%';
-
-  /* Display: Context */
-  $handler = $view->new_display('ctools_context', 'Context', 'ctools_context_1');
-  $handler->display->display_options['style_plugin'] = 'ctools_context';
-  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
-  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
-  $handler->display->display_options['row_plugin'] = 'node';
-  $handler->display->display_options['row_options']['relationship'] = 'field_related_content_target_id';
-  $handler->display->display_options['row_options']['view_mode'] = 'related_content';
-  $handler->display->display_options['row_options']['links'] = FALSE;
   $translatables['documentation_related_content'] = array(
     t('Master'),
     t('Related Content'),
@@ -102,8 +88,6 @@ function drupalorg_documentation_views_default_views() {
     t('All'),
     t('Content pane'),
     t('View panes'),
-    t('Page'),
-    t('Context'),
   );
   $export['documentation_related_content'] = $view;
 
