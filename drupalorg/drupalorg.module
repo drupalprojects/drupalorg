@@ -4985,3 +4985,15 @@ function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
   // Strip nice quotes.
   $alias = str_replace(['‘', '’', '“', '”'], '', $alias);
 }
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function drupalorg_query_comment_filter_alter(QueryAlterableInterface $query) {
+  // For documentation and guide content, with order by clause, order by newest
+  // first.
+  if (in_array($query->getMetaData('node')->type, ['documentation', 'guide']) && ($old_order =& $query->getOrderBy())) {
+    $old_order = [];
+    $query->orderBy('c.cid', 'DESC');
+  }
+}
