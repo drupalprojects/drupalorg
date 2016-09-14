@@ -21,8 +21,7 @@ function drupalorg_community_stats_pane() {
   </div>
   <div class="column-content-region">
     <span class="comments"><span class="highlight">@number_of_issue_comments comments</span> <span class="caption">in the last week</span></span>
-  </div>
-  <div class="get-involved"><a href="getting-involved-guide">Get involved →</a></div>', [
+  </div>', [
     '@number_of_confirmed_accounts' => $activity['number_of_confirmed_accounts'],
     '@number_of_git_commits' => $activity['number_of_git_commits'],
     '@number_of_issue_comments' => $activity['number_of_issue_comments'],
