@@ -5,6 +5,15 @@
  */
 
 /**
+ * Implements hook_ctools_plugin_api().
+ */
+function drupalorg_book_pages_ctools_plugin_api($module = NULL, $api = NULL) {
+  if ($module == "strongarm" && $api == "strongarm") {
+    return array("version" => "1");
+  }
+}
+
+/**
  * Implements hook_node_info().
  */
 function drupalorg_book_pages_node_info() {
@@ -18,5 +27,6 @@ function drupalorg_book_pages_node_info() {
       'help' => t('We need your contributions to grow and improve! See the <a href="/contribute/documentation">Documentation contribution guidelines</a> for ways you can help.'),
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }

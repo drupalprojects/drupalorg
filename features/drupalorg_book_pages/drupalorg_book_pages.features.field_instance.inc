@@ -10,7 +10,7 @@
 function drupalorg_book_pages_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-book-body'
+  // Exported field_instance: 'node-book-body'.
   $field_instances['node-book-body'] = array(
     'bundle' => 'book',
     'default_value' => NULL,
@@ -34,6 +34,15 @@ function drupalorg_book_pages_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 140,
+        ),
+        'type' => 'text_summary_or_trimmed',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -67,7 +76,7 @@ function drupalorg_book_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-book-taxonomy_vocabulary_31'
+  // Exported field_instance: 'node-book-taxonomy_vocabulary_31'.
   $field_instances['node-book-taxonomy_vocabulary_31'] = array(
     'bundle' => 'book',
     'default_value' => NULL,
@@ -92,6 +101,12 @@ function drupalorg_book_pages_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
       'teaser' => array(
         'label' => 'above',
         'module' => 'taxonomy',
@@ -115,7 +130,7 @@ function drupalorg_book_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-book-taxonomy_vocabulary_38'
+  // Exported field_instance: 'node-book-taxonomy_vocabulary_38'.
   $field_instances['node-book-taxonomy_vocabulary_38'] = array(
     'bundle' => 'book',
     'default_value' => NULL,
@@ -140,6 +155,12 @@ function drupalorg_book_pages_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
       'teaser' => array(
         'label' => 'above',
         'module' => 'taxonomy',
@@ -163,7 +184,7 @@ function drupalorg_book_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-book-taxonomy_vocabulary_5'
+  // Exported field_instance: 'node-book-taxonomy_vocabulary_5'.
   $field_instances['node-book-taxonomy_vocabulary_5'] = array(
     'bundle' => 'book',
     'default_value' => NULL,
@@ -188,6 +209,12 @@ function drupalorg_book_pages_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 6,
+      ),
       'teaser' => array(
         'label' => 'above',
         'module' => 'taxonomy',
@@ -211,7 +238,7 @@ function drupalorg_book_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-book-taxonomy_vocabulary_54'
+  // Exported field_instance: 'node-book-taxonomy_vocabulary_54'.
   $field_instances['node-book-taxonomy_vocabulary_54'] = array(
     'bundle' => 'book',
     'default_value' => NULL,
@@ -235,6 +262,12 @@ function drupalorg_book_pages_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -262,7 +295,7 @@ function drupalorg_book_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-book-taxonomy_vocabulary_56'
+  // Exported field_instance: 'node-book-taxonomy_vocabulary_56'.
   $field_instances['node-book-taxonomy_vocabulary_56'] = array(
     'bundle' => 'book',
     'default_value' => NULL,
@@ -287,6 +320,12 @@ function drupalorg_book_pages_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
       'teaser' => array(
         'label' => 'above',
         'module' => 'taxonomy',
@@ -310,7 +349,7 @@ function drupalorg_book_pages_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-book-upload'
+  // Exported field_instance: 'node-book-upload'.
   $field_instances['node-book-upload'] = array(
     'bundle' => 'book',
     'deleted' => 0,
@@ -341,6 +380,12 @@ function drupalorg_book_pages_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'rss' => array(
         'label' => 'hidden',

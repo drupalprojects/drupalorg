@@ -10,7 +10,7 @@
 function drupalorg_book_pages_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'taxonomy_vocabulary_31'
+  // Exported field_base: 'taxonomy_vocabulary_31'.
   $field_bases['taxonomy_vocabulary_31'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -37,7 +37,7 @@ function drupalorg_book_pages_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'taxonomy_vocabulary_38'
+  // Exported field_base: 'taxonomy_vocabulary_38'.
   $field_bases['taxonomy_vocabulary_38'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -64,7 +64,7 @@ function drupalorg_book_pages_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'taxonomy_vocabulary_5'
+  // Exported field_base: 'taxonomy_vocabulary_5'.
   $field_bases['taxonomy_vocabulary_5'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -91,7 +91,7 @@ function drupalorg_book_pages_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'taxonomy_vocabulary_54'
+  // Exported field_base: 'taxonomy_vocabulary_54'.
   $field_bases['taxonomy_vocabulary_54'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -118,7 +118,7 @@ function drupalorg_book_pages_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'taxonomy_vocabulary_56'
+  // Exported field_base: 'taxonomy_vocabulary_56'.
   $field_bases['taxonomy_vocabulary_56'] = array(
     'active' => 1,
     'cardinality' => -1,
