@@ -135,6 +135,10 @@ function drupalorg_marketplace_strongarm() {
             'weight' => '0',
             'visible' => TRUE,
           ),
+          'related_content' => array(
+            'weight' => '1',
+            'visible' => FALSE,
+          ),
         ),
       ),
     ),
