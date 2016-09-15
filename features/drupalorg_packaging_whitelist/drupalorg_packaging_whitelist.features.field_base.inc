@@ -10,7 +10,7 @@
 function drupalorg_packaging_whitelist_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'taxonomy_vocabulary_58'
+  // Exported field_base: 'taxonomy_vocabulary_58'.
   $field_bases['taxonomy_vocabulary_58'] = array(
     'active' => 1,
     'cardinality' => -1,

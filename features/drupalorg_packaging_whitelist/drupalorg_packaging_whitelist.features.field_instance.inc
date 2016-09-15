@@ -10,7 +10,7 @@
 function drupalorg_packaging_whitelist_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-packaging_whitelist-body'
+  // Exported field_instance: 'node-packaging_whitelist-body'.
   $field_instances['node-packaging_whitelist-body'] = array(
     'bundle' => 'packaging_whitelist',
     'default_value' => NULL,
@@ -35,6 +35,12 @@ function drupalorg_packaging_whitelist_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => -4,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -67,7 +73,7 @@ function drupalorg_packaging_whitelist_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-packaging_whitelist-taxonomy_vocabulary_58'
+  // Exported field_instance: 'node-packaging_whitelist-taxonomy_vocabulary_58'.
   $field_instances['node-packaging_whitelist-taxonomy_vocabulary_58'] = array(
     'bundle' => 'packaging_whitelist',
     'default_value' => NULL,
@@ -88,6 +94,12 @@ function drupalorg_packaging_whitelist_field_default_field_instances() {
         'weight' => 0,
       ),
       'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
