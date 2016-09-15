@@ -156,6 +156,10 @@ function drupalorg_issues_strongarm() {
             'weight' => '100',
             'visible' => FALSE,
           ),
+          'related_content' => array(
+            'weight' => '4',
+            'visible' => FALSE,
+          ),
         ),
         'follow_link' => array(
           'issuemetadata' => array(
@@ -176,6 +180,10 @@ function drupalorg_issues_strongarm() {
           ),
           'diff_standard' => array(
             'weight' => '100',
+            'visible' => FALSE,
+          ),
+          'related_content' => array(
+            'weight' => '6',
             'visible' => FALSE,
           ),
         ),
@@ -222,6 +230,10 @@ function drupalorg_issues_strongarm() {
             'weight' => '120',
             'visible' => FALSE,
           ),
+          'related_content' => array(
+            'weight' => '7',
+            'visible' => FALSE,
+          ),
         ),
         'project_issue_created_by' => array(
           'default' => array(
@@ -238,6 +250,10 @@ function drupalorg_issues_strongarm() {
           ),
           'diff_standard' => array(
             'weight' => '60',
+            'visible' => FALSE,
+          ),
+          'related_content' => array(
+            'weight' => '2',
             'visible' => FALSE,
           ),
         ),
@@ -258,6 +274,10 @@ function drupalorg_issues_strongarm() {
             'weight' => '80',
             'visible' => FALSE,
           ),
+          'related_content' => array(
+            'weight' => '3',
+            'visible' => FALSE,
+          ),
         ),
         'project_issue_updated' => array(
           'default' => array(
@@ -274,6 +294,10 @@ function drupalorg_issues_strongarm() {
           ),
           'diff_standard' => array(
             'weight' => '90',
+            'visible' => FALSE,
+          ),
+          'related_content' => array(
+            'weight' => '5',
             'visible' => FALSE,
           ),
         ),
