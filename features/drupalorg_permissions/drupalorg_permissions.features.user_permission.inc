@@ -479,15 +479,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'bakery',
   );
 
-  // Exported permission: 'administer block classes'.
-  $permissions['administer block classes'] = array(
-    'name' => 'administer block classes',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'block_class',
-  );
-
   // Exported permission: 'administer blocks'.
   $permissions['administer blocks'] = array(
     'name' => 'administer blocks',
