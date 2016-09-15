@@ -2208,7 +2208,7 @@ function drupalorg_form_node_form_alter(&$form) {
 
       // Hide most fields.
       foreach (array_diff(element_children($form), ['field_documentation_status', 'nodechanges_comment', 'actions']) as $key) {
-        if (in_array($form[$key]['#type'], ['textfield', 'container', 'fieldset'])) {
+        if (in_array($form[$key]['#type'], ['textfield', 'container', 'fieldset', 'select'])) {
           $form[$key]['#access'] = FALSE;
         }
       }
