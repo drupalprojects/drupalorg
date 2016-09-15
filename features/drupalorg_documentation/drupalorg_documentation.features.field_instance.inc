@@ -344,6 +344,7 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 2,
@@ -807,6 +808,7 @@ function drupalorg_documentation_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
+        'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 2,

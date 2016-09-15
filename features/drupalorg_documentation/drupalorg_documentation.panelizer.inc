@@ -224,6 +224,27 @@ function drupalorg_documentation_panelizer_defaults() {
   $display->content['new-84e55891-f6d1-4603-b1df-fd51845b082e'] = $pane;
   $display->panels['left_content'][4] = 'new-84e55891-f6d1-4603-b1df-fd51845b082e';
   $pane = new stdClass();
+  $pane->pid = 'new-b31fd674-f762-4de5-98e9-ea79073fe500';
+  $pane->panel = 'left_content';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'documentation_related_content-related_content_pane';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'context' => array(
+      0 => 'panelizer',
+    ),
+  );
+  $pane->cache = array();
+  $pane->style = array();
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 5;
+  $pane->locks = array();
+  $pane->uuid = 'b31fd674-f762-4de5-98e9-ea79073fe500';
+  $display->content['new-b31fd674-f762-4de5-98e9-ea79073fe500'] = $pane;
+  $display->panels['left_content'][5] = 'new-b31fd674-f762-4de5-98e9-ea79073fe500';
+  $pane = new stdClass();
   $pane->pid = 'new-6c4eb81c-4eb6-4067-bc40-2c0e939a389c';
   $pane->panel = 'left_content';
   $pane->type = 'flag_link';
@@ -241,32 +262,11 @@ function drupalorg_documentation_panelizer_defaults() {
   $pane->style = array();
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 5;
+  $pane->position = 6;
   $pane->locks = array();
   $pane->uuid = '6c4eb81c-4eb6-4067-bc40-2c0e939a389c';
   $display->content['new-6c4eb81c-4eb6-4067-bc40-2c0e939a389c'] = $pane;
-  $display->panels['left_content'][5] = 'new-6c4eb81c-4eb6-4067-bc40-2c0e939a389c';
-  $pane = new stdClass();
-  $pane->pid = 'new-30246fdc-f7f0-4ab3-8b1c-c200b5aa5ee0';
-  $pane->panel = 'left_content';
-  $pane->type = 'views_panes';
-  $pane->subtype = 'documentation_related_content-related_content_pane';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'context' => array(
-      0 => 'panelizer',
-    ),
-  );
-  $pane->cache = array();
-  $pane->style = array();
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 6;
-  $pane->locks = array();
-  $pane->uuid = '30246fdc-f7f0-4ab3-8b1c-c200b5aa5ee0';
-  $display->content['new-30246fdc-f7f0-4ab3-8b1c-c200b5aa5ee0'] = $pane;
-  $display->panels['left_content'][6] = 'new-30246fdc-f7f0-4ab3-8b1c-c200b5aa5ee0';
+  $display->panels['left_content'][6] = 'new-6c4eb81c-4eb6-4067-bc40-2c0e939a389c';
   $pane = new stdClass();
   $pane->pid = 'new-30529426-7058-4214-a44a-82fde63c7806';
   $pane->panel = 'top_right_content';
@@ -549,6 +549,27 @@ function drupalorg_documentation_panelizer_defaults() {
   $display->content['new-ca2bbefb-6a19-4485-8bf8-096e98001108'] = $pane;
   $display->panels['left_content'][3] = 'new-ca2bbefb-6a19-4485-8bf8-096e98001108';
   $pane = new stdClass();
+  $pane->pid = 'new-3c7ac859-dc0c-45f1-b3d9-4e3a2dcdd564';
+  $pane->panel = 'left_content';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'documentation_related_content-related_content_pane';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'context' => array(
+      0 => 'panelizer',
+    ),
+  );
+  $pane->cache = array();
+  $pane->style = array();
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 4;
+  $pane->locks = array();
+  $pane->uuid = '3c7ac859-dc0c-45f1-b3d9-4e3a2dcdd564';
+  $display->content['new-3c7ac859-dc0c-45f1-b3d9-4e3a2dcdd564'] = $pane;
+  $display->panels['left_content'][4] = 'new-3c7ac859-dc0c-45f1-b3d9-4e3a2dcdd564';
+  $pane = new stdClass();
   $pane->pid = 'new-93ec4a1e-6fc8-4dbb-ac7d-863306fe01c9';
   $pane->panel = 'left_content';
   $pane->type = 'flag_link';
@@ -568,11 +589,11 @@ function drupalorg_documentation_panelizer_defaults() {
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 4;
+  $pane->position = 5;
   $pane->locks = array();
   $pane->uuid = '93ec4a1e-6fc8-4dbb-ac7d-863306fe01c9';
   $display->content['new-93ec4a1e-6fc8-4dbb-ac7d-863306fe01c9'] = $pane;
-  $display->panels['left_content'][4] = 'new-93ec4a1e-6fc8-4dbb-ac7d-863306fe01c9';
+  $display->panels['left_content'][5] = 'new-93ec4a1e-6fc8-4dbb-ac7d-863306fe01c9';
   $pane = new stdClass();
   $pane->pid = 'new-c51c42f6-5f91-44e6-a324-9f0838a464bc';
   $pane->panel = 'top_right_content';
