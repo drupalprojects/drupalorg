@@ -36,6 +36,12 @@ function drupalorg_supporters_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 8,
+      ),
       'teaser' => array(
         'label' => 'hidden',
         'module' => 'list',
@@ -84,6 +90,15 @@ function drupalorg_supporters_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 140,
+        ),
+        'type' => 'text_trimmed',
         'weight' => 0,
       ),
       'teaser' => array(
