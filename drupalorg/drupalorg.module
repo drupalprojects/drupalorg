@@ -2200,6 +2200,12 @@ function drupalorg_form_node_form_alter(&$form) {
       $form['menu']['link']['parent']['#element_validate'] = ['drupalorg_form_node_form_no_ancestry'];
     }
 
+    // Keep things in English for now, path aliases and other things may not be
+    // ready.
+    if ($form['language']['#default_value'] === LANGUAGE_NONE) {
+      $form['language']['#default_value'] = 'en';
+    }
+
     if (!empty($form['#node']->nodechanges_in_block)) {
       // Add a message about becoming a guide maintainer.
       if ($form['#node']->type === 'guide' && !empty($_REQUEST['become-maintainer'])) {
