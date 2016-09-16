@@ -618,6 +618,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'field_group',
   );
 
+  // Exported permission: 'administer fields'.
+  $permissions['administer fields'] = array(
+    'name' => 'administer fields',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'field',
+  );
+
   // Exported permission: 'administer filters'.
   $permissions['administer filters'] = array(
     'name' => 'administer filters',
