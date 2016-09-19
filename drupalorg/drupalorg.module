@@ -3166,6 +3166,16 @@ function drupalorg_node_view($node, $view_mode = 'full') {
 }
 
 /**
+ * Implements hook_preprocess_node.
+ */
+function drupalorg_preprocess_node(&$v) {
+  // Don't display 'Submitted by' text on 'Related content' view mode
+  if ($v['view_mode'] === 'related_content') {
+    $v['display_submitted'] = FALSE;
+  }
+}
+
+/**
  * Implements hook_comment_view().
  */
 function drupalorg_comment_view($comment, $view_mode, $langcode) {
