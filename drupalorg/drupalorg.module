@@ -2802,9 +2802,13 @@ function drupalorg_node_view($node, $view_mode = 'full') {
 
       // Terms - sector, service, budget
       foreach (['taxonomy_vocabulary_48', 'taxonomy_vocabulary_50', 'taxonomy_vocabulary_52'] as $field) {
-        $info[$wrapper->{$field}->info()['label']] = implode(', ', array_map('drupalorg_generate_marketplace_link', $wrapper->{$field}->value()));
+        if ($values = $wrapper->{$field}->value()) {
+          $info[$wrapper->{$field}->info()['label']] = implode(', ', array_map('drupalorg_generate_marketplace_link', $values));
+        }
       }
-      $info[$wrapper->field_organization_type->info()['label']] = $wrapper->field_organization_type->label();
+      if ($value = $wrapper->field_organization_type->label()) {
+        $info[$wrapper->field_organization_type->info()['label']] = $value;
+      }
 
       // Headquarters.
       if ($wrapper->field_organization_headquarters->value()) {
