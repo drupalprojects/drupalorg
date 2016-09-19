@@ -249,14 +249,14 @@ function drupalorg_documentation_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'language_content_type_documentation';
-  $strongarm->value = '0';
+  $strongarm->value = '2';
   $export['language_content_type_documentation'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'language_content_type_guide';
-  $strongarm->value = '0';
+  $strongarm->value = '2';
   $export['language_content_type_guide'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -308,7 +308,6 @@ function drupalorg_documentation_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
-    2 => 'panelizer',
   );
   $export['node_options_documentation'] = $strongarm;
 
@@ -319,7 +318,6 @@ function drupalorg_documentation_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
-    2 => 'panelizer',
   );
   $export['node_options_guide'] = $strongarm;
 

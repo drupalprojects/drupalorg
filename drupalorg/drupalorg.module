@@ -2200,6 +2200,12 @@ function drupalorg_form_node_form_alter(&$form) {
       $form['menu']['link']['parent']['#element_validate'] = ['drupalorg_form_node_form_no_ancestry'];
     }
 
+    // Keep things in English for now, path aliases and other things may not be
+    // ready.
+    if ($form['language']['#default_value'] === LANGUAGE_NONE) {
+      $form['language']['#default_value'] = 'en';
+    }
+
     if (!empty($form['#node']->nodechanges_in_block)) {
       // Add a message about becoming a guide maintainer.
       if ($form['#node']->type === 'guide' && !empty($_REQUEST['become-maintainer'])) {
@@ -2208,7 +2214,7 @@ function drupalorg_form_node_form_alter(&$form) {
 
       // Hide most fields.
       foreach (array_diff(element_children($form), ['field_documentation_status', 'nodechanges_comment', 'actions']) as $key) {
-        if (in_array($form[$key]['#type'], ['textfield', 'container', 'fieldset'])) {
+        if (in_array($form[$key]['#type'], ['textfield', 'container', 'fieldset', 'select'])) {
           $form[$key]['#access'] = FALSE;
         }
       }
@@ -2795,17 +2801,13 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       $info = array();
 
       // Terms - sector, service, budget
-      foreach (field_info_instances('node', $node->type) as $instance) {
-        $links = array();
-        $field = field_info_field($instance['field_name']);
-        if ($field['module'] === 'taxonomy') {
-          if ($field_items = field_get_items('node', $node, $instance['field_name'])) {
-            foreach ($field_items as $tid => $term) {
-              $links[] = drupalorg_generate_marketplace_link($term['taxonomy_term']);
-            }
-            $info[$instance['label']] = implode(', ', $links);
-          }
+      foreach (['taxonomy_vocabulary_48', 'taxonomy_vocabulary_50', 'taxonomy_vocabulary_52'] as $field) {
+        if ($values = $wrapper->{$field}->value()) {
+          $info[$wrapper->{$field}->info()['label']] = implode(', ', array_map('drupalorg_generate_marketplace_link', $values));
         }
+      }
+      if ($value = $wrapper->field_organization_type->label()) {
+        $info[$wrapper->field_organization_type->info()['label']] = $value;
       }
 
       // Headquarters.
@@ -4986,10 +4988,24 @@ function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
   $alias = str_replace(['‘', '’', '“', '”'], '', $alias);
 }
 
-//drupalorg_documentation related content view mode
+/**
+ * Add related content view mode used on documentation pages.
+ */
 function drupalorg_documentation_entity_info_alter(&$entity_info) {
-    $entity_info['node']['view modes']['related_content'] = array(
-        'label' => t('Related Content'),
-        'custom settings' => TRUE,
-    );
+  $entity_info['node']['view modes']['related_content'] = [
+    'label' => t('Related Content'),
+    'custom settings' => TRUE,
+  ];
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function drupalorg_query_comment_filter_alter(QueryAlterableInterface $query) {
+  // For documentation and guide content, with order by clause, order by newest
+  // first.
+  if (in_array($query->getMetaData('node')->type, ['documentation', 'guide']) && ($old_order =& $query->getOrderBy())) {
+    $old_order = [];
+    $query->orderBy('c.cid', 'DESC');
+  }
 }
