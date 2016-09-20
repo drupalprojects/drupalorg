@@ -9,6 +9,7 @@ dependencies[] = drupalorg_marketplace
 dependencies[] = features
 dependencies[] = file
 dependencies[] = options
+dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = text
 datestamp = 1416851960
