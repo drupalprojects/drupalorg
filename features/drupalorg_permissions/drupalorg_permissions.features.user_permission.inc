@@ -975,49 +975,63 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'administer panelizer node documentation choice'.
   $permissions['administer panelizer node documentation choice'] = array(
     'name' => 'administer panelizer node documentation choice',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node documentation content'.
   $permissions['administer panelizer node documentation content'] = array(
     'name' => 'administer panelizer node documentation content',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node documentation context'.
   $permissions['administer panelizer node documentation context'] = array(
     'name' => 'administer panelizer node documentation context',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node documentation defaults'.
   $permissions['administer panelizer node documentation defaults'] = array(
     'name' => 'administer panelizer node documentation defaults',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node documentation layout'.
   $permissions['administer panelizer node documentation layout'] = array(
     'name' => 'administer panelizer node documentation layout',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node documentation overview'.
   $permissions['administer panelizer node documentation overview'] = array(
     'name' => 'administer panelizer node documentation overview',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node documentation settings'.
   $permissions['administer panelizer node documentation settings'] = array(
     'name' => 'administer panelizer node documentation settings',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
@@ -1031,49 +1045,63 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'administer panelizer node guide choice'.
   $permissions['administer panelizer node guide choice'] = array(
     'name' => 'administer panelizer node guide choice',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node guide content'.
   $permissions['administer panelizer node guide content'] = array(
     'name' => 'administer panelizer node guide content',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node guide context'.
   $permissions['administer panelizer node guide context'] = array(
     'name' => 'administer panelizer node guide context',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node guide defaults'.
   $permissions['administer panelizer node guide defaults'] = array(
     'name' => 'administer panelizer node guide defaults',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node guide layout'.
   $permissions['administer panelizer node guide layout'] = array(
     'name' => 'administer panelizer node guide layout',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node guide overview'.
   $permissions['administer panelizer node guide overview'] = array(
     'name' => 'administer panelizer node guide overview',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node guide settings'.
   $permissions['administer panelizer node guide settings'] = array(
     'name' => 'administer panelizer node guide settings',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
