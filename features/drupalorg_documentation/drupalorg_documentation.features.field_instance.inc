@@ -172,6 +172,12 @@ function drupalorg_documentation_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 4,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
+      ),
       'teaser' => array(
         'label' => 'hidden',
         'module' => 'text',
@@ -230,6 +236,12 @@ function drupalorg_documentation_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -259,7 +271,7 @@ function drupalorg_documentation_field_default_field_instances() {
     'default_value' => NULL,
     'default_value_function' => '',
     'deleted' => 0,
-    'description' => 'Related content for this documentation page. These can be other documentation pages and guides, change records, pages or posts.',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -278,10 +290,15 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
       'nodechanges' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -323,7 +340,7 @@ function drupalorg_documentation_field_default_field_instances() {
     'description' => 'Short (up to 140 characters) summary of the content. This will be displayed on documentation guides,  in search results, meta tags, content listings.',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
+        'label' => 'above',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -341,6 +358,13 @@ function drupalorg_documentation_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_plain',
         'weight' => 3,
+      ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -393,6 +417,13 @@ function drupalorg_documentation_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -451,6 +482,12 @@ function drupalorg_documentation_field_default_field_instances() {
         ),
         'type' => 'entityreference_label',
         'weight' => 2,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -530,6 +567,12 @@ function drupalorg_documentation_field_default_field_instances() {
         'type' => 'file_default',
         'weight' => 1,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -593,6 +636,12 @@ function drupalorg_documentation_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 4,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 7,
+      ),
       'teaser' => array(
         'label' => 'hidden',
         'module' => 'text',
@@ -651,6 +700,12 @@ function drupalorg_documentation_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 6,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -699,10 +754,15 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
       'nodechanges' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -763,6 +823,13 @@ function drupalorg_documentation_field_default_field_instances() {
         'type' => 'text_plain',
         'weight' => 3,
       ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'hidden',
         'module' => 'text',
@@ -816,6 +883,13 @@ function drupalorg_documentation_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 1,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -866,6 +940,12 @@ function drupalorg_documentation_field_default_field_instances() {
         'weight' => 0,
       ),
       'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
+      ),
+      'related_content' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -941,6 +1021,12 @@ function drupalorg_documentation_field_default_field_instances() {
         'type' => 'entityreference_label',
         'weight' => 2,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -977,7 +1063,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 8,
+      'weight' => 10,
     ),
   );
 
@@ -1006,6 +1092,12 @@ function drupalorg_documentation_field_default_field_instances() {
         'settings' => array(),
         'type' => 'file_default',
         'weight' => 1,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1039,7 +1131,7 @@ function drupalorg_documentation_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 3,
+      'weight' => 5,
     ),
   );
 
@@ -1057,7 +1149,6 @@ function drupalorg_documentation_field_default_field_instances() {
   t('Guide changes');
   t('Related content');
   t('Related content for this documentation guide. These can be other documentation guides, pages, posts or book listings.');
-  t('Related content for this documentation page. These can be other documentation pages and guides, change records, pages or posts.');
   t('Short (up to 140 characters) summary of the content. This will be displayed in search results, meta tags, content listings.');
   t('Short (up to 140 characters) summary of the content. This will be displayed on documentation guides,  in search results, meta tags, content listings.');
   t('Status');

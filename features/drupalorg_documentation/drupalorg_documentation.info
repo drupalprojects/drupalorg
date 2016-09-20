@@ -192,4 +192,5 @@ features[variable][] = panelizer_node:guide_allowed_types_default
 features[variable][] = panelizer_node:guide_default
 features[variable][] = pathauto_node_documentation_pattern
 features[variable][] = pathauto_node_guide_pattern
+features[views_view][] = documentation_related_content
 features[views_view][] = group_maintainers

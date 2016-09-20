@@ -3166,6 +3166,16 @@ function drupalorg_node_view($node, $view_mode = 'full') {
 }
 
 /**
+ * Implements hook_preprocess_node.
+ */
+function drupalorg_preprocess_node(&$v) {
+  // Don't display 'Submitted by' text on 'Related content' view mode
+  if ($v['view_mode'] === 'related_content') {
+    $v['display_submitted'] = FALSE;
+  }
+}
+
+/**
  * Implements hook_comment_view().
  */
 function drupalorg_comment_view($comment, $view_mode, $langcode) {
@@ -4986,6 +4996,16 @@ function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
 
   // Strip nice quotes.
   $alias = str_replace(['‘', '’', '“', '”'], '', $alias);
+}
+
+/**
+ * Add related content view mode used on documentation pages.
+ */
+function drupalorg_documentation_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['related_content'] = [
+    'label' => t('Related Content'),
+    'custom settings' => TRUE,
+  ];
 }
 
 /**
