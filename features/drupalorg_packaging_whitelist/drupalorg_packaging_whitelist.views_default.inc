@@ -77,7 +77,7 @@ function drupalorg_packaging_whitelist_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Description */
+  /* Field: Content: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -172,6 +172,31 @@ function drupalorg_packaging_whitelist_views_default_views() {
     'default' => 0,
   );
   $handler->display->display_options['sitename_title'] = 0;
+  $translatables['packaging_whitelist_items'] = array(
+    t('Master'),
+    t('Packaging whitelist URLs'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('To request changes to this list, visit the <a href="/project/drupalorg_whitelist">Drupal.org Library Packaging Whitelist</a> project page.'),
+    t('No whitelists have been created.'),
+    t('Whitelist name'),
+    t('Allowed URL filters'),
+    t('Licenses'),
+    t('Search Packaging Whitelists'),
+    t('Page'),
+    t('Feed'),
+  );
   $export['packaging_whitelist_items'] = $view;
 
   return $export;

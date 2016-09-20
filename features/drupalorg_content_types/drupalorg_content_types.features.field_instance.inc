@@ -152,6 +152,15 @@ function drupalorg_content_types_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 140,
+        ),
+        'type' => 'text_summary_or_trimmed',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'hidden',
         'module' => 'text',
@@ -209,6 +218,12 @@ function drupalorg_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -300,6 +315,12 @@ function drupalorg_content_types_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
       'rss' => array(
         'label' => 'hidden',
         'module' => 'file',
@@ -370,6 +391,15 @@ function drupalorg_content_types_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 140,
+        ),
+        'type' => 'text_summary_or_trimmed',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'hidden',
         'module' => 'text',
@@ -423,6 +453,12 @@ function drupalorg_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -483,6 +519,12 @@ function drupalorg_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -567,6 +609,12 @@ function drupalorg_content_types_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -612,10 +660,9 @@ function drupalorg_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -627,6 +674,15 @@ function drupalorg_content_types_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 140,
+        ),
+        'type' => 'text_summary_or_trimmed',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -674,7 +730,7 @@ function drupalorg_content_types_field_default_field_instances() {
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
-        'weight' => 1,
+        'weight' => 6,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -687,6 +743,12 @@ function drupalorg_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -729,10 +791,9 @@ function drupalorg_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 3,
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -745,6 +806,12 @@ function drupalorg_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -797,10 +864,9 @@ function drupalorg_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 2,
+        'type' => 'hidden',
+        'weight' => 5,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -813,6 +879,12 @@ function drupalorg_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -855,9 +927,8 @@ function drupalorg_content_types_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'file',
         'settings' => array(),
-        'type' => 'file_default',
+        'type' => 'hidden',
         'weight' => 4,
       ),
       'issuemetadata' => array(
@@ -871,6 +942,12 @@ function drupalorg_content_types_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',

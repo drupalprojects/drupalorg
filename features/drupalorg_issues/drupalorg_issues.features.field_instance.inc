@@ -223,6 +223,15 @@ function drupalorg_issues_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 5,
       ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 140,
+        ),
+        'type' => 'text_trimmed',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'hidden',
         'module' => 'text',
@@ -308,6 +317,12 @@ function drupalorg_issues_field_default_field_instances() {
         'type' => 'token_formatters_entity_reference',
         'weight' => 3,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 13,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -365,6 +380,12 @@ function drupalorg_issues_field_default_field_instances() {
         'settings' => array(),
         'type' => 'list_default',
         'weight' => 4,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 16,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -424,6 +445,12 @@ function drupalorg_issues_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 2,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 17,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -477,6 +504,12 @@ function drupalorg_issues_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -569,6 +602,12 @@ function drupalorg_issues_field_default_field_instances() {
         'type' => 'file_default',
         'weight' => 50,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 8,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -641,6 +680,12 @@ function drupalorg_issues_field_default_field_instances() {
         'settings' => array(),
         'type' => 'issue_id',
         'weight' => 31,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -721,6 +766,12 @@ function drupalorg_issues_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 5,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 15,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -776,6 +827,12 @@ function drupalorg_issues_field_default_field_instances() {
         'settings' => array(),
         'type' => 'issue_id',
         'weight' => 32,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 9,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -843,6 +900,12 @@ function drupalorg_issues_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 6,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 14,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -900,6 +963,12 @@ function drupalorg_issues_field_default_field_instances() {
         'settings' => array(),
         'type' => 'list_default',
         'weight' => 1,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -966,6 +1035,12 @@ function drupalorg_issues_field_default_field_instances() {
         ),
         'type' => 'entityreference_label',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 12,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1053,6 +1128,12 @@ function drupalorg_issues_field_default_field_instances() {
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
         'weight' => 20,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 18,
       ),
       'teaser' => array(
         'label' => 'hidden',

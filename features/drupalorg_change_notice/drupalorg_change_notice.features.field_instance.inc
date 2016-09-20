@@ -28,6 +28,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => -3,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 6,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -91,6 +97,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => -2,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 12,
       ),
       'rss' => array(
         'label' => 'inline',
@@ -182,6 +194,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => -3,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
       ),
       'rss' => array(
         'label' => 'inline',
@@ -282,6 +300,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         ),
         'type' => 'number_integer',
         'weight' => 16,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
       ),
       'rss' => array(
         'label' => 'inline',
@@ -405,6 +429,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         'type' => 'number_integer',
         'weight' => 17,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 13,
+      ),
       'rss' => array(
         'label' => 'above',
         'module' => 'number',
@@ -513,6 +543,15 @@ function drupalorg_change_notice_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 140,
+        ),
+        'type' => 'text_trimmed',
+        'weight' => 0,
+      ),
       'rss' => array(
         'label' => 'above',
         'module' => 'text',
@@ -611,6 +650,12 @@ function drupalorg_change_notice_field_default_field_instances() {
           'thousand_separator' => '',
         ),
         'type' => 'number_integer',
+        'weight' => 15,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 15,
       ),
       'rss' => array(
@@ -735,6 +780,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         'type' => 'number_integer',
         'weight' => 1,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 14,
+      ),
       'rss' => array(
         'label' => 'above',
         'module' => 'number',
@@ -828,6 +879,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 9,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -902,6 +959,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         ),
         'type' => 'number_integer',
         'weight' => 14,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 8,
       ),
       'rss' => array(
         'label' => 'inline',
@@ -1025,6 +1088,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         'type' => 'number_integer',
         'weight' => 12,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
       'rss' => array(
         'label' => 'inline',
         'module' => 'number',
@@ -1139,6 +1208,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 19,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
       'rss' => array(
         'label' => 'above',
         'module' => 'text',
@@ -1239,6 +1314,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         'type' => 'number_integer',
         'weight' => 18,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
       'rss' => array(
         'label' => 'inline',
         'module' => 'number',
@@ -1336,6 +1417,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1423,6 +1510,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         ),
         'type' => 'number_integer',
         'weight' => 13,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
       ),
       'rss' => array(
         'label' => 'inline',
@@ -1537,6 +1630,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 20,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 7,
+      ),
       'rss' => array(
         'label' => 'above',
         'module' => 'text',
@@ -1614,6 +1713,12 @@ function drupalorg_change_notice_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 16,
       ),
       'rss' => array(
         'label' => 'hidden',
