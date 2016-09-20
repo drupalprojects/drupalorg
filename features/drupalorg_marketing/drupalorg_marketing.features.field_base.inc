@@ -120,6 +120,7 @@ function drupalorg_marketing_field_default_field_bases() {
       'allowed_values' => array(
         'dark' => 'Dark',
         'light' => 'Light',
+        'sponsor' => 'Sponsor',
       ),
       'allowed_values_function' => '',
     ),
