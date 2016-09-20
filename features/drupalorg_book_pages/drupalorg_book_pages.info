@@ -38,6 +38,7 @@ features[variable][] = comment_default_per_page_book
 features[variable][] = comment_form_location_book
 features[variable][] = comment_preview_book
 features[variable][] = comment_subject_field_book
+features[variable][] = conflict_enable_book
 features[variable][] = field_bundle_settings_node__book
 features[variable][] = language_content_type_book
 features[variable][] = menu_options_book
