@@ -14,13 +14,13 @@ function drupalorg_community_stats_pane() {
   $activity = drupalorg_get_activity();
   $block = new stdClass();
   $block->content = t('<div class="column-content-region">
-    <span class="users"><span class="highlight">@number_of_confirmed_accounts users</span> <span class="caption">actively contributing</span></span>
+    <div class="users"><strong>@number_of_confirmed_accounts users</strong><br>actively contributing</div>
   </div>
   <div class="column-content-region">
-    <span class="commits"><span class="highlight">@number_of_git_commits commits</span> <span class="caption">in the last week</span></span>
+    <div class="commits"><strong>@number_of_git_commits commits</strong><br>in the last week</div>
   </div>
   <div class="column-content-region">
-    <span class="comments"><span class="highlight">@number_of_issue_comments comments</span> <span class="caption">in the last week</span></span>
+    <div class="comments"><strong>@number_of_issue_comments comments</strong><br>in the last week</div>
   </div>', [
     '@number_of_confirmed_accounts' => $activity['number_of_confirmed_accounts'],
     '@number_of_git_commits' => $activity['number_of_git_commits'],
