@@ -1122,56 +1122,72 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'administer panelizer node page choice'.
   $permissions['administer panelizer node page choice'] = array(
     'name' => 'administer panelizer node page choice',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node page content'.
   $permissions['administer panelizer node page content'] = array(
     'name' => 'administer panelizer node page content',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node page context'.
   $permissions['administer panelizer node page context'] = array(
     'name' => 'administer panelizer node page context',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node page defaults'.
   $permissions['administer panelizer node page defaults'] = array(
     'name' => 'administer panelizer node page defaults',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node page layout'.
   $permissions['administer panelizer node page layout'] = array(
     'name' => 'administer panelizer node page layout',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node page overview'.
   $permissions['administer panelizer node page overview'] = array(
     'name' => 'administer panelizer node page overview',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node page settings'.
   $permissions['administer panelizer node page settings'] = array(
     'name' => 'administer panelizer node page settings',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node post defaults'.
   $permissions['administer panelizer node post defaults'] = array(
     'name' => 'administer panelizer node post defaults',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
@@ -1213,49 +1229,63 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'administer panelizer node project_release choice'.
   $permissions['administer panelizer node project_release choice'] = array(
     'name' => 'administer panelizer node project_release choice',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node project_release content'.
   $permissions['administer panelizer node project_release content'] = array(
     'name' => 'administer panelizer node project_release content',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node project_release context'.
   $permissions['administer panelizer node project_release context'] = array(
     'name' => 'administer panelizer node project_release context',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node project_release defaults'.
   $permissions['administer panelizer node project_release defaults'] = array(
     'name' => 'administer panelizer node project_release defaults',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node project_release layout'.
   $permissions['administer panelizer node project_release layout'] = array(
     'name' => 'administer panelizer node project_release layout',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node project_release overview'.
   $permissions['administer panelizer node project_release overview'] = array(
     'name' => 'administer panelizer node project_release overview',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node project_release settings'.
   $permissions['administer panelizer node project_release settings'] = array(
     'name' => 'administer panelizer node project_release settings',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
@@ -1283,42 +1313,54 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'administer panelizer node section content'.
   $permissions['administer panelizer node section content'] = array(
     'name' => 'administer panelizer node section content',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node section context'.
   $permissions['administer panelizer node section context'] = array(
     'name' => 'administer panelizer node section context',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node section defaults'.
   $permissions['administer panelizer node section defaults'] = array(
     'name' => 'administer panelizer node section defaults',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node section layout'.
   $permissions['administer panelizer node section layout'] = array(
     'name' => 'administer panelizer node section layout',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node section overview'.
   $permissions['administer panelizer node section overview'] = array(
     'name' => 'administer panelizer node section overview',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
   // Exported permission: 'administer panelizer node section settings'.
   $permissions['administer panelizer node section settings'] = array(
     'name' => 'administer panelizer node section settings',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'panelizer',
   );
 
