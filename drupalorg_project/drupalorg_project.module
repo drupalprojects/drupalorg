@@ -373,6 +373,15 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     }
   }
   elseif (project_issue_node_is_issue($form_state['node'])) {
+    $fixed = variable_get('project_issue_state_fixed', PROJECT_ISSUE_STATE_FIXED);
+    $closed_fixed = variable_get('project_issue_state_closed', PROJECT_ISSUE_STATE_CLOSED);
+
+    // Remove “Closed (fixed)” status, unless issue already has that status or
+    // “Fixed”.
+    if (!in_array($form['field_issue_status'][LANGUAGE_NONE]['#default_value'][0], [$fixed, $closed_fixed])) {
+      unset($form['field_issue_status'][LANGUAGE_NONE]['#options'][$closed_fixed]);
+    }
+
     // Only existing issues for projects.
     if (!empty($form_state['node']->nid)) {
       // Build table of commenters.
