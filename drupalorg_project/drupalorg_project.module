@@ -373,13 +373,22 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     }
   }
   elseif (project_issue_node_is_issue($form_state['node'])) {
+    $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
+    $maintainer_access = isset($node_wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]) ? $node_wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]['permissions'] : [];
     $fixed = variable_get('project_issue_state_fixed', PROJECT_ISSUE_STATE_FIXED);
     $closed_fixed = variable_get('project_issue_state_closed', PROJECT_ISSUE_STATE_CLOSED);
 
     // Remove “Closed (fixed)” status, unless issue already has that status or
     // “Fixed”.
-    if (!in_array($form['field_issue_status'][LANGUAGE_NONE]['#default_value'][0], [$fixed, $closed_fixed])) {
+    if (!in_array($node_wrapper->field_issue_status->value(), [$fixed, $closed_fixed])) {
       unset($form['field_issue_status'][LANGUAGE_NONE]['#options'][$closed_fixed]);
+    }
+
+    // If issue is “Closed (fixed)”, only allow project maintainers with “Write
+    // to VCS” or “Maintain issues” access to change status.
+    if ($node_wrapper->field_issue_status->value() == $closed_fixed && empty($maintainer_access['write to vcs']) && empty($maintainer_access['maintain issues'])) {
+      $form['field_issue_status'][LANGUAGE_NONE]['#disabled'] = TRUE;
+      $form['field_issue_status'][LANGUAGE_NONE]['#description'] = t('Only maintainers can reopen.');
     }
 
     // Only existing issues for projects.
@@ -424,7 +433,6 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         ),
       );
 
-      $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
       $existing_credit = array_flip($node_wrapper->field_issue_credit->raw());
 
       $query = new EntityFieldQuery();
@@ -624,7 +632,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       );
 
       // Set up base form.
-      $is_maintainer = isset($node_wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]) && $node_wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]['permissions']['write to vcs'];
+      $is_maintainer = !empty($maintainer_access['write to vcs']);
       $form['drupalorg_credit_wrapper'] = array(
         '#attached' => array('js' => array(array(
           'type' => 'setting',
