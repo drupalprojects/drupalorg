@@ -1397,6 +1397,58 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'node/%/case-studies';
+
+  /* Display: Block */
+  $handler = $view->new_display('block', 'Block', 'block_1');
+  $handler->display->display_options['defaults']['use_more'] = FALSE;
+  $handler->display->display_options['use_more'] = TRUE;
+  $handler->display->display_options['defaults']['use_more_always'] = FALSE;
+  $handler->display->display_options['defaults']['use_more_always'] = FALSE;
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['defaults']['use_more_text'] = FALSE;
+  $handler->display->display_options['use_more_text'] = 'View all case studies';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '5';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['hide_empty'] = TRUE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Unfiltered text */
+  $handler->display->display_options['header']['area_text_custom']['id'] = 'area_text_custom';
+  $handler->display->display_options['header']['area_text_custom']['table'] = 'views';
+  $handler->display->display_options['header']['area_text_custom']['field'] = 'area_text_custom';
+  $handler->display->display_options['header']['area_text_custom']['label'] = 'Case studies';
+  $handler->display->display_options['header']['area_text_custom']['content'] = '<h3>Case studies</h3>';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Primary screenshot */
+  $handler->display->display_options['fields']['field_mainimage']['id'] = 'field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['table'] = 'field_data_field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['field'] = 'field_mainimage';
+  $handler->display->display_options['fields']['field_mainimage']['label'] = '';
+  $handler->display->display_options['fields']['field_mainimage']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_mainimage']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_mainimage']['settings'] = array(
+    'image_style' => 'case-4-2x',
+    'image_link' => 'content',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_type'] = 'p';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
   $translatables['organization_case_studies'] = array(
     t('Master'),
     t('more'),
@@ -1412,6 +1464,10 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
     t('Case studies from %1'),
     t('node/%1'),
     t('Page'),
+    t('Block'),
+    t('View all case studies'),
+    t('Case studies'),
+    t('<h3>Case studies</h3>'),
   );
   $export['organization_case_studies'] = $view;
 
