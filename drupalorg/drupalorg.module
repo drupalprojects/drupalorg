@@ -2256,7 +2256,9 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
     $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#default_value'] = $wrapper->field_attribute_contribution_to->raw();
     $customer_default = array();
     foreach ($wrapper->field_for_customer as $customer) {
-      $customer_default[] = drupalorg_entityreference_string($customer->getIdentifier(), $customer->title->value());
+      if ($customer->value()) {
+        $customer_default[] = drupalorg_entityreference_string($customer->getIdentifier(), $customer->title->value());
+      }
     }
     $element['field_for_customer'][LANGUAGE_NONE]['#default_value'] = implode(', ', $customer_default);
   }
