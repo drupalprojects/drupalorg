@@ -552,6 +552,9 @@ function drupalorg_block_info() {
       'info' => t('Documentation search form'),
       'cache' => DRUPAL_NO_CACHE,
     ],
+    'documentation-license' => [
+      'info' => t('Documentation license'),
+    ],
   );
 }
 
@@ -759,6 +762,11 @@ function drupalorg_block_view($delta, $block = NULL) {
         return ['content' => drupal_get_form('drupalorg_documentation_search_form')];
       }
       break;
+
+    case 'documentation-license':
+      return [
+        'content' => t('Drupal’s online documentation is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>.', ['!year' => date('Y'), '@ccl_url' => url('terms'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html')]),
+      ];
   }
 }
 
