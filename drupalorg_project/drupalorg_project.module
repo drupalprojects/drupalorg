@@ -299,6 +299,11 @@ function drupalorg_project_form_project_issue_node_form_alter(&$form, $form_stat
   if (isset($_GET['tags'])) {
     $form['taxonomy_vocabulary_9'][LANGUAGE_NONE]['#default_value'] = $_GET['tags'];
   }
+  // For issue cloning, the body length tends to run straight into request size
+  // limits.
+  if (!empty($_GET['clone_body']) && is_numeric($_GET['field_issue_parent'])) {
+    $form['body'][LANGUAGE_NONE][0]['#default_value'] = entity_metadata_wrapper('node', $_GET['field_issue_parent'])->body->value->raw();
+  }
 }
 
 /**
