@@ -3538,24 +3538,26 @@ function drupalorg_preprocess_views_view(&$v) {
   // Add an issue clone link.
   if ($v['view']->name === 'project_issue_issue_relations' && $v['display_id'] === 'block_child_issues') {
     $issue_wrapper = entity_metadata_wrapper('node', node_load($v['view']->argument['nid']->get_value()));
-    $tags = [];
-    foreach ($issue_wrapper->taxonomy_vocabulary_9->value() as $value) {
-      $tags[] = $value->name;
+    if ($issue_wrapper->field_project->value()) {
+      $tags = [];
+      foreach ($issue_wrapper->taxonomy_vocabulary_9->value() as $value) {
+        $tags[] = $value->name;
+      }
+      $v['footer'] .= ', ' . l(t('clone issue'), 'node/add/project-issue/' . $issue_wrapper->field_project->field_project_machine_name->value(), [
+        'query' => [
+          'title' => $issue_wrapper->title->value(),
+          'field_issue_parent' => $issue_wrapper->getIdentifier(),
+          'clone_body' => 1,
+          'categories' => $issue_wrapper->field_issue_category->value(),
+          'priorities' => $issue_wrapper->field_issue_priority->value(),
+          'status' => $issue_wrapper->field_issue_status->value(),
+          'version' => $issue_wrapper->field_issue_version->value(),
+          'component' => $issue_wrapper->field_issue_component->value(),
+          'assigned' => $issue_wrapper->field_issue_assigned->raw(),
+          'tags' => implode(', ', $tags),
+        ],
+      ]);
     }
-    $v['footer'] .= ', ' . l(t('clone issue'), 'node/add/project-issue/' . $issue_wrapper->field_project->field_project_machine_name->value(), [
-      'query' => [
-        'title' => $issue_wrapper->title->value(),
-        'field_issue_parent' => $issue_wrapper->getIdentifier(),
-        'clone_body' => 1,
-        'categories' => $issue_wrapper->field_issue_category->value(),
-        'priorities' => $issue_wrapper->field_issue_priority->value(),
-        'status' => $issue_wrapper->field_issue_status->value(),
-        'version' => $issue_wrapper->field_issue_version->value(),
-        'component' => $issue_wrapper->field_issue_component->value(),
-        'assigned' => $issue_wrapper->field_issue_assigned->raw(),
-        'tags' => implode(', ', $tags),
-      ],
-    ]);
   }
 }
 
