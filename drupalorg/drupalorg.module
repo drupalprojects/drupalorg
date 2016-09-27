@@ -3586,7 +3586,10 @@ function drupalorg_user_view($account, $view_mode) {
   $wrapper = entity_metadata_wrapper('user', $account);
   $company_titles = array();
   foreach ($wrapper->field_organizations as $n => $organization) {
-    $company_titles[$n] = $organization->field_organization_name->value();
+    try {
+      $company_titles[$n] = $organization->field_organization_name->value();
+    }
+    catch (EntityMetadataWrapperException $e) { }
   }
   if (!empty($company_titles)) {
     // Load the organization nodes for companies that have an organization node.
