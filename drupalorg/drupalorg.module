@@ -1183,8 +1183,8 @@ function drupalorg_set_home() {
     'set_home' => array(
       '#type' => 'radios',
       '#options' => array(
-        TRUE => t('Make this your Homepage'),
-        FALSE => t('Use Default Homepage'),
+        TRUE => t('Make this your homepage +'),
+        FALSE => t('Use default homepage'),
       ),
       '#default_value' => isset($account->data['drupalorg_set_home']) ? $account->data['drupalorg_set_home'] : TRUE,
       '#ajax' => array(
