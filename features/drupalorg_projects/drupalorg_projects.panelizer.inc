@@ -341,16 +341,7 @@ function drupalorg_projects_panelizer_defaults() {
   $pane->subtype = 'project_dependencies';
   $pane->shown = TRUE;
   $pane->access = array(
-    'plugins' => array(
-      0 => array(
-        'name' => 'perm',
-        'settings' => array(
-          'perm' => 'administer projects',
-        ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
-      ),
-    ),
+    'plugins' => array(),
   );
   $pane->configuration = array(
     'context' => 'panelizer',
