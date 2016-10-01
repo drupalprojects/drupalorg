@@ -2708,15 +2708,17 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         );
       }
 
-      $node->content['drupalorg_organization_contributions'] = [
-        '#prefix' => '<div class="contributions">',
-        'users' => [
-          '#prefix' => '<div>',
-          '#markup' => $people_on_drupalorg,
+      if (isset($people_on_drupalorg)) {
+        $node->content['drupalorg_organization_contributions'] = [
+          '#prefix' => '<div class="contributions">',
+          'users' => [
+            '#prefix' => '<div>',
+            '#markup' => $people_on_drupalorg,
+            '#suffix' => '</div>',
+          ],
           '#suffix' => '</div>',
-        ],
-        '#suffix' => '</div>',
-      ];
+        ];
+      }
 
 
       // Projects supported.
