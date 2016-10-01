@@ -2708,14 +2708,15 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         );
       }
 
+      $node->content['drupalorg_organization_contributions'] = [
+        '#prefix' => '<div class="contributions">',
+        '#suffix' => '</div>',
+      ];
+
       if (isset($people_on_drupalorg)) {
-        $node->content['drupalorg_organization_contributions'] = [
-          '#prefix' => '<div class="contributions">',
-          'users' => [
-            '#prefix' => '<div>',
-            '#markup' => $people_on_drupalorg,
-            '#suffix' => '</div>',
-          ],
+        $node->content['drupalorg_organization_contributions']['users'] = [
+          '#prefix' => '<div>',
+          '#markup' => $people_on_drupalorg,
           '#suffix' => '</div>',
         ];
       }
@@ -2802,7 +2803,11 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       $field_items = field_get_items('node', $node, 'field_link');
       $content['intro']['link'] = field_view_value('node', $node, 'field_link', $field_items[0]);
 
-      $info = ['' => '<strong>' . $people_on_drupalorg . '</strong>'];
+      $info = [];
+
+      if (isset($people_on_drupalorg)) {
+        $info[''] = '<strong>' . $people_on_drupalorg . '</strong>';
+      }
 
       // Terms - sector, service, budget
       foreach (['taxonomy_vocabulary_48', 'taxonomy_vocabulary_50', 'taxonomy_vocabulary_52'] as $field) {
