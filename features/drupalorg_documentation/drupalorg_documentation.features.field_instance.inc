@@ -209,6 +209,62 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-documentation-field_asciidoc_source_file'.
+  $field_instances['node-documentation-field_asciidoc_source_file'] = array(
+    'bundle' => 'documentation',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'If you import from AsciiDoc output using Feeds, this will be set.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 7,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_asciidoc_source_file',
+    'label' => 'AsciiDoc Source File',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 13,
+    ),
+  );
+
   // Exported field_instance: 'node-documentation-field_documentation_status'.
   $field_instances['node-documentation-field_documentation_status'] = array(
     'bundle' => 'documentation',
@@ -670,6 +726,62 @@ function drupalorg_documentation_field_default_field_instances() {
       ),
       'type' => 'text_textarea_with_summary',
       'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance: 'node-guide-field_asciidoc_source_file'.
+  $field_instances['node-guide-field_asciidoc_source_file'] = array(
+    'bundle' => 'guide',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'If you import from AsciiDoc output using Feeds, this will be set.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 8,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_asciidoc_source_file',
+    'label' => 'AsciiDoc Source File',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 14,
     ),
   );
 
@@ -1137,6 +1249,7 @@ function drupalorg_documentation_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('AsciiDoc Source File');
   t('Body');
   t('Description');
   t('Description of the guide and its contents.');
@@ -1147,6 +1260,7 @@ function drupalorg_documentation_field_default_field_instances() {
   t('Group');
   t('Guide');
   t('Guide changes');
+  t('If you import from AsciiDoc output using Feeds, this will be set.');
   t('Related content');
   t('Related content for this documentation guide. These can be other documentation guides, pages, posts or book listings.');
   t('Short (up to 140 characters) summary of the content. This will be displayed in search results, meta tags, content listings.');
