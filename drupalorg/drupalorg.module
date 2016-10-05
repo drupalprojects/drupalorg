@@ -4197,9 +4197,15 @@ function drupalorg_menu_local_tasks_alter(&$data, $router_item, $root_path) {
       break;
   }
 
-  // Hide the View link on node pages in guides.
+  // Hide the View link on node pages in guides, and all tabs for imported
+  // AsciiDoc nodes.
   if (isset($data['tabs'][0]['output'][0]['#link']['path']) && $data['tabs'][0]['output'][0]['#link']['path'] === 'node/%/view' && ($context = og_context()) && ($group = node_load($context['gid'])) && $group->type === 'guide') {
     unset($data['tabs'][0]['output'][0]);
+    // Check to see if it is an AsciiDoc imported node.
+    $node = $router_item['page_arguments'][0];
+    if (!empty($node->field_asciidoc_source_file)) {
+      $data['tabs'] = array();
+    }
   }
 }
 
