@@ -1294,6 +1294,16 @@ function drupalorg_preprocess_page(&$variables) {
     $variables['section_name'] = '';
     unset($variables['breadcrumb']);
   }
+
+  // Special page template for documentation pages.
+  if (isset($variables['node']) && in_array($variables['node']->type, ['guide', 'documentation'])) {
+    // Add type-specific template.
+    $variables['theme_hook_suggestions'][] = 'page__type_guide';
+
+    if (page_manager_get_current_page()) {
+      $variables['panelized'] = 'panel-page';
+    }
+  }
 }
 
 /**
