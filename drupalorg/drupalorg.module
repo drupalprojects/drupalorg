@@ -1173,6 +1173,16 @@ function drupalorg_js_alter(&$js) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_form_og_menu_overview_form_alter(&$form) {
+  // drupalorg_js_alter() sometimes doesn’t prevent hierarchy UI. Hard-code it.
+  foreach (element_children($form) as $key) {
+    $form[$key]['plid']['#value'] = 0;
+  }
+}
+
+/**
  * Set home link for Your Dashboard page.
  */
 function drupalorg_set_home() {
