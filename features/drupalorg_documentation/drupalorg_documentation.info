@@ -16,6 +16,7 @@ dependencies[] = feeds
 dependencies[] = field_extrawidgets
 dependencies[] = file
 dependencies[] = filter
+dependencies[] = filter_html_image_secure
 dependencies[] = list
 dependencies[] = metatag
 dependencies[] = nodechanges

@@ -18,8 +18,22 @@ function drupalorg_documentation_filter_default_formats() {
     'status' => 1,
     'weight' => 0,
     'filters' => array(
+      'filter_html' => array(
+        'weight' => -50,
+        'status' => 1,
+        'settings' => array(
+          'allowed_html' => '<h2> <h3> <h4> <h5> <h6> <em> <strong> <pre> <code> <del> <img> <blockquote> <q> <cite> <sup> <sub> <s> <p> <br> <ul> <ol> <li> <dl> <dt> <dd> <a> <b> <u> <i> <table> <tr> <td> <th> <tbody> <thead> <tfoot> <colgroup> <caption> <hr> <div> <!-->',
+          'filter_html_help' => 0,
+          'filter_html_nofollow' => 0,
+        ),
+      ),
       'filter_htmlcorrector' => array(
-        'weight' => 10,
+        'weight' => -43,
+        'status' => 1,
+        'settings' => array(),
+      ),
+      'filter_html_image_secure' => array(
+        'weight' => -42,
         'status' => 1,
         'settings' => array(),
       ),
