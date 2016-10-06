@@ -189,13 +189,6 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   ];
 
-  $items['home'] = array(
-    'title' => 'Drupal - Open Source CMS',
-    'page callback' => 'drupalorg_home',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-
   $items['getting-involved'] = array(
     'title' => 'Getting Involved',
     'page callback' => 'theme',
@@ -1236,15 +1229,6 @@ function drupalorg_ctools_plugin_directory($owner, $plugin_type) {
 }
 
 /**
- * Page callback for the frontpage.
- */
-function drupalorg_home() {
-  drupal_set_title(t('Drupal - Open Source CMS'));
-
-  return theme('drupalorg_home');
-}
-
-/**
  * Implementation of template_preprocess_page().
  */
 function drupalorg_preprocess_page(&$variables) {
@@ -1369,21 +1353,6 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       }
     }
   }
-}
-
-/**
- * Implementation of template_preprocess_drupalorg_home().
- */
-function drupalorg_preprocess_drupalorg_home(&$variables) {
-  // Add preface second region.
-  $variables['region']['preface_second'] = block_get_blocks_by_region('preface_second');
-  $variables['region']['preface_second']['#theme_wrappers'][] = 'region';
-  $variables['region']['preface_second']['#region'] = 'preface_second';
-
-  // Retrieve or rebuild stats cache.
-  $variables += drupalorg_get_activity();
-
-  $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'homepage-300x250'));
 }
 
 /**
@@ -1601,9 +1570,6 @@ function drupalorg_theme() {
   return array(
     'drupalorg_download' => array(
       'template' => 'drupalorg-download',
-    ),
-    'drupalorg_home' => array(
-      'template' => 'drupalorg-home',
     ),
     'drupalorg_getting_involved' => array(
       'template' => 'drupalorg-getting-involved',
