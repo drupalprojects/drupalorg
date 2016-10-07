@@ -3334,6 +3334,45 @@ function _drupalorg_node_update_project($node) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_form_node_delete_confirm_alter(&$form) {
+  if ($form['#node']->type === 'guide') {
+    $children = (new EntityFieldQuery())->entityCondition('entity_type', 'node')
+      ->fieldCondition('og_group_ref_documentation', 'target_id', $form['#node']->nid)
+      ->count()->execute();
+    if ($children > 0) {
+      $wrapper = entity_metadata_wrapper('node', $form['#node']);
+      $form['description']['#markup'] .= ' ' . format_plural($children, 'This guide’s content (1 page) will be moved to %parent.', 'This guide’s content (@count pages) will be moved to %parent.', ['%parent' => $wrapper->og_group_ref_documentation->title->value()]);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function drupalorg_node_delete(stdClass $node) {
+  if ($node->type === 'guide') {
+    // Move children to their new parent.
+    $parent = entity_metadata_wrapper('node', $node)->og_group_ref_documentation->getIdentifier();
+    $children = (new EntityFieldQuery())->entityCondition('entity_type', 'node')
+      ->fieldCondition('og_group_ref_documentation', 'target_id', $node->nid)
+      ->execute();
+    if (isset($children['node'])) {
+      foreach (node_load_multiple(array_keys($children['node'])) as $child) {
+        $child_wrapper = entity_metadata_wrapper('node', $child);
+        $child_wrapper->og_group_ref_documentation = $parent;
+        $child->nodechanges_comment['comment_body'][LANGUAGE_NONE][0] = array(
+          'value' => t('Automated message: @title guide deleted. Moving its content one level up in the documentation hierarchy.', ['@title' => $node->title]),
+          'format' => filter_default_format(),
+        );
+        node_save($child);
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_comment_insert().
  */
 function drupalorg_comment_insert($comment) {
