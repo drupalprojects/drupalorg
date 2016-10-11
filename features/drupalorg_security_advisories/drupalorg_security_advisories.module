@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Drupal.org security advisories feature.
+ */
+
+include_once 'drupalorg_security_advisories.features.inc';
