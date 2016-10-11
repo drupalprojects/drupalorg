@@ -898,16 +898,13 @@ function announcements_block_view() {
     'attributes' => array('class' => 'icon'),
   ));
 
-  // Capture WYSIWYG text from the variable
-  $body_text = variable_get('drupalorg_announcements_text_variable', '');
-
   $text = theme('html_tag', array(
     'element' => array(
       '#tag' => 'p',
       '#attributes' => array(
         'class' => 'announcement',
       ),
-      '#value' => $body_text,
+      '#value' => $image . variable_get('drupalorg_announcements_text_variable'),
     ),
   ));
 
@@ -918,11 +915,6 @@ function announcements_block_view() {
 
   // Block output in HTML with div wrapper
   $block = array(
-    'image' => array(
-      '#prefix' => '',
-      '#type' => 'markup',
-      '#markup' => $image,
-    ),
     'message' => array(
       '#type' => 'markup',
       '#markup' => $text,
