@@ -36,6 +36,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -93,6 +99,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -140,6 +152,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'weight' => 0,
       ),
       'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -210,6 +228,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -263,6 +287,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -310,6 +340,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'weight' => 0,
       ),
       'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -368,6 +404,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -416,6 +458,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'weight' => 0,
       ),
       'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -474,6 +522,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -522,6 +576,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'weight' => 0,
       ),
       'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -579,6 +639,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -626,6 +692,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'weight' => 0,
       ),
       'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
