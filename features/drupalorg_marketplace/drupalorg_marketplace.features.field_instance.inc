@@ -55,7 +55,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -68,6 +68,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 15,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -93,7 +99,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 9,
+      'weight' => 10,
     ),
   );
 
@@ -114,7 +120,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'full' => array(
         'label' => 'above',
@@ -141,6 +147,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 4,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 14,
       ),
       'rss' => array(
         'label' => 'above',
@@ -188,7 +200,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'size' => 20,
       ),
       'type' => 'text_textfield',
-      'weight' => 7,
+      'weight' => 8,
     ),
     'widget_type' => 'text_textfield',
   );
@@ -226,7 +238,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'full' => array(
         'label' => 'above',
@@ -253,6 +265,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => -1,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 18,
       ),
       'rss' => array(
         'label' => 'above',
@@ -300,7 +318,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textarea',
-      'weight' => 10,
+      'weight' => 11,
     ),
     'widget_type' => 'text_textarea',
   );
@@ -317,7 +335,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 14,
+        'weight' => 15,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -330,6 +348,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -371,7 +395,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'full' => array(
         'label' => 'above',
@@ -398,6 +422,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'settings' => array(),
         'type' => 'link_default',
         'weight' => -4,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 19,
       ),
       'rss' => array(
         'label' => 'above',
@@ -459,7 +489,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'default_value_php' => NULL,
       ),
       'type' => 'link_field',
-      'weight' => 2,
+      'weight' => 3,
     ),
     'widget_type' => 'link',
   );
@@ -479,7 +509,7 @@ function drupalorg_marketplace_field_default_field_instances() {
           'image_style' => '',
         ),
         'type' => 'image',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'full' => array(
         'label' => 'above',
@@ -512,6 +542,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         ),
         'type' => 'image',
         'weight' => -2,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 23,
       ),
       'rss' => array(
         'label' => 'above',
@@ -579,7 +615,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'use_default_image' => 0,
       ),
       'type' => 'image_image',
-      'weight' => 1,
+      'weight' => 2,
     ),
     'widget_type' => 'imagefield_widget',
   );
@@ -595,7 +631,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 17,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -608,6 +644,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -631,7 +673,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'field_extrawidgets',
       'settings' => array(),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 16,
+      'weight' => 17,
     ),
   );
 
@@ -650,7 +692,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 21,
       ),
       'full' => array(
         'label' => 'above',
@@ -687,6 +729,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         ),
         'type' => 'number_integer',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 22,
       ),
       'rss' => array(
         'label' => 'above',
@@ -750,7 +798,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 8,
+      'weight' => 9,
     ),
     'widget_type' => 'optionwidgets_onoff',
   );
@@ -771,7 +819,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 18,
+        'weight' => 20,
       ),
       'full' => array(
         'label' => 'above',
@@ -798,6 +846,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'settings' => array(),
         'type' => 'node_reference_default',
         'weight' => 27,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 21,
       ),
       'rss' => array(
         'label' => 'above',
@@ -866,7 +920,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 18,
       ),
       'full' => array(
         'label' => 'above',
@@ -903,6 +957,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         ),
         'type' => 'number_integer',
         'weight' => 8,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 20,
       ),
       'rss' => array(
         'label' => 'above',
@@ -989,7 +1049,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'full' => array(
         'label' => 'above',
@@ -1016,6 +1076,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 2,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 13,
       ),
       'rss' => array(
         'label' => 'above',
@@ -1063,7 +1129,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 3,
+      'weight' => 4,
     ),
     'widget_type' => 'text_textfield',
   );
@@ -1079,7 +1145,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 17,
+        'weight' => 19,
       ),
       'full' => array(
         'label' => 'above',
@@ -1106,6 +1172,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'settings' => array(),
         'type' => 'node_reference_default',
         'weight' => 25,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 12,
       ),
       'rss' => array(
         'label' => 'above',
@@ -1200,6 +1272,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 24,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 6,
+      ),
       'rss' => array(
         'label' => 'above',
         'module' => 'text',
@@ -1264,7 +1342,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'full' => array(
         'label' => 'above',
@@ -1291,6 +1369,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 14,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
       ),
       'rss' => array(
         'label' => 'above',
@@ -1360,7 +1444,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -1373,6 +1457,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 7,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1443,6 +1533,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 10,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
       ),
       'rss' => array(
         'label' => 'above',
@@ -1539,6 +1635,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 26,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
       'rss' => array(
         'label' => 'above',
         'module' => 'text',
@@ -1631,6 +1733,12 @@ function drupalorg_marketplace_field_default_field_instances() {
         'type' => 'link_default',
         'weight' => 9,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
       'rss' => array(
         'label' => 'above',
         'module' => 'link',
@@ -1696,19 +1804,18 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'link',
   );
 
-  // Exported field_instance: 'node-organization-taxonomy_vocabulary_48'.
-  $field_instances['node-organization-taxonomy_vocabulary_48'] = array(
+  // Exported field_instance: 'node-organization-field_organization_type'.
+  $field_instances['node-organization-field_organization_type'] = array(
     'bundle' => 'organization',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Such as development, theming, design, training, or hosting.',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 2,
+        'type' => 'hidden',
+        'weight' => 16,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -1722,34 +1829,41 @@ function drupalorg_marketplace_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'teaser' => array(
-        'label' => 'inline',
+      'related_content' => array(
+        'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 9,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'taxonomy_vocabulary_48',
-    'label' => 'Services',
-    'required' => 0,
+    'field_name' => 'field_organization_type',
+    'label' => 'Organization type',
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 5,
+      'type' => 'options_buttons',
+      'weight' => 1,
     ),
   );
 
-  // Exported field_instance: 'node-organization-taxonomy_vocabulary_50'.
-  $field_instances['node-organization-taxonomy_vocabulary_50'] = array(
+  // Exported field_instance: 'node-organization-taxonomy_vocabulary_48'.
+  $field_instances['node-organization-taxonomy_vocabulary_48'] = array(
     'bundle' => 'organization',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'List related sector(s)',
+    'description' => 'Such as development, theming, design, training, or hosting.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1770,16 +1884,22 @@ function drupalorg_marketplace_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 24,
+      ),
       'teaser' => array(
         'label' => 'inline',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'taxonomy_vocabulary_50',
-    'label' => 'Sectors',
+    'field_name' => 'taxonomy_vocabulary_48',
+    'label' => 'Services',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -1792,12 +1912,12 @@ function drupalorg_marketplace_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-organization-taxonomy_vocabulary_52'.
-  $field_instances['node-organization-taxonomy_vocabulary_52'] = array(
+  // Exported field_instance: 'node-organization-taxonomy_vocabulary_50'.
+  $field_instances['node-organization-taxonomy_vocabulary_50'] = array(
     'bundle' => 'organization',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Only select countries in which your company has a physical office.',
+    'description' => 'List related sector(s)',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1818,6 +1938,66 @@ function drupalorg_marketplace_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 17,
+      ),
+      'teaser' => array(
+        'label' => 'inline',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'taxonomy_vocabulary_50',
+    'label' => 'Sectors',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 7,
+    ),
+  );
+
+  // Exported field_instance: 'node-organization-taxonomy_vocabulary_52'.
+  $field_instances['node-organization-taxonomy_vocabulary_52'] = array(
+    'bundle' => 'organization',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Only select countries in which your company has a physical office.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 5,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 16,
+      ),
       'teaser' => array(
         'label' => 'inline',
         'settings' => array(),
@@ -1837,7 +2017,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 4,
+      'weight' => 5,
     ),
   );
 
@@ -1879,6 +2059,7 @@ function drupalorg_marketplace_field_default_field_instances() {
   t('Only select countries in which your company has a physical office.');
   t('Org issue credit count');
   t('Organization description');
+  t('Organization type');
   t('Sectors');
   t('Security review');
   t('Services');

@@ -93,10 +93,6 @@ function drupalorg_search_block_info() {
       'info' => t('Drupalorg Search: Alternate Searches'),
       'cache' => DRUPAL_NO_CACHE,
     ),
-    'drupalorg_search_users' => array(
-      'info' => t('Drupalorg Search: User Search'),
-      'cache' => DRUPAL_NO_CACHE,
-    ),
   );
   return $blocks;
 }
@@ -159,12 +155,6 @@ function drupalorg_search_block_view($delta) {
         'content' => theme('item_list', array('items' => $items)),
       );
       return $block;
-
-    case 'drupalorg_search_users':
-      return array(
-        'title' => t('Search Users'),
-        'content' => drupal_get_form('search_form', '', '', 'user', t('Username')),
-      );
   }
 }
 

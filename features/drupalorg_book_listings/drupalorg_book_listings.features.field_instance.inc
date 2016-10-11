@@ -56,6 +56,15 @@ function drupalorg_book_listings_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 8,
       ),
+      'related_content' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 140,
+        ),
+        'type' => 'text_trimmed',
+        'weight' => 0,
+      ),
       'rss' => array(
         'label' => 'hidden',
         'module' => 'text',
@@ -148,6 +157,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 6,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 15,
+      ),
       'rss' => array(
         'label' => 'hidden',
         'module' => 'text',
@@ -237,6 +252,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 5,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 9,
       ),
       'rss' => array(
         'label' => 'inline',
@@ -328,6 +349,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 8,
+      ),
       'rss' => array(
         'label' => 'inline',
         'module' => 'text',
@@ -417,6 +444,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 2,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
       ),
       'rss' => array(
         'label' => 'inline',
@@ -527,6 +560,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         ),
         'type' => 'number_integer',
         'weight' => 3,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
       ),
       'rss' => array(
         'label' => 'inline',
@@ -647,6 +686,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'type' => 'link_default',
         'weight' => 7,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
       'rss' => array(
         'label' => 'hidden',
         'module' => 'link',
@@ -758,6 +803,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => -1,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
       'rss' => array(
         'label' => 'inline',
         'module' => 'text',
@@ -858,6 +909,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         ),
         'type' => 'image',
         'weight' => -2,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
       ),
       'rss' => array(
         'label' => 'hidden',
@@ -973,6 +1030,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'type' => 'link_default',
         'weight' => 4,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 7,
+      ),
       'rss' => array(
         'label' => 'hidden',
         'module' => 'link',
@@ -1084,6 +1147,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 1,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 6,
+      ),
       'rss' => array(
         'label' => 'inline',
         'module' => 'text',
@@ -1162,6 +1231,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 12,
+      ),
       'teaser' => array(
         'label' => 'above',
         'module' => 'taxonomy',
@@ -1211,6 +1286,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 16,
+      ),
       'teaser' => array(
         'label' => 'above',
         'module' => 'taxonomy',
@@ -1259,6 +1340,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1312,6 +1399,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
+      ),
       'teaser' => array(
         'label' => 'above',
         'module' => 'taxonomy',
@@ -1361,6 +1454,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 13,
+      ),
       'teaser' => array(
         'label' => 'above',
         'module' => 'taxonomy',
@@ -1409,6 +1508,12 @@ function drupalorg_book_listings_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 14,
       ),
       'teaser' => array(
         'label' => 'above',

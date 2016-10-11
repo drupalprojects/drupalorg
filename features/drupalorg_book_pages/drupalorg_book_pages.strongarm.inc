@@ -1,82 +1,89 @@
 <?php
 /**
  * @file
- * drupalorg_marketplace.strongarm.inc
+ * drupalorg_book_pages.strongarm.inc
  */
 
 /**
  * Implements hook_strongarm().
  */
-function drupalorg_marketplace_strongarm() {
+function drupalorg_book_pages_strongarm() {
   $export = array();
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_anonymous_organization';
-  $strongarm->value = 0;
-  $export['comment_anonymous_organization'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_controls_organization';
-  $strongarm->value = '3';
-  $export['comment_controls_organization'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_mode_organization';
-  $strongarm->value = 1;
-  $export['comment_default_mode_organization'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_order_organization';
-  $strongarm->value = '1';
-  $export['comment_default_order_organization'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_per_page_organization';
-  $strongarm->value = '50';
-  $export['comment_default_per_page_organization'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_form_location_organization';
-  $strongarm->value = 0;
-  $export['comment_form_location_organization'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_organization';
+  $strongarm->name = 'comment_anonymous_book';
   $strongarm->value = '0';
-  $export['comment_organization'] = $strongarm;
+  $export['comment_anonymous_book'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_preview_organization';
+  $strongarm->name = 'comment_book';
   $strongarm->value = '2';
-  $export['comment_preview_organization'] = $strongarm;
+  $export['comment_book'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_subject_field_organization';
+  $strongarm->name = 'comment_controls_book';
+  $strongarm->value = '3';
+  $export['comment_controls_book'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_default_mode_book';
   $strongarm->value = 1;
-  $export['comment_subject_field_organization'] = $strongarm;
+  $export['comment_default_mode_book'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_node__organization';
+  $strongarm->name = 'comment_default_order_book';
+  $strongarm->value = '2';
+  $export['comment_default_order_book'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_default_per_page_book';
+  $strongarm->value = '300';
+  $export['comment_default_per_page_book'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_form_location_book';
+  $strongarm->value = 0;
+  $export['comment_form_location_book'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_preview_book';
+  $strongarm->value = '1';
+  $export['comment_preview_book'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_subject_field_book';
+  $strongarm->value = 1;
+  $export['comment_subject_field_book'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'conflict_enable_book';
+  $strongarm->value = 0;
+  $export['conflict_enable_book'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_node__book';
   $strongarm->value = array(
     'view_modes' => array(
       'teaser' => array(
@@ -111,79 +118,59 @@ function drupalorg_marketplace_strongarm() {
       ),
     ),
     'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-        'path' => array(
-          'weight' => '15',
-        ),
-        'redirect' => array(
-          'weight' => '16',
-        ),
-        'metatags' => array(
-          'weight' => '18',
-        ),
-      ),
-      'display' => array(
-        'drupalorg_organization_contributions' => array(
-          'teaser' => array(
-            'weight' => '1',
-            'visible' => TRUE,
-          ),
-          'default' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'related_content' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-        ),
-      ),
+      'form' => array(),
+      'display' => array(),
     ),
   );
-  $export['field_bundle_settings_node__organization'] = $strongarm;
+  $export['field_bundle_settings_node__book'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'menu_options_organization';
+  $strongarm->name = 'language_content_type_book';
+  $strongarm->value = '0';
+  $export['language_content_type_book'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_options_book';
   $strongarm->value = array(
     0 => 'navigation',
   );
-  $export['menu_options_organization'] = $strongarm;
+  $export['menu_options_book'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'menu_parent_organization';
+  $strongarm->name = 'menu_parent_book';
   $strongarm->value = 'navigation:0';
-  $export['menu_parent_organization'] = $strongarm;
+  $export['menu_parent_book'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'node_options_organization';
+  $strongarm->name = 'node_options_book';
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
+    2 => 'panelizer',
   );
-  $export['node_options_organization'] = $strongarm;
+  $export['node_options_book'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'node_preview_organization';
+  $strongarm->name = 'node_preview_book';
   $strongarm->value = '1';
-  $export['node_preview_organization'] = $strongarm;
+  $export['node_preview_book'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'node_submitted_organization';
+  $strongarm->name = 'node_submitted_book';
   $strongarm->value = 0;
-  $export['node_submitted_organization'] = $strongarm;
+  $export['node_submitted_book'] = $strongarm;
 
   return $export;
 }

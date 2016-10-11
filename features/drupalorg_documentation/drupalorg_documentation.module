@@ -5,3 +5,6 @@
  */
 
 include_once 'drupalorg_documentation.features.inc';
+/**
+ * Implements hook_entity_info_alter().
+ */

@@ -249,14 +249,14 @@ function drupalorg_documentation_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'language_content_type_documentation';
-  $strongarm->value = '0';
+  $strongarm->value = '2';
   $export['language_content_type_documentation'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'language_content_type_guide';
-  $strongarm->value = '0';
+  $strongarm->value = '2';
   $export['language_content_type_guide'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -308,7 +308,6 @@ function drupalorg_documentation_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
-    2 => 'panelizer',
   );
   $export['node_options_documentation'] = $strongarm;
 
@@ -319,7 +318,6 @@ function drupalorg_documentation_strongarm() {
   $strongarm->value = array(
     0 => 'status',
     1 => 'revision',
-    2 => 'panelizer',
   );
   $export['node_options_guide'] = $strongarm;
 
@@ -356,7 +354,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'og_group_manager_default_rids_node_guide';
   $strongarm->value = array(
-    13 => '13',
+    17 => '17',
   );
   $export['og_group_manager_default_rids_node_guide'] = $strongarm;
 
@@ -442,6 +440,12 @@ function drupalorg_documentation_strongarm() {
         'default' => 0,
         'choice' => 0,
       ),
+      'related_content' => array(
+        'status' => 1,
+        'substitute' => '',
+        'default' => 0,
+        'choice' => 0,
+      ),
       'nodechanges' => array(
         'status' => 0,
         'substitute' => 0,
@@ -469,7 +473,7 @@ function drupalorg_documentation_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_node:documentation_allowed_layouts';
-  $strongarm->value = 'O:22:"panels_allowed_layouts":4:{s:9:"allow_new";b:1;s:11:"module_name";s:28:"panelizer_node:documentation";s:23:"allowed_layout_settings";a:26:{s:11:"omega:siren";b:0;s:10:"omega:hero";b:0;s:16:"omega:off-canvas";b:0;s:12:"omega:simple";b:0;s:12:"omega:divine";b:0;s:8:"flexible";b:0;s:17:"threecol_33_34_33";b:0;s:13:"twocol_bricks";b:0;s:6:"onecol";b:0;s:25:"threecol_25_50_25_stacked";b:0;s:14:"twocol_stacked";b:0;s:17:"threecol_25_50_25";b:0;s:25:"threecol_33_34_33_stacked";b:0;s:6:"twocol";b:0;s:6:"taurus";b:1;s:6:"gemini";b:1;s:5:"hydra";b:1;s:5:"orion";b:1;s:6:"cygnus";b:1;s:6:"golden";b:0;s:5:"naked";b:0;s:8:"mondrian";b:0;s:6:"grid-2";b:0;s:6:"grid-3";b:0;s:6:"portal";b:0;s:6:"alcove";b:0;}s:10:"form_state";N;}';
+  $strongarm->value = 'O:22:"panels_allowed_layouts":4:{s:9:"allow_new";b:1;s:11:"module_name";s:28:"panelizer_node:documentation";s:23:"allowed_layout_settings";a:27:{s:11:"omega:siren";b:0;s:10:"omega:hero";b:0;s:16:"omega:off-canvas";b:0;s:12:"omega:simple";b:0;s:12:"omega:divine";b:0;s:8:"flexible";b:0;s:17:"threecol_33_34_33";b:0;s:13:"twocol_bricks";b:0;s:6:"onecol";b:0;s:25:"threecol_25_50_25_stacked";b:0;s:14:"twocol_stacked";b:0;s:17:"threecol_25_50_25";b:0;s:25:"threecol_33_34_33_stacked";b:0;s:6:"twocol";b:0;s:6:"taurus";b:0;s:6:"gemini";b:0;s:5:"hydra";b:1;s:5:"orion";b:0;s:6:"cygnus";b:0;s:6:"golden";b:0;s:5:"naked";b:0;s:8:"mondrian";b:0;s:6:"grid-2";b:0;s:6:"grid-3";b:0;s:6:"portal";b:0;s:6:"alcove";b:0;s:9:"capricorn";b:0;}s:10:"form_state";N;}';
   $export['panelizer_node:documentation_allowed_layouts'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -484,43 +488,46 @@ function drupalorg_documentation_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_node:documentation_allowed_types';
   $strongarm->value = array(
-    'block-message_follow-follow' => TRUE,
-    'block-og_menu-og_single_menu_block' => TRUE,
-    'custom-custom' => TRUE,
-    'custom-documentation_copyright' => TRUE,
-    'node_comments-node_comments' => TRUE,
-    'node_comment_wrapper-node_comment_wrapper' => TRUE,
-    'node_title-node_title' => TRUE,
-    'node_comment_form-node_comment_form' => TRUE,
     'node_author-node_author' => TRUE,
     'node_content-node_content' => TRUE,
-    'node_created-node_created' => TRUE,
-    'node_attachments-node_attachments' => TRUE,
-    'node_body-node_body' => TRUE,
-    'node_terms-node_terms' => TRUE,
     'node_type_desc-node_type_desc' => TRUE,
+    'node_title-node_title' => TRUE,
+    'node_comments-node_comments' => TRUE,
+    'node_attachments-node_attachments' => TRUE,
+    'node_created-node_created' => TRUE,
     'node_updated-node_updated' => TRUE,
-    'page_title-page_title' => TRUE,
-    'page_tabs-page_tabs' => TRUE,
+    'node_terms-node_terms' => TRUE,
+    'node_comment_form-node_comment_form' => TRUE,
+    'node_body-node_body' => TRUE,
+    'node_comment_wrapper-node_comment_wrapper' => TRUE,
     'page_breadcrumb-page_breadcrumb' => TRUE,
+    'page_tabs-page_tabs' => TRUE,
+    'page_title-page_title' => TRUE,
     'node-node' => TRUE,
     'node_form_author-node_form_author' => TRUE,
     'message_render-message_render' => TRUE,
     'nodechanges_edit-nodechanges_edit' => TRUE,
     'node_create_links-node_create_links' => TRUE,
     'section_contents-section_contents' => TRUE,
+    'custom-custom' => TRUE,
+    'custom-documentation_copyright' => TRUE,
     'entity_field-node:body' => TRUE,
     'entity_field-node:upload' => TRUE,
     'entity_field-node:field_summary' => TRUE,
     'entity_field-node:group_group' => TRUE,
+    'entity_field-node:field_tags' => TRUE,
     'entity_field-node:field_documentation_status' => TRUE,
     'entity_field-node:og_group_ref' => TRUE,
     'entity_field-user:field_subscribe_to' => TRUE,
     'entity_field-user:og_user_node' => TRUE,
+    'block-message_follow-follow' => TRUE,
+    'block-og_menu-og_single_menu_block' => TRUE,
     'flag_link-node' => TRUE,
+    'views_panes-documentation_related_content-related_content_pane' => TRUE,
     'views_panes-group_maintainers-panel_pane_1' => TRUE,
     'views_panes-og_members-panel_pane_1' => TRUE,
     'views_panes-og_nodes-panel_pane_1' => TRUE,
+    'views-documentation_related_content' => TRUE,
     'views-group_maintainers' => TRUE,
     'views-og_members' => TRUE,
     'views-og_nodes' => TRUE,
@@ -539,13 +546,14 @@ function drupalorg_documentation_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_node:documentation_default';
   $strongarm->value = array(
-    'block' => 0,
     'custom' => 0,
-    'token' => 0,
-    'entity_form_field' => 0,
-    'entity_field' => 0,
     'entity_field_extra' => 0,
+    'entity_field' => 0,
+    'block' => 0,
+    'entity_form_field' => 0,
+    'token' => 0,
     'entity_view' => 0,
+    'fieldable_panels_pane' => 0,
     'flag_link' => 0,
     'panels_mini' => 0,
     'views_panes' => 0,
@@ -608,14 +616,17 @@ function drupalorg_documentation_strongarm() {
     'entity_field-node:upload' => TRUE,
     'entity_field-node:field_summary' => TRUE,
     'entity_field-node:group_group' => TRUE,
+    'entity_field-node:field_tags' => TRUE,
     'entity_field-node:og_group_ref' => TRUE,
     'entity_field-node:field_parent_section' => TRUE,
     'entity_field-user:field_subscribe_to' => TRUE,
     'entity_field-user:og_user_node' => TRUE,
     'flag_link-node' => TRUE,
+    'views_panes-documentation_related_content-related_content_pane' => TRUE,
     'views_panes-group_maintainers-panel_pane_1' => TRUE,
     'views_panes-og_members-panel_pane_1' => TRUE,
     'views_panes-og_nodes-panel_pane_1' => TRUE,
+    'views-documentation_related_content' => TRUE,
     'views-group_maintainers' => TRUE,
     'views-og_members' => TRUE,
     'views-og_nodes' => TRUE,

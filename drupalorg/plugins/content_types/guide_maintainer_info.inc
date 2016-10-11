@@ -3,7 +3,7 @@
 $plugin = [
   'title' => t('Guide maintainer information'),
   'single' => TRUE,
-  'category' => t('Drupal.org Customizations'),
+  'category' => t('Drupal.org'),
   'render callback' => 'drupalorg_guide_maintainer_info',
   'required context' => new ctools_context_required(t('Node'), 'node'),
 ];

@@ -112,7 +112,7 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['changed_1']['table'] = 'node';
   $handler->display->display_options['filters']['changed_1']['field'] = 'changed';
   $handler->display->display_options['filters']['changed_1']['operator'] = '>=';
-  $handler->display->display_options['filters']['changed_1']['value']['value'] = '-3 months';
+  $handler->display->display_options['filters']['changed_1']['value']['value'] = '-1 year';
   $handler->display->display_options['filters']['changed_1']['value']['type'] = 'offset';
 
   /* Display: User recent */

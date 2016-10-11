@@ -299,6 +299,14 @@ function drupalorg_project_form_project_issue_node_form_alter(&$form, $form_stat
   if (isset($_GET['tags'])) {
     $form['taxonomy_vocabulary_9'][LANGUAGE_NONE]['#default_value'] = $_GET['tags'];
   }
+  // For issue cloning, the body length tends to run straight into request size
+  // limits.
+  if (!empty($_GET['clone_body']) && is_numeric($_GET['field_issue_parent'])) {
+    try {
+      $form['body'][LANGUAGE_NONE][0]['#default_value'] = entity_metadata_wrapper('node', $_GET['field_issue_parent'])->body->value->raw();
+    }
+    catch (EntityMetadataWrapperException $e) { }
+  }
 }
 
 /**
@@ -373,6 +381,24 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     }
   }
   elseif ($form_state['node']->type === 'sa' || project_issue_node_is_issue($form_state['node'])) {
+    $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
+    $maintainer_access = isset($node_wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]) ? $node_wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]['permissions'] : [];
+    $fixed = variable_get('project_issue_state_fixed', PROJECT_ISSUE_STATE_FIXED);
+    $closed_fixed = variable_get('project_issue_state_closed', PROJECT_ISSUE_STATE_CLOSED);
+
+    // Remove “Closed (fixed)” status, unless issue already has that status or
+    // “Fixed”.
+    if (!in_array($node_wrapper->field_issue_status->value(), [$fixed, $closed_fixed])) {
+      unset($form['field_issue_status'][LANGUAGE_NONE]['#options'][$closed_fixed]);
+    }
+
+    // If issue is “Closed (fixed)”, only allow project maintainers with “Write
+    // to VCS” or “Maintain issues” access to change status.
+    if ($node_wrapper->field_issue_status->value() == $closed_fixed && empty($maintainer_access['write to vcs']) && empty($maintainer_access['maintain issues'])) {
+      $form['field_issue_status'][LANGUAGE_NONE]['#disabled'] = TRUE;
+      $form['field_issue_status'][LANGUAGE_NONE]['#description'] = t('Only maintainers can reopen.');
+    }
+
     // Only existing issues for projects.
     if (!empty($form_state['node']->nid)) {
       // Build table of commenters.
@@ -415,7 +441,6 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         ),
       );
 
-      $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
       $existing_credit = array_flip($node_wrapper->field_issue_credit->raw());
 
       $query = new EntityFieldQuery();
@@ -619,7 +644,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         $is_maintainer = user_access('create sa content');
       }
       else {
-        $is_maintainer = isset($node_wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]) && $node_wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]['permissions']['write to vcs'];
+        $is_maintainer = !empty($maintainer_access['write to vcs']);
       }
       $form['drupalorg_credit_wrapper'] = array(
         '#attached' => array('js' => array(array(
@@ -1461,7 +1486,7 @@ function drupalorg_project_meta_data(stdClass $node) {
   if ($wrapper->field_project_has_releases->value()) {
     $output['items']['security'] = [
       '#prefix' => '<li>',
-      '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon.svg') . '" alt="shield" class="icon-left">' . t('<a href="/security-advisory-policy">Stable releases receive coverage</a> from the <a href="/security-team">Drupal Security Team</a>.<br>Look for the shield icon below.'),
+      '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon.svg') . '" alt="shield" class="icon-left">' . t('Stable releases are covered by the <a href="/security-advisory-policy">security advisory policy</a>.<br>Look for the shield icon below.'),
       '#suffix' => '</li>',
     ];
   }
