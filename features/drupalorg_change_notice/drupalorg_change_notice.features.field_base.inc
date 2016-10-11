@@ -406,8 +406,9 @@ function drupalorg_change_notice_field_default_field_bases() {
     'locked' => 0,
     'module' => 'entityreference',
     'settings' => array(
-      'handler' => 'base',
+      'handler' => 'project_behavior',
       'handler_settings' => array(
+        'behavior' => 'project',
         'behaviors' => array(
           'views-select-list' => array(
             'status' => 0,
@@ -417,15 +418,6 @@ function drupalorg_change_notice_field_default_field_bases() {
           'direction' => 'ASC',
           'property' => 'title',
           'type' => 'property',
-        ),
-        'target_bundles' => array(
-          'project_core' => 'project_core',
-          'project_distribution' => 'project_distribution',
-          'project_drupalorg' => 'project_drupalorg',
-          'project_module' => 'project_module',
-          'project_theme' => 'project_theme',
-          'project_theme_engine' => 'project_theme_engine',
-          'project_translation' => 'project_translation',
         ),
       ),
       'handler_submit' => 'Change handler',
