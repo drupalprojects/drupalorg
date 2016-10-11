@@ -376,6 +376,15 @@ function drupalorg_field_extra_fields() {
           ),
         ),
       ),
+      'sa' => [
+        'display' => [
+          'drupalorg_sa_date' => [
+            'label' => t('Created date'),
+            'description' => t('Date formatted for the SA'),
+            'weight' => 0,
+          ],
+        ],
+      ],
     ),
     'user' => array(
       'user' => array(
@@ -3100,6 +3109,20 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       $breadcrumb[] = l(t('Community showcase'), 'case-studies/community');
     }
     drupal_set_breadcrumb($breadcrumb);
+  }
+  elseif ($node->type === 'sa') {
+    $node->content['drupalorg_sa_date'] = [
+      '#theme' => 'field',
+      '#title' => t('Date'),
+      '#label_display' => 'inline',
+      '#field_name' => 'drupalorg_sa_date',
+      '#field_type' => 'text',
+      '#bundle' => $node->type,
+      '#items' => [[]],
+      [
+        '#markup' => format_date($node->created, 'custom', 'Y-F-d', variable_get('date_default_timezone', @date_default_timezone_get())),
+      ],
+    ];
   }
 }
 
