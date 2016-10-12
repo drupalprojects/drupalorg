@@ -37,6 +37,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Git administrator' => 'Git administrator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
       'testing administrator' => 'testing administrator',
@@ -99,6 +100,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
       'webmaster' => 'webmaster',
@@ -111,6 +113,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'access fieldable panels panes master list',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'fieldable_panels_panes',
   );
@@ -373,6 +376,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -387,6 +391,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -419,6 +424,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -484,6 +490,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer blocks',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'block',
   );
@@ -521,6 +528,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
       'webmaster' => 'webmaster',
@@ -551,6 +559,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer custom content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'ctools_custom_content',
   );
@@ -796,6 +805,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer news feeds',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -808,6 +818,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
       'webmaster' => 'webmaster',
@@ -847,6 +858,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer pane access',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panels',
   );
@@ -977,6 +989,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node documentation choice',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -986,6 +999,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node documentation content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -995,6 +1009,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node documentation context',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1013,6 +1028,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node documentation layout',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1022,6 +1038,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node documentation overview',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1031,6 +1048,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node documentation settings',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1047,6 +1065,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node guide choice',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1056,6 +1075,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node guide content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1065,6 +1085,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node guide context',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1083,6 +1104,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node guide layout',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1092,6 +1114,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node guide overview',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1101,6 +1124,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node guide settings',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1124,6 +1148,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node page choice',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1133,6 +1158,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node page content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1142,6 +1168,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node page context',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1160,6 +1187,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node page layout',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1169,6 +1197,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node page overview',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1178,6 +1207,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node page settings',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1231,6 +1261,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node project_release choice',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1240,6 +1271,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node project_release content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1249,6 +1281,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node project_release context',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1267,6 +1300,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node project_release layout',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1276,6 +1310,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node project_release overview',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1285,6 +1320,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node project_release settings',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1315,6 +1351,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node section content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1324,6 +1361,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node section context',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1342,6 +1380,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node section layout',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1351,6 +1390,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node section overview',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1360,6 +1400,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer panelizer node section settings',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panelizer',
   );
@@ -1744,6 +1785,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
       'testing administrator' => 'testing administrator',
@@ -1761,6 +1803,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'user administrator' => 'user administrator',
       'webmaster' => 'webmaster',
@@ -1774,6 +1817,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
       'webmaster' => 'webmaster',
@@ -1805,6 +1849,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'change layouts in place editing',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panels',
   );
@@ -1827,6 +1872,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -1841,6 +1887,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -1855,6 +1902,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -1877,6 +1925,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -1884,7 +1933,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'create fieldable cta'.
   $permissions['create fieldable cta'] = array(
     'name' => 'create fieldable cta',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'fieldable_panels_panes',
   );
 
@@ -1972,6 +2023,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create guide content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -2011,6 +2063,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -2030,6 +2083,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -2039,7 +2093,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'create post content'.
   $permissions['create post content'] = array(
     'name' => 'create post content',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'node',
   );
 
@@ -2127,6 +2183,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create section content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -2191,6 +2248,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete any documentation content',
     'roles' => array(
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -2214,6 +2272,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete any guide content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -2240,6 +2299,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -2249,7 +2309,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete any post content'.
   $permissions['delete any post content'] = array(
     'name' => 'delete any post content',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'node',
   );
 
@@ -2321,6 +2383,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete any section content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -2335,7 +2398,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete fieldable cta'.
   $permissions['delete fieldable cta'] = array(
     'name' => 'delete fieldable cta',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'fieldable_panels_panes',
   );
 
@@ -2370,7 +2435,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete own documentation content'.
   $permissions['delete own documentation content'] = array(
     'name' => 'delete own documentation content',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'node',
   );
 
@@ -2391,7 +2458,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete own guide content'.
   $permissions['delete own guide content'] = array(
     'name' => 'delete own guide content',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'node',
   );
 
@@ -2401,6 +2470,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -2418,6 +2488,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -2427,7 +2498,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete own post content'.
   $permissions['delete own post content'] = array(
     'name' => 'delete own post content',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'node',
   );
 
@@ -2501,6 +2574,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete own section content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -2567,6 +2641,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in vocabulary_3',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -2623,6 +2698,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in vocabulary_48',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -2643,6 +2719,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in vocabulary_50',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -2654,6 +2731,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in vocabulary_52',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -2665,6 +2743,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in vocabulary_54',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -2732,6 +2811,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete terms in vocabulary_9',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -2757,7 +2837,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit any casestudy content'.
   $permissions['edit any casestudy content'] = array(
     'name' => 'edit any casestudy content',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'node',
   );
 
@@ -2776,6 +2858,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit any documentation content',
     'roles' => array(
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -2792,6 +2875,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit any guide content',
     'roles' => array(
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -2799,7 +2883,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit any organization content'.
   $permissions['edit any organization content'] = array(
     'name' => 'edit any organization content',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'node',
   );
 
@@ -2818,6 +2904,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -2827,7 +2914,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit any post content'.
   $permissions['edit any post content'] = array(
     'name' => 'edit any post content',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'node',
   );
 
@@ -2894,6 +2983,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit any section content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -2918,7 +3008,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit fieldable cta'.
   $permissions['edit fieldable cta'] = array(
     'name' => 'edit fieldable cta',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'fieldable_panels_panes',
   );
 
@@ -2946,6 +3038,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -2960,6 +3053,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -2988,7 +3082,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit own documentation content'.
   $permissions['edit own documentation content'] = array(
     'name' => 'edit own documentation content',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'node',
   );
 
@@ -3005,7 +3101,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit own guide content'.
   $permissions['edit own guide content'] = array(
     'name' => 'edit own guide content',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'node',
   );
 
@@ -3015,6 +3113,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -3032,6 +3131,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -3041,7 +3141,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit own post content'.
   $permissions['edit own post content'] = array(
     'name' => 'edit own post content',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'node',
   );
 
@@ -3118,6 +3220,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own section content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'node',
   );
@@ -3175,6 +3278,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in vocabulary_3',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -3231,6 +3335,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in vocabulary_48',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -3251,6 +3356,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in vocabulary_50',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -3262,6 +3368,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in vocabulary_52',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -3273,6 +3380,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in vocabulary_54',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -3340,6 +3448,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit terms in vocabulary_9',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'webmaster' => 'webmaster',
     ),
@@ -3504,6 +3613,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'moderate users',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'user administrator' => 'user administrator',
       'webmaster' => 'webmaster',
@@ -3637,6 +3747,7 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
       'community' => 'community',
       'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
       'testing administrator' => 'testing administrator',
@@ -3660,6 +3771,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'translate content',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
     ),
     'module' => 'translation',
@@ -3810,6 +3922,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'use panels in place editing',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panels',
   );
@@ -3840,6 +3953,7 @@ function drupalorg_permissions_user_default_permissions() {
       'Documentation moderator' => 'Documentation moderator',
       'Full HTML user' => 'Full HTML user',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
       'webmaster' => 'webmaster',
@@ -3931,6 +4045,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Git administrator' => 'Git administrator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'content moderator' => 'content moderator',
       'security team' => 'security team',
       'testing administrator' => 'testing administrator',
