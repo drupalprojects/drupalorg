@@ -531,6 +531,7 @@ features[user_role][] = Packaging whitelist maintainer
 features[user_role][] = administrator
 features[user_role][] = community
 features[user_role][] = confirmed
+features[user_role][] = content administrator
 features[user_role][] = content moderator
 features[user_role][] = email unverified
 features[user_role][] = security team
