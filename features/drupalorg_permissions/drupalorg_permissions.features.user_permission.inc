@@ -659,6 +659,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer forums',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'forum',
   );
@@ -767,6 +768,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer mini panels',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panels_mini',
   );
@@ -2042,6 +2044,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create mini panels',
     'roles' => array(
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
     ),
     'module' => 'panels_mini',
   );
