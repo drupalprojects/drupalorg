@@ -183,11 +183,9 @@ function drupalorg_security_advisories_field_default_field_bases() {
     'locked' => 0,
     'module' => 'list',
     'settings' => array(
-      'allowed_values' => array(
-        '7.x' => '7.x',
-        '8.x' => '8.x',
-      ),
-      'allowed_values_function' => '',
+       'allowed_values' => array(),
+       'allowed_values_function' => 'project_release_version_allowed_values',
+       'entityreference_field' => 'field_project',
     ),
     'translatable' => 0,
     'type' => 'list_text',
