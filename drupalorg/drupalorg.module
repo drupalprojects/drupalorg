@@ -5127,17 +5127,15 @@ function drupalorg_sa_save($form, $form_state) {
     // Mark the “issue” closed.
     $form_state['node']->field_issue_status[LANGUAGE_NONE][0]['value'] = variable_get('project_issue_state_closed', PROJECT_ISSUE_STATE_CLOSED);
 
-    $givecredit = [];
     $search = $form_state['values']['field_sa_reported_by'][LANGUAGE_NONE][0]['value'];
     $search .= $form_state['values']['field_sa_fixed_by'][LANGUAGE_NONE][0]['value'];
     $search .= $form_state['values']['field_sa_coordinated_by'][LANGUAGE_NONE][0]['value'];
-    if ($search != '') {
-      preg_match_all('#https://www\.drupal\.org/(?:user/(\d+)|(u/[^/"\']+))#', $search, $matches);
-      $uids = array_merge(array_filter($matches[1]), preg_replace('#^user/(\d+)$#', '\1', array_map('drupal_get_normal_path', array_filter($matches[2]))));
-      foreach (user_load_multiple($uids) as $account) {
-        $givecredit[] = $account->name;
-      }
-      if (count($givecredit != 0)) {
+    if ($search != '' && preg_match_all('#https://www\.drupal\.org/(?:user/(\d+)|(u/[^/"\']+))#', $search, $matches)) {
+      if ($uids = array_merge(array_filter($matches[1]), preg_replace('#^user/(\d+)$#', '\1', array_map('drupal_get_normal_path', array_filter($matches[2]))))) {
+        $givecredit = [];
+        foreach (user_load_multiple($uids) as $account) {
+          $givecredit[] = $account->name;
+        }
         $form_state['values']['add_credit'] = implode(',', $givecredit);
         _drupalorg_project_issue_credit_add($form_state);
         $form_state['node']->field_issue_credit[LANGUAGE_NONE] = array();
