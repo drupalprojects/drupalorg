@@ -5009,3 +5009,32 @@ function drupalorg_query_comment_filter_alter(QueryAlterableInterface $query) {
     $query->orderBy('c.cid', 'DESC');
   }
 }
+
+/**
+ *    Implements hook_comment_delete
+ */
+function drupalorg_comment_delete($comment) {
+  // Ensure comment has a spam flag before putting it in comment delete table
+ $commentspamflagged = NULL;
+ $commentspamflagged=flag_get_entity_flags('comment', $comment->cid, 'drupalorg_comment_spam');
+  if ($commentspamflagged[1] == TRUE) {
+//Copy comment data over to comment_deleted table because it was flagged as spam
+    $comment_delete = db_insert('comment_deleted')
+      ->fields(array('cid' => $comment->cid,
+      'pid' => $comment->pid,
+      'nid' => $comment->nid,
+      'uid' => $comment->uid,
+      'subject' => $comment->subject,
+      'hostname' => $comment->hostname,
+      'created' => $comment->created,
+      'changed' => $comment->changed,
+      'status' => $comment->status,
+      'thread' => $comment->thread,
+      'name' => $comment->name,
+      'mail' => $comment->mail,
+      'homepage' => $comment->homepage,
+      'language' => $comment->language,
+      'comment_body' => $comment->comment_body['und'][0]['safe_value']
+    ))->execute();
+  };
+};
