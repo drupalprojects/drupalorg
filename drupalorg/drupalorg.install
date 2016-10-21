@@ -107,8 +107,8 @@ function drupalorg_schema() {
         'default' => '',
       ),
       'comment_body' => array(
-        'type' => 'varchar',
-        'length' => 255,
+        'type' => 'text',
+        'size' => 'big',
         'not null' => FALSE,
         'description' => "The comment body content",
       ),
@@ -4030,10 +4030,10 @@ function drupalorg_update_7085() {
         'default' => '',
       ),
       'comment_body' => array(
-        'type' => 'varchar',
-        'length' => 255,
+        'type' => 'text',
+        'size' => 'big',
         'not null' => FALSE,
-        'description' => "The comment body content",
+        'description' => 'The comment body content',
       ),
     ),
     'indexes' => array(
