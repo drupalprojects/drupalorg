@@ -14,6 +14,124 @@ function drupalorg_schema() {
     'drupalorg' => $system_schema['cache'],
   );
   $schema['drupalorg']['description'] = 'Cache table for home page map data, with a mediocre name.';
+// Adding comment_deleted table
+  $schema['comment_deleted'] = array(
+    'description' => 'Stores deleted comments and associated data.',
+    'fields' => array(
+      'cid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique comment ID.',
+      ),
+      'pid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The {comment}.cid to which this comment is a reply. If set to 0, this comment is not a reply to an existing comment.',
+      ),
+      'nid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The {node}.nid to which this comment is a reply.',
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The {users}.uid who authored the comment. If set to 0, this comment was created by an anonymous user.',
+      ),
+      'subject' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The comment title.',
+      ),
+      'hostname' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => "The author's host name.",
+      ),
+      'created' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The time that the comment was created, as a Unix timestamp.',
+      ),
+      'changed' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The time that the comment was last edited, as a Unix timestamp.',
+      ),
+      'status' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 1,
+        'size' => 'tiny',
+        'description' => 'The published status of a comment. (0 = Not Published, 1 = Published)',
+      ),
+      'thread' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'description' => "The vancode representation of the comment's place in a thread.",
+      ),
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 60,
+        'not null' => FALSE,
+        'description' => "The comment author's name. Uses {users}.name if the user is logged in, otherwise uses the value typed into the comment form.",
+      ),
+      'mail' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'description' => "The comment author's e-mail address from the comment form, if user is anonymous, and the 'Anonymous users may/must leave their contact information' setting is turned on.",
+      ),
+      'homepage' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => "The comment author's home page address from the comment form, if user is anonymous, and the 'Anonymous users may/must leave their contact information' setting is turned on.",
+      ),
+      'language' => array(
+        'description' => 'The {languages}.language of this comment.',
+        'type' => 'varchar',
+        'length' => 12,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'comment_body' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => "The comment body content",
+      ),
+    ),
+    'indexes' => array(
+      'comment_status_pid' => array('pid', 'status'),
+      'comment_num_new' => array('nid', 'status', 'created', 'cid', 'thread'),
+      'comment_uid' => array('uid'),
+      'comment_nid_language' => array('nid', 'language'),
+      'comment_created' => array('created'),
+    ),
+    'primary key' => array('cid'),
+    'foreign keys' => array(
+      'comment_node' => array(
+        'table' => 'node',
+        'columns' => array('nid' => 'nid'),
+      ),
+      'comment_author' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+    ),
+  );
   return $schema;
 }
 
@@ -3813,4 +3931,128 @@ function drupalorg_update_7084() {
   // Manually revert the drupalorg_i18n variable feature because it doesn't take
   // effect when enabled.
   features_revert(array('drupalorg_i18n' => array('variable')));
+}
+function drupalorg_update_7085(){
+// Adding comment_deleted table
+  $schema['comment_deleted'] = array(
+    'description' => 'Stores deleted comments and associated data.',
+    'fields' => array(
+      'cid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique comment ID.',
+      ),
+      'pid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The {comment}.cid to which this comment is a reply. If set to 0, this comment is not a reply to an existing comment.',
+      ),
+      'nid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The {node}.nid to which this comment is a reply.',
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The {users}.uid who authored the comment. If set to 0, this comment was created by an anonymous user.',
+      ),
+      'subject' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The comment title.',
+      ),
+      'hostname' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => "The author's host name.",
+      ),
+      'created' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The time that the comment was created, as a Unix timestamp.',
+      ),
+      'changed' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The time that the comment was last edited, as a Unix timestamp.',
+      ),
+      'status' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 1,
+        'size' => 'tiny',
+        'description' => 'The published status of a comment. (0 = Not Published, 1 = Published)',
+      ),
+      'thread' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'description' => "The vancode representation of the comment's place in a thread.",
+      ),
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 60,
+        'not null' => FALSE,
+        'description' => "The comment author's name. Uses {users}.name if the user is logged in, otherwise uses the value typed into the comment form.",
+      ),
+      'mail' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'description' => "The comment author's e-mail address from the comment form, if user is anonymous, and the 'Anonymous users may/must leave their contact information' setting is turned on.",
+      ),
+      'homepage' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => "The comment author's home page address from the comment form, if user is anonymous, and the 'Anonymous users may/must leave their contact information' setting is turned on.",
+      ),
+      'language' => array(
+        'description' => 'The {languages}.language of this comment.',
+        'type' => 'varchar',
+        'length' => 12,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'comment_body' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => "The comment body content",
+      ),
+    ),
+    'indexes' => array(
+      'comment_status_pid' => array('pid', 'status'),
+      'comment_num_new' => array('nid', 'status', 'created', 'cid', 'thread'),
+      'comment_uid' => array('uid'),
+      'comment_nid_language' => array('nid', 'language'),
+      'comment_created' => array('created'),
+    ),
+    'primary key' => array('cid'),
+    'foreign keys' => array(
+      'comment_node' => array(
+        'table' => 'node',
+        'columns' => array('nid' => 'nid'),
+      ),
+      'comment_author' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+
+      ),
+  );
+    if(!db_table_exists('comment_deleted')) {
+      db_create_table('comment_deleted', $schema['comment_deleted']);
+  }
 }
