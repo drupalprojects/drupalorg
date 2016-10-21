@@ -5023,9 +5023,9 @@ function drupalorg_panels_pane_content_alter($content, $pane, $args, $contexts) 
 function drupalorg_comment_delete($comment) {
   // Ensure comment has a spam flag before putting it in comment delete table.
   if (flag_get_entity_flags('comment', $comment->cid, 'drupalorg_comment_spam')) {
-    // Copy comment data over to comment_deleted table because it was flagged
-    // as spam.
-    db_insert('comment_deleted')->fields([
+    // Copy comment data over to drupalorg_comment_deleted table because it was
+    // flagged as spam.
+    db_insert('drupalorg_comment_deleted')->fields([
       'cid' => $comment->cid,
       'pid' => $comment->pid,
       'nid' => $comment->nid,
