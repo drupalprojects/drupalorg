@@ -99,10 +99,13 @@ function drupalorg_git_varnish_ssh_user_key() {
 }
 
 function drupalorg_git_varnish_vcs_auth_check_user_pass() {
-  $username = $_GET['username'];
   $password = $_GET['password'];
-  $account = reset(user_load_multiple(array(), array('git_username' => $username)));
-  if (!empty($account) && isset($account->pass)) {
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'user')
+    ->propertyCondition('git_username', $_GET['username'])
+    ->range(0, 1)
+    ->execute();
+  if (isset($result['user']) && ($account = user_load(reset($result['user'])->uid)) && isset($account->pass)) {
     $len = strlen($account->pass);
     $password = substr($password, 0, $len);
     if ($len > 20 && $password == $account->pass) {
@@ -115,9 +118,12 @@ function drupalorg_git_varnish_vcs_auth_check_user_pass() {
 }
 
 function drupalorg_git_varnish_vcs_auth_fetch_user_hash() {
-  $username = $_GET['username'];
-  $account = reset(user_load_multiple(array(), array('git_username' => $username)));
-  if (!empty($account) && isset($account->pass)) {
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'user')
+    ->propertyCondition('git_username', $_GET['username'])
+    ->range(0, 1)
+    ->execute();
+  if (isset($result['user']) && ($account = user_load(reset($result['user'])->uid)) && isset($account->pass)) {
     echo json_encode($account->pass);
     exit;
   }
