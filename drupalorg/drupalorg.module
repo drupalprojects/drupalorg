@@ -1345,6 +1345,11 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       }
     }
   }
+
+  // There isn’t a “core project” listing, so link to core.
+  if (isset($active_trail[2]) && $active_trail['1']['href'] === 'project/project_core' && $active_trail[2]['href'] !== 'node/' . DRUPALORG_CORE_NID) {
+    $active_trail[1]['href'] = 'node/' . DRUPALORG_CORE_NID;
+  }
 }
 
 /**
