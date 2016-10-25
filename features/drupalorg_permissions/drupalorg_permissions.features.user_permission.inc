@@ -1685,6 +1685,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'path',
@@ -2204,6 +2205,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'content administrator' => 'content administrator',
       'webmaster' => 'webmaster',
     ),
     'module' => 'path',
