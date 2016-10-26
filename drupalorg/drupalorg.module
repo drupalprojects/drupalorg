@@ -5044,3 +5044,60 @@ function drupalorg_comment_delete($comment) {
     ])->execute();
   }
 }
+
+/**
+ * Implements hook_element_info_alter().
+ *
+ * Sets the default format if the user’s default format is filtered_html.
+ */
+function drupalorg_element_info_alter(&$type) {
+  array_unshift($type['text_format']['#pre_render'], 'drupalorg_process_filter_format');
+}
+
+/**
+ * Callback function to process the filter format and remove the fieldset.
+ */
+function drupalorg_process_filter_format($element) {
+  // If no format is found, exit.
+  if (!isset($element['format'])) {
+    return $element;
+  }
+
+  // By default, disable ckeditor.
+  $element['value']['#wysiwyg'] = FALSE;
+
+  // Disable the summary value wysiwyg.
+  if (isset($element['summary'])) {
+    $element['summary']['#wysiwyg'] = FALSE;
+  }
+
+  // Disable Depricated input filter, unless its already being used
+  if ($element['format']['format']['#default_value'] != '5') {
+    unset($element['format']['format']['#options'][5]);
+  }
+
+  // Progressively enable ckeditor for specific entities & bundles / CTs.
+  if (isset($element['#entity_type'])) {
+    $bundles_to_enable = ['page', 'post', 'section', 'guide', 'documentation'];
+
+    switch ($element['#entity_type']) {
+      case 'node':
+        if (in_array($element['#bundle'], $bundles_to_enable)) {
+          $element['value']['#wysiwyg'] = TRUE;
+          // Disable the summary value wysiwyg.
+          if (isset($element['summary'])) {
+            $element['summary']['#wysiwyg'] = TRUE;
+          }
+        }
+        break;
+
+      case 'comment':
+        if (in_array(str_replace('comment_node_', '', $element['#bundle']), $bundles_to_enable)) {
+          $element['value']['#wysiwyg'] = TRUE;
+        }
+        break;
+    }
+  }
+
+  return $element;
+}
