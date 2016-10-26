@@ -2121,10 +2121,6 @@ function drupalorg_form_multiple_email_manage_alter(&$form) {
  * Impelements hook_form_FORM_BASE_alter().
  */
 function drupalorg_form_comment_form_alter(&$form, &$form_state) {
-  // Increase default comment textarea height
-  if (!empty($form['comment_body'][LANGUAGE_NONE][0])) {
-    $form['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
-  }
   if (isset($form['field_attribute_contribution_to'])) {
     _drupalorg_alter_comment_attribution($form);
   }
@@ -2165,7 +2161,6 @@ function drupalorg_form_node_form_alter(&$form) {
   }
 
   if (isset($form['nodechanges_comment'])) {
-    $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
     if (isset($form['nodechanges_comment']['field_attribute_contribution_to'])) {
       _drupalorg_alter_comment_attribution($form['nodechanges_comment'], $form['#node']);
     }
