@@ -3794,13 +3794,30 @@ function drupalorg_user_view($account, $view_mode) {
     );
   }
 
-  // Documentation edits
-  if ($drupalorg_documentation = drupalorg_documentation_contributions($account)) {
-    $account->content['summary']['drupalorg_documentation'] = array(
+  // Documentation edits.
+  $count = (int) db_query('SELECT count(1) FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid AND nr.uid = :uid WHERE n.type IN (:types) AND n.status = :status', [':types' => ['book', 'guide', 'documentation'], ':status' => 1, ':uid' => $account->uid])->fetchField();
+  if ($count > 0) {
+    // This isn't a leaderboard.
+    if ($count === 1) {
+      $drupalorg_documentation = t('1 edit');
+    }
+    elseif ($count <= 5) {
+      $drupalorg_documentation = t('At least 1 edit');
+    }
+    else {
+      foreach ([10000, 5000, 1000, 500, 100, 50, 10, 5] as $threshold) {
+        if ($count > $threshold) {
+          $drupalorg_documentation = t('Over @count edits', ['@count' => $threshold]);
+        }
+      }
+    }
+  }
+  if (isset($drupalorg_documentation)) {
+    $account->content['summary']['drupalorg_documentation'] = [
       '#type' => 'user_profile_item',
       '#title' => t('Documentation'),
       '#markup' => $drupalorg_documentation,
-    );
+    ];
   }
 
   // Issue credits.
@@ -3816,30 +3833,6 @@ function drupalorg_user_view($account, $view_mode) {
     $filter = $view->get_item('user_recent', 'filter', 'changed_1');
     $account->content['drupalorg_user_issue_credit']['#prefix'] = '<h4>' . format_plural($issues, 'Credited on 1 issue fixed in the past @time', 'Credited on @count issues fixed in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
   }
-}
-
-/**
- * Counts documentation edits for user profile view.
- */
-function drupalorg_documentation_contributions($account) {
-  $count = (int) db_query("SELECT count(*) FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid AND nr.uid = :uid WHERE n.type = :type AND n.status = :status", array(':type' => 'book', ':status' => 1, ':uid' => $account->uid))->fetchField();
-  if ($count > 0) {
-    // This isn't a leaderboard.
-    if ($count === 1) {
-      return t('1 edit');
-    }
-    elseif ($count <= 5) {
-      return t('At least 1 edit');
-    }
-    else {
-      foreach (array(10000, 5000, 1000, 500, 100, 50, 10, 5) as $threshold) {
-        if ($count > $threshold) {
-          return t('Over @count edits', array('@count' => $threshold));
-        }
-      }
-    }
-  }
-  return FALSE;
 }
 
 /**
