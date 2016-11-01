@@ -3564,7 +3564,7 @@ function drupalorg_preprocess_views_view(&$v) {
     $issue_wrapper = entity_metadata_wrapper('node', node_load($v['view']->argument['nid']->get_value()));
     if ($issue_wrapper->field_project->value()) {
       $tags = [];
-      foreach ($issue_wrapper->taxonomy_vocabulary_9->value() as $value) {
+      foreach (array_filter($issue_wrapper->taxonomy_vocabulary_9->value()) as $value) {
         $tags[] = $value->name;
       }
       $v['footer'] .= ', ' . l(t('clone issue'), 'node/add/project-issue/' . $issue_wrapper->field_project->field_project_machine_name->value(), [
