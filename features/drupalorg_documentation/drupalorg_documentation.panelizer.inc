@@ -339,7 +339,7 @@ function drupalorg_documentation_panelizer_defaults() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_title' => 1,
+    'override_title' => 0,
     'override_title_text' => 'Language',
     'build_mode' => 'rss',
     'identifier' => '',
@@ -725,7 +725,7 @@ function drupalorg_documentation_panelizer_defaults() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_title' => 1,
+    'override_title' => 0,
     'override_title_text' => 'Language',
     'build_mode' => 'rss',
     'identifier' => '',
