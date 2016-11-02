@@ -1729,16 +1729,16 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
     $form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']['#element_validate'][] = 'drupalorg_form_user_profile_set_mailchimp_subscribed';
     unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['#states']);
     // Hide "Roles in Drupal"
-    if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5609])) {
-      hide($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5609]);
+    if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['f99166c398'])) {
+      hide($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['f99166c398']);
     }
     // Alter list of lists.
-    if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845])) {
-      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845]['#title'] = t('Subscribe to');
-      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845]['#after_build'][] = 'drupalorg_form_user_profile_add_mailchimp_descriptions';
+    if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622'])) {
+      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#title'] = t('Subscribe to');
+      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#after_build'][] = 'drupalorg_form_user_profile_add_mailchimp_descriptions';
       if (isset($form_state['drupalorg_welcome'])) {
         // Only show some newsletters on the welcome version of the form.
-        $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845]['#options'] = array_intersect($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5845]['#options'], array(
+        $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#options'] = array_intersect($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#options'], array(
           'Drupal Weekly Newsletter',
           'Drupal Association News',
           'DrupalCon News',
@@ -1872,8 +1872,8 @@ function drupalorg_user_profile_redirect_submit($form, &$form_state) {
  */
 function drupalorg_form_user_profile_add_mailchimp_descriptions(&$element) {
   foreach (variable_get('drupalorg_mailchimp_list_descriptions', array()) as $name => $description) {
-    if (isset($element[$name])) {
-      $element[$name]['#description'] = t($description);
+    if ($key = array_search($name, $element['#options'])) {
+      $element[$key]['#description'] = t($description);
     }
   }
   return $element;
