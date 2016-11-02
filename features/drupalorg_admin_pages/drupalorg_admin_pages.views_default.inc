@@ -2401,6 +2401,8 @@ function drupalorg_admin_pages_views_default_views() {
     'book' => 'book',
     'casestudy' => 'casestudy',
     'changenotice' => 'changenotice',
+    'guide' => 'guide',
+    'documentation' => 'documentation',
     'forum' => 'forum',
     'project_issue' => 'project_issue',
     'organization' => 'organization',
