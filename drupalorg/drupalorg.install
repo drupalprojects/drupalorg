@@ -14,8 +14,8 @@ function drupalorg_schema() {
     'drupalorg' => $system_schema['cache'],
   );
   $schema['drupalorg']['description'] = 'Cache table for home page map data, with a mediocre name.';
-// Adding comment_deleted table
-  $schema['comment_deleted'] = array(
+
+  $schema['drupalorg_comment_deleted'] = array(
     'description' => 'Stores deleted comments and associated data.',
     'fields' => array(
       'cid' => array(
@@ -107,8 +107,8 @@ function drupalorg_schema() {
         'default' => '',
       ),
       'comment_body' => array(
-        'type' => 'varchar',
-        'length' => 255,
+        'type' => 'text',
+        'size' => 'big',
         'not null' => FALSE,
         'description' => "The comment body content",
       ),
@@ -132,6 +132,7 @@ function drupalorg_schema() {
       ),
     ),
   );
+
   return $schema;
 }
 
@@ -3932,9 +3933,12 @@ function drupalorg_update_7084() {
   // effect when enabled.
   features_revert(array('drupalorg_i18n' => array('variable')));
 }
-function drupalorg_update_7085(){
-// Adding comment_deleted table
-  $schema['comment_deleted'] = array(
+
+/**
+ * Add drupalorg_comment_deleted table.
+ */
+function drupalorg_update_7085() {
+  db_create_table('drupalorg_comment_deleted', array(
     'description' => 'Stores deleted comments and associated data.',
     'fields' => array(
       'cid' => array(
@@ -4026,10 +4030,10 @@ function drupalorg_update_7085(){
         'default' => '',
       ),
       'comment_body' => array(
-        'type' => 'varchar',
-        'length' => 255,
+        'type' => 'text',
+        'size' => 'big',
         'not null' => FALSE,
-        'description' => "The comment body content",
+        'description' => 'The comment body content',
       ),
     ),
     'indexes' => array(
@@ -4049,10 +4053,6 @@ function drupalorg_update_7085(){
         'table' => 'users',
         'columns' => array('uid' => 'uid'),
       ),
-
-      ),
-  );
-    if(!db_table_exists('comment_deleted')) {
-      db_create_table('comment_deleted', $schema['comment_deleted']);
-  }
+    ),
+  ));
 }

@@ -427,6 +427,14 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['label'] = 'Attribute comment for customer (field_for_customer)';
   $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['operator'] = 'field_for_customer_target_id_op';
   $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['identifier'] = 'field_for_customer_target_id';
+  /* Filter criterion: Content: Project type (field_project_type) */
+  $handler->display->display_options['filters']['field_project_type_value']['id'] = 'field_project_type_value';
+  $handler->display->display_options['filters']['field_project_type_value']['table'] = 'field_data_field_project_type';
+  $handler->display->display_options['filters']['field_project_type_value']['field'] = 'field_project_type_value';
+  $handler->display->display_options['filters']['field_project_type_value']['relationship'] = 'field_project_target_id';
+  $handler->display->display_options['filters']['field_project_type_value']['value'] = array(
+    'full' => 'full',
+  );
 
   /* Display: Organization recent page */
   $handler = $view->new_display('page', 'Organization recent page', 'organization_recent_page');

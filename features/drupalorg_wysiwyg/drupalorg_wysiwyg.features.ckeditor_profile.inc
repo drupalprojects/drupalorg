@@ -33,8 +33,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
   [\'Bold\',\'Italic\',\'Strike\',\'Code\',\'Format\'],
   [\'NumberedList\',\'BulletedList\',\'-\',\'Blockquote\'],
   [\'Link\',\'Unlink\',\'Anchor\'],
-  [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\'],
-  [\'Undo\',\'Redo\',\'Find\',\'Replace\']
+  [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\']
 ]',
         'expand' => 't',
         'default' => 't',
@@ -191,8 +190,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
   [\'Bold\',\'Italic\',\'Strike\',\'Code\',\'Format\'],
   [\'NumberedList\',\'BulletedList\',\'-\',\'Blockquote\'],
   [\'Link\',\'Unlink\',\'Anchor\'],
-  [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\'],
-  [\'Undo\',\'Redo\',\'Find\',\'Replace\']
+  [\'Templates\',\'CodeSnippet\',\'Image\',\'Table\',\'HorizontalRule\']
 ]',
         'expand' => 't',
         'default' => 't',

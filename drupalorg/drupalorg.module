@@ -189,13 +189,6 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   ];
 
-  $items['home'] = array(
-    'title' => 'Drupal - Open Source CMS',
-    'page callback' => 'drupalorg_home',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-
   $items['getting-involved'] = array(
     'title' => 'Getting Involved',
     'page callback' => 'theme',
@@ -905,16 +898,13 @@ function announcements_block_view() {
     'attributes' => array('class' => 'icon'),
   ));
 
-  // Capture WYSIWYG text from the variable
-  $body_text = variable_get('drupalorg_announcements_text_variable', '');
-
   $text = theme('html_tag', array(
     'element' => array(
       '#tag' => 'p',
       '#attributes' => array(
         'class' => 'announcement',
       ),
-      '#value' => $body_text,
+      '#value' => $image . variable_get('drupalorg_announcements_text_variable'),
     ),
   ));
 
@@ -925,11 +915,6 @@ function announcements_block_view() {
 
   // Block output in HTML with div wrapper
   $block = array(
-    'image' => array(
-      '#prefix' => '',
-      '#type' => 'markup',
-      '#markup' => $image,
-    ),
     'message' => array(
       '#type' => 'markup',
       '#markup' => $text,
@@ -1236,15 +1221,6 @@ function drupalorg_ctools_plugin_directory($owner, $plugin_type) {
 }
 
 /**
- * Page callback for the frontpage.
- */
-function drupalorg_home() {
-  drupal_set_title(t('Drupal - Open Source CMS'));
-
-  return theme('drupalorg_home');
-}
-
-/**
  * Implementation of template_preprocess_page().
  */
 function drupalorg_preprocess_page(&$variables) {
@@ -1369,21 +1345,11 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       }
     }
   }
-}
 
-/**
- * Implementation of template_preprocess_drupalorg_home().
- */
-function drupalorg_preprocess_drupalorg_home(&$variables) {
-  // Add preface second region.
-  $variables['region']['preface_second'] = block_get_blocks_by_region('preface_second');
-  $variables['region']['preface_second']['#theme_wrappers'][] = 'region';
-  $variables['region']['preface_second']['#region'] = 'preface_second';
-
-  // Retrieve or rebuild stats cache.
-  $variables += drupalorg_get_activity();
-
-  $variables['psa'] = theme('google_admanager_block', array('id' => variable_get('google_admanager_account', ''), 'ad_slot' => 'homepage-300x250'));
+  // There isn’t a “core project” listing, so link to core.
+  if (isset($active_trail[2]) && $active_trail['1']['href'] === 'project/project_core' && $active_trail[2]['href'] !== 'node/' . DRUPALORG_CORE_NID) {
+    $active_trail[1]['href'] = 'node/' . DRUPALORG_CORE_NID;
+  }
 }
 
 /**
@@ -1601,9 +1567,6 @@ function drupalorg_theme() {
   return array(
     'drupalorg_download' => array(
       'template' => 'drupalorg-download',
-    ),
-    'drupalorg_home' => array(
-      'template' => 'drupalorg-home',
     ),
     'drupalorg_getting_involved' => array(
       'template' => 'drupalorg-getting-involved',
@@ -2158,10 +2121,6 @@ function drupalorg_form_multiple_email_manage_alter(&$form) {
  * Impelements hook_form_FORM_BASE_alter().
  */
 function drupalorg_form_comment_form_alter(&$form, &$form_state) {
-  // Increase default comment textarea height
-  if (!empty($form['comment_body'][LANGUAGE_NONE][0])) {
-    $form['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
-  }
   if (isset($form['field_attribute_contribution_to'])) {
     _drupalorg_alter_comment_attribution($form);
   }
@@ -2202,7 +2161,6 @@ function drupalorg_form_node_form_alter(&$form) {
   }
 
   if (isset($form['nodechanges_comment'])) {
-    $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
     if (isset($form['nodechanges_comment']['field_attribute_contribution_to'])) {
       _drupalorg_alter_comment_attribution($form['nodechanges_comment'], $form['#node']);
     }
@@ -3368,6 +3326,45 @@ function _drupalorg_node_update_project($node) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_form_node_delete_confirm_alter(&$form) {
+  if ($form['#node']->type === 'guide') {
+    $children = (new EntityFieldQuery())->entityCondition('entity_type', 'node')
+      ->fieldCondition('og_group_ref_documentation', 'target_id', $form['#node']->nid)
+      ->count()->execute();
+    if ($children > 0) {
+      $wrapper = entity_metadata_wrapper('node', $form['#node']);
+      $form['description']['#markup'] .= ' ' . format_plural($children, 'This guide’s content (1 page) will be moved to %parent.', 'This guide’s content (@count pages) will be moved to %parent.', ['%parent' => $wrapper->og_group_ref_documentation->title->value()]);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function drupalorg_node_delete(stdClass $node) {
+  if ($node->type === 'guide') {
+    // Move children to their new parent.
+    $parent = entity_metadata_wrapper('node', $node)->og_group_ref_documentation->getIdentifier();
+    $children = (new EntityFieldQuery())->entityCondition('entity_type', 'node')
+      ->fieldCondition('og_group_ref_documentation', 'target_id', $node->nid)
+      ->execute();
+    if (isset($children['node'])) {
+      foreach (node_load_multiple(array_keys($children['node'])) as $child) {
+        $child_wrapper = entity_metadata_wrapper('node', $child);
+        $child_wrapper->og_group_ref_documentation = $parent;
+        $child->nodechanges_comment['comment_body'][LANGUAGE_NONE][0] = array(
+          'value' => t('Automated message: @title guide deleted. Moving its content one level up in the documentation hierarchy.', ['@title' => $node->title]),
+          'format' => filter_default_format(),
+        );
+        node_save($child);
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_comment_insert().
  */
 function drupalorg_comment_insert($comment) {
@@ -3567,7 +3564,7 @@ function drupalorg_preprocess_views_view(&$v) {
     $issue_wrapper = entity_metadata_wrapper('node', node_load($v['view']->argument['nid']->get_value()));
     if ($issue_wrapper->field_project->value()) {
       $tags = [];
-      foreach ($issue_wrapper->taxonomy_vocabulary_9->value() as $value) {
+      foreach (array_filter($issue_wrapper->taxonomy_vocabulary_9->value()) as $value) {
         $tags[] = $value->name;
       }
       $v['footer'] .= ', ' . l(t('clone issue'), 'node/add/project-issue/' . $issue_wrapper->field_project->field_project_machine_name->value(), [
@@ -3797,13 +3794,30 @@ function drupalorg_user_view($account, $view_mode) {
     );
   }
 
-  // Documentation edits
-  if ($drupalorg_documentation = drupalorg_documentation_contributions($account)) {
-    $account->content['summary']['drupalorg_documentation'] = array(
+  // Documentation edits.
+  $count = (int) db_query('SELECT count(1) FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid AND nr.uid = :uid WHERE n.type IN (:types) AND n.status = :status', [':types' => ['book', 'guide', 'documentation'], ':status' => 1, ':uid' => $account->uid])->fetchField();
+  if ($count > 0) {
+    // This isn't a leaderboard.
+    if ($count === 1) {
+      $drupalorg_documentation = t('1 edit');
+    }
+    elseif ($count <= 5) {
+      $drupalorg_documentation = t('At least 1 edit');
+    }
+    else {
+      foreach ([10000, 5000, 1000, 500, 100, 50, 10, 5] as $threshold) {
+        if ($count > $threshold) {
+          $drupalorg_documentation = t('Over @count edits', ['@count' => $threshold]);
+        }
+      }
+    }
+  }
+  if (isset($drupalorg_documentation)) {
+    $account->content['summary']['drupalorg_documentation'] = [
       '#type' => 'user_profile_item',
       '#title' => t('Documentation'),
       '#markup' => $drupalorg_documentation,
-    );
+    ];
   }
 
   // Issue credits.
@@ -3819,30 +3833,6 @@ function drupalorg_user_view($account, $view_mode) {
     $filter = $view->get_item('user_recent', 'filter', 'changed_1');
     $account->content['drupalorg_user_issue_credit']['#prefix'] = '<h4>' . format_plural($issues, 'Credited on 1 issue fixed in the past @time', 'Credited on @count issues fixed in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
   }
-}
-
-/**
- * Counts documentation edits for user profile view.
- */
-function drupalorg_documentation_contributions($account) {
-  $count = (int) db_query("SELECT count(*) FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid AND nr.uid = :uid WHERE n.type = :type AND n.status = :status", array(':type' => 'book', ':status' => 1, ':uid' => $account->uid))->fetchField();
-  if ($count > 0) {
-    // This isn't a leaderboard.
-    if ($count === 1) {
-      return t('1 edit');
-    }
-    elseif ($count <= 5) {
-      return t('At least 1 edit');
-    }
-    else {
-      foreach (array(10000, 5000, 1000, 500, 100, 50, 10, 5) as $threshold) {
-        if ($count > $threshold) {
-          return t('Over @count edits', array('@count' => $threshold));
-        }
-      }
-    }
-  }
-  return FALSE;
 }
 
 /**
@@ -5011,16 +5001,25 @@ function drupalorg_query_comment_filter_alter(QueryAlterableInterface $query) {
 }
 
 /**
- *    Implements hook_comment_delete
+ * Implements hook_panels_pane_content_alter().
+ */
+function drupalorg_panels_pane_content_alter($content, $pane, $args, $contexts) {
+  // Remove create content links in imported User guide.
+  if ($pane->type === 'node_prepopulate' && entity_metadata_wrapper('node', $contexts['panelizer']->data)->body->format->value() === 'asciidoc_import') {
+    $content->content = [];
+  }
+}
+
+/**
+ * Implements hook_comment_delete().
  */
 function drupalorg_comment_delete($comment) {
-  // Ensure comment has a spam flag before putting it in comment delete table
- $commentspamflagged = NULL;
- $commentspamflagged=flag_get_entity_flags('comment', $comment->cid, 'drupalorg_comment_spam');
-  if ($commentspamflagged[1] == TRUE) {
-//Copy comment data over to comment_deleted table because it was flagged as spam
-    $comment_delete = db_insert('comment_deleted')
-      ->fields(array('cid' => $comment->cid,
+  // Ensure comment has a spam flag before putting it in comment delete table.
+  if (flag_get_entity_flags('comment', $comment->cid, 'drupalorg_comment_spam')) {
+    // Copy comment data over to drupalorg_comment_deleted table because it was
+    // flagged as spam.
+    db_insert('drupalorg_comment_deleted')->fields([
+      'cid' => $comment->cid,
       'pid' => $comment->pid,
       'nid' => $comment->nid,
       'uid' => $comment->uid,
@@ -5034,7 +5033,64 @@ function drupalorg_comment_delete($comment) {
       'mail' => $comment->mail,
       'homepage' => $comment->homepage,
       'language' => $comment->language,
-      'comment_body' => $comment->comment_body['und'][0]['safe_value']
-    ))->execute();
-  };
-};
+      'comment_body' => $comment->comment_body['und'][0]['safe_value'],
+    ])->execute();
+  }
+}
+
+/**
+ * Implements hook_element_info_alter().
+ *
+ * Sets the default format if the user’s default format is filtered_html.
+ */
+function drupalorg_element_info_alter(&$type) {
+  array_unshift($type['text_format']['#pre_render'], 'drupalorg_process_filter_format');
+}
+
+/**
+ * Callback function to process the filter format and remove the fieldset.
+ */
+function drupalorg_process_filter_format($element) {
+  // If no format is found, exit.
+  if (!isset($element['format'])) {
+    return $element;
+  }
+
+  // By default, disable ckeditor.
+  $element['value']['#wysiwyg'] = FALSE;
+
+  // Disable the summary value wysiwyg.
+  if (isset($element['summary'])) {
+    $element['summary']['#wysiwyg'] = FALSE;
+  }
+
+  // Disable Depricated input filter, unless its already being used
+  if ($element['format']['format']['#default_value'] != '5') {
+    unset($element['format']['format']['#options'][5]);
+  }
+
+  // Progressively enable ckeditor for specific entities & bundles / CTs.
+  if (isset($element['#entity_type'])) {
+    $bundles_to_enable = ['page', 'post', 'section', 'guide', 'documentation'];
+
+    switch ($element['#entity_type']) {
+      case 'node':
+        if (in_array($element['#bundle'], $bundles_to_enable)) {
+          $element['value']['#wysiwyg'] = TRUE;
+          // Disable the summary value wysiwyg.
+          if (isset($element['summary'])) {
+            $element['summary']['#wysiwyg'] = TRUE;
+          }
+        }
+        break;
+
+      case 'comment':
+        if (in_array(str_replace('comment_node_', '', $element['#bundle']), $bundles_to_enable)) {
+          $element['value']['#wysiwyg'] = TRUE;
+        }
+        break;
+    }
+  }
+
+  return $element;
+}
