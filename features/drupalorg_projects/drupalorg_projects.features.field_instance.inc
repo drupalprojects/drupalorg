@@ -133,6 +133,78 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'field_collection_item-field_release_files-field_release_file_sha1'.
+  $field_instances['field_collection_item-field_release_files-field_release_file_sha1'] = array(
+    'bundle' => 'field_release_files',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_release_file_sha1',
+    'label' => 'Release file SHA-1 hash',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'text_default',
+      ),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_release_files-field_release_file_sha256'.
+  $field_instances['field_collection_item-field_release_files-field_release_file_sha256'] = array(
+    'bundle' => 'field_release_files',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_release_file_sha256',
+    'label' => 'Release file SHA-256 hash',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => 'text_default',
+      ),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
   // 'field_collection_item-field_supporting_organizations-field_how_they_helped'.
   $field_instances['field_collection_item-field_supporting_organizations-field_how_they_helped'] = array(
     'bundle' => 'field_supporting_organizations',
