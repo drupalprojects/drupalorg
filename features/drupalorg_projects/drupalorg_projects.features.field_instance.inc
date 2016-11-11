@@ -11944,8 +11944,8 @@ function drupalorg_projects_field_default_field_instances() {
   t('For definitions of maintenance and development statuses, see <a href="http://drupal.org/node/314492">Maintenance of your project</a>.');
   t('Has project releases');
   t('Homepage');
-  t('How they helped');
   t('How is this release built? Can be either \'Static\' if the files associated with it are built once and remain unchanged (e.g. an official release from a tag), or \'Dynamic\' if the files are regularly rebuilt and updated (e.g. a development snapshot rebuilt from the end of a branch).');
+  t('How they helped');
   t('Images');
   t('Last packaged commit hash.');
   t('License');
@@ -11963,6 +11963,8 @@ function drupalorg_projects_field_default_field_instances() {
   t('Project type');
   t('Recommended');
   t('Release file');
+  t('Release file SHA-1 hash');
+  t('Release file SHA-256 hash');
   t('Release file downloads');
   t('Release file hash');
   t('Release files');

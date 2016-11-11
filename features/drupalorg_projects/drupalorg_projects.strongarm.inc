@@ -244,9 +244,25 @@ function drupalorg_projects_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'title' => array(
+          'weight' => '-5',
+        ),
+        'path' => array(
+          'weight' => '30',
+        ),
+        'redirect' => array(
+          'weight' => '30',
+        ),
+      ),
       'display' => array(),
     ),
   );
@@ -288,9 +304,25 @@ function drupalorg_projects_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+        'path' => array(
+          'weight' => '12',
+        ),
+        'redirect' => array(
+          'weight' => '11',
+        ),
+      ),
       'display' => array(),
     ),
   );
@@ -332,9 +364,25 @@ function drupalorg_projects_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+        'path' => array(
+          'weight' => '13',
+        ),
+        'redirect' => array(
+          'weight' => '14',
+        ),
+      ),
       'display' => array(),
     ),
   );
@@ -402,9 +450,25 @@ function drupalorg_projects_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+        'path' => array(
+          'weight' => '11',
+        ),
+        'redirect' => array(
+          'weight' => '12',
+        ),
+      ),
       'display' => array(),
     ),
   );
@@ -446,9 +510,25 @@ function drupalorg_projects_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+        'path' => array(
+          'weight' => '11',
+        ),
+        'redirect' => array(
+          'weight' => '12',
+        ),
+      ),
       'display' => array(),
     ),
   );
@@ -490,9 +570,25 @@ function drupalorg_projects_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'title' => array(
+          'weight' => '-5',
+        ),
+        'path' => array(
+          'weight' => '30',
+        ),
+        'redirect' => array(
+          'weight' => '30',
+        ),
+      ),
       'display' => array(),
     ),
   );
