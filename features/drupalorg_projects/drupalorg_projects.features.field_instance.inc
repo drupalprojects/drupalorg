@@ -11,6 +11,120 @@ function drupalorg_projects_field_default_field_instances() {
   $field_instances = array();
 
   // Exported field_instance:
+  // 'field_collection_item-field_project_docs-field_earliest_applicable_versio'.
+  $field_instances['field_collection_item-field_project_docs-field_earliest_applicable_versio'] = array(
+    'bundle' => 'field_project_docs',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_earliest_applicable_versio',
+    'label' => 'Applicable from',
+    'required' => 1,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 10,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_project_docs-field_latest_applicable_version'.
+  $field_instances['field_collection_item-field_project_docs-field_latest_applicable_version'] = array(
+    'bundle' => 'field_project_docs',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_latest_applicable_version',
+    'label' => 'Applicable up to',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 10,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_project_docs-field_project_doc_guide_name'.
+  $field_instances['field_collection_item-field_project_docs-field_project_doc_guide_name'] = array(
+    'bundle' => 'field_project_docs',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_project_doc_guide_name',
+    'label' => 'Documentation guide',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 25,
+      ),
+      'type' => 'entityreference_autocomplete',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance:
   // 'field_collection_item-field_release_files-field_release_file'.
   $field_instances['field_collection_item-field_release_files-field_release_file'] = array(
     'bundle' => 'field_release_files',
@@ -1807,7 +1921,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 20,
+        'weight' => 21,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -1872,7 +1986,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 18,
+        'weight' => 19,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -1965,7 +2079,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -2030,7 +2144,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -2091,7 +2205,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 17,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -2159,6 +2273,66 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-project_distribution-field_project_docs'.
+  $field_instances['node-project_distribution-field_project_docs'] = array(
+    'bundle' => 'project_distribution',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Enter branch/release version this guide is applicable for. Add a trailing + (e.g. <em>8.x-1.0+</em>) to indicate the guide is applicable for all versions after 8.x-1.0, or specify an ‘up to’ version.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_project_docs',
+    'label' => 'Project documentation',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 42,
+    ),
+  );
+
   // Exported field_instance:
   // 'node-project_distribution-field_project_documentation'.
   $field_instances['node-project_distribution-field_project_documentation'] = array(
@@ -2171,7 +2345,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 16,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -2255,7 +2429,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -2322,7 +2496,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 13,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -2384,7 +2558,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 17,
+        'weight' => 18,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -2586,7 +2760,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -2649,7 +2823,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 15,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -2729,7 +2903,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -2791,7 +2965,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 14,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -2870,7 +3044,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 5,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -2930,7 +3104,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 20,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3063,7 +3237,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3124,7 +3298,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3258,7 +3432,7 @@ function drupalorg_projects_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3316,7 +3490,7 @@ function drupalorg_projects_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 0,
+      'weight' => 4,
     ),
   );
 
@@ -3331,7 +3505,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 20,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3380,7 +3554,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'field_extrawidgets',
       'settings' => array(),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 31,
+      'weight' => 13,
     ),
   );
 
@@ -3395,7 +3569,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 18,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3487,7 +3661,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 7,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3552,7 +3726,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 8,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3613,7 +3787,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 16,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3681,6 +3855,66 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-project_drupalorg-field_project_docs'.
+  $field_instances['node-project_drupalorg-field_project_docs'] = array(
+    'bundle' => 'project_drupalorg',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Enter branch/release version this guide is applicable for. Add a trailing + (e.g. <em>8.x-1.0+</em>) to indicate the guide is applicable for all versions after 8.x-1.0, or specify an ‘up to’ version.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_project_docs',
+    'label' => 'Project documentation',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 5,
+    ),
+  );
+
   // Exported field_instance:
   // 'node-project_drupalorg-field_project_documentation'.
   $field_instances['node-project_drupalorg-field_project_documentation'] = array(
@@ -3693,7 +3927,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 15,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3777,7 +4011,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 6,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3824,7 +4058,7 @@ function drupalorg_projects_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 3,
+      'weight' => 2,
     ),
   );
 
@@ -3844,7 +4078,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3905,7 +4139,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 17,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -3988,7 +4222,7 @@ function drupalorg_projects_field_default_field_instances() {
           'image_style' => 'grid-3',
         ),
         'type' => 'image',
-        'weight' => -1,
+        'weight' => 0,
       ),
       'full' => array(
         'label' => 'hidden',
@@ -4090,7 +4324,7 @@ function drupalorg_projects_field_default_field_instances() {
         'use_default_image' => 0,
       ),
       'type' => 'image_image',
-      'weight' => -1,
+      'weight' => 3,
     ),
     'widget_type' => 'imagefield_widget',
   );
@@ -4107,7 +4341,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -4155,7 +4389,7 @@ function drupalorg_projects_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 2,
+      'weight' => 1,
     ),
   );
 
@@ -4170,7 +4404,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 14,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -4250,7 +4484,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 2,
+        'weight' => 5,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -4296,7 +4530,7 @@ function drupalorg_projects_field_default_field_instances() {
         'size' => 128,
       ),
       'type' => 'machine_name_default',
-      'weight' => -2,
+      'weight' => 2,
     ),
   );
 
@@ -4312,7 +4546,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 13,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -4391,7 +4625,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 4,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -4435,7 +4669,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => -3,
+      'weight' => 1,
     ),
   );
 
@@ -4451,7 +4685,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 19,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -4579,7 +4813,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -4639,7 +4873,7 @@ function drupalorg_projects_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_table',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'full' => array(
         'label' => 'hidden',
@@ -4697,7 +4931,7 @@ function drupalorg_projects_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 1,
+      'weight' => 5,
     ),
   );
 
@@ -4771,7 +5005,7 @@ function drupalorg_projects_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 4,
+      'weight' => 5,
     ),
   );
 
@@ -4786,7 +5020,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 21,
+        'weight' => 22,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -4835,7 +5069,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'field_extrawidgets',
       'settings' => array(),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 13,
+      'weight' => 12,
     ),
   );
 
@@ -4850,7 +5084,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 20,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -4942,7 +5176,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -5007,7 +5241,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -5068,7 +5302,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 20,
+        'weight' => 21,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -5136,6 +5370,66 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-project_module-field_project_docs'.
+  $field_instances['node-project_module-field_project_docs'] = array(
+    'bundle' => 'project_module',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Enter branch/release version this guide is applicable for. Add a trailing + (e.g. <em>8.x-1.0+</em>) to indicate the guide is applicable for all versions after 8.x-1.0, or specify an ‘up to’ version.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_project_docs',
+    'label' => 'Project documentation',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 15,
+    ),
+  );
+
   // Exported field_instance: 'node-project_module-field_project_documentation'.
   $field_instances['node-project_module-field_project_documentation'] = array(
     'bundle' => 'project_module',
@@ -5147,7 +5441,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 17,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -5231,7 +5525,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -5297,7 +5591,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 14,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -5358,7 +5652,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 18,
+        'weight' => 19,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -5543,7 +5837,7 @@ function drupalorg_projects_field_default_field_instances() {
         'use_default_image' => 0,
       ),
       'type' => 'image_image',
-      'weight' => 3,
+      'weight' => 4,
     ),
     'widget_type' => 'imagefield_widget',
   );
@@ -5560,7 +5854,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -5623,7 +5917,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 16,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -5702,7 +5996,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -5763,7 +6057,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 15,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -5842,7 +6136,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 5,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -5902,7 +6196,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 17,
+        'weight' => 18,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -6019,7 +6313,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'field_collection',
       'settings' => array(),
       'type' => 'field_collection_embed',
-      'weight' => 12,
+      'weight' => 11,
     ),
   );
 
@@ -6034,7 +6328,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -6094,7 +6388,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -6154,7 +6448,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 13,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -6272,7 +6566,7 @@ function drupalorg_projects_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 5,
+      'weight' => 7,
     ),
   );
 
@@ -7467,7 +7761,7 @@ function drupalorg_projects_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 0,
+      'weight' => 4,
     ),
   );
 
@@ -7482,7 +7776,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 20,
+        'weight' => 21,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -7531,7 +7825,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'field_extrawidgets',
       'settings' => array(),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 34,
+      'weight' => 14,
     ),
   );
 
@@ -7546,7 +7840,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 18,
+        'weight' => 19,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -7638,7 +7932,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -7703,7 +7997,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -7764,7 +8058,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 20,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -7832,6 +8126,66 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-project_theme-field_project_docs'.
+  $field_instances['node-project_theme-field_project_docs'] = array(
+    'bundle' => 'project_theme',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Enter branch/release version this guide is applicable for. Add a trailing + (e.g. <em>8.x-1.0+</em>) to indicate the guide is applicable for all versions after 8.x-1.0, or specify an ‘up to’ version.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_project_docs',
+    'label' => 'Project documentation',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 15,
+    ),
+  );
+
   // Exported field_instance: 'node-project_theme-field_project_documentation'.
   $field_instances['node-project_theme-field_project_documentation'] = array(
     'bundle' => 'project_theme',
@@ -7843,7 +8197,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 15,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -7927,7 +8281,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -7993,7 +8347,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 13,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -8054,7 +8408,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 17,
+        'weight' => 18,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -8239,7 +8593,7 @@ function drupalorg_projects_field_default_field_instances() {
         'use_default_image' => 0,
       ),
       'type' => 'image_image',
-      'weight' => -1,
+      'weight' => 3,
     ),
     'widget_type' => 'imagefield_widget',
   );
@@ -8256,7 +8610,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -8319,7 +8673,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 16,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -8398,7 +8752,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -8444,7 +8798,7 @@ function drupalorg_projects_field_default_field_instances() {
         'size' => 128,
       ),
       'type' => 'machine_name_default',
-      'weight' => -2,
+      'weight' => 2,
     ),
   );
 
@@ -8459,7 +8813,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 14,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -8538,7 +8892,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 5,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -8582,7 +8936,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => -3,
+      'weight' => 1,
     ),
   );
 
@@ -8597,7 +8951,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 17,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -8714,7 +9068,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'field_collection',
       'settings' => array(),
       'type' => 'field_collection_embed',
-      'weight' => 32,
+      'weight' => 13,
     ),
   );
 
@@ -8729,7 +9083,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -8789,7 +9143,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -8907,7 +9261,7 @@ function drupalorg_projects_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 1,
+      'weight' => 5,
     ),
   );
 
@@ -8923,7 +9277,7 @@ function drupalorg_projects_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -8979,7 +9333,7 @@ function drupalorg_projects_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 0,
+      'weight' => 4,
     ),
   );
 
@@ -8994,7 +9348,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 21,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -9043,7 +9397,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'field_extrawidgets',
       'settings' => array(),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 34,
+      'weight' => 14,
     ),
   );
 
@@ -9059,7 +9413,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 19,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -9152,7 +9506,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 8,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -9217,7 +9571,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 9,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -9278,7 +9632,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 17,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -9346,6 +9700,66 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-project_theme_engine-field_project_docs'.
+  $field_instances['node-project_theme_engine-field_project_docs'] = array(
+    'bundle' => 'project_theme_engine',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_project_docs',
+    'label' => 'Project documentation',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 15,
+    ),
+  );
+
   // Exported field_instance:
   // 'node-project_theme_engine-field_project_documentation'.
   $field_instances['node-project_theme_engine-field_project_documentation'] = array(
@@ -9358,7 +9772,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 16,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -9442,7 +9856,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 7,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -9509,7 +9923,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 13,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -9571,7 +9985,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 18,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -9654,7 +10068,7 @@ function drupalorg_projects_field_default_field_instances() {
           'image_style' => 'grid-3',
         ),
         'type' => 'image',
-        'weight' => -1,
+        'weight' => 0,
       ),
       'full' => array(
         'label' => 'hidden',
@@ -9756,7 +10170,7 @@ function drupalorg_projects_field_default_field_instances() {
         'use_default_image' => 0,
       ),
       'type' => 'image_image',
-      'weight' => -1,
+      'weight' => 3,
     ),
     'widget_type' => 'imagefield_widget',
   );
@@ -9773,7 +10187,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 10,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -9836,7 +10250,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 15,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -9916,7 +10330,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 2,
+        'weight' => 6,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -9962,7 +10376,7 @@ function drupalorg_projects_field_default_field_instances() {
         'size' => 128,
       ),
       'type' => 'machine_name_default',
-      'weight' => -2,
+      'weight' => 2,
     ),
   );
 
@@ -9978,7 +10392,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 14,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10057,7 +10471,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 5,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10101,7 +10515,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => -3,
+      'weight' => 1,
     ),
   );
 
@@ -10117,7 +10531,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 20,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10189,7 +10603,7 @@ function drupalorg_projects_field_default_field_instances() {
           'view_mode' => 'full',
         ),
         'type' => 'field_collection_fields',
-        'weight' => 13,
+        'weight' => 3,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10234,7 +10648,7 @@ function drupalorg_projects_field_default_field_instances() {
       'module' => 'field_collection',
       'settings' => array(),
       'type' => 'field_collection_embed',
-      'weight' => 32,
+      'weight' => 13,
     ),
   );
 
@@ -10250,7 +10664,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10311,7 +10725,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 12,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10371,7 +10785,7 @@ function drupalorg_projects_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_table',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'full' => array(
         'label' => 'hidden',
@@ -10429,7 +10843,7 @@ function drupalorg_projects_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 1,
+      'weight' => 5,
     ),
   );
 
@@ -10445,7 +10859,7 @@ function drupalorg_projects_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10516,7 +10930,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 20,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10581,7 +10995,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 18,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10674,7 +11088,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 7,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10739,7 +11153,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 8,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10800,7 +11214,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 16,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10880,7 +11294,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 15,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -10964,7 +11378,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 6,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -11031,7 +11445,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -11092,7 +11506,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 17,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -11175,7 +11589,7 @@ function drupalorg_projects_field_default_field_instances() {
           'image_style' => 'grid-3',
         ),
         'type' => 'image',
-        'weight' => -1,
+        'weight' => 0,
       ),
       'full' => array(
         'label' => 'hidden',
@@ -11294,7 +11708,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -11357,7 +11771,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 14,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -11437,7 +11851,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 2,
+        'weight' => 5,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -11499,7 +11913,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 13,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -11578,7 +11992,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 4,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -11638,7 +12052,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 19,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -11766,7 +12180,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -11826,7 +12240,7 @@ function drupalorg_projects_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_table',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'full' => array(
         'label' => 'hidden',
@@ -11928,6 +12342,8 @@ function drupalorg_projects_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('<a href="/documentation/releases/types">What is a release type?</a>');
+  t('Applicable from');
+  t('Applicable up to');
   t('Changelog');
   t('Components');
   t('Core compatibility');
@@ -11937,9 +12353,11 @@ function drupalorg_projects_field_default_field_instances() {
   t('Description');
   t('Development status');
   t('Documentation');
+  t('Documentation guide');
   t('Download count');
   t('Enable issue tracker');
   t('Enter a description of this release, such as a list of the major changes or updates.');
+  t('Enter branch/release version this guide is applicable for. Add a trailing + (e.g. <em>8.x-1.0+</em>) to indicate the guide is applicable for all versions after 8.x-1.0, or specify an ‘up to’ version.');
   t('File attachments');
   t('For definitions of maintenance and development statuses, see <a href="http://drupal.org/node/314492">Maintenance of your project</a>.');
   t('Has project releases');
@@ -11960,6 +12378,7 @@ function drupalorg_projects_field_default_field_instances() {
   t('Organization');
   t('Packaged Git sha1');
   t('Project');
+  t('Project documentation');
   t('Project type');
   t('Recommended');
   t('Release file');
