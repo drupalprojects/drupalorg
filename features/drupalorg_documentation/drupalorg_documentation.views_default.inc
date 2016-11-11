@@ -11,6 +11,118 @@ function drupalorg_documentation_views_default_views() {
   $export = array();
 
   $view = new view();
+  $view->name = 'documentation_project_documentation';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'Documentation-Project Documentation';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Related projects';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'title' => 'title',
+    'field_earliest_applicable_versio' => 'field_earliest_applicable_versio',
+    'field_latest_applicable_version' => 'field_latest_applicable_version',
+  );
+  /* Relationship: Content: Project documentation (field_project_docs) */
+  $handler->display->display_options['relationships']['field_project_docs_value']['id'] = 'field_project_docs_value';
+  $handler->display->display_options['relationships']['field_project_docs_value']['table'] = 'field_data_field_project_docs';
+  $handler->display->display_options['relationships']['field_project_docs_value']['field'] = 'field_project_docs_value';
+  $handler->display->display_options['relationships']['field_project_docs_value']['required'] = TRUE;
+  $handler->display->display_options['relationships']['field_project_docs_value']['delta'] = '-1';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_project_doc_guide_name_target_id']['id'] = 'field_project_doc_guide_name_target_id';
+  $handler->display->display_options['relationships']['field_project_doc_guide_name_target_id']['table'] = 'field_data_field_project_doc_guide_name';
+  $handler->display->display_options['relationships']['field_project_doc_guide_name_target_id']['field'] = 'field_project_doc_guide_name_target_id';
+  $handler->display->display_options['relationships']['field_project_doc_guide_name_target_id']['relationship'] = 'field_project_docs_value';
+  $handler->display->display_options['relationships']['field_project_doc_guide_name_target_id']['required'] = TRUE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  /* Field: Field collection item: Applicable from */
+  $handler->display->display_options['fields']['field_earliest_applicable_versio']['id'] = 'field_earliest_applicable_versio';
+  $handler->display->display_options['fields']['field_earliest_applicable_versio']['table'] = 'field_data_field_earliest_applicable_versio';
+  $handler->display->display_options['fields']['field_earliest_applicable_versio']['field'] = 'field_earliest_applicable_versio';
+  $handler->display->display_options['fields']['field_earliest_applicable_versio']['relationship'] = 'field_project_docs_value';
+  $handler->display->display_options['fields']['field_earliest_applicable_versio']['label'] = '';
+  $handler->display->display_options['fields']['field_earliest_applicable_versio']['element_label_colon'] = FALSE;
+  /* Field: Field collection item: Applicable up to */
+  $handler->display->display_options['fields']['field_latest_applicable_version']['id'] = 'field_latest_applicable_version';
+  $handler->display->display_options['fields']['field_latest_applicable_version']['table'] = 'field_data_field_latest_applicable_version';
+  $handler->display->display_options['fields']['field_latest_applicable_version']['field'] = 'field_latest_applicable_version';
+  $handler->display->display_options['fields']['field_latest_applicable_version']['relationship'] = 'field_project_docs_value';
+  $handler->display->display_options['fields']['field_latest_applicable_version']['label'] = '';
+  $handler->display->display_options['fields']['field_latest_applicable_version']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_latest_applicable_version']['alter']['text'] = ' - [field_latest_applicable_version] ';
+  $handler->display->display_options['fields']['field_latest_applicable_version']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_latest_applicable_version']['type'] = 'text_plain';
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['relationship'] = 'field_project_doc_guide_name_target_id';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['nid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['nid']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['nid']['validate_options']['types'] = array(
+    'documentation' => 'documentation',
+    'guide' => 'guide',
+  );
+  $handler->display->display_options['arguments']['nid']['validate_options']['access'] = TRUE;
+
+  /* Display: Content pane */
+  $handler = $view->new_display('panel_pane', 'Content pane', 'project_documentation_pane');
+  $handler->display->display_options['argument_input'] = array(
+    'nid' => array(
+      'type' => 'context',
+      'context' => 'entity:node.nid',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Nid',
+    ),
+  );
+  $translatables['documentation_project_documentation'] = array(
+    t('Master'),
+    t('Related projects'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('field collection item from field_project_docs'),
+    t('Content entity referenced from field_project_doc_guide_name'),
+    t(' - [field_latest_applicable_version] '),
+    t('All'),
+    t('Content pane'),
+    t('View panes'),
+  );
+  $export['documentation_project_documentation'] = $view;
+
+  $view = new view();
   $view->name = 'documentation_related_content';
   $view->description = '';
   $view->tag = 'default';
