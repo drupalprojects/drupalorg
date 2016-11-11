@@ -11282,73 +11282,6 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-project_translation-field_project_docs'.
-  $field_instances['node-project_translation-field_project_docs'] = array(
-    'bundle' => 'project_translation',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Enter branch/release version this guide is applicable for. Add trailing + (e.g. 8.0.1+) to indicate the guide is applicable for all versions after 8.0.1, or specify an \'up to\' version.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'field_collection',
-        'settings' => array(
-          'add' => 'Add',
-          'delete' => 'Delete',
-          'description' => TRUE,
-          'edit' => 'Edit',
-          'view_mode' => 'full',
-        ),
-        'type' => 'field_collection_view',
-        'weight' => 3,
-      ),
-      'issuemetadata' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'nodechanges' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'related_content' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'rss' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_project_docs',
-    'label' => 'Project Documentation',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'field_collection',
-      'settings' => array(),
-      'type' => 'field_collection_embed',
-      'weight' => 42,
-    ),
-  );
-
   // Exported field_instance:
   // 'node-project_translation-field_project_documentation'.
   $field_instances['node-project_translation-field_project_documentation'] = array(
@@ -12445,7 +12378,6 @@ function drupalorg_projects_field_default_field_instances() {
   t('Organization');
   t('Packaged Git sha1');
   t('Project');
-  t('Project Documentation');
   t('Project documentation');
   t('Project type');
   t('Recommended');
