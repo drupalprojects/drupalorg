@@ -2278,7 +2278,7 @@ function drupalorg_projects_field_default_field_instances() {
     'bundle' => 'project_distribution',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Enter branch/release version this guide is applicable for. Add trailing + (e.g. 8.0.1+) to indicate the guide is applicable for all versions after 8.0.1, or specify an \'up to\' version.',
+    'description' => 'Enter branch/release version this guide is applicable for. Add a trailing + (e.g. <em>8.x-1.0+</em>) to indicate the guide is applicable for all versions after 8.x-1.0, or specify an ‘up to’ version.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -3860,7 +3860,7 @@ function drupalorg_projects_field_default_field_instances() {
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Enter branch/release version this guide is applicable for. Add trailing + (e.g. 8.0.1+) to indicate the guide is applicable for all versions after 8.0.1, or specify an \'up to\' version.',
+    'description' => 'Enter branch/release version this guide is applicable for. Add a trailing + (e.g. <em>8.x-1.0+</em>) to indicate the guide is applicable for all versions after 8.x-1.0, or specify an ‘up to’ version.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -5375,7 +5375,7 @@ function drupalorg_projects_field_default_field_instances() {
     'bundle' => 'project_module',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Enter branch/release version this guide is applicable for. Add trailing + (e.g. 8.0.1+) to indicate the guide is applicable for all versions after 8.0.1, or specify an \'up to\' version.',
+    'description' => 'Enter branch/release version this guide is applicable for. Add a trailing + (e.g. <em>8.x-1.0+</em>) to indicate the guide is applicable for all versions after 8.x-1.0, or specify an ‘up to’ version.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -8131,7 +8131,7 @@ function drupalorg_projects_field_default_field_instances() {
     'bundle' => 'project_theme',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Enter branch/release version this guide is applicable for. Add trailing + (e.g. 8.0.1+) to indicate the guide is applicable for all versions after 8.0.1, or specify an \'up to\' version.',
+    'description' => 'Enter branch/release version this guide is applicable for. Add a trailing + (e.g. <em>8.x-1.0+</em>) to indicate the guide is applicable for all versions after 8.x-1.0, or specify an ‘up to’ version.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -12357,7 +12357,7 @@ function drupalorg_projects_field_default_field_instances() {
   t('Download count');
   t('Enable issue tracker');
   t('Enter a description of this release, such as a list of the major changes or updates.');
-  t('Enter branch/release version this guide is applicable for. Add trailing + (e.g. 8.0.1+) to indicate the guide is applicable for all versions after 8.0.1, or specify an \'up to\' version.');
+  t('Enter branch/release version this guide is applicable for. Add a trailing + (e.g. <em>8.x-1.0+</em>) to indicate the guide is applicable for all versions after 8.x-1.0, or specify an ‘up to’ version.');
   t('File attachments');
   t('For definitions of maintenance and development statuses, see <a href="http://drupal.org/node/314492">Maintenance of your project</a>.');
   t('Has project releases');
