@@ -1212,7 +1212,7 @@ function drupalorg_library_alter(&$libraries, $module) {
  * Implements hook_ctools_plugin_directory().
  */
 function drupalorg_ctools_plugin_directory($owner, $plugin_type) {
-  if ($owner === 'ctools' && $plugin_type === 'content_types') {
+  if ($owner === 'ctools' && in_array($plugin_type, ['content_types', 'access'], TRUE)) {
     return 'plugins/' . $plugin_type;
   }
   elseif ($owner === 'versioncontrol' && $plugin_type === 'webviewer_url_handlers') {
