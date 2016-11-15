@@ -23,14 +23,14 @@ function drupalorg_request_header_ctools_access_settings($form, &$form_state, $c
   $form['settings']['header'] = [
     '#type' => 'textfield',
     '#title' => t('Header'),
-    '#default_value' => $conf['header'],
+    '#default_value' => isset($conf['header']) ? $conf['header'] : '',
     '#description' => t('Such as “Accept”, “GeoIP-continent”, or “GeoIP-country”. See <a href="https://docs.fastly.com/guides/vcl/geoip-related-vcl-features">Fastly GeoIP documentation</a>.'),
   ];
 
   $form['settings']['pattern'] = [
     '#type' => 'textfield',
     '#title' => t('Match pattern'),
-    '#default_value' => $conf['pattern'],
+    '#default_value' => isset($conf['pattern']) ? $conf['pattern'] : '/^$/',
     '#description' => t('<a href="http://www.php.net/manual/en/pcre.pattern.php">Regular expression</a> pattern that should be matched for selected header element, i.e. “/Mozilla/” or “/EU/”'),
   ];
 
@@ -42,7 +42,12 @@ function drupalorg_request_header_ctools_access_settings($form, &$form_state, $c
  */
 function drupalorg_request_header_ctools_access_check($conf, $context) {
   $header = 'HTTP_' . str_replace('-', '_', drupal_strtoupper($conf['header']));
-  return isset($_SERVER[$header]) && preg_match($conf['pattern'], $_SERVER[$header]);
+  if (isset($_SERVER[$header])) {
+    drupal_add_http_header('X-Vary-' . $conf['header'], $_SERVER[$header]);
+    return preg_match($conf['pattern'], $_SERVER[$header]);
+  }
+  drupal_add_http_header('X-Vary-' . $conf['header'], '');
+  return FALSE;
 }
 
 /**
