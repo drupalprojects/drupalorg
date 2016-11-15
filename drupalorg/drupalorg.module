@@ -3808,6 +3808,7 @@ function drupalorg_user_view($account, $view_mode) {
       foreach ([10000, 5000, 1000, 500, 100, 50, 10, 5] as $threshold) {
         if ($count > $threshold) {
           $drupalorg_documentation = t('Over @count edits', ['@count' => $threshold]);
+          break;
         }
       }
     }
