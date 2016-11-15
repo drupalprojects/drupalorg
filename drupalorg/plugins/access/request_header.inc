@@ -41,13 +41,15 @@ function drupalorg_request_header_ctools_access_settings($form, &$form_state, $c
  * Check for access.
  */
 function drupalorg_request_header_ctools_access_check($conf, $context) {
+  // Don’t use Drupal’s page cache.
+  drupal_page_is_cacheable(FALSE);
+  // We still want to vary on cookie.
+  drupal_add_http_header('Vary', 'Cookie', TRUE);
+  // Vary based on header we are checking.
+  drupal_add_http_header('Vary', $conf['header'], TRUE);
+  // Check the header.
   $header = 'HTTP_' . str_replace('-', '_', drupal_strtoupper($conf['header']));
-  if (isset($_SERVER[$header])) {
-    drupal_add_http_header('X-Vary-' . $conf['header'], $_SERVER[$header]);
-    return preg_match($conf['pattern'], $_SERVER[$header]);
-  }
-  drupal_add_http_header('X-Vary-' . $conf['header'], '');
-  return FALSE;
+  return isset($_SERVER[$header]) && preg_match($conf['pattern'], $_SERVER[$header]);
 }
 
 /**
