@@ -10,9 +10,6 @@
 // BEGIN CONFIGURATION
 // -------------------
 
-// The full path of the drush executable.
-define('PROJECT_VERIFY_PACKAGE_DRUSH_BIN', '/usr/bin/php /var/www/drupal.org/tools/drush5/drush.php');
-
 // The full path of the directory that contains the drush_make
 // extensions.
 define('PROJECT_VERIFY_PACKAGE_DRUPALORG_DRUSH_PATH', '/var/www/drupal.org/tools/drupalorg_drush');
@@ -56,7 +53,7 @@ function project_verify_package_run_drush_via_pipe($command, $input) {
   // drush expects a terminal, so give it one.
   $env = array('TERM' => 'vt100');
 
-  $process = proc_open(PROJECT_VERIFY_PACKAGE_DRUSH_BIN . ' --include=' . PROJECT_VERIFY_PACKAGE_DRUPALORG_DRUSH_PATH . " $command -", $descriptorspec, $pipes, NULL, $env);
+  $process = proc_open('drush --include=' . PROJECT_VERIFY_PACKAGE_DRUPALORG_DRUSH_PATH . " $command -", $descriptorspec, $pipes, NULL, $env);
 
   if (is_resource($process)) {
     // $pipes now looks like this:
