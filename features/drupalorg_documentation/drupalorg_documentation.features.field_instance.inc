@@ -12,7 +12,6 @@ function drupalorg_documentation_field_default_field_instances() {
 
   // Exported field_instance: 'comment-comment_node_documentation-comment_body'.
   $field_instances['comment-comment_node_documentation-comment_body'] = array(
-    'bueditor_profile' => -1,
     'bundle' => 'comment_node_documentation',
     'default_value' => NULL,
     'deleted' => 0,
@@ -31,14 +30,14 @@ function drupalorg_documentation_field_default_field_instances() {
     'label' => 'Explain your changes',
     'required' => 1,
     'settings' => array(
-      'text_processing' => 1,
+      'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 3,
       ),
       'type' => 'text_textarea',
       'weight' => 0,
@@ -81,7 +80,6 @@ function drupalorg_documentation_field_default_field_instances() {
 
   // Exported field_instance: 'comment-comment_node_guide-comment_body'.
   $field_instances['comment-comment_node_guide-comment_body'] = array(
-    'bueditor_profile' => -1,
     'bundle' => 'comment_node_guide',
     'default_value' => NULL,
     'deleted' => 0,
@@ -100,14 +98,14 @@ function drupalorg_documentation_field_default_field_instances() {
     'label' => 'Explain your changes',
     'required' => 1,
     'settings' => array(
-      'text_processing' => 1,
+      'text_processing' => 0,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 3,
       ),
       'type' => 'text_textarea',
       'weight' => 0,
