@@ -27,7 +27,7 @@ function drupalorg_documentation_feeds_importer_default() {
         'copyright_file' => 'copyright.html',
         'source_directory' => '/usr/local/user_guide_source/source/',
         'source_field' => 'field_asciidoc_source_file',
-        'source_message' => 'This page is generated from <a href="http://asciidoc.org/">AsciiDoc</a> source from the <a href="https://www.drupal.org/project_user_guide">User Guide</a>. To propose a change, edit the source and attach the file to a <a href="https://www.drupal.org/node/add/project_issue/user_guide">new issue in the User Guide project</a>.',
+        'source_message' => 'This page is generated from <a href="http://asciidoc.org/">AsciiDoc</a> source from the <a href="https://www.drupal.org/project/user_guide">User Guide</a>. To propose a change, edit the source and attach the file to a <a href="https://www.drupal.org/node/add/project_issue/user_guide">new issue in the User Guide project</a>.',
         'delete_uploaded_file' => FALSE,
         'directory' => 'public://feeds',
         'allowed_schemes' => array(
@@ -180,7 +180,7 @@ function drupalorg_documentation_feeds_importer_default() {
         'copyright_file' => 'copyright.html',
         'source_directory' => '/usr/local/user_guide_source/guidelines',
         'source_field' => 'field_asciidoc_source_file',
-        'source_message' => 'This page is generated from <a href="http://asciidoc.org/">AsciiDoc</a> source from the <a href="https://www.drupal.org/project_user_guide">User Guide</a>. To propose a change, edit the source and attach the file to a <a href="https://www.drupal.org/node/add/project_issue/user_guide">new issue in the User Guide project</a>.',
+        'source_message' => 'This page is generated from <a href="http://asciidoc.org/">AsciiDoc</a> source from the <a href="https://www.drupal.org/project/user_guide">User Guide</a>. To propose a change, edit the source and attach the file to a <a href="https://www.drupal.org/node/add/project_issue/user_guide">new issue in the User Guide project</a>.',
         'delete_uploaded_file' => FALSE,
         'directory' => 'public://feeds',
         'allowed_schemes' => array(
