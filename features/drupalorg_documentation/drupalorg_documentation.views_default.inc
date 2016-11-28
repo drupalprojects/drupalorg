@@ -651,26 +651,17 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['empty']['area']['content'] = 'No documentation pages found';
   $handler->display->display_options['empty']['area']['format'] = '1';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: OG membership: Node from OG membership */
-  $handler->display->display_options['relationships']['og_membership_related_node']['id'] = 'og_membership_related_node';
-  $handler->display->display_options['relationships']['og_membership_related_node']['table'] = 'og_membership';
-  $handler->display->display_options['relationships']['og_membership_related_node']['field'] = 'og_membership_related_node';
-  /* Relationship: OG membership: OG membership from Node */
-  $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
-  $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
-  $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
-  /* Relationship: OG membership: OG membership from Node group */
-  $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
-  $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
-  $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['og_group_ref_documentation_target_id']['id'] = 'og_group_ref_documentation_target_id';
   $handler->display->display_options['relationships']['og_group_ref_documentation_target_id']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_group_ref_documentation_target_id']['field'] = 'og_group_ref_documentation_target_id';
-  /* Relationship: Entity Reference: Referencing entity */
-  $handler->display->display_options['relationships']['reverse_og_group_ref_documentation_node']['id'] = 'reverse_og_group_ref_documentation_node';
-  $handler->display->display_options['relationships']['reverse_og_group_ref_documentation_node']['table'] = 'node';
-  $handler->display->display_options['relationships']['reverse_og_group_ref_documentation_node']['field'] = 'reverse_og_group_ref_documentation_node';
+  $handler->display->display_options['relationships']['og_group_ref_documentation_target_id']['required'] = TRUE;
+  /* Relationship: OG membership: OG membership from Node group */
+  $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['relationship'] = 'og_group_ref_documentation_target_id';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
@@ -760,16 +751,18 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['fields']['nothing_1']['alter']['path'] = 'node/[nid]/discuss';
   $handler->display->display_options['fields']['nothing_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Author uid */
-  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['table'] = 'node';
-  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['uid']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['uid']['validate']['type'] = 'user';
+  /* Contextual filter: OG membership: Entity id */
+  $handler->display->display_options['arguments']['etid']['id'] = 'etid';
+  $handler->display->display_options['arguments']['etid']['table'] = 'og_membership';
+  $handler->display->display_options['arguments']['etid']['field'] = 'etid';
+  $handler->display->display_options['arguments']['etid']['relationship'] = 'og_membership_rel_group';
+  $handler->display->display_options['arguments']['etid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['etid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['etid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['etid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['etid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['etid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['etid']['validate']['type'] = 'user';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -914,8 +907,6 @@ function drupalorg_documentation_views_default_views() {
     t('Search'),
     t('<h2>Documentation pages</h2>'),
     t('No documentation pages found'),
-    t('node from OG membership'),
-    t('Content referencing Content from og_group_ref_documentation'),
     t('Search by page title'),
     t('Status (field_documentation_status)'),
     t('Doc Guides Block'),
