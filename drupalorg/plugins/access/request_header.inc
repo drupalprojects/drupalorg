@@ -41,19 +41,7 @@ function drupalorg_request_header_ctools_access_settings($form, &$form_state, $c
  * Check for access.
  */
 function drupalorg_request_header_ctools_access_check($conf, $context) {
-  // Don’t use Drupal’s page cache.
-  drupal_page_is_cacheable(FALSE);
-  // We still want external caching.
-  if (user_is_anonymous() && variable_get('cache')) {
-    drupal_add_http_header('Cache-Control', 'public, max-age=' . variable_get('page_cache_maximum_age', 0));
-  }
-  // We still want to vary on cookie.
-  drupal_add_http_header('Vary', 'Cookie', TRUE);
-  // Vary based on header we are checking.
-  drupal_add_http_header('Vary', $conf['header'], TRUE);
-  // Check the header.
-  $header = 'HTTP_' . str_replace('-', '_', drupal_strtoupper($conf['header']));
-  return isset($_SERVER[$header]) && preg_match($conf['pattern'], $_SERVER[$header]);
+  return ($value = drupalorg_get_and_vary_header($conf['header'])) && preg_match($conf['pattern'], $value);
 }
 
 /**

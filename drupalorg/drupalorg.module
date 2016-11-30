@@ -5009,6 +5009,152 @@ function drupalorg_panels_pane_content_alter($content, $pane, $args, $contexts) 
   if ($pane->type === 'node_prepopulate' && entity_metadata_wrapper('node', $contexts['panelizer']->data)->body->format->value() === 'asciidoc_import') {
     $content->content = [];
   }
+
+  // Add lead capture to CTAs with pane admin title “Lead capture”.
+  if (isset($content->content['field_cta_body']) && $content->content['field_cta_body']['#object']->admin_title === 'Lead capture') {
+    $form = drupal_get_form('drupalorg_lead_capture_form');
+    $content->content['field_cta_body']['#suffix'] = drupal_render($form);
+  }
+}
+
+/**
+ * Sponsorship opportunity for industry landing pages.
+ */
+function drupalorg_lead_capture_form($form) {
+  $form['#action'] = 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+  $form['oid'] = [
+    '#type' => 'hidden',
+    '#value' => '00DA0000000ARBs',
+  ];
+  $form['retURL'] = [
+    '#type' => 'hidden',
+    '#value' => url(current_path(), ['absolute' => TRUE]),
+  ];
+  $form['first_name'] = [
+    '#type' => 'textfield',
+    '#title' => t('First name'),
+    '#maxlength' => 40,
+    '#size' => 20,
+  ];
+  $form['last_name'] = [
+    '#type' => 'textfield',
+    '#title' => t('Last name'),
+    '#maxlength' => 80,
+    '#size' => 20,
+  ];
+  $form['phone'] = [
+    '#type' => 'textfield',
+    '#title' => t('Phone'),
+    '#maxlength' => 40,
+    '#size' => 20,
+  ];
+  $form['email'] = [
+    '#type' => 'textfield',
+    '#title' => t('Email'),
+    '#maxlength' => 80,
+    '#size' => 20,
+  ];
+  $form['company'] = [
+    '#type' => 'textfield',
+    '#title' => t('Company'),
+    '#maxlength' => 40,
+    '#size' => 20,
+  ];
+  $form['city'] = [
+    '#type' => 'textfield',
+    '#title' => t('City'),
+    '#maxlength' => 40,
+    '#size' => 20,
+  ];
+  $form['state'] = [
+    '#type' => 'textfield',
+    '#title' => t('State/province'),
+    '#maxlength' => 20,
+    '#size' => 20,
+  ];
+  $form['country'] = [
+    '#type' => 'textfield',
+    '#title' => t('Country'),
+    '#maxlength' => 40,
+    '#size' => 20,
+  ];
+  if (user_is_logged_in()) {
+    $wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
+    $form['first_name']['#default_value'] = $wrapper->field_first_name->value();
+    $form['last_name']['#default_value'] = $wrapper->field_last_name->value();
+    $form['email']['#default_value'] = $wrapper->mail->value();
+    $form['country']['#default_value'] = $wrapper->field_country->value();
+  }
+  $form['00NA00000067Ahk'] = [
+    '#type' => 'select',
+    '#title' => t('Region'),
+    '#options' => [
+      'North America' => t('North America'),
+      'Europe' => t('Europe'),
+      'Asia Pacific' => t('Asia Pacific'),
+    ],
+  ];
+  if ($continent = drupalorg_get_and_vary_header('GeoIP-continent')) {
+    switch ($continent) {
+      case 'NA': // North America
+        $form['00NA00000067Ahk']['#default_value'] = 'North America';
+        break;
+
+      case 'EU': // Europe
+        $form['00NA00000067Ahk']['#default_value'] = 'Europe';
+        break;
+
+      case 'AS': // Asia
+      case 'OC': // Oceania
+        $form['00NA00000067Ahk']['#default_value'] = 'Asia Pacific';
+        break;
+    }
+  }
+  $form['00NA00000067AhfMAE'] = [
+    '#type' => 'textarea',
+    '#title' => t('Project description'),
+    '#rows' => 5,
+    '#resizable' => FALSE,
+  ];
+  $form['submit'] = [
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  ];
+
+  return $form;
+}
+
+/**
+ * Get a request header and set the reponse Vary header to cache accordingly.
+ *
+ * @param $header_name
+ *   Request header name like 'GeoIP-continent'.
+ * @return
+ *   If found, the request header value, or FALSE.
+ */
+function drupalorg_get_and_vary_header($header_name) {
+  static $called = FALSE;
+
+  if (!$called) {
+    $called = TRUE;
+    // Don’t use Drupal’s page cache.
+    drupal_page_is_cacheable(FALSE);
+    // We still want external caching.
+    if (user_is_anonymous() && variable_get('cache')) {
+      drupal_add_http_header('Cache-Control', 'public, max-age=' . variable_get('page_cache_maximum_age', 0));
+    }
+    // We still want to vary on cookie.
+    drupal_add_http_header('Vary', 'Cookie', TRUE);
+  }
+
+  // Vary based on header we are checking.
+  drupal_add_http_header('Vary', $header_name, TRUE);
+  // Check the header.
+  $header = 'HTTP_' . str_replace('-', '_', drupal_strtoupper($header_name));
+  if (isset($_SERVER[$header])) {
+    return $_SERVER[$header];
+  }
+  return FALSE;
 }
 
 /**
