@@ -396,6 +396,13 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
               return FALSE;
           }
           break;
+
+        case 'node':
+          switch ($field['field_name']) {
+            // Hide contribution rank from API and elsewhere.
+            case 'field_org_contribution_rank':
+              return FALSE;
+          }
       }
       break;
 
