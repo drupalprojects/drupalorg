@@ -44,27 +44,50 @@ function drush_drupalorg_org_credit() {
   foreach ($result as $row) {
     $credits[$row->organization][$row->nid] = TRUE;
   }
-  foreach (node_load_multiple(array_keys($credits)) as $node) {
-    $wrapper = entity_metadata_wrapper('node', $node);
-    if ($wrapper->field_org_issue_credit_count->value() != count($credits[$node->nid])) {
-      drush_log(dt('Updating @title', array('@title' => $node->title)));
-      $wrapper->field_org_issue_credit_count = count($credits[$node->nid]);
-      $node->revision = FALSE;
-      node_save($node);
-    }
-  }
 
-  // Clear any past credit.
+  // Update all organization.
   $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node')
+  $result = $query->entityCondition('entity_type', 'node')
     ->propertyCondition('type', 'organization')
-    ->propertyCondition('nid', array_keys($credits), 'NOT IN')
-    ->fieldCondition('field_org_issue_credit_count', 'value', 0, '>');
-  $result = $query->execute();
-  if (!empty($result)) {
-    foreach (node_load_multiple(array_keys($result['node'])) as $node) {
+    ->execute();
+  foreach (node_load_multiple(array_keys($result['node'])) as $node) {
+    $wrapper = entity_metadata_wrapper('node', $node);
+    $updated = FALSE;
+
+    $issue_credits = isset($credits[$node->nid]) ? count($credits[$node->nid]) : 0;
+    if ($wrapper->field_org_issue_credit_count->value() != $issue_credits) {
+      $wrapper->field_org_issue_credit_count = $issue_credits;
+      $updated = TRUE;
+    }
+
+    $weights = variable_get('drupalorg_org_credit_weights');
+    // Add issue credit.
+    $contribution_rank = $weights['issue credit'] * $wrapper->field_org_issue_credit_count->value();
+    // Add Association partnerships.
+    $contribution_rank += array_sum(array_intersect_key($weights['supporting partner'], array_flip($wrapper->field_organization_support->value())));
+    // Add Association membership.
+    $contribution_rank += $weights['membership'] * drupalorg_has_civimembership($node->title, 'Organization');
+    // Add D8 case studies.
+    $query = new EntityFieldQuery();
+    $contribution_rank += $weights['d8 case study'] * $query->entityCondition('entity_type', 'node')
+      ->propertyCondition('type', 'casestudy')
+      ->fieldCondition('field_developed_org', 'nid', $node->nid)
+      ->fieldCondition('taxonomy_vocabulary_5', 'tid', 20236) // D8
+      ->count()->execute();
+    // Add Projects supported.
+    $query = new EntityFieldQuery();
+    $contribution_rank += $weights['project supported'] * $query->entityCondition('entity_type', 'field_collection_item')
+      ->fieldCondition('field_organization', 'nid', $node->nid)
+      ->count()->execute();
+    // Round & store.
+    $contribution_rank = round($contribution_rank);
+    if ($wrapper->field_org_contribution_rank->value() != $contribution_rank) {
+      $wrapper->field_org_contribution_rank = $contribution_rank;
+      $updated = TRUE;
+    }
+
+    if ($updated) {
       drush_log(dt('Updating @title', array('@title' => $node->title)));
-      $wrapper->field_org_issue_credit_count = 0;
       $node->revision = FALSE;
       node_save($node);
     }
