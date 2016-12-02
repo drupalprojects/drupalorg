@@ -5037,6 +5037,10 @@ function drupalorg_lead_capture_form($form) {
     '#type' => 'hidden',
     '#value' => url(current_path(), ['absolute' => TRUE]),
   ];
+  $form['00NA00000067D9R'] = [
+    '#type' => 'hidden',
+    '#value' => url(current_path(), ['absolute' => TRUE]),
+  ];
   $form['first_name'] = [
     '#type' => 'textfield',
     '#title' => t('First name'),
