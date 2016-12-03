@@ -45,7 +45,7 @@ function drush_drupalorg_org_credit() {
     $credits[$row->organization][$row->nid] = TRUE;
   }
 
-  // Update all organization.
+  // Update all organizations.
   $query = new EntityFieldQuery();
   $result = $query->entityCondition('entity_type', 'node')
     ->propertyCondition('type', 'organization')

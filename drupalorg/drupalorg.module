@@ -401,7 +401,7 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
           switch ($field['field_name']) {
             // Hide contribution rank from API and elsewhere.
             case 'field_org_contribution_rank':
-              return FALSE;
+              return user_access('administer nodes', $account);
           }
       }
       break;
