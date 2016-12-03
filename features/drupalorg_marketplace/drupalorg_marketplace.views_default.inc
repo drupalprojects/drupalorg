@@ -61,17 +61,11 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  /* Sort criterion: Content: Org issue credit count (field_org_issue_credit_count) */
-  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['id'] = 'field_org_issue_credit_count_value';
-  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['table'] = 'field_data_field_org_issue_credit_count';
-  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['field'] = 'field_org_issue_credit_count_value';
-  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['order'] = 'DESC';
-  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['expose']['label'] = 'Contribution';
-  /* Sort criterion: Content: Drupal Association supporting program (field_organization_support) */
-  $handler->display->display_options['sorts']['field_organization_support_value']['id'] = 'field_organization_support_value';
-  $handler->display->display_options['sorts']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
-  $handler->display->display_options['sorts']['field_organization_support_value']['field'] = 'field_organization_support_value';
-  $handler->display->display_options['sorts']['field_organization_support_value']['order'] = 'DESC';
+  /* Sort criterion: Content: Org contribution rank (field_org_contribution_rank) */
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['id'] = 'field_org_contribution_rank_value';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['table'] = 'field_data_field_org_contribution_rank';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['field'] = 'field_org_contribution_rank_value';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['order'] = 'DESC';
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -224,7 +218,6 @@ function drupalorg_marketplace_views_default_views() {
     t('locations'),
     t('Title'),
     t('Updated date'),
-    t('Contribution'),
     t('A-Z'),
     t('All'),
     t('Organization name contains'),
@@ -355,17 +348,11 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  /* Sort criterion: Content: Org issue credit count (field_org_issue_credit_count) */
-  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['id'] = 'field_org_issue_credit_count_value';
-  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['table'] = 'field_data_field_org_issue_credit_count';
-  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['field'] = 'field_org_issue_credit_count_value';
-  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['order'] = 'DESC';
-  $handler->display->display_options['sorts']['field_org_issue_credit_count_value']['expose']['label'] = 'Contribution';
-  /* Sort criterion: Content: Drupal Association supporting program (field_organization_support) */
-  $handler->display->display_options['sorts']['field_organization_support_value']['id'] = 'field_organization_support_value';
-  $handler->display->display_options['sorts']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
-  $handler->display->display_options['sorts']['field_organization_support_value']['field'] = 'field_organization_support_value';
-  $handler->display->display_options['sorts']['field_organization_support_value']['order'] = 'DESC';
+  /* Sort criterion: Content: Org contribution rank (field_org_contribution_rank) */
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['id'] = 'field_org_contribution_rank_value';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['table'] = 'field_data_field_org_contribution_rank';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['field'] = 'field_org_contribution_rank_value';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['order'] = 'DESC';
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -486,7 +473,6 @@ function drupalorg_marketplace_views_default_views() {
     t('@total organizations provide Drupal services and have requested to be listed here.'),
     t('Title'),
     t('Updated date'),
-    t('Contribution'),
     t('A-Z'),
     t('All services'),
     t('Marketplace: %1'),

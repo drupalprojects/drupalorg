@@ -1544,6 +1544,7 @@ function drupalorg_admin_pages_views_default_views() {
     'field_organization_training_list' => 'field_organization_training_list',
     'field_org_marketplace_request' => 'field_org_marketplace_request',
     'field_organization_list_rule' => 'field_organization_list_rule',
+    'field_org_contribution_rank' => 'field_org_contribution_rank',
     'field_org_issue_credit_count' => 'field_org_issue_credit_count',
     'status' => 'status',
     'edit_node' => 'edit_node',
@@ -1628,9 +1629,16 @@ function drupalorg_admin_pages_views_default_views() {
       'separator' => '',
       'empty_column' => 1,
     ),
+    'field_org_contribution_rank' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 1,
+    ),
     'field_org_issue_credit_count' => array(
       'sortable' => 1,
-      'default_sort_order' => 'asc',
+      'default_sort_order' => 'desc',
       'align' => '',
       'separator' => '',
       'empty_column' => 1,
@@ -1766,6 +1774,15 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['field_organization_list_rule']['table'] = 'field_data_field_organization_list_rule';
   $handler->display->display_options['fields']['field_organization_list_rule']['field'] = 'field_organization_list_rule';
   $handler->display->display_options['fields']['field_organization_list_rule']['label'] = 'Services';
+  /* Field: Content: Org contribution rank */
+  $handler->display->display_options['fields']['field_org_contribution_rank']['id'] = 'field_org_contribution_rank';
+  $handler->display->display_options['fields']['field_org_contribution_rank']['table'] = 'field_data_field_org_contribution_rank';
+  $handler->display->display_options['fields']['field_org_contribution_rank']['field'] = 'field_org_contribution_rank';
+  $handler->display->display_options['fields']['field_org_contribution_rank']['label'] = 'Contribution rank';
+  $handler->display->display_options['fields']['field_org_contribution_rank']['settings'] = array(
+    'thousand_separator' => '',
+    'prefix_suffix' => 1,
+  );
   /* Field: Content: Org issue credit count */
   $handler->display->display_options['fields']['field_org_issue_credit_count']['id'] = 'field_org_issue_credit_count';
   $handler->display->display_options['fields']['field_org_issue_credit_count']['table'] = 'field_data_field_org_issue_credit_count';
@@ -2163,6 +2180,7 @@ function drupalorg_admin_pages_views_default_views() {
     t('Training'),
     t('Requested Services Listing'),
     t('Services'),
+    t('Contribution rank'),
     t('Issue credits (90 days)'),
     t('Published'),
     t('Edit'),
