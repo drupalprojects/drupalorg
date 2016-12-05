@@ -355,18 +355,25 @@ function _drupalorg_docs_migrate_node($nid, $group_ref) {
     'enabled' => 1,
   );
 
+  // Do not create alias during intermediate save.
+  $node->path = ['pathauto' => FALSE];
+
   $node_wrapper = entity_metadata_wrapper('node', $node);
 
   // Summary is a new field for documentation. Lets auto-fill it
   $node_wrapper->field_summary->set(truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 140, TRUE, FALSE));
   $node_wrapper->save();
 
+  // Use normal path aliasing.
+  $node->path = ['pathauto' => TRUE];
+
   // Empty out summary attached to body field.
   $node->body[LANGUAGE_NONE][0]['summary'] = '';
   // Open comments.
   $node->comment = COMMENT_NODE_OPEN;
 
-  // Set the group reference for the node
+  // Set the group reference for the node. After the initial save so field
+  // changes have kicked in.
   $node_wrapper->og_group_ref_documentation->set(intval($group_ref));
   $node_wrapper->save();
 }
