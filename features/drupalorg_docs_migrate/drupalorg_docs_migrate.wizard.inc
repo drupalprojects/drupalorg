@@ -358,6 +358,10 @@ function _drupalorg_docs_migrate_node($nid, $group_ref) {
   // Do not create alias during intermediate save.
   $node->path = ['pathauto' => FALSE];
 
+  // Create a revision for the migration.
+  $node->revision = TRUE;
+  $node->log = t('Migrating to new documentation system.');
+
   $node_wrapper = entity_metadata_wrapper('node', $node);
 
   // Summary is a new field for documentation. Lets auto-fill it
@@ -366,6 +370,9 @@ function _drupalorg_docs_migrate_node($nid, $group_ref) {
 
   // Use normal path aliasing.
   $node->path = ['pathauto' => TRUE];
+
+  // Do not create a revision for the second save.
+  $node->revision = FALSE;
 
   // Empty out summary attached to body field.
   $node->body[LANGUAGE_NONE][0]['summary'] = '';
