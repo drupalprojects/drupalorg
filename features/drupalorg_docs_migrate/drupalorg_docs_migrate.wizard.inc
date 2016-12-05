@@ -294,7 +294,7 @@ function drupalorg_docs_migrate_form_edit_submit($form, &$form_state) {
   $form_state['object']->guide = $form_state['values']['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id'];
 
   // Children nodes to also be migrated
-  if (isset($form_state['values']['children'])) {
+  if (!empty($form_state['values']['children'])) {
     $form_state['object']->children = array_keys(array_filter($form_state['values']['migrate']));
   }
 }
