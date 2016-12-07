@@ -193,15 +193,32 @@ function drupalorg_docs_migrate_wizard_cancel(&$form_state) {
  */
 function drupalorg_docs_migrate_form_edit($form, &$form_state) {
   // Attach the fields for destination guide.
-  $form_state['entity_type'] = 'node';
   $form_state['node'] = $form_state['original_node'];
   $form_state['node']->type = 'documentation';
-  $form['#node'] = $form_state['node'];
 
-  $og_widget = array();
-  field_attach_form('node', $form_state['node'], $og_widget, $form_state, LANGUAGE_NONE, array('field_name' => 'og_group_ref_documentation'));
-
-  $form['og_group_ref_documentation'] = $og_widget['og_group_ref_documentation'];
+  $query = db_select('node', 'n');
+  $query->fields('n', ['nid'])
+    ->addExpression("CONCAT(n.title, ' (', n.nid, ')')");
+  $query->condition('n.status', NODE_PUBLISHED)
+    ->condition('n.type', 'guide')
+    ->condition('n.comment', COMMENT_NODE_HIDDEN, '!=') // No automated user guide.
+    ->orderBy('n.title')
+    ->orderBy('n.nid');
+  if (!user_access('access content overview')) {
+    $groups = og_get_groups_by_user();
+    if (empty($groups['node'])) {
+      drupal_set_message(t('You must be the maintainer of a guide to migrate documentation.'), 'warning');
+      $form_state['cancel'] = TRUE;
+      return $form;
+    }
+    $query->condition('n.nid', array_keys($groups['node']));
+  }
+  $form['guide'] = [
+    '#type' => 'select',
+    '#title' => t('Documentation guide to migrate page(s) into'),
+    '#options' => $query->execute()->fetchAllKeyed(),
+    '#required' => TRUE,
+  ];
 
   if ($result = _get_children_nodes($form_state['node']->nid)) {
     $depth = -1;
@@ -238,8 +255,6 @@ function drupalorg_docs_migrate_form_edit($form, &$form_state) {
     }
   }
 
-  // Change 'group audience' title to something meaningful.
-  $form['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id']['#title'] = t('Documentation guide to migrate page(s) into');
   return $form;
 }
 
@@ -275,15 +290,6 @@ function _print_children_nodes(&$children, $result, $depth) {
 }
 
 /**
- * Validate callback for drupalorg_docs_migrate_form_edit().
- */
-function drupalorg_docs_migrate_form_edit_validate($form, &$form_state) {
-  if (!node_load($form_state['values']['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id'])) {
-    form_set_error('og_group_ref_documentation', t('Please select a valid guide using autocomplete.'));
-  }
-}
-
-/**
  * Handles submit of first form.
  */
 function drupalorg_docs_migrate_form_edit_submit($form, &$form_state) {
@@ -291,7 +297,7 @@ function drupalorg_docs_migrate_form_edit_submit($form, &$form_state) {
   $form_state['object'] = $form_state['node'];
 
   // Guide the node is to be migrated into
-  $form_state['object']->guide = $form_state['values']['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id'];
+  $form_state['object']->guide = $form_state['values']['guide'];
 
   // Children nodes to also be migrated
   if (!empty($form_state['values']['children'])) {
