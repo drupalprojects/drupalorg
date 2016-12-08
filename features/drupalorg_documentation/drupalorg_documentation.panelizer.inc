@@ -163,7 +163,7 @@ function drupalorg_documentation_panelizer_defaults() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'format' => 'medium',
+    'format' => 'date_only',
     'context' => 'panelizer',
     'override_title' => 1,
     'override_title_text' => 'Last updated on',
