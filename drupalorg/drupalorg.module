@@ -3598,6 +3598,12 @@ function drupalorg_preprocess_views_view(&$v) {
 function drupalorg_user_view($account, $view_mode) {
   global $user;
 
+  // Add messaging to user profile about how a user can be confirmed
+  if ($user->uid === $account->uid && !drupalorg_user_is_confirmed($account) && isset($account->roles[2])) {
+    drupal_set_message(t('
+Your account is not yet confirmed and has some limitations. Learn how to <a href="https://www.drupal.org/drupalorg/docs/user-accounts/become-a-confirmed-user">become a confirmed user</a>.'));
+  }
+
   // Put non-field items into groups.
   $account->content['#group_children']['user_picture'] = 'group_profile_contact';
   $account->content['user_picture']['#prefix'] = '<div class="user-picture-container">';
