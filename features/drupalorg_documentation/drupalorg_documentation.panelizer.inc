@@ -166,7 +166,7 @@ function drupalorg_documentation_panelizer_defaults() {
     'format' => 'date_only',
     'context' => 'panelizer',
     'override_title' => 1,
-    'override_title_text' => 'Last updated on',
+    'override_title_text' => 'Last <a href="/node/%node:nid/discuss">updated</a> on',
     'override_title_heading' => 'span',
   );
   $pane->cache = array();
