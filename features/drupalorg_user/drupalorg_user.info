@@ -110,6 +110,7 @@ features[field_instance][] = user-user-og_user_node
 features[image][] = drupalorg_user_picture
 features[image][] = drupalorg_user_picture_large
 features[taxonomy][] = areas_of_expertise
+features[variable][] = user_mail_drupalorg_email_verified_body
 features[views_view][] = issue_credit
 features[views_view][] = user_mentees
 features_exclude[field_base][field_current_company_org] = field_current_company_org
