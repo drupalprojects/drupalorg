@@ -564,6 +564,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'ctools_custom_content',
   );
 
+  // Exported permission: 'administer d3'.
+  $permissions['administer d3'] = array(
+    'name' => 'administer d3',
+    'roles' => array(),
+    'module' => 'd3',
+  );
+
   // Exported permission: 'administer facets'.
   $permissions['administer facets'] = array(
     'name' => 'administer facets',
@@ -916,6 +923,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panelizer comment comment_node_packaging_whitelist defaults'.
+  $permissions['administer panelizer comment comment_node_packaging_whitelist defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_packaging_whitelist defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panelizer comment comment_node_page defaults'.
   $permissions['administer panelizer comment comment_node_page defaults'] = array(
     'name' => 'administer panelizer comment comment_node_page defaults',
@@ -930,6 +944,20 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panelizer comment comment_node_project_distribution defaults'.
+  $permissions['administer panelizer comment comment_node_project_distribution defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_distribution defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_drupalorg defaults'.
+  $permissions['administer panelizer comment comment_node_project_drupalorg defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_drupalorg defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panelizer comment comment_node_project_issue defaults'.
   $permissions['administer panelizer comment comment_node_project_issue defaults'] = array(
     'name' => 'administer panelizer comment comment_node_project_issue defaults',
@@ -937,9 +965,37 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panelizer comment comment_node_project_module defaults'.
+  $permissions['administer panelizer comment comment_node_project_module defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_module defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_release defaults'.
+  $permissions['administer panelizer comment comment_node_project_release defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_release defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panelizer comment comment_node_project_theme defaults'.
   $permissions['administer panelizer comment comment_node_project_theme defaults'] = array(
     'name' => 'administer panelizer comment comment_node_project_theme defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_theme_engine defaults'.
+  $permissions['administer panelizer comment comment_node_project_theme_engine defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_theme_engine defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer comment comment_node_project_translation defaults'.
+  $permissions['administer panelizer comment comment_node_project_translation defaults'] = array(
+    'name' => 'administer panelizer comment comment_node_project_translation defaults',
     'roles' => array(),
     'module' => 'panelizer',
   );
@@ -1568,9 +1624,36 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panels display styles'.
+  $permissions['administer panels display styles'] = array(
+    'name' => 'administer panels display styles',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
   // Exported permission: 'administer panels layouts'.
   $permissions['administer panels layouts'] = array(
     'name' => 'administer panels layouts',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'administer panels pane styles'.
+  $permissions['administer panels pane styles'] = array(
+    'name' => 'administer panels pane styles',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'administer panels region styles'.
+  $permissions['administer panels region styles'] = array(
+    'name' => 'administer panels region styles',
     'roles' => array(
       'administrator' => 'administrator',
     ),
@@ -1865,6 +1948,20 @@ function drupalorg_permissions_user_default_permissions() {
       'email unverified' => 'email unverified',
     ),
     'module' => 'user',
+  );
+
+  // Exported permission: 'clear asciidoc_user_guide feeds'.
+  $permissions['clear asciidoc_user_guide feeds'] = array(
+    'name' => 'clear asciidoc_user_guide feeds',
+    'roles' => array(),
+    'module' => 'feeds',
+  );
+
+  // Exported permission: 'clear asciidoc_user_guide_guidelines feeds'.
+  $permissions['clear asciidoc_user_guide_guidelines feeds'] = array(
+    'name' => 'clear asciidoc_user_guide_guidelines feeds',
+    'roles' => array(),
+    'module' => 'feeds',
   );
 
   // Exported permission: 'create book content'.
@@ -3547,6 +3644,20 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'features',
   );
 
+  // Exported permission: 'import asciidoc_user_guide feeds'.
+  $permissions['import asciidoc_user_guide feeds'] = array(
+    'name' => 'import asciidoc_user_guide feeds',
+    'roles' => array(),
+    'module' => 'feeds',
+  );
+
+  // Exported permission: 'import asciidoc_user_guide_guidelines feeds'.
+  $permissions['import asciidoc_user_guide_guidelines feeds'] = array(
+    'name' => 'import asciidoc_user_guide_guidelines feeds',
+    'roles' => array(),
+    'module' => 'feeds',
+  );
+
   // Exported permission: 'make posts sticky'.
   $permissions['make posts sticky'] = array(
     'name' => 'make posts sticky',
@@ -3845,6 +3956,20 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'flag',
   );
 
+  // Exported permission: 'unlock asciidoc_user_guide feeds'.
+  $permissions['unlock asciidoc_user_guide feeds'] = array(
+    'name' => 'unlock asciidoc_user_guide feeds',
+    'roles' => array(),
+    'module' => 'feeds',
+  );
+
+  // Exported permission: 'unlock asciidoc_user_guide_guidelines feeds'.
+  $permissions['unlock asciidoc_user_guide_guidelines feeds'] = array(
+    'name' => 'unlock asciidoc_user_guide_guidelines feeds',
+    'roles' => array(),
+    'module' => 'feeds',
+  );
+
   // Exported permission: 'use PHP for tracking visibility'.
   $permissions['use PHP for tracking visibility'] = array(
     'name' => 'use PHP for tracking visibility',
@@ -3969,6 +4094,13 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'use text format 5'.
   $permissions['use text format 5'] = array(
     'name' => 'use text format 5',
+    'roles' => array(),
+    'module' => 'filter',
+  );
+
+  // Exported permission: 'use text format asciidoc_import'.
+  $permissions['use text format asciidoc_import'] = array(
+    'name' => 'use text format asciidoc_import',
     'roles' => array(),
     'module' => 'filter',
   );
