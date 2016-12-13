@@ -2151,7 +2151,7 @@ function drupalorg_form_aggregator_form_feed_alter(&$form) {
 /**
  * Node form alter.
  */
-function drupalorg_form_node_form_alter(&$form) {
+function drupalorg_form_node_form_alter(&$form, &$form_state) {
   if (isset($form['#node']->title) && empty($form['#node']->nodechanges_in_block)) {
     drupal_set_title(t('Edit %title', ['%title' => $form['#node']->title]), PASS_THROUGH);
   }
@@ -2174,8 +2174,14 @@ function drupalorg_form_node_form_alter(&$form) {
   }
 
   // If this is a new node with OG Menu, put in the menu.
-  if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu'])) {
-    $form['menu']['enabled']['#default_value'] = 1;
+  if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu']) && isset($form_state['entityreference_prepopulate']['node']['documentation']['og_group_ref_documentation'][0])) {
+    // But only if a guide maintainer with access to put it in the menu is
+    // adding the page.
+    foreach ($form['#node']->storage['og_menu'] as $item) {
+      if ($item['gid'] == $form_state['entityreference_prepopulate']['node']['documentation']['og_group_ref_documentation'][0]) {
+        $form['menu']['enabled']['#default_value'] = 1;
+      }
+    }
   }
 
   // If this is a documentation page or guide, only allow keeping one level of
