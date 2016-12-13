@@ -5018,7 +5018,7 @@ function drupalorg_query_comment_filter_alter(QueryAlterableInterface $query) {
  */
 function drupalorg_panels_pane_content_alter($content, $pane, $args, $contexts) {
   // Remove create content links in imported User guide.
-  if ($pane->type === 'node_prepopulate' && entity_metadata_wrapper('node', $contexts['panelizer']->data)->body->format->value() === 'asciidoc_import') {
+  if (!empty($content) && $pane->type === 'node_prepopulate' && entity_metadata_wrapper('node', $contexts['panelizer']->data)->body->format->value() === 'asciidoc_import') {
     $content->content = [];
   }
 
