@@ -512,14 +512,12 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['relationships']['field_organizations_value']['id'] = 'field_organizations_value';
   $handler->display->display_options['relationships']['field_organizations_value']['table'] = 'field_data_field_organizations';
   $handler->display->display_options['relationships']['field_organizations_value']['field'] = 'field_organizations_value';
-  $handler->display->display_options['relationships']['field_organizations_value']['required'] = TRUE;
   $handler->display->display_options['relationships']['field_organizations_value']['delta'] = '-1';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_organization_reference_target_id']['id'] = 'field_organization_reference_target_id';
   $handler->display->display_options['relationships']['field_organization_reference_target_id']['table'] = 'field_data_field_organization_reference';
   $handler->display->display_options['relationships']['field_organization_reference_target_id']['field'] = 'field_organization_reference_target_id';
   $handler->display->display_options['relationships']['field_organization_reference_target_id']['relationship'] = 'field_organizations_value';
-  $handler->display->display_options['relationships']['field_organization_reference_target_id']['required'] = TRUE;
   /* Field: Bulk operations: User */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'users';
@@ -693,6 +691,9 @@ function drupalorg_admin_pages_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
+  $handler->display->display_options['defaults']['query'] = FALSE;
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
@@ -1238,6 +1239,8 @@ function drupalorg_admin_pages_views_default_views() {
   $handler = $view->new_display('page', 'Org Profiles', 'page_3');
   $handler->display->display_options['defaults']['group_by'] = FALSE;
   $handler->display->display_options['group_by'] = TRUE;
+  $handler->display->display_options['defaults']['query'] = FALSE;
+  $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
