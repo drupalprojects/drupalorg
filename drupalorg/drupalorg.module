@@ -5079,6 +5079,12 @@ function drupalorg_lead_capture_form($form) {
     '#maxlength' => 80,
     '#size' => 20,
   ];
+  $form['title'] = [
+    '#type' => 'textfield',
+    '#title' => t('Title'),
+    '#maxlength' => 40,
+    '#size' => 20,
+  ];
   $form['company'] = [
     '#type' => 'textfield',
     '#title' => t('Company'),
