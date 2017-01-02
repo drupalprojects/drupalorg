@@ -205,6 +205,15 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['sponsor-redirect/%'] = [
+    'title' => t('Sponsor redirect'),
+    'access arguments' => ['access content'],
+    'page callback' => 'drupalorg_sponsor_redirect_page',
+    'page arguments' => [1],
+    'type' => MENU_CALLBACK,
+    'file' => 'drupalorg.pages.inc',
+  ];
+
   // Redirect some legacy paths related to the security listings.
   $items['security-contrib'] = array(
     'access arguments' => array('access content'),
