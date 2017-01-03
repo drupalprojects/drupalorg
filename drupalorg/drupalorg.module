@@ -2392,6 +2392,12 @@ function drupalorg_form_guide_node_form_alter(&$form) {
       $form['#access'] = FALSE;
     }
   }
+
+  // If a valid project to add the guide to is set, stash it in the node object.
+  if (isset($_REQUEST['project']) && ($project = node_load((int) $_REQUEST['project'])) && project_node_is_project($project)) {
+    $form['title']['#default_value'] = $project->title;
+    $form['#node']->drupalorg_add_to_project = $project->nid;
+  }
 }
 
 /**
@@ -3268,6 +3274,32 @@ function drupalorg_node_insert($node) {
   }
   elseif (project_node_is_project($node)) {
     _drupalorg_node_update_project($node);
+  }
+  elseif ($node->type === 'guide') {
+    $wrapper = entity_metadata_wrapper('node', $node);
+
+    // If a project was specified, add the guide to the project.
+    if (isset($node->drupalorg_add_to_project)) {
+      $project = node_load($node->drupalorg_add_to_project);
+      $field_collection_item = entity_create('field_collection_item', ['field_name' => 'field_project_docs']);
+      $field_collection_item->setHostEntity('node', $project);
+      $collection_wrapper = entity_metadata_wrapper('field_collection_item', $field_collection_item);
+      $collection_wrapper->field_project_doc_guide_name = $node->nid;
+      switch ($wrapper->og_group_ref_documentation->value()->nid) {
+        case 2785809:
+          $collection_wrapper->field_earliest_applicable_versio = '7.x';
+          break;
+
+        case 2785817:
+          $collection_wrapper->field_earliest_applicable_versio = '8.x';
+          break;
+
+        default:
+          $collection_wrapper->field_earliest_applicable_versio = '-';
+          break;
+      }
+      $field_collection_item->save();
+    }
   }
 }
 

@@ -379,6 +379,14 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       $form['author']['name']['#disabled'] = TRUE;
       $form['author']['name']['#description'] = t('Sandbox projects can not be transferred to another maintainer.');
     }
+
+    // Create guide links.
+    if (isset($form_state['node']->nid)) {
+      $form['field_project_docs'][LANGUAGE_NONE]['add_more']['#suffix'] = t('Create a new !d7 or !d8 guide', [
+        '!d7' => l(t('Drupal 7'), 'node/add/guide', ['query' => ['og_group_ref_documentation' => 2785809, 'project' => $form_state['node']->nid]]),
+        '!d8' => l(t('Drupal 8'), 'node/add/guide', ['query' => ['og_group_ref_documentation' => 2785817, 'project' => $form_state['node']->nid]]),
+      ]);
+    }
   }
   elseif (project_issue_node_is_issue($form_state['node'])) {
     $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
