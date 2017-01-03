@@ -234,7 +234,7 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['extension']['relationship'] = 'field_release_file_fid';
   $handler->display->display_options['fields']['extension']['label'] = 'Download';
   $handler->display->display_options['fields']['extension']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['extension']['alter']['text'] = '[extension] <span class="filesize">([filesize])</span>';
+  $handler->display->display_options['fields']['extension']['alter']['text'] = '[extension] <small>([filesize])</small>';
   $handler->display->display_options['fields']['extension']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['extension']['alter']['path'] = '[uri]';
   $handler->display->display_options['fields']['extension']['extension_detect_tar'] = TRUE;
@@ -245,7 +245,7 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['extension_1']['relationship'] = 'field_release_file_fid_1';
   $handler->display->display_options['fields']['extension_1']['label'] = '';
   $handler->display->display_options['fields']['extension_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['extension_1']['alter']['text'] = '[extension_1] <span class="filesize">([filesize_1])</span>';
+  $handler->display->display_options['fields']['extension_1']['alter']['text'] = '[extension_1] <small>([filesize_1])</small>';
   $handler->display->display_options['fields']['extension_1']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['extension_1']['alter']['path'] = '[uri_1]';
   $handler->display->display_options['fields']['extension_1']['element_label_colon'] = FALSE;
@@ -575,8 +575,8 @@ function drupalorg_projects_views_default_views() {
     t('Path'),
     t('Version'),
     t('Download'),
-    t('[extension] <span class="filesize">([filesize])</span>'),
-    t('[extension_1] <span class="filesize">([filesize_1])</span>'),
+    t('[extension] <small>([filesize])</small>'),
+    t('[extension_1] <small>([filesize_1])</small>'),
     t('Date'),
     t('All'),
     t('Recommended releases'),
