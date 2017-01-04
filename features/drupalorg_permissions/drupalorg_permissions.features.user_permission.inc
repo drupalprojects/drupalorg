@@ -2123,6 +2123,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create guide content',
     'roles' => array(
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
       'content administrator' => 'content administrator',
     ),
     'module' => 'node',
