@@ -4860,12 +4860,7 @@ function drupalorg_project_release_history_xml_written($project, $api_version) {
 function drupalorg_mollom_content_alter(&$data) {
   // Remove safe domains.
   if (isset($data['postBody'])) {
-    $data['postBody'] = preg_replace(array(
-      '#https?://((www|api|assoc|events|groups|jobs|localize|qa|security|git)\.)?drupal\.org#',
-      '#https?://([a-z]\.)?stack(exchange|overflow)\.com#',
-      '#https://github\.com#',
-      '#https?://(www\.)?example\.(com|net|org)#',
-    ), '', $data['postBody']);
+    $data['postBody'] = preg_replace(variable_get('drupalorg_mollom_remove', []), '', $data['postBody']);
   }
 }
 
