@@ -33,9 +33,13 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['row_class'] = 'recommended-[recommended] security-[drupalorg_security_coverage]';
+  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['style_options']['columns'] = array(
     'path' => 'path',
     'field_release_version' => 'field_release_version',
+    'drupalorg_security_coverage_1' => 'field_release_version',
     'drupalorg_security_coverage' => 'field_release_version',
     'uri' => 'uri',
     'uri_1' => 'uri_1',
@@ -44,6 +48,7 @@ function drupalorg_projects_views_default_views() {
     'extension' => 'extension',
     'extension_1' => 'extension',
     'timestamp' => 'timestamp',
+    'recommended' => 'recommended',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -55,6 +60,11 @@ function drupalorg_projects_views_default_views() {
     'field_release_version' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'drupalorg_security_coverage_1' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -109,15 +119,15 @@ function drupalorg_projects_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'recommended' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
   );
   $handler->display->display_options['style_options']['override'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['label'] = 'Title';
-  $handler->display->display_options['header']['area']['content'] = '<h4>Recommended releases</h4>';
-  $handler->display->display_options['header']['area']['format'] = '1';
   /* Relationship: Content: Taxonomy terms on node */
   $handler->display->display_options['relationships']['term_node_tid']['id'] = 'term_node_tid';
   $handler->display->display_options['relationships']['term_node_tid']['table'] = 'node';
@@ -188,11 +198,21 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['field_release_version']['alter']['path'] = '[path]';
   $handler->display->display_options['fields']['field_release_version']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_release_version']['type'] = 'text_plain';
+  /* Field: Security Team coverage icon */
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['id'] = 'drupalorg_security_coverage_1';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['field'] = 'drupalorg_security_coverage';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['ui_name'] = 'Security Team coverage icon';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['label'] = '';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['alter']['text'] = '<img src="/sites/all/modules/drupalorg/drupalorg/images/shield-icon-black.svg" alt="Full release covered by the Drupal Security Team" title="Full release covered by the Drupal Security Team">';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['element_label_colon'] = FALSE;
   /* Field: Content: Security Team coverage */
   $handler->display->display_options['fields']['drupalorg_security_coverage']['id'] = 'drupalorg_security_coverage';
   $handler->display->display_options['fields']['drupalorg_security_coverage']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['drupalorg_security_coverage']['field'] = 'drupalorg_security_coverage';
   $handler->display->display_options['fields']['drupalorg_security_coverage']['label'] = '';
+  $handler->display->display_options['fields']['drupalorg_security_coverage']['exclude'] = TRUE;
   $handler->display->display_options['fields']['drupalorg_security_coverage']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['drupalorg_security_coverage']['element_default_classes'] = FALSE;
   /* Field: File: Path */
@@ -258,6 +278,13 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['timestamp']['label'] = 'Date';
   $handler->display->display_options['fields']['timestamp']['date_format'] = 'custom';
   $handler->display->display_options['fields']['timestamp']['custom_date_format'] = 'Y-M-d';
+  /* Field: Project release: Recommended branch */
+  $handler->display->display_options['fields']['recommended']['id'] = 'recommended';
+  $handler->display->display_options['fields']['recommended']['table'] = 'project_release_supported_versions';
+  $handler->display->display_options['fields']['recommended']['field'] = 'recommended';
+  $handler->display->display_options['fields']['recommended']['relationship'] = 'supported_releases_rel';
+  $handler->display->display_options['fields']['recommended']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['recommended']['not'] = 0;
   /* Sort criterion: Taxonomy term: Weight */
   $handler->display->display_options['sorts']['weight']['id'] = 'weight';
   $handler->display->display_options['sorts']['weight']['table'] = 'taxonomy_term_data';
@@ -339,12 +366,6 @@ function drupalorg_projects_views_default_views() {
     'static' => 'static',
   );
   $handler->display->display_options['filters']['field_release_build_type_value']['group'] = 1;
-  /* Filter criterion: Project release: Recommended branch */
-  $handler->display->display_options['filters']['recommended']['id'] = 'recommended';
-  $handler->display->display_options['filters']['recommended']['table'] = 'project_release_supported_versions';
-  $handler->display->display_options['filters']['recommended']['field'] = 'recommended';
-  $handler->display->display_options['filters']['recommended']['relationship'] = 'supported_releases_rel';
-  $handler->display->display_options['filters']['recommended']['value'] = '1';
   /* Filter criterion: Project release: Latest or recommended release */
   $handler->display->display_options['filters']['release_type']['id'] = 'release_type';
   $handler->display->display_options['filters']['release_type']['table'] = 'project_release_supported_versions';
@@ -411,76 +432,6 @@ function drupalorg_projects_views_default_views() {
     'static' => 'static',
   );
   $handler->display->display_options['filters']['field_release_build_type_value']['group'] = 1;
-  /* Filter criterion: Project release: Latest or recommended release */
-  $handler->display->display_options['filters']['release_type']['id'] = 'release_type';
-  $handler->display->display_options['filters']['release_type']['table'] = 'project_release_supported_versions';
-  $handler->display->display_options['filters']['release_type']['field'] = 'release_type';
-  $handler->display->display_options['filters']['release_type']['relationship'] = 'supported_releases_rel';
-  $handler->display->display_options['filters']['release_type']['value'] = 'recommended';
-  $handler->display->display_options['displays'] = array(
-    'recommended' => 'recommended',
-    'default' => 0,
-  );
-  $handler->display->display_options['attachment_position'] = 'after';
-
-  /* Display: Other releases */
-  $handler = $view->new_display('attachment', 'Other releases', 'other');
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['pager']['type'] = 'none';
-  $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['label'] = 'Title';
-  $handler->display->display_options['header']['area']['content'] = '<h4>Other releases</h4>';
-  $handler->display->display_options['header']['area']['format'] = '1';
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Project: Project system behavior */
-  $handler->display->display_options['filters']['project_type']['id'] = 'project_type';
-  $handler->display->display_options['filters']['project_type']['table'] = 'node';
-  $handler->display->display_options['filters']['project_type']['field'] = 'project_type';
-  $handler->display->display_options['filters']['project_type']['value'] = 'project_release';
-  $handler->display->display_options['filters']['project_type']['group'] = 1;
-  /* Filter criterion: Taxonomy term: Recommended (field_release_recommended) */
-  $handler->display->display_options['filters']['field_release_recommended_value']['id'] = 'field_release_recommended_value';
-  $handler->display->display_options['filters']['field_release_recommended_value']['table'] = 'field_data_field_release_recommended';
-  $handler->display->display_options['filters']['field_release_recommended_value']['field'] = 'field_release_recommended_value';
-  $handler->display->display_options['filters']['field_release_recommended_value']['relationship'] = 'term_node_tid';
-  $handler->display->display_options['filters']['field_release_recommended_value']['value'] = array(
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_release_recommended_value']['group'] = 1;
-  /* Filter criterion: Content: Update status (field_release_update_status) */
-  $handler->display->display_options['filters']['field_release_update_status_value']['id'] = 'field_release_update_status_value';
-  $handler->display->display_options['filters']['field_release_update_status_value']['table'] = 'field_data_field_release_update_status';
-  $handler->display->display_options['filters']['field_release_update_status_value']['field'] = 'field_release_update_status_value';
-  $handler->display->display_options['filters']['field_release_update_status_value']['operator'] = '<=';
-  $handler->display->display_options['filters']['field_release_update_status_value']['value']['value'] = '1';
-  $handler->display->display_options['filters']['field_release_update_status_value']['group'] = 1;
-  /* Filter criterion: Content: Release type (field_release_build_type) */
-  $handler->display->display_options['filters']['field_release_build_type_value']['id'] = 'field_release_build_type_value';
-  $handler->display->display_options['filters']['field_release_build_type_value']['table'] = 'field_data_field_release_build_type';
-  $handler->display->display_options['filters']['field_release_build_type_value']['field'] = 'field_release_build_type_value';
-  $handler->display->display_options['filters']['field_release_build_type_value']['value'] = array(
-    'static' => 'static',
-  );
-  $handler->display->display_options['filters']['field_release_build_type_value']['group'] = 1;
-  /* Filter criterion: Project release: Recommended branch */
-  $handler->display->display_options['filters']['recommended']['id'] = 'recommended';
-  $handler->display->display_options['filters']['recommended']['table'] = 'project_release_supported_versions';
-  $handler->display->display_options['filters']['recommended']['field'] = 'recommended';
-  $handler->display->display_options['filters']['recommended']['relationship'] = 'supported_releases_rel';
-  $handler->display->display_options['filters']['recommended']['value'] = '0';
   /* Filter criterion: Project release: Latest or recommended release */
   $handler->display->display_options['filters']['release_type']['id'] = 'release_type';
   $handler->display->display_options['filters']['release_type']['table'] = 'project_release_supported_versions';
@@ -564,8 +515,6 @@ function drupalorg_projects_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('Title'),
-    t('<h4>Recommended releases</h4>'),
     t('term'),
     t('field collection item from field_release_files 1'),
     t('file from field_release_file 1'),
@@ -574,19 +523,20 @@ function drupalorg_projects_views_default_views() {
     t('supported versions'),
     t('Path'),
     t('Version'),
+    t('<img src="/sites/all/modules/drupalorg/drupalorg/images/shield-icon-black.svg" alt="Full release covered by the Drupal Security Team" title="Full release covered by the Drupal Security Team">'),
     t('Download'),
     t('[extension] <small>([filesize])</small>'),
     t('[extension_1] <small>([filesize_1])</small>'),
     t('Date'),
+    t('Recommended branch'),
     t('All'),
     t('Recommended releases'),
     t('Releases missing security updates'),
+    t('Title'),
     t('<h4>Releases missing security updates</h4>
 
 <div class="warning">There are security updates available for code included in these releases. Review release notes before downloading.</div>
 '),
-    t('Other releases'),
-    t('<h4>Other releases</h4>'),
     t('Development releases'),
     t('<h4>Development releases</h4>'),
   );
