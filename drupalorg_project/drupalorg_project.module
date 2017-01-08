@@ -381,7 +381,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     }
 
     // Create guide links.
-    if (isset($form_state['node']->nid)) {
+    if (isset($form_state['node']->nid) && isset($form['field_project_docs'])) {
       $form['field_project_docs'][LANGUAGE_NONE]['add_more']['#suffix'] = t('Create a new !d7 or !d8 guide', [
         '!d7' => l(t('Drupal 7'), 'node/add/guide', ['query' => ['og_group_ref_documentation' => 2785809, 'project' => $form_state['node']->nid]]),
         '!d8' => l(t('Drupal 8'), 'node/add/guide', ['query' => ['og_group_ref_documentation' => 2785817, 'project' => $form_state['node']->nid]]),
