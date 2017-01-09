@@ -453,7 +453,7 @@
   Drupal.behaviors.projectPage = {
     attach: function (context) {
       // Hide all but the first download table headers.
-      var list = context.querySelectorAll('.view-project-release-download-table thead');
+      var list = document.querySelectorAll('.view-project-release-download-table thead');
       for (var i = 1; i < list.length; i++) {
         list[i].style.display = 'none';
       }
