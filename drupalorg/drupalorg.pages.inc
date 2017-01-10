@@ -158,5 +158,8 @@ function drupalorg_sponsor_redirect_page($sponsor) {
           drupal_goto('https://www.1and1.com/server-dedicated-tariff?ac=OM.US.USo63K403740T7073a');
           return;
       }
+
+    case 'debug':
+      return t('Country: %country', ['%country' => $country]);
   }
 }
