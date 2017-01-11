@@ -468,6 +468,31 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'text_long',
   );
 
+  // Exported field_base: 'field_project_issue_version_opts'.
+  $field_bases['field_project_issue_version_opts'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_project_issue_version_opts',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'static' => 'Tagged releases',
+        'dynamic' => 'Development branch releases',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_project_license'.
   $field_bases['field_project_license'] = array(
     'active' => 1,

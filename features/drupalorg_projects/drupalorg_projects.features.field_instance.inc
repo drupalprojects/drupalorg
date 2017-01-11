@@ -1299,6 +1299,74 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'node-project_core-field_project_issue_version_opts'.
+  $field_instances['node-project_core-field_project_issue_version_opts'] = array(
+    'bundle' => 'project_core',
+    'default_value' => array(
+      0 => array(
+        'value' => 'static',
+      ),
+      1 => array(
+        'value' => 'dynamic',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_project_issue_version_opts',
+    'label' => 'Version options',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
+    ),
+  );
+
   // Exported field_instance: 'node-project_core-field_project_license'.
   $field_instances['node-project_core-field_project_license'] = array(
     'bundle' => 'project_core',
@@ -2809,6 +2877,74 @@ function drupalorg_projects_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-project_distribution-field_project_issue_version_opts'.
+  $field_instances['node-project_distribution-field_project_issue_version_opts'] = array(
+    'bundle' => 'project_distribution',
+    'default_value' => array(
+      0 => array(
+        'value' => 'static',
+      ),
+      1 => array(
+        'value' => 'dynamic',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_project_issue_version_opts',
+    'label' => 'Version options',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
     ),
   );
 
@@ -4393,6 +4529,74 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'node-project_drupalorg-field_project_issue_version_opts'.
+  $field_instances['node-project_drupalorg-field_project_issue_version_opts'] = array(
+    'bundle' => 'project_drupalorg',
+    'default_value' => array(
+      0 => array(
+        'value' => 'static',
+      ),
+      1 => array(
+        'value' => 'dynamic',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_project_issue_version_opts',
+    'label' => 'Version options',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
+    ),
+  );
+
   // Exported field_instance: 'node-project_drupalorg-field_project_license'.
   $field_instances['node-project_drupalorg-field_project_license'] = array(
     'bundle' => 'project_drupalorg',
@@ -5903,6 +6107,74 @@ function drupalorg_projects_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-project_module-field_project_issue_version_opts'.
+  $field_instances['node-project_module-field_project_issue_version_opts'] = array(
+    'bundle' => 'project_module',
+    'default_value' => array(
+      0 => array(
+        'value' => 'static',
+      ),
+      1 => array(
+        'value' => 'dynamic',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_project_issue_version_opts',
+    'label' => 'Version options',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
     ),
   );
 
@@ -8662,6 +8934,74 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'node-project_theme-field_project_issue_version_opts'.
+  $field_instances['node-project_theme-field_project_issue_version_opts'] = array(
+    'bundle' => 'project_theme',
+    'default_value' => array(
+      0 => array(
+        'value' => 'static',
+      ),
+      1 => array(
+        'value' => 'dynamic',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_project_issue_version_opts',
+    'label' => 'Version options',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
+    ),
+  );
+
   // Exported field_instance: 'node-project_theme-field_project_license'.
   $field_instances['node-project_theme-field_project_license'] = array(
     'bundle' => 'project_theme',
@@ -10239,6 +10579,74 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'node-project_theme_engine-field_project_issue_version_opts'.
+  $field_instances['node-project_theme_engine-field_project_issue_version_opts'] = array(
+    'bundle' => 'project_theme_engine',
+    'default_value' => array(
+      0 => array(
+        'value' => 'static',
+      ),
+      1 => array(
+        'value' => 'dynamic',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_project_issue_version_opts',
+    'label' => 'Version options',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
+    ),
+  );
+
   // Exported field_instance: 'node-project_theme_engine-field_project_license'.
   $field_instances['node-project_theme_engine-field_project_license'] = array(
     'bundle' => 'project_theme_engine',
@@ -11760,6 +12168,74 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'node-project_translation-field_project_issue_version_opts'.
+  $field_instances['node-project_translation-field_project_issue_version_opts'] = array(
+    'bundle' => 'project_translation',
+    'default_value' => array(
+      0 => array(
+        'value' => 'static',
+      ),
+      1 => array(
+        'value' => 'dynamic',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_project_issue_version_opts',
+    'label' => 'Version options',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
+    ),
+  );
+
   // Exported field_instance: 'node-project_translation-field_project_license'.
   $field_instances['node-project_translation-field_project_license'] = array(
     'bundle' => 'project_translation',
@@ -12406,6 +12882,7 @@ function drupalorg_projects_field_default_field_instances() {
   t('Version extra weight');
   t('Version major');
   t('Version minor');
+  t('Version options');
   t('Version patch');
 
   return $field_instances;
