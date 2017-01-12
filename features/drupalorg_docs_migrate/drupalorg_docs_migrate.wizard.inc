@@ -215,9 +215,10 @@ function drupalorg_docs_migrate_form_edit($form, &$form_state) {
   }
   $form['guide'] = [
     '#type' => 'select',
-    '#title' => t('Documentation guide to migrate page(s) into'),
+    '#title' => t('Documentation guide to migrate page(s) into:'),
     '#options' => $query->execute()->fetchAllKeyed(),
     '#required' => TRUE,
+    '#description' => t('You can only migrate pages into the guide you maintain. To create a guide for your project, edit the project page and follow the links on the "Project documentation" tab.'),
   ];
 
   if ($result = _get_children_nodes($form_state['node']->nid)) {
@@ -352,7 +353,7 @@ function _drupalorg_docs_migrate_node($nid, $group_ref) {
   // Remove the page from book schema.
   book_node_delete($node);
   $node->book = array();
-  
+
   $node->menu = array(
     'link_title' => $node->title,
     'menu_name' => 'menu-og-'. $group_ref,
