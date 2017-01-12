@@ -1151,7 +1151,7 @@ function drupalorg_documentation_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'og_group_ref_documentation',
     'label' => 'Guide',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'behaviors' => array(
         'prepopulate' => array(
