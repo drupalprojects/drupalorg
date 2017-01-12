@@ -1354,11 +1354,6 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       if ($group->type === 'guide') {
         array_shift($active_trail);
       }
-
-      // Message about documentation migration.
-      if ($parent->nid == 2734545 || $parent->nid == 2743405) {
-        drupal_set_message(t('Documentation is currently <a href="!url">being migrated</a> into the new system. Some pages might be temporarily missing, and some guides might appear empty. Thank you for your patience while we are improving Drupal.org documentation.', ['!url' => url('node/2762837')]), 'warning', FALSE);
-      }
     }
   }
 
