@@ -234,8 +234,9 @@ function drupalorg_docs_migrate_form_edit($form, &$form_state) {
       '#title' => t('Migrate @number child pages', ['@number' => count($children)]),
       '#description' => t('<strong>Hierarchy will not be saved!</strong> All child pages will be on the same level with the parent page in relation to the documentation guide.'),
     );
-    if (count($children) > 100) {
-      drupal_set_message(t('Warning: you’re attempting to migrate over 100 children nodes, and cannot individually deselect this many children. Usually you’ll want to migrate smaller sections of documentation at a time.'), 'warning');
+    if (count($children) > 30) {
+      drupal_set_message(t('<strong>Migration cancelled.</strong> You tried to migrate over 30 child nodes. Usually a guide consists of a smaller number of pages. To prevent possible mistakes, please select a smaller sub-set of book pages for migration at a time.'), 'error');
+      $form_state['cancel'] = TRUE;
     }
     else {
       $form['children_nodes'] = array(
