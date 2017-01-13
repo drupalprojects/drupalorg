@@ -121,6 +121,7 @@ function drupalorg_marketing_field_default_field_bases() {
         'dark' => 'Dark',
         'light' => 'Light',
         'sponsor' => 'Sponsor',
+        'built-by' => 'Built by card',
       ),
       'allowed_values_function' => '',
     ),
