@@ -244,7 +244,7 @@ function drupalorg_git_gateway_help($path, $arg) {
         }
         // Non-vetted users should be pointed to the documentation on projects.
         else {
-          return t('To learn about projects, see <a href="http://drupal.org/node/1014922">Contributing code on Drupal.org</a>.');
+          return t('To learn about projects, see <a href="https://www.drupal.org/contribute-projects">Contributing code on Drupal.org</a>.');
         }
       }
       break;
