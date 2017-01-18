@@ -333,7 +333,7 @@ function drupalorg_user_field_default_field_bases() {
         'Venezuela' => 'Venezuela',
         'Viet Nam' => 'Viet Nam',
         'Virgin Islands' => 'Virgin Islands',
-        'Western Samoa' => 'Western Samoa',
+        'Samoa' => 'Samoa',
         'Yemen' => 'Yemen',
         'Yugoslavia' => 'Yugoslavia',
         'Zambia' => 'Zambia',
