@@ -6,7 +6,7 @@ function drupalorg_sponsor_redirect_page($sponsor) {
     case '1and1-shared':
       switch ($country) {
         case 'DE':
-          drupal_goto('https://hosting.1und1.de/webhosting?ac=OM.PU.PUo63K403739T7073a');
+          drupal_goto('https://hosting.1und1.de/drupal-hosting?ac=OM.PU.PUo63K403739T7073a');
           return;
 
         case 'AT':
