@@ -5098,45 +5098,21 @@ function drupalorg_lead_capture_form($form) {
     '#maxlength' => 80,
     '#size' => 20,
   ];
-  $form['phone'] = [
-    '#type' => 'textfield',
-    '#title' => t('Phone'),
-    '#maxlength' => 40,
-    '#size' => 20,
-  ];
   $form['email'] = [
     '#type' => 'textfield',
     '#title' => t('Email'),
     '#maxlength' => 80,
     '#size' => 20,
   ];
+  $form['phone'] = [
+    '#type' => 'textfield',
+    '#title' => t('Phone'),
+    '#maxlength' => 40,
+    '#size' => 20,
+  ];
   $form['title'] = [
     '#type' => 'textfield',
     '#title' => t('Title'),
-    '#maxlength' => 40,
-    '#size' => 20,
-  ];
-  $form['company'] = [
-    '#type' => 'textfield',
-    '#title' => t('Company'),
-    '#maxlength' => 40,
-    '#size' => 20,
-  ];
-  $form['city'] = [
-    '#type' => 'textfield',
-    '#title' => t('City'),
-    '#maxlength' => 40,
-    '#size' => 20,
-  ];
-  $form['state'] = [
-    '#type' => 'textfield',
-    '#title' => t('State/province'),
-    '#maxlength' => 20,
-    '#size' => 20,
-  ];
-  $form['country'] = [
-    '#type' => 'textfield',
-    '#title' => t('Country'),
     '#maxlength' => 40,
     '#size' => 20,
   ];
