@@ -153,6 +153,7 @@ function drupalorg_documentation_og_features_default_permissions() {
   $permissions['node:guide:create guide content'] = array(
     'roles' => array(
       'maintainer' => 'maintainer',
+      'non-member' => 'non-member',
     ),
   );
 
