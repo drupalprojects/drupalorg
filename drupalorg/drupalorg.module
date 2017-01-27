@@ -5089,37 +5089,47 @@ function drupalorg_lead_capture_form($form) {
   $form['first_name'] = [
     '#type' => 'textfield',
     '#title' => t('First name'),
-    '#placeholder' => t('First name'),
     '#maxlength' => 40,
     '#size' => 20,
+    '#attributes' => array(
+        'placeholder' => t('First name'),
+      ),
   ];
   $form['last_name'] = [
     '#type' => 'textfield',
     '#title' => t('Last name'),
-    '#placeholder' => t('Last name'),
     '#maxlength' => 80,
     '#size' => 20,
+    '#attributes' => array(
+        'placeholder' => t('Last name'),
+      ),
   ];
   $form['email'] = [
     '#type' => 'textfield',
     '#title' => t('Email'),
-    '#placeholder' => t('Email'),
     '#maxlength' => 80,
     '#size' => 20,
+    '#attributes' => array(
+        'placeholder' => t('Email'),
+      ),
   ];
   $form['phone'] = [
     '#type' => 'textfield',
     '#title' => t('Phone'),
-    '#placeholder' => t('Phone'),
     '#maxlength' => 40,
     '#size' => 20,
+    '#attributes' => array(
+        'placeholder' => t('Phone'),
+      ),
   ];
   $form['country'] = [
     '#type' => 'textfield',
     '#title' => t('Country'),
-    '#placeholder' => t('Country'),
     '#maxlength' => 40,
     '#size' => 20,
+    '#attributes' => array(
+        'placeholder' => t('Country'),
+      ),
   ];
   if (user_is_logged_in()) {
     $wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
@@ -5406,9 +5416,11 @@ function drupalorg_lead_capture_form($form) {
   $form['00NA00000067AhfMAE'] = [
     '#type' => 'textarea',
     '#title' => t('Project description'),
-    '#placeholder' => t('Project description'),
     '#rows' => 5,
     '#resizable' => FALSE,
+    '#attributes' => array(
+        'placeholder' => t('Project description'),
+      ),
   ];
   $form['submit'] = [
     '#type' => 'submit',
