@@ -149,6 +149,7 @@ function drupalorg_marketing_field_default_field_bases() {
         'full mirror' => 'Full width, mirrored',
         'full center' => 'Full width, centered',
         'full stack' => 'Full width, stacked',
+        'full breadcrumb' => 'Full width, breadcrumb',
         'full nographic' => 'Full width, no graphic',
         'full fifty-fifty' => 'Full width, 50-50',
         'card' => 'Card',
