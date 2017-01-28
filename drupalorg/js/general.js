@@ -239,7 +239,7 @@
             // Hide taken suggestions.
             $.each(customers.split(','), function (index, value) {
               if (value.match(/.*\(\d+\)\s*/)) {
-                $customerSuggestions.filter('[data-string*="' + value.replace(/.*\((\d+)\)\s*/, '$1') + '"]').hide();
+                $customerSuggestions.filter('[data-string*="' + value.replace(/.*\((\d+)\)[\s"]*/, '$1') + '"]').hide();
               }
             });
           }
