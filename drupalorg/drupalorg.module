@@ -2388,6 +2388,11 @@ function drupalorg_form_guide_node_form_alter(&$form) {
     }
   }
 
+  // Allow admins to create stand-alone guides.
+  if (user_access('administer group')) {
+    $form['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id']['#required'] = FALSE;
+  }
+
   // If a valid project to add the guide to is set, stash it in the node object.
   if (isset($_REQUEST['project']) && ($project = node_load((int) $_REQUEST['project'])) && project_node_is_project($project)) {
     $form['title']['#default_value'] = $project->title;
@@ -2663,11 +2668,6 @@ function drupalorg_node_access($node, $op, $account) {
     // documentatation pages have restrictions from node_node_access(), but do
     // not require documentation guide membership to edit.
     if (($type === 'documentation' || ($type === 'guide' && $op === 'update')) && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
-      return NODE_ACCESS_DENY;
-    }
-    // Do not allow creating guides outside of groups where the user is a guide
-    // maintainer.
-    if ($type === 'guide' && $op === 'create' && ($context = og_context()) && !og_user_access('node', $context['gid'], 'create guide content')) {
       return NODE_ACCESS_DENY;
     }
   }
