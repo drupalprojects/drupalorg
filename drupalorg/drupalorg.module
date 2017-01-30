@@ -2670,11 +2670,6 @@ function drupalorg_node_access($node, $op, $account) {
     if (($type === 'documentation' || ($type === 'guide' && $op === 'update')) && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
       return NODE_ACCESS_DENY;
     }
-    // Do not allow creating guides outside of groups where the user is a guide
-    // maintainer.
-    if ($type === 'guide' && $op === 'create' && ($context = og_context()) && !og_user_access('node', $context['gid'], 'create guide content')) {
-      return NODE_ACCESS_DENY;
-    }
   }
 }
 
