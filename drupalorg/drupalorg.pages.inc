@@ -159,6 +159,45 @@ function drupalorg_sponsor_redirect_page($sponsor) {
           return;
       }
 
+    case '1and1-try-drupal':
+      switch ($country) {
+        case 'DE':
+          drupal_goto('https://hosting.1und1.de/drupal-cloud-hosting?ac=OM.PU.PUo63K404685T7073a');
+          return;
+
+        case 'AT':
+          drupal_goto('https://www.1und1.at/drupal-cloud-hosting?ac=OM.AA.AAo63K404687T7073a');
+          return;
+
+        case 'GB':
+          drupal_goto('https://www.1and1.co.uk/drupal-cloud-hosting?ac=OM.UK.UKo63K404688T7073a');
+          return;
+
+        case 'FR':
+          drupal_goto('https://www.1and1.fr/drupal-cloud-hosting?ac=OM.FR.FRo63K404689T7073a');
+          return;
+
+        case 'ES':
+          drupal_goto('https://www.1and1.es/drupal-cloud-hosting?ac=OM.WE.WEo63K404690T7073a');
+          return;
+
+        case 'CA':
+          drupal_goto('https://www.1and1.ca/drupal-cloud-hosting?ac=OM.CA.CAo63K404691T7073a');
+          return;
+
+        case 'MX':
+          drupal_goto('https://www.1and1.mx/drupal-cloud-hosting?ac=OM.MB.MBo63K404692T7073a');
+          return;
+
+        case 'IT':
+          drupal_goto('https://www.1and1.it/drupal-cloud-hosting?ac=OM.IA.IAo63K404693T7073a');
+          return;
+
+        default:
+          drupal_goto('https://www.1and1.com/drupal-cloud-hosting?ac=OM.US.USo63K404686T7073a');
+          return;
+      }
+
     case 'debug':
       return t('Country: %country', ['%country' => $country]);
   }
