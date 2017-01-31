@@ -379,6 +379,14 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       $form['author']['name']['#disabled'] = TRUE;
       $form['author']['name']['#description'] = t('Sandbox projects can not be transferred to another maintainer.');
     }
+
+    // Create guide links.
+    if (isset($form_state['node']->nid) && isset($form['field_project_docs'])) {
+      $form['field_project_docs'][LANGUAGE_NONE]['add_more']['#suffix'] = t('Create a new !d7 or !d8 guide', [
+        '!d7' => l(t('Drupal 7'), 'node/add/guide', ['query' => ['og_group_ref_documentation' => 2785809, 'project' => $form_state['node']->nid]]),
+        '!d8' => l(t('Drupal 8'), 'node/add/guide', ['query' => ['og_group_ref_documentation' => 2785817, 'project' => $form_state['node']->nid]]),
+      ]);
+    }
   }
   elseif (project_issue_node_is_issue($form_state['node'])) {
     $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
@@ -971,7 +979,11 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
       if ($field_project = field_get_items('node', $node, 'field_project')) {
         $project = node_load($field_project[0]['target_id']);
         $machine_name = field_get_items('node', $project, 'field_project_machine_name');
-        project_project_set_breadcrumb($project, TRUE, array(l(t('Change records'), 'list-changes/' . $machine_name[0]['value'])));
+        project_project_set_breadcrumb($project, TRUE, [[
+          'title' => t('Change records'),
+          'href' => 'list-changes/' . $machine_name[0]['value'],
+          'localized_options' => [],
+        ]]);
       }
     }
   }
@@ -1481,7 +1493,7 @@ function drupalorg_project_meta_data(stdClass $node) {
   if ($wrapper->field_project_has_releases->value()) {
     $output['items']['security'] = [
       '#prefix' => '<li>',
-      '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon.svg') . '" alt="shield" class="icon-left">' . t('Stable releases are covered by the <a href="/security-advisory-policy">security advisory policy</a>.<br>Look for the shield icon below.'),
+      '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon-black.svg') . '" alt="shield" class="icon-left">' . t('Stable releases are covered by the <a href="/security-advisory-policy">security advisory policy</a>.<br>Look for the shield icon below.'),
       '#suffix' => '</li>',
     ];
   }

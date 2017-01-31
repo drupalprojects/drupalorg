@@ -620,6 +620,64 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'imagefield_widget',
   );
 
+  // Exported field_instance: 'node-organization-field_org_contribution_rank'.
+  $field_instances['node-organization-field_org_contribution_rank'] = array(
+    'bundle' => 'organization',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 24,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_org_contribution_rank',
+    'label' => 'Org contribution rank',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 37,
+    ),
+  );
+
   // Exported field_instance: 'node-organization-field_org_issue_credit_count'.
   $field_instances['node-organization-field_org_issue_credit_count'] = array(
     'bundle' => 'organization',
@@ -2057,6 +2115,7 @@ function drupalorg_marketplace_field_default_field_instances() {
   t('Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1710338">Review marketplace listings</a>" guide.');
   t('Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1735864">Review training listings</a>" guide.');
   t('Only select countries in which your company has a physical office.');
+  t('Org contribution rank');
   t('Org issue credit count');
   t('Organization description');
   t('Organization type');

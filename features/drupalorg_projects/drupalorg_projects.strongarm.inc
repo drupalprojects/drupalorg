@@ -244,9 +244,25 @@ function drupalorg_projects_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'title' => array(
+          'weight' => '-5',
+        ),
+        'path' => array(
+          'weight' => '30',
+        ),
+        'redirect' => array(
+          'weight' => '30',
+        ),
+      ),
       'display' => array(),
     ),
   );
@@ -288,9 +304,25 @@ function drupalorg_projects_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+        'path' => array(
+          'weight' => '12',
+        ),
+        'redirect' => array(
+          'weight' => '11',
+        ),
+      ),
       'display' => array(),
     ),
   );
@@ -332,9 +364,25 @@ function drupalorg_projects_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+        'path' => array(
+          'weight' => '13',
+        ),
+        'redirect' => array(
+          'weight' => '14',
+        ),
+      ),
       'display' => array(),
     ),
   );
@@ -402,9 +450,25 @@ function drupalorg_projects_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+        'path' => array(
+          'weight' => '11',
+        ),
+        'redirect' => array(
+          'weight' => '12',
+        ),
+      ),
       'display' => array(),
     ),
   );
@@ -446,9 +510,25 @@ function drupalorg_projects_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+        'path' => array(
+          'weight' => '11',
+        ),
+        'redirect' => array(
+          'weight' => '12',
+        ),
+      ),
       'display' => array(),
     ),
   );
@@ -490,9 +570,25 @@ function drupalorg_projects_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'metatags' => array(
+          'weight' => '40',
+        ),
+        'title' => array(
+          'weight' => '-5',
+        ),
+        'path' => array(
+          'weight' => '30',
+        ),
+        'redirect' => array(
+          'weight' => '30',
+        ),
+      ),
       'display' => array(),
     ),
   );
@@ -723,26 +819,6 @@ function drupalorg_projects_strongarm() {
   $strongarm->name = 'panelizer_node:project_release_allowed_layouts_default';
   $strongarm->value = 0;
   $export['panelizer_node:project_release_allowed_layouts_default'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'panelizer_node:project_release_allowed_types';
-  $strongarm->value = array(
-    'node_links-node_links' => TRUE,
-    'project_components-project_components' => TRUE,
-    'project_dependencies-project_dependencies' => TRUE,
-    'custom-drupalorg_trydrupal_button' => TRUE,
-    'custom-drupalorg_whatsnext_core' => TRUE,
-    'entity_field-node:body' => TRUE,
-    'views_panes-project_release_info-release_info_pane' => TRUE,
-    'views_panes-project_package_local_items-local_items_pane' => TRUE,
-    'views_panes-project_package_local_patches-local_patches_pane' => TRUE,
-    'views_panes-project_package_remote_items-remote_items_pane' => TRUE,
-    'views_panes-project_package_remote_patches-remote_patches_pane' => TRUE,
-    'views_panes-project_release_files-release_files_pane' => TRUE,
-  );
-  $export['panelizer_node:project_release_allowed_types'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

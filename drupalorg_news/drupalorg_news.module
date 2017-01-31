@@ -33,13 +33,6 @@ function drupalorg_news_page() {
 }
 
 /**
- * Implementation of template_preprocess_drupalorg_home().
- */
-function drupalorg_news_preprocess_drupalorg_home(&$vars) {
-  $vars['tab_content_news'] = drupalorg_news_short_block();
-}
-
-/**
  * @todo Please document this function.
  * @see http://drupal.org/node/1354
  */

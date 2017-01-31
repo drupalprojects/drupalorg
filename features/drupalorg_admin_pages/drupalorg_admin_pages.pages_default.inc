@@ -95,8 +95,8 @@ function drupalorg_admin_pages_default_page_manager_pages() {
   $display->cache = array();
   $display->title = '';
   $display->uuid = '689873c2-2723-4409-be42-64a281a6c424';
-  $display->storage_type = '';
-  $display->storage_id = '';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_administer_user_content__panel';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
