@@ -564,6 +564,9 @@ function drupalorg_block_info() {
     'documentation-license' => [
       'info' => t('Documentation license'),
     ],
+    'lead-capture' => [
+      'info' => t('Lead capture form'),
+    ],
   );
 }
 
@@ -776,6 +779,10 @@ function drupalorg_block_view($delta, $block = NULL) {
       return [
         'content' => t('Drupal’s online documentation is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>.', ['!year' => date('Y'), '@ccl_url' => url('terms'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html')]),
       ];
+
+    case 'lead-capture':
+      $form = drupal_get_form('drupalorg_lead_capture_form');
+      return ['content' => $form];
   }
 }
 
