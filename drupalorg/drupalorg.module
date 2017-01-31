@@ -4340,9 +4340,12 @@ function drupalorg_bakery_transmit($edit, $account) {
   if (!empty($account->timezone)) {
     $data['drupalorg_timezone'] = $account->timezone;
   }
-    if (!empty($account->created)) {
+
+  // Account creation to sync.
+  if (!empty($account->created)) {
     $data['drupalorg_crosssite_account_created'] = $account->created;
   }
+
   // Roles to sync.
   foreach (array('logintoboggan_pre_auth_role', 'drupalorg_crosssite_trusted_role', 'drupalorg_crosssite_community_role') as $role) {
     if ($rid = variable_get($role, FALSE)) {
