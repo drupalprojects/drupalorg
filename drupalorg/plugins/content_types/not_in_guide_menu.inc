@@ -18,7 +18,7 @@ function drupalorg_not_in_guide_menu($subtype, $conf, $args, $context = NULL) {
     if (!isset($context->data->menu)) {
       $wrapper = entity_metadata_wrapper('node', $context->data);
       $uri = entity_uri('node', $wrapper->og_group_ref_documentation->value());
-      $block->content = '<p class="incomplete">' . t('This !type has not been reviewed by !parent maintainer(s) and added to the menu yet.', [
+      $block->content = '<p class="incomplete">' . t('This !type has not yet been reviewed by !parent maintainer(s) and added to the menu.', [
         '!type' => $context->data->type === 'documentation' ? t('page') : t('guide'),
         '!parent' => l($wrapper->og_group_ref_documentation->title->value(), $uri['path'], $uri['options']),
       ]) . '</p>';
