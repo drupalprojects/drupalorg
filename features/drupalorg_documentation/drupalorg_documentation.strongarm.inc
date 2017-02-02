@@ -505,8 +505,8 @@ function drupalorg_documentation_strongarm() {
     'fieldable_panels_pane' => 0,
     'flag_link' => 0,
     'panels_mini' => 0,
-    'views_panes' => 0,
     'views' => 0,
+    'views_panes' => 0,
     'other' => 0,
   );
   $export['panelizer_node:documentation_default'] = $strongarm;
@@ -544,18 +544,18 @@ function drupalorg_documentation_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_node:guide_default';
   $strongarm->value = array(
+    'custom' => 0,
+    'entity_field_extra' => 0,
+    'entity_field' => 0,
     'block' => 0,
     'entity_form_field' => 0,
     'token' => 0,
-    'entity_field_extra' => 0,
-    'entity_field' => 0,
-    'custom' => 0,
     'entity_view' => 0,
     'fieldable_panels_pane' => 0,
     'flag_link' => 0,
     'panels_mini' => 0,
-    'views_panes' => 0,
     'views' => 0,
+    'views_panes' => 0,
     'other' => 0,
   );
   $export['panelizer_node:guide_default'] = $strongarm;
