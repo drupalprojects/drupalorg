@@ -23,10 +23,10 @@ function drupalorg_drupal8_panes_default_ctools_custom_content() {
     'title_heading' => 'h2',
     'body' => '<div class="drupal8-sponsor">Drupal.org is brought to you in part by the generous support of sponsors like:
 <div class="sponsor">
-<a href="https://www.a2hosting.com/drupal-hostingy"><img src="https://www.drupal.org/files/styles/grid-3/public/a2%3Dhosting.png?itok=BuizxGip"></a>
+<a href="https://www.a2hosting.com/drupal-hosting?utm_source=drupal&utm_campaign=drupal-downloads&utm_medium=promo"><img src="https://www.drupal.org/files/styles/grid-3/public/a2%3Dhosting.png?itok=BuizxGip"></a>
 <div class="text">
 <p>Don\'t worry about download or install files! Drupal is pre-installed complete with security and speed optimizations! Sign up now for 20X faster page loads on A2 Hosting\'s Turbo Servers</p>
-<p><a class="button" href="https://www.a2hosting.com/drupal-hosting">Get Faster Drupal Hosting</a>
+<p><a class="button" href="https://www.a2hosting.com/drupal-hosting?utm_source=drupal&utm_campaign=drupal-downloads&utm_medium=promo">Get Faster Drupal Hosting</a>
 </p></div>
 </div>
 </div>',
