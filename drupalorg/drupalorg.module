@@ -2405,6 +2405,9 @@ function drupalorg_form_guide_node_form_alter(&$form) {
     $form['title']['#default_value'] = $project->title;
     $form['#node']->drupalorg_add_to_project = $project->nid;
   }
+
+  // Limit guide description length.
+  $form['body'][LANGUAGE_NONE][0]['#maxlength'] = 600;
 }
 
 /**
