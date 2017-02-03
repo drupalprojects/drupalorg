@@ -319,7 +319,7 @@ function drupalorg_menu_alter(&$menu) {
  * Menu access callback. Hide revisions for some content types.
  */
 function drupalorg_node_revision_access($node) {
-  if (in_array($node->type, ['page', 'post', 'casestudy'])) {
+  if (in_array($node->type, ['page', 'post', 'casestudy', 'section'])) {
     return diff_node_revision_access($node) && node_access('update', $node);
   }
 
