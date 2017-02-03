@@ -422,49 +422,83 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
+    'views_bulk_operations' => 'views_bulk_operations',
     'name' => 'name',
-    'status' => 'status',
-    'rid' => 'rid',
+    'field_first_name' => 'field_first_name',
+    'field_last_name' => 'field_last_name',
+    'mail' => 'mail',
+    'field_job_title' => 'field_job_title',
+    'field_organization_name' => 'field_organization_name',
+    'title' => 'title',
+    'field_link' => 'field_link',
     'created' => 'created',
-    'access' => 'access',
-    'edit_node' => 'edit_node',
   );
   $handler->display->display_options['style_options']['default'] = 'created';
   $handler->display->display_options['style_options']['info'] = array(
-    'name' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
+    'views_bulk_operations' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'status' => array(
+    'name' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_first_name' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'rid' => array(
+    'field_last_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'mail' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_job_title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_organization_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_link' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'created' => array(
       'sortable' => 1,
-      'default_sort_order' => 'desc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'access' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'desc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'edit_node' => array(
+      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -474,6 +508,16 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['header']['result']['id'] = 'result';
   $handler->display->display_options['header']['result']['table'] = 'views';
   $handler->display->display_options['header']['result']['field'] = 'result';
+  /* Relationship: User: Organizations (field_organizations) */
+  $handler->display->display_options['relationships']['field_organizations_value']['id'] = 'field_organizations_value';
+  $handler->display->display_options['relationships']['field_organizations_value']['table'] = 'field_data_field_organizations';
+  $handler->display->display_options['relationships']['field_organizations_value']['field'] = 'field_organizations_value';
+  $handler->display->display_options['relationships']['field_organizations_value']['delta'] = '-1';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_organization_reference_target_id']['id'] = 'field_organization_reference_target_id';
+  $handler->display->display_options['relationships']['field_organization_reference_target_id']['table'] = 'field_data_field_organization_reference';
+  $handler->display->display_options['relationships']['field_organization_reference_target_id']['field'] = 'field_organization_reference_target_id';
+  $handler->display->display_options['relationships']['field_organization_reference_target_id']['relationship'] = 'field_organizations_value';
   /* Field: Bulk operations: User */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'users';
@@ -647,6 +691,69 @@ function drupalorg_admin_pages_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
+  $handler->display->display_options['defaults']['query'] = FALSE;
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['distinct'] = TRUE;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'views_bulk_operations' => 'views_bulk_operations',
+    'name' => 'name',
+    'status' => 'status',
+    'rid' => 'rid',
+    'created' => 'created',
+    'access' => 'access',
+    'edit_node' => 'edit_node',
+  );
+  $handler->display->display_options['style_options']['default'] = 'created';
+  $handler->display->display_options['style_options']['info'] = array(
+    'views_bulk_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'status' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'rid' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'created' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'access' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'edit_node' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['path'] = 'admin/people/advanced';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Advanced';
@@ -657,6 +764,95 @@ function drupalorg_admin_pages_views_default_views() {
 
   /* Display: Organization People */
   $handler = $view->new_display('page', 'Organization People', 'page_2');
+  $handler->display->display_options['defaults']['group_by'] = FALSE;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'views_bulk_operations' => 'views_bulk_operations',
+    'name' => 'name',
+    'field_first_name' => 'field_first_name',
+    'field_last_name' => 'field_last_name',
+    'mail' => 'mail',
+    'field_job_title' => 'field_job_title',
+    'field_organization_name' => 'field_organization_name',
+    'title' => 'title',
+    'field_link' => 'field_link',
+    'created' => 'created',
+  );
+  $handler->display->display_options['style_options']['default'] = 'created';
+  $handler->display->display_options['style_options']['info'] = array(
+    'views_bulk_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_first_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_last_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'mail' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_job_title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_organization_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_link' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'created' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: User: Organizations (field_organizations) */
   $handler->display->display_options['relationships']['field_organizations_value']['id'] = 'field_organizations_value';
@@ -664,6 +860,12 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['relationships']['field_organizations_value']['field'] = 'field_organizations_value';
   $handler->display->display_options['relationships']['field_organizations_value']['required'] = TRUE;
   $handler->display->display_options['relationships']['field_organizations_value']['delta'] = '-1';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_organization_reference_target_id']['id'] = 'field_organization_reference_target_id';
+  $handler->display->display_options['relationships']['field_organization_reference_target_id']['table'] = 'field_data_field_organization_reference';
+  $handler->display->display_options['relationships']['field_organization_reference_target_id']['field'] = 'field_organization_reference_target_id';
+  $handler->display->display_options['relationships']['field_organization_reference_target_id']['relationship'] = 'field_organizations_value';
+  $handler->display->display_options['relationships']['field_organization_reference_target_id']['label'] = 'Organization';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Bulk operations: User */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
@@ -743,17 +945,24 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['field_organization_name']['table'] = 'field_data_field_organization_name';
   $handler->display->display_options['fields']['field_organization_name']['field'] = 'field_organization_name';
   $handler->display->display_options['fields']['field_organization_name']['relationship'] = 'field_organizations_value';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['relationship'] = 'field_organization_reference_target_id';
+  $handler->display->display_options['fields']['title']['label'] = 'Org Profile';
+  /* Field: Content: Website */
+  $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
+  $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
+  $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
+  $handler->display->display_options['fields']['field_link']['relationship'] = 'field_organization_reference_target_id';
+  $handler->display->display_options['fields']['field_link']['click_sort_column'] = 'url';
   /* Field: User: Created date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'users';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Member for';
   $handler->display->display_options['fields']['created']['date_format'] = 'raw time span';
-  /* Field: User: Edit link */
-  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['table'] = 'users';
-  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['label'] = 'Operations';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: User: Name (raw) */
@@ -868,6 +1077,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['filters']['field_job_title_value']['table'] = 'field_data_field_job_title';
   $handler->display->display_options['filters']['field_job_title_value']['field'] = 'field_job_title_value';
   $handler->display->display_options['filters']['field_job_title_value']['relationship'] = 'field_organizations_value';
+  $handler->display->display_options['filters']['field_job_title_value']['operator'] = 'contains';
   $handler->display->display_options['filters']['field_job_title_value']['group'] = 1;
   $handler->display->display_options['filters']['field_job_title_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_job_title_value']['expose']['operator_id'] = 'field_job_title_value_op';
@@ -884,12 +1094,11 @@ function drupalorg_admin_pages_views_default_views() {
     7 => 0,
     34 => 0,
     32 => 0,
-    16 => 0,
     30 => 0,
     22 => 0,
     20 => 0,
     24 => 0,
-    12 => 0,
+    41 => 0,
     28 => 0,
     26 => 0,
     14 => 0,
@@ -909,6 +1118,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['filters']['field_organization_name_value']['table'] = 'field_data_field_organization_name';
   $handler->display->display_options['filters']['field_organization_name_value']['field'] = 'field_organization_name_value';
   $handler->display->display_options['filters']['field_organization_name_value']['relationship'] = 'field_organizations_value';
+  $handler->display->display_options['filters']['field_organization_name_value']['operator'] = 'contains';
   $handler->display->display_options['filters']['field_organization_name_value']['group'] = 1;
   $handler->display->display_options['filters']['field_organization_name_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_organization_name_value']['expose']['operator_id'] = 'field_organization_name_value_op';
@@ -925,12 +1135,11 @@ function drupalorg_admin_pages_views_default_views() {
     7 => 0,
     34 => 0,
     32 => 0,
-    16 => 0,
     30 => 0,
     22 => 0,
     20 => 0,
     24 => 0,
-    12 => 0,
+    41 => 0,
     28 => 0,
     26 => 0,
     14 => 0,
@@ -942,6 +1151,9 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['filters']['field_current_value']['table'] = 'field_data_field_current';
   $handler->display->display_options['filters']['field_current_value']['field'] = 'field_current_value';
   $handler->display->display_options['filters']['field_current_value']['relationship'] = 'field_organizations_value';
+  $handler->display->display_options['filters']['field_current_value']['value'] = array(
+    1 => '1',
+  );
   $handler->display->display_options['filters']['field_current_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_current_value']['expose']['operator_id'] = 'field_current_value_op';
   $handler->display->display_options['filters']['field_current_value']['expose']['label'] = 'Current';
@@ -960,6 +1172,7 @@ function drupalorg_admin_pages_views_default_views() {
     22 => 0,
     20 => 0,
     24 => 0,
+    41 => 0,
     28 => 0,
     26 => 0,
     14 => 0,
@@ -1016,8 +1229,236 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['filters']['field_organization_name_value_1']['value'] = '0';
   $handler->display->display_options['path'] = 'admin/people/organization';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Organization & Job Title';
+  $handler->display->display_options['menu']['title'] = 'Users by Org & Job';
   $handler->display->display_options['menu']['weight'] = '-1';
+  $handler->display->display_options['menu']['name'] = 'management';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Org Profiles */
+  $handler = $view->new_display('page', 'Org Profiles', 'page_3');
+  $handler->display->display_options['defaults']['group_by'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
+  $handler->display->display_options['defaults']['query'] = FALSE;
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'title' => 'title',
+    'name' => 'name',
+  );
+  $handler->display->display_options['style_options']['default'] = 'name';
+  $handler->display->display_options['style_options']['info'] = array(
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['relationship'] = 'field_organization_reference_target_id';
+  $handler->display->display_options['fields']['title']['label'] = 'Org Profile';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['group_type'] = 'count';
+  $handler->display->display_options['fields']['name']['label'] = 'Username';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: User: Name (raw) */
+  $handler->display->display_options['filters']['name']['id'] = 'name';
+  $handler->display->display_options['filters']['name']['table'] = 'users';
+  $handler->display->display_options['filters']['name']['field'] = 'name';
+  $handler->display->display_options['filters']['name']['operator'] = 'contains';
+  $handler->display->display_options['filters']['name']['group'] = 1;
+  $handler->display->display_options['filters']['name']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['name']['expose']['operator_id'] = 'name_op';
+  $handler->display->display_options['filters']['name']['expose']['label'] = 'Username contains';
+  $handler->display->display_options['filters']['name']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['name']['expose']['operator'] = 'name_op';
+  $handler->display->display_options['filters']['name']['expose']['identifier'] = 'name';
+  $handler->display->display_options['filters']['name']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['operator'] = 'not in';
+  $handler->display->display_options['filters']['uid']['value'] = array(
+    0 => 0,
+  );
+  $handler->display->display_options['filters']['uid']['group'] = 1;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  /* Filter criterion: User: E-mail */
+  $handler->display->display_options['filters']['mail']['id'] = 'mail';
+  $handler->display->display_options['filters']['mail']['table'] = 'users';
+  $handler->display->display_options['filters']['mail']['field'] = 'mail';
+  $handler->display->display_options['filters']['mail']['operator'] = 'contains';
+  $handler->display->display_options['filters']['mail']['group'] = 1;
+  $handler->display->display_options['filters']['mail']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['mail']['expose']['operator_id'] = 'mail_op';
+  $handler->display->display_options['filters']['mail']['expose']['label'] = 'E-mail contains';
+  $handler->display->display_options['filters']['mail']['expose']['operator'] = 'mail_op';
+  $handler->display->display_options['filters']['mail']['expose']['identifier'] = 'mail';
+  $handler->display->display_options['filters']['mail']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    16 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    12 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: User: Active */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['status']['expose']['label'] = 'Active';
+  $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['status']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: Field collection item: Job Title (field_job_title) */
+  $handler->display->display_options['filters']['field_job_title_value']['id'] = 'field_job_title_value';
+  $handler->display->display_options['filters']['field_job_title_value']['table'] = 'field_data_field_job_title';
+  $handler->display->display_options['filters']['field_job_title_value']['field'] = 'field_job_title_value';
+  $handler->display->display_options['filters']['field_job_title_value']['relationship'] = 'field_organizations_value';
+  $handler->display->display_options['filters']['field_job_title_value']['operator'] = 'contains';
+  $handler->display->display_options['filters']['field_job_title_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_job_title_value']['expose']['operator_id'] = 'field_job_title_value_op';
+  $handler->display->display_options['filters']['field_job_title_value']['expose']['label'] = 'Job Title';
+  $handler->display->display_options['filters']['field_job_title_value']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['field_job_title_value']['expose']['operator'] = 'field_job_title_value_op';
+  $handler->display->display_options['filters']['field_job_title_value']['expose']['identifier'] = 'field_job_title_value';
+  $handler->display->display_options['filters']['field_job_title_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['relationship'] = 'field_organization_reference_target_id';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Organization';
+  $handler->display->display_options['filters']['title']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  $handler->display->display_options['path'] = 'admin/people/org-profiles';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Org Profiles';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'management';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $translatables['admin_users_drupalorg'] = array(
@@ -1036,6 +1477,8 @@ function drupalorg_admin_pages_views_default_views() {
     t('next ›'),
     t('last »'),
     t('Displaying @start - @end of @total'),
+    t('field collection item from field_organizations'),
+    t('Content entity referenced from field_organization_reference'),
     t('User'),
     t('- Choose an operation -'),
     t('Username'),
@@ -1050,14 +1493,16 @@ function drupalorg_admin_pages_views_default_views() {
     t('Role'),
     t('Page'),
     t('Organization People'),
-    t('field collection item from field_organizations'),
+    t('Organization'),
     t('First Name'),
     t('Last Name'),
     t('E-mail'),
     t('Job Title'),
-    t('Organization'),
+    t('Org Profile'),
+    t('Website'),
     t('Current'),
     t('User created date'),
+    t('Org Profiles'),
   );
   $export['admin_users_drupalorg'] = $view;
 
@@ -1076,8 +1521,11 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['title'] = 'Administer Organizations';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['group_by'] = TRUE;
-  $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['access']['perm'] = 'administer nodes';
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    3 => '3',
+    41 => '41',
+  );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
@@ -1102,6 +1550,7 @@ function drupalorg_admin_pages_views_default_views() {
     'field_organization_training_list' => 'field_organization_training_list',
     'field_org_marketplace_request' => 'field_org_marketplace_request',
     'field_organization_list_rule' => 'field_organization_list_rule',
+    'field_org_contribution_rank' => 'field_org_contribution_rank',
     'field_org_issue_credit_count' => 'field_org_issue_credit_count',
     'status' => 'status',
     'edit_node' => 'edit_node',
@@ -1186,9 +1635,16 @@ function drupalorg_admin_pages_views_default_views() {
       'separator' => '',
       'empty_column' => 1,
     ),
+    'field_org_contribution_rank' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 1,
+    ),
     'field_org_issue_credit_count' => array(
       'sortable' => 1,
-      'default_sort_order' => 'asc',
+      'default_sort_order' => 'desc',
       'align' => '',
       'separator' => '',
       'empty_column' => 1,
@@ -1324,6 +1780,15 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['field_organization_list_rule']['table'] = 'field_data_field_organization_list_rule';
   $handler->display->display_options['fields']['field_organization_list_rule']['field'] = 'field_organization_list_rule';
   $handler->display->display_options['fields']['field_organization_list_rule']['label'] = 'Services';
+  /* Field: Content: Org contribution rank */
+  $handler->display->display_options['fields']['field_org_contribution_rank']['id'] = 'field_org_contribution_rank';
+  $handler->display->display_options['fields']['field_org_contribution_rank']['table'] = 'field_data_field_org_contribution_rank';
+  $handler->display->display_options['fields']['field_org_contribution_rank']['field'] = 'field_org_contribution_rank';
+  $handler->display->display_options['fields']['field_org_contribution_rank']['label'] = 'Contribution rank';
+  $handler->display->display_options['fields']['field_org_contribution_rank']['settings'] = array(
+    'thousand_separator' => '',
+    'prefix_suffix' => 1,
+  );
   /* Field: Content: Org issue credit count */
   $handler->display->display_options['fields']['field_org_issue_credit_count']['id'] = 'field_org_issue_credit_count';
   $handler->display->display_options['fields']['field_org_issue_credit_count']['table'] = 'field_data_field_org_issue_credit_count';
@@ -1721,6 +2186,7 @@ function drupalorg_admin_pages_views_default_views() {
     t('Training'),
     t('Requested Services Listing'),
     t('Services'),
+    t('Contribution rank'),
     t('Issue credits (90 days)'),
     t('Published'),
     t('Edit'),
@@ -2401,6 +2867,8 @@ function drupalorg_admin_pages_views_default_views() {
     'book' => 'book',
     'casestudy' => 'casestudy',
     'changenotice' => 'changenotice',
+    'guide' => 'guide',
+    'documentation' => 'documentation',
     'forum' => 'forum',
     'project_issue' => 'project_issue',
     'organization' => 'organization',

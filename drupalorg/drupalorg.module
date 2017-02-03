@@ -205,6 +205,15 @@ function drupalorg_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['sponsor-redirect/%'] = [
+    'title' => t('Sponsor redirect'),
+    'access arguments' => ['access content'],
+    'page callback' => 'drupalorg_sponsor_redirect_page',
+    'page arguments' => [1],
+    'type' => MENU_CALLBACK,
+    'file' => 'drupalorg.pages.inc',
+  ];
+
   // Redirect some legacy paths related to the security listings.
   $items['security-contrib'] = array(
     'access arguments' => array('access content'),
@@ -310,7 +319,7 @@ function drupalorg_menu_alter(&$menu) {
  * Menu access callback. Hide revisions for some content types.
  */
 function drupalorg_node_revision_access($node) {
-  if (in_array($node->type, ['page', 'post', 'casestudy'])) {
+  if (in_array($node->type, ['page', 'post', 'casestudy', 'section'])) {
     return diff_node_revision_access($node) && node_access('update', $node);
   }
 
@@ -405,6 +414,13 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
               return FALSE;
           }
           break;
+
+        case 'node':
+          switch ($field['field_name']) {
+            // Hide contribution rank from API and elsewhere.
+            case 'field_org_contribution_rank':
+              return user_access('administer nodes', $account);
+          }
       }
       break;
 
@@ -556,6 +572,9 @@ function drupalorg_block_info() {
     ],
     'documentation-license' => [
       'info' => t('Documentation license'),
+    ],
+    'lead-capture' => [
+      'info' => t('Lead capture form'),
     ],
   );
 }
@@ -769,6 +788,10 @@ function drupalorg_block_view($delta, $block = NULL) {
       return [
         'content' => t('Drupal’s online documentation is © 2000-!year by the individual contributors and can be used in accordance with the <a href="@ccl_url">Creative Commons License, Attribution-ShareAlike 2.0</a>. PHP code is distributed under the <a href="@gpl_url">GNU General Public License</a>.', ['!year' => date('Y'), '@ccl_url' => url('terms'), '@gpl_url' => url('http://www.gnu.org/licenses/old-licenses/gpl-2.0.html')]),
       ];
+
+    case 'lead-capture':
+      $form = drupal_get_form('drupalorg_lead_capture_form');
+      return ['content' => $form];
   }
 }
 
@@ -1221,7 +1244,7 @@ function drupalorg_library_alter(&$libraries, $module) {
  * Implements hook_ctools_plugin_directory().
  */
 function drupalorg_ctools_plugin_directory($owner, $plugin_type) {
-  if ($owner === 'ctools' && $plugin_type === 'content_types') {
+  if ($owner === 'ctools' && in_array($plugin_type, ['content_types', 'access'], TRUE)) {
     return 'plugins/' . $plugin_type;
   }
   elseif ($owner === 'versioncontrol' && $plugin_type === 'webviewer_url_handlers') {
@@ -1347,12 +1370,12 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
       if ($group->type === 'guide') {
         array_shift($active_trail);
       }
-
-      // Message about documentation migration.
-      if ($parent->nid == 2734545 || $parent->nid == 2743405) {
-        drupal_set_message(t('Documentation is currently <a href="!url">being migrated</a> into the new system. Some pages might be temporarily missing, and some guides might appear empty. Thank you for your patience while we are improving Drupal.org documentation.', ['!url' => url('node/2762837')]), 'warning', FALSE);
-      }
     }
+  }
+
+  // There isn’t a “core project” listing, so link to core.
+  if (isset($active_trail[2]) && $active_trail['1']['href'] === 'project/project_core' && $active_trail[2]['href'] !== 'node/' . DRUPALORG_CORE_NID) {
+    $active_trail[1]['href'] = 'node/' . DRUPALORG_CORE_NID;
   }
 }
 
@@ -2125,10 +2148,6 @@ function drupalorg_form_multiple_email_manage_alter(&$form) {
  * Impelements hook_form_FORM_BASE_alter().
  */
 function drupalorg_form_comment_form_alter(&$form, &$form_state) {
-  // Increase default comment textarea height
-  if (!empty($form['comment_body'][LANGUAGE_NONE][0])) {
-    $form['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
-  }
   if (isset($form['field_attribute_contribution_to'])) {
     _drupalorg_alter_comment_attribution($form);
   }
@@ -2152,7 +2171,7 @@ function drupalorg_form_aggregator_form_feed_alter(&$form) {
 /**
  * Node form alter.
  */
-function drupalorg_form_node_form_alter(&$form) {
+function drupalorg_form_node_form_alter(&$form, &$form_state) {
   if (isset($form['#node']->title) && empty($form['#node']->nodechanges_in_block)) {
     drupal_set_title(t('Edit %title', ['%title' => $form['#node']->title]), PASS_THROUGH);
   }
@@ -2169,15 +2188,20 @@ function drupalorg_form_node_form_alter(&$form) {
   }
 
   if (isset($form['nodechanges_comment'])) {
-    $form['nodechanges_comment']['comment_body'][LANGUAGE_NONE][0]['#rows'] = 15;
     if (isset($form['nodechanges_comment']['field_attribute_contribution_to'])) {
       _drupalorg_alter_comment_attribution($form['nodechanges_comment'], $form['#node']);
     }
   }
 
   // If this is a new node with OG Menu, put in the menu.
-  if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu'])) {
-    $form['menu']['enabled']['#default_value'] = 1;
+  if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu']) && isset($form_state['entityreference_prepopulate']['node']['documentation']['og_group_ref_documentation'][0])) {
+    // But only if a guide maintainer with access to put it in the menu is
+    // adding the page.
+    foreach ($form['#node']->storage['og_menu'] as $item) {
+      if ($item['gid'] == $form_state['entityreference_prepopulate']['node']['documentation']['og_group_ref_documentation'][0]) {
+        $form['menu']['enabled']['#default_value'] = 1;
+      }
+    }
   }
 
   // If this is a documentation page or guide, only allow keeping one level of
@@ -2379,6 +2403,20 @@ function drupalorg_form_guide_node_form_alter(&$form) {
       $form['#access'] = FALSE;
     }
   }
+
+  // Allow admins to create stand-alone guides.
+  if (user_access('administer group')) {
+    $form['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id']['#required'] = FALSE;
+  }
+
+  // If a valid project to add the guide to is set, stash it in the node object.
+  if (isset($_REQUEST['project']) && ($project = node_load((int) $_REQUEST['project'])) && project_node_is_project($project)) {
+    $form['title']['#default_value'] = $project->title;
+    $form['#node']->drupalorg_add_to_project = $project->nid;
+  }
+
+  // Limit guide description length.
+  $form['body'][LANGUAGE_NONE][0]['#maxlength'] = 600;
 }
 
 /**
@@ -2587,6 +2625,54 @@ function drupalorg_homebox() {
           'title' => 'Your Security Issues',
           'weight' => 0,
         ),
+        'views_32e7c65bac9dbae3eee1572e8b7a9483' =>
+          array (
+            'module' => 'views',
+            'delta' => '32e7c65bac9dbae3eee1572e8b7a9483',
+            'region' => 1,
+            'movable' => 1,
+            'status' => 0,
+            'open' => 1,
+            'closable' => 1,
+            'title' => 'Security Advisories for Drupal core',
+            'weight' => 0,
+          ),
+        'views_8c73e7a3d634393e1980697b5e160df7' =>
+          array (
+            'module' => 'views',
+            'delta' => '8c73e7a3d634393e1980697b5e160df7',
+            'region' => 1,
+            'movable' => 1,
+            'status' => 1,
+            'open' => 1,
+            'closable' => 1,
+            'title' => 'All Security Advisories and Announcements',
+            'weight' => -32,
+          ),
+        'views_90684096e587b35d0dfab2580896b361' =>
+          array (
+            'module' => 'views',
+            'delta' => '90684096e587b35d0dfab2580896b361',
+            'region' => 1,
+            'movable' => 1,
+            'status' => 0,
+            'open' => 1,
+            'closable' => 1,
+            'title' => 'Security Advisories for contributed projects',
+            'weight' => 0,
+          ),
+        'views_27b26a3690773e7693ca6ac30f6dbd5e' =>
+          array (
+            'module' => 'views',
+            'delta' => '27b26a3690773e7693ca6ac30f6dbd5e',
+            'region' => 1,
+            'movable' => 1,
+            'status' => 0,
+            'open' => 1,
+            'closable' => 1,
+            'title' => 'Security Public Service Announcements',
+            'weight' => 0,
+          ),
       ),
     ),
   );
@@ -2649,11 +2735,6 @@ function drupalorg_node_access($node, $op, $account) {
     // documentatation pages have restrictions from node_node_access(), but do
     // not require documentation guide membership to edit.
     if (($type === 'documentation' || ($type === 'guide' && $op === 'update')) && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
-      return NODE_ACCESS_DENY;
-    }
-    // Do not allow creating guides outside of groups where the user is a guide
-    // maintainer.
-    if ($type === 'guide' && $op === 'create' && ($context = og_context()) && !og_user_access('node', $context['gid'], 'create guide content')) {
       return NODE_ACCESS_DENY;
     }
   }
@@ -3270,6 +3351,32 @@ function drupalorg_node_insert($node) {
   elseif (project_node_is_project($node)) {
     _drupalorg_node_update_project($node);
   }
+  elseif ($node->type === 'guide') {
+    $wrapper = entity_metadata_wrapper('node', $node);
+
+    // If a project was specified, add the guide to the project.
+    if (isset($node->drupalorg_add_to_project)) {
+      $project = node_load($node->drupalorg_add_to_project);
+      $field_collection_item = entity_create('field_collection_item', ['field_name' => 'field_project_docs']);
+      $field_collection_item->setHostEntity('node', $project);
+      $collection_wrapper = entity_metadata_wrapper('field_collection_item', $field_collection_item);
+      $collection_wrapper->field_project_doc_guide_name = $node->nid;
+      switch ($wrapper->og_group_ref_documentation->value()->nid) {
+        case 2785809:
+          $collection_wrapper->field_earliest_applicable_versio = '7.x';
+          break;
+
+        case 2785817:
+          $collection_wrapper->field_earliest_applicable_versio = '8.x';
+          break;
+
+        default:
+          $collection_wrapper->field_earliest_applicable_versio = '-';
+          break;
+      }
+      $field_collection_item->save();
+    }
+  }
 }
 
 /**
@@ -3587,7 +3694,7 @@ function drupalorg_preprocess_views_view(&$v) {
     $issue_wrapper = entity_metadata_wrapper('node', node_load($v['view']->argument['nid']->get_value()));
     if ($issue_wrapper->field_project->value()) {
       $tags = [];
-      foreach ($issue_wrapper->taxonomy_vocabulary_9->value() as $value) {
+      foreach (array_filter($issue_wrapper->taxonomy_vocabulary_9->value()) as $value) {
         $tags[] = $value->name;
       }
       $v['footer'] .= ', ' . l(t('clone issue'), 'node/add/project-issue/' . $issue_wrapper->field_project->field_project_machine_name->value(), [
@@ -3613,6 +3720,11 @@ function drupalorg_preprocess_views_view(&$v) {
  */
 function drupalorg_user_view($account, $view_mode) {
   global $user;
+
+  // Add messaging to user profile about how a user can be confirmed.
+  if ($user->uid === $account->uid && !drupalorg_user_is_confirmed($account) && isset($account->roles[2])) {
+    drupal_set_message(t('Your account is not yet confirmed and has some limitations. Learn how to <a href="https://www.drupal.org/drupalorg/docs/user-accounts/become-a-confirmed-user">become a confirmed user</a>.'));
+  }
 
   // Put non-field items into groups.
   $account->content['#group_children']['user_picture'] = 'group_profile_contact';
@@ -3817,13 +3929,31 @@ function drupalorg_user_view($account, $view_mode) {
     );
   }
 
-  // Documentation edits
-  if ($drupalorg_documentation = drupalorg_documentation_contributions($account)) {
-    $account->content['summary']['drupalorg_documentation'] = array(
+  // Documentation edits.
+  $count = (int) db_query('SELECT count(1) FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid AND nr.uid = :uid WHERE n.type IN (:types) AND n.status = :status', [':types' => ['book', 'guide', 'documentation'], ':status' => 1, ':uid' => $account->uid])->fetchField();
+  if ($count > 0) {
+    // This isn't a leaderboard.
+    if ($count === 1) {
+      $drupalorg_documentation = t('1 edit');
+    }
+    elseif ($count <= 5) {
+      $drupalorg_documentation = t('At least 1 edit');
+    }
+    else {
+      foreach ([10000, 5000, 1000, 500, 100, 50, 10, 5] as $threshold) {
+        if ($count > $threshold) {
+          $drupalorg_documentation = t('Over @count edits', ['@count' => $threshold]);
+          break;
+        }
+      }
+    }
+  }
+  if (isset($drupalorg_documentation)) {
+    $account->content['summary']['drupalorg_documentation'] = [
       '#type' => 'user_profile_item',
       '#title' => t('Documentation'),
       '#markup' => $drupalorg_documentation,
-    );
+    ];
   }
 
   // Issue credits.
@@ -3839,30 +3969,6 @@ function drupalorg_user_view($account, $view_mode) {
     $filter = $view->get_item('user_recent', 'filter', 'changed_1');
     $account->content['drupalorg_user_issue_credit']['#prefix'] = '<h4>' . format_plural($issues, 'Credited on 1 issue fixed in the past @time', 'Credited on @count issues fixed in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
   }
-}
-
-/**
- * Counts documentation edits for user profile view.
- */
-function drupalorg_documentation_contributions($account) {
-  $count = (int) db_query("SELECT count(*) FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid AND nr.uid = :uid WHERE n.type = :type AND n.status = :status", array(':type' => 'book', ':status' => 1, ':uid' => $account->uid))->fetchField();
-  if ($count > 0) {
-    // This isn't a leaderboard.
-    if ($count === 1) {
-      return t('1 edit');
-    }
-    elseif ($count <= 5) {
-      return t('At least 1 edit');
-    }
-    else {
-      foreach (array(10000, 5000, 1000, 500, 100, 50, 10, 5) as $threshold) {
-        if ($count > $threshold) {
-          return t('Over @count edits', array('@count' => $threshold));
-        }
-      }
-    }
-  }
-  return FALSE;
 }
 
 /**
@@ -4316,6 +4422,11 @@ function drupalorg_bakery_transmit($edit, $account) {
     $data['drupalorg_timezone'] = $account->timezone;
   }
 
+  // Account creation to sync.
+  if (!empty($account->created)) {
+    $data['drupalorg_crosssite_account_created'] = $account->created;
+  }
+
   // Roles to sync.
   foreach (array('logintoboggan_pre_auth_role', 'drupalorg_crosssite_trusted_role', 'drupalorg_crosssite_community_role') as $role) {
     if ($rid = variable_get($role, FALSE)) {
@@ -4356,15 +4467,18 @@ function drupalorg_entity_presave($entity, $type) {
         $organization['entity']->field_organization_reference = array();
         // Add to list of titles to try loading.
         if (!empty($organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value'])) {
-          $organization_titles[trim(drupal_strtolower($organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value']))] = $delta;
+          $organization_titles[trim(drupal_strtolower($organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value']))][] = $delta;
         }
       }
       if (!empty($organization_titles)) {
         // Load organizations by title and populate reference field.
         foreach (db_query("SELECT nid, title FROM {node} n WHERE n.status = :published AND n.type = 'organization' AND title IN (:titles)", array(':published' => NODE_PUBLISHED, ':titles' => array_keys($organization_titles)))->fetchAllKeyed() as $nid => $title) {
           // MySQL collation is more loose than PHP.
-          if (isset($organization_titles[trim(drupal_strtolower($title))])) {
-            $entity->field_organizations[LANGUAGE_NONE][$organization_titles[trim(drupal_strtolower($title))]]['entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id'] = $nid;
+          $key = trim(drupal_strtolower($title));
+          if (isset($organization_titles[$key])) {
+            foreach ($organization_titles[$key] as $delta) {
+              $entity->field_organizations[LANGUAGE_NONE][$delta]['entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id'] = $nid;
+            }
           }
         }
       }
@@ -4885,12 +4999,7 @@ function drupalorg_project_release_history_xml_written($project, $api_version) {
 function drupalorg_mollom_content_alter(&$data) {
   // Remove safe domains.
   if (isset($data['postBody'])) {
-    $data['postBody'] = preg_replace(array(
-      '#https?://((www|api|assoc|events|groups|jobs|localize|qa|security|git)\.)?drupal\.org#',
-      '#https?://([a-z]\.)?stack(exchange|overflow)\.com#',
-      '#https://github\.com#',
-      '#https?://(www\.)?example\.(com|net|org)#',
-    ), '', $data['postBody']);
+    $data['postBody'] = preg_replace(variable_get('drupalorg_mollom_remove', []), '', $data['postBody']);
   }
 }
 
@@ -5153,7 +5262,499 @@ function drupalorg_sa_save($form, $form_state) {
  */
 function drupalorg_panels_pane_content_alter($content, $pane, $args, $contexts) {
   // Remove create content links in imported User guide.
-  if ($pane->type === 'node_prepopulate' && entity_metadata_wrapper('node', $contexts['panelizer']->data)->body->format->value() === 'asciidoc_import') {
+  if (!empty($content) && $pane->type === 'node_prepopulate' && entity_metadata_wrapper('node', $contexts['panelizer']->data)->body->format->value() === 'asciidoc_import') {
     $content->content = [];
   }
+
+  // Add lead capture to CTAs with pane admin title “Lead capture”.
+  if (isset($content->content['field_cta_body']) && $content->content['field_cta_body']['#object']->admin_title === 'Lead capture') {
+    $form = drupal_get_form('drupalorg_lead_capture_form');
+    $content->content['field_cta_body']['#suffix'] = drupal_render($form);
+  }
+}
+
+/**
+ * Sponsorship opportunity for industry landing pages.
+ */
+function drupalorg_lead_capture_form($form) {
+  $form['#action'] = 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+  $form['oid'] = [
+    '#type' => 'hidden',
+    '#value' => '00DA0000000ARBs',
+  ];
+  $form['retURL'] = [
+    '#type' => 'hidden',
+    '#value' => url('industries/thank-you', ['absolute' => TRUE, 'alias' => TRUE]),
+  ];
+  $form['00NA00000067D9R'] = [
+    '#type' => 'hidden',
+    '#value' => url(current_path(), ['absolute' => TRUE]),
+  ];
+  $form['first_name'] = [
+    '#type' => 'textfield',
+    '#title' => t('First name'),
+    '#title_display' => 'invisible',
+    '#maxlength' => 40,
+    '#size' => 20,
+    '#attributes' => [
+      'placeholder' => t('First name'),
+    ],
+  ];
+  $form['last_name'] = [
+    '#type' => 'textfield',
+    '#title' => t('Last name'),
+    '#title_display' => 'invisible',
+    '#maxlength' => 80,
+    '#size' => 20,
+    '#attributes' => [
+      'placeholder' => t('Last name'),
+    ],
+  ];
+  $form['email'] = [
+    '#type' => 'textfield',
+    '#title' => t('Email'),
+    '#title_display' => 'invisible',
+    '#maxlength' => 80,
+    '#size' => 20,
+    '#attributes' => [
+      'placeholder' => t('Email'),
+    ],
+  ];
+  $form['phone'] = [
+    '#type' => 'textfield',
+    '#title' => t('Phone'),
+    '#title_display' => 'invisible',
+    '#maxlength' => 40,
+    '#size' => 20,
+    '#attributes' => [
+      'placeholder' => t('Phone'),
+    ],
+  ];
+  $form['country'] = [
+    '#type' => 'textfield',
+    '#title' => t('Country'),
+    '#title_display' => 'invisible',
+    '#maxlength' => 40,
+    '#size' => 20,
+    '#attributes' => [
+      'placeholder' => t('Country'),
+    ],
+  ];
+  if (user_is_logged_in()) {
+    $wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
+    $form['first_name']['#default_value'] = $wrapper->field_first_name->value();
+    $form['last_name']['#default_value'] = $wrapper->field_last_name->value();
+    $form['email']['#default_value'] = $wrapper->mail->value();
+    $form['country']['#default_value'] = $wrapper->field_country->value();
+  }
+  $form['00NA00000067Ahk'] = [
+    '#type' => 'select',
+    '#title' => t('Region'),
+    '#title_display' => 'invisible',
+    '#options' => [
+      'AMER' => t('Americas'),
+      'EMEA' => t('Europe, Middle East, Africa'),
+      'APAC' => t('Asia Pacific'),
+    ],
+  ];
+  if ($country = drupalorg_get_and_vary_header('GeoIP-country')) {
+    switch ($country) {
+      case 'A1': // Anonymous Proxy
+      case 'A2': // Satellite Provider
+      case 'O1': // Other Country
+      case 'AI': // Anguilla
+      case 'AG': // Antigua and Barbuda
+      case 'AR': // Argentina
+      case 'AW': // Aruba
+      case 'BS': // Bahamas
+      case 'BB': // Barbados
+      case 'BZ': // Belize
+      case 'BM': // Bermuda
+      case 'BO': // Bolivia (Plurinational State of)
+      case 'BQ': // Bonaire, Sint Eustatius and Saba
+      case 'BR': // Brazil
+      case 'CA': // Canada
+      case 'KY': // Cayman Islands
+      case 'CL': // Chile
+      case 'CO': // Colombia
+      case 'CR': // Costa Rica
+      case 'CU': // Cuba
+      case 'CW': // Curaçao
+      case 'DM': // Dominica
+      case 'DO': // Dominican Republic
+      case 'EC': // Ecuador
+      case 'SV': // El Salvador
+      case 'GF': // French Guiana
+      case 'GD': // Grenada
+      case 'GP': // Guadeloupe
+      case 'GT': // Guatemala
+      case 'GY': // Guyana
+      case 'HT': // Haiti
+      case 'HN': // Honduras
+      case 'JM': // Jamaica
+      case 'MQ': // Martinique
+      case 'MX': // Mexico
+      case 'MS': // Montserrat
+      case 'NI': // Nicaragua
+      case 'PA': // Panama
+      case 'PY': // Paraguay
+      case 'PE': // Peru
+      case 'PR': // Puerto Rico
+      case 'BL': // Saint Barthélemy
+      case 'KN': // Saint Kitts And Nevis
+      case 'LC': // Saint Lucia
+      case 'MF': // Saint Martin
+      case 'PM': // Saint Pierre and Miquelon
+      case 'VC': // Saint Vincent and The Grenadines
+      case 'SX': // Sint Maarten (Dutch part)
+      case 'SR': // Suriname
+      case 'TT': // Trinidad and Tobago
+      case 'TC': // Turks and Caicos Islands
+      case 'US': // United States
+      case 'UY': // Uruguay
+      case 'VE': // Venezuela
+      case 'VG': // Virgin Islands (British)
+      case 'VI': // Virgin Islands (U.S.)
+        $form['00NA00000067Ahk']['#default_value'] = 'AMER';
+        break;
+
+      case 'EU': // European Union
+      case 'AF': // Afghanistan
+      case 'AX': // Åland Islands
+      case 'AL': // Albania
+      case 'DZ': // Algeria
+      case 'AD': // Andorra
+      case 'AO': // Angola
+      case 'AM': // Armenia
+      case 'AT': // Austria
+      case 'AZ': // Azerbaijan
+      case 'BH': // Bahrain
+      case 'BY': // Belarus
+      case 'BE': // Belgium
+      case 'BJ': // Benin
+      case 'BA': // Bosnia and Herzegovina
+      case 'BW': // Botswana
+      case 'BV': // Bouvet Island
+      case 'BG': // Bulgaria
+      case 'BF': // Burkina Faso
+      case 'BI': // Burundi
+      case 'CM': // Cameroon
+      case 'CV': // Cabo Verde
+      case 'CF': // Central African Republic
+      case 'TD': // Chad
+      case 'KM': // Comoros
+      case 'CD': // Congo (Democratic Republic of the)
+      case 'CG': // Congo
+      case 'CI': // Côte d’Ivoire
+      case 'HR': // Croatia
+      case 'CY': // Cyprus
+      case 'CZ': // Czech Republic
+      case 'DK': // Denmark
+      case 'DJ': // Djibouti
+      case 'EG': // Egypt
+      case 'GQ': // Equatorial Guinea
+      case 'ER': // Eritrea
+      case 'EE': // Estonia
+      case 'ET': // Ethiopia
+      case 'FK': // Falkland Islands
+      case 'FO': // Faroe Islands
+      case 'FI': // Finland
+      case 'FR': // France
+      case 'GA': // Gabon
+      case 'GM': // Gambia
+      case 'GE': // Georgia
+      case 'DE': // Germany
+      case 'GH': // Ghana
+      case 'GI': // Gibraltar
+      case 'GR': // Greece
+      case 'GL': // Greenland
+      case 'GG': // Guernsey
+      case 'GN': // Guinea
+      case 'GW': // Guinea-Bissau
+      case 'VA': // Vatican City
+      case 'HU': // Hungary
+      case 'IS': // Iceland
+      case 'IR': // Iran
+      case 'IQ': // Iraq
+      case 'IE': // Ireland
+      case 'IM': // Isle of Man
+      case 'IL': // Israel
+      case 'IT': // Italy
+      case 'JE': // Jersey
+      case 'JO': // Jordan
+      case 'KZ': // Kazakhstan
+      case 'KE': // Kenya
+      case 'KV': // Korea (Democratic People’s Republic of)
+      case 'KR': // Korea (Republic of)
+      case 'KW': // Kuwait
+      case 'LV': // Latvia
+      case 'LB': // Lebanon
+      case 'LS': // Lesotho
+      case 'LR': // Liberia
+      case 'LY': // Libya
+      case 'LI': // Liechtenstein
+      case 'LT': // Lithuania
+      case 'LU': // Luxembourg
+      case 'MK': // Macedonia
+      case 'MG': // Madagascar
+      case 'MW': // Malawi
+      case 'ML': // Mali
+      case 'MT': // Malta
+      case 'MR': // Mauritania
+      case 'MU': // Mauritius
+      case 'YT': // Mayotte
+      case 'MD': // Moldova
+      case 'MC': // Monaco
+      case 'ME': // Montenegro
+      case 'MA': // Morocco
+      case 'MZ': // Mozambique
+      case 'NA': // Namibia
+      case 'NL': // Netherlands
+      case 'NE': // Niger
+      case 'NG': // Nigeria
+      case 'NO': // Norway
+      case 'OM': // Oman
+      case 'PS': // Palestine
+      case 'PL': // Poland
+      case 'PT': // Portugal
+      case 'QA': // Qatar
+      case 'RE': // Réunion
+      case 'RO': // Romania
+      case 'RU': // Russia
+      case 'RW': // Rwanda
+      case 'SH': // Saint Helena
+      case 'SM': // San Marino
+      case 'ST': // Sao Tome and Principe
+      case 'SA': // Saudi Arabia
+      case 'SN': // Senegal
+      case 'RS': // Serbia
+      case 'SC': // Seychelles
+      case 'SL': // Sierra Leone
+      case 'SK': // Slovakia
+      case 'SI': // Slovenia
+      case 'SO': // Somalia
+      case 'ZA': // South Africa
+      case 'GS': // South Georgia and the South Sandwich Islands
+      case 'ES': // Spain
+      case 'SD': // Sudan
+      case 'SJ': // Svalbard
+      case 'SZ': // Swaziland
+      case 'SE': // Sweden
+      case 'CH': // Switzerland
+      case 'SY': // Syria
+      case 'TZ': // Tanzania
+      case 'TG': // Togo
+      case 'TN': // Tunisia
+      case 'TR': // Turkey
+      case 'UG': // Uganda
+      case 'UA': // Ukraine
+      case 'AE': // United Arab Emirates
+      case 'GB': // United Kingdom
+      case 'EH': // Western Sahara
+      case 'YE': // Yemen
+      case 'ZM': // Zambia
+      case 'ZW': // Zimbabwe
+        $form['00NA00000067Ahk']['#default_value'] = 'EMEA';
+        break;
+
+      case 'AP': // Asia Pacific
+      case 'AS': // American Samoa
+      case 'AQ': // Antarctica
+      case 'AU': // Australia
+      case 'BD': // Bangladesh
+      case 'BT': // Bhutan
+      case 'IO': // British Indian Ocean Territory
+      case 'BN': // Brunei Darussalam
+      case 'KH': // Cambodia
+      case 'CN': // China
+      case 'CX': // Christmas Island
+      case 'CC': // Cocos (Keeling) Islands
+      case 'CK': // Cook Islands
+      case 'FJ': // Fiji
+      case 'PF': // French Polynesia
+      case 'TF': // French Southern Territories
+      case 'GU': // Guam
+      case 'HM': // Heard Island and McDonald Islands
+      case 'HK': // Hong Kong
+      case 'IN': // India
+      case 'ID': // Indonesia
+      case 'JP': // Japan
+      case 'KI': // Kiribati
+      case 'KG': // Kyrgyzstan
+      case 'LA': // Laos
+      case 'MO': // Macao
+      case 'MY': // Malaysia
+      case 'MV': // Maldives
+      case 'MH': // Marshall Islands
+      case 'FM': // Micronesia
+      case 'MN': // Mongolia
+      case 'MM': // Myanmar
+      case 'NR': // Nauru
+      case 'NP': // Nepal
+      case 'NC': // New Caledonia
+      case 'NZ': // New Zealand
+      case 'NU': // Niue
+      case 'NF': // Norfolk Island
+      case 'MP': // Northern Mariana Islands
+      case 'PK': // Pakistan
+      case 'PW': // Palau
+      case 'PG': // Papua New Guinea
+      case 'PH': // Philippines
+      case 'PN': // Pitcairn
+      case 'WS': // Samoa
+      case 'SG': // Singapore
+      case 'SB': // Solomon Islands
+      case 'SS': // South Sudan
+      case 'LK': // Sri Lanka
+      case 'TW': // Taiwan
+      case 'TJ': // Tajikistan
+      case 'TH': // Thailand
+      case 'TL': // Timor-Leste
+      case 'TK': // Tokelau
+      case 'TO': // Tonga
+      case 'TM': // Turkmenistan
+      case 'TV': // Tuvalu
+      case 'UM': // United States Minor Outlying Islands
+      case 'UZ': // Uzbekistan
+      case 'VU': // Vanuatu
+      case 'VN': // Viet Nam
+      case 'WF': // Wallis and Futuna
+        $form['00NA00000067Ahk']['#default_value'] = 'APAC';
+        break;
+    }
+  }
+  $form['00NA00000067AhfMAE'] = [
+    '#type' => 'textarea',
+    '#title' => t('Project description'),
+    '#title_display' => 'invisible',
+    '#rows' => 5,
+    '#resizable' => FALSE,
+    '#attributes' => [
+      'placeholder' => t('Project description'),
+    ],
+  ];
+  $form['submit'] = [
+    '#type' => 'submit',
+    '#value' => t('Get Connected'),
+  ];
+
+  return $form;
+}
+
+/**
+ * Get a request header and set the reponse Vary header to cache accordingly.
+ *
+ * @param $header_name
+ *   Request header name like 'GeoIP-continent'.
+ * @return
+ *   If found, the request header value, or FALSE.
+ */
+function drupalorg_get_and_vary_header($header_name) {
+  static $called = FALSE;
+
+  if (!$called) {
+    $called = TRUE;
+    // Don’t use Drupal’s page cache.
+    drupal_page_is_cacheable(FALSE);
+    // We still want external caching.
+    if (user_is_anonymous() && variable_get('cache')) {
+      drupal_add_http_header('Cache-Control', 'public, max-age=' . variable_get('page_cache_maximum_age', 0));
+    }
+    // We still want to vary on cookie.
+    drupal_add_http_header('Vary', 'Cookie', TRUE);
+  }
+
+  // Vary based on header we are checking.
+  drupal_add_http_header('Vary', $header_name, TRUE);
+  // Check the header.
+  $header = 'HTTP_' . str_replace('-', '_', drupal_strtoupper($header_name));
+  if (isset($_SERVER[$header])) {
+    return $_SERVER[$header];
+  }
+  return FALSE;
+}
+
+/**
+ * Implements hook_comment_delete().
+ */
+function drupalorg_comment_delete($comment) {
+  // Ensure comment has a spam flag before putting it in comment delete table.
+  if (flag_get_entity_flags('comment', $comment->cid, 'drupalorg_comment_spam')) {
+    // Copy comment data over to drupalorg_comment_deleted table because it was
+    // flagged as spam.
+    db_insert('drupalorg_comment_deleted')->fields([
+      'cid' => $comment->cid,
+      'pid' => $comment->pid,
+      'nid' => $comment->nid,
+      'uid' => $comment->uid,
+      'subject' => $comment->subject,
+      'hostname' => $comment->hostname,
+      'created' => $comment->created,
+      'changed' => $comment->changed,
+      'status' => $comment->status,
+      'thread' => $comment->thread,
+      'name' => $comment->name,
+      'mail' => $comment->mail,
+      'homepage' => $comment->homepage,
+      'language' => $comment->language,
+      'comment_body' => $comment->comment_body['und'][0]['safe_value'],
+    ])->execute();
+  }
+}
+
+/**
+ * Implements hook_element_info_alter().
+ *
+ * Sets the default format if the user’s default format is filtered_html.
+ */
+function drupalorg_element_info_alter(&$type) {
+  array_unshift($type['text_format']['#pre_render'], 'drupalorg_process_filter_format');
+}
+
+/**
+ * Callback function to process the filter format and remove the fieldset.
+ */
+function drupalorg_process_filter_format($element) {
+  // If no format is found, exit.
+  if (!isset($element['format'])) {
+    return $element;
+  }
+
+  // By default, disable ckeditor.
+  $element['value']['#wysiwyg'] = FALSE;
+
+  // Disable the summary value wysiwyg.
+  if (isset($element['summary'])) {
+    $element['summary']['#wysiwyg'] = FALSE;
+  }
+
+  // Disable Depricated input filter, unless its already being used
+  if ($element['format']['format']['#default_value'] != '5') {
+    unset($element['format']['format']['#options'][5]);
+  }
+
+  // Progressively enable ckeditor for specific entities & bundles / CTs.
+  if (isset($element['#entity_type'])) {
+    $bundles_to_enable = ['page', 'post', 'section', 'guide', 'documentation'];
+
+    switch ($element['#entity_type']) {
+      case 'node':
+        if (in_array($element['#bundle'], $bundles_to_enable)) {
+          $element['value']['#wysiwyg'] = TRUE;
+          // Disable the summary value wysiwyg.
+          if (isset($element['summary'])) {
+            $element['summary']['#wysiwyg'] = TRUE;
+          }
+        }
+        break;
+
+      case 'comment':
+        if (in_array(str_replace('comment_node_', '', $element['#bundle']), $bundles_to_enable)) {
+          $element['value']['#wysiwyg'] = TRUE;
+        }
+        break;
+    }
+  }
+
+  return $element;
 }

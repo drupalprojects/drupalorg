@@ -239,7 +239,7 @@
             // Hide taken suggestions.
             $.each(customers.split(','), function (index, value) {
               if (value.match(/.*\(\d+\)\s*/)) {
-                $customerSuggestions.filter('[data-string*="' + value.replace(/.*\((\d+)\)\s*/, '$1') + '"]').hide();
+                $customerSuggestions.filter('[data-string*="' + value.replace(/.*\((\d+)\)[\s"]*/, '$1') + '"]').hide();
               }
             });
           }
@@ -447,6 +447,16 @@
           $link_title.removeData('menuLinkAutomaticTitleOveridden');
         });
       });
+    }
+  };
+
+  Drupal.behaviors.projectPage = {
+    attach: function (context) {
+      // Hide all but the first download table headers.
+      var list = document.querySelectorAll('.view-project-release-download-table thead');
+      for (var i = 1; i < list.length; i++) {
+        list[i].style.display = 'none';
+      }
     }
   };
 })(jQuery);

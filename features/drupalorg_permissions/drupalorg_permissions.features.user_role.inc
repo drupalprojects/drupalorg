@@ -64,6 +64,12 @@ function drupalorg_permissions_user_default_roles() {
     'weight' => 4,
   );
 
+  // Exported role: content administrator.
+  $roles['content administrator'] = array(
+    'name' => 'content administrator',
+    'weight' => 14,
+  );
+
   // Exported role: content moderator.
   $roles['content moderator'] = array(
     'name' => 'content moderator',

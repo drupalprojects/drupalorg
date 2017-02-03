@@ -11,7 +11,7 @@ function drupalorg_content_types_default_page_manager_handlers() {
   $export = array();
 
   $handler = new stdClass();
-  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->disabled = TRUE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'node_view__node_in_an_og';
   $handler->task = 'node_view';
@@ -190,7 +190,7 @@ function drupalorg_content_types_default_page_manager_handlers() {
   $export['node_view__node_in_an_og'] = $handler;
 
   $handler = new stdClass();
-  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->disabled = TRUE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'node_view__section_panel';
   $handler->task = 'node_view';

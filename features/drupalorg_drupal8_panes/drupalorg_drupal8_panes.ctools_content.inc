@@ -14,20 +14,20 @@ function drupalorg_drupal8_panes_default_ctools_custom_content() {
   $content->disabled = FALSE; /* Edit this to true to make a default content disabled initially */
   $content->api_version = 1;
   $content->name = 'drupalorg_d8_ad';
-  $content->admin_title = 'D8 Download Page Ad (Fastly)';
+  $content->admin_title = 'D8 Download Page Ad (A2)';
   $content->admin_description = 'Download experience Drupal Core Ad';
-  $content->category = 'Drupalorg Project';
+  $content->category = 'Drupal.org';
   $content->settings = array(
     'admin_title' => 'Drupal 8 Ad',
     'title' => '',
     'title_heading' => 'h2',
-    'body' => '<div class="drupal8-sponsor"><span class="intro">Drupal.org is brought to you in part by the generous support of sponsors like:</span>
+    'body' => '<div class="drupal8-sponsor">Drupal.org is brought to you in part by the generous support of sponsors like:
 <div class="sponsor">
-<a href="https://www.drupal.org/news/drupalorg-migrates-content-and-file-delivery-to-fastly"><img src="/files/styles/grid-3/public/project-images/fastly_logo-01 (1)_0.png" /></a>
+<a href="https://www.a2hosting.com/drupal-hosting?utm_source=drupal&utm_campaign=drupal-downloads&utm_medium=promo"><img src="https://www.drupal.org/files/styles/grid-3/public/a2%3Dhosting.png?itok=BuizxGip"></a>
 <div class="text">
-<p>We’re the only CDN that offers complete control over your content and real-time access to performance analytics, and are proud to help Drupal.org provide great experiences across the world. <br /><br />
-<a class="button" href="https://www.drupal.org/news/drupalorg-migrates-content-and-file-delivery-to-fastly">Learn why Drupal.org chose Fastly</a>
-</div>
+<p>Don\'t worry about download or install files! Drupal is pre-installed complete with security and speed optimizations! Sign up now for 20X faster page loads on A2 Hosting\'s Turbo Servers</p>
+<p><a class="button" href="https://www.a2hosting.com/drupal-hosting?utm_source=drupal&utm_campaign=drupal-downloads&utm_medium=promo">Get Faster Drupal Hosting</a>
+</p></div>
 </div>
 </div>',
     'format' => '1',

@@ -109,6 +109,9 @@ function drupalorg_marketplace_strongarm() {
       'diff_standard' => array(
         'custom_settings' => FALSE,
       ),
+      'related_content' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
