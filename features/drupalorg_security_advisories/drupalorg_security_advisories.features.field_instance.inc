@@ -134,7 +134,7 @@ function drupalorg_security_advisories_field_default_field_instances() {
     'default_value' => NULL,
     'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Use the “securitydrupalorg” project for PSAs.',
     'display' => array(
       'default' => array(
         'label' => 'inline',
