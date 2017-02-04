@@ -10,6 +10,39 @@
 function drupalorg_security_advisories_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'comment-comment_node_sa-field_sa_changes'.
+  $field_instances['comment-comment_node_sa-field_sa_changes'] = array(
+    'bundle' => 'comment_node_sa',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'nodechanges',
+        'settings' => array(
+          'files_display_mode' => 'fieldset_all_but_new',
+        ),
+        'type' => 'nodechanges_diff_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'field_sa_changes',
+    'label' => 'Security Announcement changes',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'field_extrawidgets',
+      'settings' => array(),
+      'type' => 'field_extrawidgets_hidden',
+      'weight' => 1,
+    ),
+  );
+
   // Exported field_instance: 'node-sa-field_issue_credit'.
   $field_instances['node-sa-field_issue_credit'] = array(
     'bundle' => 'sa',
@@ -735,10 +768,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
   t('Like 001 or 042.');
   t('Project');
   t('Reported By');
+  t('Security Announcement changes');
   t('Security risk');
   t('Solution');
   t('Status');
   t('Such as “Cross site scripting”, “Information disclosure”, or “Access bypass”.');
+  t('Use the “securitydrupalorg” project for PSAs.');
   t('Version');
   t('Vulnerability');
   t('issue_credit');
