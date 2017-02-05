@@ -1910,8 +1910,10 @@ function _drupalorg_project_issue_credit_add(&$form_state) {
         $form_state['drupalorg_credit_cids'][$node->nodechanges_cid] = $account->uid;
 
         // Notify the creditee. See _project_issue_email_notify().
-        $from = '"' . mime_header_encode(t('!name (!site)', array('!name' => $GLOBALS['user']->name, '!site' => variable_get('site_name', 'Drupal')))) . '" <' . variable_get('project_issue_reply_to_' . $node->type, variable_get('site_mail', ini_get('sendmail_from'))) . '>';
-        drupal_mail('drupalorg', 'credited_by_maintainer', $account->mail, LANGUAGE_NONE, ['node' => $node], $from);
+        if ($node->type !== 'sa') {
+          $from = '"' . mime_header_encode(t('!name (!site)', array('!name' => $GLOBALS['user']->name, '!site' => variable_get('site_name', 'Drupal')))) . '" <' . variable_get('project_issue_reply_to_' . $node->type, variable_get('site_mail', ini_get('sendmail_from'))) . '>';
+          drupal_mail('drupalorg', 'credited_by_maintainer', $account->mail, LANGUAGE_NONE, ['node' => $node], $from);
+        }
       }
 
       // Give them credit.
