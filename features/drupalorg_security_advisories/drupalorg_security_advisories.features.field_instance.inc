@@ -10,6 +10,154 @@
 function drupalorg_security_advisories_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'comment-comment_node_sa-comment_body'.
+  $field_instances['comment-comment_node_sa-comment_body'] = array(
+    'bundle' => 'comment_node_sa',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'comment_body',
+    'label' => 'Comment',
+    'required' => TRUE,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'comment-comment_node_sa-field_attribute_as_volunteer'.
+  $field_instances['comment-comment_node_sa-field_attribute_as_volunteer'] = array(
+    'bundle' => 'comment_node_sa',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'field_attribute_as_volunteer',
+    'label' => 'Attribute this contribution',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'comment-comment_node_sa-field_attribute_contribution_to'.
+  $field_instances['comment-comment_node_sa-field_attribute_contribution_to'] = array(
+    'bundle' => 'comment_node_sa',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'field_attribute_contribution_to',
+    'label' => 'Attribute comment at organization',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance: 'comment-comment_node_sa-field_for_customer'.
+  $field_instances['comment-comment_node_sa-field_for_customer'] = array(
+    'bundle' => 'comment_node_sa',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 4,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'field_for_customer',
+    'label' => 'Attribute comment for customer',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete_tags',
+      'weight' => 7,
+    ),
+  );
+
   // Exported field_instance: 'comment-comment_node_sa-field_sa_changes'.
   $field_instances['comment-comment_node_sa-field_sa_changes'] = array(
     'bundle' => 'comment_node_sa',
@@ -762,6 +910,10 @@ function drupalorg_security_advisories_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Advisory ID');
+  t('Attribute comment at organization');
+  t('Attribute comment for customer');
+  t('Attribute this contribution');
+  t('Comment');
   t('Coordinated By');
   t('Description');
   t('Fixed By');
