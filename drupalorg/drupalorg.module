@@ -5651,3 +5651,16 @@ function drupalorg_process_filter_format($element) {
 
   return $element;
 }
+
+/**
+ * Implements hook_preprocess_node_add_list().
+ */
+function drupalorg_preprocess_node_add_list(&$v) {
+  // Remove add Documentation guide & page links. They should be added directly
+  // from their parent guide.
+  foreach ($v['content'] as $key => $value) {
+    if (in_array($value['path'], ['node/add/guide', 'node/add/documentation'])) {
+      unset($v['content'][$key]);
+    }
+  }
+}
