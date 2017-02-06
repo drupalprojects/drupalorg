@@ -4349,6 +4349,13 @@ function drupalorg_module_implements_alter(&$implementations, $hook) {
     unset($implementations['drupalorg']);
     $implementations['drupalorg'] = NULL;
   }
+
+  // Execute drupalorg_entity_property_info_alter() after
+  // comment_fragment_entity_info_alter() to override 'uri callback'.
+  if ($hook === 'entity_info_alter') {
+    unset($implementations['drupalorg']);
+    $implementations['drupalorg'] = NULL;
+  }
 }
 
 /**
@@ -5103,6 +5110,32 @@ function drupalorg_entity_info_alter(&$entity_info) {
     'label' => t('Related Content'),
     'custom settings' => TRUE,
   ];
+
+  // Special comment URI callback for content types with …/discuss pages.
+  $entity_info['comment']['uri callback'] = 'drupalorg_comment_uri';
+}
+
+/**
+ * Comment URI callback.
+ */
+function drupalorg_comment_uri($comment) {
+  // …/discuss page for documentation.
+  if (in_array($comment->node_type, ['comment_node_guide', 'comment_node_documentation'])) {
+    $node = node_load($comment->nid);
+    $page = comment_get_display_page($comment->cid, $node->type);
+
+    $uri = [
+      'path' => 'node/' . $comment->nid . '/discuss',
+      'options' => array('fragment' => 'comment-' . $comment->cid),
+    ];
+    if ($page > 0) {
+      $uri['options']['query']['page'] = $page;
+    }
+    return $uri;
+  }
+
+  // Fall back to comment_fragment module.
+  return comment_fragment_uri($comment);
 }
 
 /**
