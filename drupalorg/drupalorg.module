@@ -5095,9 +5095,10 @@ function drupalorg_pathauto_alias_alter(&$alias, array &$context) {
 }
 
 /**
- * Add related content view mode used on documentation pages.
+ * Implements hook_entity_info_alter().
  */
-function drupalorg_documentation_entity_info_alter(&$entity_info) {
+function drupalorg_entity_info_alter(&$entity_info) {
+  // Add related content view mode used on documentation pages.
   $entity_info['node']['view modes']['related_content'] = [
     'label' => t('Related Content'),
     'custom settings' => TRUE,
