@@ -1285,6 +1285,17 @@ function drupalorg_preprocess_page(&$variables) {
       unset($variables['logo']);
       drupal_set_title('');
     }
+
+    $group_wrapper = entity_metadata_wrapper('node', node_load($context['gid']));
+    if (isset($group_wrapper->field_parent_section)) {
+      // Drupal Association logo for its section.
+      while ($group_wrapper->field_parent_section->getIdentifier()) {
+        $group_wrapper = $group_wrapper->field_parent_section;
+      }
+      if ($group_wrapper->getIdentifier() == 2838077) {
+        $variables['drupalorg_logo_link'] = l(theme('image', ['path' => drupal_get_path('module', 'drupalorg') . '/images/drupal-association-logo-white.svg', 'alt' => t('Drupal Association'), 'attributes' => ['class' => ['association']]]), 'association', ['html' => TRUE]);
+      }
+    }
   }
 
   // Group breadcrumbs.
@@ -1302,6 +1313,8 @@ function drupalorg_preprocess_page(&$variables) {
     if (page_manager_get_current_page()) {
       $variables['panelized'] = 'panel-page';
     }
+
+    $variables['drupalorg_logo_link'] = l('Documentation', 'documentation');
   }
 }
 
