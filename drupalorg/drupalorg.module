@@ -5236,16 +5236,6 @@ function drupalorg_lead_capture_form($form) {
       'placeholder' => t('Phone'),
     ],
   ];
-  $form['country'] = [
-    '#type' => 'textfield',
-    '#title' => t('Country'),
-    '#title_display' => 'invisible',
-    '#maxlength' => 40,
-    '#size' => 20,
-    '#attributes' => [
-      'placeholder' => t('Country'),
-    ],
-  ];
   $form['company'] = [
     '#type' => 'textfield',
     '#title' => t('Company'),
@@ -5254,6 +5244,16 @@ function drupalorg_lead_capture_form($form) {
     '#size' => 20,
     '#attributes' => [
       'placeholder' => t('Company'),
+    ],
+  ];
+  $form['country'] = [
+    '#type' => 'textfield',
+    '#title' => t('Country'),
+    '#title_display' => 'invisible',
+    '#maxlength' => 40,
+    '#size' => 20,
+    '#attributes' => [
+      'placeholder' => t('Country'),
     ],
   ];
   if (user_is_logged_in()) {
