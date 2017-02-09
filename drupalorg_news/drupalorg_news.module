@@ -11,28 +11,6 @@
 define('DRUPALORG_PLANET_CATEGORY', 2);
 
 /**
- * Implements hook_menu().
- */
-function drupalorg_news_menu() {
-  $items['news'] = array(
-    'title' => 'Drupal News',
-    'page callback' => 'drupalorg_news_page',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-  return $items;
-}
-
-/**
- * Use the regular node page, but with a title.
- */
-function drupalorg_news_page() {
-  $output = node_page_default();
-  drupal_set_title(t('Drupal News'));
-  return $output;
-}
-
-/**
  * @todo Please document this function.
  * @see http://drupal.org/node/1354
  */
