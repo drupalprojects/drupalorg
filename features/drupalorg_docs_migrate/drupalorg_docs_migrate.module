@@ -17,9 +17,6 @@ function drupalorg_docs_migrate_node_view($node, $view_mode, $langcode) {
   if (drupalorg_docs_migrate_access($node, TRUE) === 1) {
     drupal_set_message(t('This documentation needs to be migrated into the !docs. If you are a project maintainer, create a new documentation guide for your project first and then !migrate.', ['!docs' => l('new documentation system', 'drupalorg/docs/content/documentation', ['fragment' => 'contrib']), '!migrate' => l('migrate this documentation', 'migrate/documentation/' . $node->nid)]), 'warning');
   }
-  elseif (drupalorg_docs_migrate_access($node, TRUE) === 2) {
-    drupal_set_message(t('<p>This documentation may need to be !migrated.</p> <p>Please check with !content before migrating.</p>', ['!migrated' => l('migrated to the new Documentation system', 'migrate/documentation/' . $node->nid), '!content' => l('tvn', 'user/999848/contact')]), 'warning');
-  }
 }
 
 /**
