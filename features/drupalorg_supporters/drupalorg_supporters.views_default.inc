@@ -86,13 +86,6 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['display_description'] = 'Signature supporting partner organizations.';
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<a href="https://assoc.drupal.org/supporting-partners">Supporting Partners</a> are businesses who offer Drupal services. Their program fees help fund Drupal.org improvements, so together we can collaborate more easily and accelerate Drupal\'s innovation.';
-  $handler->display->display_options['header']['area']['format'] = '1';
-  /* Header: Global: Text area */
   $handler->display->display_options['header']['area_1']['id'] = 'area_1';
   $handler->display->display_options['header']['area_1']['table'] = 'views';
   $handler->display->display_options['header']['area_1']['field'] = 'area';
@@ -580,16 +573,6 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['title'] = 'Technology Supporters';
   $handler->display->display_options['display_description'] = 'Premium technology partner organizations.';
   $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<a class="link-button right" href="https://www.drupal.org/technology-supporter-resources">Educational Materials<br>from Tech Supporters</a>
-
-<p><a href="https://assoc.drupal.org/technology-supporters">Drupal Technology Supporters</a> are companies who provide a product or service that helps the Drupal community build amazing sites. These Supporters educate the community about their offerings and their program fees help fund Drupal.org improvements.</p>
-
-<h2>Premium Technology Supporters</h2>';
-  $handler->display->display_options['header']['area']['format'] = '3';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Logo */
   $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
@@ -723,15 +706,6 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['defaults']['query'] = FALSE;
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<a href="https://assoc.drupal.org/drupal-hosting-supporter-program">Drupal Hosting Supporters</a> help the community publish great sites. These Supporters educate the community about their offerings, promote Drupal to their user base, and their program fees help fund Drupal.org improvements.
-
-Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.';
-  $handler->display->display_options['header']['area']['format'] = '1';
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area_1']['id'] = 'area_1';
   $handler->display->display_options['header']['area_1']['table'] = 'views';
@@ -1229,7 +1203,6 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
     t('Signature supporting partners'),
     t('Supporting Partners'),
     t('Signature supporting partner organizations.'),
-    t('<a href="https://assoc.drupal.org/supporting-partners">Supporting Partners</a> are businesses who offer Drupal services. Their program fees help fund Drupal.org improvements, so together we can collaborate more easily and accelerate Drupal\'s innovation.'),
     t('<h2>Signature Supporting Partners</h2>'),
     t('Sectors'),
     t('Locations'),
@@ -1246,20 +1219,12 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
     t('Premium Technology'),
     t('Technology Supporters'),
     t('Premium technology partner organizations.'),
-    t('<a class="link-button right" href="https://www.drupal.org/technology-supporter-resources">Educational Materials<br>from Tech Supporters</a>
-
-<p><a href="https://assoc.drupal.org/technology-supporters">Drupal Technology Supporters</a> are companies who provide a product or service that helps the Drupal community build amazing sites. These Supporters educate the community about their offerings and their program fees help fund Drupal.org improvements.</p>
-
-<h2>Premium Technology Supporters</h2>'),
     t('Technology'),
     t('Technology partner organizations.'),
     t('<h2>Technology Supporters</h2>'),
     t('Signature Hosting'),
     t('Hosting Supporters'),
     t('Signature hosting partner organizations.'),
-    t('<a href="https://assoc.drupal.org/drupal-hosting-supporter-program">Drupal Hosting Supporters</a> help the community publish great sites. These Supporters educate the community about their offerings, promote Drupal to their user base, and their program fees help fund Drupal.org improvements.
-
-Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.'),
     t('<h2>Signature Hosting Supporters</h2>'),
     t('Premium Hosting'),
     t('Hosting partner organizations.'),
