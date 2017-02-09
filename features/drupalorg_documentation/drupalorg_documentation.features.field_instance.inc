@@ -669,6 +669,7 @@ function drupalorg_documentation_field_default_field_instances() {
 
   // Exported field_instance: 'node-guide-body'.
   $field_instances['node-guide-body'] = array(
+    'bueditor_profile' => -1,
     'bundle' => 'guide',
     'default_value' => NULL,
     'deleted' => 0,
