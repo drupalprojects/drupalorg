@@ -573,6 +573,12 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['title'] = 'Technology Supporters';
   $handler->display->display_options['display_description'] = 'Premium technology partner organizations.';
   $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = '<h2>Premium Technology Supporters</h2>';
+  $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Logo */
   $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
@@ -1219,6 +1225,7 @@ function drupalorg_supporters_views_default_views() {
     t('Premium Technology'),
     t('Technology Supporters'),
     t('Premium technology partner organizations.'),
+    t('<h2>Premium Technology Supporters</h2>'),
     t('Technology'),
     t('Technology partner organizations.'),
     t('<h2>Technology Supporters</h2>'),
