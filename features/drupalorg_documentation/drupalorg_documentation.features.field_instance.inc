@@ -672,7 +672,7 @@ function drupalorg_documentation_field_default_field_instances() {
     'bundle' => 'guide',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Description of the guide and its contents.',
+    'description' => 'Describe what the guide is about. 600 characters max. Create pages inside of the guide for the actual documentation content.',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -1253,8 +1253,8 @@ function drupalorg_documentation_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('AsciiDoc Source File');
   t('Body');
+  t('Describe what the guide is about. 600 characters max. Create pages inside of the guide for the actual documentation content.');
   t('Description');
-  t('Description of the guide and its contents.');
   t('Determine if this is an OG group.');
   t('Documentation changes');
   t('Explain your changes');
