@@ -45,7 +45,7 @@ function drupalorg_wysiwyg_ckeditor_profile_defaults() {
         'auto_lang' => 't',
         'language_direction' => 'default',
         'allowed_content' => 't',
-        'extraAllowedContent' => 'dl;dd;dt;*[id]',
+        'extraAllowedContent' => 'dl;dd;dt;*[id];small;div(note-warning,note-version)',
         'enter_mode' => 'p',
         'shift_enter_mode' => 'br',
         'font_format' => 'p;h2;h3;h4;h5;h6;pre',
