@@ -35,6 +35,13 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['style_options']['class'] = 'grid cols-2 drupalorg-random sponsors--signature';
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['hide_empty'] = TRUE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['label'] = 'Display in panel if empty';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['format'] = '1';
   /* Field: Content: Logo */
   $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
   $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
@@ -83,10 +90,14 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<a href="https://assoc.drupal.org/supporting-partners">Supporting Partners</a> are businesses who offer Drupal services. Their program fees help fund Drupal.org improvements, so together we can collaborate more easily and accelerate Drupal\'s innovation.
-
-<h2>Signature Supporting Partners</h2>';
+  $handler->display->display_options['header']['area']['content'] = '<a href="https://assoc.drupal.org/supporting-partners">Supporting Partners</a> are businesses who offer Drupal services. Their program fees help fund Drupal.org improvements, so together we can collaborate more easily and accelerate Drupal\'s innovation.';
   $handler->display->display_options['header']['area']['format'] = '1';
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area_1']['id'] = 'area_1';
+  $handler->display->display_options['header']['area_1']['table'] = 'views';
+  $handler->display->display_options['header']['area_1']['field'] = 'area';
+  $handler->display->display_options['header']['area_1']['content'] = '<h2>Signature Supporting Partners</h2>';
+  $handler->display->display_options['header']['area_1']['format'] = '1';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Sectors (taxonomy_vocabulary_50) */
   $handler->display->display_options['relationships']['taxonomy_vocabulary_50_tid']['id'] = 'taxonomy_vocabulary_50_tid';
@@ -438,7 +449,6 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['name']['summary_options']['base_path'] = 'supporters/partners';
   $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
@@ -503,6 +513,17 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['delta_offset'] = '0';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Global: Null */
+  $handler->display->display_options['arguments']['null']['id'] = 'null';
+  $handler->display->display_options['arguments']['null']['table'] = 'views';
+  $handler->display->display_options['arguments']['null']['field'] = 'null';
+  $handler->display->display_options['arguments']['null']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['null']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['null']['default_argument_options']['argument'] = 'all';
+  $handler->display->display_options['arguments']['null']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['null']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['null']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['null']['specify_validation'] = TRUE;
   /* Contextual filter: Taxonomy term: Name */
   $handler->display->display_options['arguments']['name']['id'] = 'name';
   $handler->display->display_options['arguments']['name']['table'] = 'taxonomy_term_data';
@@ -512,7 +533,6 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['name']['summary_options']['base_path'] = 'supporters/partners/all';
   $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
@@ -564,9 +584,9 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p class="left"><a href="https://assoc.drupal.org/technology-supporters">Drupal Technology Supporters</a> are companies who provide a product or service that helps the Drupal community build amazing sites. These Supporters educate the community about their offerings and their program fees help fund Drupal.org improvements.</p>
+  $handler->display->display_options['header']['area']['content'] = '<a class="link-button right" href="https://www.drupal.org/technology-supporter-resources">Educational Materials<br>from Tech Supporters</a>
 
-<p class="right"><a class="link-button" href="https://www.drupal.org/technology-supporter-resources"><span>Educational Materials from Tech Supporters</span></a></p>
+<p><a href="https://assoc.drupal.org/technology-supporters">Drupal Technology Supporters</a> are companies who provide a product or service that helps the Drupal community build amazing sites. These Supporters educate the community about their offerings and their program fees help fund Drupal.org improvements.</p>
 
 <h2>Premium Technology Supporters</h2>';
   $handler->display->display_options['header']['area']['format'] = '3';
@@ -710,10 +730,14 @@ function drupalorg_supporters_views_default_views() {
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<a href="https://assoc.drupal.org/drupal-hosting-supporter-program">Drupal Hosting Supporters</a> help the community publish great sites. These Supporters educate the community about their offerings, promote Drupal to their user base, and their program fees help fund Drupal.org improvements.
 
-Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.
-
-<h2>Signature Hosting Supporters</h2>';
+Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.';
   $handler->display->display_options['header']['area']['format'] = '1';
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area_1']['id'] = 'area_1';
+  $handler->display->display_options['header']['area_1']['table'] = 'views';
+  $handler->display->display_options['header']['area_1']['field'] = 'area';
+  $handler->display->display_options['header']['area_1']['content'] = '<h2>Signature Hosting Supporters</h2>';
+  $handler->display->display_options['header']['area_1']['format'] = '1';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['id'] = 'taxonomy_vocabulary_52_tid';
@@ -913,7 +937,6 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
     'block_2' => 0,
   );
   $handler->display->display_options['attachment_position'] = 'after';
-  $handler->display->display_options['inherit_exposed_filters'] = TRUE;
 
   /* Display: Hosting */
   $handler = $view->new_display('attachment', 'Hosting', 'hosting');
@@ -1025,12 +1048,10 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
     'block_4' => 0,
     'block_3' => 0,
     'page_1' => 0,
-    'page_2' => 0,
     'block_1' => 0,
     'block_2' => 0,
   );
   $handler->display->display_options['attachment_position'] = 'after';
-  $handler->display->display_options['inherit_exposed_filters'] = TRUE;
 
   /* Display: Hosting by country */
   $handler = $view->new_display('block', 'Hosting by country', 'block_1');
@@ -1068,7 +1089,6 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
   $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['name']['summary_options']['base_path'] = 'supporters/hosting';
   $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['name']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['name']['validate']['type'] = 'taxonomy_term';
@@ -1133,6 +1153,16 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
   $handler->display->display_options['sorts']['taxonomy_vocabulary_52_tid']['table'] = 'field_data_taxonomy_vocabulary_52';
   $handler->display->display_options['sorts']['taxonomy_vocabulary_52_tid']['field'] = 'taxonomy_vocabulary_52_tid';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Global: Null */
+  $handler->display->display_options['arguments']['null']['id'] = 'null';
+  $handler->display->display_options['arguments']['null']['table'] = 'views';
+  $handler->display->display_options['arguments']['null']['field'] = 'null';
+  $handler->display->display_options['arguments']['null']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['null']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['null']['default_argument_options']['argument'] = 'all';
+  $handler->display->display_options['arguments']['null']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['null']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['null']['summary_options']['items_per_page'] = '25';
   /* Contextual filter: Content: Hosting type (field_hosting_type) */
   $handler->display->display_options['arguments']['field_hosting_type_value']['id'] = 'field_hosting_type_value';
   $handler->display->display_options['arguments']['field_hosting_type_value']['table'] = 'field_data_field_hosting_type';
@@ -1141,7 +1171,6 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
   $handler->display->display_options['arguments']['field_hosting_type_value']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['field_hosting_type_value']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['field_hosting_type_value']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_hosting_type_value']['summary_options']['base_path'] = 'supporters/hosting/all';
   $handler->display->display_options['arguments']['field_hosting_type_value']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['field_hosting_type_value']['summary']['human'] = TRUE;
   $handler->display->display_options['arguments']['field_hosting_type_value']['specify_validation'] = TRUE;
@@ -1196,12 +1225,12 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
     t('Sort by'),
     t('Asc'),
     t('Desc'),
+    t('Display in panel if empty'),
     t('Signature supporting partners'),
     t('Supporting Partners'),
     t('Signature supporting partner organizations.'),
-    t('<a href="https://assoc.drupal.org/supporting-partners">Supporting Partners</a> are businesses who offer Drupal services. Their program fees help fund Drupal.org improvements, so together we can collaborate more easily and accelerate Drupal\'s innovation.
-
-<h2>Signature Supporting Partners</h2>'),
+    t('<a href="https://assoc.drupal.org/supporting-partners">Supporting Partners</a> are businesses who offer Drupal services. Their program fees help fund Drupal.org improvements, so together we can collaborate more easily and accelerate Drupal\'s innovation.'),
+    t('<h2>Signature Supporting Partners</h2>'),
     t('Sectors'),
     t('Locations'),
     t('All'),
@@ -1217,9 +1246,9 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
     t('Premium Technology'),
     t('Technology Supporters'),
     t('Premium technology partner organizations.'),
-    t('<p class="left"><a href="https://assoc.drupal.org/technology-supporters">Drupal Technology Supporters</a> are companies who provide a product or service that helps the Drupal community build amazing sites. These Supporters educate the community about their offerings and their program fees help fund Drupal.org improvements.</p>
+    t('<a class="link-button right" href="https://www.drupal.org/technology-supporter-resources">Educational Materials<br>from Tech Supporters</a>
 
-<p class="right"><a class="link-button" href="https://www.drupal.org/technology-supporter-resources"><span>Educational Materials from Tech Supporters</span></a></p>
+<p><a href="https://assoc.drupal.org/technology-supporters">Drupal Technology Supporters</a> are companies who provide a product or service that helps the Drupal community build amazing sites. These Supporters educate the community about their offerings and their program fees help fund Drupal.org improvements.</p>
 
 <h2>Premium Technology Supporters</h2>'),
     t('Technology'),
@@ -1230,9 +1259,8 @@ Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Ho
     t('Signature hosting partner organizations.'),
     t('<a href="https://assoc.drupal.org/drupal-hosting-supporter-program">Drupal Hosting Supporters</a> help the community publish great sites. These Supporters educate the community about their offerings, promote Drupal to their user base, and their program fees help fund Drupal.org improvements.
 
-Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.
-
-<h2>Signature Hosting Supporters</h2>'),
+Check out <a href="https://www.drupal.org/drupal-hosting-supporter-resources">Hosting Supporters Resource Center</a> for useful resources from these companies.'),
+    t('<h2>Signature Hosting Supporters</h2>'),
     t('Premium Hosting'),
     t('Hosting partner organizations.'),
     t('<h2>Premium Hosting Supporters</h2>'),
