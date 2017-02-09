@@ -461,6 +461,12 @@ function drupalorg_content_types_views_default_views() {
     'default' => 0,
     'panel_pane_2' => 0,
   );
+
+  /* Display: All blog posts */
+  $handler = $view->new_display('panel_pane', 'All blog posts', 'panel_pane_3');
+  $handler->display->display_options['display_description'] = 'List view of all blog posts across the site.';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
   $translatables['blog'] = array(
     t('Master'),
     t('more'),
@@ -486,6 +492,8 @@ function drupalorg_content_types_views_default_views() {
     t('Blog: Recent posts titles'),
     t('Feed'),
     t('%1 posts'),
+    t('All blog posts'),
+    t('List view of all blog posts across the site.'),
   );
   $export['blog'] = $view;
 
