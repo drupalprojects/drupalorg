@@ -5222,8 +5222,9 @@ function drupalorg_lead_capture_form($form) {
     '#title_display' => 'invisible',
     '#maxlength' => 80,
     '#size' => 20,
+    '#required' => TRUE,
     '#attributes' => [
-      'placeholder' => t('Email'),
+      'placeholder' => t('* Required: Email'),
     ],
   ];
   $form['phone'] = [
@@ -5545,8 +5546,9 @@ function drupalorg_lead_capture_form($form) {
     '#title_display' => 'invisible',
     '#rows' => 5,
     '#resizable' => FALSE,
+    '#required' => TRUE,
     '#attributes' => [
-      'placeholder' => t('Project description'),
+      'placeholder' => t('* Required: Project description'),
     ],
   ];
   $form['submit'] = [
