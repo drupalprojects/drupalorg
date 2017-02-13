@@ -5558,27 +5558,34 @@ function drupalorg_lead_capture_form($form) {
   return $form;
 }
 
+/**
+ * Submit handler for sponsored form for industry landing pages
+ */
 function drupalorg_lead_capture_submit($form, &$form_state) {
+  // The external form action url
   $url = 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
-
-  $form_state['redirect'] = array(
-    $url,
-    array(
-      'query' => array(
-        'oid' => '00DA0000000ARBs',
-        'retURL' => $form_state['input']['retURL'],
-        '00NA00000067D9R' => $form_state['input']['00NA00000067D9R'], // Source URL
-        'first_name' => $form_state['input']['first_name'],
-        'last_name' => $form_state['input']['last_name'],
-        'email' => $form_state['input']['email'],
-        'phone' => $form_state['input']['phone'],
-        'company' => $form_state['input']['company'],
-        '00NA00000067Mm6' => $form_state['input']['00NA00000067Mm6'], // Country
-        '00NA00000067Ahk' => $form_state['input']['00NA00000067Ahk'], // Region
-        '00NA00000067AhfMAE' => $form_state['input']['00NA00000067Mm6'], // Project description
-      ),
-    ),
+  // The headers required by the external endpoint
+  $headers = array('Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8');
+  // The request method
+  $method = 'POST';
+  // The form input
+  $form_input => array(
+    'oid' => '00DA0000000ARBs',
+    'retURL' => $form_state['input']['retURL'],
+    '00NA00000067D9R' => $form_state['input']['00NA00000067D9R'], // Source URL
+    'first_name' => $form_state['input']['first_name'],
+    'last_name' => $form_state['input']['last_name'],
+    'email' => $form_state['input']['email'],
+    'phone' => $form_state['input']['phone'],
+    'company' => $form_state['input']['company'],
+    '00NA00000067Mm6' => $form_state['input']['00NA00000067Mm6'], // Country
+    '00NA00000067Ahk' => $form_state['input']['00NA00000067Ahk'], // Region
+    '00NA00000067AhfMAE' => $form_state['input']['00NA00000067Mm6'], // Project description
   );
+  // Build the form input into the correct query format
+  $data = http_build_query($form_input, '', '&');
+  // Send the request
+  $request = drupal_http_request($url, $headers, $method, $data);
 }
 
 /**
