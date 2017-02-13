@@ -4056,3 +4056,10 @@ function drupalorg_update_7085() {
     ),
   ));
 }
+
+/**
+ * Sets salesforce api url
+ */
+function drupalorg_update_7086() {
+  variable_set('salesforce_lead_url', 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8');
+}
