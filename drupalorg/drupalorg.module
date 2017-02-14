@@ -5551,10 +5551,10 @@ function drupalorg_lead_capture_form($form) {
     '#value' => t('Get Connected'),
     '#submit' => array('drupalorg_lead_capture_submit'),
   ];
-  
+
   // Protect the partner form with honeypot
   honeypot_add_form_protection($form, $form_state, array('honeypot', 'time_restriction'));
-  
+
   return $form;
 }
 
@@ -5587,20 +5587,20 @@ function drupalorg_lead_capture_submit($form, &$form_state) {
     'timeout' => 15,
     'headers' => array('Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8'),
   );
- 
+
   $response = drupal_http_request($url, $options);
 
   if (!empty($response->error)) {
-    form_set_error('',t('There was an error with your form submission. Please try again. If the issue persists, contact us at <a href="mailto:help@drupal.org">help@drupal.org</a>.'));
-  } 
+    form_set_error('', t('There was an error with your form submission. Please try again. If the issue persists, contact us at <a href="mailto:help@drupal.org">help@drupal.org</a>.'));
+  }
   else {
     drupal_set_message(t('Thank you for your submission.'));
   }
 }
 
 /**
-* Add mollom form protection to these custom form(s)
-*/
+ * Add mollom form protection to these custom form(s)
+ */
 function drupalorg_mollom_form_list() {
   $forms['drupalorg_lead_capture_form'] = array(
     'title' => 'Partner Lead Capture Form',
@@ -5609,17 +5609,16 @@ function drupalorg_mollom_form_list() {
 }
 
 /**
-* Set the mollomg protection mode for custom form(s)
-*/
+ * Set the mollomg protection mode for custom form(s)
+ */
 function drupalorg_mollom_form_info($form_id) {
-    switch ($form_id) {
-        case 'drupalorg_lead_capture_form':
-            $form_info = array(
-                'mode' => MOLLOM_MODE_ANALYSIS,
-            );
-            return $form_info;
-            break;
-    }
+  switch ($form_id) {
+    case 'drupalorg_lead_capture_form':
+      $form_info = array(
+        'mode' => MOLLOM_MODE_ANALYSIS,
+      );
+      return $form_info;
+  }
 }
 
 /**
