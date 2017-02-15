@@ -584,7 +584,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             '#title' => t($by_text, $row['by']),
             // Suggest credit if they uploaded a patch after the last
             // maintainer comment, or previously received credit.
-            '#checked' => (isset($row['#last_patch']) && $row['#last_patch'] >= $last_maintainer_comment) || isset($row['#checked']),
+            '#checked' => (!empty($row['#last_patch']) && $row['#last_patch'] >= $last_maintainer_comment) || isset($row['#checked']),
             '#id' => 'by-' . $key,
             '#name' => 'by-' . $key,
             '#attributes' => array(
