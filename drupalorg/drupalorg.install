@@ -4131,3 +4131,25 @@ function drupalorg_update_7087() {
     }
   }
 }
+
+/**
+ * Populate field_security_advisory_coverage.
+ */
+function drupalorg_update_7088() {
+  $query = db_select('node', 'n');
+  $query->condition('n.type', project_project_node_types());
+  $query->leftJoin('field_data_field_release_project', 'fdf_rp', 'fdf_rp.field_release_project_target_id = n.nid');
+  $query->leftJoin('taxonomy_index', 'ti', 'ti.nid = fdf_rp.entity_id AND ti.tid IN (103,7234)');
+  $query->leftJoin('field_data_field_release_version_extra', 'fdf_rve', 'fdf_rve.entity_id = ti.nid AND fdf_rve.field_release_version_extra_value IS NOT NULL');
+  $query->addExpression("'node'", 'entity_type');
+  $query->addField('n', 'type', 'bundle');
+  $query->addExpression(0, 'deleted');
+  $query->addField('n', 'nid', 'entity_id');
+  $query->addField('n', 'vid', 'revision_id');
+  $query->addExpression("'" . LANGUAGE_NONE . "'", 'language');
+  $query->addExpression(0, 'delta');
+  $query->addExpression("if(sum(ti.nid IS NOT NULL AND fdf_rve.entity_id IS NULL) > 0, 'covered', 'not-covered')", 'field_security_advisory_coverage_value');
+  $query->groupBy('n.nid')->orderBy('NULL');
+  db_insert('field_data_field_security_advisory_coverage')->from($query)->execute();
+  db_insert('field_revision_field_security_advisory_coverage')->from($query)->execute();
+}
