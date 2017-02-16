@@ -4094,7 +4094,7 @@ function drupalorg_update_7087() {
       'default_value' => [
         ['value' => 'not-covered'],
       ],
-      'description' => '<em>Read & understand <a href="/security-advisory-policy">the policy</a>!</em> Once you opt-in your project, only the Security Team can change this.',
+      'description' => '<em>Read & understand <a href="/security-advisory-policy">the policy</a>!</em> Once you opt-in your project, you may not opt-out. Only the Security Team will be able to change this.',
       'display' => [
         'default' => [
           'type' => 'hidden',

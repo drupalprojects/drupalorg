@@ -397,7 +397,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     elseif ($wrapper->field_security_advisory_coverage->value() !== 'not-covered') {
       // If coverage has selected, only allow Security Team to update.
       $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = !user_access('post to newsletter');
-      $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('Only Security Team members may change coverage. Notice of discontinuing security advisory coverage should be given to users.');
+      $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('Only Security Team members may change coverage. A security advisory may be posted to notify users that the project is no longer receiving security advisory coverage.');
     }
     else {
       // Only allow Security Team to revoke coverage.
@@ -413,7 +413,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('Only the project owner may opt into security advisory coverage. <a href="!url">Learn about transferring ownership</a>', ['!url' => url('project/projectownership')]);
       }
-      elseif (!user_access('opt into security advisory coverage')) {
+      elseif (!user_access('may opt into security advisory coverage')) {
         // - The user user has access.
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('You must be given access to opt into security advisory coverage. <a href="!url">Learn how to apply</a>', ['!url' => url('project/projectapplications')]);
@@ -422,7 +422,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         // - The 10 day waiting period has elapsed (or a security team member is
         //   editing).
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
-        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('New projects must wait 10 days. Please take this time to review <a href="!url">writing secure code</a>.', ['!url' => url('writing-secure-code')]);
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('New projects must wait 10 days before opting into security advisory coverage. Please take this time to review <a href="!writing">writing secure code</a> and <a href="!practices">best practices</a>.', ['!writing' => url('writing-secure-code'), '!practices' => url('node/7765')]);
       }
     }
   }
