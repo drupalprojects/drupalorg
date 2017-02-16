@@ -23,6 +23,18 @@ define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 8);
 define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 7234); // 8.x
 
 /**
+ * Implements hook_permission().
+ */
+function drupalorg_permission() {
+  return [
+    'may opt into security advisory coverage' => [
+      'title' => t('May opt into security advisory coverage'),
+      'description' => t('Agree to the policy for projects.'),
+    ],
+  ];
+}
+
+/**
  * Implements hook_init().
  */
 function drupalorg_init() {
