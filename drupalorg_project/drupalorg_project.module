@@ -1529,11 +1529,20 @@ function drupalorg_project_meta_data(stdClass $node) {
 
   // Security information.
   if ($wrapper->field_project_has_releases->value()) {
-    $output['items']['security'] = [
-      '#prefix' => '<li>',
-      '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon-black.svg') . '" alt="shield" class="icon-left gray">' . t('Stable releases are covered by the <a href="/security-advisory-policy">security advisory policy</a>.<br>Look for the shield icon below.'),
-      '#suffix' => '</li>',
-    ];
+    if ($wrapper->field_security_advisory_coverage->value() === 'covered') {
+      $output['items']['security'] = [
+        '#prefix' => '<li>',
+        '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon-black.svg') . '" alt="shield" class="icon-left gray">' . t('Stable releases are covered by the <a href="/security-advisory-policy">security advisory policy</a>.<br>Look for the shield icon below.'),
+        '#suffix' => '</li>',
+      ];
+    }
+    else {
+      $output['items']['security'] = [
+        '#prefix' => '<li>',
+        '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon-alert.svg') . '" alt="shield alert" class="icon-left">' . t('This project is not covered by the <a href="/security-advisory-policy">security advisory policy</a>.<br>It may have publicly disclosed vulnerabilities. Use at your own risk!'),
+        '#suffix' => '</li>',
+      ];
+    }
   }
 
   return $output;
