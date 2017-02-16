@@ -356,6 +356,7 @@ function _drupalorg_project_update_project_cache(stdClass $node) {
  */
 function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
   if (project_node_is_project($form_state['node'])) {
+    $wrapper = entity_metadata_wrapper('node', $form_state['node']);
     // Deprecate the "license" field, as it must always be GPLv2+ anyway.
     $form['field_project_license']['#access'] = FALSE;
     $form['field_project_license'][LANGUAGE_NONE][0]['#default_value']['url'] = DRUPALORG_DEFAULT_LICENSE_LINK;
@@ -386,6 +387,43 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         '!d7' => l(t('Drupal 7'), 'node/add/guide', ['query' => ['og_group_ref_documentation' => 2785809, 'project' => $form_state['node']->nid]]),
         '!d8' => l(t('Drupal 8'), 'node/add/guide', ['query' => ['og_group_ref_documentation' => 2785817, 'project' => $form_state['node']->nid]]),
       ]);
+    }
+
+    // Security advisory coverage.
+    if (!isset($form_state['node']->nid)) {
+      // Don’t bother with this on node creation.
+      $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#access'] = FALSE;
+    }
+    elseif ($wrapper->field_security_advisory_coverage->value() !== 'not-covered') {
+      // If coverage has selected, only allow Security Team to update.
+      $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = !user_access('post to newsletter');
+      $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('Only Security Team members may change coverage. Notice of discontinuing security advisory coverage should be given to users.');
+    }
+    else {
+      // Only allow Security Team to revoke coverage.
+      $form['field_security_advisory_coverage'][LANGUAGE_NONE]['revoked']['#access'] = user_access('post to newsletter');
+      // Only allow opting in if:
+      if ($wrapper->field_project_type->value() !== 'full') {
+        // - It is a full project.
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('Only promoted full projects may opt into security advisory coverage.');
+      }
+      elseif ($form_state['node']->uid !== $GLOBALS['user']->uid && !user_access('post to newsletter')) {
+        // - The project owner (or a security team member) are editing.
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('Only the project owner may opt into security advisory coverage. <a href="!url">Learn about transferring ownership</a>', ['!url' => url('project/projectownership')]);
+      }
+      elseif (!user_access('opt into security advisory coverage')) {
+        // - The user user has access.
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('You must be given access to opt into security advisory coverage. <a href="!url">Learn how to apply</a>', ['!url' => url('project/projectapplications')]);
+      }
+      elseif ($form_state['node']->created > REQUEST_TIME - 10 * 24 * 60 * 60 && !user_access('post to newsletter')) {
+        // - The 10 day waiting period has elapsed (or a security team member is
+        //   editing).
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('New projects must wait 10 days. Please take this time to review <a href="!url">writing secure code</a>.', ['!url' => url('writing-secure-code')]);
+      }
     }
   }
   elseif (project_issue_node_is_issue($form_state['node'])) {

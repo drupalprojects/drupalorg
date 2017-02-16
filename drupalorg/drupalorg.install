@@ -4063,3 +4063,71 @@ function drupalorg_update_7085() {
 function drupalorg_update_7086() {
   variable_set('salesforce_lead_url', 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8');
 }
+
+/**
+ * Add security advisory coverage field.
+ */
+function drupalorg_update_7087() {
+  field_create_field([
+    'cardinality' => 1,
+    'entity_types' => [],
+    'field_name' => 'field_security_advisory_coverage',
+    'indexes' => [
+      'value' => ['value'],
+    ],
+    'module' => 'list',
+    'settings' => [
+      'allowed_values' => [
+        'not-covered' => 'Not covered',
+        'covered' => 'Opt into <a href="/security-advisory-policy">security advisory coverage</a>',
+        'revoked' => 'Unsupported due to security issue',
+      ],
+      'allowed_values_function' => '',
+    ],
+    'translatable' => 0,
+    'type' => 'list_text',
+  ]);
+  ctools_include('export');
+  foreach (project_project_node_types() as $project_type) {
+    field_create_instance([
+      'bundle' => $project_type,
+      'default_value' => [
+        ['value' => 'not-covered'],
+      ],
+      'description' => '<em>Read & understand <a href="/security-advisory-policy">the policy</a>!</em> Once you opt-in your project, only the Security Team can change this.',
+      'display' => [
+        'default' => [
+          'type' => 'hidden',
+          'label' => 'above',
+          'settings' => [],
+          'weight' => 0,
+        ],
+        'teaser' => [
+          'type' => 'hidden',
+          'label' => 'above',
+          'settings' => [],
+          'weight' => 0,
+        ],
+      ],
+      'entity_type' => 'node',
+      'field_name' => 'field_security_advisory_coverage',
+      'label' => 'Security advisory coverage',
+      'required' => 1,
+      'settings' => [
+        'user_register_form' => FALSE,
+      ],
+      'widget' => [
+        'weight' => 41,
+        'type' => 'options_buttons',
+        'module' => 'options',
+        'active' => 1,
+        'settings' => [],
+      ],
+    ]);
+    $groups = field_group_info_groups('node', $project_type, 'form', TRUE);
+    if (isset($groups['group_project_classification'])) {
+      $groups['group_project_classification']->children[] = 'field_security_advisory_coverage';
+      ctools_export_crud_save('field_group', $groups['group_project_classification']);
+    }
+  }
+}
