@@ -5266,7 +5266,7 @@ function drupalorg_lead_capture_form($form) {
     '#options' => [
       'AMER' => t('Americas'),
       'EMEA' => t('Europe, Middle East, Africa'),
-      'APAC' => t('Asia Pacific'),
+      'APAC' => t('Asia Pacific, Australia, New Zealand'),
     ],
   ];
   if ($country = drupalorg_get_and_vary_header('GeoIP-country')) {
@@ -5576,7 +5576,7 @@ function drupalorg_lead_capture_submit($form, &$form_state) {
     'company' => $form_state['input']['company'],
     '00NA00000067Mm6' => $form_state['input']['00NA00000067Mm6'], // Country
     '00NA00000067Ahk' => $form_state['input']['00NA00000067Ahk'], // Region
-    '00NA00000067AhfMAE' => $form_state['input']['00NA00000067Mm6'], // Project description
+    '00NA00000067AhfMAE' => $form_state['input']['00NA00000067AhfMAE'], // Project description
   );
   // Build the form input into the correct query format
   $data = http_build_query($form_input, '', '&');
