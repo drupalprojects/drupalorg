@@ -566,6 +566,7 @@ function drupalorg_block_info() {
     ],
     'lead-capture' => [
       'info' => t('Lead capture form'),
+      'cache' => DRUPAL_NO_CACHE,
     ],
   );
 }
