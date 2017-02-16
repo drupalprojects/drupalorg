@@ -3705,6 +3705,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'sshkey',
   );
 
+  // Exported permission: 'may opt into security advisory coverage'.
+  $permissions['may opt into security advisory coverage'] = array(
+    'name' => 'may opt into security advisory coverage',
+    'roles' => array(
+      'Git vetted user' => 'Git vetted user',
+    ),
+    'module' => 'drupalorg',
+  );
+
   // Exported permission: 'moderate comments'.
   $permissions['moderate comments'] = array(
     'name' => 'moderate comments',
