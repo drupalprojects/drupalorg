@@ -832,12 +832,12 @@ function drupalorg_projects_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_node:project_release_default';
   $strongarm->value = array(
-    'custom' => 0,
-    'entity_field_extra' => 0,
-    'entity_field' => 0,
-    'block' => 0,
-    'entity_form_field' => 0,
     'token' => 0,
+    'entity_form_field' => 0,
+    'entity_field' => 0,
+    'entity_field_extra' => 0,
+    'custom' => 0,
+    'block' => 0,
     'entity_view' => 0,
     'fieldable_panels_pane' => 0,
     'flag_link' => 0,

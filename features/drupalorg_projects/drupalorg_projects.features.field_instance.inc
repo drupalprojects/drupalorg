@@ -1713,6 +1713,71 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'node-project_core-field_security_advisory_coverage'.
+  $field_instances['node-project_core-field_security_advisory_coverage'] = array(
+    'bundle' => 'project_core',
+    'default_value' => array(
+      0 => array(
+        'value' => 'not-covered',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '<em>Read & understand <a href="/security-advisory-policy">the policy</a>!</em> Once you opt-in your project, you may not opt-out. Only the Security Team will be able to change this.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_security_advisory_coverage',
+    'label' => 'Security advisory coverage',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
+    ),
+  );
+
   // Exported field_instance: 'node-project_core-taxonomy_vocabulary_44'.
   $field_instances['node-project_core-taxonomy_vocabulary_44'] = array(
     'bundle' => 'project_core',
@@ -3294,6 +3359,71 @@ function drupalorg_projects_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-project_distribution-field_security_advisory_coverage'.
+  $field_instances['node-project_distribution-field_security_advisory_coverage'] = array(
+    'bundle' => 'project_distribution',
+    'default_value' => array(
+      0 => array(
+        'value' => 'not-covered',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '<em>Read & understand <a href="/security-advisory-policy">the policy</a>!</em> Once you opt-in your project, you may not opt-out. Only the Security Team will be able to change this.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_security_advisory_coverage',
+    'label' => 'Security advisory coverage',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
     ),
   );
 
@@ -4946,6 +5076,71 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'node-project_drupalorg-field_security_advisory_coverage'.
+  $field_instances['node-project_drupalorg-field_security_advisory_coverage'] = array(
+    'bundle' => 'project_drupalorg',
+    'default_value' => array(
+      0 => array(
+        'value' => 'not-covered',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '<em>Read & understand <a href="/security-advisory-policy">the policy</a>!</em> Once you opt-in your project, you may not opt-out. Only the Security Team will be able to change this.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_security_advisory_coverage',
+    'label' => 'Security advisory coverage',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
+    ),
+  );
+
   // Exported field_instance: 'node-project_drupalorg-taxonomy_vocabulary_44'.
   $field_instances['node-project_drupalorg-taxonomy_vocabulary_44'] = array(
     'bundle' => 'project_drupalorg',
@@ -6522,6 +6717,71 @@ function drupalorg_projects_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-project_module-field_security_advisory_coverage'.
+  $field_instances['node-project_module-field_security_advisory_coverage'] = array(
+    'bundle' => 'project_module',
+    'default_value' => array(
+      0 => array(
+        'value' => 'not-covered',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '<em>Read & understand <a href="/security-advisory-policy">the policy</a>!</em> Once you opt-in your project, you may not opt-out. Only the Security Team will be able to change this.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_security_advisory_coverage',
+    'label' => 'Security advisory coverage',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
     ),
   );
 
@@ -9349,6 +9609,71 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-project_theme-field_security_advisory_coverage'.
+  $field_instances['node-project_theme-field_security_advisory_coverage'] = array(
+    'bundle' => 'project_theme',
+    'default_value' => array(
+      0 => array(
+        'value' => 'not-covered',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '<em>Read & understand <a href="/security-advisory-policy">the policy</a>!</em> Once you opt-in your project, you may not opt-out. Only the Security Team will be able to change this.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_security_advisory_coverage',
+    'label' => 'Security advisory coverage',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-project_theme-field_supporting_organizations'.
   $field_instances['node-project_theme-field_supporting_organizations'] = array(
     'bundle' => 'project_theme',
@@ -10997,6 +11322,71 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-project_theme_engine-field_security_advisory_coverage'.
+  $field_instances['node-project_theme_engine-field_security_advisory_coverage'] = array(
+    'bundle' => 'project_theme_engine',
+    'default_value' => array(
+      0 => array(
+        'value' => 'not-covered',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '<em>Read & understand <a href="/security-advisory-policy">the policy</a>!</em> Once you opt-in your project, you may not opt-out. Only the Security Team will be able to change this.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_security_advisory_coverage',
+    'label' => 'Security advisory coverage',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-project_theme_engine-field_supporting_organizations'.
   $field_instances['node-project_theme_engine-field_supporting_organizations'] = array(
     'bundle' => 'project_theme_engine',
@@ -12585,6 +12975,71 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'node-project_translation-field_security_advisory_coverage'.
+  $field_instances['node-project_translation-field_security_advisory_coverage'] = array(
+    'bundle' => 'project_translation',
+    'default_value' => array(
+      0 => array(
+        'value' => 'not-covered',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '<em>Read & understand <a href="/security-advisory-policy">the policy</a>!</em> Once you opt-in your project, you may not opt-out. Only the Security Team will be able to change this.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_security_advisory_coverage',
+    'label' => 'Security advisory coverage',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 41,
+    ),
+  );
+
   // Exported field_instance: 'node-project_translation-taxonomy_vocabulary_44'.
   $field_instances['node-project_translation-taxonomy_vocabulary_44'] = array(
     'bundle' => 'project_translation',
@@ -12818,6 +13273,7 @@ function drupalorg_projects_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('<a href="/documentation/releases/types">What is a release type?</a>');
+  t('<em>Read & understand <a href="/security-advisory-policy">the policy</a>!</em> Once you opt-in your project, you may not opt-out. Only the Security Team will be able to change this.');
   t('Applicable from');
   t('Applicable up to');
   t('Changelog');
@@ -12866,6 +13322,7 @@ function drupalorg_projects_field_default_field_instances() {
   t('Release notes');
   t('Release type');
   t('Screenshots');
+  t('Security advisory coverage');
   t('Short Description');
   t('Short name');
   t('Show in project’s download table when branch is supported');

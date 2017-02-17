@@ -1006,6 +1006,32 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
+  // Exported field_base: 'field_security_advisory_coverage'.
+  $field_bases['field_security_advisory_coverage'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_security_advisory_coverage',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'not-covered' => 'Not covered',
+        'covered' => 'Opt into <a href="/security-advisory-policy">security advisory coverage</a>',
+        'revoked' => 'Unsupported due to security issue',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_show_download'.
   $field_bases['field_show_download'] = array(
     'active' => 1,
