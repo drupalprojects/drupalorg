@@ -593,6 +593,8 @@ function drupalorg_user_field_default_field_bases() {
         'asia_2016' => 'DrupalCon Asia 2016',
         'neworleans_2016' => 'DrupalCon New Orleans 2016',
         'dublin_2016' => 'DrupalCon Dublin 2016',
+        'baltimore_2017' => 'DrupalCon Baltimore 2017',
+        'vienna_2017' => 'DrupalCon Vienna 2017',
       ),
       'allowed_values_function' => '',
     ),
