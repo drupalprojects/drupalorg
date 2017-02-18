@@ -2433,7 +2433,7 @@ function drupalorg_form_guide_node_form_alter(&$form) {
   }
 
   // Limit guide description length.
-  $form['body'][LANGUAGE_NONE][0]['#maxlength'] = 600;
+  $form['body'][LANGUAGE_NONE][0]['#maxlength'] = 1000;
 }
 
 /**
