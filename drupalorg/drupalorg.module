@@ -4924,6 +4924,28 @@ function drupalorg_admin_paths_alter(&$paths) {
 }
 
 /**
+ * Implements hook_project_release_xml_release_alter().
+ */
+function drupalorg_project_release_xml_release_alter(&$xml, $project, $release) {
+  // For distributions, add <variant> to <file>s.
+  if ($project->type === 'project_distribution') {
+    foreach ($xml->release->files->file as $key => $value) {
+      if (preg_match('/-((?:no-)?core)\.' . preg_quote($value->archive_type, '/') . '$/', $value->url, $match)) {
+        if ($match[1] === 'no-core') {
+          $value->variant = 'projects';
+        }
+        elseif ($match[1] === 'core') {
+          $value->variant = 'full';
+        }
+      }
+      else {
+        $value->variant = 'profile-only';
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_project_release_xml_alter().
  */
 function drupalorg_project_release_xml_alter(&$xml, $project, $api_tid) {
