@@ -4927,6 +4927,8 @@ function drupalorg_admin_paths_alter(&$paths) {
  * Implements hook_project_release_xml_release_alter().
  */
 function drupalorg_project_release_xml_release_alter(&$xml, $project, $release) {
+  $release_wrapper = entity_metadata_wrapper('node', $release);
+
   // For distributions, add <variant> to <file>s.
   if ($project->type === 'project_distribution') {
     foreach ($xml->release->files->file as $key => $value) {
@@ -4942,6 +4944,21 @@ function drupalorg_project_release_xml_release_alter(&$xml, $project, $release) 
         $value->variant = 'profile-only';
       }
     }
+  }
+
+  // Add security advisory coverage. See also class
+  // drupalorg_handler_security_coverage.
+  if ($release_wrapper->field_release_project->field_security_advisory_coverage->value() !== 'covered') {
+    $xml->release->security = t('Project has not opted into security advisory coverage!');
+  }
+  elseif ($type = $release_wrapper->field_release_version_extra->value()) {
+    $xml->release->security = t('@type releases are not covered by Drupal security advisories.', ['@type' => drupal_ucfirst(preg_replace('/[0-9]*$/', '', $type))]);
+  }
+  elseif ($release_wrapper->{'taxonomy_' . taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary'))->machine_name}->value()->name <= 6) {
+    $xml->release->security = t('Drupal 6 and earlier are not covered by Drupal security advisories!');
+  }
+  else {
+    $xml->release->security['covered'] = TRUE;
   }
 }
 
