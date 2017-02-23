@@ -72,14 +72,14 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
         'branches' => [$this->release_node->versioncontrol_release['label']['label_id']],
         'parent_commit' => $this->release_node_wrapper->field_packaged_git_sha1->value(),
       ];
-      if (count($backend->loadEntities('operation', [], $conditions, ['may cache' => FALSE])) === 0) {
+      if (count($backend->loadEntities('operation', [], $conditions, ['may cache' => FALSE])) === 0 && ($packaged_commit = $backend->loadEntity('operation', [], ['revision' => $this->release_node_wrapper->field_packaged_git_sha1->value()]))) {
         // Look for commits on the branch with a commit date after the
         // currently packaged release.
         $conditions = [
           'branches' => [$this->release_node->versioncontrol_release['label']['label_id']],
           'committer_date' => [
             'operator' => '>',
-            'values' => $backend->loadEntity('operation', [], ['revision' => $this->release_node_wrapper->field_packaged_git_sha1->value()])->committer_date,
+            'values' => $packaged_commit->committer_date,
           ],
         ];
         if (count($backend->loadEntities('operation', [], $conditions, ['may cache' => FALSE])) === 0) {
