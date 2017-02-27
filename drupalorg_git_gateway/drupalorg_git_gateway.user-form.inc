@@ -28,8 +28,7 @@ function _drupalorg_git_gateway_user_page($account) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Form callback, agreement for Git access.
  */
 function drupalorg_git_gateway_user_form($form, &$form_state) {
   $form = array();
@@ -95,8 +94,7 @@ function drupalorg_git_gateway_user_form($form, &$form_state) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Form callback, admin Git access.
  */
 function drupalorg_git_gateway_admin_user_form($form, &$form_state) {
   $form = array();
@@ -286,8 +284,9 @@ function _drupalorg_git_gateway_user_admin($account) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Form callback, confirm Git username choice.
+ *
+ * @see drupalorg_git_gateway_user_form()
  */
 function drupalorg_git_gateway_confirm_username($form, &$form_state, $account) {
   // Copy out the original settings so we have them when actually submitting.
@@ -316,8 +315,7 @@ function drupalorg_git_gateway_confirm_username($form, &$form_state, $account) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Form validate callback for drupalorg_git_gateway_user_form().
  */
 function drupalorg_git_gateway_user_form_base_validate($form, &$form_state) {
   global $user;
@@ -349,8 +347,7 @@ function drupalorg_git_gateway_user_form_base_validate($form, &$form_state) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Form validate callback for drupalorg_git_gateway_confirm_username().
  */
 function drupalorg_git_gateway_confirm_username_validate($form, &$form_state) {
   // Copy the stored base form values into place for the main submit handler.

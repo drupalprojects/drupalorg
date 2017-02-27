@@ -6,8 +6,7 @@
  */
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Implements hook_schema().
  */
 function drupalorg_git_gateway_schema() {
   $schema = array(
