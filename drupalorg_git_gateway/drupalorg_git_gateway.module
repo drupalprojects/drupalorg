@@ -34,13 +34,11 @@ define('DRUPALORG_GIT_GATECTL_SANDBOXES', 0x04);
 // Refers to the set of per-issue repositories. We don't have these yet, but
 // defining this constant in hopeful anticipation :)
 // define('DRUPALORG_GIT_GATECTL_ISSUES', 0x08);
-define('DRUPALORG_GIT_DISABLE_MSG', "@user_name,\n
-Your Git access on Drupal.org has been disabled because it is in violation of
-the terms of service (http://drupal.org/node/1001544). To seek reinstatement,
-post an explanation of what happened and the steps you will take to correct the
-situation to the Drupal.org webmasters issue queue
-(http://drupal.org/node/1042972).
-\n@admin_name");
+define('DRUPALORG_GIT_DISABLE_MSG', "@user_name,
+
+Your Git access on Drupal.org has been disabled because it is in violation of the Git repository usage policy at https://www.drupal.org/git-repository-usage-policy. To seek reinstatement, post an explanation of what happened and the steps you will take to correct the situation to the Drupal.org webmasters issue queue (https://www.drupal.org/node/1042972).
+
+@admin_name");
 
 /**
  * Implements hook_menu().
