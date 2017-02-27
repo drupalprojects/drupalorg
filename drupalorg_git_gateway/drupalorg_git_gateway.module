@@ -42,7 +42,7 @@ function drupalorg_git_gateway_menu() {
   $items = array();
 
   // Don't let the User module handle our settings page. Fight the power.
-  $items['user/%user_category/edit/git'] = array(
+  $items['user/%user_category/git'] = array(
     'title' => 'Git access',
     'page callback' => 'drupalorg_git_gateway_user_page',
     'page arguments' => array(1),
@@ -70,20 +70,6 @@ function drupalorg_git_gateway_menu() {
   );
 
   return $items;
-}
-
-/**
- * Implements hook_user_categories().
- */
-function drupalorg_git_gateway_user_categories() {
-  return array(
-    'git' => array(
-      'name' => 'git',
-      'title' => t('Git access'),
-      'weight' => 1,
-      // use defaults for access callback and arguments
-    ),
-  );
 }
 
 /**
