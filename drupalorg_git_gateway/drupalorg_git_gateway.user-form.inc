@@ -263,7 +263,11 @@ function _drupalorg_git_gateway_user_admin($account) {
   $form['git_disabled_msg'] = array(
     '#type' => 'textarea',
     '#title' => t('Git access disabled e-mail'),
-    '#default_value' => variable_get('project_git_gateway_disabled_msg', DRUPALORG_GIT_DISABLE_MSG),
+    '#default_value' => t('@user_name,
+
+Your Git access on Drupal.org has been disabled because it is in violation of the Git repository usage policy at https://www.drupal.org/git-repository-usage-policy. To seek reinstatement, post an explanation of what happened and the steps you will take to correct the situation to the Drupal.org webmasters issue queue (https://www.drupal.org/node/1042972).
+
+@admin_name'),
     '#description' => t('Message to send to a user when disabling their Git push access.'),
     '#rows' => 10,
   );

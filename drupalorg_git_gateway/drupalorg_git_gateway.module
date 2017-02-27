@@ -34,11 +34,6 @@ define('DRUPALORG_GIT_GATECTL_SANDBOXES', 0x04);
 // Refers to the set of per-issue repositories. We don't have these yet, but
 // defining this constant in hopeful anticipation :)
 // define('DRUPALORG_GIT_GATECTL_ISSUES', 0x08);
-define('DRUPALORG_GIT_DISABLE_MSG', "@user_name,
-
-Your Git access on Drupal.org has been disabled because it is in violation of the Git repository usage policy at https://www.drupal.org/git-repository-usage-policy. To seek reinstatement, post an explanation of what happened and the steps you will take to correct the situation to the Drupal.org webmasters issue queue (https://www.drupal.org/node/1042972).
-
-@admin_name");
 
 /**
  * Implements hook_menu().
@@ -58,26 +53,12 @@ function drupalorg_git_gateway_menu() {
     'type' => MENU_LOCAL_TASK,
   );
 
-  $items['admin/config/drupalorg-git'] = array(
-    'title' => 'Drupal.org Git gateway',
+  $items['admin/config/system/drupalorg-git'] = array(
+    'title' => 'Drupal.org Git global push control',
+    'description' => 'Drastic measure to disable Git.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('drupalorg_git_gateway_defaults'),
-    'access arguments' => array('administer version control systems'),
-    'description' => 'Update Git e-mail text or globally disable push access.',
-    'type' => MENU_NORMAL_ITEM,
-  );
-
-  $items['admin/config/drupalorg-git/defaults'] = array(
-    'title' => 'Defaults',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => - 10,
-  );
-
-  $items['admin/config/drupalorg-git/gatectl'] = array(
-    'title' => 'Global Push Control',
     'page arguments' => array('drupalorg_git_gateway_gatectl'),
     'access arguments' => array('administer version control systems'),
-    'type' => MENU_LOCAL_TASK,
   );
 
   $items['user/%user/git-attribution'] = array(
@@ -294,23 +275,6 @@ function drupalorg_git_gateway_permission() {
 function drupalorg_git_gateway_user_page_access($account) {
   // Default logic from user_edit_access(), but also allow if they have administer vcs
   return ((($GLOBALS['user']->uid == $account->uid && user_access('accept git access agreement')) || user_access('administer users')) || user_access('administer user git access')) && $account->uid > 0;
-}
-
-/**
- * Menu callback for admin settings.
- */
-function drupalorg_git_gateway_defaults($form, &$form_state) {
-  $form = array();
-
-  $form['project_git_gateway_disabled_msg'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Default Git access disabled e-mail'),
-    '#default_value' => variable_get('project_git_gateway_disabled_msg', DRUPALORG_GIT_DISABLE_MSG),
-    '#description' => t('The default message to send to a user when disabling their Git push access.'),
-    '#rows' => 10,
-  );
-
-  return system_settings_form($form);
 }
 
 /**
