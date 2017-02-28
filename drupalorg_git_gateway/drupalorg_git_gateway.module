@@ -42,16 +42,15 @@ function drupalorg_git_gateway_menu() {
   $items = array();
 
   // Don't let the User module handle our settings page. Fight the power.
-  $items['user/%user_category/git'] = array(
+  $items['user/%user/git'] = [
     'title' => 'Git access',
     'page callback' => 'drupalorg_git_gateway_user_page',
-    'page arguments' => array(1),
+    'page arguments' => [1],
     'access callback' => 'drupalorg_git_gateway_user_page_access',
-    'access arguments' => array(1),
-    'load arguments' => array('%map', '%index'),
-    'weight' => 1,
+    'access arguments' => [1],
+    'file' => 'drupalorg_git_gateway.user-form.inc',
     'type' => MENU_LOCAL_TASK,
-  );
+  ];
 
   $items['admin/config/system/drupalorg-git'] = array(
     'title' => 'Drupal.org Git global push control',
@@ -87,8 +86,8 @@ function drupalorg_git_gateway_user_update(&$edit, $account, $category) {
   if (empty($account->git_disabled)) {
     // Grant the perm IFF consent has been given and a username has been set.
     $grant |= (!empty($account->git_username) && !empty($account->git_consent)) ? 0x01 : 0;
-
   }
+
   // Vetted state persists through disabling.
   $grant |= !empty($account->git_vetted) ? 0x02 : 0;
 
@@ -184,7 +183,7 @@ function drupalorg_git_gateway_form_user_profile_form_alter(&$form, &$form_state
       // Remove the role from the original set of checkboxes.
       unset($options[$rid]);
     }
-    $form['account']['roles'][DRUPALORG_GIT_GATEWAY_VETTED_RID]['#description'] = t('The "Git user" and "Git vetted user" roles cannot be changed directly here. Manage them on the !link tab.', array('!link' => l('Git access', 'user/' . $form['#user']->uid . '/edit/git')));
+    $form['account']['roles'][DRUPALORG_GIT_GATEWAY_VETTED_RID]['#description'] = t('The “Git user” and “Git vetted user” roles cannot be changed directly here. Manage them on the !link tab.', ['!link' => l('Git access', 'user/' . $form['#user']->uid . '/git')]);
   }
 }
 
@@ -229,16 +228,7 @@ function drupalorg_git_gateway_help($path, $arg) {
  *   The text to display to users who have not consented to using Git.
  */
 function drupalorg_git_gateway_no_consent_error($account) {
-  $git_access_url = url('user/' . $account->uid . '/edit/git', array('query' => drupal_get_destination()));
-  return t('In order to create projects, agree to the terms of service on <a href="@git_access">Git access</a>.', array('@git_access' => $git_access_url));
-}
-
-/**
- * Menu callback for user’s Git access.
- */
-function drupalorg_git_gateway_user_page($account) {
-  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'drupalorg_git_gateway') . "/drupalorg_git_gateway.user-form.inc";
-  return _drupalorg_git_gateway_user_page($account);
+  return t('In order to create projects, agree to the terms of service on <a href="@git_access">Git access</a>.', ['@git_access' => url('user/' . $account->uid . '/git', ['query' => drupal_get_destination()])]);
 }
 
 /**

@@ -5,7 +5,7 @@
  * Forms for Drupal.org Git Gateway.
  */
 
-function _drupalorg_git_gateway_user_page($account) {
+function drupalorg_git_gateway_user_page($account) {
   global $user;
 
   // Pre-populate the form state with account information.
@@ -395,7 +395,8 @@ function drupalorg_git_gateway_user_form_submit($form, &$form_state) {
     }
   }
   if ($dirty) {
-    user_save($account, $fields, 'git');
+    user_save($account, $fields);
+    drupal_set_message(t('Saved Git access agreement.'));
   }
 }
 
