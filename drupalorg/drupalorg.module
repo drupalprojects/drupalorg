@@ -179,14 +179,6 @@ function drupalorg_show_global_notice(stdClass $account) {
  * Implements hook_menu().
  */
 function drupalorg_menu() {
-  // Custom 403 page handler to provide better messages and help.
-  $items['drupalorg-403'] = array(
-    'title' => 'Access denied',
-    'page callback' => 'drupalorg_403_page',
-    'access callback' => 1,
-    'type' => MENU_CALLBACK,
-  );
-
   $items['download'] = array(
     'title' => 'Download & Extend',
     'page callback' => 'theme',
@@ -4021,20 +4013,6 @@ function drupalorg_civimembership_data($name, $type) {
       return $memberships['organization'][$name][$type];
     }
   }
-}
-
-/**
- * Page callback for a custom 403 page to better handle error reporting.
- *
- * This checks if the user is on node/add/project-project but hasn't agreed to
- * the Git terms of service.
- */
-function drupalorg_403_page() {
-  global $user;
-  if (!empty($_GET['destination']) && $_GET['destination'] == 'node/add/project-project' && !empty($user->uid) && empty($user->git_consent) && !empty($user->git_vetted)) {
-    return drupalorg_git_gateway_no_consent_error($user);
-  }
-  return t('You are not authorized to access this page.');
 }
 
 /**
