@@ -98,7 +98,7 @@ function drupalorg_git_gateway_user_update(&$edit, $account, $category) {
       'rid' => DRUPALORG_GIT_GATEWAY_RID,
     );
     db_merge('users_roles')->key($vals)->fields($vals)->execute();
-    $account->roles[DRUPALORG_GIT_GATEWAY_RID] = 'Git user';
+    $account->roles[DRUPALORG_GIT_GATEWAY_RID] = TRUE;
   }
   else {
     unset($account->roles[DRUPALORG_GIT_GATEWAY_RID]);
@@ -111,7 +111,7 @@ function drupalorg_git_gateway_user_update(&$edit, $account, $category) {
       'rid' => DRUPALORG_GIT_GATEWAY_VETTED_RID,
     );
     db_merge('users_roles')->key($vals)->fields($vals)->execute();
-    $account->roles[DRUPALORG_GIT_GATEWAY_VETTED_RID] = 'Git vetted user';
+    $account->roles[DRUPALORG_GIT_GATEWAY_VETTED_RID] = TRUE;
   }
   else {
     unset($account->roles[DRUPALORG_GIT_GATEWAY_VETTED_RID]);
@@ -171,6 +171,11 @@ function drupalorg_git_gateway_form_user_profile_form_alter(&$form, &$form_state
   // authenticated user role is disabled.
   if (user_access('administer permissions')) {
     $options = &$form['account']['roles']['#options'];
+    $args = [
+      '@git_user' => $options[DRUPALORG_GIT_GATEWAY_RID],
+      '@git_vetted_user' => $options[DRUPALORG_GIT_GATEWAY_VETTED_RID],
+      '!link' => url('user/' . $form['#user']->uid . '/git'),
+    ];
     foreach (array(DRUPALORG_GIT_GATEWAY_RID, DRUPALORG_GIT_GATEWAY_VETTED_RID) as $rid) {
       $checkbox = array(
         '#type' => 'checkbox',
@@ -183,7 +188,7 @@ function drupalorg_git_gateway_form_user_profile_form_alter(&$form, &$form_state
       // Remove the role from the original set of checkboxes.
       unset($options[$rid]);
     }
-    $form['account']['roles'][DRUPALORG_GIT_GATEWAY_VETTED_RID]['#description'] = t('The “Git user” and “Git vetted user” roles cannot be changed directly here. Manage them on the !link tab.', ['!link' => l('Git access', 'user/' . $form['#user']->uid . '/git')]);
+    $form['account']['roles'][DRUPALORG_GIT_GATEWAY_VETTED_RID]['#description'] = t('Manage “@git_user” and “@git_vetted_user” roles on the <a href="!link">Git access</a> tab.', $args);
   }
 }
 
