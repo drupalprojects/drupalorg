@@ -38,7 +38,9 @@ class DrupalorgVersioncontrolLabelVersionMapperGit implements VersioncontrolRele
           $version->version_major = $matches[1];
           $version->version_minor = $matches[2];
           // Match 4 contains the patch level without the leading '.'.
-          $version->version_patch = $matches[4];
+          if (isset($matches[4])) {
+            $version->version_patch = $matches[4];
+          }
           if ($matches[1] <= 4) {
             // For version 4 and prior, the API compatibility prefix had 3 components
             // e.g., 4.4.x-1.0
