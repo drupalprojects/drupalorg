@@ -2061,7 +2061,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create full project_distribution projects'] = array(
     'name' => 'create full project_distribution projects',
     'roles' => array(
-      'Git vetted user' => 'Git vetted user',
+      'Git user' => 'Git user',
     ),
     'module' => 'project',
   );
@@ -2079,7 +2079,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create full project_module projects'] = array(
     'name' => 'create full project_module projects',
     'roles' => array(
-      'Git vetted user' => 'Git vetted user',
+      'Git user' => 'Git user',
     ),
     'module' => 'project',
   );
@@ -2088,7 +2088,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create full project_theme projects'] = array(
     'name' => 'create full project_theme projects',
     'roles' => array(
-      'Git vetted user' => 'Git vetted user',
+      'Git user' => 'Git user',
     ),
     'module' => 'project',
   );
@@ -2097,7 +2097,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create full project_theme_engine projects'] = array(
     'name' => 'create full project_theme_engine projects',
     'roles' => array(
-      'Git vetted user' => 'Git vetted user',
+      'Git user' => 'Git user',
     ),
     'module' => 'project',
   );
