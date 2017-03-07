@@ -2105,9 +2105,7 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'create full project_translation projects'.
   $permissions['create full project_translation projects'] = array(
     'name' => 'create full project_translation projects',
-    'roles' => array(
-      'Git vetted user' => 'Git vetted user',
-    ),
+    'roles' => array(),
     'module' => 'project',
   );
 
