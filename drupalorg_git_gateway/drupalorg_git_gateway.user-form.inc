@@ -280,7 +280,7 @@ Your Git access on Drupal.org has been disabled because it is in violation of th
   $form['git_vetted'] = array(
     '#type' => 'checkbox',
     '#title' => t('Is a vetted user'),
-    '#description' => t('If checked, this user will be granted "vetted" status. Vetted users create full projects and promote existing experimental sandboxes.'),
+    '#description' => t('Vetted users can opt their projects into security advisory coverage.'),
     '#default_value' => $account->git_vetted,
   );
 
