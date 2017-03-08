@@ -1174,14 +1174,6 @@ function drupalorg_project_block_view($delta = '') {
             'href' => $home_link[0]['url'],
           );
         }
-        // Documentation
-        $documentation_link = field_get_items('node', $project, 'field_project_documentation');
-        if (!empty($documentation_link[0]['url'])) {
-          $links[] = array(
-            'title' => t('Read documentation'),
-            'href' => $documentation_link[0]['url'],
-          );
-        }
         // License
         $license_link = field_get_items('node', $project, 'field_project_license');
         if (!empty($license_link[0]['url'])) {
