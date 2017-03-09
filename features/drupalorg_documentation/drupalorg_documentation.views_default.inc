@@ -994,6 +994,12 @@ function drupalorg_documentation_views_default_views() {
     'guide' => 'guide',
   );
   $handler->display->display_options['arguments']['nid']['validate_options']['access'] = TRUE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['relationship'] = 'field_project_doc_guide_name_target_id';
+  $handler->display->display_options['filters']['status']['value'] = '1';
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'project_documentation_pane');
