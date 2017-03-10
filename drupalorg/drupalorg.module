@@ -3934,11 +3934,13 @@ function drupalorg_user_view($account, $view_mode) {
 
   // Guides maintained.
   $view = views_get_view('doc_guide_per_user');
-  $account->content['drupalorg_documentation_guides'] = array(
-    '#type' => 'user_profile_item',
-    '#title' => t('Documentation guides'),
-    '#markup' => $view->preview('block_1', array($account->uid)),
-  );
+  $output = $view->preview('block_1', [$account->uid]);
+  if ($view->result) {
+    $account->content['drupalorg_documentation_guides'] = [
+      '#prefix' => '<h4>' . t('Documentation guides') . '</h4>',
+      '#markup' => $output,
+    ];
+  }
 
   // Documentation edits.
   $count = (int) db_query('SELECT count(1) FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid AND nr.uid = :uid WHERE n.type IN (:types) AND n.status = :status', [':types' => ['book', 'guide', 'documentation'], ':status' => 1, ':uid' => $account->uid])->fetchField();
