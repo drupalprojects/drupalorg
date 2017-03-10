@@ -232,7 +232,8 @@ function drupalorg_user_field_group_info() {
       3 => 'field_drupal_contributions',
       4 => 'summary',
       5 => 'versioncontrol_project_user_commits',
-      6 => 'drupalorg_user_issue_credit',
+      6 => 'drupalorg_documentation_guides',
+      7 => 'drupalorg_user_issue_credit',
     ),
     'format_type' => 'div',
     'format_settings' => array(
