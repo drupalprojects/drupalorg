@@ -988,7 +988,7 @@ function drupalorg_project_node_view($node, $view_mode = 'full') {
     if (project_node_is_project($node)) {
       if ($node->field_project_type[LANGUAGE_NONE][0]['value'] === 'sandbox') {
         drupal_set_title(l(t("!name's sandbox", array('!name' => $node->name)), 'project/user/' . $node->uid) . ': ' . check_plain($node->title), PASS_THROUGH);
-        $node->content['project_sandbox_warning']['#markup'] = '<div class="meta"><h5>Experimental Project</h5><p>This is a <a href="/node/1011196">sandbox project</a>, which contains experimental code for developer use only.</p></div>';
+        $node->content['project_sandbox_warning']['#markup'] = '<div class="note-warning"><h4>Experimental project</h4><p>This is a <a href="/node/1011196">sandbox project</a>, which contains experimental code for developer use only.</p></div>';
         $node->content['project_sandbox_warning']['#weight'] = -1;
       }
       $node->content['project_info'] = drupalorg_project_meta_data($node);
@@ -1529,9 +1529,11 @@ function drupalorg_project_meta_data(stdClass $node) {
       ];
     }
     else {
+      $node->content['project_security_warning']['#markup'] = '<div class="note-warning"><p>This project is not covered by Drupal’s <a href="/security-advisory-policy">security advisory policy</a>.</p></div>';
+      $node->content['project_security_warning']['#weight'] = -1;
       $output['items']['security'] = [
         '#prefix' => '<li>',
-        '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon-alert.svg') . '" alt="shield alert" class="icon-left">' . t('This project is not covered by the <a href="/security-advisory-policy">security advisory policy</a>.<br>It may have publicly disclosed vulnerabilities. Use at your own risk!'),
+        '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon-alert.svg') . '" alt="shield alert" class="icon-left">' . t('This project is not covered by the <a href="/security-advisory-policy">security advisory policy</a>.<br><strong>Use at your own risk!</strong> It may have publicly disclosed vulnerabilities.'),
         '#suffix' => '</li>',
       ];
     }
