@@ -366,6 +366,11 @@ function drupalorg_field_extra_fields() {
     'user' => array(
       'user' => array(
         'display' => array(
+          'drupalorg_documentation_guides' => array(
+            'label' => t('Documentation guides'),
+            'description' => t('Documentation guides that a user maintains'),
+            'weight' => 0,
+          ),
           'drupalorg_companies_worked_for' => array(
             'label' => t('Companies Worked For'),
             'description' => t('Companies Worked For derived from companies or organizations'),
@@ -3926,6 +3931,14 @@ function drupalorg_user_view($account, $view_mode) {
       '#weight' => -1,
     );
   }
+
+  // Guides maintained.
+  $view = views_get_view('doc_guide_per_user');
+  $account->content['drupalorg_documentation_guides'] = array(
+    '#type' => 'user_profile_item',
+    '#title' => t('Documentation guides'),
+    '#markup' => $view->preview('block_1', array($account->uid)),
+  );
 
   // Documentation edits.
   $count = (int) db_query('SELECT count(1) FROM {node} n INNER JOIN {node_revision} nr ON n.nid = nr.nid AND nr.uid = :uid WHERE n.type IN (:types) AND n.status = :status', [':types' => ['book', 'guide', 'documentation'], ':status' => 1, ':uid' => $account->uid])->fetchField();

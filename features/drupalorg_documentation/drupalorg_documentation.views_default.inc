@@ -857,11 +857,51 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
-  /* Display: Doc Guides Block */
-  $handler = $view->new_display('block', 'Doc Guides Block', 'block_1');
+  /* Display: Doc guides profile block */
+  $handler = $view->new_display('block', 'Doc guides profile block', 'block_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Documentation guides';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'og_group_ref_documentation' => 'og_group_ref_documentation',
+    'title' => 'title',
+  );
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Guide */
+  $handler->display->display_options['fields']['og_group_ref_documentation']['id'] = 'og_group_ref_documentation';
+  $handler->display->display_options['fields']['og_group_ref_documentation']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['og_group_ref_documentation']['field'] = 'og_group_ref_documentation';
+  $handler->display->display_options['fields']['og_group_ref_documentation']['label'] = '';
+  $handler->display->display_options['fields']['og_group_ref_documentation']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['og_group_ref_documentation']['alter']['text'] = '[og_group_ref_documentation] - ';
+  $handler->display->display_options['fields']['og_group_ref_documentation']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['og_group_ref_documentation']['settings'] = array(
+    'link' => 1,
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Guide (og_group_ref_documentation) */
+  $handler->display->display_options['sorts']['og_group_ref_documentation_target_id']['id'] = 'og_group_ref_documentation_target_id';
+  $handler->display->display_options['sorts']['og_group_ref_documentation_target_id']['table'] = 'og_membership';
+  $handler->display->display_options['sorts']['og_group_ref_documentation_target_id']['field'] = 'og_group_ref_documentation_target_id';
+  $handler->display->display_options['sorts']['og_group_ref_documentation_target_id']['order'] = 'DESC';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['block_description'] = 'Doc Guides Block';
   $translatables['doc_guide_per_user'] = array(
     t('Master'),
@@ -909,6 +949,8 @@ function drupalorg_documentation_views_default_views() {
     t('No documentation pages found'),
     t('Search by page title'),
     t('Status (field_documentation_status)'),
+    t('Doc guides profile block'),
+    t('[og_group_ref_documentation] - '),
     t('Doc Guides Block'),
   );
   $export['doc_guide_per_user'] = $view;
