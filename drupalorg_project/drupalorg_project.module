@@ -408,10 +408,10 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('Only promoted full projects may opt into security advisory coverage.');
       }
-      elseif ($form_state['node']->uid !== $GLOBALS['user']->uid && !user_access('post to newsletter')) {
-        // - The project owner (or a security team member) are editing.
+      elseif (!project_user_access($form_state['node'], 'write to vcs') && !user_access('post to newsletter')) {
+        // - A project committer (or a security team member) is editing.
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
-        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('Only the project owner may opt into security advisory coverage. <a href="!url">Learn about transferring ownership</a>', ['!url' => url('project/projectownership')]);
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('Only committers with “write to VCS” access may opt into security advisory coverage.');
       }
       elseif (!user_access('may opt into security advisory coverage')) {
         // - The user user has access.
@@ -423,6 +423,9 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         //   editing).
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('New projects must wait 10 days before opting into security advisory coverage. Please take this time to review <a href="!writing">writing secure code</a> and <a href="!practices">best practices</a>.', ['!writing' => url('writing-secure-code'), '!practices' => url('node/7765')]);
+      }
+      else {
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['covered']['#description'] = t('I will cooperate with the <a href="/security-team">Drupal Security Team</a> as needed.');
       }
     }
   }
