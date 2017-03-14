@@ -1087,30 +1087,39 @@ function drupalorg_documentation_views_default_views() {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Documentation';
-  $handler->display->display_options['css_class'] = 'node-project-module';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
   $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['style_options']['class'] = 'links';
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['hide_empty'] = TRUE;
-  /* Footer: Global: View area */
-  $handler->display->display_options['footer']['view']['id'] = 'view';
-  $handler->display->display_options['footer']['view']['table'] = 'views';
-  $handler->display->display_options['footer']['view']['field'] = 'view';
+  $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'No documentation guides';
+  $handler->display->display_options['empty']['area']['format'] = '1';
   /* Relationship: Content: Project documentation (field_project_docs) */
   $handler->display->display_options['relationships']['field_project_docs_value']['id'] = 'field_project_docs_value';
   $handler->display->display_options['relationships']['field_project_docs_value']['table'] = 'field_data_field_project_docs';
   $handler->display->display_options['relationships']['field_project_docs_value']['field'] = 'field_project_docs_value';
   $handler->display->display_options['relationships']['field_project_docs_value']['required'] = TRUE;
   $handler->display->display_options['relationships']['field_project_docs_value']['delta'] = '-1';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_project_doc_guide_name_target_id']['id'] = 'field_project_doc_guide_name_target_id';
+  $handler->display->display_options['relationships']['field_project_doc_guide_name_target_id']['table'] = 'field_data_field_project_doc_guide_name';
+  $handler->display->display_options['relationships']['field_project_doc_guide_name_target_id']['field'] = 'field_project_doc_guide_name_target_id';
+  $handler->display->display_options['relationships']['field_project_doc_guide_name_target_id']['relationship'] = 'field_project_docs_value';
+  $handler->display->display_options['relationships']['field_project_doc_guide_name_target_id']['required'] = TRUE;
   /* Field: Field collection item: Documentation guide */
   $handler->display->display_options['fields']['field_project_doc_guide_name_1']['id'] = 'field_project_doc_guide_name_1';
   $handler->display->display_options['fields']['field_project_doc_guide_name_1']['table'] = 'field_data_field_project_doc_guide_name';
@@ -1172,11 +1181,6 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['fields']['field_project_documentation']['alter']['path'] = '[field_project_documentation]';
   $handler->display->display_options['fields']['field_project_documentation']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_project_documentation']['click_sort_column'] = 'url';
-  /* Sort criterion: Content: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'node';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
   /* Contextual filter: Content: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
@@ -1189,9 +1193,6 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['arguments']['nid']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['nid']['validate']['type'] = 'node';
   $handler->display->display_options['arguments']['nid']['validate_options']['types'] = array(
-    'page' => 'page',
-    'documentation' => 'documentation',
-    'guide' => 'guide',
     'project_core' => 'project_core',
     'project_distribution' => 'project_distribution',
     'project_drupalorg' => 'project_drupalorg',
@@ -1205,32 +1206,14 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['relationship'] = 'field_project_doc_guide_name_target_id';
+  $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'project_documentation_block');
-  $handler->display->display_options['defaults']['footer'] = FALSE;
-  /* Footer: Global: View area */
-  $handler->display->display_options['footer']['view']['id'] = 'view';
-  $handler->display->display_options['footer']['view']['table'] = 'views';
-  $handler->display->display_options['footer']['view']['field'] = 'view';
-  $handler->display->display_options['footer']['view']['view_to_insert'] = 'documentation_project_page_doc_list:panel_pane_1';
-  $handler->display->display_options['footer']['view']['inherit_arguments'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Field collection item: Documentation guide */
-  $handler->display->display_options['fields']['field_project_doc_guide_name_1']['id'] = 'field_project_doc_guide_name_1';
-  $handler->display->display_options['fields']['field_project_doc_guide_name_1']['table'] = 'field_data_field_project_doc_guide_name';
-  $handler->display->display_options['fields']['field_project_doc_guide_name_1']['field'] = 'field_project_doc_guide_name';
-  $handler->display->display_options['fields']['field_project_doc_guide_name_1']['relationship'] = 'field_project_docs_value';
-  $handler->display->display_options['fields']['field_project_doc_guide_name_1']['label'] = 'Doc Guide URL';
-  $handler->display->display_options['fields']['field_project_doc_guide_name_1']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_project_doc_guide_name_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_project_doc_guide_name_1']['type'] = 'entityreference_entity_id';
-  $handler->display->display_options['fields']['field_project_doc_guide_name_1']['settings'] = array(
-    'link' => 0,
-  );
   /* Field: Field collection item: Applicable from */
   $handler->display->display_options['fields']['field_earliest_applicable_versio']['id'] = 'field_earliest_applicable_versio';
   $handler->display->display_options['fields']['field_earliest_applicable_versio']['table'] = 'field_data_field_earliest_applicable_versio';
@@ -1254,26 +1237,22 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['fields']['field_latest_applicable_version']['alter']['path'] = 'node/[field_project_doc_guide_name_1]';
   $handler->display->display_options['fields']['field_latest_applicable_version']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_latest_applicable_version']['hide_empty'] = TRUE;
-  /* Field: Field collection item: Documentation guide */
-  $handler->display->display_options['fields']['field_project_doc_guide_name']['id'] = 'field_project_doc_guide_name';
-  $handler->display->display_options['fields']['field_project_doc_guide_name']['table'] = 'field_data_field_project_doc_guide_name';
-  $handler->display->display_options['fields']['field_project_doc_guide_name']['field'] = 'field_project_doc_guide_name';
-  $handler->display->display_options['fields']['field_project_doc_guide_name']['relationship'] = 'field_project_docs_value';
-  $handler->display->display_options['fields']['field_project_doc_guide_name']['label'] = '';
-  $handler->display->display_options['fields']['field_project_doc_guide_name']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_project_doc_guide_name']['alter']['text'] = '<a href="/node/[field_project_doc_guide_name_1]">[field_project_doc_guide_name] [field_earliest_applicable_versio][field_latest_applicable_version]</a>';
-  $handler->display->display_options['fields']['field_project_doc_guide_name']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_project_doc_guide_name']['alter']['trim_whitespace'] = TRUE;
-  $handler->display->display_options['fields']['field_project_doc_guide_name']['alter']['target'] = '_blank';
-  $handler->display->display_options['fields']['field_project_doc_guide_name']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_project_doc_guide_name']['settings'] = array(
-    'link' => 0,
-  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['relationship'] = 'field_project_doc_guide_name_target_id';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '[title] [field_earliest_applicable_versio][field_latest_applicable_version]';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['block_description'] = 'Project Documentation';
 
-  /* Display: Project doc block footer */
-  $handler = $view->new_display('panel_pane', 'Project doc block footer', 'panel_pane_1');
-  $handler->display->display_options['defaults']['group_by'] = FALSE;
+  /* Display: Attachment */
+  $handler = $view->new_display('attachment', 'Attachment', 'attachment_1');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Documentation */
   $handler->display->display_options['fields']['field_project_documentation']['id'] = 'field_project_documentation';
@@ -1286,6 +1265,12 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['fields']['field_project_documentation']['alter']['path'] = '[field_project_documentation]';
   $handler->display->display_options['fields']['field_project_documentation']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_project_documentation']['click_sort_column'] = 'url';
+  $handler->display->display_options['displays'] = array(
+    'project_documentation_block' => 'project_documentation_block',
+    'default' => 0,
+    'panel_pane_1' => 0,
+  );
+  $handler->display->display_options['attachment_position'] = 'after';
   $translatables['documentation_project_page_doc_list'] = array(
     t('Master'),
     t('Documentation'),
@@ -1295,7 +1280,9 @@ function drupalorg_documentation_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
+    t('No documentation guides'),
     t('field collection item from field_project_docs'),
+    t('Content entity referenced from field_project_doc_guide_name'),
     t('Doc Guide URL'),
     t('[field_earliest_applicable_versio-value]'),
     t('-[field_latest_applicable_version]'),
@@ -1303,10 +1290,9 @@ function drupalorg_documentation_views_default_views() {
     t('External documentation'),
     t('All'),
     t('Block'),
-    t('<a href="/node/[field_project_doc_guide_name_1]">[field_project_doc_guide_name] [field_earliest_applicable_versio][field_latest_applicable_version]</a>'),
+    t('[title] [field_earliest_applicable_versio][field_latest_applicable_version]'),
     t('Project Documentation'),
-    t('Project doc block footer'),
-    t('View panes'),
+    t('Attachment'),
   );
   $export['documentation_project_page_doc_list'] = $view;
 
