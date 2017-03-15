@@ -1265,6 +1265,7 @@ function drupalorg_documentation_views_default_views() {
   $handler->display->display_options['fields']['field_project_documentation']['alter']['path'] = '[field_project_documentation]';
   $handler->display->display_options['fields']['field_project_documentation']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_project_documentation']['click_sort_column'] = 'url';
+  $handler->display->display_options['fields']['field_project_documentation']['type'] = 'link_absolute';
   $handler->display->display_options['displays'] = array(
     'project_documentation_block' => 'project_documentation_block',
     'default' => 0,
