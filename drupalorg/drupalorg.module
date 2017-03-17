@@ -4951,7 +4951,11 @@ function drupalorg_project_release_xml_release_alter(&$xml, $project, $release) 
     $xml->release->security = t('Drupal 6 and earlier are not covered by Drupal security advisories!');
   }
   elseif ($type = $release_wrapper->field_release_version_extra->value()) {
-    $xml->release->security = t('@type releases are not covered by Drupal security advisories.', ['@type' => drupal_ucfirst(preg_replace('/[0-9]*$/', '', $type))]);
+    $type = drupal_ucfirst(preg_replace('/[0-9]*$/', '', $type));
+    if ($type === 'Rc') {
+      $type = 'RC';
+    }
+    $xml->release->security = t('@type releases are not covered by Drupal security advisories.', ['@type' => $type]);
   }
   else {
     $xml->release->security['covered'] = TRUE;
