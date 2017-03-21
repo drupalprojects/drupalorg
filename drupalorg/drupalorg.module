@@ -5828,6 +5828,9 @@ function drupalorg_project_has_full_release(stdClass $node) {
     ':nid' => $node->nid,
     ':tids' => array_keys($recommended_term_result['taxonomy_term']),
   ])->fetchCol();
+  if (count($recommended_releases) === 0) {
+    return FALSE;
+  }
   // Check if those releases have extra versions, like alpha42 or dev.
   $query = new EntityFieldQuery();
   $with_extra_release_count = $query->entityCondition('entity_type', 'node')
