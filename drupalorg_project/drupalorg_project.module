@@ -778,7 +778,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         unset($release_type_field['#options'][$security_term->tid]);
       }
       else {
-        // Regular release
+        // Tagged static release.
         $form['#validate'][] = 'drupalorg_project_security_release_form_validate';
         $release_type_field['security_update_confirm'] = array(
           '#type' => 'checkbox',
