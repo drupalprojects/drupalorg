@@ -1523,9 +1523,15 @@ function drupalorg_project_meta_data(stdClass $node) {
     if ($wrapper->field_security_advisory_coverage->value() === 'covered') {
       $output['items']['security'] = [
         '#prefix' => '<li>',
-        '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon-black.svg') . '" alt="shield" class="icon-left gray">' . t('Stable releases for this project are covered by the <a href="/security-advisory-policy">security advisory policy</a>.<br>Look for the shield icon below.'),
+        '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon-black.svg') . '" alt="shield" class="icon-left gray">' . t('Stable releases for this project are covered by the <a href="/security-advisory-policy">security advisory policy</a>.<br>'),
         '#suffix' => '</li>',
       ];
+      if (drupalorg_project_has_full_release($node)) {
+        $output['items']['security']['#markup'] .= t('Look for the shield icon below.');
+      }
+      else {
+        $output['items']['security']['#markup'] .= t('There are currently no supported stable releases.');
+      }
     }
     else {
       $node->content['project_security_warning']['#markup'] = '<div class="note-warning"><p>This project is not covered by Drupal’s <a href="/security-advisory-policy">security advisory policy</a>.</p></div>';
