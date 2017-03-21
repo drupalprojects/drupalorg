@@ -773,7 +773,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     $release_type_field = &$form['taxonomy_' . $security_term->vocabulary_machine_name][LANGUAGE_NONE];
     if (empty($form['nid']['#value'])) {
       // Adding a new release.
-      if (!empty($form['project_release']['rebuild']['#value'])) {
+      if ($form['field_release_build_type'][LANGUAGE_NONE]['#default_value'][0] === 'dynamic') {
         // This is a -dev, don't let anyone mark it a security update.
         unset($release_type_field['#options'][$security_term->tid]);
       }
