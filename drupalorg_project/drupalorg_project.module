@@ -448,8 +448,12 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       $form['field_issue_status'][LANGUAGE_NONE]['#description'] = t('Only maintainers can reopen.');
     }
 
-    // Only existing issues for projects.
-    if (!empty($form_state['node']->nid)) {
+    if (empty($form_state['node']->nid)) { // New issues.
+      if (drupalorg_project_has_full_release($node_wrapper->field_project->value())) {
+        drupal_set_message(t('<em><strong>Security issues</strong> should not be reported here.</em> Follow the <a href="/node/101494">procedure for reporting security issues</a>.'));
+      }
+    }
+    else { // Existing issues.
       // Build table of commenters.
       $table = array(
         '#theme' => 'table',
@@ -1264,19 +1268,11 @@ function drupalorg_project_block_view($delta = '') {
             'href' => 'node/' . $project->nid . '/commits',
           );
         }
-        // Link to security handbook page.
-        if (project_promote_project_is_sandbox($project)) {
-          $links[] = array(
-            'title' => t('Sandbox security policy'),
-            'href' => 'security-advisory-policy',
-          );
-        }
-        else {
-          $links[] = array(
-            'title' => t('Report a security vulnerability'),
-            'href' => 'https://security.drupal.org/node/add/project-issue/' . $machine_name,
-          );
-        }
+        // Report a security vulnerability.
+        $links[] = [
+          'title' => t('Report a security vulnerability'),
+          'href' => 'project/' . $machine_name . '/report-security-issue',
+        ];
         // Link to change records page.
         $links[] = array(
           'title' => t('View change records'),

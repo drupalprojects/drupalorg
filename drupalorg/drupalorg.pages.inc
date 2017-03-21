@@ -1,5 +1,22 @@
 <?php
 
+/**
+ * Menu callback, redirect to the appropriate place to report a security issue
+ * for a project.
+ */
+function drupalorg_project_security_redirect(stdClass $node) {
+  $wrapper = entity_metadata_wrapper('node', $node);
+  $project = $wrapper->field_project_machine_name->value();
+
+  if ($wrapper->field_security_advisory_coverage->value() === 'covered' && drupalorg_project_has_full_release($node)) {
+    drupal_goto('https://security.drupal.org/node/add/project-issue/' . $project);
+  }
+  else {
+    drupal_set_message(t('This project is not covered by the Drupal Security Team’s advisory policy. Security issues do not need to be privately reported for the %title project.', ['%title' => $node->title]));
+    drupal_goto('node/add/project-issue/' . $project, ['query' => ['tags' => 'security', 'priorities' => '400', 'categories' => 'bug']]);
+  }
+}
+
 function drupalorg_sponsor_redirect_page($sponsor) {
   $country = drupalorg_get_and_vary_header('GeoIP-country');
   switch ($sponsor) {
