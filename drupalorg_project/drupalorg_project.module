@@ -768,6 +768,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       );
       return;
     }
+    $project_wrapper = entity_metadata_wrapper('node', $project);
 
     $security_term = taxonomy_term_load(variable_get('project_release_security_update_tid', FALSE));
     $release_type_field = &$form['taxonomy_' . $security_term->vocabulary_machine_name][LANGUAGE_NONE];
@@ -799,6 +800,13 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
             ),
           ),
         );
+
+        // Disable security releases for projects not covered by security
+        // advisories.
+        if ($project_wrapper->field_security_advisory_coverage->value() !== 'covered' || !drupalorg_project_has_full_release($project) && !user_access('post to newsletter')) {
+          $release_type_field[$security_term->tid]['#disabled'] = TRUE;
+          $release_type_field[$security_term->tid]['#description'] = t('This project does not have security advisory coverage. You may be able to opt-in by <a href="!url">editing the project</a>. If you feel this is in error, please email security@drupal.org', ['!url' => url('node/' . $project->nid . '/edit')]);
+        }
       }
     }
     else {
