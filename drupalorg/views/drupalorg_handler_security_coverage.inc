@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Views field handler for making a link to drupalorg_ham().
+ * Views field handler for determining if a release has security advisory
+ * coverage.
  */
 class drupalorg_handler_security_coverage extends views_handler_field_entity {
   function render($values) {
