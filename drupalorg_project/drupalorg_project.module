@@ -770,6 +770,71 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     }
     $project_wrapper = entity_metadata_wrapper('node', $project);
 
+    // Add advice for tagged releases.
+    if (isset($form['versioncontrol_release']['versioncontrol_release_label_id']['#options']['Tags'])) {
+      $form['versioncontrol_release']['drupalorg_tag'] = [
+        '#type' => 'item',
+        '#markup' => t('<em>Tagged releases are permanent:</em><ul><li>Double check what will be in your release. Review the <a href="!issues">issue queue</a>, especially <a href="!security">security issues</a>.</li><li>Before clicking Next, the Git tag can be deleted or moved. It can not be modified after clicking Next.</li><li>If you notice a problem after making this release, you can release the next version.</li></ul>', ['!issues' => url('project/issues/' . $project_wrapper->field_project_machine_name->value()), '!security' => url('project/issues/search/' . $project_wrapper->field_project_machine_name->value(), ['query' => ['status[]' => 'Open', 'issue_tags' => 'security']])]),
+        '#states' => [
+          'visible' => [
+            ':input[name=versioncontrol_release_label_id]' => [],
+          ],
+        ],
+      ];
+      $form['versioncontrol_release']['drupalorg_tag_full'] = [
+        '#type' => 'item',
+        '#markup' => t('<em>Full releases mean stable</em> and ready for general use. Upgrade paths between stable releases should be provided. It’s a good idea to make alpha, beta, and/or RC releases before the full release. Read more about Drupal’s <a href="!url">release naming conventions</a>.', ['!url' => url('node/1015226')]),
+        '#states' => [
+          'visible' => [
+            ':input[name=versioncontrol_release_label_id]' => [],
+          ],
+        ],
+      ];
+      $form['versioncontrol_release']['drupalorg_tag_security'] = [
+        '#type' => 'checkbox',
+        '#title' => t('This release will not be covered for security advisories'),
+        '#description' => t('Your project has not opted into security advisory coverage. Full releases are best with security advisory coverage. You may opt in by <a href="!url">editing your project</a>.', ['!url' => url('node/' . $project->nid . '/edit')]),
+        '#element_validate' => ['drupalorg_project_release_covered_validate'],
+        '#states' => [
+          'visible' => [
+            ':input[name=versioncontrol_release_label_id]' => [],
+          ],
+        ],
+      ];
+      if ($project_wrapper->field_security_advisory_coverage->value() === 'covered') {
+        $form['versioncontrol_release']['drupalorg_tag_security']['#type'] = 'item';
+        $form['versioncontrol_release']['drupalorg_tag_security']['#markup'] = t('✓ This release will be covered for security advisories. Thanks for helping keep Drupal sites secure.');
+        unset($form['versioncontrol_release']['drupalorg_tag_security']['#title']);
+        unset($form['versioncontrol_release']['drupalorg_tag_security']['#description']);
+        unset($form['versioncontrol_release']['drupalorg_tag_security']['#element_validate']);
+      }
+      // Show elements only in some situations.
+      if ($project->type === 'project_core') {
+        $full_release_dashes = 0;
+      }
+      else {
+        $full_release_dashes = 1;
+      }
+      $form['#drupalorg_full_releases'] = [];
+      foreach ($form['versioncontrol_release']['versioncontrol_release_label_id']['#options']['Tags'] as $label_id => $label) {
+        $form['versioncontrol_release']['drupalorg_tag']['#states']['visible'][':input[name=versioncontrol_release_label_id]'][] = ['value' => $label_id];
+        if (substr_count($label, '-') === $full_release_dashes) {
+          $form['versioncontrol_release']['drupalorg_tag_full']['#states']['visible'][':input[name=versioncontrol_release_label_id]'][] = ['value' => $label_id];
+          if (strpos($label, '8.x-') === 0 || strpos($label, '7.x-') === 0) {
+            $form['#drupalorg_full_releases'][$label_id] = TRUE;
+            $form['versioncontrol_release']['drupalorg_tag_security']['#states']['visible'][':input[name=versioncontrol_release_label_id]'][] = ['value' => $label_id];
+          }
+        }
+      }
+      // Hide unreachable situations.
+      if (empty($form['versioncontrol_release']['drupalorg_tag_full']['#states']['visible'][':input[name=versioncontrol_release_label_id]'])) {
+        hide($form['versioncontrol_release']['drupalorg_tag_full']);
+      }
+      if (empty($form['versioncontrol_release']['drupalorg_tag_security']['#states']['visible'][':input[name=versioncontrol_release_label_id]'])) {
+        hide($form['versioncontrol_release']['drupalorg_tag_security']);
+      }
+    }
+
     $security_term = taxonomy_term_load(variable_get('project_release_security_update_tid', FALSE));
     $release_type_field = &$form['taxonomy_' . $security_term->vocabulary_machine_name][LANGUAGE_NONE];
     if (empty($form['nid']['#value'])) {
@@ -855,6 +920,15 @@ function drupalorg_project_issue_credit_submit($form, &$form_state) {
  */
 function drupalorg_project_form_project_promote_project_form_alter(&$form) {
   $form['shortname']['#element_validate'][] = 'drupalorg_project_machine_name_validate';
+}
+
+/**
+ * Element validate for drupalorg_tag_security.
+ */
+function drupalorg_project_release_covered_validate(&$element, &$form_state, $form) {
+  if (empty($element['#printed']) && !$element['#value'] && ($label_id = $form['versioncontrol_release']['versioncontrol_release_label_id']['#value']) && isset($form['#drupalorg_full_releases'][$label_id])) {
+    form_error($element, t('You must confirm you want to make a full release without security advisory coverage. Until a project has security advisory coverage, it is recommended to only make pre-release versions.'));
+  }
 }
 
 /**
