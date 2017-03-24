@@ -3421,6 +3421,20 @@ function drupalorg_node_update($node) {
 
   if ($node->type === 'organization') {
     drupalorg_org_request_issue($node);
+
+    // Update users’ organization names when a reference exists.
+    $query = new EntityFieldQuery();
+    $result = $query->entityCondition('entity_type', 'field_collection_item')
+      ->fieldCondition('field_organization_reference', 'target_id', $node->nid)
+      ->fieldCondition('field_organization_name', 'value', $node->title, '!=')
+      ->execute();
+    if (isset($result['field_collection_item'])) {
+      foreach (field_collection_item_load_multiple(array_keys($result['field_collection_item'])) as $collection) {
+        $collection_wrapper = entity_metadata_wrapper('field_collection_item', $collection);
+        $collection_wrapper->field_organization_name = $node->title;
+        $collection->save(TRUE);
+      }
+    }
   }
   elseif (project_release_node_is_release($node)) {
     $download_base = variable_get('project_release_download_base_' . $node->type, '');
