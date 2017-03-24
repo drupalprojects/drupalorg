@@ -31,7 +31,7 @@ function drupalorg_sponsor_redirect_page($sponsor) {
           return;
 
         case 'GB':
-          drupal_goto('https://www.1and1.co.uk/hosting?ac=OM.UK.UKo63K403741T7073a');
+          drupal_goto('https://www.1and1.co.uk/drupal-hosting?ac=OM.UK.UKo63K403741T7073a');
           return;
 
         case 'FR':
@@ -43,7 +43,7 @@ function drupalorg_sponsor_redirect_page($sponsor) {
           return;
 
         case 'CA':
-          drupal_goto('https://www.1and1.ca/web-hosting?ac=OM.CA.CAo63K403744T7073a');
+          drupal_goto('https://www.1and1.ca/drupal-hosting?ac=OM.CA.CAo63K403744T7073a');
           return;
 
         case 'MX':
@@ -55,7 +55,7 @@ function drupalorg_sponsor_redirect_page($sponsor) {
           return;
 
         default:
-          drupal_goto('https://www.1and1.com/web-hosting?ac=OM.US.USo63K403740T7073a');
+          drupal_goto('https://www.1and1.com/drupal-hosting?ac=OM.US.USo63K403740T7073a');
           return;
       }
 
