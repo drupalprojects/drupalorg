@@ -2443,6 +2443,31 @@ function drupalorg_form_guide_node_form_alter(&$form) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter() for Organization node form.
+ */
+function drupalorg_form_organization_node_form_alter(&$form) {
+  $form['title']['#element_validate'] = ['drupalorg_validate_unique_title'];
+}
+
+/**
+ * Element validate callback, make sure organization title is unique.
+ *
+ * @see drupalorg_form_organization_node_form_alter()
+ */
+function drupalorg_validate_unique_title($element) {
+  if ($element['#value'] !== $element['#default_value']) {
+    $query = new EntityFieldQuery();
+    $count = $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'organization')
+      ->propertyCondition('title', $element['#value'])
+      ->count()->execute();
+    if ($count) {
+      form_error($element, t('An organization named %title already exists.', ['%title' => $element['#value']]));
+    }
+  }
+}
+
+/**
  * Implements hook_search_info().
  *
  * Defines an IRC nickname search.
