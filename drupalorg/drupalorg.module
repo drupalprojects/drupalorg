@@ -466,9 +466,7 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
               // Always allow admins to configure releases. Otherwise restrict
               // access to maintainers with 'administer releases' permission on
               // the project.
-              return (!empty($entity->project['maintainers'][$account->uid]['permissions']['administer releases'])
-                || $entity->uid == $account->uid
-                || user_access('administer nodes'));
+              return user_access('administer projects');
 
             case 'field_project_has_issue_queue':
               // Always allow admins to configure issue tracking. Otherwise

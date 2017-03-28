@@ -920,6 +920,7 @@ function drupalorg_project_issue_credit_submit($form, &$form_state) {
  */
 function drupalorg_project_form_project_promote_project_form_alter(&$form) {
   $form['shortname']['#element_validate'][] = 'drupalorg_project_machine_name_validate';
+  $form['releases']['#default_value'] = TRUE;
 }
 
 /**
