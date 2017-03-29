@@ -4307,6 +4307,27 @@ function drupalorg_theme_no_file_icon() {
 }
 
 /**
+ * Implements hook_flag_access().
+ *
+ * Denies access to the Spam flag for imported nodes, based on the body text
+ * format.
+ */
+function drupalorg_flag_access($flag, $entity_id, $action, $account) {
+  if ($flag->name !== 'drupalorg_node_spam') {
+    // Wrong flag, don't care.
+    return NULL;
+  }
+
+  $node = node_load($entity_id);
+  if (($node->type == 'guide' || $node->type == 'documentation') &&
+    isset($node->body['und'][0]['format']) &&
+    ($node->body['und'][0]['format'] == 'asciidoc_import')) {
+    // This is an imported node, not flaggable as spam.
+    return FALSE;
+  }
+}
+
+/**
  * Implements hook_entity_property_info_alter().
  */
 function drupalorg_entity_property_info_alter(&$info) {
