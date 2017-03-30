@@ -1136,7 +1136,7 @@ function drupalorg_project_preprocess_node(&$variables) {
  * Implements hook_preprocess_project_issue_issue_update_link().
  */
 function drupalorg_project_preprocess_project_issue_issue_update_link(&$variables) {
-  $variables['last_update'] = t('Last updated on %date', array('%date' => format_date($variables['node']->changed, 'custom', 'M j, Y \a\t g:ia')));
+  $variables['last_update'] = t('Last updated on %date', array('%date' => format_date($variables['node']->changed, 'custom', 'j M Y \a\t H:i')));
 }
 
 /**
@@ -1597,7 +1597,7 @@ function drupalorg_project_meta_data(stdClass $node) {
   // Last modified.
   $output['items']['modified'] = [
     '#prefix' => '<li>',
-    '#markup' => t('Last modified: @modified', ['@modified' => format_date($node->changed, 'custom', 'F j, Y')]),
+    '#markup' => t('Last modified: @modified', ['@modified' => format_date($node->changed, 'custom', 'j F Y')]),
     '#suffix' => '</li>',
   ];
 

@@ -12,11 +12,11 @@ function drupalorg_handbook_node_view($node, $view_mode = 'full') {
   $section = drupalorg_crosssite_section();
   if ($view_mode === 'full' && isset($node->book['bid']) && ($section === 'documentation' || $section === 'community')) {
     // Prepend information about the page.
-    $node->content['body']['#prefix'] = '<p class="updated"><em>' . t('Last updated @changed.', array('@changed' => format_date($node->changed, 'custom', 'F j, Y')));
+    $node->content['body']['#prefix'] = '<p class="updated"><em>' . t('Last updated @changed.', array('@changed' => format_date($node->changed, 'custom', 'j F Y')));
     $contributors = '';
     $edit_link = '';
     if (drupalorg_crosssite_section() === 'documentation') {
-      $node->content['body']['#prefix'] .= ' ' . t('Created on @created.', array('@created' => format_date($node->created, 'custom', 'F j, Y')));
+      $node->content['body']['#prefix'] .= ' ' . t('Created on @created.', array('@created' => format_date($node->created, 'custom', 'j F Y')));
       // Make a list of the 4 most recent different revision authors.
       $contributor_list = array();
       foreach (node_revision_list($node) as $revision) {

@@ -1595,7 +1595,7 @@ function theme_drupalorg_recent_activity($variables) {
     foreach ($nodes as $node) {
       $rows[] =
         '<h6>' . l($node->title, "node/$node->nid") . ' ' . theme('mark', array('type' => node_mark($node->nid, $node->changed))) . '</h6>' .
-        '<p class="submitted">' . t('Last activity: ') . t('!time', array('!time' => format_date($node->changed, 'custom', 'F d, Y'))) . '</p>';
+        '<p class="submitted">' . t('Last activity: ') . t('!time', array('!time' => format_date($node->changed, 'custom', 'j F Y'))) . '</p>';
     }
   }
   else {
@@ -3949,15 +3949,15 @@ function drupalorg_user_view($account, $view_mode) {
       switch ($membership->membership_status) {
         case 'New':
         case 'Current':
-          $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="https://assoc.drupal.org">Drupal Association</a> membership. Your support has helped us to support the Drupal community.<br />Your membership will expire on @expiration_date.', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'M d, Y')));
+          $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="https://assoc.drupal.org">Drupal Association</a> membership. Your support has helped us to support the Drupal community.<br />Your membership will expire on @expiration_date.', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'j F Y')));
           break;
 
         case 'Grace':
-          $membership_personal = t('<strong>Oh No!</strong> Your membership expired on @expiration_date. The <a href="https://assoc.drupal.org">Drupal Association</a> depends on your continued support to keep Drupal.org up and running. <a href="https://assoc.drupal.org/membership">Renew your membership today</a> so your badge stays visible and your access to benefits continues. Thank you!', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'M d, Y')));
+          $membership_personal = t('<strong>Oh No!</strong> Your membership expired on @expiration_date. The <a href="https://assoc.drupal.org">Drupal Association</a> depends on your continued support to keep Drupal.org up and running. <a href="https://assoc.drupal.org/membership">Renew your membership today</a> so your badge stays visible and your access to benefits continues. Thank you!', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'j F Y')));
           break;
 
         case 'Grace Period':
-          $membership_personal = t('<strong>Oh No!</strong> Your membership expired on @expiration_date. The <a href="https://assoc.drupal.org">Drupal Association</a> depends on your continued support to keep Drupal.org up and running. <a href="https://assoc.drupal.org/membership">Renew your membership today</a> so your badge stays visible and your access to benefits continues. Thank you!', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'M d, Y')));
+          $membership_personal = t('<strong>Oh No!</strong> Your membership expired on @expiration_date. The <a href="https://assoc.drupal.org">Drupal Association</a> depends on your continued support to keep Drupal.org up and running. <a href="https://assoc.drupal.org/membership">Renew your membership today</a> so your badge stays visible and your access to benefits continues. Thank you!', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'j F Y')));
           break;
       }
     }
@@ -4214,7 +4214,7 @@ function drupalorg_preprocess_comment(&$v) {
       '!created_date_iso' => format_date($v['comment']->created, 'custom', 'c'),
       // The formatted date to display when users have JS disabled or they have
       // manually opted out of relative times.
-      '!created_date' => format_date($v['comment']->created, 'custom', 'F j, Y \a\t g:ia'),
+      '!created_date' => format_date($v['comment']->created, 'custom', 'j F Y \a\t H:i'),
     ));
 
     // Add extra classes.
@@ -4246,7 +4246,7 @@ function drupalorg_preprocess_comment(&$v) {
       '!created_date_iso' => format_date($v['comment']->created, 'custom', 'c'),
       // The formatted date to display when users have JS disabled or they have
       // manually opted out of relative times.
-      '!created_date' => format_date($v['comment']->created, 'custom', 'F j, Y \a\t g:ia'),
+      '!created_date' => format_date($v['comment']->created, 'custom', 'j F Y \a\t H:i'),
     );
     // Add submitted by with attribution.
     $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain';
