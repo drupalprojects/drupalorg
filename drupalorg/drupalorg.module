@@ -5914,3 +5914,23 @@ function drupalorg_project_has_full_release(stdClass $node) {
   // If there are full releases, recommended without extra.
   return count($recommended_releases) - $with_extra_release_count > 0;
 }
+
+/**
+ * Get nids of a project’s open issues tagged “security”.
+ */
+function drupalorg_project_open_security_tagged_issues(stdClass $node) {
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', project_issue_issue_node_types())
+    ->propertyCondition('status', NODE_PUBLISHED)
+    ->fieldCondition('field_project', 'target_id', $node->nid)
+    ->fieldCondition('field_issue_status', 'value', project_issue_open_states())
+    ->fieldCondition('field_issue_status', 'value', variable_get('project_issue_state_fixed', PROJECT_ISSUE_STATE_FIXED), '!=')
+    ->fieldCondition('taxonomy_vocabulary_9', 'tid', 1230)
+    ->execute();
+  if (isset($result['node'])) {
+    return array_keys($result['node']);
+  }
+
+  return FALSE;
+}

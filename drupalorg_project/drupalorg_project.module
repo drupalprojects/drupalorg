@@ -413,6 +413,11 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('Only committers with “write to VCS” access may opt into security advisory coverage.');
       }
+      elseif (drupalorg_project_open_security_tagged_issues($form_state['node'])) {
+        // - There are no open issues tagged “security”.
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
+        $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#description'] = t('<a href="!url">Issues tagged “security”</a> must be resolved before opting in.', ['!url' => url('project/issues/search/' . $wrapper->field_project_machine_name->value(), ['query' => ['issue_tags' => 'security']])]);
+      }
       elseif (!user_access('may opt into security advisory coverage')) {
         // - The user user has access.
         $form['field_security_advisory_coverage'][LANGUAGE_NONE]['#disabled'] = TRUE;
