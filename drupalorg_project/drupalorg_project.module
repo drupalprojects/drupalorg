@@ -1133,13 +1133,6 @@ function drupalorg_project_preprocess_node(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_project_issue_issue_update_link().
- */
-function drupalorg_project_preprocess_project_issue_issue_update_link(&$variables) {
-  $variables['last_update'] = t('Last updated on %date', array('%date' => format_date($variables['node']->changed, 'custom', 'j M Y \a\t H:i')));
-}
-
-/**
  * Show branches ever created in contrib based on versioncontrol module data.
  */
 function drupalorg_project_list_branches_contrib() {
