@@ -1615,8 +1615,30 @@ function drupalorg_project_meta_data(stdClass $node) {
       }
     }
     else {
-      $node->content['project_security_warning']['#markup'] = '<div class="note-warning"><p>This project is not covered by Drupal’s <a href="/security-advisory-policy">security advisory policy</a>.</p></div>';
-      $node->content['project_security_warning']['#weight'] = -1;
+      // Notice at top of page.
+      $node->content['project_security_warning'] = [
+        '#prefix' => '<div class="note-warning">',
+        '#markup' => '<p>' . t('This project is not covered by Drupal’s <a href="/security-advisory-policy">security advisory policy</a>.') . '</p>',
+        '#suffix' => '</div>',
+        '#weight' => -1,
+      ];
+
+      // Add issues tagged “security”.
+      if ($nids = drupalorg_project_open_security_tagged_issues($node)) {
+        $issues = [];
+        $result = db_select('node', 'n')
+          ->fields('n', array('nid', 'title'))
+          ->condition('status', 1)
+          ->condition('nid', $nids)
+          ->addTag('node_access')
+          ->execute();
+        foreach ($result as $row) {
+          $issues[] = l($row->title, 'node/' . $row->nid);
+        }
+        $node->content['project_security_warning']['#markup'] .= '<p>' . format_plural(count($issues), '<strong>There is an open security issue:</strong> !issues', '<strong>There are open security issues:</strong> !issues', ['!issues' => implode(', ', $issues)]) . '</p>';
+      }
+
+      // Notice by download table.
       $output['items']['security'] = [
         '#prefix' => '<li>',
         '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon-alert.svg') . '" alt="shield alert" class="icon-left">' . t('This project is not covered by the <a href="/security-advisory-policy">security advisory policy</a>.<br><strong>Use at your own risk!</strong> It may have publicly disclosed vulnerabilities.'),
