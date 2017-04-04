@@ -359,6 +359,7 @@ features[variable][] = panelizer_node:project_release_default
 features[variable][] = pathauto_node_project_release_pattern
 features[views_view][] = drupalorg_project_downloads
 features[views_view][] = project_downloads
+features[views_view][] = starred_projects
 features_exclude[field_base][field_project_phpcs_errors] = field_project_phpcs_errors
 features_exclude[field_base][field_project_phpcs_full] = field_project_phpcs_full
 features_exclude[field_base][field_project_phpcs_ts] = field_project_phpcs_ts

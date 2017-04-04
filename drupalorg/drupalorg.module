@@ -584,6 +584,10 @@ function drupalorg_block_info() {
       'info' => t('Lead capture form'),
       'cache' => DRUPAL_NO_CACHE,
     ],
+    'project-follow' => [
+      'info' => t('Project star and notifications'),
+      'cache' => DRUPAL_NO_CACHE,
+    ],
   );
 }
 
@@ -800,6 +804,37 @@ function drupalorg_block_view($delta, $block = NULL) {
     case 'lead-capture':
       $form = drupal_get_form('drupalorg_lead_capture_form');
       return ['content' => $form];
+
+    case 'project-follow':
+      if ($node = menu_get_object()) {
+        $wrapper = entity_metadata_wrapper('node', $node);
+
+        // Starring the project.
+        $output = flag_create_link('project_star', $node->nid);
+        if (empty($output)) {
+          $flag_count = flag_get_counts('node', $node->nid);
+          if (!empty($flag_count['project_star'])) {
+            $output = '<span>' . l(format_plural($flag_count['project_star'], '1<span class="element-invisible"> person starred this project</span>', '@count_formatted<span class="element-invisible"> people starred this project</span>', ['@count_formatted' => number_format($flag_count['project_star'])]), 'user', ['html' => TRUE, 'attributes' => ['class' => ['log-in-to-star'], 'title' => t('Log in to star projects')], 'query' => drupal_get_destination()]) . '</span>';
+          }
+        }
+
+        // Email notifications.
+        if (user_is_logged_in()) {
+          $level = project_issue_notification_project_setting_load($GLOBALS['user']->uid, $node->nid);
+          if ($level == PROJECT_ISSUE_NOTIFICATION_DEFAULT) {
+            $level = project_issue_notification_user_settings_load_multiple([$GLOBALS['user']->uid])[$GLOBALS['user']->uid]['level'];
+          }
+          $subscriptions = [
+            PROJECT_ISSUE_NOTIFICATION_NONE => t('No mail'),
+            PROJECT_ISSUE_NOTIFICATION_OWN => t('Followed'),
+            PROJECT_ISSUE_NOTIFICATION_ALL => t('All issues'),
+          ];
+          $output .= ' <span>' . l($subscriptions[$level], 'project/issues/subscribe-mail/' . $wrapper->field_project_machine_name->value(), ['attributes' => ['title' => t('Change issue email notification'), 'class' => ['mail']], 'query' => drupal_get_destination()]) . '</span>';
+        }
+
+        return ['content' => $output];
+      }
+      break;
   }
 }
 
@@ -4307,6 +4342,20 @@ function drupalorg_theme_no_file_icon() {
 }
 
 /**
+ * Implements hook_preprocess_flag().
+ */
+function drupalorg_preprocess_flag(&$variables) {
+  if ($variables['flag']->name === 'project_star') {
+    $flag_count = flag_get_counts('node', $variables['entity_id']);
+    if (!empty($flag_count['project_star'])) {
+      $variables['after_flagging'] = TRUE;
+      $variables['message_classes_array'] = ['count'];
+      $variables['message_text'] = format_plural($flag_count['project_star'], '1<span class="element-invisible"> person starred this project</span>', '@count_formatted<span class="element-invisible"> people starred this project</span>', ['@count_formatted' => number_format($flag_count['project_star'])]);
+    }
+  }
+}
+
+/**
  * Implements hook_flag_access().
  *
  * Denies access to the Spam flag for imported nodes, based on the body text
@@ -5933,4 +5982,12 @@ function drupalorg_project_open_security_tagged_issues(stdClass $node) {
   }
 
   return FALSE;
+}
+
+/**
+ * Implements hook_preprocess_project_issue_issue_cockpit().
+ */
+function drupalorg_preprocess_project_issue_issue_cockpit(&$variables) {
+  // Subscribe link in moved into the project-follow block.
+  $variables['issue_subscribe'] = '';
 }
