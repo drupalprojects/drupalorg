@@ -210,19 +210,24 @@ function _drupalorg_og_menu_find_node_after($menu, $nid, $next = TRUE) {
   }
 
   // Filter out anything that is hidden or not a node, and find node IDs.
+  // Also make an array key that is sortable, similar to what
+  // _menu_tree_check_access() does.
   $items = array();
   foreach ($tree as $data) {
     if (!$data['link']['hidden'] && ($data['link']['router_path'] == 'node/%')) {
       $this_nid = (int) substr($data['link']['link_path'], 5);
       if ($this_nid > 0) {
         $data['nid'] = $this_nid;
-        $items[] = $data;
+        $key = (50000 + $data['link']['weight']) . ' ' . $data['link']['mlid'];
+        $items[$key] = $data;
       }
     }
   }
   if (empty($items)) {
     return NULL;
   }
+  ksort($items);
+  $items = array_values($items);
 
   // Figure out which item we're after here.
   $next_item = NULL;
