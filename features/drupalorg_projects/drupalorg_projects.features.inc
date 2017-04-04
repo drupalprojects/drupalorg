@@ -30,6 +30,61 @@ function drupalorg_projects_views_api($module = NULL, $api = NULL) {
 }
 
 /**
+ * Implements hook_flag_default_flags().
+ */
+function drupalorg_projects_flag_default_flags() {
+  $flags = array();
+  // Exported flag: "Project star".
+  $flags['project_star'] = array(
+    'entity_type' => 'node',
+    'title' => 'Project star',
+    'global' => 0,
+    'types' => array(
+      0 => 'project_distribution',
+      1 => 'project_core',
+      2 => 'project_drupalorg',
+      3 => 'project_module',
+      4 => 'project_theme_engine',
+      5 => 'project_theme',
+    ),
+    'flag_short' => 'Star',
+    'flag_long' => '',
+    'flag_message' => '',
+    'unflag_short' => 'Unstar',
+    'unflag_long' => '',
+    'unflag_message' => '',
+    'unflag_denied_text' => '',
+    'link_type' => 'toggle',
+    'weight' => 0,
+    'show_in_links' => array(
+      'full' => 0,
+      'teaser' => 0,
+      'rss' => 0,
+      'search_index' => 0,
+      'search_result' => 0,
+      'print' => 0,
+      'nodechanges' => 0,
+      'token' => 0,
+      'diff_standard' => 0,
+      'issuemetadata' => 0,
+      'related_content' => 0,
+    ),
+    'show_as_field' => 0,
+    'show_on_form' => 0,
+    'access_author' => '',
+    'show_contextual_link' => FALSE,
+    'i18n' => 0,
+    'api_version' => 3,
+    'module' => 'drupalorg_projects',
+    'locked' => array(
+      0 => 'name',
+    ),
+  );
+  return $flags;
+
+}
+
+/**
  * Implements hook_node_info().
  */
 function drupalorg_projects_node_info() {
