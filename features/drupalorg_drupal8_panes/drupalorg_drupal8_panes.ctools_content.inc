@@ -23,10 +23,10 @@ function drupalorg_drupal8_panes_default_ctools_custom_content() {
     'title_heading' => 'h2',
     'body' => '<div class="drupal8-sponsor">Drupal.org is brought to you in part by the generous support of sponsors like:
 <div class="sponsor">
-<a href="https://www.a2hosting.com/drupal-hosting?utm_source=drupal&utm_campaign=drupal-downloads&utm_medium=promo"><img src="https://www.drupal.org/files/styles/grid-3/public/a2%3Dhosting.png?itok=BuizxGip"></a>
+<a href="https://www.acquia.com/resources/collateral/ultimate-guide-drupal-8?cid=701a0000002d33YAAQ&ct=online-advertising&ls=drupalorg&lls=PRO_US_OLA_DrupalDownload_042017"><img src="https://www.drupal.org/files/Acquia_Logo.jpg"></a>
 <div class="text">
-<p>Don\'t worry about download or install files! Drupal is pre-installed complete with security and speed optimizations! Sign up now for 20X faster page loads on A2 Hosting\'s Turbo Servers</p>
-<p><a class="button" href="https://www.a2hosting.com/drupal-hosting?utm_source=drupal&utm_campaign=drupal-downloads&utm_medium=promo">Get Faster Drupal Hosting</a>
+<p>Get expert Drupal 8 best practices. From new sitebuilding tools to improved front and backend developer experiences, learn how D8 builds on D7 and what to expect from your new D8 Site</p>
+<p><a class="button" href="https://www.acquia.com/resources/collateral/ultimate-guide-drupal-8?cid=701a0000002d33YAAQ&ct=online-advertising&ls=drupalorg&lls=PRO_US_OLA_DrupalDownload_042017">Get the Free Guide Today!</a>
 </p></div>
 </div>
 </div>',
