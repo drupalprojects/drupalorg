@@ -1,6 +1,6 @@
 <h2>Download</h2>
 
-<p><?php print $core_download_button; ?> <a href="/try-drupal" class="secondary-button">Try a hosted Drupal demo</a></p>
+<p><?php print $core_download_button; ?> <a href="/try-drupal" class="secondary-button">Try a hosted Drupal demo</a> <a href="/hosting" class="secondary-button">Explore hosting partners</a></p>
 
 <p>See <strong><a href="/project/drupal">Drupal’s project page</a></strong> for more information, older versions, and project development.<br>
 <a href="/hosting">Explore hosting options</a> for your site. Browse <a href="/docs">documentation</a> for more help and information.</p>
