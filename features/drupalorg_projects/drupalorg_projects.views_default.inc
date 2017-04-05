@@ -1128,13 +1128,17 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
   $handler->display->display_options['fields']['body']['label'] = '';
-  $handler->display->display_options['fields']['body']['alter']['max_length'] = '200';
+  $handler->display->display_options['fields']['body']['alter']['max_length'] = '140';
+  $handler->display->display_options['fields']['body']['alter']['strip_tags'] = TRUE;
   $handler->display->display_options['fields']['body']['alter']['trim'] = TRUE;
+  $handler->display->display_options['fields']['body']['alter']['preserve_tags'] = '<em> <strong>';
+  $handler->display->display_options['fields']['body']['alter']['html'] = TRUE;
+  $handler->display->display_options['fields']['body']['element_type'] = 'p';
   $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['body']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['body']['type'] = 'text_trimmed';
   $handler->display->display_options['fields']['body']['settings'] = array(
-    'trim_length' => '200',
+    'trim_length' => '140',
   );
   /* Sort criterion: Flags: Flagging ID */
   $handler->display->display_options['sorts']['flagging_id']['id'] = 'flagging_id';
@@ -1148,6 +1152,8 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['arguments']['uid']['field'] = 'uid';
   $handler->display->display_options['arguments']['uid']['relationship'] = 'flag_content_rel';
   $handler->display->display_options['arguments']['uid']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['uid']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['uid']['title'] = '%1’s starred projects';
   $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
@@ -1190,6 +1196,7 @@ function drupalorg_projects_views_default_views() {
     t('.'),
     t(','),
     t('All'),
+    t('%1’s starred projects'),
     t('Page'),
   );
   $export['starred_projects'] = $view;
