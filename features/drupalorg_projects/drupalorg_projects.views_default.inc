@@ -1152,6 +1152,7 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['arguments']['uid']['field'] = 'uid';
   $handler->display->display_options['arguments']['uid']['relationship'] = 'flag_content_rel';
   $handler->display->display_options['arguments']['uid']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['uid']['exception']['value'] = '';
   $handler->display->display_options['arguments']['uid']['title_enable'] = TRUE;
   $handler->display->display_options['arguments']['uid']['title'] = '%1’s starred projects';
   $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'fixed';
