@@ -628,10 +628,9 @@ function drupalorg_block_view($delta, $block = NULL) {
             elseif ($node->nid === '24572') {
               $blocks[] = array('Documentation Team links', 'menu', 'menu-documentation-t');
             }
-            break;
-
-          case 'news':
-            $blocks[] = array('Drupal News', 'drupalorg_news', 'drupal-news');
+            elseif ($node->nid === '2851243') {
+              $blocks[] = array('Drupal News', 'drupalorg_news', 'drupal-news');
+            }
             break;
 
           case 'aggregator/categories/%':
