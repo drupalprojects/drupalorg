@@ -135,6 +135,16 @@ function drupalorg_spam_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['label'] = 'Useful related links';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = 'Support links:
+Email whitelisting: <a href="admin/config/people/user-restrictions/add" target="_blank">User Restrictions</a>
+DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_blank">DBLog</a>';
+  $handler->display->display_options['header']['area']['format'] = '1';
   /* Field: Distil Registration Data: Manage IID Status */
   $handler->display->display_options['fields']['manage_button']['id'] = 'manage_button';
   $handler->display->display_options['fields']['manage_button']['table'] = 'distil_registration';
@@ -312,6 +322,10 @@ function drupalorg_spam_views_default_views() {
     t('‹ previous'),
     t('next ›'),
     t('last »'),
+    t('Useful related links'),
+    t('Support links:
+Email whitelisting: <a href="admin/config/people/user-restrictions/add" target="_blank">User Restrictions</a>
+DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_blank">DBLog</a>'),
     t('Manage IID Status'),
     t('Fingerprint'),
     t('IID Status'),
@@ -408,7 +422,11 @@ function drupalorg_spam_views_default_views() {
   $handler->display->display_options['header']['area_1']['table'] = 'views';
   $handler->display->display_options['header']['area_1']['field'] = 'area';
   $handler->display->display_options['header']['area_1']['label'] = 'parent view link';
-  $handler->display->display_options['header']['area_1']['content'] = '<a href="/admin/content/iid_status_management">Back to parent view</a>';
+  $handler->display->display_options['header']['area_1']['content'] = 'Support links:
+Email whitelisting: <a href="admin/config/people/user-restrictions/add" target="_blank">User Restrictions</a>
+DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_blank">DBLog</a>
+
+<a href="/admin/content/iid_status_management">Back to parent view</a>';
   $handler->display->display_options['header']['area_1']['format'] = '1';
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
@@ -490,7 +508,11 @@ function drupalorg_spam_views_default_views() {
     t('Asc'),
     t('Desc'),
     t('parent view link'),
-    t('<a href="/admin/content/iid_status_management">Back to parent view</a>'),
+    t('Support links:
+Email whitelisting: <a href="admin/config/people/user-restrictions/add" target="_blank">User Restrictions</a>
+DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_blank">DBLog</a>
+
+<a href="/admin/content/iid_status_management">Back to parent view</a>'),
     t('Distil IID: [field_distil_reg_iid]'),
     t('Roles'),
     t('Organizations'),
