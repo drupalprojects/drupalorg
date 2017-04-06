@@ -8,7 +8,7 @@ function drupalorg_project_security_redirect(stdClass $node) {
   $wrapper = entity_metadata_wrapper('node', $node);
   $project = $wrapper->field_project_machine_name->value();
 
-  if ($wrapper->field_security_advisory_coverage->value() === 'covered' && drupalorg_project_has_full_release($node)) {
+  if ($wrapper->field_security_advisory_coverage->value() === 'covered' && project_release_has_full_release($node)) {
     drupal_goto('https://security.drupal.org/node/add/project-issue/' . $project);
   }
   else {

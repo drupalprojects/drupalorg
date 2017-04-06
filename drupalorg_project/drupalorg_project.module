@@ -454,7 +454,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     }
 
     if (empty($form_state['node']->nid)) { // New issues.
-      if (drupalorg_project_has_full_release($node_wrapper->field_project->value())) {
+      if (project_release_has_full_release($node_wrapper->field_project->value())) {
         drupal_set_message(t('<em><strong>Security issues</strong> should not be reported here.</em> Follow the <a href="/node/101494">procedure for reporting security issues</a>.'));
       }
     }
@@ -873,7 +873,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
 
         // Disable security releases for projects not covered by security
         // advisories.
-        if ($project_wrapper->field_security_advisory_coverage->value() !== 'covered' || !drupalorg_project_has_full_release($project) && !user_access('post to newsletter')) {
+        if ($project_wrapper->field_security_advisory_coverage->value() !== 'covered' || !project_release_has_full_release($project) && !user_access('post to newsletter')) {
           $release_type_field[$security_term->tid]['#disabled'] = TRUE;
           $release_type_field[$security_term->tid]['#description'] = t('This project does not have security advisory coverage. You may be able to opt-in by <a href="!url">editing the project</a>. If you feel this is in error, please email security@drupal.org', ['!url' => url('node/' . $project->nid . '/edit')]);
         }
@@ -1607,7 +1607,7 @@ function drupalorg_project_meta_data(stdClass $node) {
         '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/shield-icon-black.svg') . '" alt="shield" class="icon-left gray">' . t('Stable releases for this project are covered by the <a href="/security-advisory-policy">security advisory policy</a>.<br>'),
         '#suffix' => '</li>',
       ];
-      if (drupalorg_project_has_full_release($node)) {
+      if (project_release_has_full_release($node)) {
         $output['items']['security']['#markup'] .= t('Look for the shield icon below.');
       }
       else {
