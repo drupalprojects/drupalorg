@@ -187,7 +187,7 @@ function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &
     global $pager_total_items;
 
     // Update text search title.
-    $label = drupalorg_project_node_type_label($form['#project_type']->type, 'plural');
+    $label = drupalorg_project_node_type_label($form_state['build_info']['args'][0]->type, 'plural');
     $form['text']['#title'] = t('Search @type', array('@type' => $label));
 
     // If not on the core search page, add a results count title to the form
