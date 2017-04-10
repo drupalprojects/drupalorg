@@ -218,6 +218,28 @@ function drupalorg_menu() {
     'file' => 'drupalorg.pages.inc',
   ];
 
+  // We do *not* want to setup menu items like /project/%/% since that breaks
+  // various menus and Views from Project*. Instead, iterate over the actual
+  // project type names and define separate menu items for each project type.
+  $node_types = node_type_get_types();
+  foreach (project_project_node_types() as $project_type) {
+    $paths = [
+      'project/' . $project_type,
+      'project/' . strtr($project_type, ['_' => '-']),
+    ];
+    foreach ($paths as $path) {
+      $items[$path] = [
+        'title' => $node_types[$project_type]->name,
+        'description' => '',
+        'page callback' => 'drupalorg_project_browse_page',
+        'page arguments' => [$node_types[$project_type]],
+        'access arguments' => ['access content'],
+        'type' => MENU_CALLBACK,
+        'file' => 'drupalorg.pages.inc',
+      ];
+    }
+  }
+
   $items['sponsor-redirect/%'] = [
     'title' => t('Sponsor redirect'),
     'access arguments' => ['access content'],

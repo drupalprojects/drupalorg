@@ -17,6 +17,124 @@ function drupalorg_project_security_redirect(stdClass $node) {
   }
 }
 
+/**
+ * Menu callback, project browsing pages.
+ */
+function drupalorg_project_browse_page($project_type) {
+  // Default Solr params.
+  $params = [
+    'q' => isset($_GET['text']) ? $_GET['text'] : '',
+    'qf' => 'content',
+    'fl' => [
+      'id',
+      'entity_type',
+      'entity_id',
+      'label',
+      'content',
+      'is_comment_count',
+      'bundle',
+      'ds_created',
+      'ds_changed',
+      'url',
+      'is_uid',
+      'ss_name',
+      'iss_project_release_usage',
+      'ds_project_latest_release',
+      'ds_project_latest_activity',
+      'hash',
+    ],
+    'rows' => variable_get('apachesolr_rows', 10),
+    'facet' => 'true',
+    'facet.mincount' => 1,
+    'facet.sort' => 'true',
+    'facet.field' => [
+      'bundle',
+      'im_project_release_api_tids',
+    ],
+    'facet.limit' => 200,
+  ];
+  $params['start'] = (isset($_GET['page']) ? $_GET['page'] : 0) * $params['rows'];
+
+  // This is the object that does the communication with the solr server.
+  $env_id = apachesolr_default_environment();
+  $solr = apachesolr_get_solr($env_id);
+  if (isset($_GET['solrsort'])) {
+    $solrsort = $_GET['solrsort'];
+  }
+  else {
+    if (module_exists('project_usage')) {
+      $solrsort = 'iss_project_release_usage desc';
+    }
+    else {
+      $solrsort = 'sort desc';
+    }
+  }
+  $query = new SolrBaseQuery($env_id, $solr, $params, $solrsort, $_GET['q']);
+  if (is_null($query)) {
+    throw new Exception(t('Could not construct a Solr query.'));
+  }
+
+  // We add addFilter() parameters here to include all the constant filters for
+  // the query -- project nodes of the given top-level type that have releases
+  // (if project_release is enabled). We use addFilter() rather than
+  // $params['fq'] so that our filters are correctly passed to anything that
+  // uses our cached query.
+  $query->addFilter('bundle', $project_type->type);
+
+  // Apply sort value.
+  $query->setAvailableSort('ss_name', ['title' => t('Author'), 'default' => 'asc']);
+  $query->setAvailableSort('ds_created', ['title' => t('Created date'), 'default' => 'desc']);
+  $query->setAvailableSort('ds_project_latest_release', ['title' => t('Last release'), 'default' => 'desc']);
+  $query->setAvailableSort('ds_project_latest_activity', ['title' => t('Last build'), 'default' => 'desc']);
+  if (module_exists('project_usage')) {
+    $query->setAvailableSort('iss_project_release_usage', ['title' => t('Most installed'), 'default' => 'desc']);
+  }
+  list($sort_field, $sort_direction) = explode(' ', $solrsort);
+  $query->setSolrsort($sort_field, $sort_direction);
+
+  // Allow modules to alter the query prior to statically caching it.
+  // This can e.g. be used to add available sorts.
+  foreach (module_implements('apachesolr_query_prepare') as $module) {
+    $function_name = $module . '_apachesolr_query_prepare';
+    $function_name($query);
+  }
+
+  // Cache the built query. Since all the built queries go through
+  // this process, all the hook_invocations will happen later.
+  apachesolr_current_query($env_id, $query);
+  $response = $query->search(isset($_GET['text']) ? $_GET['text'] : '');
+
+  // The response is cached so that it is accessible to the blocks and anything
+  // else that needs it beyond the initial search.
+  apachesolr_static_response_cache($query->getSearcher(), $response);
+  apachesolr_has_searched($env_id, TRUE);
+
+  $nids = [];
+  foreach (apachesolr_search_process_response($response, $query) as $result) {
+    $nids[] = $result['node']->entity_id;
+  }
+  $results = [];
+  foreach (node_load_multiple($nids) as $node) {
+    $results[] = node_view($node, 'teaser');
+  }
+
+  $form_state = [
+    'method' => 'get',
+    'always_process' => TRUE,
+    'no_redirect' => TRUE,
+    'build_info' => ['args' => [$project_type]],
+  ];
+  $form = drupal_build_form('project_solr_browse_projects_form', $form_state);
+  unset($form['#build_id'], $form['form_build_id'], $form['form_id']);
+
+  return [
+    'project_solr_browse_projects_form' => $form,
+    'description' => ['#markup' => '<p>' . filter_xss($project_type->description) . '</p>'],
+    'results' => $results,
+    'pager' => ['#markup' => theme('pager')],
+  ];
+}
+
 function drupalorg_sponsor_redirect_page($sponsor) {
   $country = drupalorg_get_and_vary_header('GeoIP-country');
   switch ($sponsor) {
