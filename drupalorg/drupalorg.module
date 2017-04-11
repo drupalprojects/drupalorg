@@ -5982,3 +5982,155 @@ function drupalorg_preprocess_project_issue_issue_cockpit(&$variables) {
   // Subscribe link in moved into the project-follow block.
   $variables['issue_subscribe'] = '';
 }
+
+/**
+ * Build project browsing navigation form.
+ *
+ * @param object $project_type
+ *   A node type object.
+ */
+function drupalorg_browse_projects_form($form, &$form_state, $project_type) {
+  $form['#method'] = 'get';
+  if (user_is_logged_in()) {
+    $form['#token'] = FALSE;
+  }
+
+  $label = drupalorg_project_node_type_label($project_type->type, 'plural');
+  if (arg(0) === 'project') {
+    // On project browsing pages, not search page, add results count.
+    global $pager_total_items;
+
+    $form['results'] = [
+      '#markup' => '<h3 class="results-count">' . t('@result @type match your search', ['@result' => number_format($pager_total_items[0]), '@type' => $label]) . '</h3>',
+      '#weight' => -10,
+    ];
+  }
+
+  // Create a drop-down for each related vocabulary.
+  $vocabs = [];
+  $fields_info = field_info_instances('node', $project_type->type);
+  foreach ($fields_info as $field_name => $value) {
+    $field_info = field_info_field($field_name);
+    if ($field_info['type'] == 'taxonomy_term_reference' && $field_name != 'taxonomyextra') {
+      foreach ($field_info['settings']['allowed_values'] as $allowed_vocab) {
+        $vocabs[$allowed_vocab['vocabulary']] = TRUE;
+      }
+    }
+  }
+
+  $env_id = apachesolr_default_environment();
+
+  // Use the Apachesolr query string 'f'.
+  $form['f'] = ['#tree' => TRUE];
+
+  // Add the API compatibilty option, if applicable.
+  $api_vocab = FALSE;
+  if (module_exists('project_release')) {
+    $api_vocab = taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary', ''));
+    $vocabs[$api_vocab->machine_name] = TRUE;
+  }
+
+  $vocab_names = taxonomy_vocabulary_get_names();
+  foreach (array_keys($vocabs) as $vocab) {
+    $vocab = taxonomy_vocabulary_machine_name_load($vocab);
+    $terms = taxonomy_get_tree($vocab->vid);
+    $options = ['' => t(' - Any -')];
+
+    // Filter values take the form of facet_name:facet_value.
+    $facet_machine_name = 'im_vid_' . $vocab->vid;
+    // Special facet machine name if this is the API vocab.
+    if ($api_vocab && $api_vocab->vid === $vocab->vid) {
+      // Load facet definition.
+      $facet_definition = facetapi_facet_load('im_project_release_api_tids', 'apachesolr@' . $env_id);
+      $facet_machine_name = $facet_definition['field alias'];
+    }
+    foreach ($terms as $term) {
+      $options[$facet_machine_name . ':' . $term->tid] = $term->name;
+    }
+
+    $form['f'][] = [
+      '#type' => 'select',
+      '#title' => check_plain($vocab->name),
+      '#options' => $options,
+    ];
+  }
+
+  // Add the project sandbox fields.
+  $form['f'][] = [
+    '#title' => t('Status'),
+    '#type' => 'select',
+    '#options' => [
+      'sm_field_project_type:full' => t('Full projects'),
+      'sm_field_project_type:[* TO *]' => t('All projects'),
+      'sm_field_project_type:sandbox' => t('Only sandbox projects'),
+    ],
+  ];
+
+  // Fill in default values.
+  if (isset($_GET['f'])) {
+    foreach (array_filter($_GET['f']) as $n => $value) {
+      if (isset($form['f'][$n])) {
+        $form['f'][$n]['#default_value'] = $value;
+      }
+    }
+  }
+
+  $form['text'] = [
+    '#title' => t('Search @label', ['@label' => $label]),
+    '#type' => 'textfield',
+    '#size' => 20,
+  ];
+
+  $form['solrsort'] = [
+    '#type' => 'select',
+    '#title' => t('Sort by'),
+    '#options' => [
+      'score desc' => t('Relevancy'),
+      'sort_label asc' => t('Title'),
+      'ss_name asc' => t('Author'),
+      'ds_created desc' => t('Created date'),
+      'ds_project_latest_release desc' => t('Last release'),
+      'ds_project_latest_activity desc' => t('Last build'),
+    ],
+    '#default_value' => 'score desc',
+  ];
+  if (module_exists('project_usage')) {
+    $form['solrsort']['#options']['iss_project_release_usage desc'] = t('Most installed');
+  }
+
+  if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
+    $params = $query->getParams();
+    if (isset($params['q'])) {
+      $form['text']['#default_value'] = $params['q'];
+    }
+
+    foreach ($query->getFilters() as $key => $filter) {
+      // If site search is filtering on ss_meta_type, include it.
+      if ($filter['#name'] === 'ss_meta_type') {
+        $form['f'][] = [
+          '#type' => 'hidden',
+          '#value' => $filter['#name'] . ':' . $filter['#value'],
+        ];
+      }
+    }
+
+    $sort = $query->getSolrsort();
+    $form['solrsort']['#default_value'] = $sort['#name'] . ' ' . $sort['#direction'];
+  }
+
+  $form['submit'] = [
+    '#type' => 'submit',
+    '#value' => t('Search'),
+    '#weight' => 101,
+  ];
+
+  return $form;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function drupalorg_form_drupalorg_browse_projects_form_alter(&$form, &$form_state) {
+  // Unset form_id etc.
+  unset($form['form_id'], $form['form_build_id'], $form['token']);
+}

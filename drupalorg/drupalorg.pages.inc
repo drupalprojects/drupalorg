@@ -124,11 +124,11 @@ function drupalorg_project_browse_page($project_type) {
     'no_redirect' => TRUE,
     'build_info' => ['args' => [$project_type]],
   ];
-  $form = drupal_build_form('project_solr_browse_projects_form', $form_state);
+  $form = drupal_build_form('drupalorg_browse_projects_form', $form_state);
   unset($form['#build_id'], $form['form_build_id'], $form['form_id']);
 
   return [
-    'project_solr_browse_projects_form' => $form,
+    'drupalorg_browse_projects_form' => $form,
     'description' => ['#markup' => '<p>' . filter_xss($project_type->description) . '</p>'],
     'results' => $results,
     'pager' => ['#markup' => theme('pager')],

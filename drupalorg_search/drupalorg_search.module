@@ -109,12 +109,11 @@ function drupalorg_search_block_view($delta) {
       if (apachesolr_has_searched($env_id) && ($query = apachesolr_current_query($env_id))) {
         $searcher = $query->getSearcher();
         if ($response = apachesolr_static_response_cache($searcher)) {
-          $project_type = drupalorg_search_get_project_type($query, $response);
-          if ($project_type) {
-            return array('content' => drupal_get_form('project_solr_browse_projects_form', $project_type, 'search/' . arg(1)));
+          if ($project_type = drupalorg_search_get_project_type($query, $response)) {
+            return ['content' => drupal_get_form('drupalorg_browse_projects_form', $project_type, 'search/' . arg(1))];
           }
           else {
-            return array('content' => drupal_get_form('drupalorg_search_sort_form'));
+            return ['content' => drupal_get_form('drupalorg_search_sort_form')];
           }
         }
       }
@@ -156,95 +155,6 @@ function drupalorg_search_block_view($delta) {
       );
       return $block;
   }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- *
- * This drastically alters the project solr form, which we essentially still use
- * only for the logic that populates the proper facets for a given project type.
- */
-function drupalorg_search_form_project_solr_browse_projects_form_alter(&$form, &$form_state) {
-  $env_id = apachesolr_default_environment();
-  $query = apachesolr_current_query($env_id);
-
-  // Check to see if the project_solr_browse_projects form is being used in
-  // our block on the core search page. We could test $form['path']['#value']
-  // here instead, but it's not really any better that way, so arg() works.
-  if (arg(0) === 'search' && (arg(1) === 'site')) {
-    // If we're being reused on the core search results page, we add our own
-    // submit handler so that we can properly handle the "meta type" stuff.
-    $form['#submit'][] = 'drupalorg_search_project_solr_browse_project_form_submit';
-
-    // We default the text to our current search terms so that we don't get
-    // errors when attempting to sort by relevancy. We make the access false,
-    // so that the values aren't visible and we don't have 2 search forms.
-    $params = $query->getParams();
-    $form['text']['#default_value'] = $params['q'];
-    $form['text']['#access'] = FALSE;
-  }
-  else {
-    global $pager_total_items;
-
-    // Update text search title.
-    $label = drupalorg_project_node_type_label($form_state['build_info']['args'][0]->type, 'plural');
-    $form['text']['#title'] = t('Search @type', array('@type' => $label));
-
-    // If not on the core search page, add a results count title to the form
-    $form['results'] = array(
-      '#markup' => '<h3 class="results-count">' . t('@result @type match your search', array('@result' => number_format($pager_total_items[0]), '@type' => $label)) . '</h3>',
-      '#weight' => -10,
-    );
-  }
-
-  // Set ss_meta_type as a hidden form item.
-  if ($query) {
-    foreach ($query->getFilters() as $key => $filter) {
-      if ($filter['#name'] == 'ss_meta_type') {
-        $form['f'][] = array(
-          '#type' => 'hidden',
-          '#value' => $filter['#name'] . ':' . $filter['#value'],
-        );
-      }
-    }
-  }
-
-  // Unset form_id etc.
-  if (strtolower($form['#method']) == 'get') {
-    unset($form['form_id'], $form['form_build_id'], $form['token']);
-  }
-
-  // Sort should be at the bottom.
-  $form['solrsort']['#weight'] = 100;
-}
-
-/**
- * Submit handler for project_solr_browse_project_form on the search page.
- *
- * This deals with inserting ss_meta_type values into the path that we
- * redirect to, so that the whole search page still works and remembers the
- * value of "refine your search" that the user has selected.
- */
-function drupalorg_search_project_solr_browse_project_form_submit(&$form, &$form_state) {
-  $env_id = apachesolr_default_environment();
-  $query = apachesolr_current_query($env_id);
-
-  // There might not be any filters yet. To avoid special-casing this, we just
-  // explode() the existing space-delimited filters into an array,
-  // conditionally append our filter into the array, and then when we're done,
-  // we use implode() to re-create a space-delimited string and let implode()
-  // handle the special cases of 0 or 1 filters for us.
-  foreach($query->getFilters() as $filter) {
-    if ($filter['#name'] == 'ss_meta_type') {
-      // Add the query values into the redirect.
-      $filters[] = $filter['#name'] . ':' . $filter['#value'];
-    }
-  }
-
-  if (isset($form_state['redirect'][1]['f'])) {
-    $previous_filters = $form_state['redirect'][1]['f'];
-  }
-  $form_state['redirect'][1]['f'] = array_merge($previous_filters, $filters);
 }
 
 /**

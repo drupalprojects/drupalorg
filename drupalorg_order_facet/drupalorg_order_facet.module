@@ -78,7 +78,7 @@ function drupalorg_order_facet_build($sort, $info, $query, $more = TRUE) {
   }
   // Match up filters to form array.
   $dummy = array();
-  $form = project_solr_browse_projects_form(array(), $dummy, node_type_load($type));
+  $form = drupalorg_browse_projects_form([], $dummy, node_type_load($type));
   foreach (element_children($form['f']) as $element) {
     if ($intersect = array_intersect($f, array_keys($form['f'][$element]['#options']))) {
       $query_values['f'][$element] = reset($intersect);
