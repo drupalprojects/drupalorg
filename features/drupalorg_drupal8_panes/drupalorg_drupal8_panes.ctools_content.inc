@@ -25,7 +25,7 @@ function drupalorg_drupal8_panes_default_ctools_custom_content() {
 <div class="sponsor">
 <a href="https://www.acquia.com/resources/collateral/ultimate-guide-drupal-8?cid=701a0000002d33YAAQ&ct=online-advertising&ls=drupalorg&lls=PRO_US_OLA_DrupalDownload_042017"><img src="https://www.drupal.org/files/Acquia_Logo.jpg"></a>
 <div class="text">
-<p>Get expert Drupal 8 best practices. From new sitebuilding tools to improved front and backend developer experiences, learn how D8 builds on D7 and what to expect from your new D8 Site</p>
+<p>Get expert Drupal 8 advice. Thanks to the hard work of the Drupal community, D8 features improved frontend and backend experiences and more. Checkout this guide to see what\'s new in D8</p>
 <p><a class="button" href="https://www.acquia.com/resources/collateral/ultimate-guide-drupal-8?cid=701a0000002d33YAAQ&ct=online-advertising&ls=drupalorg&lls=PRO_US_OLA_DrupalDownload_042017">Get the Free Guide Today!</a>
 </p></div>
 </div>
