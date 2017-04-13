@@ -60,49 +60,6 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
-  // Exported field_base: 'field_developed_org'.
-  $field_bases['field_developed_org'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_developed_org',
-    'indexes' => array(
-      'nid' => array(
-        0 => 'nid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'node_reference',
-    'settings' => array(
-      'referenceable_types' => array(
-        'book' => 0,
-        'book_listing' => 0,
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'forum' => 0,
-        'image' => 0,
-        'organization' => 'organization',
-        'packaging_whitelist' => 0,
-        'page' => 0,
-        'project_issue' => 0,
-        'project_project' => 0,
-        'project_release' => 0,
-        'story' => 0,
-      ),
-      'view' => array(
-        'args' => array(
-          0 => '',
-        ),
-        'display_name' => 'default',
-        'view_name' => '--',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'node_reference',
-    'type_name' => 'casestudy',
-  );
-
   // Exported field_base: 'field_goals'.
   $field_bases['field_goals'] = array(
     'active' => 1,
@@ -180,56 +137,6 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
-  // Exported field_base: 'field_module'.
-  $field_bases['field_module'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_module',
-    'indexes' => array(
-      'nid' => array(
-        0 => 'nid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'node_reference',
-    'settings' => array(
-      'referenceable_types' => array(
-        'book' => 0,
-        'book_listing' => 0,
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'forum' => 0,
-        'image' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'page' => 0,
-        'project' => 0,
-        'project_core' => 0,
-        'project_distribution' => 'project_distribution',
-        'project_drupalorg' => 0,
-        'project_issue' => 0,
-        'project_module' => 'project_module',
-        'project_release' => 0,
-        'project_theme' => 'project_theme',
-        'project_theme_engine' => 'project_theme_engine',
-        'project_translation' => 0,
-        'story' => 0,
-      ),
-      'view' => array(
-        'args' => array(
-          0 => '',
-        ),
-        'display_name' => 'default',
-        'view_name' => '--',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'node_reference',
-    'type_name' => 'casestudy',
-  );
-
   // Exported field_base: 'field_module_selection'.
   $field_bases['field_module_selection'] = array(
     'active' => 1,
@@ -277,53 +184,6 @@ function drupalorg_case_studies_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'text_long',
-    'type_name' => 'casestudy',
-  );
-
-  // Exported field_base: 'field_profiles'.
-  $field_bases['field_profiles'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_profiles',
-    'indexes' => array(
-      'uid' => array(
-        0 => 'uid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'user_reference',
-    'settings' => array(
-      'referenceable_roles' => array(
-        2 => 2,
-        3 => 0,
-        4 => 0,
-        7 => 0,
-        12 => 0,
-        14 => 0,
-        16 => 0,
-        20 => 0,
-        22 => 0,
-        24 => 0,
-        26 => 0,
-        28 => 0,
-        30 => 0,
-        32 => 0,
-        34 => 0,
-        36 => 0,
-      ),
-      'referenceable_status' => 1,
-      'view' => array(
-        'args' => array(
-          0 => '',
-        ),
-        'display_name' => 'default',
-        'view_name' => '--',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'user_reference',
     'type_name' => 'casestudy',
   );
 
