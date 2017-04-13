@@ -3636,6 +3636,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'flag',
   );
 
+  // Exported permission: 'flag project_star'.
+  $permissions['flag project_star'] = array(
+    'name' => 'flag project_star',
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'flag',
+  );
+
   // Exported permission: 'generate features'.
   $permissions['generate features'] = array(
     'name' => 'generate features',
@@ -3958,6 +3967,15 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'unflag project_issue_follow'.
   $permissions['unflag project_issue_follow'] = array(
     'name' => 'unflag project_issue_follow',
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'flag',
+  );
+
+  // Exported permission: 'unflag project_star'.
+  $permissions['unflag project_star'] = array(
+    'name' => 'unflag project_star',
     'roles' => array(
       'authenticated user' => 'authenticated user',
     ),
