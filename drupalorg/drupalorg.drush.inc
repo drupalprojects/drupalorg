@@ -81,7 +81,7 @@ function drush_drupalorg_org_credit() {
     $query = new EntityFieldQuery();
     $contribution_rank += $weights['d8 case study'] * $query->entityCondition('entity_type', 'node')
       ->propertyCondition('type', 'casestudy')
-      ->fieldCondition('field_developed_org', 'nid', $node->nid)
+      ->fieldCondition('field_case_organizations', 'target_id', $node->nid)
       ->fieldCondition('taxonomy_vocabulary_5', 'tid', 20236) // D8
       ->count()->execute();
     // Add Projects supported.

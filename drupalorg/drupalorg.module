@@ -2926,7 +2926,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       $query->entityCondition('entity_type', 'node')
         ->propertyCondition('type', 'casestudy')
         ->propertyCondition('status', 1)
-        ->fieldCondition('field_developed_org', 'nid', $node->nid);
+        ->fieldCondition('field_case_organizations', 'target_id', $node->nid);
       if ($count = $query->count()->execute()) {
         $node->content['drupalorg_organization_contributions']['case_studies'] = array(
           '#prefix' => '<div>',
