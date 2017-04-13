@@ -248,48 +248,6 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
-  // Exported field_base: 'field_org_training_issue'.
-  $field_bases['field_org_training_issue'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_org_training_issue',
-    'indexes' => array(
-      'nid' => array(
-        0 => 'nid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'node_reference',
-    'settings' => array(
-      'referenceable_types' => array(
-        'book' => 0,
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'forum' => 0,
-        'image' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'page' => 0,
-        'project_issue' => 'project_issue',
-        'project_project' => 0,
-        'project_release' => 0,
-        'story' => 0,
-      ),
-      'view' => array(
-        'args' => array(
-          0 => '',
-        ),
-        'display_name' => 'default',
-        'view_name' => '--',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'node_reference',
-    'type_name' => 'organization',
-  );
-
   // Exported field_base: 'field_org_training_request'.
   $field_bases['field_org_training_request'] = array(
     'active' => 1,
@@ -343,55 +301,6 @@ function drupalorg_marketplace_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'text',
-    'type_name' => 'organization',
-  );
-
-  // Exported field_base: 'field_organization_issue'.
-  $field_bases['field_organization_issue'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_organization_issue',
-    'indexes' => array(
-      'nid' => array(
-        0 => 'nid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'node_reference',
-    'settings' => array(
-      'referenceable_types' => array(
-        'book' => 0,
-        'book_listing' => 0,
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'forum' => 0,
-        'organization' => 0,
-        'packaging_whitelist' => 0,
-        'page' => 0,
-        'project' => 0,
-        'project_core' => 0,
-        'project_distribution' => 0,
-        'project_drupalorg' => 0,
-        'project_issue' => 'project_issue',
-        'project_module' => 0,
-        'project_release' => 0,
-        'project_theme' => 0,
-        'project_theme_engine' => 0,
-        'project_translation' => 0,
-        'story' => 0,
-      ),
-      'view' => array(
-        'args' => array(
-          0 => '',
-        ),
-        'display_name' => 'default',
-        'view_name' => '--',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'node_reference',
     'type_name' => 'organization',
   );
 

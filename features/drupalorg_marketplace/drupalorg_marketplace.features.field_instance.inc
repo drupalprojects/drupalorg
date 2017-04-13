@@ -861,107 +861,6 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'optionwidgets_onoff',
   );
 
-  // Exported field_instance: 'node-organization-field_org_training_issue'.
-  $field_instances['node-organization-field_org_training_issue'] = array(
-    'bundle' => 'organization',
-    'default_value' => array(
-      0 => array(
-        'nid' => NULL,
-        '_error_element' => 'default_value_widget][field_org_training_issue][0][nid][nid',
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 20,
-      ),
-      'full' => array(
-        'label' => 'above',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 27,
-      ),
-      'issuemetadata' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'nodechanges' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'print' => array(
-        'label' => 'above',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 27,
-      ),
-      'related_content' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 21,
-      ),
-      'rss' => array(
-        'label' => 'above',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 27,
-      ),
-      'search_index' => array(
-        'label' => 'above',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 27,
-      ),
-      'search_result' => array(
-        'label' => 'above',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 27,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 9,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_org_training_issue',
-    'label' => 'Training issue',
-    'required' => FALSE,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'weight' => 27,
-    'widget' => array(
-      'active' => 1,
-      'module' => 'node_reference',
-      'settings' => array(
-        'autocomplete_match' => 'contains',
-        'autocomplete_path' => 'node_reference/autocomplete',
-        'default_value_php' => NULL,
-        'size' => 60,
-      ),
-      'type' => 'node_reference_autocomplete',
-      'weight' => 33,
-    ),
-    'widget_type' => 'project_issue_nodereference_auto',
-  );
-
   // Exported field_instance: 'node-organization-field_org_training_request'.
   $field_instances['node-organization-field_org_training_request'] = array(
     'bundle' => 'organization',
@@ -1190,101 +1089,6 @@ function drupalorg_marketplace_field_default_field_instances() {
       'weight' => 4,
     ),
     'widget_type' => 'text_textfield',
-  );
-
-  // Exported field_instance: 'node-organization-field_organization_issue'.
-  $field_instances['node-organization-field_organization_issue'] = array(
-    'bundle' => 'organization',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 19,
-      ),
-      'full' => array(
-        'label' => 'above',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 25,
-      ),
-      'issuemetadata' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'nodechanges' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'print' => array(
-        'label' => 'above',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 25,
-      ),
-      'related_content' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 12,
-      ),
-      'rss' => array(
-        'label' => 'above',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 25,
-      ),
-      'search_index' => array(
-        'label' => 'above',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 25,
-      ),
-      'search_result' => array(
-        'label' => 'above',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 25,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 15,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_organization_issue',
-    'label' => 'Services issue',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'weight' => 25,
-    'widget' => array(
-      'active' => 1,
-      'module' => 'node_reference',
-      'settings' => array(
-        'autocomplete_match' => 'starts_with',
-        'autocomplete_path' => 'node_reference/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'node_reference_autocomplete',
-      'weight' => 31,
-    ),
-    'widget_type' => 'project_issue_nodereference_auto',
   );
 
   // Exported field_instance: 'node-organization-field_organization_list_rule'.
@@ -2122,14 +1926,12 @@ function drupalorg_marketplace_field_default_field_instances() {
   t('Sectors');
   t('Security review');
   t('Services');
-  t('Services issue');
   t('Services listing');
   t('Specify the date hosting provider passed security review. Format: \'passed on Month Day, Year\'');
   t('Such as development, theming, design, training, or hosting.');
   t('Supporting Technologies listing');
   t('The url for your trainings landing page (the page specifically for Drupal trainings preferred). This will be shown in the Training listing only.');
   t('Training description');
-  t('Training issue');
   t('Training listing');
   t('Training url');
   t('Use this field if you are listed on the <a href="/supporters/hosting">Hosting Supporters page</a>.');
