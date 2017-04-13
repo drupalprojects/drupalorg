@@ -83,6 +83,67 @@ function drupalorg_case_studies_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-casestudy-field_case_organizations'.
+  $field_instances['node-casestudy-field_case_organizations'] = array(
+    'bundle' => 'casestudy',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => 'Include the organizations that contributed to this project. Use the autocomplete widget if they exist on Drupal.org as organization nodes; otherwise, use the Project team text field below.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => 1,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 5,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_case_organizations',
+    'label' => 'Organizations involved',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'STARTS_WITH',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete_tags',
+      'weight' => 9,
+    ),
+  );
+
   // Exported field_instance: 'node-casestudy-field_community'.
   $field_instances['node-casestudy-field_community'] = array(
     'bundle' => 'casestudy',
@@ -906,6 +967,67 @@ function drupalorg_case_studies_field_default_field_instances() {
     'widget_type' => 'text_textarea',
   );
 
+  // Exported field_instance: 'node-casestudy-field_projects'.
+  $field_instances['node-casestudy-field_projects'] = array(
+    'bundle' => 'casestudy',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => 1,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 15,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_projects',
+    'label' => 'Key modules/theme/distribution used',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'STARTS_WITH',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete',
+      'weight' => 33,
+    ),
+  );
+
   // Exported field_instance: 'node-casestudy-field_status'.
   $field_instances['node-casestudy-field_status'] = array(
     'bundle' => 'casestudy',
@@ -1001,6 +1123,67 @@ function drupalorg_case_studies_field_default_field_instances() {
       'weight' => 14,
     ),
     'widget_type' => 'optionwidgets_buttons',
+  );
+
+  // Exported field_instance: 'node-casestudy-field_team_members'.
+  $field_instances['node-casestudy-field_team_members'] = array(
+    'bundle' => 'casestudy',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => 'Use the autocomplete widget if team members or significant contributors are Drupal.org users; otherwise, use the Project team text field below.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => 1,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 9,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_team_members',
+    'label' => 'Team members',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'STARTS_WITH',
+        'path' => '',
+        'size' => 100,
+      ),
+      'type' => 'entityreference_autocomplete_tags',
+      'weight' => 10,
+    ),
   );
 
   // Exported field_instance: 'node-casestudy-taxonomy_vocabulary_5'.
@@ -1195,13 +1378,18 @@ function drupalorg_case_studies_field_default_field_instances() {
   t('Drupal version');
   t('Enter the names of organizations and team members that can\'t be referenced in the autocomplete fields above. Also, feel free to add more description about the team.<br /><br />');
   t('File attachments');
+  t('Include the organizations that contributed to this project. Use the autocomplete widget if they exist on Drupal.org as organization nodes; otherwise, use the Project team text field below.');
+  t('Key modules/theme/distribution used');
   t('List related sector(s)');
+  t('Organizations involved');
   t('Primary screenshot');
   t('Project team');
   t('Provide a brief outline of the business case, some background to the project, and if desired, a short description of the companies participating in the project.<br /><br />');
   t('Sectors');
   t('Status');
+  t('Team members');
   t('Upload 2-3 additional screenshots of different pages or significant site features. Please include alternate text (for search engines and accessibility reasons). Preferred file format - PNG.<br /><br />');
+  t('Use the autocomplete widget if team members or significant contributors are Drupal.org users; otherwise, use the Project team text field below.');
   t('Use the homepage unless you can provide a strong case not to. Preferred format: PNG. No drop shadow or whitespace on the edges.');
   t('Why Drupal was chosen');
   t('Why these modules/theme/distribution were chosen');

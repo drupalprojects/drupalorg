@@ -23,9 +23,9 @@ function drupalorg_case_studies_field_group_info() {
     'label' => 'Modules/Themes/Distributions',
     'weight' => '5',
     'children' => array(
-      0 => 'field_module',
-      1 => 'field_module_selection',
-      2 => 'taxonomy_vocabulary_5',
+      0 => 'field_module_selection',
+      1 => 'taxonomy_vocabulary_5',
+      2 => 'field_projects',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -52,9 +52,9 @@ function drupalorg_case_studies_field_group_info() {
     'label' => 'Modules/Themes/Distributions',
     'weight' => '7',
     'children' => array(
-      0 => 'field_module',
-      1 => 'field_module_selection',
-      2 => 'taxonomy_vocabulary_5',
+      0 => 'field_module_selection',
+      1 => 'taxonomy_vocabulary_5',
+      2 => 'field_projects',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -85,8 +85,7 @@ Specify at least 4 key contributed projects.
     'label' => 'Modules/Themes/Distributions',
     'weight' => '3',
     'children' => array(
-      0 => 'field_module',
-      1 => 'field_module_selection',
+      0 => 'field_module_selection',
     ),
     'format_type' => 'hidden',
     'format_settings' => array(
