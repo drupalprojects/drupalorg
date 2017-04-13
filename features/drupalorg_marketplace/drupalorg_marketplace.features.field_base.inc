@@ -248,6 +248,76 @@ function drupalorg_marketplace_field_default_field_bases() {
     'type_name' => 'organization',
   );
 
+  // Exported field_base: 'field_org_services_issue'.
+  $field_bases['field_org_services_issue'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_org_services_issue',
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'handler' => 'project_behavior',
+      'handler_settings' => array(
+        'behavior' => 'project_issue',
+        'behaviors' => array(
+          'views-select-list' => array(
+            'status' => 0,
+          ),
+        ),
+        'sort' => array(
+          'direction' => 'DESC',
+          'property' => 'changed',
+          'type' => 'property',
+        ),
+      ),
+      'target_type' => 'node',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
+  );
+
+  // Exported field_base: 'field_org_train_issue'.
+  $field_bases['field_org_train_issue'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_org_train_issue',
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'handler' => 'project_behavior',
+      'handler_settings' => array(
+        'behavior' => 'project_issue',
+        'behaviors' => array(
+          'views-select-list' => array(
+            'status' => 0,
+          ),
+        ),
+        'sort' => array(
+          'direction' => 'DESC',
+          'property' => 'changed',
+          'type' => 'property',
+        ),
+      ),
+      'target_type' => 'node',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
+  );
+
   // Exported field_base: 'field_org_training_request'.
   $field_bases['field_org_training_request'] = array(
     'active' => 1,
