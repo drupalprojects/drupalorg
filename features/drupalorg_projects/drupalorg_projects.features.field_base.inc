@@ -88,51 +88,6 @@ function drupalorg_projects_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_organization'.
-  $field_bases['field_organization'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_organization',
-    'indexes' => array(
-      'nid' => array(
-        0 => 'nid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'node_reference',
-    'settings' => array(
-      'referenceable_types' => array(
-        'book' => 0,
-        'book_listing' => 0,
-        'casestudy' => 0,
-        'changenotice' => 0,
-        'forum' => 0,
-        'organization' => 'organization',
-        'packaging_whitelist' => 0,
-        'page' => 0,
-        'project_core' => 0,
-        'project_distribution' => 0,
-        'project_drupalorg' => 0,
-        'project_issue' => 0,
-        'project_module' => 0,
-        'project_release' => 0,
-        'project_theme' => 0,
-        'project_theme_engine' => 0,
-        'project_translation' => 0,
-        'story' => 0,
-      ),
-      'view' => array(
-        'args' => array(),
-        'display_name' => '',
-        'view_name' => '',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'node_reference',
-  );
-
   // Exported field_base: 'field_packaged_git_sha1'.
   $field_bases['field_packaged_git_sha1'] = array(
     'active' => 1,
@@ -1055,6 +1010,43 @@ function drupalorg_projects_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'list_boolean',
+  );
+
+  // Exported field_base: 'field_supporting_organization'.
+  $field_bases['field_supporting_organization'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_supporting_organization',
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'handler' => 'base',
+      'handler_settings' => array(
+        'behaviors' => array(
+          'views-select-list' => array(
+            'status' => 0,
+          ),
+        ),
+        'sort' => array(
+          'direction' => 'ASC',
+          'property' => 'title',
+          'type' => 'property',
+        ),
+        'target_bundles' => array(
+          'organization' => 'organization',
+        ),
+      ),
+      'target_type' => 'node',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
   );
 
   // Exported field_base: 'field_supporting_organizations'.

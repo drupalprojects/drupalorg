@@ -331,7 +331,7 @@ function drupalorg_projects_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 2,
       ),
     ),
     'entity_type' => 'field_collection_item',
@@ -354,38 +354,46 @@ function drupalorg_projects_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_supporting_organizations-field_organization'.
-  $field_instances['field_collection_item-field_supporting_organizations-field_organization'] = array(
+  // 'field_collection_item-field_supporting_organizations-field_supporting_organization'.
+  $field_instances['field_collection_item-field_supporting_organizations-field_supporting_organization'] = array(
     'bundle' => 'field_supporting_organizations',
-    'default_value' => NULL,
+    'default_value' => '',
+    'default_value_function' => '',
     'deleted' => 0,
     'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 0,
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => 1,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 1,
       ),
     ),
     'entity_type' => 'field_collection_item',
-    'field_name' => 'field_organization',
+    'field_name' => 'field_supporting_organization',
     'label' => 'Organization',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
-      'user_register_form' => FALSE,
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => '',
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'node_reference',
+      'module' => 'entityreference',
       'settings' => array(
-        'autocomplete_match' => 'contains',
-        'autocomplete_path' => 'node_reference/autocomplete',
+        'match_operator' => 'STARTS_WITH',
+        'path' => '',
         'size' => 60,
       ),
-      'type' => 'node_reference_autocomplete',
-      'weight' => 31,
+      'type' => 'entityreference_autocomplete',
+      'weight' => 0,
     ),
   );
 
