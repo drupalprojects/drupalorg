@@ -4153,3 +4153,97 @@ function drupalorg_update_7088() {
   db_insert('field_data_field_security_advisory_coverage')->from($query)->execute();
   db_insert('field_revision_field_security_advisory_coverage')->from($query)->execute();
 }
+
+/**
+ * Migrate node reference to entity reference.
+ */
+function drupalorg_update_7089() {
+  field_create_field([
+    'cardinality' => 1,
+    'entity_types' => [],
+    'field_name' => 'field_supporting_organization',
+    'indexes' => [
+      'target_id' => ['target_id'],
+    ],
+    'module' => 'entityreference',
+    'settings' => [
+      'target_type' => 'node',
+      'handler' => 'base',
+      'handler_settings' => [
+        'target_bundles' => [
+          'organization' => 'organization',
+        ],
+        'sort' => [
+          'type' => 'property',
+          'property' => 'title',
+          'direction' => 'ASC',
+        ],
+        'behaviors' => [
+          'views-select-list' => [
+          'status' => 0,
+          ],
+        ],
+      ],
+    ],
+    'translatable' => 0,
+    'type' => 'entityreference',
+  ]);
+  field_create_instance([
+    'bundle' => 'field_supporting_organizations',
+    'default_value' => '',
+    'default_value_function' => '',
+    'description' => '',
+    'display' => [
+      'default' => [
+        'label' => 'above',
+        'type' => 'entityreference_label',
+        'settings' => [
+          'link' => '',
+        ],
+        'module' => 'entityreference',
+        'weight' => 2,
+      ],
+    ],
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_supporting_organization',
+    'label' => 'Organization',
+    'required' => 1,
+    'settings' => [
+      'behaviors' => [
+        'prepopulate' => [
+          'status' => 0,
+        ],
+      ],
+      'user_register_form' => '',
+    ],
+    'widget' => [
+      'weight' => 0,
+      'type' => 'entityreference_autocomplete',
+      'module' => 'entityreference',
+      'active' => 1,
+      'settings' => [
+        'match_operator' => 'STARTS_WITH',
+        'size' => 60,
+        'path' => '',
+      ],
+    ],
+  ]);
+}
+
+/**
+ * Move data into new field.
+ */
+function drupalorg_update_7090() {
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'field_collection_item')
+    ->entityCondition('bundle', 'field_supporting_organizations')
+    ->fieldCondition('field_organization', NULL, 'IS NOT NULL')
+    ->execute();
+  foreach (array_chunk(array_keys($result['field_collection_item']), 50) as $ids) {
+    foreach (field_collection_item_load_multiple($ids) as $collection) {
+      $collection->field_supporting_organization[LANGUAGE_NONE][0]['target_id'] = $collection->field_organization[LANGUAGE_NONE][0]['nid'];
+      $collection->field_organization = [];
+      $collection->save(TRUE);
+    }
+  }
+}

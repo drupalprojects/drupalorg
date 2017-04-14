@@ -87,7 +87,7 @@ function drush_drupalorg_org_credit() {
     // Add Projects supported.
     $query = new EntityFieldQuery();
     $contribution_rank += $weights['project supported'] * $query->entityCondition('entity_type', 'field_collection_item')
-      ->fieldCondition('field_organization', 'nid', $node->nid)
+      ->fieldCondition('field_supporting_organization', 'target_id', $node->nid)
       ->count()->execute();
     // Round & store.
     $contribution_rank = round($contribution_rank);

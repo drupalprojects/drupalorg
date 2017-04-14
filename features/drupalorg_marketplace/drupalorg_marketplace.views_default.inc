@@ -302,23 +302,21 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Field collection item: Organization (field_organization) */
-  $handler->display->display_options['arguments']['field_organization_nid']['id'] = 'field_organization_nid';
-  $handler->display->display_options['arguments']['field_organization_nid']['table'] = 'field_data_field_organization';
-  $handler->display->display_options['arguments']['field_organization_nid']['field'] = 'field_organization_nid';
-  $handler->display->display_options['arguments']['field_organization_nid']['relationship'] = 'field_supporting_organizations_value';
-  $handler->display->display_options['arguments']['field_organization_nid']['default_action'] = 'not found';
-  $handler->display->display_options['arguments']['field_organization_nid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_organization_nid']['default_argument_skip_url'] = TRUE;
-  $handler->display->display_options['arguments']['field_organization_nid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_organization_nid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_organization_nid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_organization_nid']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['field_organization_nid']['validate']['type'] = 'node';
-  $handler->display->display_options['arguments']['field_organization_nid']['validate_options']['types'] = array(
+  /* Contextual filter: Field collection item: Organization (field_supporting_organization) */
+  $handler->display->display_options['arguments']['field_supporting_organization_target_id']['id'] = 'field_supporting_organization_target_id';
+  $handler->display->display_options['arguments']['field_supporting_organization_target_id']['table'] = 'field_data_field_supporting_organization';
+  $handler->display->display_options['arguments']['field_supporting_organization_target_id']['field'] = 'field_supporting_organization_target_id';
+  $handler->display->display_options['arguments']['field_supporting_organization_target_id']['relationship'] = 'field_supporting_organizations_value';
+  $handler->display->display_options['arguments']['field_supporting_organization_target_id']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_supporting_organization_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_supporting_organization_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_supporting_organization_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_supporting_organization_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_supporting_organization_target_id']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_supporting_organization_target_id']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['field_supporting_organization_target_id']['validate_options']['types'] = array(
     'organization' => 'organization',
   );
-  $handler->display->display_options['arguments']['field_organization_nid']['validate_options']['access'] = TRUE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';

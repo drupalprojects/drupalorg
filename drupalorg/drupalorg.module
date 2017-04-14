@@ -2895,7 +2895,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
       // Projects supported.
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'field_collection_item')
-        ->fieldCondition('field_organization', 'nid', $node->nid);
+        ->fieldCondition('field_supporting_organization', 'target_id', $node->nid);
       if ($count = $query->count()->execute()) {
         $node->content['drupalorg_organization_contributions']['projects'] = array(
           '#prefix' => '<div>',
