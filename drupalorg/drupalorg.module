@@ -6107,11 +6107,13 @@ function drupalorg_browse_projects_form($form, &$form_state, $project_type) {
     }
   }
 
-  $form['text'] = [
-    '#title' => t('Search @label', ['@label' => $label]),
-    '#type' => 'textfield',
-    '#size' => 20,
-  ];
+  if (arg(0) === 'project') {
+    $form['text'] = [
+      '#title' => t('Search @label', ['@label' => $label]),
+      '#type' => 'textfield',
+      '#size' => 20,
+    ];
+  }
 
   $form['solrsort'] = [
     '#type' => 'select',
