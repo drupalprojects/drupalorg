@@ -68,14 +68,13 @@ function drupalorg_search_facetapi_widgets() {
 
 /**
  * Implementation of hook_apachesolr_query_prepare().
- *
- * Add project sorts whenever we have an ss_meta_type of theme or module.
  */
 function drupalorg_search_apachesolr_query_prepare(&$query) {
-  if (isset($_GET['solrsort'])) {
-    list($sort, $direction) = explode(' ', $_GET['solrsort']);
-    $query->setSolrsort($sort, $direction);
-  }
+  // Add project usage boost.
+  // - floor: treat less-used projects and other content, like documentation, equally.
+  // - boost: how much to boost.
+  list($floor, $boost) = explode(':', variable_get('drupalorg_usage_boost', '500:200'));
+  $query->addParam('bf', 'log(max(iss_project_release_usage,' . $floor . '))^' . $boost);
 }
 
 /**
