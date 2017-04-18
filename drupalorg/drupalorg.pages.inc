@@ -98,6 +98,7 @@ function drupalorg_project_browse_page($project_type) {
     $function_name = $module . '_apachesolr_query_prepare';
     $function_name($query);
   }
+  apachesolr_search_add_boost_params($query);
 
   // Cache the built query. Since all the built queries go through
   // this process, all the hook_invocations will happen later.
