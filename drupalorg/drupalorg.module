@@ -569,7 +569,7 @@ function drupalorg_block_info() {
     'drupalorg_activity' => array('info' => t('Drupal.org Activity')),
     'add_to_dashboard' => array(
       'info' => t('Add to Dashboard links'),
-      'cache' => DRUPAL_CACHE_PER_USER | DRUPAL_CACHE_PER_PAGE,
+      'cache' => DRUPAL_NO_CACHE,
     ),
     'tracker_user' => array(
       'info' => t('Your posts'),
@@ -678,8 +678,30 @@ function drupalorg_block_view($delta, $block = NULL) {
         }
         if (count($blocks) > 0) {
           $page = homebox_get_page('dashboard');
+          $user_settings = _homebox_get_user_settings($page);
+          if ($user_settings === FALSE) {
+            $user_settings = $page->settings['blocks'];
+          }
           $content = '';
           foreach ($blocks as $block) {
+            // Check if this block already on the dashboard.
+            $existing_block = FALSE;
+            foreach ($user_settings as $homebox) {
+              if (!$homebox['status']) {
+                continue;
+              }
+              if ($homebox['module'] !== $block[1] && $homebox['delta'] !== $block[2]) {
+                continue;
+              }
+              if (isset($block[3]) && !array_intersect_assoc($block[3], $homebox)) {
+                continue;
+              }
+              $existing_block = TRUE;
+            }
+            if ($existing_block) {
+              continue;
+            }
+            // Make a link to add the block.
             $options = array('attributes' => array('class' => array('add')));
             if (isset($block[3])) {
               $options['query'] = $block[3];
