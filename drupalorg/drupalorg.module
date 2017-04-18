@@ -3516,7 +3516,7 @@ function drupalorg_node_update($node) {
     _drupalorg_node_update_project($node);
 
     // Changes like security advisory coverage may change the download table.
-    project_release_download_table($node->nid, TRUE);
+    drupal_register_shutdown_function('project_release_download_table', $node->nid, TRUE);
   }
   elseif (project_issue_node_is_issue($node) && isset($node->nodechanges_cid) && isset($node->nodechanges_comment->uid)) {
     // Check if the commenter has previously received credit.
