@@ -316,7 +316,7 @@ function drupalorg_project_form_project_issue_node_form_alter(&$form, $form_stat
  * get e-mail notifications for all issues for all projects. Remove that
  * option entirely on the per-user notification settings form.
  */
-function drupalorg_project_form_project_issue_notification_user_form_alter($form, $form_state) {
+function drupalorg_project_form_project_issue_notification_user_form_alter(&$form, $form_state) {
   unset($form['projects']['default']['level']['#options'][PROJECT_ISSUE_NOTIFICATION_ALL]);
 }
 
