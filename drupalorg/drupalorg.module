@@ -3345,13 +3345,6 @@ function drupalorg_generate_marketplace_link($term) {
  * Create issue for organizations requesting services or training listing
  */
 function drupalorg_org_request_issue($node) {
-  // Only request issue if the author is updating.
-  if ($node->uid != $GLOBALS['user']->uid) {
-    return;
-  }
-
-  $wrapper = entity_metadata_wrapper('node', $node);
-
   $changed = FALSE;
   // If an organization wants to be listed in the Services section of the Marketplace.
   if (($node->field_org_marketplace_request[LANGUAGE_NONE][0]['value'] == '1') && empty($node->field_org_services_issue[LANGUAGE_NONE][0]['target_id'])) {
@@ -3374,8 +3367,7 @@ Want to help review? Here is how to do it: https://drupal.org/node/1710338',
     $issue->field_project[LANGUAGE_NONE][]['target_id'] = 1848824;  // Content project, http://drupal.org/project/content
     $issue->field_project[LANGUAGE_NONE][]['target_type'] = 'node';
     $issue->field_issue_priority[LANGUAGE_NONE][]['value'] = 200;  // normal
-    // Needs review if not listed, otherwise back-fill fixed issue.
-    $issue->field_issue_status[LANGUAGE_NONE][]['value'] = $wrapper->field_organization_list_rule->value() === 'never' ? 8 : 2;
+    $issue->field_issue_status[LANGUAGE_NONE][]['value'] = 8;  // needs review
     $issue->field_issue_component[LANGUAGE_NONE][]['value'] = 'Services listing';
     $issue->field_issue_category[LANGUAGE_NONE][]['value'] = 2; //task
     $issue->comment = 2; // read & write
@@ -3406,8 +3398,7 @@ Want to help review? Here is how to do it: https://drupal.org/node/1735864',
     $issue->field_project[LANGUAGE_NONE][]['target_id'] = 1848824;  // Content project, http://drupal.org/project/content
     $issue->field_project[LANGUAGE_NONE][]['target_type'] = 'node';
     $issue->field_issue_priority[LANGUAGE_NONE][]['value'] = 200;  // normal
-    // Needs review if not listed, otherwise back-fill fixed issue.
-    $issue->field_issue_status[LANGUAGE_NONE][]['value'] = $wrapper->field_organization_training_list->value() === 'off' ? 8 : 2;
+    $issue->field_issue_status[LANGUAGE_NONE][]['value'] = 8;  // needs review
     $issue->field_issue_component[LANGUAGE_NONE][]['value'] = 'Training listing';
     $issue->field_issue_category[LANGUAGE_NONE][]['value'] = 2; //task
     $issue->comment = 2; // read & write
