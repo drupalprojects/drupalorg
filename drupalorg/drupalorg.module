@@ -3908,6 +3908,7 @@ function drupalorg_user_view($account, $view_mode) {
       }
     }
     $companies_worked_for = array();
+    $current_companies = array();
     $account->content['field_organizations']['#title'] = t('Current Role(s)');
     foreach ($company_titles as $n => $title) {
       $collection_id = $wrapper->field_organizations[$n]->getIdentifier();
@@ -3918,6 +3919,9 @@ function drupalorg_user_view($account, $view_mode) {
       }
 
       if ($wrapper->field_organizations[$n]->field_current->value()) {
+        // Store this as a current company for later comparison.
+        $current_companies[$title] = TRUE;
+
         // Add logo, if it exists.
         if (isset($company_nodes[$title])) {
           $organization_wrapper = entity_metadata_wrapper('node', $company_nodes[$title]);
@@ -3988,7 +3992,7 @@ function drupalorg_user_view($account, $view_mode) {
       }
       else {
         // Move non-current organizations.
-        $companies_worked_for[] = $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#markup'];
+        $companies_worked_for[$title] = $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#markup'];
         hide($account->content['field_organizations'][$n]);
       }
     }
@@ -4002,6 +4006,10 @@ function drupalorg_user_view($account, $view_mode) {
       }
       $account->content['field_industries_worked_in'][0]['#markup'] = implode(', ', $field_industries_worked_in);
     }
+
+    // Ensure that any duplicates are removed if a value is present in both
+    // current and previous companies.
+    $companies_worked_for = array_diff_key($companies_worked_for, $current_companies);
 
     // Add companies worked for.
     if (!empty($companies_worked_for)) {
