@@ -12,8 +12,8 @@ $plugin = [
     'commit_view' => '%base_url/%repo_path/commit/?id=%revision',
     'file_log_view' => '%base_url/%repo_path/log/%path%branch',
     'directory_log_view' => '%base_url/%repo_path/log/%path%branch',
-    'file_view' => '%base_url/%repo_path/tree/%path?id=%revision%branch',
-    'directory_view' => '%base_url/%repo_path/tree/%path?id=%revision%branch',
+    'file_view' => '%base_url/%repo_path/tree/%path?%args',
+    'directory_view' => '%base_url/%repo_path/tree/%path?%args',
     // @todo does cgit support diffing arbitrary files on different revisions?
     'diff' => '',
   ],

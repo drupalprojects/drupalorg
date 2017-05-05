@@ -26,6 +26,25 @@ class DrupalorgUrlHandlerCgit extends VersioncontrolRepositoryUrlHandlerCgit {
   }
 
   public function getItemViewUrl($item, $current_label = NULL) {
-    return $this->replaceRepoPath(parent::getItemViewUrl($item, $current_label));
+    // Removed items has not blob hash
+    if (is_null($item->blob_hash)) {
+      return '';
+    }
+
+    $args = [];
+    if (!empty($item->revision)) {
+      $args['id'] = $item->revision;
+    }
+    if (isset($current_label->type) && $current_label->type == VERSIONCONTROL_LABEL_BRANCH && isset($current_label->name)) {
+      $args['h'] = $current_label->name;
+    }
+
+    $placeholders = [
+      '%repo_name' => $this->repository->name,
+      '%path' => substr($item->path, 1),
+      '%args' => drupal_http_build_query($args),
+    ];
+
+    return $this->replaceRepoPath(strtr($this->getTemplateUrl($item->isFile() ? 'file_view' : 'directory_view'), $placeholders));
   }
 }
