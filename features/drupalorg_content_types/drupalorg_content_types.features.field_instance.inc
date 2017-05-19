@@ -629,7 +629,7 @@ function drupalorg_content_types_field_default_field_instances() {
     'settings' => array(
       'description_field' => 0,
       'file_directory' => '',
-      'file_extensions' => 'jpg jpeg gif png txt xls pdf ppt pps odt ods odp gz tgz patch diff zip test info po pot psd yml mov mp4 avi mkv',
+      'file_extensions' => 'jpg jpeg gif png txt xls pdf ppt pps odt ods odp gz tgz patch diff zip test info po pot psd yml mov mp4 avi mkv mp3',
       'max_filesize' => '',
       'user_register_form' => FALSE,
     ),
