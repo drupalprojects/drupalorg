@@ -3185,7 +3185,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
             theme('image', array(
               'path' => drupal_get_path('module', 'drupalorg') . '/images/association_org_member_badge.svg',
               'alt' => t('Drupal Association Organization Member badge'),
-            )), 'https://www.drupal.org/association/membership', array(
+            )), 'https://www.drupal.org/association/membership/organization', array(
             'html' => TRUE,
             'attributes' => array(
               'title' => t('Drupal Association Organization Member'),
@@ -4028,14 +4028,14 @@ function drupalorg_user_view($account, $view_mode) {
   }
   if ($membership = drupalorg_civimembership_data($account->name, 'Individual')) {
     $account->content['drupalorg_membership'][] = array(
-      '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/membership"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_ind_member_badge.svg') . '" alt="' . t('Drupal Association Individual Member') . '" /></a></div></div>',
+      '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/membership/individual"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_ind_member_badge.svg') . '" alt="' . t('Drupal Association Individual Member') . '" /></a></div></div>',
     );
 
     if ($account->uid === $user->uid) {
       switch ($membership->membership_status) {
         case 'New':
         case 'Current':
-          $membership_personal = t('<strong>You Rock!</strong> Thank you for purchasing a <a href="https://www.drupal.org/association">Drupal Association</a> membership. Your support has helped us to support the Drupal community.<br />Your membership will expire on @expiration_date.', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'j F Y')));
+          $membership_personal = t('<p></p><strong>You Rock!</strong> Thank you for purchasing a <a href="https://www.drupal.org/association">Drupal Association</a> membership. Your support has helped us to support the Drupal community.</p> <p>More information about memberships can be found by clicking on your membership badge.</p>');
           break;
 
         case 'Grace':
@@ -4043,7 +4043,7 @@ function drupalorg_user_view($account, $view_mode) {
           break;
 
         case 'Grace Period':
-          $membership_personal = t('<strong>Oh No!</strong> Your membership expired on @expiration_date. The <a href="https://www.drupal.org/association">Drupal Association</a> depends on your continued support to keep Drupal.org up and running. <a href="https://www.drupal.org/association/membership">Renew your membership today</a> so your badge stays visible and your access to benefits continues. Thank you!', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'j F Y')));
+          $membership_personal = t('<strong>Oh No!</strong> Your membership expired on @expiration_date. The <a href="https://www.drupal.org/association">Drupal Association</a> depends on your continued support to keep Drupal.org up and running. <a href="https://www.drupal.org/association/membership/individual">Renew your membership today</a> so your badge stays visible and your access to benefits continues. Thank you!', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'j F Y')));
           break;
       }
     }
