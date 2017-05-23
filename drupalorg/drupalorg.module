@@ -5796,7 +5796,7 @@ function drupalorg_lead_capture_form($form) {
  */
 function drupalorg_lead_capture_submit($form, &$form_state) {
   // The external form action url
-  $url = variable_get('salesforce_lead_url', 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8');
+  $url = variable_get('salesforce_lead_url', 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8');
   // The form input
   $form_input = array(
     'oid' => '00DA0000000ARBs',
