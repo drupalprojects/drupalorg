@@ -35,6 +35,16 @@ function drupalorg_permission() {
 }
 
 /**
+ * Implements hook_custom_theme().
+ */
+function drupalorg_custom_theme() {
+  // hook_custom_theme() is invoked before hook_init(). og_theme causes
+  // mailchimp to check if its libraries are loaded in some cases. Load them
+  // early.
+  composer_manager_init();
+}
+
+/**
  * Implements hook_init().
  */
 function drupalorg_init() {
@@ -4558,6 +4568,11 @@ function drupalorg_module_implements_alter(&$implementations, $hook) {
   if ($hook === 'entity_info_alter') {
     unset($implementations['drupalorg']);
     $implementations['drupalorg'] = NULL;
+  }
+
+  // Execute drupalorg_custom_theme() before og_theme_custom_theme().
+  if ($hook === 'custom_theme') {
+    $implementations = ['drupalorg' => NULL] + $implementations;
   }
 }
 
