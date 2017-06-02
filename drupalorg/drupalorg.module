@@ -4305,7 +4305,7 @@ function drupalorg_preprocess_comment(&$v) {
 
     // Add extra classes.
     $v['classes_array'][] = 'system-message';
-    if (isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('/^The last submitted patch, .*, failed testing.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
+    if (isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('/^The last submitted patch, .*, failed testing./', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
       $v['classes_array'][] = 'testing-failed';
     }
     elseif (isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('/queued .* for re-testing\.$/', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) {
