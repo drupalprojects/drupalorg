@@ -4,7 +4,6 @@
  * Implements hook_views_data().
  */
 function drupalorg_views_data() {
-
   return array(
     'views_entity_node' => array(
       'drupalorg_not_spam' => array(
@@ -40,20 +39,19 @@ function drupalorg_views_data() {
         ),
       ),
     ),
-//Base drupalorg_comment_deleted table description.
+    // Base drupalorg_comment_deleted table description.
     'drupalorg_comment_deleted' => array(
       'table' => array(
         'group' => t('Drupalorg comment deleted.'),
       ),
-// UID
+      // UID
       'uid' => array(
         'title' => t('User uid'),
         'help' => t('The user that wrote the comment that was spam deleted'),
         'field' => array(
           'handler' => 'views_handler_field',
         ),
-
-// UID relationship.
+        // UID relationship.
         'relationship' => array(
           'base' => 'users',
           'title' => t('User'),
@@ -68,7 +66,7 @@ function drupalorg_views_data() {
           'handler' => 'views_handler_argument_numeric',
         ),
       ),
-// NID
+      // NID
       'nid' => array(
         'title' => t('Spam node id'),
         'help' => t('Node id of spam node.'),
@@ -82,7 +80,7 @@ function drupalorg_views_data() {
           'handler' => 'views_handler_argument_numeric',
         ),
       ),
-// Spam subject.
+      // Spam subject.
       'subject' => array(
         'title' => t('Subject/title of spam node.'),
         'help' => t('Display the subject or title of a spam node'),
@@ -90,7 +88,7 @@ function drupalorg_views_data() {
           'handler' => 'views_handler_field',
         ),
       ),
-// Comment body.
+      // Comment body.
       'comment_body' => array(
         'title' => t('Body of spam node.'),
         'help' => t('Display the body of a spam node'),
@@ -106,7 +104,7 @@ function drupalorg_views_data() {
  * Implements hook_views_data_alter().
  */
 function drupalorg_views_data_alter(&$data) {
-// Add the deleted spam comment relationship.
+  // Add the deleted spam comment relationship.
   $data['users']['drupalorg_comment_deleted_rel'] = array(
     'group' => t('Drupalorg comment uid'),
     'title' => t('Drupalorg comment deleted rel - uid'),
