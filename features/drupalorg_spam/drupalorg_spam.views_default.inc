@@ -149,7 +149,7 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['fields']['manage_button']['id'] = 'manage_button';
   $handler->display->display_options['fields']['manage_button']['table'] = 'distil_registration';
   $handler->display->display_options['fields']['manage_button']['field'] = 'manage_button';
-  /* Field: Distil Registration Data: D_IID Fingerprint */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['fingerprint']['id'] = 'fingerprint';
   $handler->display->display_options['fields']['fingerprint']['table'] = 'distil_registration';
   $handler->display->display_options['fields']['fingerprint']['field'] = 'fingerprint';
@@ -198,7 +198,7 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['fields']['fingerprint_age']['id'] = 'fingerprint_age';
   $handler->display->display_options['fields']['fingerprint_age']['table'] = 'distil_registration';
   $handler->display->display_options['fields']['fingerprint_age']['field'] = 'fingerprint_age';
-  /* Filter criterion: Distil Registration Data: D_IID Fingerprint */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['fingerprint']['id'] = 'fingerprint';
   $handler->display->display_options['filters']['fingerprint']['table'] = 'distil_registration';
   $handler->display->display_options['filters']['fingerprint']['field'] = 'fingerprint';
@@ -883,6 +883,15 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
   $handler->display->display_options['relationships']['uid_1']['table'] = 'node_revision';
   $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
+  /* Relationship: Drupalorg comment nid: Drupalorg comment deleted - nid */
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['id'] = 'drupalorg_comment_deleted_rel';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['table'] = 'node';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['field'] = 'drupalorg_comment_deleted_rel';
+  /* Relationship: Drupalorg comment uid: Drupalorg comment deleted rel - uid */
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['id'] = 'drupalorg_comment_deleted_rel_1';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['table'] = 'users';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['field'] = 'drupalorg_comment_deleted_rel';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['relationship'] = 'uid_1';
   /* Field: Content: Type */
   $handler->display->display_options['fields']['type']['id'] = 'type';
   $handler->display->display_options['fields']['type']['table'] = 'node';
@@ -922,6 +931,18 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid_1';
   $handler->display->display_options['fields']['name']['label'] = 'Author';
+  /* Field: Drupalorg comment deleted.: Body of spam node. */
+  $handler->display->display_options['fields']['comment_body']['id'] = 'comment_body';
+  $handler->display->display_options['fields']['comment_body']['table'] = 'drupalorg_comment_deleted';
+  $handler->display->display_options['fields']['comment_body']['field'] = 'comment_body';
+  $handler->display->display_options['fields']['comment_body']['relationship'] = 'drupalorg_comment_deleted_rel';
+  /* Field: Drupalorg comment deleted.: Subject/title of spam node. */
+  $handler->display->display_options['fields']['subject']['id'] = 'subject';
+  $handler->display->display_options['fields']['subject']['table'] = 'drupalorg_comment_deleted';
+  $handler->display->display_options['fields']['subject']['field'] = 'subject';
+  $handler->display->display_options['fields']['subject']['relationship'] = 'drupalorg_comment_deleted_rel';
+  $handler->display->display_options['fields']['subject']['label'] = 'Subject of spam node.';
+  $handler->display->display_options['fields']['subject']['element_label_colon'] = FALSE;
   /* Field: Content: Remove spam flags */
   $handler->display->display_options['fields']['drupalorg_not_spam']['id'] = 'drupalorg_not_spam';
   $handler->display->display_options['fields']['drupalorg_not_spam']['table'] = 'views_entity_node';
@@ -985,6 +1006,8 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
     t('flag'),
     t('counter'),
     t('revision user'),
+    t('Drupalorg comment deleted nid rel.'),
+    t('Drupalorg comment deleted rel - uid'),
     t('Type'),
     t('Reports'),
     t('.'),
@@ -992,6 +1015,8 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
     t('Summary'),
     t('Updated'),
     t('Author'),
+    t('Body of spam node.'),
+    t('Subject of spam node.'),
     t('Administer content'),
     t('Content pane'),
     t('View panes'),
@@ -1017,7 +1042,7 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '100';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '50';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['quantity'] = '9';
@@ -1118,6 +1143,17 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['relationships']['flag_content_rel_1']['required'] = 0;
   $handler->display->display_options['relationships']['flag_content_rel_1']['flag'] = 'drupalorg_node_spam';
   $handler->display->display_options['relationships']['flag_content_rel_1']['user_scope'] = 'any';
+  /* Relationship: Drupalorg comment uid: Drupalorg comment deleted rel - uid */
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['id'] = 'drupalorg_comment_deleted_rel_1';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['table'] = 'users';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['field'] = 'drupalorg_comment_deleted_rel';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['label'] = 'Drupalorg comment deleted.';
+  /* Relationship: Drupalorg comment nid: Drupalorg comment deleted - nid */
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['id'] = 'drupalorg_comment_deleted_rel';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['table'] = 'node';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['field'] = 'drupalorg_comment_deleted_rel';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['relationship'] = 'uid';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['label'] = 'Drupalorg comment deleted.';
   /* Field: User: Uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
   $handler->display->display_options['fields']['uid']['table'] = 'users';
@@ -1168,6 +1204,18 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['fields']['fasttoggle_block_user']['table'] = 'users';
   $handler->display->display_options['fields']['fasttoggle_block_user']['field'] = 'fasttoggle_block_user';
   $handler->display->display_options['fields']['fasttoggle_block_user']['label'] = 'Operations';
+  /* Field: Drupalorg comment deleted.: Subject/title of spam node. */
+  $handler->display->display_options['fields']['subject']['id'] = 'subject';
+  $handler->display->display_options['fields']['subject']['table'] = 'drupalorg_comment_deleted';
+  $handler->display->display_options['fields']['subject']['field'] = 'subject';
+  $handler->display->display_options['fields']['subject']['relationship'] = 'drupalorg_comment_deleted_rel_1';
+  $handler->display->display_options['fields']['subject']['label'] = 'Spam subject';
+  $handler->display->display_options['fields']['subject']['element_label_colon'] = FALSE;
+  /* Field: Drupalorg comment deleted.: Body of spam node. */
+  $handler->display->display_options['fields']['comment_body']['id'] = 'comment_body';
+  $handler->display->display_options['fields']['comment_body']['table'] = 'drupalorg_comment_deleted';
+  $handler->display->display_options['fields']['comment_body']['field'] = 'comment_body';
+  $handler->display->display_options['fields']['comment_body']['relationship'] = 'drupalorg_comment_deleted_rel_1';
   /* Sort criterion: User: Created date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'users';
@@ -1221,6 +1269,7 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
     t('counter'),
     t('nodes'),
     t('node-flag'),
+    t('Drupalorg comment deleted.'),
     t('Username'),
     t('Reports'),
     t('.'),
@@ -1228,6 +1277,8 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
     t('E-mail'),
     t('Operations'),
     t('<a href="/user/[uid]/admin-content">Administer content</a>'),
+    t('Spam subject'),
+    t('Body of spam node.'),
     t('Content pane'),
     t('View panes'),
   );
