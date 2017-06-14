@@ -238,6 +238,10 @@ function drupalorg_versioncontrol_versioncontrol_project_issue_git_issue_notific
     $valid_branch_name_regex = '/^((\d+)(\.(\d+))?\.x)-(\d+)\.x$/';
   }
   if (preg_match($valid_branch_name_regex, $ref->refname)) {
+    if ($ref->eventCreatedMe()) {
+      // Do not allow new release branches to notify when they are initially pushed.
+      $valid_issue_nids = array();
+    }
     // Allow notifications on any issue if the branch looks like a release branch.
     return;
   }
