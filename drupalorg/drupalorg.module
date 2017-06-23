@@ -13,11 +13,6 @@
 define('DRUPALORG_CORE_NID', 3060);
 
 /**
- * Major version number for core project listings.
- */
-define('DRUPALORG_DOWNLOAD_MAJOR_VERSION', 8);
-
-/**
  * TID for API compatibility for project listings.
  */
 define('DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID', 7234); // 8.x
@@ -1492,7 +1487,7 @@ function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
  * Implementation of template_preprocess_drupalorg_download().
  */
 function drupalorg_preprocess_drupalorg_download(&$variables) {
-  $release = project_release_get_current_recommended(DRUPALORG_CORE_NID, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID, DRUPALORG_DOWNLOAD_MAJOR_VERSION);
+  $release = project_release_get_current_recommended(DRUPALORG_CORE_NID, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID);
   $variables['core_download_button'] = l(t('Download Drupal @version', ['@version' => $release->field_release_version[LANGUAGE_NONE][0]['value']]), 'node/' . $release->nid, ['attributes' => ['class' => ['primary-button']]]);
 
   foreach (['project_module', 'project_theme', 'project_distribution'] as $type) {
