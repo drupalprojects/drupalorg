@@ -213,6 +213,32 @@ function drupalorg_book_listings_field_default_field_bases() {
     'type_name' => 'book_listing',
   );
 
+  // Exported field_base: 'field_cover_image'.
+  $field_bases['field_cover_image'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_cover_image',
+    'indexes' => array(
+      'fid' => array(
+        0 => 'fid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'image',
+    'settings' => array(
+      'default_image' => 0,
+      'description_field' => 0,
+      'list_default' => 1,
+      'list_field' => 0,
+      'uri_scheme' => 'public',
+    ),
+    'translatable' => 0,
+    'type' => 'image',
+    'type_name' => 'book_listing',
+  );
+
   // Exported field_base: 'field_official_website'.
   $field_bases['field_official_website'] = array(
     'active' => 1,

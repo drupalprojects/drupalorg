@@ -31,6 +31,7 @@ features[field_base][] = field_book_listing_date
 features[field_base][] = field_book_page_count
 features[field_base][] = field_book_purchase_link
 features[field_base][] = field_book_subtitle
+features[field_base][] = field_cover_image
 features[field_base][] = field_official_website
 features[field_base][] = field_publisher
 features[field_base][] = taxonomy_vocabulary_60
