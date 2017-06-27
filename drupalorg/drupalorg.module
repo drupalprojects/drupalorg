@@ -1399,7 +1399,7 @@ function drupalorg_preprocess_page(&$variables) {
   }
 
   // Group breadcrumbs.
-  if ($context || $router['path'] === 'group/node/%/admin/content') {
+  if ($context || $router['path'] === 'group/node/%/admin/content' || (isset($variables['node']) && $variables['node']->type === 'casestudy')) {
     // Reset drupalorg_crosssite_preprocess_page() overrides.
     $variables['section_name'] = '';
     unset($variables['breadcrumb']);
@@ -3262,10 +3262,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
     }
   }
   elseif ($node->type === 'casestudy') {
-    $breadcrumb = array(
-      l(t('Home'), ''),
-      l(t('Case Studies'), 'case-studies'),
-    );
+    $breadcrumb = [l(t('Case studies'), 'case-studies')];
     $status = field_get_items('node', $node, 'field_status');
     if ($status[0]['value'] === 'Featured') {
       $breadcrumb[] = l(t('Featured showcase'), 'case-studies/featured');
