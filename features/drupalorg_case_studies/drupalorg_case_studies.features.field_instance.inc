@@ -79,7 +79,7 @@ function drupalorg_case_studies_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 3,
+      'weight' => 4,
     ),
   );
 
@@ -140,7 +140,7 @@ function drupalorg_case_studies_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete_tags',
-      'weight' => 9,
+      'weight' => 10,
     ),
   );
 
@@ -233,9 +233,71 @@ function drupalorg_case_studies_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 8,
+      'weight' => 9,
     ),
     'widget_type' => 'text_textarea',
+  );
+
+  // Exported field_instance: 'node-casestudy-field_cover_photo'.
+  $field_instances['node-casestudy-field_cover_photo'] = array(
+    'bundle' => 'casestudy',
+    'deleted' => 0,
+    'description' => 'Used if featured on home page.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => '',
+          'image_style' => '',
+        ),
+        'type' => 'image',
+        'weight' => 18,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_cover_photo',
+    'label' => 'Cover photo',
+    'required' => 0,
+    'settings' => array(
+      'alt_field' => 0,
+      'default_image' => 0,
+      'file_directory' => 'casestudy/cover',
+      'file_extensions' => 'png gif jpg jpeg',
+      'max_filesize' => '',
+      'max_resolution' => '',
+      'min_resolution' => '1000x300',
+      'title_field' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'image',
+      'settings' => array(
+        'preview_image_style' => 'thumbnail',
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'image_image',
+      'weight' => 35,
+    ),
   );
 
   // Exported field_instance: 'node-casestudy-field_developed'.
@@ -327,7 +389,7 @@ function drupalorg_case_studies_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 11,
+      'weight' => 12,
     ),
     'widget_type' => 'text_textarea',
   );
@@ -421,7 +483,7 @@ function drupalorg_case_studies_field_default_field_instances() {
         'rows' => 10,
       ),
       'type' => 'text_textarea',
-      'weight' => 6,
+      'weight' => 7,
     ),
     'widget_type' => 'text_textarea',
   );
@@ -538,7 +600,7 @@ function drupalorg_case_studies_field_default_field_instances() {
         'progress_indicator' => 'bar',
       ),
       'type' => 'image_image',
-      'weight' => 12,
+      'weight' => 13,
     ),
     'widget_type' => 'imagefield_widget',
   );
@@ -649,9 +711,71 @@ function drupalorg_case_studies_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 4,
+      'weight' => 5,
     ),
     'widget_type' => 'link',
+  );
+
+  // Exported field_instance: 'node-casestudy-field_logo'.
+  $field_instances['node-casestudy-field_logo'] = array(
+    'bundle' => 'casestudy',
+    'deleted' => 0,
+    'description' => 'Used if featured on home page.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => '',
+          'image_style' => '',
+        ),
+        'type' => 'image',
+        'weight' => 17,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'rss' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_logo',
+    'label' => 'Project logo',
+    'required' => 0,
+    'settings' => array(
+      'alt_field' => 0,
+      'default_image' => 0,
+      'file_directory' => 'casestudy/logo',
+      'file_extensions' => 'png gif jpg jpeg',
+      'max_filesize' => '',
+      'max_resolution' => '',
+      'min_resolution' => '200x200',
+      'title_field' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'image',
+      'settings' => array(
+        'preview_image_style' => 'thumbnail',
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'image_image',
+      'weight' => 1,
+    ),
   );
 
   // Exported field_instance: 'node-casestudy-field_mainimage'.
@@ -774,7 +898,7 @@ function drupalorg_case_studies_field_default_field_instances() {
         'progress_indicator' => 'bar',
       ),
       'type' => 'image_image',
-      'weight' => 1,
+      'weight' => 2,
     ),
     'widget_type' => 'imagefield_widget',
   );
@@ -962,7 +1086,7 @@ function drupalorg_case_studies_field_default_field_instances() {
         'rows' => 4,
       ),
       'type' => 'text_textarea',
-      'weight' => 5,
+      'weight' => 6,
     ),
     'widget_type' => 'text_textarea',
   );
@@ -1120,7 +1244,7 @@ function drupalorg_case_studies_field_default_field_instances() {
         'default_value_php' => NULL,
       ),
       'type' => 'options_buttons',
-      'weight' => 14,
+      'weight' => 15,
     ),
     'widget_type' => 'optionwidgets_buttons',
   );
@@ -1182,7 +1306,7 @@ function drupalorg_case_studies_field_default_field_instances() {
         'size' => 100,
       ),
       'type' => 'entityreference_autocomplete_tags',
-      'weight' => 10,
+      'weight' => 11,
     ),
   );
 
@@ -1292,7 +1416,7 @@ function drupalorg_case_studies_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 2,
+      'weight' => 3,
     ),
   );
 
@@ -1360,7 +1484,7 @@ function drupalorg_case_studies_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 13,
+      'weight' => 14,
     ),
   );
 
@@ -1372,6 +1496,7 @@ function drupalorg_case_studies_field_default_field_instances() {
   t('Community contributions');
   t('Community contributions are what make Drupal great. Highlight any contributions made back into the community as a result of this project. Include patches, modules, themes, documentation, new community members, and anything else of benefit to the Drupal community.<br /><br />');
   t('Completed Drupal site or project URL');
+  t('Cover photo');
   t('Describe the project (goals, requirements and outcome)');
   t('Describe which CMSs/frameworks you\'ve considered and why you\'ve chosen Drupal. How Drupal met your project\'s specific needs.<br /><br />');
   t('Discuss the project\'s goals and requirements, timeline and major milestones. What makes your project special? What project management approach you used? What was the outcome of the project? What business problems were solved? What results were achieved (e.g., increased traffic, better performance, etc.) as a result of using Drupal for this project?<br /><br />');
@@ -1383,6 +1508,7 @@ function drupalorg_case_studies_field_default_field_instances() {
   t('List related sector(s)');
   t('Organizations involved');
   t('Primary screenshot');
+  t('Project logo');
   t('Project team');
   t('Provide a brief outline of the business case, some background to the project, and if desired, a short description of the companies participating in the project.<br /><br />');
   t('Sectors');
@@ -1391,6 +1517,7 @@ function drupalorg_case_studies_field_default_field_instances() {
   t('Upload 2-3 additional screenshots of different pages or significant site features. Please include alternate text (for search engines and accessibility reasons). Preferred file format - PNG.<br /><br />');
   t('Use the autocomplete widget if team members or significant contributors are Drupal.org users; otherwise, use the Project team text field below.');
   t('Use the homepage unless you can provide a strong case not to. Preferred format: PNG. No drop shadow or whitespace on the edges.');
+  t('Used if featured on home page.');
   t('Why Drupal was chosen');
   t('Why these modules/theme/distribution were chosen');
   t('You can use this field to upload images and embed them directly into case study content. They won\'t be displayed on the case study node by default.');

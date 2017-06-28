@@ -72,6 +72,28 @@ function drupalorg_case_studies_field_default_field_bases() {
     'type_name' => 'casestudy',
   );
 
+  // Exported field_base: 'field_cover_photo'.
+  $field_bases['field_cover_photo'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_cover_photo',
+    'indexes' => array(
+      'fid' => array(
+        0 => 'fid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'image',
+    'settings' => array(
+      'default_image' => 0,
+      'uri_scheme' => 'public',
+    ),
+    'translatable' => 0,
+    'type' => 'image',
+  );
+
   // Exported field_base: 'field_developed'.
   $field_bases['field_developed'] = array(
     'active' => 1,

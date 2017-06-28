@@ -50,7 +50,7 @@ function drupalorg_case_studies_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modules/Themes/Distributions',
-    'weight' => '7',
+    'weight' => '8',
     'children' => array(
       0 => 'field_module_selection',
       1 => 'taxonomy_vocabulary_5',
