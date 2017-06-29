@@ -10,6 +10,48 @@
 function drupalorg_case_studies_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance:
+  // 'fieldable_panels_pane-case_study-field_case_study'.
+  $field_instances['fieldable_panels_pane-case_study-field_case_study'] = array(
+    'bundle' => 'case_study',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'drupalorg',
+        'settings' => array(),
+        'type' => 'casestudy_card',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'fieldable_panels_pane',
+    'field_name' => 'field_case_study',
+    'label' => 'Case study',
+    'required' => 1,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'STARTS_WITH',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete',
+      'weight' => -4,
+    ),
+  );
+
   // Exported field_instance: 'node-casestudy-body'.
   $field_instances['node-casestudy-body'] = array(
     'bundle' => 'casestudy',
@@ -1492,6 +1534,7 @@ function drupalorg_case_studies_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Additional screenshots');
   t('Brief overview');
+  t('Case study');
   t('Choose "Featured" to promote case study to "Featured showcase" section.');
   t('Community contributions');
   t('Community contributions are what make Drupal great. Highlight any contributions made back into the community as a result of this project. Include patches, modules, themes, documentation, new community members, and anything else of benefit to the Drupal community.<br /><br />');

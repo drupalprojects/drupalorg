@@ -11,6 +11,9 @@ function drupalorg_case_studies_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "field_group" && $api == "field_group") {
     return array("version" => "1");
   }
+  if ($module == "fieldable_panels_panes" && $api == "fieldable_panels_pane_type") {
+    return array("version" => "1");
+  }
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -28,6 +31,37 @@ function drupalorg_case_studies_views_api($module = NULL, $api = NULL) {
  */
 function drupalorg_case_studies_image_default_styles() {
   $styles = array();
+
+  // Exported image style: card-cover.
+  $styles['card-cover'] = array(
+    'label' => 'card-cover',
+    'effects' => array(
+      1 => array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 341,
+          'height' => 144,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
+  // Exported image style: card-logo.
+  $styles['card-logo'] = array(
+    'label' => 'card-logo',
+    'effects' => array(
+      3 => array(
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => 434,
+          'height' => 160,
+          'upscale' => 0,
+        ),
+        'weight' => 2,
+      ),
+    ),
+  );
 
   // Exported image style: case-4-2x.
   $styles['case-4-2x'] = array(
