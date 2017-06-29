@@ -4813,6 +4813,10 @@ function drupalorg_field_formatter_info() {
       'label' => t('Documentation status'),
       'field types' => ['list_text'],
     ],
+    'casestudy_card' => [
+      'label' => t('Case study card'),
+      'field types' => ['entityreference'],
+    ],
   );
 }
 
@@ -4899,6 +4903,36 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
             $element[$delta]['#markup'] = t('This documentation is <strong>deprecated</strong>. !link.', ['!link' => l(t('Recommend a change or new documentation'), 'node/' . $entity->nid . '/discuss')]);
             break;
         }
+      }
+      break;
+
+    case 'casestudy_card':
+      foreach ($items as $delta => $item) {
+        $wrapper = entity_metadata_wrapper('node', node_load($item['target_id']));
+        if ($cover = $wrapper->field_cover_photo->value()) {
+          $output = '<div class="pane-style-card pane-style-built-by with-background" style="background-image: url(' . image_style_url('card-cover', $cover['uri']) . ')">';
+        }
+        else {
+          $output = '<div class="pane-style-card pane-style-built-by">';
+        }
+        $output .= '<div class="pane-content-inner"><div class="field-name-field-cta-graphic">';
+        if ($logo = $wrapper->field_logo->value()) {
+          $output .= theme('image_style', [
+            'style_name' => 'card-logo',
+            'path' => $logo['uri'],
+            'alt' => $wrapper->label(),
+          ]);
+        }
+        $output .= '</div>';
+        $output .= $wrapper->body->summary->value(['sanitize' => TRUE]);
+        $output .= '</div><div class="built-by"><div class="built-by-label"><small>built by</small></div><div class="field-name-field-cta-graphic">';
+        $output .= theme('image_style', [
+          'style_name' => 'card-logo',
+          'path' => $wrapper->field_case_organizations[0]->field_logo->value()['uri'],
+          'alt' => $wrapper->field_case_organizations[0]->label(),
+        ]);
+        $output .= '</div></div></div>';
+        $element[$delta]['#markup'] = l($output, 'node/' . $wrapper->getIdentifier(), ['html' => TRUE, 'attributes' => ['class' => ['card-link']]]);
       }
       break;
   }
