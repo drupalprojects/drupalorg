@@ -539,6 +539,7 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'administer comments';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -562,6 +563,9 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
     'drupalorg_not_spam' => 'nothing',
     'nothing' => 'nothing',
     'fasttoggle_block_user' => 'nothing',
+    'count_1' => 'count_1',
+    'name_1' => 'name_1',
+    'nothing_1' => 'nothing_1',
   );
   $handler->display->display_options['style_options']['default'] = 'count';
   $handler->display->display_options['style_options']['info'] = array(
@@ -627,6 +631,25 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
       'separator' => '',
       'empty_column' => 0,
     ),
+    'count_1' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name_1' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ', ',
+      'empty_column' => 1,
+    ),
+    'nothing_1' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
   );
   /* Relationship: Comment: Content */
   $handler->display->display_options['relationships']['nid']['id'] = 'nid';
@@ -649,6 +672,11 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['relationships']['uid']['table'] = 'comment';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   $handler->display->display_options['relationships']['uid']['required'] = TRUE;
+  /* Relationship: Flags: User */
+  $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['relationships']['uid_1']['table'] = 'flagging';
+  $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid_1']['relationship'] = 'flag_content_rel';
   /* Field: Comment: Author uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
   $handler->display->display_options['fields']['uid']['table'] = 'comment';
@@ -714,11 +742,31 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['fields']['fasttoggle_block_user']['relationship'] = 'uid';
   $handler->display->display_options['fields']['fasttoggle_block_user']['label'] = '';
   $handler->display->display_options['fields']['fasttoggle_block_user']['element_label_colon'] = FALSE;
+  /* Field: Flags: Flag counter */
+  $handler->display->display_options['fields']['count_1']['id'] = 'count_1';
+  $handler->display->display_options['fields']['count_1']['table'] = 'flag_counts';
+  $handler->display->display_options['fields']['count_1']['field'] = 'count';
+  $handler->display->display_options['fields']['count_1']['relationship'] = 'flag_count_rel';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name_1']['id'] = 'name_1';
+  $handler->display->display_options['fields']['name_1']['table'] = 'users';
+  $handler->display->display_options['fields']['name_1']['field'] = 'name';
+  $handler->display->display_options['fields']['name_1']['relationship'] = 'uid_1';
+  $handler->display->display_options['fields']['name_1']['label'] = 'Flagger(s)';
+  $handler->display->display_options['fields']['name_1']['element_label_colon'] = FALSE;
+  /* Sort criterion: Flags: Flag counter */
+  $handler->display->display_options['sorts']['count']['id'] = 'count';
+  $handler->display->display_options['sorts']['count']['table'] = 'flag_counts';
+  $handler->display->display_options['sorts']['count']['field'] = 'count';
+  $handler->display->display_options['sorts']['count']['relationship'] = 'flag_count_rel';
+  $handler->display->display_options['sorts']['count']['order'] = 'DESC';
+  $handler->display->display_options['sorts']['count']['expose']['label'] = 'Flag counter';
   /* Sort criterion: Comment: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'comment';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  $handler->display->display_options['sorts']['created']['expose']['label'] = 'Post date';
   /* Filter criterion: Comment: Approved */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'comment';
@@ -737,6 +785,119 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'drupalorg_comment_spam_pane');
+  $handler->display->display_options['defaults']['group_by'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Comment: Content */
+  $handler->display->display_options['relationships']['nid']['id'] = 'nid';
+  $handler->display->display_options['relationships']['nid']['table'] = 'comment';
+  $handler->display->display_options['relationships']['nid']['field'] = 'nid';
+  $handler->display->display_options['relationships']['nid']['required'] = TRUE;
+  /* Relationship: Flags: drupalorg_comment_spam */
+  $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'comment';
+  $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'drupalorg_comment_spam';
+  $handler->display->display_options['relationships']['flag_content_rel']['user_scope'] = 'any';
+  /* Relationship: Flags: drupalorg_comment_spam counter */
+  $handler->display->display_options['relationships']['flag_count_rel']['id'] = 'flag_count_rel';
+  $handler->display->display_options['relationships']['flag_count_rel']['table'] = 'comment';
+  $handler->display->display_options['relationships']['flag_count_rel']['field'] = 'flag_count_rel';
+  $handler->display->display_options['relationships']['flag_count_rel']['flag'] = 'drupalorg_comment_spam';
+  /* Relationship: Comment: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'comment';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['required'] = TRUE;
+  /* Relationship: Flags: User */
+  $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['relationships']['uid_1']['table'] = 'flagging';
+  $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid_1']['relationship'] = 'flag_content_rel';
+  /* Relationship: Flags: drupalorg_comment_spam counter */
+  $handler->display->display_options['relationships']['flag_count_rel_1']['id'] = 'flag_count_rel_1';
+  $handler->display->display_options['relationships']['flag_count_rel_1']['table'] = 'comment';
+  $handler->display->display_options['relationships']['flag_count_rel_1']['field'] = 'flag_count_rel';
+  $handler->display->display_options['relationships']['flag_count_rel_1']['required'] = 0;
+  $handler->display->display_options['relationships']['flag_count_rel_1']['flag'] = 'drupalorg_comment_spam';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Comment: Author uid */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'comment';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid']['label'] = '';
+  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['uid']['link_to_user'] = FALSE;
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'node';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['relationship'] = 'nid';
+  /* Field: Flags: Flag counter */
+  $handler->display->display_options['fields']['count']['id'] = 'count';
+  $handler->display->display_options['fields']['count']['table'] = 'flag_counts';
+  $handler->display->display_options['fields']['count']['field'] = 'count';
+  $handler->display->display_options['fields']['count']['relationship'] = 'flag_count_rel';
+  $handler->display->display_options['fields']['count']['label'] = 'Reports';
+  $handler->display->display_options['fields']['count']['separator'] = '';
+  /* Field: Comment: Title */
+  $handler->display->display_options['fields']['subject']['id'] = 'subject';
+  $handler->display->display_options['fields']['subject']['table'] = 'comment';
+  $handler->display->display_options['fields']['subject']['field'] = 'subject';
+  $handler->display->display_options['fields']['subject']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['subject']['alter']['ellipsis'] = FALSE;
+  /* Field: Comment: Comment */
+  $handler->display->display_options['fields']['comment_body']['id'] = 'comment_body';
+  $handler->display->display_options['fields']['comment_body']['table'] = 'field_data_comment_body';
+  $handler->display->display_options['fields']['comment_body']['field'] = 'comment_body';
+  $handler->display->display_options['fields']['comment_body']['type'] = 'text_trimmed';
+  $handler->display->display_options['fields']['comment_body']['settings'] = array(
+    'trim_length' => '600',
+  );
+  /* Field: Comment: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'comment';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['label'] = 'Updated';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['second_date_format'] = 'long';
+  /* Field: Comment: Author */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'comment';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  /* Field: Comment: Remove spam flags */
+  $handler->display->display_options['fields']['drupalorg_not_spam']['id'] = 'drupalorg_not_spam';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['table'] = 'views_entity_comment';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['field'] = 'drupalorg_not_spam';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['label'] = '';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['element_label_colon'] = FALSE;
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = 'Operations';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="/user/[uid]/admin-content">Administer content</a>';
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  /* Field: User: Block Link (Fasttoggle) */
+  $handler->display->display_options['fields']['fasttoggle_block_user']['id'] = 'fasttoggle_block_user';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['table'] = 'users';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['field'] = 'fasttoggle_block_user';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['label'] = '';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['element_label_colon'] = FALSE;
+  /* Field: Flags: Flag counter */
+  $handler->display->display_options['fields']['count_1']['id'] = 'count_1';
+  $handler->display->display_options['fields']['count_1']['table'] = 'flag_counts';
+  $handler->display->display_options['fields']['count_1']['field'] = 'count';
+  $handler->display->display_options['fields']['count_1']['relationship'] = 'flag_count_rel';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name_1']['id'] = 'name_1';
+  $handler->display->display_options['fields']['name_1']['table'] = 'users';
+  $handler->display->display_options['fields']['name_1']['field'] = 'name';
+  $handler->display->display_options['fields']['name_1']['relationship'] = 'uid_1';
+  $handler->display->display_options['fields']['name_1']['label'] = 'First flagger';
+  $handler->display->display_options['fields']['name_1']['element_label_colon'] = FALSE;
   $translatables['drupalorg_comment_spam'] = array(
     t('Master'),
     t('more'),
@@ -756,6 +917,7 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
     t('flag'),
     t('counter'),
     t('author'),
+    t('Flag user'),
     t('Type'),
     t('Reports'),
     t('.'),
@@ -765,7 +927,12 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
     t('Author'),
     t('Operations'),
     t('<a href="/user/[uid]/admin-content">Administer content</a>'),
+    t('Flag counter'),
+    t(','),
+    t('Flagger(s)'),
+    t('Post date'),
     t('Content pane'),
+    t('First flagger'),
     t('View panes'),
   );
   $export['drupalorg_comment_spam'] = $view;
@@ -1154,6 +1321,11 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['field'] = 'drupalorg_comment_deleted_rel';
   $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['relationship'] = 'uid';
   $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['label'] = 'Drupalorg comment deleted.';
+  /* Relationship: Flags: User */
+  $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['relationships']['uid_1']['table'] = 'flagging';
+  $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid_1']['relationship'] = 'flag_content_rel';
   /* Field: User: Uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
   $handler->display->display_options['fields']['uid']['table'] = 'users';
@@ -1182,6 +1354,12 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
+  /* Field: User: Last login */
+  $handler->display->display_options['fields']['login']['id'] = 'login';
+  $handler->display->display_options['fields']['login']['table'] = 'users';
+  $handler->display->display_options['fields']['login']['field'] = 'login';
+  $handler->display->display_options['fields']['login']['date_format'] = 'short';
+  $handler->display->display_options['fields']['login']['second_date_format'] = 'long';
   /* Field: User: E-mail */
   $handler->display->display_options['fields']['mail']['id'] = 'mail';
   $handler->display->display_options['fields']['mail']['table'] = 'users';
@@ -1204,18 +1382,23 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['fields']['fasttoggle_block_user']['table'] = 'users';
   $handler->display->display_options['fields']['fasttoggle_block_user']['field'] = 'fasttoggle_block_user';
   $handler->display->display_options['fields']['fasttoggle_block_user']['label'] = 'Operations';
-  /* Field: Drupalorg comment deleted.: Subject/title of spam node. */
-  $handler->display->display_options['fields']['subject']['id'] = 'subject';
-  $handler->display->display_options['fields']['subject']['table'] = 'drupalorg_comment_deleted';
-  $handler->display->display_options['fields']['subject']['field'] = 'subject';
-  $handler->display->display_options['fields']['subject']['relationship'] = 'drupalorg_comment_deleted_rel_1';
-  $handler->display->display_options['fields']['subject']['label'] = 'Spam subject';
-  $handler->display->display_options['fields']['subject']['element_label_colon'] = FALSE;
   /* Field: Drupalorg comment deleted.: Body of spam node. */
   $handler->display->display_options['fields']['comment_body']['id'] = 'comment_body';
   $handler->display->display_options['fields']['comment_body']['table'] = 'drupalorg_comment_deleted';
   $handler->display->display_options['fields']['comment_body']['field'] = 'comment_body';
   $handler->display->display_options['fields']['comment_body']['relationship'] = 'drupalorg_comment_deleted_rel_1';
+  /* Field: Flags: Time last flagged */
+  $handler->display->display_options['fields']['last_updated']['id'] = 'last_updated';
+  $handler->display->display_options['fields']['last_updated']['table'] = 'flag_counts';
+  $handler->display->display_options['fields']['last_updated']['field'] = 'last_updated';
+  $handler->display->display_options['fields']['last_updated']['relationship'] = 'flag_count_rel';
+  $handler->display->display_options['fields']['last_updated']['date_format'] = 'short';
+  $handler->display->display_options['fields']['last_updated']['second_date_format'] = 'long';
+  /* Field: Flags: User uid */
+  $handler->display->display_options['fields']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['fields']['uid_1']['table'] = 'flagging';
+  $handler->display->display_options['fields']['uid_1']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid_1']['relationship'] = 'flag_content_rel';
   /* Sort criterion: User: Created date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'users';
@@ -1249,6 +1432,270 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'spammers_pane');
+  $handler->display->display_options['defaults']['group_by'] = FALSE;
+  $handler->display->display_options['defaults']['query'] = FALSE;
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'uid' => 'uid',
+    'name' => 'name',
+    'count' => 'count',
+    'created' => 'created',
+    'login' => 'login',
+    'mail' => 'mail',
+    'drupalorg_not_spam' => 'fasttoggle_block_user',
+    'nothing' => 'fasttoggle_block_user',
+    'fasttoggle_block_user' => 'fasttoggle_block_user',
+    'comment_body' => 'comment_body',
+    'last_updated' => 'last_updated',
+    'name_1' => 'name_1',
+  );
+  $handler->display->display_options['style_options']['default'] = 'login';
+  $handler->display->display_options['style_options']['info'] = array(
+    'uid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'count' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'created' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'login' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'mail' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'drupalorg_not_spam' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'nothing' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'fasttoggle_block_user' => array(
+      'align' => '',
+      'separator' => ' | ',
+      'empty_column' => 0,
+    ),
+    'comment_body' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'last_updated' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name_1' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ', ',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Flags: drupalorg_user_spam */
+  $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'users';
+  $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel']['required'] = 0;
+  $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'drupalorg_user_spam';
+  $handler->display->display_options['relationships']['flag_content_rel']['user_scope'] = 'any';
+  /* Relationship: Flags: drupalorg_user_spam counter */
+  $handler->display->display_options['relationships']['flag_count_rel']['id'] = 'flag_count_rel';
+  $handler->display->display_options['relationships']['flag_count_rel']['table'] = 'users';
+  $handler->display->display_options['relationships']['flag_count_rel']['field'] = 'flag_count_rel';
+  $handler->display->display_options['relationships']['flag_count_rel']['required'] = 0;
+  $handler->display->display_options['relationships']['flag_count_rel']['flag'] = 'drupalorg_user_spam';
+  /* Relationship: User: Content authored */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'users';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Relationship: Flags: drupalorg_node_spam */
+  $handler->display->display_options['relationships']['flag_content_rel_1']['id'] = 'flag_content_rel_1';
+  $handler->display->display_options['relationships']['flag_content_rel_1']['table'] = 'node';
+  $handler->display->display_options['relationships']['flag_content_rel_1']['field'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel_1']['relationship'] = 'uid';
+  $handler->display->display_options['relationships']['flag_content_rel_1']['label'] = 'node-flag';
+  $handler->display->display_options['relationships']['flag_content_rel_1']['required'] = 0;
+  $handler->display->display_options['relationships']['flag_content_rel_1']['flag'] = 'drupalorg_node_spam';
+  $handler->display->display_options['relationships']['flag_content_rel_1']['user_scope'] = 'any';
+  /* Relationship: Drupalorg comment uid: Drupalorg comment deleted rel - uid */
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['id'] = 'drupalorg_comment_deleted_rel_1';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['table'] = 'users';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['field'] = 'drupalorg_comment_deleted_rel';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['label'] = 'Drupalorg comment deleted.';
+  /* Relationship: Drupalorg comment nid: Drupalorg comment deleted - nid */
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['id'] = 'drupalorg_comment_deleted_rel';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['table'] = 'node';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['field'] = 'drupalorg_comment_deleted_rel';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['relationship'] = 'uid';
+  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['label'] = 'Drupalorg comment deleted.';
+  /* Relationship: Flags: User */
+  $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['relationships']['uid_1']['table'] = 'flagging';
+  $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid_1']['relationship'] = 'flag_content_rel_1';
+  $handler->display->display_options['relationships']['uid_1']['label'] = '(node-flag)Flag user';
+  /* Relationship: Flags: User */
+  $handler->display->display_options['relationships']['uid_2']['id'] = 'uid_2';
+  $handler->display->display_options['relationships']['uid_2']['table'] = 'flagging';
+  $handler->display->display_options['relationships']['uid_2']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid_2']['relationship'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['uid_2']['label'] = '(flag)Flag user';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: User: Uid */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'users';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid']['label'] = '';
+  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['uid']['link_to_user'] = FALSE;
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = 'Username';
+  $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
+  /* Field: Flags: Flag counter */
+  $handler->display->display_options['fields']['count']['id'] = 'count';
+  $handler->display->display_options['fields']['count']['table'] = 'flag_counts';
+  $handler->display->display_options['fields']['count']['field'] = 'count';
+  $handler->display->display_options['fields']['count']['relationship'] = 'flag_count_rel';
+  $handler->display->display_options['fields']['count']['label'] = 'Reports';
+  $handler->display->display_options['fields']['count']['separator'] = '';
+  /* Field: User: Created date */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'users';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
+  /* Field: User: Last login */
+  $handler->display->display_options['fields']['login']['id'] = 'login';
+  $handler->display->display_options['fields']['login']['table'] = 'users';
+  $handler->display->display_options['fields']['login']['field'] = 'login';
+  $handler->display->display_options['fields']['login']['date_format'] = 'short';
+  $handler->display->display_options['fields']['login']['second_date_format'] = 'long';
+  /* Field: User: E-mail */
+  $handler->display->display_options['fields']['mail']['id'] = 'mail';
+  $handler->display->display_options['fields']['mail']['table'] = 'users';
+  $handler->display->display_options['fields']['mail']['field'] = 'mail';
+  /* Field: User: Remove spam flags */
+  $handler->display->display_options['fields']['drupalorg_not_spam']['id'] = 'drupalorg_not_spam';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['table'] = 'views_entity_user';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['field'] = 'drupalorg_not_spam';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['label'] = '';
+  $handler->display->display_options['fields']['drupalorg_not_spam']['element_label_colon'] = FALSE;
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = 'Operations';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="/user/[uid]/admin-content">Administer content</a>';
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  /* Field: User: Block Link (Fasttoggle) */
+  $handler->display->display_options['fields']['fasttoggle_block_user']['id'] = 'fasttoggle_block_user';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['table'] = 'users';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['field'] = 'fasttoggle_block_user';
+  $handler->display->display_options['fields']['fasttoggle_block_user']['label'] = 'Operations';
+  /* Field: Drupalorg comment deleted.: Body of spam node. */
+  $handler->display->display_options['fields']['comment_body']['id'] = 'comment_body';
+  $handler->display->display_options['fields']['comment_body']['table'] = 'drupalorg_comment_deleted';
+  $handler->display->display_options['fields']['comment_body']['field'] = 'comment_body';
+  $handler->display->display_options['fields']['comment_body']['relationship'] = 'drupalorg_comment_deleted_rel_1';
+  /* Field: Flags: Time last flagged */
+  $handler->display->display_options['fields']['last_updated']['id'] = 'last_updated';
+  $handler->display->display_options['fields']['last_updated']['table'] = 'flag_counts';
+  $handler->display->display_options['fields']['last_updated']['field'] = 'last_updated';
+  $handler->display->display_options['fields']['last_updated']['relationship'] = 'flag_count_rel';
+  $handler->display->display_options['fields']['last_updated']['date_format'] = 'short';
+  $handler->display->display_options['fields']['last_updated']['second_date_format'] = 'long';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name_1']['id'] = 'name_1';
+  $handler->display->display_options['fields']['name_1']['table'] = 'users';
+  $handler->display->display_options['fields']['name_1']['field'] = 'name';
+  $handler->display->display_options['fields']['name_1']['relationship'] = 'uid_2';
+  $handler->display->display_options['fields']['name_1']['label'] = 'Flagger';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: User: Created date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'users';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Sort criterion: User: Name */
+  $handler->display->display_options['sorts']['name']['id'] = 'name';
+  $handler->display->display_options['sorts']['name']['table'] = 'users';
+  $handler->display->display_options['sorts']['name']['field'] = 'name';
+  $handler->display->display_options['sorts']['name']['relationship'] = 'uid_2';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'OR',
+  );
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: User: Active */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Flags: Flagged */
+  $handler->display->display_options['filters']['flagged']['id'] = 'flagged';
+  $handler->display->display_options['filters']['flagged']['table'] = 'flagging';
+  $handler->display->display_options['filters']['flagged']['field'] = 'flagged';
+  $handler->display->display_options['filters']['flagged']['relationship'] = 'flag_content_rel';
+  $handler->display->display_options['filters']['flagged']['value'] = '1';
+  $handler->display->display_options['filters']['flagged']['group'] = 2;
+  /* Filter criterion: Flags: Flagged */
+  $handler->display->display_options['filters']['flagged_1']['id'] = 'flagged_1';
+  $handler->display->display_options['filters']['flagged_1']['table'] = 'flagging';
+  $handler->display->display_options['filters']['flagged_1']['field'] = 'flagged';
+  $handler->display->display_options['filters']['flagged_1']['relationship'] = 'flag_content_rel_1';
+  $handler->display->display_options['filters']['flagged_1']['value'] = '1';
+  $handler->display->display_options['filters']['flagged_1']['group'] = 2;
   $translatables['drupalorg_spammers'] = array(
     t('Master'),
     t('more'),
@@ -1270,16 +1717,22 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
     t('nodes'),
     t('node-flag'),
     t('Drupalorg comment deleted.'),
+    t('Flag user'),
     t('Username'),
     t('Reports'),
     t('.'),
     t('Created date'),
+    t('Last login'),
     t('E-mail'),
     t('Operations'),
     t('<a href="/user/[uid]/admin-content">Administer content</a>'),
-    t('Spam subject'),
     t('Body of spam node.'),
+    t('Time last flagged'),
+    t('User uid'),
     t('Content pane'),
+    t('(node-flag)Flag user'),
+    t('(flag)Flag user'),
+    t('Flagger'),
     t('View panes'),
   );
   $export['drupalorg_spammers'] = $view;
