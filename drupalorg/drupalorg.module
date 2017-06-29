@@ -5891,9 +5891,9 @@ function drupalorg_get_and_vary_header($header_name) {
  */
 function drupalorg_comment_delete($comment) {
   // Ensure all comments that are deleted get captured in drupalorg_comment_deleted table.
-  //If a comment had spam flags, tell us how many.
+  // If a comment had spam flags, tell us how many.
   $flag_counts = flag_get_counts('comment', $comment->cid);
-  //Insert comment into drupalorg_comment_deleted.
+  // Insert comment into drupalorg_comment_deleted.
   db_insert('drupalorg_comment_deleted')->fields([
     'cid' => $comment->cid,
     'pid' => $comment->pid,
@@ -5910,7 +5910,7 @@ function drupalorg_comment_delete($comment) {
     'homepage' => $comment->homepage,
     'language' => $comment->language,
     'comment_body' => $comment->comment_body['und'][0]['safe_value'],
-    'flag_count' => $flag_counts,
+    'flag_count' => isset($flag_counts['drupalorg_comment_spam']) ? $flag_counts['drupalorg_comment_spam'] : 0,
   ])->execute();
 }
 

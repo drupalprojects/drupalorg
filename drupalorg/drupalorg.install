@@ -4253,16 +4253,15 @@ function drupalorg_update_7090() {
     }
   }
 }
+
 /**
  * Add new flag_count column to drupalorg_comment_deleted.
  */
 function drupalorg_update_7091() {
-  db_add_field('drupalorg_comment_deleted', 'flag_count',
-    array(
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-        'description' => 'The number of times a node was flagged as spam.',
-      )
-    );
+  db_add_field('drupalorg_comment_deleted', 'flag_count', array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 0,
+    'description' => 'The number of times a node was flagged as spam.',
+  ));
 }
