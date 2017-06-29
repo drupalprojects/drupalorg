@@ -5890,28 +5890,28 @@ function drupalorg_get_and_vary_header($header_name) {
  * Implements hook_comment_delete().
  */
 function drupalorg_comment_delete($comment) {
-  // Ensure comment has a spam flag before putting it in comment delete table.
-  if (flag_get_entity_flags('comment', $comment->cid, 'drupalorg_comment_spam')) {
-    // Copy comment data over to drupalorg_comment_deleted table because it was
-    // flagged as spam.
-    db_insert('drupalorg_comment_deleted')->fields([
-      'cid' => $comment->cid,
-      'pid' => $comment->pid,
-      'nid' => $comment->nid,
-      'uid' => $comment->uid,
-      'subject' => $comment->subject,
-      'hostname' => $comment->hostname,
-      'created' => $comment->created,
-      'changed' => $comment->changed,
-      'status' => $comment->status,
-      'thread' => $comment->thread,
-      'name' => $comment->name,
-      'mail' => $comment->mail,
-      'homepage' => $comment->homepage,
-      'language' => $comment->language,
-      'comment_body' => $comment->comment_body['und'][0]['safe_value'],
-    ])->execute();
-  }
+  // Ensure all comments that are deleted get captured in drupalorg_comment_deleted table.
+  //If a comment had spam flags, tell us how many.
+  $flag_counts = flag_get_counts('comment', $comment->cid);
+  //Insert comment into drupalorg_comment_deleted.
+  db_insert('drupalorg_comment_deleted')->fields([
+    'cid' => $comment->cid,
+    'pid' => $comment->pid,
+    'nid' => $comment->nid,
+    'uid' => $comment->uid,
+    'subject' => $comment->subject,
+    'hostname' => $comment->hostname,
+    'created' => $comment->created,
+    'changed' => $comment->changed,
+    'status' => $comment->status,
+    'thread' => $comment->thread,
+    'name' => $comment->name,
+    'mail' => $comment->mail,
+    'homepage' => $comment->homepage,
+    'language' => $comment->language,
+    'comment_body' => $comment->comment_body['und'][0]['safe_value'],
+    'flag_count' => $flag_counts,
+  ])->execute();
 }
 
 /**

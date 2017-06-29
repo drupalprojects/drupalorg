@@ -96,6 +96,14 @@ function drupalorg_views_data() {
           'handler' => 'views_handler_field',
         ),
       ),
+      // Flag count
+      'flag_count' => array(
+        'title' => t('Number of spam flags on a comment'),
+        'help' => t('A count of the number of spam flags on a comment.,'),
+        'field' => array(
+          'handler' => 'views_handler_field',
+        ),
+      )
     )
   );
 }

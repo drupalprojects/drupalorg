@@ -112,6 +112,12 @@ function drupalorg_schema() {
         'not null' => FALSE,
         'description' => "The comment body content",
       ),
+      'flag_count' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The number of times a node was flagged as spam.',
+      ),
     ),
     'indexes' => array(
       'comment_status_pid' => array('pid', 'status'),
@@ -4246,4 +4252,14 @@ function drupalorg_update_7090() {
       $collection->save(TRUE);
     }
   }
+}
+function drupalorg_update_7091() {
+  db_add_field('drupalorg_comment_deleted', 'flag_count',
+    array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The number of times a node was flagged as spam.',
+      )
+    );
 }
