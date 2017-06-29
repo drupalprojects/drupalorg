@@ -4253,6 +4253,9 @@ function drupalorg_update_7090() {
     }
   }
 }
+/**
+ * Add new flag_count column to drupalorg_comment_deleted.
+ */
 function drupalorg_update_7091() {
   db_add_field('drupalorg_comment_deleted', 'flag_count',
     array(
