@@ -2030,6 +2030,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'create fieldable case_study'.
+  $permissions['create fieldable case_study'] = array(
+    'name' => 'create fieldable case_study',
+    'roles' => array(),
+    'module' => 'fieldable_panels_panes',
+  );
+
   // Exported permission: 'create fieldable cta'.
   $permissions['create fieldable cta'] = array(
     'name' => 'create fieldable cta',
@@ -2494,6 +2501,13 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete any story content',
     'roles' => array(),
     'module' => 'node',
+  );
+
+  // Exported permission: 'delete fieldable case_study'.
+  $permissions['delete fieldable case_study'] = array(
+    'name' => 'delete fieldable case_study',
+    'roles' => array(),
+    'module' => 'fieldable_panels_panes',
   );
 
   // Exported permission: 'delete fieldable cta'.
@@ -3104,6 +3118,13 @@ function drupalorg_permissions_user_default_permissions() {
       'authenticated user' => 'authenticated user',
     ),
     'module' => 'asciidoc_display',
+  );
+
+  // Exported permission: 'edit fieldable case_study'.
+  $permissions['edit fieldable case_study'] = array(
+    'name' => 'edit fieldable case_study',
+    'roles' => array(),
+    'module' => 'fieldable_panels_panes',
   );
 
   // Exported permission: 'edit fieldable cta'.
