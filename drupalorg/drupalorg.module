@@ -1152,22 +1152,6 @@ function drupalorg_get_activity($_force = FALSE) {
     // Comments: count comments.
     $stats['comments'] = number_format(db_query("SELECT COUNT(*) FROM {comment} WHERE status = :status", array(':status' => 1))->fetchField());
 
-    // Sites made with Drupal.
-    if (module_exists('drupalorg_case_studies')) {
-      $view = views_get_view('drupalorg_casestudies');
-      if (!empty($view)) {
-        $stats['case_studies'] = $view->preview('block_1');
-        // Ensure the derivative gets generated
-        $style = 'case-4-2x';
-        foreach ($view->result as $result) {
-          $uri = $result->field_field_mainimage[0]['rendered']['#item']['uri'];
-          $destination = image_style_path($style, $uri);
-          if (!file_exists($destination)) {
-            image_style_create_derivative(image_style_load($style), $uri, $destination);
-          }
-        }
-      }
-    }
     cache_set('drupalorg_front_counter_data', $stats, 'drupalorg');
     lock_release('drupalorg_get_activity');
   }
