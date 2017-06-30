@@ -154,7 +154,10 @@ function drupalorg_projects_field_default_field_instances() {
       'active' => 1,
       'module' => 'file',
       'settings' => array(
+        'display_empty' => 0,
         'extended_file_field_show_remove' => FALSE,
+        'formatter' => '',
+        'formatter_settings' => array(),
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
@@ -7342,8 +7345,12 @@ function drupalorg_projects_field_default_field_instances() {
     'widget' => array(
       'active' => 0,
       'module' => 'field_collection',
-      'settings' => array(),
-      'type' => 'field_collection_embed',
+      'settings' => array(
+        'display_empty' => 0,
+        'formatter' => '',
+        'formatter_settings' => array(),
+      ),
+      'type' => 'field_collection_hidden',
       'weight' => 15,
     ),
   );
