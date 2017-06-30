@@ -52,6 +52,43 @@ function drupalorg_case_studies_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'fieldable_panels_pane-case_study-field_show_built_by'.
+  $field_instances['fieldable_panels_pane-case_study-field_show_built_by'] = array(
+    'bundle' => 'case_study',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'fieldable_panels_pane',
+    'field_name' => 'field_show_built_by',
+    'label' => 'Show built by',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => -3,
+    ),
+  );
+
   // Exported field_instance: 'node-casestudy-body'.
   $field_instances['node-casestudy-body'] = array(
     'bundle' => 'casestudy',
@@ -1547,6 +1584,7 @@ function drupalorg_case_studies_field_default_field_instances() {
   t('Project team');
   t('Provide a brief outline of the business case, some background to the project, and if desired, a short description of the companies participating in the project.<br /><br />');
   t('Sectors');
+  t('Show built by');
   t('Status');
   t('Team members');
   t('Upload 2-3 additional screenshots of different pages or significant site features. Please include alternate text (for search engines and accessibility reasons). Preferred file format - PNG.<br /><br />');
