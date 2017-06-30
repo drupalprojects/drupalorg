@@ -4893,13 +4893,14 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
     case 'casestudy_card':
       foreach ($items as $delta => $item) {
         $wrapper = entity_metadata_wrapper('node', node_load($item['target_id']));
+        $attributes = [
+          'class' => ['pane-style-card'],
+        ];
         if ($cover = $wrapper->field_cover_photo->value()) {
-          $output = '<div class="pane-style-card pane-style-built-by with-background" style="background-image: url(' . image_style_url('card-cover', $cover['uri']) . ')">';
+          $attributes['class'][] = 'with-background';
+          $attributes['style'] = 'background-image: url(' . image_style_url('card-cover', $cover['uri']) . ')';
         }
-        else {
-          $output = '<div class="pane-style-card pane-style-built-by">';
-        }
-        $output .= '<div class="pane-content-inner"><div class="field-name-field-cta-graphic">';
+        $output = '<div class="pane-content-inner"><div class="field-name-field-cta-graphic">';
         if ($logo = $wrapper->field_logo->value()) {
           $output .= theme('image_style', [
             'style_name' => 'card-logo',
@@ -4909,14 +4910,18 @@ function drupalorg_field_formatter_view($entity_type, $entity, $field, $instance
         }
         $output .= '</div>';
         $output .= $wrapper->body->summary->value(['sanitize' => TRUE]);
-        $output .= '</div><div class="built-by"><div class="built-by-label"><small>built by</small></div><div class="field-name-field-cta-graphic">';
-        $output .= theme('image_style', [
-          'style_name' => 'card-logo',
-          'path' => $wrapper->field_case_organizations[0]->field_logo->value()['uri'],
-          'alt' => $wrapper->field_case_organizations[0]->label(),
-        ]);
-        $output .= '</div></div></div>';
-        $element[$delta]['#markup'] = l($output, 'node/' . $wrapper->getIdentifier(), ['html' => TRUE, 'attributes' => ['class' => ['card-link']]]);
+        $output .= '</div>';
+        if (entity_metadata_wrapper('fieldable_panels_pane', $entity)->field_show_built_by->value()) {
+          $attributes['class'][] = 'pane-style-built-by';
+          $output .= '<div class="built-by"><div class="built-by-label"><small>built by</small></div><div class="field-name-field-cta-graphic">';
+          $output .= theme('image_style', [
+            'style_name' => 'card-logo',
+            'path' => $wrapper->field_case_organizations[0]->field_logo->value()['uri'],
+            'alt' => $wrapper->field_case_organizations[0]->label(),
+          ]);
+        $output .= '</div></div>';
+        }
+        $element[$delta]['#markup'] = l('<div' . drupal_attributes($attributes) . '>' . $output . '</div>', 'node/' . $wrapper->getIdentifier(), ['html' => TRUE, 'attributes' => ['class' => ['card-link']]]);
       }
       break;
   }
