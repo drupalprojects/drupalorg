@@ -936,10 +936,9 @@ return TRUE;';
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
 
-  /* Display: Content pane */
-  $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
+  /* Display: Home page pane */
+  $handler = $view->new_display('panel_pane', 'Home page pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Who uses Drupal?';
   $handler->display->display_options['defaults']['use_more'] = FALSE;
   $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['defaults']['use_more_always'] = FALSE;
@@ -1048,8 +1047,7 @@ return TRUE;';
     t('Feed'),
     t('Drupal.org: %1 case studies'),
     t('Sidebar Case Study Filter'),
-    t('Content pane'),
-    t('Who uses Drupal?'),
+    t('Home page pane'),
     t('More case studies'),
     t('Drupal.org'),
   );
