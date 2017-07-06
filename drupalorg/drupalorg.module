@@ -191,6 +191,11 @@ function drupalorg_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+  $items['8/download'] = [
+    'page callback' => 'drupalorg_download_redirect',
+    'access arguments' => ['access content'],
+    'type' => MENU_CALLBACK,
+  ];
   // Prevent passing unexpected arguments to theme().
   $items['download/%'] = [
     'page callback' => 'drupal_not_found',
@@ -1547,6 +1552,14 @@ function drupalorg_download_version_form_submit($form, &$form_state) {
     $filters = ['f' => [$version_alias . ':' . $form_state['values'][$version_alias]]];
   }
   $form_state['redirect'] = ['path' => $query->getPath(), ['query' => $filters]];
+}
+
+/**
+ * Menu callback, go to the current D8 release page.
+ */
+function drupalorg_download_redirect() {
+  $release = project_release_get_current_recommended(DRUPALORG_CORE_NID, DRUPALORG_DOWNLOAD_API_COMPATIBILITY_TID);
+  drupal_goto('node/' . $release->nid);
 }
 
 /**
