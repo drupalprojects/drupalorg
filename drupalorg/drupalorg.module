@@ -2126,7 +2126,7 @@ function drupalorg_taxonomy_forums_ajax_callback($form, &$form_state) {
 function drupalorg_get_site_parameter($bd = NULL) {
   if (isset($bd) || ($bd = bakery_get_destination())) {
     $sites = drupalorg_crosssite_sites();
-    $site = str_replace(variable_get('bakery_domain'), '', parse_url($bd, PHP_URL_HOST));
+    $site = str_replace(variable_get('bakery_domain'), '', parse_url($bd[0], PHP_URL_HOST));
     if (isset($sites[$site])) {
       return $site;
     }
