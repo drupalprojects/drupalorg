@@ -1160,7 +1160,7 @@ function drupalorg_documentation_field_default_field_instances() {
           'action_on_edit' => 0,
           'fallback' => 'none',
           'providers' => array(
-            'og_context' => 0,
+            'og_context' => 1,
             'url' => 1,
           ),
           'skip_perm' => 0,
