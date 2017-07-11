@@ -4482,6 +4482,26 @@ function drupalorg_menu_local_tasks_alter(&$data, $router_item, $root_path) {
         }
       }
       break;
+
+    case 'node/%':
+      // Add guide & page.
+      if ($router_item['page_arguments'][0]->type === 'guide') {
+        foreach (['guide', 'documentation'] as $type) {
+          if (node_access('create', $type)) {
+            $data['tabs'][0]['output'][] = [
+              '#theme' => 'menu_local_task',
+              '#link' => [
+                'title' => t('Add @type', ['@type' => str_replace('Documentation ', '', node_type_get_name($type))]),
+                'href' => 'node/add/' . $type,
+                'localized_options' => [
+                  'query' => ['og_group_ref_documentation' => $router_item['page_arguments'][0]->nid],
+                ],
+              ],
+            ];
+          }
+        }
+      }
+      break;
   }
 
   // Hide the View link on node pages in guides, and all tabs for imported
@@ -5405,11 +5425,6 @@ function drupalorg_query_comment_filter_alter(QueryAlterableInterface $query) {
  * Implements hook_panels_pane_content_alter().
  */
 function drupalorg_panels_pane_content_alter($content, $pane, $args, $contexts) {
-  // Remove create content links in imported User guide.
-  if (!empty($content) && $pane->type === 'node_prepopulate' && entity_metadata_wrapper('node', $contexts['panelizer']->data)->body->format->value() === 'asciidoc_import') {
-    $content->content = [];
-  }
-
   // Add lead capture to CTAs with pane admin title “Lead capture”.
   if (isset($content->content['field_cta_body']) && $content->content['field_cta_body']['#object']->admin_title === 'Lead capture') {
     $form = drupal_get_form('drupalorg_lead_capture_form');
