@@ -1368,13 +1368,6 @@ function drupalorg_preprocess_page(&$variables) {
   }
 
   if ($context = og_context()) {
-    // Landing pages group.
-    if ($context['gid'] == 2773617) {
-      // Hide header banner, page title; let the content take over.
-      unset($variables['logo']);
-      drupal_set_title('');
-    }
-
     $group_wrapper = entity_metadata_wrapper('node', node_load($context['gid']));
     if (isset($group_wrapper->field_parent_section)) {
       // Drupal Association logo for its section.
@@ -1385,6 +1378,13 @@ function drupalorg_preprocess_page(&$variables) {
         $variables['drupalorg_logo_link'] = l(theme('image', ['path' => drupal_get_path('module', 'drupalorg') . '/images/drupal-association-logo-white.svg', 'alt' => t('Drupal Association'), 'attributes' => ['class' => ['association']]]), 'association', ['html' => TRUE]);
       }
     }
+  }
+
+  if (($node = menu_get_object()) && isset($node->panelizer) && $node->panelizer['default']->display->layout === 'capricorn') {
+    // Capricorn layout takes over the whole page.
+    $variables['drupalorg_no_wrap'] = TRUE;
+    unset($variables['logo']);
+    drupal_set_title('');
   }
 
   // Group breadcrumbs.
@@ -1411,16 +1411,16 @@ function drupalorg_preprocess_page(&$variables) {
  * Implements hook_menu_breadcrumb_alter().
  */
 function drupalorg_menu_breadcrumb_alter(&$active_trail, $item) {
+  $node = menu_get_object();
+  if ($node && isset($node->panelizer) && $node->panelizer['default']->display->layout === 'capricorn') {
+    // Hide breadcrumbs for landing pages.
+    $active_trail = [];
+    return;
+  }
+
   if ($context = og_context()) {
     // If we are in a group.
     if ($context['group_type'] === 'node') {
-      // Hide breadcrumbs for landing pages.
-      if ($context['gid'] == 2773617) {
-        $active_trail = [];
-        return;
-      }
-
-      $node = menu_get_object();
       $group = entity_load_single($context['group_type'], $context['gid']);
 
       // If we are on a post page, add Blog to the breadcrumb.
