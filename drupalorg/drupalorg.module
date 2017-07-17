@@ -3631,7 +3631,7 @@ function drupalorg_node_delete(stdClass $node) {
   // Ensure all nodes that are deleted get captured in drupalorg_node_deleted table.
   //If a comment had spam flags, tell us how many.
   $flag_counts = flag_get_counts('node', $node->nid);
-  dpm($flag_counts);
+
   //Insert node into drupalorg_node_deleted.
   db_insert('drupalorg_node_deleted')->fields([
     'nid' => $node->nid,
