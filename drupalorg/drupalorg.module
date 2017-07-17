@@ -3627,6 +3627,25 @@ function drupalorg_node_delete(stdClass $node) {
       }
     }
   }
+
+  // Ensure all nodes that are deleted get captured in drupalorg_node_deleted table.
+  //If a comment had spam flags, tell us how many.
+ $flag_counts = flag_get_counts('node', $node->nid);
+  dpm($flag_counts);
+  //Insert node into drupalorg_node_deleted.
+  db_insert('drupalorg_node_deleted')->fields([
+    'nid' => $node->nid,
+    'node_type' => $node->type,
+    'uid' => $node->uid,
+    'title' => $node->title,
+    'created' => $node->created,
+    'changed' => $node->changed,
+    'status' => $node->status,
+    'name' => $node->name,
+    'language' => $node->language,
+    'node_body' => $node->body['und'][0]['value'],
+    'flag_count' => $flag_counts['drupalorg_node_spam'],
+  ])->execute();
 }
 
 /**
@@ -4556,6 +4575,10 @@ function drupalorg_module_implements_alter(&$implementations, $hook) {
 
   // Execute drupalorg_custom_theme() before og_theme_custom_theme().
   if ($hook === 'custom_theme') {
+    $implementations = ['drupalorg' => NULL] + $implementations;
+  }
+  // Execute drupalorg_node_delete() before flag_node_delete.
+  if ($hook === 'node_delete') {
     $implementations = ['drupalorg' => NULL] + $implementations;
   }
 }
