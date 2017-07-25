@@ -155,12 +155,6 @@ function drupalorg_schema() {
         'default' => '',
         'description' => 'The node type.',
       ),
-      'entity_id' => array(
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-        'description' => 'The entity_id of the deleted node.',
-      ),
       'uid' => array(
         'type' => 'int',
         'not null' => TRUE,
@@ -4370,12 +4364,6 @@ function drupalorg_update_7092() {
         'not null' => TRUE,
         'default' => '',
         'description' => 'The node type.',
-      ),
-      'entity_id' => array(
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-        'description' => 'The entity_id of the deleted node.',
       ),
       'uid' => array(
         'type' => 'int',
