@@ -4441,4 +4441,3 @@ function drupalorg_update_7092() {
     )
   );
 }
-
