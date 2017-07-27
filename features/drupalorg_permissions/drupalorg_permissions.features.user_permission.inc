@@ -440,6 +440,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'tfa',
   );
 
+  // Exported permission: 'administer CAPTCHA settings'.
+  $permissions['administer CAPTCHA settings'] = array(
+    'name' => 'administer CAPTCHA settings',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'captcha',
+  );
+
   // Exported permission: 'administer SSH public keys'.
   $permissions['administer SSH public keys'] = array(
     'name' => 'administer SSH public keys',
@@ -1705,6 +1714,15 @@ function drupalorg_permissions_user_default_permissions() {
       'testing administrator' => 'testing administrator',
     ),
     'module' => 'project',
+  );
+
+  // Exported permission: 'administer recaptcha'.
+  $permissions['administer recaptcha'] = array(
+    'name' => 'administer recaptcha',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'recaptcha',
   );
 
   // Exported permission: 'administer redirects'.
@@ -3919,6 +3937,16 @@ function drupalorg_permissions_user_default_permissions() {
       'webmaster' => 'webmaster',
     ),
     'module' => 'tfa_basic',
+  );
+
+  // Exported permission: 'skip CAPTCHA'.
+  $permissions['skip CAPTCHA'] = array(
+    'name' => 'skip CAPTCHA',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+    ),
+    'module' => 'captcha',
   );
 
   // Exported permission: 'skip comment approval'.
