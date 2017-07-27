@@ -467,6 +467,16 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panels',
   );
 
+  // Exported permission: 'administer all documentation guides'.
+  $permissions['administer all documentation guides'] = array(
+    'name' => 'administer all documentation guides',
+    'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
+      'webmaster' => 'webmaster',
+    ),
+    'module' => 'drupalorg',
+  );
+
   // Exported permission: 'administer asciidoc'.
   $permissions['administer asciidoc'] = array(
     'name' => 'administer asciidoc',
