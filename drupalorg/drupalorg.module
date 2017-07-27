@@ -26,6 +26,10 @@ function drupalorg_permission() {
       'title' => t('May opt into security advisory coverage'),
       'description' => t('Agree to the policy for projects.'),
     ],
+    'administer all documentation guides' => [
+      'title' => t('Administer all documentation guides'),
+      'description' => t('Manage guide maintainers and menus.'),
+    ],
   ];
 }
 
@@ -5358,6 +5362,23 @@ function drupalorg_mail_alter(&$message) {
       // when special characters (including some punctuation) are used. See
       // example in Appendix A.1.2.
       $message['headers']['From'] = '"' . mime_header_encode($name . ' (' . variable_get('site_name', 'Drupal') . ')') . '" <' . $message['from'] . '>';
+    }
+  }
+}
+
+/**
+ * Implements hook_og_user_access_alter().
+ */
+function drupalorg_og_user_access_alter(&$perm, $context) {
+  static $altered = FALSE;
+
+  if (!$altered) {
+    $altered = TRUE;
+
+    if ($context['group']->type === 'guide' && user_access('administer all documentation guides', $context['account'])) {
+      foreach (og_role_permissions(array_intersect(og_roles($context['group_type'], $context['group']->type), ['maintainer'])) as $maintainer_perms) {
+        $perm += $maintainer_perms;
+      }
     }
   }
 }
