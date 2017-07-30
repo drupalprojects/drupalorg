@@ -3637,7 +3637,7 @@ function drupalorg_node_delete(stdClass $node) {
     'name' => $node->name,
     'language' => $node->language,
     'node_body' => $node->body['und'][0]['value'],
-    'flag_count' => $flag_counts['drupalorg_node_spam'],
+    'flag_count' => isset($flag_counts['drupalorg_node_spam']) ? $flag_counts['drupalorg_node_spam'] : 0,
   ])->execute();
 }
 
