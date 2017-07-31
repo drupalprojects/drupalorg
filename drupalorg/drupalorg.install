@@ -222,7 +222,9 @@ function drupalorg_schema() {
       ),
       'deleted_by' => array(
         'type' => 'int',
-        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+        'unsigned' => TRUE,
         'description' => 'The userid of the account that deleted the node.',
       )
     ),
@@ -4454,8 +4456,9 @@ function drupalorg_update_7093() {
   db_add_field('drupalorg_node_deleted', 'deleted_by',
     array(
       'type' => 'int',
-      'length' => 11,
       'not null' => TRUE,
+      'unsigned' => TRUE,
+      'default' => 0,
       'description' => 'The userid of the account that deleted the node.',
     )
   );
