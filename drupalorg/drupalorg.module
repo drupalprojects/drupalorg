@@ -3632,8 +3632,7 @@ function drupalorg_node_delete(stdClass $node) {
   //If a comment had spam flags, tell us how many.
   $flag_counts = flag_get_counts('node', $node->nid);
 
-  GLOBAL $user;
-  $deleted_by = $user->name;
+  $deleted_by = $GLOBALS['user']->uid;
 
   //Insert node into drupalorg_node_deleted.
   db_insert('drupalorg_node_deleted')->fields([

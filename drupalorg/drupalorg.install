@@ -221,10 +221,9 @@ function drupalorg_schema() {
         'description' => 'The number of times a node was flagged as spam.',
       ),
       'deleted_by' => array(
-        'type' => 'varchar',
-        'length' => 60,
-        'not null' => TRUE,
-        'description' => 'The username of the account that deleted the node.',
+        'type' => 'int',
+        'length' => 11,
+        'description' => 'The userid of the account that deleted the node.',
       )
     ),
     'primary key' => array('nid'),
@@ -4454,10 +4453,10 @@ function drupalorg_update_7092() {
 function drupalorg_update_7093() {
   db_add_field('drupalorg_node_deleted', 'deleted_by',
     array(
-      'type' => 'varchar',
-      'length' => 60,
+      'type' => 'int',
+      'length' => 11,
       'not null' => TRUE,
-      'description' => 'The username of the account that deleted the node.',
+      'description' => 'The userid of the account that deleted the node.',
     )
   );
 }
