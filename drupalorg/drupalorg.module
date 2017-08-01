@@ -263,6 +263,16 @@ function drupalorg_menu() {
     'file' => 'drupalorg.pages.inc',
   ];
 
+  $items['node/%node/drupalorg_maintain_guide/%'] = [
+    'title' => t('Immediately maintain guide'),
+    'access callback' => 'drupalorg_maintain_guide_access',
+    'access arguments' => [1, 3],
+    'page callback' => 'drupalorg_maintain_guide',
+    'page arguments' => [1],
+    'type' => MENU_CALLBACK,
+    'file' => 'drupalorg.pages.inc',
+  ];
+
   // Redirect some legacy paths related to the security listings.
   $items['security-contrib'] = array(
     'access arguments' => array('access content'),
@@ -373,6 +383,13 @@ function drupalorg_node_revision_access($node) {
   }
 
   return diff_node_revision_access($node);
+}
+
+/**
+ * Menu access callback. Check for a valid token.
+ */
+function drupalorg_maintain_guide_access($node, $token) {
+  return drupalorg_user_is_confirmed($GLOBALS['user']) && drupal_valid_token($token, 'drupalorg_maintain_guide/' . $node->nid);
 }
 
 /**
@@ -2312,6 +2329,14 @@ function drupalorg_form_node_form_alter(&$form, &$form_state) {
       // Add a message about becoming a guide maintainer.
       if ($form['#node']->type === 'guide' && !empty($_REQUEST['become-maintainer'])) {
         drupal_set_message(t('Use the “Suggest improvements” field to explain your interest in maintaining the guide. Webmasters will review your comment and may add you as a maintainer.'));
+        if (drupalorg_user_is_confirmed($GLOBALS['user'])) {
+          // Check if there are no maintainers, or the only maintainer is System Message.
+          $wrapper = entity_metadata_wrapper('node', $form['#node']);
+          $members = $wrapper->{'members__' . array_search('Active', og_group_content_states())};
+          if (count($members) === 1 && $members[0]->getIdentifier() == 180064) {
+            drupal_set_message(t('This guide is currently unmaintained. You can <a href="!url">become a maintainer immediately</a>.', ['!url' => url('node/' . $form['#node']->nid . '/drupalorg_maintain_guide/' . drupal_get_token('drupalorg_maintain_guide/' . $form['#node']->nid))]));
+          }
+        }
       }
 
       // Hide most fields.

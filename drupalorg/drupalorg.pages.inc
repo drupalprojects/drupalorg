@@ -338,3 +338,19 @@ function drupalorg_sponsor_redirect_page($sponsor) {
       return t('Country: %country', ['%country' => $country]);
   }
 }
+
+/**
+ * Page callback, current user becomes maintainer of a guide.
+ */
+function drupalorg_maintain_guide($node) {
+  // Make current user the author, OG auotmatically adds maintainership.
+  $node->uid = $GLOBALS['user']->uid;
+  node_save($node);
+
+  // Remove System Message placeholder maintainer.
+  og_get_membership('node', $node->nid, 'user', 180064)->delete();
+
+  drupal_set_message(t('You now maintain this guide! <a href="!url">Learn about maintaining documentation</a>', ['!url' => url('drupalorg/docs/content/documentation', ['fragment' => 'maintain'])]));
+
+  drupal_goto('node/' . $node->nid);
+}
