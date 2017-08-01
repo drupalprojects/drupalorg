@@ -164,7 +164,7 @@ function drupalorg_schema() {
 
       'title' => array(
         'type' => 'varchar',
-        'length' => 64,
+        'length' => 255,
         'not null' => TRUE,
         'default' => '',
         'description' => 'The node title.',
@@ -214,6 +214,13 @@ function drupalorg_schema() {
         'default' => 0,
         'description' => 'The number of times a node was flagged as spam.',
       ),
+      'deleted_by' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'unsigned' => TRUE,
+        'description' => 'The userid of the account that deleted the node.',
+      )
     ),
     'primary key' => array('nid'),
   );
@@ -4426,6 +4433,36 @@ function drupalorg_update_7092() {
       ),
     ),
     'primary key' => array('nid'),
+    )
+  );
+}
+
+/**
+ * Add deleted_by column to drupalorg_node_deleted.
+ */
+function drupalorg_update_7093() {
+  db_add_field('drupalorg_node_deleted', 'deleted_by',
+    array(
+      'type' => 'int',
+      'not null' => TRUE,
+      'unsigned' => TRUE,
+      'default' => 0,
+      'description' => 'The userid of the account that deleted the node.',
+    )
+  );
+}
+
+/**
+ * Update title column length to match node.title.
+ */
+function drupalorg_update_7094() {
+  db_change_field('drupalorg_node_deleted', 'title', 'title',
+    array(
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+      'description' => 'The node title.',
     )
   );
 }
