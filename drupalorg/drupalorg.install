@@ -170,7 +170,7 @@ function drupalorg_schema() {
 
       'title' => array(
         'type' => 'varchar',
-        'length' => 64,
+        'length' => 255,
         'not null' => TRUE,
         'default' => '',
         'description' => 'The node title.',
@@ -4464,3 +4464,17 @@ function drupalorg_update_7093() {
   );
 }
 
+/**
+ * Update title column length to match node.title.
+ */
+function drupalorg_update_7094() {
+  db_change_field('drupalorg_node_deleted', 'title', 'title',
+    array(
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+      'description' => 'The node title.',
+    )
+  );
+}
