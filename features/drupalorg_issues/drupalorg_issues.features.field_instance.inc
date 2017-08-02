@@ -543,14 +543,14 @@ function drupalorg_issues_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'extended_file_field',
         'settings' => array(
           'columns' => array(
-            0 => 'cid',
-            1 => 'filename',
-            2 => 'filesize',
-            3 => 'uid',
+            'cid' => 'cid',
+            'filename' => 'filename',
+            'filesize' => 'filesize',
+            'uid' => 'uid',
           ),
           'extensionbehavior' => 'table',
           'extensionfilter' => 'all',
@@ -558,11 +558,11 @@ function drupalorg_issues_field_default_field_instances() {
           'restrictbehavior' => 'toggle',
           'restrictdisplay' => 5,
           'showhidden' => 'table',
-          'showuploadlink' => 1,
+          'showuploadlink' => 0,
           'sortby' => 'reverse',
           'sortorder' => 'asc',
           'usedescriptionforfilename' => 1,
-          'usefieldset' => TRUE,
+          'usefieldset' => 1,
         ),
         'type' => 'extended_file_field',
         'weight' => 50,
