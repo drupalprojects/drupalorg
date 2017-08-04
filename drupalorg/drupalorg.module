@@ -2819,6 +2819,15 @@ function drupalorg_homebox() {
 function drupalorg_ad_settings_form() {
   $form = array();
 
+  $form['drupalorg_ci_ad'] = [
+    '#type' => 'textarea',
+    '#title' => t('DrupalCI'),
+    '#default_value' => variable_get('drupalorg_ci_ad'),
+    '#description' => t('Appears on issue pages with releases. Template: <code>@example</code>', [
+      '@example' => '<a href="{url}" class="ci-ad">{blurb} <img src="{use a relatively-small image, like the grid-2 on user pages}" alt="{organization name}"> <strong>Learn more</strong></a>',
+    ]),
+  ];
+
   $slots = array_merge(array(0 => t('No ad')), _google_admanager_get_ad_slots());
   $ads = variable_get('drupalorg_forum_ad', array());
   $form['drupalorg_forum_ad'] = array(
