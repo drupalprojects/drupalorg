@@ -20,6 +20,13 @@ function drupalorg_views_data() {
           'handler' => 'drupalorg_handler_security_coverage',
         ],
       ],
+      'drupalorg_release_branch_info' => [
+        'field' => [
+          'title' => t('Release branch information'),
+          'help' => t('For Downloads on project pages, information about the branch'),
+          'handler' => 'drupalorg_handler_release_branch_info',
+        ],
+      ],
     ),
     'views_entity_comment' => array(
       'drupalorg_not_spam' => array(
