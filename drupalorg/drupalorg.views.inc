@@ -15,8 +15,8 @@ function drupalorg_views_data() {
       ),
       'drupalorg_security_coverage' => [
         'field' => [
-          'title' => t('Security Team coverage'),
-          'help' => t('Indicator of Drupal Security Team coverage'),
+          'title' => t('Security advisory coverage'),
+          'help' => t('Indicator of Drupal Security advisory coverage'),
           'handler' => 'drupalorg_handler_security_coverage',
         ],
       ],
