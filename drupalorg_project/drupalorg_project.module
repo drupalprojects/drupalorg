@@ -1587,15 +1587,6 @@ function drupalorg_project_meta_data(stdClass $node) {
     ];
   }
 
-  // Automated tests.
-  if (module_exists('pift') && pift_ci_project_info($node->nid)) {
-    $output['items']['tests'] = [
-      '#prefix' => '<li>',
-      '#markup' => t('Automated tests: Enabled'),
-      '#suffix' => '</li>',
-    ];
-  }
-
   // Last modified.
   $output['items']['modified'] = [
     '#prefix' => '<li>',
