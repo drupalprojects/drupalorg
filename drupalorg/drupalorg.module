@@ -669,7 +669,6 @@ function drupalorg_block_view($delta, $block = NULL) {
 
     case 'add_to_dashboard':
       if (user_is_logged_in()) {
-        global $user;
         $item = menu_get_item();
         $blocks = array();
         switch ($item['path']) {
@@ -694,7 +693,7 @@ function drupalorg_block_view($delta, $block = NULL) {
             break;
 
           case 'user/%/track':
-            if ($item['map'][1]->uid === $user->uid) {
+            if ($item['map'][1]->uid === $GLOBALS['user']->uid) {
               $blocks[] = array('Your Posts', 'drupalorg', 'tracker_user');
             }
             break;
