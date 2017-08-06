@@ -543,6 +543,16 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['fields']['body']['settings'] = array(
     'trim_length' => '150',
   );
+  /* Field: Content: Description */
+  $handler->display->display_options['fields']['field_sa_description']['id'] = 'field_sa_description';
+  $handler->display->display_options['fields']['field_sa_description']['table'] = 'field_data_field_sa_description';
+  $handler->display->display_options['fields']['field_sa_description']['field'] = 'field_sa_description';
+  $handler->display->display_options['fields']['field_sa_description']['label'] = '';
+  $handler->display->display_options['fields']['field_sa_description']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_sa_description']['alter']['max_length'] = '150';
+  $handler->display->display_options['fields']['field_sa_description']['alter']['trim'] = TRUE;
+  $handler->display->display_options['fields']['field_sa_description']['alter']['html'] = TRUE;
+  $handler->display->display_options['fields']['field_sa_description']['element_label_colon'] = FALSE;
   /* Field: Content: Link */
   $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
   $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';

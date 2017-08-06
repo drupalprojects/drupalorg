@@ -434,7 +434,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       }
     }
   }
-  elseif (project_issue_node_is_issue($form_state['node'])) {
+  elseif ($form_state['node']->type === 'sa' || project_issue_node_is_issue($form_state['node'])) {
     $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
     $maintainer_access = isset($node_wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]) ? $node_wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]['permissions'] : [];
     $fixed = variable_get('project_issue_state_fixed', PROJECT_ISSUE_STATE_FIXED);
@@ -698,7 +698,12 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       );
 
       // Set up base form.
-      $is_maintainer = !empty($maintainer_access['write to vcs']);
+      if ($form['#node']->type === 'sa') {
+        $is_maintainer = user_access('create sa content');
+      }
+      else {
+        $is_maintainer = !empty($maintainer_access['write to vcs']);
+      }
       $form['drupalorg_credit_wrapper'] = array(
         '#attached' => array('js' => array(array(
           'type' => 'setting',
@@ -2058,8 +2063,10 @@ function _drupalorg_project_issue_credit_add(&$form_state) {
         $form_state['drupalorg_credit_cids'][$node->nodechanges_cid] = $account->uid;
 
         // Notify the creditee. See _project_issue_email_notify().
-        $from = '"' . mime_header_encode(t('!name (!site)', array('!name' => $GLOBALS['user']->name, '!site' => variable_get('site_name', 'Drupal')))) . '" <' . variable_get('project_issue_reply_to_' . $node->type, variable_get('site_mail', ini_get('sendmail_from'))) . '>';
-        drupal_mail('drupalorg', 'credited_by_maintainer', $account->mail, LANGUAGE_NONE, ['node' => $node], $from);
+        if ($node->type !== 'sa') {
+          $from = '"' . mime_header_encode(t('!name (!site)', array('!name' => $GLOBALS['user']->name, '!site' => variable_get('site_name', 'Drupal')))) . '" <' . variable_get('project_issue_reply_to_' . $node->type, variable_get('site_mail', ini_get('sendmail_from'))) . '>';
+          drupal_mail('drupalorg', 'credited_by_maintainer', $account->mail, LANGUAGE_NONE, ['node' => $node], $from);
+        }
       }
 
       // Give them credit.
