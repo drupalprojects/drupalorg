@@ -32,102 +32,17 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['row_class'] = 'recommended-[recommended] security-[drupalorg_security_coverage]';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['row_class'] = 'release recommended-[recommended] security-[drupalorg_security_coverage]';
   $handler->display->display_options['style_options']['default_row_class'] = FALSE;
   $handler->display->display_options['style_options']['row_class_special'] = FALSE;
-  $handler->display->display_options['style_options']['columns'] = array(
-    'path' => 'path',
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
     'field_release_version' => 'field_release_version',
-    'drupalorg_security_coverage_1' => 'field_release_version',
-    'drupalorg_security_coverage' => 'field_release_version',
-    'uri' => 'uri',
-    'uri_1' => 'uri_1',
-    'filesize' => 'filesize',
-    'filesize_1' => 'filesize_1',
-    'extension' => 'extension',
-    'extension_1' => 'extension',
+    'drupalorg_security_coverage_1' => 'drupalorg_security_coverage_1',
     'timestamp' => 'timestamp',
-    'recommended' => 'recommended',
   );
-  $handler->display->display_options['style_options']['default'] = '-1';
-  $handler->display->display_options['style_options']['info'] = array(
-    'path' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_release_version' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'drupalorg_security_coverage_1' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'drupalorg_security_coverage' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'uri' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'uri_1' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'filesize' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'filesize_1' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'extension' => array(
-      'align' => '',
-      'separator' => ' | ',
-      'empty_column' => 0,
-    ),
-    'extension_1' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'timestamp' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'recommended' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-  );
-  $handler->display->display_options['style_options']['override'] = FALSE;
+  $handler->display->display_options['row_options']['hide_empty'] = TRUE;
   /* Relationship: Content: Taxonomy terms on node */
   $handler->display->display_options['relationships']['term_node_tid']['id'] = 'term_node_tid';
   $handler->display->display_options['relationships']['term_node_tid']['table'] = 'node';
@@ -194,8 +109,11 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['field_release_version']['id'] = 'field_release_version';
   $handler->display->display_options['fields']['field_release_version']['table'] = 'field_data_field_release_version';
   $handler->display->display_options['fields']['field_release_version']['field'] = 'field_release_version';
+  $handler->display->display_options['fields']['field_release_version']['label'] = '';
   $handler->display->display_options['fields']['field_release_version']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_release_version']['alter']['path'] = '[path]';
+  $handler->display->display_options['fields']['field_release_version']['alter']['alt'] = 'View release notes';
+  $handler->display->display_options['fields']['field_release_version']['element_type'] = 'strong';
   $handler->display->display_options['fields']['field_release_version']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_release_version']['type'] = 'text_plain';
   /* Field: Security Team coverage icon */
@@ -205,9 +123,24 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['drupalorg_security_coverage_1']['ui_name'] = 'Security Team coverage icon';
   $handler->display->display_options['fields']['drupalorg_security_coverage_1']['label'] = '';
   $handler->display->display_options['fields']['drupalorg_security_coverage_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['alter']['text'] = '<img src="/sites/all/modules/drupalorg/drupalorg/images/shield-icon-black.svg" alt="Full release covered by the Drupal Security Team" title="Full release covered by the Drupal Security Team">';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['alter']['text'] = '<img src="/sites/all/modules/drupalorg/drupalorg/images/shield-icon-black.svg" alt="Stable release covered by the Drupal Security Team" title="Stable release covered by the Drupal Security Team">';
   $handler->display->display_options['fields']['drupalorg_security_coverage_1']['element_label_colon'] = FALSE;
-  /* Field: Content: Security Team coverage */
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['element_wrapper_type'] = 'span';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['element_wrapper_class'] = 'security-covered';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['element_default_classes'] = FALSE;
+  /* Field: File: Upload date */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['relationship'] = 'field_release_file_fid';
+  $handler->display->display_options['fields']['timestamp']['label'] = '';
+  $handler->display->display_options['fields']['timestamp']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['timestamp']['alter']['text'] = '<small>released [timestamp]</small>';
+  $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'date_only';
+  $handler->display->display_options['fields']['timestamp']['custom_date_format'] = 'Y-M-d';
+  $handler->display->display_options['fields']['timestamp']['second_date_format'] = 'long';
+  /* Field: Content: Security advisory coverage */
   $handler->display->display_options['fields']['drupalorg_security_coverage']['id'] = 'drupalorg_security_coverage';
   $handler->display->display_options['fields']['drupalorg_security_coverage']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['drupalorg_security_coverage']['field'] = 'drupalorg_security_coverage';
@@ -215,6 +148,14 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['drupalorg_security_coverage']['exclude'] = TRUE;
   $handler->display->display_options['fields']['drupalorg_security_coverage']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['drupalorg_security_coverage']['element_default_classes'] = FALSE;
+  /* Field: Content: Short Description */
+  $handler->display->display_options['fields']['field_release_short_description']['id'] = 'field_release_short_description';
+  $handler->display->display_options['fields']['field_release_short_description']['table'] = 'field_data_field_release_short_description';
+  $handler->display->display_options['fields']['field_release_short_description']['field'] = 'field_release_short_description';
+  $handler->display->display_options['fields']['field_release_short_description']['label'] = '';
+  $handler->display->display_options['fields']['field_release_short_description']['element_type'] = 'p';
+  $handler->display->display_options['fields']['field_release_short_description']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_release_short_description']['element_default_classes'] = FALSE;
   /* Field: File: Path */
   $handler->display->display_options['fields']['uri']['id'] = 'uri';
   $handler->display->display_options['fields']['uri']['table'] = 'file_managed';
@@ -248,36 +189,32 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['filesize_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['filesize_1']['element_label_colon'] = FALSE;
   /* Field: File: Extension */
-  $handler->display->display_options['fields']['extension']['id'] = 'extension';
-  $handler->display->display_options['fields']['extension']['table'] = 'file_managed';
-  $handler->display->display_options['fields']['extension']['field'] = 'extension';
-  $handler->display->display_options['fields']['extension']['relationship'] = 'field_release_file_fid';
-  $handler->display->display_options['fields']['extension']['label'] = 'Download';
-  $handler->display->display_options['fields']['extension']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['extension']['alter']['text'] = '[extension] <small>([filesize])</small>';
-  $handler->display->display_options['fields']['extension']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['extension']['alter']['path'] = '[uri]';
-  $handler->display->display_options['fields']['extension']['extension_detect_tar'] = TRUE;
-  /* Field: File: Extension */
   $handler->display->display_options['fields']['extension_1']['id'] = 'extension_1';
   $handler->display->display_options['fields']['extension_1']['table'] = 'file_managed';
   $handler->display->display_options['fields']['extension_1']['field'] = 'extension';
   $handler->display->display_options['fields']['extension_1']['relationship'] = 'field_release_file_fid_1';
   $handler->display->display_options['fields']['extension_1']['label'] = '';
+  $handler->display->display_options['fields']['extension_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['extension_1']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['extension_1']['alter']['text'] = '[extension_1] <small>([filesize_1])</small>';
   $handler->display->display_options['fields']['extension_1']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['extension_1']['alter']['path'] = '[uri_1]';
   $handler->display->display_options['fields']['extension_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['extension_1']['extension_detect_tar'] = TRUE;
-  /* Field: File: Upload date */
-  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['table'] = 'file_managed';
-  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['relationship'] = 'field_release_file_fid';
-  $handler->display->display_options['fields']['timestamp']['label'] = 'Date';
-  $handler->display->display_options['fields']['timestamp']['date_format'] = 'custom';
-  $handler->display->display_options['fields']['timestamp']['custom_date_format'] = 'Y-M-d';
+  /* Field: File: Extension */
+  $handler->display->display_options['fields']['extension']['id'] = 'extension';
+  $handler->display->display_options['fields']['extension']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['extension']['field'] = 'extension';
+  $handler->display->display_options['fields']['extension']['relationship'] = 'field_release_file_fid';
+  $handler->display->display_options['fields']['extension']['label'] = '';
+  $handler->display->display_options['fields']['extension']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['extension']['alter']['text'] = '[extension] <small>([filesize])</small>';
+  $handler->display->display_options['fields']['extension']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['extension']['alter']['path'] = '[uri]';
+  $handler->display->display_options['fields']['extension']['alter']['prefix'] = '⬇ <span class="element-invisible">Download</span> ';
+  $handler->display->display_options['fields']['extension']['alter']['suffix'] = ' | [extension_1]';
+  $handler->display->display_options['fields']['extension']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['extension']['extension_detect_tar'] = TRUE;
   /* Field: Project release: Recommended branch */
   $handler->display->display_options['fields']['recommended']['id'] = 'recommended';
   $handler->display->display_options['fields']['recommended']['table'] = 'project_release_supported_versions';
@@ -285,6 +222,15 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['recommended']['relationship'] = 'supported_releases_rel';
   $handler->display->display_options['fields']['recommended']['exclude'] = TRUE;
   $handler->display->display_options['fields']['recommended']['not'] = 0;
+  /* Field: Content: Release branch information */
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['id'] = 'drupalorg_release_branch_info';
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['field'] = 'drupalorg_release_branch_info';
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['label'] = '';
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['element_type'] = '0';
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['element_wrapper_class'] = 'release-info';
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['element_default_classes'] = FALSE;
   /* Sort criterion: Taxonomy term: Weight */
   $handler->display->display_options['sorts']['weight']['id'] = 'weight';
   $handler->display->display_options['sorts']['weight']['table'] = 'taxonomy_term_data';
@@ -503,8 +449,8 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['filters']['supported']['relationship'] = 'supported_releases_rel';
   $handler->display->display_options['filters']['supported']['value'] = '1';
   $handler->display->display_options['displays'] = array(
-    'recommended' => 'recommended',
     'default' => 0,
+    'recommended' => 0,
   );
   $handler->display->display_options['attachment_position'] = 'after';
   $translatables['drupalorg_project_downloads'] = array(
@@ -522,12 +468,13 @@ function drupalorg_projects_views_default_views() {
     t('file from field_release_file 2'),
     t('supported versions'),
     t('Path'),
-    t('Version'),
-    t('<img src="/sites/all/modules/drupalorg/drupalorg/images/shield-icon-black.svg" alt="Full release covered by the Drupal Security Team" title="Full release covered by the Drupal Security Team">'),
-    t('Download'),
-    t('[extension] <small>([filesize])</small>'),
+    t('View release notes'),
+    t('<img src="/sites/all/modules/drupalorg/drupalorg/images/shield-icon-black.svg" alt="Stable release covered by the Drupal Security Team" title="Stable release covered by the Drupal Security Team">'),
+    t('<small>released [timestamp]</small>'),
     t('[extension_1] <small>([filesize_1])</small>'),
-    t('Date'),
+    t('[extension] <small>([filesize])</small>'),
+    t('⬇ <span class="element-invisible">Download</span> '),
+    t(' | [extension_1]'),
     t('Recommended branch'),
     t('All'),
     t('Recommended releases'),
