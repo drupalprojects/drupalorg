@@ -340,6 +340,48 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'restws',
   );
 
+  // Exported permission: 'access resource versioncontrol_branch'.
+  $permissions['access resource versioncontrol_branch'] = array(
+    'name' => 'access resource versioncontrol_branch',
+    'roles' => array(),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource versioncontrol_event'.
+  $permissions['access resource versioncontrol_event'] = array(
+    'name' => 'access resource versioncontrol_event',
+    'roles' => array(),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource versioncontrol_item'.
+  $permissions['access resource versioncontrol_item'] = array(
+    'name' => 'access resource versioncontrol_item',
+    'roles' => array(),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource versioncontrol_operation'.
+  $permissions['access resource versioncontrol_operation'] = array(
+    'name' => 'access resource versioncontrol_operation',
+    'roles' => array(),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource versioncontrol_repo'.
+  $permissions['access resource versioncontrol_repo'] = array(
+    'name' => 'access resource versioncontrol_repo',
+    'roles' => array(),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource versioncontrol_tag'.
+  $permissions['access resource versioncontrol_tag'] = array(
+    'name' => 'access resource versioncontrol_tag',
+    'roles' => array(),
+    'module' => 'restws',
+  );
+
   // Exported permission: 'access security review list'.
   $permissions['access security review list'] = array(
     'name' => 'access security review list',
