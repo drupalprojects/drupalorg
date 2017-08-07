@@ -2346,6 +2346,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'create sa content'.
+  $permissions['create sa content'] = array(
+    'name' => 'create sa content',
+    'roles' => array(
+      'security team' => 'security team',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'create sandbox projects'.
   $permissions['create sandbox projects'] = array(
     'name' => 'create sandbox projects',
@@ -2549,6 +2558,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'delete any sa content'.
+  $permissions['delete any sa content'] = array(
+    'name' => 'delete any sa content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'delete any sandbox project'.
   $permissions['delete any sandbox project'] = array(
     'name' => 'delete any sandbox project',
@@ -2741,6 +2757,13 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete own project_translation content'.
   $permissions['delete own project_translation content'] = array(
     'name' => 'delete own project_translation content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'delete own sa content'.
+  $permissions['delete own sa content'] = array(
+    'name' => 'delete own sa content',
     'roles' => array(),
     'module' => 'node',
   );
@@ -3163,6 +3186,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit any sa content'.
+  $permissions['edit any sa content'] = array(
+    'name' => 'edit any sa content',
+    'roles' => array(
+      'security team' => 'security team',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit any section content'.
   $permissions['edit any section content'] = array(
     'name' => 'edit any section content',
@@ -3403,6 +3435,13 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit own project_translation content'.
   $permissions['edit own project_translation content'] = array(
     'name' => 'edit own project_translation content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'edit own sa content'.
+  $permissions['edit own sa content'] = array(
+    'name' => 'edit own sa content',
     'roles' => array(),
     'module' => 'node',
   );
