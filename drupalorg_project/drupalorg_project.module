@@ -563,6 +563,19 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       }
       $form_state['drupalorg_credit_cids'] = $cid_key_map;
 
+      // Find users with commit attribution.
+      $commit_attribution = [];
+      if (isset($form_state['node']->versioncontrol_project_issue)) {
+        foreach ($form_state['node']->versioncontrol_project_issue['operations'] as $operation) {
+          if ($operation->author_uid) {
+            $commit_attribution[$operation->author_uid] = TRUE;
+          }
+          if ($operation->committer_uid) {
+            $commit_attribution[$operation->committer_uid] = TRUE;
+          }
+        }
+      }
+
       // Populate patches and files.
       if (isset($node_wrapper->field_issue_files)) {
         foreach ($node_wrapper->field_issue_files->value() as $file) {
@@ -632,9 +645,9 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           'data' => array(
             '#type' => 'checkbox',
             '#title' => t($by_text, $row['by']),
-            // Suggest credit if they uploaded a patch after the last
-            // maintainer comment, or previously received credit.
-            '#checked' => (!empty($row['#last_patch']) && $row['#last_patch'] >= $last_maintainer_comment) || isset($row['#checked']),
+            // Suggest credit if previously received credit, uploaded a patch
+            // after the last maintainer comment, or have commit attribution.
+            '#checked' => isset($row['#checked']) || (!empty($row['#last_patch']) && $row['#last_patch'] >= $last_maintainer_comment) || isset($commit_attribution[$key]),
             '#id' => 'by-' . $key,
             '#name' => 'by-' . $key,
             '#attributes' => array(
@@ -648,6 +661,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           ),
         );
         unset($row['#checked']);
+        $commit_attribution[$key] = FALSE;
         // Format patches, files, and comments bars.
         foreach (array('patches' => t('patches attached'), 'files' => t('other files attached'), 'comments' => t('comments made')) as $key => $description) {
           if (!is_null($row[$key])) {
@@ -755,6 +769,11 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           '#autocomplete_path' => 'admin/views/ajax/autocomplete/user',
           '#description' => t('A comment for each person will be added and they will be notified.'),
         ];
+        // Add people with commit attribution who have not commented.
+        if ($committers_without_comments = array_keys(array_filter($commit_attribution))) {
+          $form['drupalorg_credit_wrapper']['add_credit']['#default_value'] = implode(', ', db_query('SELECT name FROM {users} WHERE uid IN (:uids)', [':uids' => $committers_without_comments])->fetchCol());
+        }
+
         $form['drupalorg_credit_wrapper']['help'] = array(
           '#markup' => '<div class="description">' . t('As a project maintainer, use checkboxes to give credit for the issue. Learn more about <a href="@attribution-url">giving credit</a>.', array('@attribution-url' => url('node/52287'))) . '</div>',
         );
