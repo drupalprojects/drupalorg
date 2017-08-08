@@ -761,7 +761,8 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         ),
       );
       if ($is_maintainer) {
-        $form['#submit'][] = 'drupalorg_project_issue_credit_submit';
+        // Execute before node save to have comments first.
+        array_unshift($form['actions']['submit']['#submit'], 'drupalorg_project_issue_credit_submit');
         // Add non-commenter row.
         $form['drupalorg_credit_wrapper']['add_credit'] = [
           '#type' => 'textfield',
