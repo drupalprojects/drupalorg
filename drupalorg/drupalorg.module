@@ -4361,7 +4361,7 @@ function drupalorg_preprocess_comment(&$v) {
   }
 
   // System messages, and first comment, in the issue queue.
-  if ($v['comment']->uid != 0 && ($v['comment']->uid == variable_get('project_issue_followup_user', 0) || ($v['comment']->uid == $v['node']->uid && isset($v['comment']->thread) && $v['comment']->thread == int2vancode(1) . '/' && isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('|^<a.*class="username">.*</a> created an issue.( See <a.*>original summary</a>.)?$|', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) || (isset($v['comment']->comment_body[LANGUAGE_NONE]) && preg_match('|^<a.*class="username">.*</a> credited <a.*class="username">.*</a>\.?$|', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])))) {
+  if ($v['comment']->uid != 0 && ($v['comment']->uid == variable_get('project_issue_followup_user', 0) || ($v['comment']->uid == $v['node']->uid && isset($v['comment']->thread) && $v['comment']->thread == int2vancode(1) . '/' && isset($v['comment']->comment_body[LANGUAGE_NONE][0]) && preg_match('|^<a.*class="username">.*</a> created an issue.( See <a.*>original summary</a>.)?$|', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) || (isset($v['comment']->comment_body[LANGUAGE_NONE][0]) && preg_match('|^<a.*class="username">.*</a> credited <a.*class="username">.*</a>\.?$|', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])))) {
     // Remove picture & username.
     $v['picture'] = '';
     $v['submitted'] = t('<time pubdate datetime="!created_date_iso">!created_date</time>', array(
