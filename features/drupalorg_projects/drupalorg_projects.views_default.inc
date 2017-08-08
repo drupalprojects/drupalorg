@@ -148,7 +148,7 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['drupalorg_security_coverage']['exclude'] = TRUE;
   $handler->display->display_options['fields']['drupalorg_security_coverage']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['drupalorg_security_coverage']['element_default_classes'] = FALSE;
-  /* Field: Content: Short Description */
+  /* Field: Content: Short description */
   $handler->display->display_options['fields']['field_release_short_description']['id'] = 'field_release_short_description';
   $handler->display->display_options['fields']['field_release_short_description']['table'] = 'field_data_field_release_short_description';
   $handler->display->display_options['fields']['field_release_short_description']['field'] = 'field_release_short_description';
@@ -607,7 +607,7 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['field_release_version']['alter']['path'] = '[path]';
   $handler->display->display_options['fields']['field_release_version']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_release_version']['type'] = 'text_plain';
-  /* Field: Content: Short Description */
+  /* Field: Content: Short description */
   $handler->display->display_options['fields']['field_release_short_description']['id'] = 'field_release_short_description';
   $handler->display->display_options['fields']['field_release_short_description']['table'] = 'field_data_field_release_short_description';
   $handler->display->display_options['fields']['field_release_short_description']['field'] = 'field_release_short_description';

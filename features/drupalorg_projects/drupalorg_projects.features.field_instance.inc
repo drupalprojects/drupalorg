@@ -154,10 +154,7 @@ function drupalorg_projects_field_default_field_instances() {
       'active' => 1,
       'module' => 'file',
       'settings' => array(
-        'display_empty' => 0,
         'extended_file_field_show_remove' => FALSE,
-        'formatter' => '',
-        'formatter_settings' => array(),
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
@@ -7345,11 +7342,7 @@ function drupalorg_projects_field_default_field_instances() {
     'widget' => array(
       'active' => 0,
       'module' => 'field_collection',
-      'settings' => array(
-        'display_empty' => 0,
-        'formatter' => '',
-        'formatter_settings' => array(),
-      ),
+      'settings' => array(),
       'type' => 'field_collection_hidden',
       'weight' => 15,
     ),
@@ -7448,7 +7441,7 @@ function drupalorg_projects_field_default_field_instances() {
     'bundle' => 'project_release',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Appears on the project page’s downloads section.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -7485,7 +7478,7 @@ function drupalorg_projects_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_release_short_description',
-    'label' => 'Short Description',
+    'label' => 'Short description',
     'required' => 0,
     'settings' => array(
       'text_processing' => 0,
@@ -13289,6 +13282,7 @@ function drupalorg_projects_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('<a href="/documentation/releases/types">What is a release type?</a>');
   t('<em>Read & understand <a href="/security-advisory-policy">the policy</a>!</em> Once you opt-in your project, you may not opt-out. Only the Security Team will be able to change this.');
+  t('Appears on the project page’s downloads section.');
   t('Applicable from');
   t('Applicable up to');
   t('Changelog');
@@ -13338,7 +13332,7 @@ function drupalorg_projects_field_default_field_instances() {
   t('Release type');
   t('Screenshots');
   t('Security advisory coverage');
-  t('Short Description');
+  t('Short description');
   t('Short name');
   t('Show in project’s download table when branch is supported');
   t('Submission guidelines');
