@@ -67,13 +67,8 @@ class drupalorg_handler_release_branch_info extends views_handler_field_entity {
                 ->propertyCondition('custom', FALSE)
                 ->propertyOrderBy('job_id', 'DESC')
                 ->range(0, 1);
-              if (!empty($testing['core_branch'])) {
-                if (strpos($testing['core_branch'], '~') === 0) {
-                  $query->propertyCondition('core_branch', pift_get_current_core($testing['core_branch'], $dev_release_wrapper->$api_field->raw())['branch']);
-                }
-                else {
-                  $query->propertyCondition('core_branch', $testing['core_branch']);
-                }
+              if (!empty($testing['core_branch']) && strpos($testing['core_branch'], '~') !== 0) {
+                $query->propertyCondition('core_branch', $testing['core_branch']);
               }
               $result = $query->execute();
               if (isset($result['pift_ci_job'])) {
