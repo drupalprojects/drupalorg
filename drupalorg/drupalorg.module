@@ -5320,22 +5320,12 @@ function drupalorg_project_release_xml_release_alter(&$xml, $project, $release) 
 
   // Add security advisory coverage. See also class
   // drupalorg_handler_security_coverage.
-  if ($release_wrapper->field_release_project->field_security_advisory_coverage->value() !== 'covered') {
-    $xml->release->security = t('Project has not opted into security advisory coverage!');
-  }
-  elseif ($release_wrapper->{'taxonomy_' . taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary'))->machine_name}->value()->name <= 6) {
-    $xml->release->security = t('Drupal 6 and earlier are not covered by Drupal security advisories!');
-  }
-  elseif ($type = $release_wrapper->field_release_version_extra->value()) {
-    $type = drupal_ucfirst(preg_replace('/[0-9]*$/', '', $type));
-    if ($type === 'Rc') {
-      $type = 'RC';
-    }
-    $xml->release->security = t('@type releases are not covered by Drupal security advisories.', ['@type' => $type]);
-  }
-  else {
+  $coverage = drupalorg_project_release_security_coverage($release);
+  if ($coverage['status'] === 'covered') {
     $xml->release->security['covered'] = TRUE;
   }
+  $xml->release->security = $coverage['explanation'];
+
 }
 
 /**
@@ -5358,6 +5348,37 @@ function drupalorg_project_release_xml_alter(&$xml, $project, $api_tid) {
 function drupalorg_project_release_history_xml_written($project, $api_version) {
   $url = 'http://updates.drupal.org/release-history/' . $project->field_project_machine_name[LANGUAGE_NONE][0]['value'] . '/' . $api_version;
   drupalorg_fastly_purge_url($url);
+}
+
+function drupalorg_project_release_security_coverage($release) {
+  $coverage['status'] = '';
+  $coverage['explanation'] = t('Project has not opted into security advisory coverage!');
+
+  // Project is not covered by the policy in general, either maintainers have
+  // not opted in, or cannot opt in due to privilege restrictions.
+  if ($release_wrapper = entity_metadata_wrapper('node', $release)) {
+    if ($release_wrapper->field_release_project->field_security_advisory_coverage->value() === 'covered') {
+      // D6 and earlier do not have security team coverage.
+      if ($release_wrapper->{'taxonomy_' . taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary'))->machine_name}->value()->name <= 6) {
+        $coverage['explanation'] = t('Drupal 6 and earlier are not covered by Drupal security advisories!');
+      }
+      // Non-full releases, with a version extra value like 'dev' or 'alpha42'
+      // do not have security team coverage.
+      else if ($type = $release_wrapper->field_release_version_extra->value()) {
+          $type = drupal_ucfirst(preg_replace('/[0-9]*$/', '', $type));
+          if ($type === 'Rc') {
+            $type = 'RC';
+          }
+          $coverage['explanation'] = t('@type releases are not covered by Drupal security advisories.', ['@type' => $type]);
+      }
+      else {
+        $coverage['status'] = 'covered';
+        $coverage['explanation'] = t('Covered by Drupal\'s security advisory policy');
+      }
+    }
+  }
+
+  return $coverage;
 }
 
 /**
