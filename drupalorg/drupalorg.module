@@ -5359,6 +5359,7 @@ function drupalorg_project_release_security_coverage($release) {
     if ($release_wrapper->field_release_project->field_security_advisory_coverage->value() === 'covered') {
       // D6 and earlier do not have security team coverage.
       if ($release_wrapper->{'taxonomy_' . taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary'))->machine_name}->value()->name <= 6) {
+        $coverage['status'] = 'not-covered';
         $coverage['explanation'] = t('Drupal 6 and earlier are not covered by Drupal security advisories!');
       }
       // Non-full releases, with a version extra value like 'dev' or 'alpha42'
@@ -5368,6 +5369,7 @@ function drupalorg_project_release_security_coverage($release) {
           if ($type === 'Rc') {
             $type = 'RC';
           }
+          $coverage['status'] = 'not-covered';
           $coverage['explanation'] = t('@type releases are not covered by Drupal security advisories.', ['@type' => $type]);
       }
       else {
