@@ -5351,12 +5351,11 @@ function drupalorg_project_release_history_xml_written($project, $api_version) {
 }
 
 function drupalorg_project_release_security_coverage($release) {
-  $coverage['status'] = '';
-  $coverage['explanation'] = t('Project has not opted into security advisory coverage!');
 
-  // Project is not covered by the policy in general, either maintainers have
-  // not opted in, or cannot opt in due to privilege restrictions.
+
   if ($release_wrapper = entity_metadata_wrapper('node', $release)) {
+    $coverage['status'] = $release_wrapper->field_release_project->field_security_advisory_coverage->value();
+
     if ($release_wrapper->field_release_project->field_security_advisory_coverage->value() === 'covered') {
       // D6 and earlier do not have security team coverage.
       if ($release_wrapper->{'taxonomy_' . taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary'))->machine_name}->value()->name <= 6) {
@@ -5372,9 +5371,16 @@ function drupalorg_project_release_security_coverage($release) {
           $coverage['explanation'] = t('@type releases are not covered by Drupal security advisories.', ['@type' => $type]);
       }
       else {
-        $coverage['status'] = 'covered';
         $coverage['explanation'] = t('Covered by Drupal\'s security advisory policy');
       }
+    }
+    else if ($release_wrapper->field_release_project->field_security_advisory_coverage->value() === 'revoked') {
+      $coverage['explanation'] = t('Project has been unsupported by the Drupal Security Team');
+    }
+    else {
+      // Project is not covered by the policy by default; either maintainers have
+      // not opted in, or cannot opt in due to privilege restrictions.
+      $coverage['explanation'] = t('Project has not opted into security advisory coverage!');
     }
   }
 
