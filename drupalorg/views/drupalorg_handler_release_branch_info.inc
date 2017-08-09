@@ -75,6 +75,7 @@ class drupalorg_handler_release_branch_info extends views_handler_field_entity {
                 $test_output = pift_ci_render_tests(entity_load('pift_ci_job', array_keys($result['pift_ci_job'])));
                 foreach (element_children($test_output) as $key) {
                   $test_output[$key]['#prefix'] .= t('Testing result: ');
+                  $test_output[$key]['#suffix'] = ' ' . l(t('all results'), 'node/' . $dev_release_wrapper->field_release_project->raw() . '/qa') . $test_output[$key]['#suffix'];
                 }
                 $output .= drupal_render($test_output);
               }
