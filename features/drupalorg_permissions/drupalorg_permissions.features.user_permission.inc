@@ -2103,7 +2103,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'create fieldable case_study'.
   $permissions['create fieldable case_study'] = array(
     'name' => 'create fieldable case_study',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'fieldable_panels_panes',
   );
 
@@ -2592,7 +2594,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete fieldable case_study'.
   $permissions['delete fieldable case_study'] = array(
     'name' => 'delete fieldable case_study',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'fieldable_panels_panes',
   );
 
@@ -3225,7 +3229,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit fieldable case_study'.
   $permissions['edit fieldable case_study'] = array(
     'name' => 'edit fieldable case_study',
-    'roles' => array(),
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
     'module' => 'fieldable_panels_panes',
   );
 
