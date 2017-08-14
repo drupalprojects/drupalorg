@@ -6480,3 +6480,24 @@ function drupalorg_form_drupalorg_browse_projects_form_alter(&$form, &$form_stat
   // Unset form_id etc.
   unset($form['form_id'], $form['form_build_id'], $form['token']);
 }
+
+/**
+ * Get committer & author uids for version control operations attached to an
+ * issue node.
+ */
+function drupalorg_get_issue_committers(stdClass $node) {
+  $committers = [];
+
+  if (isset($node->versioncontrol_project_issue)) {
+    foreach ($node->versioncontrol_project_issue['operations'] as $operation) {
+      if ($operation->author_uid) {
+        $committers[$operation->author_uid] = TRUE;
+      }
+      if ($operation->committer_uid) {
+        $committers[$operation->committer_uid] = TRUE;
+      }
+    }
+  }
+
+  return $committers;
+}

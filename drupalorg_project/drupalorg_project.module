@@ -564,17 +564,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       $form_state['drupalorg_credit_cids'] = $cid_key_map;
 
       // Find users with commit attribution.
-      $commit_attribution = [];
-      if (isset($form_state['node']->versioncontrol_project_issue)) {
-        foreach ($form_state['node']->versioncontrol_project_issue['operations'] as $operation) {
-          if ($operation->author_uid) {
-            $commit_attribution[$operation->author_uid] = TRUE;
-          }
-          if ($operation->committer_uid) {
-            $commit_attribution[$operation->committer_uid] = TRUE;
-          }
-        }
-      }
+      $commit_attribution = $form_state['drupalorg_commit_attribution'] = drupalorg_get_issue_committers($form_state['node']);
 
       // Populate patches and files.
       if (isset($node_wrapper->field_issue_files)) {
@@ -929,6 +919,12 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
  * Form submit callback.
  */
 function drupalorg_project_issue_credit_submit($form, &$form_state) {
+  // Add last-minute credit for commit made after form load.
+  versioncontrol_project_issue_node_load([$form_state['node']->nid => $form_state['node']], [$form_state['node']->type]);
+  if ($uncredited_uids = array_diff_key(drupalorg_get_issue_committers($form_state['node']), $form_state['drupalorg_commit_attribution'])) {
+    $form_state['values']['add_credit'] .= ',' . implode(',', db_query('SELECT name FROM {users} WHERE uid IN (:uids)', [':uids' => array_keys($uncredited_uids)])->fetchCol());
+  }
+
   // Add additional credit.
   if (!empty($form_state['values']['add_credit'])) {
     _drupalorg_project_issue_credit_add($form_state);
