@@ -148,6 +148,21 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['drupalorg_security_coverage']['exclude'] = TRUE;
   $handler->display->display_options['fields']['drupalorg_security_coverage']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['drupalorg_security_coverage']['element_default_classes'] = FALSE;
+  /* Field: Project release: Recommended branch */
+  $handler->display->display_options['fields']['recommended_1']['id'] = 'recommended_1';
+  $handler->display->display_options['fields']['recommended_1']['table'] = 'project_release_supported_versions';
+  $handler->display->display_options['fields']['recommended_1']['field'] = 'recommended';
+  $handler->display->display_options['fields']['recommended_1']['relationship'] = 'supported_releases_rel';
+  $handler->display->display_options['fields']['recommended_1']['label'] = '';
+  $handler->display->display_options['fields']['recommended_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['recommended_1']['alter']['text'] = '<small>[recommended_1]</small>';
+  $handler->display->display_options['fields']['recommended_1']['element_type'] = '0';
+  $handler->display->display_options['fields']['recommended_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['recommended_1']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['recommended_1']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['recommended_1']['type'] = 'custom';
+  $handler->display->display_options['fields']['recommended_1']['type_custom_true'] = '✓ Recommended by the project’s maintainer.';
+  $handler->display->display_options['fields']['recommended_1']['not'] = 0;
   /* Field: Content: Short description */
   $handler->display->display_options['fields']['field_release_short_description']['id'] = 'field_release_short_description';
   $handler->display->display_options['fields']['field_release_short_description']['table'] = 'field_data_field_release_short_description';
@@ -471,6 +486,8 @@ function drupalorg_projects_views_default_views() {
     t('View release notes'),
     t('<img src="/sites/all/modules/drupalorg/drupalorg/images/shield-icon-black.svg" alt="Stable release covered by the Drupal Security Team" title="Stable release covered by the Drupal Security Team">'),
     t('<small>released [timestamp]</small>'),
+    t('<small>[recommended_1]</small>'),
+    t('✓ Recommended by the project’s maintainer.'),
     t('[extension_1] <small>([filesize_1])</small>'),
     t('[extension] <small>([filesize])</small>'),
     t('⬇ <span class="element-invisible">Download</span> '),
