@@ -14,7 +14,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
     // with the full path to the directory where drupalorg_drush is located.
     // Keep concurrency at 1, writing metadata json file merges any existing
     // contents.
-    $this->conf['drush'] = 'php /var/www/drupal.org/tools/drush.phar --no-cache --include=/var/www/drupal.org/tools/drupalorg_drush';
+    $this->conf['drush'] = 'php /var/www/drupal.org/tools/drush.phar --no-cache --cache-duration-releasexml=300 --include=/var/www/drupal.org/tools/drupalorg_drush';
   }
 
   public function createPackage(&$files) {
