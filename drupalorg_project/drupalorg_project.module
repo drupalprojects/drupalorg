@@ -1559,36 +1559,21 @@ function drupalorg_project_meta_data(stdClass $node) {
   }
 
   // Project solr is currently finnicky about f query parameter indexing.
-  $dummy = array();
   $form = drupalorg_browse_projects_form([], $dummy, node_type_load($node->type));
-
-  foreach (taxonomy_vocabulary_get_names() as $vocabulary) {
+  foreach (taxonomy_vocabulary_load_multiple([DRUPALORG_PROJECT_CATEGORIES_VID]) as $vocabulary) {
     if (!empty($node->{'taxonomy_' . $vocabulary->machine_name})) {
-      $links = array();
+      $links = [];
       foreach ($node->{'taxonomy_' . $vocabulary->machine_name}[LANGUAGE_NONE] as $term) {
         if ($term_entity = taxonomy_term_load($term['tid'])) {
-          $options = array();
-          // Maintenance status is Abandoned or Development status is Obsolete
-          if (($vocabulary->vid == 44 && $term['tid'] == 13032) || ($vocabulary->vid == 46 && $term['tid'] == 9994)) {
-            $options['attributes'] = ['class' => ['alert']];
-          }
-          // Special-case module category terms to link to download+extend.
-          if ($vocabulary->vid == DRUPALORG_PROJECT_CATEGORIES_VID) {
-            // Only use the 'terms' style for module categories.
-            $term_path = 'project/' . $node->type;
-            $solr_arg = 'im_vid_' . $vocabulary->vid . ':' . $term['tid'];
-            foreach (element_children($form['f']) as $element) {
-              if (isset($form['f'][$element]['#options'][$solr_arg])) {
-                $options['query'] = array('f' => array($element => $solr_arg));
-              }
+          // Link to project browsing.
+          $options = [];
+          $solr_arg = 'im_vid_' . $vocabulary->vid . ':' . $term['tid'];
+          foreach (element_children($form['f']) as $element) {
+            if (isset($form['f'][$element]['#options'][$solr_arg])) {
+              $options['query'] = array('f' => array($element => $solr_arg));
             }
           }
-          else {
-            $uri = entity_uri('taxonomy_term', $term_entity);
-            $term_path = $uri['path'];
-          }
-
-          $links[] = l($term_entity->name, $term_path, $options);
+          $links[] = l($term_entity->name, 'project/' . $node->type, $options);
         }
       }
       if (!empty($links)) {
