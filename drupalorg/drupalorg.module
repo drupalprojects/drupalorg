@@ -3348,6 +3348,15 @@ function drupalorg_preprocess_node(&$v) {
 }
 
 /**
+ * Implements hook_process_node().
+ */
+function drupalorg_process_node(&$v) {
+  if (project_node_is_project($v['node'])) {
+    $v['submitted'] .= ', ' . t('updated !changed', ['!changed' => '<time pubdate datetime="' . $v['node']->changed . '">' . format_date($v['node']->changed, 'custom', 'j F Y') . '</time>']);
+  }
+}
+
+/**
  * Implements hook_comment_view().
  */
 function drupalorg_comment_view($comment, $view_mode, $langcode) {

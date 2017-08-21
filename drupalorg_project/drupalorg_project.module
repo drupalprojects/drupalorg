@@ -1608,13 +1608,6 @@ function drupalorg_project_meta_data(stdClass $node) {
     ];
   }
 
-  // Last modified.
-  $output['items']['modified'] = [
-    '#prefix' => '<li>',
-    '#markup' => t('Last modified: @modified', ['@modified' => format_date($node->changed, 'custom', 'j F Y')]),
-    '#suffix' => '</li>',
-  ];
-
   // Security information.
   if ($wrapper->field_project_has_releases->value()) {
     if ($wrapper->field_security_advisory_coverage->value() === 'covered') {
