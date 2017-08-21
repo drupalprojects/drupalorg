@@ -1593,30 +1593,28 @@ function drupalorg_project_meta_data(stdClass $node) {
     }
   }
 
-  // Usage stats.
-  if ($total_usage = project_usage_get_project_total_usage($node->nid)) {
+  if (($total_usage = project_usage_get_project_total_usage($node->nid)) || ($wrapper->field_download_count->value() > 0)) {
     $output['items']['usage'] = [
       '#prefix' => '<li>',
-      '#markup' => format_plural($total_usage,
-        'Reported installs: <strong>1</strong> site currently reports using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
-        'Reported installs: <strong>@formatted-count</strong> sites currently report using this @project-type. <a href="/project/usage/!project-shortname">View usage statistics</a>.',
+      '#markup' => '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/chart-black.svg') . '" alt="chart icon" class="icon-left gray">',
+      '#suffix' => '</li>',
+    ];
+    // Usage stats.
+    if (!empty($total_usage)) {
+      $output['items']['usage']['#markup'] .= l(format_plural($total_usage,
+        '<strong>1</strong> site reports using this @project-type',
+        '<strong>@formatted-count</strong> sites report using this @project-type',
         [
           '@formatted-count' => number_format($total_usage),
           '@project-type' => drupal_strtolower(drupalorg_project_node_type_label($node->type, 'singular')),
-          '!project-shortname' => $node->field_project_machine_name[LANGUAGE_NONE][0]['value'],
         ]
-      ),
-      '#suffix' => '</li>',
-    ];
-  }
+      ), 'project/usage/' . $node->field_project_machine_name[LANGUAGE_NONE][0]['value'], ['html' => TRUE]) . '<br>';
+    }
 
-  // Download stats.
-  if ($wrapper->field_download_count->value() > 0) {
-    $output['items']['downloads'] = [
-      '#prefix' => '<li>',
-      '#markup' => t('Downloads: @downloads', ['@downloads' => number_format($wrapper->field_download_count->value())]),
-      '#suffix' => '</li>',
-    ];
+    // Download stats.
+    if ($wrapper->field_download_count->value() > 0) {
+      $output['items']['usage']['#markup'] .= '<small>' . t('@downloads downloads', ['@downloads' => number_format($wrapper->field_download_count->value())]) . '</small>';
+    }
   }
 
   // Security information.

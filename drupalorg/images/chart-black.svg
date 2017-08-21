@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Layer_1" x="0px" y="0px" viewBox="34.852 -0.064 80 80" xmlns="http://www.w3.org/2000/svg">
+  <ellipse transform="matrix(0, 1, -1, 0, 67.087997, -6.563)" cx="56.756" cy="24.236" rx="8" ry="8"/>
+  <ellipse transform="matrix(0, 1, -1, 0, 131.088013, -36.983032)" cx="56.756" cy="24.236" rx="8" ry="8"/>
+  <ellipse transform="matrix(0, 1, -1, 0, 111.371117, -14.364212)" cx="56.756" cy="24.236" rx="8" ry="8"/>
+  <ellipse transform="matrix(0, 1, -1, 0, 87.320358, -27.29591)" cx="56.756" cy="24.236" rx="8" ry="8"/>
+  <line x1="42.662" y1="50.392" x2="63.301" y2="29.065" style="stroke: rgb(0, 0, 0); stroke-width: 8;"/>
+  <line x1="73.72347259521484" y1="55.86076736450195" x2="102.68899536132812" y2="23.635059356689453"/>
+  <line x1="87.091" y1="42.193" x2="107.507" y2="19.329" style="stroke: rgb(0, 0, 0); stroke-width: 8;"/>
+  <line x1="63.301" y1="29.065" x2="87.091" y2="43.344" style="stroke: rgb(0, 0, 0); stroke-width: 8;" transform="matrix(-1, 0, 0, -1, 150.391995, 72.409001)"/>
+</svg>
