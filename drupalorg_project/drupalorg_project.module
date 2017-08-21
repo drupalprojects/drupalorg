@@ -1534,21 +1534,29 @@ function drupalorg_project_meta_data(stdClass $node) {
   $wrapper = entity_metadata_wrapper('node', $node);
 
   $output = [
-    '#prefix' => '<h3>' . t('Project Information') . '</h3><ul class="project-info flat">',
-    'items' => [
-      'Maintenance status' => [
-        '#prefix' => '<li>',
-        '#markup' => t('Maintenance status: <span class="warning">Unknown</span>'),
-        '#suffix' => '</li>',
-      ],
-      'Development status' => [
-        '#prefix' => '<li>',
-        '#markup' => t('Development status: <span class="warning">Unknown</span>'),
-        '#suffix' => '</li>',
-      ],
-    ],
+    '#prefix' => '<h3>' . t('Project information') . '</h3><ul class="project-info">',
+    'items' => [],
     '#suffix' => '</ul>',
   ];
+  foreach (['taxonomy_vocabulary_44', 'taxonomy_vocabulary_46'] as $field) {
+    // Maintenance status is not Actively maintained and Development status is
+    // not Under active development.
+    if (($status = $wrapper->$field->value()) && !in_array($status->tid, [13028, 9988])) {
+      // Maintenance status is Abandoned, or Development status is No further
+      // development or Obsolete.
+      if (in_array($status->tid, [13032, 16538, 9994])) {
+        $icon = '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/triangle-alert.svg') . '" alt="caution" class="icon-left"> ';
+      }
+      else {
+        $icon = '<img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/triangle-black.svg') . '" alt="caution" class="icon-left gray"> ';
+      }
+      $output['items'][$field] = [
+        '#prefix' => '<li>',
+        '#markup' => $icon . check_plain($status->name) . '<br><small>' . filter_xss($status->description) . '</small>',
+        '#suffix' => '</li>',
+      ];
+    }
+  }
 
   // Project solr is currently finnicky about f query parameter indexing.
   $dummy = array();
