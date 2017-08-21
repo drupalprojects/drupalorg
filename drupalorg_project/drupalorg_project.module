@@ -389,6 +389,17 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       ]);
     }
 
+    // Maintenance & development status — add term descriptions.
+    $tids = [];
+    foreach (['taxonomy_vocabulary_44', 'taxonomy_vocabulary_46'] as $field) {
+      if (isset($form[$field])) {
+        $tids = array_merge($tids, array_keys($form[$field][LANGUAGE_NONE]['#options']));
+      }
+    }
+    foreach (taxonomy_term_load_multiple($tids) as $term) {
+      $form['taxonomy_' . $term->vocabulary_machine_name][LANGUAGE_NONE][$term->tid]['#description'] = filter_xss($term->description);
+    }
+
     // Security advisory coverage.
     if (!isset($form_state['node']->nid)) {
       // Don’t bother with this on node creation.
