@@ -4653,6 +4653,7 @@ function drupalorg_module_implements_alter(&$implementations, $hook) {
   if ($hook === 'custom_theme') {
     $implementations = ['drupalorg' => NULL] + $implementations;
   }
+
   // Execute drupalorg_node_delete() before flag_node_delete.
   if ($hook === 'node_delete') {
     $implementations = ['drupalorg' => NULL] + $implementations;
