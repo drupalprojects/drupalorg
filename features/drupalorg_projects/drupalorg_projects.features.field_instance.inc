@@ -93,6 +93,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'inline',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
@@ -366,6 +367,7 @@ function drupalorg_projects_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => 1,
         ),
         'type' => 'entityreference_label',
@@ -3555,7 +3557,7 @@ function drupalorg_projects_field_default_field_instances() {
     'widget' => array(
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => -4,
     ),
   );
@@ -3566,7 +3568,7 @@ function drupalorg_projects_field_default_field_instances() {
     'bundle' => 'project_distribution',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'For definitions of maintenance and development statuses, see <a href="http://drupal.org/node/314492">Maintenance of your project</a>.',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -3614,9 +3616,10 @@ function drupalorg_projects_field_default_field_instances() {
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => -3,
     ),
   );
@@ -5204,7 +5207,7 @@ function drupalorg_projects_field_default_field_instances() {
     'widget' => array(
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => -4,
     ),
   );
@@ -5214,7 +5217,7 @@ function drupalorg_projects_field_default_field_instances() {
     'bundle' => 'project_drupalorg',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'For definitions of maintenance and development statuses, see <a href="http://drupal.org/node/314492">Maintenance of your project</a>.',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -5262,9 +5265,10 @@ function drupalorg_projects_field_default_field_instances() {
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => -3,
     ),
   );
@@ -6972,7 +6976,7 @@ function drupalorg_projects_field_default_field_instances() {
     'widget' => array(
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => -4,
     ),
   );
@@ -6982,7 +6986,7 @@ function drupalorg_projects_field_default_field_instances() {
     'bundle' => 'project_module',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'For definitions of maintenance and development statuses, see <a href="http://drupal.org/node/314492">Maintenance of your project</a>.',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -7030,9 +7034,10 @@ function drupalorg_projects_field_default_field_instances() {
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => -3,
     ),
   );
@@ -9800,7 +9805,7 @@ function drupalorg_projects_field_default_field_instances() {
     'widget' => array(
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => -4,
     ),
   );
@@ -9810,7 +9815,7 @@ function drupalorg_projects_field_default_field_instances() {
     'bundle' => 'project_theme',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'For definitions of maintenance and development statuses, see <a href="http://drupal.org/node/314492">Maintenance of your project</a>.',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -9858,9 +9863,10 @@ function drupalorg_projects_field_default_field_instances() {
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => -3,
     ),
   );
@@ -11514,7 +11520,7 @@ function drupalorg_projects_field_default_field_instances() {
     'widget' => array(
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => -4,
     ),
   );
@@ -11525,7 +11531,7 @@ function drupalorg_projects_field_default_field_instances() {
     'bundle' => 'project_theme_engine',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'For definitions of maintenance and development statuses, see <a href="http://drupal.org/node/314492">Maintenance of your project</a>.',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -11573,9 +11579,10 @@ function drupalorg_projects_field_default_field_instances() {
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => -3,
     ),
   );
