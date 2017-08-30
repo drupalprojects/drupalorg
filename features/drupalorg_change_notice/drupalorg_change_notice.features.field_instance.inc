@@ -863,6 +863,7 @@ function drupalorg_change_notice_field_default_field_instances() {
   $field_instances['node-changenotice-field_issues'] = array(
     'bundle' => 'changenotice',
     'default_value' => NULL,
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => 'Type the title of the issue to enter issues related to this change.',
     'display' => array(
@@ -897,6 +898,19 @@ function drupalorg_change_notice_field_default_field_instances() {
     'label' => 'Issues',
     'required' => 0,
     'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'action' => 'none',
+          'action_on_edit' => 0,
+          'fallback' => 'none',
+          'providers' => array(
+            'og_context' => 0,
+            'url' => 1,
+          ),
+          'skip_perm' => 0,
+          'status' => 1,
+        ),
+      ),
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -1406,6 +1420,7 @@ function drupalorg_change_notice_field_default_field_instances() {
         'label' => 'inline',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => 1,
         ),
         'type' => 'entityreference_label',
