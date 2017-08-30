@@ -3930,6 +3930,14 @@ function drupalorg_preprocess_views_view(&$v) {
           'tags' => implode(', ', $tags),
         ],
       ]);
+
+      // Add change notice link.
+      if (user_access('create changenotice content')) {
+        $v['footer'] .= ', ' . l(t('add change notice'), 'node/add/changenotice', ['query' => [
+          'field_project' => $issue_wrapper->field_project->getIdentifier(),
+          'field_issues' => $issue_wrapper->getIdentifier(),
+        ]]);
+      }
     }
   }
 }
