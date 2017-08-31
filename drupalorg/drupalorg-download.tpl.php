@@ -5,6 +5,8 @@
 <p>See <strong><a href="/project/drupal">Drupal’s project page</a></strong> for more information, older versions, and project development.<br>
 Browse <a href="/docs">documentation</a> for more help and information.</p>
 
+<div class="drupalorg-download-ad-body"><?php print filter_xss_admin(variable_get('drupalorg_download_ad')); ?></div>
+
 <h3><a href="/project/project_distribution">Distributions</a></h3>
 <div class="download-facets">
   <div class="main">

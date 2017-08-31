@@ -2836,6 +2836,16 @@ function drupalorg_ad_settings_form() {
       '@example' => '<a href="{url}" class="ci-ad">{blurb} <img src="{use a relatively-small image, like the grid-2 on user pages}" alt="{organization name}"> <strong>Learn more</strong></a>',
     ]),
   ];
+  $form['drupalorg_download_ad'] = [
+    '#type' => 'textarea',
+    '#title' => t('Download and Extend'),
+    '#default_value' => variable_get('drupalorg_download_ad'),
+    '#description' => t('Appears on Download and Extend page. Template: <code>@example</code>', [
+      '@example' => '<div class="durpalorg-download-ad-body><img src="/pathtoimg.png">
+<blockquote>blurb</blockquote></div>
+<div class="drupalorg-download-ad-cta"><a href="/membership" class="action-button">button text</a></div>',
+    ]),
+  ];
 
   $slots = array_merge(array(0 => t('No ad')), _google_admanager_get_ad_slots());
   $ads = variable_get('drupalorg_forum_ad', array());
