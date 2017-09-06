@@ -3759,9 +3759,9 @@ function _drupalorg_spam_message() {
  * Implements hook_views_query_substitutions().
  */
 function drupalorg_views_query_substitutions($view) {
-  if (get_class($view) === 'views_plugin_query_default' && $view->view->name === 'issue_credit' && $view->view->current_display === 'organization_recent_page') {
+  if (get_class($view) === 'view' && $view->name === 'issue_credit' && $view->current_display === 'organization_recent_page') {
     // Provide organization argument.
-    return array('***CURRENT_ORGANIZATION***' => $view->view->args[0]);
+    return array('***CURRENT_ORGANIZATION***' => $view->args[0]);
   }
 }
 
