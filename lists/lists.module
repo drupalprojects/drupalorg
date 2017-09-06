@@ -179,8 +179,6 @@ function lists_form_alter(&$form, $form_state, $form_id) {
  * Implements hook_node_update().
  */
 function lists_node_update($node) {
-  global $user;
-
   if ($node->status && user_access('post to newsletter')) {
     // Only generate mail for configured forum types.
     $generate_mail = FALSE;
@@ -197,35 +195,43 @@ function lists_node_update($node) {
 
     // User has permission to generate emails, so send the node to mailman.
     if ($generate_mail) {
-      // There's no reason I can see for sending a mailing multiple times, but
-      // since we're tracking whether or not something is sent anyway...
-      $sent = db_query('SELECT nid FROM {lists_mailman} WHERE nid = :nid', array(':nid' => $node->nid))->fetchField();
-      if (!$sent) {
-        $lists = _lists_get_mailman_lists();
-        $lists_forum_tids = _lists_get_forum_tids();
-        $list = $lists[$lists_forum_tids[$forum_tid]];
-        $language = language_default();
-        $params = array('node' => $node);
-        drupal_mail('lists', 'mailman_newsletter', $list['mail'], $language, $params);
-        $nid = db_insert('lists_mailman') // Table name no longer needs {}
-          ->fields(array(
-            'nid' =>  $node->nid,
-            'uid' => $user->uid,
-            'timestamp' => REQUEST_TIME,
-          ))
-          ->execute();
-        drupal_set_message(t('Mail sent to !email.', array('!email' => $list['mail'])));
-      }
-      // Force comments to be disabled for these posts.  David doesn't like this.
-      // This is an ugly kludge.
-      db_update('node')
-        ->fields(array(
-          'comment' => COMMENT_NODE_CLOSED,
-        ))
-        ->condition('nid', $node->nid)
-        ->execute();
+      lists_send_mail($node, $forum_tid);
+    }
+    if ($node->type === 'sa') {
+      lists_send_mail($node, '44');  // 44 is the old contrib tid, it is linked to the same list as all the other fourms. This is nasty.
     }
   }
+}
+
+/**
+ * Logic to send mail
+ */
+function lists_send_mail($node, $forum_tid = '') {
+  $sent = db_query('SELECT nid FROM {lists_mailman} WHERE nid = :nid', array(':nid' => $node->nid))->fetchField();
+  if (!$sent) {
+    $lists = _lists_get_mailman_lists();
+    $lists_forum_tids = _lists_get_forum_tids();
+    $list = $lists[$lists_forum_tids[$forum_tid]];
+    $language = language_default();
+    $params = array('node' => $node);
+    drupal_mail('lists', 'mailman_newsletter', $list['mail'], $language, $params);
+    $nid = db_insert('lists_mailman') // Table name no longer needs {}
+      ->fields(array(
+        'nid' =>  $node->nid,
+        'uid' => $GLOBALS['user']->uid,
+        'timestamp' => REQUEST_TIME,
+      ))
+      ->execute();
+    drupal_set_message(t('Mail sent to !email.', array('!email' => $list['mail'])));
+  }
+  // Force comments to be disabled for these posts.  David doesn't like this.
+  // This is an ugly kludge.
+  db_update('node')
+    ->fields(array(
+      'comment' => COMMENT_NODE_CLOSED,
+    ))
+    ->condition('nid', $node->nid)
+    ->execute();
 }
 
 /**
@@ -235,8 +241,22 @@ function lists_mail($key, &$message, $params) {
   if ($key == 'mailman_newsletter') {
     // Just copy over the subject and body as provided.
     $message['subject'] = $params['node']->title;
-    $body = field_get_items('node', $params['node'], 'body');
-    $message['body'][] = drupal_html_to_text('<p>' . t('View online: !url', array('!url' => url('node/' . $params['node']->nid, array('absolute' => TRUE)))) . '</p>' . $body[0]['value']);
+    if ($params['node']->type === 'sa') {
+      $node_view = node_view($params['node']);
+      // Massage the newlines.
+      foreach (element_children($node_view) as $key) {
+        if (isset($node_view[$key]['#label_display']) && $node_view[$key]['#label_display'] === 'inline') {
+          $node_view[$key]['#suffix'] = '<br>';
+        }
+      }
+      $node_view['field_sa_type']['#suffix'] .= '<p></p>';
+      $rendered_node = drupal_render($node_view);
+      $message['body'][] = drupal_html_to_text('<p>' . t('View online: !url', array('!url' => url('node/' . $params['node']->nid, array('absolute' => TRUE)))) . '</p>' . $rendered_node);
+    }
+    else {
+      $body = field_get_items('node', $params['node'], 'body');
+      $message['body'][] = drupal_html_to_text('<p>' . t('View online: !url', array('!url' => url('node/' . $params['node']->nid, array('absolute' => TRUE)))) . '</p>' . $body[0]['value']);
+    }
   }
 }
 
