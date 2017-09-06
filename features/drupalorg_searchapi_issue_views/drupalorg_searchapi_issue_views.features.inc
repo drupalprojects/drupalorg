@@ -31,11 +31,17 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
           "weight" : "-10",
           "settings" : { "default" : "0", "bundles" : { "project_issue" : "project_issue" } }
         },
-        "search_api_alter_node_status" : { "status" : 1, "weight" : "0", "settings" : [] },
         "project_issue_alter_participants" : { "status" : 1, "weight" : "0", "settings" : [] },
+        "search_api_alter_node_status" : { "status" : 1, "weight" : "0", "settings" : [] },
+        "project_issue_alter_last_status_change" : { "status" : 1, "weight" : "0", "settings" : [] },
         "project_issue_alter_followers" : { "status" : 1, "weight" : "0", "settings" : [] },
+        "panelizer" : { "status" : 0, "weight" : "0", "settings" : [] },
         "search_api_alter_node_access" : { "status" : 0, "weight" : "0", "settings" : [] },
-        "search_api_alter_add_hierarchy" : { "status" : 0, "weight" : "0", "settings" : { "fields" : [] } },
+        "search_api_alter_language_control" : {
+          "status" : 0,
+          "weight" : "0",
+          "settings" : { "lang_field" : "", "languages" : [] }
+        },
         "search_api_alter_add_url" : { "status" : 0, "weight" : "0", "settings" : [] },
         "search_api_alter_add_aggregation" : {
           "status" : 1,
@@ -49,7 +55,9 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
             }
           }
         },
-        "search_api_alter_add_viewed_entity" : { "status" : 0, "weight" : "0", "settings" : { "mode" : "full" } }
+        "search_api_alter_add_viewed_entity" : { "status" : 0, "weight" : "0", "settings" : { "mode" : "full" } },
+        "search_api_alter_add_hierarchy" : { "status" : 0, "weight" : "0", "settings" : { "fields" : [] } },
+        "search_api_metatag_alter_callback" : { "status" : 0, "weight" : "0", "settings" : [] }
       },
       "processors" : {
         "search_api_case_ignore" : {
@@ -108,6 +116,7 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
             "suffix" : "\\u003C\\/strong\\u003E",
             "excerpt" : 1,
             "excerpt_length" : "256",
+            "exclude_fields" : [],
             "highlight" : "always"
           }
         }
@@ -129,6 +138,7 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
         "field_project:title" : { "type" : "string" },
         "last_comment_timestamp" : { "type" : "date" },
         "project_issue_followers" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "user" },
+        "project_issue_last_status_change" : { "type" : "date" },
         "project_issue_participants" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "user" },
         "search_api_aggregation_1" : { "type" : "text", "boost" : "2.0" },
         "search_api_language" : { "type" : "string" },
@@ -277,6 +287,12 @@ function drupalorg_searchapi_issue_views_default_search_api_server() {
             "table" : "search_api_db_project_issues",
             "column" : "field_project_title",
             "type" : "string",
+            "boost" : "1.0"
+          },
+          "project_issue_last_status_change" : {
+            "table" : "search_api_db_project_issues",
+            "column" : "project_issue_last_status_change",
+            "type" : "date",
             "boost" : "1.0"
           }
         }
