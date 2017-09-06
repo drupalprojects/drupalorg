@@ -5627,6 +5627,9 @@ function drupalorg_form_sa_node_form_alter(&$form, &$form_state) {
   $form['comment_settings']['comment']['#default_value'] = COMMENT_NODE_HIDDEN;
   $form['comment_settings']['#access'] = FALSE;
 
+  // Set author to the team.
+  $form['author']['name']['#default_value'] = 'Drupal Security Team';
+
   $form['#validate'][] = '_drupalorg_sa_validate';
   $form['#submit'][] = 'drupalorg_sa_save';
 }
