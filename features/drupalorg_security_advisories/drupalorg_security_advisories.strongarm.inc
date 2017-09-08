@@ -120,6 +120,10 @@ function drupalorg_security_advisories_strongarm() {
             'weight' => '2',
             'visible' => TRUE,
           ),
+          'teaser' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
         ),
       ),
     ),
