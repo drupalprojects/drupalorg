@@ -33,7 +33,7 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
         },
         "project_issue_alter_participants" : { "status" : 1, "weight" : "0", "settings" : [] },
         "search_api_alter_node_status" : { "status" : 1, "weight" : "0", "settings" : [] },
-        "project_issue_alter_last_status_change" : { "status" : 1, "weight" : "0", "settings" : [] },
+        "project_issue_alter_last_status_change" : { "status" : 0, "weight" : "0", "settings" : [] },
         "project_issue_alter_followers" : { "status" : 1, "weight" : "0", "settings" : [] },
         "panelizer" : { "status" : 0, "weight" : "0", "settings" : [] },
         "search_api_alter_node_access" : { "status" : 0, "weight" : "0", "settings" : [] },
@@ -131,6 +131,7 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
         "field_issue_assigned" : { "type" : "integer", "entity_type" : "user" },
         "field_issue_category" : { "type" : "integer" },
         "field_issue_component" : { "type" : "string" },
+        "field_issue_last_status_change" : { "type" : "date" },
         "field_issue_priority" : { "type" : "integer" },
         "field_issue_status" : { "type" : "integer" },
         "field_issue_version" : { "type" : "string" },
@@ -138,7 +139,6 @@ function drupalorg_searchapi_issue_views_default_search_api_index() {
         "field_project:title" : { "type" : "string" },
         "last_comment_timestamp" : { "type" : "date" },
         "project_issue_followers" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "user" },
-        "project_issue_last_status_change" : { "type" : "date" },
         "project_issue_participants" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "user" },
         "search_api_aggregation_1" : { "type" : "text", "boost" : "2.0" },
         "search_api_language" : { "type" : "string" },
@@ -289,9 +289,9 @@ function drupalorg_searchapi_issue_views_default_search_api_server() {
             "type" : "string",
             "boost" : "1.0"
           },
-          "project_issue_last_status_change" : {
+          "field_issue_last_status_change" : {
             "table" : "search_api_db_project_issues",
-            "column" : "project_issue_last_status_change",
+            "column" : "field_issue_last_status_change",
             "type" : "date",
             "boost" : "1.0"
           }
