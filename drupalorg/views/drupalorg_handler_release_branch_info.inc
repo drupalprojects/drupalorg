@@ -13,6 +13,7 @@ class drupalorg_handler_release_branch_info extends views_handler_field_entity {
       PIFT_CI_TEST_BRANCH_WEEKLY => 3,
       PIFT_CI_TEST_DISABLED => 4,
     ];
+    static $releases_seen = [];
 
     if ($node_wrapper = entity_metadata_wrapper('node', $this->get_value($values))) {
       $output = '';
@@ -47,7 +48,8 @@ class drupalorg_handler_release_branch_info extends views_handler_field_entity {
         $dev_release = node_load(reset($result['node'])->nid);
         $dev_release_wrapper = entity_metadata_wrapper('node', $dev_release);
 
-        if ($dev_release_wrapper->field_show_download->raw()) {
+        if (empty($releases_seen[$dev_release->nid]) && $dev_release_wrapper->field_show_download->raw()) {
+          $releases_seen[$dev_release->nid] = TRUE;
           $output .= '<p>' . t('Development version: !version <small>updated @updated</small>', [
             '!version' => l($dev_release_wrapper->field_release_version->raw(), 'node/' . $dev_release->nid),
             '@updated' => format_date(isset($dev_release_wrapper->field_release_files[0]) ? $dev_release_wrapper->field_release_files[0]->field_release_file->file->timestamp->value() : $dev_release->changed, 'medium', '', 'UTC'),
