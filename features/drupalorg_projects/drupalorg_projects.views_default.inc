@@ -337,6 +337,13 @@ function drupalorg_projects_views_default_views() {
   /* Display: Recommended releases */
   $handler = $view->new_display('block', 'Recommended releases', 'recommended');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  /* Footer: Global: View area */
+  $handler->display->display_options['footer']['view']['id'] = 'view';
+  $handler->display->display_options['footer']['view']['table'] = 'views';
+  $handler->display->display_options['footer']['view']['field'] = 'view';
+  $handler->display->display_options['footer']['view']['view_to_insert'] = 'drupalorg_project_downloads:development';
+  $handler->display->display_options['footer']['view']['inherit_arguments'] = TRUE;
 
   /* Display: Releases missing security updates */
   $handler = $view->new_display('attachment', 'Releases missing security updates', 'security');
@@ -411,13 +418,145 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['label'] = 'Title';
-  $handler->display->display_options['header']['area']['content'] = '<h4>Development releases</h4>';
-  $handler->display->display_options['header']['area']['format'] = '1';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Path */
+  $handler->display->display_options['fields']['path']['id'] = 'path';
+  $handler->display->display_options['fields']['path']['table'] = 'node';
+  $handler->display->display_options['fields']['path']['field'] = 'path';
+  $handler->display->display_options['fields']['path']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['path']['absolute'] = TRUE;
+  /* Field: Content: Version */
+  $handler->display->display_options['fields']['field_release_version']['id'] = 'field_release_version';
+  $handler->display->display_options['fields']['field_release_version']['table'] = 'field_data_field_release_version';
+  $handler->display->display_options['fields']['field_release_version']['field'] = 'field_release_version';
+  $handler->display->display_options['fields']['field_release_version']['label'] = '';
+  $handler->display->display_options['fields']['field_release_version']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_release_version']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_release_version']['alter']['path'] = '[path]';
+  $handler->display->display_options['fields']['field_release_version']['alter']['alt'] = 'View release notes';
+  $handler->display->display_options['fields']['field_release_version']['element_type'] = 'strong';
+  $handler->display->display_options['fields']['field_release_version']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_release_version']['type'] = 'text_plain';
+  /* Field: Security Team coverage icon */
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['id'] = 'drupalorg_security_coverage_1';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['field'] = 'drupalorg_security_coverage';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['ui_name'] = 'Security Team coverage icon';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['label'] = '';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['alter']['text'] = '<img src="/sites/all/modules/drupalorg/drupalorg/images/shield-icon-black.svg" alt="Stable release covered by the Drupal Security Team" title="Stable release covered by the Drupal Security Team">';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['element_wrapper_type'] = 'span';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['element_wrapper_class'] = 'security-covered';
+  $handler->display->display_options['fields']['drupalorg_security_coverage_1']['element_default_classes'] = FALSE;
+  /* Field: File: Upload date */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['relationship'] = 'field_release_file_fid';
+  $handler->display->display_options['fields']['timestamp']['label'] = '';
+  $handler->display->display_options['fields']['timestamp']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['timestamp']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['timestamp']['alter']['text'] = '<small>released [timestamp]</small>';
+  $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'date_only';
+  $handler->display->display_options['fields']['timestamp']['custom_date_format'] = 'Y-M-d';
+  $handler->display->display_options['fields']['timestamp']['second_date_format'] = 'long';
+  /* Field: Project release: Recommended branch */
+  $handler->display->display_options['fields']['recommended_1']['id'] = 'recommended_1';
+  $handler->display->display_options['fields']['recommended_1']['table'] = 'project_release_supported_versions';
+  $handler->display->display_options['fields']['recommended_1']['field'] = 'recommended';
+  $handler->display->display_options['fields']['recommended_1']['relationship'] = 'supported_releases_rel';
+  $handler->display->display_options['fields']['recommended_1']['label'] = '';
+  $handler->display->display_options['fields']['recommended_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['recommended_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['recommended_1']['alter']['text'] = '<small>[recommended_1]</small>';
+  $handler->display->display_options['fields']['recommended_1']['element_type'] = '0';
+  $handler->display->display_options['fields']['recommended_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['recommended_1']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['recommended_1']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['recommended_1']['type'] = 'custom';
+  $handler->display->display_options['fields']['recommended_1']['type_custom_true'] = '✓ Recommended by the project’s maintainer.';
+  $handler->display->display_options['fields']['recommended_1']['not'] = 0;
+  /* Field: Content: Short description */
+  $handler->display->display_options['fields']['field_release_short_description']['id'] = 'field_release_short_description';
+  $handler->display->display_options['fields']['field_release_short_description']['table'] = 'field_data_field_release_short_description';
+  $handler->display->display_options['fields']['field_release_short_description']['field'] = 'field_release_short_description';
+  $handler->display->display_options['fields']['field_release_short_description']['label'] = '';
+  $handler->display->display_options['fields']['field_release_short_description']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_release_short_description']['element_type'] = 'p';
+  $handler->display->display_options['fields']['field_release_short_description']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_release_short_description']['element_default_classes'] = FALSE;
+  /* Field: File: Path */
+  $handler->display->display_options['fields']['uri']['id'] = 'uri';
+  $handler->display->display_options['fields']['uri']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['uri']['field'] = 'uri';
+  $handler->display->display_options['fields']['uri']['relationship'] = 'field_release_file_fid';
+  $handler->display->display_options['fields']['uri']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['uri']['file_download_path'] = TRUE;
+  /* Field: File: Path */
+  $handler->display->display_options['fields']['uri_1']['id'] = 'uri_1';
+  $handler->display->display_options['fields']['uri_1']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['uri_1']['field'] = 'uri';
+  $handler->display->display_options['fields']['uri_1']['relationship'] = 'field_release_file_fid_1';
+  $handler->display->display_options['fields']['uri_1']['label'] = '';
+  $handler->display->display_options['fields']['uri_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['uri_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['uri_1']['file_download_path'] = TRUE;
+  /* Field: File: Size */
+  $handler->display->display_options['fields']['filesize']['id'] = 'filesize';
+  $handler->display->display_options['fields']['filesize']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['filesize']['field'] = 'filesize';
+  $handler->display->display_options['fields']['filesize']['relationship'] = 'field_release_file_fid';
+  $handler->display->display_options['fields']['filesize']['label'] = '';
+  $handler->display->display_options['fields']['filesize']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['filesize']['element_label_colon'] = FALSE;
+  /* Field: File: Size */
+  $handler->display->display_options['fields']['filesize_1']['id'] = 'filesize_1';
+  $handler->display->display_options['fields']['filesize_1']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['filesize_1']['field'] = 'filesize';
+  $handler->display->display_options['fields']['filesize_1']['relationship'] = 'field_release_file_fid_1';
+  $handler->display->display_options['fields']['filesize_1']['label'] = '';
+  $handler->display->display_options['fields']['filesize_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['filesize_1']['element_label_colon'] = FALSE;
+  /* Field: File: Extension */
+  $handler->display->display_options['fields']['extension_1']['id'] = 'extension_1';
+  $handler->display->display_options['fields']['extension_1']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['extension_1']['field'] = 'extension';
+  $handler->display->display_options['fields']['extension_1']['relationship'] = 'field_release_file_fid_1';
+  $handler->display->display_options['fields']['extension_1']['label'] = '';
+  $handler->display->display_options['fields']['extension_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['extension_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['extension_1']['alter']['text'] = '[extension_1] <small>([filesize_1])</small>';
+  $handler->display->display_options['fields']['extension_1']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['extension_1']['alter']['path'] = '[uri_1]';
+  $handler->display->display_options['fields']['extension_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['extension_1']['extension_detect_tar'] = TRUE;
+  /* Field: File: Extension */
+  $handler->display->display_options['fields']['extension']['id'] = 'extension';
+  $handler->display->display_options['fields']['extension']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['extension']['field'] = 'extension';
+  $handler->display->display_options['fields']['extension']['relationship'] = 'field_release_file_fid';
+  $handler->display->display_options['fields']['extension']['label'] = '';
+  $handler->display->display_options['fields']['extension']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['extension']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['extension']['alter']['text'] = '[extension] <small>([filesize])</small>';
+  $handler->display->display_options['fields']['extension']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['extension']['alter']['path'] = '[uri]';
+  $handler->display->display_options['fields']['extension']['alter']['prefix'] = '⬇ <span class="element-invisible">Download</span> ';
+  $handler->display->display_options['fields']['extension']['alter']['suffix'] = ' | [extension_1]';
+  $handler->display->display_options['fields']['extension']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['extension']['extension_detect_tar'] = TRUE;
+  /* Field: Content: Release branch information */
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['id'] = 'drupalorg_release_branch_info';
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['field'] = 'drupalorg_release_branch_info';
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['label'] = '';
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['element_type'] = '0';
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['element_wrapper_class'] = 'release-info';
+  $handler->display->display_options['fields']['drupalorg_release_branch_info']['element_default_classes'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -502,7 +641,6 @@ function drupalorg_projects_views_default_views() {
 <div class="warning">There are security updates available for code included in these releases. Review release notes before downloading.</div>
 '),
     t('Development releases'),
-    t('<h4>Development releases</h4>'),
   );
   $export['drupalorg_project_downloads'] = $view;
 
