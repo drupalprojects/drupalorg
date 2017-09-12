@@ -1649,7 +1649,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'url' => 'url',
     'field_project_machine_name_1' => 'field_project_machine_name_1',
-    'field_project' => 'field_project',
     'field_project_title' => 'field_project_title',
     'title' => 'title',
     'has_new_content' => 'title',
@@ -1663,6 +1662,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'field_issue_assigned' => 'field_issue_assigned',
     'created' => 'created',
     'search_api_relevance' => 'search_api_relevance',
+    'field_issue_last_status_change' => 'field_issue_last_status_change',
   );
   $handler->display->display_options['style_options']['default'] = 'last_comment_timestamp';
   $handler->display->display_options['style_options']['info'] = array(
@@ -1672,13 +1672,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'empty_column' => 0,
     ),
     'field_project_machine_name_1' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_project' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -1770,6 +1763,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'field_issue_last_status_change' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
   );
   /* No results behavior: Global: Unfiltered text */
   $handler->display->display_options['empty']['area_text_custom']['id'] = 'area_text_custom';
@@ -1854,6 +1854,16 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['last_comment_timestamp']['label'] = 'Last updated';
   $handler->display->display_options['fields']['last_comment_timestamp']['date_format'] = 'raw time ago';
   $handler->display->display_options['fields']['last_comment_timestamp']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Last status change */
+  $handler->display->display_options['fields']['field_issue_last_status_change']['id'] = 'field_issue_last_status_change';
+  $handler->display->display_options['fields']['field_issue_last_status_change']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_issue_last_status_change']['field'] = 'field_issue_last_status_change';
+  $handler->display->display_options['fields']['field_issue_last_status_change']['label'] = 'Status changed';
+  $handler->display->display_options['fields']['field_issue_last_status_change']['type'] = 'project_issue_time_ago';
+  $handler->display->display_options['fields']['field_issue_last_status_change']['settings'] = array(
+    'thousand_separator' => '',
+    'prefix_suffix' => 1,
+  );
   /* Field: Indexed Node: Assigned */
   $handler->display->display_options['fields']['field_issue_assigned']['id'] = 'field_issue_assigned';
   $handler->display->display_options['fields']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
@@ -2276,6 +2286,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     t('New comment count'),
     t('[comment_count_new] new'),
     t('Last updated'),
+    t('Status changed'),
     t('Assigned to'),
     t('Created'),
     t('Score'),
@@ -2329,6 +2340,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     'field_issue_assigned' => 'field_issue_assigned',
     'created' => 'created',
     'search_api_relevance' => 'search_api_relevance',
+    'field_issue_last_status_change' => 'field_issue_last_status_change',
   );
   $handler->display->display_options['style_options']['default'] = 'last_comment_timestamp';
   $handler->display->display_options['style_options']['info'] = array(
@@ -2424,6 +2436,13 @@ function drupalorg_searchapi_issue_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'field_issue_last_status_change' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
   );
   $handler->display->display_options['style_options']['sticky'] = TRUE;
   /* No results behavior: Global: Unfiltered text */
@@ -2496,6 +2515,16 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['last_comment_timestamp']['label'] = 'Last updated';
   $handler->display->display_options['fields']['last_comment_timestamp']['date_format'] = 'raw time ago';
   $handler->display->display_options['fields']['last_comment_timestamp']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Last status change */
+  $handler->display->display_options['fields']['field_issue_last_status_change']['id'] = 'field_issue_last_status_change';
+  $handler->display->display_options['fields']['field_issue_last_status_change']['table'] = 'search_api_index_project_issues';
+  $handler->display->display_options['fields']['field_issue_last_status_change']['field'] = 'field_issue_last_status_change';
+  $handler->display->display_options['fields']['field_issue_last_status_change']['label'] = 'Status changed';
+  $handler->display->display_options['fields']['field_issue_last_status_change']['type'] = 'project_issue_time_ago';
+  $handler->display->display_options['fields']['field_issue_last_status_change']['settings'] = array(
+    'thousand_separator' => '',
+    'prefix_suffix' => 1,
+  );
   /* Field: Indexed Node: Assigned */
   $handler->display->display_options['fields']['field_issue_assigned']['id'] = 'field_issue_assigned';
   $handler->display->display_options['fields']['field_issue_assigned']['table'] = 'search_api_index_project_issues';
@@ -3227,6 +3256,7 @@ function drupalorg_searchapi_issue_views_views_default_views() {
     t('New comment count'),
     t('[comment_count_new] new'),
     t('Last updated'),
+    t('Status changed'),
     t('Assigned to'),
     t('Created'),
     t('Score'),
