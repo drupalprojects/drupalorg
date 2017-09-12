@@ -50,7 +50,7 @@ class drupalorg_handler_release_branch_info extends views_handler_field_entity {
         if ($dev_release_wrapper->field_show_download->raw()) {
           $output .= '<p>' . t('Development version: !version <small>updated @updated</small>', [
             '!version' => l($dev_release_wrapper->field_release_version->raw(), 'node/' . $dev_release->nid),
-            '@updated' => format_date($dev_release->changed),
+            '@updated' => format_date(isset($dev_release_wrapper->field_release_files[0]) ? $dev_release_wrapper->field_release_files[0]->field_release_file->file->timestamp->value() : $dev_release->changed, 'medium', '', 'UTC'),
           ]) . '</p>';
 
           // DrupalCI testing.
