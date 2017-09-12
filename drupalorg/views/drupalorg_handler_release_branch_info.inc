@@ -17,6 +17,7 @@ class drupalorg_handler_release_branch_info extends views_handler_field_entity {
     if ($node_wrapper = entity_metadata_wrapper('node', $this->get_value($values))) {
       $output = '';
 
+      // Find a pre-release, if there is one.
       if (($nid = db_query('SELECT latest_release FROM {project_release_supported_versions} WHERE recommended_release = :nid AND latest_release != :nid', [':nid' => $node_wrapper->getIdentifier()])->fetchField()) && ($pre_release = node_load($nid))) {
         $pre_release_wrapper = entity_metadata_wrapper('node', $pre_release);
         $output .= '<p>' . t('Pre-release version: !version <small>released @updated</small>', [
