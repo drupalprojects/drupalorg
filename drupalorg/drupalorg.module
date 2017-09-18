@@ -825,7 +825,7 @@ function drupalorg_block_view($delta, $block = NULL) {
       }
       if (variable_get('drupalorg_announcements_users_membership') === 'non-members' && user_is_logged_in()) {
         // Check for individual membership.
-        if (db_query_range("SELECT 1 FROM {drupalorg_crosssite_ind_civimembership} cm WHERE user_name = :name AND membership_status IN ('New', 'Current', 'Grace', 'Grace Period')", 0, 1, [':name' => $GLOBALS['user']->name])->fetchField()) {
+        if (db_query_range("SELECT 1 FROM {drupalorg_crosssite_ind_civimembership} cm WHERE user_name = :name AND membership_status IN ('New', 'Current', 'Grace Period')", 0, 1, [':name' => $GLOBALS['user']->name])->fetchField()) {
           break;
         }
         // Check for organization membership.
@@ -836,7 +836,7 @@ function drupalorg_block_view($delta, $block = NULL) {
             $names[] = $organization->field_organization_name->value();
           }
         }
-        if ($names && db_query_range("SELECT 1 FROM {drupalorg_crosssite_org_civimembership} cmo WHERE org_name IN (:names) AND membership_status IN ('New', 'Current', 'Grace', 'Grace Period')", 0, 1, [':names' => $names])->fetchField()) {
+        if ($names && db_query_range("SELECT 1 FROM {drupalorg_crosssite_org_civimembership} cmo WHERE org_name IN (:names) AND membership_status IN ('New', 'Current', 'Grace Period')", 0, 1, [':names' => $names])->fetchField()) {
           break;
         }
       }
@@ -4134,10 +4134,6 @@ function drupalorg_user_view($account, $view_mode) {
           $membership_personal = t('<p></p><strong>You Rock!</strong> Thank you for purchasing a <a href="https://www.drupal.org/association">Drupal Association</a> membership. Your support has helped us to support the Drupal community.</p> <p>More information about memberships can be found by clicking on your membership badge.</p>');
           break;
 
-        case 'Grace':
-          $membership_personal = t('<strong>Oh No!</strong> Your membership expired on @expiration_date. The <a href="https://www.drupal.org/association">Drupal Association</a> depends on your continued support to keep Drupal.org up and running. <a href="https://www.drupal.org/association/membership">Renew your membership today</a> so your badge stays visible and your access to benefits continues. Thank you!', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'j F Y')));
-          break;
-
         case 'Grace Period':
           $membership_personal = t('<strong>Oh No!</strong> Your membership expired on @expiration_date. The <a href="https://www.drupal.org/association">Drupal Association</a> depends on your continued support to keep Drupal.org up and running. <a href="https://www.drupal.org/association/membership/individual">Renew your membership today</a> so your badge stays visible and your access to benefits continues. Thank you!', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'j F Y')));
           break;
@@ -4263,11 +4259,11 @@ function drupalorg_civimembership_data($name, $type) {
   static $memberships = array();
 
   if ($type == 'Individual') {
-    return db_query("SELECT cm.user_name, cm.membership_status, cm.expiration_date FROM {drupalorg_crosssite_ind_civimembership} cm WHERE user_name = :name AND membership_status IN ('New', 'Current', 'Grace', 'Grace Period')", array(':name' => $name))->fetchObject();
+    return db_query("SELECT cm.user_name, cm.membership_status, cm.expiration_date FROM {drupalorg_crosssite_ind_civimembership} cm WHERE user_name = :name AND membership_status IN ('New', 'Current', 'Grace Period')", array(':name' => $name))->fetchObject();
   }
   else {
     if (!isset($memberships['organization'][$name])) {
-      $memberships['organization'][$name] = db_query("SELECT cmo.org_name, cmo.membership_type, cmo.membership_status, cmo.expiration_date FROM {drupalorg_crosssite_org_civimembership} cmo WHERE org_name = :name AND membership_status IN ('New', 'Current', 'Grace', 'Grace Period')", array(':name' => $name))->fetchAllAssoc('membership_type');
+      $memberships['organization'][$name] = db_query("SELECT cmo.org_name, cmo.membership_type, cmo.membership_status, cmo.expiration_date FROM {drupalorg_crosssite_org_civimembership} cmo WHERE org_name = :name AND membership_status IN ('New', 'Current', 'Grace Period')", array(':name' => $name))->fetchAllAssoc('membership_type');
     }
     if (isset($memberships['organization'][$name][$type])) {
       return $memberships['organization'][$name][$type];
