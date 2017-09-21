@@ -1674,9 +1674,6 @@ function drupalorg_project_ctools_plugin_directory($module, $plugin) {
   if ($module == 'ctools' && $plugin == 'arguments') {
     return "plugins/$plugin";
   }
-  if ($module == 'ctools' && $plugin == 'relationships') {
-    return "plugins/$plugin";
-  }
 }
 
 /**
