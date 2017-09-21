@@ -629,7 +629,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['empty']['text']['empty'] = TRUE;
   $handler->display->display_options['empty']['text']['content'] = 'Coming soon.';
   $handler->display->display_options['empty']['text']['format'] = '1';
-  /* Field: Content: Logo */
+  /* Field: Content: Project logo */
   $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
   $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
   $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
@@ -793,7 +793,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
     'vocabulary_34' => 0,
     'vocabulary_9' => 0,
   );
-  /* Field: Content: Logo */
+  /* Field: Content: Project logo */
   $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
   $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
   $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
@@ -896,7 +896,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Logo */
+  /* Field: Content: Project logo */
   $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
   $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
   $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
