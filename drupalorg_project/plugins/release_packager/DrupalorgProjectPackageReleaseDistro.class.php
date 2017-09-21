@@ -324,7 +324,7 @@ class DrupalorgProjectPackageReleaseDistro extends DrupalorgProjectPackageReleas
     }
     $output = "api = 2\n";
     $output .= "core = $core_version\n";
-    $output .= "projects[drupal] = $core_project_version\n";
+    $output .= "projects[drupal][type] = core\n";
     file_put_contents($core_makefile, $output);
 
     // Return this .make file as a parsed info array.
