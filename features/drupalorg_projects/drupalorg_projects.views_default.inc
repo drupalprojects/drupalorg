@@ -757,7 +757,7 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['field_release_version']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_release_version']['alter']['text'] = '<a href="[path]">
   <h4>[field_release_project] [field_release_version]</h4>
-  <span class="release-date">Released: [timestamp]</span>
+  <span class="release-date">Released [timestamp]</span>
   </a>';
   $handler->display->display_options['fields']['field_release_version']['alter']['path'] = '[path]';
   $handler->display->display_options['fields']['field_release_version']['element_label_colon'] = FALSE;
@@ -769,6 +769,17 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['field_release_short_description']['label'] = '';
   $handler->display->display_options['fields']['field_release_short_description']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_release_short_description']['type'] = 'text_plain';
+  /* Field: Content: Version minor */
+  $handler->display->display_options['fields']['field_release_version_minor']['id'] = 'field_release_version_minor';
+  $handler->display->display_options['fields']['field_release_version_minor']['table'] = 'field_data_field_release_version_minor';
+  $handler->display->display_options['fields']['field_release_version_minor']['field'] = 'field_release_version_minor';
+  $handler->display->display_options['fields']['field_release_version_minor']['label'] = '';
+  $handler->display->display_options['fields']['field_release_version_minor']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_release_version_minor']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_release_version_minor']['settings'] = array(
+    'thousand_separator' => '',
+    'prefix_suffix' => 1,
+  );
   /* Sort criterion: Taxonomy term: Weight */
   $handler->display->display_options['sorts']['weight']['id'] = 'weight';
   $handler->display->display_options['sorts']['weight']['table'] = 'taxonomy_term_data';
@@ -1062,6 +1073,47 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['content'] = 'These releases have all the latest features, but might be not stable. Only use them if you are a developer and you are sure you know what you are doing.';
   $handler->display->display_options['header']['area']['format'] = '1';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Project */
+  $handler->display->display_options['fields']['field_release_project']['id'] = 'field_release_project';
+  $handler->display->display_options['fields']['field_release_project']['table'] = 'field_data_field_release_project';
+  $handler->display->display_options['fields']['field_release_project']['field'] = 'field_release_project';
+  $handler->display->display_options['fields']['field_release_project']['label'] = '';
+  $handler->display->display_options['fields']['field_release_project']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_release_project']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_release_project']['settings'] = array(
+    'link' => 0,
+  );
+  /* Field: Content: Path */
+  $handler->display->display_options['fields']['path']['id'] = 'path';
+  $handler->display->display_options['fields']['path']['table'] = 'node';
+  $handler->display->display_options['fields']['path']['field'] = 'path';
+  $handler->display->display_options['fields']['path']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['path']['absolute'] = TRUE;
+  /* Field: File: Upload date */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['relationship'] = 'field_release_file_fid';
+  $handler->display->display_options['fields']['timestamp']['label'] = '';
+  $handler->display->display_options['fields']['timestamp']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['timestamp']['custom_date_format'] = 'M d Y';
+  $handler->display->display_options['fields']['timestamp']['second_date_format'] = 'long';
+  /* Field: Content: Version */
+  $handler->display->display_options['fields']['field_release_version']['id'] = 'field_release_version';
+  $handler->display->display_options['fields']['field_release_version']['table'] = 'field_data_field_release_version';
+  $handler->display->display_options['fields']['field_release_version']['field'] = 'field_release_version';
+  $handler->display->display_options['fields']['field_release_version']['label'] = '';
+  $handler->display->display_options['fields']['field_release_version']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_release_version']['alter']['text'] = '<a href="[path]">
+  <h4>[field_release_project] [field_release_version]</h4>
+  <span class="release-date">Released [timestamp]</span>
+  </a>';
+  $handler->display->display_options['fields']['field_release_version']['alter']['path'] = '[path]';
+  $handler->display->display_options['fields']['field_release_version']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_release_version']['type'] = 'text_plain';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -1126,6 +1178,104 @@ function drupalorg_projects_views_default_views() {
       'label' => 'Content: Project (field_release_project)',
     ),
   );
+
+  /* Display: Pre-releases */
+  $handler = $view->new_display('panel_pane', 'Pre-releases', 'prereleases');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = '<h3>Drupal 8.[field_release_version_minor].0 is coming soon. Help us test it today!</h3>';
+  $handler->display->display_options['header']['area']['format'] = '1';
+  $handler->display->display_options['header']['area']['tokenize'] = TRUE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Project: Project system behavior */
+  $handler->display->display_options['filters']['project_type']['id'] = 'project_type';
+  $handler->display->display_options['filters']['project_type']['table'] = 'node';
+  $handler->display->display_options['filters']['project_type']['field'] = 'project_type';
+  $handler->display->display_options['filters']['project_type']['value'] = 'project_release';
+  $handler->display->display_options['filters']['project_type']['group'] = 1;
+  /* Filter criterion: Taxonomy term: Recommended (field_release_recommended) */
+  $handler->display->display_options['filters']['field_release_recommended_value']['id'] = 'field_release_recommended_value';
+  $handler->display->display_options['filters']['field_release_recommended_value']['table'] = 'field_data_field_release_recommended';
+  $handler->display->display_options['filters']['field_release_recommended_value']['field'] = 'field_release_recommended_value';
+  $handler->display->display_options['filters']['field_release_recommended_value']['relationship'] = 'term_node_tid';
+  $handler->display->display_options['filters']['field_release_recommended_value']['value'] = array(
+    1 => '1',
+  );
+  $handler->display->display_options['filters']['field_release_recommended_value']['group'] = 1;
+  /* Filter criterion: Content: Update status (field_release_update_status) */
+  $handler->display->display_options['filters']['field_release_update_status_value']['id'] = 'field_release_update_status_value';
+  $handler->display->display_options['filters']['field_release_update_status_value']['table'] = 'field_data_field_release_update_status';
+  $handler->display->display_options['filters']['field_release_update_status_value']['field'] = 'field_release_update_status_value';
+  $handler->display->display_options['filters']['field_release_update_status_value']['operator'] = '<=';
+  $handler->display->display_options['filters']['field_release_update_status_value']['value']['value'] = '1';
+  $handler->display->display_options['filters']['field_release_update_status_value']['group'] = 1;
+  /* Filter criterion: Content: Release type (field_release_build_type) */
+  $handler->display->display_options['filters']['field_release_build_type_value']['id'] = 'field_release_build_type_value';
+  $handler->display->display_options['filters']['field_release_build_type_value']['table'] = 'field_data_field_release_build_type';
+  $handler->display->display_options['filters']['field_release_build_type_value']['field'] = 'field_release_build_type_value';
+  $handler->display->display_options['filters']['field_release_build_type_value']['value'] = array(
+    'static' => 'static',
+  );
+  $handler->display->display_options['filters']['field_release_build_type_value']['group'] = 1;
+  /* Filter criterion: Project release: Recommended branch */
+  $handler->display->display_options['filters']['recommended']['id'] = 'recommended';
+  $handler->display->display_options['filters']['recommended']['table'] = 'project_release_supported_versions';
+  $handler->display->display_options['filters']['recommended']['field'] = 'recommended';
+  $handler->display->display_options['filters']['recommended']['relationship'] = 'supported_releases_rel';
+  $handler->display->display_options['filters']['recommended']['value'] = '1';
+  /* Filter criterion: Project release: Latest or recommended release */
+  $handler->display->display_options['filters']['release_type']['id'] = 'release_type';
+  $handler->display->display_options['filters']['release_type']['table'] = 'project_release_supported_versions';
+  $handler->display->display_options['filters']['release_type']['field'] = 'release_type';
+  $handler->display->display_options['filters']['release_type']['relationship'] = 'supported_releases_rel';
+  $handler->display->display_options['filters']['release_type']['value'] = 'latest';
+  /* Filter criterion: Content: Core compatibility (taxonomy_vocabulary_6) */
+  $handler->display->display_options['filters']['taxonomy_vocabulary_6_tid']['id'] = 'taxonomy_vocabulary_6_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_6_tid']['table'] = 'field_data_taxonomy_vocabulary_6';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_6_tid']['field'] = 'taxonomy_vocabulary_6_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_6_tid']['value'] = array(
+    7234 => '7234',
+  );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_6_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_6_tid']['vocabulary'] = 'vocabulary_6';
+  /* Filter criterion: Project release: Latest or recommended release */
+  $handler->display->display_options['filters']['release_type_1']['id'] = 'release_type_1';
+  $handler->display->display_options['filters']['release_type_1']['table'] = 'project_release_supported_versions';
+  $handler->display->display_options['filters']['release_type_1']['field'] = 'release_type';
+  $handler->display->display_options['filters']['release_type_1']['relationship'] = 'supported_releases_rel';
+  $handler->display->display_options['filters']['release_type_1']['operator'] = '!=';
+  $handler->display->display_options['filters']['release_type_1']['value'] = 'recommended';
+  $handler->display->display_options['allow']['use_pager'] = 0;
+  $handler->display->display_options['allow']['items_per_page'] = 0;
+  $handler->display->display_options['allow']['offset'] = 0;
+  $handler->display->display_options['allow']['link_to_view'] = 0;
+  $handler->display->display_options['allow']['more_link'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['title_override'] = 'title_override';
+  $handler->display->display_options['allow']['exposed_form'] = 0;
+  $handler->display->display_options['allow']['fields_override'] = 0;
+  $handler->display->display_options['argument_input'] = array(
+    'field_release_project_target_id' => array(
+      'type' => 'context',
+      'context' => 'entity:node.nid',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Project (field_release_project)',
+    ),
+  );
   $translatables['project_downloads'] = array(
     t('Master'),
     t('more'),
@@ -1143,7 +1293,7 @@ function drupalorg_projects_views_default_views() {
     t('Path'),
     t('<a href="[path]">
   <h4>[field_release_project] [field_release_version]</h4>
-  <span class="release-date">Released: [timestamp]</span>
+  <span class="release-date">Released [timestamp]</span>
   </a>'),
     t('All'),
     t('Recommended releases'),
@@ -1156,6 +1306,8 @@ function drupalorg_projects_views_default_views() {
     t('Other releases'),
     t('Development releases'),
     t('These releases have all the latest features, but might be not stable. Only use them if you are a developer and you are sure you know what you are doing.'),
+    t('Pre-releases'),
+    t('<h3>Drupal 8.[field_release_version_minor].0 is coming soon. Help us test it today!</h3>'),
   );
   $export['project_downloads'] = $view;
 

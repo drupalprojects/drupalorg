@@ -98,6 +98,32 @@ function drupalorg_projects_default_panels_mini() {
   $display->content['new-bbace5f0-8ece-4481-8def-952f3624ff25'] = $pane;
   $display->panels['middle'][1] = 'new-bbace5f0-8ece-4481-8def-952f3624ff25';
   $pane = new stdClass();
+  $pane->pid = 'new-72d4feb4-c6ab-434d-8081-17bf1cc773fb';
+  $pane->panel = 'middle';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'project_downloads-prereleases';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'context' => array(
+      0 => 'requiredcontext_entity:node_1',
+    ),
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '72d4feb4-c6ab-434d-8081-17bf1cc773fb';
+  $display->content['new-72d4feb4-c6ab-434d-8081-17bf1cc773fb'] = $pane;
+  $display->panels['middle'][2] = 'new-72d4feb4-c6ab-434d-8081-17bf1cc773fb';
+  $pane = new stdClass();
   $pane->pid = 'new-0712750e-7ddd-43d5-a928-0020285a2fdb';
   $pane->panel = 'middle';
   $pane->type = 'views_panes';
@@ -118,11 +144,11 @@ function drupalorg_projects_default_panels_mini() {
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = '0712750e-7ddd-43d5-a928-0020285a2fdb';
   $display->content['new-0712750e-7ddd-43d5-a928-0020285a2fdb'] = $pane;
-  $display->panels['middle'][2] = 'new-0712750e-7ddd-43d5-a928-0020285a2fdb';
+  $display->panels['middle'][3] = 'new-0712750e-7ddd-43d5-a928-0020285a2fdb';
   $pane = new stdClass();
   $pane->pid = 'new-3555485c-ebd6-4ef3-8821-89d0a932bbee';
   $pane->panel = 'middle';
@@ -159,11 +185,11 @@ The final Drupal 6 <em>security release</em> is <a href="/drupal-6.38-release-no
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 3;
+  $pane->position = 4;
   $pane->locks = array();
   $pane->uuid = '3555485c-ebd6-4ef3-8821-89d0a932bbee';
   $display->content['new-3555485c-ebd6-4ef3-8821-89d0a932bbee'] = $pane;
-  $display->panels['middle'][3] = 'new-3555485c-ebd6-4ef3-8821-89d0a932bbee';
+  $display->panels['middle'][4] = 'new-3555485c-ebd6-4ef3-8821-89d0a932bbee';
   $pane = new stdClass();
   $pane->pid = 'new-cd086f79-69b4-47cc-8cb3-74b7bbf1a218';
   $pane->panel = 'middle';
@@ -185,11 +211,11 @@ The final Drupal 6 <em>security release</em> is <a href="/drupal-6.38-release-no
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 4;
+  $pane->position = 5;
   $pane->locks = array();
   $pane->uuid = 'cd086f79-69b4-47cc-8cb3-74b7bbf1a218';
   $display->content['new-cd086f79-69b4-47cc-8cb3-74b7bbf1a218'] = $pane;
-  $display->panels['middle'][4] = 'new-cd086f79-69b4-47cc-8cb3-74b7bbf1a218';
+  $display->panels['middle'][5] = 'new-cd086f79-69b4-47cc-8cb3-74b7bbf1a218';
   $pane = new stdClass();
   $pane->pid = 'new-4b053f83-d857-45e1-9ba2-66f62c335cf8';
   $pane->panel = 'middle';
@@ -204,11 +230,11 @@ The final Drupal 6 <em>security release</em> is <a href="/drupal-6.38-release-no
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 5;
+  $pane->position = 6;
   $pane->locks = array();
   $pane->uuid = '4b053f83-d857-45e1-9ba2-66f62c335cf8';
   $display->content['new-4b053f83-d857-45e1-9ba2-66f62c335cf8'] = $pane;
-  $display->panels['middle'][5] = 'new-4b053f83-d857-45e1-9ba2-66f62c335cf8';
+  $display->panels['middle'][6] = 'new-4b053f83-d857-45e1-9ba2-66f62c335cf8';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $mini->display = $display;
