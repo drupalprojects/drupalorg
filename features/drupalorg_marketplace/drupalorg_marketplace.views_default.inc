@@ -629,7 +629,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['empty']['text']['empty'] = TRUE;
   $handler->display->display_options['empty']['text']['content'] = 'Coming soon.';
   $handler->display->display_options['empty']['text']['format'] = '1';
-  /* Field: Content: Project logo */
+  /* Field: Content: Logo */
   $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
   $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
   $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
@@ -793,7 +793,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
     'vocabulary_34' => 0,
     'vocabulary_9' => 0,
   );
-  /* Field: Content: Project logo */
+  /* Field: Content: Logo */
   $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
   $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
   $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
@@ -896,7 +896,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Project logo */
+  /* Field: Content: Logo */
   $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
   $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
   $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
@@ -1590,6 +1590,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['style_options']['class'] = 'flat';
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Header: Global: Text area */
@@ -1617,17 +1618,19 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
   $handler->display->display_options['fields']['picture']['field'] = 'picture';
   $handler->display->display_options['fields']['picture']['label'] = '';
   $handler->display->display_options['fields']['picture']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['picture']['image_style'] = 'grid-2-2x';
+  $handler->display->display_options['fields']['picture']['image_style'] = 'grid-2-2x-square';
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['label'] = '';
   $handler->display->display_options['fields']['name']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['name']['alter']['text'] = '<h2>[name]</h2>';
+  $handler->display->display_options['fields']['name']['alter']['text'] = '[name]';
   $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['name']['element_type'] = 'h2';
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['name']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['name']['element_default_classes'] = FALSE;
   /* Field: Field collection item: Job Title */
   $handler->display->display_options['fields']['field_job_title']['id'] = 'field_job_title';
@@ -1727,7 +1730,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
     t('◀︎ [title]'),
     t('field collection item from field_organizations'),
     t('Content entity referenced from field_organization_reference'),
-    t('<h2>[name]</h2>'),
+    t('[name]'),
     t('<h3>[field_job_title]</h3>'),
     t('On Drupal.org for [created] <br/>'),
     t('Back to [title]'),
