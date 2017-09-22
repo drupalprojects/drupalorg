@@ -667,5 +667,170 @@ function drupalorg_content_types_views_default_views() {
   );
   $export['drupalorg_news'] = $view;
 
+  $view = new view();
+  $view->name = 'individual_members';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'users';
+  $view->human_name = 'Individual members';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'access user profiles';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Search';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '48';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'No members found.';
+  $handler->display->display_options['empty']['area']['format'] = '1';
+  /* Field: User: Picture */
+  $handler->display->display_options['fields']['picture']['id'] = 'picture';
+  $handler->display->display_options['fields']['picture']['table'] = 'users';
+  $handler->display->display_options['fields']['picture']['field'] = 'picture';
+  $handler->display->display_options['fields']['picture']['label'] = '';
+  $handler->display->display_options['fields']['picture']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['picture']['image_style'] = 'grid-2-2x-square';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = '';
+  $handler->display->display_options['fields']['name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['name']['element_default_classes'] = FALSE;
+  /* Field: User: Country */
+  $handler->display->display_options['fields']['field_country']['id'] = 'field_country';
+  $handler->display->display_options['fields']['field_country']['table'] = 'field_data_field_country';
+  $handler->display->display_options['fields']['field_country']['field'] = 'field_country';
+  $handler->display->display_options['fields']['field_country']['label'] = '';
+  $handler->display->display_options['fields']['field_country']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_country']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_country']['alter']['text'] = '<small>[field_country]</small>';
+  $handler->display->display_options['fields']['field_country']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_country']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['field_country']['element_default_classes'] = FALSE;
+  /* Field: User: Last name or surname */
+  $handler->display->display_options['fields']['field_last_name']['id'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['table'] = 'field_data_field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['field'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['label'] = '';
+  $handler->display->display_options['fields']['field_last_name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_last_name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_last_name']['element_default_classes'] = FALSE;
+  /* Field: User: First or given name */
+  $handler->display->display_options['fields']['field_first_name']['id'] = 'field_first_name';
+  $handler->display->display_options['fields']['field_first_name']['table'] = 'field_data_field_first_name';
+  $handler->display->display_options['fields']['field_first_name']['field'] = 'field_first_name';
+  $handler->display->display_options['fields']['field_first_name']['label'] = '';
+  $handler->display->display_options['fields']['field_first_name']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_first_name']['alter']['text'] = '[field_first_name] [field_last_name]
+[name]
+[field_country]';
+  $handler->display->display_options['fields']['field_first_name']['alter']['nl2br'] = TRUE;
+  $handler->display->display_options['fields']['field_first_name']['element_type'] = 'p';
+  $handler->display->display_options['fields']['field_first_name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_first_name']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['field_first_name']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_first_name']['empty'] = '[name]<br>
+[field_country]';
+  /* Sort criterion: User: Created date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'users';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: User: Active */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: User: Drupal Association - Individual Membership (field_da_ind_membership) */
+  $handler->display->display_options['filters']['field_da_ind_membership_value']['id'] = 'field_da_ind_membership_value';
+  $handler->display->display_options['filters']['field_da_ind_membership_value']['table'] = 'field_data_field_da_ind_membership';
+  $handler->display->display_options['filters']['field_da_ind_membership_value']['field'] = 'field_da_ind_membership_value';
+  $handler->display->display_options['filters']['field_da_ind_membership_value']['operator'] = 'longerthan';
+  $handler->display->display_options['filters']['field_da_ind_membership_value']['value'] = '0';
+  /* Filter criterion: User: Country (field_country) */
+  $handler->display->display_options['filters']['field_country_value']['id'] = 'field_country_value';
+  $handler->display->display_options['filters']['field_country_value']['table'] = 'field_data_field_country';
+  $handler->display->display_options['filters']['field_country_value']['field'] = 'field_country_value';
+  $handler->display->display_options['filters']['field_country_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_country_value']['expose']['operator_id'] = 'field_country_value_op';
+  $handler->display->display_options['filters']['field_country_value']['expose']['label'] = 'Country';
+  $handler->display->display_options['filters']['field_country_value']['expose']['operator'] = 'field_country_value_op';
+  $handler->display->display_options['filters']['field_country_value']['expose']['identifier'] = 'field_country_value';
+  $handler->display->display_options['filters']['field_country_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+
+  /* Display: Content pane */
+  $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
+  $handler->display->display_options['inherit_panels_path'] = '1';
+  $translatables['individual_members'] = array(
+    t('Master'),
+    t('more'),
+    t('Search'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No members found.'),
+    t('<small>[field_country]</small>'),
+    t('[field_first_name] [field_last_name]
+[name]
+[field_country]'),
+    t('[name]<br>
+[field_country]'),
+    t('Country'),
+    t('Content pane'),
+    t('View panes'),
+  );
+  $export['individual_members'] = $view;
+
   return $export;
 }
