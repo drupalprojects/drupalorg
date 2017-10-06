@@ -3619,6 +3619,13 @@ function drupalorg_node_update($node) {
         break;
       }
     }
+
+    // Commenting user is being credited for the first time, save that credit.
+    if (!empty($node->drupalorg_credit_self)) {
+      $wrapper->field_issue_credit[] = $node->nodechanges_cid;
+      field_attach_presave('node', $node);
+      field_attach_update('node', $node);
+    }
   }
 
   // Keep OG Menu titles matching the node title.
