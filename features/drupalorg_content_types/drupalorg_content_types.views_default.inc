@@ -718,6 +718,23 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['name']['element_default_classes'] = FALSE;
+  /* Field: User: Drupal Association - join date */
+  $handler->display->display_options['fields']['field_da_join_date']['id'] = 'field_da_join_date';
+  $handler->display->display_options['fields']['field_da_join_date']['table'] = 'field_data_field_da_join_date';
+  $handler->display->display_options['fields']['field_da_join_date']['field'] = 'field_da_join_date';
+  $handler->display->display_options['fields']['field_da_join_date']['label'] = 'Member for';
+  $handler->display->display_options['fields']['field_da_join_date']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_da_join_date']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_da_join_date']['alter']['text'] = '<small>Member for [field_da_join_date]</small>';
+  $handler->display->display_options['fields']['field_da_join_date']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_da_join_date']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_da_join_date']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['field_da_join_date']['empty_zero'] = TRUE;
+  $handler->display->display_options['fields']['field_da_join_date']['type'] = 'project_issue_time_ago';
+  $handler->display->display_options['fields']['field_da_join_date']['settings'] = array(
+    'thousand_separator' => '',
+    'prefix_suffix' => 1,
+  );
   /* Field: User: Country */
   $handler->display->display_options['fields']['field_country']['id'] = 'field_country';
   $handler->display->display_options['fields']['field_country']['table'] = 'field_data_field_country';
@@ -745,6 +762,7 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['fields']['field_first_name']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_first_name']['alter']['text'] = '[field_first_name] [field_last_name]
 [name]
+[field_da_join_date]
 [field_country]';
   $handler->display->display_options['fields']['field_first_name']['alter']['nl2br'] = TRUE;
   $handler->display->display_options['fields']['field_first_name']['element_type'] = 'p';
@@ -820,9 +838,12 @@ function drupalorg_content_types_views_default_views() {
     t('next ›'),
     t('last »'),
     t('No members found.'),
+    t('Member for'),
+    t('<small>Member for [field_da_join_date]</small>'),
     t('<small>[field_country]</small>'),
     t('[field_first_name] [field_last_name]
 [name]
+[field_da_join_date]
 [field_country]'),
     t('[name]<br>
 [field_country]'),
