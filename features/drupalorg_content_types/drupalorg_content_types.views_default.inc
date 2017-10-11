@@ -771,11 +771,10 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['fields']['field_first_name']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_first_name']['empty'] = '[name]<br>
 [field_country]';
-  /* Sort criterion: User: Created date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'users';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Sort criterion: User: Drupal Association - join date (field_da_join_date) */
+  $handler->display->display_options['sorts']['field_da_join_date_value']['id'] = 'field_da_join_date_value';
+  $handler->display->display_options['sorts']['field_da_join_date_value']['table'] = 'field_data_field_da_join_date';
+  $handler->display->display_options['sorts']['field_da_join_date_value']['field'] = 'field_da_join_date_value';
   /* Filter criterion: User: Active */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
