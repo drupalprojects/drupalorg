@@ -457,7 +457,7 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -637,7 +637,7 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 9,
+        'weight' => 8,
       ),
       'issuemetadata' => array(
         'label' => 'above',
