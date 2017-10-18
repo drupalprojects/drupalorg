@@ -52,27 +52,5 @@ function drupalorg_drupal8_panes_default_ctools_custom_content() {
   );
   $export['drupalorg_trydrupal_button'] = $content;
 
-  $content = new stdClass();
-  $content->disabled = FALSE; /* Edit this to true to make a default content disabled initially */
-  $content->api_version = 1;
-  $content->name = 'drupalorg_whatsnext_core';
-  $content->admin_title = 'What\'s Next Pane (Drupal Core)';
-  $content->admin_description = 'What\'s next block';
-  $content->category = 'Drupalorg Project';
-  $content->settings = array(
-    'admin_title' => 'What\'s Next Pane (Drupal Core)',
-    'title' => 'What\'s Next?',
-    'title_heading' => 'h2',
-    'body' => '<ol>
- <li><a href="/documentation/install">Learn how to install Drupal</a></li>
- <li><a href="/project/project_module">Extend Drupal to do more</a></li>
-<li><a href="/training">Get training</a></li>
-<li><a href="/case-studies">Check out what others built</a></li>
-</ol>',
-    'format' => '1',
-    'substitute' => 1,
-  );
-  $export['drupalorg_whatsnext_core'] = $content;
-
   return $export;
 }
