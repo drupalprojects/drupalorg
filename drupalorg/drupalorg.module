@@ -6283,7 +6283,7 @@ function drupalorg_process_filter_format($element) {
 
   // Progressively enable ckeditor for specific entities & bundles / CTs.
   if (isset($element['#entity_type'])) {
-    $bundles_to_enable = ['page', 'post', 'section', 'guide', 'documentation'];
+    $bundles_to_enable = ['page', 'post', 'section', 'guide', 'documentation', 'forum'];
 
     switch ($element['#entity_type']) {
       case 'node':
