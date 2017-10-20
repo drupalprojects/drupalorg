@@ -79,6 +79,10 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['sorts']['changed']['field'] = 'changed';
   $handler->display->display_options['sorts']['changed']['group_type'] = 'max';
   $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'OR',
+  );
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -92,13 +96,24 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'project_issue' => 'project_issue',
+    'sa' => 'sa',
   );
+  $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Comment: Approved */
   $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
   $handler->display->display_options['filters']['status_1']['table'] = 'comment';
   $handler->display->display_options['filters']['status_1']['field'] = 'status';
   $handler->display->display_options['filters']['status_1']['relationship'] = 'field_issue_credit_target_id';
   $handler->display->display_options['filters']['status_1']['value'] = '1';
+  $handler->display->display_options['filters']['status_1']['group'] = 1;
+  /* Filter criterion: Content: Updated date */
+  $handler->display->display_options['filters']['changed_1']['id'] = 'changed_1';
+  $handler->display->display_options['filters']['changed_1']['table'] = 'node';
+  $handler->display->display_options['filters']['changed_1']['field'] = 'changed';
+  $handler->display->display_options['filters']['changed_1']['operator'] = '>=';
+  $handler->display->display_options['filters']['changed_1']['value']['value'] = '-1 year';
+  $handler->display->display_options['filters']['changed_1']['value']['type'] = 'offset';
+  $handler->display->display_options['filters']['changed_1']['group'] = 1;
   /* Filter criterion: Content: Status (field_issue_status) */
   $handler->display->display_options['filters']['field_issue_status_value']['id'] = 'field_issue_status_value';
   $handler->display->display_options['filters']['field_issue_status_value']['table'] = 'field_data_field_issue_status';
@@ -107,13 +122,13 @@ function drupalorg_user_views_default_views() {
     2 => '2',
     7 => '7',
   );
-  /* Filter criterion: Content: Updated date */
-  $handler->display->display_options['filters']['changed_1']['id'] = 'changed_1';
-  $handler->display->display_options['filters']['changed_1']['table'] = 'node';
-  $handler->display->display_options['filters']['changed_1']['field'] = 'changed';
-  $handler->display->display_options['filters']['changed_1']['operator'] = '>=';
-  $handler->display->display_options['filters']['changed_1']['value']['value'] = '-1 year';
-  $handler->display->display_options['filters']['changed_1']['value']['type'] = 'offset';
+  $handler->display->display_options['filters']['field_issue_status_value']['group'] = 2;
+  /* Filter criterion: Content: Status (field_issue_status) */
+  $handler->display->display_options['filters']['field_issue_status_value_1']['id'] = 'field_issue_status_value_1';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['table'] = 'field_data_field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['field'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['operator'] = 'empty';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['group'] = 2;
 
   /* Display: User recent */
   $handler = $view->new_display('block', 'User recent', 'user_recent');
@@ -275,6 +290,10 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['arguments']['field_project_target_id']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['field_project_target_id']['validate']['type'] = 'project_nid';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'OR',
+  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -289,13 +308,16 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'project_issue' => 'project_issue',
+    'sa' => 'sa',
   );
+  $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Comment: Approved */
   $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
   $handler->display->display_options['filters']['status_1']['table'] = 'comment';
   $handler->display->display_options['filters']['status_1']['field'] = 'status';
   $handler->display->display_options['filters']['status_1']['relationship'] = 'field_issue_credit_target_id';
   $handler->display->display_options['filters']['status_1']['value'] = '1';
+  $handler->display->display_options['filters']['status_1']['group'] = 1;
   /* Filter criterion: Content: Status (field_issue_status) */
   $handler->display->display_options['filters']['field_issue_status_value']['id'] = 'field_issue_status_value';
   $handler->display->display_options['filters']['field_issue_status_value']['table'] = 'field_data_field_issue_status';
@@ -304,6 +326,13 @@ function drupalorg_user_views_default_views() {
     2 => '2',
     7 => '7',
   );
+  $handler->display->display_options['filters']['field_issue_status_value']['group'] = 2;
+  /* Filter criterion: Content: Status (field_issue_status) */
+  $handler->display->display_options['filters']['field_issue_status_value_1']['id'] = 'field_issue_status_value_1';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['table'] = 'field_data_field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['field'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['operator'] = 'empty';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['group'] = 2;
   $handler->display->display_options['path'] = 'u/%/issue-credits/%';
 
   /* Display: Organization recent */
@@ -361,6 +390,7 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
     2 => 'OR',
+    3 => 'OR',
   );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -376,6 +406,7 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'project_issue' => 'project_issue',
+    'sa' => 'sa',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Comment: Approved */
@@ -385,15 +416,6 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['status_1']['relationship'] = 'field_issue_credit_target_id';
   $handler->display->display_options['filters']['status_1']['value'] = '1';
   $handler->display->display_options['filters']['status_1']['group'] = 1;
-  /* Filter criterion: Content: Status (field_issue_status) */
-  $handler->display->display_options['filters']['field_issue_status_value']['id'] = 'field_issue_status_value';
-  $handler->display->display_options['filters']['field_issue_status_value']['table'] = 'field_data_field_issue_status';
-  $handler->display->display_options['filters']['field_issue_status_value']['field'] = 'field_issue_status_value';
-  $handler->display->display_options['filters']['field_issue_status_value']['value'] = array(
-    2 => '2',
-    7 => '7',
-  );
-  $handler->display->display_options['filters']['field_issue_status_value']['group'] = 1;
   /* Filter criterion: Content: Updated date */
   $handler->display->display_options['filters']['changed_1']['id'] = 'changed_1';
   $handler->display->display_options['filters']['changed_1']['table'] = 'node';
@@ -411,6 +433,30 @@ function drupalorg_user_views_default_views() {
     0 => '0',
   );
   $handler->display->display_options['filters']['field_attribute_as_volunteer_value']['group'] = 1;
+  /* Filter criterion: Content: Project type (field_project_type) */
+  $handler->display->display_options['filters']['field_project_type_value']['id'] = 'field_project_type_value';
+  $handler->display->display_options['filters']['field_project_type_value']['table'] = 'field_data_field_project_type';
+  $handler->display->display_options['filters']['field_project_type_value']['field'] = 'field_project_type_value';
+  $handler->display->display_options['filters']['field_project_type_value']['relationship'] = 'field_project_target_id';
+  $handler->display->display_options['filters']['field_project_type_value']['value'] = array(
+    'full' => 'full',
+  );
+  $handler->display->display_options['filters']['field_project_type_value']['group'] = 1;
+  /* Filter criterion: Content: Status (field_issue_status) */
+  $handler->display->display_options['filters']['field_issue_status_value']['id'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value']['table'] = 'field_data_field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status_value']['field'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value']['value'] = array(
+    2 => '2',
+    7 => '7',
+  );
+  $handler->display->display_options['filters']['field_issue_status_value']['group'] = 3;
+  /* Filter criterion: Content: Status (field_issue_status) */
+  $handler->display->display_options['filters']['field_issue_status_value_1']['id'] = 'field_issue_status_value_1';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['table'] = 'field_data_field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['field'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['operator'] = 'empty';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['group'] = 3;
   /* Filter criterion: Comment: Attribute comment at organization (field_attribute_contribution_to) */
   $handler->display->display_options['filters']['field_attribute_contribution_to_target_id']['id'] = 'field_attribute_contribution_to_target_id';
   $handler->display->display_options['filters']['field_attribute_contribution_to_target_id']['table'] = 'field_data_field_attribute_contribution_to';
@@ -427,14 +473,6 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['label'] = 'Attribute comment for customer (field_for_customer)';
   $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['operator'] = 'field_for_customer_target_id_op';
   $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['identifier'] = 'field_for_customer_target_id';
-  /* Filter criterion: Content: Project type (field_project_type) */
-  $handler->display->display_options['filters']['field_project_type_value']['id'] = 'field_project_type_value';
-  $handler->display->display_options['filters']['field_project_type_value']['table'] = 'field_data_field_project_type';
-  $handler->display->display_options['filters']['field_project_type_value']['field'] = 'field_project_type_value';
-  $handler->display->display_options['filters']['field_project_type_value']['relationship'] = 'field_project_target_id';
-  $handler->display->display_options['filters']['field_project_type_value']['value'] = array(
-    'full' => 'full',
-  );
 
   /* Display: Organization recent page */
   $handler = $view->new_display('page', 'Organization recent page', 'organization_recent_page');
@@ -503,6 +541,7 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
     2 => 'OR',
+    3 => 'OR',
   );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -518,6 +557,7 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'project_issue' => 'project_issue',
+    'sa' => 'sa',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Comment: Approved */
@@ -527,15 +567,6 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['status_1']['relationship'] = 'field_issue_credit_target_id';
   $handler->display->display_options['filters']['status_1']['value'] = '1';
   $handler->display->display_options['filters']['status_1']['group'] = 1;
-  /* Filter criterion: Content: Status (field_issue_status) */
-  $handler->display->display_options['filters']['field_issue_status_value']['id'] = 'field_issue_status_value';
-  $handler->display->display_options['filters']['field_issue_status_value']['table'] = 'field_data_field_issue_status';
-  $handler->display->display_options['filters']['field_issue_status_value']['field'] = 'field_issue_status_value';
-  $handler->display->display_options['filters']['field_issue_status_value']['value'] = array(
-    2 => '2',
-    7 => '7',
-  );
-  $handler->display->display_options['filters']['field_issue_status_value']['group'] = 1;
   /* Filter criterion: Comment: Attribute this contribution (field_attribute_as_volunteer) */
   $handler->display->display_options['filters']['field_attribute_as_volunteer_value']['id'] = 'field_attribute_as_volunteer_value';
   $handler->display->display_options['filters']['field_attribute_as_volunteer_value']['table'] = 'field_data_field_attribute_as_volunteer';
@@ -559,6 +590,21 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['field_for_customer_target_id']['relationship'] = 'field_issue_credit_target_id';
   $handler->display->display_options['filters']['field_for_customer_target_id']['value']['value'] = '***CURRENT_ORGANIZATION***';
   $handler->display->display_options['filters']['field_for_customer_target_id']['group'] = 2;
+  /* Filter criterion: Content: Status (field_issue_status) */
+  $handler->display->display_options['filters']['field_issue_status_value']['id'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value']['table'] = 'field_data_field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status_value']['field'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value']['value'] = array(
+    2 => '2',
+    7 => '7',
+  );
+  $handler->display->display_options['filters']['field_issue_status_value']['group'] = 3;
+  /* Filter criterion: Content: Status (field_issue_status) */
+  $handler->display->display_options['filters']['field_issue_status_value_1']['id'] = 'field_issue_status_value_1';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['table'] = 'field_data_field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['field'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['operator'] = 'empty';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['group'] = 3;
   $handler->display->display_options['path'] = 'node/%/issue-credits/%';
   $translatables['issue_credit'] = array(
     t('Master'),
