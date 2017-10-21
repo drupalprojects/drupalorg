@@ -28,7 +28,7 @@ function drupalorg_token_info() {
 function drupalorg_tokens($type, $tokens, array $data = [], array $options = []) {
   $replacements = [];
 
-  if ($type === 'node') {
+  if ($type === 'node' && isset($data['node'])) {
     $node_wrapper = entity_metadata_wrapper('node', $data['node']);
     if ($replace_tokens = token_find_with_prefix($tokens, 'drupalorg-top-guide')) {
       while ($node_wrapper->og_group_ref_documentation->getIdentifier()) {
