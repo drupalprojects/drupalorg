@@ -4177,6 +4177,10 @@ function drupalorg_user_view($account, $view_mode) {
     );
   }
 
+  $account->content['summary']['member_for'] = [
+    '#markup' => '<p>' . t('On Drupal.org for @interval', ['@interval' => $account->content['summary']['member_for']['#markup']]) . '</p>',
+  ];
+
   // Guides maintained.
   $view = views_get_view('doc_guide_per_user');
   $output = $view->preview('block_1', [$account->uid]);
