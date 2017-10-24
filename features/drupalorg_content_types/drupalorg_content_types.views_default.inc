@@ -694,6 +694,11 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'field_first_name' => 'field_first_name',
+    'field_last_name' => 'field_last_name',
+  );
+  $handler->display->display_options['row_options']['hide_empty'] = TRUE;
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -708,25 +713,40 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['fields']['picture']['label'] = '';
   $handler->display->display_options['fields']['picture']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['picture']['image_style'] = 'grid-2-2x-square';
+  /* Field: User: First or given name */
+  $handler->display->display_options['fields']['field_first_name']['id'] = 'field_first_name';
+  $handler->display->display_options['fields']['field_first_name']['table'] = 'field_data_field_first_name';
+  $handler->display->display_options['fields']['field_first_name']['field'] = 'field_first_name';
+  $handler->display->display_options['fields']['field_first_name']['label'] = '';
+  $handler->display->display_options['fields']['field_first_name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_first_name']['element_default_classes'] = FALSE;
+  /* Field: User: Last name or surname */
+  $handler->display->display_options['fields']['field_last_name']['id'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['table'] = 'field_data_field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['field'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['label'] = '';
+  $handler->display->display_options['fields']['field_last_name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_last_name']['element_default_classes'] = FALSE;
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['label'] = '';
-  $handler->display->display_options['fields']['name']['exclude'] = TRUE;
   $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['name']['element_type'] = 'div';
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['name']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['name']['element_default_classes'] = FALSE;
   /* Field: User: Drupal Association - join date */
   $handler->display->display_options['fields']['field_da_join_date']['id'] = 'field_da_join_date';
   $handler->display->display_options['fields']['field_da_join_date']['table'] = 'field_data_field_da_join_date';
   $handler->display->display_options['fields']['field_da_join_date']['field'] = 'field_da_join_date';
-  $handler->display->display_options['fields']['field_da_join_date']['label'] = 'Member for';
-  $handler->display->display_options['fields']['field_da_join_date']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_da_join_date']['label'] = '';
   $handler->display->display_options['fields']['field_da_join_date']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_da_join_date']['alter']['text'] = '<small>Member for [field_da_join_date]</small>';
   $handler->display->display_options['fields']['field_da_join_date']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_da_join_date']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['field_da_join_date']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_da_join_date']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['field_da_join_date']['empty_zero'] = TRUE;
@@ -740,41 +760,19 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['fields']['field_country']['table'] = 'field_data_field_country';
   $handler->display->display_options['fields']['field_country']['field'] = 'field_country';
   $handler->display->display_options['fields']['field_country']['label'] = '';
-  $handler->display->display_options['fields']['field_country']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_country']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_country']['alter']['text'] = '<small>[field_country]</small>';
   $handler->display->display_options['fields']['field_country']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_country']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['field_country']['element_default_classes'] = FALSE;
-  /* Field: User: Last name or surname */
-  $handler->display->display_options['fields']['field_last_name']['id'] = 'field_last_name';
-  $handler->display->display_options['fields']['field_last_name']['table'] = 'field_data_field_last_name';
-  $handler->display->display_options['fields']['field_last_name']['field'] = 'field_last_name';
-  $handler->display->display_options['fields']['field_last_name']['label'] = '';
-  $handler->display->display_options['fields']['field_last_name']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_last_name']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_last_name']['element_default_classes'] = FALSE;
-  /* Field: User: First or given name */
-  $handler->display->display_options['fields']['field_first_name']['id'] = 'field_first_name';
-  $handler->display->display_options['fields']['field_first_name']['table'] = 'field_data_field_first_name';
-  $handler->display->display_options['fields']['field_first_name']['field'] = 'field_first_name';
-  $handler->display->display_options['fields']['field_first_name']['label'] = '';
-  $handler->display->display_options['fields']['field_first_name']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_first_name']['alter']['text'] = '[field_first_name] [field_last_name]
-[name]
-[field_da_join_date]
-[field_country]';
-  $handler->display->display_options['fields']['field_first_name']['alter']['nl2br'] = TRUE;
-  $handler->display->display_options['fields']['field_first_name']['element_type'] = 'p';
-  $handler->display->display_options['fields']['field_first_name']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_first_name']['element_wrapper_type'] = '0';
-  $handler->display->display_options['fields']['field_first_name']['element_default_classes'] = FALSE;
-  $handler->display->display_options['fields']['field_first_name']['empty'] = '[name]<br>
-[field_country]';
+  $handler->display->display_options['fields']['field_country']['hide_empty'] = TRUE;
   /* Sort criterion: User: Drupal Association - join date (field_da_join_date) */
   $handler->display->display_options['sorts']['field_da_join_date_value']['id'] = 'field_da_join_date_value';
   $handler->display->display_options['sorts']['field_da_join_date_value']['table'] = 'field_data_field_da_join_date';
   $handler->display->display_options['sorts']['field_da_join_date_value']['field'] = 'field_da_join_date_value';
+  $handler->display->display_options['sorts']['field_da_join_date_value']['order'] = 'DESC';
+  $handler->display->display_options['sorts']['field_da_join_date_value']['exposed'] = TRUE;
+  $handler->display->display_options['sorts']['field_da_join_date_value']['expose']['label'] = 'Join date';
   /* Filter criterion: User: Active */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
@@ -796,8 +794,98 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['filters']['field_country_value']['expose']['operator_id'] = 'field_country_value_op';
   $handler->display->display_options['filters']['field_country_value']['expose']['label'] = 'Country';
   $handler->display->display_options['filters']['field_country_value']['expose']['operator'] = 'field_country_value_op';
-  $handler->display->display_options['filters']['field_country_value']['expose']['identifier'] = 'field_country_value';
+  $handler->display->display_options['filters']['field_country_value']['expose']['identifier'] = 'country';
   $handler->display->display_options['filters']['field_country_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Username';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'n';
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: User: First or given name (field_first_name) */
+  $handler->display->display_options['filters']['field_first_name_value']['id'] = 'field_first_name_value';
+  $handler->display->display_options['filters']['field_first_name_value']['table'] = 'field_data_field_first_name';
+  $handler->display->display_options['filters']['field_first_name_value']['field'] = 'field_first_name_value';
+  $handler->display->display_options['filters']['field_first_name_value']['operator'] = 'starts';
+  $handler->display->display_options['filters']['field_first_name_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_first_name_value']['expose']['operator_id'] = 'field_first_name_value_op';
+  $handler->display->display_options['filters']['field_first_name_value']['expose']['label'] = 'First or given name';
+  $handler->display->display_options['filters']['field_first_name_value']['expose']['operator'] = 'field_first_name_value_op';
+  $handler->display->display_options['filters']['field_first_name_value']['expose']['identifier'] = 'fn';
+  $handler->display->display_options['filters']['field_first_name_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  /* Filter criterion: User: Last name or surname (field_last_name) */
+  $handler->display->display_options['filters']['field_last_name_value']['id'] = 'field_last_name_value';
+  $handler->display->display_options['filters']['field_last_name_value']['table'] = 'field_data_field_last_name';
+  $handler->display->display_options['filters']['field_last_name_value']['field'] = 'field_last_name_value';
+  $handler->display->display_options['filters']['field_last_name_value']['operator'] = 'starts';
+  $handler->display->display_options['filters']['field_last_name_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_last_name_value']['expose']['operator_id'] = 'field_last_name_value_op';
+  $handler->display->display_options['filters']['field_last_name_value']['expose']['label'] = 'Last name or surname';
+  $handler->display->display_options['filters']['field_last_name_value']['expose']['operator'] = 'field_last_name_value_op';
+  $handler->display->display_options['filters']['field_last_name_value']['expose']['identifier'] = 'ln';
+  $handler->display->display_options['filters']['field_last_name_value']['expose']['remember_roles'] = array(
     2 => '2',
     3 => 0,
     1 => 0,
@@ -837,16 +925,13 @@ function drupalorg_content_types_views_default_views() {
     t('next ›'),
     t('last »'),
     t('No members found.'),
-    t('Member for'),
     t('<small>Member for [field_da_join_date]</small>'),
     t('<small>[field_country]</small>'),
-    t('[field_first_name] [field_last_name]
-[name]
-[field_da_join_date]
-[field_country]'),
-    t('[name]<br>
-[field_country]'),
+    t('Join date'),
     t('Country'),
+    t('Username'),
+    t('First or given name'),
+    t('Last name or surname'),
     t('Content pane'),
     t('View panes'),
   );
