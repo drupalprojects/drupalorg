@@ -2036,7 +2036,7 @@ function _drupalorg_project_issue_credit_add(&$form_state) {
     foreach (user_load_multiple(array_keys($result['user'])) as $account) {
       // If the user has not commented.
       if (!in_array($account->uid, $form_state['drupalorg_credit_cids'])) {
-        if ($account->uid === $GLOBALS['user']->uid) {
+        if ($account->uid === $GLOBALS['user']->uid && project_issue_node_is_issue($form_state['node'])) {
           // Commenting user is being credited for the first time, likely from
           // commit credit. Do not post “self credited self” comment.
           $form_state['node']->drupalorg_credit_self = TRUE;
