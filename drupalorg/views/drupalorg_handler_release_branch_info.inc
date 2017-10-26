@@ -45,11 +45,16 @@ class drupalorg_handler_release_branch_info extends views_handler_field_entity {
       }
       $result = $query->execute();
       if (isset($result['node'])) {
-        $dev_release = node_load(reset($result['node'])->nid);
+        $dev_release = node_load(array_keys($result['node'])[0]);
         $dev_release_wrapper = entity_metadata_wrapper('node', $dev_release);
 
-        if (empty($releases_seen[$dev_release->nid]) && $dev_release_wrapper->field_show_download->raw()) {
-          $releases_seen[$dev_release->nid] = TRUE;
+        // Only show each dev release once. May be with a tagged release, or
+        // fall back to the development display. This class is instanciated for
+        // each display, so need the extra check for the current display.
+        if (($this->view->current_display !== 'development' || empty($releases_seen[$dev_release->nid])) && $dev_release_wrapper->field_show_download->raw()) {
+          if ($this->view->current_display !== 'development') {
+            $releases_seen[$dev_release->nid] = TRUE;
+          }
           $output .= '<p>' . t('Development version: !version <small>updated @updated</small>', [
             '!version' => l($dev_release_wrapper->field_release_version->raw(), 'node/' . $dev_release->nid),
             '@updated' => format_date(isset($dev_release_wrapper->field_release_files[0]) && !empty($dev_release_wrapper->field_release_files[0]->field_release_file->value()) ? $dev_release_wrapper->field_release_files[0]->field_release_file->file->timestamp->value() : $dev_release->changed, 'medium', '', 'UTC'),
