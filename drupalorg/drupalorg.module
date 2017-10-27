@@ -5746,21 +5746,26 @@ function drupalorg_sa_save($form, $form_state) {
 /**
  * Implements hook_panels_pane_content_alter().
  */
-function drupalorg_panels_pane_content_alter($content, $pane, $args, $contexts) {
+function drupalorg_panels_pane_content_alter($content, $pane, $args, $contexts, $node_alias) {
+  $node_alias = NULL;
   // Add lead capture to CTAs with pane admin title “Lead capture”.
   if (isset($content->content['field_cta_body']) && $content->content['field_cta_body']['#object']->admin_title === 'Lead capture') {
     $form = drupal_get_form('drupalorg_lead_capture_form');
     $content->content['field_cta_body']['#suffix'] = drupal_render($form);
+    $node_alias = drupal_get_path_alias('node/' . $contexts['panelizer']->argument);
   }
 }
 
 /**
  * Sponsorship opportunity for industry landing pages.
  */
-function drupalorg_lead_capture_form($form) {
+function drupalorg_lead_capture_form($form, $contexts, $node_alias) {
   $form['retURL'] = [
     '#type' => 'hidden',
-    '#value' => url('industries/thank-you', ['absolute' => TRUE, 'alias' => TRUE]),
+    '#value' => url('industries/thank-you?utm_source=' . $node_alias ., [
+      'absolute' => TRUE,
+      'alias' => TRUE
+    ]),
   ];
   $form['00NA00000067D9R'] = [
     '#type' => 'hidden',
