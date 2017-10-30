@@ -6128,7 +6128,6 @@ function drupalorg_lead_capture_form($form) {
   $form['00NA000000Bye9j'] = [
     '#type' => 'checkbox',
     '#title' => t('Contact me about hosting:'),
-    ],
   ];
   $form['actions']['submit'] = [
     '#type' => 'submit',
