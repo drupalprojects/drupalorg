@@ -2622,6 +2622,25 @@ function drupalorg_search_execute($keys = NULL, $conditions = NULL) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_form_alter
+ * Performs nid search and redirects if match found
+ */
+function drupalorg_form_search_block_form_alter(&$form, $form_state) {
+  $nid_search = $form_state['input']['search_block_form'];
+  if (ctype_digit($nid_search)) {
+    $query = db_select('node', 'n')
+      ->condition('nid', $nid_search, '=')
+      ->fields('n', array('nid'))
+      ->execute();
+    $nid_count = $query->rowCount();
+
+    if ($nid_count === 1) {
+      drupal_goto('node/' . $nid_search);
+    }
+  }
+}
+
+/**
  * Implements hook_views_api().
  */
 function drupalorg_views_api() {
