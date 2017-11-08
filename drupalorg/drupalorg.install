@@ -225,6 +225,123 @@ function drupalorg_schema() {
     'primary key' => array('nid'),
   );
 
+  $schema['drupalorg_chargify_subscriptions'] = [
+    'description' => 'Track which users have a Chargify subscription for Association membership.',
+    'fields' => [
+      'uid' => [
+        'description' => 'Drupal user ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'organization_nid' => [
+        'description' => 'Drupal organization node ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+      ],
+      'currency' => [
+        'description' => 'Currency and Chargify site used',
+        'type' => 'char',
+        'length' => 3,
+        'not null' => TRUE,
+        'default' => '---',
+      ],
+      'subscription_id' => [
+        'description' => 'Chargify subscription ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'state' => [
+        'description' => 'Chargify subscription state',
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'current_billing_amount_in_cents' => [
+        'description' => 'Chargify amount billed',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'created_at' => [
+        'description' => 'When the subscription was created',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'current_period_ends_at' => [
+        'description' => 'When the subscription period will currently end',
+        'type' => 'int',
+        'unsigned' => TRUE,
+      ],
+      'expires_at' => [
+        'description' => 'When the subscription will currently expire',
+        'type' => 'int',
+        'unsigned' => TRUE,
+      ],
+      'product_handle' => [
+        'description' => 'Chargify product handle',
+        'type' => 'varchar',
+        'length' => 30,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'product_name' => [
+        'description' => 'Chargify product name',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'customer_id' => [
+        'description' => 'Chargify customer ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'customer_first_name' => [
+        'description' => 'Chargify customer first name',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'customer_last_name' => [
+        'description' => 'Chargify customer last name',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'customer_organization' => [
+        'description' => 'Chargify customer organization',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'customer_email' => [
+        'description' => 'Chargify customer email',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['subscription_id', 'currency'],
+    'indexes' => [
+      'uid' => ['uid'],
+      'organization_nid' => ['organization_nid'],
+    ],
+  ];
+
   return $schema;
 }
 
@@ -4542,5 +4659,127 @@ function drupalorg_update_7095() {
       'type' => 'field_extrawidgets_hidden',
       'weight' => 38,
     ),
+  ]);
+}
+
+/**
+ * Add table to keep track of Chargify memberships.
+ */
+function drupalorg_update_7096() {
+  db_create_table('drupalorg_chargify_subscriptions', [
+    'description' => 'Track which users have a Chargify subscription for Association membership.',
+    'fields' => [
+      'uid' => [
+        'description' => 'Drupal user ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'organization_nid' => [
+        'description' => 'Drupal organization node ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+      ],
+      'currency' => [
+        'description' => 'Currency and Chargify site used',
+        'type' => 'char',
+        'length' => 3,
+        'not null' => TRUE,
+        'default' => '---',
+      ],
+      'subscription_id' => [
+        'description' => 'Chargify subscription ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'state' => [
+        'description' => 'Chargify subscription state',
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'current_billing_amount_in_cents' => [
+        'description' => 'Chargify amount billed',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'created_at' => [
+        'description' => 'When the subscription was created',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'current_period_ends_at' => [
+        'description' => 'When the subscription period will currently end',
+        'type' => 'int',
+        'unsigned' => TRUE,
+      ],
+      'expires_at' => [
+        'description' => 'When the subscription will currently expire',
+        'type' => 'int',
+        'unsigned' => TRUE,
+      ],
+      'product_handle' => [
+        'description' => 'Chargify product handle',
+        'type' => 'varchar',
+        'length' => 30,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'product_name' => [
+        'description' => 'Chargify product name',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'customer_id' => [
+        'description' => 'Chargify customer ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'customer_first_name' => [
+        'description' => 'Chargify customer first name',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'customer_last_name' => [
+        'description' => 'Chargify customer last name',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'customer_organization' => [
+        'description' => 'Chargify customer organization',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'customer_email' => [
+        'description' => 'Chargify customer email',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['subscription_id', 'currency'],
+    'indexes' => [
+      'uid' => ['uid'],
+      'organization_nid' => ['organization_nid'],
+    ],
   ]);
 }

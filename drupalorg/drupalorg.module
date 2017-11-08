@@ -273,6 +273,18 @@ function drupalorg_menu() {
     'file' => 'drupalorg.pages.inc',
   ];
 
+  $items['user/%user/membership'] = [
+    'title' => t('Drupal Association membership'),
+    'access callback' => 'user_edit_access',
+    'access arguments' => [1],
+    // todo switch to new permission
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['drupalorg_membership_form', 1],
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10,
+    'file' => 'drupalorg.pages.inc',
+  ];
+
   // Redirect some legacy paths related to the security listings.
   $items['security-contrib'] = array(
     'access arguments' => array('access content'),
@@ -6570,4 +6582,12 @@ function drupalorg_get_issue_committers(stdClass $node) {
   }
 
   return $committers;
+}
+
+/**
+ * Get a base URL for making authenticated requests to Chargify’s API.
+ */
+function _drupalorg_chargify_base_url($currency) {
+  $chargify = variable_get('drupalorg_chargify_keys')[$currency];
+  return 'https://' . $chargify['api_key'] . ':' . $chargify['password'] . '@' . $chargify['subdomain'] . '.chargify.com/';
 }

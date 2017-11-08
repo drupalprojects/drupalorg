@@ -21,6 +21,9 @@ function drupalorg_drush_command() {
     'drupalorg-org-credit' => array(
       'description' => 'Update organization credit totals.'
     ),
+    'drupalorg-chargify-sync' => [
+      'description' => 'Sync Association membership subscriptions.'
+    ],
   );
 }
 
@@ -124,4 +127,92 @@ function drush_drupalorg_post_association_members() {
 
   // Give those accounts the trusted role.
   user_multiple_role_edit($result->fetchCol(), 'add_role', $rid);
+}
+
+/**
+ * Command callback. Sync Association membership subscriptions.
+ */
+function drush_drupalorg_chargify_sync() {
+  foreach (variable_get('drupalorg_chargify_keys') as $currency => $chargify) {
+    $base_url = _drupalorg_chargify_base_url($currency);
+
+    $page = 0;
+    do {
+      $page += 1;
+      $response = drupal_http_request(url($base_url . 'subscriptions.json', ['query' => ['page' => 1]]));
+      if ($response->code != 200) {
+        drush_log(dt('Failed to fetch subscriptions for @currency', ['@currency' => $currency]), 'error');
+        break 2;
+      }
+      $data = json_decode($response->data);
+      if ($data === NULL) {
+        drush_log(dt('Failed to parse subscriptions for @currency', ['@currency' => $currency]), 'error');
+        break 2;
+      }
+      foreach ($data as $subscription) {
+        $row = [
+          'state' => $subscription->subscription->state,
+          'created_at' => strtotime($subscription->subscription->created_at),
+          'product_handle' => $subscription->subscription->product->handle,
+          'product_name' => $subscription->subscription->product->name,
+          'customer_id' => $subscription->subscription->customer->id,
+          'customer_first_name' => $subscription->subscription->customer->first_name,
+          'customer_last_name' => $subscription->subscription->customer->last_name,
+          'customer_organization' => $subscription->subscription->customer->organization,
+          'customer_email' => $subscription->subscription->customer->email,
+        ];
+        // Customer reference is {uid}[-{extra}]. Optional extra is
+        // organization NID or “donation”.
+        if (strpos($subscription->subscription->customer->reference, '-') === FALSE) {
+          $row['uid'] = $subscription->subscription->customer->reference;
+        }
+        else {
+          list($row['uid'], $reference_extra) = explode('-', $subscription->subscription->customer->reference);
+        }
+        if ($row['product_handle'] === 'donation') {
+          // Donation “subscriptions” expire quickly, use the total revenue.
+          $row['current_billing_amount_in_cents'] = $subscription->subscription->total_revenue_in_cents;
+        }
+        else {
+          if (!empty($subscription->subscription->current_period_ends_at)) {
+            $row['current_period_ends_at'] = strtotime($subscription->subscription->current_period_ends_at);
+          }
+          if (!empty($subscription->subscription->expires_at)) {
+            $row['expires_at'] = strtotime($subscription->subscription->expires_at);
+          }
+
+          // Add the base product price and donation component quantity.
+          $row['current_billing_amount_in_cents'] = $subscription->subscription->product_price_in_cents;
+          $response_component = drupal_http_request(url($base_url . 'subscriptions/' . $subscription->subscription->id . '/components.json'));
+          if ($response_component->code != 200) {
+            drush_log(dt('Failed to fetch components for subscription @subscription_id (@currency)', ['@subscription_id' => $subscription->subscription->id, '@currency' => $currency]), 'error');
+            break;
+          }
+          $data_component = json_decode($response_component->data);
+          if ($data === NULL) {
+            drush_log(dt('Failed to parse components for subscription @subscription_id (@currency)', ['@subscription_id' => $subscription->subscription->id, '@currency' => $currency]), 'error');
+            break;
+          }
+          foreach ($data_component as $component) {
+            if ($component->component->component_id == $chargify['donation_component']) {
+              $row['current_billing_amount_in_cents'] += round($component->component->allocated_quantity * 100);
+            }
+          }
+
+          // For organization membership, get the organization NID.
+          if (strpos($row['product_handle'], 'organization') === 0) {
+            $row['organization_nid'] = $reference_extra;
+          }
+        }
+
+        db_merge('drupalorg_chargify_subscriptions')
+          ->key([
+            'subscription_id' => $subscription->subscription->id,
+            'currency' => $currency,
+          ])
+          ->fields($row)
+          ->execute();
+      }
+    } while (count($data) === 200);
+  }
 }

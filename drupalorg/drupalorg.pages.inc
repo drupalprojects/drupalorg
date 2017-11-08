@@ -361,3 +361,388 @@ function drupalorg_maintain_guide($node) {
 
   drupal_goto('node/' . $node->nid);
 }
+
+/**
+ * Membership summary & update form.
+ */
+function drupalorg_membership_form($form, &$form_state, stdClass $user) {
+  $chargify_keys = variable_get('drupalorg_chargify_keys');
+  $chargify_products = variable_get('drupalorg_chargify_products');
+
+  $form['donations'] = [
+    '#prefix' => '<h3>' . t('Donations') . '</h3><p>' . t('Donations help keep the Drupal Association running.') . '</p>',
+    'table' => [
+      '#theme' => 'table',
+      '#sticky' => FALSE,
+    ],
+    '#suffix' => '<p>' . l(t('Donate'), 'association/donate', ['attributes' => ['class' => 'action-button']]) . '</p>',
+    '#weight' => 1,
+  ];
+
+  $result = db_query('SELECT uid, organization_nid, currency, subscription_id, state, current_billing_amount_in_cents, created_at, current_period_ends_at, expires_at, product_handle, product_name, customer_id, customer_first_name, customer_last_name, customer_organization, customer_email FROM {drupalorg_chargify_subscriptions} WHERE uid = :uid', [':uid' => $user->uid]);
+  foreach ($result as $row) {
+    if ($row->product_handle === 'donation') {
+      $form['donations']['table']['#caption'] = t('Your past donations');
+      $form['donations']['table']['#suffix'] = '<p>' . t('Thank you! 🎉') . '</p>';
+      $form['donations']['table']['#rows'][] = [
+        format_date($row->created_at, 'custom', 'j F Y'),
+        _format_chargify_money($row),
+      ];
+    }
+    else {
+      $base_product_handle = preg_replace('/-recur$/', '', $row->product_handle);
+      $form[$row->subscription_id] = [
+        '#tree' => TRUE,
+        'subscription' => ['#type' => 'value', '#value' => $row],
+        '#prefix' => '<h3>' . check_plain($row->product_name) . '</h3>'
+        . '<p><strong>' . format_date($row->created_at, 'custom', 'j F Y') . ' — ' . format_date($row->current_period_ends_at, 'custom', 'j F Y') . '</strong></p>'
+        . '<p>' . t('On renewal you’ll be charged <strong>@amount</strong>', ['@amount' => _format_chargify_money($row)])
+        . '<br>' . l(t('View & update credit card'), 'https://' . $chargify_keys[$row->currency]['subdomain'] . '.chargify.com/update_payment/' . $row->subscription_id . '/' . substr(sha1('update_payment--' . $row->subscription_id . '--' . $chargify_keys[$row->currency]['shared_key']), 0, 10), ['external' => TRUE, 'attributes' => ['target' => '_blank']])
+        . '</p>',
+        'update_amount' => [
+          '#type' => 'checkbox',
+          '#title' => t('Update membership level'),
+        ],
+        'amount' => [
+          '#type' => 'fieldset',
+          '#states' => [
+            'visible' => [
+              ':input[name="' . $row->subscription_id . '[update_amount]"]' => ['checked' => TRUE],
+            ],
+          ],
+          'level' => [
+            '#type' => 'radios',
+            '#options' => $chargify_products['membership-' . $base_product_handle][$row->currency]['options'],
+            '#default_value' => $row->current_billing_amount_in_cents / 100 - $chargify_products['membership-' . $base_product_handle][$row->currency]['minimum'],
+          ],
+          'submit' => [
+            '#type' => 'submit',
+            '#value' => t('Update membership level'),
+            '#submit' => ['drupalorg_membership_form_submit_amount'],
+          ],
+        ],
+        'recurring' => [],
+        'update_billing' => [
+          '#prefix' => '<p>' . t('Billed to @first_name @last_name@organization<br>@email', [
+            '@first_name' => $row->customer_first_name,
+            '@last_name' => $row->customer_last_name,
+            '@organization' => !empty($row->customer_organization) ? ', ' . $row->customer_organization : '',
+            '@email' => $row->customer_email,
+          ]) . '</p>',
+          '#type' => 'checkbox',
+          '#title' => t('Update billing name, organization, or email'),
+        ],
+        'billing' => [
+          '#type' => 'fieldset',
+          '#states' => [
+            'visible' => [
+              ':input[name="' . $row->subscription_id . '[update_billing]"]' => ['checked' => TRUE],
+            ],
+          ],
+          'customer_id' => [
+            '#type' => 'value',
+            '#value' => $row->customer_id,
+          ],
+          'first_name' => [
+            '#type' => 'textfield',
+            '#title' => t('First name'),
+            '#default_value' => $row->customer_first_name,
+            '#required' => TRUE,
+          ],
+          'last_name' => [
+            '#type' => 'textfield',
+            '#title' => t('Last name'),
+            '#default_value' => $row->customer_last_name,
+            '#required' => TRUE,
+          ],
+          'organization' => [
+            '#type' => 'textfield',
+            '#title' => t('Organization'),
+            '#default_value' => $row->customer_organization,
+          ],
+          'email' => [
+            '#type' => 'textfield',
+            '#title' => t('Email'),
+            '#default_value' => $row->customer_email,
+            '#required' => TRUE,
+          ],
+          'submit' => [
+            '#type' => 'submit',
+            '#value' => t('Save'),
+            '#submit' => ['drupalorg_membership_form_submit_billing'],
+          ],
+        ],
+      ];
+      if (in_array($row->state, ['canceled', 'expired'])) {
+        // Membership expired.
+        $form[$row->subscription_id]['recurring'] = [
+          '#prefix' => '<div class="note-warning"><p>' . t('<strong>Oh no!</strong> Your membership expired!') . '</p>',
+          'reactivate' => [
+            '#type' => 'submit',
+            '#value' => t('Reactivate now'),
+            '#suffix' => t('Your card will be charged @amount', ['@amount' => _format_chargify_money($row)]),
+            '#submit' => ['drupalorg_membership_form_submit_reactivate'],
+          ],
+          '#suffix' => '</div>',
+        ];
+      }
+      // todo link to benefits thank-you
+      else if (preg_match('/-recur$/', $row->product_handle)) {
+        // Membership is recurring.
+        $form[$row->subscription_id]['recurring'] = [
+          '#prefix' => '<p>' . t('Your membership is auto-renewing, thanks! You’ll be billed on @date', ['@date' => format_date($row->current_period_ends_at, 'custom', 'j F Y')]) . '</p>',
+          'recur_stop' => [
+            '#type' => 'checkbox',
+            '#title' => t('I don’t want my membership to auto-renew'),
+          ],
+          'confirm' => [
+            '#type' => 'fieldset',
+            '#states' => [
+              'visible' => [
+                ':input[name="' . $row->subscription_id . '[recurring][recur_stop]"]' => ['checked' => TRUE],
+              ],
+            ],
+            'recur' => [
+              '#type' => 'submit',
+              '#prefix' => t('Are you sure?') . ' ',
+              '#value' => t('Cancel auto-renewal'),
+              '#submit' => ['drupalorg_membership_form_submit_switch'],
+              '#product_handle' => $base_product_handle,
+            ],
+          ],
+        ];
+      }
+      else {
+        // Membership is non-recurring.
+        if ($row->expires_at > $row->current_period_ends_at) {
+          $form[$row->subscription_id]['recurring'] = [
+            '#prefix' => '<p>' . t('Renewal for 1 year will be charged on @date', ['@date' => format_date($row->current_period_ends_at, 'custom', 'j F Y')]) . '</p>',
+          ];
+        }
+        else {
+          $form[$row->subscription_id]['recurring'] = [
+            '#prefix' => '<p>' . t('Your membership is <em>not auto-renewing</em>') . '</p>',
+            'renew' => [
+              '#prefix' => '<p>',
+              '#type' => 'submit',
+              '#value' => t('Renew for 1 more year'),
+              '#suffix' => t('Your card will be billed on @date', ['@date' => format_date($row->current_period_ends_at, 'custom', 'j F Y')]) . '</p>',
+              '#submit' => ['drupalorg_membership_form_submit_extend'],
+            ],
+          ];
+        }
+        $form[$row->subscription_id]['recurring']['recur'] = [
+          '#prefix' => '<p>',
+          '#type' => 'submit',
+          '#value' => t('Switch to automatic renewal'),
+          '#submit' => ['drupalorg_membership_form_submit_switch'],
+          '#product_handle' => $row->product_handle . '-recur',
+          '#suffix' => t('Never miss membership renewal') . '</p>',
+        ];
+      }
+      // todo not a member yet, upsell
+    }
+  }
+
+  return $form;
+}
+
+/**
+ * Format the billing amount of a Chargify subscription.
+ */
+function _format_chargify_money($row) {
+  static $symbols = [
+    'usd' => '$',
+    'eur' => '€',
+  ];
+
+  return $symbols[$row->currency] . number_format(floor($row->current_billing_amount_in_cents / 100)) . '.' . str_pad($row->current_billing_amount_in_cents % 100, 2, '0', STR_PAD_LEFT);
+}
+
+/**
+ * Form submit callback, update contribution amount in Chargify.
+ */
+function drupalorg_membership_form_submit_amount($form, &$form_state) {
+  $subscription_id = $form_state['clicked_button']['#parents'][0];
+  $subscription = $form_state['values'][$subscription_id]['subscription'];
+
+  if ($form_state['values'][$subscription->subscription_id]['amount']['level'] == $form[$subscription->subscription_id]['amount']['level']['#default_value']) {
+    drupal_set_message(t('Membership not updated, that is the same membership level you already contribute at.'), 'warning');
+    return;
+  }
+
+  $response = drupal_http_request(_drupalorg_chargify_base_url($subscription->currency) . 'subscriptions/' . $subscription->subscription_id . '/components/' . variable_get('drupalorg_chargify_keys')[$subscription->currency]['donation_component'] . '/allocations.json', [
+    'method' => 'POST',
+    'headers' => ['content-type' => 'application/json'],
+    'data' => json_encode(['allocation' => [
+      'quantity' => $form_state['values'][$subscription->subscription_id]['amount']['level'],
+    ]]),
+  ]);
+  if ($response->code != 201) {
+    watchdog('drupalorg_chargify', 'Failed to update amount for subscription @id', ['@id' => $subscription_id], WATCHDOG_ERROR);
+    drupal_set_message(t('Failed to update billing backend. Please try again in a couple minutes.'), 'error');
+    return;
+  }
+  $data = json_decode($response->data);
+  if ($data === NULL) {
+    watchdog('drupalorg_chargify', 'Failed to parse update amount for subscription @id response', ['@id' => $subscription_id], WATCHDOG_ERROR);
+    drupal_set_message(t('Failed to update billing backend. Please try again in a couple minutes.'), 'error');
+    return;
+  }
+  db_update('drupalorg_chargify_subscriptions')
+    ->condition('currency', $subscription->currency)
+    ->condition('subscription_id', $subscription_id)
+    ->fields([
+      'current_billing_amount_in_cents' => (variable_get('drupalorg_chargify_products')['membership-' . preg_replace('/-recur$/', '', $subscription->product_handle)][$subscription->currency]['minimum'] + $data->allocation->quantity) * 100,
+    ])
+    ->execute();
+  drupal_set_message(t('Membership updated!'));
+}
+
+/**
+ * Form submit callback, reactivate subscription in Chargify.
+ */
+function drupalorg_membership_form_submit_reactivate($form, &$form_state) {
+  $subscription_id = $form_state['clicked_button']['#parents'][0];
+  $subscription = $form_state['values'][$subscription_id]['subscription'];
+  $response = drupal_http_request(_drupalorg_chargify_base_url($subscription->currency) . 'subscriptions/' . $subscription->subscription_id . '/reactivate.json', [
+    'method' => 'PUT',
+  ]);
+  $data = json_decode($response->data);
+  if ($data === NULL) {
+    watchdog('drupalorg_chargify', 'Failed to parse reactivate subscription @id response', ['@id' => $subscription_id], WATCHDOG_ERROR);
+    drupal_set_message(t('Failed to update billing backend. Please try again in a couple minutes.'), 'error');
+    return;
+  }
+  if ($response->code != 200) {
+    watchdog('drupalorg_chargify', 'Failed to reactivate subscription @id', ['@id' => $subscription_id], WATCHDOG_ERROR);
+    drupal_set_message(t('Failed to reactivate membership: @error', ['@error' => implode(' ', $data->errors)]), 'error');
+    return;
+  }
+  db_update('drupalorg_chargify_subscriptions')
+    ->condition('currency', $subscription->currency)
+    ->condition('subscription_id', $subscription_id)
+    ->fields([
+      'state' => $data->subscription->state,
+      'current_period_ends_at' => !empty($data->subscription->current_period_ends_at) ? strtotime($data->subscription->current_period_ends_at) : NULL,
+      'expires_at' => !empty($data->subscription->expires_at) ? strtotime($data->subscription->expires_at) : NULL,
+    ])
+    ->execute();
+  drupal_set_message(t('Thanks for your membership! 🎉'));
+}
+
+/**
+ * Form submit callback, save billing information to Chargify.
+ */
+function drupalorg_membership_form_submit_billing($form, &$form_state) {
+  $subscription_id = $form_state['clicked_button']['#parents'][0];
+  $subscription = $form_state['values'][$subscription_id]['subscription'];
+  $response = drupal_http_request(_drupalorg_chargify_base_url($subscription->currency) . 'customers/' . $subscription->customer_id . '.json', [
+    'method' => 'PUT',
+    'headers' => ['content-type' => 'application/json'],
+    'data' => json_encode(['customer' => array_intersect_key($form_state['values'][$subscription_id]['billing'], ['first_name' => TRUE, 'last_name' => TRUE, 'organization' => TRUE, 'email' => TRUE])]),
+  ]);
+  if ($response->code != 200) {
+    watchdog('drupalorg_chargify', 'Failed to update customer @id', ['@id' => $subscription_id], WATCHDOG_ERROR);
+    drupal_set_message(t('Failed to update billing backend. Please try again in a couple minutes.'), 'error');
+    return;
+  }
+  $data = json_decode($response->data);
+  if ($data === NULL) {
+    watchdog('drupalorg_chargify', 'Failed to parse update customer @id response', ['@id' => $subscription_id], WATCHDOG_ERROR);
+    drupal_set_message(t('Failed to update billing backend. Please try again in a couple minutes.'), 'error');
+    return;
+  }
+  db_update('drupalorg_chargify_subscriptions')
+    ->condition('currency', $subscription->currency)
+    ->condition('subscription_id', $subscription_id)
+    ->fields([
+      'customer_first_name' => $data->customer->first_name,
+      'customer_last_name' => $data->customer->last_name,
+      'customer_organization' => $data->customer->organization,
+      'customer_email' => $data->customer->email,
+    ])
+    ->execute();
+  drupal_set_message(t('Thanks for keeping your billing information current!'));
+}
+
+/**
+ * Form submit callback, switch product in Chargify.
+ */
+function drupalorg_membership_form_submit_switch($form, &$form_state) {
+  $subscription_id = $form_state['clicked_button']['#parents'][0];
+  $subscription = $form_state['values'][$subscription_id]['subscription'];
+  $response = drupal_http_request(_drupalorg_chargify_base_url($subscription->currency) . 'subscriptions/' . $subscription->subscription_id . '.json', [
+    'method' => 'PUT',
+    'headers' => ['content-type' => 'application/json'],
+    'data' => json_encode(['subscription' => [
+      'product_handle' => $form_state['clicked_button']['#product_handle'],
+    ]]),
+  ]);
+  if ($response->code != 200) {
+    watchdog('drupalorg_chargify', 'Failed to update product for subscription @id', ['@id' => $subscription_id], WATCHDOG_ERROR);
+    drupal_set_message(t('Failed to update billing backend. Please try again in a couple minutes.'), 'error');
+    return;
+  }
+  $data = json_decode($response->data);
+  if ($data === NULL) {
+    watchdog('drupalorg_chargify', 'Failed to parse update product for subscription @id response', ['@id' => $subscription_id], WATCHDOG_ERROR);
+    drupal_set_message(t('Failed to update billing backend. Please try again in a couple minutes.'), 'error');
+    return;
+  }
+  db_update('drupalorg_chargify_subscriptions')
+    ->condition('currency', $subscription->currency)
+    ->condition('subscription_id', $subscription_id)
+    ->fields([
+      'product_handle' => $data->subscription->product->handle,
+      'product_name' => $data->subscription->product->name,
+      // Calculate expiration date since we are resetting it next.
+      'expires_at' => preg_match('/-recur/', $data->subscription->product->handle) ? NULL : $subscription->current_period_ends_at,
+    ])
+    ->execute();
+  // If switching to non-recurring, reset the expiration date.
+  if (!preg_match('/-recur$/', $data->subscription->product->handle)) {
+    drupal_http_request(_drupalorg_chargify_base_url($subscription->currency) . 'subscriptions/' . $subscription->subscription_id . '.json', [
+      'method' => 'PUT',
+      'headers' => ['content-type' => 'application/json'],
+      'data' => json_encode(['subscription' => [
+        'expires_at' => gmdate('c', $subscription->current_period_ends_at),
+      ]]),
+    ]);
+  }
+  drupal_set_message(t('Membership updated!'));
+}
+
+/**
+ * Form submit callback, extend expiration date in Chargify.
+ */
+function drupalorg_membership_form_submit_extend($form, &$form_state) {
+  $subscription_id = $form_state['clicked_button']['#parents'][0];
+  $subscription = $form_state['values'][$subscription_id]['subscription'];
+  $response = drupal_http_request(_drupalorg_chargify_base_url($subscription->currency) . 'subscriptions/' . $subscription->subscription_id . '.json', [
+    'method' => 'PUT',
+    'headers' => ['content-type' => 'application/json'],
+    'data' => json_encode(['subscription' => [
+      'expires_at' => (new DateTime('@' . $subscription->expires_at))->add(new DateInterval('P1Y'))->format('c'),
+    ]]),
+  ]);
+  if ($response->code != 200) {
+    watchdog('drupalorg_chargify', 'Failed to update product for subscription @id', ['@id' => $subscription_id], WATCHDOG_ERROR);
+    drupal_set_message(t('Failed to update billing backend. Please try again in a couple minutes.'), 'error');
+    return;
+  }
+  $data = json_decode($response->data);
+  if ($data === NULL) {
+    watchdog('drupalorg_chargify', 'Failed to parse update product for subscription @id response', ['@id' => $subscription_id], WATCHDOG_ERROR);
+    drupal_set_message(t('Failed to update billing backend. Please try again in a couple minutes.'), 'error');
+    return;
+  }
+  db_update('drupalorg_chargify_subscriptions')
+    ->condition('currency', $subscription->currency)
+    ->condition('subscription_id', $subscription_id)
+    ->fields([
+      'expires_at' => strtotime($data->subscription->expires_at),
+    ])
+    ->execute();
+  drupal_set_message(t('Membership updated!'));
+}
