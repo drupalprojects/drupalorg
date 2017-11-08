@@ -2628,11 +2628,9 @@ function drupalorg_search_execute($keys = NULL, $conditions = NULL) {
 function drupalorg_form_search_block_form_alter(&$form, $form_state) {
   $nid_search = $form_state['input']['search_block_form'];
   if (ctype_digit($nid_search)) {
-    $query = db_select('node', 'n')
-      ->condition('nid', $nid_search, '=')
-      ->fields('n', array('nid'))
-      ->execute();
-    $nid_count = $query->rowCount();
+    $nid_count = db_select('node', 'n')
+      ->condition('nid', $nid_search)
+      ->count()->execute();
 
     if ($nid_count === 1) {
       drupal_goto('node/' . $nid_search);
