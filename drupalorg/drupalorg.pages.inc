@@ -135,9 +135,12 @@ function drupalorg_project_browse_page($project_type) {
     'pager' => ['#markup' => theme('pager')],
   ];
 }
-function drupalorg_issue_redirect_page($nid){
-  $page_redirect = 'node/'. $nid;
-  drupal_goto($page_redirect);
+
+/**
+ * Page callback, shortcut to get to issue pages.
+ */
+function drupalorg_issue_redirect_page($nid) {
+  drupal_goto('node/'. $nid);
 }
 
 function drupalorg_sponsor_redirect_page($sponsor) {
