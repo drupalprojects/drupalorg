@@ -135,6 +135,10 @@ function drupalorg_project_browse_page($project_type) {
     'pager' => ['#markup' => theme('pager')],
   ];
 }
+function drupalorg_issue_redirect_page($nid){
+  $page_redirect = 'node/'. $nid;
+  drupal_goto($page_redirect);
+}
 
 function drupalorg_sponsor_redirect_page($sponsor) {
   $country = drupalorg_get_and_vary_header('GeoIP-country');

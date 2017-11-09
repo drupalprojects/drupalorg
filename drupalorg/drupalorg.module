@@ -305,7 +305,14 @@ function drupalorg_menu() {
     'page arguments' => ['dashboard', [], '301'],
     'type' => MENU_CALLBACK,
   ];
-
+  // Redirect issues.
+  $items['i/%'] = [
+    'page callback' => 'drupalorg_issue_redirect_page',
+    'access arguments' => array('access content'),
+    'page arguments' => [1],
+    'type' => MENU_CALLBACK,
+    'file' => 'drupalorg.pages.inc',
+  ];
   $items['drupalorg-ham/%/%/%'] = array(
     'access callback' => 'drupalorg_ham_access',
     'access arguments' => array(1, 2, 3),
