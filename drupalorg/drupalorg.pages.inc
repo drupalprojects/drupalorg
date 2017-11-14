@@ -369,6 +369,14 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
   $chargify_keys = variable_get('drupalorg_chargify_keys');
   $chargify_products = variable_get('drupalorg_chargify_products');
 
+  $form['individual'] = [
+    '#prefix' => '<h3>' . t('Individual membership') . '</h3>',
+    '#markup' => '<p>' . l(t('Learn about membership and join today'), 'association/individual-membership') . '</p>',
+  ];
+  $form['organization'] = [
+    '#prefix' => '<h3>' . t('Organization membership') . '</h3>',
+    '#markup' => '<p>' . t('Responsible for an organization?') . ' ' . l(t('Learn about supporting the Drupal Association'), 'association/organization-membership') . '</p>',
+  ];
   $form['donations'] = [
     '#prefix' => '<h3>' . t('Donations') . '</h3><p>' . t('Donations help keep the Drupal Association running.') . '</p>',
     'table' => [
@@ -390,7 +398,8 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
     }
     else {
       $base_product_handle = preg_replace('/-recur$/', '', $row->product_handle);
-      $form[$row->subscription_id] = [
+      unset($form[$base_product_handle]['#markup']);
+      $form[$base_product_handle][$row->subscription_id] = [
         '#tree' => TRUE,
         'subscription' => ['#type' => 'value', '#value' => $row],
         '#prefix' => '<p><strong>' . format_date($row->created_at, 'custom', 'j F Y') . ' — ' . format_date($row->current_period_ends_at, 'custom', 'j F Y') . '</strong></p>',
@@ -477,7 +486,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
       ];
       if (in_array($row->state, ['canceled', 'expired'])) {
         // Membership expired.
-        $form[$row->subscription_id]['recurring'] = [
+        $form[$base_product_handle][$row->subscription_id]['recurring'] = [
           '#prefix' => '<div class="note-warning"><p>' . t('<strong>Oh no!</strong> Your membership expired!') . '</p>',
           'reactivate' => [
             '#type' => 'submit',
@@ -490,7 +499,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
       }
       else if (preg_match('/-recur$/', $row->product_handle)) {
         // Membership is recurring.
-        $form[$row->subscription_id]['recurring'] = [
+        $form[$base_product_handle][$row->subscription_id]['recurring'] = [
           '#prefix' => '<p>' . t('Your membership is auto-renewing, thanks! You’ll be billed on @date', ['@date' => format_date($row->current_period_ends_at, 'custom', 'j F Y')]) . '</p>',
           'recur_stop' => [
             '#type' => 'checkbox',
@@ -516,12 +525,12 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
       else {
         // Membership is non-recurring.
         if ($row->expires_at > $row->current_period_ends_at) {
-          $form[$row->subscription_id]['recurring'] = [
+          $form[$base_product_handle][$row->subscription_id]['recurring'] = [
             '#prefix' => '<p>' . t('Renewal for 1 year will be charged on @date', ['@date' => format_date($row->current_period_ends_at, 'custom', 'j F Y')]) . '</p>',
           ];
         }
         else {
-          $form[$row->subscription_id]['recurring'] = [
+          $form[$base_product_handle][$row->subscription_id]['recurring'] = [
             '#prefix' => '<p>' . t('Your membership is <em>not auto-renewing</em>') . '</p>',
             'renew' => [
               '#prefix' => '<p>',
@@ -532,7 +541,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
             ],
           ];
         }
-        $form[$row->subscription_id]['recurring']['recur'] = [
+        $form[$base_product_handle][$row->subscription_id]['recurring']['recur'] = [
           '#prefix' => '<p>',
           '#type' => 'submit',
           '#value' => t('Switch to automatic renewal'),
@@ -541,7 +550,6 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
           '#suffix' => t('Never miss membership renewal') . '</p>',
         ];
       }
-      // todo not a member yet, upsell
     }
   }
 
