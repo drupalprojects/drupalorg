@@ -102,7 +102,12 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
   }
 
   if (user_is_anonymous()) {
-    // todo prompt for login
+    $form['login'] = [
+      '#markup' => l(t('Log in or register to support us'), 'user', [
+        'attributes' => ['class' => 'action-button'],
+        'query' => drupal_get_destination(),
+      ]),
+    ];
     return $form;
   }
 
