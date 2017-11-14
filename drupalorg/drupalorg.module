@@ -752,7 +752,7 @@ function drupalorg_block_view($delta, $block = NULL) {
             if (isset($block[3])) {
               $options['query'] = $block[3];
             }
-            $content .= homebox_add_link(t('Add @name to dashboard +', array('@name' => $block[0])), $page, $block[1], $block[2], $options);
+            $content .= homebox_add_link(t('Add !name to dashboard +', array('!name' => $block[0])), $page, $block[1], $block[2], $options);
           }
           return array('content' => $content);
         }
