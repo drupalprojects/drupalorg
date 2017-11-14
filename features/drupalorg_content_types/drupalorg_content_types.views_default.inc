@@ -684,6 +684,7 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['access']['perm'] = 'access user profiles';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Search';
   $handler->display->display_options['pager']['type'] = 'full';
@@ -706,6 +707,10 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = 'No members found.';
   $handler->display->display_options['empty']['area']['format'] = '1';
+  /* Relationship: User: Areas of Expertise (field_areas_of_expertise) */
+  $handler->display->display_options['relationships']['field_areas_of_expertise_tid']['id'] = 'field_areas_of_expertise_tid';
+  $handler->display->display_options['relationships']['field_areas_of_expertise_tid']['table'] = 'field_data_field_areas_of_expertise';
+  $handler->display->display_options['relationships']['field_areas_of_expertise_tid']['field'] = 'field_areas_of_expertise_tid';
   /* Field: User: Picture */
   $handler->display->display_options['fields']['picture']['id'] = 'picture';
   $handler->display->display_options['fields']['picture']['table'] = 'users';
@@ -905,6 +910,37 @@ function drupalorg_content_types_views_default_views() {
     38 => 0,
     4 => 0,
   );
+  /* Filter criterion: Taxonomy term: Name */
+  $handler->display->display_options['filters']['name']['id'] = 'name';
+  $handler->display->display_options['filters']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['filters']['name']['field'] = 'name';
+  $handler->display->display_options['filters']['name']['relationship'] = 'field_areas_of_expertise_tid';
+  $handler->display->display_options['filters']['name']['operator'] = 'contains';
+  $handler->display->display_options['filters']['name']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['name']['expose']['operator_id'] = 'name_op';
+  $handler->display->display_options['filters']['name']['expose']['label'] = 'Area of expertise';
+  $handler->display->display_options['filters']['name']['expose']['operator'] = 'name_op';
+  $handler->display->display_options['filters']['name']['expose']['identifier'] = 'expertise';
+  $handler->display->display_options['filters']['name']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
@@ -925,6 +961,7 @@ function drupalorg_content_types_views_default_views() {
     t('next ›'),
     t('last »'),
     t('No members found.'),
+    t('term from field_areas_of_expertise'),
     t('<small>Member for [field_da_join_date]</small>'),
     t('<small>[field_country]</small>'),
     t('Join date'),
@@ -932,6 +969,7 @@ function drupalorg_content_types_views_default_views() {
     t('Username'),
     t('First or given name'),
     t('Last name or surname'),
+    t('Area of expertise'),
     t('Content pane'),
     t('View panes'),
   );
