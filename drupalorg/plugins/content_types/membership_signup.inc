@@ -37,8 +37,25 @@ function drupalorg_membership_signup_content_type_edit_form_submit($form, &$form
 function drupalorg_membership_signup_content_type_render($subtype, $conf, $args, $context) {
   $block = new stdClass();
 
-  $block->content = drupal_get_form('drupalorg_membership_signup_content_type_render_form', $conf);
+  // Check for existing memberships.
+  if (strpos($conf['membership_type'], 'membership-') === 0) {
+    $membership_type = explode('-', $conf['membership_type'])[1];
+    foreach (_drupalorg_get_chargify_subscriptions($GLOBALS['user']) as $subscription) {
+      if (strpos($subscription->product_handle, $membership_type) === 0) {
+        switch ($subscription->state) {
+          case 'active':
+            drupal_set_message(t('You already have a membership, thanks!') . ' ' . l(t('Manage & renew your membership'), 'user/' . $GLOBALS['user']->uid . '/membership'));
+            return $block;
 
+          default:
+            drupal_set_message(t('Your membership has expired!') . ' ' . l(t('Manage & renew your membership'), 'user/' . $GLOBALS['user']->uid . '/membership'), 'warning');
+            return $block;
+        }
+      }
+    }
+  }
+
+  $block->content = drupal_get_form('drupalorg_membership_signup_content_type_render_form', $conf);
   return $block;
 }
 
@@ -88,7 +105,6 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     // todo prompt for login
     return $form;
   }
-  // todo already a member or previously a member
 
   $form['submit'] = [
     '#type' => 'submit',
