@@ -30,6 +30,10 @@ function drupalorg_permission() {
       'title' => t('Administer all documentation guides'),
       'description' => t('Manage guide maintainers and menus.'),
     ],
+    'administer association memberships' => [
+      'title' => t('Administer all Drupal Association memberships'),
+      'description' => t('Ability to manage and edit all memberships'),
+    ],
   ];
 }
 
@@ -275,9 +279,8 @@ function drupalorg_menu() {
 
   $items['user/%user/membership'] = [
     'title' => t('Drupal Association membership'),
-    'access callback' => 'user_edit_access',
+    'access callback' => 'drupalorg_user_membership_access',
     'access arguments' => [1],
-    // todo switch to new permission
     'page callback' => 'drupal_get_form',
     'page arguments' => ['drupalorg_membership_form', 1],
     'type' => MENU_LOCAL_TASK,
@@ -409,6 +412,13 @@ function drupalorg_node_revision_access($node) {
  */
 function drupalorg_maintain_guide_access($node, $token) {
   return drupalorg_user_is_confirmed($GLOBALS['user']) && drupal_valid_token($token, 'drupalorg_maintain_guide/' . $node->nid);
+}
+
+/**
+ * Menu access callback. A user is themself or can administer all memberships.
+ */
+function drupalorg_user_membership_access(stdClass $account) {
+  return (($GLOBALS['user']->uid == $account->uid) || user_access('administer association memberships')) && $account->uid > 0;
 }
 
 /**
