@@ -6601,3 +6601,10 @@ function _drupalorg_chargify_base_url($currency) {
   $chargify = variable_get('drupalorg_chargify_keys')[$currency];
   return 'https://' . $chargify['api_key'] . ':' . $chargify['password'] . '@' . $chargify['subdomain'] . '.chargify.com/';
 }
+
+/**
+ * Get a user’s Chargify subscriptions.
+ */
+function _drupalorg_get_chargify_subscriptions(stdClass $account) {
+  return db_query('SELECT uid, organization_nid, currency, subscription_id, state, current_billing_amount_in_cents, created_at, current_period_ends_at, expires_at, product_handle, product_name, customer_id, customer_first_name, customer_last_name, customer_organization, customer_email FROM {drupalorg_chargify_subscriptions} WHERE uid = :uid', [':uid' => $account->uid])->fetchAll();
+}

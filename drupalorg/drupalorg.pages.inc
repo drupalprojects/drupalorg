@@ -365,7 +365,7 @@ function drupalorg_maintain_guide($node) {
 /**
  * Membership summary & update form.
  */
-function drupalorg_membership_form($form, &$form_state, stdClass $user) {
+function drupalorg_membership_form($form, &$form_state, stdClass $account) {
   $chargify_keys = variable_get('drupalorg_chargify_keys');
   $chargify_products = variable_get('drupalorg_chargify_products');
 
@@ -379,8 +379,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $user) {
     '#weight' => 1,
   ];
 
-  $result = db_query('SELECT uid, organization_nid, currency, subscription_id, state, current_billing_amount_in_cents, created_at, current_period_ends_at, expires_at, product_handle, product_name, customer_id, customer_first_name, customer_last_name, customer_organization, customer_email FROM {drupalorg_chargify_subscriptions} WHERE uid = :uid', [':uid' => $user->uid]);
-  foreach ($result as $row) {
+  foreach (_drupalorg_get_chargify_subscriptions($account) as $row) {
     if ($row->product_handle === 'donation') {
       $form['donations']['table']['#caption'] = t('Your past donations');
       $form['donations']['table']['#suffix'] = '<p>' . t('Thank you! 🎉') . '</p>';
