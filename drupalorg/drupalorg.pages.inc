@@ -393,12 +393,15 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
       $form[$row->subscription_id] = [
         '#tree' => TRUE,
         'subscription' => ['#type' => 'value', '#value' => $row],
-        '#prefix' => '<h3>' . check_plain($row->product_name) . '</h3>'
-        . '<p><strong>' . format_date($row->created_at, 'custom', 'j F Y') . ' — ' . format_date($row->current_period_ends_at, 'custom', 'j F Y') . '</strong></p>'
-        . '<p>' . t('On renewal you’ll be charged <strong>@amount</strong>', ['@amount' => _format_chargify_money($row)])
-        . '<br>' . l(t('View & update credit card'), 'https://' . $chargify_keys[$row->currency]['subdomain'] . '.chargify.com/update_payment/' . $row->subscription_id . '/' . substr(sha1('update_payment--' . $row->subscription_id . '--' . $chargify_keys[$row->currency]['shared_key']), 0, 10), ['external' => TRUE, 'attributes' => ['target' => '_blank']])
-        . '</p>',
+        '#prefix' => '<p><strong>' . format_date($row->created_at, 'custom', 'j F Y') . ' — ' . format_date($row->current_period_ends_at, 'custom', 'j F Y') . '</strong></p>',
+        'thanks' => [
+          '#access' => $row->state === 'active',
+          '#markup' => '<p>' . t('🎉 Thank you for your membership! <a href="!url">Get the most out of your membership</a>', ['!url' => url('association/membership/thanks')]) . '</p>',
+        ],
         'update_amount' => [
+          '#prefix' => '<p>' . t('On renewal you’ll be charged <strong>@amount</strong>', ['@amount' => _format_chargify_money($row)])
+          . '<br>' . l(t('View & update credit card'), 'https://' . $chargify_keys[$row->currency]['subdomain'] . '.chargify.com/update_payment/' . $row->subscription_id . '/' . substr(sha1('update_payment--' . $row->subscription_id . '--' . $chargify_keys[$row->currency]['shared_key']), 0, 10), ['external' => TRUE, 'attributes' => ['target' => '_blank']])
+          . '</p>',
           '#type' => 'checkbox',
           '#title' => t('Update membership level'),
         ],
@@ -485,7 +488,6 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
           '#suffix' => '</div>',
         ];
       }
-      // todo link to benefits thank-you
       else if (preg_match('/-recur$/', $row->product_handle)) {
         // Membership is recurring.
         $form[$row->subscription_id]['recurring'] = [
