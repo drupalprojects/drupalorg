@@ -384,7 +384,14 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
       '#sticky' => FALSE,
     ],
     '#suffix' => '<p>' . l(t('Donate'), 'association/donate', ['attributes' => ['class' => 'action-button']]) . '</p>',
-    '#weight' => 1,
+  ];
+  $form['questions'] = [
+    '#prefix' => '<h3>' . t('Have questions?') . '</h3>',
+    '#markup' => '<ul>'
+      . '<li>' . l(t('Membership frequently asked questions'), 'association/faq', ['fragment' => 'aboutmembership']) . '</li>'
+      . '<li>' . l(t('Association frequently asked questions'), 'association/faq') . '</li>'
+      . '<li>' . l(t('Contact us'), 'contact') . '</li>'
+      . '</ul>',
   ];
 
   foreach (_drupalorg_get_chargify_subscriptions($account) as $row) {
