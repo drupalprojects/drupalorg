@@ -87,7 +87,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
   else {
     $form['amount'] = [
       '#type' => 'radios',
-      '#title' => t('Membership level'),
+      '#title' => t('Membership gift level'),
       '#title_display' => 'invisible',
       '#options' => $chargify_products[$conf['membership_type']]['usd']['options'],
       '#default_value' => 35,

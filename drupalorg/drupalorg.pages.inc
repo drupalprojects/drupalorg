@@ -419,7 +419,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
           . '<br>' . l(t('View & update credit card'), 'https://' . $chargify_keys[$row->currency]['subdomain'] . '.chargify.com/update_payment/' . $row->subscription_id . '/' . substr(sha1('update_payment--' . $row->subscription_id . '--' . $chargify_keys[$row->currency]['shared_key']), 0, 10), ['external' => TRUE, 'attributes' => ['target' => '_blank']])
           . '</p>',
           '#type' => 'checkbox',
-          '#title' => t('Update membership level'),
+          '#title' => t('Update membership gift level'),
         ],
         'amount' => [
           '#type' => 'fieldset',
@@ -435,7 +435,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
           ],
           'submit' => [
             '#type' => 'submit',
-            '#value' => t('Update membership level'),
+            '#value' => t('Update membership gift level'),
             '#submit' => ['drupalorg_membership_form_submit_amount'],
           ],
         ],
