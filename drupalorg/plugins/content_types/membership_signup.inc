@@ -74,10 +74,27 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     '#required' => TRUE,
   ];
   if ($conf['membership_type'] === 'donation') {
-    $form['amount'] = [
+    $form['amount_usd'] = [
       '#type' => 'textfield',
       '#title' => t('Donation'),
+      '#field_prefix' => '$',
       '#size' => 5,
+      '#states' => [
+        'visible' => [
+          ':input[name="currency"]' => ['value' => 'usd'],
+        ],
+      ],
+    ];
+    $form['amount_eur'] = [
+      '#type' => 'textfield',
+      '#title' => t('Donation'),
+      '#field_prefix' => '€',
+      '#size' => 5,
+      '#states' => [
+        'visible' => [
+          ':input[name="currency"]' => ['value' => 'eur'],
+        ],
+      ],
     ];
     $form['recur'] = [
       '#type' => 'value',
@@ -85,13 +102,31 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     ];
   }
   else {
-    $form['amount'] = [
+    $form['amount_usd'] = [
       '#type' => 'radios',
       '#title' => t('Membership gift level'),
       '#title_display' => 'invisible',
       '#options' => $chargify_products[$conf['membership_type']]['usd']['options'],
       '#default_value' => 35,
       '#required' => TRUE,
+      '#states' => [
+        'visible' => [
+          ':input[name="currency"]' => ['value' => 'usd'],
+        ],
+      ],
+    ];
+    $form['amount_eur'] = [
+      '#type' => 'radios',
+      '#title' => t('Membership gift level'),
+      '#title_display' => 'invisible',
+      '#options' => $chargify_products[$conf['membership_type']]['eur']['options'],
+      '#default_value' => 30,
+      '#required' => TRUE,
+      '#states' => [
+        'visible' => [
+          ':input[name="currency"]' => ['value' => 'eur'],
+        ],
+      ],
     ];
     $form['recur'] = [
       '#type' => 'checkbox',
@@ -120,8 +155,11 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
 }
 
 function drupalorg_membership_signup_content_type_render_form_validate($form, &$form_state) {
-  if (!is_numeric($form_state['values']['amount']) || $form_state['values']['amount'] <= 0) {
-    form_set_error('amount', t('Amount must be a number greater than zero.'));
+  if (!empty($form_state['values']['currency'])) {
+    $field_name = 'amount_' . $form_state['values']['currency'];
+    if (!is_numeric($form_state['values'][$field_name]) || $form_state['values'][$field_name] <= 0) {
+      form_set_error($field_name, t('Amount must be a number greater than zero.'));
+    }
   }
 }
 
@@ -140,7 +178,7 @@ function drupalorg_membership_signup_content_type_render_form_submit($form, &$fo
         'email' => $GLOBALS['user']->mail,
         'first_name' => $user_wrapper->field_first_name->value(),
         'last_name' => $user_wrapper->field_last_name->value(),
-        'components[448894][allocated_quantity]' => $form_state['values']['amount'],
+        'components[448894][allocated_quantity]' => $form_state['values']['amount_' . $form_state['values']['currency']],
       ],
     ],
   ];
