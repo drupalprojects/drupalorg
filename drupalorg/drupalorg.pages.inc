@@ -762,3 +762,46 @@ function drupalorg_membership_form_submit_extend($form, &$form_state) {
     ->execute();
   drupal_set_message(t('Membership updated!'));
 }
+
+/**
+ * Menu callback, record membership and redirect to a thank-you page.
+ */
+function drupalorg_membership_return() {
+  // Make sure input is sane.
+  if (!in_array($_GET['currency'], ['usd', 'eur'])) {
+    drupal_set_message(t('Something went wrong, incorrect currency.'), 'error');
+    return '';
+  }
+  if (!ctype_digit($_GET['id'])) {
+    drupal_set_message(t('Something went wrong, bad id.'), 'error');
+    return '';
+  }
+
+  // Get the subscription.
+  $response = drupal_http_request(url(_drupalorg_chargify_base_url($_GET['currency']) . 'subscriptions/' . $_GET['id'] . '.json'));
+  if ($response->code != 200) {
+    drupal_set_message(t('Failed to fetch subscription.'), 'error');
+    return '';
+  }
+  $data = json_decode($response->data);
+  if ($data === NULL) {
+    drupal_set_message(t('Failed to parse subscription.'), 'error');
+    return '';
+  }
+
+  // Save the subscription & redirect toward thanks.
+  $subscription = _drupalorg_update_chargify_subscription($_GET['currency'], $data);
+  if (is_array($subscription)) {
+    switch ($subscription['product_handle']) {
+      case 'donation':
+        drupal_goto('association/support/thanks-donation');
+
+      default:
+        drupal_goto('association/membership/thanks');
+    }
+  }
+  else {
+    // Something went wrong.
+    return '';
+  }
+}
