@@ -72,6 +72,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
       'eur' => t('Donate in Euro'),
     ],
     '#required' => TRUE,
+    '#attributes' => ['class' => ['container-inline']]
   ];
   if ($conf['membership_type'] === 'donation') {
     $form['amount_usd'] = [
@@ -133,6 +134,14 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
       '#title' => t('Renew my membership automatically every year'),
       '#default_value' => 'single',
       '#return_value' => 'recur',
+      '#states' => [
+        'visible' => [
+          ':input[name="currency"]' => [
+            ['value' => 'usd'],
+            ['value' => 'eur'],
+          ],
+        ],
+      ],
     ];
   }
 
@@ -149,6 +158,14 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
   $form['submit'] = [
     '#type' => 'submit',
     '#value' => t('Continue'),
+    '#states' => [
+      'visible' => [
+        ':input[name="currency"]' => [
+          ['value' => 'usd'],
+          ['value' => 'eur'],
+        ],
+      ],
+    ],
   ];
 
   return $form;
