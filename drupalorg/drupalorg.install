@@ -337,7 +337,7 @@ function drupalorg_schema() {
     ],
     'primary key' => ['subscription_id', 'currency'],
     'indexes' => [
-      'uid' => ['uid'],
+      'uid' => ['uid', 'state', 'product_handle'],
       'organization_nid' => ['organization_nid'],
     ],
   ];
@@ -4778,7 +4778,7 @@ function drupalorg_update_7096() {
     ],
     'primary key' => ['subscription_id', 'currency'],
     'indexes' => [
-      'uid' => ['uid'],
+      'uid' => ['uid', 'state', 'product_handle'],
       'organization_nid' => ['organization_nid'],
     ],
   ]);
