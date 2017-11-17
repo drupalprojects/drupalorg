@@ -6694,5 +6694,49 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
     ->fields($row)
     ->execute();
 
+  switch (explode('-', $row['product_handle'])[0]) {
+    case 'individual':
+      if ($account = user_load($row['uid'])) {
+        $account_wrapper = entity_metadata_wrapper('user', $account);
+        $changed = FALSE;
+        if ($row['state'] === 'active') {
+          if ($account_wrapper->field_da_ind_membership->value() !== 'Current') {
+            $account_wrapper->field_da_ind_membership = 'Current';
+            $changed = TRUE;
+          }
+          if ($account_wrapper->field_da_join_date->value() != $row['created_at']) {
+            $account_wrapper->field_da_join_date = $row['created_at'];
+            $changed = TRUE;
+          }
+          if ($account_wrapper->field_da_expiration_date->value() != $row['current_period_ends_at']) {
+            $account_wrapper->field_da_expiration_date = $row['current_period_ends_at'];
+            $changed = TRUE;
+          }
+        }
+        else {
+          if (!empty($account_wrapper->field_da_ind_membership->value())) {
+            $account_wrapper->field_da_ind_membership = '';
+            $changed = TRUE;
+          }
+          if (!empty($account_wrapper->field_da_join_date->value())) {
+            $account_wrapper->field_da_join_date = 0;
+            $changed = TRUE;
+          }
+          if (!empty($account_wrapper->field_da_expiration_date->value())) {
+            $account_wrapper->field_da_expiration_date = 0;
+            $changed = TRUE;
+          }
+        }
+      }
+      if ($changed) {
+        user_save($account);
+      }
+      break;
+
+    case 'organization':
+      // todo update organization node.
+      break;
+  }
+
   return $row;
 }
