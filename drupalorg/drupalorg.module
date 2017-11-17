@@ -6712,6 +6712,12 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
             $account_wrapper->field_da_expiration_date = $row['current_period_ends_at'];
             $changed = TRUE;
           }
+          $rid = variable_get('drupalorg_crosssite_trusted_role', 36);
+          // Grant trusted role.
+          if (!isset($account->roles[$rid])) {
+            $account->roles[$rid] = TRUE;
+            $changed = TRUE;
+          }
         }
         else {
           if (!empty($account_wrapper->field_da_ind_membership->value())) {
