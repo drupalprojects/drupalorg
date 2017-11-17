@@ -860,7 +860,8 @@ function drupalorg_block_view($delta, $block = NULL) {
       }
       if (variable_get('drupalorg_announcements_users_membership') === 'non-members' && user_is_logged_in()) {
         // Check for individual membership.
-        if (db_query_range("SELECT 1 FROM {drupalorg_crosssite_ind_civimembership} cm WHERE user_name = :name AND membership_status IN ('New', 'Current', 'Grace Period')", 0, 1, [':name' => $GLOBALS['user']->name])->fetchField()) {
+        $wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
+        if (!empty($wrapper->field_da_ind_membership->value())) {
           break;
         }
         // Check for organization membership.
@@ -4188,23 +4189,19 @@ function drupalorg_user_view($account, $view_mode) {
   if ($account->uid === $user->uid) {
     $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="https://www.drupal.org/association">Drupal Association</a> badges on your profile page? <a href="https://www.drupal.org/association/membership">Become an Individual Member today.</a>');
   }
-  if ($membership = drupalorg_civimembership_data($account->name, 'Individual')) {
+  if (!empty($wrapper->field_da_ind_membership->value())) {
     $account->content['drupalorg_membership'][] = array(
       '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/membership/individual"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_ind_member_badge.svg') . '" alt="' . t('Drupal Association Individual Member') . '" /></a></div></div>',
     );
 
     if ($account->uid === $user->uid) {
-      switch ($membership->membership_status) {
-        case 'New':
-        case 'Current':
-          $membership_personal = t('<p></p><strong>You Rock!</strong> Thank you for purchasing a <a href="https://www.drupal.org/association">Drupal Association</a> membership. Your support has helped us to support the Drupal community.</p> <p>More information about memberships can be found by clicking on your membership badge.</p>');
-          break;
-
-        case 'Grace Period':
-          $membership_personal = t('<strong>Oh No!</strong> Your membership expired on @expiration_date. The <a href="https://www.drupal.org/association">Drupal Association</a> depends on your continued support to keep Drupal.org up and running. <a href="https://www.drupal.org/association/membership/individual">Renew your membership today</a> so your badge stays visible and your access to benefits continues. Thank you!', array('@expiration_date' => format_date($membership->expiration_date, 'custom', 'j F Y')));
-          break;
-      }
+      $membership_personal = t('<p></p><strong>You Rock!</strong> Thank you for purchasing a <a href="https://www.drupal.org/association">Drupal Association</a> membership. Your support has helped us to support the Drupal community.</p> <p>More information about memberships can be found by clicking on your membership badge.</p>');
     }
+
+  }
+  elseif ($expiration_date = db_query_range("SELECT expires_at FROM {drupalorg_chargify_subscriptions} WHERE uid = :uid AND state = 'expired' AND product_handle LIKE 'individual%'", 0, 1, [':uid' => $GLOBALS['user']->uid])->fetchField()) {
+    // There is an expired membership.
+    $membership_personal = t('<strong>Oh No!</strong> Your membership expired on @expiration_date. The <a href="https://www.drupal.org/association">Drupal Association</a> depends on your continued support to keep Drupal.org up and running. <a href="https://www.drupal.org/association/membership/individual">Renew your membership today</a> so your badge stays visible and your access to benefits continues. Thank you!', array('@expiration_date' => format_date($expiration_date, 'custom', 'j F Y')));
   }
   // Board and Advisory Board memberships
   /*
