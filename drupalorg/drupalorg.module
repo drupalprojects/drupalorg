@@ -4296,7 +4296,7 @@ function drupalorg_user_view($account, $view_mode) {
  *   Name of the page/profile the function is being called from. Used for pattern
  *   matching to find memberships
  * @param $type
- *   'Individual', 'Organization', or 'Supporting' at time of writing.
+ *   'Organization', or 'Supporting' at time of writing.
  *
  * @return
  *   Boolean, TRUE if membership exists, FALSE if none.
@@ -4317,7 +4317,7 @@ function drupalorg_has_civimembership($name, $type) {
  * @param $name
  *   Name of the page/profile to pattern match for the membership
  * @param $type
- *   Membership type, current values are 'Individual', 'Organization', or 'Supporting'
+ *   Membership type, current values are 'Organization', or 'Supporting'
  *
  * @return $membership
  *   Object containing membership info
@@ -4325,16 +4325,11 @@ function drupalorg_has_civimembership($name, $type) {
 function drupalorg_civimembership_data($name, $type) {
   static $memberships = array();
 
-  if ($type == 'Individual') {
-    return db_query("SELECT cm.user_name, cm.membership_status, cm.expiration_date FROM {drupalorg_crosssite_ind_civimembership} cm WHERE user_name = :name AND membership_status IN ('New', 'Current', 'Grace Period')", array(':name' => $name))->fetchObject();
+  if (!isset($memberships['organization'][$name])) {
+    $memberships['organization'][$name] = db_query("SELECT cmo.org_name, cmo.membership_type, cmo.membership_status, cmo.expiration_date FROM {drupalorg_crosssite_org_civimembership} cmo WHERE org_name = :name AND membership_status IN ('New', 'Current', 'Grace Period')", array(':name' => $name))->fetchAllAssoc('membership_type');
   }
-  else {
-    if (!isset($memberships['organization'][$name])) {
-      $memberships['organization'][$name] = db_query("SELECT cmo.org_name, cmo.membership_type, cmo.membership_status, cmo.expiration_date FROM {drupalorg_crosssite_org_civimembership} cmo WHERE org_name = :name AND membership_status IN ('New', 'Current', 'Grace Period')", array(':name' => $name))->fetchAllAssoc('membership_type');
-    }
-    if (isset($memberships['organization'][$name][$type])) {
-      return $memberships['organization'][$name][$type];
-    }
+  if (isset($memberships['organization'][$name][$type])) {
+    return $memberships['organization'][$name][$type];
   }
 }
 
