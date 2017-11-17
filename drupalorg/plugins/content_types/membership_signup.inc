@@ -67,14 +67,14 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     '#type' => 'radios',
     '#title' => t('Currency'),
     '#title_display' => 'invisible',
-    '#options' => [
-      'usd' => t('Donate in U.S. Dollars'),
-      'eur' => t('Donate in Euro'),
-    ],
     '#required' => TRUE,
     '#attributes' => ['class' => ['container-inline']]
   ];
   if ($conf['membership_type'] === 'donation') {
+    $form['currency']['#options'] = [
+      'usd' => t('Donate in U.S. Dollars'),
+      'eur' => t('Donate in Euro'),
+    ];
     $form['amount_usd'] = [
       '#type' => 'textfield',
       '#title' => t('Donation'),
@@ -103,6 +103,10 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     ];
   }
   else {
+    $form['currency']['#options'] = [
+      'usd' => t('Join with U.S. Dollars'),
+      'eur' => t('Join with Euro'),
+    ];
     $form['amount_usd'] = [
       '#type' => 'radios',
       '#title' => t('Membership gift level'),
