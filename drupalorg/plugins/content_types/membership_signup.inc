@@ -112,7 +112,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
       '#title' => t('Membership gift level'),
       '#title_display' => 'invisible',
       '#options' => $chargify_products[$conf['membership_type']]['usd']['options'],
-      '#default_value' => 35,
+      '#default_value' => $chargify_products[$conf['membership_type']]['usd']['default'],
       '#required' => TRUE,
       '#states' => [
         'visible' => [
@@ -125,7 +125,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
       '#title' => t('Membership gift level'),
       '#title_display' => 'invisible',
       '#options' => $chargify_products[$conf['membership_type']]['eur']['options'],
-      '#default_value' => 30,
+      '#default_value' => $chargify_products[$conf['membership_type']]['eur']['default'],
       '#required' => TRUE,
       '#states' => [
         'visible' => [
