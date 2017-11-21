@@ -582,7 +582,7 @@ function drupalorg_membership_form_submit_amount($form, &$form_state) {
   $subscription_id = $form_state['clicked_button']['#parents'][0];
   $subscription = $form_state['values'][$subscription_id]['subscription'];
 
-  if ($form_state['values'][$subscription->subscription_id]['amount']['level'] == $form[$subscription->subscription_id]['amount']['level']['#default_value']) {
+  if ($form_state['values'][$subscription->subscription_id]['amount']['level'] == $form[$form_state['clicked_button']['#array_parents'][0]][$subscription->subscription_id]['amount']['level']['#default_value']) {
     drupal_set_message(t('Membership not updated, that is the same membership level you already contribute at.'), 'warning');
     return;
   }
