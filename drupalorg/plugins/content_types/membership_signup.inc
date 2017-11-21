@@ -200,7 +200,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
 }
 
 function drupalorg_membership_signup_content_type_render_form_validate($form, &$form_state) {
-  if (!empty($form_state['values']['currency'])) {
+  if (!empty($form_state['values']['currency']) && $form_state['build_info']['args'][0]['membership_type'] === 'donation') {
     $field_name = 'amount_' . $form_state['values']['currency'];
     if (!is_numeric($form_state['values'][$field_name]) || $form_state['values'][$field_name] <= 0) {
       form_set_error($field_name, t('Amount must be a number greater than zero.'));
