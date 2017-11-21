@@ -136,7 +136,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     $form['recur'] = [
       '#type' => 'checkbox',
       '#title' => t('Renew my membership automatically every year'),
-      '#default_value' => 'single',
+      '#default_value' => TRUE,
       '#return_value' => 'recur',
       '#states' => [
         'visible' => [
