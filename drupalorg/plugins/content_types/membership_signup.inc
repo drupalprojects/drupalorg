@@ -147,6 +147,30 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
         ],
       ],
     ];
+    if ($conf['membership_type'] === 'membership-organization') {
+      $form['organization'] = [
+        '#type' => 'radios',
+        '#title' => t('Organization'),
+        '#options' => [],
+        '#description' => t('Add your current organization to your <a href="/user">user profile</a> for membership badge and directory listing. If you don’t have an <a href="/organizations">organization page</a> yet, you can add it later.'),
+        '#states' => [
+          'visible' => [
+            ':input[name="currency"]' => [
+              ['value' => 'usd'],
+              ['value' => 'eur'],
+            ],
+          ],
+        ],
+      ];
+      $user_wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
+      foreach ($user_wrapper->field_organizations as $organization) {
+        if ($organization->field_current->value()) {
+          $form['organization']['#options'][$organization->field_organization_reference->raw()] = check_plain($organization->field_organization_reference->label());
+        }
+      }
+      $form['organization']['#options'][0] = t('Name my organization on the next page');
+      $form['organization']['#default_value'] = array_keys($form['organization']['#options'])[0];
+    }
   }
 
   if (user_is_anonymous()) {
@@ -186,21 +210,30 @@ function drupalorg_membership_signup_content_type_render_form_validate($form, &$
 
 function drupalorg_membership_signup_content_type_render_form_submit($form, &$form_state) {
   $user_wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
-  $reference = $GLOBALS['user']->uid;
+  $query = [
+    'reference' => $GLOBALS['user']->uid,
+    'email' => $GLOBALS['user']->mail,
+    'first_name' => $user_wrapper->field_first_name->value(),
+    'last_name' => $user_wrapper->field_last_name->value(),
+    'components[448894][allocated_quantity]' => $form_state['values']['amount_' . $form_state['values']['currency']],
+  ];
   if ($form_state['build_info']['args'][0]['membership_type'] === 'donation') {
-    $reference .= '-' . REQUEST_TIME;
+    $query['reference'] .= '-' . REQUEST_TIME;
+  }
+  elseif ($form_state['build_info']['args'][0]['membership_type'] === 'membership-organization') {
+    if (empty($form_state['values']['organization'])) {
+      $query['reference'] .= '-new-' . REQUEST_TIME;
+    }
+    else {
+      $query['reference'] .= '-' . $form_state['values']['organization'];
+      $query['organization'] = $form['organization']['#options'][$form_state['values']['organization']];
+    }
   }
   $form_state['redirect'] = [
     variable_get('drupalorg_chargify_products')[$form_state['build_info']['args'][0]['membership_type']][$form_state['values']['currency']][$form_state['values']['recur'] ?: 'single'],
     [
       'external' => TRUE,
-      'query' => [
-        'reference' => $reference,
-        'email' => $GLOBALS['user']->mail,
-        'first_name' => $user_wrapper->field_first_name->value(),
-        'last_name' => $user_wrapper->field_last_name->value(),
-        'components[448894][allocated_quantity]' => $form_state['values']['amount_' . $form_state['values']['currency']],
-      ],
+      'query' => $query,
     ],
   ];
 }
