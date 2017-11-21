@@ -409,7 +409,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
       $form[$base_product_handle][$row->subscription_id] = [
         '#tree' => TRUE,
         'subscription' => ['#type' => 'value', '#value' => $row],
-        '#prefix' => '<p><strong>' . format_date($row->created_at, 'custom', 'j F Y') . ' — ' . format_date($row->current_period_ends_at, 'custom', 'j F Y') . '</strong></p>',
+        '#prefix' => '<p><strong>' . format_date($row->created_at, 'custom', 'j F Y') . ' — ' . format_date($row->current_period_ends_at ?: $row->expires_at, 'custom', 'j F Y') . '</strong></p>',
         'thanks' => [
           '#access' => $row->state === 'active',
           '#markup' => '<p>' . t('🎉 Thank you for your membership! <a href="!url">Get the most out of your membership</a>', ['!url' => url('association/membership/thanks')]) . '</p>',
