@@ -79,7 +79,7 @@ function drush_drupalorg_org_credit() {
     // Add Association partnerships.
     $contribution_rank += array_sum(array_intersect_key($weights['supporting partner'], array_flip($wrapper->field_organization_support->value())));
     // Add Association membership.
-    $contribution_rank += $weights['membership'] * drupalorg_has_civimembership($node->title, 'Organization');
+    $contribution_rank += $weights['membership'] * !empty($wrapper->field_org_membership_status->value());
     // Add D8 case studies.
     $query = new EntityFieldQuery();
     $contribution_rank += $weights['d8 case study'] * $query->entityCondition('entity_type', 'node')
