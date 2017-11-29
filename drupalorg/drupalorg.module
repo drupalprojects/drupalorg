@@ -6673,7 +6673,7 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
     }
 
     // For organization membership, get the organization NID.
-    if (strpos($row['product_handle'], 'organization') === 0) {
+    if (strpos($row['product_handle'], 'organization') === 0 && ctype_digit($reference_extra)) {
       $row['organization_nid'] = $reference_extra;
     }
   }
@@ -6725,14 +6725,32 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
             $changed = TRUE;
           }
         }
-      }
-      if ($changed) {
-        user_save($account);
+        if ($changed) {
+          user_save($account);
+        }
       }
       break;
 
     case 'organization':
-      // todo update organization node.
+      if (!empty($row['organization_nid']) && ($organization = node_load($row['organization_nid']))) {
+        $organization_wrapper = entity_metadata_wrapper('node', $organization);
+        $changed = FALSE;
+        if ($row['state'] === 'active') {
+          if ($organization_wrapper->field_org_membership_status->value() !== 'Current') {
+            $organization_wrapper->field_org_membership_status = 'Current';
+            $changed = TRUE;
+          }
+        }
+        else {
+          if (!empty($organization_wrapper->field_org_membership_status->value())) {
+            $organization_wrapper->field_org_membership_status = '';
+            $changed = TRUE;
+          }
+        }
+        if ($changed) {
+          node_save($organization);
+        }
+      }
       break;
   }
 
