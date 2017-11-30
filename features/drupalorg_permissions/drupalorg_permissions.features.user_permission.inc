@@ -1864,13 +1864,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'user',
   );
 
-  // Exported permission: 'administer varnish'.
-  $permissions['administer varnish'] = array(
-    'name' => 'administer varnish',
-    'roles' => array(),
-    'module' => 'varnish',
-  );
-
   // Exported permission: 'administer version control systems'.
   $permissions['administer version control systems'] = array(
     'name' => 'administer version control systems',
