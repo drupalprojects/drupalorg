@@ -309,13 +309,7 @@ function drupalorg_git_gateway_gatectl_submit($form, &$form_state) {
     $pushctl |= $val;
   }
 
-  $old_pushctl = (int) variable_get('drupalorg_git_gateway_pushctl', 0);
   variable_set('drupalorg_git_gateway_pushctl', $pushctl);
-
-  // Invoke notification hook if old pushctl != new pushctl
-  if ($pushctl != $old_pushctl) {
-    module_invoke_all('drupalorg_pushctl_changed', $pushctl);
-  }
 }
 
 /**
