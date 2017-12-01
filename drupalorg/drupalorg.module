@@ -3736,6 +3736,12 @@ function drupalorg_node_delete(stdClass $node) {
       }
     }
   }
+  elseif ($node->type === 'organization') {
+    db_update('drupalorg_chargify_subscriptions')
+      ->condition('organization_nid', $node->nid)
+      ->fields(['organization_nid' => NULL])
+      ->execute();
+  }
 
   // Ensure all nodes that are deleted get captured in drupalorg_node_deleted
   // table. If a comment had spam flags, tell us how many.
