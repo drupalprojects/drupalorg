@@ -6665,3 +6665,19 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
 
   return $row;
 }
+
+/**
+ * Return array of nid => sanitized organization title of the current user’s
+ * current organizations.
+ */
+function _drupalorg_organization_options() {
+  $user_wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
+  $options = [];
+  foreach ($user_wrapper->field_organizations as $organization) {
+    if ($organization->field_current->value() && $organization->field_organization_reference->raw()) {
+      $options[$organization->field_organization_reference->raw()] = check_plain($organization->field_organization_reference->label());
+    }
+  }
+
+  return $options;
+}

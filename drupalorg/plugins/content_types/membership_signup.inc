@@ -151,7 +151,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
       $form['organization'] = [
         '#type' => 'radios',
         '#title' => t('Organization'),
-        '#options' => [],
+        '#options' => _drupalorg_organization_options(),
         '#description' => t('Add your current organization to your <a href="/user">user profile</a> for membership badge and directory listing. If you don’t have an <a href="/organizations">organization page</a> yet, you can add it later.'),
         '#states' => [
           'visible' => [
@@ -162,12 +162,6 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
           ],
         ],
       ];
-      $user_wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
-      foreach ($user_wrapper->field_organizations as $organization) {
-        if ($organization->field_current->value()) {
-          $form['organization']['#options'][$organization->field_organization_reference->raw()] = check_plain($organization->field_organization_reference->label());
-        }
-      }
       $form['organization']['#options'][0] = t('Name my organization on the next page');
       $form['organization']['#default_value'] = array_keys($form['organization']['#options'])[0];
     }
