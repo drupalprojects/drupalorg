@@ -370,15 +370,15 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
   $chargify_products = variable_get('drupalorg_chargify_products');
 
   $form['individual'] = [
-    '#prefix' => '<h3>' . t('Individual membership') . '</h3>',
+    '#prefix' => '<h2>' . t('Individual membership') . '</h2>',
     '#markup' => '<p>' . l(t('Learn about membership and join today'), 'association/individual-membership') . '</p>',
   ];
   $form['organization'] = [
-    '#prefix' => '<h3>' . t('Organization membership') . '</h3>',
+    '#prefix' => '<h2>' . t('Organization membership') . '</h2>',
     '#markup' => '<p>' . t('Responsible for an organization?') . ' ' . l(t('Learn about supporting the Drupal Association'), 'association/organization-membership') . '</p>',
   ];
   $form['donations'] = [
-    '#prefix' => '<h3>' . t('Donations') . '</h3><p>' . t('Donations help keep the Drupal Association running.') . '</p>',
+    '#prefix' => '<h2>' . t('Donations') . '</h2><p>' . t('Donations help keep the Drupal Association running.') . '</p>',
     'table' => [
       '#theme' => 'table',
       '#sticky' => FALSE,
@@ -386,7 +386,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
     '#suffix' => '<p>' . l(t('Donate'), 'association/donate', ['attributes' => ['class' => 'action-button']]) . '</p>',
   ];
   $form['questions'] = [
-    '#prefix' => '<h3>' . t('Have questions?') . '</h3>',
+    '#prefix' => '<h2>' . t('Have questions?') . '</h2>',
     '#markup' => '<ul>'
       . '<li>' . l(t('Membership frequently asked questions'), 'association/faq', ['fragment' => 'aboutmembership']) . '</li>'
       . '<li>' . l(t('Association frequently asked questions'), 'association/faq') . '</li>'
