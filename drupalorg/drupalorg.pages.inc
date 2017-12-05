@@ -414,12 +414,15 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
           '#access' => $row->state === 'active',
           '#markup' => '<p>' . t('🎉 Thank you for your membership! <a href="!url">Get the most out of your membership</a>', ['!url' => url('association/membership/thanks')]) . '</p>',
         ],
+        'update_organization' => [],
+        'organization' => [],
         'update_amount' => [
           '#prefix' => '<p>' . t('On renewal you’ll be charged <strong>@amount</strong>', ['@amount' => _format_chargify_money($row)])
           . '<br>' . l(t('View & update credit card'), 'https://' . $chargify_keys[$row->currency]['subdomain'] . '.chargify.com/update_payment/' . $row->subscription_id . '/' . substr(sha1('update_payment--' . $row->subscription_id . '--' . $chargify_keys[$row->currency]['shared_key']), 0, 10), ['external' => TRUE, 'attributes' => ['target' => '_blank']])
           . '</p>',
           '#type' => 'checkbox',
           '#title' => t('Update membership gift level'),
+          '#attributes' => ['class' => ['toggle', 'element-invisible']],
         ],
         'amount' => [
           '#type' => 'fieldset',
@@ -449,6 +452,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
           ]) . '</p>',
           '#type' => 'checkbox',
           '#title' => t('Update billing name, organization, or email'),
+          '#attributes' => ['class' => ['toggle', 'element-invisible']],
         ],
         'billing' => [
           '#type' => 'fieldset',
@@ -491,6 +495,48 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
           ],
         ],
       ];
+      if ($base_product_handle === 'organization') {
+        $form[$base_product_handle][$row->subscription_id]['update_organization'] = [
+          '#type' => 'checkbox',
+          '#title' => t('Change organization'),
+          '#attributes' => ['class' => ['toggle', 'element-invisible']],
+        ];
+        if (empty($row->organization_nid)) {
+          $form[$base_product_handle][$row->subscription_id]['update_organization']['#prefix'] = '<p>' . t('You do not have an organization page associated with your membership yet.') . '</p>';
+        }
+        else {
+          $organization = node_load($row->organization_nid);
+          $form[$base_product_handle][$row->subscription_id]['update_organization']['#prefix'] = '<p>' . t('For organization !link', ['!link' => l($organization->title, 'node/' . $organization->nid)]) . '</p>';
+        }
+        $form[$base_product_handle][$row->subscription_id]['organization'] = [
+          '#type' => 'fieldset',
+          '#states' => [
+            'visible' => [
+              ':input[name="' . $row->subscription_id . '[update_organization]"]' => ['checked' => TRUE],
+            ],
+          ],
+        ];
+        if ($options = _drupalorg_organization_options()) {
+          $form[$base_product_handle][$row->subscription_id]['organization']['organization'] = [
+            '#type' => 'radios',
+            '#title' => t('Organization'),
+            '#title_display' => 'invisible',
+            '#options' => $options,
+            '#default_value' => $row->organization_nid,
+            '#description' => t('Don’t see your organization? <a href="!edit">Add it to your user profile</a> and make sure the name exactly matches an <a href="!organizations">organization page</a>', ['!edit' => url('user/' . $GLOBALS['user']->uid . '/edit', ['fragment' => 'field-organizations-values']), '!organizations' => url('organizations')]),
+          ];
+          $form[$base_product_handle][$row->subscription_id]['organization']['set_organization'] = [
+            '#type' => 'submit',
+            '#value' => t('Update organization'),
+            '#submit' => ['drupalorg_membership_form_submit_organization'],
+          ];
+        }
+        else {
+          $form[$base_product_handle][$row->subscription_id]['organization']['organization'] = [
+            '#markup' => t('Please <a href="!edit">add your organization to your user profile</a> and make sure the name exactly matches an <a href="!organizations">organization page</a>', ['!edit' => url('user/' . $GLOBALS['user']->uid . '/edit', ['fragment' => 'field-organizations-values']), '!organizations' => url('organizations')]),
+          ];
+        }
+      }
       if (in_array($row->state, ['canceled', 'expired'])) {
         // Membership expired.
         $form[$base_product_handle][$row->subscription_id]['recurring'] = [
@@ -511,6 +557,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
           'recur_stop' => [
             '#type' => 'checkbox',
             '#title' => t('I don’t want my membership to auto-renew'),
+            '#attributes' => ['class' => ['toggle', 'element-invisible']],
           ],
           'confirm' => [
             '#type' => 'fieldset',
@@ -612,6 +659,61 @@ function drupalorg_membership_form_submit_amount($form, &$form_state) {
       'current_billing_amount_in_cents' => (variable_get('drupalorg_chargify_products')['membership-' . preg_replace('/-recur$/', '', $subscription->product_handle)][$subscription->currency]['minimum'] + $data->allocation->quantity) * 100,
     ])
     ->execute();
+  drupal_set_message(t('Membership updated!'));
+}
+
+/**
+ * Form submit callback, change organization.
+ */
+function drupalorg_membership_form_submit_organization($form, &$form_state) {
+  $subscription_id = $form_state['clicked_button']['#parents'][0];
+  $subscription = $form_state['values'][$subscription_id]['subscription'];
+
+  if ($form_state['values'][$subscription->subscription_id]['organization']['organization'] == $form[$form_state['clicked_button']['#array_parents'][0]][$subscription->subscription_id]['organization']['organization']['#default_value']) {
+    drupal_set_message(t('Membership not updated, that is the same organization.'), 'warning');
+    return;
+  }
+
+  $organization = node_load($form_state['values'][$subscription->subscription_id]['organization']['organization']);
+  $response = drupal_http_request(_drupalorg_chargify_base_url($subscription->currency) . 'customers/' . $subscription->customer_id . '.json', [
+    'method' => 'PUT',
+    'headers' => ['content-type' => 'application/json'],
+    'data' => json_encode(['customer' => [
+      'reference' => $form_state['build_info']['args'][0]->uid . '-' . $organization->nid,
+      'organization' => $organization->title,
+    ]]),
+  ]);
+  if ($response->code != 200) {
+    watchdog('drupalorg_chargify', 'Failed to update customer @id', ['@id' => $subscription_id], WATCHDOG_ERROR);
+    drupal_set_message(t('Failed to update billing backend. Please try again in a couple minutes.'), 'error');
+    return;
+  }
+  $data = json_decode($response->data);
+  if ($data === NULL) {
+    watchdog('drupalorg_chargify', 'Failed to parse update customer @id response', ['@id' => $subscription_id], WATCHDOG_ERROR);
+    drupal_set_message(t('Failed to update billing backend. Please try again in a couple minutes.'), 'error');
+    return;
+  }
+  db_update('drupalorg_chargify_subscriptions')
+    ->condition('currency', $subscription->currency)
+    ->condition('subscription_id', $subscription_id)
+    ->fields([
+      'organization_nid' => $organization->nid,
+      'customer_organization' => $data->customer->organization,
+    ])
+    ->execute();
+
+  // Move the status in the field.
+  $organization_wrapper = entity_metadata_wrapper('node', $organization);
+  $organization_wrapper->field_org_membership_status = 'Current';
+  node_save($organization);
+  if (!empty($subscription->organization_nid)) {
+    $old_organization = node_load($subscription->organization_nid);
+    $old_organization_wrapper = entity_metadata_wrapper('node', $old_organization);
+    $old_organization_wrapper->field_org_membership_status = 'Current';
+    node_save($old_organization);
+  }
+
   drupal_set_message(t('Membership updated!'));
 }
 
