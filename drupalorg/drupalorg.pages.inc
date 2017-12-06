@@ -894,6 +894,9 @@ function drupalorg_membership_return() {
   // Save the subscription & redirect toward thanks.
   $subscription = _drupalorg_update_chargify_subscription($_GET['currency'], $data);
   if (is_array($subscription)) {
+    // Stash subscription ID for Google Analytics for next page request, which
+    // will not be a redirect and can run analytics JS.
+    $_SESSION['drupalorg_chargify_subscription_added'] = $data->subscription->id;
     switch ($subscription['product_handle']) {
       case 'donation':
         drupal_goto('association/support/thanks-donation');

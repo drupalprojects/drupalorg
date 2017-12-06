@@ -93,6 +93,33 @@ function drupalorg_init() {
     );
   }
 
+  // Record Chargify transaction in Google Analytics.
+  if (isset($_SESSION['drupalorg_chargify_subscription_added'])) {
+    if (_googleanalytics_visibility_user($GLOBALS['user'])) {
+      $subscription = db_query('SELECT uid, organization_nid, currency, subscription_id, state, current_billing_amount_in_cents, created_at, current_period_ends_at, expires_at, product_handle, product_name, customer_id, customer_first_name, customer_last_name, customer_organization, customer_email FROM {drupalorg_chargify_subscriptions} WHERE subscription_id = :subscription_id', [':subscription_id' => $_SESSION['drupalorg_chargify_subscription_added']])->fetch();
+      drupal_add_js("ga('create', 'UA-2360451-23', 'auto', 'chargify', {'allowLinker': true});"
+        . "ga('chargify.require', 'linker');"
+        . "ga('chargify.linker:autoLink', ['chargify.com'] );"
+        . "ga('chargify.require', 'ecommerce');"
+        . "ga('chargify.ecommerce:addTransaction', {
+             'id': " . $subscription->subscription_id . ",
+             'affiliation': 'Drupal Association',
+             'revenue': " . ($subscription->current_billing_amount_in_cents / 100) . ",
+             'currency': '" . $subscription->currency . "'
+           });"
+        . "ga('chargify.ecommerce:addItem', {
+             'id': " . $subscription->subscription_id . ",
+             'name': '" . $subscription->product_name . "',
+             'price': " . ($subscription->current_billing_amount_in_cents / 100) . ",
+             'quantity': '1',
+             'currency': '" . $subscription->currency . "'
+           });"
+        . "ga('chargify.ecommerce:send');"
+        . "ga('chargify.send', 'pageview');", 'inline');
+    }
+    unset($_SESSION['drupalorg_chargify_subscription_added']);
+  }
+
   // Temporary message about the Solr index being rebuilt.
   if (variable_get('drupalorg_warn_search_index_rebuild', FALSE)) {
     if (arg(0) == 'search' || arg(0) == 'download' || (arg(0) == 'project' && (arg(1) == 'modules' || arg(1) == 'themes' || arg(1) == 'distributions' || arg(1) == 'theme engines'))) {
