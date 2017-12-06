@@ -112,7 +112,7 @@ function drupalorg_init() {
     $node = menu_get_object();
     // Do not include on issue & project nodes.
     if (empty($node) || !(project_issue_node_is_issue($node) || project_node_is_project($node))) {
-      drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/drupalorg-perfect-audience.js', array('scope' => 'footer'));
+      drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/audience-extension.js', ['scope' => 'footer', 'requires_jquery' => FALSE]);
     }
   }
 }
