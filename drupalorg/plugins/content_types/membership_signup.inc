@@ -70,7 +70,9 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     '#required' => TRUE,
     '#attributes' => ['class' => ['container-inline']],
     'usd' => [
-      '#suffix' => t('or'),
+      '#suffix' => t('or')
+      // EUR remains on CiviCRM for now.
+      . ' ' . l(t('Donate in Euro'), 'https://assoc.drupal.org/civicrm/contribute/transact?reset=1&id=29', ['external' => TRUE, 'attributes' => ['class' => ['action-button']]]),
       '#attributes' => ['class' => ['element-invisible', 'toggle-button']],
     ],
     'eur' => [
@@ -80,7 +82,8 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
   if ($conf['membership_type'] === 'donation') {
     $form['currency']['#options'] = [
       'usd' => t('Donate in U.S. Dollars'),
-      'eur' => t('Donate in Euro'),
+      //'eur' => t('Donate in Euro'),
+      'eur' => '',
     ];
     $form['amount_usd'] = [
       '#type' => 'textfield',
@@ -94,6 +97,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
         ],
       ],
     ];
+    /*
     $form['amount_eur'] = [
       '#type' => 'textfield',
       '#title' => t('Donation'),
@@ -106,6 +110,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
         ],
       ],
     ];
+    */
     $form['recur'] = [
       '#type' => 'value',
       '#value' => 'single',
