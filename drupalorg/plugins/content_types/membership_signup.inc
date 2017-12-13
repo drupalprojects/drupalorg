@@ -87,6 +87,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
       '#title' => t('Donation'),
       '#field_prefix' => '$',
       '#size' => 5,
+      '#attributes' => ['class' => ['focus-on-visible']],
       '#states' => [
         'visible' => [
           ':input[name="currency"]' => ['value' => 'usd'],
@@ -98,6 +99,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
       '#title' => t('Donation'),
       '#field_prefix' => '€',
       '#size' => 5,
+      '#attributes' => ['class' => ['focus-on-visible']],
       '#states' => [
         'visible' => [
           ':input[name="currency"]' => ['value' => 'eur'],

@@ -83,6 +83,13 @@
     })
     .bind('touchstart', function (e) {
       $('.attribution-label .attribution').not($('.attribution', $(e.target).filter('.attribution-label'))).addClass('element-invisible');
+    })
+    .bind('state:visible', function (e) {
+      // Focus the newly-visible element, if the focus-on-visible class is set.
+      // Wait a millisecond because the clicked element may want the focus.
+      if (e.target.classList.contains('focus-on-visible')) {
+        window.setTimeout(function () {e.target.focus();}, 1);
+      }
     });
     // For potential link GA event tracking. Attach mousedown, keyup,
     // touchstart events to document only and catch clicks on all elements.
