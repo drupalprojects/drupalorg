@@ -400,7 +400,10 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
       $form['donations']['table']['#suffix'] = '<p>' . t('Thank you! 🎉') . '</p>';
       $form['donations']['table']['#rows'][] = [
         format_date($row->created_at, 'custom', 'j F Y'),
-        _format_chargify_money($row),
+        [
+          'data' => _format_chargify_money($row),
+          'class' => ['numeric'],
+        ],
       ];
     }
     else {
