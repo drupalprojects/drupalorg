@@ -68,7 +68,14 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     '#title' => t('Currency'),
     '#title_display' => 'invisible',
     '#required' => TRUE,
-    '#attributes' => ['class' => ['container-inline']]
+    '#attributes' => ['class' => ['container-inline']],
+    'usd' => [
+      '#suffix' => t('or'),
+      '#attributes' => ['class' => ['element-invisible', 'toggle-button']],
+    ],
+    'eur' => [
+      '#attributes' => ['class' => ['element-invisible', 'toggle-button']],
+    ],
   ];
   if ($conf['membership_type'] === 'donation') {
     $form['currency']['#options'] = [
