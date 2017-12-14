@@ -278,6 +278,36 @@ function drupalorg_marketplace_views_default_views() {
   );
   $handler->display->display_options['filters']['field_organization_type_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_organization_type_tid']['vocabulary'] = 'organization_type';
+  /* Filter criterion: Content: Membership status (field_org_membership_status) */
+  $handler->display->display_options['filters']['field_org_membership_status_value']['id'] = 'field_org_membership_status_value';
+  $handler->display->display_options['filters']['field_org_membership_status_value']['table'] = 'field_data_field_org_membership_status';
+  $handler->display->display_options['filters']['field_org_membership_status_value']['field'] = 'field_org_membership_status_value';
+  $handler->display->display_options['filters']['field_org_membership_status_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_org_membership_status_value']['expose']['operator_id'] = 'field_org_membership_status_value_op';
+  $handler->display->display_options['filters']['field_org_membership_status_value']['expose']['label'] = 'Membership status (field_org_membership_status)';
+  $handler->display->display_options['filters']['field_org_membership_status_value']['expose']['operator'] = 'field_org_membership_status_value_op';
+  $handler->display->display_options['filters']['field_org_membership_status_value']['expose']['identifier'] = 'field_org_membership_status_value';
+  $handler->display->display_options['filters']['field_org_membership_status_value']['is_grouped'] = TRUE;
+  $handler->display->display_options['filters']['field_org_membership_status_value']['group_info']['label'] = 'Membership status';
+  $handler->display->display_options['filters']['field_org_membership_status_value']['group_info']['identifier'] = 'membership';
+  $handler->display->display_options['filters']['field_org_membership_status_value']['group_info']['widget'] = 'radios';
+  $handler->display->display_options['filters']['field_org_membership_status_value']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => 'Drupal Association members',
+      'operator' => 'longerthan',
+      'value' => '1',
+    ),
+    2 => array(
+      'title' => '',
+      'operator' => '=',
+      'value' => '',
+    ),
+    3 => array(
+      'title' => '',
+      'operator' => '=',
+      'value' => '',
+    ),
+  );
   $handler->display->display_options['path'] = 'organizations';
 
   /* Display: Drupal Orgs by Country */
@@ -335,6 +365,8 @@ function drupalorg_marketplace_views_default_views() {
     t('Organization type'),
     t('Drupal Orgs'),
     t('Organizations using Drupal: %1'),
+    t('Membership status (field_org_membership_status)'),
+    t('Membership status'),
     t('Drupal Orgs by Country'),
     t('Browse by country'),
   );
