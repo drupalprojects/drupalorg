@@ -82,4 +82,5 @@ features[variable][] = node_preview_project_issue
 features[variable][] = node_submitted_project_issue
 features[views_view][] = drupal_org_user_customers
 features[views_view][] = drupalorg_user_organizations
+features[views_view][] = manage_issue_tags
 features[views_view][] = unused_issue_tags
