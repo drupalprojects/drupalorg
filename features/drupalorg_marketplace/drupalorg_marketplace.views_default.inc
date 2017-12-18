@@ -78,8 +78,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['arguments']['name']['relationship'] = 'taxonomy_vocabulary_52_tid';
   $handler->display->display_options['arguments']['name']['default_action'] = 'summary';
   $handler->display->display_options['arguments']['name']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['name']['summary']['sort_order'] = 'desc';
-  $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '1';
+  $handler->display->display_options['arguments']['name']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['name']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['name']['summary_options']['base_path'] = 'organizations';
   $handler->display->display_options['arguments']['name']['summary_options']['items_per_page'] = '25';
@@ -321,6 +320,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['style_options']['class'] = 'grid cols-2 drupalorg-random sponsors--signature';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
