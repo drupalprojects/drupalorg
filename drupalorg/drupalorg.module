@@ -4546,17 +4546,14 @@ function drupalorg_preprocess_flag(&$variables) {
  * format.
  */
 function drupalorg_flag_access($flag, $entity_id, $action, $account) {
-  if ($flag->name !== 'drupalorg_node_spam') {
-    // Wrong flag, don't care.
-    return NULL;
-  }
-
-  $node = node_load($entity_id);
-  if (($node->type == 'guide' || $node->type == 'documentation') &&
-    isset($node->body['und'][0]['format']) &&
-    ($node->body['und'][0]['format'] == 'asciidoc_import')) {
-    // This is an imported node, not flaggable as spam.
-    return FALSE;
+  if ($flag->name === 'drupalorg_node_spam' && $entity_id !== 'new') {
+    $node = node_load($entity_id);
+    if (($node->type == 'guide' || $node->type == 'documentation') &&
+      isset($node->body['und'][0]['format']) &&
+      ($node->body['und'][0]['format'] == 'asciidoc_import')) {
+      // This is an imported node, not flaggable as spam.
+      return FALSE;
+    }
   }
 }
 
