@@ -3538,6 +3538,7 @@ function drupalorg_node_insert($node) {
         '!name' => theme('username', array('account' => $node)),
       )),
       'format' => filter_default_format(),
+      'drupalorg_crosssite_ham' => TRUE,
     );
     $node->nodechanges_comment_attributes = array(
       'project_issue_no_email' => TRUE,
