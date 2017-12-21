@@ -1954,7 +1954,7 @@ function drupalorg_maintainers_json($project) {
  */
 function drupalorg_project_machine_name_validate($element, &$form_state, $form) {
   if (($form['#id'] === 'project-promote-project-form' || $form_state['values']['field_project_type'][LANGUAGE_NONE][0]['value'] == 'full')
-    && !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $element['#value'])) {
+    && !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $element['#value'])) {
     form_error($element, t('@title must follow <a href="@url">PHP naming convention</a>.', array(
       '@title' => $element['#title'],
       '@url' => 'http://www.php.net/manual/en/functions.user-defined.php')));
