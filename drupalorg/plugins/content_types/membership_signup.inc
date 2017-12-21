@@ -181,6 +181,13 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     }
   }
 
+  if (isset($_GET['currency'])) {
+    $form['currency']['#default_value'] = $_GET['currency'];
+  }
+  if (isset($_GET['amount'])) {
+    $form['amount_usd']['#default_value'] = $form['amount_eur']['#default_value'] = $_GET['amount'];
+  }
+
   if (user_is_anonymous()) {
     $form['login'] = [
       '#markup' => l(t('Log in or register to support us'), 'user', [
