@@ -537,6 +537,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'asciidoc_display',
   );
 
+  // Exported permission: 'administer association memberships'.
+  $permissions['administer association memberships'] = array(
+    'name' => 'administer association memberships',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'drupalorg',
+  );
+
   // Exported permission: 'administer bakery'.
   $permissions['administer bakery'] = array(
     'name' => 'administer bakery',
