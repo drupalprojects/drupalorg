@@ -277,13 +277,8 @@ function drupalorg_issues_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'inline',
-        'module' => 'token_formatters',
-        'settings' => array(
-          'check_access' => 1,
-          'link' => '',
-          'text' => '[user:project-issue-assignment-link]',
-        ),
-        'type' => 'token_formatters_entity_reference',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 5,
       ),
       'diff_standard' => array(
@@ -357,9 +352,8 @@ function drupalorg_issues_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
+        'type' => 'hidden',
         'weight' => 3,
       ),
       'diff_standard' => array(
@@ -421,9 +415,8 @@ function drupalorg_issues_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
+        'type' => 'hidden',
         'weight' => 4,
       ),
       'diff_standard' => array(
@@ -807,9 +800,8 @@ function drupalorg_issues_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
+        'type' => 'hidden',
         'weight' => 2,
       ),
       'diff_standard' => array(
@@ -941,9 +933,8 @@ function drupalorg_issues_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
+        'type' => 'hidden',
         'weight' => 1,
       ),
       'diff_standard' => array(
@@ -1005,9 +996,8 @@ function drupalorg_issues_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
+        'type' => 'hidden',
         'weight' => 1,
       ),
       'diff_standard' => array(
@@ -1069,12 +1059,8 @@ function drupalorg_issues_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'bypass_access' => FALSE,
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'diff_standard' => array(
