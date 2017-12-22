@@ -888,7 +888,7 @@ function drupalorg_block_view($delta, $block = NULL) {
       if (variable_get('drupalorg_announcements_users_membership') === 'non-members' && user_is_logged_in()) {
         // Check for individual membership.
         $wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
-        if (!empty($wrapper->field_da_ind_membership->value())) {
+        if ($wrapper->field_da_ind_membership->value()) {
           return;
         }
         // Check for organization membership.
@@ -4182,7 +4182,7 @@ function drupalorg_user_view($account, $view_mode) {
   if ($account->uid === $user->uid) {
     $membership_personal = t('Hey! Want to support the Drupal Community, Drupal.org’s infrastructure, and get one of the cool <a href="https://www.drupal.org/association">Drupal Association</a> badges on your profile page? <a href="https://www.drupal.org/association/membership">Become an Individual Member today.</a>');
   }
-  if (!empty($wrapper->field_da_ind_membership->value())) {
+  if ($wrapper->field_da_ind_membership->value()) {
     $account->content['drupalorg_membership'][] = array(
       '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/membership/individual"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_ind_member_badge.svg') . '" alt="' . t('Drupal Association Individual Member') . '" /></a></div></div>',
     );
@@ -6648,15 +6648,15 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
           }
         }
         else {
-          if (!empty($account_wrapper->field_da_ind_membership->value())) {
+          if ($account_wrapper->field_da_ind_membership->value()) {
             $account_wrapper->field_da_ind_membership = '';
             $changed = TRUE;
           }
-          if (!empty($account_wrapper->field_da_join_date->value())) {
+          if ($account_wrapper->field_da_join_date->value()) {
             $account_wrapper->field_da_join_date = 0;
             $changed = TRUE;
           }
-          if (!empty($account_wrapper->field_da_expiration_date->value())) {
+          if ($account_wrapper->field_da_expiration_date->value()) {
             $account_wrapper->field_da_expiration_date = 0;
             $changed = TRUE;
           }
@@ -6678,7 +6678,7 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
           }
         }
         else {
-          if (!empty($organization_wrapper->field_org_membership_status->value())) {
+          if ($organization_wrapper->field_org_membership_status->value()) {
             $organization_wrapper->field_org_membership_status = '';
             $changed = TRUE;
           }
