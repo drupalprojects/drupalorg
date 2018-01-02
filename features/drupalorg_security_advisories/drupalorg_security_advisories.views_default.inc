@@ -202,26 +202,69 @@ function drupalorg_security_advisories_views_default_views() {
   $handler->display->display_options['fields']['created']['date_format'] = 'long';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['operator'] = 'OR';
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'AND',
+  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published or admin */
-  $handler->display->display_options['filters']['status_extra']['id'] = 'status_extra';
-  $handler->display->display_options['filters']['status_extra']['table'] = 'node';
-  $handler->display->display_options['filters']['status_extra']['field'] = 'status_extra';
-  $handler->display->display_options['filters']['status_extra']['group'] = '0';
-  $handler->display->display_options['filters']['status_extra']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Has taxonomy term */
-  $handler->display->display_options['filters']['tid']['id'] = 'tid';
-  $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
-  $handler->display->display_options['filters']['tid']['field'] = 'tid';
-  $handler->display->display_options['filters']['tid']['value'] = array(
+  /* Filter criterion: Content: Has taxonomy terms (with depth) */
+  $handler->display->display_options['filters']['term_node_tid_depth']['id'] = 'term_node_tid_depth';
+  $handler->display->display_options['filters']['term_node_tid_depth']['table'] = 'node';
+  $handler->display->display_options['filters']['term_node_tid_depth']['field'] = 'term_node_tid_depth';
+  $handler->display->display_options['filters']['term_node_tid_depth']['value'] = array(
     1852 => '1852',
     44 => '44',
     1856 => '1856',
   );
-  $handler->display->display_options['filters']['tid']['group'] = '0';
-  $handler->display->display_options['filters']['tid']['expose']['operator'] = FALSE;
-  $handler->display->display_options['filters']['tid']['type'] = 'select';
-  $handler->display->display_options['filters']['tid']['vocabulary'] = 'vocabulary_1';
+  $handler->display->display_options['filters']['term_node_tid_depth']['group'] = 1;
+  $handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator_id'] = 'term_node_tid_depth_op';
+  $handler->display->display_options['filters']['term_node_tid_depth']['expose']['label'] = 'Has taxonomy terms (with depth)';
+  $handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator'] = 'term_node_tid_depth_op';
+  $handler->display->display_options['filters']['term_node_tid_depth']['expose']['identifier'] = 'term_node_tid_depth';
+  $handler->display->display_options['filters']['term_node_tid_depth']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+  );
+  $handler->display->display_options['filters']['term_node_tid_depth']['type'] = 'select';
+  $handler->display->display_options['filters']['term_node_tid_depth']['vocabulary'] = 'vocabulary_1';
+  $handler->display->display_options['filters']['term_node_tid_depth']['hierarchy'] = 1;
+  $handler->display->display_options['filters']['term_node_tid_depth']['depth'] = '0';
+  /* Filter criterion: Content: Published or admin */
+  $handler->display->display_options['filters']['status_extra']['id'] = 'status_extra';
+  $handler->display->display_options['filters']['status_extra']['table'] = 'node';
+  $handler->display->display_options['filters']['status_extra']['field'] = 'status_extra';
+  $handler->display->display_options['filters']['status_extra']['group'] = 1;
+  $handler->display->display_options['filters']['status_extra']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'sa' => 'sa',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 2;
+  /* Filter criterion: Content: Published or admin */
+  $handler->display->display_options['filters']['status_extra_1']['id'] = 'status_extra_1';
+  $handler->display->display_options['filters']['status_extra_1']['table'] = 'node';
+  $handler->display->display_options['filters']['status_extra_1']['field'] = 'status_extra';
+  $handler->display->display_options['filters']['status_extra_1']['group'] = 2;
   $translatables['drupalorg_security_announcements'] = array(
     t('Defaults'),
     t('Security advisories'),
@@ -249,6 +292,7 @@ function drupalorg_security_advisories_views_default_views() {
     t('Block - All advisories'),
     t('All security advisories and announcements'),
     t('This block contains Core, Contrib and PSA'),
+    t('Has taxonomy terms (with depth)'),
   );
   $export['drupalorg_security_announcements'] = $view;
 
