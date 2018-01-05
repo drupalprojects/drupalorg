@@ -259,6 +259,10 @@ function drupalorg_issues_strongarm() {
             'weight' => '2',
             'visible' => FALSE,
           ),
+          'issuemetadata' => array(
+            'weight' => '60',
+            'visible' => TRUE,
+          ),
         ),
         'project_issue_created' => array(
           'default' => array(
@@ -281,6 +285,10 @@ function drupalorg_issues_strongarm() {
             'weight' => '3',
             'visible' => FALSE,
           ),
+          'issuemetadata' => array(
+            'weight' => '80',
+            'visible' => TRUE,
+          ),
         ),
         'project_issue_updated' => array(
           'default' => array(
@@ -302,6 +310,10 @@ function drupalorg_issues_strongarm() {
           'related_content' => array(
             'weight' => '5',
             'visible' => FALSE,
+          ),
+          'issuemetadata' => array(
+            'weight' => '90',
+            'visible' => TRUE,
           ),
         ),
       ),

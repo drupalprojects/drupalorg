@@ -1174,9 +1174,9 @@ function drupalorg_issues_field_default_field_instances() {
       ),
       'issuemetadata' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
+        'module' => 'project_issue',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
+        'type' => 'taxonomy_term_reference_with_description',
         'weight' => 7,
       ),
       'nodechanges' => array(
