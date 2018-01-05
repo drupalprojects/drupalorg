@@ -184,7 +184,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
   /* Field: Indexed Node: Has new content */
   $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
@@ -732,7 +731,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Title';
   $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['title']['alter']['text'] = '[field_project]: [title]';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 0;
@@ -961,7 +959,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
   /* Field: Indexed Node: Has new content */
   $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
@@ -1548,7 +1545,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 0;
   /* Field: Indexed Node: Date created */
   $handler->display->display_options['fields']['created']['id'] = 'created';
@@ -1806,7 +1802,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
   /* Field: Indexed Node: Has new content */
   $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
@@ -2220,7 +2215,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 0;
   /* Field: Indexed Node: Date created */
   $handler->display->display_options['fields']['created']['id'] = 'created';
@@ -2462,7 +2456,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
   /* Field: Indexed Node: Has new content */
   $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
@@ -3192,7 +3185,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 0;
   /* Field: Indexed Node: Date created */
   $handler->display->display_options['fields']['created']['id'] = 'created';
@@ -3460,7 +3452,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
   /* Field: Indexed Node: Has new content */
   $handler->display->display_options['fields']['has_new_content']['id'] = 'has_new_content';
@@ -4016,7 +4007,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 0;
   /* Field: Indexed Node: Date created */
   $handler->display->display_options['fields']['created']['id'] = 'created';
@@ -4163,7 +4153,6 @@ function drupalorg_searchapi_issue_views_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_project_issues';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
   /* Field: Indexed Node: Status */
   $handler->display->display_options['fields']['field_issue_status']['id'] = 'field_issue_status';
