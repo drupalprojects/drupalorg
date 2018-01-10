@@ -4064,22 +4064,15 @@ function drupalorg_user_view($account, $view_mode) {
       ->propertyCondition('title', $company_titles, 'IN');
     $result = $query->execute();
 
-    $company_nodes = array();
-    if (isset($result['node'])) {
-      // Index company nodes by title.
-      foreach (node_load_multiple(array_keys($result['node'])) as $node) {
-        $company_nodes[$node->title] = $node;
-      }
-    }
     $companies_worked_for = array();
     $current_companies = array();
     $account->content['field_organizations']['#title'] = t('Current Role(s)');
     foreach ($company_titles as $n => $title) {
       $collection_id = $wrapper->field_organizations[$n]->getIdentifier();
 
-      if (isset($company_nodes[$title])) {
+      if ($wrapper->field_organizations[$n]->field_organization_reference->value()) {
         // Replace values with links to organization pages.
-        $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#markup'] = l($title, 'node/' . $company_nodes[$title]->nid);
+        $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#markup'] = l($title, 'node/' . $wrapper->field_organizations[$n]->field_organization_reference->raw());
       }
 
       if ($wrapper->field_organizations[$n]->field_current->value()) {
@@ -4087,16 +4080,14 @@ function drupalorg_user_view($account, $view_mode) {
         $current_companies[$title] = TRUE;
 
         // Add logo, if it exists.
-        if (isset($company_nodes[$title])) {
+        if ($wrapper->field_organizations[$n]->field_organization_reference->value()) {
           if ($wrapper->field_organizations[$n]->field_organization_reference->field_logo->value()) {
-            $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0] = field_view_value('node', $company_nodes[$title], 'field_logo', $wrapper->field_organizations[$n]->field_organization_reference->field_logo->value());
+            $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0] = field_view_value('node', $wrapper->field_organizations[$n]->field_organization_reference->value(), 'field_logo', $wrapper->field_organizations[$n]->field_organization_reference->field_logo->value());
             $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#image_style'] = 'grid-2';
-            $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#path']['path'] = 'node/' . $company_nodes[$title]->nid;
+            $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#path']['path'] = 'node/' . $wrapper->field_organizations[$n]->field_organization_reference->raw();
             $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#item']['alt'] = $title;
           }
-        }
 
-        if ($wrapper->field_organizations[$n]->field_organization_reference->value()) {
           // Organization Memberships and Supporting Partner/Technology and Hosting Supporters
           if ($wrapper->field_organizations[$n]->field_organization_reference->field_org_membership_status->value()) {
             $account->content['drupalorg_membership'][] = array(
