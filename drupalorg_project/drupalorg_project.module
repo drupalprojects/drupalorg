@@ -1980,7 +1980,7 @@ function _drupalorg_project_issue_credit_add(&$form_state) {
           $form_state['node']->drupalorg_credit_self = TRUE;
         }
         else {
-          // Save initial issue comment.
+          // Save comment for credit assignment.
           $node = node_load($form_state['node']->nid, NULL, TRUE);
           $node->nodechanges_comment['comment_body'][LANGUAGE_NONE][0] = [
             'value' => t('!maintainer credited !name.', [
