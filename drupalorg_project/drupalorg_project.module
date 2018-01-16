@@ -567,7 +567,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           }
 
           // Keep track of the last time a maintainer commented.
-          if (isset($form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$comment->uid]) && $form_state['node']->field_project[LANGUAGE_NONE][0]['entity']->project['maintainers'][$comment->uid]['permissions']['write to vcs']) {
+          if (isset($node_wrapper->field_project->value()->project['maintainers'][$comment->uid]) && $node_wrapper->field_project->value()->project['maintainers'][$comment->uid]['permissions']['write to vcs']) {
             $last_maintainer_comment = max($last_maintainer_comment, $comment->created);
           }
         }
