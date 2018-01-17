@@ -30,5 +30,16 @@
     'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '576466256018464');
     fbq('track', 'PageView');
+
+    // LinkedIn
+    _linkedin_data_partner_id = "188468";
+    (function () {
+        var s = document.getElementsByTagName("script")[0];
+        var b = document.createElement("script");
+        b.type = "text/javascript";
+        b.async = true;
+        b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+        s.parentNode.insertBefore(b, s);
+    })
   }
 })();
