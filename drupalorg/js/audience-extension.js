@@ -40,6 +40,6 @@
         b.async = true;
         b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
         s.parentNode.insertBefore(b, s);
-    })
+    })();
   }
 })();
