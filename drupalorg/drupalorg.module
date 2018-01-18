@@ -569,9 +569,6 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
           switch ($field['field_name']) {
             case 'field_organization_list_rule':
             case 'field_organization_training_list':
-            case 'field_organization_hosting_level':
-            case 'field_organization_hosting_last':
-            case 'field_organization_hosting_by':
             case 'field_organization_security':
             case 'field_org_services_issue':
             case 'field_org_train_issue':
