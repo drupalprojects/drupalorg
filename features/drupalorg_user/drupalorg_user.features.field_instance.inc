@@ -1115,6 +1115,7 @@ function drupalorg_user_field_default_field_instances() {
       'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
+        'configurable_class' => 0,
         'configurable_title' => 0,
         'rel' => 'nofollow',
         'target' => 'default',
@@ -1123,10 +1124,10 @@ function drupalorg_user_field_default_field_instances() {
       'display' => array(
         'url_cutoff' => 80,
       ),
-      'enable_tokens' => 1,
+      'enable_tokens' => 0,
       'rel_remove' => 'default',
       'title' => 'none',
-      'title_label_use_field_label' => FALSE,
+      'title_label_use_field_label' => 0,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
