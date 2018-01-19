@@ -50,7 +50,7 @@ function drupalorg_marketing_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'image_image',
-      'weight' => 4,
+      'weight' => 5,
     ),
   );
 
@@ -66,7 +66,7 @@ function drupalorg_marketing_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'fieldable_panels_pane',
@@ -85,6 +85,41 @@ function drupalorg_marketing_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance: 'fieldable_panels_pane-cta-field_cta_body_2'.
+  $field_instances['fieldable_panels_pane-cta-field_cta_body_2'] = array(
+    'bueditor_profile' => -1,
+    'bundle' => 'cta',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'For CTA styles that include a second block of text, such as the Full width - 2 column style',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'fieldable_panels_pane',
+    'field_name' => 'field_cta_body_2',
+    'label' => 'Body 2',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 2,
     ),
   );
 
@@ -128,7 +163,7 @@ function drupalorg_marketing_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'image_image',
-      'weight' => 3,
+      'weight' => 4,
     ),
   );
 
@@ -164,7 +199,7 @@ function drupalorg_marketing_field_default_field_instances() {
       'display' => array(
         'url_cutoff' => 80,
       ),
-      'enable_tokens' => 1,
+      'enable_tokens' => 0,
       'rel_remove' => 'default',
       'title' => 'optional',
       'title_label_use_field_label' => 0,
@@ -179,7 +214,7 @@ function drupalorg_marketing_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 2,
+      'weight' => 3,
     ),
   );
 
@@ -215,7 +250,7 @@ function drupalorg_marketing_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 6,
+      'weight' => 7,
     ),
   );
 
@@ -250,7 +285,7 @@ function drupalorg_marketing_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 5,
+      'weight' => 6,
     ),
   );
 
@@ -258,6 +293,8 @@ function drupalorg_marketing_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Background');
   t('Body');
+  t('Body 2');
+  t('For CTA styles that include a second block of text, such as the Full width - 2 column style');
   t('Graphic');
   t('Link');
   t('Secondary style');
