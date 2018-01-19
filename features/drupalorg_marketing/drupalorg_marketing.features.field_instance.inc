@@ -88,6 +88,41 @@ function drupalorg_marketing_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'fieldable_panels_pane-cta-field_cta_body_2'.
+  $field_instances['fieldable_panels_pane-cta-field_cta_body_2'] = array(
+    'bueditor_profile' => -1,
+    'bundle' => 'cta',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'For CTA styles that include a second block of text, such as the Full width - 2 column style',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'fieldable_panels_pane',
+    'field_name' => 'field_cta_body_2',
+    'label' => 'Body 2',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 2,
+    ),
+  );
+
   // Exported field_instance: 'fieldable_panels_pane-cta-field_cta_graphic'.
   $field_instances['fieldable_panels_pane-cta-field_cta_graphic'] = array(
     'bundle' => 'cta',
@@ -258,6 +293,8 @@ function drupalorg_marketing_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Background');
   t('Body');
+  t('Body 2');
+  t('For CTA styles that include a second block of text, such as the Full width - 2 column style');
   t('Graphic');
   t('Link');
   t('Secondary style');
