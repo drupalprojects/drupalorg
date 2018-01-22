@@ -1370,108 +1370,6 @@ function drupalorg_marketplace_field_default_field_instances() {
     'widget_type' => 'optionwidgets_buttons',
   );
 
-  // Exported field_instance: 'node-organization-field_organization_security'.
-  $field_instances['node-organization-field_organization_security'] = array(
-    'bundle' => 'organization',
-    'default_value' => array(
-      0 => array(
-        'value' => '',
-        '_error_element' => 'default_value_widget][field_organization_security][0][value',
-      ),
-    ),
-    'deleted' => 0,
-    'description' => 'Specify the date hosting provider passed security review. Format: \'passed on Month Day, Year\'',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 7,
-      ),
-      'full' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 14,
-      ),
-      'issuemetadata' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'nodechanges' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'print' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 14,
-      ),
-      'related_content' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 5,
-      ),
-      'rss' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 14,
-      ),
-      'search_index' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 14,
-      ),
-      'search_result' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 14,
-      ),
-      'teaser' => array(
-        'label' => 'inline',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_organization_security',
-    'label' => 'Security review',
-    'required' => FALSE,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'weight' => 14,
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'default_value_php' => NULL,
-        'rows' => 5,
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 16,
-    ),
-    'widget_type' => 'text_textfield',
-  );
-
   // Exported field_instance:
   // 'node-organization-field_organization_technologies'.
   $field_instances['node-organization-field_organization_technologies'] = array(
@@ -2108,11 +2006,9 @@ function drupalorg_marketplace_field_default_field_instances() {
   t('Organization description');
   t('Organization type');
   t('Sectors');
-  t('Security review');
   t('Services');
   t('Services issue');
   t('Services listing');
-  t('Specify the date hosting provider passed security review. Format: \'passed on Month Day, Year\'');
   t('Such as development, theming, design, training, or hosting.');
   t('Supporting Technologies listing');
   t('The url for your trainings landing page (the page specifically for Drupal trainings preferred). This will be shown in the Training listing only.');
