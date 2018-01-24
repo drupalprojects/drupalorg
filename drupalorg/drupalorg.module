@@ -3223,6 +3223,20 @@ function drupalorg_node_view($node, $view_mode = 'full') {
           ))
         );
       }
+      elseif (isset($organization_support['technology_signature'])) {
+        $content['intro']['association_technology_supporter'] = array(
+          '#markup' => l(
+            theme('image', array(
+              'path' => drupal_get_path('module', 'drupalorg') . '/images/association_technology_signature_badge.svg',
+              'alt' => t('Drupal Association Signature Technology Supporter badge'),
+            )), 'https://www.drupal.org/association/programs/technology-supporter', array(
+            'html' => TRUE,
+            'attributes' => array(
+              'title' => t('Drupal Association Signature Technology Supporter'),
+            ),
+          ))
+        );
+      }
       if (isset($organization_support['hosting'])) {
         $content['intro']['association_hosting_partner'] = array(
           '#markup' => l(
@@ -4109,6 +4123,11 @@ function drupalorg_user_view($account, $view_mode) {
           if (isset($organization_support['technology_premium'])) {
             $account->content['drupalorg_membership'][] = array(
               '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/programs/technology-supporter"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_prem_tech_sp_badge.svg') . '" alt="' . t('Drupal Association Premium Technology Supporter') . '" /></a></div></div>',
+            );
+          }
+          elseif (isset($organization_support['technology_signature'])) {
+            $account->content['drupalorg_membership'][] = array(
+              '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/programs/technology-supporter"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_technology_signature_badge.svg') . '" alt="' . t('Drupal Association Signature Technology Supporter') . '" /></a></div></div>',
             );
           }
           if (isset($organization_support['hosting'])) {
