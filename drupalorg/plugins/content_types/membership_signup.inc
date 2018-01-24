@@ -70,9 +70,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     '#required' => TRUE,
     '#attributes' => ['class' => ['container-inline']],
     'usd' => [
-      '#suffix' => t('or')
-      // EUR remains on CiviCRM for now.
-      . ' ' . l(t('Donate in Euro'), 'https://assoc.drupal.org/civicrm/contribute/transact?reset=1&id=29', ['external' => TRUE, 'attributes' => ['class' => ['action-button']]]),
+      '#suffix' => t('or'),
       '#attributes' => ['class' => ['element-invisible', 'toggle-button']],
     ],
     'eur' => [
@@ -80,6 +78,8 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     ],
   ];
   if ($conf['membership_type'] === 'donation') {
+    // EUR remains on CiviCRM for now.
+    $form['currency']['usd']['#suffix'] .= ' ' . l(t('Donate in Euro'), 'https://assoc.drupal.org/civicrm/contribute/transact?reset=1&id=29', ['external' => TRUE, 'attributes' => ['class' => ['action-button']]]);
     $form['currency']['#options'] = [
       'usd' => t('Donate in U.S. Dollars'),
       //'eur' => t('Donate in Euro'),
@@ -117,9 +117,12 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     ];
   }
   else {
+    // EUR remains on CiviCRM for now.
+    $form['currency']['usd']['#suffix'] .= ' ' . l(t('Donate in Euro'), 'https://assoc.drupal.org/civicrm/contribute/transact?reset=1&id=1', ['external' => TRUE, 'attributes' => ['class' => ['action-button']]]);
     $form['currency']['#options'] = [
       'usd' => t('Join with U.S. Dollars'),
-      'eur' => t('Join with Euro'),
+      //'eur' => t('Join with Euro'),
+      'eur' => '',
     ];
     $form['amount_usd'] = [
       '#type' => 'radios',
@@ -134,6 +137,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
         ],
       ],
     ];
+    /*
     $form['amount_eur'] = [
       '#type' => 'radios',
       '#title' => t('Membership gift level'),
@@ -147,6 +151,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
         ],
       ],
     ];
+    */
     $form['recur'] = [
       '#type' => 'checkbox',
       '#title' => t('Renew my membership automatically every year'),
