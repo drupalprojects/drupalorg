@@ -29,6 +29,7 @@ function drupalorg_supporters_field_default_field_bases() {
         'supporting_signature' => 'Signature Supporting Partner',
         'supporting_premium' => 'Premium Supporting Partner',
         'supporting' => 'Supporting Partner',
+        'technology_signature' => 'Signature Technology Supporter',
         'technology_premium' => 'Premium Technology Supporter',
         'technology' => 'Technology Supporter',
         'hosting_signature' => 'Signature Hosting Supporter',
