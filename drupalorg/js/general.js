@@ -466,4 +466,75 @@
       }
     }
   };
+
+  Drupal.behaviors.hosting = {
+    attach: function (context) {
+      var block = document.getElementById('block-drupalorg-hosting-filter');
+      if (block === null) {
+        return;
+      }
+      // Hide non-present terms.
+      var listings = document.querySelectorAll('.view-id-hosting li'),
+        classes = [],
+        links = block.querySelectorAll('.filter a');
+      for (var i = 0; i < listings.length; i += 1) {
+        for (var j = 0; j < listings[i].classList.length; j += 1) {
+          classes.push(listings[i].classList.item(j));
+        }
+      }
+      for (var i = 0; i < links.length; i += 1) {
+        for (var j = 0; j < links[i].classList.length; j += 1) {
+          if (/^term-/.test(links[i].classList.item(j))) {
+            if (classes.indexOf(links[i].classList.item(j)) < 0) {
+              links[i].parentElement.classList.add('element-invisible');
+            }
+            break;
+          }
+        }
+      }
+      // Override links.
+      block.addEventListener('click', function (e) {
+        var match, reallyActive, classes = [], show;
+        for (var i = 0; i < e.target.classList.length; i += 1) {
+          if (/^term-/.test(e.target.classList.item(i))) {
+            e.target.classList.toggle('really-active');
+            // Find all active classes.
+            reallyActive = block.querySelectorAll('.really-active');
+            for (var j = 0; j < reallyActive.length; j += 1) {
+              for (var k = 0; k < reallyActive[j].classList.length; k += 1) {
+                if (/^term-/.test(reallyActive[j].classList.item(k))) {
+                  classes.push(reallyActive[j].classList.item(k));
+                  break;
+                }
+              }
+            }
+            for (var j = 0; j < listings.length; j += 1) {
+              if (classes.length > 0) {
+                // Filter list.
+                show = false;
+                for (var k = 0; k < listings[j].classList.length; k += 1) {
+                  if (classes.indexOf(listings[j].classList.item(k)) >= 0) {
+                    show = true;
+                    break;
+                  }
+                }
+              }
+              else {
+                // Show all.
+                show = true;
+              }
+              if (show) {
+                listings[j].classList.remove('element-invisible');
+              }
+              else {
+                listings[j].classList.add('element-invisible');
+              }
+            }
+            e.preventDefault();
+            return;
+          }
+        }
+      });
+    }
+  };
 })(jQuery);

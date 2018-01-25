@@ -708,6 +708,10 @@ function drupalorg_block_info() {
       'info' => t('Project star and notifications'),
       'cache' => DRUPAL_NO_CACHE,
     ],
+    'hosting-filter' => [
+      'info' => t('Hosting listing filters'),
+      'cache' => DRUPAL_NO_CACHE,
+    ],
   );
 }
 
@@ -971,6 +975,59 @@ function drupalorg_block_view($delta, $block = NULL) {
         return ['content' => $output];
       }
       break;
+
+    case 'hosting-filter':
+      $base_path = menu_get_item()['path'];
+      $content = [
+        'type' => [
+          '#theme' => 'item_list',
+          '#title' => t('Hosting type'),
+          '#items' => [],
+        ],
+        'sector' => [
+          '#theme' => 'item_list',
+          '#title' => t('Sector'),
+          '#items' => [],
+          '#attributes' => ['class' => 'filter'],
+        ],
+        'features' => [
+          '#theme' => 'item_list',
+          '#title' => t('Features'),
+          '#items' => [],
+          '#attributes' => ['class' => 'filter'],
+        ],
+        'location' => [
+          '#theme' => 'item_list',
+          '#title' => t('Server location'),
+          '#items' => [],
+          '#attributes' => ['class' => 'filter'],
+        ],
+      ];
+      foreach (field_read_field('field_hosting_type')['settings']['allowed_values'] as $key => $value) {
+        $content['type']['#items'][] = l($value, $base_path . '/' . $key);
+      }
+      if (current_path() !== $base_path) {
+        $content['type']['#items'][] = l(t('Show all'), $base_path);
+      }
+      foreach (['vocabulary_52' => 'location', 'vocabulary_50' => 'sector', 'hosting_features' => 'features'] as $vocabulary_name => $group) {
+        $query = new EntityFieldQuery();
+        foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load($vocabulary_name)->vid, 0, 1) as $term) {
+          $classes = ['term-' . $term->tid];
+          if (isset($_GET[$group]) && $_GET[$group] === $term->tid) {
+            $classes[] = 'really-active';
+          }
+          $content[$group]['#items'][] = l($term->name, current_path(), [
+            'attributes' => ['class' => $classes],
+            'query' => [$group => $term->tid],
+          ]);
+        }
+        if (isset($_GET[$group])) {
+          $content[$group]['#items'][] = l(t('Show all'), current_path(), [
+            'attributes' => ['class' => ['all-' . $group]],
+          ]);
+        }
+      }
+      return ['content' => $content];
   }
 }
 
@@ -3403,6 +3460,10 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         '#markup' => format_date($node->created, 'custom', 'Y-F-d', variable_get('date_default_timezone', @date_default_timezone_get())),
       ],
     ];
+  }
+  elseif ($node->type === 'hosting_listing') {
+    // Do not allow viewing individual hosting listings.
+    drupal_goto('hosting');
   }
 }
 
@@ -6279,7 +6340,7 @@ function drupalorg_process_filter_format($element) {
 
   // Progressively enable ckeditor for specific entities & bundles / CTs.
   if (isset($element['#entity_type'])) {
-    $bundles_to_enable = ['page', 'post', 'section', 'guide', 'documentation', 'forum'];
+    $bundles_to_enable = ['page', 'post', 'section', 'guide', 'documentation', 'forum', 'hosting_listing'];
 
     switch ($element['#entity_type']) {
       case 'node':
