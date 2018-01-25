@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Hosting listings feature.
+ */
+
+include_once 'drupalorg_hosting_listings.features.inc';
