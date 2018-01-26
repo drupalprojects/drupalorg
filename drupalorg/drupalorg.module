@@ -1004,7 +1004,9 @@ function drupalorg_block_view($delta, $block = NULL) {
         ],
       ];
       foreach (field_read_field('field_hosting_type')['settings']['allowed_values'] as $key => $value) {
-        $content['type']['#items'][] = l($value, $base_path . '/' . $key);
+        if ($key !== 'all') {
+          $content['type']['#items'][] = l($value, $base_path . '/' . $key);
+        }
       }
       if (current_path() !== $base_path) {
         $content['type']['#items'][] = l(t('Show all'), $base_path);
