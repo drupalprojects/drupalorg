@@ -2208,6 +2208,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'create hosting_listing content'.
+  $permissions['create hosting_listing content'] = array(
+    'name' => 'create hosting_listing content',
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'create messages'.
   $permissions['create messages'] = array(
     'name' => 'create messages',
@@ -2468,6 +2477,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'delete any hosting_listing content'.
+  $permissions['delete any hosting_listing content'] = array(
+    'name' => 'delete any hosting_listing content',
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'delete any organization content'.
   $permissions['delete any organization content'] = array(
     'name' => 'delete any organization content',
@@ -2671,6 +2689,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'delete own hosting_listing content'.
+  $permissions['delete own hosting_listing content'] = array(
+    'name' => 'delete own hosting_listing content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'delete own organization content'.
   $permissions['delete own organization content'] = array(
     'name' => 'delete own organization content',
@@ -2815,6 +2840,13 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
     ),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'delete terms in hosting_features'.
+  $permissions['delete terms in hosting_features'] = array(
+    'name' => 'delete terms in hosting_features',
+    'roles' => array(),
     'module' => 'taxonomy',
   );
 
@@ -3094,6 +3126,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit any hosting_listing content'.
+  $permissions['edit any hosting_listing content'] = array(
+    'name' => 'edit any hosting_listing content',
+    'roles' => array(
+      'content administrator' => 'content administrator',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit any organization content'.
   $permissions['edit any organization content'] = array(
     'name' => 'edit any organization content',
@@ -3339,6 +3380,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit own hosting_listing content'.
+  $permissions['edit own hosting_listing content'] = array(
+    'name' => 'edit own hosting_listing content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit own organization content'.
   $permissions['edit own organization content'] = array(
     'name' => 'edit own organization content',
@@ -3477,6 +3525,13 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
     ),
+    'module' => 'taxonomy',
+  );
+
+  // Exported permission: 'edit terms in hosting_features'.
+  $permissions['edit terms in hosting_features'] = array(
+    'name' => 'edit terms in hosting_features',
+    'roles' => array(),
     'module' => 'taxonomy',
   );
 
