@@ -1,6 +1,8 @@
 name = Hosting listings
 core = 7.x
 package = Features
+version = 7.x-3.x-dev
+project = drupalorg
 dependencies[] = ctools
 dependencies[] = drupalorg_marketplace
 dependencies[] = features
@@ -12,6 +14,7 @@ dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = text
 dependencies[] = views
+datestamp = 1516986147
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:2

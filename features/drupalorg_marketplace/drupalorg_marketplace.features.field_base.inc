@@ -118,6 +118,7 @@ function drupalorg_marketplace_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
+        'all' => 'All hosting types',
         'shared' => 'Shared',
         'managed' => 'Managed/Enterprise',
         'cloud' => 'Cloud',

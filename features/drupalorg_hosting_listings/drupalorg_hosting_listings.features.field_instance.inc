@@ -16,7 +16,7 @@ function drupalorg_hosting_listings_field_default_field_instances() {
     'bundle' => 'hosting_listing',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '<em>Do not include links</em> the whole ad is clickable. Highlight calls to action with bold.',
+    'description' => '<em>Do not include links</em>, the whole ad is clickable. Highlight calls to action with bold.',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -190,9 +190,13 @@ function drupalorg_hosting_listings_field_default_field_instances() {
   // Exported field_instance: 'node-hosting_listing-field_hosting_type'.
   $field_instances['node-hosting_listing-field_hosting_type'] = array(
     'bundle' => 'hosting_listing',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'value' => 'all',
+      ),
+    ),
     'deleted' => 0,
-    'description' => 'For featured providers, select only one.',
+    'description' => 'Featured position and ad copy apply to all pages. For different settings in another type, create a separate listing, and uncheck “All hosting types” to remove duplicates from the main page.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -497,11 +501,11 @@ function drupalorg_hosting_listings_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('<em>Do not include links</em> the whole ad is clickable. Highlight calls to action with bold.');
+  t('<em>Do not include links</em>, the whole ad is clickable. Highlight calls to action with bold.');
   t('Ad copy');
   t('Featured');
+  t('Featured position and ad copy apply to all pages. For different settings in another type, create a separate listing, and uncheck “All hosting types” to remove duplicates from the main page.');
   t('Features');
-  t('For featured providers, select only one.');
   t('Link');
   t('Logo');
   t('Sectors');

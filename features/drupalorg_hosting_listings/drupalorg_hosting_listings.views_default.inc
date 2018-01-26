@@ -64,7 +64,7 @@ function drupalorg_hosting_listings_views_default_views() {
   $handler->display->display_options['fields']['body']['label'] = '';
   $handler->display->display_options['fields']['body']['exclude'] = TRUE;
   $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
-  /* Field: Content: Website */
+  /* Field: Content: Link */
   $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
   $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
   $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
@@ -120,11 +120,14 @@ function drupalorg_hosting_listings_views_default_views() {
   $handler->display->display_options['sorts']['field_featured_value']['id'] = 'field_featured_value';
   $handler->display->display_options['sorts']['field_featured_value']['table'] = 'field_data_field_featured';
   $handler->display->display_options['sorts']['field_featured_value']['field'] = 'field_featured_value';
-  /* Contextual filter: Content: Hosting type (field_hosting_type) */
+  /* Contextual filter: Content: Type (field_hosting_type) */
   $handler->display->display_options['arguments']['field_hosting_type_value']['id'] = 'field_hosting_type_value';
   $handler->display->display_options['arguments']['field_hosting_type_value']['table'] = 'field_data_field_hosting_type';
   $handler->display->display_options['arguments']['field_hosting_type_value']['field'] = 'field_hosting_type_value';
+  $handler->display->display_options['arguments']['field_hosting_type_value']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_hosting_type_value']['exception']['value'] = '';
   $handler->display->display_options['arguments']['field_hosting_type_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_hosting_type_value']['default_argument_options']['argument'] = 'all';
   $handler->display->display_options['arguments']['field_hosting_type_value']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['field_hosting_type_value']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['field_hosting_type_value']['summary_options']['items_per_page'] = '25';
@@ -449,7 +452,7 @@ function drupalorg_hosting_listings_views_default_views() {
   $handler->display->display_options['fields']['body']['label'] = '';
   $handler->display->display_options['fields']['body']['exclude'] = TRUE;
   $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
-  /* Field: Content: Website */
+  /* Field: Content: Link */
   $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
   $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
   $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
@@ -706,10 +709,11 @@ function drupalorg_hosting_listings_views_default_views() {
   $handler->display->display_options['fields']['field_featured']['id'] = 'field_featured';
   $handler->display->display_options['fields']['field_featured']['table'] = 'field_data_field_featured';
   $handler->display->display_options['fields']['field_featured']['field'] = 'field_featured';
-  /* Field: Content: Hosting type */
+  /* Field: Content: Type */
   $handler->display->display_options['fields']['field_hosting_type']['id'] = 'field_hosting_type';
   $handler->display->display_options['fields']['field_hosting_type']['table'] = 'field_data_field_hosting_type';
   $handler->display->display_options['fields']['field_hosting_type']['field'] = 'field_hosting_type';
+  $handler->display->display_options['fields']['field_hosting_type']['label'] = 'Hosting type';
   $handler->display->display_options['fields']['field_hosting_type']['group_columns'] = array(
     'bundle' => 'bundle',
   );
