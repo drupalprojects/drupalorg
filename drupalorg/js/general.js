@@ -470,9 +470,10 @@
   Drupal.behaviors.hosting = {
     attach: function (context) {
       var block = document.getElementById('block-drupalorg-hosting-filter');
-      if (block === null) {
+      if (block === null || block.classList.contains('drupalorg-processed')) {
         return;
       }
+      block.classList.add('drupalorg-processed');
       // Hide non-present terms.
       var listings = document.querySelectorAll('.view-id-hosting li'),
         classes = [],
