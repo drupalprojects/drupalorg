@@ -495,7 +495,7 @@
       }
       // Override links.
       block.addEventListener('click', function (e) {
-        var match, reallyActive, classes = [], show;
+        var match, reallyActive, classes = [], show, matched, remaining = [];
         for (var i = 0; i < e.target.classList.length; i += 1) {
           if (/^term-/.test(e.target.classList.item(i))) {
             e.target.classList.toggle('really-active');
@@ -512,13 +512,11 @@
             for (var j = 0; j < listings.length; j += 1) {
               if (classes.length > 0) {
                 // Filter list.
-                show = false;
+                matched = 0;
                 for (var k = 0; k < listings[j].classList.length; k += 1) {
-                  if (classes.indexOf(listings[j].classList.item(k)) >= 0) {
-                    show = true;
-                    break;
-                  }
+                  matched += classes.indexOf(listings[j].classList.item(k)) >= 0;
                 }
+                show = matched === classes.length;
               }
               else {
                 // Show all.
@@ -526,9 +524,31 @@
               }
               if (show) {
                 listings[j].classList.remove('element-invisible');
+                for (var k = 0; k < listings[j].classList.length; k += 1) {
+                  if (classes.indexOf(listings[j].classList.item(k)) === -1 && remaining.indexOf(listings[j].classList.item(k)) === -1) {
+                    remaining.push(listings[j].classList.item(k))
+                  }
+                }
               }
               else {
                 listings[j].classList.add('element-invisible');
+              }
+            }
+            // Disable checkboxes that would diminish the remaining hosts to zero.
+            for (var i = 0; i < links.length; i += 1) {
+              if (links[i].parentElement.classList.contains('element-invisible')) {
+                continue;
+              }
+              for (var j = 0; j < links[i].classList.length; j += 1) {
+                if (/^term-/.test(links[i].classList.item(j))) {
+                  if (remaining.indexOf(links[i].classList.item(j)) >= 0) {
+                    links[i].classList.remove('disabled');
+                  }
+                  else {
+                    links[i].classList.add('disabled');
+                  }
+                  break;
+                }
               }
             }
             e.preventDefault();
