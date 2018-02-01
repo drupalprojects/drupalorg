@@ -700,6 +700,11 @@ function drupalorg_content_types_views_default_views() {
     'field_last_name' => 'field_last_name',
   );
   $handler->display->display_options['row_options']['hide_empty'] = TRUE;
+  /* Header: Global: Result summary */
+  $handler->display->display_options['header']['result']['id'] = 'result';
+  $handler->display->display_options['header']['result']['table'] = 'views';
+  $handler->display->display_options['header']['result']['field'] = 'result';
+  $handler->display->display_options['header']['result']['content'] = '<span class=\'individual-member-count\'>@total members</span>';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -960,6 +965,7 @@ function drupalorg_content_types_views_default_views() {
     t('‹ previous'),
     t('next ›'),
     t('last »'),
+    t('<span class=\'individual-member-count\'>@total members</span>'),
     t('No members found.'),
     t('term from field_areas_of_expertise'),
     t('<small>Member for [field_da_join_date]</small>'),
