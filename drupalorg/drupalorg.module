@@ -3629,6 +3629,34 @@ function drupalorg_fastly_purge_url($url) {
 }
 
 /**
+ * This function exists to purge subsections of urls from fastly.  Right now
+ * it's primary purpose is cgit, but it could someday be extended to other
+ * services.
+ *
+ * @todo: get the serviceid's from fast.ly api: https://docs.fastly.com/api/config#service_74d98f7e5d018256e44d1cf820388ef8
+ * @todo: take in a service identifier and allow key purging of any service.
+ *
+ * @param $key - the surrogate key that we wish to purge from fast.ly
+ */
+function drupalorg_fastly_purge_key($key) {
+  $fastly_endpoint = 'https://api.fastly.com';
+  $serviceid = variable_get('drupalorg_fastly_drupalcode_serviceid', FALSE);
+
+  $purge_url = "${fastly_endpoint}/service/${serviceid}/${key}";
+  if ($fastly_key = variable_get('drupalorg_fastly_key', FALSE)) {
+    $request = drupal_http_request($url, [
+      'method' => 'POST',
+      'headers' => [
+        'Fastly-Key' => $fastly_key,
+      ],
+    ]);
+    if (function_exists('dlm')) {
+      dlm($request);
+    }
+  }
+}
+
+/**
  * Run when inserting or updating a project node.
  */
 function _drupalorg_node_update_project($node) {
