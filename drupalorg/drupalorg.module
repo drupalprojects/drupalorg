@@ -3644,7 +3644,7 @@ function drupalorg_fastly_purge_key($key) {
 
   $purge_url = "${fastly_endpoint}/service/${serviceid}/${key}";
   if ($fastly_key = variable_get('drupalorg_fastly_key', FALSE)) {
-    $request = drupal_http_request($url, [
+    $request = drupal_http_request($purge_url, [
       'method' => 'POST',
       'headers' => [
         'Fastly-Key' => $fastly_key,
