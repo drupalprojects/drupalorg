@@ -1,6 +1,7 @@
 name = Drupal.org Version Control API integration
 description = "Drupal.org-specific plugins and customizations for Version Control API"
 package = Drupal.org
+dependencies[] = drupalorg
 dependencies[] = versioncontrol
 dependencies[] = versioncontrol_git
 dependencies[] = multiple_email
