@@ -10,6 +10,21 @@ function drupalorg_versioncontrol_ctools_plugin_directory($module, $plugin) {
 }
 
 /**
+ * Implements hook_versioncontrol_code_arrival().
+ *
+ * When something changes in the project, we need to purge cgit.
+ */
+function drupalorg_versioncontrol_versioncontrol_code_arrival(VersioncontrolRepository $repository, VersioncontrolEvent $event){
+  // Ignore events for disabled projects and non-Git repos.
+  if (!$repository instanceof VersioncontrolGitRepository) {
+    return;
+  }
+  // Purges everything in cgit for this project if it changes.
+  drupalorg_fastly_purge_key($repository->name);
+
+}
+
+/**
  * Return total number of commits in a given interval.
  *
  * @param $interval
