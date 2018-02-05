@@ -4662,12 +4662,8 @@ function drupalorg_has_new_content($node, array &$options, $name, $type, &$info)
  * @see entity_access(), drupalorg_entity_property_info_alter().
  */
 function _drupalorg_user_flag_access($op, $property, $entity_type, $entity) {
-  if ($op === 'view') {
-    foreach (debug_backtrace() as $trace) {
-      if ($trace['function'] === 'restws_handle_request') {
-        return FALSE;
-      }
-    }
+  if ($op === 'view' && menu_get_item()['page_callback'] === 'restws_page_callback') {
+    return FALSE;
   }
   return entity_metadata_user_access($op, $entity);
 }
