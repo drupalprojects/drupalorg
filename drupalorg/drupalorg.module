@@ -4632,6 +4632,23 @@ function drupalorg_entity_property_info_alter(&$info) {
     if (!$flag->global) {
       $info['user']['properties']['flag_' . $flag->name . '_flagged']['access callback'] = '_drupalorg_user_flag_access';
     }
+    switch ($flag->name) {
+      case 'drupalorg_node_spam':
+        foreach ($flag->types as $type) {
+          $info['node']['bundles'][$type]['properties']['flag_drupalorg_node_spam_user']['access callback'] = '_drupalorg_user_flag_access';
+        }
+        break;
+
+      case 'drupalorg_comment_spam':
+        foreach ($flag->types as $type) {
+          $info['comment']['bundles'][$type]['properties']['flag_drupalorg_comment_spam_user']['access callback'] = '_drupalorg_user_flag_access';
+        }
+        break;
+
+      case 'drupalorg_user_spam':
+        $info['user']['properties']['flag_drupalorg_user_spam_user']['access callback'] = '_drupalorg_user_flag_access';
+        break;
+    }
   }
 }
 
