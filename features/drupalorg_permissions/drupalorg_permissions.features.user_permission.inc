@@ -542,6 +542,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'administer association memberships',
     'roles' => array(
       'administrator' => 'administrator',
+      'association staff' => 'association staff',
     ),
     'module' => 'drupalorg',
   );

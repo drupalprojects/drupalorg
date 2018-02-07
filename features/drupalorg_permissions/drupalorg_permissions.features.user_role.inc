@@ -52,6 +52,12 @@ function drupalorg_permissions_user_default_roles() {
     'weight' => 0,
   );
 
+  // Exported role: association staff.
+  $roles['association staff'] = array(
+    'name' => 'association staff',
+    'weight' => 19,
+  );
+
   // Exported role: community.
   $roles['community'] = array(
     'name' => 'community',
