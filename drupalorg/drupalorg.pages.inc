@@ -420,9 +420,6 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
         'update_organization' => [],
         'organization' => [],
         'update_amount' => [
-          '#prefix' => '<p>' . t('On renewal you’ll be charged <strong>@amount</strong>', ['@amount' => _format_chargify_money($row)])
-          . '<br>' . l(t('View & update credit card'), 'https://' . $chargify_keys[$row->currency]['subdomain'] . '.chargify.com/update_payment/' . $row->subscription_id . '/' . substr(sha1('update_payment--' . $row->subscription_id . '--' . $chargify_keys[$row->currency]['shared_key']), 0, 10), ['external' => TRUE, 'attributes' => ['target' => '_blank']])
-          . '</p>',
           '#type' => 'checkbox',
           '#title' => t('Update membership gift level'),
           '#attributes' => ['class' => ['toggle', 'element-invisible']],
@@ -443,6 +440,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
             '#type' => 'submit',
             '#value' => t('Update membership gift level'),
             '#submit' => ['drupalorg_membership_form_submit_amount'],
+            '#element_validate' => ['drupalorg_membership_form_validate_current_user'],
           ],
         ],
         'recurring' => [],
@@ -498,6 +496,16 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
           ],
         ],
       ];
+      $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] = '<p>' . t('On renewal you’ll be charged <strong>@amount</strong>', ['@amount' => _format_chargify_money($row)]) . '<br>';
+      if ($GLOBALS['user']->uid === $account->uid) {
+        // Only allow the member themselves to do certain actions.
+        $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= l(t('View & update credit card'), 'https://' . $chargify_keys[$row->currency]['subdomain'] . '.chargify.com/update_payment/' . $row->subscription_id . '/' . substr(sha1('update_payment--' . $row->subscription_id . '--' . $chargify_keys[$row->currency]['shared_key']), 0, 10), ['external' => TRUE, 'attributes' => ['target' => '_blank']]);
+      }
+      else {
+        // Disable some actions for admins.
+        $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '<em>' . t('View & update credit card [must be done by member]') . '</em>';
+      }
+      $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '</p>';
       if ($base_product_handle === 'organization') {
         $form[$base_product_handle][$row->subscription_id]['update_organization'] = [
           '#type' => 'checkbox',
@@ -549,6 +557,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
             '#value' => t('Reactivate now'),
             '#suffix' => t('Your card will be charged @amount', ['@amount' => _format_chargify_money($row)]),
             '#submit' => ['drupalorg_membership_form_submit_reactivate'],
+            '#element_validate' => ['drupalorg_membership_form_validate_current_user'],
           ],
           '#suffix' => '</div>',
         ];
@@ -595,6 +604,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
               '#value' => t('Renew for 1 more year'),
               '#suffix' => t('Your card will be billed on @date', ['@date' => format_date($row->current_period_ends_at, 'custom', 'j F Y')]) . '</p>',
               '#submit' => ['drupalorg_membership_form_submit_extend'],
+              '#element_validate' => ['drupalorg_membership_form_validate_current_user'],
             ],
           ];
         }
@@ -603,6 +613,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
           '#type' => 'submit',
           '#value' => t('Switch to automatic renewal'),
           '#submit' => ['drupalorg_membership_form_submit_switch'],
+          '#element_validate' => ['drupalorg_membership_form_validate_current_user'],
           '#product_handle' => $row->product_handle . '-recur',
           '#suffix' => t('Never miss membership renewal') . '</p>',
         ];
@@ -623,6 +634,15 @@ function _format_chargify_money($row) {
   ];
 
   return $symbols[$row->currency] . number_format(floor($row->current_billing_amount_in_cents / 100)) . '.' . str_pad($row->current_billing_amount_in_cents % 100, 2, '0', STR_PAD_LEFT);
+}
+
+/**
+ * Only allow the user to update their own membership.
+ */
+function drupalorg_membership_form_validate_current_user($element, $form_state) {
+  if ($form_state['build_info']['args'][0]->uid !== $GLOBALS['user']->uid) {
+    form_set_error($element['#name'], t('This can only be done by the member themselves.'));
+  }
 }
 
 /**
