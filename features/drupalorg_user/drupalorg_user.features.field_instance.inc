@@ -212,7 +212,7 @@ function drupalorg_user_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 16,
+      'weight' => 17,
     ),
   );
 
@@ -278,6 +278,36 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_demographics'.
+  $field_instances['user-user-field_demographics'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'We have chosen these categories based on the <a href="http://www.isdnetwork.org/what-is-diversity.html">Big 8</a>, which is a list of cultural identifiers.  <a href="https://www.drupal.org/drupalorg/docs/user-accounts/demographic-information">Learn more about why we collect this type of data</a>.',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_demographics',
+    'label' => 'Underrepresented communities',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 16,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_distil_reg_botscore'.
   $field_instances['user-user-field_distil_reg_botscore'] = array(
     'bundle' => 'user',
@@ -289,7 +319,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 14,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -328,7 +358,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 9,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -363,7 +393,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 15,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -401,7 +431,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 7,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -439,7 +469,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 10,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -477,7 +507,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 13,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -515,7 +545,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 8,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -618,7 +648,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 17,
       ),
     ),
     'entity_type' => 'user',
@@ -735,7 +765,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 17,
+      'weight' => 18,
     ),
   );
 
@@ -781,7 +811,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 18,
       ),
     ),
     'entity_type' => 'user',
@@ -849,7 +879,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'user',
@@ -938,7 +968,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'url_external',
-      'weight' => 19,
+      'weight' => 20,
     ),
   );
 
@@ -981,7 +1011,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 19,
       ),
     ),
     'entity_type' => 'user',
@@ -1041,7 +1071,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 16,
       ),
     ),
     'entity_type' => 'user',
@@ -1073,7 +1103,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 12,
       ),
     ),
     'entity_type' => 'user',
@@ -1139,7 +1169,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 18,
+      'weight' => 19,
     ),
   );
 
@@ -1154,7 +1184,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 21,
       ),
     ),
     'entity_type' => 'user',
@@ -1238,6 +1268,8 @@ function drupalorg_user_field_default_field_instances() {
   t('Subscribe to');
   t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');
+  t('Underrepresented communities');
+  t('We have chosen these categories based on the <a href="http://www.isdnetwork.org/what-is-diversity.html">Big 8</a>, which is a list of cultural identifiers.  <a href="https://www.drupal.org/drupalorg/docs/user-accounts/demographic-information">Learn more about why we collect this type of data</a>.');
   t('Website(s)');
   t('Your general location may appear on the Drupal.org home page map, and potentially more future uses.');
 

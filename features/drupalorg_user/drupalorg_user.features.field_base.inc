@@ -370,6 +370,42 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
+  // Exported field_base: 'field_demographics'.
+  $field_bases['field_demographics'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_demographics',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'ability' => 'Ability',
+        'age' => 'Age',
+        'ethnicity' => 'Ethnicity',
+        'gender' => 'Gender',
+        'gender identity' => 'Gender',
+        'race' => 'Race',
+        'religion' => 'Religion',
+        'sexual orientation' => 'Sexual orientation',
+        'socio-economic status' => 'Socio-economic status/class',
+        'learning differences' => 'Learning differences',
+        'family composition' => 'Family composition',
+        'none' => 'None',
+        'prefer not to answer' => 'Prefer not to answer',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_distil_reg_botscore'.
   $field_bases['field_distil_reg_botscore'] = array(
     'active' => 1,
