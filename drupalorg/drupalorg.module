@@ -544,6 +544,8 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
             case 'field_subscribe_to':
             // Only show notes on edit.
             case 'field_notes':
+            // Only show demographic info to logged in user
+            case 'field_demographics':
               return FALSE;
           }
           break;
@@ -613,6 +615,10 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
 
             case 'field_notes':
               return user_access('administer users');
+
+            case 'field_demographics':
+              // Only you can see your selections.
+              return isset($entity->uid) && $entity->uid === $account->uid;
           }
       }
   }
@@ -2047,7 +2053,6 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
       'field_first_name',
       'field_last_name',
       'field_country',
-      'field_gender',
       'field_organizations',
       'picture',
       'timezone',
@@ -5246,7 +5251,7 @@ function drupalorg_welcome_page() {
 
   // Add the introductory text.
   $output .= '<p>' . t('You’ve joined Drupal.org - a home to a global community of passionate people. Whether you are new to open source or ready to change the world, welcome!') . '</p>';
-  $output .= '<p>' . t('This information will be public on your profile.') . '</p>';
+  $output .= '<p>' . t('Your name, country, organization, and job title will be publicly viewable on your profile.') . '</p>';
 
   // Load the user profile form.
   $form_state = array(
