@@ -544,6 +544,8 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
             case 'field_subscribe_to':
             // Only show notes on edit.
             case 'field_notes':
+            // Only show demographic info to logged in user
+            case 'field_demographics':
               return FALSE;
           }
           break;
@@ -613,6 +615,10 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
 
             case 'field_notes':
               return user_access('administer users');
+
+            case 'field_demographics':
+              // Only you can see your selections.
+              return isset($entity->uid) && $entity->uid === $account->uid;
           }
       }
   }
@@ -2040,6 +2046,11 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
       $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference = array();
     }
   }
+ // Remove field title and add some text about how the field data will be used
+  if (isset($form_state['drupalorg_welcome'])) {
+    $form['field_demographics'][LANGUAGE_NONE]['#prefix'] = '<div><strong>Please indicate any of the following underrepresented communities that you identify with. We have provided some examples of each, but these are not exhaustive - if you feel you identify, please mark the box.</strong></div><p> </p><p>This field will remain private, and will only be used to provide anonymized, aggregate data about the makeup of the Drupal community. </p>';
+    $form['field_demographics'][LANGUAGE_NONE]['#title'] = '';
+  }
 
   // Be welcoming.
   if (isset($form_state['drupalorg_welcome'])) {
@@ -2047,10 +2058,10 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
       'field_first_name',
       'field_last_name',
       'field_country',
-      'field_gender',
       'field_organizations',
       'picture',
       'timezone',
+      'field_demographics',
       'field_subscribe_to',
       'actions',
       // Without these, the user won't be updated.
@@ -2078,6 +2089,7 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
       'field_last_name' => 'group_left',
       'field_organizations' => 'group_left',
       'field_gender' => 'group_left',
+      'field_demographics' => 'group_left',
       'picture' => 'group_right',
       'timezone' => 'group_right',
       'field_subscribe_to' => 'group_right',
@@ -5246,7 +5258,7 @@ function drupalorg_welcome_page() {
 
   // Add the introductory text.
   $output .= '<p>' . t('You’ve joined Drupal.org - a home to a global community of passionate people. Whether you are new to open source or ready to change the world, welcome!') . '</p>';
-  $output .= '<p>' . t('This information will be public on your profile.') . '</p>';
+  $output .= '<p>' . t('Your name, country, organization, and job title will be publicly viewable on your profile.') . '</p>';
 
   // Load the user profile form.
   $form_state = array(
