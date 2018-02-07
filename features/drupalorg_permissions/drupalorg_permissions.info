@@ -220,6 +220,7 @@ features[user_permission][] = administer panelizer node guide defaults
 features[user_permission][] = administer panelizer node guide layout
 features[user_permission][] = administer panelizer node guide overview
 features[user_permission][] = administer panelizer node guide settings
+features[user_permission][] = administer panelizer node hosting_listing defaults
 features[user_permission][] = administer panelizer node organization defaults
 features[user_permission][] = administer panelizer node packaging_whitelist defaults
 features[user_permission][] = administer panelizer node page choice

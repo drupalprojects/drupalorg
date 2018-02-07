@@ -1257,6 +1257,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panelizer node hosting_listing defaults'.
+  $permissions['administer panelizer node hosting_listing defaults'] = array(
+    'name' => 'administer panelizer node hosting_listing defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panelizer node organization defaults'.
   $permissions['administer panelizer node organization defaults'] = array(
     'name' => 'administer panelizer node organization defaults',
