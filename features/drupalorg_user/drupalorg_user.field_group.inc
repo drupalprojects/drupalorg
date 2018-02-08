@@ -370,8 +370,9 @@ function drupalorg_user_field_group_info() {
       5 => 'field_gender',
       6 => 'field_languages',
       7 => 'field_social_links',
-      8 => 'picture',
-      9 => 'group_name',
+      8 => 'field_demographics',
+      9 => 'picture',
+      10 => 'group_name',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
