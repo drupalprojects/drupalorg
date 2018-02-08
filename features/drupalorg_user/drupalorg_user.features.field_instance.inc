@@ -283,13 +283,13 @@ function drupalorg_user_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'We have chosen these categories based on the <a href="http://www.isdnetwork.org/what-is-diversity.html">Big 8</a>, which is a list of cultural identifiers.  <a href="https://www.drupal.org/drupalorg/docs/user-accounts/demographic-information">Learn more about why we collect this type of data</a>.',
+    'description' => 'We have chosen these categories based on the <a href="http://www.isdnetwork.org/what-is-diversity.html" target="_blank">Big 8</a>, which is a list of cultural identifiers.  <a href="/drupalorg/docs/user-accounts/demographic-information" target="_blank">Learn more about why we collect this type of data</a>.',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
+        'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 22,
       ),
     ),
     'entity_type' => 'user',
@@ -304,7 +304,83 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 16,
+      'weight' => 15,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_distil_ip_prob'.
+  $field_instances['user-user-field_distil_ip_prob'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_distil_ip_prob',
+    'label' => 'Reported bad IP probability score',
+    'required' => FALSE,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 108,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_distil_ip_prob_country'.
+  $field_instances['user-user-field_distil_ip_prob_country'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_distil_ip_prob_country',
+    'label' => 'Reported bad IP probability country',
+    'required' => FALSE,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 109,
     ),
   );
 
@@ -319,7 +395,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -358,7 +434,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -393,7 +469,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -431,7 +507,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -469,7 +545,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -507,7 +583,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -545,7 +621,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -569,6 +645,44 @@ function drupalorg_user_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 105,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_distil_reg_zid'.
+  $field_instances['user-user-field_distil_reg_zid'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_distil_reg_zid',
+    'label' => 'Distil zid',
+    'required' => FALSE,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 110,
     ),
   );
 
@@ -648,7 +762,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 17,
+        'weight' => 6,
       ),
     ),
     'entity_type' => 'user',
@@ -697,7 +811,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 15,
+      'weight' => 16,
     ),
   );
 
@@ -811,7 +925,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 18,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'user',
@@ -879,7 +993,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 3,
       ),
     ),
     'entity_type' => 'user',
@@ -1011,7 +1125,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 8,
       ),
     ),
     'entity_type' => 'user',
@@ -1071,7 +1185,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 5,
       ),
     ),
     'entity_type' => 'user',
@@ -1103,7 +1217,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'user',
@@ -1184,7 +1298,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 21,
+        'weight' => 19,
       ),
     ),
     'entity_type' => 'user',
@@ -1237,6 +1351,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Distil Initial IP');
   t('Distil Suspicious User');
   t('Distil iid');
+  t('Distil zid');
   t('Drupal Contributions');
   t('Drupal Events');
   t('First or given name');
@@ -1262,6 +1377,8 @@ function drupalorg_user_field_default_field_instances() {
   t('Provide an overview of your Drupal contributions.');
   t('Reported Account Creation IP');
   t('Reported Account Creation User-Agent');
+  t('Reported bad IP probability country');
+  t('Reported bad IP probability score');
   t('Select Drupal events you attended or are planning to attend.');
   t('Select one or more languages you speak.');
   t('Social links');
@@ -1269,7 +1386,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Underrepresented communities');
-  t('We have chosen these categories based on the <a href="http://www.isdnetwork.org/what-is-diversity.html">Big 8</a>, which is a list of cultural identifiers.  <a href="https://www.drupal.org/drupalorg/docs/user-accounts/demographic-information">Learn more about why we collect this type of data</a>.');
+  t('We have chosen these categories based on the <a href="http://www.isdnetwork.org/what-is-diversity.html" target="_blank">Big 8</a>, which is a list of cultural identifiers.  <a href="/drupalorg/docs/user-accounts/demographic-information" target="_blank">Learn more about why we collect this type of data</a>.');
   t('Website(s)');
   t('Your general location may appear on the Drupal.org home page map, and potentially more future uses.');
 
