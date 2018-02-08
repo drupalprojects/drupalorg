@@ -2046,12 +2046,10 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
       $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference = array();
     }
   }
- // Remove field title and add some text about how the field data will be used
-  if (isset($form_state['drupalorg_welcome'])) {
-    $form['field_demographics'][LANGUAGE_NONE]['#prefix'] = '<div><strong>Please indicate any of the following underrepresented communities that you identify with. We have <a href="https://www.drupal.org/drupalorg/docs/user-accounts/demographic-information">provided some examples</a> of each, but these are not exhaustive - if you feel you identify, please mark the box.</strong></div><p> </p><p>This field will remain private, and will only be used to provide anonymized, aggregate data about the makeup of the Drupal community. </p>';
 
-    $form['field_demographics'][LANGUAGE_NONE]['#title'] = '';
-  }
+  // Remove field title and add some text about how the field data will be used.
+  $form['field_demographics'][LANGUAGE_NONE]['#title'] = 'Please indicate any of the following underrepresented communities that you identify with. We have <a href="/drupalorg/docs/user-accounts/demographic-information" target="_blank">provided some examples</a> of each, but these are not exhaustive—if you feel you identify, please mark the box.';
+  $form['field_demographics'][LANGUAGE_NONE]['ability']['#prefix'] = '<br><p>This field will remain private, and will only be used to provide anonymized, aggregate data about the makeup of the Drupal community.</p>';
 
   // Be welcoming.
   if (isset($form_state['drupalorg_welcome'])) {
