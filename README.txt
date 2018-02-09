@@ -28,4 +28,4 @@ Work from the `dev` branch, using feature branches named
 `{issue number}-{short-description}`, for example
 `2182993-api-breadcrumb-space`.
 
-See https://www.drupal.org/node/2406727 for more information.
+See https://www.drupal.org/node/2406727 for more informatio.
