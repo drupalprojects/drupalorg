@@ -466,7 +466,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
 
     if (empty($form_state['node']->nid)) { // New issues.
       if (($project = $node_wrapper->field_project->value()) && project_release_has_full_release($project)) {
-        drupal_set_message(t('<em><strong>Security issues</strong> should not be reported here.</em> Follow the <a href="/node/101494">procedure for reporting security issues</a>.'));
+        drupal_set_message(t('<em><strong>Security issues</strong> should not be reported here.</em> Follow the <a href="/node/101494">procedure for reporting security issues</a>.'), 'warning');
       }
     }
     else { // Existing issues.
