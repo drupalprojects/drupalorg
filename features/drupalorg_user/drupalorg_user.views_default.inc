@@ -73,12 +73,12 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['fields']['nid']['format_plural'] = TRUE;
   $handler->display->display_options['fields']['nid']['format_plural_singular'] = '1 issue';
   $handler->display->display_options['fields']['nid']['format_plural_plural'] = '@count issues';
-  /* Sort criterion: MAX(Content: Updated date) */
-  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['table'] = 'node';
-  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['group_type'] = 'max';
-  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
+  /* Sort criterion: MAX(Content: Last status change (field_issue_last_status_change)) */
+  $handler->display->display_options['sorts']['field_issue_last_status_change_value']['id'] = 'field_issue_last_status_change_value';
+  $handler->display->display_options['sorts']['field_issue_last_status_change_value']['table'] = 'field_data_field_issue_last_status_change';
+  $handler->display->display_options['sorts']['field_issue_last_status_change_value']['field'] = 'field_issue_last_status_change_value';
+  $handler->display->display_options['sorts']['field_issue_last_status_change_value']['group_type'] = 'max';
+  $handler->display->display_options['sorts']['field_issue_last_status_change_value']['order'] = 'DESC';
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
     2 => 'OR',
