@@ -6840,4 +6840,9 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
   if ($response['type'] === 'sa') {
     $response['sa_risk'] = drupalorg_calculate_security_risk($response['field_sa_criticality']);
   }
+
+  if (!empty($response['field_project']['id'])) {
+    // Add project’s machine name.
+    $response['field_project']['machine_name'] = node_load($response['field_project']['id'])->field_project_machine_name[LANGUAGE_NONE][0]['value'];
+  }
 }
