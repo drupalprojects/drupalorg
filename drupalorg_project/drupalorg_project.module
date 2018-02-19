@@ -2018,3 +2018,19 @@ function _drupalorg_project_issue_credit_add(&$form_state) {
     }
   }
 }
+
+/**
+ * Implements hook_restws_response_alter().
+ */
+function drupalorg_project_restws_response_alter(&$response, $function, $formatName, $resourceController) {
+  if ($function != 'viewResource') {
+    return;
+  }
+  if ($response['type'] == 'sa') {
+    if (!empty($response['field_project']['id'])) {
+      // Adds field_project machine_name to SA API.
+      $sa_prj_node  = node_load($response['field_project']['id']);
+      $response['field_project']['machine_name'] = $sa_prj_node->field_project_machine_name[LANGUAGE_NONE][0]['value'];
+    }
+  }
+}
