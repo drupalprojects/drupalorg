@@ -6827,3 +6827,18 @@ function _drupalorg_organization_options() {
 
   return $options;
 }
+
+/**
+ * Implements hook_restws_response_alter().
+ */
+function drupalorg_restws_response_alter(&$response, $function, $formatName, $resourceController) {
+  if ($function != 'viewResource') {
+    return;
+  }
+  // Adds security risk-score and label to SA API.
+  if ($response['type'] == 'sa') {
+    $security_risks = drupalorg_calculate_security_risk($response['field_sa_criticality']);
+    $response['issue_risk_score'] = $security_risks[0] . "/25";
+    $response['issue_risk_label'] = $security_risks[1];
+  }
+}
