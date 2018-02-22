@@ -1337,7 +1337,7 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['header']['area_text_custom']['id'] = 'area_text_custom';
   $handler->display->display_options['header']['area_text_custom']['table'] = 'views';
   $handler->display->display_options['header']['area_text_custom']['field'] = 'area_text_custom';
-  $handler->display->display_options['header']['area_text_custom']['content'] = '<h2>Other Releases for this Project</h2>';
+  $handler->display->display_options['header']['area_text_custom']['content'] = '<h2> Releases for this Project</h2>';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_release_project_target_id']['id'] = 'field_release_project_target_id';
   $handler->display->display_options['relationships']['field_release_project_target_id']['table'] = 'field_data_field_release_project';
@@ -1354,28 +1354,13 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Created On ';
-  $handler->display->display_options['fields']['created']['date_format'] = 'medium';
+  $handler->display->display_options['fields']['created']['date_format'] = 'date_only';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
-  /* Field: Content: Release type */
-  $handler->display->display_options['fields']['taxonomy_vocabulary_7']['id'] = 'taxonomy_vocabulary_7';
-  $handler->display->display_options['fields']['taxonomy_vocabulary_7']['table'] = 'field_data_taxonomy_vocabulary_7';
-  $handler->display->display_options['fields']['taxonomy_vocabulary_7']['field'] = 'taxonomy_vocabulary_7';
-  $handler->display->display_options['fields']['taxonomy_vocabulary_7']['delta_offset'] = '0';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Content: Nid */
-  $handler->display->display_options['arguments']['nid_1']['id'] = 'nid_1';
-  $handler->display->display_options['arguments']['nid_1']['table'] = 'node';
-  $handler->display->display_options['arguments']['nid_1']['field'] = 'nid';
-  $handler->display->display_options['arguments']['nid_1']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['nid_1']['default_argument_type'] = 'node';
-  $handler->display->display_options['arguments']['nid_1']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['nid_1']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['nid_1']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['nid_1']['not'] = TRUE;
   /* Contextual filter: Content: Short name (field_project_machine_name) */
   $handler->display->display_options['arguments']['field_project_machine_name_value']['id'] = 'field_project_machine_name_value';
   $handler->display->display_options['arguments']['field_project_machine_name_value']['table'] = 'field_data_field_project_machine_name';
@@ -1432,10 +1417,9 @@ function drupalorg_projects_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('<h2>Other Releases for this Project</h2>'),
+    t('<h2> Releases for this Project</h2>'),
     t('Content entity referenced from field_release_project'),
     t('Created On '),
-    t('Release type'),
     t('All'),
     t('Content pane'),
     t('View panes'),
