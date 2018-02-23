@@ -1997,13 +1997,7 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
   // MailChimp lists.
   if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0])) {
     // Remove fieldset over-nesting.
-    unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['#type']);
-    unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['#title']);
-    // Show interest groups, and have them control the now-hidden subscribe
-    // checkbox.
-    hide($form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']);
-    $form['field_subscribe_to'][LANGUAGE_NONE][0]['subscribe']['#element_validate'][] = 'drupalorg_form_user_profile_set_mailchimp_subscribed';
-    unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['#states']);
+    unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['#title']);
     // Hide "Roles in Drupal"
     if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['f99166c398'])) {
       hide($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['f99166c398']);
@@ -2149,19 +2143,6 @@ function drupalorg_user_profile_redirect_submit($form, &$form_state) {
     );
     // Do not redirect again.
     $form_state['user']->data['drupalorg_destination'] = NULL;
-  }
-}
-
-/**
- * #element_validate callback. Set subscribe checkbox if interest groups are
- * checked.
- */
-function drupalorg_form_user_profile_set_mailchimp_subscribed($element, &$form_state) {
-  foreach ($form_state['values']['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'] as $interest_group) {
-    if (array_filter($interest_group)) {
-      form_set_value($element, TRUE, $form_state);
-      return;
-    }
   }
 }
 
