@@ -99,7 +99,7 @@ function drupalorg_init() {
       $subscription = db_query('SELECT uid, organization_nid, currency, subscription_id, state, current_billing_amount_in_cents, created_at, current_period_ends_at, expires_at, product_handle, product_name, customer_id, customer_first_name, customer_last_name, customer_organization, customer_email FROM {drupalorg_chargify_subscriptions} WHERE subscription_id = :subscription_id', [':subscription_id' => $_SESSION['drupalorg_chargify_subscription_added']])->fetch();
       drupal_add_js("ga('create', 'UA-2360451-23', 'auto', 'chargify', {'allowLinker': true});"
         . "ga('chargify.require', 'linker');"
-        . "ga('chargify.linker:autoLink', ['chargify.com'] );"
+        . "ga('chargify.linker:autoLink', ['chargifypay.com'] );"
         . "ga('chargify.require', 'ecommerce');"
         . "ga('chargify.ecommerce:addTransaction', {
              'id': " . $subscription->subscription_id . ",
