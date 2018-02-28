@@ -2512,8 +2512,8 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
   $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title_display'] = 'attribute';
   $element['field_for_customer'][LANGUAGE_NONE]['#title_display'] = 'invisible';
   // Close buttons for accessibility.
-  $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#description'] .= '<button class="element-invisible">' . t('Close @title', array('@title' => $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title'])) .'</button>';
-  $element['field_for_customer'][LANGUAGE_NONE]['#description'] .= '<button class="element-invisible">' . t('Close @title', array('@title' => $element['field_for_customer'][LANGUAGE_NONE]['#title'])) .'</button>';
+  $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#prefix'] = '<button>' . t('Close') . '<span class="element-invisible">' . t('@title', array('@title' => $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title'])) . '</span></button>';
+  $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] = '<button>' . t('Close') . '<span class="element-invisible">' . t('@title', array('@title' => $element['field_for_customer'][LANGUAGE_NONE]['#title'])) . '</span></button>';
   // Add customer suggestions.
   $view = views_get_view('drupal_org_user_customers');
   $view->set_display('entityreference_1');
@@ -2523,7 +2523,7 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
     'limit' => 0,
     'ids' => array(),
   ));
-  $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] = '<strong class="element-invisible">' . t('Attribute comment for customer') . '</strong>';
+  $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<strong class="element-invisible">' . t('Attribute comment for customer') . '</strong>';
   foreach ($view->execute_display('entityreference_1') as $nid => $title) {
     $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div><a href="#" class="customer-suggestion" data-string="' . check_plain(drupalorg_entityreference_string($nid, $title)) . '">' . t('<span class="element-invisible">Add customer </span>@title', array('@title' => trim($title))) . '</a></div>';
   }
