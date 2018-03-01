@@ -399,125 +399,6 @@ function drupalorg_projects_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'node-documentation-field_require_review_approval'.
-  $field_instances['node-documentation-field_require_review_approval'] = array(
-    'bundle' => 'documentation',
-    'default_value' => array(
-      0 => array(
-        'value' => 1,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 8,
-      ),
-      'issuemetadata' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'nodechanges' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'related_content' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_require_review_approval',
-    'label' => 'Require Review approval',
-    'required' => 1,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 15,
-    ),
-  );
-
-  // Exported field_instance: 'node-guide-field_require_review_approval'.
-  $field_instances['node-guide-field_require_review_approval'] = array(
-    'bundle' => 'guide',
-    'default_value' => array(
-      0 => array(
-        'value' => 1,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => 'Review gives you and guide co-maintainers a chance to spot, and fix, low quality content and spam.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 9,
-      ),
-      'issuemetadata' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'nodechanges' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'related_content' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_require_review_approval',
-    'label' => 'Require Review approval',
-    'required' => 1,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 15,
-    ),
-  );
-
   // Exported field_instance: 'node-project_core-body'.
   $field_instances['node-project_core-body'] = array(
     'bundle' => 'project_core',
@@ -13465,8 +13346,6 @@ function drupalorg_projects_field_default_field_instances() {
   t('Release files');
   t('Release notes');
   t('Release type');
-  t('Require Review approval');
-  t('Review gives you and guide co-maintainers a chance to spot, and fix, low quality content and spam.');
   t('Screenshots');
   t('Security advisory coverage');
   t('Short description');

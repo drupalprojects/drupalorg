@@ -847,6 +847,65 @@ function drupalorg_documentation_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-guide-field_new_page_and_guide_review'.
+  $field_instances['node-guide-field_new_page_and_guide_review'] = array(
+    'bundle' => 'guide',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Review gives you and guide co-maintainers a chance to spot, and fix, low quality content and spam.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 9,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_new_page_and_guide_review',
+    'label' => 'New pages and guides',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 15,
+    ),
+  );
+
   // Exported field_instance: 'node-guide-field_related_content'.
   $field_instances['node-guide-field_related_content'] = array(
     'bundle' => 'guide',
@@ -1270,8 +1329,10 @@ function drupalorg_documentation_field_default_field_instances() {
   t('Guide');
   t('Guide changes');
   t('If you import from AsciiDoc output using Feeds, this will be set.');
+  t('New pages and guides');
   t('Related content');
   t('Related content for this documentation guide. These can be other documentation guides, pages, posts or book listings.');
+  t('Review gives you and guide co-maintainers a chance to spot, and fix, low quality content and spam.');
   t('Short (up to 140 characters) summary of the content. This will be displayed in search results, meta tags, content listings.');
   t('Short (up to 140 characters) summary of the content. This will be displayed on documentation guides,  in search results, meta tags, content listings.');
   t('Status');
