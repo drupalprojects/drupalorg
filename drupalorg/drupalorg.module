@@ -731,6 +731,19 @@ function drupalorg_block_info() {
 }
 
 /**
+ * Implements hook_block_info_alter().
+ */
+function drupalorg_block_info_alter(&$blocks) {
+  // Make sure MailChimp signup blocks are cached per-user. User-specific form
+  // values are altered in.
+  if (isset($blocks['mailchimp_signup'])) {
+    foreach ($blocks['mailchimp_signup'] as &$block) {
+      $block['cache'] |= DRUPAL_CACHE_PER_USER;
+    }
+  }
+}
+
+/**
  * Implements hook_block_view().
  */
 function drupalorg_block_view($delta, $block = NULL) {
@@ -6848,5 +6861,48 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
   if (!empty($response['field_project']['id'])) {
     // Add project’s machine name.
     $response['field_project']['machine_name'] = node_load($response['field_project']['id'])->field_project_machine_name[LANGUAGE_NONE][0]['value'];
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter.
+ */
+function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_state) {
+  // Hide “Roles in Drupal”.
+  hide($form['mailchimp_lists']['interest_groups']['f99166c398']);
+
+  // Only add a single list for some forms.
+  $list_forms = [
+    'hosting_offers' => ['dc0ad3fd6d' => TRUE],
+  ];
+  if (isset($list_forms[$form_state['build_info']['args'][0]->name])) {
+    $form['mailchimp_lists']['interest_groups']['8d99874622']['#type'] = 'value';
+    $form['mailchimp_lists']['interest_groups']['8d99874622']['#value'] = $list_forms[$form_state['build_info']['args'][0]->name];
+  }
+
+  if (user_is_logged_in()) {
+    $account_wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
+
+    // Fill out name & email.
+    $form['mergevars']['EMAIL']['#type'] = 'value';
+    $form['mergevars']['EMAIL']['#value'] = $GLOBALS['user']->mail;
+    $form['mergevars']['FNAME']['#type'] = 'value';
+    $form['mergevars']['LNAME']['#type'] = 'value';
+    if ($name = $account_wrapper->field_first_name->value()) {
+      $form['mergevars']['FNAME']['#value'] = $name;
+    }
+    else {
+      $form['mergevars']['FNAME']['#value'] = $GLOBALS['user']->name;
+    }
+    if ($name = $account_wrapper->field_last_name->value()) {
+      $form['mergevars']['LNAME']['#value'] = $name;
+    }
+    $form['mergevars']['#prefix'] .= t('We’ll send occasional updates to @mail<br><small><a href="!url">Update your primary email</a></small>', ['@mail' => $GLOBALS['user']->mail, '!url' => url('user/' . $GLOBALS['user']->uid . '/edit/email-addresses')]);
+  }
+  else {
+    $form['mergevars']['#prefix'] .= t('We’ll send occasional updates');
+    hide($form['mergevars']['FNAME']);
+    hide($form['mergevars']['LNAME']);
+    $form_state['build_info']['args'][0]->settings['doublein'] = TRUE;
   }
 }
