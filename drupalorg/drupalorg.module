@@ -5664,6 +5664,12 @@ function drupalorg_og_user_access_alter(&$perm, $context) {
         $perm += $maintainer_perms;
       }
     }
+
+    // If a guide allows adding to its menu without approval, allow that.
+    if (empty($perm['administer og menu']) && in_array($context['string'], ['create guide content', 'create documentation content'])) {
+      $group = entity_metadata_wrapper($context['group_type'], $context['group']);
+      $perm['administer og menu'] = !$group->field_new_page_and_guide_review->value();
+    }
   }
 }
 
