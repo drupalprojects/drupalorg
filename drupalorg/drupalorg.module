@@ -2423,16 +2423,18 @@ function drupalorg_form_node_form_alter(&$form, &$form_state) {
   }
 
   // If this is a new node with OG Menu, put in the menu.
-  if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu']) && isset($form_state['entityreference_prepopulate']['node']['documentation']['og_group_ref_documentation'][0])) {
-    // Automatically approve new pages/guides being added to their guide.
-    $ref_guide = node_load($form_state['entityreference_prepopulate']['node']['documentation']['og_group_ref_documentation'][0]);
-    if ($ref_guide->field_new_page_and_guide_review['#value'] === 0) {
+  if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu']) && isset($form_state['entityreference_prepopulate']['node'][$form['#node']->type]['og_group_ref_documentation'][0])) {
+    // Automatically approve new pages/guides being added to their guide, if
+    // the parent guide allows it.
+    $parent_guide = entity_metadata_wrapper('node', node_load($form_state['entityreference_prepopulate']['node'][$form['#node']->type]['og_group_ref_documentation'][0]));
+    if (!$parent_guide->field_new_page_and_guide_review->value()) {
       $form['menu']['enabled']['#default_value'] = 1;
-    } else {
-      // But only if a guide maintainer with access to put it in the menu is
-      // adding the page.
+    }
+    else {
+      // Or if a guide maintainer with access to put it in the menu is adding
+      // the page.
       foreach ($form['#node']->storage['og_menu'] as $item) {
-        if ($item['gid'] == $form_state['entityreference_prepopulate']['node']['documentation']['og_group_ref_documentation'][0]) {
+        if ($item['gid'] == $form_state['entityreference_prepopulate']['node'][$form['#node']->type]['og_group_ref_documentation'][0]) {
           $form['menu']['enabled']['#default_value'] = 1;
         }
       }
