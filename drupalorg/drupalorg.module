@@ -597,6 +597,15 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
               return (!empty($entity->project['maintainers'][$account->uid]['permissions']['maintain issues'])
                 || $entity->uid == $account->uid
                 || user_access('administer nodes'));
+
+            case 'field_new_page_and_guide_review':
+              if (isset($entity->nid)) {
+                // Only allow access if a guide maintainer is editing. So
+                // someone adding a new page can’t grant this for themselves.
+                return og_user_access_entity('administer og menu', $entity_type, $entity, $account);
+              }
+              // This is a new guide, grant access.
+              return TRUE;
           }
 
         case 'user':
