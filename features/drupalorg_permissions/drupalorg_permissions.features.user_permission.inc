@@ -118,6 +118,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'fieldable_panels_panes',
   );
 
+  // Exported permission: 'access mailchimp signup pages'.
+  $permissions['access mailchimp signup pages'] = array(
+    'name' => 'access mailchimp signup pages',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'mailchimp_signup',
+  );
+
   // Exported permission: 'access mollom statistics'.
   $permissions['access mollom statistics'] = array(
     'name' => 'access mollom statistics',
@@ -205,6 +214,13 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'access resource flagging'.
   $permissions['access resource flagging'] = array(
     'name' => 'access resource flagging',
+    'roles' => array(),
+    'module' => 'restws',
+  );
+
+  // Exported permission: 'access resource mailchimp_signup'.
+  $permissions['access resource mailchimp_signup'] = array(
+    'name' => 'access resource mailchimp_signup',
     'roles' => array(),
     'module' => 'restws',
   );
@@ -812,6 +828,15 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'mailchimp',
+  );
+
+  // Exported permission: 'administer mailchimp signup entities'.
+  $permissions['administer mailchimp signup entities'] = array(
+    'name' => 'administer mailchimp signup entities',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'mailchimp_signup',
   );
 
   // Exported permission: 'administer menu'.
