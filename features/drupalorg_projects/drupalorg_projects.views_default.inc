@@ -1323,13 +1323,13 @@ function drupalorg_projects_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Other releases';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['pager']['type'] = 'some';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '5';
+  $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['row_plugin'] = 'fields';
@@ -1338,11 +1338,6 @@ function drupalorg_projects_views_default_views() {
     'created' => 'created',
   );
   $handler->display->display_options['row_options']['separator'] = ' - ';
-  /* Header: Global: Unfiltered text */
-  $handler->display->display_options['header']['area_text_custom']['id'] = 'area_text_custom';
-  $handler->display->display_options['header']['area_text_custom']['table'] = 'views';
-  $handler->display->display_options['header']['area_text_custom']['field'] = 'area_text_custom';
-  $handler->display->display_options['header']['area_text_custom']['content'] = '<h2> Recent Releases</h2>';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_release_project_target_id']['id'] = 'field_release_project_target_id';
   $handler->display->display_options['relationships']['field_release_project_target_id']['table'] = 'field_data_field_release_project';
@@ -1446,13 +1441,13 @@ function drupalorg_projects_views_default_views() {
   );
   $translatables['related_project_releases'] = array(
     t('Master'),
+    t('Other releases'),
     t('more'),
     t('Apply'),
     t('Reset'),
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('<h2> Recent Releases</h2>'),
     t('Content entity referenced from field_release_project'),
     t('Nid'),
     t('[field_release_version]  - [created]'),
