@@ -26,6 +26,10 @@ function drupalorg_permission() {
       'title' => t('May opt into security advisory coverage'),
       'description' => t('Agree to the policy for projects.'),
     ],
+    'update security release types' => [
+      'title' => t('Update security release types'),
+      'description' => t('Manage “Security update” & “Insecure” release types'),
+    ],
     'administer all documentation guides' => [
       'title' => t('Administer all documentation guides'),
       'description' => t('Manage guide maintainers and menus.'),

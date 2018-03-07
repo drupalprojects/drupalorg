@@ -867,7 +867,11 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     }
 
     $security_term = taxonomy_term_load(variable_get('project_release_security_update_tid', FALSE));
+    $insecure_term = array_values(taxonomy_get_term_by_name('Insecure', 'vocabulary_7'))[0];
     $release_type_field = &$form['taxonomy_' . $security_term->vocabulary_machine_name][LANGUAGE_NONE];
+    // Only allow security team to edit the “Insecure” release type.
+    $release_type_field[$insecure_term->tid]['#access'] = user_access('update security release types');
+    $release_type_field[$insecure_term->tid]['#description'] = check_markup($insecure_term->description, $insecure_term->format);
     if (empty($form['nid']['#value'])) {
       // Adding a new release.
       if ($form['field_release_build_type'][LANGUAGE_NONE]['#default_value'][0] === 'dynamic') {
@@ -908,17 +912,64 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     else {
       // Editing an existing release.
       if (project_release_is_security_update($form_state['node'])) {
-        // If this release is already marked as a Security update, don't let
-        // regular users change it any futher.
-        if (!user_access('administer projects')) {
-          $release_type_field['#access'] = FALSE;
+        if (user_access('update security release types')) {
+          // Offer to mark previous releases, that are not already insecure, as insecure.
+          $api_vocabulary = taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary'));
+          $query = new EntityFieldQuery();
+          $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', project_release_release_node_types())
+            ->propertyCondition('nid', $form_state['node']->nid, '!=')
+            ->fieldCondition('field_release_project', 'target_id', $project->nid)
+            ->fieldCondition('field_release_build_type', 'value', 'static')
+            ->fieldCondition('taxonomy_' . $api_vocabulary->machine_name, 'tid', $wrapper->{'taxonomy_' . $api_vocabulary->machine_name}->getIdentifier())
+            ->fieldCondition('field_release_version_major', 'value', $wrapper->field_release_version_major->value());
+          foreach (['field_release_version_minor', 'field_release_version_patch'] as $field) {
+            if ($value = $wrapper->$field->value()) {
+              $query->fieldCondition($field, 'value', $value, '<=');
+            }
+          }
+          $result = $query->execute();
+          if (isset($result['node'])) {
+            $form['additional_insecure'] = [
+              '#type' => 'checkboxes',
+              '#title' => t('Mark previous releases as insecure'),
+              '#options' => [],
+              '#weight' => 30,
+              '#states' => [
+                'enabled' => [':input[name=status]' => ['checked' => TRUE]],
+              ],
+              '#description' => t('Available when this release is published.'),
+            ];
+            foreach (node_load_multiple(array_keys($result['node'])) as $potentially_insecure_release) {
+              if (!empty($potentially_insecure_release->taxonomy_vocabulary_7)) {
+                foreach ($potentially_insecure_release->taxonomy_vocabulary_7[LANGUAGE_NONE] as $term) {
+                  if ($term['tid'] == $insecure_term->tid) {
+                    // Already marked as insecure.
+                    continue 2;
+                  }
+                }
+              }
+              $form['additional_insecure']['#options'][$potentially_insecure_release->nid] = check_plain($potentially_insecure_release->title);
+            }
+            // If the release has not yet been published, default to marking
+            // all previous releases as insecure.
+            if ($form_state['node']->status == NODE_NOT_PUBLISHED) {
+              $form['additional_insecure']['#default_value'] = array_keys($form['additional_insecure']['#options']);
+            }
+            $form['actions']['submit']['#submit'][] = 'drupalorg_project_security_release_form_submit';
+          }
         }
-        $release_type_field['#description'] .= ' ' . t('Since this release is already marked as a %security_update, you can no longer change the release type. If you believe you need to do so for some reason, you should <a href="@contact_url">contact</a> the <a href="@security_url">Drupal Security Team</a>.', array('%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL));
+        else {
+          // If this release is already marked as a Security update, don't let
+          // regular users change it any futher.
+          $release_type_field['#disabled'] = TRUE;
+          $release_type_field['#description'] .= ' ' . t('Since this release is a %security_update, you can no longer change the release type. If you believe you need to do so for some reason, you should <a href="@contact_url">contact</a> the <a href="@security_url">Drupal Security Team</a>.', array('%security_update' => t('Security update'), '@security_url' => DRUPALORG_SECURITY_TEAM_URL, '@contact_url' => DRUPALORG_SECURITY_CONTACT_URL));
+        }
       }
       else {
         // Not a Security update, remove that option entirely if this is either
         // a -dev snapshot or a non-admin user.
-        if ($form_state['node']->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic' || !user_access('administer projects')) {
+        if ($form_state['node']->field_release_build_type[LANGUAGE_NONE][0]['value'] === 'dynamic' || !user_access('update security release types')) {
           unset($release_type_field['#options'][$security_term->tid]);
         }
       }
@@ -981,6 +1032,21 @@ function drupalorg_project_security_release_form_validate($form, &$form_state) {
         form_set_error('security_update_confirm', t('You must confirm you want this release to be a <a href="@security_update_url">Security update</a>.', array('@security_update_url' => url('node/' . DRUPALORG_SECURITY_UPDATE_HANDBOOK_NID))));
       }
       break;
+    }
+  }
+}
+
+/**
+ * Form submit callback for security releases.
+ */
+function drupalorg_project_security_release_form_submit($form, $form_state) {
+  if ($nids = array_filter($form_state['values']['additional_insecure'])) {
+    $insecure_term = array_values(taxonomy_get_term_by_name('Insecure', 'vocabulary_7'))[0];
+    foreach (node_load_multiple($nids) as $insecure_release) {
+      $insecure_release->taxonomy_vocabulary_7[LANGUAGE_NONE][] = ['tid' => $insecure_term->tid];
+      $insecure_release->revision = TRUE;
+      $insecure_release->log = t('Marked as insecure during @title release', ['@title' => $form_state['node']->title]);
+      node_save($insecure_release);
     }
   }
 }
