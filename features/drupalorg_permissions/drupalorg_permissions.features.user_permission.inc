@@ -4232,6 +4232,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'feeds',
   );
 
+  // Exported permission: 'update security release types'.
+  $permissions['update security release types'] = array(
+    'name' => 'update security release types',
+    'roles' => array(
+      'security team' => 'security team',
+    ),
+    'module' => 'drupalorg',
+  );
+
   // Exported permission: 'use PHP for tracking visibility'.
   $permissions['use PHP for tracking visibility'] = array(
     'name' => 'use PHP for tracking visibility',
