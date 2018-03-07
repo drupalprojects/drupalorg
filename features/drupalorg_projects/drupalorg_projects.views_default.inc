@@ -1312,6 +1312,157 @@ function drupalorg_projects_views_default_views() {
   $export['project_downloads'] = $view;
 
   $view = new view();
+  $view->name = 'related_project_releases';
+  $view->description = 'Newer & older releases in release nodes';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'Related Project Releases';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '5';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'field_release_version' => 'field_release_version',
+    'created' => 'created',
+  );
+  $handler->display->display_options['row_options']['separator'] = ' - ';
+  /* Header: Global: Unfiltered text */
+  $handler->display->display_options['header']['area_text_custom']['id'] = 'area_text_custom';
+  $handler->display->display_options['header']['area_text_custom']['table'] = 'views';
+  $handler->display->display_options['header']['area_text_custom']['field'] = 'area_text_custom';
+  $handler->display->display_options['header']['area_text_custom']['content'] = '<h2> Recent Releases</h2>';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_release_project_target_id']['id'] = 'field_release_project_target_id';
+  $handler->display->display_options['relationships']['field_release_project_target_id']['table'] = 'field_data_field_release_project';
+  $handler->display->display_options['relationships']['field_release_project_target_id']['field'] = 'field_release_project_target_id';
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  /* Field: Content: Version */
+  $handler->display->display_options['fields']['field_release_version']['id'] = 'field_release_version';
+  $handler->display->display_options['fields']['field_release_version']['table'] = 'field_data_field_release_version';
+  $handler->display->display_options['fields']['field_release_version']['field'] = 'field_release_version';
+  $handler->display->display_options['fields']['field_release_version']['label'] = '';
+  $handler->display->display_options['fields']['field_release_version']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_release_version']['alter']['path'] = 'node/[nid]';
+  $handler->display->display_options['fields']['field_release_version']['element_label_colon'] = FALSE;
+  /* Field: Content: Post date */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'node';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = '';
+  $handler->display->display_options['fields']['created']['alter']['text'] = '[field_release_version]  - [created]';
+  $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['created']['date_format'] = 'date_only';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Contextual filter: Content: Project (field_release_project) */
+  $handler->display->display_options['arguments']['field_release_project_target_id']['id'] = 'field_release_project_target_id';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['table'] = 'field_data_field_release_project';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['field'] = 'field_release_project_target_id';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['summary_options']['items_per_page'] = '25';
+  /* Contextual filter: Content: Version major (field_release_version_major) */
+  $handler->display->display_options['arguments']['field_release_version_major_value']['id'] = 'field_release_version_major_value';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['table'] = 'field_data_field_release_version_major';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['field'] = 'field_release_version_major_value';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['summary_options']['items_per_page'] = '25';
+  /* Contextual filter: Content: Core compatibility (taxonomy_vocabulary_6) */
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['id'] = 'taxonomy_vocabulary_6_tid';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['table'] = 'field_data_taxonomy_vocabulary_6';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['field'] = 'taxonomy_vocabulary_6_tid';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['summary_options']['items_per_page'] = '25';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'project_release' => 'project_release',
+  );
+
+  /* Display: Content pane */
+  $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
+  $handler->display->display_options['argument_input'] = array(
+    'field_release_project_target_id' => array(
+      'type' => 'user',
+      'context' => 'node_edit_form.field-project',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Project (field_release_project)',
+    ),
+    'field_release_version_major_value' => array(
+      'type' => 'user',
+      'context' => 'entity:node.field-release-version-major',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Version major (field_release_version_major)',
+    ),
+    'taxonomy_vocabulary_6_tid' => array(
+      'type' => 'user',
+      'context' => 'entity:node.taxonomy-vocabulary-6',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Core compatibility (taxonomy_vocabulary_6)',
+    ),
+  );
+  $translatables['related_project_releases'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('<h2> Recent Releases</h2>'),
+    t('Content entity referenced from field_release_project'),
+    t('Nid'),
+    t('[field_release_version]  - [created]'),
+    t('All'),
+    t('Content pane'),
+    t('View panes'),
+  );
+  $export['related_project_releases'] = $view;
+
+  $view = new view();
   $view->name = 'starred_projects';
   $view->description = '';
   $view->tag = 'default';

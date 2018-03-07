@@ -277,6 +277,14 @@ function drupalorg_projects_panelizer_defaults() {
       'context' => 'panelizer',
       'id' => 1,
     ),
+    1 => array(
+      'identifier' => 'Taxonomy term from Node (on Node: Core compatibility [taxonomy_vocabulary_6])',
+      'keyword' => 'taxonomy_term',
+      'name' => 'entity_from_field:taxonomy_vocabulary_6-node-taxonomy_term',
+      'delta' => 0,
+      'context' => 'panelizer',
+      'id' => 1,
+    ),
   );
   $display = new panels_display();
   $display->layout = 'hydra';
@@ -360,6 +368,31 @@ function drupalorg_projects_panelizer_defaults() {
   $pane->uuid = 'c719bc17-0b0a-48ce-8aa1-5b413c9eadf6';
   $display->content['new-c719bc17-0b0a-48ce-8aa1-5b413c9eadf6'] = $pane;
   $display->panels['bottom_right_content'][1] = 'new-c719bc17-0b0a-48ce-8aa1-5b413c9eadf6';
+  $pane = new stdClass();
+  $pane->pid = 'new-eaf4c3d6-a02e-4384-97c9-375690a8a4c8';
+  $pane->panel = 'bottom_right_content';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'related_project_releases-panel_pane_1';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'arguments' => array(
+      'field_release_project_target_id' => '%field_release_project:nid',
+      'field_release_version_major_value' => '%node:field_release_version_major',
+      'taxonomy_vocabulary_6_tid' => '%taxonomy_term:tid',
+    ),
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = 'eaf4c3d6-a02e-4384-97c9-375690a8a4c8';
+  $display->content['new-eaf4c3d6-a02e-4384-97c9-375690a8a4c8'] = $pane;
+  $display->panels['bottom_right_content'][2] = 'new-eaf4c3d6-a02e-4384-97c9-375690a8a4c8';
   $pane = new stdClass();
   $pane->pid = 'new-30eef2e9-7098-4079-ba0e-a60a3ee3a373';
   $pane->panel = 'left_content';
@@ -617,7 +650,9 @@ function drupalorg_projects_panelizer_defaults() {
   $pane->access = array();
   $pane->configuration = array();
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 2;
