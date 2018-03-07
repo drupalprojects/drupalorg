@@ -499,7 +499,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
       $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] = '<p>' . t('On renewal you’ll be charged <strong>@amount</strong>', ['@amount' => _format_chargify_money($row)]) . '<br>';
       if ($GLOBALS['user']->uid === $account->uid) {
         // Only allow the member themselves to do certain actions.
-        $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= l(t('View & update credit card'), 'https://' . $chargify_keys[$row->currency]['subdomain'] . '.chargify.com/update_payment/' . $row->subscription_id . '/' . substr(sha1('update_payment--' . $row->subscription_id . '--' . $chargify_keys[$row->currency]['shared_key']), 0, 10), ['external' => TRUE, 'attributes' => ['target' => '_blank']]);
+        $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= l(t('View & update credit card'), 'https://' . $chargify_keys[$row->currency]['subdomain'] . '.chargifypay.com/update_payment/' . $row->subscription_id . '/' . substr(sha1('update_payment--' . $row->subscription_id . '--' . $chargify_keys[$row->currency]['shared_key']), 0, 10), ['external' => TRUE, 'attributes' => ['target' => '_blank']]);
       }
       else {
         // Disable some actions for admins.

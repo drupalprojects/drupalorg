@@ -112,12 +112,9 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
     ];
   }
   else {
-    // EUR remains on CiviCRM for now.
-    $form['currency']['usd']['#suffix'] .= ' ' . l(t('Join with Euro'), 'https://assoc.drupal.org/civicrm/contribute/transact?reset=1&id=1', ['external' => TRUE, 'attributes' => ['class' => ['action-button']]]);
     $form['currency']['#options'] = [
       'usd' => t('Join with U.S. Dollars'),
-      //'eur' => t('Join with Euro'),
-      'eur' => '',
+      'eur' => t('Join with Euro'),
     ];
     $form['amount_usd'] = [
       '#type' => 'radios',
@@ -132,7 +129,6 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
         ],
       ],
     ];
-    /*
     $form['amount_eur'] = [
       '#type' => 'radios',
       '#title' => t('Membership gift level'),
@@ -146,7 +142,6 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
         ],
       ],
     ];
-    */
     $form['recur'] = [
       '#type' => 'checkbox',
       '#title' => t('Renew my membership automatically every year'),

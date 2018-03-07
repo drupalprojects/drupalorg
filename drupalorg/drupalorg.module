@@ -99,7 +99,7 @@ function drupalorg_init() {
       $subscription = db_query('SELECT uid, organization_nid, currency, subscription_id, state, current_billing_amount_in_cents, created_at, current_period_ends_at, expires_at, product_handle, product_name, customer_id, customer_first_name, customer_last_name, customer_organization, customer_email FROM {drupalorg_chargify_subscriptions} WHERE subscription_id = :subscription_id', [':subscription_id' => $_SESSION['drupalorg_chargify_subscription_added']])->fetch();
       drupal_add_js("ga('create', 'UA-2360451-23', 'auto', 'chargify', {'allowLinker': true});"
         . "ga('chargify.require', 'linker');"
-        . "ga('chargify.linker:autoLink', ['chargify.com'] );"
+        . "ga('chargify.linker:autoLink', ['chargifypay.com'] );"
         . "ga('chargify.require', 'ecommerce');"
         . "ga('chargify.ecommerce:addTransaction', {
              'id': " . $subscription->subscription_id . ",
@@ -597,6 +597,15 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
               return (!empty($entity->project['maintainers'][$account->uid]['permissions']['maintain issues'])
                 || $entity->uid == $account->uid
                 || user_access('administer nodes'));
+
+            case 'field_new_page_and_guide_review':
+              if (isset($entity->nid)) {
+                // Only allow access if a guide maintainer is editing. So
+                // someone adding a new page can’t grant this for themselves.
+                return og_user_access_entity('administer og menu', $entity_type, $entity, $account);
+              }
+              // This is a new guide, grant access.
+              return TRUE;
           }
 
         case 'user':
@@ -719,6 +728,19 @@ function drupalorg_block_info() {
       'cache' => DRUPAL_NO_CACHE,
     ],
   );
+}
+
+/**
+ * Implements hook_block_info_alter().
+ */
+function drupalorg_block_info_alter(&$blocks) {
+  // Make sure MailChimp signup blocks are cached per-user. User-specific form
+  // values are altered in.
+  if (isset($blocks['mailchimp_signup'])) {
+    foreach ($blocks['mailchimp_signup'] as &$block) {
+      $block['cache'] |= DRUPAL_CACHE_PER_USER;
+    }
+  }
 }
 
 /**
@@ -2414,12 +2436,20 @@ function drupalorg_form_node_form_alter(&$form, &$form_state) {
   }
 
   // If this is a new node with OG Menu, put in the menu.
-  if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu']) && isset($form_state['entityreference_prepopulate']['node']['documentation']['og_group_ref_documentation'][0])) {
-    // But only if a guide maintainer with access to put it in the menu is
-    // adding the page.
-    foreach ($form['#node']->storage['og_menu'] as $item) {
-      if ($item['gid'] == $form_state['entityreference_prepopulate']['node']['documentation']['og_group_ref_documentation'][0]) {
-        $form['menu']['enabled']['#default_value'] = 1;
+  if (!isset($form['#node']->nid) && isset($form['menu']) && isset($form['#node']->storage) && isset($form['#node']->storage['og_menu']) && isset($form_state['entityreference_prepopulate']['node'][$form['#node']->type]['og_group_ref_documentation'][0])) {
+    // Automatically approve new pages/guides being added to their guide, if
+    // the parent guide allows it.
+    $parent_guide = entity_metadata_wrapper('node', node_load($form_state['entityreference_prepopulate']['node'][$form['#node']->type]['og_group_ref_documentation'][0]));
+    if (!$parent_guide->field_new_page_and_guide_review->value()) {
+      $form['menu']['enabled']['#default_value'] = 1;
+    }
+    else {
+      // Or if a guide maintainer with access to put it in the menu is adding
+      // the page.
+      foreach ($form['#node']->storage['og_menu'] as $item) {
+        if ($item['gid'] == $form_state['entityreference_prepopulate']['node'][$form['#node']->type]['og_group_ref_documentation'][0]) {
+          $form['menu']['enabled']['#default_value'] = 1;
+        }
       }
     }
   }
@@ -2512,8 +2542,8 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
   $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title_display'] = 'attribute';
   $element['field_for_customer'][LANGUAGE_NONE]['#title_display'] = 'invisible';
   // Close buttons for accessibility.
-  $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#description'] .= '<button class="element-invisible">' . t('Close @title', array('@title' => $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title'])) .'</button>';
-  $element['field_for_customer'][LANGUAGE_NONE]['#description'] .= '<button class="element-invisible">' . t('Close @title', array('@title' => $element['field_for_customer'][LANGUAGE_NONE]['#title'])) .'</button>';
+  $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#prefix'] = '<button>' . t('Close') . '<span class="element-invisible">' . t('@title', array('@title' => $element['field_attribute_contribution_to'][LANGUAGE_NONE]['#title'])) . '</span></button>';
+  $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] = '<button>' . t('Close') . '<span class="element-invisible">' . t('@title', array('@title' => $element['field_for_customer'][LANGUAGE_NONE]['#title'])) . '</span></button>';
   // Add customer suggestions.
   $view = views_get_view('drupal_org_user_customers');
   $view->set_display('entityreference_1');
@@ -2523,7 +2553,7 @@ function _drupalorg_alter_comment_attribution(&$element, $node = NULL) {
     'limit' => 0,
     'ids' => array(),
   ));
-  $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] = '<strong class="element-invisible">' . t('Attribute comment for customer') . '</strong>';
+  $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<strong class="element-invisible">' . t('Attribute comment for customer') . '</strong>';
   foreach ($view->execute_display('entityreference_1') as $nid => $title) {
     $element['field_for_customer'][LANGUAGE_NONE]['#prefix'] .= '<div><a href="#" class="customer-suggestion" data-string="' . check_plain(drupalorg_entityreference_string($nid, $title)) . '">' . t('<span class="element-invisible">Add customer </span>@title', array('@title' => trim($title))) . '</a></div>';
   }
@@ -5649,6 +5679,12 @@ function drupalorg_og_user_access_alter(&$perm, $context) {
         $perm += $maintainer_perms;
       }
     }
+
+    // If a guide allows adding to its menu without approval, allow that.
+    if (empty($perm['administer og menu']) && in_array($context['string'], ['create guide content', 'create documentation content'])) {
+      $group = entity_metadata_wrapper($context['group_type'], $context['group']);
+      $perm['administer og menu'] = !$group->field_new_page_and_guide_review->value();
+    }
   }
 }
 
@@ -6825,5 +6861,48 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
   if (!empty($response['field_project']['id'])) {
     // Add project’s machine name.
     $response['field_project']['machine_name'] = node_load($response['field_project']['id'])->field_project_machine_name[LANGUAGE_NONE][0]['value'];
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter.
+ */
+function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_state) {
+  // Hide “Roles in Drupal”.
+  hide($form['mailchimp_lists']['interest_groups']['f99166c398']);
+
+  // Only add a single list for some forms.
+  $list_forms = [
+    'hosting_offers' => ['dc0ad3fd6d' => TRUE],
+  ];
+  if (isset($list_forms[$form_state['build_info']['args'][0]->name])) {
+    $form['mailchimp_lists']['interest_groups']['8d99874622']['#type'] = 'value';
+    $form['mailchimp_lists']['interest_groups']['8d99874622']['#value'] = $list_forms[$form_state['build_info']['args'][0]->name];
+  }
+
+  if (user_is_logged_in()) {
+    $account_wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
+
+    // Fill out name & email.
+    $form['mergevars']['EMAIL']['#type'] = 'value';
+    $form['mergevars']['EMAIL']['#value'] = $GLOBALS['user']->mail;
+    $form['mergevars']['FNAME']['#type'] = 'value';
+    $form['mergevars']['LNAME']['#type'] = 'value';
+    if ($name = $account_wrapper->field_first_name->value()) {
+      $form['mergevars']['FNAME']['#value'] = $name;
+    }
+    else {
+      $form['mergevars']['FNAME']['#value'] = $GLOBALS['user']->name;
+    }
+    if ($name = $account_wrapper->field_last_name->value()) {
+      $form['mergevars']['LNAME']['#value'] = $name;
+    }
+    $form['mergevars']['#prefix'] .= t('We’ll send occasional updates to @mail<br><small><a href="!url">Update your primary email</a></small>', ['@mail' => $GLOBALS['user']->mail, '!url' => url('user/' . $GLOBALS['user']->uid . '/edit/email-addresses')]);
+  }
+  else {
+    $form['mergevars']['#prefix'] .= t('We’ll send occasional updates');
+    hide($form['mergevars']['FNAME']);
+    hide($form['mergevars']['LNAME']);
+    $form_state['build_info']['args'][0]->settings['doublein'] = TRUE;
   }
 }

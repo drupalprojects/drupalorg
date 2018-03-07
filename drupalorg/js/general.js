@@ -158,7 +158,7 @@
         var $fieldset = $(this),
           $summary = $(Drupal.settings.drupalOrg.defaultCommentAttribution),
           $notVolunteer = $('.field-name-field-attribute-as-volunteer .form-checkbox[value=0]', $fieldset),
-          $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
+          $attributeContributionTo = $('.field-name-field-attribute-contribution-to', $fieldset).attr('tabindex', 0).hide(),
           $attributeContributionToFields = $('input', $attributeContributionTo).change(function (e) {
             if (e.target.checked) {
               $notVolunteer.attr('checked', 'checked');
@@ -169,10 +169,11 @@
             $attributeContributionTo.css({
               'left': Math.max(0, $summaryOrganization.position().left + ($summaryOrganization.outerWidth() - $attributeContributionTo.outerWidth()) / 2) + 'px',
               'top': $summaryOrganization.position().top + $summaryOrganization.outerHeight() + 'px'
-            }).show().focus();
+            }).show();
+            $('.field-name-field-attribute-contribution-to button').focus();
             e.preventDefault();
           }),
-          $forCustomer = $('.field-name-field-for-customer', $fieldset).attr('role', 'dialog').attr('tabindex', 0).hide(),
+          $forCustomer = $('.field-name-field-for-customer', $fieldset).attr('tabindex', 0).hide(),
           $forCustomerField = $('.form-text', $forCustomer).change(function (e) {
             if (e.target.value !== '') {
               $notVolunteer.attr('checked', 'checked');
@@ -192,7 +193,8 @@
             $forCustomer.css({
               'left': Math.max(0, $summaryCustomer.position().left + ($summaryCustomer.outerWidth() - $forCustomer.outerWidth()) / 2) + 'px',
               'top': $summaryCustomer.position().top + $summaryCustomer.outerHeight() + 'px'
-            }).show().focus();
+            }).show();
+            $('.field-name-field-for-customer button').focus();
             e.preventDefault();
           });
 

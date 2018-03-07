@@ -128,6 +128,31 @@ function drupalorg_documentation_field_default_field_bases() {
     'type' => 'list_text',
   );
 
+  // Exported field_base: 'field_new_page_and_guide_review'.
+  $field_bases['field_new_page_and_guide_review'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_new_page_and_guide_review',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => 'Are approved automatically',
+        1 => 'Require review and approval to be added to this guide’s menu',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  );
+
   // Exported field_base: 'field_related_content'.
   $field_bases['field_related_content'] = array(
     'active' => 1,
