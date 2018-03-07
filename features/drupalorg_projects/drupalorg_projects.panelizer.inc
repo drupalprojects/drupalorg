@@ -277,6 +277,14 @@ function drupalorg_projects_panelizer_defaults() {
       'context' => 'panelizer',
       'id' => 1,
     ),
+    1 => array(
+      'identifier' => 'Taxonomy term from Node (on Node: Core compatibility [taxonomy_vocabulary_6])',
+      'keyword' => 'taxonomy_term',
+      'name' => 'entity_from_field:taxonomy_vocabulary_6-node-taxonomy_term',
+      'delta' => 0,
+      'context' => 'panelizer',
+      'id' => 1,
+    ),
   );
   $display = new panels_display();
   $display->layout = 'hydra';
@@ -367,9 +375,17 @@ function drupalorg_projects_panelizer_defaults() {
   $pane->subtype = 'related_project_releases-panel_pane_1';
   $pane->shown = TRUE;
   $pane->access = array();
-  $pane->configuration = array();
+  $pane->configuration = array(
+    'arguments' => array(
+      'field_release_project_target_id' => '%field_release_project:nid',
+      'field_release_version_major_value' => '%node:field_release_version_major',
+      'taxonomy_vocabulary_6_tid' => '%taxonomy_term:tid',
+    ),
+  );
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 2;
@@ -634,7 +650,9 @@ function drupalorg_projects_panelizer_defaults() {
   $pane->access = array();
   $pane->configuration = array();
   $pane->cache = array();
-  $pane->style = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
   $pane->css = array();
   $pane->extras = array();
   $pane->position = 2;

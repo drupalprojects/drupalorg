@@ -1374,19 +1374,33 @@ function drupalorg_projects_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Content: Short name (field_project_machine_name) */
-  $handler->display->display_options['arguments']['field_project_machine_name_value']['id'] = 'field_project_machine_name_value';
-  $handler->display->display_options['arguments']['field_project_machine_name_value']['table'] = 'field_data_field_project_machine_name';
-  $handler->display->display_options['arguments']['field_project_machine_name_value']['field'] = 'field_project_machine_name_value';
-  $handler->display->display_options['arguments']['field_project_machine_name_value']['relationship'] = 'field_release_project_target_id';
-  $handler->display->display_options['arguments']['field_project_machine_name_value']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['field_project_machine_name_value']['default_argument_type'] = 'raw';
-  $handler->display->display_options['arguments']['field_project_machine_name_value']['default_argument_options']['index'] = '1';
-  $handler->display->display_options['arguments']['field_project_machine_name_value']['default_argument_options']['use_alias'] = TRUE;
-  $handler->display->display_options['arguments']['field_project_machine_name_value']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_project_machine_name_value']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_project_machine_name_value']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_project_machine_name_value']['limit'] = '0';
+  /* Contextual filter: Content: Project (field_release_project) */
+  $handler->display->display_options['arguments']['field_release_project_target_id']['id'] = 'field_release_project_target_id';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['table'] = 'field_data_field_release_project';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['field'] = 'field_release_project_target_id';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_release_project_target_id']['summary_options']['items_per_page'] = '25';
+  /* Contextual filter: Content: Version major (field_release_version_major) */
+  $handler->display->display_options['arguments']['field_release_version_major_value']['id'] = 'field_release_version_major_value';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['table'] = 'field_data_field_release_version_major';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['field'] = 'field_release_version_major_value';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_release_version_major_value']['summary_options']['items_per_page'] = '25';
+  /* Contextual filter: Content: Core compatibility (taxonomy_vocabulary_6) */
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['id'] = 'taxonomy_vocabulary_6_tid';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['table'] = 'field_data_taxonomy_vocabulary_6';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['field'] = 'taxonomy_vocabulary_6_tid';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['taxonomy_vocabulary_6_tid']['summary_options']['items_per_page'] = '25';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -1405,21 +1419,29 @@ function drupalorg_projects_views_default_views() {
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
   $handler->display->display_options['argument_input'] = array(
-    'nid' => array(
-      'type' => 'none',
-      'context' => 'entity:node.field_release_project',
+    'field_release_project_target_id' => array(
+      'type' => 'user',
+      'context' => 'node_edit_form.field-project',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',
-      'label' => 'Content: Nid',
+      'label' => 'Content: Project (field_release_project)',
     ),
-    'nid_1' => array(
-      'type' => 'none',
-      'context' => 'entity:comment.field_attribute_contribution_to',
+    'field_release_version_major_value' => array(
+      'type' => 'user',
+      'context' => 'entity:node.field-release-version-major',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',
-      'label' => 'Content: Nid',
+      'label' => 'Content: Version major (field_release_version_major)',
+    ),
+    'taxonomy_vocabulary_6_tid' => array(
+      'type' => 'user',
+      'context' => 'entity:node.taxonomy-vocabulary-6',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Core compatibility (taxonomy_vocabulary_6)',
     ),
   );
   $translatables['related_project_releases'] = array(
