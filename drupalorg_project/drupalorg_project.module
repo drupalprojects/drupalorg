@@ -355,8 +355,9 @@ function _drupalorg_project_update_project_cache(stdClass $node) {
  * people add this tag, they get to know about the process.
  */
 function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
+  $wrapper = entity_metadata_wrapper('node', $form_state['node']);
+
   if (project_node_is_project($form_state['node'])) {
-    $wrapper = entity_metadata_wrapper('node', $form_state['node']);
     // Deprecate the "license" field, as it must always be GPLv2+ anyway.
     $form['field_project_license']['#access'] = FALSE;
     $form['field_project_license'][LANGUAGE_NONE][0]['#default_value']['url'] = DRUPALORG_DEFAULT_LICENSE_LINK;
@@ -446,26 +447,25 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     }
   }
   elseif ($form_state['node']->type === 'sa' || project_issue_node_is_issue($form_state['node'])) {
-    $node_wrapper = entity_metadata_wrapper('node', $form_state['node']);
-    $maintainer_access = isset($node_wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]) ? $node_wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]['permissions'] : [];
+    $maintainer_access = isset($wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]) ? $wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]['permissions'] : [];
     $fixed = variable_get('project_issue_state_fixed', PROJECT_ISSUE_STATE_FIXED);
     $closed_fixed = variable_get('project_issue_state_closed', PROJECT_ISSUE_STATE_CLOSED);
 
     // Remove “Closed (fixed)” status, unless issue already has that status or
     // “Fixed”.
-    if (!in_array($node_wrapper->field_issue_status->value(), [$fixed, $closed_fixed])) {
+    if (!in_array($wrapper->field_issue_status->value(), [$fixed, $closed_fixed])) {
       unset($form['field_issue_status'][LANGUAGE_NONE]['#options'][$closed_fixed]);
     }
 
     // If issue is “Closed (fixed)”, only allow project maintainers with “Write
     // to VCS” or “Maintain issues” access to change status.
-    if ($node_wrapper->field_issue_status->value() == $closed_fixed && empty($maintainer_access['write to vcs']) && empty($maintainer_access['maintain issues'])) {
+    if ($wrapper->field_issue_status->value() == $closed_fixed && empty($maintainer_access['write to vcs']) && empty($maintainer_access['maintain issues'])) {
       $form['field_issue_status'][LANGUAGE_NONE]['#disabled'] = TRUE;
       $form['field_issue_status'][LANGUAGE_NONE]['#description'] = t('Only maintainers can reopen.');
     }
 
     if (empty($form_state['node']->nid)) { // New issues.
-      if (($project = $node_wrapper->field_project->value()) && project_release_has_full_release($project)) {
+      if (($project = $wrapper->field_project->value()) && project_release_has_full_release($project)) {
         drupal_set_message(t('<em><strong>Security issues</strong> should not be reported here.</em> Follow the <a href="/node/101494">procedure for reporting security issues</a>.'), 'warning');
       }
     }
@@ -510,7 +510,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         ),
       );
 
-      $existing_credit = array_flip($node_wrapper->field_issue_credit->raw());
+      $existing_credit = array_flip($wrapper->field_issue_credit->raw());
 
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'comment');
@@ -567,7 +567,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           }
 
           // Keep track of the last time a maintainer commented.
-          if (isset($node_wrapper->field_project->value()->project['maintainers'][$comment->uid]) && $node_wrapper->field_project->value()->project['maintainers'][$comment->uid]['permissions']['write to vcs']) {
+          if (isset($wrapper->field_project->value()->project['maintainers'][$comment->uid]) && $wrapper->field_project->value()->project['maintainers'][$comment->uid]['permissions']['write to vcs']) {
             $last_maintainer_comment = max($last_maintainer_comment, $comment->created);
           }
         }
@@ -578,8 +578,8 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       $commit_attribution = $form_state['drupalorg_commit_attribution'] = drupalorg_get_issue_committers($form_state['node']);
 
       // Populate patches and files.
-      if (isset($node_wrapper->field_issue_files)) {
-        foreach ($node_wrapper->field_issue_files->value() as $file) {
+      if (isset($wrapper->field_issue_files)) {
+        foreach ($wrapper->field_issue_files->value() as $file) {
           if (!empty($form_state['node']->in_preview)) {
             $file = (array) file_load($file['fid']);
           }
@@ -600,7 +600,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         }
       }
       // Set author to final file, except for core.
-      $author = (isset($last_patch_uid) && $node_wrapper->field_project->value()->nid != DRUPALORG_CORE_NID) ? $last_patch_uid : '';
+      $author = (isset($last_patch_uid) && $wrapper->field_project->value()->nid != DRUPALORG_CORE_NID) ? $last_patch_uid : '';
 
       // Sort.
       uasort($table['#rows'], 'element_sort');
