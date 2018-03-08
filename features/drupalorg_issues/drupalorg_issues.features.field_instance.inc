@@ -616,7 +616,7 @@ function drupalorg_issues_field_default_field_instances() {
     'required' => 0,
     'settings' => array(
       'description_field' => 0,
-      'file_directory' => 'issues',
+      'file_directory' => 'issues/[current-date:custom:Y-m-d]',
       'file_extensions' => 'jpg jpeg gif png txt xls pdf ppt pps odt fodt ods fods odp fodp gz tgz patch diff zip test info po pot psd yml mov mp4 avi mkv',
       'max_filesize' => '',
       'user_register_form' => FALSE,
