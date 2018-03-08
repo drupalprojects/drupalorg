@@ -6853,18 +6853,36 @@ function _drupalorg_organization_options() {
  * Implements hook_restws_response_alter().
  */
 function drupalorg_restws_response_alter(&$response, $function, $formatName, $resourceController) {
-  if ($function !== 'viewResource') {
-    return;
-  }
+  if ($resourceController->resource() === 'node') {
+    switch ($function) {
+      case 'queryResource':
+        // Add author name to node API.
+        $uids = [];
+        foreach ($response['list'] as $value) {
+          $uids[$value['author']['id']] = TRUE;
+        }
+        if ($uids) {
+          $names = db_select('users')
+            ->fields('users', ['uid', 'name'])
+            ->condition('uid', array_keys($uids))
+            ->execute()->fetchAllKeyed();
+          foreach ($response['list'] as &$value) {
+            $value['author']['name'] = $names[$value['author']['id']];
+          }
+        }
+        break;
 
-  // Adds security risk-score and label to SA API.
-  if ($response['type'] === 'sa') {
-    $response['sa_risk'] = drupalorg_calculate_security_risk($response['field_sa_criticality']);
-  }
+      case 'viewResource':
+        // Add security risk-score and label to SA API.
+        if ($response['type'] === 'sa') {
+          $response['sa_risk'] = drupalorg_calculate_security_risk($response['field_sa_criticality']);
+        }
 
-  if (!empty($response['field_project']['id'])) {
-    // Add project’s machine name.
-    $response['field_project']['machine_name'] = node_load($response['field_project']['id'])->field_project_machine_name[LANGUAGE_NONE][0]['value'];
+        if (!empty($response['field_project']['id'])) {
+          // Add project’s machine name.
+          $response['field_project']['machine_name'] = node_load($response['field_project']['id'])->field_project_machine_name[LANGUAGE_NONE][0]['value'];
+        }
+    }
   }
 }
 
