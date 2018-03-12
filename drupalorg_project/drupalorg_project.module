@@ -915,20 +915,19 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         if (user_access('update security release types')) {
           // Offer to mark previous releases, that are not already insecure, as insecure.
           $api_vocabulary = taxonomy_vocabulary_load(variable_get('project_release_api_vocabulary'));
+          $current_version_parts = [
+            'field_release_version_minor' => $wrapper->field_release_version_minor->value(),
+            'field_release_version_patch' => $wrapper->field_release_version_patch->value(),
+          ];
           $query = new EntityFieldQuery();
-          $query->entityCondition('entity_type', 'node')
+          $result = $query->entityCondition('entity_type', 'node')
             ->entityCondition('bundle', project_release_release_node_types())
             ->propertyCondition('nid', $form_state['node']->nid, '!=')
             ->fieldCondition('field_release_project', 'target_id', $project->nid)
             ->fieldCondition('field_release_build_type', 'value', 'static')
             ->fieldCondition('taxonomy_' . $api_vocabulary->machine_name, 'tid', $wrapper->{'taxonomy_' . $api_vocabulary->machine_name}->getIdentifier())
-            ->fieldCondition('field_release_version_major', 'value', $wrapper->field_release_version_major->value());
-          foreach (['field_release_version_minor', 'field_release_version_patch'] as $field) {
-            if ($value = $wrapper->$field->value()) {
-              $query->fieldCondition($field, 'value', $value, '<=');
-            }
-          }
-          $result = $query->execute();
+            ->fieldCondition('field_release_version_major', 'value', $wrapper->field_release_version_major->value())
+            ->execute();
           if (isset($result['node'])) {
             $form['additional_insecure'] = [
               '#type' => 'checkboxes',
@@ -944,8 +943,20 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
               if (!empty($potentially_insecure_release->taxonomy_vocabulary_7)) {
                 foreach ($potentially_insecure_release->taxonomy_vocabulary_7[LANGUAGE_NONE] as $term) {
                   if ($term['tid'] == $insecure_term->tid) {
-                    // Already marked as insecure.
+                    // Already marked as insecure, discard.
                     continue 2;
+                  }
+                }
+                foreach ($current_version_parts as $field => $value) {
+                  if (isset($potentially_insecure_release->{$field}[LANGUAGE_NONE][0]['value'])) {
+                    if ($potentially_insecure_release->{$field}[LANGUAGE_NONE][0]['value'] < $value) {
+                      // Earlier version, keep this release.
+                      break;
+                    }
+                    if ($potentially_insecure_release->{$field}[LANGUAGE_NONE][0]['value'] > $value) {
+                      // Later version, discard this release.
+                      continue 2;
+                    }
                   }
                 }
               }
