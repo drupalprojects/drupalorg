@@ -23,20 +23,20 @@ function drupalorg_versioncontrol_versioncontrol_code_arrival(VersioncontrolRepo
 
   $project = node_load($repository->project_nid);
 
-  $cgit_url_name = $repository->name;
+  $reponame = $repository->name;
   if ($project->field_project_type[LANGUAGE_NONE][0]['value'] === 'sandbox') {
     $git_username = user_load($project->uid)->git_username;
-    $cgit_url_name = "sandbox-${git_username}-${cgit_url_name}";
+    $cgit_url_name = "sandbox-${git_username}-${reponame}";
   }
   drupalorg_fastly_purge_key($cgit_url_name);
 
   foreach ($event as $ref) {
     if (VERSIONCONTROL_GIT_REFTYPE_BRANCH == $ref->reftype) {
 
-      $url = variable_get('git_base_url', 'git://git.drupal.org/project/') . escapeshellcmd($repository->name) . '.git';
+      $url = variable_get('git_base_url', 'git://git.drupal.org/project/') . escapeshellcmd($reponame) . '.git';
       $tag = escapeshellcmd($ref->getLabel()->name);
 
-      $work_tree = '/tmp/' . $repository->name . '_' . time();
+      $work_tree = '/tmp/do_' . $reponame . '_' . time();
       $esc_work_tree = escapeshellarg($work_tree);
       $command = "git clone --depth 1 --branch $tag $url $esc_work_tree 2>&1";
       exec($command, $output, $status);
@@ -48,11 +48,16 @@ function drupalorg_versioncontrol_versioncontrol_code_arrival(VersioncontrolRepo
         return FALSE;
       }
       // Invoke a hook so other projects can respond to the repo
-
       module_invoke_all('drupalorg_versioncontrol_new_commits', $repository, $ref, $esc_work_tree);
       // remove the created repository.
       $command = 'rm -rf ' . $esc_work_tree;
       exec($command, $output, $status);
+      if ($status) {
+        watchdog('drupalorg_versioncontrol', 'Failed to remove repository: %cmd; output=%output', [
+          '%cmd' => $command,
+          '%output' => implode(' ', $output)
+        ]);
+      }
     }
   }
 
