@@ -26,8 +26,7 @@ function drupalorg_versioncontrol_versioncontrol_code_arrival(VersioncontrolRepo
   $reponame = $cgit_url_name = $repository->name;
 
   if ($project->field_project_type[LANGUAGE_NONE][0]['value'] === 'sandbox') {
-    preg_match('#^/var/git/repositories/(?<sandbox>.*?)\/(?<username>.*?)\/(?<reponame>.*?).git$#',$repository->root, $match);
-    $cgit_url_name = "${match['sandbox']}-${match['username']}-${match['reponame']}";
+    $cgit_url_name = preg_replace(['#^/var/git/repositories/#', '#^project/#', '#\.git$#', '#/#'], ['', '', '', '-'], $repository->root);
   }
   drupalorg_fastly_purge_key($cgit_url_name);
 
