@@ -23,7 +23,8 @@ function drupalorg_versioncontrol_versioncontrol_code_arrival(VersioncontrolRepo
 
   $project = node_load($repository->project_nid);
 
-  $reponame = $repository->name;
+  $reponame = $cgit_url_name = $repository->name;
+
   if ($project->field_project_type[LANGUAGE_NONE][0]['value'] === 'sandbox') {
     $git_username = user_load($project->uid)->git_username;
     $cgit_url_name = "sandbox-${git_username}-${reponame}";
