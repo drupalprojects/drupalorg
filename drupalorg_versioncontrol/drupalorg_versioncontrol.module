@@ -31,6 +31,33 @@ function drupalorg_versioncontrol_versioncontrol_code_arrival(VersioncontrolRepo
   }
   drupalorg_fastly_purge_key($cgit_url_name);
 
+  $releases = array();
+  foreach ($event as $ref) {
+    if (VERSIONCONTROL_GIT_REFTYPE_BRANCH == $ref->reftype) {
+
+      $url = variable_get('git_base_url', 'git://git.drupal.org/project/') . escapeshellcmd($repository->name) . '.git';
+      $tag = escapeshellcmd($ref->getLabel()->name);
+
+      $work_tree = '/tmp/' . $repository->name . '_' . time();
+      $esc_work_tree = escapeshellarg($work_tree);
+      $command = "git clone --depth 1 --branch $tag $url $esc_work_tree 2>&1";
+      exec($command, $output, $status);
+      if ($status) {
+        watchdog('drupalorg_versioncontrol', 'Failed to checkout git repository: %cmd; output=%output', [
+          '%cmd' => $command,
+          '%output' => implode(' ', $output)
+        ]);
+        return FALSE;
+      }
+      // Invoke a hook so other projects can respond to the repo
+
+      module_invoke_all('drupalorg_versioncontrol_new_commits', $repository, $ref, $esc_work_tree);
+      // remove the created repository.
+      $command = 'rm -rf ' . $esc_work_tree;
+      exec($command, $output, $status);
+    }
+  }
+
 }
 
 /**
