@@ -22,7 +22,6 @@ function drupalorg_versioncontrol_versioncontrol_code_arrival(VersioncontrolRepo
   // Purges everything in cgit for this project if it changes.
 
   $project = node_load($repository->project_nid);
-  $project_wrapper = entity_metadata_wrapper('node', $project);
 
   $cgit_url_name = $repository->name;
   if ($project->field_project_type[LANGUAGE_NONE][0]['value'] === 'sandbox') {
@@ -31,7 +30,6 @@ function drupalorg_versioncontrol_versioncontrol_code_arrival(VersioncontrolRepo
   }
   drupalorg_fastly_purge_key($cgit_url_name);
 
-  $releases = array();
   foreach ($event as $ref) {
     if (VERSIONCONTROL_GIT_REFTYPE_BRANCH == $ref->reftype) {
 
