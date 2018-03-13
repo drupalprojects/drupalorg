@@ -20,7 +20,16 @@ function drupalorg_versioncontrol_versioncontrol_code_arrival(VersioncontrolRepo
     return;
   }
   // Purges everything in cgit for this project if it changes.
-  drupalorg_fastly_purge_key($repository->name);
+
+  $project = node_load($repository->project_nid);
+  $project_wrapper = entity_metadata_wrapper('node', $project);
+
+  $cgit_url_name = $repository->name;
+  if ($project->field_project_type[LANGUAGE_NONE][0]['value'] === 'sandbox') {
+    $git_username = user_load($project->uid)->git_username;
+    $cgit_url_name = "sandbox-${git_username}-${cgit_url_name}";
+  }
+  drupalorg_fastly_purge_key($cgit_url_name);
 
 }
 
