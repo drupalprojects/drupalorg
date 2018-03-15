@@ -122,6 +122,29 @@ function drupalorg_documentation_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
+  $pane->pid = 'new-36b6db72-ddfe-460e-bf2d-6bd3bff9875c';
+  $pane->panel = 'content';
+  $pane->type = 'block';
+  $pane->subtype = 'message_follow-follow';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '36b6db72-ddfe-460e-bf2d-6bd3bff9875c';
+  $display->content['new-36b6db72-ddfe-460e-bf2d-6bd3bff9875c'] = $pane;
+  $display->panels['content'][0] = 'new-36b6db72-ddfe-460e-bf2d-6bd3bff9875c';
+  $pane = new stdClass();
   $pane->pid = 'new-3c66644f-3038-4873-a643-d6749c8e17bc';
   $pane->panel = 'content';
   $pane->type = 'node_comments';
@@ -142,11 +165,11 @@ function drupalorg_documentation_default_page_manager_pages() {
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 0;
+  $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = '3c66644f-3038-4873-a643-d6749c8e17bc';
   $display->content['new-3c66644f-3038-4873-a643-d6749c8e17bc'] = $pane;
-  $display->panels['content'][0] = 'new-3c66644f-3038-4873-a643-d6749c8e17bc';
+  $display->panels['content'][1] = 'new-3c66644f-3038-4873-a643-d6749c8e17bc';
   $pane = new stdClass();
   $pane->pid = 'new-2f1eef76-4fc2-4747-b5fc-58f86981e78a';
   $pane->panel = 'preface';
