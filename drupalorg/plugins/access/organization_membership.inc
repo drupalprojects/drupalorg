@@ -45,7 +45,7 @@ function drupalorg_organization_membership_access_check($conf, $context) {
   // Find the user’s current organizations.
   $wrapper = entity_metadata_wrapper('user', $context->data);
   foreach ($wrapper->field_organizations as $organization) {
-    if ($organization->field_current->value() && ($status = $organization->field_organization_reference->field_org_membership_status->value()) && !empty($conf['value'][$status])) {
+    if ($organization->field_current->value() && $organization->field_organization_reference->value() && ($status = $organization->field_organization_reference->field_org_membership_status->value()) && !empty($conf['value'][$status])) {
       return TRUE;
     }
   }
