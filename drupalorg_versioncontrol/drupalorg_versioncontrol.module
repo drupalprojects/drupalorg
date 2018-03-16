@@ -48,7 +48,7 @@ function drupalorg_versioncontrol_versioncontrol_code_arrival(VersioncontrolRepo
         return FALSE;
       }
       // Invoke a hook so other projects can respond to the repo
-      module_invoke_all('drupalorg_versioncontrol_repo_changes', $repository, $ref, $esc_work_tree);
+      module_invoke_all('drupalorg_versioncontrol_repo_changes', $repository, $ref, $work_tree);
       // remove the created repository.
       $command = 'rm -rf ' . $esc_work_tree;
       exec($command, $output, $status);
