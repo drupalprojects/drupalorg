@@ -34,13 +34,6 @@ function drupalorg_git_varnish_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['drupalorg/pushctl-state'] = array(
-    'title' => 'Fetch project vcs auth data',
-    'page callback' => 'drupalorg_git_varnish_pushctl_state',
-    'access callback' => 'drupalorg_git_varnish_access_callback', // we're restricting in apache conf, this is always TRUE
-    'type' => MENU_CALLBACK,
-  );
-
   $items['drupalorg/vcs-auth-data'] = array(
     'title' => 'Fetch project vcs auth data',
     'page callback' => 'drupalorg_git_varnish_vcs_auth_data',
@@ -60,11 +53,6 @@ function drupalorg_git_varnish_access_callback() {
     return TRUE;
   }
   return FALSE;
-}
-
-function drupalorg_git_varnish_pushctl_state() {
-  echo (int) variable_get('drupalorg_git_gateway_pushctl', 0);
-  exit;
 }
 
 function drupalorg_git_varnish_sshkey_check() {
