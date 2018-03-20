@@ -14,6 +14,9 @@ function drupalorg_documentation_metatag_export_default() {
   $config['node:documentation'] = array(
     'instance' => 'node:documentation',
     'config' => array(
+      'title' => array(
+        'value' => '[node:title] |  [node:drupalorg-top-guide:title] [site:name]',
+      ),
       'description' => array(
         'value' => '[node:field_summary]',
       ),
@@ -24,6 +27,9 @@ function drupalorg_documentation_metatag_export_default() {
   $config['node:guide'] = array(
     'instance' => 'node:guide',
     'config' => array(
+      'title' => array(
+        'value' => '[node:title] |  [node:drupalorg-top-guide:title] [site:name]',
+      ),
       'description' => array(
         'value' => '[node:field_summary]',
       ),
