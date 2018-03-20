@@ -15,7 +15,7 @@ function drupalorg_documentation_metatag_export_default() {
     'instance' => 'node:documentation',
     'config' => array(
       'title' => array(
-        'value' => '[node:title] |  [node:drupalorg-top-guide:title] [site:name]',
+        'value' => '[node:title] | [node:drupalorg-top-guide:title] guide on [site:name]',
       ),
       'description' => array(
         'value' => '[node:field_summary]',
@@ -28,7 +28,7 @@ function drupalorg_documentation_metatag_export_default() {
     'instance' => 'node:guide',
     'config' => array(
       'title' => array(
-        'value' => '[node:title] |  [node:drupalorg-top-guide:title] [site:name]',
+        'value' => '[node:title] | [node:drupalorg-top-guide:title] guide on [site:name]',
       ),
       'description' => array(
         'value' => '[node:field_summary]',
