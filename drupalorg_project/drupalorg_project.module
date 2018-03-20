@@ -363,6 +363,9 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     $form['field_project_license'][LANGUAGE_NONE][0]['#default_value']['url'] = DRUPALORG_DEFAULT_LICENSE_LINK;
     $form['field_project_license'][LANGUAGE_NONE][0]['#default_value']['title'] = DRUPALORG_DEFAULT_LICENSE;
 
+    // Increase size attribute for "Module categories" multiple-value select.
+    $form['taxonomy_vocabulary_3'][LANGUAGE_NONE]['#size'] = 10;
+
     // Do not allow users to disable releases once a release has been created.
     if (!user_access('administer projects') && !empty($form_state['node']->field_project_has_releases[LANGUAGE_NONE][0]['value'])) {
       $releases = project_release_query_releases($form_state['node']->nid);
