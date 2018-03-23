@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Drupalorg redesign 2018 feature.
+ */
+
+include_once 'drupalorg_redesign_2018.features.inc';
