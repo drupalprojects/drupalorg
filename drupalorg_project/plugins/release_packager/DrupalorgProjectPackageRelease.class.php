@@ -266,7 +266,6 @@ class DrupalorgProjectPackageRelease implements ProjectReleasePackagerInterface 
     }
     $info .= 'project = "' . $this->project_short_name . "\"\n";
     $info .= 'datestamp = "' . time() . "\"\n";
-    $info .= "\n";
 
     if (!chmod($file, 0644)) {
       watchdog('package_error', 'chmod(@file, 0644) failed', array('@file' => $file), WATCHDOG_ERROR);
