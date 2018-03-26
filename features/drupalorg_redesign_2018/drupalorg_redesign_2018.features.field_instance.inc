@@ -214,7 +214,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
           'view_mode' => 'full',
         ),
         'type' => 'field_collection_view',
-        'weight' => 0,
+        'weight' => 1,
       ),
     ),
     'entity_type' => 'fieldable_panels_pane',
@@ -229,7 +229,44 @@ function drupalorg_redesign_2018_field_default_field_instances() {
       'module' => 'field_collection',
       'settings' => array(),
       'type' => 'field_collection_embed',
-      'weight' => -4,
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'fieldable_panels_pane-cta_multiple-field_interactive'.
+  $field_instances['fieldable_panels_pane-cta_multiple-field_interactive'] = array(
+    'bundle' => 'cta_multiple',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'fieldable_panels_pane',
+    'field_name' => 'field_interactive',
+    'label' => 'Interactive',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 1,
     ),
   );
 
@@ -245,7 +282,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_default',
-        'weight' => 1,
+        'weight' => 2,
       ),
     ),
     'entity_type' => 'fieldable_panels_pane',
@@ -280,7 +317,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => -2,
+      'weight' => 3,
     ),
   );
 
@@ -290,6 +327,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
   t('Cta');
   t('Graphic');
   t('Infographics');
+  t('Interactive');
   t('Title');
 
   return $field_instances;
