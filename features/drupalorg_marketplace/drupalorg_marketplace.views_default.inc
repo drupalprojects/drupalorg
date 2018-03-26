@@ -48,7 +48,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['header']['result']['content'] = '<p>Displaying @start to @end of @total organizations. <a href="/node/1887616">Confirmed users</a> can <a href="/node/add/organization">add an organization</a>.</p>
 <p>Organizations using Drupal are shops providing Drupal services, customers that have Drupal installations, and companies that support Drupal financially or through sponsoring amazing events that promote Drupal.</p>
 <p>The organizations listed below are in order of issue credits awarded in the past 90 days and by membership in the Drupal Supporter Programs.</p>';
-  /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
+  /* Relationship: Content: Offices in (taxonomy_vocabulary_52) */
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['id'] = 'taxonomy_vocabulary_52_tid';
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['table'] = 'field_data_taxonomy_vocabulary_52';
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['field'] = 'taxonomy_vocabulary_52_tid';
@@ -329,7 +329,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Locations */
+  /* Field: Content: Offices in */
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['id'] = 'taxonomy_vocabulary_52';
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['table'] = 'field_data_taxonomy_vocabulary_52';
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['field'] = 'taxonomy_vocabulary_52';
@@ -591,10 +591,301 @@ function drupalorg_marketplace_views_default_views() {
     'all-providers' => 'all-providers',
     'featured' => 'featured',
   );
+  /* Filter criterion: Content: Offices in (taxonomy_vocabulary_52) */
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['id'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['table'] = 'field_data_taxonomy_vocabulary_52';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['field'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['operator_id'] = 'taxonomy_vocabulary_52_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['label'] = 'Countries in which your organization has a physical presence (taxonomy_vocabulary_52)';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['operator'] = 'taxonomy_vocabulary_52_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['identifier'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['vocabulary'] = 'vocabulary_52';
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['exposed_form'] = FALSE;
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Apply filters';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Clear filters';
+  $handler->display->display_options['exposed_block'] = TRUE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Has taxonomy term ID */
+  $handler->display->display_options['arguments']['tid']['id'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['table'] = 'taxonomy_index';
+  $handler->display->display_options['arguments']['tid']['field'] = 'tid';
+  $handler->display->display_options['arguments']['tid']['exception']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['exception']['title'] = 'All services';
+  $handler->display->display_options['arguments']['tid']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['title'] = 'Marketplace: %1';
+  $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['tid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['tid']['summary_options']['base_path'] = 'drupal-services';
+  $handler->display->display_options['arguments']['tid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['tid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['tid']['validate_options']['vocabularies'] = array(
+    'vocabulary_48' => 'vocabulary_48',
+  );
+  $handler->display->display_options['arguments']['tid']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['arguments']['tid']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['tid']['add_table'] = TRUE;
+  /* Contextual filter: Content: Has taxonomy term ID */
+  $handler->display->display_options['arguments']['tid_1']['id'] = 'tid_1';
+  $handler->display->display_options['arguments']['tid_1']['table'] = 'taxonomy_index';
+  $handler->display->display_options['arguments']['tid_1']['field'] = 'tid';
+  $handler->display->display_options['arguments']['tid_1']['default_action'] = 'summary';
+  $handler->display->display_options['arguments']['tid_1']['exception']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid_1']['exception']['title'] = 'All sectors';
+  $handler->display->display_options['arguments']['tid_1']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid_1']['title'] = 'Marketplace: %2';
+  $handler->display->display_options['arguments']['tid_1']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['tid_1']['default_argument_skip_url'] = TRUE;
+  $handler->display->display_options['arguments']['tid_1']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['tid_1']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['tid_1']['summary_options']['base_path'] = 'drupal-services';
+  $handler->display->display_options['arguments']['tid_1']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['tid_1']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['tid_1']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['tid_1']['validate_options']['vocabularies'] = array(
+    'vocabulary_50' => 'vocabulary_50',
+  );
+  $handler->display->display_options['arguments']['tid_1']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['arguments']['tid_1']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['tid_1']['add_table'] = TRUE;
+  /* Contextual filter: Content: Has taxonomy term ID */
+  $handler->display->display_options['arguments']['tid_2']['id'] = 'tid_2';
+  $handler->display->display_options['arguments']['tid_2']['table'] = 'taxonomy_index';
+  $handler->display->display_options['arguments']['tid_2']['field'] = 'tid';
+  $handler->display->display_options['arguments']['tid_2']['default_action'] = 'summary';
+  $handler->display->display_options['arguments']['tid_2']['exception']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid_2']['exception']['title'] = 'All locations';
+  $handler->display->display_options['arguments']['tid_2']['title_enable'] = TRUE;
+  $handler->display->display_options['arguments']['tid_2']['title'] = 'Marketplace: %3';
+  $handler->display->display_options['arguments']['tid_2']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['tid_2']['default_argument_skip_url'] = TRUE;
+  $handler->display->display_options['arguments']['tid_2']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['tid_2']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['tid_2']['summary_options']['base_path'] = 'drupal-services';
+  $handler->display->display_options['arguments']['tid_2']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['tid_2']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['tid_2']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['tid_2']['validate_options']['vocabularies'] = array(
+    'vocabulary_52' => 'vocabulary_52',
+  );
+  $handler->display->display_options['arguments']['tid_2']['validate_options']['type'] = 'convert';
+  $handler->display->display_options['arguments']['tid_2']['validate_options']['transform'] = TRUE;
+  $handler->display->display_options['arguments']['tid_2']['add_table'] = TRUE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: List in marketplace (field_org_marketplace_request) */
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['id'] = 'field_org_marketplace_request_value';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['table'] = 'field_data_field_org_marketplace_request';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['field'] = 'field_org_marketplace_request_value';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['value'] = array(
+    1 => '1',
+  );
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['group'] = 1;
+  /* Filter criterion: Content: Services listing (field_organization_list_rule) */
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['id'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['table'] = 'field_data_field_organization_list_rule';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['field'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['value'] = array(
+    'all-providers' => 'all-providers',
+    'featured' => 'featured',
+  );
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['operator_id'] = 'field_organization_list_rule_value_op';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['label'] = 'Services listing';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['operator'] = 'field_organization_list_rule_value_op';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['identifier'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+    42 => 0,
+  );
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['reduce'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['group_info']['label'] = 'Services listing (field_organization_list_rule)';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['group_info']['identifier'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['group_info']['remember'] = FALSE;
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['group_info']['group_items'] = array(
+    1 => array(),
+    2 => array(),
+    3 => array(),
+  );
+  /* Filter criterion: Content: Services (taxonomy_vocabulary_48) */
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['id'] = 'taxonomy_vocabulary_48_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['table'] = 'field_data_taxonomy_vocabulary_48';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['field'] = 'taxonomy_vocabulary_48_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['group'] = 1;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['operator_id'] = 'taxonomy_vocabulary_48_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['label'] = 'Services';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['operator'] = 'taxonomy_vocabulary_48_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['identifier'] = 'taxonomy_vocabulary_48_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+    42 => 0,
+  );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['vocabulary'] = 'vocabulary_48';
+  /* Filter criterion: Content: Sectors (taxonomy_vocabulary_50) */
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['id'] = 'taxonomy_vocabulary_50_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['table'] = 'field_data_taxonomy_vocabulary_50';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['field'] = 'taxonomy_vocabulary_50_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['group'] = 1;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['operator_id'] = 'taxonomy_vocabulary_50_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['label'] = 'Sectors';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['operator'] = 'taxonomy_vocabulary_50_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['identifier'] = 'taxonomy_vocabulary_50_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+    42 => 0,
+  );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['vocabulary'] = 'vocabulary_50';
+  /* Filter criterion: Content: Offices in (taxonomy_vocabulary_52) */
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['id'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['table'] = 'field_data_taxonomy_vocabulary_52';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['field'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['group'] = 1;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['operator_id'] = 'taxonomy_vocabulary_52_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['label'] = 'Offices in';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['operator'] = 'taxonomy_vocabulary_52_tid_op';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['identifier'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+    42 => 0,
+  );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['vocabulary'] = 'vocabulary_52';
+  /* Filter criterion: Broken/missing handler */
+  $handler->display->display_options['filters']['field_business_countries_tid']['id'] = 'field_business_countries_tid';
+  $handler->display->display_options['filters']['field_business_countries_tid']['table'] = 'field_data_field_business_countries';
+  $handler->display->display_options['filters']['field_business_countries_tid']['field'] = 'field_business_countries_tid';
+  $handler->display->display_options['filters']['field_business_countries_tid']['operator'] = 'or';
+  $handler->display->display_options['filters']['field_business_countries_tid']['value'] = array();
+  $handler->display->display_options['filters']['field_business_countries_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_business_countries_tid']['expose']['operator_id'] = 'field_business_countries_tid_op';
+  $handler->display->display_options['filters']['field_business_countries_tid']['expose']['label'] = 'Locations served';
+  $handler->display->display_options['filters']['field_business_countries_tid']['expose']['operator'] = 'field_business_countries_tid_op';
+  $handler->display->display_options['filters']['field_business_countries_tid']['expose']['identifier'] = 'field_business_countries_tid';
+  $handler->display->display_options['filters']['field_business_countries_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_business_countries_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    3 => 0,
+    1 => 0,
+    39 => 0,
+    36 => 0,
+    7 => 0,
+    34 => 0,
+    32 => 0,
+    30 => 0,
+    22 => 0,
+    20 => 0,
+    24 => 0,
+    41 => 0,
+    28 => 0,
+    26 => 0,
+    14 => 0,
+    38 => 0,
+    4 => 0,
+    42 => 0,
+  );
   $handler->display->display_options['path'] = 'drupal-services';
   $translatables['drupalorg_organizations'] = array(
     t('Defaults'),
@@ -622,7 +913,16 @@ function drupalorg_marketplace_views_default_views() {
     t('Marketplace: %2'),
     t('All locations'),
     t('Marketplace: %3'),
+    t('Countries in which your organization has a physical presence (taxonomy_vocabulary_52)'),
     t('Page'),
+    t('Apply filters'),
+    t('Clear filters'),
+    t('Services listing'),
+    t('Services listing (field_organization_list_rule)'),
+    t('Services'),
+    t('Sectors'),
+    t('Offices in'),
+    t('Locations served'),
   );
   $export['drupalorg_organizations'] = $view;
 
@@ -1043,7 +1343,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
     'vocabulary_9' => 0,
   );
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Locations */
+  /* Field: Content: Offices in */
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['id'] = 'taxonomy_vocabulary_52';
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['table'] = 'field_data_taxonomy_vocabulary_52';
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['field'] = 'taxonomy_vocabulary_52';
@@ -1396,7 +1696,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
 </div>'),
     t('Sidebar navigation'),
     t('Browse by country'),
-    t('Locations'),
+    t('Offices in'),
     t('Trainings: %1'),
     t('Management view'),
     t('Marketplace management'),

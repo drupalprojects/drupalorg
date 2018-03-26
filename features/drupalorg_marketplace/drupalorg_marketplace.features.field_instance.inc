@@ -99,7 +99,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 10,
+      'weight' => 11,
     ),
   );
 
@@ -200,7 +200,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'size' => 20,
       ),
       'type' => 'text_textfield',
-      'weight' => 8,
+      'weight' => 9,
     ),
     'widget_type' => 'text_textfield',
   );
@@ -318,7 +318,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textarea',
-      'weight' => 11,
+      'weight' => 12,
     ),
     'widget_type' => 'text_textarea',
   );
@@ -631,7 +631,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 24,
+        'weight' => 22,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -674,7 +674,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'field_extrawidgets',
       'settings' => array(),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 37,
+      'weight' => 20,
     ),
   );
 
@@ -731,7 +731,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'field_extrawidgets',
       'settings' => array(),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 17,
+      'weight' => 18,
     ),
   );
 
@@ -750,7 +750,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 21,
+        'weight' => 19,
       ),
       'full' => array(
         'label' => 'above',
@@ -856,7 +856,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 9,
+      'weight' => 10,
     ),
     'widget_type' => 'optionwidgets_onoff',
   );
@@ -872,7 +872,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 27,
+        'weight' => 25,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -912,7 +912,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'field_extrawidgets',
       'settings' => array(),
       'type' => 'field_extrawidgets_hidden',
-      'weight' => 38,
+      'weight' => 21,
     ),
   );
 
@@ -928,7 +928,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 25,
+        'weight' => 23,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -992,7 +992,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 26,
+        'weight' => 24,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -1189,7 +1189,7 @@ function drupalorg_marketplace_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 6,
+        'weight' => 5,
       ),
       'full' => array(
         'label' => 'above',
@@ -1368,6 +1368,61 @@ function drupalorg_marketplace_field_default_field_instances() {
       'weight' => 30,
     ),
     'widget_type' => 'optionwidgets_buttons',
+  );
+
+  // Exported field_instance: 'node-organization-field_organization_loc_served'.
+  $field_instances['node-organization-field_organization_loc_served'] = array(
+    'bundle' => 'organization',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Please select countries where your organization does business.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 26,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_organization_loc_served',
+    'label' => 'Locations served',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 6,
+    ),
   );
 
   // Exported field_instance:
@@ -1851,7 +1906,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 6,
+      'weight' => 7,
     ),
   );
 
@@ -1905,7 +1960,7 @@ function drupalorg_marketplace_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 7,
+      'weight' => 8,
     ),
   );
 
@@ -1914,14 +1969,14 @@ function drupalorg_marketplace_field_default_field_instances() {
     'bundle' => 'organization',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Only select countries in which your company has a physical office.',
+    'description' => 'Only select countries in which this company has a physical presence.',
     'display' => array(
       'default' => array(
         'label' => 'above',
         'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 5,
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 7,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -1950,7 +2005,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'taxonomy_vocabulary_52',
-    'label' => 'Locations',
+    'label' => 'Offices in',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -1995,16 +2050,18 @@ function drupalorg_marketplace_field_default_field_instances() {
   t('List in Training section');
   t('List in marketplace');
   t('List related sector(s)');
-  t('Locations');
+  t('Locations served');
   t('Logo');
   t('Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1710338">Review marketplace listings</a>" guide.');
   t('Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1735864">Review training listings</a>" guide.');
   t('Membership status');
-  t('Only select countries in which your company has a physical office.');
+  t('Offices in');
+  t('Only select countries in which this company has a physical presence.');
   t('Org contribution rank');
   t('Org issue credit count');
   t('Organization description');
   t('Organization type');
+  t('Please select countries where your organization does business.');
   t('Sectors');
   t('Services');
   t('Services issue');
