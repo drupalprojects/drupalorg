@@ -1,4 +1,4 @@
-<svg id="paths" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 240">
+<svg class="random-shapes" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 240">
   <title>random-shape2</title>
-  <path class="shape" d="M205.48,48.2C153.79,27.36,82.08,55.38,73.2,100.61c-8.25,42,39.17,90.68,89.85,97.35,38.57,5.07,92.45-12.42,103-54.91C276.13,102.13,240.06,62.13,205.48,48.2Z" style="fill: #f6f6f2"/>
+  <path d="M96.87,194.17c65.09,23.9,189,18,196-55,5.33-55.54-38-114-147-105C53.36,41.81,2.91,159.66,96.87,194.17Z" style="fill: #f6f6f2"/>
 </svg>
