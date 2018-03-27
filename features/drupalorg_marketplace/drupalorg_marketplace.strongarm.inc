@@ -119,13 +119,13 @@ function drupalorg_marketplace_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '16',
+          'weight' => '15',
         ),
         'redirect' => array(
-          'weight' => '17',
+          'weight' => '16',
         ),
         'metatags' => array(
-          'weight' => '19',
+          'weight' => '18',
         ),
       ),
       'display' => array(
