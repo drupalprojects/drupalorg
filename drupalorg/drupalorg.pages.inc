@@ -53,7 +53,9 @@ function drupalorg_project_browse_page($project_type) {
     ],
     'facet.limit' => 200,
   ];
-  $params['start'] = (isset($_GET['page']) ? $_GET['page'] : 0) * $params['rows'];
+  if (isset($_GET['page']) && ctype_digit($_GET['page'])) {
+    $params['start'] = $_GET['page'] * $params['rows'];
+  }
 
   // This is the object that does the communication with the solr server.
   $env_id = apachesolr_default_environment();
