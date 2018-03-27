@@ -48,7 +48,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['header']['result']['content'] = '<p>Displaying @start to @end of @total organizations. <a href="/node/1887616">Confirmed users</a> can <a href="/node/add/organization">add an organization</a>.</p>
 <p>Organizations using Drupal are shops providing Drupal services, customers that have Drupal installations, and companies that support Drupal financially or through sponsoring amazing events that promote Drupal.</p>
 <p>The organizations listed below are in order of issue credits awarded in the past 90 days and by membership in the Drupal Supporter Programs.</p>';
-  /* Relationship: Content: Locations (taxonomy_vocabulary_52) */
+  /* Relationship: Content: Offices in (taxonomy_vocabulary_52) */
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['id'] = 'taxonomy_vocabulary_52_tid';
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['table'] = 'field_data_taxonomy_vocabulary_52';
   $handler->display->display_options['relationships']['taxonomy_vocabulary_52_tid']['field'] = 'taxonomy_vocabulary_52_tid';
@@ -329,7 +329,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Locations */
+  /* Field: Content: Offices in */
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['id'] = 'taxonomy_vocabulary_52';
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['table'] = 'field_data_taxonomy_vocabulary_52';
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['field'] = 'taxonomy_vocabulary_52';
@@ -1043,7 +1043,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
     'vocabulary_9' => 0,
   );
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Locations */
+  /* Field: Content: Offices in */
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['id'] = 'taxonomy_vocabulary_52';
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['table'] = 'field_data_taxonomy_vocabulary_52';
   $handler->display->display_options['fields']['taxonomy_vocabulary_52']['field'] = 'taxonomy_vocabulary_52';
@@ -1396,7 +1396,7 @@ For upcoming Trainings check <a href="http://groups.drupal.org/events?type[]=tra
 </div>'),
     t('Sidebar navigation'),
     t('Browse by country'),
-    t('Locations'),
+    t('Offices in'),
     t('Trainings: %1'),
     t('Management view'),
     t('Marketplace management'),

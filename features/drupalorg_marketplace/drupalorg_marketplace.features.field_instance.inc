@@ -1914,7 +1914,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     'bundle' => 'organization',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Only select countries in which your company has a physical office.',
+    'description' => 'Only select countries in which your company has a physical presence.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1950,7 +1950,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'taxonomy_vocabulary_52',
-    'label' => 'Locations',
+    'label' => 'Offices in',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -1995,12 +1995,12 @@ function drupalorg_marketplace_field_default_field_instances() {
   t('List in Training section');
   t('List in marketplace');
   t('List related sector(s)');
-  t('Locations');
   t('Logo');
   t('Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1710338">Review marketplace listings</a>" guide.');
   t('Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1735864">Review training listings</a>" guide.');
   t('Membership status');
-  t('Only select countries in which your company has a physical office.');
+  t('Offices in');
+  t('Only select countries in which your company has a physical presence.');
   t('Org contribution rank');
   t('Org issue credit count');
   t('Organization description');
