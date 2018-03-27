@@ -467,6 +467,10 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Apply filters';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Clear filters';
+  $handler->display->display_options['exposed_form']['options']['expose_sort_order'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '25';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -606,11 +610,6 @@ function drupalorg_marketplace_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['defaults']['exposed_form'] = FALSE;
-  $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Apply filters';
-  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
-  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Clear filters';
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Has taxonomy term ID */
@@ -715,7 +714,6 @@ function drupalorg_marketplace_views_default_views() {
     'featured' => 'featured',
   );
   $handler->display->display_options['filters']['field_organization_list_rule_value']['group'] = 1;
-  $handler->display->display_options['filters']['field_organization_list_rule_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['operator_id'] = 'field_organization_list_rule_value_op';
   $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['label'] = 'Services listing';
   $handler->display->display_options['filters']['field_organization_list_rule_value']['expose']['operator'] = 'field_organization_list_rule_value_op';
@@ -760,7 +758,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['operator_id'] = 'taxonomy_vocabulary_48_tid_op';
   $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['label'] = 'Services';
   $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['operator'] = 'taxonomy_vocabulary_48_tid_op';
-  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['identifier'] = 'taxonomy_vocabulary_48_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['identifier'] = 'services';
   $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['expose']['remember_roles'] = array(
     2 => '2',
@@ -794,7 +792,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['operator_id'] = 'taxonomy_vocabulary_50_tid_op';
   $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['label'] = 'Sectors';
   $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['operator'] = 'taxonomy_vocabulary_50_tid_op';
-  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['identifier'] = 'taxonomy_vocabulary_50_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['identifier'] = 'sectors';
   $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['expose']['remember_roles'] = array(
     2 => '2',
@@ -828,7 +826,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['operator_id'] = 'taxonomy_vocabulary_52_tid_op';
   $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['label'] = 'Offices in';
   $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['operator'] = 'taxonomy_vocabulary_52_tid_op';
-  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['identifier'] = 'taxonomy_vocabulary_52_tid';
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['identifier'] = 'offices';
   $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['expose']['remember_roles'] = array(
     2 => '2',
@@ -861,7 +859,7 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['operator_id'] = 'field_organization_loc_served_tid_op';
   $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['label'] = 'Locations served';
   $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['operator'] = 'field_organization_loc_served_tid_op';
-  $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['identifier'] = 'field_organization_loc_served_tid';
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['identifier'] = 'locations';
   $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['remember_roles'] = array(
     2 => '2',
@@ -891,8 +889,8 @@ function drupalorg_marketplace_views_default_views() {
     t('Defaults'),
     t('Marketplace'),
     t('more'),
-    t('Apply'),
-    t('Reset'),
+    t('Apply filters'),
+    t('Clear filters'),
     t('Sort by'),
     t('Asc'),
     t('Desc'),
@@ -915,8 +913,6 @@ function drupalorg_marketplace_views_default_views() {
     t('Marketplace: %3'),
     t('Countries in which your organization has a physical presence (taxonomy_vocabulary_52)'),
     t('Page'),
-    t('Apply filters'),
-    t('Clear filters'),
     t('Services listing'),
     t('Services listing (field_organization_list_rule)'),
     t('Services'),
