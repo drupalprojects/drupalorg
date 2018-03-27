@@ -853,19 +853,17 @@ function drupalorg_marketplace_views_default_views() {
   );
   $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['type'] = 'select';
   $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['vocabulary'] = 'vocabulary_52';
-  /* Filter criterion: Broken/missing handler */
-  $handler->display->display_options['filters']['field_business_countries_tid']['id'] = 'field_business_countries_tid';
-  $handler->display->display_options['filters']['field_business_countries_tid']['table'] = 'field_data_field_business_countries';
-  $handler->display->display_options['filters']['field_business_countries_tid']['field'] = 'field_business_countries_tid';
-  $handler->display->display_options['filters']['field_business_countries_tid']['operator'] = 'or';
-  $handler->display->display_options['filters']['field_business_countries_tid']['value'] = array();
-  $handler->display->display_options['filters']['field_business_countries_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_business_countries_tid']['expose']['operator_id'] = 'field_business_countries_tid_op';
-  $handler->display->display_options['filters']['field_business_countries_tid']['expose']['label'] = 'Locations served';
-  $handler->display->display_options['filters']['field_business_countries_tid']['expose']['operator'] = 'field_business_countries_tid_op';
-  $handler->display->display_options['filters']['field_business_countries_tid']['expose']['identifier'] = 'field_business_countries_tid';
-  $handler->display->display_options['filters']['field_business_countries_tid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_business_countries_tid']['expose']['remember_roles'] = array(
+  /* Filter criterion: Content: Locations served (field_organization_loc_served) */
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['id'] = 'field_organization_loc_served_tid';
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['table'] = 'field_data_field_organization_loc_served';
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['field'] = 'field_organization_loc_served_tid';
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['operator_id'] = 'field_organization_loc_served_tid_op';
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['label'] = 'Locations served';
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['operator'] = 'field_organization_loc_served_tid_op';
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['identifier'] = 'field_organization_loc_served_tid';
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['expose']['remember_roles'] = array(
     2 => '2',
     3 => 0,
     1 => 0,
@@ -886,6 +884,8 @@ function drupalorg_marketplace_views_default_views() {
     4 => 0,
     42 => 0,
   );
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['vocabulary'] = 'vocabulary_52';
   $handler->display->display_options['path'] = 'drupal-services';
   $translatables['drupalorg_organizations'] = array(
     t('Defaults'),
