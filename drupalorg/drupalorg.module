@@ -3205,8 +3205,8 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         $info[''] = '<strong>' . $people_on_drupalorg . '</strong>';
       }
 
-// Terms - sector, service, offices in, locations served
-      foreach (['taxonomy_vocabulary_48', 'taxonomy_vocabulary_50', 'taxonomy_vocabulary_52','field_organization_loc_served'] as $field) {
+      // Terms - sector, service, offices in, locations served.
+      foreach (['taxonomy_vocabulary_48', 'taxonomy_vocabulary_50', 'taxonomy_vocabulary_52', 'field_organization_loc_served'] as $field) {
         if ($values = $wrapper->{$field}->value()) {
           $info[$wrapper->{$field}->info()['label']] = implode(', ', array_map('drupalorg_generate_marketplace_link', $values));
         }
