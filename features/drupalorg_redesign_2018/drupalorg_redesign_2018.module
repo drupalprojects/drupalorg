@@ -8,16 +8,6 @@
 include_once 'drupalorg_redesign_2018.features.inc';
 
 /**
- * Implements hook_entity_info_alter().
- */
-function drupalorg_redesign_2018_entity_info_alter(&$entity_info) {
-  $entity_info['node']['view modes']['slick'] = [
-    'label' => t('Slick'),
-    'custom settings' => FALSE,
-  ];
-}
-
-/**
  * Implements hook_preprocess_entity().
  */
 function drupalorg_redesign_2018_preprocess_entity(&$variables) {
