@@ -1914,7 +1914,7 @@ function drupalorg_marketplace_field_default_field_instances() {
     'bundle' => 'organization',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Only select countries in which your company has a physical presence.',
+    'description' => 'Only select countries in which this company has a physical presence.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -2000,7 +2000,7 @@ function drupalorg_marketplace_field_default_field_instances() {
   t('Make sure to follow <a href="/marketplace/guidelines">Marketplace guidelines</a> and "<a href="/node/1735864">Review training listings</a>" guide.');
   t('Membership status');
   t('Offices in');
-  t('Only select countries in which your company has a physical presence.');
+  t('Only select countries in which this company has a physical presence.');
   t('Org contribution rank');
   t('Org issue credit count');
   t('Organization description');
