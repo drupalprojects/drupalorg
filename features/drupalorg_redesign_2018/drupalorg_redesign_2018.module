@@ -30,6 +30,10 @@ function drupalorg_redesign_2018_preprocess_entity(&$variables) {
           }
         }
       }
+
+      if (isset($variables['field_link'][0]['url'])) {
+        $variables['classes_array'][] = 'h-animate';
+      }
     }
   }
 }
