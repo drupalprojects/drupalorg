@@ -89,7 +89,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
       'alt_field' => 1,
       'default_image' => 0,
       'file_directory' => 'cta_multiple/cta_graphic',
-      'file_extensions' => 'svg',
+      'file_extensions' => 'png gif jpg jpeg svg',
       'max_filesize' => '',
       'max_resolution' => '',
       'min_resolution' => '',
