@@ -24,7 +24,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 2,
+        'weight' => 3,
       ),
       'full' => array(
         'label' => 'above',
@@ -49,7 +49,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 2,
+      'weight' => 3,
     ),
   );
 
@@ -84,12 +84,12 @@ function drupalorg_redesign_2018_field_default_field_instances() {
     'entity_type' => 'field_collection_item',
     'field_name' => 'field_cta_graphic',
     'label' => 'Graphic',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'alt_field' => 1,
       'default_image' => 0,
       'file_directory' => 'cta_multiple/cta_graphic',
-      'file_extensions' => 'png gif jpg jpeg svg',
+      'file_extensions' => 'svg',
       'max_filesize' => '',
       'max_resolution' => '',
       'min_resolution' => '',
@@ -109,6 +109,51 @@ function drupalorg_redesign_2018_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'field_collection_item-field_infographics-field_featured_image'.
+  $field_instances['field_collection_item-field_infographics-field_featured_image'] = array(
+    'bundle' => 'field_infographics',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => '',
+          'image_style' => '',
+        ),
+        'type' => 'image',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_featured_image',
+    'label' => 'Featured image',
+    'required' => 0,
+    'settings' => array(
+      'alt_field' => 1,
+      'default_image' => 0,
+      'file_directory' => 'cta_multiple/featured_image',
+      'file_extensions' => 'png gif jpg jpeg',
+      'max_filesize' => '',
+      'max_resolution' => '',
+      'min_resolution' => '',
+      'title_field' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'image',
+      'settings' => array(
+        'preview_image_style' => 'thumbnail',
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'image_image',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
   // 'field_collection_item-field_infographics-field_link'.
   $field_instances['field_collection_item-field_infographics-field_link'] = array(
     'bundle' => 'field_infographics',
@@ -120,7 +165,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'field_collection_item',
@@ -155,7 +200,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 3,
+      'weight' => 4,
     ),
   );
 
@@ -172,7 +217,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 2,
       ),
     ),
     'entity_type' => 'field_collection_item',
@@ -522,6 +567,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Body');
   t('Cta');
+  t('Featured image');
   t('Graphic');
   t('Infographics');
   t('Interactive');
