@@ -31,8 +31,9 @@ function drupalorg_redesign_2018_preprocess_entity(&$variables) {
         }
       }
 
-      if (isset($variables['field_link'][0]['url'])) {
+      if (isset($variables['field_collection_item']->field_link[LANGUAGE_NONE][0]['url'])) {
         $variables['classes_array'][] = 'h-animate';
+        $variables['content']['field_title'][0]['#markup'] = l($variables['content']['field_title'][0]['#markup'], $variables['field_collection_item']->field_link[LANGUAGE_NONE][0]['url']);
       }
     }
   }
