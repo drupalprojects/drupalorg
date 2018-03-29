@@ -47,6 +47,22 @@ function drupalorg_redesign_2018_image_default_styles() {
     ),
   );
 
+  // Exported image style: logos_grids.
+  $styles['logos_grids'] = array(
+    'label' => 'Logos - grids (height x 150px)',
+    'effects' => array(
+      2 => array(
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => '',
+          'height' => 150,
+          'upscale' => 0,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
   return $styles;
 }
 

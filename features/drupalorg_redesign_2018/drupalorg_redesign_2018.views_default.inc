@@ -49,7 +49,7 @@ function drupalorg_redesign_2018_views_default_views() {
   $handler->display->display_options['fields']['field_logo']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_logo']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_logo']['settings'] = array(
-    'image_style' => 'grid-4',
+    'image_style' => 'logos_grids',
     'image_link' => '',
   );
   /* Field: Content: Title */
