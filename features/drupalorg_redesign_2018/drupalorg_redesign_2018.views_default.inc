@@ -182,23 +182,39 @@ function drupalorg_redesign_2018_views_default_views() {
   $handler->display->display_options['style_options']['slide_overlay'] = '';
   $handler->display->display_options['style_options']['preserve_keys'] = 0;
   $handler->display->display_options['row_plugin'] = 'fields';
+  /* Field: Content: Path */
+  $handler->display->display_options['fields']['path']['id'] = 'path';
+  $handler->display->display_options['fields']['path']['table'] = 'node';
+  $handler->display->display_options['fields']['path']['field'] = 'path';
+  $handler->display->display_options['fields']['path']['label'] = '';
+  $handler->display->display_options['fields']['path']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['path']['element_label_colon'] = FALSE;
   /* Field: Content: Primary screenshot */
   $handler->display->display_options['fields']['field_mainimage']['id'] = 'field_mainimage';
   $handler->display->display_options['fields']['field_mainimage']['table'] = 'field_data_field_mainimage';
   $handler->display->display_options['fields']['field_mainimage']['field'] = 'field_mainimage';
   $handler->display->display_options['fields']['field_mainimage']['label'] = '';
+  $handler->display->display_options['fields']['field_mainimage']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_mainimage']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_mainimage']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_mainimage']['settings'] = array(
-    'image_style' => 'grid-4-2x',
-    'image_link' => 'content',
+    'image_style' => 'case_studies_frontpage',
+    'image_link' => '',
   );
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<div class="cs-header">
+<div class="cs-image">[field_mainimage]</div>
+<div class="cs-title">[title]</div>
+</div>';
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['path'] = '[path]';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   /* Field: Content: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
@@ -262,6 +278,10 @@ function drupalorg_redesign_2018_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
+    t('<div class="cs-header">
+<div class="cs-image">[field_mainimage]</div>
+<div class="cs-title">[title]</div>
+</div>'),
     t('All'),
     t('Content pane'),
     t('more'),

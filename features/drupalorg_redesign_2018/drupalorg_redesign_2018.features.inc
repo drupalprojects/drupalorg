@@ -27,6 +27,30 @@ function drupalorg_redesign_2018_views_api($module = NULL, $api = NULL) {
 }
 
 /**
+ * Implements hook_image_default_styles().
+ */
+function drupalorg_redesign_2018_image_default_styles() {
+  $styles = array();
+
+  // Exported image style: case_studies_frontpage.
+  $styles['case_studies_frontpage'] = array(
+    'label' => 'Case studies - frontpage (600x410)',
+    'effects' => array(
+      1 => array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 600,
+          'height' => 410,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
+  return $styles;
+}
+
+/**
  * Implements hook_node_info().
  */
 function drupalorg_redesign_2018_node_info() {

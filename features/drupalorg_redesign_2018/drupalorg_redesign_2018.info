@@ -35,6 +35,7 @@ features[field_instance][] = node-logo-field_link
 features[field_instance][] = node-logo-field_logo
 features[field_instance][] = node-logo-field_logo_type
 features[fieldable_panels_pane_type][] = cta_multiple
+features[image][] = case_studies_frontpage
 features[node][] = logo
 features[slick_optionset][] = 3xcarousel
 features[variable][] = comment_anonymous_logo
