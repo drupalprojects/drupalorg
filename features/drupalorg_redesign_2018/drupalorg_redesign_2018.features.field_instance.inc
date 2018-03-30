@@ -277,43 +277,6 @@ function drupalorg_redesign_2018_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'fieldable_panels_pane-cta_multiple-field_interactive'.
-  $field_instances['fieldable_panels_pane-cta_multiple-field_interactive'] = array(
-    'bundle' => 'cta_multiple',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
-      ),
-    ),
-    'entity_type' => 'fieldable_panels_pane',
-    'field_name' => 'field_interactive',
-    'label' => 'Interactive',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 1,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 1,
-    ),
-  );
-
   // Exported field_instance: 'fieldable_panels_pane-cta_multiple-field_link'.
   $field_instances['fieldable_panels_pane-cta_multiple-field_link'] = array(
     'bundle' => 'cta_multiple',
@@ -570,7 +533,6 @@ function drupalorg_redesign_2018_field_default_field_instances() {
   t('Featured image');
   t('Graphic');
   t('Infographics');
-  t('Interactive');
   t('Logo');
   t('Logo type');
   t('Title');

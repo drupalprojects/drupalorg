@@ -13,22 +13,15 @@ include_once 'drupalorg_redesign_2018.features.inc';
 function drupalorg_redesign_2018_preprocess_entity(&$variables) {
   if ($variables['entity_type'] === 'field_collection_item') {
     if ($variables['elements']['#bundle'] === 'field_infographics') {
-      $parent = field_collection_item_get_host_entity($variables['field_collection_item']);
-      if (isset($parent)) {
-        $parent_obj = $parent->value();
-        if (isset($parent_obj)) {
-          $interactive = $parent_obj->field_interactive;
-          if (isset($interactive[LANGUAGE_NONE][0]['value']) and $interactive[LANGUAGE_NONE][0]['value'] === '1') {
-            $dir   = drupal_get_path('module', 'drupalorg_redesign_2018') . '/shapes/';
-            $scan  = scandir($dir);
-            $count = count($scan) - 2;
-            $int   = rand(1, $count);
+      if (isset($variables['content']['field_cta_graphic'][0])) {
+        $dir   = drupal_get_path('module', 'drupalorg_redesign_2018') . '/shapes/';
+        $scan  = scandir($dir);
+        $count = count($scan) - 2;
+        $int   = rand(1, $count);
 
-            $variables['content']['field_cta_graphic'][0]['#prefix'] = format_string('<div class="field-prefix-shape">!field_content</div>', [
-              '!field_content' => file_get_contents($dir . '/random-shape' . $int . '.svg'),
-            ]);
-          }
-        }
+        $variables['content']['field_cta_graphic'][0]['#prefix'] = format_string('<div class="field-prefix-shape">!field_content</div>', [
+          '!field_content' => file_get_contents($dir . '/random-shape' . $int . '.svg'),
+        ]);
       }
 
       if (isset($variables['field_collection_item']->field_link[LANGUAGE_NONE][0]['url'])) {
