@@ -5532,16 +5532,18 @@ function drupalorg_og_user_access_alter(&$perm, $context) {
   if (!$altered) {
     $altered = TRUE;
 
-    if ($context['group']->type === 'guide' && user_access('administer all documentation guides', $context['account'])) {
-      foreach (og_role_permissions(array_intersect(og_roles($context['group_type'], $context['group']->type), ['maintainer'])) as $maintainer_perms) {
-        $perm += $maintainer_perms;
+    if ($context['group']->type === 'guide') {
+      if (user_access('administer all documentation guides', $context['account'])) {
+        foreach (og_role_permissions(array_intersect(og_roles($context['group_type'], $context['group']->type), ['maintainer'])) as $maintainer_perms) {
+          $perm += $maintainer_perms;
+        }
       }
-    }
 
-    // If a guide allows adding to its menu without approval, allow that.
-    if (empty($perm['administer og menu']) && in_array($context['string'], ['create guide content', 'create documentation content'])) {
-      $group = entity_metadata_wrapper($context['group_type'], $context['group']);
-      $perm['administer og menu'] = !$group->field_new_page_and_guide_review->value();
+      // If a guide allows adding to its menu without approval, allow that.
+      if (empty($perm['administer og menu']) && in_array($context['string'], ['create guide content', 'create documentation content'])) {
+        $group = entity_metadata_wrapper($context['group_type'], $context['group']);
+        $perm['administer og menu'] = !$group->field_new_page_and_guide_review->value();
+      }
     }
   }
 }
