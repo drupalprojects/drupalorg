@@ -231,6 +231,7 @@ function drupalorg_membership_signup_content_type_render_form_submit($form, &$fo
     'first_name' => $user_wrapper->field_first_name->value(),
     'last_name' => $user_wrapper->field_last_name->value(),
     'components[' . variable_get('drupalorg_chargify_keys')[$form_state['values']['currency']]['donation_component'] . '][allocated_quantity]' => $form_state['values']['amount_' . $form_state['values']['currency']],
+    'referrer' => drupal_get_path_alias(current_path()),
   ];
   if ($form_state['build_info']['args'][0]['membership_type'] === 'donation') {
     $query['reference'] .= '-' . REQUEST_TIME;
