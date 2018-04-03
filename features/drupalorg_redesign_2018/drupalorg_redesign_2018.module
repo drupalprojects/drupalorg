@@ -15,8 +15,8 @@ function drupalorg_redesign_2018_preprocess_entity(&$variables) {
     if ($variables['elements']['#bundle'] === 'field_infographics') {
       if (isset($variables['content']['field_cta_graphic'][0])) {
         $dir   = drupal_get_path('module', 'drupalorg_redesign_2018') . '/shapes/';
-        $scan  = scandir($dir);
-        $count = count($scan) - 2;
+        $files = preg_grep('/^([^.])/', scandir($dir));
+        $count = count($files);
         $int   = rand(1, $count);
 
         $variables['content']['field_cta_graphic'][0]['#prefix'] = format_string('<div class="field-prefix-shape">!field_content</div>', [
