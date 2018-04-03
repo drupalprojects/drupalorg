@@ -31,3 +31,50 @@ function drupalorg_redesign_2018_preprocess_entity(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_views_view_field().
+ */
+function drupalorg_redesign_2018_preprocess_views_view_field(&$variables) {
+  // Strip tags for the case studies homepage view.
+  if ($variables['view']->name === 'redesign_2018_case_studies') {
+    if ($variables['view']->current_display === 'panel_pane_1') {
+      if (isset($variables['field']->real_field) and $variables['field']->real_field === 'body_value') {
+        $variables['output'] = format_string('<p>@text</p>', array(
+          '@text' => strip_tags($variables['output']),
+        ));
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_panels_pane().
+ */
+function drupalorg_redesign_2018_preprocess_panels_pane(&$variables) {
+  if (is_array($variables['content'])) {
+    if (isset($variables['content']['title']['#value'])) {
+      $variables['content']['title']['#value'] = html_entity_decode($variables['content']['title']['#value']);
+    }
+  }
+
+  // Redesign 2018.
+  if (in_array('d-hero', $variables['classes_array'])) {
+    $variables['theme_hook_suggestions'][] = 'panels_pane__d_hero';
+  }
+
+  foreach ($variables['classes_array'] as $key => $value) {
+    $exploded = explode(' ', $value);
+    if (in_array('d-persona', $exploded)) {
+      $variables['theme_hook_suggestions'][] = 'panels_pane__d_persona';
+      preg_match('/d-persona-[\S]*/', $value, $matches);
+      $variables['pane_graphic_svg'] = '';
+      if (isset($matches[0])) {
+        $file_path = drupal_get_path('theme', 'bluecheese') . '/images/personas/' . $matches[0] . '.svg';
+
+        $variables['pane_graphic_svg'] = file_get_contents($file_path);
+      }
+    }
+  }
+
+}
