@@ -462,6 +462,7 @@ function drupalorg_marketplace_views_default_views() {
   /* Display: Defaults */
   $handler = $view->new_display('default', 'Defaults', 'default');
   $handler->display->display_options['title'] = 'Marketplace';
+  $handler->display->display_options['css_class'] = 'marketplace-pane';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -504,6 +505,10 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['sorts']['title']['expose']['label'] = 'A-Z';
+  /* Sort criterion: Content: Drupal Association supporting program (field_organization_support) */
+  $handler->display->display_options['sorts']['field_organization_support_value']['id'] = 'field_organization_support_value';
+  $handler->display->display_options['sorts']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['sorts']['field_organization_support_value']['field'] = 'field_organization_support_value';
   /* Contextual filter: Content: Has taxonomy term ID */
   $handler->display->display_options['arguments']['tid']['id'] = 'tid';
   $handler->display->display_options['arguments']['tid']['table'] = 'taxonomy_index';
@@ -886,10 +891,10 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['filters']['field_organization_loc_served_tid']['vocabulary'] = 'vocabulary_52';
   $handler->display->display_options['path'] = 'drupal-services';
 
-  /* Display: Premium Partners and Above */
-  $handler = $view->new_display('panel_pane', 'Premium Partners and Above', 'panel_pane_1');
+  /* Display: Supporting Patners - Signature and Premium */
+  $handler = $view->new_display('panel_pane', 'Supporting Patners - Signature and Premium', 'panel_pane_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Talk to an expert';
+  $handler->display->display_options['title'] = 'Find an agency to help build your success on Drupal';
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -919,6 +924,30 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  /* Field: Content: Drupal Association supporting program */
+  $handler->display->display_options['fields']['field_organization_support']['id'] = 'field_organization_support';
+  $handler->display->display_options['fields']['field_organization_support']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['fields']['field_organization_support']['field'] = 'field_organization_support';
+  $handler->display->display_options['fields']['field_organization_support']['label'] = '';
+  $handler->display->display_options['fields']['field_organization_support']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_organization_support']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_organization_support']['delta_offset'] = '0';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Drupal Association supporting program (field_organization_support) */
+  $handler->display->display_options['sorts']['field_organization_support_value']['id'] = 'field_organization_support_value';
+  $handler->display->display_options['sorts']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['sorts']['field_organization_support_value']['field'] = 'field_organization_support_value';
+  $handler->display->display_options['sorts']['field_organization_support_value']['order'] = 'DESC';
+  /* Sort criterion: Content: Org contribution rank (field_org_contribution_rank) */
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['id'] = 'field_org_contribution_rank_value';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['table'] = 'field_data_field_org_contribution_rank';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['field'] = 'field_org_contribution_rank_value';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['order'] = 'DESC';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  $handler->display->display_options['sorts']['title']['expose']['label'] = 'A-Z';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -959,10 +988,208 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['filters']['field_organization_support_value']['value'] = array(
     'supporting_signature' => 'supporting_signature',
     'supporting_premium' => 'supporting_premium',
-    'technology_signature' => 'technology_signature',
-    'technology_premium' => 'technology_premium',
+  );
+
+  /* Display: Hosting Supporters - Signature and Premium */
+  $handler = $view->new_display('panel_pane', 'Hosting Supporters - Signature and Premium', 'panel_pane_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Choose an expert Drupal host';
+  $handler->display->display_options['defaults']['css_class'] = FALSE;
+  $handler->display->display_options['css_class'] = 'marketplace-pane';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Logo */
+  $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
+  $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['label'] = '';
+  $handler->display->display_options['fields']['field_logo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_logo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_logo']['settings'] = array(
+    'image_style' => 'logos_grids',
+    'image_link' => '',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  /* Field: Content: Drupal Association supporting program */
+  $handler->display->display_options['fields']['field_organization_support']['id'] = 'field_organization_support';
+  $handler->display->display_options['fields']['field_organization_support']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['fields']['field_organization_support']['field'] = 'field_organization_support';
+  $handler->display->display_options['fields']['field_organization_support']['label'] = '';
+  $handler->display->display_options['fields']['field_organization_support']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_organization_support']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_organization_support']['delta_offset'] = '0';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Drupal Association supporting program (field_organization_support) */
+  $handler->display->display_options['sorts']['field_organization_support_value']['id'] = 'field_organization_support_value';
+  $handler->display->display_options['sorts']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['sorts']['field_organization_support_value']['field'] = 'field_organization_support_value';
+  $handler->display->display_options['sorts']['field_organization_support_value']['order'] = 'DESC';
+  /* Sort criterion: Content: Org contribution rank (field_org_contribution_rank) */
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['id'] = 'field_org_contribution_rank_value';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['table'] = 'field_data_field_org_contribution_rank';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['field'] = 'field_org_contribution_rank_value';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['order'] = 'DESC';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  $handler->display->display_options['sorts']['title']['expose']['label'] = 'A-Z';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: List in marketplace (field_org_marketplace_request) */
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['id'] = 'field_org_marketplace_request_value';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['table'] = 'field_data_field_org_marketplace_request';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['field'] = 'field_org_marketplace_request_value';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['value'] = array(
+    1 => '1',
+  );
+  /* Filter criterion: Content: Services listing (field_organization_list_rule) */
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['id'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['table'] = 'field_data_field_organization_list_rule';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['field'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['value'] = array(
+    'all-providers' => 'all-providers',
+    'featured' => 'featured',
+  );
+  /* Filter criterion: Content: Drupal Association supporting program (field_organization_support) */
+  $handler->display->display_options['filters']['field_organization_support_value']['id'] = 'field_organization_support_value';
+  $handler->display->display_options['filters']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['filters']['field_organization_support_value']['field'] = 'field_organization_support_value';
+  $handler->display->display_options['filters']['field_organization_support_value']['value'] = array(
     'hosting_signature' => 'hosting_signature',
     'hosting_premium' => 'hosting_premium',
+  );
+
+  /* Display: Technology Supporters - Signature and Premium */
+  $handler = $view->new_display('panel_pane', 'Technology Supporters - Signature and Premium', 'panel_pane_3');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Need specialist 3rd party tech?';
+  $handler->display->display_options['defaults']['css_class'] = FALSE;
+  $handler->display->display_options['css_class'] = 'marketplace-pane';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Logo */
+  $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
+  $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['label'] = '';
+  $handler->display->display_options['fields']['field_logo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_logo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_logo']['settings'] = array(
+    'image_style' => 'logos_grids',
+    'image_link' => '',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  /* Field: Content: Drupal Association supporting program */
+  $handler->display->display_options['fields']['field_organization_support']['id'] = 'field_organization_support';
+  $handler->display->display_options['fields']['field_organization_support']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['fields']['field_organization_support']['field'] = 'field_organization_support';
+  $handler->display->display_options['fields']['field_organization_support']['label'] = '';
+  $handler->display->display_options['fields']['field_organization_support']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_organization_support']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_organization_support']['delta_offset'] = '0';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Drupal Association supporting program (field_organization_support) */
+  $handler->display->display_options['sorts']['field_organization_support_value']['id'] = 'field_organization_support_value';
+  $handler->display->display_options['sorts']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['sorts']['field_organization_support_value']['field'] = 'field_organization_support_value';
+  $handler->display->display_options['sorts']['field_organization_support_value']['order'] = 'DESC';
+  /* Sort criterion: Content: Org contribution rank (field_org_contribution_rank) */
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['id'] = 'field_org_contribution_rank_value';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['table'] = 'field_data_field_org_contribution_rank';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['field'] = 'field_org_contribution_rank_value';
+  $handler->display->display_options['sorts']['field_org_contribution_rank_value']['order'] = 'DESC';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  $handler->display->display_options['sorts']['title']['expose']['label'] = 'A-Z';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = '0';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'organization' => 'organization',
+  );
+  $handler->display->display_options['filters']['type']['group'] = '0';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: List in marketplace (field_org_marketplace_request) */
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['id'] = 'field_org_marketplace_request_value';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['table'] = 'field_data_field_org_marketplace_request';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['field'] = 'field_org_marketplace_request_value';
+  $handler->display->display_options['filters']['field_org_marketplace_request_value']['value'] = array(
+    1 => '1',
+  );
+  /* Filter criterion: Content: Services listing (field_organization_list_rule) */
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['id'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['table'] = 'field_data_field_organization_list_rule';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['field'] = 'field_organization_list_rule_value';
+  $handler->display->display_options['filters']['field_organization_list_rule_value']['value'] = array(
+    'all-providers' => 'all-providers',
+    'featured' => 'featured',
+  );
+  /* Filter criterion: Content: Drupal Association supporting program (field_organization_support) */
+  $handler->display->display_options['filters']['field_organization_support_value']['id'] = 'field_organization_support_value';
+  $handler->display->display_options['filters']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
+  $handler->display->display_options['filters']['field_organization_support_value']['field'] = 'field_organization_support_value';
+  $handler->display->display_options['filters']['field_organization_support_value']['value'] = array(
+    'technology_signature' => 'technology_signature',
+    'technology_premium' => 'technology_premium',
   );
   $translatables['drupalorg_organizations'] = array(
     t('Defaults'),
@@ -998,9 +1225,13 @@ function drupalorg_marketplace_views_default_views() {
     t('Sectors'),
     t('Offices in'),
     t('Locations served'),
-    t('Premium Partners and Above'),
-    t('Talk to an expert'),
+    t('Supporting Patners - Signature and Premium'),
+    t('Find an agency to help build your success on Drupal'),
     t('View panes'),
+    t('Hosting Supporters - Signature and Premium'),
+    t('Choose an expert Drupal host'),
+    t('Technology Supporters - Signature and Premium'),
+    t('Need specialist 3rd party tech?'),
   );
   $export['drupalorg_organizations'] = $view;
 
