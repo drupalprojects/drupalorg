@@ -15,6 +15,37 @@
   Drupal.behaviors.redesign = {
     attach: function (context) {
 
+      // Case studies slideshow.
+      var $viewCaseStudies = $('.view-redesign-2018-case-studies .view-content', context);
+      if ($viewCaseStudies.length > 0) {
+
+        $viewCaseStudies.addClass('view-slideshow');
+
+        var mySiema = new Siema({
+          selector: '.view-redesign-2018-case-studies .view-content',
+          duration: 200,
+          easing: 'ease-out',
+          loop: true,
+          rtl: false,
+          perPage: {
+            768: 2,
+            1024: 3,
+          }
+        });
+
+        $('<button class="btn-prev">prev</button><button class="btn-next">next</button>').insertAfter($viewCaseStudies);
+
+        $('.btn-prev').click(function() {
+          mySiema.prev();
+        });
+
+        $('.btn-next').click(function() {
+          mySiema.next();
+        });
+
+      };
+
+      // Hero animation.
       if ($('.d-hero', context).length > 0) {
 
         for (i=0; i<6; i++) {
