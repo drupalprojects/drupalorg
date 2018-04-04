@@ -312,7 +312,7 @@ function drupalorg_projects_panelizer_defaults() {
   $pane->panel = 'bottom_right_content';
   $pane->type = 'project_components';
   $pane->subtype = 'project_components';
-  $pane->shown = TRUE;
+  $pane->shown = FALSE;
   $pane->access = array(
     'plugins' => array(
       0 => array(
@@ -347,7 +347,7 @@ function drupalorg_projects_panelizer_defaults() {
   $pane->panel = 'bottom_right_content';
   $pane->type = 'project_dependencies';
   $pane->subtype = 'project_dependencies';
-  $pane->shown = TRUE;
+  $pane->shown = FALSE;
   $pane->access = array(
     'plugins' => array(),
   );

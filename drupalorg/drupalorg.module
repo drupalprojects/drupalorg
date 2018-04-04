@@ -3205,10 +3205,19 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         $info[''] = '<strong>' . $people_on_drupalorg . '</strong>';
       }
 
-      // Terms - sector, service, budget
-      foreach (['taxonomy_vocabulary_48', 'taxonomy_vocabulary_50', 'taxonomy_vocabulary_52'] as $field) {
+      // Terms - sector, service, offices in, locations served.
+      foreach ([
+        'taxonomy_vocabulary_48' => 'services',
+        'taxonomy_vocabulary_50' => 'sectors',
+        'taxonomy_vocabulary_52' => 'offices',
+        'field_organization_loc_served' => 'locations',
+      ] as $field => $filter) {
         if ($values = $wrapper->{$field}->value()) {
-          $info[$wrapper->{$field}->info()['label']] = implode(', ', array_map('drupalorg_generate_marketplace_link', $values));
+          $links = [];
+          foreach ($values as $term) {
+            $links[] = l($term->name, 'drupal-services', ['query' => [$filter . '[]' => $term->tid]]);
+          }
+          $info[$wrapper->{$field}->info()['label']] = implode(', ', $links);
         }
       }
       if ($value = $wrapper->field_organization_type->label()) {
@@ -3525,36 +3534,6 @@ function drupalorg_comment_view($comment, $view_mode, $langcode) {
   if ($comment->node_type === 'comment_node_guide' || $comment->node_type === 'comment_node_documentation') {
     unset($comment->content['links']['comment']['#links']['comment-reply']);
   }
-}
-
-/**
- * Generate an URL for the marketplace term.
- *
- * @param $term
- *   A taxonomy term object.
- *
- * @return
- *   String, a l() link.
- */
-function drupalorg_generate_marketplace_link($term) {
-  $vocabulary = taxonomy_vocabulary_load($term->vid);
-
-  // Set the default to 'all', we need this for the URL creation later on.
-  $default_args = array(
-    'Services' => 'all',
-    'Sectors' => 'all',
-    'Locations' => 'all',
-  );
-
-  $term_arg = array($vocabulary->name => str_replace(' ', '-', $term->name));
-
-  // The Marketplace URL starts with 'drupal-services'.
-  $link = 'drupal-services';
-
-  // Terms in order, truncating trailing '/all'.
-  $link .= '/' . preg_replace('!(/all)*$!', '', implode('/', array_merge($default_args, $term_arg)));
-
-  return l($term->name, $link);
 }
 
 /**
@@ -3959,132 +3938,7 @@ function drupalorg_views_query_substitutions($view) {
  * Implements hook_views_pre_render().
  */
 function drupalorg_views_pre_render(&$view) {
-  // Render the taxonomy filtering above the marketplace organization listing.
-  if ($view->name === 'drupalorg_organizations') {
-    $content = array(
-      'nav' => array(
-        '#prefix' => '<div class="view-header"><div class="nav">',
-        '#suffix' => '</div></div>',
-      ),
-    );
-
-    // Each argument should be a term restricted to a vocabulary.
-    $n = 0;
-    foreach ($view->display['default']->handler->options['arguments'] as $argument) {
-      if (!empty($argument['validate_options']['vocabularies'])) {
-        // Find that vocabulary.
-        $vocabulary = taxonomy_vocabulary_machine_name_load(current($argument['validate_options']['vocabularies']));
-      }
-      else {
-        continue;
-      }
-
-      $content['nav']['column_' . ($n + 1)] = array(
-        '#prefix' => '<div class="nav-column">',
-        '#suffix' => '</div>',
-        '#sorted' => TRUE,
-        '#weight' => $n,
-      );
-      $content['nav']['column_' . ($n + 1)]['header'] = array('#markup' => '<h3>' . check_plain($vocabulary->name) . '</h3>');
-      $content['nav']['column_' . ($n + 1)]['list'] = array(
-        '#prefix' => '<ul>',
-        '#suffix' => '</ul>',
-        '#sorted' => TRUE,
-      ); // See comment on 3 #... items below if modified.
-
-      // Query for terms in the vocabulary used by nodes in the current view.
-      if (isset($view->args[$n]) && $view->args[$n] !== 'all') {
-        // Remove the current filter, since only one term in each vocab may be
-        // selected.
-        $copy = $view->clone_view();
-        $copy->args[$n] = 'all';
-        $copy->build();
-        $query = clone $copy->query;
-      }
-      else {
-        $query = clone $view->query;
-      }
-
-      // Clear out what we don't need.
-      $view->query->fields = array();
-      $view->query->orderby = array();
-
-      //Get the D7 db_query
-      $query = $query->query();
-
-      // Join back to all terms
-      $query->join('taxonomy_index', 'ti', 'node.nid = ti.nid');
-      $query->join('taxonomy_term_data', 'ttd', 'ttd.tid = ti.tid');
-      $query->addField('ttd', 'name');
-      // … in our vid
-      $query->condition('ttd.vid', $vocabulary->vid);
-      // group by term, count & order by
-      $query->addField('ti', 'tid', 'term_id');
-      $query->groupBy('term_id');
-      $query->groupBy('name');
-      $query->addExpression('COUNT(*)', 'count');
-      $query->orderBy('count', 'DESC');
-
-      $c = 0;
-      $result = $query->execute();
-      foreach ($result as $row) {
-        $c += 1;
-        $args = $view->args;
-        // If necessary, fill default arguments.
-        if ($n > count($args)) {
-          $args = array_merge($args, array_fill(count($args), $n - count($args), 'all'));
-        }
-        // Link to this argument.
-        $args[$n] = str_replace(' ', '-', $row->name);
-
-        $path = 'drupal-services/' . implode('/', $args);
-        $item = array(
-          '#prefix' => '<li' . ($c > 6 && $_GET['q'] !== $path ? ' class="show-more"' : '') . '>',
-          '#markup' => l(t('@name (@count)', array('@name' => $row->name, '@count' => $row->count)), $path, array('html' => TRUE)),
-          '#suffix' => '</li>',
-        );
-        // Ensure active is in slot 6 or lower.
-        if ($_GET['q'] === $path && $c > 6) {
-          array_splice($content['nav']['column_' . ($n + 1)]['list'], 8, 0, array($item)); // 8 = 5 + 3 #... items
-          $content['nav']['column_' . ($n + 1)]['list'][6]['#prefix'] = '<li class="show-more">';
-        }
-        else {
-          $content['nav']['column_' . ($n + 1)]['list'][] = $item;
-        }
-      }
-      // If there are more than 6, show more/less links.
-      if ($c > 6) {
-        $content['nav']['column_' . ($n + 1)]['list']['show-more'] = array(
-          '#markup' => '<li class="show-link">' . l(t('Show more'), $_GET['q']) . '</li>',
-        );
-        $content['nav']['column_' . ($n + 1)]['list']['show-less'] = array(
-          '#markup' => '<li class="hide-link">' . l(t('Show fewer'), $_GET['q']) . '</li>',
-        );
-      }
-      // If there is a copy, show an all link.
-      if (isset($copy)) {
-        $replacements = module_invoke_all('views_query_substitutions', $copy);
-
-        $args = $view->args;
-        // If necessasry, fill default arguments.
-        if ($n > count($args)) {
-          $args = array_merge(array_fill(count($args), $n - count($args), 'all'), $args);
-        }
-        $args[$n] = 'all';
-        $content['nav']['column_' . ($n + 1)]['list'][] = array(
-          '#prefix' => '<li>',
-          '#markup' => l(t('All @name (@count)', array('@name' => $vocabulary->name, '@count' => $c)), preg_replace('!(/all)*$!', '', 'drupal-services/' . implode('/', $args)), array('attributes' => array('class' => array('all')))),
-          '#suffix' => '</li>',
-        );
-
-        unset($copy);
-      }
-
-      $n += 1;
-    }
-    $view->attachment_before = drupal_render($content);
-  }
-  elseif ($view->name === 'issue_credit') {
+  if ($view->name === 'issue_credit') {
     if ($view->current_display === 'organization_recent_page') {
       // Substitute in organization argument title.
       $organization = node_load($view->args[0]);
@@ -5678,16 +5532,18 @@ function drupalorg_og_user_access_alter(&$perm, $context) {
   if (!$altered) {
     $altered = TRUE;
 
-    if ($context['group']->type === 'guide' && user_access('administer all documentation guides', $context['account'])) {
-      foreach (og_role_permissions(array_intersect(og_roles($context['group_type'], $context['group']->type), ['maintainer'])) as $maintainer_perms) {
-        $perm += $maintainer_perms;
+    if ($context['group']->type === 'guide') {
+      if (user_access('administer all documentation guides', $context['account'])) {
+        foreach (og_role_permissions(array_intersect(og_roles($context['group_type'], $context['group']->type), ['maintainer'])) as $maintainer_perms) {
+          $perm += $maintainer_perms;
+        }
       }
-    }
 
-    // If a guide allows adding to its menu without approval, allow that.
-    if (empty($perm['administer og menu']) && in_array($context['string'], ['create guide content', 'create documentation content'])) {
-      $group = entity_metadata_wrapper($context['group_type'], $context['group']);
-      $perm['administer og menu'] = !$group->field_new_page_and_guide_review->value();
+      // If a guide allows adding to its menu without approval, allow that.
+      if (empty($perm['administer og menu']) && in_array($context['string'], ['create guide content', 'create documentation content'])) {
+        $group = entity_metadata_wrapper($context['group_type'], $context['group']);
+        $perm['administer og menu'] = !$group->field_new_page_and_guide_review->value();
+      }
     }
   }
 }
