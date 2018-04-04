@@ -165,25 +165,14 @@ function drupalorg_redesign_2018_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
-  $handler->display->display_options['style_plugin'] = 'slick';
-  $handler->display->display_options['style_options']['slide_field_wrapper'] = 0;
-  $handler->display->display_options['style_options']['cache'] = '';
-  $handler->display->display_options['style_options']['mousewheel'] = 0;
-  $handler->display->display_options['style_options']['optionset'] = '3xcarousel';
-  $handler->display->display_options['style_options']['override'] = 0;
-  $handler->display->display_options['style_options']['overridables'] = array(
-    'arrows' => 0,
-    'autoplay' => 0,
-    'dots' => 0,
-    'draggable' => 0,
-  );
-  $handler->display->display_options['style_options']['slide_caption'] = array(
-    'field_mainimage' => 0,
-    'title' => 0,
-    'body' => 0,
-  );
-  $handler->display->display_options['style_options']['slide_overlay'] = '';
-  $handler->display->display_options['style_options']['preserve_keys'] = 0;
+  $handler->display->display_options['style_plugin'] = 'jcarousel';
+  $handler->display->display_options['style_options']['wrap'] = 'circular';
+  $handler->display->display_options['style_options']['visible'] = '3';
+  $handler->display->display_options['style_options']['scroll'] = '1';
+  $handler->display->display_options['style_options']['auto'] = '0';
+  $handler->display->display_options['style_options']['autoPause'] = 0;
+  $handler->display->display_options['style_options']['easing'] = '';
+  $handler->display->display_options['style_options']['vertical'] = 0;
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Field: Content: Path */
   $handler->display->display_options['fields']['path']['id'] = 'path';
