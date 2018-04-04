@@ -167,6 +167,7 @@ function drupalorg_redesign_2018_views_default_views() {
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['style_plugin'] = 'jcarousel';
   $handler->display->display_options['style_options']['wrap'] = 'circular';
+  $handler->display->display_options['style_options']['skin'] = '';
   $handler->display->display_options['style_options']['visible'] = '3';
   $handler->display->display_options['style_options']['scroll'] = '1';
   $handler->display->display_options['style_options']['auto'] = '0';
