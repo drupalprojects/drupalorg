@@ -1,0 +1,11 @@
+._*
+
+# OS/IDE generated files #
+######################
+.DS_Store*
+._.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+.idea
+*nbproject*
