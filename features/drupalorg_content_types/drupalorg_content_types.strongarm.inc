@@ -661,30 +661,6 @@ function drupalorg_content_types_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'panelizer_node:page_allowed_types';
-  $strongarm->value = array(
-    'custom-custom' => TRUE,
-    'custom-d8_landing_page_ad_1' => TRUE,
-    'custom-d8_landing_page_ad_2' => TRUE,
-    'custom-d8_landing_page_ad_3' => TRUE,
-    'custom-d8_sponsor_header' => TRUE,
-    'custom-roadmap_view_roadmap' => TRUE,
-    'custom-roadmap_criteria_learn_more' => TRUE,
-    'custom-roadmap_volunteer_learn_more' => TRUE,
-    'custom-roadmap_community_learn_more' => TRUE,
-    'custom-roadmap_sidebar_footer' => TRUE,
-    'custom-drupalorg_d8_ad' => TRUE,
-    'custom-drupalorg_section_notice' => TRUE,
-    'custom-d8_top_sponsor' => TRUE,
-    'custom-d8_sub_sponsor' => TRUE,
-    'custom-lingotek_multilingual_ad' => TRUE,
-    'custom-drupalorg_trydrupal_button' => TRUE,
-  );
-  $export['panelizer_node:page_allowed_types'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_node:section:default_selection';
   $strongarm->value = 'node:section:default:default';
   $export['panelizer_node:section:default_selection'] = $strongarm;
