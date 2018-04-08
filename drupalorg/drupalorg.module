@@ -6605,8 +6605,13 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
     }
 
     // For organization membership, get the organization NID.
-    if (strpos($row['product_handle'], 'organization') === 0 && ctype_digit($reference_extra)) {
-      $row['organization_nid'] = $reference_extra;
+    if (strpos($row['product_handle'], 'organization') === 0) {
+      if (isset($reference_extra) && ctype_digit($reference_extra)) {
+        $row['organization_nid'] = $reference_extra;
+      }
+      else {
+        watchdog('drupalorg_chargify', 'Missing organization nid for @subscription_id (@currency)', ['@subscription_id' => $subscription->subscription->id, '@currency' => $currency]);
+      }
     }
   }
 
