@@ -6554,6 +6554,10 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
     'customer_organization' => $subscription->subscription->customer->organization,
     'customer_email' => $subscription->subscription->customer->email,
   ];
+  if (empty($subscription->subscription->customer->reference)) {
+    // Not matched up to a user account, return early.
+    return $row;
+  }
   // Customer reference is {uid}[-{extra}]. Optional extra is
   // organization NID or “donation”.
   if (strpos($subscription->subscription->customer->reference, '-') === FALSE) {
