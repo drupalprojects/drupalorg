@@ -87,6 +87,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
       '#title' => t('Donation'),
       '#field_prefix' => '$',
       '#size' => 5,
+      '#description' => t('Your donation charge will appear as: DRUPALCON 503-405-1159 OR'),
       '#attributes' => ['class' => ['focus-on-visible']],
       '#states' => [
         'visible' => [
@@ -99,6 +100,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
       '#title' => t('Donation'),
       '#field_prefix' => '€',
       '#size' => 5,
+      '#description' => t('Your donation charge will appear as: DrupalCon Inc.'),
       '#attributes' => ['class' => ['focus-on-visible']],
       '#states' => [
         'visible' => [
