@@ -127,15 +127,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'mailchimp_signup',
   );
 
-  // Exported permission: 'access mollom statistics'.
-  $permissions['access mollom statistics'] = array(
-    'name' => 'access mollom statistics',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'mollom',
-  );
-
   // Exported permission: 'access news feeds'.
   $permissions['access news feeds'] = array(
     'name' => 'access news feeds',
@@ -883,15 +874,6 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'system',
-  );
-
-  // Exported permission: 'administer mollom'.
-  $permissions['administer mollom'] = array(
-    'name' => 'administer mollom',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'mollom',
   );
 
   // Exported permission: 'administer multiple emails'.
@@ -1984,22 +1966,6 @@ function drupalorg_permissions_user_default_permissions() {
       'webmaster' => 'webmaster',
     ),
     'module' => 'honeypot',
-  );
-
-  // Exported permission: 'bypass mollom protection'.
-  $permissions['bypass mollom protection'] = array(
-    'name' => 'bypass mollom protection',
-    'roles' => array(
-      'Documentation moderator' => 'Documentation moderator',
-      'administrator' => 'administrator',
-      'community' => 'community',
-      'confirmed' => 'confirmed',
-      'content administrator' => 'content administrator',
-      'content moderator' => 'content moderator',
-      'user administrator' => 'user administrator',
-      'webmaster' => 'webmaster',
-    ),
-    'module' => 'mollom',
   );
 
   // Exported permission: 'bypass node access'.
@@ -4049,15 +4015,6 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'rename features',
     'roles' => array(),
     'module' => 'features',
-  );
-
-  // Exported permission: 'report to mollom'.
-  $permissions['report to mollom'] = array(
-    'name' => 'report to mollom',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'mollom',
   );
 
   // Exported permission: 'revert revisions'.
