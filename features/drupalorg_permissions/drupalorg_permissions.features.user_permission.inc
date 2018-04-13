@@ -4022,6 +4022,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'revert revisions',
     'roles' => array(
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
