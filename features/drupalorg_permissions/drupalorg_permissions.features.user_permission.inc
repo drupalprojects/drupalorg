@@ -2119,6 +2119,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'fieldable_panels_panes',
   );
 
+  // Exported permission: 'create fieldable cta_multiple'.
+  $permissions['create fieldable cta_multiple'] = array(
+    'name' => 'create fieldable cta_multiple',
+    'roles' => array(),
+    'module' => 'fieldable_panels_panes',
+  );
+
   // Exported permission: 'create forum content'.
   $permissions['create forum content'] = array(
     'name' => 'create forum content',
@@ -2213,6 +2220,13 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'content administrator' => 'content administrator',
     ),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'create logo content'.
+  $permissions['create logo content'] = array(
+    'name' => 'create logo content',
+    'roles' => array(),
     'module' => 'node',
   );
 
@@ -2485,6 +2499,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'delete any logo content'.
+  $permissions['delete any logo content'] = array(
+    'name' => 'delete any logo content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'delete any organization content'.
   $permissions['delete any organization content'] = array(
     'name' => 'delete any organization content',
@@ -2628,6 +2649,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'fieldable_panels_panes',
   );
 
+  // Exported permission: 'delete fieldable cta_multiple'.
+  $permissions['delete fieldable cta_multiple'] = array(
+    'name' => 'delete fieldable cta_multiple',
+    'roles' => array(),
+    'module' => 'fieldable_panels_panes',
+  );
+
   // Exported permission: 'delete own book content'.
   $permissions['delete own book content'] = array(
     'name' => 'delete own book content',
@@ -2691,6 +2719,13 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete own hosting_listing content'.
   $permissions['delete own hosting_listing content'] = array(
     'name' => 'delete own hosting_listing content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'delete own logo content'.
+  $permissions['delete own logo content'] = array(
+    'name' => 'delete own logo content',
     'roles' => array(),
     'module' => 'node',
   );
@@ -3134,6 +3169,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit any logo content'.
+  $permissions['edit any logo content'] = array(
+    'name' => 'edit any logo content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit any organization content'.
   $permissions['edit any organization content'] = array(
     'name' => 'edit any organization content',
@@ -3286,6 +3328,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'fieldable_panels_panes',
   );
 
+  // Exported permission: 'edit fieldable cta_multiple'.
+  $permissions['edit fieldable cta_multiple'] = array(
+    'name' => 'edit fieldable cta_multiple',
+    'roles' => array(),
+    'module' => 'fieldable_panels_panes',
+  );
+
   // Exported permission: 'edit meta tags'.
   $permissions['edit meta tags'] = array(
     'name' => 'edit meta tags',
@@ -3382,6 +3431,13 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit own hosting_listing content'.
   $permissions['edit own hosting_listing content'] = array(
     'name' => 'edit own hosting_listing content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'edit own logo content'.
+  $permissions['edit own logo content'] = array(
+    'name' => 'edit own logo content',
     'roles' => array(),
     'module' => 'node',
   );
