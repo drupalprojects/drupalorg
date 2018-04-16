@@ -1175,6 +1175,31 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'field_collection',
   );
 
+  // Exported field_base: 'field_shared_account_for_an_org'.
+  $field_bases['field_shared_account_for_an_org'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_shared_account_for_an_org',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => '',
+        1 => '',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  );
+
   // Exported field_base: 'field_social_links'.
   $field_bases['field_social_links'] = array(
     'active' => 1,

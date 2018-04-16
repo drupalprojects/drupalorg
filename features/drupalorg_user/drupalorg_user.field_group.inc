@@ -52,7 +52,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Welcome left',
-    'weight' => '12',
+    'weight' => '17',
     'children' => array(),
     'format_type' => 'div',
     'format_settings' => array(
@@ -152,7 +152,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Aside',
-    'weight' => '2',
+    'weight' => '3',
     'children' => array(
       0 => 'field_contributed',
       1 => 'field_mentors',
@@ -193,8 +193,9 @@ function drupalorg_user_field_group_info() {
       2 => 'field_websites',
       3 => 'field_country',
       4 => 'field_social_links',
-      5 => 'group_profile_personal',
-      6 => 'group_profile_professional',
+      5 => 'field_shared_account_for_an_orga',
+      6 => 'group_profile_personal',
+      7 => 'group_profile_professional',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -263,7 +264,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = 'group_profile_contact';
   $field_group->data = array(
     'label' => 'Personal Info',
-    'weight' => '15',
+    'weight' => '21',
     'children' => array(
       0 => 'field_gender',
       1 => 'field_languages',
@@ -296,7 +297,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = 'group_profile_contact';
   $field_group->data = array(
     'label' => 'Professional Info',
-    'weight' => '13',
+    'weight' => '19',
     'children' => array(
       0 => 'field_industries_worked_in',
       1 => 'drupalorg_companies_worked_for',
@@ -329,7 +330,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Welcome right',
-    'weight' => '13',
+    'weight' => '18',
     'children' => array(),
     'format_type' => 'div',
     'format_settings' => array(

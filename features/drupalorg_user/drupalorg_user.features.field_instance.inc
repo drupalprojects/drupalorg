@@ -259,7 +259,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 9,
+        'weight' => 15,
       ),
     ),
     'entity_type' => 'user',
@@ -289,7 +289,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 22,
+        'weight' => 24,
       ),
     ),
     'entity_type' => 'user',
@@ -319,7 +319,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 5,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -357,7 +357,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -395,7 +395,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 14,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -434,7 +434,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 9,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -469,7 +469,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 15,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -507,7 +507,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 13,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -545,7 +545,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 10,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -583,7 +583,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 12,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -621,7 +621,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 8,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -659,7 +659,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 11,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -762,7 +762,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 17,
       ),
     ),
     'entity_type' => 'user',
@@ -861,7 +861,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 12,
+        'weight' => 18,
       ),
     ),
     'entity_type' => 'user',
@@ -925,7 +925,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 18,
       ),
     ),
     'entity_type' => 'user',
@@ -993,7 +993,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'user',
@@ -1020,7 +1020,8 @@ function drupalorg_user_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'List companies or institutions you have worked for or are working for now.',
+    'description' => 'List companies or institutions you have worked for or are working for now. Organization must have an <a href=\'node/add/organization\'> organization page </a>.
+',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1029,7 +1030,7 @@ function drupalorg_user_field_default_field_instances() {
           'view_mode' => 'full',
         ),
         'type' => 'field_collection_fields',
-        'weight' => 11,
+        'weight' => 17,
       ),
     ),
     'entity_type' => 'user',
@@ -1048,6 +1049,43 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_shared_account_for_an_org'.
+  $field_instances['user-user-field_shared_account_for_an_org'] = array(
+    'bundle' => 'user',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Check this field if this account is a shared account for multiple users (eg: for an Organization)',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 25,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_shared_account_for_an_org',
+    'label' => 'Is this a shared account?',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 7,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_social_links'.
   $field_instances['user-user-field_social_links'] = array(
     'bundle' => 'user',
@@ -1063,7 +1101,7 @@ function drupalorg_user_field_default_field_instances() {
           'trim_length' => 80,
         ),
         'type' => 'url_default',
-        'weight' => 10,
+        'weight' => 16,
       ),
     ),
     'entity_type' => 'user',
@@ -1128,7 +1166,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 19,
       ),
     ),
     'entity_type' => 'user',
@@ -1178,7 +1216,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'mailchimp_lists',
       'settings' => array(),
       'type' => 'mailchimp_lists_select',
-      'weight' => 5,
+      'weight' => 11,
     ),
   );
 
@@ -1197,7 +1235,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 16,
       ),
     ),
     'entity_type' => 'user',
@@ -1214,7 +1252,7 @@ function drupalorg_user_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 9,
+      'weight' => 14,
     ),
   );
 
@@ -1229,7 +1267,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'user',
@@ -1260,7 +1298,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_url',
-        'weight' => 14,
+        'weight' => 20,
       ),
     ),
     'entity_type' => 'user',
@@ -1310,7 +1348,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 21,
       ),
     ),
     'entity_type' => 'user',
@@ -1347,7 +1385,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'og',
       'settings' => array(),
       'type' => 'og_complex',
-      'weight' => 100,
+      'weight' => 21,
     ),
   );
 
@@ -1356,6 +1394,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Admin-only notes.');
   t('Areas of Expertise');
   t('Bio');
+  t('Check this field if this account is a shared account for multiple users (eg: for an Organization)');
   t('Country');
   t('Current');
   t('Distil Botscore');
@@ -1372,11 +1411,13 @@ function drupalorg_user_field_default_field_instances() {
   t('Group membership');
   t('IRC');
   t('Industries Worked In');
+  t('Is this a shared account?');
   t('Job Title');
   t('Languages spoken');
   t('Last name or surname');
   t('Link to your profile pages on Twitter, LinkedIn, Facebook, Google, Drupal Answers, GitHub, Gratipay, and any others you would like to include.');
-  t('List companies or institutions you have worked for or are working for now.');
+  t('List companies or institutions you have worked for or are working for now. Organization must have an <a href=\'node/add/organization\'> organization page </a>.
+');
   t('Location');
   t('My contributions');
   t('My mentors');
