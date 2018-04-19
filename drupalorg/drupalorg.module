@@ -5397,49 +5397,6 @@ function drupalorg_project_release_security_coverage($release) {
 }
 
 /**
- * Implements hook_mollom_content_alter().
- */
-function drupalorg_mollom_content_alter(&$data) {
-  // Remove safe domains.
-  if (isset($data['postBody'])) {
-    $data['postBody'] = preg_replace(variable_get('drupalorg_mollom_remove', []), '', $data['postBody']);
-  }
-}
-
-/**
- * Implements hook_mollom_form_info_alter().
- */
-function drupalorg_mollom_form_info_alter(&$data) {
-  foreach (project_issue_issue_node_types() as $type) {
-    if ($data['form_id'] === $type . '_node_form') {
-      // Edit any issue is handed out liberally, do not consider it a Mollom
-      // bypass.
-      if ($key = array_search('edit any ' . $type . ' content', $data['bypass access'])) {
-        unset($data['bypass access'][$key]);
-      }
-
-      // Also allow the issue comment to be analyzed.
-      $data['elements']['nodechanges_comment][comment_body'] = t('Issue comment');
-
-      // Moderation may be unpublishing the comment or the issue summary.
-      $data['moderation callback'] = 'drupalorg_mollom_issue_moderation';
-    }
-  }
-}
-
-/**
- * Mollom moderation callback from drupalorg_mollom_form_info_alter().
- */
-function drupalorg_mollom_issue_moderation(&$form, &$form_state) {
-  if (isset($form_state['values']['nodechanges_comment'])) {
-    $form_state['values']['nodechanges_comment']['status'] = COMMENT_NOT_PUBLISHED;
-  }
-  else {
-    $form_state['values']['status'] = NODE_NOT_PUBLISHED;
-  }
-}
-
-/**
  * Menu access callback for marking an entity as ham.
  *
  * Check that a user has admin access for the entity, a valid token, and a
@@ -6154,29 +6111,6 @@ function drupalorg_lead_capture_submit($form, &$form_state) {
   }
   else {
     drupal_set_message(t('Thank you for your submission.'));
-  }
-}
-
-/**
- * Add mollom form protection to these custom form(s)
- */
-function drupalorg_mollom_form_list() {
-  $forms['drupalorg_lead_capture_form'] = array(
-    'title' => 'Partner Lead Capture Form',
-  );
-  return $forms;
-}
-
-/**
- * Set the mollomg protection mode for custom form(s)
- */
-function drupalorg_mollom_form_info($form_id) {
-  switch ($form_id) {
-    case 'drupalorg_lead_capture_form':
-      $form_info = array(
-        'mode' => MOLLOM_MODE_ANALYSIS,
-      );
-      return $form_info;
   }
 }
 
