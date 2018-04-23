@@ -1338,10 +1338,6 @@ function drupalorg_projects_views_default_views() {
     'created' => 'created',
   );
   $handler->display->display_options['row_options']['separator'] = ' - ';
-  /* Relationship: Entity Reference: Referenced Entity */
-  $handler->display->display_options['relationships']['field_release_project_target_id']['id'] = 'field_release_project_target_id';
-  $handler->display->display_options['relationships']['field_release_project_target_id']['table'] = 'field_data_field_release_project';
-  $handler->display->display_options['relationships']['field_release_project_target_id']['field'] = 'field_release_project_target_id';
   /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
@@ -1448,7 +1444,6 @@ function drupalorg_projects_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('Content entity referenced from field_release_project'),
     t('Nid'),
     t('[field_release_version]  - [created]'),
     t('All'),
