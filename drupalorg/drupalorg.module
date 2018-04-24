@@ -6479,7 +6479,8 @@ function _drupalorg_get_chargify_subscriptions(stdClass $account) {
 function _drupalorg_update_chargify_subscription($currency, stdClass $subscription) {
   $row = [
     'state' => $subscription->subscription->state,
-    'created_at' => strtotime($subscription->subscription->created_at),
+    // Imported transactions could not be backdated.
+    'created_at' => min(strtotime($subscription->subscription->created_at), strtotime($subscription->subscription->activated_at)),
     'product_handle' => $subscription->subscription->product->handle,
     'product_name' => $subscription->subscription->product->name,
     'customer_id' => $subscription->subscription->customer->id,
