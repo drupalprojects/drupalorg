@@ -1,5 +1,5 @@
 These modules provide customizations used on Drupal.org itself. Other sites
-SHOULD NOT INSTALL OR USE THESE MODULES. They are only included in the main
+SHOULD NOT INSTALL OR USE THESE MODULES! They are only included in the main
 Drupal contributions repository for three reasons:
 
   1) To facilitate members of the Drupal community who wish to help
