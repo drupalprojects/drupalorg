@@ -3723,8 +3723,10 @@ function drupalorg_node_update($node) {
     }
   }
   elseif ($node->type === 'sa') {
-    // Clear the time-based cache for /security*.
-    cache_clear_all('drupalorg_security_announcements', 'cache_views_data', TRUE);
+    if ($node->status == NODE_PUBLISHED || $node->original->status == NODE_PUBLISHED) {
+      // Clear the time-based cache for /security*.
+      cache_clear_all('drupalorg_security_announcements', 'cache_views_data', TRUE);
+    }
   }
   elseif (project_release_node_is_release($node)) {
     $download_base = variable_get('project_release_download_base_' . $node->type, '');
