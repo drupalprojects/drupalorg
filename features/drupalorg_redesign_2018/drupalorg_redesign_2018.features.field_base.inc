@@ -70,8 +70,9 @@ function drupalorg_redesign_2018_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'brand' => 'Brand',
-        'integration' => 'Integration',
+        'brand' => 'Marketing Trusted Brand',
+        'integration' => 'Marketing Integration',
+        '2018promotedrupalthanks' => 'Promoted Drupal Thanks 2018',
       ),
       'allowed_values_function' => '',
     ),
