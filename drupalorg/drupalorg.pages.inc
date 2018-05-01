@@ -398,7 +398,7 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
 
   foreach (_drupalorg_get_chargify_subscriptions($account) as $row) {
     if ($row->product_handle === 'donation') {
-      $form['donations']['table']['#caption'] = t('<strong>Your past donations</strong><br>made after December 2017');
+      $form['donations']['table']['#caption'] = t('<strong>Your past donations</strong>');
       $form['donations']['table']['#suffix'] = '<p>' . t('Thank you! 🎉') . '</p>';
       $form['donations']['table']['#rows'][] = [
         format_date($row->created_at, 'custom', 'j F Y'),
