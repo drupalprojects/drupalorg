@@ -23,6 +23,15 @@ function drupalorg_token_info() {
 }
 
 /**
+ * Implements hook_token_info_alter().
+ */
+function drupalorg_token_info_alter(&$data) {
+  // Allow date-ish fields to be rendered as dates.
+  $data['tokens']['user']['field-da-join-date']['type'] = 'date';
+  $data['tokens']['user']['field-da-expiration-date']['type'] = 'date';
+}
+
+/**
  * Implements hook_tokens().
  */
 function drupalorg_tokens($type, $tokens, array $data = [], array $options = []) {
