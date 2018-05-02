@@ -6688,9 +6688,9 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
         }
     }
   }
-  // Get file deatils of a comment.
-  if ($resourceController->resource() === 'comment') {
-    if (!empty($response['node')) {
+  elseif ($resourceController->resource() === 'comment') {
+    if (!empty($response['node'])) {
+      // Get file details of a comment.
       $result = nodechanges_get_changed_cids_keyed(node_load($response['node']['id']), 'field_issue_files', 'fid');
       $files = [];
       foreach ($result as $key => $value) {
