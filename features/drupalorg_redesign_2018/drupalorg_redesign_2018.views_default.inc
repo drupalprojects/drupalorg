@@ -82,13 +82,6 @@ function drupalorg_redesign_2018_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'logo' => 'logo',
   );
-  /* Filter criterion: Content: Logo type (field_logo_type) */
-  $handler->display->display_options['filters']['field_logo_type_value']['id'] = 'field_logo_type_value';
-  $handler->display->display_options['filters']['field_logo_type_value']['table'] = 'field_data_field_logo_type';
-  $handler->display->display_options['filters']['field_logo_type_value']['field'] = 'field_logo_type_value';
-  $handler->display->display_options['filters']['field_logo_type_value']['value'] = array(
-    'integration' => 'integration',
-  );
 
   /* Display: Content pane: drupal integrations */
   $handler = $view->new_display('panel_pane', 'Content pane: drupal integrations', 'panel_pane_1');
@@ -128,6 +121,71 @@ function drupalorg_redesign_2018_views_default_views() {
   );
   $handler->display->display_options['pane_category']['name'] = 'Drupal.org';
   $handler->display->display_options['pane_category']['weight'] = '0';
+
+  /* Display: Content pane: Logos based on Logo type (no titles) */
+  $handler = $view->new_display('panel_pane', 'Content pane: Logos based on Logo type (no titles)', 'panel_pane_3');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = '<none>';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Field: Cta */
+  $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
+  $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
+  $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
+  $handler->display->display_options['fields']['field_link']['label'] = '';
+  $handler->display->display_options['fields']['field_link']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_link']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_link']['click_sort_column'] = 'url';
+  /* Field: Content: Logo */
+  $handler->display->display_options['fields']['field_logo']['id'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['table'] = 'field_data_field_logo';
+  $handler->display->display_options['fields']['field_logo']['field'] = 'field_logo';
+  $handler->display->display_options['fields']['field_logo']['label'] = '';
+  $handler->display->display_options['fields']['field_logo']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_logo']['alter']['path'] = '[field_link]';
+  $handler->display->display_options['fields']['field_logo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_logo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_logo']['settings'] = array(
+    'image_style' => 'logos_grids',
+    'image_link' => '',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['path'] = '[field_link]';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Logo type (field_logo_type) */
+  $handler->display->display_options['arguments']['field_logo_type_value']['id'] = 'field_logo_type_value';
+  $handler->display->display_options['arguments']['field_logo_type_value']['table'] = 'field_data_field_logo_type';
+  $handler->display->display_options['arguments']['field_logo_type_value']['field'] = 'field_logo_type_value';
+  $handler->display->display_options['arguments']['field_logo_type_value']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_logo_type_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_logo_type_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_logo_type_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_logo_type_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_logo_type_value']['limit'] = '0';
+  $handler->display->display_options['pane_category']['name'] = 'Drupal.org';
+  $handler->display->display_options['pane_category']['weight'] = '0';
+  $handler->display->display_options['argument_input'] = array(
+    'field_logo_type_value' => array(
+      'type' => 'user',
+      'context' => 'entity:node.field_logo_type',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Content: Logo type',
+    ),
+  );
   $translatables['drupalorg_logos'] = array(
     t('Master'),
     t('Drupal integrations'),
@@ -141,6 +199,9 @@ function drupalorg_redesign_2018_views_default_views() {
     t('Drupal.org'),
     t('Content pane: trusted brands'),
     t('Trusted by trusted brands'),
+    t('Content pane: Logos based on Logo type (no titles)'),
+    t('<none>'),
+    t('All'),
   );
   $export['drupalorg_logos'] = $view;
 
