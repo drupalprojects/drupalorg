@@ -101,6 +101,7 @@ function drupalorg_drupal8_panes_strongarm() {
     'views_panes-drupalorg_casestudies-panel_pane_1' => TRUE,
     'views_panes-drupalorg_logos-panel_pane_1' => TRUE,
     'views_panes-drupalorg_logos-panel_pane_2' => TRUE,
+    'views_panes-drupalorg_logos-panel_pane_3' => TRUE,
     'views_panes-drupalorg_organizations-panel_pane_1' => TRUE,
     'views_panes-drupalorg_organizations-panel_pane_2' => TRUE,
     'views_panes-drupalorg_organizations-panel_pane_3' => TRUE,
