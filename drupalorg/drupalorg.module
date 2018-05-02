@@ -6690,6 +6690,26 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
         }
     }
   }
+  elseif ($resourceController->resource() === 'comment') {
+    if (!empty($response['node'])) {
+      // Get file details of a comment.
+      $result = nodechanges_get_changed_cids_keyed(node_load($response['node']['id']), 'field_issue_files', 'fid');
+      $files = [];
+      foreach ($result as $key => $value) {
+        if ($value === $response['cid']) {
+          if ($file_data = file_load($key)) {
+            $file_items['id'] = isset($file_data->fid) ? $file_data->fid : 0;
+            $file_items['url'] = isset($file_data->uri) ? file_create_url($file_data->uri): 0;
+            $file_items['filename'] = isset($file_data->filename) ? $file_data->filename : 0;
+            $files[] = $file_items;
+          }
+        }
+      }
+      if ($files) {
+        $response['comment_files'] = $files;
+      }
+    }
+  }
 }
 
 /**
