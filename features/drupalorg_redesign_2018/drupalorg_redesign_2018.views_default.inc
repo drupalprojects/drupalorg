@@ -186,6 +186,15 @@ function drupalorg_redesign_2018_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Featured (field_featured) */
+  $handler->display->display_options['sorts']['field_featured_value']['id'] = 'field_featured_value';
+  $handler->display->display_options['sorts']['field_featured_value']['table'] = 'field_data_field_featured';
+  $handler->display->display_options['sorts']['field_featured_value']['field'] = 'field_featured_value';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Logo type (field_logo_type) */
   $handler->display->display_options['arguments']['field_logo_type_value']['id'] = 'field_logo_type_value';
