@@ -1091,7 +1091,7 @@ function drupalorg_user_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => array(
       0 => array(
-        'subscribe' => 0,
+        'subscribe' => FALSE,
         'interest_groups' => array(
           '8d99874622' => array(
             '22e1b642b7' => 0,
@@ -1139,7 +1139,7 @@ function drupalorg_user_field_default_field_instances() {
       'hide_subscribe_checkbox' => 1,
       'interest_groups_title' => 'Interest Groups',
       'mergefields' => array(
-        'ACCTCREATE' => '',
+        'ACCTCREATE' => '[user:created:custom:Y-m-d]',
         'BUSINESS' => '',
         'CIVI_ID' => '',
         'COMPANY' => '',
@@ -1151,19 +1151,24 @@ function drupalorg_user_field_default_field_instances() {
         'FULLNAME' => '',
         'JOBTITLE' => '',
         'LNAME' => '[user:field-last-name]',
-        'MEMENDIND' => '',
+        'MEMENDIND' => '[user:field-da-expiration-date:custom:Y-m-d]',
         'MEMENDORG' => '',
-        'MEMSINCEIN' => '',
+        'MEMSINCEIN' => '[user:field-da-join-date:custom:Y-m-d]',
         'MEMSINCEOR' => '',
         'MMERGE16' => '',
         'MMERGE18' => '',
         'MMERGE19' => '',
+        'MMERGE24' => '',
+        'MMERGE25' => '',
+        'MMERGE26' => '',
+        'MMERGE27' => '',
+        'MMERGE28' => '',
         'ORG' => '',
         'RECENTGIFT' => '',
         'SFID' => '',
         'SIGNUP' => '',
         'SKILLLEVEL' => '',
-        'advanced' => 0,
+        'advanced' => 1,
       ),
       'options' => array(
         'interest_groups' => array(),
