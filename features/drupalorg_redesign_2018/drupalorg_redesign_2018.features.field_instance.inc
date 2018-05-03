@@ -331,7 +331,11 @@ function drupalorg_redesign_2018_field_default_field_instances() {
   // Exported field_instance: 'node-logo-field_featured'.
   $field_instances['node-logo-field_featured'] = array(
     'bundle' => 'logo',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'value' => 11,
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -462,7 +466,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
   $field_instances['node-logo-field_logo'] = array(
     'bundle' => 'logo',
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Please upload the largest image you can find, horizontal orientation preferred.',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -591,6 +595,7 @@ function drupalorg_redesign_2018_field_default_field_instances() {
   t('Infographics');
   t('Logo');
   t('Logo type');
+  t('Please upload the largest image you can find, horizontal orientation preferred.');
   t('Title');
 
   return $field_instances;
