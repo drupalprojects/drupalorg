@@ -99,12 +99,13 @@ function drupalorg_drupal8_panes_strongarm() {
     'fieldable_panels_pane-cta_multiple' => TRUE,
     'fieldable_panels_pane-fpid:446' => TRUE,
     'views_panes-drupalorg_casestudies-panel_pane_1' => TRUE,
-    'views_panes-drupalorg_logos-panel_pane_1' => TRUE,
-    'views_panes-drupalorg_logos-panel_pane_2' => TRUE,
-    'views_panes-drupalorg_logos-panel_pane_3' => TRUE,
     'views_panes-drupalorg_organizations-panel_pane_1' => TRUE,
     'views_panes-drupalorg_organizations-panel_pane_2' => TRUE,
     'views_panes-drupalorg_organizations-panel_pane_3' => TRUE,
+    'views_panes-drupalorg_logos-panel_pane_1' => TRUE,
+    'views_panes-drupalorg_logos-panel_pane_2' => TRUE,
+    'views_panes-drupalorg_logos-panel_pane_3' => TRUE,
+    'views_panes-drupalorg_logos-panel_pane_4' => TRUE,
     'views_panes-redesign_2018_case_studies-panel_pane_1' => TRUE,
   );
   $export['panelizer_node:page_allowed_types'] = $strongarm;
