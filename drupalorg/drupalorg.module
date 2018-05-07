@@ -6640,6 +6640,18 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
 }
 
 /**
+ * Format the billing amount of a Chargify subscription.
+ */
+function _format_chargify_money($row) {
+  static $symbols = [
+    'usd' => '$',
+    'eur' => '€',
+  ];
+
+  return $symbols[$row->currency] . number_format(floor($row->current_billing_amount_in_cents / 100)) . '.' . str_pad($row->current_billing_amount_in_cents % 100, 2, '0', STR_PAD_LEFT);
+}
+
+/**
  * Return array of nid => sanitized organization title of the current user’s
  * current organizations.
  */

@@ -627,18 +627,6 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
 }
 
 /**
- * Format the billing amount of a Chargify subscription.
- */
-function _format_chargify_money($row) {
-  static $symbols = [
-    'usd' => '$',
-    'eur' => '€',
-  ];
-
-  return $symbols[$row->currency] . number_format(floor($row->current_billing_amount_in_cents / 100)) . '.' . str_pad($row->current_billing_amount_in_cents % 100, 2, '0', STR_PAD_LEFT);
-}
-
-/**
  * Only allow the user to update their own membership.
  */
 function drupalorg_membership_form_validate_current_user($element, $form_state) {
