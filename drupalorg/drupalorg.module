@@ -6121,6 +6121,30 @@ function drupalorg_lead_capture_submit($form, &$form_state) {
 }
 
 /**
+ * Add akismet form protection to these custom form(s)
+ */
+function drupalorg_akismet_form_list() {
+    $forms['drupalorg_lead_capture_form'] = array(
+        'title' => 'Partner Lead Capture Form',
+      );
+    return $forms;
+}
+
+/**
+ * Set the akismet protection mode for custom form(s)
+ */
+function drupalorg_akismet_form_info($form_id) {
+    switch ($form_id) {
+      case 'drupalorg_lead_capture_form':
+            $form_info = array(
+                'mode' => AKISMET_MODE_ANALYSIS,
+              );
+            return $form_info;
+  }
+}
+
+
+/**
  * Get a request header and set the reponse Vary header to cache accordingly.
  *
  * @param $header_name
