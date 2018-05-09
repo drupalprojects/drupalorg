@@ -2146,26 +2146,7 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
 
     $form['#submit'][] = 'drupalorg_form_user_profile_submit';
   }
-  $form['#submit'][] = 'drupalorg_custom_user_profile_submit';
 }
-
-/**
- * Adds an extra role for the organization profiles.
- */
-function drupalorg_custom_user_profile_submit($form, &$form_state) {
-  $user_id = arg(1);
-  $user = user_load($user_id);
-  // Set role to the user.
-  if ($form_state['values']['field_shared_account_for_an_org']['und'][0]['value'] == 1) {
-    $role = user_role_load_by_name("Shared account user");
-    user_multiple_role_edit(array($user->uid), 'add_role', $role->rid);
-  }
-  else {
-   $role = user_role_load_by_name("Shared account user");
-   $user->roles[$role->rid] = NULL;
- }
-}
-
 
 /**
  * #submit callback. See drupalorg_form_user_profile_form_alter().
