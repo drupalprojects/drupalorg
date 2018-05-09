@@ -116,7 +116,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   /* Field: Bulk operations: Content */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
@@ -520,7 +520,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['relationships']['field_organization_reference_target_id']['relationship'] = 'field_organizations_value';
   /* Field: Bulk operations: User */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'users';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_user';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
@@ -870,7 +870,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Bulk operations: User */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'users';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_user';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
@@ -952,7 +952,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['relationship'] = 'field_organization_reference_target_id';
   $handler->display->display_options['fields']['title']['label'] = 'Org Profile';
-  /* Field: Content: Website */
+  /* Field: Field: Cta */
   $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
   $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
   $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
@@ -1500,7 +1500,7 @@ function drupalorg_admin_pages_views_default_views() {
     t('E-mail'),
     t('Job Title'),
     t('Org Profile'),
-    t('Website'),
+    t('Cta'),
     t('Current'),
     t('User created date'),
     t('Org Profiles'),
@@ -1680,7 +1680,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['relationships']['term_node_tid']['field'] = 'term_node_tid';
   /* Field: Bulk operations: Content */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
   $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
@@ -1722,7 +1722,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  /* Field: Content: Website */
+  /* Field: Field: Cta */
   $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
   $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
   $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
@@ -1753,7 +1753,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['field_organization_support']['field'] = 'field_organization_support';
   $handler->display->display_options['fields']['field_organization_support']['label'] = 'Supporter';
   $handler->display->display_options['fields']['field_organization_support']['delta_offset'] = '0';
-  /* Field: COUNT(Content: Locations (taxonomy_vocabulary_52:delta)) */
+  /* Field: COUNT(Content: Offices in (taxonomy_vocabulary_52:delta)) */
   $handler->display->display_options['fields']['delta']['id'] = 'delta';
   $handler->display->display_options['fields']['delta']['table'] = 'field_data_taxonomy_vocabulary_52';
   $handler->display->display_options['fields']['delta']['field'] = 'delta';
@@ -2175,7 +2175,7 @@ function drupalorg_admin_pages_views_default_views() {
     t('term'),
     t('- Choose an operation -'),
     t('Title'),
-    t('Website'),
+    t('Cta'),
     t('Created'),
     t('Owner'),
     t('Updated date'),
@@ -2300,7 +2300,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['relationships']['uid']['label'] = 'User';
   /* Field: Bulk operations: Comment */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'comment';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_comment';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
   $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
@@ -2541,7 +2541,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   /* Field: Bulk operations: Content */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
