@@ -31,8 +31,11 @@ function drupalorg_token_info() {
         ],
         'drupalorg-last-gift-amount' => [
           'name' => t('Last gift amount'),
-          'description' => t('Drupal Association last donation or membership fee.'),
-          'type' => 'integer',
+          'description' => t('Drupal Association last donation or membership fee amount.'),
+        ],
+        'drupalorg-last-gift-currency' => [
+          'name' => t('Last gift currency'),
+          'description' => t('Drupal Association last donation or membership fee’s currency.'),
         ],
       ],
     ],
@@ -92,15 +95,20 @@ function drupalorg_tokens($type, $tokens, array $data = [], array $options = [])
         }
 
         // Last gift amount.
-        if (isset($tokens['drupalorg-last-gift-amount'])) {
+        if (isset($tokens['drupalorg-last-gift-amount']) || isset($tokens['drupalorg-last-gift-currency'])) {
           $last = 0;
           foreach (_drupalorg_get_chargify_subscriptions($data['user']) as $subscription) {
             if ($last === ($last = max($last, $subscription->created_at))) {
-              $last_amount = _format_chargify_money($subscription);
+              $last_subscription = $subscription;
             }
           }
-          if (isset($last_amount)) {
-            $replacements[$tokens['drupalorg-last-gift-amount']] = $last_amount;
+          if (isset($last_subscription)) {
+            if (isset($tokens['drupalorg-last-gift-amount'])) {
+              $replacements[$tokens['drupalorg-last-gift-amount']] = substr(_format_chargify_money($last_subscription), 1);
+            }
+            if (isset($tokens['drupalorg-last-gift-currency'])) {
+              $replacements[$tokens['drupalorg-last-gift-currency']] = drupal_strtoupper($last_subscription->currency);
+            }
           }
         }
       }
