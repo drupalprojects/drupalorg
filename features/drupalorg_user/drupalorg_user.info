@@ -121,5 +121,6 @@ features[taxonomy][] = areas_of_expertise
 features[variable][] = user_mail_drupalorg_email_verified_body
 features[views_view][] = issue_credit
 features[views_view][] = user_mentees
+features[views_view][] = user_profile_my_mentor_list
 features_exclude[field_base][field_current_company_org] = field_current_company_org
 features_exclude[field_instance][user-user-field_current_company_org] = user-user-field_current_company_org
