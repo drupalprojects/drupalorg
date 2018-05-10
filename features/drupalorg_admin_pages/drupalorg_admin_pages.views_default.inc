@@ -2207,10 +2207,10 @@ function drupalorg_admin_pages_views_default_views() {
 
   $view = new view();
   $view->name = 'drupalorg_admin_comments_by_user';
-  $view->description = 'Administrative view of all comments by a user';
+  $view->description = 'Administrative view of all comments by a user (Administer Content on profile)';
   $view->tag = '';
   $view->base_table = 'comment';
-  $view->human_name = '';
+  $view->human_name = 'drupalorg_admin_comments_by_user';
   $view->core = 0;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -2361,6 +2361,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['comment']['field'] = 'comment_body';
   $handler->display->display_options['fields']['comment']['alter']['max_length'] = '200';
   $handler->display->display_options['fields']['comment']['alter']['trim'] = TRUE;
+  $handler->display->display_options['fields']['comment']['type'] = 'text_plain';
   /* Field: Comment: Updated date */
   $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
   $handler->display->display_options['fields']['timestamp']['table'] = 'comment';
@@ -2413,6 +2414,14 @@ function drupalorg_admin_pages_views_default_views() {
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'admin_comments_by_user_pane');
   $handler->display->display_options['exposed_block'] = TRUE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'User has not posted any comments.';
+  $handler->display->display_options['empty']['area']['format'] = '1';
   $handler->display->display_options['argument_input'] = array(
     'uid' => array(
       'type' => 'user',
@@ -2452,16 +2461,17 @@ function drupalorg_admin_pages_views_default_views() {
     t('All'),
     t('Comments by %1'),
     t('Content pane'),
+    t('User has not posted any comments.'),
     t('View panes'),
   );
   $export['drupalorg_admin_comments_by_user'] = $view;
 
   $view = new view();
   $view->name = 'drupalorg_admin_node_by_user';
-  $view->description = 'Administrative view of all nodes by a user';
+  $view->description = 'Administrative view of all nodes by a user (Admin content on user profile)';
   $view->tag = '';
   $view->base_table = 'node';
-  $view->human_name = '';
+  $view->human_name = 'drupalorg_admin_node_by_user';
   $view->core = 0;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -2543,6 +2553,13 @@ function drupalorg_admin_pages_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'User does not currently have any nodes associated with their account..';
+  $handler->display->display_options['empty']['area']['format'] = '1';
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
@@ -2604,6 +2621,7 @@ function drupalorg_admin_pages_views_default_views() {
   $handler->display->display_options['fields']['body_1']['alter']['max_length'] = '200';
   $handler->display->display_options['fields']['body_1']['alter']['trim'] = TRUE;
   $handler->display->display_options['fields']['body_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['body_1']['type'] = 'text_plain';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -2653,6 +2671,21 @@ function drupalorg_admin_pages_views_default_views() {
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'admin_node_by_user_pane');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = 'Removing spam on Drupal.org.
+1) Confirm that reported node is spam
+2) Block author of spam node
+3) If not already there, goto spammer\'s profile and click Administer Content
+4) Check all spam node boxes and "Report to akismet and unpublish"
+5) Pay attention for spam node edits, make sure to only delete the spam revision, and not the entire node (if applicable)
+6) Delete all spam nodes
+
+Thank you for helping us fight spam on Drupal.org!';
+  $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['argument_input'] = array(
     'uid' => array(
       'type' => 'user',
@@ -2678,6 +2711,7 @@ function drupalorg_admin_pages_views_default_views() {
     t('‹ previous'),
     t('next ›'),
     t('last »'),
+    t('User does not currently have any nodes associated with their account..'),
     t('author'),
     t('Content'),
     t('- Choose an operation -'),
@@ -2692,6 +2726,15 @@ function drupalorg_admin_pages_views_default_views() {
     t('All'),
     t('Nodes by %1'),
     t('Content pane'),
+    t('Removing spam on Drupal.org.
+1) Confirm that reported node is spam
+2) Block author of spam node
+3) If not already there, goto spammer\'s profile and click Administer Content
+4) Check all spam node boxes and "Report to akismet and unpublish"
+5) Pay attention for spam node edits, make sure to only delete the spam revision, and not the entire node (if applicable)
+6) Delete all spam nodes
+
+Thank you for helping us fight spam on Drupal.org!'),
     t('View panes'),
   );
   $export['drupalorg_admin_node_by_user'] = $view;
