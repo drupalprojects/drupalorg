@@ -122,7 +122,7 @@ function drupalorg_content_types_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
-    'action::mollom_action_unpublish_node' => array(
+    'action::akismet_action_unpublish_node' => array(
       'selected' => 1,
       'skip_confirmation' => 0,
       'override_label' => 0,
