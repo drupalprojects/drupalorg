@@ -1066,6 +1066,21 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
       'empty_column' => 0,
     ),
   );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = 'Removing spam on Drupal.org:
+<ol>
+<li>Confirm that reported node is spam
+<li>Block author of spam node
+<li>Head to spammer\'s profile and click Administer Content
+<li>Check all spam node boxes and "Report to Akismet and unpublish"
+<li>Pay attention for spam node edits, make sure to only delete the spam revision, and not the entire node (if applicable)
+<li>Delete all spam nodes <em>which were not revision spam</em>
+</ol>
+Thank you for helping us fight spam on Drupal.org!';
+  $handler->display->display_options['header']['area']['format'] = '1';
   /* Relationship: Flags: drupalorg_node_spam */
   $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
   $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'node';
@@ -1081,10 +1096,6 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
   $handler->display->display_options['relationships']['uid_1']['table'] = 'node_revision';
   $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
-  /* Relationship: Drupalorg comment nid: Drupalorg comment deleted - nid */
-  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['id'] = 'drupalorg_comment_deleted_rel';
-  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['table'] = 'node';
-  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['field'] = 'drupalorg_comment_deleted_rel';
   /* Relationship: Drupalorg comment uid: Drupalorg comment deleted rel - uid */
   $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['id'] = 'drupalorg_comment_deleted_rel_1';
   $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['table'] = 'users';
@@ -1129,18 +1140,6 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid_1';
   $handler->display->display_options['fields']['name']['label'] = 'Author';
-  /* Field: Drupalorg comment deleted.: Body of spam node. */
-  $handler->display->display_options['fields']['comment_body']['id'] = 'comment_body';
-  $handler->display->display_options['fields']['comment_body']['table'] = 'drupalorg_comment_deleted';
-  $handler->display->display_options['fields']['comment_body']['field'] = 'comment_body';
-  $handler->display->display_options['fields']['comment_body']['relationship'] = 'drupalorg_comment_deleted_rel';
-  /* Field: Drupalorg comment deleted.: Subject/title of spam node. */
-  $handler->display->display_options['fields']['subject']['id'] = 'subject';
-  $handler->display->display_options['fields']['subject']['table'] = 'drupalorg_comment_deleted';
-  $handler->display->display_options['fields']['subject']['field'] = 'subject';
-  $handler->display->display_options['fields']['subject']['relationship'] = 'drupalorg_comment_deleted_rel';
-  $handler->display->display_options['fields']['subject']['label'] = 'Subject of spam node.';
-  $handler->display->display_options['fields']['subject']['element_label_colon'] = FALSE;
   /* Field: Content: Remove spam flags */
   $handler->display->display_options['fields']['drupalorg_not_spam']['id'] = 'drupalorg_not_spam';
   $handler->display->display_options['fields']['drupalorg_not_spam']['table'] = 'views_entity_node';
@@ -1176,24 +1175,14 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['sorts']['count']['field'] = 'count';
   $handler->display->display_options['sorts']['count']['relationship'] = 'flag_count_rel';
   $handler->display->display_options['sorts']['count']['order'] = 'DESC';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'drupalorg_node_spam_pane');
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'Removing spam on Drupal.org.
-1) Confirm that reported node is spam
-2) Block author of spam node
-3) Head to spammer\'s profile and click Administer Content
-4) Check all spam node boxes and "Report to akismet and unpublish"
-5) Pay attention for spam node edits, make sure to only delete the spam revision, and not the entire node (if applicable)
-6) Delete all spam nodes
-
-Thank you for helping us fight spam on Drupal.org!';
-  $handler->display->display_options['header']['area']['format'] = '1';
   $handler->display->display_options['defaults']['empty'] = FALSE;
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -1217,10 +1206,19 @@ Thank you for helping us fight spam on Drupal.org!';
     t('‹ previous'),
     t('next ›'),
     t('last »'),
+    t('Removing spam on Drupal.org:
+<ol>
+<li>Confirm that reported node is spam
+<li>Block author of spam node
+<li>Head to spammer\'s profile and click Administer Content
+<li>Check all spam node boxes and "Report to Akismet and unpublish"
+<li>Pay attention for spam node edits, make sure to only delete the spam revision, and not the entire node (if applicable)
+<li>Delete all spam nodes <em>which were not revision spam</em>
+</ol>
+Thank you for helping us fight spam on Drupal.org!'),
     t('flag'),
     t('counter'),
     t('revision user'),
-    t('Drupalorg comment deleted nid rel.'),
     t('Drupalorg comment deleted rel - uid'),
     t('Type'),
     t('Reports'),
@@ -1229,19 +1227,8 @@ Thank you for helping us fight spam on Drupal.org!';
     t('Summary'),
     t('Updated'),
     t('Author'),
-    t('Body of spam node.'),
-    t('Subject of spam node.'),
     t('Administer content'),
     t('Content pane'),
-    t('Removing spam on Drupal.org.
-1) Confirm that reported node is spam
-2) Block author of spam node
-3) Head to spammer\'s profile and click Administer Content
-4) Check all spam node boxes and "Report to akismet and unpublish"
-5) Pay attention for spam node edits, make sure to only delete the spam revision, and not the entire node (if applicable)
-6) Delete all spam nodes
-
-Thank you for helping us fight spam on Drupal.org!'),
     t('There are currently no spam nodes reported.  Thanks for checking!'),
     t('View panes'),
   );
