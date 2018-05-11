@@ -1187,8 +1187,10 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['header']['area']['content'] = 'Removing spam on Drupal.org.
 1) Confirm that reported node is spam
 2) Block author of spam node
-3) Head to administer content on spammer\'s profile and delete all nodes
-4) Edit spammer profile and leave an administrative note indicating they were blocked for spamming.
+3) Head to spammer\'s profile and click Administer Content
+4) Check all spam node boxes and "Report to akismet and unpublish"
+5) Pay attention for spam node edits, make sure to only delete the spam revision, and not the entire node (if applicable)
+6) Delete all spam nodes
 
 Thank you for helping us fight spam on Drupal.org!';
   $handler->display->display_options['header']['area']['format'] = '1';
@@ -1234,8 +1236,10 @@ Thank you for helping us fight spam on Drupal.org!';
     t('Removing spam on Drupal.org.
 1) Confirm that reported node is spam
 2) Block author of spam node
-3) Head to administer content on spammer\'s profile and delete all nodes
-4) Edit spammer profile and leave an administrative note indicating they were blocked for spamming.
+3) Head to spammer\'s profile and click Administer Content
+4) Check all spam node boxes and "Report to akismet and unpublish"
+5) Pay attention for spam node edits, make sure to only delete the spam revision, and not the entire node (if applicable)
+6) Delete all spam nodes
 
 Thank you for helping us fight spam on Drupal.org!'),
     t('There are currently no spam nodes reported.  Thanks for checking!'),
