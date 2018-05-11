@@ -47,6 +47,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'system',
   );
 
+  // Exported permission: 'access akismet statistics'.
+  $permissions['access akismet statistics'] = array(
+    'name' => 'access akismet statistics',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'akismet',
+  );
+
   // Exported permission: 'access all views'.
   $permissions['access all views'] = array(
     'name' => 'access all views',
@@ -523,6 +532,15 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'panels',
+  );
+
+  // Exported permission: 'administer akismet'.
+  $permissions['administer akismet'] = array(
+    'name' => 'administer akismet',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'akismet',
   );
 
   // Exported permission: 'administer all documentation guides'.
@@ -1937,6 +1955,16 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'advagg',
+  );
+
+  // Exported permission: 'bypass akismet protection'.
+  $permissions['bypass akismet protection'] = array(
+    'name' => 'bypass akismet protection',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+    ),
+    'module' => 'akismet',
   );
 
   // Exported permission: 'bypass bakery'.
@@ -4071,6 +4099,15 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'rename features',
     'roles' => array(),
     'module' => 'features',
+  );
+
+  // Exported permission: 'report to akismet'.
+  $permissions['report to akismet'] = array(
+    'name' => 'report to akismet',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'akismet',
   );
 
   // Exported permission: 'revert revisions'.
