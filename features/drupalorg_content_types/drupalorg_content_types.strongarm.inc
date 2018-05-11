@@ -700,6 +700,10 @@ function drupalorg_content_types_strongarm() {
     'custom-d8_sub_sponsor' => TRUE,
     'custom-lingotek_multilingual_ad' => TRUE,
     'custom-drupalorg_trydrupal_button' => TRUE,
+    'block-block-56' => TRUE,
+    'block-google_admanager-89caa04f148acdc52719b3d001e487c4' => TRUE,
+    'block-og_menu-og_single_menu_block' => TRUE,
+    'block-og_menu-og_multi_menu_block' => TRUE,
   );
   $export['panelizer_node:section_allowed_types'] = $strongarm;
 
