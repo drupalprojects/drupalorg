@@ -786,6 +786,7 @@ function drupalorg_marketplace_views_default_views() {
     4 => 0,
     42 => 0,
   );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['type'] = 'select';
   $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['vocabulary'] = 'vocabulary_48';
   /* Filter criterion: Content: Sectors (taxonomy_vocabulary_50) */
@@ -820,6 +821,7 @@ function drupalorg_marketplace_views_default_views() {
     4 => 0,
     42 => 0,
   );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['type'] = 'select';
   $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['vocabulary'] = 'vocabulary_50';
   /* Filter criterion: Content: Offices in (taxonomy_vocabulary_52) */
@@ -854,6 +856,7 @@ function drupalorg_marketplace_views_default_views() {
     4 => 0,
     42 => 0,
   );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['type'] = 'select';
   $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['vocabulary'] = 'vocabulary_52';
   /* Filter criterion: Content: Locations served (field_organization_loc_served) */
@@ -887,6 +890,7 @@ function drupalorg_marketplace_views_default_views() {
     4 => 0,
     42 => 0,
   );
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['field_organization_loc_served_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_organization_loc_served_tid']['vocabulary'] = 'vocabulary_52';
   $handler->display->display_options['path'] = 'drupal-services';
