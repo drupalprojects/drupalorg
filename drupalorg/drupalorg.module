@@ -2031,17 +2031,7 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
     // Alter list of lists.
     if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622'])) {
       $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#title'] = t('Subscribe to');
-      if (isset($form_state['drupalorg_welcome'])) {
-        // Only show some newsletters on the welcome version of the form.
-        $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#options'] = array_intersect($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#options'], [
-          'Drupal Weekly Newsletter',
-          'Drupal Association News',
-          'DrupalCon News',
-          'Special Offers from Drupal Supporters',
-          'Security Announcements',
-        ]);
-      }
-      else {
+      if (!isset($form_state['drupalorg_welcome'])) {
         $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5485]['#suffix'] = '<div class="description">' . t('Your primary email address %address will be used for subscriptions. <a href="!url">Edit email addresses</a>', array('%address' => $form['#user']->mail, '!url' => url('user/' . $form['#user']->uid . '/edit/email-addresses'))) . '</div>';
       }
     }
