@@ -2031,12 +2031,6 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
     // Alter list of lists.
     if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622'])) {
       $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#title'] = t('Subscribe to');
-      // Add descriptions to MailChimp lists.
-      foreach (variable_get('drupalorg_mailchimp_list_descriptions', []) as $name => $description) {
-        if ($key = array_search($name, $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#options'])) {
-          $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622'][$key]['#description'] = $description;
-        }
-      }
       if (isset($form_state['drupalorg_welcome'])) {
         // Only show some newsletters on the welcome version of the form.
         $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#options'] = array_intersect($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#options'], [
