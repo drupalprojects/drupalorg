@@ -6745,7 +6745,7 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     $form['mailchimp_lists']['interest_groups'][$list_forms[$form_state['build_info']['args'][0]->name]['parent']]['#type'] = 'value';
     $form['mailchimp_lists']['interest_groups'][$list_forms[$form_state['build_info']['args'][0]->name]['parent']]['#value'] = $list_forms[$form_state['build_info']['args'][0]->name]['value'];
     foreach ($list_forms[$form_state['build_info']['args'][0]->name]['hide'] as $id) {
-      hide($form['mailchimp_lists']['interest_groups'][$id]);
+      unset($form['mailchimp_lists']['interest_groups'][$id]);
     }
   }
 
