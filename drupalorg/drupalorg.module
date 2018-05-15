@@ -6728,16 +6728,25 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
  * Implements hook_form_FORM_ID_alter.
  */
 function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_state) {
-  // Hide “Roles in Drupal”.
-  hide($form['mailchimp_lists']['interest_groups']['f99166c398']);
+  // Control interest group sprawl.
+  foreach (variable_get('drupalorg_suppress_interest_groups', []) as $id) {
+    hide($form['mailchimp_lists']['interest_groups'][$id]);
+  }
 
   // Only add a single list for some forms.
   $list_forms = [
-    'hosting_offers' => ['dc0ad3fd6d' => TRUE],
+    'hosting_offers' => [
+      'parent' => '41ac996e3d',
+      'value' => ['eb3fcc4be5' => TRUE],
+      'hide' => ['853d1901d5', '27985faf3e'],
+    ],
   ];
   if (isset($list_forms[$form_state['build_info']['args'][0]->name])) {
-    $form['mailchimp_lists']['interest_groups']['8d99874622']['#type'] = 'value';
-    $form['mailchimp_lists']['interest_groups']['8d99874622']['#value'] = $list_forms[$form_state['build_info']['args'][0]->name];
+    $form['mailchimp_lists']['interest_groups'][$list_forms[$form_state['build_info']['args'][0]->name]['parent']]['#type'] = 'value';
+    $form['mailchimp_lists']['interest_groups'][$list_forms[$form_state['build_info']['args'][0]->name]['parent']]['#value'] = $list_forms[$form_state['build_info']['args'][0]->name]['value'];
+    foreach ($list_forms[$form_state['build_info']['args'][0]->name]['hide'] as $id) {
+      hide($form['mailchimp_lists']['interest_groups'][$id]);
+    }
   }
 
   if (user_is_logged_in()) {
@@ -6748,6 +6757,7 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     $form['mergevars']['EMAIL']['#value'] = $GLOBALS['user']->mail;
     $form['mergevars']['FNAME']['#type'] = 'value';
     $form['mergevars']['LNAME']['#type'] = 'value';
+    $form['mergevars']['COUNTRY']['#type'] = 'value';
     if ($name = $account_wrapper->field_first_name->value()) {
       $form['mergevars']['FNAME']['#value'] = $name;
     }
@@ -6757,12 +6767,11 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     if ($name = $account_wrapper->field_last_name->value()) {
       $form['mergevars']['LNAME']['#value'] = $name;
     }
+    $form['mergevars']['COUNTRY']['#value'] = $account_wrapper->field_country->value();
     $form['mergevars']['#prefix'] .= t('We’ll send occasional updates to @mail<br><small><a href="!url">Update your primary email</a></small>', ['@mail' => $GLOBALS['user']->mail, '!url' => url('user/' . $GLOBALS['user']->uid . '/edit/email-addresses')]);
   }
   else {
     $form['mergevars']['#prefix'] .= t('We’ll send occasional updates');
-    hide($form['mergevars']['FNAME']);
     hide($form['mergevars']['LNAME']);
-    $form_state['build_info']['args'][0]->settings['doublein'] = TRUE;
   }
 }
