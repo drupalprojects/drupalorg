@@ -37,6 +37,10 @@ function drupalorg_token_info() {
           'name' => t('Last gift currency'),
           'description' => t('Drupal Association last donation or membership fee’s currency.'),
         ],
+        'drupalorg-current-organization-name' => [
+          'name' => t('Current organization name'),
+          'description' => t('Name of the <em>first</em> current organization a user has.')
+        ],
       ],
     ],
   ];
@@ -109,6 +113,19 @@ function drupalorg_tokens($type, $tokens, array $data = [], array $options = [])
             if (isset($tokens['drupalorg-last-gift-currency'])) {
               $replacements[$tokens['drupalorg-last-gift-currency']] = drupal_strtoupper($last_subscription->currency);
             }
+          }
+        }
+
+        // Current organization name.
+        if (isset($tokens['drupalorg-current-organization-name'])) {
+          $wrapper = entity_metadata_wrapper('user', $data['user']);
+          foreach ($wrapper->field_organizations as $organization) {
+            try {
+              if ($organization->field_current->value()) {
+                $replacements[$tokens['drupalorg-current-organization-name']] = $organization->field_organization_name->value();
+              }
+            }
+            catch (EntityMetadataWrapperException $e) { }
           }
         }
       }
