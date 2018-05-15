@@ -1110,27 +1110,6 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
-  // Exported permission: 'administer panelizer fieldable_panels_pane case_study defaults'.
-  $permissions['administer panelizer fieldable_panels_pane case_study defaults'] = array(
-    'name' => 'administer panelizer fieldable_panels_pane case_study defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer fieldable_panels_pane cta defaults'.
-  $permissions['administer panelizer fieldable_panels_pane cta defaults'] = array(
-    'name' => 'administer panelizer fieldable_panels_pane cta defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
-  // Exported permission: 'administer panelizer fieldable_panels_pane cta_multiple defaults'.
-  $permissions['administer panelizer fieldable_panels_pane cta_multiple defaults'] = array(
-    'name' => 'administer panelizer fieldable_panels_pane cta_multiple defaults',
-    'roles' => array(),
-    'module' => 'panelizer',
-  );
-
   // Exported permission: 'administer panelizer node book defaults'.
   $permissions['administer panelizer node book defaults'] = array(
     'name' => 'administer panelizer node book defaults',

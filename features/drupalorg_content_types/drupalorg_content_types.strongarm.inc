@@ -622,6 +622,7 @@ function drupalorg_content_types_strongarm() {
   $strongarm->name = 'panelizer_defaults_node_section';
   $strongarm->value = array(
     'status' => 1,
+    'help' => '',
     'view modes' => array(
       'page_manager' => array(
         'status' => 0,
@@ -633,7 +634,7 @@ function drupalorg_content_types_strongarm() {
         'status' => 1,
         'substitute' => '',
         'default' => 1,
-        'choice' => 1,
+        'choice' => 0,
       ),
       'teaser' => array(
         'status' => 0,
@@ -648,12 +649,6 @@ function drupalorg_content_types_strongarm() {
         'choice' => 0,
       ),
       'issuemetadata' => array(
-        'status' => 0,
-        'substitute' => 0,
-        'default' => 0,
-        'choice' => 0,
-      ),
-      'related_content' => array(
         'status' => 0,
         'substitute' => 0,
         'default' => 0,
@@ -727,11 +722,11 @@ function drupalorg_content_types_strongarm() {
   $strongarm->name = 'panelizer_node:section_default';
   $strongarm->value = array(
     'custom' => 'custom',
-    'entity_field_extra' => 0,
-    'entity_field' => 0,
-    'block' => 0,
-    'entity_form_field' => 0,
     'token' => 0,
+    'entity_form_field' => 0,
+    'entity_field' => 0,
+    'entity_field_extra' => 0,
+    'block' => 0,
     'entity_view' => 0,
     'fieldable_panels_pane' => 0,
     'flag_link' => 0,
