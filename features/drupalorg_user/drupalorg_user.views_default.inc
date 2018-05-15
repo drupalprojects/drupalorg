@@ -106,14 +106,6 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['status_1']['relationship'] = 'field_issue_credit_target_id';
   $handler->display->display_options['filters']['status_1']['value'] = '1';
   $handler->display->display_options['filters']['status_1']['group'] = 1;
-  /* Filter criterion: Content: Updated date */
-  $handler->display->display_options['filters']['changed_1']['id'] = 'changed_1';
-  $handler->display->display_options['filters']['changed_1']['table'] = 'node';
-  $handler->display->display_options['filters']['changed_1']['field'] = 'changed';
-  $handler->display->display_options['filters']['changed_1']['operator'] = '>=';
-  $handler->display->display_options['filters']['changed_1']['value']['value'] = '-1 year';
-  $handler->display->display_options['filters']['changed_1']['value']['type'] = 'offset';
-  $handler->display->display_options['filters']['changed_1']['group'] = 1;
   /* Filter criterion: Content: Status (field_issue_status) */
   $handler->display->display_options['filters']['field_issue_status_value']['id'] = 'field_issue_status_value';
   $handler->display->display_options['filters']['field_issue_status_value']['table'] = 'field_data_field_issue_status';
@@ -207,6 +199,56 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['uid']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['uid']['validate']['type'] = 'user';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'OR',
+  );
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'project_issue' => 'project_issue',
+    'sa' => 'sa',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Comment: Approved */
+  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
+  $handler->display->display_options['filters']['status_1']['table'] = 'comment';
+  $handler->display->display_options['filters']['status_1']['field'] = 'status';
+  $handler->display->display_options['filters']['status_1']['relationship'] = 'field_issue_credit_target_id';
+  $handler->display->display_options['filters']['status_1']['value'] = '1';
+  $handler->display->display_options['filters']['status_1']['group'] = 1;
+  /* Filter criterion: Content: Status (field_issue_status) */
+  $handler->display->display_options['filters']['field_issue_status_value']['id'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value']['table'] = 'field_data_field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status_value']['field'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value']['value'] = array(
+    2 => '2',
+    7 => '7',
+  );
+  $handler->display->display_options['filters']['field_issue_status_value']['group'] = 2;
+  /* Filter criterion: Content: Status (field_issue_status) */
+  $handler->display->display_options['filters']['field_issue_status_value_1']['id'] = 'field_issue_status_value_1';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['table'] = 'field_data_field_issue_status';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['field'] = 'field_issue_status_value';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['operator'] = 'empty';
+  $handler->display->display_options['filters']['field_issue_status_value_1']['group'] = 2;
+  /* Filter criterion: Content: Last status change (field_issue_last_status_change) */
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['id'] = 'field_issue_last_status_change_value';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['table'] = 'field_data_field_issue_last_status_change';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['field'] = 'field_issue_last_status_change_value';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['operator'] = '>=';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['value']['value'] = '-1 year';
 
   /* Display: User recent page */
   $handler = $view->new_display('page', 'User recent page', 'user_recent_page');
@@ -514,24 +556,23 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['field_issue_status_value_1']['field'] = 'field_issue_status_value';
   $handler->display->display_options['filters']['field_issue_status_value_1']['operator'] = 'empty';
   $handler->display->display_options['filters']['field_issue_status_value_1']['group'] = 2;
-  /* Filter criterion: Content: Updated date */
-  $handler->display->display_options['filters']['changed']['id'] = 'changed';
-  $handler->display->display_options['filters']['changed']['table'] = 'node';
-  $handler->display->display_options['filters']['changed']['field'] = 'changed';
-  $handler->display->display_options['filters']['changed']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['changed']['expose']['operator_id'] = 'changed_op';
-  $handler->display->display_options['filters']['changed']['expose']['label'] = 'Updated date';
-  $handler->display->display_options['filters']['changed']['expose']['operator'] = 'changed_op';
-  $handler->display->display_options['filters']['changed']['expose']['identifier'] = 'changed';
-  $handler->display->display_options['filters']['changed']['is_grouped'] = TRUE;
-  $handler->display->display_options['filters']['changed']['group_info']['label'] = 'Date range';
-  $handler->display->display_options['filters']['changed']['group_info']['identifier'] = 'changed';
-  $handler->display->display_options['filters']['changed']['group_info']['group_items'] = array(
+  /* Filter criterion: Content: Last status change (field_issue_last_status_change) */
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['id'] = 'field_issue_last_status_change_value';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['table'] = 'field_data_field_issue_last_status_change';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['field'] = 'field_issue_last_status_change_value';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['operator_id'] = 'field_issue_last_status_change_value_op';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['label'] = 'Last status change (field_issue_last_status_change)';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['operator'] = 'field_issue_last_status_change_value_op';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['identifier'] = 'field_issue_last_status_change_value';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['is_grouped'] = TRUE;
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['group_info']['label'] = 'Date range';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['group_info']['identifier'] = 'field_issue_last_status_change_value';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['group_info']['group_items'] = array(
     1 => array(
       'title' => 'Past 12 months',
       'operator' => '>=',
       'value' => array(
-        'type' => 'date',
         'value' => '-1 year',
         'min' => '',
         'max' => '',
@@ -541,7 +582,6 @@ function drupalorg_user_views_default_views() {
       'title' => '',
       'operator' => '=',
       'value' => array(
-        'type' => 'date',
         'value' => '',
         'min' => '',
         'max' => '',
@@ -551,7 +591,6 @@ function drupalorg_user_views_default_views() {
       'title' => '',
       'operator' => '=',
       'value' => array(
-        'type' => 'date',
         'value' => '',
         'min' => '',
         'max' => '',
@@ -641,14 +680,6 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['status_1']['relationship'] = 'field_issue_credit_target_id';
   $handler->display->display_options['filters']['status_1']['value'] = '1';
   $handler->display->display_options['filters']['status_1']['group'] = 1;
-  /* Filter criterion: Content: Updated date */
-  $handler->display->display_options['filters']['changed_1']['id'] = 'changed_1';
-  $handler->display->display_options['filters']['changed_1']['table'] = 'node';
-  $handler->display->display_options['filters']['changed_1']['field'] = 'changed';
-  $handler->display->display_options['filters']['changed_1']['operator'] = '>=';
-  $handler->display->display_options['filters']['changed_1']['value']['value'] = '-3 months';
-  $handler->display->display_options['filters']['changed_1']['value']['type'] = 'offset';
-  $handler->display->display_options['filters']['changed_1']['group'] = 1;
   /* Filter criterion: Comment: Attribute this contribution (field_attribute_as_volunteer) */
   $handler->display->display_options['filters']['field_attribute_as_volunteer_value']['id'] = 'field_attribute_as_volunteer_value';
   $handler->display->display_options['filters']['field_attribute_as_volunteer_value']['table'] = 'field_data_field_attribute_as_volunteer';
@@ -698,6 +729,16 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['label'] = 'Attribute comment for customer (field_for_customer)';
   $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['operator'] = 'field_for_customer_target_id_op';
   $handler->display->display_options['filters']['field_for_customer_target_id']['expose']['identifier'] = 'field_for_customer_target_id';
+  /* Filter criterion: Content: Last status change (field_issue_last_status_change) */
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['id'] = 'field_issue_last_status_change_value';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['table'] = 'field_data_field_issue_last_status_change';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['field'] = 'field_issue_last_status_change_value';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['operator'] = '>=';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['value']['value'] = '-3 months';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['operator_id'] = 'field_issue_last_status_change_value_op';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['label'] = 'Last status change (field_issue_last_status_change)';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['operator'] = 'field_issue_last_status_change_value_op';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['identifier'] = 'field_issue_last_status_change_value';
 
   /* Display: Organization recent page */
   $handler = $view->new_display('page', 'Organization recent page', 'organization_recent_page');
@@ -859,7 +900,7 @@ function drupalorg_user_views_default_views() {
     t('◀︎ '),
     t('%2 issues credited to %1'),
     t('User issue credit page'),
-    t('Updated date'),
+    t('Last status change (field_issue_last_status_change)'),
     t('Date range'),
     t('Organization recent'),
     t('Attribute comment for customer (field_for_customer)'),
