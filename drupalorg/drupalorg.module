@@ -3404,7 +3404,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         $issues += $row->nid;
       }
       if ($issues > 0) {
-        $filter = $view->get_item('organization_recent', 'filter', 'changed_1');
+        $filter = $view->get_item('organization_recent', 'filter', 'field_issue_last_status_change_value');
         $content['main']['drupalorg_organization_issue_credit']['#prefix'] = '<h4 id="issue-credit">' . format_plural($issues, 'Credited on 1 issue fixed in the past @time', 'Credited on @count issues fixed in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
       }
 
@@ -4221,7 +4221,7 @@ function drupalorg_user_view($account, $view_mode) {
     $issues += $row->nid;
   }
   if ($issues > 0) {
-    $filter = $view->get_item('user_recent', 'filter', 'changed_1');
+    $filter = $view->get_item('user_recent', 'filter', 'field_issue_last_status_change_value');
     $account->content['drupalorg_user_issue_credit']['#prefix'] = '<h4>' . format_plural($issues, 'Credited on 1 issue fixed in the past @time', 'Credited on @count issues fixed in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
   }
 }
