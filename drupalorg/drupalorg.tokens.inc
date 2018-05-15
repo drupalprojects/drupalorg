@@ -41,6 +41,10 @@ function drupalorg_token_info() {
           'name' => t('Current organization name'),
           'description' => t('Name of the <em>first</em> current organization a user has.')
         ],
+        'drupalorg-first-or-user-name' => [
+          'name' => t('First or user name'),
+          'description' => t('If the user has a first name, that name, otherwise their username.'),
+        ],
       ],
     ],
   ];
@@ -127,6 +131,12 @@ function drupalorg_tokens($type, $tokens, array $data = [], array $options = [])
             }
             catch (EntityMetadataWrapperException $e) { }
           }
+        }
+
+        // First or user name.
+        if (isset($tokens['drupalorg-first-or-user-name'])) {
+          $wrapper = entity_metadata_wrapper('user', $data['user']);
+          $replacements[$tokens['drupalorg-first-or-user-name']] = empty($wrapper->field_first_name->value()) ? $data['user']->name : $wrapper->field_first_name->value();
         }
       }
       break;
