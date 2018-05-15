@@ -1110,6 +1110,27 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'panelizer',
   );
 
+  // Exported permission: 'administer panelizer fieldable_panels_pane case_study defaults'.
+  $permissions['administer panelizer fieldable_panels_pane case_study defaults'] = array(
+    'name' => 'administer panelizer fieldable_panels_pane case_study defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer fieldable_panels_pane cta defaults'.
+  $permissions['administer panelizer fieldable_panels_pane cta defaults'] = array(
+    'name' => 'administer panelizer fieldable_panels_pane cta defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
+  // Exported permission: 'administer panelizer fieldable_panels_pane cta_multiple defaults'.
+  $permissions['administer panelizer fieldable_panels_pane cta_multiple defaults'] = array(
+    'name' => 'administer panelizer fieldable_panels_pane cta_multiple defaults',
+    'roles' => array(),
+    'module' => 'panelizer',
+  );
+
   // Exported permission: 'administer panelizer node book defaults'.
   $permissions['administer panelizer node book defaults'] = array(
     'name' => 'administer panelizer node book defaults',
@@ -2142,6 +2163,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create fieldable cta'] = array(
     'name' => 'create fieldable cta',
     'roles' => array(
+      'confirmed' => 'confirmed',
       'content administrator' => 'content administrator',
     ),
     'module' => 'fieldable_panels_panes',
@@ -2150,7 +2172,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'create fieldable cta_multiple'.
   $permissions['create fieldable cta_multiple'] = array(
     'name' => 'create fieldable cta_multiple',
-    'roles' => array(),
+    'roles' => array(
+      'confirmed' => 'confirmed',
+    ),
     'module' => 'fieldable_panels_panes',
   );
 
@@ -3315,8 +3339,10 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit any section content'] = array(
     'name' => 'edit any section content',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
       'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'node',
   );
@@ -3351,6 +3377,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit fieldable cta'] = array(
     'name' => 'edit fieldable cta',
     'roles' => array(
+      'confirmed' => 'confirmed',
       'content administrator' => 'content administrator',
     ),
     'module' => 'fieldable_panels_panes',
@@ -3359,7 +3386,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit fieldable cta_multiple'.
   $permissions['edit fieldable cta_multiple'] = array(
     'name' => 'edit fieldable cta_multiple',
-    'roles' => array(),
+    'roles' => array(
+      'confirmed' => 'confirmed',
+    ),
     'module' => 'fieldable_panels_panes',
   );
 
@@ -3589,8 +3618,10 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit own section content'] = array(
     'name' => 'edit own section content',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
       'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'node',
   );
