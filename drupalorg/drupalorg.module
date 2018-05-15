@@ -2024,7 +2024,7 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
   if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0])) {
     // Control interest group sprawl.
     foreach (variable_get('drupalorg_suppress_interest_groups', []) as $id) {
-      hide($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][$id]);
+      unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][$id]);
     }
     // Add note about which email address is subscribed.
     if (!isset($form_state['drupalorg_welcome'])) {
@@ -6730,7 +6730,7 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
 function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_state) {
   // Control interest group sprawl.
   foreach (variable_get('drupalorg_suppress_interest_groups', []) as $id) {
-    hide($form['mailchimp_lists']['interest_groups'][$id]);
+    unset($form['mailchimp_lists']['interest_groups'][$id]);
   }
 
   // Only add a single list for some forms.
