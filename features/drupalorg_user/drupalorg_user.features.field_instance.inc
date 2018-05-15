@@ -1099,29 +1099,32 @@ function drupalorg_user_field_default_field_instances() {
       0 => array(
         'subscribe' => FALSE,
         'interest_groups' => array(
-          '8d99874622' => array(
-            '22e1b642b7' => 0,
-            '53d7f4209a' => 0,
-            '3374b1dd84' => 0,
-            '60985452cc' => 0,
-            'a0d7a1c02b' => 0,
-            'b3d670a22d' => 0,
-            'dc0ad3fd6d' => 0,
-            'faceb9a270' => 0,
+          '41ac996e3d' => array(
+            '9e8f056224' => 0,
+            '462306d1ff' => 0,
+            'eb3fcc4be5' => 0,
           ),
-          'f99166c398' => array(
-            '8e538016f8' => 0,
-            '8f497df2ac' => 0,
-            '12e0adb9c2' => 0,
-            '6471b579b9' => 0,
-            '7178f4ed23' => 0,
-            '8052a9eec6' => 0,
-            'b5eae4f409' => 0,
-            'c0d1826013' => 0,
-            'c2c6d438b4' => 0,
-            'da2686313a' => 0,
-            'f0dc5eecf2' => 0,
-            'f235b3d5e5' => 0,
+          '853d1901d5' => array(
+            '7cbef189d8' => 0,
+            '792fc1487f' => 0,
+            '40270f75fa' => 0,
+            'b2b586f8e6' => 0,
+          ),
+          '27985faf3e' => array(
+            'ac14893ea5' => 0,
+            'bb893e8fcf' => 0,
+          ),
+          'de188429fc' => '',
+          'ef73b36223' => array(
+            '14da73ca33' => 0,
+            '55f3a25697' => 0,
+            '503e9527cd' => 0,
+            '884c445c33' => 0,
+            '75950bc10a' => 0,
+            'd8026e0bd5' => 0,
+          ),
+          'f66bd3cafd' => array(
+            'd506874da1' => 0,
           ),
         ),
         'is_default' => TRUE,
@@ -1139,39 +1142,23 @@ function drupalorg_user_field_default_field_instances() {
     ),
     'entity_type' => 'user',
     'field_name' => 'field_subscribe_to',
-    'label' => 'Subscribe to',
+    'label' => 'Communication preferences',
     'required' => 0,
     'settings' => array(
       'hide_subscribe_checkbox' => 1,
       'interest_groups_title' => 'Interest Groups',
       'mergefields' => array(
         'ACCTCREATE' => '[user:created:custom:Y-m-d]',
-        'BUSINESS' => '',
         'CIVI_ID' => '',
-        'COMPANY' => '',
-        'COUNTRY' => '',
-        'DCEVENT' => '',
+        'COMPANY' => '[user:drupalorg-current-organization-name]',
+        'COUNTRY' => '[user:field-country]',
         'DRUPNAME' => '[user:name]',
         'EMAIL' => '[user:mail]',
-        'FNAME' => '[user:name]',
+        'FNAME' => '[user:drupalorg-first-or-user-name]',
         'FULLNAME' => '',
         'JOBTITLE' => '',
         'LNAME' => '[user:field-last-name]',
-        'MEMENDIND' => '',
-        'MEMENDORG' => '',
-        'MEMSINCEIN' => '',
-        'MEMSINCEOR' => '',
-        'MMERGE16' => '',
-        'MMERGE18' => '',
-        'MMERGE19' => '',
-        'MMERGE24' => '',
-        'MMERGE25' => '',
-        'MMERGE26' => '',
-        'ORG' => '',
-        'RECENTGCUR' => '',
-        'RECENTGIFT' => '',
         'SFID' => '',
-        'SIGNUP' => '',
         'SKILLLEVEL' => '',
         'advanced' => 1,
       ),
@@ -1366,6 +1353,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Admin-only notes.');
   t('Areas of Expertise');
   t('Bio');
+  t('Communication preferences');
   t('Country');
   t('Current');
   t('Distil Botscore');
@@ -1404,7 +1392,6 @@ function drupalorg_user_field_default_field_instances() {
   t('Select Drupal events you attended or are planning to attend.');
   t('Select one or more languages you speak.');
   t('Social links');
-  t('Subscribe to');
   t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Underrepresented communities');

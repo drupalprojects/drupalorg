@@ -704,6 +704,8 @@ function drupalorg_content_types_strongarm() {
     'block-google_admanager-89caa04f148acdc52719b3d001e487c4' => TRUE,
     'block-og_menu-og_single_menu_block' => TRUE,
     'block-og_menu-og_multi_menu_block' => TRUE,
+    'fieldable_panels_pane-cta' => TRUE,
+    'fieldable_panels_pane-cta_multiple' => TRUE,
   );
   $export['panelizer_node:section_allowed_types'] = $strongarm;
 
@@ -719,11 +721,11 @@ function drupalorg_content_types_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_node:section_default';
   $strongarm->value = array(
+    'custom' => 'custom',
     'token' => 0,
     'entity_form_field' => 0,
     'entity_field' => 0,
     'entity_field_extra' => 0,
-    'custom' => 0,
     'block' => 0,
     'entity_view' => 0,
     'fieldable_panels_pane' => 0,
