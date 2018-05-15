@@ -529,18 +529,13 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['administer advanced pane settings'] = array(
     'name' => 'administer advanced pane settings',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'panels',
-  );
-
-  // Exported permission: 'administer akismet'.
-  $permissions['administer akismet'] = array(
-    'name' => 'administer akismet',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'akismet',
   );
 
   // Exported permission: 'administer all documentation guides'.
@@ -1731,7 +1726,11 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['administer panels display styles'] = array(
     'name' => 'administer panels display styles',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'panels',
   );
@@ -1749,7 +1748,11 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['administer panels pane styles'] = array(
     'name' => 'administer panels pane styles',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'panels',
   );
@@ -2675,6 +2678,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['delete fieldable cta'] = array(
     'name' => 'delete fieldable cta',
     'roles' => array(
+      'confirmed' => 'confirmed',
       'content administrator' => 'content administrator',
     ),
     'module' => 'fieldable_panels_panes',
@@ -2683,7 +2687,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete fieldable cta_multiple'.
   $permissions['delete fieldable cta_multiple'] = array(
     'name' => 'delete fieldable cta_multiple',
-    'roles' => array(),
+    'roles' => array(
+      'confirmed' => 'confirmed',
+    ),
     'module' => 'fieldable_panels_panes',
   );
 
