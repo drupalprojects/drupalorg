@@ -249,6 +249,19 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['field_issue_last_status_change_value']['field'] = 'field_issue_last_status_change_value';
   $handler->display->display_options['filters']['field_issue_last_status_change_value']['operator'] = '>=';
   $handler->display->display_options['filters']['field_issue_last_status_change_value']['value']['value'] = '-1 year';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['value']['type'] = 'offset';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['operator_id'] = 'field_issue_last_status_change_value_op';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['label'] = 'Last status change (field_issue_last_status_change)';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['operator'] = 'field_issue_last_status_change_value_op';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['identifier'] = 'field_issue_last_status_change_value';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['group_info']['label'] = 'Last status change (field_issue_last_status_change)';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['group_info']['identifier'] = 'field_issue_last_status_change_value';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['group_info']['remember'] = FALSE;
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['group_info']['group_items'] = array(
+    1 => array(),
+    2 => array(),
+    3 => array(),
+  );
 
   /* Display: User recent page */
   $handler = $view->new_display('page', 'User recent page', 'user_recent_page');
@@ -573,25 +586,8 @@ function drupalorg_user_views_default_views() {
       'title' => 'Past 12 months',
       'operator' => '>=',
       'value' => array(
+        'type' => 'offset',
         'value' => '-1 year',
-        'min' => '',
-        'max' => '',
-      ),
-    ),
-    2 => array(
-      'title' => '',
-      'operator' => '=',
-      'value' => array(
-        'value' => '',
-        'min' => '',
-        'max' => '',
-      ),
-    ),
-    3 => array(
-      'title' => '',
-      'operator' => '=',
-      'value' => array(
-        'value' => '',
         'min' => '',
         'max' => '',
       ),
@@ -735,6 +731,7 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['filters']['field_issue_last_status_change_value']['field'] = 'field_issue_last_status_change_value';
   $handler->display->display_options['filters']['field_issue_last_status_change_value']['operator'] = '>=';
   $handler->display->display_options['filters']['field_issue_last_status_change_value']['value']['value'] = '-3 months';
+  $handler->display->display_options['filters']['field_issue_last_status_change_value']['value']['type'] = 'offset';
   $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['operator_id'] = 'field_issue_last_status_change_value_op';
   $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['label'] = 'Last status change (field_issue_last_status_change)';
   $handler->display->display_options['filters']['field_issue_last_status_change_value']['expose']['operator'] = 'field_issue_last_status_change_value_op';
@@ -894,13 +891,13 @@ function drupalorg_user_views_default_views() {
     t(','),
     t('Author'),
     t('All'),
+    t('Last status change (field_issue_last_status_change)'),
     t('User recent page'),
     t('[name]'),
     t('Back to [name]’s profile'),
     t('◀︎ '),
     t('%2 issues credited to %1'),
     t('User issue credit page'),
-    t('Last status change (field_issue_last_status_change)'),
     t('Date range'),
     t('Organization recent'),
     t('Attribute comment for customer (field_for_customer)'),
