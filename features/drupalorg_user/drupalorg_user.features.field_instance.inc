@@ -1054,6 +1054,42 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_shared_account_for_an_org'.
+  $field_instances['user-user-field_shared_account_for_an_org'] = array(
+    'bundle' => 'user',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Check if this account is a <a href="/terms#accounts" target="_blank" rel="noopener">shared account</a> for multiple people (eg: for an organization).',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 25,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_shared_account_for_an_org',
+    'label' => 'Is this a shared account?',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 1,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_social_links'.
   $field_instances['user-user-field_social_links'] = array(
     'bundle' => 'user',
@@ -1353,6 +1389,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Admin-only notes.');
   t('Areas of Expertise');
   t('Bio');
+  t('Check if this account is a <a href="/terms#accounts" target="_blank" rel="noopener">shared account</a> for multiple people (eg: for an organization).');
   t('Communication preferences');
   t('Country');
   t('Current');
@@ -1370,6 +1407,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Group membership');
   t('IRC');
   t('Industries Worked In');
+  t('Is this a shared account?');
   t('Job Title');
   t('Languages spoken');
   t('Last name or surname');
