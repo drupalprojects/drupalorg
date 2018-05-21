@@ -6133,6 +6133,7 @@ function drupalorg_akismet_form_info_alter(&$data) {
       }
     }
   }
+}
 
 /**
  * Get a request header and set the reponse Vary header to cache accordingly.
