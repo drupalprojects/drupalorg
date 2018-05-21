@@ -392,6 +392,12 @@ function drupalorg_menu() {
     'page arguments' => array('drupalorg_notice_settings_form'),
   );
 
+  $items['user_profile/organization-name/get-details'] = array(
+    'page callback' => 'drupalorg_get_organization_name_details',
+    'access arguments' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -2041,8 +2047,12 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
 
   // Remove hanging organization references to deleted organizations.
   foreach (element_children($form['field_organizations'][LANGUAGE_NONE]) as $delta) {
-    if (is_numeric($delta) && !empty($form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference) && !db_query('SELECT 1 FROM {node} WHERE nid = :nid', array(':nid' => $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id']))->fetchField()) {
-      $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference = array();
+    if (is_numeric($delta)) {
+      // Adds a new class to the organization element.
+      $form['field_organizations']['und'][$delta]['field_organization_name'][LANGUAGE_NONE][0]['value']['#attributes']['class'][] = 'organization-name';
+      if (!empty($form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference) && !db_query('SELECT 1 FROM {node} WHERE nid = :nid', array(':nid' => $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id']))->fetchField()) {
+        $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference = array();
+      }
     }
   }
 
@@ -6775,3 +6785,18 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     hide($form['mergevars']['LNAME']);
   }
 }
+
+/**
+ * Menu callback for getting organization name details.
+ */
+function drupalorg_get_organization_name_details() {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', $_GET['type'])
+    ->propertyCondition('title', $_GET['title']);
+  $query_result = $query->execute();
+
+  $result = array('organization_name_exist' => (!empty($query_result)) ? 1 : 0, 'valid' => true);
+  drupal_json_output($result);
+}
+

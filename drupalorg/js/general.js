@@ -560,4 +560,34 @@
       });
     }
   };
+  /**
+   * Display a warning message if an organization name does not match exactly.
+   */
+  Drupal.behaviors.orgName = {
+    attach: function (context, settings) {
+     $(".organization-name").once().focusout(function(e) {
+        var org_title_value = $( this ).val();
+        var id = $(this).attr('id');
+        var warning_id = id + '-organization-name-warning';
+        $.ajax({
+          url: Drupal.settings.basePath + 'user_profile/organization-name/get-details',
+          data: { type : 'organization', title : org_title_value, },
+          type: 'GET',
+          error: function() {
+            $('#info').html('<p>An error has occurred</p>');
+          },
+          success: function(result) {
+            if (result.organization_name_exist == 0) {
+              if (!($('#' + warning_id).length)) {
+                $('#' + id).after('<p class="organization-warning-text" id=' + warning_id + '> No organization page found. Names must match exactly.</p>');
+              }
+            }
+            else {
+              $('#' + warning_id).remove();
+            }
+          },
+        });
+      });
+    }
+  };
 })(jQuery);
