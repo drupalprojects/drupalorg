@@ -951,7 +951,6 @@ function drupalorg_user_field_default_field_instances() {
   $field_instances['user-user-field_mentors'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
-    'default_value_function' => '',
     'deleted' => 0,
     'description' => 'Give credit to community members (Drupal.org usernames) who have significantly influenced your contributions to Drupal. For example, people who mentored you in the issue queue, IRC, user groups, sprints, Core contribution mentoring hours, etc.',
     'display' => array(
@@ -968,18 +967,14 @@ function drupalorg_user_field_default_field_instances() {
     'label' => 'My mentors',
     'required' => 0,
     'settings' => array(
-      'behaviors' => array(
-        'prepopulate' => array(
-          'status' => 0,
-        ),
-      ),
       'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 1,
       'module' => 'entityreference',
       'settings' => array(
-        'match_operator' => 'STARTS_WITH',
+        'match_operator' => 'CONTAINS',
+        'max_results' => 10,
         'path' => '',
         'size' => 60,
       ),
@@ -1026,7 +1021,7 @@ function drupalorg_user_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'List companies or institutions you have worked for or are working for now.',
+    'description' => 'Organizations with an <a href="/organizations" target="_blank" rel="noopener">organization page</a> will link you to the organization, allowing sharing contribution attribution with them.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1051,42 +1046,6 @@ function drupalorg_user_field_default_field_instances() {
       'settings' => array(),
       'type' => 'field_collection_embed',
       'weight' => 34,
-    ),
-  );
-
-  // Exported field_instance: 'user-user-field_shared_account_for_an_org'.
-  $field_instances['user-user-field_shared_account_for_an_org'] = array(
-    'bundle' => 'user',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => 'Check if this account is a <a href="/terms#accounts" target="_blank" rel="noopener">shared account</a> for multiple people (eg: for an organization).',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 25,
-      ),
-    ),
-    'entity_type' => 'user',
-    'field_name' => 'field_shared_account_for_an_org',
-    'label' => 'Is this a shared account?',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 1,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 1,
     ),
   );
 
@@ -1133,34 +1092,31 @@ function drupalorg_user_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => array(
       0 => array(
-        'subscribe' => FALSE,
+        'subscribe' => 0,
         'interest_groups' => array(
-          '41ac996e3d' => array(
-            '9e8f056224' => 0,
-            '462306d1ff' => 0,
-            'eb3fcc4be5' => 0,
+          '8d99874622' => array(
+            '22e1b642b7' => 0,
+            '53d7f4209a' => 0,
+            '3374b1dd84' => 0,
+            '60985452cc' => 0,
+            'a0d7a1c02b' => 0,
+            'b3d670a22d' => 0,
+            'dc0ad3fd6d' => 0,
+            'faceb9a270' => 0,
           ),
-          '853d1901d5' => array(
-            '7cbef189d8' => 0,
-            '792fc1487f' => 0,
-            '40270f75fa' => 0,
-            'b2b586f8e6' => 0,
-          ),
-          '27985faf3e' => array(
-            'ac14893ea5' => 0,
-            'bb893e8fcf' => 0,
-          ),
-          'de188429fc' => '',
-          'ef73b36223' => array(
-            '14da73ca33' => 0,
-            '55f3a25697' => 0,
-            '503e9527cd' => 0,
-            '884c445c33' => 0,
-            '75950bc10a' => 0,
-            'd8026e0bd5' => 0,
-          ),
-          'f66bd3cafd' => array(
-            'd506874da1' => 0,
+          'f99166c398' => array(
+            '8e538016f8' => 0,
+            '8f497df2ac' => 0,
+            '12e0adb9c2' => 0,
+            '6471b579b9' => 0,
+            '7178f4ed23' => 0,
+            '8052a9eec6' => 0,
+            'b5eae4f409' => 0,
+            'c0d1826013' => 0,
+            'c2c6d438b4' => 0,
+            'da2686313a' => 0,
+            'f0dc5eecf2' => 0,
+            'f235b3d5e5' => 0,
           ),
         ),
         'is_default' => TRUE,
@@ -1178,25 +1134,37 @@ function drupalorg_user_field_default_field_instances() {
     ),
     'entity_type' => 'user',
     'field_name' => 'field_subscribe_to',
-    'label' => 'Communication preferences',
+    'label' => 'Subscribe to',
     'required' => 0,
     'settings' => array(
       'hide_subscribe_checkbox' => 1,
       'interest_groups_title' => 'Interest Groups',
       'mergefields' => array(
-        'ACCTCREATE' => '[user:created:custom:Y-m-d]',
+        'ACCTCREATE' => '',
+        'BUSINESS' => '',
         'CIVI_ID' => '',
-        'COMPANY' => '[user:drupalorg-current-organization-name]',
-        'COUNTRY' => '[user:field-country]',
+        'COMPANY' => '',
+        'COUNTRY' => '',
+        'DCEVENT' => '',
         'DRUPNAME' => '[user:name]',
         'EMAIL' => '[user:mail]',
-        'FNAME' => '[user:drupalorg-first-or-user-name]',
+        'FNAME' => '[user:name]',
         'FULLNAME' => '',
         'JOBTITLE' => '',
         'LNAME' => '[user:field-last-name]',
+        'MEMENDIND' => '',
+        'MEMENDORG' => '',
+        'MEMSINCEIN' => '',
+        'MEMSINCEOR' => '',
+        'MMERGE16' => '',
+        'MMERGE18' => '',
+        'MMERGE19' => '',
+        'ORG' => '',
+        'RECENTGIFT' => '',
         'SFID' => '',
+        'SIGNUP' => '',
         'SKILLLEVEL' => '',
-        'advanced' => 1,
+        'advanced' => 0,
       ),
       'options' => array(
         'interest_groups' => array(),
@@ -1389,8 +1357,6 @@ function drupalorg_user_field_default_field_instances() {
   t('Admin-only notes.');
   t('Areas of Expertise');
   t('Bio');
-  t('Check if this account is a <a href="/terms#accounts" target="_blank" rel="noopener">shared account</a> for multiple people (eg: for an organization).');
-  t('Communication preferences');
   t('Country');
   t('Current');
   t('Distil Botscore');
@@ -1407,12 +1373,10 @@ function drupalorg_user_field_default_field_instances() {
   t('Group membership');
   t('IRC');
   t('Industries Worked In');
-  t('Is this a shared account?');
   t('Job Title');
   t('Languages spoken');
   t('Last name or surname');
   t('Link to your profile pages on Twitter, LinkedIn, Facebook, Google, Drupal Answers, GitHub, Gratipay, and any others you would like to include.');
-  t('List companies or institutions you have worked for or are working for now.');
   t('Location');
   t('My contributions');
   t('My mentors');
@@ -1420,6 +1384,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Organization');
   t('Organization reference');
   t('Organizations');
+  t('Organizations with an <a href="/organizations" target="_blank" rel="noopener">organization page</a> will link you to the organization, allowing sharing contribution attribution with them.');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
   t('Provide an overview of your Drupal contributions.');
@@ -1430,6 +1395,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Select Drupal events you attended or are planning to attend.');
   t('Select one or more languages you speak.');
   t('Social links');
+  t('Subscribe to');
   t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Underrepresented communities');
