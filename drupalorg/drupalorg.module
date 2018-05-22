@@ -6121,6 +6121,21 @@ function drupalorg_akismet_form_info($form_id) {
 }
 
 /**
+ * Implements hook_akismet_form_info_alter().
+ */
+function drupalorg_akismet_form_info_alter(&$data) {
+  foreach (project_issue_issue_node_types() as $type) {
+    if ($data['form_id'] === $type . '_node_form') {
+      // Edit any issue is handed out liberally, do not consider it an Akismet
+      // bypass.
+      if ($key = array_search('edit any ' . $type . ' content', $data['bypass access'])) {
+        unset($data['bypass access'][$key]);
+      }
+    }
+  }
+}
+
+/**
  * Get a request header and set the reponse Vary header to cache accordingly.
  *
  * @param $header_name
