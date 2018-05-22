@@ -13,6 +13,7 @@ function drupalorg_redesign_2018_metatag_export_default() {
   // Exported Metatag config instance: node:logo.
   $config['node:logo'] = array(
     'instance' => 'node:logo',
+    'disabled' => FALSE,
     'config' => array(
       'robots' => array(
         'value' => array(
