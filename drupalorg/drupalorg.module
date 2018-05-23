@@ -543,9 +543,11 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
     case 'view':
       switch ($entity_type) {
         case 'user':
-          switch ($field['field_name']) {
+          if ($field['type'] === 'mailchimp_lists_subscription') {
             // We should not see Mailchimp subscription information.
-            case 'field_subscribe_to':
+            return FALSE;
+          }
+          switch ($field['field_name']) {
             // Only show notes on edit.
             case 'field_notes':
             // Only show demographic info to logged in user
