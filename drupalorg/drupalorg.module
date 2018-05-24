@@ -392,7 +392,47 @@ function drupalorg_menu() {
     'page arguments' => array('drupalorg_notice_settings_form'),
   );
 
+  $items['drupal-service-providers/%/%/%'] = array(
+    'page callback' => 'drupalorg_get_drupal_service_providers',
+    'page arguments' => array(1, 2, 3),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
+}
+
+/**
+ * Menu callback to get drupal service providers.
+ */
+function drupalorg_get_drupal_service_providers($service = NULL, $sector = NULL, $location = NULL) {
+  $query = [];
+
+  if (($service !== 'all')) {
+    $terms = taxonomy_get_term_by_name($service, 'vocabulary_48');
+    $service_tid = key($terms);
+    if (!empty($service_tid)) {
+      $query['services'] = array($service_tid);
+    }
+  }
+
+  if (($sector !== 'all')) {
+    $terms = taxonomy_get_term_by_name($sector, 'vocabulary_50');
+    $sector_tid = key($terms);
+    if (!empty($sector_tid)) {
+      $query['sectors'] = array($sector_tid);
+    }
+  }
+
+  if (($location !== 'all')) {
+    $terms = taxonomy_get_term_by_name($location, 'vocabulary_52');
+    $location_tid = key($terms);
+    if (!empty($location_tid)) {
+      $query['offices'] = array($location_tid);
+    }
+  }
+
+  drupal_goto('drupal-services', array('query' => $query));
 }
 
 /**
