@@ -6670,6 +6670,18 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
       break;
   }
 
+  // Update MailChimp merge vars, if they have changed.
+  $field = field_info_field('field_subscribe_membership');
+  if (mailchimp_is_subscribed($field['settings']['mc_list_id'], $account->mail)) {
+    $member_info = mailchimp_get_memberinfo($field['settings']['mc_list_id'], $account->mail);
+    $instance = field_info_instance('user', $field['field_name'], 'user');
+    $mergefields = $instance['settings']['mergefields'];
+    $merge_vars = _mailchimp_lists_mergevars_populate($mergefields, $account, 'user', $field['settings']['mc_list_id']);
+    if (array_diff_assoc($merge_vars, (array) $member_info->merge_fields, array_intersect_key($merge_vars, ['EMAIL' => NULL, 'advanced' => NULL]))) {
+      mailchimp_update_member($field['settings']['mc_list_id'], $account->mail, $merge_vars);
+    }
+  }
+
   return $row;
 }
 
