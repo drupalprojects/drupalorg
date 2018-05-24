@@ -394,7 +394,7 @@ function drupalorg_menu() {
 
   $items['user_profile/organization-name/get-details'] = array(
     'page callback' => 'drupalorg_get_organization_name_details',
-    'access arguments' => TRUE,
+    'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
 
