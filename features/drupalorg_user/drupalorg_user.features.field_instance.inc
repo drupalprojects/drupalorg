@@ -1128,6 +1128,61 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_subscribe_membership'.
+  $field_instances['user-user-field_subscribe_membership'] = array(
+    'bundle' => 'user',
+    'default_value' => array(
+      0 => NULL,
+    ),
+    'deleted' => 0,
+    'description' => 'Subscribe to get emails relevant to members.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 23,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_subscribe_membership',
+    'label' => 'Member communications',
+    'required' => 0,
+    'settings' => array(
+      'hide_subscribe_checkbox' => 0,
+      'interest_groups_title' => 'Interest Groups',
+      'mergefields' => array(
+        'COMPANY' => '[user:drupalorg-current-organization-name]',
+        'COUNTRY' => '[user:field-country]',
+        'DRUPNAME' => '[user:name]',
+        'EMAIL' => '[user:mail]',
+        'FNAME' => '[user:drupalorg-first-or-user-name]',
+        'LNAME' => '[user:field-last-name]',
+        'MEMENDIND' => '[user:field-da-expiration-date:custom:Y-m-d]',
+        'MEMENDORG' => '[user:drupalorg-org-member-expiration-date:custom:Y-m-d]',
+        'MEMSINCEIN' => '[user:field-da-join-date:custom:Y-m-d]',
+        'MEMSINCEOR' => '[user:drupalorg-org-member-join-date:custom:Y-m-d]',
+        'RECENTGCUR' => '[user:drupalorg-last-gift-currency]',
+        'RECENTGIFT' => '[user:drupalorg-last-gift-amount]',
+        'advanced' => 1,
+      ),
+      'options' => array(
+        'interest_groups' => array(),
+        'subscribe' => FALSE,
+      ),
+      'show_interest_groups' => 0,
+      'unsubscribe_on_delete' => 1,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'mailchimp_lists',
+      'settings' => array(),
+      'type' => 'mailchimp_lists_select',
+      'weight' => 6,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_subscribe_to'.
   $field_instances['user-user-field_subscribe_to'] = array(
     'bundle' => 'user',
@@ -1414,6 +1469,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Link to your profile pages on Twitter, LinkedIn, Facebook, Google, Drupal Answers, GitHub, Gratipay, and any others you would like to include.');
   t('List companies or institutions you have worked for or are working for now.');
   t('Location');
+  t('Member communications');
   t('My contributions');
   t('My mentors');
   t('Notes');
@@ -1430,6 +1486,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Select Drupal events you attended or are planning to attend.');
   t('Select one or more languages you speak.');
   t('Social links');
+  t('Subscribe to get emails relevant to members.');
   t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Underrepresented communities');

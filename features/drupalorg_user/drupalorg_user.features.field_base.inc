@@ -1218,6 +1218,25 @@ function drupalorg_user_field_default_field_bases() {
     'type' => 'url',
   );
 
+  // Exported field_base: 'field_subscribe_membership'.
+  $field_bases['field_subscribe_membership'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_subscribe_membership',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'mailchimp_lists',
+    'settings' => array(
+      'double_opt_in' => 0,
+      'mc_list_id' => 'a1d014e8d3',
+      'unsubscribe_action' => 'unsubscribe',
+    ),
+    'translatable' => 0,
+    'type' => 'mailchimp_lists_subscription',
+  );
+
   // Exported field_base: 'field_subscribe_to'.
   $field_bases['field_subscribe_to'] = array(
     'active' => 1,
