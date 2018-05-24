@@ -636,15 +636,17 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
               return isset($entity->uid) && $entity->uid === $account->uid;
 
             case 'field_subscribe_membership':
-              $wrapper = entity_metadata_wrapper('user', $entity);
-              // Has individual membership.
-              if ($wrapper->field_da_ind_membership->value()) {
-                return TRUE;
-              }
-              // Has organization membership.
-              foreach (_drupalorg_get_chargify_subscriptions($entity) as $subscription) {
-                if ($subscription->state === 'active' && strpos($subscription->product_handle, 'organization') === 0) {
+              if (isset($entity)) {
+                $wrapper = entity_metadata_wrapper('user', $entity);
+                // Has individual membership.
+                if ($wrapper->field_da_ind_membership->value()) {
                   return TRUE;
+                }
+                // Has organization membership.
+                foreach (_drupalorg_get_chargify_subscriptions($entity) as $subscription) {
+                  if ($subscription->state === 'active' && strpos($subscription->product_handle, 'organization') === 0) {
+                    return TRUE;
+                  }
                 }
               }
               // Hide otherwise.
