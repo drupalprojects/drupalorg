@@ -78,6 +78,7 @@ function drupalorg_drupal8_panes_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_node:page_allowed_types';
   $strongarm->value = array(
+    'cookie_consent_reset-cookie_consent_reset' => TRUE,
     'custom-custom' => TRUE,
     'custom-d8_landing_page_ad_1' => TRUE,
     'custom-d8_landing_page_ad_2' => TRUE,

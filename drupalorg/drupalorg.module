@@ -549,9 +549,11 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
     case 'view':
       switch ($entity_type) {
         case 'user':
-          switch ($field['field_name']) {
+          if ($field['type'] === 'mailchimp_lists_subscription') {
             // We should not see Mailchimp subscription information.
-            case 'field_subscribe_to':
+            return FALSE;
+          }
+          switch ($field['field_name']) {
             // Only show notes on edit.
             case 'field_notes':
             // Only show demographic info to logged in user
@@ -638,6 +640,23 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
             case 'field_demographics':
               // Only you can see your selections.
               return isset($entity->uid) && $entity->uid === $account->uid;
+
+            case 'field_subscribe_membership':
+              if (isset($entity)) {
+                $wrapper = entity_metadata_wrapper('user', $entity);
+                // Has individual membership.
+                if ($wrapper->field_da_ind_membership->value()) {
+                  return TRUE;
+                }
+                // Has organization membership.
+                foreach (_drupalorg_get_chargify_subscriptions($entity) as $subscription) {
+                  if ($subscription->state === 'active' && strpos($subscription->product_handle, 'organization') === 0) {
+                    return TRUE;
+                  }
+                }
+              }
+              // Hide otherwise.
+              return FALSE;
           }
       }
   }
@@ -3923,7 +3942,7 @@ function _drupalorg_spam_message() {
  * Implements hook_views_query_substitutions().
  */
 function drupalorg_views_query_substitutions($view) {
-  if (get_class($view) === 'view' && $view->name === 'issue_credit' && $view->current_display === 'organization_recent_page') {
+  if (get_class($view) === 'view' && $view->name === 'issue_credit' && in_array($view->current_display, array('organization_recent_page','organization_issue_credit_page'))) {
     // Provide organization argument.
     return array('***CURRENT_ORGANIZATION***' => $view->args[0]);
   }
@@ -3934,7 +3953,7 @@ function drupalorg_views_query_substitutions($view) {
  */
 function drupalorg_views_pre_render(&$view) {
   if ($view->name === 'issue_credit') {
-    if ($view->current_display === 'organization_recent_page') {
+    if (in_array($view->current_display, array('organization_recent_page', 'organization_issue_credit_page'))) {
       // Substitute in organization argument title.
       $organization = node_load($view->args[0]);
       if (!empty($organization) && $organization->type === 'organization' && $organization->status == NODE_PUBLISHED) {
@@ -6131,6 +6150,21 @@ function drupalorg_akismet_form_info($form_id) {
 }
 
 /**
+ * Implements hook_akismet_form_info_alter().
+ */
+function drupalorg_akismet_form_info_alter(&$data) {
+  foreach (project_issue_issue_node_types() as $type) {
+    if ($data['form_id'] === $type . '_node_form') {
+      // Edit any issue is handed out liberally, do not consider it an Akismet
+      // bypass.
+      if ($key = array_search('edit any ' . $type . ' content', $data['bypass access'])) {
+        unset($data['bypass access'][$key]);
+      }
+    }
+  }
+}
+
+/**
  * Get a request header and set the reponse Vary header to cache accordingly.
  *
  * @param $header_name
@@ -6646,6 +6680,18 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
       break;
   }
 
+  // Update MailChimp merge vars, if they have changed.
+  $field = field_info_field('field_subscribe_membership');
+  if (mailchimp_is_subscribed($field['settings']['mc_list_id'], $account->mail)) {
+    $member_info = mailchimp_get_memberinfo($field['settings']['mc_list_id'], $account->mail);
+    $instance = field_info_instance('user', $field['field_name'], 'user');
+    $mergefields = $instance['settings']['mergefields'];
+    $merge_vars = _mailchimp_lists_mergevars_populate($mergefields, $account, 'user', $field['settings']['mc_list_id']);
+    if (array_diff_assoc($merge_vars, (array) $member_info->merge_fields, array_intersect_key($merge_vars, ['EMAIL' => NULL, 'advanced' => NULL]))) {
+      mailchimp_update_member($field['settings']['mc_list_id'], $account->mail, $merge_vars);
+    }
+  }
+
   return $row;
 }
 
@@ -6799,4 +6845,3 @@ function drupalorg_get_organization_name_details() {
   $result = array('organization_name_exist' => (!empty($query_result)) ? 1 : 0, 'valid' => true);
   drupal_json_output($result);
 }
-
