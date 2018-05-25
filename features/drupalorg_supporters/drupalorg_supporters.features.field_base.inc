@@ -28,6 +28,8 @@ function drupalorg_supporters_field_default_field_bases() {
       'allowed_values' => array(
         'supporting_signature' => 'Signature Supporting Partner',
         'supporting_premium' => 'Premium Supporting Partner',
+        'supporting_customer_charter' => 'Charter Customer Supporting Partner',
+        'supporting_customer' => 'Customer Supporting Partner',
         'supporting' => 'Supporting Partner',
         'technology_signature' => 'Signature Technology Supporter',
         'technology_premium' => 'Premium Technology Supporter',

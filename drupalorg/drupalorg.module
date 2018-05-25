@@ -3284,6 +3284,36 @@ function drupalorg_node_view($node, $view_mode = 'full') {
           ))
         );
       }
+      // Customer Supporter
+      if (isset($organization_support['supporting_customer_charter'])) {
+        $content['intro']['association_partner'] = array(
+          '#markup' => l(
+            theme('image', array(
+              'path' => drupal_get_path('module', 'drupalorg') . '/images/Charter-Customer-SPP-Badge.png',
+              'alt' => t('Drupal Association Charter Customer Supporting Partner badge'),
+            )), 'https://www.drupal.org/association/programs/', array(
+            'html' => TRUE,
+            'attributes' => array(
+              'title' => t('Drupal Association Charter Customer Supporting Partner'),
+            ),
+          ))
+        );
+      }
+      elseif (isset($organization_support['supporting_customer'])) {
+        $content['intro']['association_partner'] = array(
+          '#markup' => l(
+            theme('image', array(
+              'path' => drupal_get_path('module', 'drupalorg') . '/images/Customer-SPP-Badge.png',
+              'alt' => t('Drupal Association Customer Supporting Partner badge'),
+            )), 'https://www.drupal.org/association/programs/', array(
+            'html' => TRUE,
+            'attributes' => array(
+              'title' => t('Drupal Association Customer Supporting Partner'),
+            ),
+          ))
+        );
+      }
+
       // Technology Supporter
       if (isset($organization_support['technology'])) {
         $content['intro']['association_technology_supporter'] = array(
