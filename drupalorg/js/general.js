@@ -566,29 +566,25 @@
    */
   Drupal.behaviors.orgName = {
     attach: function (context, settings) {
-     $(".organization-name").once().focusout(function(e) {
-        var org_title_value = $( this ).val();
-        var id = $(this).attr('id');
-        var warning_id = id + '-organization-name-warning';
-        $.ajax({
-          url: Drupal.settings.basePath + 'user_profile/organization-name/get-details',
-          data: { type : 'organization', title : org_title_value, },
-          type: 'GET',
-          error: function() {
-            $('#info').html('<p>An error has occurred</p>');
-          },
-          success: function(result) {
-            if (result.organization_name_exist == 0) {
-              if (!($('#' + warning_id).length)) {
-                $('#' + id).after('<p class="organization-warning-text" id=' + warning_id + '> No organization page found. Names must match exactly.</p>');
+      var orgs;
+
+      if ((orgs = document.getElementById('edit-field-organizations')) && !orgs.classList.contains('processed')) {
+        orgs.classList.add('processed');
+        orgs.addEventListener('focusout', function (e) {
+          if (e.target.attributes['name'] !== undefined && /\[field_organization_name]/.test(e.target.attributes['name'].value)) {
+            $.ajax({
+              url: Drupal.settings.basePath + 'api-d7/node.json',
+              data: {
+                type: 'organization',
+                title: e.target.value
+              },
+              success: function (result) {
+                e.target.parentNode.parentNode.parentNode.parentNode.getElementsByClassName('warning')[0].classList.toggle('element-hidden', result.list.length !== 0);
               }
-            }
-            else {
-              $('#' + warning_id).remove();
-            }
-          },
+            });
+          }
         });
-      });
+      }
     }
   };
 })(jQuery);
