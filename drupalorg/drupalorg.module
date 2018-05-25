@@ -2058,10 +2058,15 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
   unset($form['picture']['#title']);
   $form['picture']['#collapsible'] = FALSE;
 
-  // Remove hanging organization references to deleted organizations.
   foreach (element_children($form['field_organizations'][LANGUAGE_NONE]) as $delta) {
-    if (is_numeric($delta) && !empty($form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference) && !db_query('SELECT 1 FROM {node} WHERE nid = :nid', array(':nid' => $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id']))->fetchField()) {
-      $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference = array();
+    if (is_numeric($delta)) {
+      $found = !empty($form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference) && db_query('SELECT 1 FROM {node} WHERE nid = :nid', array(':nid' => $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id']))->fetchField();
+      // Remove hanging organization references to deleted organizations.
+      if (!$found) {
+        $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference = array();
+      }
+      // Add note for unmatched organization names.
+      $form['field_organizations'][LANGUAGE_NONE][$delta]['field_current']['#suffix'] = '<span class="warning' . ($found || empty($form['field_organizations'][LANGUAGE_NONE][$delta]['field_organization_name'][LANGUAGE_NONE][0]['value']['#default_value']) ? ' element-hidden' : '') . '">' . t('No organization page found. Names are matched exactly.') . '</span>';
     }
   }
 
