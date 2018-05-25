@@ -70,7 +70,7 @@
   };
 
   /**
-   * Code to run after the documnent is ready.
+   * Code to run after the document is ready.
    */
   $(document).ready(function () {
     var $body = $('body');
