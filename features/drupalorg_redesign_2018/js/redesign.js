@@ -127,20 +127,22 @@
         var bgColor = "#0464A5";
         var brightBlue = "#0678BE";
 
-        $personas.mouseenter(function (e) {
-          var $start = $(this).find('.start');
-          var $end = $(this).find('.end');
-          var $ico = $(this).find('.field-name-field-cta-graphic').find('img');
+        $personas.find('.field-name-field-cta-link a').live('mouseover focusin click', function(e){
+          var $el = $(this).closest('.d-persona');
+          var $start = $el.find('.start');
+          var $end = $el.find('.end');
+          var $ico = $el.find('.field-name-field-cta-graphic').find('img');
           start = $start;
           end = $end;
           bgColor = $start.css('fill');
           TweenMax.to($start, 1, { morphSVG:$end, fill:brightBlue, ease: Elastic.easeOut.config(1.2, 0.5)});
           TweenMax.to($ico, 1, { rotation: 19, scale: 0.7, ease: Elastic.easeOut.config(1.2, 0.5)});
         });
-        $personas.mouseleave(function (e) {
-          var $start = $(this).find('.start');
-          var $end = $(this).find('.end');
-          var $ico = $(this).find('.field-name-field-cta-graphic').find("img");
+        $personas.find('.field-name-field-cta-link a').live('mouseout focusout', function(e){
+          var $el = $(this).closest('.d-persona');
+          var $start = $el.find('.start');
+          var $end = $el.find('.end');
+          var $ico = $el.find('.field-name-field-cta-graphic').find("img");
           if (start) {
             TweenMax.to($start, 1, { morphSVG:start, fill:bgColor, ease: Elastic.easeOut.config(1.2, 0.5)});
             TweenMax.to($ico, 1, { rotation: 0, scale: 1, ease: Elastic.easeOut.config(1.2, 0.5)});
@@ -154,19 +156,21 @@
         var end = null;
         var start = null;
 
-        $randomShapes.mouseenter(function (e) {
-          var $start = $(this).find('.start');
-          var $end = $(this).find('.end');
-          var $ico = $(this).find('.field-name-field-cta-graphic').find('img');
+        $randomShapes.find('.field-name-field-title a').live('mouseover focusin click', function(e){
+          var $el = $(this).closest('..field-collection-item-field-infographics');
+          var $start = $el.find('.start');
+          var $end = $el.find('.end');
+          var $ico = $el.find('.field-name-field-cta-graphic').find('img');
           start = $start;
           end = $end;
           TweenMax.to($start, 1, { morphSVG:$end, ease: Elastic.easeOut.config(1.2, 0.5)});
           TweenMax.to($ico, 1, { scale: 1.1, ease: Elastic.easeOut.config(1.2, 0.5)});
         });
-        $randomShapes.mouseleave(function (e) {
-          var $ico = $(this).find('.field-name-field-cta-graphic').find('img');
-          var $start = $(this).find('.start');
-          var $end = $(this).find('.end');
+        $randomShapes.find('.field-name-field-title a').live('mouseout focusout', function(e){
+          var $el = $(this).closest('..field-collection-item-field-infographics');
+          var $ico = $el.find('.field-name-field-cta-graphic').find('img');
+          var $start = $el.find('.start');
+          var $end = $el.find('.end');
           if (start) {
             TweenMax.to($start, 1, { morphSVG:start, ease: Elastic.easeOut.config(1.2, 0.5)});
             TweenMax.to($ico, 1, { scale: 1, ease: Elastic.easeOut.config(1.2, 0.5)});
