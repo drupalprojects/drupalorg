@@ -15,6 +15,31 @@
   Drupal.behaviors.redesign = {
     attach: function (context) {
 
+      if (localStorage.getItem('dorganimations')) {
+        $('.d-animations-checkbox').attr('checked','checked');
+        $('body').addClass('dorg-noanim');
+      }
+
+      var els = $('#canvas'), saved = els.clone (true);
+
+      $('.d-animations-checkbox').click( function(){
+        if( $(this).is(':checked') ) {
+          localStorage.setItem('dorganimations', '0');
+          $('body').addClass('dorg-noanim');
+          // Remove hero animation.
+            $('#animation_container #canvas').fadeOut(500, function() {
+              $(this).remove();
+            });
+        } else {
+          localStorage.removeItem('dorganimations');
+          $('body').removeClass('dorg-noanim');
+          if ($('#animation_container #canvas').length === 0) {
+            saved.appendTo($('#animation_container')).fadeIn();
+          }
+          initHero();
+        }
+      });
+
       if (window.matchMedia('(prefers-reduced-motion)').matches === false) {
         // Check if prefers-reduced-motion is enabled. If it's not, add animations.
 
@@ -115,7 +140,9 @@
           }
 
           // Initialize canvas.
-          initHero();
+          if (!localStorage.getItem('dorganimations')) {
+            initHero();
+          }
 
         }
 
@@ -130,7 +157,7 @@
           var bgColor = "#0464A5";
           var brightBlue = "#0678BE";
 
-          $personas.find('.field-name-field-cta-link a').live('mouseover focusin click', function(e){
+          $('body:not(.dorg-noanim)' + $personas).find('.field-name-field-cta-link a').live('mouseover focusin click', function(e){
             var $el = $(this).closest('.d-persona');
             var $start = $el.find('.start');
             var $end = $el.find('.end');
@@ -141,7 +168,7 @@
             TweenMax.to($start, 1, { morphSVG:$end, fill:brightBlue, ease: Elastic.easeOut.config(1.2, 0.5)});
             TweenMax.to($ico, 1, { rotation: 19, scale: 0.7, ease: Elastic.easeOut.config(1.2, 0.5)});
           });
-          $personas.find('.field-name-field-cta-link a').live('mouseout focusout', function(e){
+          $('body:not(.dorg-noanim)' + $personas).find('.field-name-field-cta-link a').live('mouseout focusout', function(e){
             var $el = $(this).closest('.d-persona');
             var $start = $el.find('.start');
             var $end = $el.find('.end');
@@ -159,7 +186,7 @@
           var end = null;
           var start = null;
 
-          $randomShapes.find('.field-name-field-title a').live('mouseover focusin click', function(e){
+          $('body:not(.dorg-noanim)' + $randomShapes).find('.field-name-field-title a').live('mouseover focusin click', function(e){
             var $el = $(this).closest('..field-collection-item-field-infographics');
             var $start = $el.find('.start');
             var $end = $el.find('.end');
@@ -169,7 +196,7 @@
             TweenMax.to($start, 1, { morphSVG:$end, ease: Elastic.easeOut.config(1.2, 0.5)});
             TweenMax.to($ico, 1, { scale: 1.1, ease: Elastic.easeOut.config(1.2, 0.5)});
           });
-          $randomShapes.find('.field-name-field-title a').live('mouseout focusout', function(e){
+          $('body:not(.dorg-noanim)' + $randomShapes).find('.field-name-field-title a').live('mouseout focusout', function(e){
             var $el = $(this).closest('..field-collection-item-field-infographics');
             var $ico = $el.find('.field-name-field-cta-graphic').find('img');
             var $start = $el.find('.start');
