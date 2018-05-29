@@ -923,3 +923,36 @@ function drupalorg_membership_return() {
     return '';
   }
 }
+
+/**
+ * Menu callback to redirect legacy Drupal service provider listings.
+ */
+function drupalorg_redirect_legacy_services($service = NULL, $sector = NULL, $location = NULL) {
+  $query = [];
+
+  if ($service !== 'all') {
+    $terms = taxonomy_get_term_by_name($service, 'vocabulary_48');
+    $service_tid = key($terms);
+    if (!empty($service_tid)) {
+      $query['services'] = [$service_tid];
+    }
+  }
+
+  if ($sector !== 'all') {
+    $terms = taxonomy_get_term_by_name($sector, 'vocabulary_50');
+    $sector_tid = key($terms);
+    if (!empty($sector_tid)) {
+      $query['sectors'] = [$sector_tid];
+    }
+  }
+
+  if ($location !== 'all') {
+    $terms = taxonomy_get_term_by_name($location, 'vocabulary_52');
+    $location_tid = key($terms);
+    if (!empty($location_tid)) {
+      $query['offices'] = [$location_tid];
+    }
+  }
+
+  drupal_goto('drupal-services', ['query' => $query]);
+}
