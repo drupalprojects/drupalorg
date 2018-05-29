@@ -3300,6 +3300,37 @@ function drupalorg_node_view($node, $view_mode = 'full') {
           ))
         );
       }
+
+      // Supporting Customer
+      if (isset($organization_support['supporting_customer_charter'])) {
+        $content['intro']['association_partner'] = array(
+          '#markup' => l(
+            theme('image', array(
+              'path' => drupal_get_path('module', 'drupalorg') . '/images/association_supporting_customer_charter_badge.svg',
+              'alt' => t('Drupal Association Charter Customer Supporting Partner badge'),
+            )), 'https://www.drupal.org/association/programs/', array(
+            'html' => TRUE,
+            'attributes' => array(
+              'title' => t('Drupal Association Charter Customer Supporting Partner'),
+            ),
+          ))
+        );
+      }
+      elseif (isset($organization_support['supporting_customer'])) {
+        $content['intro']['association_partner'] = array(
+          '#markup' => l(
+            theme('image', array(
+              'path' => drupal_get_path('module', 'drupalorg') . '/images/association_supporting_customer_badge.svg',
+              'alt' => t('Drupal Association Customer Supporting Partner badge'),
+            )), 'https://www.drupal.org/association/programs/', array(
+            'html' => TRUE,
+            'attributes' => array(
+              'title' => t('Drupal Association Customer Supporting Partner'),
+            ),
+          ))
+        );
+      }
+
       // Technology Supporter
       if (isset($organization_support['technology'])) {
         $content['intro']['association_technology_supporter'] = array(
@@ -4132,6 +4163,17 @@ function drupalorg_user_view($account, $view_mode) {
           if (isset($organization_support['hosting_signature'])) {
             $account->content['drupalorg_membership'][] = array(
               '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/programs/hosting-supporter"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_hosting_signature_badge.svg') . '" alt="' . t('Drupal Association Signature Hosting Supporter') . '" /></a></div></div>',
+            );
+          }
+          // Supporting Customer
+          if (isset($organization_support['supporting_customer'])) {
+            $account->content['drupalorg_membership'][] = array(
+              '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/programs/"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_supporting_customer_badge.svg') . '" alt="' . t('Drupal Association Customer Supporting Partner') . '" /></a></div></div>',
+            );
+          }
+          elseif (isset($organization_support['supporting_customer_charter'])) {
+            $account->content['drupalorg_membership'][] = array(
+              '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/programs/"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_supporting_customer_charter_badge.svg') . '" alt="' . t('Drupal Association Charter Customer Supporting Partner') . '" /></a></div></div>',
             );
           }
         }
