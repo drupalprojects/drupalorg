@@ -4148,6 +4148,22 @@ function drupalorg_user_view($account, $view_mode) {
               '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/programs/hosting-supporter"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_hosting_signature_badge.svg') . '" alt="' . t('Drupal Association Signature Hosting Supporter') . '" /></a></div></div>',
             );
           }
+  // Customer supporting partner
+          if (isset($organization_support['supporting_customer'])) {
+            $account->content['drupalorg_membership'][] = array(
+              '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/programs/"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/Customer-SPP-Badge.png') . '" alt="' . t('Drupal Association Customer Supporting Partner') . '" /></a></div></div>',
+            );
+          }
+          elseif (isset($organization_support['supporting_customer_charter'])) {
+            $account->content['drupalorg_membership'][] = array(
+              '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/programs/"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/Charter-Customer-SPP-Badge.png') . '" alt="' . t('Drupal Association Charter Customer Supporting Partner') . '" /></a></div></div>',
+            );
+          }
+          else {
+            // Move non-current organizations.
+            $companies_worked_for[$title] = $account->content['field_organizations'][$n]['entity']['field_collection_item'][$collection_id]['field_organization_name'][0]['#markup'];
+            hide($account->content['field_organizations'][$n]);
+          }
         }
       }
       else {
