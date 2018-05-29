@@ -6739,6 +6739,26 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
             $value['author']['name'] = $names[$value['author']['id']];
           }
         }
+        // Add sponsored projects to organization node API.
+        if ($_GET['type'] === 'organization') {
+          foreach ($response['list'] as &$value) {
+            $projects = [];
+
+            $view = views_get_view('drupalorg_organization_supported_projects');
+            $view->preview(NULL, array($value['nid']));
+
+            foreach ($view->result as $item) {
+              $items['id'] = $item->nid;
+              $items['title'] = $item->node_title;
+              $items['uri'] = url('/api-d7/node/' . $item->nid, array('absolute' => true));
+
+              $projects[] = $items;
+            }
+            if (!empty($projects)) {
+              $value['sponsored_projects'] = $projects;
+            }
+          }
+        }
         break;
 
       case 'viewResource':
@@ -6750,6 +6770,25 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
         if (!empty($response['field_project']['id'])) {
           // Add project’s machine name.
           $response['field_project']['machine_name'] = node_load($response['field_project']['id'])->field_project_machine_name[LANGUAGE_NONE][0]['value'];
+        }
+        // Add sponsored projects to organization node API.
+        if ($response['type'] === 'organization') {
+          $projects = [];
+
+          $view = views_get_view('drupalorg_organization_supported_projects');
+          $view->preview(NULL, array($response['nid']));
+
+          foreach ($view->result as $item) {
+            $items['id'] = $item->nid;
+            $items['title'] = $item->node_title;
+            $items['uri'] = url('/api-d7/node/' . $item->nid, array('absolute' => true));
+
+            $projects[] = $items;
+          }
+
+          if (!empty($projects)) {
+            $response['sponsored_projects'] = $projects;
+          }
         }
     }
   }
