@@ -357,6 +357,15 @@ function drupalorg_menu() {
     'page arguments' => ['dashboard', [], '301'],
     'type' => MENU_CALLBACK,
   ];
+  // Redirect legacy Drupal Services pages.
+  $items['drupal-services/%'] = [
+    'access callback' => TRUE,
+    'page callback' => 'drupalorg_redirect_legacy_services',
+    'page arguments' => [1],
+    'type' => MENU_CALLBACK,
+    'file' => 'drupalorg.pages.inc',
+  ];
+
   // Shortcut to get to issue pages.
   $items['i/%'] = [
     'page callback' => 'drupalorg_issue_redirect_page',
