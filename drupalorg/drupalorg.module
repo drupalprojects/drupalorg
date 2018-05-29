@@ -357,6 +357,15 @@ function drupalorg_menu() {
     'page arguments' => ['dashboard', [], '301'],
     'type' => MENU_CALLBACK,
   ];
+  // Redirect legacy Drupal Services pages.
+  $items['drupal-services/%'] = [
+    'access callback' => TRUE,
+    'page callback' => 'drupalorg_redirect_legacy_services',
+    'page arguments' => [1],
+    'type' => MENU_CALLBACK,
+    'file' => 'drupalorg.pages.inc',
+  ];
+
   // Shortcut to get to issue pages.
   $items['i/%'] = [
     'page callback' => 'drupalorg_issue_redirect_page',
@@ -636,15 +645,17 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
               return isset($entity->uid) && $entity->uid === $account->uid;
 
             case 'field_subscribe_membership':
-              $wrapper = entity_metadata_wrapper('user', $entity);
-              // Has individual membership.
-              if ($wrapper->field_da_ind_membership->value()) {
-                return TRUE;
-              }
-              // Has organization membership.
-              foreach (_drupalorg_get_chargify_subscriptions($entity) as $subscription) {
-                if ($subscription->state === 'active' && strpos($subscription->product_handle, 'organization') === 0) {
+              if (isset($entity)) {
+                $wrapper = entity_metadata_wrapper('user', $entity);
+                // Has individual membership.
+                if ($wrapper->field_da_ind_membership->value()) {
                   return TRUE;
+                }
+                // Has organization membership.
+                foreach (_drupalorg_get_chargify_subscriptions($entity) as $subscription) {
+                  if ($subscription->state === 'active' && strpos($subscription->product_handle, 'organization') === 0) {
+                    return TRUE;
+                  }
                 }
               }
               // Hide otherwise.
@@ -2056,10 +2067,15 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
   unset($form['picture']['#title']);
   $form['picture']['#collapsible'] = FALSE;
 
-  // Remove hanging organization references to deleted organizations.
   foreach (element_children($form['field_organizations'][LANGUAGE_NONE]) as $delta) {
-    if (is_numeric($delta) && !empty($form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference) && !db_query('SELECT 1 FROM {node} WHERE nid = :nid', array(':nid' => $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id']))->fetchField()) {
-      $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference = array();
+    if (is_numeric($delta)) {
+      $found = !empty($form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference) && db_query('SELECT 1 FROM {node} WHERE nid = :nid', array(':nid' => $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id']))->fetchField();
+      // Remove hanging organization references to deleted organizations.
+      if (!$found) {
+        $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference = array();
+      }
+      // Add note for unmatched organization names.
+      $form['field_organizations'][LANGUAGE_NONE][$delta]['field_current']['#suffix'] = '<span class="warning' . ($found || empty($form['field_organizations'][LANGUAGE_NONE][$delta]['field_organization_name'][LANGUAGE_NONE][0]['value']['#default_value']) ? ' element-hidden' : '') . '">' . t('No organization page found. Names are matched exactly.') . '</span>';
     }
   }
 
@@ -3960,7 +3976,7 @@ function _drupalorg_spam_message() {
  * Implements hook_views_query_substitutions().
  */
 function drupalorg_views_query_substitutions($view) {
-  if (get_class($view) === 'view' && $view->name === 'issue_credit' && $view->current_display === 'organization_recent_page') {
+  if (get_class($view) === 'view' && $view->name === 'issue_credit' && in_array($view->current_display, array('organization_recent_page','organization_issue_credit_page'))) {
     // Provide organization argument.
     return array('***CURRENT_ORGANIZATION***' => $view->args[0]);
   }
@@ -3971,7 +3987,7 @@ function drupalorg_views_query_substitutions($view) {
  */
 function drupalorg_views_pre_render(&$view) {
   if ($view->name === 'issue_credit') {
-    if ($view->current_display === 'organization_recent_page') {
+    if (in_array($view->current_display, array('organization_recent_page', 'organization_issue_credit_page'))) {
       // Substitute in organization argument title.
       $organization = node_load($view->args[0]);
       if (!empty($organization) && $organization->type === 'organization' && $organization->status == NODE_PUBLISHED) {
@@ -5821,7 +5837,7 @@ function drupalorg_lead_capture_form($form) {
     $form['first_name']['#default_value'] = $wrapper->field_first_name->value();
     $form['last_name']['#default_value'] = $wrapper->field_last_name->value();
     $form['email']['#default_value'] = $wrapper->mail->value();
-    $form['country']['#default_value'] = $wrapper->field_country->value();
+    $form['country']['#default_value'] = $wrapper->field_country->label();
   }
   $form['00NA00000067Ahk'] = [
     '#type' => 'select',
@@ -6714,6 +6730,18 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
       break;
   }
 
+  // Update MailChimp merge vars, if they have changed.
+  $field = field_info_field('field_subscribe_membership');
+  if (mailchimp_is_subscribed($field['settings']['mc_list_id'], $account->mail)) {
+    $member_info = mailchimp_get_memberinfo($field['settings']['mc_list_id'], $account->mail);
+    $instance = field_info_instance('user', $field['field_name'], 'user');
+    $mergefields = $instance['settings']['mergefields'];
+    $merge_vars = _mailchimp_lists_mergevars_populate($mergefields, $account, 'user', $field['settings']['mc_list_id']);
+    if (array_diff_assoc($merge_vars, (array) $member_info->merge_fields, array_intersect_key($merge_vars, ['EMAIL' => NULL, 'advanced' => NULL]))) {
+      mailchimp_update_member($field['settings']['mc_list_id'], $account->mail, $merge_vars);
+    }
+  }
+
   return $row;
 }
 
@@ -6845,7 +6873,7 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     if ($name = $account_wrapper->field_last_name->value()) {
       $form['mergevars']['LNAME']['#value'] = $name;
     }
-    $form['mergevars']['COUNTRY']['#value'] = $account_wrapper->field_country->value();
+    $form['mergevars']['COUNTRY']['#value'] = $account_wrapper->field_country->label();
     $form['mergevars']['#prefix'] .= t('We’ll send occasional updates to @mail<br><small><a href="!url">Update your primary email</a></small>', ['@mail' => $GLOBALS['user']->mail, '!url' => url('user/' . $GLOBALS['user']->uid . '/edit/email-addresses')]);
   }
   else {
