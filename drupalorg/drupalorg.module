@@ -5782,7 +5782,7 @@ function drupalorg_lead_capture_form($form) {
     $form['first_name']['#default_value'] = $wrapper->field_first_name->value();
     $form['last_name']['#default_value'] = $wrapper->field_last_name->value();
     $form['email']['#default_value'] = $wrapper->mail->value();
-    $form['country']['#default_value'] = $wrapper->field_country->value();
+    $form['country']['#default_value'] = $wrapper->field_country->label();
   }
   $form['00NA00000067Ahk'] = [
     '#type' => 'select',
@@ -6818,7 +6818,7 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     if ($name = $account_wrapper->field_last_name->value()) {
       $form['mergevars']['LNAME']['#value'] = $name;
     }
-    $form['mergevars']['COUNTRY']['#value'] = $account_wrapper->field_country->value();
+    $form['mergevars']['COUNTRY']['#value'] = $account_wrapper->field_country->label();
     $form['mergevars']['#prefix'] .= t('We’ll send occasional updates to @mail<br><small><a href="!url">Update your primary email</a></small>', ['@mail' => $GLOBALS['user']->mail, '!url' => url('user/' . $GLOBALS['user']->uid . '/edit/email-addresses')]);
   }
   else {
