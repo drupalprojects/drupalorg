@@ -6742,7 +6742,7 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
         // Add sponsored projects to organization node API.
         if ($_GET['type'] === 'organization') {
           foreach ($response['list'] as &$value) {
-            $projects_list = drupalorg_get_sponsored_projects($value['nid']);
+            $projects_list = drupalorg_get_organization_supported_projects($value['nid']);
             if (!empty($projects_list)) {
               $value['sponsored_projects'] = $projects_list;
             }
@@ -6762,7 +6762,7 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
         }
         // Add sponsored projects to organization node API.
         if ($response['type'] === 'organization') {
-          $projects_list = drupalorg_get_sponsored_projects($response['nid']);
+          $projects_list = drupalorg_get_organization_supported_projects($response['nid']);
           if (!empty($projects_list)) {
             $response['sponsored_projects'] = $projects_list;
           }
@@ -6794,7 +6794,7 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
 /**
  * Function to get sponsored projects.
  */
-function drupalorg_get_sponsored_projects($nid = NULL) {
+function drupalorg_get_organization_supported_projects($nid = NULL) {
   $projects = [];
 
   $view = views_get_view('drupalorg_organization_supported_projects');
