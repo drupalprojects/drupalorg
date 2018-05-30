@@ -6742,20 +6742,9 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
         // Add sponsored projects to organization node API.
         if ($_GET['type'] === 'organization') {
           foreach ($response['list'] as &$value) {
-            $projects = [];
-
-            $view = views_get_view('drupalorg_organization_supported_projects');
-            $view->preview(NULL, array($value['nid']));
-
-            foreach ($view->result as $item) {
-              $items['id'] = $item->nid;
-              $items['title'] = $item->node_title;
-              $items['uri'] = url('/api-d7/node/' . $item->nid, array('absolute' => true));
-
-              $projects[] = $items;
-            }
-            if (!empty($projects)) {
-              $value['sponsored_projects'] = $projects;
+            $projects_list = drupalorg_get_sponsored_projects($value['nid']);
+            if (!empty($projects_list)) {
+              $value['sponsored_projects'] = $projects_list;
             }
           }
         }
@@ -6773,21 +6762,9 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
         }
         // Add sponsored projects to organization node API.
         if ($response['type'] === 'organization') {
-          $projects = [];
-
-          $view = views_get_view('drupalorg_organization_supported_projects');
-          $view->preview(NULL, array($response['nid']));
-
-          foreach ($view->result as $item) {
-            $items['id'] = $item->nid;
-            $items['title'] = $item->node_title;
-            $items['uri'] = url('/api-d7/node/' . $item->nid, array('absolute' => true));
-
-            $projects[] = $items;
-          }
-
-          if (!empty($projects)) {
-            $response['sponsored_projects'] = $projects;
+          $projects_list = drupalorg_get_sponsored_projects($response['nid']);
+          if (!empty($projects_list)) {
+            $response['sponsored_projects'] = $projects_list;
           }
         }
     }
@@ -6812,6 +6789,26 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
       }
     }
   }
+}
+
+/**
+ * Function to get sponsored projects.
+ */
+function drupalorg_get_sponsored_projects($nid = NULL) {
+  $projects = [];
+
+  $view = views_get_view('drupalorg_organization_supported_projects');
+  $view->preview(NULL, [$nid]);
+
+  foreach ($view->result as $item) {
+    $items['id'] = $item->nid;
+    $items['title'] = $item->node_title;
+    $items['uri'] = url('/api-d7/node/' . $item->nid, ['absolute' => true]);
+
+    $projects[] = $items;
+  }
+
+  return $projects;
 }
 
 /**
