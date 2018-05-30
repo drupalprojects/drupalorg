@@ -5749,6 +5749,12 @@ function drupalorg_panels_pane_content_alter($content, $pane, $args, $contexts) 
     $form = drupal_get_form('drupalorg_lead_capture_form');
     $content->content['field_cta_body']['#suffix'] = drupal_render($form);
   }
+
+  // Add JS for home page hero animation.
+  if (isset($pane->css['css_class']) && $pane->css['css_class'] === 'd-hero') {
+    drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/createjs-2015.11.26.min.js');
+    drupal_add_js(drupal_get_path('module', 'drupalorg') . '/js/hero.js');
+  }
 }
 
 /**
