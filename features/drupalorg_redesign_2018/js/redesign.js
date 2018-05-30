@@ -1,17 +1,4 @@
-
 (function ($) {
-
-  /**
-  * This script transforms a set of fieldsets into a stack of vertical
-  * tabs. Another tab pane can be selected by clicking on the respective
-  * tab.
-  *
-  * Each tab may have a summary which can be updated by another
-  * script. For that to work, each fieldset has an associated
-  * 'verticalTabCallback' (with jQuery.data() attached to the fieldset),
-  * which is called every time the user performs an update to a form
-  * element inside the tab pane.
-  */
   Drupal.behaviors.redesign = {
     attach: function (context) {
       if (localStorage.getItem('dorganimations')) {
@@ -142,7 +129,6 @@
           if (!localStorage.getItem('dorganimations')) {
             initHero();
           }
-
         }
 
         if ($('.d-focus', context).length > 0) {
@@ -206,11 +192,7 @@
             }
           });
         }
-
       }
-
     }
-
   };
-
 })(jQuery);
