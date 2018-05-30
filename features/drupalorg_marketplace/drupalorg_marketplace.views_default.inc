@@ -509,66 +509,6 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['sorts']['field_organization_support_value']['id'] = 'field_organization_support_value';
   $handler->display->display_options['sorts']['field_organization_support_value']['table'] = 'field_data_field_organization_support';
   $handler->display->display_options['sorts']['field_organization_support_value']['field'] = 'field_organization_support_value';
-  /* Contextual filter: Content: Has taxonomy term ID */
-  $handler->display->display_options['arguments']['tid']['id'] = 'tid';
-  $handler->display->display_options['arguments']['tid']['table'] = 'taxonomy_index';
-  $handler->display->display_options['arguments']['tid']['field'] = 'tid';
-  $handler->display->display_options['arguments']['tid']['exception']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid']['exception']['title'] = 'All services';
-  $handler->display->display_options['arguments']['tid']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid']['title'] = 'Marketplace: %1';
-  $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['tid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['tid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['tid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['tid']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['tid']['validate']['type'] = 'taxonomy_term';
-  $handler->display->display_options['arguments']['tid']['validate_options']['vocabularies'] = array(
-    'vocabulary_48' => 'vocabulary_48',
-  );
-  $handler->display->display_options['arguments']['tid']['validate_options']['type'] = 'convert';
-  $handler->display->display_options['arguments']['tid']['validate_options']['transform'] = TRUE;
-  $handler->display->display_options['arguments']['tid']['add_table'] = TRUE;
-  /* Contextual filter: Content: Has taxonomy term ID */
-  $handler->display->display_options['arguments']['tid_1']['id'] = 'tid_1';
-  $handler->display->display_options['arguments']['tid_1']['table'] = 'taxonomy_index';
-  $handler->display->display_options['arguments']['tid_1']['field'] = 'tid';
-  $handler->display->display_options['arguments']['tid_1']['exception']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid_1']['exception']['title'] = 'All sectors';
-  $handler->display->display_options['arguments']['tid_1']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid_1']['title'] = 'Marketplace: %2';
-  $handler->display->display_options['arguments']['tid_1']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['tid_1']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['tid_1']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['tid_1']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['tid_1']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['tid_1']['validate']['type'] = 'taxonomy_term';
-  $handler->display->display_options['arguments']['tid_1']['validate_options']['vocabularies'] = array(
-    'vocabulary_50' => 'vocabulary_50',
-  );
-  $handler->display->display_options['arguments']['tid_1']['validate_options']['type'] = 'convert';
-  $handler->display->display_options['arguments']['tid_1']['validate_options']['transform'] = TRUE;
-  $handler->display->display_options['arguments']['tid_1']['add_table'] = TRUE;
-  /* Contextual filter: Content: Has taxonomy term ID */
-  $handler->display->display_options['arguments']['tid_2']['id'] = 'tid_2';
-  $handler->display->display_options['arguments']['tid_2']['table'] = 'taxonomy_index';
-  $handler->display->display_options['arguments']['tid_2']['field'] = 'tid';
-  $handler->display->display_options['arguments']['tid_2']['exception']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid_2']['exception']['title'] = 'All locations';
-  $handler->display->display_options['arguments']['tid_2']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid_2']['title'] = 'Marketplace: %3';
-  $handler->display->display_options['arguments']['tid_2']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['tid_2']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['tid_2']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['tid_2']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['tid_2']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['tid_2']['validate']['type'] = 'taxonomy_term';
-  $handler->display->display_options['arguments']['tid_2']['validate_options']['vocabularies'] = array(
-    'vocabulary_52' => 'vocabulary_52',
-  );
-  $handler->display->display_options['arguments']['tid_2']['validate_options']['type'] = 'convert';
-  $handler->display->display_options['arguments']['tid_2']['validate_options']['transform'] = TRUE;
-  $handler->display->display_options['arguments']['tid_2']['add_table'] = TRUE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -617,73 +557,6 @@ function drupalorg_marketplace_views_default_views() {
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Has taxonomy term ID */
-  $handler->display->display_options['arguments']['tid']['id'] = 'tid';
-  $handler->display->display_options['arguments']['tid']['table'] = 'taxonomy_index';
-  $handler->display->display_options['arguments']['tid']['field'] = 'tid';
-  $handler->display->display_options['arguments']['tid']['exception']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid']['exception']['title'] = 'All services';
-  $handler->display->display_options['arguments']['tid']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid']['title'] = 'Marketplace: %1';
-  $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['tid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['tid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['tid']['summary_options']['base_path'] = 'drupal-services';
-  $handler->display->display_options['arguments']['tid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['tid']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['tid']['validate']['type'] = 'taxonomy_term';
-  $handler->display->display_options['arguments']['tid']['validate_options']['vocabularies'] = array(
-    'vocabulary_48' => 'vocabulary_48',
-  );
-  $handler->display->display_options['arguments']['tid']['validate_options']['type'] = 'convert';
-  $handler->display->display_options['arguments']['tid']['validate_options']['transform'] = TRUE;
-  $handler->display->display_options['arguments']['tid']['add_table'] = TRUE;
-  /* Contextual filter: Content: Has taxonomy term ID */
-  $handler->display->display_options['arguments']['tid_1']['id'] = 'tid_1';
-  $handler->display->display_options['arguments']['tid_1']['table'] = 'taxonomy_index';
-  $handler->display->display_options['arguments']['tid_1']['field'] = 'tid';
-  $handler->display->display_options['arguments']['tid_1']['default_action'] = 'summary';
-  $handler->display->display_options['arguments']['tid_1']['exception']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid_1']['exception']['title'] = 'All sectors';
-  $handler->display->display_options['arguments']['tid_1']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid_1']['title'] = 'Marketplace: %2';
-  $handler->display->display_options['arguments']['tid_1']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['tid_1']['default_argument_skip_url'] = TRUE;
-  $handler->display->display_options['arguments']['tid_1']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['tid_1']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['tid_1']['summary_options']['base_path'] = 'drupal-services';
-  $handler->display->display_options['arguments']['tid_1']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['tid_1']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['tid_1']['validate']['type'] = 'taxonomy_term';
-  $handler->display->display_options['arguments']['tid_1']['validate_options']['vocabularies'] = array(
-    'vocabulary_50' => 'vocabulary_50',
-  );
-  $handler->display->display_options['arguments']['tid_1']['validate_options']['type'] = 'convert';
-  $handler->display->display_options['arguments']['tid_1']['validate_options']['transform'] = TRUE;
-  $handler->display->display_options['arguments']['tid_1']['add_table'] = TRUE;
-  /* Contextual filter: Content: Has taxonomy term ID */
-  $handler->display->display_options['arguments']['tid_2']['id'] = 'tid_2';
-  $handler->display->display_options['arguments']['tid_2']['table'] = 'taxonomy_index';
-  $handler->display->display_options['arguments']['tid_2']['field'] = 'tid';
-  $handler->display->display_options['arguments']['tid_2']['default_action'] = 'summary';
-  $handler->display->display_options['arguments']['tid_2']['exception']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid_2']['exception']['title'] = 'All locations';
-  $handler->display->display_options['arguments']['tid_2']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid_2']['title'] = 'Marketplace: %3';
-  $handler->display->display_options['arguments']['tid_2']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['tid_2']['default_argument_skip_url'] = TRUE;
-  $handler->display->display_options['arguments']['tid_2']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['tid_2']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['tid_2']['summary_options']['base_path'] = 'drupal-services';
-  $handler->display->display_options['arguments']['tid_2']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['tid_2']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['tid_2']['validate']['type'] = 'taxonomy_term';
-  $handler->display->display_options['arguments']['tid_2']['validate_options']['vocabularies'] = array(
-    'vocabulary_52' => 'vocabulary_52',
-  );
-  $handler->display->display_options['arguments']['tid_2']['validate_options']['type'] = 'convert';
-  $handler->display->display_options['arguments']['tid_2']['validate_options']['transform'] = TRUE;
-  $handler->display->display_options['arguments']['tid_2']['add_table'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -786,6 +659,7 @@ function drupalorg_marketplace_views_default_views() {
     4 => 0,
     42 => 0,
   );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['type'] = 'select';
   $handler->display->display_options['filters']['taxonomy_vocabulary_48_tid']['vocabulary'] = 'vocabulary_48';
   /* Filter criterion: Content: Sectors (taxonomy_vocabulary_50) */
@@ -820,6 +694,7 @@ function drupalorg_marketplace_views_default_views() {
     4 => 0,
     42 => 0,
   );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['type'] = 'select';
   $handler->display->display_options['filters']['taxonomy_vocabulary_50_tid']['vocabulary'] = 'vocabulary_50';
   /* Filter criterion: Content: Offices in (taxonomy_vocabulary_52) */
@@ -854,6 +729,7 @@ function drupalorg_marketplace_views_default_views() {
     4 => 0,
     42 => 0,
   );
+  $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['type'] = 'select';
   $handler->display->display_options['filters']['taxonomy_vocabulary_52_tid']['vocabulary'] = 'vocabulary_52';
   /* Filter criterion: Content: Locations served (field_organization_loc_served) */
@@ -887,6 +763,7 @@ function drupalorg_marketplace_views_default_views() {
     4 => 0,
     42 => 0,
   );
+  $handler->display->display_options['filters']['field_organization_loc_served_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['field_organization_loc_served_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_organization_loc_served_tid']['vocabulary'] = 'vocabulary_52';
   $handler->display->display_options['path'] = 'drupal-services';
@@ -1211,12 +1088,6 @@ function drupalorg_marketplace_views_default_views() {
     t('Title'),
     t('Updated date'),
     t('A-Z'),
-    t('All services'),
-    t('Marketplace: %1'),
-    t('All sectors'),
-    t('Marketplace: %2'),
-    t('All locations'),
-    t('Marketplace: %3'),
     t('Countries in which your organization has a physical presence (taxonomy_vocabulary_52)'),
     t('Page'),
     t('Services listing'),

@@ -90,6 +90,13 @@ function drupalorg_content_types_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = '<a href="/group/node/[gid]/admin/menus/menu-og-[gid]">Reorder & edit menu</a>';
+  $handler->display->display_options['header']['area']['format'] = '1';
+  $handler->display->display_options['header']['area']['tokenize'] = TRUE;
   /* Relationship: OG membership: OG membership from Node */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
@@ -97,7 +104,7 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['relationships']['og_membership_rel']['required'] = TRUE;
   /* Field: Bulk operations: Content */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
@@ -122,7 +129,7 @@ function drupalorg_content_types_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
-    'action::mollom_action_unpublish_node' => array(
+    'action::akismet_action_unpublish_node' => array(
       'selected' => 1,
       'skip_confirmation' => 0,
       'override_label' => 0,
@@ -171,6 +178,14 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['fields']['delete_node']['label'] = '';
   $handler->display->display_options['fields']['delete_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['delete_node']['text'] = 'Delete';
+  /* Field: OG membership: Group ID */
+  $handler->display->display_options['fields']['gid']['id'] = 'gid';
+  $handler->display->display_options['fields']['gid']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['gid']['field'] = 'gid';
+  $handler->display->display_options['fields']['gid']['label'] = '';
+  $handler->display->display_options['fields']['gid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['gid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['gid']['separator'] = '';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -309,6 +324,7 @@ function drupalorg_content_types_views_default_views() {
     t('‹ previous'),
     t('next ›'),
     t('last »'),
+    t('<a href="/group/node/[gid]/admin/menus/menu-og-[gid]">Reorder & edit menu</a>'),
     t('OG membership from node'),
     t('Content'),
     t('- Choose an operation -'),
@@ -319,6 +335,7 @@ function drupalorg_content_types_views_default_views() {
     t('Operations'),
     t('Edit'),
     t('Delete'),
+    t('.'),
     t('All'),
     t('Administer content in %1 section'),
     t('Page'),

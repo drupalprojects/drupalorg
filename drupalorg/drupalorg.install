@@ -4866,3 +4866,134 @@ function drupalorg_update_7097() {
     ),
   ]);
 }
+
+/**
+ * Add field_shared_account_for_an_org field.
+ */
+function drupalorg_update_7098() {
+  field_create_field([
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => [],
+    'field_name' => 'field_shared_account_for_an_org',
+    'indexes' => [
+      'value' => [
+        0 => 'value',
+      ],
+    ],
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => [
+      'allowed_values' => [
+        0 => '',
+        1 => '',
+      ],
+      'allowed_values_function' => '',
+    ],
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  ]);
+  field_create_instance([
+    'bundle' => 'user',
+    'default_value' => [
+      0 => [
+        'value' => 0,
+      ],
+    ],
+    'deleted' => 0,
+    'description' => 'Check if this account is a <a href="/terms#accounts" target="_blank" rel="noopener">shared account</a> for multiple people (eg: for an Organization).',
+    'display' => [
+      'default' => [
+        'label' => 'above',
+        'settings' => [],
+        'type' => 'hidden',
+        'weight' => 25,
+      ],
+    ],
+    'entity_type' => 'user',
+    'field_name' => 'field_shared_account_for_an_org',
+    'label' => 'Is this a shared account?',
+    'required' => 0,
+    'settings' => [
+      'user_register_form' => 0,
+    ],
+    'widget' => [
+      'active' => 1,
+      'module' => 'options',
+      'settings' => [
+        'display_label' => 1,
+      ],
+      'type' => 'options_onoff',
+      'weight' => 1,
+    ],
+  ]);
+}
+
+/**
+ * Add field_subscribe_membership.
+ */
+function drupalorg_update_7099() {
+  field_create_field([
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => [],
+    'field_name' => 'field_subscribe_membership',
+    'indexes' => [],
+    'locked' => 0,
+    'module' => 'mailchimp_lists',
+    'settings' => [
+      'double_opt_in' => 1,
+      'mc_list_id' => 'a1d014e8d3',
+      'unsubscribe_action' => 'remove',
+    ],
+    'translatable' => 0,
+    'type' => 'mailchimp_lists_subscription',
+  ]);
+  field_create_instance([
+    'bundle' => 'user',
+    'default_value' => [
+      0 => [
+        'subscribe' => 0,
+        'is_default' => TRUE,
+      ],
+    ],
+    'deleted' => 0,
+    'description' => 'Subscribe to get emails relevant to members.',
+    'display' => [
+      'default' => [
+        'label' => 'above',
+        'settings' => [],
+        'type' => 'hidden',
+        'weight' => 23,
+      ],
+    ],
+    'entity_type' => 'user',
+    'field_name' => 'field_subscribe_membership',
+    'label' => 'Member communications',
+    'required' => 0,
+    'settings' => [
+      'hide_subscribe_checkbox' => 0,
+      'interest_groups_title' => 'Interest Groups',
+      'mergefields' => [
+        'EMAIL' => '[user:mail]',
+        'advanced' => 0,
+      ],
+      'options' => [
+        'interest_groups' => [],
+        'subscribe' => FALSE,
+      ],
+      'show_interest_groups' => 0,
+      'unsubscribe_on_delete' => 1,
+      'user_register_form' => 0,
+    ],
+    'widget' => [
+      'active' => 0,
+      'module' => 'mailchimp_lists',
+      'settings' => [],
+      'type' => 'mailchimp_lists_select',
+      'weight' => 6,
+    ],
+  ]);
+}

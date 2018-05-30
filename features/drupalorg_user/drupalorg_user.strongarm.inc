@@ -38,7 +38,9 @@ Attend a DrupalCon or a Global Training Day: https://assoc.drupal.org/drupalcon
 Make Friends & Find Mentors
 ---------------------
 
-Meet our community https://www.drupal.org/community and the Drupal Association https://assoc.drupal.org
+Meet our community https://www.drupal.org/community and the Drupal Association https://drupal.org/association
+
+Learn Drupal’s values and principles: https://www.drupal.org/about/values-and-principles
 
 Get Involved with the project: https://www.drupal.org/getting-involved
 
@@ -63,7 +65,7 @@ Subscribe to Drupal Newsletters by updating preferences on your profile at [user
 
 Add the Drupal project to your LinkedIn experience: https://www.linkedin.com/company/drupal-project
 
-Become a Drupal Association Member https://assoc.drupal.org/membership - and support community initiatives like DrupalCon, DrupalCon Scholarships, Community grants, Drupal.org infrastructure and more.
+Become a Drupal Association Member https://drupal.org/association/support - and support community initiatives like maintaining the technical infrastructure of the project on Drupal.org, community grants, and the organization of DrupalCon events and DrupalCon scholarships and grants.
 
 We’re glad to have you in the community. Thanks for joining the Drupal family.';
   $export['user_mail_drupalorg_email_verified_body'] = $strongarm;

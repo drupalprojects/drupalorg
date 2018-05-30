@@ -6,6 +6,7 @@ $plugin = [
   'category' => t('Drupal.org'),
   'defaults' => [
     'membership_type' => 'membership-individual',
+    'require_login' => TRUE,
   ],
 ];
 
@@ -17,6 +18,10 @@ function drupalorg_membership_signup_content_type_edit_form($form, &$form_state)
       'membership-organization' => t('Organization membership'),
       'donation' => t('Donation'),
     ],
+  ];
+  $form['require_login'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Require login'),
   ];
 
   // Copy in default values.
@@ -36,6 +41,10 @@ function drupalorg_membership_signup_content_type_edit_form_submit($form, &$form
 
 function drupalorg_membership_signup_content_type_render($subtype, $conf, $args, $context) {
   $block = new stdClass();
+
+  if (!isset($conf['require_login'])) {
+    $conf['require_login'] = TRUE;
+  }
 
   // Check for existing memberships.
   if (strpos($conf['membership_type'], 'membership-') === 0) {
@@ -87,6 +96,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
       '#title' => t('Donation'),
       '#field_prefix' => '$',
       '#size' => 5,
+      '#description' => t('Your donation charge will appear as: DRUPALCON 503-405-1159 OR'),
       '#attributes' => ['class' => ['focus-on-visible']],
       '#states' => [
         'visible' => [
@@ -99,6 +109,7 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
       '#title' => t('Donation'),
       '#field_prefix' => '€',
       '#size' => 5,
+      '#description' => t('Your donation charge will appear as: DrupalCon Inc.'),
       '#attributes' => ['class' => ['focus-on-visible']],
       '#states' => [
         'visible' => [
@@ -197,14 +208,19 @@ function drupalorg_membership_signup_content_type_render_form($form, &$form_stat
   ];
 
   if (user_is_anonymous()) {
-    $form['submit']['#value'] = t('Log in or register to support us');
+    if ($conf['require_login']) {
+      $form['submit']['#value'] = t('Log in or register to support us');
+    }
+    else {
+      $form['submit']['#prefix'] = '<p>' . t('If you would like to keep track of your donation history, <a href="!url">log in</a> first.', ['!url' => url('user', ['query' => drupal_get_destination()])]) . '</p>';
+    }
   }
 
   return $form;
 }
 
 function drupalorg_membership_signup_content_type_render_form_validate($form, &$form_state) {
-  if (user_is_anonymous()) {
+  if (user_is_anonymous() && $form_state['build_info']['args'][0]['require_login']) {
     // Detour through login, keeping track of currency and amount.
     if (!empty($form_state['values']['currency'])) {
       $_GET['currency'] = $form_state['values']['currency'];
@@ -226,22 +242,25 @@ function drupalorg_membership_signup_content_type_render_form_validate($form, &$
 function drupalorg_membership_signup_content_type_render_form_submit($form, &$form_state) {
   $user_wrapper = entity_metadata_wrapper('user', $GLOBALS['user']);
   $query = [
-    'reference' => $GLOBALS['user']->uid,
-    'email' => $GLOBALS['user']->mail,
-    'first_name' => $user_wrapper->field_first_name->value(),
-    'last_name' => $user_wrapper->field_last_name->value(),
     'components[' . variable_get('drupalorg_chargify_keys')[$form_state['values']['currency']]['donation_component'] . '][allocated_quantity]' => $form_state['values']['amount_' . $form_state['values']['currency']],
+    'referrer' => drupal_get_path_alias(current_path()),
   ];
-  if ($form_state['build_info']['args'][0]['membership_type'] === 'donation') {
-    $query['reference'] .= '-' . REQUEST_TIME;
-  }
-  elseif ($form_state['build_info']['args'][0]['membership_type'] === 'membership-organization') {
-    if (empty($form_state['values']['organization'])) {
-      $query['reference'] .= '-new-' . REQUEST_TIME;
+  if (user_is_logged_in()) {
+    $query['reference'] = $GLOBALS['user']->uid;
+    $query['email'] = $GLOBALS['user']->mail;
+    $query['first_name'] = $user_wrapper->field_first_name->value();
+    $query['last_name'] = $user_wrapper->field_last_name->value();
+    if ($form_state['build_info']['args'][0]['membership_type'] === 'donation') {
+      $query['reference'] .= '-' . REQUEST_TIME;
     }
-    else {
-      $query['reference'] .= '-' . $form_state['values']['organization'];
-      $query['organization'] = $form['organization']['#options'][$form_state['values']['organization']];
+    elseif ($form_state['build_info']['args'][0]['membership_type'] === 'membership-organization') {
+      if (empty($form_state['values']['organization'])) {
+        $query['reference'] .= '-new-' . REQUEST_TIME;
+      }
+      else {
+        $query['reference'] .= '-' . $form_state['values']['organization'];
+        $query['organization'] = $form['organization']['#options'][$form_state['values']['organization']];
+      }
     }
   }
   $form_state['redirect'] = [

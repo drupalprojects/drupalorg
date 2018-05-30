@@ -357,6 +357,15 @@ function drupalorg_menu() {
     'page arguments' => ['dashboard', [], '301'],
     'type' => MENU_CALLBACK,
   ];
+  // Redirect legacy Drupal Services pages.
+  $items['drupal-services/%'] = [
+    'access callback' => TRUE,
+    'page callback' => 'drupalorg_redirect_legacy_services',
+    'page arguments' => [1],
+    'type' => MENU_CALLBACK,
+    'file' => 'drupalorg.pages.inc',
+  ];
+
   // Shortcut to get to issue pages.
   $items['i/%'] = [
     'page callback' => 'drupalorg_issue_redirect_page',
@@ -543,9 +552,11 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
     case 'view':
       switch ($entity_type) {
         case 'user':
-          switch ($field['field_name']) {
+          if ($field['type'] === 'mailchimp_lists_subscription') {
             // We should not see Mailchimp subscription information.
-            case 'field_subscribe_to':
+            return FALSE;
+          }
+          switch ($field['field_name']) {
             // Only show notes on edit.
             case 'field_notes':
             // Only show demographic info to logged in user
@@ -632,6 +643,23 @@ function drupalorg_field_access($op, $field, $entity_type, $entity, $account) {
             case 'field_demographics':
               // Only you can see your selections.
               return isset($entity->uid) && $entity->uid === $account->uid;
+
+            case 'field_subscribe_membership':
+              if (isset($entity)) {
+                $wrapper = entity_metadata_wrapper('user', $entity);
+                // Has individual membership.
+                if ($wrapper->field_da_ind_membership->value()) {
+                  return TRUE;
+                }
+                // Has organization membership.
+                foreach (_drupalorg_get_chargify_subscriptions($entity) as $subscription) {
+                  if ($subscription->state === 'active' && strpos($subscription->product_handle, 'organization') === 0) {
+                    return TRUE;
+                  }
+                }
+              }
+              // Hide otherwise.
+              return FALSE;
           }
       }
   }
@@ -2022,34 +2050,13 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
 
   // MailChimp lists.
   if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0])) {
-    // Remove fieldset over-nesting.
-    unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['#title']);
-    // Hide "Roles in Drupal"
-    if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['f99166c398'])) {
-      hide($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['f99166c398']);
+    // Control interest group sprawl.
+    foreach (variable_get('drupalorg_suppress_interest_groups', []) as $id) {
+      unset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][$id]);
     }
-    // Alter list of lists.
-    if (isset($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622'])) {
-      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#title'] = t('Subscribe to');
-      // Add descriptions to MailChimp lists.
-      foreach (variable_get('drupalorg_mailchimp_list_descriptions', []) as $name => $description) {
-        if ($key = array_search($name, $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#options'])) {
-          $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622'][$key]['#description'] = $description;
-        }
-      }
-      if (isset($form_state['drupalorg_welcome'])) {
-        // Only show some newsletters on the welcome version of the form.
-        $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#options'] = array_intersect($form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['8d99874622']['#options'], [
-          'Drupal Weekly Newsletter',
-          'Drupal Association News',
-          'DrupalCon News',
-          'Special Offers from Drupal Supporters',
-          'Security Announcements',
-        ]);
-      }
-      else {
-        $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups'][5485]['#suffix'] = '<div class="description">' . t('Your primary email address %address will be used for subscriptions. <a href="!url">Edit email addresses</a>', array('%address' => $form['#user']->mail, '!url' => url('user/' . $form['#user']->uid . '/edit/email-addresses'))) . '</div>';
-      }
+    // Add note about which email address is subscribed.
+    if (!isset($form_state['drupalorg_welcome'])) {
+      $form['field_subscribe_to'][LANGUAGE_NONE][0]['interest_groups']['#suffix'] = '<div class="description">' . t('Your primary email address %address will be used for subscriptions. <a href="!url">Edit email addresses</a>', array('%address' => $form['#user']->mail, '!url' => url('user/' . $form['#user']->uid . '/edit/email-addresses'))) . '</div>';
     }
   }
 
@@ -2060,10 +2067,15 @@ function drupalorg_form_user_profile_form_alter(&$form, &$form_state) {
   unset($form['picture']['#title']);
   $form['picture']['#collapsible'] = FALSE;
 
-  // Remove hanging organization references to deleted organizations.
   foreach (element_children($form['field_organizations'][LANGUAGE_NONE]) as $delta) {
-    if (is_numeric($delta) && !empty($form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference) && !db_query('SELECT 1 FROM {node} WHERE nid = :nid', array(':nid' => $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id']))->fetchField()) {
-      $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference = array();
+    if (is_numeric($delta)) {
+      $found = !empty($form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference) && db_query('SELECT 1 FROM {node} WHERE nid = :nid', array(':nid' => $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference[LANGUAGE_NONE][0]['target_id']))->fetchField();
+      // Remove hanging organization references to deleted organizations.
+      if (!$found) {
+        $form['field_organizations'][LANGUAGE_NONE][$delta]['#entity']->field_organization_reference = array();
+      }
+      // Add note for unmatched organization names.
+      $form['field_organizations'][LANGUAGE_NONE][$delta]['field_current']['#suffix'] = '<span class="warning' . ($found || empty($form['field_organizations'][LANGUAGE_NONE][$delta]['field_organization_name'][LANGUAGE_NONE][0]['value']['#default_value']) ? ' element-hidden' : '') . '">' . t('No organization page found. Names are matched exactly.') . '</span>';
     }
   }
 
@@ -3288,6 +3300,37 @@ function drupalorg_node_view($node, $view_mode = 'full') {
           ))
         );
       }
+
+      // Supporting Customer
+      if (isset($organization_support['supporting_customer_charter'])) {
+        $content['intro']['association_partner'] = array(
+          '#markup' => l(
+            theme('image', array(
+              'path' => drupal_get_path('module', 'drupalorg') . '/images/association_supporting_customer_charter_badge.svg',
+              'alt' => t('Drupal Association Charter Customer Supporting Partner badge'),
+            )), 'https://www.drupal.org/association/programs/', array(
+            'html' => TRUE,
+            'attributes' => array(
+              'title' => t('Drupal Association Charter Customer Supporting Partner'),
+            ),
+          ))
+        );
+      }
+      elseif (isset($organization_support['supporting_customer'])) {
+        $content['intro']['association_partner'] = array(
+          '#markup' => l(
+            theme('image', array(
+              'path' => drupal_get_path('module', 'drupalorg') . '/images/association_supporting_customer_badge.svg',
+              'alt' => t('Drupal Association Customer Supporting Partner badge'),
+            )), 'https://www.drupal.org/association/programs/', array(
+            'html' => TRUE,
+            'attributes' => array(
+              'title' => t('Drupal Association Customer Supporting Partner'),
+            ),
+          ))
+        );
+      }
+
       // Technology Supporter
       if (isset($organization_support['technology'])) {
         $content['intro']['association_technology_supporter'] = array(
@@ -3425,7 +3468,7 @@ function drupalorg_node_view($node, $view_mode = 'full') {
         $issues += $row->nid;
       }
       if ($issues > 0) {
-        $filter = $view->get_item('organization_recent', 'filter', 'changed_1');
+        $filter = $view->get_item('organization_recent', 'filter', 'field_issue_last_status_change_value');
         $content['main']['drupalorg_organization_issue_credit']['#prefix'] = '<h4 id="issue-credit">' . format_plural($issues, 'Credited on 1 issue fixed in the past @time', 'Credited on @count issues fixed in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
       }
 
@@ -3722,6 +3765,12 @@ function drupalorg_node_update($node) {
       }
     }
   }
+  elseif ($node->type === 'sa') {
+    if ($node->status == NODE_PUBLISHED || $node->original->status == NODE_PUBLISHED) {
+      // Clear the time-based cache for /security*.
+      cache_clear_all('drupalorg_security_announcements', 'cache_views_data', TRUE);
+    }
+  }
   elseif (project_release_node_is_release($node)) {
     $download_base = variable_get('project_release_download_base_' . $node->type, '');
     foreach ($wrapper->field_release_files as $file_wrapper) {
@@ -3928,7 +3977,7 @@ function _drupalorg_spam_message() {
  * Implements hook_views_query_substitutions().
  */
 function drupalorg_views_query_substitutions($view) {
-  if (get_class($view) === 'view' && $view->name === 'issue_credit' && $view->current_display === 'organization_recent_page') {
+  if (get_class($view) === 'view' && $view->name === 'issue_credit' && in_array($view->current_display, array('organization_recent_page','organization_issue_credit_page'))) {
     // Provide organization argument.
     return array('***CURRENT_ORGANIZATION***' => $view->args[0]);
   }
@@ -3939,7 +3988,7 @@ function drupalorg_views_query_substitutions($view) {
  */
 function drupalorg_views_pre_render(&$view) {
   if ($view->name === 'issue_credit') {
-    if ($view->current_display === 'organization_recent_page') {
+    if (in_array($view->current_display, array('organization_recent_page', 'organization_issue_credit_page'))) {
       // Substitute in organization argument title.
       $organization = node_load($view->args[0]);
       if (!empty($organization) && $organization->type === 'organization' && $organization->status == NODE_PUBLISHED) {
@@ -4116,6 +4165,17 @@ function drupalorg_user_view($account, $view_mode) {
               '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/programs/hosting-supporter"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_hosting_signature_badge.svg') . '" alt="' . t('Drupal Association Signature Hosting Supporter') . '" /></a></div></div>',
             );
           }
+          // Supporting Customer
+          if (isset($organization_support['supporting_customer'])) {
+            $account->content['drupalorg_membership'][] = array(
+              '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/programs/"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_supporting_customer_badge.svg') . '" alt="' . t('Drupal Association Customer Supporting Partner') . '" /></a></div></div>',
+            );
+          }
+          elseif (isset($organization_support['supporting_customer_charter'])) {
+            $account->content['drupalorg_membership'][] = array(
+              '#markup' => '<div class="clearfix"><div class="da-membership-badge"><a href="https://www.drupal.org/association/programs/"><img src="' . url(drupal_get_path('module', 'drupalorg') . '/images/association_supporting_customer_charter_badge.svg') . '" alt="' . t('Drupal Association Charter Customer Supporting Partner') . '" /></a></div></div>',
+            );
+          }
         }
       }
       else {
@@ -4236,7 +4296,7 @@ function drupalorg_user_view($account, $view_mode) {
     $issues += $row->nid;
   }
   if ($issues > 0) {
-    $filter = $view->get_item('user_recent', 'filter', 'changed_1');
+    $filter = $view->get_item('user_recent', 'filter', 'field_issue_last_status_change_value');
     $account->content['drupalorg_user_issue_credit']['#prefix'] = '<h4>' . format_plural($issues, 'Credited on 1 issue fixed in the past @time', 'Credited on @count issues fixed in the past @time', array('@time' => ltrim($filter['value']['value'], '-'))) . '</h4>';
   }
 }
@@ -5397,49 +5457,6 @@ function drupalorg_project_release_security_coverage($release) {
 }
 
 /**
- * Implements hook_mollom_content_alter().
- */
-function drupalorg_mollom_content_alter(&$data) {
-  // Remove safe domains.
-  if (isset($data['postBody'])) {
-    $data['postBody'] = preg_replace(variable_get('drupalorg_mollom_remove', []), '', $data['postBody']);
-  }
-}
-
-/**
- * Implements hook_mollom_form_info_alter().
- */
-function drupalorg_mollom_form_info_alter(&$data) {
-  foreach (project_issue_issue_node_types() as $type) {
-    if ($data['form_id'] === $type . '_node_form') {
-      // Edit any issue is handed out liberally, do not consider it a Mollom
-      // bypass.
-      if ($key = array_search('edit any ' . $type . ' content', $data['bypass access'])) {
-        unset($data['bypass access'][$key]);
-      }
-
-      // Also allow the issue comment to be analyzed.
-      $data['elements']['nodechanges_comment][comment_body'] = t('Issue comment');
-
-      // Moderation may be unpublishing the comment or the issue summary.
-      $data['moderation callback'] = 'drupalorg_mollom_issue_moderation';
-    }
-  }
-}
-
-/**
- * Mollom moderation callback from drupalorg_mollom_form_info_alter().
- */
-function drupalorg_mollom_issue_moderation(&$form, &$form_state) {
-  if (isset($form_state['values']['nodechanges_comment'])) {
-    $form_state['values']['nodechanges_comment']['status'] = COMMENT_NOT_PUBLISHED;
-  }
-  else {
-    $form_state['values']['status'] = NODE_NOT_PUBLISHED;
-  }
-}
-
-/**
  * Menu access callback for marking an entity as ham.
  *
  * Check that a user has admin access for the entity, a valid token, and a
@@ -5816,7 +5833,7 @@ function drupalorg_lead_capture_form($form) {
     $form['first_name']['#default_value'] = $wrapper->field_first_name->value();
     $form['last_name']['#default_value'] = $wrapper->field_last_name->value();
     $form['email']['#default_value'] = $wrapper->mail->value();
-    $form['country']['#default_value'] = $wrapper->field_country->value();
+    $form['country']['#default_value'] = $wrapper->field_country->label();
   }
   $form['00NA00000067Ahk'] = [
     '#type' => 'select',
@@ -6158,25 +6175,38 @@ function drupalorg_lead_capture_submit($form, &$form_state) {
 }
 
 /**
- * Add mollom form protection to these custom form(s)
+ * Add Akismet form protection to these custom form(s).
  */
-function drupalorg_mollom_form_list() {
-  $forms['drupalorg_lead_capture_form'] = array(
-    'title' => 'Partner Lead Capture Form',
-  );
-  return $forms;
+function drupalorg_akismet_form_list() {
+  return [
+    'drupalorg_lead_capture_form' => ['title' => 'Partner Lead Capture Form'],
+  ];
 }
 
 /**
- * Set the mollomg protection mode for custom form(s)
+ * Set the Akismet protection mode for custom form(s).
  */
-function drupalorg_mollom_form_info($form_id) {
+function drupalorg_akismet_form_info($form_id) {
   switch ($form_id) {
     case 'drupalorg_lead_capture_form':
-      $form_info = array(
-        'mode' => MOLLOM_MODE_ANALYSIS,
-      );
-      return $form_info;
+      return [
+        'mode' => AKISMET_MODE_ANALYSIS,
+      ];
+  }
+}
+
+/**
+ * Implements hook_akismet_form_info_alter().
+ */
+function drupalorg_akismet_form_info_alter(&$data) {
+  foreach (project_issue_issue_node_types() as $type) {
+    if ($data['form_id'] === $type . '_node_form') {
+      // Edit any issue is handed out liberally, do not consider it an Akismet
+      // bypass.
+      if ($key = array_search('edit any ' . $type . ' content', $data['bypass access'])) {
+        unset($data['bypass access'][$key]);
+      }
+    }
   }
 }
 
@@ -6545,7 +6575,8 @@ function _drupalorg_get_chargify_subscriptions(stdClass $account) {
 function _drupalorg_update_chargify_subscription($currency, stdClass $subscription) {
   $row = [
     'state' => $subscription->subscription->state,
-    'created_at' => strtotime($subscription->subscription->created_at),
+    // Imported transactions could not be backdated.
+    'created_at' => min(strtotime($subscription->subscription->created_at), strtotime($subscription->subscription->activated_at)),
     'product_handle' => $subscription->subscription->product->handle,
     'product_name' => $subscription->subscription->product->name,
     'customer_id' => $subscription->subscription->customer->id,
@@ -6554,6 +6585,10 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
     'customer_organization' => $subscription->subscription->customer->organization,
     'customer_email' => $subscription->subscription->customer->email,
   ];
+  if (empty($subscription->subscription->customer->reference)) {
+    // Not matched up to a user account, return early.
+    return $row;
+  }
   // Customer reference is {uid}[-{extra}]. Optional extra is
   // organization NID or “donation”.
   if (strpos($subscription->subscription->customer->reference, '-') === FALSE) {
@@ -6605,8 +6640,13 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
     }
 
     // For organization membership, get the organization NID.
-    if (strpos($row['product_handle'], 'organization') === 0 && ctype_digit($reference_extra)) {
-      $row['organization_nid'] = $reference_extra;
+    if (strpos($row['product_handle'], 'organization') === 0) {
+      if (isset($reference_extra) && ctype_digit($reference_extra)) {
+        $row['organization_nid'] = $reference_extra;
+      }
+      else {
+        watchdog('drupalorg_chargify', 'Missing organization nid for @subscription_id (@currency)', ['@subscription_id' => $subscription->subscription->id, '@currency' => $currency]);
+      }
     }
   }
 
@@ -6686,7 +6726,31 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
       break;
   }
 
+  // Update MailChimp merge vars, if they have changed.
+  $field = field_info_field('field_subscribe_membership');
+  if (mailchimp_is_subscribed($field['settings']['mc_list_id'], $account->mail)) {
+    $member_info = mailchimp_get_memberinfo($field['settings']['mc_list_id'], $account->mail);
+    $instance = field_info_instance('user', $field['field_name'], 'user');
+    $mergefields = $instance['settings']['mergefields'];
+    $merge_vars = _mailchimp_lists_mergevars_populate($mergefields, $account, 'user', $field['settings']['mc_list_id']);
+    if (array_diff_assoc($merge_vars, (array) $member_info->merge_fields, array_intersect_key($merge_vars, ['EMAIL' => NULL, 'advanced' => NULL]))) {
+      mailchimp_update_member($field['settings']['mc_list_id'], $account->mail, $merge_vars);
+    }
+  }
+
   return $row;
+}
+
+/**
+ * Format the billing amount of a Chargify subscription.
+ */
+function _format_chargify_money($row) {
+  static $symbols = [
+    'usd' => '$',
+    'eur' => '€',
+  ];
+
+  return $symbols[$row->currency] . number_format(floor($row->current_billing_amount_in_cents / 100)) . '.' . str_pad($row->current_billing_amount_in_cents % 100, 2, '0', STR_PAD_LEFT);
 }
 
 /**
@@ -6740,22 +6804,51 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
         }
     }
   }
+  elseif ($resourceController->resource() === 'comment') {
+    if (!empty($response['node'])) {
+      // Get file details of a comment.
+      $result = nodechanges_get_changed_cids_keyed(node_load($response['node']['id']), 'field_issue_files', 'fid');
+      $files = [];
+      foreach ($result as $key => $value) {
+        if ($value === $response['cid']) {
+          if ($file_data = file_load($key)) {
+            $file_items['id'] = isset($file_data->fid) ? $file_data->fid : 0;
+            $file_items['url'] = isset($file_data->uri) ? file_create_url($file_data->uri): 0;
+            $file_items['filename'] = isset($file_data->filename) ? $file_data->filename : 0;
+            $files[] = $file_items;
+          }
+        }
+      }
+      if ($files) {
+        $response['comment_files'] = $files;
+      }
+    }
+  }
 }
 
 /**
  * Implements hook_form_FORM_ID_alter.
  */
 function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_state) {
-  // Hide “Roles in Drupal”.
-  hide($form['mailchimp_lists']['interest_groups']['f99166c398']);
+  // Control interest group sprawl.
+  foreach (variable_get('drupalorg_suppress_interest_groups', []) as $id) {
+    unset($form['mailchimp_lists']['interest_groups'][$id]);
+  }
 
   // Only add a single list for some forms.
   $list_forms = [
-    'hosting_offers' => ['dc0ad3fd6d' => TRUE],
+    'hosting_offers' => [
+      'parent' => '41ac996e3d',
+      'value' => ['eb3fcc4be5' => TRUE],
+      'hide' => ['853d1901d5', '27985faf3e'],
+    ],
   ];
   if (isset($list_forms[$form_state['build_info']['args'][0]->name])) {
-    $form['mailchimp_lists']['interest_groups']['8d99874622']['#type'] = 'value';
-    $form['mailchimp_lists']['interest_groups']['8d99874622']['#value'] = $list_forms[$form_state['build_info']['args'][0]->name];
+    $form['mailchimp_lists']['interest_groups'][$list_forms[$form_state['build_info']['args'][0]->name]['parent']]['#type'] = 'value';
+    $form['mailchimp_lists']['interest_groups'][$list_forms[$form_state['build_info']['args'][0]->name]['parent']]['#value'] = $list_forms[$form_state['build_info']['args'][0]->name]['value'];
+    foreach ($list_forms[$form_state['build_info']['args'][0]->name]['hide'] as $id) {
+      unset($form['mailchimp_lists']['interest_groups'][$id]);
+    }
   }
 
   if (user_is_logged_in()) {
@@ -6766,6 +6859,7 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     $form['mergevars']['EMAIL']['#value'] = $GLOBALS['user']->mail;
     $form['mergevars']['FNAME']['#type'] = 'value';
     $form['mergevars']['LNAME']['#type'] = 'value';
+    $form['mergevars']['COUNTRY']['#type'] = 'value';
     if ($name = $account_wrapper->field_first_name->value()) {
       $form['mergevars']['FNAME']['#value'] = $name;
     }
@@ -6775,12 +6869,11 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     if ($name = $account_wrapper->field_last_name->value()) {
       $form['mergevars']['LNAME']['#value'] = $name;
     }
+    $form['mergevars']['COUNTRY']['#value'] = $account_wrapper->field_country->label();
     $form['mergevars']['#prefix'] .= t('We’ll send occasional updates to @mail<br><small><a href="!url">Update your primary email</a></small>', ['@mail' => $GLOBALS['user']->mail, '!url' => url('user/' . $GLOBALS['user']->uid . '/edit/email-addresses')]);
   }
   else {
     $form['mergevars']['#prefix'] .= t('We’ll send occasional updates');
-    hide($form['mergevars']['FNAME']);
     hide($form['mergevars']['LNAME']);
-    $form_state['build_info']['args'][0]->settings['doublein'] = TRUE;
   }
 }

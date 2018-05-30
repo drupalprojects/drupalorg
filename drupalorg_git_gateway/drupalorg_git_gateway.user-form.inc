@@ -173,6 +173,10 @@ function _drupalorg_git_gateway_user_tos($account) {
     '#title' => t('I agree to these terms'),
     '#default_value' => $account->git_consent,
   );
+  if ($account->git_consent) {
+    $form['git_consent']['#disabled'] = TRUE;
+    $form['git_consent']['#description'] = t('You have consented to the terms of service.');
+  }
 
   global $user;
   if ($user->uid != $account->uid) {

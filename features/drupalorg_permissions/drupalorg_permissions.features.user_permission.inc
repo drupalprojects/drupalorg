@@ -47,6 +47,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'system',
   );
 
+  // Exported permission: 'access akismet statistics'.
+  $permissions['access akismet statistics'] = array(
+    'name' => 'access akismet statistics',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'akismet',
+  );
+
   // Exported permission: 'access all views'.
   $permissions['access all views'] = array(
     'name' => 'access all views',
@@ -125,15 +134,6 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'mailchimp_signup',
-  );
-
-  // Exported permission: 'access mollom statistics'.
-  $permissions['access mollom statistics'] = array(
-    'name' => 'access mollom statistics',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'mollom',
   );
 
   // Exported permission: 'access news feeds'.
@@ -529,9 +529,22 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['administer advanced pane settings'] = array(
     'name' => 'administer advanced pane settings',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'panels',
+  );
+
+  // Exported permission: 'administer akismet'.
+  $permissions['administer akismet'] = array(
+    'name' => 'administer akismet',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'akismet',
   );
 
   // Exported permission: 'administer all documentation guides'.
@@ -883,15 +896,6 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'system',
-  );
-
-  // Exported permission: 'administer mollom'.
-  $permissions['administer mollom'] = array(
-    'name' => 'administer mollom',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'mollom',
   );
 
   // Exported permission: 'administer multiple emails'.
@@ -1731,7 +1735,11 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['administer panels display styles'] = array(
     'name' => 'administer panels display styles',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'panels',
   );
@@ -1749,7 +1757,11 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['administer panels pane styles'] = array(
     'name' => 'administer panels pane styles',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'panels',
   );
@@ -1957,6 +1969,16 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'advagg',
   );
 
+  // Exported permission: 'bypass akismet protection'.
+  $permissions['bypass akismet protection'] = array(
+    'name' => 'bypass akismet protection',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+    ),
+    'module' => 'akismet',
+  );
+
   // Exported permission: 'bypass bakery'.
   $permissions['bypass bakery'] = array(
     'name' => 'bypass bakery',
@@ -1984,22 +2006,6 @@ function drupalorg_permissions_user_default_permissions() {
       'webmaster' => 'webmaster',
     ),
     'module' => 'honeypot',
-  );
-
-  // Exported permission: 'bypass mollom protection'.
-  $permissions['bypass mollom protection'] = array(
-    'name' => 'bypass mollom protection',
-    'roles' => array(
-      'Documentation moderator' => 'Documentation moderator',
-      'administrator' => 'administrator',
-      'community' => 'community',
-      'confirmed' => 'confirmed',
-      'content administrator' => 'content administrator',
-      'content moderator' => 'content moderator',
-      'user administrator' => 'user administrator',
-      'webmaster' => 'webmaster',
-    ),
-    'module' => 'mollom',
   );
 
   // Exported permission: 'bypass node access'.
@@ -2148,7 +2154,17 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create fieldable cta'] = array(
     'name' => 'create fieldable cta',
     'roles' => array(
+      'confirmed' => 'confirmed',
       'content administrator' => 'content administrator',
+    ),
+    'module' => 'fieldable_panels_panes',
+  );
+
+  // Exported permission: 'create fieldable cta_multiple'.
+  $permissions['create fieldable cta_multiple'] = array(
+    'name' => 'create fieldable cta_multiple',
+    'roles' => array(
+      'confirmed' => 'confirmed',
     ),
     'module' => 'fieldable_panels_panes',
   );
@@ -2247,6 +2263,13 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'content administrator' => 'content administrator',
     ),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'create logo content'.
+  $permissions['create logo content'] = array(
+    'name' => 'create logo content',
+    'roles' => array(),
     'module' => 'node',
   );
 
@@ -2519,6 +2542,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'delete any logo content'.
+  $permissions['delete any logo content'] = array(
+    'name' => 'delete any logo content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'delete any organization content'.
   $permissions['delete any organization content'] = array(
     'name' => 'delete any organization content',
@@ -2657,7 +2687,17 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['delete fieldable cta'] = array(
     'name' => 'delete fieldable cta',
     'roles' => array(
+      'confirmed' => 'confirmed',
       'content administrator' => 'content administrator',
+    ),
+    'module' => 'fieldable_panels_panes',
+  );
+
+  // Exported permission: 'delete fieldable cta_multiple'.
+  $permissions['delete fieldable cta_multiple'] = array(
+    'name' => 'delete fieldable cta_multiple',
+    'roles' => array(
+      'confirmed' => 'confirmed',
     ),
     'module' => 'fieldable_panels_panes',
   );
@@ -2725,6 +2765,13 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete own hosting_listing content'.
   $permissions['delete own hosting_listing content'] = array(
     'name' => 'delete own hosting_listing content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'delete own logo content'.
+  $permissions['delete own logo content'] = array(
+    'name' => 'delete own logo content',
     'roles' => array(),
     'module' => 'node',
   );
@@ -3168,6 +3215,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit any logo content'.
+  $permissions['edit any logo content'] = array(
+    'name' => 'edit any logo content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit any organization content'.
   $permissions['edit any organization content'] = array(
     'name' => 'edit any organization content',
@@ -3279,8 +3333,10 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit any section content'] = array(
     'name' => 'edit any section content',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
       'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'node',
   );
@@ -3315,7 +3371,17 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit fieldable cta'] = array(
     'name' => 'edit fieldable cta',
     'roles' => array(
+      'confirmed' => 'confirmed',
       'content administrator' => 'content administrator',
+    ),
+    'module' => 'fieldable_panels_panes',
+  );
+
+  // Exported permission: 'edit fieldable cta_multiple'.
+  $permissions['edit fieldable cta_multiple'] = array(
+    'name' => 'edit fieldable cta_multiple',
+    'roles' => array(
+      'confirmed' => 'confirmed',
     ),
     'module' => 'fieldable_panels_panes',
   );
@@ -3416,6 +3482,13 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit own hosting_listing content'.
   $permissions['edit own hosting_listing content'] = array(
     'name' => 'edit own hosting_listing content',
+    'roles' => array(),
+    'module' => 'node',
+  );
+
+  // Exported permission: 'edit own logo content'.
+  $permissions['edit own logo content'] = array(
+    'name' => 'edit own logo content',
     'roles' => array(),
     'module' => 'node',
   );
@@ -3539,8 +3612,10 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit own section content'] = array(
     'name' => 'edit own section content',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
       'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'node',
   );
@@ -4051,13 +4126,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'features',
   );
 
-  // Exported permission: 'report to mollom'.
-  $permissions['report to mollom'] = array(
-    'name' => 'report to mollom',
+  // Exported permission: 'report to akismet'.
+  $permissions['report to akismet'] = array(
+    'name' => 'report to akismet',
     'roles' => array(
       'administrator' => 'administrator',
     ),
-    'module' => 'mollom',
+    'module' => 'akismet',
   );
 
   // Exported permission: 'revert revisions'.
@@ -4065,6 +4140,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'revert revisions',
     'roles' => array(
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );

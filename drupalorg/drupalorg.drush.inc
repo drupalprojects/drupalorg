@@ -137,7 +137,12 @@ function drush_drupalorg_chargify_sync() {
     $page = 0;
     do {
       $page += 1;
-      $response = drupal_http_request(url(_drupalorg_chargify_base_url($currency) . 'subscriptions.json', ['query' => ['page' => 1]]));
+      $response = drupal_http_request(url(_drupalorg_chargify_base_url($currency) . 'subscriptions.json', [
+        'query' => [
+          'page' => $page,
+          'per_page' => 200,
+        ],
+      ]));
       if ($response->code != 200) {
         drush_log(dt('Failed to fetch subscriptions for @currency', ['@currency' => $currency]), 'error');
         break 2;

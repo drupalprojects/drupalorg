@@ -951,6 +951,7 @@ function drupalorg_user_field_default_field_instances() {
   $field_instances['user-user-field_mentors'] = array(
     'bundle' => 'user',
     'default_value' => NULL,
+    'default_value_function' => '',
     'deleted' => 0,
     'description' => 'Give credit to community members (Drupal.org usernames) who have significantly influenced your contributions to Drupal. For example, people who mentored you in the issue queue, IRC, user groups, sprints, Core contribution mentoring hours, etc.',
     'display' => array(
@@ -967,13 +968,18 @@ function drupalorg_user_field_default_field_instances() {
     'label' => 'My mentors',
     'required' => 0,
     'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
       'user_register_form' => 0,
     ),
     'widget' => array(
       'active' => 1,
       'module' => 'entityreference',
       'settings' => array(
-        'match_operator' => 'CONTAINS',
+        'match_operator' => 'STARTS_WITH',
         'path' => '',
         'size' => 60,
       ),
@@ -1048,6 +1054,42 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_shared_account_for_an_org'.
+  $field_instances['user-user-field_shared_account_for_an_org'] = array(
+    'bundle' => 'user',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Check if this account is a <a href="/terms#accounts" target="_blank" rel="noopener">shared account</a> for multiple people (eg: for an organization).',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 25,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_shared_account_for_an_org',
+    'label' => 'Is this a shared account?',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 1,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_social_links'.
   $field_instances['user-user-field_social_links'] = array(
     'bundle' => 'user',
@@ -1086,36 +1128,94 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-field_subscribe_membership'.
+  $field_instances['user-user-field_subscribe_membership'] = array(
+    'bundle' => 'user',
+    'default_value' => array(
+      0 => NULL,
+    ),
+    'deleted' => 0,
+    'description' => 'Subscribe to get emails relevant to members.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 23,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_subscribe_membership',
+    'label' => 'Member communications',
+    'required' => 0,
+    'settings' => array(
+      'hide_subscribe_checkbox' => 0,
+      'interest_groups_title' => 'Interest Groups',
+      'mergefields' => array(
+        'COMPANY' => '[user:drupalorg-current-organization-name]',
+        'COUNTRY' => '[user:field-country]',
+        'DRUPNAME' => '[user:name]',
+        'EMAIL' => '[user:mail]',
+        'FNAME' => '[user:drupalorg-first-or-user-name]',
+        'LNAME' => '[user:field-last-name]',
+        'MEMENDIND' => '[user:field-da-expiration-date:custom:Y-m-d]',
+        'MEMENDORG' => '[user:drupalorg-org-member-expiration-date:custom:Y-m-d]',
+        'MEMSINCEIN' => '[user:field-da-join-date:custom:Y-m-d]',
+        'MEMSINCEOR' => '[user:drupalorg-org-member-join-date:custom:Y-m-d]',
+        'RECENTGCUR' => '[user:drupalorg-last-gift-currency]',
+        'RECENTGIFT' => '[user:drupalorg-last-gift-amount]',
+        'advanced' => 1,
+      ),
+      'options' => array(
+        'interest_groups' => array(),
+        'subscribe' => FALSE,
+      ),
+      'show_interest_groups' => 0,
+      'unsubscribe_on_delete' => 1,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'mailchimp_lists',
+      'settings' => array(),
+      'type' => 'mailchimp_lists_select',
+      'weight' => 6,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_subscribe_to'.
   $field_instances['user-user-field_subscribe_to'] = array(
     'bundle' => 'user',
     'default_value' => array(
       0 => array(
-        'subscribe' => 0,
+        'subscribe' => FALSE,
         'interest_groups' => array(
-          '8d99874622' => array(
-            '22e1b642b7' => 0,
-            '53d7f4209a' => 0,
-            '3374b1dd84' => 0,
-            '60985452cc' => 0,
-            'a0d7a1c02b' => 0,
-            'b3d670a22d' => 0,
-            'dc0ad3fd6d' => 0,
-            'faceb9a270' => 0,
+          '41ac996e3d' => array(
+            '9e8f056224' => 0,
+            '462306d1ff' => 0,
+            'eb3fcc4be5' => 0,
           ),
-          'f99166c398' => array(
-            '8e538016f8' => 0,
-            '8f497df2ac' => 0,
-            '12e0adb9c2' => 0,
-            '6471b579b9' => 0,
-            '7178f4ed23' => 0,
-            '8052a9eec6' => 0,
-            'b5eae4f409' => 0,
-            'c0d1826013' => 0,
-            'c2c6d438b4' => 0,
-            'da2686313a' => 0,
-            'f0dc5eecf2' => 0,
-            'f235b3d5e5' => 0,
+          '853d1901d5' => array(
+            '7cbef189d8' => 0,
+            '792fc1487f' => 0,
+            '40270f75fa' => 0,
+            'b2b586f8e6' => 0,
+          ),
+          '27985faf3e' => array(
+            'ac14893ea5' => 0,
+            'bb893e8fcf' => 0,
+          ),
+          'de188429fc' => '',
+          'ef73b36223' => array(
+            '14da73ca33' => 0,
+            '55f3a25697' => 0,
+            '503e9527cd' => 0,
+            '884c445c33' => 0,
+            '75950bc10a' => 0,
+            'd8026e0bd5' => 0,
+          ),
+          'f66bd3cafd' => array(
+            'd506874da1' => 0,
           ),
         ),
         'is_default' => TRUE,
@@ -1133,37 +1233,25 @@ function drupalorg_user_field_default_field_instances() {
     ),
     'entity_type' => 'user',
     'field_name' => 'field_subscribe_to',
-    'label' => 'Subscribe to',
+    'label' => 'Communication preferences',
     'required' => 0,
     'settings' => array(
       'hide_subscribe_checkbox' => 1,
       'interest_groups_title' => 'Interest Groups',
       'mergefields' => array(
-        'ACCTCREATE' => '',
-        'BUSINESS' => '',
+        'ACCTCREATE' => '[user:created:custom:Y-m-d]',
         'CIVI_ID' => '',
-        'COMPANY' => '',
-        'COUNTRY' => '',
-        'DCEVENT' => '',
+        'COMPANY' => '[user:drupalorg-current-organization-name]',
+        'COUNTRY' => '[user:field-country]',
         'DRUPNAME' => '[user:name]',
         'EMAIL' => '[user:mail]',
-        'FNAME' => '[user:name]',
+        'FNAME' => '[user:drupalorg-first-or-user-name]',
         'FULLNAME' => '',
         'JOBTITLE' => '',
         'LNAME' => '[user:field-last-name]',
-        'MEMENDIND' => '',
-        'MEMENDORG' => '',
-        'MEMSINCEIN' => '',
-        'MEMSINCEOR' => '',
-        'MMERGE16' => '',
-        'MMERGE18' => '',
-        'MMERGE19' => '',
-        'ORG' => '',
-        'RECENTGIFT' => '',
         'SFID' => '',
-        'SIGNUP' => '',
         'SKILLLEVEL' => '',
-        'advanced' => 0,
+        'advanced' => 1,
       ),
       'options' => array(
         'interest_groups' => array(),
@@ -1356,6 +1444,8 @@ function drupalorg_user_field_default_field_instances() {
   t('Admin-only notes.');
   t('Areas of Expertise');
   t('Bio');
+  t('Check if this account is a <a href="/terms#accounts" target="_blank" rel="noopener">shared account</a> for multiple people (eg: for an organization).');
+  t('Communication preferences');
   t('Country');
   t('Current');
   t('Distil Botscore');
@@ -1372,12 +1462,14 @@ function drupalorg_user_field_default_field_instances() {
   t('Group membership');
   t('IRC');
   t('Industries Worked In');
+  t('Is this a shared account?');
   t('Job Title');
   t('Languages spoken');
   t('Last name or surname');
   t('Link to your profile pages on Twitter, LinkedIn, Facebook, Google, Drupal Answers, GitHub, Gratipay, and any others you would like to include.');
   t('List companies or institutions you have worked for or are working for now.');
   t('Location');
+  t('Member communications');
   t('My contributions');
   t('My mentors');
   t('Notes');
@@ -1394,7 +1486,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Select Drupal events you attended or are planning to attend.');
   t('Select one or more languages you speak.');
   t('Social links');
-  t('Subscribe to');
+  t('Subscribe to get emails relevant to members.');
   t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');
   t('Underrepresented communities');

@@ -1,6 +1,6 @@
 (function () {
   // Check Do Not Track.
-  if (navigator.doNotTrack != "yes" && navigator.doNotTrack != "1" && navigator.msDoNotTrack != "1" && window.doNotTrack != "1") {
+  if (Drupal.drupalorgCrosssite.canTrack()) {
     // Perfect Audience
     window._pa = window._pa || {};
     var pa = document.createElement('script');

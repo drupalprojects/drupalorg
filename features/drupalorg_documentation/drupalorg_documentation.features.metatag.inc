@@ -13,6 +13,7 @@ function drupalorg_documentation_metatag_export_default() {
   // Exported Metatag config instance: node:documentation.
   $config['node:documentation'] = array(
     'instance' => 'node:documentation',
+    'disabled' => FALSE,
     'config' => array(
       'title' => array(
         'value' => '[node:title] | [node:drupalorg-top-guide:title] guide on [site:name]',
@@ -26,6 +27,7 @@ function drupalorg_documentation_metatag_export_default() {
   // Exported Metatag config instance: node:guide.
   $config['node:guide'] = array(
     'instance' => 'node:guide',
+    'disabled' => FALSE,
     'config' => array(
       'title' => array(
         'value' => '[node:title] | [node:drupalorg-top-guide:title] guide on [site:name]',

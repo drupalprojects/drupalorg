@@ -14,7 +14,6 @@
   */
   Drupal.behaviors.redesign = {
     attach: function (context) {
-
       if (localStorage.getItem('dorganimations')) {
         $('.d-animations-checkbox').attr('checked','checked');
         $('body').addClass('dorg-noanim');
