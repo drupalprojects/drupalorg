@@ -89,6 +89,8 @@ function drupalorg_tokens($type, $tokens, array $data = [], array $options = [])
 
     case 'user':
       if (isset($data['user'])) {
+        $wrapper = entity_metadata_wrapper('user', $data['user']);
+
         // Organization join & expiration date.
         $replace_tokens_join = token_find_with_prefix($tokens, 'drupalorg-org-member-join-date');
         $replace_tokens_expiration = token_find_with_prefix($tokens, 'drupalorg-org-member-expiration-date');
@@ -122,7 +124,6 @@ function drupalorg_tokens($type, $tokens, array $data = [], array $options = [])
 
         // Current organization name.
         if (isset($tokens['drupalorg-current-organization-name'])) {
-          $wrapper = entity_metadata_wrapper('user', $data['user']);
           foreach ($wrapper->field_organizations as $organization) {
             try {
               if ($organization->field_current->value()) {
@@ -135,7 +136,6 @@ function drupalorg_tokens($type, $tokens, array $data = [], array $options = [])
 
         // First or user name.
         if (isset($tokens['drupalorg-first-or-user-name'])) {
-          $wrapper = entity_metadata_wrapper('user', $data['user']);
           $replacements[$tokens['drupalorg-first-or-user-name']] = empty($wrapper->field_first_name->value()) ? $data['user']->name : $wrapper->field_first_name->value();
         }
       }
