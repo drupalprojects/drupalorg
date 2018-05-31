@@ -2676,7 +2676,11 @@ function drupalorg_form_guide_node_form_alter(&$form) {
       $form['#access'] = FALSE;
     }
   }
-
+  // Allow top level guide edits to happen without the parent field being required
+  if (isset($form['#node']->nid)){
+    // && node_node_access('guide', 'update', $GLOBALS['user']) === NODE_ACCESS_ALLOW
+    $form['og_group_ref_documentation']['und'][0]['target_id']['#required'] = FALSE;
+  }
   // Allow admins to create stand-alone guides.
   if (user_access('administer group')) {
     $form['og_group_ref_documentation'][LANGUAGE_NONE][0]['target_id']['#required'] = FALSE;
