@@ -45,6 +45,10 @@ function drupalorg_token_info() {
           'name' => t('First or user name'),
           'description' => t('If the user has a first name, that name, otherwise their username.'),
         ],
+        'drupalorg-country-or-geolocation' => [
+          'name' => t('Country with geolocation fallback'),
+          'description' => t('The user’s country, or geolocation as a fallback.'),
+        ],
       ],
     ],
   ];
@@ -137,6 +141,21 @@ function drupalorg_tokens($type, $tokens, array $data = [], array $options = [])
         // First or user name.
         if (isset($tokens['drupalorg-first-or-user-name'])) {
           $replacements[$tokens['drupalorg-first-or-user-name']] = empty($wrapper->field_first_name->value()) ? $data['user']->name : $wrapper->field_first_name->value();
+        }
+
+        // Country or geolocation.
+        if (isset($tokens['drupalorg-country-or-geolocation'])) {
+          if (empty($wrapper->field_country->value())) {
+            if ($country = drupalorg_get_and_vary_header('GeoIP-country')) {
+              $country_names = list_allowed_values(field_info_field('field_country'));
+              if (isset($country_names[$country])) {
+                $replacements[$tokens['drupalorg-country-or-geolocation']] = $country_names[$country];
+              }
+            }
+          }
+          else {
+            $replacements[$tokens['drupalorg-country-or-geolocation']] = $wrapper->field_country->label();
+          }
         }
       }
       break;
