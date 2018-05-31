@@ -6796,18 +6796,30 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
             $value['author']['name'] = $names[$value['author']['id']];
           }
         }
+        // Add sponsored projects to organization node API.
+        $parameters = drupal_get_query_parameters();
+        if (isset($parameters['type']) && $parameters['type'] === 'organization') {
+          foreach ($response['list'] as &$value) {
+            $value['projects_supported'] = drupalorg_get_organization_supported_projects($value['nid']);
+          }
+        }
         break;
 
       case 'viewResource':
-        // Add security risk-score and label to SA API.
         if ($response['type'] === 'sa') {
+          // Add security risk score and label.
           $response['sa_risk'] = drupalorg_calculate_security_risk($response['field_sa_criticality']);
+        }
+        elseif ($response['type'] === 'organization') {
+          // Add sponsored projects.
+          $response['projects_supported'] = drupalorg_get_organization_supported_projects($response['nid']);
         }
 
         if (!empty($response['field_project']['id'])) {
           // Add project’s machine name.
           $response['field_project']['machine_name'] = node_load($response['field_project']['id'])->field_project_machine_name[LANGUAGE_NONE][0]['value'];
         }
+        break;
     }
   }
   elseif ($resourceController->resource() === 'comment') {
@@ -6830,6 +6842,26 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
       }
     }
   }
+}
+
+/**
+ * Function to get sponsored projects.
+ */
+function drupalorg_get_organization_supported_projects($nid = NULL) {
+  $projects = [];
+
+  $view = views_get_view('drupalorg_organization_supported_projects');
+  $view->preview(NULL, [$nid]);
+
+  foreach ($view->result as $item) {
+    $projects[] = [
+      'id' => $item->nid,
+      'title' => $item->node_title,
+      'uri' => restws_resource_uri('node', $item->nid),
+    ];
+  }
+
+  return $projects;
 }
 
 /**
