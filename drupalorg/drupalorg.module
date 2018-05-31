@@ -770,7 +770,7 @@ function drupalorg_block_info_alter(&$blocks) {
   // values are altered in.
   if (isset($blocks['mailchimp_signup'])) {
     foreach ($blocks['mailchimp_signup'] as &$block) {
-      $block['cache'] |= DRUPAL_CACHE_PER_USER;
+      $block['cache'] = DRUPAL_NO_CACHE;
     }
   }
 }
@@ -6846,7 +6846,7 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     'hosting_offers' => [
       'parent' => '41ac996e3d',
       'value' => ['eb3fcc4be5' => TRUE],
-      'hide' => ['853d1901d5', '27985faf3e'],
+      'hide' => ['853d1901d5', '27985faf3e', 'de188429fc', 'ef73b36223', 'f66bd3cafd'],
     ],
   ];
   if (isset($list_forms[$form_state['build_info']['args'][0]->name])) {
@@ -6863,9 +6863,10 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     // Fill out name & email.
     $form['mergevars']['EMAIL']['#type'] = 'value';
     $form['mergevars']['EMAIL']['#value'] = $GLOBALS['user']->mail;
+    $form['mergevars']['DRUPNAME']['#type'] = 'value';
+    $form['mergevars']['DRUPNAME']['#value'] = $GLOBALS['user']->name;
     $form['mergevars']['FNAME']['#type'] = 'value';
     $form['mergevars']['LNAME']['#type'] = 'value';
-    $form['mergevars']['COUNTRY']['#type'] = 'value';
     if ($name = $account_wrapper->field_first_name->value()) {
       $form['mergevars']['FNAME']['#value'] = $name;
     }
@@ -6875,11 +6876,21 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     if ($name = $account_wrapper->field_last_name->value()) {
       $form['mergevars']['LNAME']['#value'] = $name;
     }
-    $form['mergevars']['COUNTRY']['#value'] = $account_wrapper->field_country->label();
     $form['mergevars']['#prefix'] .= t('We’ll send occasional updates to @mail<br><small><a href="!url">Update your primary email</a></small>', ['@mail' => $GLOBALS['user']->mail, '!url' => url('user/' . $GLOBALS['user']->uid . '/edit/email-addresses')]);
   }
   else {
     $form['mergevars']['#prefix'] .= t('We’ll send occasional updates');
     hide($form['mergevars']['LNAME']);
+  }
+
+  if (user_is_logged_in() && !empty($account_wrapper->field_country->value())) {
+    $form['mergevars']['COUNTRY']['#type'] = 'value';
+    $form['mergevars']['COUNTRY']['#value'] = $account_wrapper->field_country->label();
+  }
+  elseif ($country = drupalorg_get_and_vary_header('GeoIP-country')) {
+    $country_names = list_allowed_values(field_info_field('field_country'));
+    if (isset($country_names[$country])) {
+      $form['mergevars']['COUNTRY']['#value'] = $country_names[$country];
+    }
   }
 }
