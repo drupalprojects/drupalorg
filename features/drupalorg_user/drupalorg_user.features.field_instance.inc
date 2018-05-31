@@ -1153,7 +1153,7 @@ function drupalorg_user_field_default_field_instances() {
       'interest_groups_title' => 'Interest Groups',
       'mergefields' => array(
         'COMPANY' => '[user:drupalorg-current-organization-name]',
-        'COUNTRY' => '[user:field-country]',
+        'COUNTRY' => '[user:drupalorg-country-or-geolocation]',
         'DRUPNAME' => '[user:name]',
         'EMAIL' => '[user:mail]',
         'FNAME' => '[user:drupalorg-first-or-user-name]',
@@ -1242,7 +1242,7 @@ function drupalorg_user_field_default_field_instances() {
         'ACCTCREATE' => '[user:created:custom:Y-m-d]',
         'CIVI_ID' => '',
         'COMPANY' => '[user:drupalorg-current-organization-name]',
-        'COUNTRY' => '[user:field-country]',
+        'COUNTRY' => '[user:drupalorg-country-or-geolocation]',
         'DRUPNAME' => '[user:name]',
         'EMAIL' => '[user:mail]',
         'FNAME' => '[user:drupalorg-first-or-user-name]',
