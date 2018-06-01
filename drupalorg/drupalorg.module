@@ -6397,7 +6397,7 @@ function drupalorg_browse_projects_form($form, &$form_state, $project_type) {
     $form['#token'] = FALSE;
   }
 
-  $label = drupalorg_project_node_type_label($project_type->type, 'plural');
+  $label = drupal_strtolower(drupalorg_project_node_type_label($project_type->type, 'plural'));
   if (arg(0) === 'project') {
     // On project browsing pages, not search page, add results count.
     global $pager_total_items;
@@ -6478,9 +6478,9 @@ function drupalorg_browse_projects_form($form, &$form_state, $project_type) {
     ],
   ];
 
-  // Security Advisory Coverage.
+  // Security advisory coverage.
   $form['f'][] = [
-    '#title' => t('Security Advisory Coverage'),
+    '#title' => t('Security advisory coverage'),
     '#type' => 'select',
     '#options' => [
       '' => t('All projects'),
