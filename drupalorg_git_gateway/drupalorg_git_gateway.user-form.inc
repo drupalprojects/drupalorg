@@ -347,6 +347,9 @@ function drupalorg_git_gateway_user_form_base_validate($form, &$form_state) {
     elseif (preg_match('/[^A-Za-z0-9\._-]/', $form_state['values']['git_username'])) {
       form_set_error('git_username', t('The requested username contains invalid characters.'));
     }
+    elseif (in_array($form_state['values']['git_username'], variable_get('drupalorg_git_reserved_names', []))) {
+      form_set_error('git_username', t('The requested username is reserved, please choose a different Git username.'));
+    }
     elseif (empty($form_state['account']->git_username)) {
       $form_state['rebuild'] = TRUE;
       $form_state['storage']['chosen_username'] = $form_state['values']['git_username'];
