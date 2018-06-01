@@ -341,7 +341,7 @@ function drupalorg_git_gateway_user_form_base_validate($form, &$form_state) {
   // If the git_username field is present, do some validation.
   if (isset($form['username']['git_username'])) {
     // Ensure the requested ID isn't taken.
-    if ($uid = db_query("SELECT uid FROM {users} WHERE git_username = :git_username AND uid <> :uid", array(':git_username' => $form_state['values']['git_username'], ':uid' => $form_state['account']->uid))->fetchField()) {
+    if ($uid = db_query("SELECT uid FROM {users} WHERE lower(git_username) = lower(:git_username) AND uid <> :uid", array(':git_username' => $form_state['values']['git_username'], ':uid' => $form_state['account']->uid))->fetchField()) {
       form_set_error('git_username', t('The requested Git username is already taken.'));
     }
     elseif (preg_match('/[^A-Za-z0-9\._-]/', $form_state['values']['git_username'])) {
