@@ -6935,6 +6935,7 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     hide($form['mergevars']['LNAME']);
   }
 
+  // Try to fill out country.
   if (user_is_logged_in() && !empty($account_wrapper->field_country->value())) {
     $form['mergevars']['COUNTRY']['#type'] = 'value';
     $form['mergevars']['COUNTRY']['#value'] = $account_wrapper->field_country->label();
@@ -6944,5 +6945,9 @@ function drupalorg_form_mailchimp_signup_subscribe_form_alter(&$form, &$form_sta
     if (isset($country_names[$country])) {
       $form['mergevars']['COUNTRY']['#value'] = $country_names[$country];
     }
+  }
+  elseif (!$form['mergevars']['COUNTRY']['#required']) {
+    // Hide if not required.
+    $form['mergevars']['COUNTRY']['#type'] = 'value';
   }
 }
