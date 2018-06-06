@@ -6592,7 +6592,7 @@ function _drupalorg_chargify_base_url($currency) {
  * Get a user’s Chargify subscriptions.
  */
 function _drupalorg_get_chargify_subscriptions(stdClass $account) {
-  return db_query('SELECT uid, organization_nid, currency, subscription_id, state, current_billing_amount_in_cents, created_at, current_period_ends_at, expires_at, product_handle, product_name, customer_id, customer_first_name, customer_last_name, customer_organization, customer_email FROM {drupalorg_chargify_subscriptions} WHERE uid = :uid', [':uid' => $account->uid])->fetchAll();
+  return db_query('SELECT uid, organization_nid, currency, subscription_id, state, current_billing_amount_in_cents, created_at, current_period_ends_at, expires_at, product_handle, product_name, customer_id, customer_first_name, customer_last_name, customer_organization, customer_email, has_cc FROM {drupalorg_chargify_subscriptions} WHERE uid = :uid', [':uid' => $account->uid])->fetchAll();
 }
 
 /**
@@ -6610,7 +6610,7 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
     'customer_last_name' => $subscription->subscription->customer->last_name,
     'customer_organization' => $subscription->subscription->customer->organization,
     'customer_email' => $subscription->subscription->customer->email,
-    'has_cc' => !is_null($subscription->subscription->credit_card),
+    'has_cc' => (int) !is_null($subscription->subscription->credit_card),
   ];
   if (empty($subscription->subscription->customer->reference)) {
     // Not matched up to a user account, return early.
