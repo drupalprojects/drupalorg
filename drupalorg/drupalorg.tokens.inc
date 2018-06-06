@@ -118,7 +118,7 @@ function drupalorg_tokens($type, $tokens, array $data = [], array $options = [])
           }
           if (isset($last_subscription)) {
             if (isset($tokens['drupalorg-last-gift-amount'])) {
-              $replacements[$tokens['drupalorg-last-gift-amount']] = substr(_format_chargify_money($last_subscription), 1);
+              $replacements[$tokens['drupalorg-last-gift-amount']] = drupal_substr(_format_chargify_money($last_subscription), 1);
             }
             if (isset($tokens['drupalorg-last-gift-currency'])) {
               $replacements[$tokens['drupalorg-last-gift-currency']] = drupal_strtoupper($last_subscription->currency);
