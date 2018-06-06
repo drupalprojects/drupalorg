@@ -6610,6 +6610,7 @@ function _drupalorg_update_chargify_subscription($currency, stdClass $subscripti
     'customer_last_name' => $subscription->subscription->customer->last_name,
     'customer_organization' => $subscription->subscription->customer->organization,
     'customer_email' => $subscription->subscription->customer->email,
+    'has_cc' => !is_null($subscription->subscription->credit_card),
   ];
   if (empty($subscription->subscription->customer->reference)) {
     // Not matched up to a user account, return early.

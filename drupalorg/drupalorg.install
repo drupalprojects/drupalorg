@@ -334,6 +334,14 @@ function drupalorg_schema() {
         'not null' => TRUE,
         'default' => 0,
       ],
+      'has_cc' => [
+        'description' => 'Flag for whether a subscription has credit card info, or not',
+        'type' => 'int',
+        'size' => 'small',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
     ],
     'primary key' => ['subscription_id', 'currency'],
     'indexes' => [
@@ -4995,5 +5003,19 @@ function drupalorg_update_7099() {
       'type' => 'mailchimp_lists_select',
       'weight' => 6,
     ],
+  ]);
+}
+
+/**
+ * Add drupalorg_chargify_subscriptions.has_cc column.
+ */
+function drupalorg_update_7100() {
+  db_add_field('drupalorg_chargify_subscriptions', 'has_cc', [
+    'description' => 'Flag for whether a subscription has credit card info, or not',
+    'type' => 'int',
+    'size' => 'small',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'default' => 0,
   ]);
 }
