@@ -326,26 +326,23 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
     ->condition('u.name', array_keys($data['users']), 'IN')
     ->execute()->fetchAllKeyed();
 
+  // Use Git usernames for users.
   $users_original = $data['users'];
-  foreach ($result as $name => $git_username) {
-    // Use Git usernames for users.
-    $account = user_load($data['users'][$name]['uid']);
-    $data['users'][$git_username] = $users_original[$name];
-
-    $ap = &$data['users'][$git_username];
-
-    $ap['global'] = 0;
+  $data['users'] = [];
+  foreach (user_load_multiple(array_column($users_original, 'uid')) as $account) {
+    $data['users'][$account->git_username] = $users_original[$account->name];
+    $data['users'][$account->git_username]['global'] = 0;
     // User has global access disabled for some reason.
     if (!isset($account->roles[DRUPALORG_GIT_GATEWAY_RID]) || empty($account->status)) {
-      $ap['global'] |= DRUPALORG_GIT_AUTH_NO_ROLE;
+      $data['users'][$account->git_username]['global'] |= DRUPALORG_GIT_AUTH_NO_ROLE;
       if (!empty($account->git_disabled)) {
-        $ap['global'] |= DRUPALORG_GIT_AUTH_ACCOUNT_SUSPENDED;
+        $data['users'][$account->git_username]['global'] |= DRUPALORG_GIT_AUTH_ACCOUNT_SUSPENDED;
       }
       if (empty($account->git_consent)) {
-        $ap['global'] |= DRUPALORG_GIT_AUTH_NOT_CONSENTED;
+        $data['users'][$account->git_username]['global'] |= DRUPALORG_GIT_AUTH_NOT_CONSENTED;
       }
       if (empty($account->status)) {
-        $ap['global'] |= DRUPALORG_GIT_AUTH_ACCOUNT_BLOCKED;
+        $data['users'][$account->git_username]['global'] |= DRUPALORG_GIT_AUTH_ACCOUNT_BLOCKED;
       }
     }
   }
