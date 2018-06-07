@@ -372,19 +372,18 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
   $chargify_products = variable_get('drupalorg_chargify_products');
 
   $form['individual'] = [
-    '#prefix' => '<h2>' . t('Individual membership') . '</h2>',
+    '#prefix' => '<div class="memberships"><section><h2>' . t('Individual membership') . '</h2>',
     '#markup' => '<p>' . l(t('Learn about membership and join today'), 'association/individual-membership') . '</p>',
+    '#suffix' => '</section>',
   ];
   $form['organization'] = [
-    '#prefix' => '<h2>' . t('Organization membership') . '</h2>',
+    '#prefix' => '<section><h2>' . t('Organization membership') . '</h2>',
     '#markup' => '<p>' . t('Responsible for an organization?') . ' ' . l(t('Learn about supporting the Drupal Association'), 'association/organization-membership') . '</p>',
+    '#suffix' => '</section></div>',
   ];
   $form['donations'] = [
-    '#prefix' => '<h2>' . t('Donations') . '</h2><p>' . t('Donations help keep the Drupal Association running.') . '</p>',
-    'table' => [
-      '#theme' => 'table',
-      '#sticky' => FALSE,
-    ],
+    '#prefix' => '<div class="other"><h2>' . t('Donations') . '</h2><p>' . t('Donations help keep the Drupal Association running.') . '</p>',
+    'table' => [],
     '#suffix' => '<p>' . l(t('Donate'), 'association/donate', ['attributes' => ['class' => 'action-button']]) . '</p>',
   ];
   $form['questions'] = [
@@ -394,10 +393,13 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
       . '<li>' . l(t('Association frequently asked questions'), 'association/faq') . '</li>'
       . '<li>' . l(t('Contact us'), 'contact') . '</li>'
       . '</ul>',
+    '#suffix' => '</div>',
   ];
 
   foreach (_drupalorg_get_chargify_subscriptions($account) as $row) {
     if ($row->product_handle === 'donation') {
+      $form['donations']['table']['#theme'] = 'table';
+      $form['donations']['table']['#sticky'] = FALSE;
       $form['donations']['table']['#caption'] = t('<strong>Your past donations</strong>');
       $form['donations']['table']['#suffix'] = '<p>' . t('Thank you! 🎉') . '</p>';
       $form['donations']['table']['#rows'][] = [
@@ -508,6 +510,8 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
         $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '<em>' . t('View & update credit card [must be done by member]') . '</em>';
       }
       $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '</p>';
+
+      // Organization membership.
       if ($base_product_handle === 'organization') {
         $form[$base_product_handle][$row->subscription_id]['update_organization'] = [
           '#type' => 'checkbox',
