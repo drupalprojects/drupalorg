@@ -321,15 +321,13 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
     'branches' => $branches,
   );
 
-  $result = db_select('users', 'u')
-    ->fields('u', array('name', 'git_username'))
-    ->condition('u.name', array_keys($data['users']), 'IN')
-    ->execute()->fetchAllKeyed();
-
   // Use Git usernames for users.
   $users_original = $data['users'];
   $data['users'] = [];
   foreach (user_load_multiple(array_column($users_original, 'uid')) as $account) {
+    if (empty($account->git_username)) {
+      continue;
+    }
     $data['users'][$account->git_username] = $users_original[$account->name];
     $data['users'][$account->git_username]['global'] = 0;
     // User has global access disabled for some reason.
