@@ -4795,7 +4795,17 @@ function drupalorg_bakery_transmit($edit, $account) {
       $data['drupalorg_roles'][$role] = isset($account->roles[$rid]);
     }
   }
-
+  // Current organization name.
+  foreach ($account_wrapper->field_organizations as $organization) {
+    try {
+      if ($organization->field_current->value()) {
+        $data['drupalorg_field_organization_name'] = $organization->field_organization_name->value();
+        $data['drupalorg_field_job_title'] = $organization->field_job_title->value();
+      }
+    }
+    catch (EntityMetadataWrapperException $e) {
+    }
+  }
   return $data;
 }
 
