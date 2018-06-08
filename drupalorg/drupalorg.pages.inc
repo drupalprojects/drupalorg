@@ -500,7 +500,23 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
           ],
         ],
       ];
+
+      // Current amount.
       $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] = '<p>' . t('On renewal you’ll be charged <strong>@amount</strong>', ['@amount' => _format_chargify_money($row)]) . '<br>';
+
+      if (!$row->has_cc) {
+        // Credit card info is not on file.
+        if (preg_match('/-recur$/', $row->product_handle) || $row->expires_at > $row->current_period_ends_at) {
+          // Membership is set to renew, but we don't have payment info.
+          $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '<div class="note-warning">';
+        }
+        else {
+          $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '<div>';
+        }
+        $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= t('<strong>No payment information on file!</strong><br>If you’d like to renew your membership, please update your card.<br><small>Updates take a few minutes to sync. Click to review a recently-added card.</small>') . '<br><strong>';
+      }
+
+      // Payment information.
       if ($GLOBALS['user']->uid === $account->uid) {
         // Only allow the member themselves to do certain actions.
         $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= l(t('View & update credit card'), 'https://' . $chargify_keys[$row->currency]['subdomain'] . '.chargifypay.com/update_payment/' . $row->subscription_id . '/' . substr(sha1('update_payment--' . $row->subscription_id . '--' . $chargify_keys[$row->currency]['shared_key']), 0, 10), ['external' => TRUE, 'attributes' => ['target' => '_blank']]);
@@ -508,6 +524,9 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
       else {
         // Disable some actions for admins.
         $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '<em>' . t('View & update credit card [must be done by member]') . '</em>';
+      }
+      if (!$row->has_cc) {
+        $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '</strong></div>';
       }
       $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '</p>';
 
