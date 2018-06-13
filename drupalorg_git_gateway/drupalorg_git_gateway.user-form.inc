@@ -69,6 +69,10 @@ function drupalorg_git_gateway_user_form($form, &$form_state) {
     $form['git_config'] = _drupalorg_git_gateway_user_config($account);
   }
 
+  if ($show_messages && !empty($account->field_shared_account_for_an_org['und'][0]['value'])) {
+    drupal_set_message(t(' Your account is a <a href="/terms#accounts">shared account</a>, which can not push code via Git. You can use Git with a separate account for an individual.'), 'warning');
+  }
+
   if (!isset($account->git_username)) {
     $form['username'] = _drupalorg_git_gateway_username_set($account);
     if ($show_messages) {

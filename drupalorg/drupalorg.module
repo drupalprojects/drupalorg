@@ -3087,6 +3087,30 @@ function drupalorg_node_access($node, $op, $account) {
     if (($type === 'documentation' || ($type === 'guide' && $op === 'update')) && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
       return NODE_ACCESS_DENY;
     }
+
+    $allowed_nodes = [
+     'organization',
+     'casestudy',
+     'project_core',
+     'project_distribution',
+     'project_drupalorg',
+     'project_module',
+     'project_release',
+     'project_theme_engine',
+     'project_theme',
+     'project_translation',
+    ];
+
+    global $user;
+    $user_values = user_load($user->uid);
+    $show_messages = empty($form_state['post']);
+
+    if ($show_messages && (!empty($user_values->field_shared_account_for_an_org['und'][0]['value']))) {
+      if (!empty($type) && !in_array($type, $allowed_nodes)) {
+        drupal_set_message(t('Your account is a <a href="/terms#accounts">shared account</a>, which can not post all types of content. This content should be posted from a separate account for an individual.'), 'warning');
+        return NODE_ACCESS_DENY;
+      }
+    }
   }
 }
 
