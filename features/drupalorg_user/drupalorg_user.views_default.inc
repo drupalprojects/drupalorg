@@ -145,7 +145,7 @@ function drupalorg_user_views_default_views() {
   $handler->display->display_options['footer']['area']['id'] = 'area';
   $handler->display->display_options['footer']['area']['table'] = 'views';
   $handler->display->display_options['footer']['area']['field'] = 'area';
-  $handler->display->display_options['footer']['area']['content'] = '<a href="/u/[name]/issue-credits">View all issue credits</a>';
+  $handler->display->display_options['footer']['area']['content'] = '<a href="/u/%1/issue-credits">View all issue credits</a>';
   $handler->display->display_options['footer']['area']['format'] = '1';
   $handler->display->display_options['footer']['area']['tokenize'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
@@ -1056,7 +1056,7 @@ function drupalorg_user_views_default_views() {
     t('Comment entity referenced from field_issue_credit'),
     t('Content entity referenced from field_project'),
     t('User recent'),
-    t('<a href="/u/[name]/issue-credits">View all issue credits</a>'),
+    t('<a href="/u/%1/issue-credits">View all issue credits</a>'),
     t(','),
     t('Author'),
     t('All'),
