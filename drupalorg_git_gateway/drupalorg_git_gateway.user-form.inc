@@ -209,13 +209,13 @@ function _drupalorg_git_gateway_username_set($account) {
     '#weight' => -20,
   );
 
-  $form['#description'] = t('Choose a username to use for Git. This will be your SSH user when authenticating to Drupal.org with Git, and Drupal.org will use it to generate your personalized sandbox URIs. <strong>Once chosen, your Git username cannot be changed.</strong>');
+  $form['#description'] = t('Choose a username to use for Git. This can be used when authenticating to Drupal.org with Git, and Drupal.org will use it to generate your personalized sandbox URIs. <strong>Once chosen, your Git username cannot be changed.</strong>');
   $form['git_username'] = array(
     '#type' => 'textfield',
     '#title' => t('Desired Git username'),
     '#maxlength' => 64,
     '#default_value' => drupalorg_git_gateway_suggest_git_username($account->name),
-    '#description' => t('Acceptable characters are ANSI alphanumerics (A-Z, a-z, 0-9), periods, underscores, or dashes. A suggested username is provided, based on the acceptable characters in your Drupal username and the availability of Git usernames.'),
+    '#description' => t('Can contain A-Z letters, numbers, periods, underscores, and dashes. Can not start with a dash; or end with a dash, dot, <code>.git</code>, or <code>.atom</code>.'),
   );
   return $form;
 }
@@ -344,7 +344,9 @@ function drupalorg_git_gateway_user_form_base_validate($form, &$form_state) {
     if ($uid = db_query("SELECT uid FROM {users} WHERE lower(git_username) = lower(:git_username) AND uid <> :uid", array(':git_username' => $form_state['values']['git_username'], ':uid' => $form_state['account']->uid))->fetchField()) {
       form_set_error('git_username', t('The requested Git username is already taken.'));
     }
-    elseif (preg_match('/[^A-Za-z0-9\._-]/', $form_state['values']['git_username'])) {
+    // And is a valid pattern. Adapted from NAMESPACE_FORMAT_REGEX in
+    // https://gitlab.com/gitlab-org/gitlab-ce/blob/master/lib/gitlab/path_regex.rb
+    elseif (!preg_match('/^(?:[a-zA-Z0-9_\.][a-zA-Z0-9_\-\.]*[a-zA-Z0-9_\-]|[a-zA-Z0-9_])(?<!\.git|\.atom)$/', $form_state['values']['git_username'])) {
       form_set_error('git_username', t('The requested username contains invalid characters.'));
     }
     elseif (in_array($form_state['values']['git_username'], variable_get('drupalorg_git_reserved_names', []))) {
