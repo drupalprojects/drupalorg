@@ -3681,14 +3681,7 @@ function drupalorg_node_insert($node) {
     drupalorg_org_request_issue($node);
     // Send an email confirmation to organization owner.
     $author = user_load($node->uid);
-    $params = array(
-      'subject' => t('Your organization page is created.'),
-      'user' => t($author->name)
-    );
-    $flag = drupal_mail('drupalorg', 'new_org_created', $author->mail, language_default(), $params);
-    if($flag['send'] == 1) {
-      dpm('An email has been sent to your email address:' . $author->mail);
-    }
+    drupal_mail('drupalorg', 'new_org_created', $author->mail, language_default(), ['user' => $author]);
   }
   elseif (project_issue_node_is_issue($node)) {
     // Save initial issue comment.
@@ -5546,14 +5539,14 @@ function drupalorg_mail($key, &$message, $params) {
 
 
     case 'new_org_created':
-      $message['subject'] = $params['subject'];
+      $message['subject'] = t('You created an organization page on Drupal.org, what’s next?');
       $message['body'] = [
-        t('Dear @name,', ['@name' => $params['user']]),
-        t('Thanks for creating an organization page on Drupal.org. By making this space for your organization, you are showing the community that you are invested in Drupal\'s ecosystem.'),
-        t('If you have any questions about organization pages and putting your best foot forward on Drupal.org, we\'re here to help. Email @url.',['@url' => url('mailto:help@drupal.org',['absolute' => TRUE,])]),
-        t('If your organization provides Drupal services, make sure that you\'ve requested for your page to be added to the Marketplace. (A checkbox on the organization page is visible for this in Edit mode.) By checking this box, you generate an issue in the Content queue (@url1) for community review. You can learn more about the review process in the guidelines for Drupal Services list (@url2).', ['@url1' => url('https://www.drupal.org/project/issues/content?text=&status=Open&priorities=All&categories=All&version=All&component=Services+listing',['absolute' => TRUE]), '@url2' => url('https://www.drupal.org/drupalorg/docs/marketplace',['absolute' => TRUE]),]),
-        t('When your organization has a presence on Drupal.org, you have a home to show your contributions to the project. We have an issue credit system that uses your team\'s contributions to give you a spot on the Marketplace list. The more contribution credits your organization has, the higher your spot on the list. You can learn more about how credit is given (@url1) and where it appears on your organization page. You can also see how Dries provides analysis of who is sponsoring Drupal development (@url2) with data from the issue credit system.', ['@url1' => url('https://www.drupal.org/getting-involved/maintainer/grant-issue-credits',['absolute' => TRUE]), '@url2' => url('https://www.drupal.org/blog/who-sponsors-drupal-development',['absolute' => TRUE])]),
-        t('We strongly encourage a Drupal Association Organization Membership or Partnership (@url). It is not required to be listed, but membership fees help fund Drupal.org infrastructure and improvements as well as various community initiatives. When you join, you receive a badge on both your organization page and your team\'s user profiles too. Plus, you are helping to keep Drupal.org - the home of the community, where everyone collaborates on the project- up and running.',['@url' => url('https://www.drupal.org/association/support',['absolute' => TRUE])]),
+        t('Dear @name,', ['@name' => $params['user']->name]),
+        t('Thanks for creating an organization page on Drupal.org. By making this space for your organization, you are showing the community that you are invested in Drupal’s ecosystem.'),
+        t('If you have any questions about organization pages and putting your best foot forward on Drupal.org, we’re here to help. Email help@drupal.org'),
+        t('If your organization provides Drupal services, make sure that you’ve requested for your page to be added to the Marketplace. (A checkbox on the organization page is visible for this in Edit mode.) By checking this box, you generate an issue in the Content queue (@url1) for community review. You can learn more about the review process in the guidelines for Drupal Services list (@url2).', ['@url1' => url('project/issues/content', ['query' => ['component' => 'Services listing'], 'absolute' => TRUE]), '@url2' => url('drupalorg/docs/marketplace', ['absolute' => TRUE]),]),
+        t('When your organization has a presence on Drupal.org, you have a home to show your contributions to the project. We have an issue credit system that uses your team’s contributions to give you a spot on the Marketplace list. The more contribution credits your organization has, the higher your spot on the list. You can learn more about how credit is given (@url1) and where it appears on your organization page. You can also see how Dries provides analysis of who is sponsoring Drupal development (@url2) with data from the issue credit system.', ['@url1' => url('getting-involved/maintainer/grant-issue-credits', ['absolute' => TRUE]), '@url2' => url('blog/who-sponsors-drupal-development', ['absolute' => TRUE])]),
+        t('We strongly encourage a Drupal Association Organization Membership or Partnership (@url). It is not required to be listed, but membership fees help fund Drupal.org infrastructure and improvements as well as various community initiatives. When you join, you receive a badge on both your organization page and your team’s user profiles too. Plus, you are helping to keep Drupal.org—the home of the community, where everyone collaborates on the project—up and running.', ['@url' => url('association/support', ['absolute' => TRUE])]),
         t('See you on Drupal.org!'),
       ];
       break;
