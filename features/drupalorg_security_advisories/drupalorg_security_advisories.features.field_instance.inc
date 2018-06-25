@@ -562,6 +562,64 @@ function drupalorg_security_advisories_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-sa-field_sa_cve'.
+  $field_instances['node-sa-field_sa_cve'] = array(
+    'bundle' => 'sa',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 13,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_sa_cve',
+    'label' => 'CVE',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 17,
+    ),
+  );
+
   // Exported field_instance: 'node-sa-field_sa_description'.
   $field_instances['node-sa-field_sa_description'] = array(
     'bueditor_profile' => -1,
@@ -920,6 +978,7 @@ function drupalorg_security_advisories_field_default_field_instances() {
   t('Attribute comment at organization');
   t('Attribute comment for customer');
   t('Attribute this contribution');
+  t('CVE');
   t('Comment');
   t('Coordinated By');
   t('Description');
