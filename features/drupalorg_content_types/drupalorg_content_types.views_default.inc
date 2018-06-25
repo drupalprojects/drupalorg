@@ -517,6 +517,7 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['path'] = 'section-blog/%/feed';
   $handler->display->display_options['displays'] = array(
     'panel_pane_1' => 'panel_pane_1',
+    'panel_pane_3' => 'panel_pane_3',
     'default' => 0,
     'panel_pane_2' => 0,
   );
@@ -526,6 +527,16 @@ function drupalorg_content_types_views_default_views() {
   $handler->display->display_options['display_description'] = 'List view of all blog posts across the site.';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Global: Null */
+  $handler->display->display_options['arguments']['null']['id'] = 'null';
+  $handler->display->display_options['arguments']['null']['table'] = 'views';
+  $handler->display->display_options['arguments']['null']['field'] = 'null';
+  $handler->display->display_options['arguments']['null']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['null']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['null']['default_argument_options']['argument'] = 'all';
+  $handler->display->display_options['arguments']['null']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['null']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['null']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['operator'] = 'OR';
   $handler->display->display_options['filter_groups']['groups'] = array(
