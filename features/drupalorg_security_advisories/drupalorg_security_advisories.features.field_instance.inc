@@ -457,7 +457,7 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -562,6 +562,65 @@ function drupalorg_security_advisories_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-sa-field_sa_cve'.
+  $field_instances['node-sa-field_sa_cve'] = array(
+    'bundle' => 'sa',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'If assigned, most advisories do not have a CVE ID.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 5,
+      ),
+      'issuemetadata' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'nodechanges' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'related_content' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_sa_cve',
+    'label' => 'CVE IDs',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 20,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 15,
+    ),
+  );
+
   // Exported field_instance: 'node-sa-field_sa_description'.
   $field_instances['node-sa-field_sa_description'] = array(
     'bueditor_profile' => -1,
@@ -575,7 +634,7 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -602,7 +661,7 @@ function drupalorg_security_advisories_field_default_field_instances() {
           'trim_length' => 600,
         ),
         'type' => 'text_trimmed',
-        'weight' => 2,
+        'weight' => 3,
       ),
     ),
     'entity_type' => 'node',
@@ -620,7 +679,7 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 15,
+      'weight' => 16,
     ),
   );
 
@@ -637,7 +696,7 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -696,7 +755,7 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -755,7 +814,7 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'issuemetadata' => array(
         'label' => 'above',
@@ -797,7 +856,7 @@ function drupalorg_security_advisories_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 16,
+      'weight' => 17,
     ),
   );
 
@@ -920,10 +979,12 @@ function drupalorg_security_advisories_field_default_field_instances() {
   t('Attribute comment at organization');
   t('Attribute comment for customer');
   t('Attribute this contribution');
+  t('CVE IDs');
   t('Comment');
   t('Coordinated By');
   t('Description');
   t('Fixed By');
+  t('If assigned, most advisories do not have a CVE ID.');
   t('Like 001 or 042.');
   t('Project');
   t('Reported By');
