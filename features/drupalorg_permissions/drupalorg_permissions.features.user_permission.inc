@@ -2200,6 +2200,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create full project_drupalorg projects'] = array(
     'name' => 'create full project_drupalorg projects',
     'roles' => array(
+      'Git user' => 'Git user',
       'administrator' => 'administrator',
     ),
     'module' => 'project',
@@ -2367,7 +2368,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create project_drupalorg content'] = array(
     'name' => 'create project_drupalorg content',
     'roles' => array(
-      'webmaster' => 'webmaster',
+      'Git user' => 'Git user',
     ),
     'module' => 'node',
   );
@@ -3555,7 +3556,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit own project_drupalorg content'] = array(
     'name' => 'edit own project_drupalorg content',
     'roles' => array(
-      'webmaster' => 'webmaster',
+      'Git user' => 'Git user',
     ),
     'module' => 'node',
   );

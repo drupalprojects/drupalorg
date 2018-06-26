@@ -108,7 +108,7 @@ function drupalorg_projects_node_info() {
     'project_drupalorg' => array(
       'name' => t('Community project'),
       'base' => 'node_content',
-      'description' => t('Community projects can be used for any purpose that supports or enhances the Drupal project and community. Examples could be support for the Drupal.org website or non-code projects used to manage groups or initiatives within the Drupal community.'),
+      'description' => t('Community projects can be used for any purpose that supports or enhances the Drupal project and community. Examples could be non-code projects used to manage groups or initiatives within the Drupal community such as Drupal camps or working groups. They don’t contain modules or themes for use on other websites.'),
       'has_title' => '1',
       'title_label' => t('Name'),
       'help' => '',
