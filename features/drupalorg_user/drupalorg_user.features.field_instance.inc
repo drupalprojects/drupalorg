@@ -737,7 +737,7 @@ function drupalorg_user_field_default_field_instances() {
     ),
     'entity_type' => 'user',
     'field_name' => 'field_events_attended',
-    'label' => 'Drupal Events',
+    'label' => 'Drupal events',
     'required' => 0,
     'settings' => array(
       'user_register_form' => 0,
@@ -1455,7 +1455,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Distil iid');
   t('Distil zid');
   t('Drupal Contributions');
-  t('Drupal Events');
+  t('Drupal events');
   t('First or given name');
   t('Gender');
   t('Give credit to community members (Drupal.org usernames) who have significantly influenced your contributions to Drupal. For example, people who mentored you in the issue queue, IRC, user groups, sprints, Core contribution mentoring hours, etc.');

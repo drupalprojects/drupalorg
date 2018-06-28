@@ -725,6 +725,8 @@ function drupalorg_user_field_default_field_bases() {
         'vienna_2017' => 'DrupalCon Vienna 2017',
         'nashville_2018' => 'DrupalCon Nashville 2018',
         'europe_2018' => 'Drupal Europe 2018',
+        'seattle_2019' => 'DrupalCon Seattle 2019',
+        'minneapolis_2020' => 'DrupalCon Minneapolis 2020',
       ),
       'allowed_values_function' => '',
     ),
