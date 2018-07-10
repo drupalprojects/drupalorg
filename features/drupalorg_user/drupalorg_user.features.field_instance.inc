@@ -1306,36 +1306,6 @@ function drupalorg_user_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_user_geolocation'.
-  $field_instances['user-user-field_user_geolocation'] = array(
-    'bundle' => 'user',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Your general location may appear on the Drupal.org home page map, and potentially more future uses.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 4,
-      ),
-    ),
-    'entity_type' => 'user',
-    'field_name' => 'field_user_geolocation',
-    'label' => 'Location',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'geolocation_html5',
-      'settings' => array(),
-      'type' => 'geolocation_html5_widget',
-      'weight' => 13,
-    ),
-  );
-
   // Exported field_instance: 'user-user-field_websites'.
   $field_instances['user-user-field_websites'] = array(
     'bundle' => 'user',
@@ -1468,7 +1438,6 @@ function drupalorg_user_field_default_field_instances() {
   t('Last name or surname');
   t('Link to your profile pages on Twitter, LinkedIn, Facebook, Google, Drupal Answers, GitHub, Gratipay, and any others you would like to include.');
   t('List companies or institutions you have worked for or are working for now.');
-  t('Location');
   t('Member communications');
   t('My contributions');
   t('My mentors');
@@ -1492,7 +1461,6 @@ function drupalorg_user_field_default_field_instances() {
   t('Underrepresented communities');
   t('We have chosen these categories based on the <a href="http://www.isdnetwork.org/what-is-diversity.html" target="_blank">Big 8</a>, which is a list of cultural identifiers.  <a href="/drupalorg/docs/user-accounts/demographic-information" target="_blank">Learn more about why we collect this type of data</a>.');
   t('Website(s)');
-  t('Your general location may appear on the Drupal.org home page map, and potentially more future uses.');
 
   return $field_instances;
 }
