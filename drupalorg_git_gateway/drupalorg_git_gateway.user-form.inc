@@ -69,10 +69,6 @@ function drupalorg_git_gateway_user_form($form, &$form_state) {
     $form['git_config'] = _drupalorg_git_gateway_user_config($account);
   }
 
-  if ($show_messages && !empty($account->field_shared_account_for_an_org['und'][0]['value'])) {
-    drupal_set_message(t(' Your account is a <a href="/terms#accounts">shared account</a>, which can not push code via Git. You can use Git with a separate account for an individual.'), 'warning');
-  }
-
   if (!isset($account->git_username)) {
     $form['username'] = _drupalorg_git_gateway_username_set($account);
     if ($show_messages) {
@@ -180,6 +176,10 @@ function _drupalorg_git_gateway_user_tos($account) {
   if ($account->git_consent) {
     $form['git_consent']['#disabled'] = TRUE;
     $form['git_consent']['#description'] = t('You have consented to the terms of service.');
+  }
+  if (entity_metadata_wrapper('user', $account)->field_shared_account_for_an_org->value()) {
+    $form['git_consent']['#disabled'] = TRUE;
+    drupal_set_message(t('Your account is a <a href="/terms#accounts">shared account</a>, which can not agree <em>as an individual</em>. You can use Git with a separate account for each individual.'), 'warning', FALSE);
   }
 
   global $user;
