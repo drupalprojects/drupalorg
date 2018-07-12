@@ -5200,26 +5200,6 @@ function drupalorg_calculate_security_risk($value) {
   }
 }
 
-/**
- * Function to generate unique advisory id for sa type.
- */
-function drupalorg_sa_unique_advisory_id_generation($node_id, $sa_value) {
-  $sa_unique_advisory_id = NULL;
-  $node = node_load($node_id);
-  $node_wrapper = entity_metadata_wrapper('node', $node);
-  if ($node_wrapper->field_project->raw() === 807766) {
-    // “securitydrupalorg” project for PSAs.
-    $sa_unique_advisory_id = 'PSA-' . format_date($node->created, 'custom', 'Y') . '-' . $node_wrapper->field_sa_advisory_id->value();
-  }
-  else {
-    $sa_unique_advisory_id = 'SA-' . ($node_wrapper->field_project->type === 'project_core' ? 'CORE' : 'CONTRIB') . '-' . format_date($node->created, 'custom', 'Y') . '-' . $node_wrapper->field_sa_advisory_id->value();
-  }
-
-  return $sa_unique_advisory_id;
-}
-
-
-
 function drupalorg_welcome_page() {
   global $user;
 
@@ -6884,7 +6864,15 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
           // Add security risk score and label.
           $response['sa_risk'] = drupalorg_calculate_security_risk($response['field_sa_criticality']);
           // Add unique advisory id.
-          $response['sa_unique_advisory_id'] = drupalorg_sa_unique_advisory_id_generation($response['nid'], $response['field_sa_advisory_id']);
+           require_once (dirname(__FILE__) . '/drupalorg.tokens.inc');
+
+           $data = [];
+           $data['node'] = node_load($response['nid']);
+           $tokens['drupalorg-sa-id'] = 'sa_unique_advisory_id';
+
+           $result = drupalorg_tokens('node', $tokens, $data);
+
+           $response['sa_unique_advisory_id'] = $result['sa_unique_advisory_id'];
         }
         elseif ($response['type'] === 'organization') {
           // Add sponsored projects.
