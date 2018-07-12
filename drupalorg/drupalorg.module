@@ -6864,7 +6864,7 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
           // Add security risk score and label.
           $response['sa_risk'] = drupalorg_calculate_security_risk($response['field_sa_criticality']);
           // Add unique advisory id.
-           require_once (dirname(__FILE__) . '/drupalorg.tokens.inc');
+           require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'drupalorg') . '/drupalorg.tokens.inc';
 
            $data = [];
            $data['node'] = node_load($response['nid']);
