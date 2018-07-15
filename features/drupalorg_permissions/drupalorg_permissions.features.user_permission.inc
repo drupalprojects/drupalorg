@@ -510,9 +510,7 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'administer SSH public keys'.
   $permissions['administer SSH public keys'] = array(
     'name' => 'administer SSH public keys',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
+    'roles' => array(),
     'module' => 'sshkey',
   );
 
