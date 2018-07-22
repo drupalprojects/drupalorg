@@ -3084,7 +3084,7 @@ function drupalorg_node_access($node, $op, $account) {
     // required roles and group membership, if any. For example,
     // documentatation pages have restrictions from node_node_access(), but do
     // not require documentation guide membership to edit.
-    if (($type === 'documentation' || ($type === 'guide' && $op === 'update')) && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
+    if (in_array($type, ['documentation', 'guide']) && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
       return NODE_ACCESS_DENY;
     }
   }
