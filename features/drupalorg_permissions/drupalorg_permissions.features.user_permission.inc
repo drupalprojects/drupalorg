@@ -2190,6 +2190,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full project_distribution projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2200,6 +2201,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Git user' => 'Git user',
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2209,6 +2211,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full project_module projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2218,6 +2221,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full project_theme projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2227,6 +2231,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full project_theme_engine projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2349,6 +2354,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_core content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2358,6 +2364,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_distribution content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2367,6 +2374,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_drupalorg content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2385,6 +2393,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_module content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2394,6 +2403,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_theme content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2403,6 +2413,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_theme_engine content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2428,6 +2439,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create sandbox projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2883,6 +2895,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete own sandbox project',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -3537,6 +3550,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_core content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3546,6 +3560,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_distribution content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3555,6 +3570,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_drupalorg content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3571,6 +3587,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_module content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3580,6 +3597,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_theme content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3589,6 +3607,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_theme_engine content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
