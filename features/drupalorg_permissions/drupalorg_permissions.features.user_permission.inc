@@ -3156,6 +3156,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
+  // Exported permission: 'edit any SSH public keys'.
+  $permissions['edit any SSH public keys'] = array(
+    'name' => 'edit any SSH public keys',
+    'roles' => array(),
+    'module' => 'sshkey',
+  );
+
   // Exported permission: 'edit any book content'.
   $permissions['edit any book content'] = array(
     'name' => 'edit any book content',
@@ -3405,6 +3412,13 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'metatag',
+  );
+
+  // Exported permission: 'edit own SSH public keys'.
+  $permissions['edit own SSH public keys'] = array(
+    'name' => 'edit own SSH public keys',
+    'roles' => array(),
+    'module' => 'sshkey',
   );
 
   // Exported permission: 'edit own book content'.
