@@ -3058,11 +3058,20 @@ function drupalorg_node_access($node, $op, $account) {
   $type = is_string($node) ? $node : $node->type;
 
   if ($op === 'create') {
-    if (entity_metadata_wrapper('user', $account)->field_shared_account_for_an_org->value() && !in_array($type, ['organization', 'casestudy'] + project_project_node_types())) {
+    $account_wrapper = entity_metadata_wrapper('user', $account);
+    if ($account_wrapper->field_shared_account_for_an_org->value() && !in_array($type, ['organization', 'casestudy'] + project_project_node_types())) {
       // Only allow shared organization accounts to create organizations, case
       // studies, and projects.
       if (current_path() === 'node/add/' . str_replace('_', '-', $type)) {
         drupal_set_message(t('Your account is a <a href="/terms#accounts">shared account</a>, which can not create this type of content.'), 'warning', FALSE);
+      }
+      return NODE_ACCESS_DENY;
+    }
+    if (in_array($type, project_project_node_types()) && !$account_wrapper->field_shared_account_for_an_org->value() && !isset($account->roles[DRUPALORG_GIT_GATEWAY_RID])) {
+      // Only allow either shared organization accounts or Git users to create
+      // projects.
+      if (current_path() === 'node/add/' . str_replace('_', '-', $type)) {
+        drupal_set_message(t('Agree to Drupal.org’s <a href="!git">Git access agreement</a> to create projects.', ['!git' => url('user/' . $GLOBALS['user']->uid . '/git')]), 'warning', FALSE);
       }
       return NODE_ACCESS_DENY;
     }
