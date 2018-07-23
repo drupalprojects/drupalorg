@@ -177,6 +177,10 @@ function _drupalorg_git_gateway_user_tos($account) {
     $form['git_consent']['#disabled'] = TRUE;
     $form['git_consent']['#description'] = t('You have consented to the terms of service.');
   }
+  if (entity_metadata_wrapper('user', $account)->field_shared_account_for_an_org->value()) {
+    $form['git_consent']['#disabled'] = TRUE;
+    drupal_set_message(t('Your account is a <a href="/terms#accounts">shared account</a>, which can not agree <em>as an individual</em>. You can use Git with a separate account for each individual.'), 'warning', FALSE);
+  }
 
   global $user;
   if ($user->uid != $account->uid) {

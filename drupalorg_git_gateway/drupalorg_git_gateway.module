@@ -76,8 +76,9 @@ function drupalorg_git_gateway_user_update(&$edit, $account, $category) {
   // 0x01 == grant basic; 0x02 == grant vetted
 
   if (empty($account->git_disabled)) {
-    // Grant the perm IFF consent has been given and a username has been set.
-    $grant |= (!empty($account->git_username) && !empty($account->git_consent)) ? 0x01 : 0;
+    // Grant the perm IFF consent has been given, a username has been set, and
+    // the user is not a shared organization account.
+    $grant |= (!empty($account->git_username) && !empty($account->git_consent) && empty(entity_metadata_wrapper('user', $account)->field_shared_account_for_an_org->value())) ? 0x01 : 0;
   }
 
   // Vetted state persists through disabling.
