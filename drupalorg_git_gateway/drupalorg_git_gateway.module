@@ -396,7 +396,7 @@ function drupalorg_git_gateway_mail($key, &$message, $params = array()) {
 
   if ($key == 'disabled') {
     $message['subject'] = t('Git push access disabled');
-    $message['body'] = $params['body'];
+    $message['body'] = [$params['body']];
     return;
   }
 }

@@ -430,7 +430,7 @@ function drupalorg_git_gateway_admin_user_form_submit($form, &$form_state) {
     if ($edit['git_disabled'] == 1) {
       $body = t($edit['git_disabled_msg'], array('@user_name' => $account->name, '@admin_name' => $user->name));
       drupal_mail('drupalorg_git_gateway', 'disabled', $account->mail, user_preferred_language($account), array('body' => $body));
-      $values['email'] = $body;
+      $record['email'] = $body;
     }
     $id = db_insert('drupalorg_git_disable_log')
       ->fields($record)
