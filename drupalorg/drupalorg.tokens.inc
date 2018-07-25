@@ -80,13 +80,7 @@ function drupalorg_tokens($type, $tokens, array $data = [], array $options = [])
           $replacements += token_generate('node', $replace_tokens, ['node' => $node_wrapper->value()]);
         }
         elseif ($data['node']->type === 'sa' && isset($tokens['drupalorg-sa-id'])) {
-          if ($node_wrapper->field_project->raw() == 807766) {
-            // “securitydrupalorg” project for PSAs.
-            $replacements[$tokens['drupalorg-sa-id']] = 'PSA-' . format_date($data['node']->created, 'custom', 'Y') . '-' . $node_wrapper->field_sa_advisory_id->value();
-          }
-          else {
-            $replacements[$tokens['drupalorg-sa-id']] = 'SA-' . ($node_wrapper->field_project->type === 'project_core' ? 'CORE' : 'CONTRIB') . '-' . format_date($data['node']->created, 'custom', 'Y') . '-' . $node_wrapper->field_sa_advisory_id->value();
-          }
+          $replacements[$tokens['drupalorg-sa-id']] = drupalorg_sa_unique_advisory_id_generation($node_wrapper);
         }
       }
       break;
