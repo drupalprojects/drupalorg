@@ -80,7 +80,7 @@ function drupalorg_tokens($type, $tokens, array $data = [], array $options = [])
           $replacements += token_generate('node', $replace_tokens, ['node' => $node_wrapper->value()]);
         }
         elseif ($data['node']->type === 'sa' && isset($tokens['drupalorg-sa-id'])) {
-          $replacements[$tokens['drupalorg-sa-id']] = drupalorg_sa_unique_advisory_id_generation($node_wrapper);
+          $replacements[$tokens['drupalorg-sa-id']] = drupalorg_sa_id($node_wrapper);
         }
       }
       break;

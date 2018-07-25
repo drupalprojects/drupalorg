@@ -6882,10 +6882,8 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
         if ($response['type'] === 'sa') {
           // Add security risk score and label.
           $response['sa_risk'] = drupalorg_calculate_security_risk($response['field_sa_criticality']);
-          // Add unique advisory id.
-           $node = node_load($response['nid']);
-           $node_wrapper = entity_metadata_wrapper('node', $node);
-           $response['sa_unique_advisory_id'] = drupalorg_sa_unique_advisory_id_generation($node_wrapper);
+          // Add advisory id.
+          $response['sa_id'] = drupalorg_sa_id(entity_metadata_wrapper('node', node_load($response['nid'])));
         }
         elseif ($response['type'] === 'organization') {
           // Add sponsored projects.
@@ -6924,18 +6922,14 @@ function drupalorg_restws_response_alter(&$response, $function, $formatName, $re
 /**
  * Function to generate unique advisory id for sa type.
  */
-function drupalorg_sa_unique_advisory_id_generation($node_wrapper) {
-  $sa_unique_advisory_id = NULL;
-
+function drupalorg_sa_id($node_wrapper) {
   if ($node_wrapper->field_project->raw() == 807766) {
     // “securitydrupalorg” project for PSAs.
-    $sa_unique_advisory_id = 'PSA-' . format_date($node_wrapper->created->value(), 'custom', 'Y') . '-' . $node_wrapper->field_sa_advisory_id->value();
+    return 'PSA-' . format_date($node_wrapper->created->value(), 'custom', 'Y') . '-' . $node_wrapper->field_sa_advisory_id->value();
   }
   else {
-    $sa_unique_advisory_id = 'SA-' . ($node_wrapper->field_project->type === 'project_core' ? 'CORE' : 'CONTRIB') . '-' . format_date($node_wrapper->created->value(), 'custom', 'Y') . '-' . $node_wrapper->field_sa_advisory_id->value();
+    return 'SA-' . ($node_wrapper->field_project->type->value() === 'project_core' ? 'CORE' : 'CONTRIB') . '-' . format_date($node_wrapper->created->value(), 'custom', 'Y') . '-' . $node_wrapper->field_sa_advisory_id->value();
   }
-
-  return $sa_unique_advisory_id;
 }
 
 /**
