@@ -71,7 +71,6 @@ features[field_base][] = field_user_pronouns
 features[field_base][] = field_websites
 features[field_base][] = og_user_node
 features[field_group][] = group_drupal|user|user|form
-features[field_group][] = group_geolocation|user|user|form
 features[field_group][] = group_left|user|user|form
 features[field_group][] = group_name|user|user|form
 features[field_group][] = group_org_inline|field_collection_item|field_organizations|form

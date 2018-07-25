@@ -44,35 +44,6 @@ function drupalorg_user_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
-  $field_group->identifier = 'group_geolocation|user|user|form';
-  $field_group->group_name = 'group_geolocation';
-  $field_group->entity_type = 'user';
-  $field_group->bundle = 'user';
-  $field_group->mode = 'form';
-  $field_group->parent_name = 'group_user_language_location';
-  $field_group->data = array(
-    'label' => 'Geolocation',
-    'weight' => '9',
-    'children' => array(
-      0 => 'field_user_geolocation',
-    ),
-    'format_type' => 'fieldset',
-    'format_settings' => array(
-      'label' => 'Geolocation',
-      'instance_settings' => array(
-        'required_fields' => 0,
-        'id' => 'group-geolocation',
-        'classes' => '',
-        'description' => 'Your general location may appear on the Drupal.org home page map, and potentially more future uses.',
-      ),
-      'formatter' => 'open',
-    ),
-  );
-  $field_groups['group_geolocation|user|user|form'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
   $field_group->identifier = 'group_left|user|user|form';
   $field_group->group_name = 'group_left';
   $field_group->entity_type = 'user';
@@ -427,7 +398,6 @@ function drupalorg_user_field_group_info() {
       3 => 'field_user_primary_language',
       4 => 'timezone',
       5 => 'locale',
-      6 => 'group_geolocation',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
