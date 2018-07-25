@@ -560,4 +560,13 @@
       });
     }
   };
+
+  Drupal.behaviors.editProfileShowOnComments = {
+    attach: function(context) {
+      jQuery('.page-user-edit a.show-comment-tab').click(function(e) {
+        e.preventDefault();
+        jQuery('.page-user-edit .field-group-tab-wrapper li.vertical-tab-button strong:contains("Comments")').click();
+      });
+    }
+  };
 })(jQuery);

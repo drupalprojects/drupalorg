@@ -21,7 +21,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Drupal',
-    'weight' => '3',
+    'weight' => '6',
     'children' => array(
       0 => 'field_areas_of_expertise',
       1 => 'field_contributed',
@@ -44,6 +44,35 @@ function drupalorg_user_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_geolocation|user|user|form';
+  $field_group->group_name = 'group_geolocation';
+  $field_group->entity_type = 'user';
+  $field_group->bundle = 'user';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_user_language_location';
+  $field_group->data = array(
+    'label' => 'Geolocation',
+    'weight' => '9',
+    'children' => array(
+      0 => 'field_user_geolocation',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Geolocation',
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'id' => 'group-geolocation',
+        'classes' => '',
+        'description' => 'Your general location may appear on the Drupal.org home page map, and potentially more future uses.',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $field_groups['group_geolocation|user|user|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_left|user|user|form';
   $field_group->group_name = 'group_left';
   $field_group->entity_type = 'user';
@@ -52,7 +81,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Welcome left',
-    'weight' => '12',
+    'weight' => '16',
     'children' => array(),
     'format_type' => 'div',
     'format_settings' => array(
@@ -193,8 +222,9 @@ function drupalorg_user_field_group_info() {
       2 => 'field_websites',
       3 => 'field_country',
       4 => 'field_social_links',
-      5 => 'group_profile_personal',
-      6 => 'group_profile_professional',
+      5 => 'field_user_location',
+      6 => 'group_profile_personal',
+      7 => 'group_profile_professional',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -263,10 +293,12 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = 'group_profile_contact';
   $field_group->data = array(
     'label' => 'Personal Info',
-    'weight' => '15',
+    'weight' => '17',
     'children' => array(
       0 => 'field_gender',
       1 => 'field_languages',
+      2 => 'field_user_primary_language',
+      3 => 'field_user_pronouns',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -296,7 +328,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = 'group_profile_contact';
   $field_group->data = array(
     'label' => 'Professional Info',
-    'weight' => '13',
+    'weight' => '15',
     'children' => array(
       0 => 'field_industries_worked_in',
       1 => 'drupalorg_companies_worked_for',
@@ -329,7 +361,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Welcome right',
-    'weight' => '13',
+    'weight' => '17',
     'children' => array(),
     'format_type' => 'div',
     'format_settings' => array(
@@ -352,6 +384,66 @@ function drupalorg_user_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_user_comments|user|user|form';
+  $field_group->group_name = 'group_user_comments';
+  $field_group->entity_type = 'user';
+  $field_group->bundle = 'user';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Comments',
+    'weight' => '5',
+    'children' => array(
+      0 => 'field_user_comment_meta',
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $field_groups['group_user_comments|user|user|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_user_language_location|user|user|form';
+  $field_group->group_name = 'group_user_language_location';
+  $field_group->entity_type = 'user';
+  $field_group->bundle = 'user';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Language & Location',
+    'weight' => '3',
+    'children' => array(
+      0 => 'field_country',
+      1 => 'field_languages',
+      2 => 'field_user_location',
+      3 => 'field_user_primary_language',
+      4 => 'timezone',
+      5 => 'locale',
+      6 => 'group_geolocation',
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-user-language-location field-group-tab',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $field_groups['group_user_language_location|user|user|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_user_personal|user|user|form';
   $field_group->group_name = 'group_user_personal';
   $field_group->entity_type = 'user';
@@ -362,17 +454,15 @@ function drupalorg_user_field_group_info() {
     'label' => 'Personal information',
     'weight' => '2',
     'children' => array(
-      0 => 'field_user_geolocation',
-      1 => 'field_bio',
-      2 => 'field_irc_nick',
-      3 => 'field_websites',
-      4 => 'field_country',
-      5 => 'field_gender',
-      6 => 'field_languages',
-      7 => 'field_social_links',
-      8 => 'field_demographics',
-      9 => 'picture',
-      10 => 'group_name',
+      0 => 'field_bio',
+      1 => 'field_irc_nick',
+      2 => 'field_websites',
+      3 => 'field_gender',
+      4 => 'field_social_links',
+      5 => 'field_demographics',
+      6 => 'field_user_pronouns',
+      7 => 'picture',
+      8 => 'group_name',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -397,7 +487,7 @@ function drupalorg_user_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Work',
-    'weight' => '4',
+    'weight' => '7',
     'children' => array(
       0 => 'field_industries_worked_in',
       1 => 'field_organizations',
@@ -417,8 +507,11 @@ function drupalorg_user_field_group_info() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Aside');
+  t('Comments');
   t('Contact');
   t('Drupal');
+  t('Geolocation');
+  t('Language & Location');
   t('Main');
   t('Name');
   t('Personal Info');

@@ -4022,6 +4022,11 @@ function drupalorg_user_view($account, $view_mode) {
     unset($account->content['links']['fasttoggle']['#links']['role_' . variable_get('drupalorg_crosssite_trusted_role')]);
   }
 
+  // Hide the country if they have filled out the freeform "Location" field.
+  if (isset($account->content['field_user_location']) && !empty($account->content['field_user_location'])) {
+    unset($account->content['field_country']);
+  }
+
   // Link organization to organization node, if it exists.
   $wrapper = entity_metadata_wrapper('user', $account);
   $company_titles = array();
@@ -4314,6 +4319,15 @@ function drupalorg_cron_queue_info_alter(&$queues) {
  * Implements hook_preprocess_comment().
  */
 function drupalorg_preprocess_comment(&$v) {
+  $v['submitted'] = t('<time pubdate datetime="!created_date_iso">!created_date</time>', array(
+    '!username-plain' => check_plain($v['comment']->name),
+    // The ISO 8601 formatted date, needed for relative times to work properly.
+    '!created_date_iso' => format_date($v['comment']->created, 'custom', 'c'),
+    // The formatted date to display when users have JS disabled or they have
+    // manually opted out of relative times.
+    '!created_date' => format_date($v['comment']->created, 'custom', 'j F Y \a\t H:i'),
+  ));
+
   // Force the comment title to be empty for node types with a disabled comment
   // title field, such as project_issue.
   if (!variable_get('comment_subject_field_' . $v['node']->type, 1)) {
@@ -4360,13 +4374,6 @@ function drupalorg_preprocess_comment(&$v) {
   elseif ($v['comment']->uid != 0 && ($v['comment']->uid == variable_get('project_issue_followup_user', 0) || ($v['comment']->uid == $v['node']->uid && isset($v['comment']->thread) && $v['comment']->thread == int2vancode(1) . '/' && isset($v['comment']->comment_body[LANGUAGE_NONE][0]) && preg_match('|^<a.*class="username">.*</a> created an issue.( See <a.*>original summary</a>.)?$|', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])) || (isset($v['comment']->comment_body[LANGUAGE_NONE][0]) && preg_match('|^<a.*class="username">.*</a> credited <a.*class="username">.*</a>\.?$|', $v['comment']->comment_body[LANGUAGE_NONE][0]['value'])))) {
     // Remove picture & username.
     $v['picture'] = '';
-    $v['submitted'] = t('<time pubdate datetime="!created_date_iso">!created_date</time>', array(
-      // The ISO 8601 formatted date, needed for relative times to work properly.
-      '!created_date_iso' => format_date($v['comment']->created, 'custom', 'c'),
-      // The formatted date to display when users have JS disabled or they have
-      // manually opted out of relative times.
-      '!created_date' => format_date($v['comment']->created, 'custom', 'j F Y \a\t H:i'),
-    ));
 
     // Add extra classes.
     $v['classes_array'][] = 'system-message';
@@ -4391,16 +4398,10 @@ function drupalorg_preprocess_comment(&$v) {
     // Add organizations and customers to comments.
     $wrapper = entity_metadata_wrapper('comment', $v['comment']);
     $args = array(
-      '!username' => $v['author'],
       '!username-plain' => check_plain($v['comment']->name),
-      // The ISO 8601 formatted date, needed for relative times to work properly.
-      '!created_date_iso' => format_date($v['comment']->created, 'custom', 'c'),
-      // The formatted date to display when users have JS disabled or they have
-      // manually opted out of relative times.
-      '!created_date' => format_date($v['comment']->created, 'custom', 'j F Y \a\t H:i'),
     );
     // Add submitted by with attribution.
-    $text = '!username <span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain';
+    $text = '<span class="attribution-label">Credit<span class="attribution element-invisible"><strong>Attribution:</strong> !username-plain';
     $as_volunteer = array_flip($wrapper->field_attribute_as_volunteer->value());
     if (isset($as_volunteer[1])) {
       $text .= ' as a volunteer';
@@ -4432,14 +4433,37 @@ function drupalorg_preprocess_comment(&$v) {
         $text .= ' for !customer';
       }
     }
-    $text .= '</span></span> commented <time pubdate datetime="!created_date_iso">!created_date</time>';
-    $v['submitted'] = t($text, $args);
+    $text .= '</span></span>';
+    $v['submitted'] = t($text, $args) . $v['submitted'];
   }
 
   // Confirm button.
   if (!in_array('system-message', $v['classes_array']) && drupalorg_confirm_user_access($comment_account)) {
     $form = drupal_get_form('drupalorg_add_confirm_button', $comment_account, $v['comment']->cid);
     $v['picture'] = '<div class="user-picture-with-button">' . $v['picture'] . drupal_render($form) . '</div>';
+  }
+
+  // Adds metadata about the user to their comment.
+  $v['user_comment_meta'] = array();
+  if ($v['comment']->uid) {
+    $author = user_load($v['comment']->uid);
+    $meta = field_get_items('user', $author, 'field_user_comment_meta') ?: [];
+    $meta = array_map(function($value) {
+      return $value['value'];
+    }, $meta);
+
+    $meta_to_field_map = array(
+      'language' => 'field_user_primary_language',
+      'pronouns' => 'field_user_pronouns',
+      'location' => 'field_user_location',
+    );
+
+    foreach ($meta as $meta_item) {
+      $field_items = field_get_items('user', $author, $meta_to_field_map[$meta_item]);
+      if (!empty($field_items[0])) {
+        $v['user_comment_meta'][$meta_item] = field_view_field('user', $author, $meta_to_field_map[$meta_item]);
+      }
+    }
   }
 }
 

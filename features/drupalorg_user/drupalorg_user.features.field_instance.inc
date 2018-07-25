@@ -212,7 +212,7 @@ function drupalorg_user_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 17,
+      'weight' => 15,
     ),
   );
 
@@ -228,7 +228,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 2,
+        'weight' => 8,
       ),
     ),
     'entity_type' => 'user',
@@ -259,7 +259,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 9,
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'user',
@@ -274,7 +274,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 12,
+      'weight' => 6,
     ),
   );
 
@@ -289,7 +289,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 22,
+        'weight' => 25,
       ),
     ),
     'entity_type' => 'user',
@@ -304,7 +304,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 15,
+      'weight' => 13,
     ),
   );
 
@@ -319,7 +319,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -357,7 +357,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 7,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -395,7 +395,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 15,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -434,7 +434,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 10,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -469,7 +469,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 16,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -507,7 +507,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 14,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -545,7 +545,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 11,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -583,7 +583,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 13,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -621,7 +621,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 9,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -659,7 +659,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 12,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -682,7 +682,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 110,
+      'weight' => 111,
     ),
   );
 
@@ -747,7 +747,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 19,
+      'weight' => 20,
     ),
   );
 
@@ -762,7 +762,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 18,
       ),
     ),
     'entity_type' => 'user',
@@ -796,7 +796,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 17,
+        'weight' => 25,
       ),
     ),
     'entity_type' => 'user',
@@ -811,7 +811,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 16,
+      'weight' => 14,
     ),
   );
 
@@ -861,7 +861,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 12,
+        'weight' => 14,
       ),
     ),
     'entity_type' => 'user',
@@ -879,7 +879,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 18,
+      'weight' => 16,
     ),
   );
 
@@ -895,7 +895,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 18,
+        'weight' => 27,
       ),
     ),
     'entity_type' => 'user',
@@ -910,7 +910,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 14,
+      'weight' => 11,
     ),
   );
 
@@ -925,7 +925,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 19,
       ),
     ),
     'entity_type' => 'user',
@@ -959,7 +959,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'drupalorg',
         'settings' => array(),
         'type' => 'user_pictures',
-        'weight' => 1,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'user',
@@ -993,7 +993,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 5,
       ),
     ),
     'entity_type' => 'user',
@@ -1011,7 +1011,7 @@ function drupalorg_user_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 0,
+      'weight' => 1,
     ),
   );
 
@@ -1029,7 +1029,7 @@ function drupalorg_user_field_default_field_instances() {
           'view_mode' => 'full',
         ),
         'type' => 'field_collection_fields',
-        'weight' => 11,
+        'weight' => 13,
       ),
     ),
     'entity_type' => 'user',
@@ -1063,7 +1063,7 @@ function drupalorg_user_field_default_field_instances() {
           'trim_length' => 80,
         ),
         'type' => 'url_default',
-        'weight' => 10,
+        'weight' => 12,
       ),
     ),
     'entity_type' => 'user',
@@ -1082,7 +1082,7 @@ function drupalorg_user_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'url_external',
-      'weight' => 20,
+      'weight' => 18,
     ),
   );
 
@@ -1128,7 +1128,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 20,
       ),
     ),
     'entity_type' => 'user',
@@ -1178,7 +1178,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'mailchimp_lists',
       'settings' => array(),
       'type' => 'mailchimp_lists_select',
-      'weight' => 5,
+      'weight' => 9,
     ),
   );
 
@@ -1197,7 +1197,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 17,
       ),
     ),
     'entity_type' => 'user',
@@ -1214,7 +1214,37 @@ function drupalorg_user_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 9,
+      'weight' => 13,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_user_comment_meta'.
+  $field_instances['user-user-field_user_comment_meta'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_user_comment_meta',
+    'label' => 'Show on my comments',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 30,
     ),
   );
 
@@ -1229,12 +1259,12 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 8,
       ),
     ),
     'entity_type' => 'user',
     'field_name' => 'field_user_geolocation',
-    'label' => 'Location',
+    'label' => 'Geolocation',
     'required' => 0,
     'settings' => array(
       'user_register_form' => 0,
@@ -1244,7 +1274,106 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'geolocation_html5',
       'settings' => array(),
       'type' => 'geolocation_html5_widget',
-      'weight' => 13,
+      'weight' => 27,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_user_location'.
+  $field_instances['user-user-field_user_location'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'This can be <a class="show-comment-tab" href="#">optionally shown on your comments</a>.',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 10,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_user_location',
+    'label' => 'Location',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 7,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_user_primary_language'.
+  $field_instances['user-user-field_user_primary_language'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Your primary written or spoken language. This can be <a class="show-comment-tab" href="#">optionally shown on your comments</a>.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 26,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_user_primary_language',
+    'label' => 'Primary language',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 10,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-field_user_pronouns'.
+  $field_instances['user-user-field_user_pronouns'] = array(
+    'bundle' => 'user',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'The pronoun you choose to identify with and would prefer others use when talking to or about you. e.g. "they/them". This can be <a class="show-comment-tab" href="#">optionally shown on your comments</a>.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 24,
+      ),
+    ),
+    'entity_type' => 'user',
+    'field_name' => 'field_user_pronouns',
+    'label' => 'Preferred Pronouns',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 12,
     ),
   );
 
@@ -1260,7 +1389,7 @@ function drupalorg_user_field_default_field_instances() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_url',
-        'weight' => 14,
+        'weight' => 16,
       ),
     ),
     'entity_type' => 'user',
@@ -1295,7 +1424,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 19,
+      'weight' => 17,
     ),
   );
 
@@ -1310,7 +1439,7 @@ function drupalorg_user_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 22,
       ),
     ),
     'entity_type' => 'user',
@@ -1347,7 +1476,7 @@ function drupalorg_user_field_default_field_instances() {
       'module' => 'og',
       'settings' => array(),
       'type' => 'og_complex',
-      'weight' => 100,
+      'weight' => 19,
     ),
   );
 
@@ -1368,6 +1497,7 @@ function drupalorg_user_field_default_field_instances() {
   t('Drupal Events');
   t('First or given name');
   t('Gender');
+  t('Geolocation');
   t('Give credit to community members (Drupal.org usernames) who have significantly influenced your contributions to Drupal. For example, people who mentored you in the issue queue, IRC, user groups, sprints, Core contribution mentoring hours, etc.');
   t('Group membership');
   t('IRC');
@@ -1386,6 +1516,8 @@ function drupalorg_user_field_default_field_instances() {
   t('Organizations');
   t('Please include a short blurb about yourself to let us know who you are outside of Drupal.');
   t('Please provide a comma-separated list of your areas of Drupal expertise, e.g. module development, theming, site building, marketing, etc.');
+  t('Preferred Pronouns');
+  t('Primary language');
   t('Provide an overview of your Drupal contributions.');
   t('Reported Account Creation IP');
   t('Reported Account Creation User-Agent');
@@ -1393,14 +1525,18 @@ function drupalorg_user_field_default_field_instances() {
   t('Reported bad IP probability score');
   t('Select Drupal events you attended or are planning to attend.');
   t('Select one or more languages you speak.');
+  t('Show on my comments');
   t('Social links');
   t('Subscribe to');
   t('Terms of Service');
   t('The nickname you use on various channels of irc.freenode.net');
+  t('The pronoun you choose to identify with and would prefer others use when talking to or about you. e.g. "they/them". This can be <a class="show-comment-tab" href="#">optionally shown on your comments</a>.');
+  t('This can be <a class="show-comment-tab" href="#">optionally shown on your comments</a>.');
   t('Underrepresented communities');
   t('We have chosen these categories based on the <a href="http://www.isdnetwork.org/what-is-diversity.html" target="_blank">Big 8</a>, which is a list of cultural identifiers.  <a href="/drupalorg/docs/user-accounts/demographic-information" target="_blank">Learn more about why we collect this type of data</a>.');
   t('Website(s)');
   t('Your general location may appear on the Drupal.org home page map, and potentially more future uses.');
+  t('Your primary written or spoken language. This can be <a class="show-comment-tab" href="#">optionally shown on your comments</a>.');
 
   return $field_instances;
 }
