@@ -35,6 +35,8 @@ function drupalorg_supporters_field_default_field_bases() {
         'hosting_signature' => 'Signature Hosting Supporter',
         'hosting_premium' => 'Premium Hosting Supporter',
         'hosting' => 'Hosting Supporter',
+        'supporting_customer_charter' => 'Charter Customer Supporting Partner',
+        'supporting_customer' => 'Customer Supporting Partner',
       ),
       'allowed_values_function' => '',
     ),

@@ -106,9 +106,9 @@ function drupalorg_projects_node_info() {
       'help' => '',
     ),
     'project_drupalorg' => array(
-      'name' => t('Drupal.org project'),
+      'name' => t('Community project'),
       'base' => 'node_content',
-      'description' => t('Drupal.org is maintained by volunteers and the <a href="http://association.drupal.org/">Drupal Association</a>. These projects organize work on Drupal.org itself. For more about how Drupal.org works, see the <a href="http://drupal.org/about/drupal.org-FAQ">FAQ</a>.'),
+      'description' => t('Community projects can be used for any purpose that supports or enhances the Drupal project and community. Examples could be non-code projects used to manage groups or initiatives within the Drupal community such as Drupal camps or working groups. They don’t contain modules or themes for use on other websites.'),
       'has_title' => '1',
       'title_label' => t('Name'),
       'help' => '',

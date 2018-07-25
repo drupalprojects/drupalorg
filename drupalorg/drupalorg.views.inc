@@ -144,4 +144,5 @@ function drupalorg_views_data_alter(&$data) {
       'relationship field' => 'nid',
     )
   );
+  $data['field_data_field_issue_last_status_change']['field_issue_last_status_change_value']['filter']['handler'] = 'views_handler_filter_date';
 }

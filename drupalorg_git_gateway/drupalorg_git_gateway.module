@@ -76,8 +76,9 @@ function drupalorg_git_gateway_user_update(&$edit, $account, $category) {
   // 0x01 == grant basic; 0x02 == grant vetted
 
   if (empty($account->git_disabled)) {
-    // Grant the perm IFF consent has been given and a username has been set.
-    $grant |= (!empty($account->git_username) && !empty($account->git_consent)) ? 0x01 : 0;
+    // Grant the perm IFF consent has been given, a username has been set, and
+    // the user is not a shared organization account.
+    $grant |= (!empty($account->git_username) && !empty($account->git_consent) && empty(entity_metadata_wrapper('user', $account)->field_shared_account_for_an_org->value())) ? 0x01 : 0;
   }
 
   // Vetted state persists through disabling.
@@ -321,31 +322,26 @@ function drupalorg_git_gateway_versioncontrol_project_auth_data_alter(&$data, $r
     'branches' => $branches,
   );
 
-  $result = db_select('users', 'u')
-    ->fields('u', array('name', 'git_username'))
-    ->condition('u.name', array_keys($data['users']), 'IN')
-    ->execute()->fetchAllKeyed();
-
+  // Use Git usernames for users.
   $users_original = $data['users'];
-  foreach ($result as $name => $git_username) {
-    // Use Git usernames for users.
-    $account = user_load($data['users'][$name]['uid']);
-    $data['users'][$git_username] = $users_original[$name];
-
-    $ap = &$data['users'][$git_username];
-
-    $ap['global'] = 0;
+  $data['users'] = [];
+  foreach (user_load_multiple(array_column($users_original, 'uid')) as $account) {
+    if (empty($account->git_username)) {
+      continue;
+    }
+    $data['users'][$account->git_username] = $users_original[$account->name];
+    $data['users'][$account->git_username]['global'] = 0;
     // User has global access disabled for some reason.
     if (!isset($account->roles[DRUPALORG_GIT_GATEWAY_RID]) || empty($account->status)) {
-      $ap['global'] |= DRUPALORG_GIT_AUTH_NO_ROLE;
+      $data['users'][$account->git_username]['global'] |= DRUPALORG_GIT_AUTH_NO_ROLE;
       if (!empty($account->git_disabled)) {
-        $ap['global'] |= DRUPALORG_GIT_AUTH_ACCOUNT_SUSPENDED;
+        $data['users'][$account->git_username]['global'] |= DRUPALORG_GIT_AUTH_ACCOUNT_SUSPENDED;
       }
       if (empty($account->git_consent)) {
-        $ap['global'] |= DRUPALORG_GIT_AUTH_NOT_CONSENTED;
+        $data['users'][$account->git_username]['global'] |= DRUPALORG_GIT_AUTH_NOT_CONSENTED;
       }
       if (empty($account->status)) {
-        $ap['global'] |= DRUPALORG_GIT_AUTH_ACCOUNT_BLOCKED;
+        $data['users'][$account->git_username]['global'] |= DRUPALORG_GIT_AUTH_ACCOUNT_BLOCKED;
       }
     }
   }
@@ -401,7 +397,7 @@ function drupalorg_git_gateway_mail($key, &$message, $params = array()) {
 
   if ($key == 'disabled') {
     $message['subject'] = t('Git push access disabled');
-    $message['body'] = $params['body'];
+    $message['body'] = [$params['body']];
     return;
   }
 }

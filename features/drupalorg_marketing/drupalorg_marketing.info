@@ -33,3 +33,4 @@ features[field_instance][] = fieldable_panels_pane-cta-field_cta_secondary_style
 features[field_instance][] = fieldable_panels_pane-cta-field_cta_style
 features[fieldable_panels_pane_type][] = cta
 features[mailchimp_signup][] = hosting_offers
+features[mailchimp_signup][] = member_emails

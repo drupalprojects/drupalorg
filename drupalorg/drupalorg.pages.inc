@@ -372,19 +372,18 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
   $chargify_products = variable_get('drupalorg_chargify_products');
 
   $form['individual'] = [
-    '#prefix' => '<h2>' . t('Individual membership') . '</h2>',
+    '#prefix' => '<div class="memberships"><section><h2>' . t('Individual membership') . '</h2>',
     '#markup' => '<p>' . l(t('Learn about membership and join today'), 'association/individual-membership') . '</p>',
+    '#suffix' => '</section>',
   ];
   $form['organization'] = [
-    '#prefix' => '<h2>' . t('Organization membership') . '</h2>',
+    '#prefix' => '<section><h2>' . t('Organization membership') . '</h2>',
     '#markup' => '<p>' . t('Responsible for an organization?') . ' ' . l(t('Learn about supporting the Drupal Association'), 'association/organization-membership') . '</p>',
+    '#suffix' => '</section></div>',
   ];
   $form['donations'] = [
-    '#prefix' => '<h2>' . t('Donations') . '</h2><p>' . t('Donations help keep the Drupal Association running.') . '</p>',
-    'table' => [
-      '#theme' => 'table',
-      '#sticky' => FALSE,
-    ],
+    '#prefix' => '<div class="other"><h2>' . t('Donations') . '</h2><p>' . t('Donations help keep the Drupal Association running.') . '</p>',
+    'table' => [],
     '#suffix' => '<p>' . l(t('Donate'), 'association/donate', ['attributes' => ['class' => 'action-button']]) . '</p>',
   ];
   $form['questions'] = [
@@ -394,11 +393,14 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
       . '<li>' . l(t('Association frequently asked questions'), 'association/faq') . '</li>'
       . '<li>' . l(t('Contact us'), 'contact') . '</li>'
       . '</ul>',
+    '#suffix' => '</div>',
   ];
 
   foreach (_drupalorg_get_chargify_subscriptions($account) as $row) {
     if ($row->product_handle === 'donation') {
-      $form['donations']['table']['#caption'] = t('<strong>Your past donations</strong><br>made after December 2017');
+      $form['donations']['table']['#theme'] = 'table';
+      $form['donations']['table']['#sticky'] = FALSE;
+      $form['donations']['table']['#caption'] = t('<strong>Your past donations</strong>');
       $form['donations']['table']['#suffix'] = '<p>' . t('Thank you! 🎉') . '</p>';
       $form['donations']['table']['#rows'][] = [
         format_date($row->created_at, 'custom', 'j F Y'),
@@ -498,7 +500,23 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
           ],
         ],
       ];
+
+      // Current amount.
       $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] = '<p>' . t('On renewal you’ll be charged <strong>@amount</strong>', ['@amount' => _format_chargify_money($row)]) . '<br>';
+
+      if (!$row->has_cc) {
+        // Credit card info is not on file.
+        if (preg_match('/-recur$/', $row->product_handle) || $row->expires_at > $row->current_period_ends_at) {
+          // Membership is set to renew, but we don't have payment info.
+          $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '<div class="note-warning">';
+        }
+        else {
+          $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '<div>';
+        }
+        $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= t('<strong>No payment information on file!</strong><br>If you’d like to renew your membership, please update your card.<br><small>Updates take a few minutes to sync. Click to review a recently-added card.</small>') . '<br><strong>';
+      }
+
+      // Payment information.
       if ($GLOBALS['user']->uid === $account->uid) {
         // Only allow the member themselves to do certain actions.
         $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= l(t('View & update credit card'), 'https://' . $chargify_keys[$row->currency]['subdomain'] . '.chargifypay.com/update_payment/' . $row->subscription_id . '/' . substr(sha1('update_payment--' . $row->subscription_id . '--' . $chargify_keys[$row->currency]['shared_key']), 0, 10), ['external' => TRUE, 'attributes' => ['target' => '_blank']]);
@@ -507,7 +525,12 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
         // Disable some actions for admins.
         $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '<em>' . t('View & update credit card [must be done by member]') . '</em>';
       }
+      if (!$row->has_cc) {
+        $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '</strong></div>';
+      }
       $form[$base_product_handle][$row->subscription_id]['update_amount']['#prefix'] .= '</p>';
+
+      // Organization membership.
       if ($base_product_handle === 'organization') {
         $form[$base_product_handle][$row->subscription_id]['update_organization'] = [
           '#type' => 'checkbox',
@@ -624,18 +647,6 @@ function drupalorg_membership_form($form, &$form_state, stdClass $account) {
   }
 
   return $form;
-}
-
-/**
- * Format the billing amount of a Chargify subscription.
- */
-function _format_chargify_money($row) {
-  static $symbols = [
-    'usd' => '$',
-    'eur' => '€',
-  ];
-
-  return $symbols[$row->currency] . number_format(floor($row->current_billing_amount_in_cents / 100)) . '.' . str_pad($row->current_billing_amount_in_cents % 100, 2, '0', STR_PAD_LEFT);
 }
 
 /**
@@ -934,4 +945,37 @@ function drupalorg_membership_return() {
     // Something went wrong.
     return '';
   }
+}
+
+/**
+ * Menu callback to redirect legacy Drupal service provider listings.
+ */
+function drupalorg_redirect_legacy_services($service = NULL, $sector = NULL, $location = NULL) {
+  $query = [];
+
+  if ($service !== 'all') {
+    $terms = taxonomy_get_term_by_name($service, 'vocabulary_48');
+    $service_tid = key($terms);
+    if (!empty($service_tid)) {
+      $query['services'] = [$service_tid];
+    }
+  }
+
+  if ($sector !== 'all') {
+    $terms = taxonomy_get_term_by_name($sector, 'vocabulary_50');
+    $sector_tid = key($terms);
+    if (!empty($sector_tid)) {
+      $query['sectors'] = [$sector_tid];
+    }
+  }
+
+  if ($location !== 'all') {
+    $terms = taxonomy_get_term_by_name($location, 'vocabulary_52');
+    $location_tid = key($terms);
+    if (!empty($location_tid)) {
+      $query['offices'] = [$location_tid];
+    }
+  }
+
+  drupal_goto('drupal-services', ['query' => $query]);
 }

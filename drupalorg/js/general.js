@@ -70,7 +70,7 @@
   };
 
   /**
-   * Code to run after the documnent is ready.
+   * Code to run after the document is ready.
    */
   $(document).ready(function () {
     var $body = $('body');
@@ -563,10 +563,37 @@
 
   Drupal.behaviors.editProfileShowOnComments = {
     attach: function(context) {
-      jQuery('.page-user-edit a.show-comment-tab').click(function(e) {
+      $('.page-user-edit a.show-comment-tab').click(function(e) {
         e.preventDefault();
-        jQuery('.page-user-edit .field-group-tab-wrapper li.vertical-tab-button strong:contains("Comments")').click();
+        $('.page-user-edit .field-group-tab-wrapper li.vertical-tab-button strong:contains("Comments")').click();
       });
+    }
+  };
+
+  /**
+   * Display a warning message if an organization name does not match exactly.
+   */
+  Drupal.behaviors.orgName = {
+    attach: function (context, settings) {
+      var orgs;
+
+      if ((orgs = document.getElementById('edit-field-organizations')) && !orgs.classList.contains('processed')) {
+        orgs.classList.add('processed');
+        orgs.addEventListener('focusout', function (e) {
+          if (e.target.attributes['name'] !== undefined && /\[field_organization_name]/.test(e.target.attributes['name'].value)) {
+            $.ajax({
+              url: Drupal.settings.basePath + 'api-d7/node.json',
+              data: {
+                type: 'organization',
+                title: e.target.value
+              },
+              success: function (result) {
+                e.target.parentNode.parentNode.parentNode.parentNode.getElementsByClassName('warning')[0].classList.toggle('element-hidden', result.list.length !== 0);
+              }
+            });
+          }
+        });
+      }
     }
   };
 })(jQuery);

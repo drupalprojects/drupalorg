@@ -78,6 +78,7 @@ function drupalorg_drupal8_panes_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'panelizer_node:page_allowed_types';
   $strongarm->value = array(
+    'cookie_consent_reset-cookie_consent_reset' => TRUE,
     'custom-custom' => TRUE,
     'custom-d8_landing_page_ad_1' => TRUE,
     'custom-d8_landing_page_ad_2' => TRUE,
@@ -94,6 +95,7 @@ function drupalorg_drupal8_panes_strongarm() {
     'custom-d8_sub_sponsor' => TRUE,
     'custom-lingotek_multilingual_ad' => TRUE,
     'custom-drupalorg_trydrupal_button' => TRUE,
+    'block-mailchimp_signup-member_emails' => TRUE,
     'fieldable_panels_pane-case_study' => TRUE,
     'fieldable_panels_pane-cta' => TRUE,
     'fieldable_panels_pane-cta_multiple' => TRUE,
@@ -101,6 +103,8 @@ function drupalorg_drupal8_panes_strongarm() {
     'views_panes-drupalorg_casestudies-panel_pane_1' => TRUE,
     'views_panes-drupalorg_logos-panel_pane_1' => TRUE,
     'views_panes-drupalorg_logos-panel_pane_2' => TRUE,
+    'views_panes-drupalorg_logos-panel_pane_3' => TRUE,
+    'views_panes-drupalorg_logos-panel_pane_4' => TRUE,
     'views_panes-drupalorg_organizations-panel_pane_1' => TRUE,
     'views_panes-drupalorg_organizations-panel_pane_2' => TRUE,
     'views_panes-drupalorg_organizations-panel_pane_3' => TRUE,
@@ -121,11 +125,11 @@ function drupalorg_drupal8_panes_strongarm() {
   $strongarm->name = 'panelizer_node:page_default';
   $strongarm->value = array(
     'custom' => 'custom',
-    'token' => 0,
-    'entity_form_field' => 0,
-    'entity_field' => 0,
     'entity_field_extra' => 0,
+    'entity_field' => 0,
     'block' => 0,
+    'entity_form_field' => 0,
+    'token' => 0,
     'entity_view' => 0,
     'fieldable_panels_pane' => 0,
     'flag_link' => 0,

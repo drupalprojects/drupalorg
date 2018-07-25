@@ -494,12 +494,13 @@ function drupalorg_user_field_group_info() {
     ),
     'format_type' => 'tab',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Work',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
         'required_fields' => 1,
+        'classes' => '',
+        'description' => 'Organizations with an <a href="/organizations" target="_blank" rel="noopener">organization page</a> will link you to the organization, allowing sharing contribution attribution with them.',
       ),
+      'formatter' => 'closed',
     ),
   );
   $field_groups['group_user_work|user|user|form'] = $field_group;

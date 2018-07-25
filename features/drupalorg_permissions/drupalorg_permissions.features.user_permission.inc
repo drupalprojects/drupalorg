@@ -47,6 +47,15 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'system',
   );
 
+  // Exported permission: 'access akismet statistics'.
+  $permissions['access akismet statistics'] = array(
+    'name' => 'access akismet statistics',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'akismet',
+  );
+
   // Exported permission: 'access all views'.
   $permissions['access all views'] = array(
     'name' => 'access all views',
@@ -501,9 +510,7 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'administer SSH public keys'.
   $permissions['administer SSH public keys'] = array(
     'name' => 'administer SSH public keys',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
+    'roles' => array(),
     'module' => 'sshkey',
   );
 
@@ -520,9 +527,22 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['administer advanced pane settings'] = array(
     'name' => 'administer advanced pane settings',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'panels',
+  );
+
+  // Exported permission: 'administer akismet'.
+  $permissions['administer akismet'] = array(
+    'name' => 'administer akismet',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'akismet',
   );
 
   // Exported permission: 'administer all documentation guides'.
@@ -1713,7 +1733,11 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['administer panels display styles'] = array(
     'name' => 'administer panels display styles',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'panels',
   );
@@ -1731,7 +1755,11 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['administer panels pane styles'] = array(
     'name' => 'administer panels pane styles',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+      'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'panels',
   );
@@ -1939,6 +1967,16 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'advagg',
   );
 
+  // Exported permission: 'bypass akismet protection'.
+  $permissions['bypass akismet protection'] = array(
+    'name' => 'bypass akismet protection',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
+    ),
+    'module' => 'akismet',
+  );
+
   // Exported permission: 'bypass bakery'.
   $permissions['bypass bakery'] = array(
     'name' => 'bypass bakery',
@@ -2114,6 +2152,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create fieldable cta'] = array(
     'name' => 'create fieldable cta',
     'roles' => array(
+      'confirmed' => 'confirmed',
       'content administrator' => 'content administrator',
     ),
     'module' => 'fieldable_panels_panes',
@@ -2122,7 +2161,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'create fieldable cta_multiple'.
   $permissions['create fieldable cta_multiple'] = array(
     'name' => 'create fieldable cta_multiple',
-    'roles' => array(),
+    'roles' => array(
+      'confirmed' => 'confirmed',
+    ),
     'module' => 'fieldable_panels_panes',
   );
 
@@ -2149,6 +2190,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full project_distribution projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2157,7 +2199,9 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create full project_drupalorg projects'] = array(
     'name' => 'create full project_drupalorg projects',
     'roles' => array(
+      'Git user' => 'Git user',
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2167,6 +2211,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full project_module projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2176,6 +2221,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full project_theme projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2185,6 +2231,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full project_theme_engine projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2307,6 +2354,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_core content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2316,6 +2364,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_distribution content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2324,7 +2373,8 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['create project_drupalorg content'] = array(
     'name' => 'create project_drupalorg content',
     'roles' => array(
-      'webmaster' => 'webmaster',
+      'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2343,6 +2393,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_module content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2352,6 +2403,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_theme content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2361,6 +2413,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_theme_engine content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2386,6 +2439,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create sandbox projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2644,6 +2698,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['delete fieldable cta'] = array(
     'name' => 'delete fieldable cta',
     'roles' => array(
+      'confirmed' => 'confirmed',
       'content administrator' => 'content administrator',
     ),
     'module' => 'fieldable_panels_panes',
@@ -2652,7 +2707,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'delete fieldable cta_multiple'.
   $permissions['delete fieldable cta_multiple'] = array(
     'name' => 'delete fieldable cta_multiple',
-    'roles' => array(),
+    'roles' => array(
+      'confirmed' => 'confirmed',
+    ),
     'module' => 'fieldable_panels_panes',
   );
 
@@ -2838,6 +2895,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete own sandbox project',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -3098,6 +3156,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
+  // Exported permission: 'edit any SSH public keys'.
+  $permissions['edit any SSH public keys'] = array(
+    'name' => 'edit any SSH public keys',
+    'roles' => array(),
+    'module' => 'sshkey',
+  );
+
   // Exported permission: 'edit any book content'.
   $permissions['edit any book content'] = array(
     'name' => 'edit any book content',
@@ -3287,8 +3352,10 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit any section content'] = array(
     'name' => 'edit any section content',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
       'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'node',
   );
@@ -3323,6 +3390,7 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit fieldable cta'] = array(
     'name' => 'edit fieldable cta',
     'roles' => array(
+      'confirmed' => 'confirmed',
       'content administrator' => 'content administrator',
     ),
     'module' => 'fieldable_panels_panes',
@@ -3331,7 +3399,9 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'edit fieldable cta_multiple'.
   $permissions['edit fieldable cta_multiple'] = array(
     'name' => 'edit fieldable cta_multiple',
-    'roles' => array(),
+    'roles' => array(
+      'confirmed' => 'confirmed',
+    ),
     'module' => 'fieldable_panels_panes',
   );
 
@@ -3342,6 +3412,13 @@ function drupalorg_permissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'metatag',
+  );
+
+  // Exported permission: 'edit own SSH public keys'.
+  $permissions['edit own SSH public keys'] = array(
+    'name' => 'edit own SSH public keys',
+    'roles' => array(),
+    'module' => 'sshkey',
   );
 
   // Exported permission: 'edit own book content'.
@@ -3487,6 +3564,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_core content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3496,6 +3574,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_distribution content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3504,7 +3583,8 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit own project_drupalorg content'] = array(
     'name' => 'edit own project_drupalorg content',
     'roles' => array(
-      'webmaster' => 'webmaster',
+      'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3521,6 +3601,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_module content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3530,6 +3611,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_theme content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3539,6 +3621,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_theme_engine content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3561,8 +3644,10 @@ function drupalorg_permissions_user_default_permissions() {
   $permissions['edit own section content'] = array(
     'name' => 'edit own section content',
     'roles' => array(
+      'Documentation moderator' => 'Documentation moderator',
       'administrator' => 'administrator',
       'content administrator' => 'content administrator',
+      'content moderator' => 'content moderator',
     ),
     'module' => 'node',
   );
@@ -4071,6 +4156,15 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'rename features',
     'roles' => array(),
     'module' => 'features',
+  );
+
+  // Exported permission: 'report to akismet'.
+  $permissions['report to akismet'] = array(
+    'name' => 'report to akismet',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'akismet',
   );
 
   // Exported permission: 'revert revisions'.

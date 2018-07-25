@@ -450,7 +450,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
     }
   }
   elseif ($form_state['node']->type === 'sa' || project_issue_node_is_issue($form_state['node'])) {
-    $maintainer_access = isset($wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]) ? $wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]['permissions'] : [];
+    $maintainer_access = isset($wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]) ? array_filter($wrapper->field_project->value()->project['maintainers'][$GLOBALS['user']->uid]['permissions']) : [];
     $fixed = variable_get('project_issue_state_fixed', PROJECT_ISSUE_STATE_FIXED);
     $closed_fixed = variable_get('project_issue_state_closed', PROJECT_ISSUE_STATE_CLOSED);
 
@@ -514,6 +514,12 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
       );
 
       $existing_credit = array_flip($wrapper->field_issue_credit->raw());
+      // Allow those with either 'write to vcs' or 'maintain issues' access to
+      // affect the issue's credit.
+      $crediting_permissions = [
+        'write to vcs' => TRUE,
+        'maintain issues' => TRUE,
+      ];
 
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'comment');
@@ -570,7 +576,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           }
 
           // Keep track of the last time a maintainer commented.
-          if (isset($wrapper->field_project->value()->project['maintainers'][$comment->uid]) && $wrapper->field_project->value()->project['maintainers'][$comment->uid]['permissions']['write to vcs']) {
+          if (isset($wrapper->field_project->value()->project['maintainers'][$comment->uid]) && !empty(array_intersect_assoc(array_filter($wrapper->field_project->value()->project['maintainers'][$comment->uid]['permissions']), $crediting_permissions))) {
             $last_maintainer_comment = max($last_maintainer_comment, $comment->created);
           }
         }
@@ -720,7 +726,7 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
         $is_maintainer = user_access('create sa content');
       }
       else {
-        $is_maintainer = !empty($maintainer_access['write to vcs']);
+        $is_maintainer = !empty(array_intersect_assoc($maintainer_access, $crediting_permissions));
       }
       $form['drupalorg_credit_wrapper'] = array(
         '#attached' => array('js' => array(array(
@@ -1948,7 +1954,7 @@ function drupalorg_project_project_types() {
       'tid' => 96,
     ),
     'project_drupalorg' => array(
-      'title' => 'Drupal.org project',
+      'title' => 'Community project',
       'tid' => 22588,
     ),
     'project_core' => array(
@@ -1980,8 +1986,8 @@ function drupalorg_project_node_type_label($node_type, $label_type) {
       'plural' => 'Distributions',
     ),
     'project_drupalorg' => array(
-      'singular' => 'Drupal.org project',
-      'plural' => 'Drupal.org projects',
+      'singular' => 'Community project',
+      'plural' => 'Community projects',
     ),
     'project_module' => array(
       'singular' => 'Module',

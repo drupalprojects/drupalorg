@@ -173,6 +173,14 @@ function _drupalorg_git_gateway_user_tos($account) {
     '#title' => t('I agree to these terms'),
     '#default_value' => $account->git_consent,
   );
+  if ($account->git_consent) {
+    $form['git_consent']['#disabled'] = TRUE;
+    $form['git_consent']['#description'] = t('You have consented to the terms of service.');
+  }
+  if (entity_metadata_wrapper('user', $account)->field_shared_account_for_an_org->value()) {
+    $form['git_consent']['#disabled'] = TRUE;
+    drupal_set_message(t('Your account is a <a href="/terms#accounts">shared account</a>, which can not agree <em>as an individual</em>. You can use Git with a separate account for each individual.'), 'warning', FALSE);
+  }
 
   global $user;
   if ($user->uid != $account->uid) {
@@ -205,13 +213,13 @@ function _drupalorg_git_gateway_username_set($account) {
     '#weight' => -20,
   );
 
-  $form['#description'] = t('Choose a username to use for Git. This will be your SSH user when authenticating to Drupal.org with Git, and Drupal.org will use it to generate your personalized sandbox URIs. <strong>Once chosen, your Git username cannot be changed.</strong>');
+  $form['#description'] = t('Choose a username to use for Git. This can be used when authenticating to Drupal.org with Git, and Drupal.org will use it to generate your personalized sandbox URIs. <strong>Once chosen, your Git username cannot be changed.</strong>');
   $form['git_username'] = array(
     '#type' => 'textfield',
     '#title' => t('Desired Git username'),
     '#maxlength' => 64,
     '#default_value' => drupalorg_git_gateway_suggest_git_username($account->name),
-    '#description' => t('Acceptable characters are ANSI alphanumerics (A-Z, a-z, 0-9), periods, underscores, or dashes. A suggested username is provided, based on the acceptable characters in your Drupal username and the availability of Git usernames.'),
+    '#description' => t('Can contain A-Z letters, numbers, periods, underscores, and dashes. Can not start with a dash; or end with a dash, dot, <code>.git</code>, or <code>.atom</code>.'),
   );
   return $form;
 }
@@ -340,8 +348,13 @@ function drupalorg_git_gateway_user_form_base_validate($form, &$form_state) {
     if ($uid = db_query("SELECT uid FROM {users} WHERE git_username = :git_username AND uid <> :uid", array(':git_username' => $form_state['values']['git_username'], ':uid' => $form_state['account']->uid))->fetchField()) {
       form_set_error('git_username', t('The requested Git username is already taken.'));
     }
-    elseif (preg_match('/[^A-Za-z0-9\._-]/', $form_state['values']['git_username'])) {
+    // And is a valid pattern. Adapted from NAMESPACE_FORMAT_REGEX in
+    // https://gitlab.com/gitlab-org/gitlab-ce/blob/master/lib/gitlab/path_regex.rb
+    elseif (!preg_match('/^(?:[a-zA-Z0-9_\.][a-zA-Z0-9_\-\.]*[a-zA-Z0-9_\-]|[a-zA-Z0-9_])(?<!\.git|\.atom)$/', $form_state['values']['git_username'])) {
       form_set_error('git_username', t('The requested username contains invalid characters.'));
+    }
+    elseif (in_array($form_state['values']['git_username'], variable_get('drupalorg_git_reserved_names', []))) {
+      form_set_error('git_username', t('The requested username is reserved, please choose a different Git username.'));
     }
     elseif (empty($form_state['account']->git_username)) {
       $form_state['rebuild'] = TRUE;
@@ -421,7 +434,7 @@ function drupalorg_git_gateway_admin_user_form_submit($form, &$form_state) {
     if ($edit['git_disabled'] == 1) {
       $body = t($edit['git_disabled_msg'], array('@user_name' => $account->name, '@admin_name' => $user->name));
       drupal_mail('drupalorg_git_gateway', 'disabled', $account->mail, user_preferred_language($account), array('body' => $body));
-      $values['email'] = $body;
+      $record['email'] = $body;
     }
     $id = db_insert('drupalorg_git_disable_log')
       ->fields($record)

@@ -149,7 +149,7 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['fields']['manage_button']['id'] = 'manage_button';
   $handler->display->display_options['fields']['manage_button']['table'] = 'distil_registration';
   $handler->display->display_options['fields']['manage_button']['field'] = 'manage_button';
-  /* Field: Broken/missing handler */
+  /* Field: Distil Registration Data: D_IID Fingerprint */
   $handler->display->display_options['fields']['fingerprint']['id'] = 'fingerprint';
   $handler->display->display_options['fields']['fingerprint']['table'] = 'distil_registration';
   $handler->display->display_options['fields']['fingerprint']['field'] = 'fingerprint';
@@ -198,7 +198,7 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['fields']['fingerprint_age']['id'] = 'fingerprint_age';
   $handler->display->display_options['fields']['fingerprint_age']['table'] = 'distil_registration';
   $handler->display->display_options['fields']['fingerprint_age']['field'] = 'fingerprint_age';
-  /* Filter criterion: Broken/missing handler */
+  /* Filter criterion: Distil Registration Data: D_IID Fingerprint */
   $handler->display->display_options['filters']['fingerprint']['id'] = 'fingerprint';
   $handler->display->display_options['filters']['fingerprint']['table'] = 'distil_registration';
   $handler->display->display_options['filters']['fingerprint']['field'] = 'fingerprint';
@@ -787,6 +787,14 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler = $view->new_display('panel_pane', 'Content pane', 'drupalorg_comment_spam_pane');
   $handler->display->display_options['defaults']['group_by'] = FALSE;
   $handler->display->display_options['group_by'] = TRUE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'There are currently not spam comments reported.  Thanks for checking!';
+  $handler->display->display_options['empty']['area']['format'] = '1';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Comment: Content */
   $handler->display->display_options['relationships']['nid']['id'] = 'nid';
@@ -841,12 +849,30 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['fields']['count']['relationship'] = 'flag_count_rel';
   $handler->display->display_options['fields']['count']['label'] = 'Reports';
   $handler->display->display_options['fields']['count']['separator'] = '';
+  /* Field: Comment: View link */
+  $handler->display->display_options['fields']['view_comment']['id'] = 'view_comment';
+  $handler->display->display_options['fields']['view_comment']['table'] = 'comment';
+  $handler->display->display_options['fields']['view_comment']['field'] = 'view_comment';
+  $handler->display->display_options['fields']['view_comment']['exclude'] = TRUE;
   /* Field: Comment: Title */
   $handler->display->display_options['fields']['subject']['id'] = 'subject';
   $handler->display->display_options['fields']['subject']['table'] = 'comment';
   $handler->display->display_options['fields']['subject']['field'] = 'subject';
+  $handler->display->display_options['fields']['subject']['label'] = 'Comment link';
+  $handler->display->display_options['fields']['subject']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['subject']['alter']['text'] = 'View';
+  $handler->display->display_options['fields']['subject']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['subject']['alter']['path'] = '[view_comment]';
   $handler->display->display_options['fields']['subject']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['subject']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['subject']['empty'] = '[view_comment]';
+  $handler->display->display_options['fields']['subject']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['subject']['link_to_node'] = TRUE;
+  /* Field: Comment: Title */
+  $handler->display->display_options['fields']['subject_1']['id'] = 'subject_1';
+  $handler->display->display_options['fields']['subject_1']['table'] = 'comment';
+  $handler->display->display_options['fields']['subject_1']['field'] = 'subject';
+  $handler->display->display_options['fields']['subject_1']['link_to_comment'] = FALSE;
   /* Field: Comment: Comment */
   $handler->display->display_options['fields']['comment_body']['id'] = 'comment_body';
   $handler->display->display_options['fields']['comment_body']['table'] = 'field_data_comment_body';
@@ -932,6 +958,11 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
     t('Flagger(s)'),
     t('Post date'),
     t('Content pane'),
+    t('There are currently not spam comments reported.  Thanks for checking!'),
+    t('View link'),
+    t('Comment link'),
+    t('View'),
+    t('[view_comment]'),
     t('First flagger'),
     t('View panes'),
   );
@@ -1035,6 +1066,21 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
       'empty_column' => 0,
     ),
   );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = 'Removing spam on Drupal.org:
+<ol>
+<li>Confirm that reported node is spam
+<li>Block author of spam node
+<li>Head to spammer\'s profile and click Administer Content
+<li>Check all spam node boxes and "Report to Akismet and unpublish"
+<li>Pay attention for spam node edits, make sure to only delete the spam revision, and not the entire node (if applicable)
+<li>Delete all spam nodes <em>which were not revision spam</em>
+</ol>
+Thank you for helping us fight spam on Drupal.org!';
+  $handler->display->display_options['header']['area']['format'] = '1';
   /* Relationship: Flags: drupalorg_node_spam */
   $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
   $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'node';
@@ -1050,10 +1096,6 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
   $handler->display->display_options['relationships']['uid_1']['table'] = 'node_revision';
   $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
-  /* Relationship: Drupalorg comment nid: Drupalorg comment deleted - nid */
-  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['id'] = 'drupalorg_comment_deleted_rel';
-  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['table'] = 'node';
-  $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel']['field'] = 'drupalorg_comment_deleted_rel';
   /* Relationship: Drupalorg comment uid: Drupalorg comment deleted rel - uid */
   $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['id'] = 'drupalorg_comment_deleted_rel_1';
   $handler->display->display_options['relationships']['drupalorg_comment_deleted_rel_1']['table'] = 'users';
@@ -1098,18 +1140,6 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid_1';
   $handler->display->display_options['fields']['name']['label'] = 'Author';
-  /* Field: Drupalorg comment deleted.: Body of spam node. */
-  $handler->display->display_options['fields']['comment_body']['id'] = 'comment_body';
-  $handler->display->display_options['fields']['comment_body']['table'] = 'drupalorg_comment_deleted';
-  $handler->display->display_options['fields']['comment_body']['field'] = 'comment_body';
-  $handler->display->display_options['fields']['comment_body']['relationship'] = 'drupalorg_comment_deleted_rel';
-  /* Field: Drupalorg comment deleted.: Subject/title of spam node. */
-  $handler->display->display_options['fields']['subject']['id'] = 'subject';
-  $handler->display->display_options['fields']['subject']['table'] = 'drupalorg_comment_deleted';
-  $handler->display->display_options['fields']['subject']['field'] = 'subject';
-  $handler->display->display_options['fields']['subject']['relationship'] = 'drupalorg_comment_deleted_rel';
-  $handler->display->display_options['fields']['subject']['label'] = 'Subject of spam node.';
-  $handler->display->display_options['fields']['subject']['element_label_colon'] = FALSE;
   /* Field: Content: Remove spam flags */
   $handler->display->display_options['fields']['drupalorg_not_spam']['id'] = 'drupalorg_not_spam';
   $handler->display->display_options['fields']['drupalorg_not_spam']['table'] = 'views_entity_node';
@@ -1149,12 +1179,18 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  $handler->display->display_options['filters']['status']['value'] = '1';
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'drupalorg_node_spam_pane');
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'There are currently no spam nodes reported.  Thanks for checking!';
+  $handler->display->display_options['empty']['area']['format'] = '1';
   $translatables['drupalorg_node_spam'] = array(
     t('Master'),
     t('more'),
@@ -1170,10 +1206,19 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
     t('‹ previous'),
     t('next ›'),
     t('last »'),
+    t('Removing spam on Drupal.org:
+<ol>
+<li>Confirm that reported node is spam
+<li>Block author of spam node
+<li>Head to spammer\'s profile and click Administer Content
+<li>Check all spam node boxes and "Report to Akismet and unpublish"
+<li>Pay attention for spam node edits, make sure to only delete the spam revision, and not the entire node (if applicable)
+<li>Delete all spam nodes <em>which were not revision spam</em>
+</ol>
+Thank you for helping us fight spam on Drupal.org!'),
     t('flag'),
     t('counter'),
     t('revision user'),
-    t('Drupalorg comment deleted nid rel.'),
     t('Drupalorg comment deleted rel - uid'),
     t('Type'),
     t('Reports'),
@@ -1182,10 +1227,9 @@ DBLog (filter by distil_registration): <a href="/admin/reports/dblog" target="_b
     t('Summary'),
     t('Updated'),
     t('Author'),
-    t('Body of spam node.'),
-    t('Subject of spam node.'),
     t('Administer content'),
     t('Content pane'),
+    t('There are currently no spam nodes reported.  Thanks for checking!'),
     t('View panes'),
   );
   $export['drupalorg_node_spam'] = $view;

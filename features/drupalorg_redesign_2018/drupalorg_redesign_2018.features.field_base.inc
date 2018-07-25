@@ -43,11 +43,15 @@ function drupalorg_redesign_2018_field_default_field_bases() {
       'revision_id' => array(
         0 => 'revision_id',
       ),
+      'value' => array(
+        0 => 'value',
+      ),
     ),
     'locked' => 0,
     'module' => 'field_collection',
     'settings' => array(
       'hide_blank_items' => 1,
+      'hide_initial_item' => FALSE,
       'path' => '',
     ),
     'translatable' => 0,
@@ -57,7 +61,7 @@ function drupalorg_redesign_2018_field_default_field_bases() {
   // Exported field_base: 'field_logo_type'.
   $field_bases['field_logo_type'] = array(
     'active' => 1,
-    'cardinality' => 1,
+    'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_logo_type',
@@ -70,8 +74,9 @@ function drupalorg_redesign_2018_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'brand' => 'Brand',
-        'integration' => 'Integration',
+        'brand' => 'Marketing Trusted Brand',
+        'integration' => 'Marketing Integration',
+        '2018promotedrupalthanks' => 'Promoted Drupal Thanks 2018',
       ),
       'allowed_values_function' => '',
     ),
