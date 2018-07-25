@@ -177,6 +177,10 @@ function _drupalorg_git_gateway_user_tos($account) {
     $form['git_consent']['#disabled'] = TRUE;
     $form['git_consent']['#description'] = t('You have consented to the terms of service.');
   }
+  if (entity_metadata_wrapper('user', $account)->field_shared_account_for_an_org->value()) {
+    $form['git_consent']['#disabled'] = TRUE;
+    drupal_set_message(t('Your account is a <a href="/terms#accounts">shared account</a>, which can not agree <em>as an individual</em>. You can use Git with a separate account for each individual.'), 'warning', FALSE);
+  }
 
   global $user;
   if ($user->uid != $account->uid) {
@@ -430,7 +434,7 @@ function drupalorg_git_gateway_admin_user_form_submit($form, &$form_state) {
     if ($edit['git_disabled'] == 1) {
       $body = t($edit['git_disabled_msg'], array('@user_name' => $account->name, '@admin_name' => $user->name));
       drupal_mail('drupalorg_git_gateway', 'disabled', $account->mail, user_preferred_language($account), array('body' => $body));
-      $values['email'] = $body;
+      $record['email'] = $body;
     }
     $id = db_insert('drupalorg_git_disable_log')
       ->fields($record)

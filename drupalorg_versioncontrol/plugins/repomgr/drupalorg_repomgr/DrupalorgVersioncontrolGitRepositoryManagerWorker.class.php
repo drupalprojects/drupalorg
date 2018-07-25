@@ -17,7 +17,26 @@ class DrupalorgVersioncontrolGitRepositoryManagerWorker extends VersioncontrolGi
   public function init() {
     $this->getSandboxStatus();
     $this->templateDir = $this->templateBaseDir . '/' . (empty($this->sandbox) ? 'project' : 'sandbox');
-    return parent::init();
+    $return = parent::init();
+
+    if (!empty($this->sandbox)) {
+      // Add symlink to also allow new sandbox Git remotes.
+      $node = node_load($this->repository->project_nid);
+      $aliased_remote = variable_get('drupalorg_git_basedir', '/var/git') . '/repositories/sandbox/' . user_load($node->uid)->git_username . '-' . $node->nid . '.git';
+      $this->proc_open('ln -s ' . escapeshellarg($this->repository->root) . ' ' . escapeshellarg($aliased_remote), TRUE);
+    }
+    return $return;
+  }
+
+  public function reInit(array $flush) {
+    // Remove symlink that also allowed new sandbox Git remotes.
+    $node = node_load($this->repository->project_nid);
+    $aliased_remote = variable_get('drupalorg_git_basedir', '/var/git') . '/repositories/sandbox/' . user_load($node->uid)->git_username . '-' . $node->nid . '.git';
+    if (file_exists($aliased_remote)) {
+      $this->proc_open('rm ' . escapeshellarg($aliased_remote), FALSE);
+    }
+
+    parent::reInit($flush);
   }
 
   public function setUserAuthData($uid, $auth_data) {

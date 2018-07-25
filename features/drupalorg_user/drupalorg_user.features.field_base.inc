@@ -725,6 +725,8 @@ function drupalorg_user_field_default_field_bases() {
         'vienna_2017' => 'DrupalCon Vienna 2017',
         'nashville_2018' => 'DrupalCon Nashville 2018',
         'europe_2018' => 'Drupal Europe 2018',
+        'seattle_2019' => 'DrupalCon Seattle 2019',
+        'minneapolis_2020' => 'DrupalCon Minneapolis 2020',
       ),
       'allowed_values_function' => '',
     ),
@@ -1303,28 +1305,6 @@ function drupalorg_user_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'list_boolean',
-  );
-
-  // Exported field_base: 'field_user_geolocation'.
-  $field_bases['field_user_geolocation'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_user_geolocation',
-    'indexes' => array(
-      'lat' => array(
-        0 => 'lat',
-      ),
-      'lng' => array(
-        0 => 'lng',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'geolocation',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'geolocation_latlng',
   );
 
   // Exported field_base: 'field_websites'.

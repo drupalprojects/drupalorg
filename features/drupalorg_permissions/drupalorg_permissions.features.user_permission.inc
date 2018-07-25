@@ -510,9 +510,7 @@ function drupalorg_permissions_user_default_permissions() {
   // Exported permission: 'administer SSH public keys'.
   $permissions['administer SSH public keys'] = array(
     'name' => 'administer SSH public keys',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
+    'roles' => array(),
     'module' => 'sshkey',
   );
 
@@ -2192,6 +2190,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full project_distribution projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2202,6 +2201,7 @@ function drupalorg_permissions_user_default_permissions() {
     'roles' => array(
       'Git user' => 'Git user',
       'administrator' => 'administrator',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2211,6 +2211,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full project_module projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2220,6 +2221,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full project_theme projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2229,6 +2231,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create full project_theme_engine projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2351,6 +2354,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_core content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2360,6 +2364,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_distribution content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2369,6 +2374,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_drupalorg content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2387,6 +2393,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_module content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2396,6 +2403,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_theme content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2405,6 +2413,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create project_theme_engine content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -2430,6 +2439,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'create sandbox projects',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -2885,6 +2895,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'delete own sandbox project',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'project',
   );
@@ -3145,6 +3156,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
+  // Exported permission: 'edit any SSH public keys'.
+  $permissions['edit any SSH public keys'] = array(
+    'name' => 'edit any SSH public keys',
+    'roles' => array(),
+    'module' => 'sshkey',
+  );
+
   // Exported permission: 'edit any book content'.
   $permissions['edit any book content'] = array(
     'name' => 'edit any book content',
@@ -3396,6 +3414,13 @@ function drupalorg_permissions_user_default_permissions() {
     'module' => 'metatag',
   );
 
+  // Exported permission: 'edit own SSH public keys'.
+  $permissions['edit own SSH public keys'] = array(
+    'name' => 'edit own SSH public keys',
+    'roles' => array(),
+    'module' => 'sshkey',
+  );
+
   // Exported permission: 'edit own book content'.
   $permissions['edit own book content'] = array(
     'name' => 'edit own book content',
@@ -3539,6 +3564,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_core content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3548,6 +3574,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_distribution content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3557,6 +3584,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_drupalorg content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3573,6 +3601,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_module content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3582,6 +3611,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_theme content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );
@@ -3591,6 +3621,7 @@ function drupalorg_permissions_user_default_permissions() {
     'name' => 'edit own project_theme_engine content',
     'roles' => array(
       'Git user' => 'Git user',
+      'confirmed' => 'confirmed',
     ),
     'module' => 'node',
   );

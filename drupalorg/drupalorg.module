@@ -3055,7 +3055,28 @@ function drupalorg_ad_settings_form() {
  * Implements hook_node_access().
  */
 function drupalorg_node_access($node, $op, $account) {
-  if ($op == 'update') {
+  $type = is_string($node) ? $node : $node->type;
+
+  if ($op === 'create') {
+    $account_wrapper = entity_metadata_wrapper('user', $account);
+    if ($account_wrapper->field_shared_account_for_an_org->value() && !in_array($type, ['organization', 'casestudy'] + project_project_node_types())) {
+      // Only allow shared organization accounts to create organizations, case
+      // studies, and projects.
+      if (current_path() === 'node/add/' . str_replace('_', '-', $type)) {
+        drupal_set_message(t('Your account is a <a href="/terms#accounts">shared account</a>, which can not create this type of content.'), 'warning', FALSE);
+      }
+      return NODE_ACCESS_DENY;
+    }
+    if (in_array($type, project_project_node_types()) && !$account_wrapper->field_shared_account_for_an_org->value() && !isset($account->roles[DRUPALORG_GIT_GATEWAY_RID])) {
+      // Only allow either shared organization accounts or Git users to create
+      // projects.
+      if (current_path() === 'node/add/' . str_replace('_', '-', $type)) {
+        drupal_set_message(t('Agree to Drupal.org’s <a href="!git">Git access agreement</a> to create projects.', ['!git' => url('user/' . $GLOBALS['user']->uid . '/git')]), 'warning', FALSE);
+      }
+      return NODE_ACCESS_DENY;
+    }
+  }
+  elseif ($op === 'update') {
     // The documentation team lock pages by setting the body filter format to
     // a format which only privileged accounts have access to. This behaviour
     // worked in D6 but not D7, so we need to workaround this by restricting
@@ -3077,14 +3098,12 @@ function drupalorg_node_access($node, $op, $account) {
   }
 
   if ($op !== 'view') {
-    $type = is_string($node) ? $node : $node->type;
-
     // For documentation pages in guides, strengthen core node access to deny
     // instead of ignore for lack of permission. Users must have both the
     // required roles and group membership, if any. For example,
     // documentatation pages have restrictions from node_node_access(), but do
     // not require documentation guide membership to edit.
-    if (($type === 'documentation' || ($type === 'guide' && $op === 'update')) && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
+    if (in_array($type, ['documentation', 'guide']) && node_node_access($node, $op, $account) === NODE_ACCESS_IGNORE) {
       return NODE_ACCESS_DENY;
     }
   }
