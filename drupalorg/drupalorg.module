@@ -4853,10 +4853,6 @@ function drupalorg_entity_presave($entity, $type) {
       // Populate field_organization_reference.
       $organization_titles = array();
       foreach ($entity->field_organizations[LANGUAGE_NONE] as $delta => &$organization) {
-        // Load field collection item entity if not already loaded.
-        if (isset($organization['value'])) {
-          $organization['entity'] = field_collection_item_load($organization['value']);
-        }
         // Clear any previous reference.
         $organization['entity']->field_organization_reference = array();
         // Add to list of titles to try loading.
