@@ -4854,7 +4854,9 @@ function drupalorg_entity_presave($entity, $type) {
       $organization_titles = array();
       foreach ($entity->field_organizations[LANGUAGE_NONE] as $delta => &$organization) {
         // Clear any previous reference.
-        $organization['entity']->field_organization_reference = array();
+        if (isset($organization['entity'])) {
+          $organization['entity']->field_organization_reference = [];
+        }
         // Add to list of titles to try loading.
         if (!empty($organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value'])) {
           $organization_titles[trim(drupal_strtolower($organization['entity']->field_organization_name[LANGUAGE_NONE][0]['value']))][] = $delta;
