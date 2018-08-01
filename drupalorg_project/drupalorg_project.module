@@ -956,16 +956,16 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
                     continue 2;
                   }
                 }
-                foreach ($current_version_parts as $field => $value) {
-                  if (isset($potentially_insecure_release->{$field}[LANGUAGE_NONE][0]['value'])) {
-                    if ($potentially_insecure_release->{$field}[LANGUAGE_NONE][0]['value'] < $value) {
-                      // Earlier version, keep this release.
-                      break;
-                    }
-                    if ($potentially_insecure_release->{$field}[LANGUAGE_NONE][0]['value'] > $value) {
-                      // Later version, discard this release.
-                      continue 2;
-                    }
+              }
+              foreach ($current_version_parts as $field => $value) {
+                if (isset($potentially_insecure_release->{$field}[LANGUAGE_NONE][0]['value'])) {
+                  if ($potentially_insecure_release->{$field}[LANGUAGE_NONE][0]['value'] < $value) {
+                    // Earlier version, keep this release.
+                    break;
+                  }
+                  if ($potentially_insecure_release->{$field}[LANGUAGE_NONE][0]['value'] > $value) {
+                    // Later version, discard this release.
+                    continue 2;
                   }
                 }
               }
