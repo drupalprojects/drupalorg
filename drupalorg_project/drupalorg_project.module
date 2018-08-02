@@ -927,6 +927,8 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
           $current_version_parts = [
             'field_release_version_minor' => $wrapper->field_release_version_minor->value(),
             'field_release_version_patch' => $wrapper->field_release_version_patch->value(),
+            'field_release_version_ext_weight' => $wrapper->field_release_version_ext_weight->value(),
+            'field_release_version_ext_delta' => $wrapper->field_release_version_ext_delta->value(),
           ];
           $query = new EntityFieldQuery();
           $result = $query->entityCondition('entity_type', 'node')
@@ -967,6 +969,13 @@ function drupalorg_project_form_node_form_alter(&$form, &$form_state) {
                     // Later version, discard this release.
                     continue 2;
                   }
+                }
+                elseif ($field === 'field_release_version_ext_weight' && !empty($value)) {
+                  // The security release has a verion extra value
+                  // (alpha/beta/etc), potentially insecure release does not,
+                  // everything else is the same. Such as 7.x-2.0-rc1 security
+                  // release, 7.x-2.0 potentially insecure release. Discard it.
+                  continue 2;
                 }
               }
               $form['additional_insecure']['#options'][$potentially_insecure_release->nid] = check_plain($potentially_insecure_release->title);
